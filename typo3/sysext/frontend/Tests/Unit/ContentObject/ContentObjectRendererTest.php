@@ -55,10 +55,10 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->createMockedLoggerAndLogManager();
 
-		$this->templateServiceMock = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('getFileName', 'linkData'));
-		$pageRepositoryMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('getRawRecord'));
+		$this->templateServiceMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('getFileName', 'linkData'));
+		$pageRepositoryMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getRawRecord'));
 
-		$this->typoScriptFrontendControllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array('dummy'), array(), '', FALSE);
+		$this->typoScriptFrontendControllerMock = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
 		$this->typoScriptFrontendControllerMock->tmpl = $this->templateServiceMock;
 		$this->typoScriptFrontendControllerMock->config = array();
 		$this->typoScriptFrontendControllerMock->page = array();
@@ -67,11 +67,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->typoScriptFrontendControllerMock->renderCharset = 'utf-8';
 		$GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
 
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
+		$GLOBALS['TYPO3_CONF_VARS']['SYS'][\TYPO3\CMS\Core\Charset\CharsetConverter_utils::class] = 'mbstring';
 
 		$this->subject = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
 			array('getResourceFactory', 'getEnvironmentVariable'),
 			array($this->typoScriptFrontendControllerMock)
 		);
@@ -125,11 +125,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->with('typo3/clear.gif')
 			->will($this->returnValue('typo3/clear.gif'));
 
-		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array(), array(), '', FALSE);
+		$resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array(), array(), '', FALSE);
 		$this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
 		$className = uniqid('tx_coretest');
-		$getImgResourceHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetImageResourceHookInterface', array('getImgResourcePostProcess'), array(), $className);
+		$getImgResourceHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface::class, array('getImgResourcePostProcess'), array(), $className);
 		$getImgResourceHookMock
 			->expects($this->once())
 			->method('getImgResourcePostProcess')
@@ -1812,7 +1812,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getDataWithTypeFileReturnsUidOfFileObject() {
 		$uid = uniqid();
-		$file = $this->getMock('TYPO3\\CMS\\Core\\Resource\File', array(), array(), '', FALSE);
+		$file = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
 		$file->expects($this->once())->method('getUid')->will($this->returnValue($uid));
 		$this->subject->setCurrentFile($file);
 		$this->assertEquals($uid, $this->subject->getData('file:current:uid'));
@@ -2362,7 +2362,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getImageSourceCollectionRendersDefinedSources() {
 		/** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 		$cObj = $this->getMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
 			array('stdWrap','getImgResource')
 		);
 		$cObj->start(array(), 'tt_content');
@@ -2458,7 +2458,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getImageSourceCollectionRendersDefinedLayoutKeyDefault($layoutKey , $configuration) {
 		/** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 		$cObj = $this->getMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
 			array('stdWrap','getImgResource')
 		);
 		$cObj->start(array(), 'tt_content');
@@ -2579,7 +2579,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getImageSourceCollectionRendersDefinedLayoutKeyData($layoutKey , $configuration, $xhtmlDoctype, $expectedHtml) {
 		/** @var $cObj \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
 		$cObj = $this->getMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
 			array('stdWrap','getImgResource')
 		);
 		$cObj->start(array(), 'tt_content');
@@ -2613,7 +2613,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getImageSourceCollectionHookCalled() {
 		$this->subject = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
 			array('getResourceFactory', 'stdWrap', 'getImgResource')
 		);
 		$this->subject->start(array(), 'tt_content');
@@ -2627,11 +2627,11 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('getImgResource')
 			->will($this->returnValue(array(100, 100, NULL, 'bar-file.jpg')));
 
-		$resourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array(), array(), '', FALSE);
+		$resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array(), array(), '', FALSE);
 		$this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
 
 		$className = uniqid('tx_coretest_getImageSourceCollectionHookCalled');
-		$getImageSourceCollectionHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectOneSourceCollectionHookInterface', array('getOneSourceCollection'), array(), $className);
+		$getImageSourceCollectionHookMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class, array('getOneSourceCollection'), array(), $className);
 		$GLOBALS['T3_VAR']['getUserObj'][$className] = $getImageSourceCollectionHookMock;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'][] = $className;
 

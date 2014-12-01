@@ -612,7 +612,7 @@ class ContentObjectRenderer {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface) {
-					throw new \UnexpectedValueException($classData . ' must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectStdWrapHookInterface', 1195043965);
+					throw new \UnexpectedValueException($classData . ' must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface::class, 1195043965);
 				}
 				$this->stdWrapHookObjects[] = $hookObject;
 			}
@@ -621,7 +621,7 @@ class ContentObjectRenderer {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $classData) {
 				$postInitializationProcessor = GeneralUtility::getUserObj($classData);
 				if (!$postInitializationProcessor instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface) {
-					throw new \UnexpectedValueException($classData . ' must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectPostInitHookInterface', 1274563549);
+					throw new \UnexpectedValueException($classData . ' must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface::class, 1274563549);
 				}
 				$postInitializationProcessor->postProcessContentObjectInitialization($this);
 			}
@@ -650,7 +650,7 @@ class ContentObjectRenderer {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $classData) {
 					$hookObject = GeneralUtility::getUserObj($classData);
 					if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetImageResourceHookInterface', 1218636383);
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface::class, 1218636383);
 					}
 					$this->getImgResourceHookObjects[] = $hookObject;
 				}
@@ -780,7 +780,7 @@ class ContentObjectRenderer {
 							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData) {
 								$hookObject = GeneralUtility::getUserObj($classData);
 								if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface) {
-									throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetSingleHookInterface', 1195043731);
+									throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface::class, 1195043731);
 								}
 								/** @var $hookObject \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface */
 								$content .= $hookObject->getSingleContentObject($name, (array)$conf, $TSkey, $this);
@@ -893,7 +893,7 @@ class ContentObjectRenderer {
 		}
 
 		if ($exceptionHandlerClassName === '1') {
-			$exceptionHandlerClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\Exception\\ProductionExceptionHandler';
+			$exceptionHandlerClassName = \TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler::class;
 		}
 
 		return $exceptionHandlerClassName;
@@ -1006,7 +1006,7 @@ class ContentObjectRenderer {
 	 */
 	public function convertToUserIntObject() {
 		if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-			$GLOBALS['TT']->setTSlogMessage('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::convertToUserIntObject() ' . 'is called in the wrong context or for the wrong object type', 2);
+			$GLOBALS['TT']->setTSlogMessage(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
 		} else {
 			$this->doConvertToUserIntObject = TRUE;
 		}
@@ -1518,7 +1518,7 @@ class ContentObjectRenderer {
 							$hookObject = GeneralUtility::getUserObj($classData);
 							if (!$hookObject instanceof ContentObjectOneSourceCollectionHookInterface) {
 								throw new \UnexpectedValueException(
-									'$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectOneSourceCollectionHookInterface',
+									'$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class,
 									1380007853
 								);
 							}
@@ -5566,7 +5566,7 @@ class ContentObjectRenderer {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] as $classData) {
 					$hookObject = GeneralUtility::getUserObj($classData);
 					if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetDataHookInterface', 1195044480);
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface::class, 1195044480);
 					}
 					$retVal = $hookObject->getDataExtension($string, $fieldArray, $secVal, $retVal, $this);
 				}

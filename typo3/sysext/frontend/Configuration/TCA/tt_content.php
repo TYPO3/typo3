@@ -319,7 +319,7 @@ return array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:colPos',
 			'config' => array(
 				'type' => 'select',
-				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutView->colPosListItemProcFunc',
+				'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->colPosListItemProcFunc',
 				'items' => array(
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:colPos.I.0',
@@ -1189,7 +1189,7 @@ return array(
 						''
 					)
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Frontend\\Hooks\\TableColumnHooks->sortPluginList',
+				'itemsProcFunc' => \TYPO3\CMS\Frontend\Hooks\TableColumnHooks::class . '->sortPluginList',
 				'default' => '',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 				'iconsInOptionTags' => 1,
@@ -1613,7 +1613,7 @@ return array(
 				'minitems' => 0,
 				'maxitems' => 1,
 				'suppress_icons' => 1,
-				'itemsProcFunc' => 'TYPO3\\CMS\\Core\\Category\\CategoryRegistry->getCategoryFieldsForTable',
+				'itemsProcFunc' => \TYPO3\CMS\Core\Category\CategoryRegistry::class . '->getCategoryFieldsForTable',
 			)
 		)
 	),

@@ -54,7 +54,7 @@ class MediaWizardProviderManager {
 			if (!isset(self::$providerObjects[$className])) {
 				$provider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
 				if (!$provider instanceof MediaWizardProviderInterface) {
-					throw new \UnexpectedValueException($className . ' is registered as a mediaWizardProvider, so it must implement interface TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProviderInterface', 1285022360);
+					throw new \UnexpectedValueException($className . ' is registered as a mediaWizardProvider, so it must implement interface ' . \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface::class, 1285022360);
 				}
 				self::$providerObjects[$className] = $provider;
 			}

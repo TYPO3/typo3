@@ -29,10 +29,10 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up this testcase
 	 */
 	public function setUp() {
-		$proxy = $this->buildAccessibleProxy('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuContentObject');
+		$proxy = $this->buildAccessibleProxy(\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::class);
 		$this->fixture = new $proxy();
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array($GLOBALS['TYPO3_CONF_VARS'], 1, 1));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+		$GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array($GLOBALS['TYPO3_CONF_VARS'], 1, 1));
 		$GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
 		$GLOBALS['TSFE']->page = array();
 	}
@@ -46,8 +46,8 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function prepareSectionIndexTest() {
-		$this->fixture->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-		$this->fixture->parent_cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$this->fixture->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$this->fixture->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 	}
 
 	/**
@@ -252,7 +252,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 
 		$this->prepareSectionIndexTest();
-		$this->fixture->parent_cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array());
+		$this->fixture->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array());
 
 		$this->fixture->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
 		$this->fixture->menuArr = array(

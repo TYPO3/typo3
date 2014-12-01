@@ -29,10 +29,10 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $menuTypeToClassMapping = array(
-		'GMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\GraphicalMenuContentObject',
-		'TMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\TextMenuContentObject',
-		'IMGMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\ImageMenuContentObject',
-		'JSMENU' => 'TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\JavaScriptMenuContentObject',
+		'GMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::class,
+		'TMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject::class,
+		'IMGMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::class,
+		'JSMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\JavaScriptMenuContentObject::class,
 	);
 
 	/**

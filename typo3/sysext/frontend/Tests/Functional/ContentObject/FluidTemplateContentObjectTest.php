@@ -26,7 +26,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTes
 	 */
 	public function renderWorksWithNestedFluidtemplate() {
 		/** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+		$tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
 		$GLOBALS['TSFE'] = $tsfe;
 
 		$configuration = array(

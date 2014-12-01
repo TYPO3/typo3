@@ -52,7 +52,7 @@ class DataSubmissionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 
 		$instance = new \TYPO3\CMS\Frontend\Controller\DataSubmissionController(999999999, $lockMethod);
-		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Frontend\\Controller\\DataSubmissionController');
+		$t3libLockReflection = new \ReflectionClass(\TYPO3\CMS\Frontend\Controller\DataSubmissionController::class);
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('temporaryFiles');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$t3libLockReflectionResourceProperty->setValue($instance, array($file));

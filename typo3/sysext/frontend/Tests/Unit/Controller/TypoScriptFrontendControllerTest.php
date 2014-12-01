@@ -60,7 +60,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 */
 	protected function setupTsfeMockForHeaderFooterReplacementCheck() {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(
+		$tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(
 			'INTincScript_process',
 			'INTincScript_includeLibs',
 			'INTincScript_loadJSCode',

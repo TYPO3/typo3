@@ -58,16 +58,16 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->contentObjectRenderer = $this->getMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
 		);
 		$this->subject = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Frontend\\ContentObject\\FluidTemplateContentObject',
+			\TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
 			array('dummy', 'initializeStandaloneViewInstance'),
 			array($this->contentObjectRenderer)
 		);
 		/** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
-		$tsfe->tmpl = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+		$tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
+		$tsfe->tmpl = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class);
 		$GLOBALS['TSFE'] = $tsfe;
 	}
 
@@ -83,8 +83,8 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Add a mock standalone view to subject
 	 */
 	protected function addMockViewToSubject() {
-		$this->standaloneView = $this->getMock('TYPO3\\CMS\\Fluid\\View\\StandaloneView', array(), array(), '', FALSE);
-		$this->request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request');
+		$this->standaloneView = $this->getMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, array(), array(), '', FALSE);
+		$this->request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class);
 		$this->standaloneView
 			->expects($this->any())
 			->method('getRequest')
@@ -472,13 +472,13 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		);
 
 		/** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
-		$typoScriptServiceMock = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+		$typoScriptServiceMock = $this->getMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
 		$typoScriptServiceMock
 			->expects($this->once())
 			->method('convertTypoScriptArrayToPlainArray')
 			->with($configuration['settings.'])
 			->will($this->returnValue($expectedSettingsToBeSet));
-		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService', $typoScriptServiceMock);
+		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class, $typoScriptServiceMock);
 
 		$this->standaloneView
 			->expects($this->at(1))

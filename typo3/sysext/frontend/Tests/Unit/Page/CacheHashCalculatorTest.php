@@ -36,7 +36,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'encryptionKey' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', array('foo'));
+		$this->fixture = $this->getMock(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, array('foo'));
 		$this->fixture->setConfiguration(array(
 			'excludedParameters' => array('exclude1', 'exclude2'),
 			'cachedParametersWhiteList' => array(),
@@ -171,7 +171,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canWhitelistParameters($params, $expected) {
-		$method = new \ReflectionMethod('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'setCachedParametersWhiteList');
+		$method = new \ReflectionMethod(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'setCachedParametersWhiteList');
 		$method->setAccessible(TRUE);
 		$method->invoke($this->fixture, array('whitep1', 'whitep2'));
 		$this->assertEquals($expected, $this->fixture->generateForParameters($params));

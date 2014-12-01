@@ -200,7 +200,7 @@ class PageRepository {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetPageHookInterface', 1251476766);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface::class, 1251476766);
 				}
 				$hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
 			}
@@ -313,7 +313,7 @@ class PageRepository {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetPageOverlayHookInterface', 1269878881);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
 				}
 				$hookObject->getPageOverlay_preProcess($pageInput, $lUid, $this);
 			}
@@ -388,7 +388,7 @@ class PageRepository {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetRecordOverlayHookInterface', 1269881658);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
 				}
 				$hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
@@ -449,7 +449,7 @@ class PageRepository {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Frontend\\Page\\PageRepositoryGetRecordOverlayHookInterface', 1269881659);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
 				}
 				$hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
@@ -571,8 +571,8 @@ class PageRepository {
 					$redirectUrl .= '/' . $prependStr;
 				}
 				$statusCode = (int)$row['redirectHttpStatusCode'];
-				if ($statusCode && defined('TYPO3\\CMS\\Core\\Utility\\HttpUtility::HTTP_STATUS_' . $statusCode)) {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, constant('TYPO3\\CMS\\Core\\Utility\\HttpUtility::HTTP_STATUS_' . $statusCode));
+				if ($statusCode && defined(\TYPO3\CMS\Core\Utility\HttpUtility::class . '::HTTP_STATUS_' . $statusCode)) {
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, constant(\TYPO3\CMS\Core\Utility\HttpUtility::class . '::HTTP_STATUS_' . $statusCode));
 				} else {
 					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301);
 				}

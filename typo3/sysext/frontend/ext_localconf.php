@@ -3,9 +3,9 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'FE' && !isset($_REQUEST['eID'])) {
 	\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-		'TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository',
+		\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class,
 		'recordPostRetrieval',
-		'TYPO3\\CMS\\Frontend\\Aspect\\FileMetadataOverlayAspect',
+		\TYPO3\CMS\Frontend\Aspect\FileMetadataOverlayAspect::class,
 		'languageAndWorkspaceOverlay'
 	);
 }
@@ -25,5 +25,5 @@ if (TYPO3_MODE === 'FE') {
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = 'EXT:frontend/Resources/PHP/Eid/ExtDirect.php';
 
 	// Register the core media wizard provider
-	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider('TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProvider');
+	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider(\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider::class);
 }
