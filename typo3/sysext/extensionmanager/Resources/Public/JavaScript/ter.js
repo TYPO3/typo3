@@ -2,7 +2,7 @@
 (function ($) {
 
 	$(document).ready(function() {
-		$('#terTable').dataTable({
+		$('#terTable').DataTable({
 			'jQueryUI': true,
 			'lengthChange': false,
 			'pageLength': 15,
@@ -14,7 +14,7 @@
 			'drawCallback': bindDownload
 		});
 
-		$('#terVersionTable').dataTable({
+		$('#terVersionTable').DataTable({
 			'jQueryUI': true,
 			'lengthChange': false,
 			'pageLength': 15,
@@ -36,7 +36,7 @@
 			]
 		});
 
-		$('#terSearchTable').dataTable({
+		$('#terSearchTable').DataTable({
 			'paging': false,
 			'jQueryUI': true,
 			'lengthChange': false,

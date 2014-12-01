@@ -24,7 +24,7 @@ TYPO3.DocumentationApplication = {
 	},
 	// Initializes the list view
 	documentationListView: function(getVars) {
-		this.datatable = jQuery('#typo3-documentation-list').dataTable({
+		this.datatable = jQuery('#typo3-documentation-list').DataTable({
 			'paging': false,
 			'jQueryUI': true,
 			'lengthChange': false,
@@ -34,12 +34,12 @@ TYPO3.DocumentationApplication = {
 
 		// restore filter
 		if (this.datatable.length && getVars['search']) {
-			this.datatable.fnFilter(getVars['search']);
+			this.datatable.search(getVars['search']);
 		}
 	},
 	// Initializes the download view
 	documentationDownloadView: function(getVars) {
-		this.datatable = jQuery('#typo3-documentation-download').dataTable({
+		this.datatable = jQuery('#typo3-documentation-download').DataTable({
 			'paging': false,
 			'jQueryUI': true,
 			'lengthChange': false,
@@ -50,7 +50,7 @@ TYPO3.DocumentationApplication = {
 
 		// restore filter
 		if (this.datatable.length && getVars['search']) {
-			this.datatable.fnFilter(getVars['search']);
+			this.datatable.search(getVars['search']);
 		}
 	}
 };
@@ -65,7 +65,7 @@ TYPO3.DocumentationApplication = {
 		// Make the data table filter react to the clearing of the filter field
 		$('.dataTables_wrapper .dataTables_filter input').clearable({
 			onClear: function() {
-				TYPO3.DocumentationApplication.datatable.fnFilter('');
+				TYPO3.DocumentationApplication.datatable.search('');
 			}
 		});
 	});

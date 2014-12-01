@@ -56,7 +56,7 @@ var languageModule = {
 	initialize: function() {
 			// Initialize dataTable for selection and translation list
 		languageModule.tableSetup.sScrollY = languageModule.calculateTableHeight();
-		jQuery('.selectionList, .translationList').dataTable(languageModule.tableSetup);
+		jQuery('.selectionList, .translationList').DataTable(languageModule.tableSetup);
 
 			// Prevent "jumping" style of the tables while generating
 		jQuery('.languageSelectionListContainer').css('visibility', 'visible');

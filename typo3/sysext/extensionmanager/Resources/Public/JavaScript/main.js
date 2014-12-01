@@ -11,7 +11,7 @@
 
 		$('.dataTables_wrapper .dataTables_filter input').clearable({
 			onClear: function() {
-				datatable.fnFilter('');
+				datatable.search('');
 			}
 		});
 
@@ -44,7 +44,7 @@
 	}
 
 	function manageExtensionListing() {
-		datatable = $('#typo3-extension-list').dataTable({
+		datatable = $('#typo3-extension-list').DataTable({
 			'paging': false,
 			'jQueryUI': true,
 			'lengthChange': false,
@@ -67,7 +67,7 @@
 
 		// restore filter
 		if(datatable.length && getVars['search']) {
-			datatable.fnFilter(getVars['search']);
+			datatable.search(getVars['search']);
 		}
 	}
 
