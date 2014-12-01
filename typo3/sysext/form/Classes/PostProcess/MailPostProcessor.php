@@ -333,11 +333,11 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	protected function addAttachmentsFromElements($elements, $submittedValues) {
 		/** @var $element \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement */
 		foreach ($elements as $element) {
-			if (is_a($element, 'TYPO3\\CMS\\Form\\Domain\\Model\\Element\\ContainerElement')) {
+			if (is_a($element, \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement::class)) {
 				$this->addAttachmentsFromElements($element->getElements(), $submittedValues);
 				continue;
 			}
-			if (is_a($element, 'TYPO3\\CMS\\Form\\Domain\\Model\\Element\\FileuploadElement')) {
+			if (is_a($element, \TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement::class)) {
 				$elementName = $element->getName();
 				if (is_array($submittedValues[$elementName]) && isset($submittedValues[$elementName]['tempFilename'])) {
 					$filename = $submittedValues[$elementName]['tempFilename'];

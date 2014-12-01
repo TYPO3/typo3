@@ -348,7 +348,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	protected function createAttributes() {
-		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\AttributesAttribute';
+		$className = \TYPO3\CMS\Form\Domain\Model\Attribute\AttributesAttribute::class;
 		$this->attributes = GeneralUtility::makeInstance($className, $this->elementId);
 	}
 
@@ -453,7 +453,7 @@ abstract class AbstractElement {
 	 * @return void
 	 */
 	protected function createAdditional() {
-		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Additional\\AdditionalAdditionalElement';
+		$className = \TYPO3\CMS\Form\Domain\Model\Additional\AdditionalAdditionalElement::class;
 		$this->additional = GeneralUtility::makeInstance($className);
 	}
 

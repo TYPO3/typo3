@@ -31,7 +31,7 @@ class BetweenValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$this->subject = $this->getMock('TYPO3\\CMS\\Form\\Validation\\BetweenValidator', array('dummy'), array(), '', FALSE);
+		$this->subject = $this->getMock(\TYPO3\CMS\Form\Validation\BetweenValidator::class, array('dummy'), array(), '', FALSE);
 	}
 
 	public function validNonInclusiveDataProvider() {

@@ -37,7 +37,7 @@ class DigitValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
 			if ($this->filter === NULL) {
-				$className = 'TYPO3\\CMS\\Form\\Filter\\DigitFilter';
+				$className = \TYPO3\CMS\Form\Filter\DigitFilter::class;
 				$this->filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
 			}
 			if ($this->filter->filter($value) !== $value) {

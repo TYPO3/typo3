@@ -25,7 +25,7 @@ class AbstractElementViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getInputValueDoesNotHtmlSpecialCharBr() {
-		$model = $this->getMock('TYPO3\\CMS\\Form\\Domain\\Model\\Element\\AbstractElement');
+		$model = $this->getMock(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement::class);
 		$model
 			->expects($this->once())
 			->method('getAttributeValue')
@@ -34,7 +34,7 @@ class AbstractElementViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		/** @var $fixture \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView|PHPUnit_Framework_MockObject_MockObject */
 		$fixture = $this->getMock(
-			'TYPO3\\CMS\\Form\\View\\Mail\\Html\\Element\\AbstractElementView',
+			\TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView::class,
 			array('dummy'),
 			array($model)
 		);

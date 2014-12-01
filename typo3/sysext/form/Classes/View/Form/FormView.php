@@ -24,7 +24,7 @@ class FormView extends \TYPO3\CMS\Form\View\Form\Element\ContainerElementView {
 	/**
 	 * @var string
 	 */
-	protected $expectedModelName = 'TYPO3\\CMS\\Form\\Domain\\Model\\Form';
+	protected $expectedModelName = \TYPO3\CMS\Form\Domain\Model\Form::class;
 
 	/**
 	 * Default layout of this object

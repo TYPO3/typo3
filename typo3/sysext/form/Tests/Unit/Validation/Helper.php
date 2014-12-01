@@ -33,7 +33,7 @@ class Helper extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getRequestHandler(array $data) {
 		$this->mockData = $data;
 
-		$requestHandlerMock = $this->getMock('TYPO3\\CMS\\Form\\Request', array('has', 'getByMethod'));
+		$requestHandlerMock = $this->getMock(\TYPO3\CMS\Form\Request::class, array('has', 'getByMethod'));
 		$requestHandlerMock->expects($this->any())->method('has')->will($this->returnCallback(array($this, 'has')));
 		$requestHandlerMock->expects($this->any())->method('getByMethod')
 			->will($this->returnCallback(array($this, 'getByMethod')));

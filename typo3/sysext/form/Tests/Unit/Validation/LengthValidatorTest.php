@@ -33,12 +33,12 @@ class LengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
-		$charsetConverterMock = $this->getMock('TYPO3\\CMS\\Core\\Charset\\CharsetConverter', array(), array(), '', FALSE);
+		$charsetConverterMock = $this->getMock(\TYPO3\CMS\Core\Charset\CharsetConverter::class, array(), array(), '', FALSE);
 		$charsetConverterMock->expects($this->any())->method('strlen')
 			->will($this->returnCallback(function ($charset, $value) {
 				return mb_strlen($value, $charset);
 			}));
-		$this->subject = $this->getAccessibleMock('TYPO3\\CMS\\Form\\Validation\\LengthValidator', array('dummy'), array(), '', FALSE);
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Form\Validation\LengthValidator::class, array('dummy'), array(), '', FALSE);
 		$this->subject->_set('charsetConverter', $charsetConverterMock);
 	}
 

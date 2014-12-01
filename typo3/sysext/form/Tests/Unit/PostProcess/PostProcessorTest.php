@@ -27,9 +27,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	public function setUp() {
-		$form = $this->getMock('TYPO3\\CMS\\Form\\Domain\\Model\\Form', array(), array(), '', FALSE);
+		$form = $this->getMock(\TYPO3\CMS\Form\Domain\Model\Form::class, array(), array(), '', FALSE);
 		$this->fixture = $this->getMock(
-			'TYPO3\CMS\Form\PostProcess\PostProcessor',
+			\TYPO3\CMS\Form\PostProcess\PostProcessor::class,
 			array('sortTypoScriptKeyList'),
 			array($form, array())
 		);
