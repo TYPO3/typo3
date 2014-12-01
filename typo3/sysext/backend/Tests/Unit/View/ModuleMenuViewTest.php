@@ -25,7 +25,7 @@ class ModuleMenuViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function unsetHiddenModulesUnsetsHiddenModules() {
 		/** @var \TYPO3\CMS\Backend\View\ModuleMenuView|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $moduleMenuViewMock */
 		$moduleMenuViewMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Backend\\View\\ModuleMenuView',
+			\TYPO3\CMS\Backend\View\ModuleMenuView::class,
 			array('dummy'),
 			array(),
 			'',
@@ -59,7 +59,7 @@ class ModuleMenuViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->expects($this->any())->method('getTSConfig')->will($this->returnValue($userTsFixture));
 
 		$expectedResult = array(

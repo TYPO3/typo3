@@ -786,7 +786,7 @@ class IconUtility {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof IconUtilityOverrideResourceIconHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\Utility\\IconUtilityOverrideResourceIconHookInterface', 1393574895);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\Utility\IconUtilityOverrideResourceIconHookInterface::class, 1393574895);
 				}
 				$hookObject->overrideResourceIcon($resource, $iconName, $options, $overlays);
 			}
@@ -1051,7 +1051,7 @@ class IconUtility {
 	 * @return array
 	 */
 	static protected function emitBuildSpriteHtmlIconTagSignal(array $tagAttributes, $innerHtml, $tagName) {
-		return static::getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Backend\\Utility\\IconUtility', 'buildSpriteHtmlIconTag', array($tagAttributes, $innerHtml, $tagName));
+		return static::getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Backend\Utility\IconUtility::class, 'buildSpriteHtmlIconTag', array($tagAttributes, $innerHtml, $tagName));
 	}
 
 	/**
@@ -1062,7 +1062,7 @@ class IconUtility {
 	 * @param string $cssClasses the CSS classes to be used as a string
 	 */
 	static protected function emitBuildSpriteIconClassesSignal($iconName, &$cssClasses) {
-		static::getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Backend\\Utility\\IconUtility', 'buildSpriteIconClasses', array($iconName, &$cssClasses));
+		static::getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Backend\Utility\IconUtility::class, 'buildSpriteIconClasses', array($iconName, &$cssClasses));
 	}
 
 	/**

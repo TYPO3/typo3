@@ -60,7 +60,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 
 		$dataProviderCollection->add(
 			'default',
-			'TYPO3\\CMS\\Backend\\View\\BackendLayout\\DefaultDataProvider'
+			\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class
 		);
 
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider'])) {

@@ -26,12 +26,12 @@ class TreeNodeCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sortNodes() {
 		$nodeCollection = new \TYPO3\CMS\Backend\Tree\TreeNodeCollection(array(
-			array('serializeClassName' => 'TYPO3\\CMS\\Backend\\Tree\\TreeNode', 'id' => 15),
-			array('serializeClassName' => 'TYPO3\\CMS\\Backend\\Tree\\TreeNode', 'id' => 25),
-			array('serializeClassName' => 'TYPO3\\CMS\\Backend\\Tree\\TreeNode', 'id' => 5),
-			array('serializeClassName' => 'TYPO3\\CMS\\Backend\\Tree\\TreeNode', 'id' => 2),
-			array('serializeClassName' => 'TYPO3\\CMS\\Backend\\Tree\\TreeNode', 'id' => 150),
-			array('serializeClassName' => 'TYPO3\\CMS\\Backend\\Tree\\TreeNode', 'id' => 67)
+			array('serializeClassName' => \TYPO3\CMS\Backend\Tree\TreeNode::class, 'id' => 15),
+			array('serializeClassName' => \TYPO3\CMS\Backend\Tree\TreeNode::class, 'id' => 25),
+			array('serializeClassName' => \TYPO3\CMS\Backend\Tree\TreeNode::class, 'id' => 5),
+			array('serializeClassName' => \TYPO3\CMS\Backend\Tree\TreeNode::class, 'id' => 2),
+			array('serializeClassName' => \TYPO3\CMS\Backend\Tree\TreeNode::class, 'id' => 150),
+			array('serializeClassName' => \TYPO3\CMS\Backend\Tree\TreeNode::class, 'id' => 67)
 		));
 		$nodeCollection->asort();
 		$expected = array(2, 5, 15, 25, 67, 150);

@@ -150,7 +150,7 @@ class InlineElement {
 				foreach ($tceformsInlineHook as $classData) {
 					$processObject = GeneralUtility::getUserObj($classData);
 					if (!$processObject instanceof \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface) {
-						throw new \UnexpectedValueException('$processObject must implement interface TYPO3\\CMS\\Backend\\Form\\Element\\InlineElementHookInterface', 1202072000);
+						throw new \UnexpectedValueException('$processObject must implement interface ' . \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface::class, 1202072000);
 					}
 					$processObject->init($this);
 					$this->hookObjects[] = $processObject;

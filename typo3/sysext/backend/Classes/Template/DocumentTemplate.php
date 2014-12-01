@@ -911,7 +911,7 @@ function jumpToUrl(URL) {
 
 		// Logging: Can't find better place to put it:
 		if (TYPO3_DLOG) {
-			GeneralUtility::devLog('END of BACKEND session', 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate', 0, array('_FLUSH' => TRUE));
+			GeneralUtility::devLog('END of BACKEND session', \TYPO3\CMS\Backend\Template\DocumentTemplate::class, 0, array('_FLUSH' => TRUE));
 		}
 		return $str;
 	}

@@ -273,7 +273,7 @@ class SuggestElement {
 			// instantiate the class that should fetch the records for this $queryTable
 			$receiverClassName = $config['receiverClass'];
 			if (!class_exists($receiverClassName)) {
-				$receiverClassName = 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestDefaultReceiver';
+				$receiverClassName = \TYPO3\CMS\Backend\Form\Element\SuggestDefaultReceiver::class;
 			}
 			$receiverObj = GeneralUtility::makeInstance($receiverClassName, $queryTable, $config);
 			$params = array('value' => $search);

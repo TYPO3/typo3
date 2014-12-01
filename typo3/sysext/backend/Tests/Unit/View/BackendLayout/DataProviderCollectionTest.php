@@ -61,8 +61,8 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function defaultBackendLayoutIsFound() {
 		$backendLayoutIdentifier = uniqid('identifier');
 
-		$dataProviderMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\DefaultDataProvider', array('getBackendLayout'), array(), '', FALSE);
-		$backendLayoutMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\BackendLayout', array('getIdentifier'), array(), '', FALSE);
+		$dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', FALSE);
+		$backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
 		$backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
 		$dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 
@@ -80,8 +80,8 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dataProviderIdentifier = uniqid('custom');
 		$backendLayoutIdentifier = uniqid('identifier');
 
-		$dataProviderMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\DefaultDataProvider', array('getBackendLayout'), array(), '', FALSE);
-		$backendLayoutMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\BackendLayout', array('getIdentifier'), array(), '', FALSE);
+		$dataProviderMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class, array('getBackendLayout'), array(), '', FALSE);
+		$backendLayoutMock = $this->getMock(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class, array('getIdentifier'), array(), '', FALSE);
 		$backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
 		$dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
 

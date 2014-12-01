@@ -46,7 +46,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_info',
- * 'TYPO3\\CMS\\Frontend\\Controller\\PageInformationController',
+ * \TYPO3\CMS\Frontend\Controller\PageInformationController::class,
  * NULL,
  * 'LLL:EXT:cms/locallang_tca.xlf:mod_tx_cms_webinfo_page'
  * );
@@ -61,7 +61,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_func',
- * 'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
+ * \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController::class
  * NULL,
  * 'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany',
  * 'wiz'

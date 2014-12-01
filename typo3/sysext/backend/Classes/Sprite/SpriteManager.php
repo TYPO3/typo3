@@ -83,7 +83,7 @@ class SpriteManager {
 		$handler = GeneralUtility::makeInstance($handlerClass);
 		// Throw exception if handler class does not implement required interface
 		if (!$handler instanceof \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface) {
-			throw new \RuntimeException('Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' . ' does not implement TYPO3\\CMS\\Backend\\Sprite\\SpriteIconGeneratorInterface', 1294586333);
+			throw new \RuntimeException('Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' . ' does not implement ' . \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface::class, 1294586333);
 		}
 		// Create temp directory if missing
 		if (!is_dir((PATH_site . self::$tempPath))) {

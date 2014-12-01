@@ -339,7 +339,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function matchHideForNonAdminsReturnsTrueIfBackendUserIsAdmin() {
 		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUserMock
 			->expects($this->once())
 			->method('isAdmin')
@@ -353,7 +353,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function matchHideForNonAdminsReturnsFalseIfBackendUserIsNotAdmin() {
 		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUserMock
 			->expects($this->once())
 			->method('isAdmin')
@@ -367,7 +367,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function matchHideL10NSiblingsExceptAdminReturnsTrueIfBackendUserIsAdmin() {
 		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUserMock
 			->expects($this->once())
 			->method('isAdmin')
@@ -381,7 +381,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function matchHideL10NSiblingsExceptAdminReturnsFalseIfBackendUserIsNotAdmin() {
 		/** @var $backendUserMock \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject */
-		$backendUserMock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUserMock = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUserMock
 			->expects($this->once())
 			->method('isAdmin')

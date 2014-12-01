@@ -556,7 +556,7 @@ class PageLayoutController {
 			$this->topFuncMenu = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], 'db_layout.php', '');
 			$this->languageMenu = count($this->MOD_MENU['language']) > 1 ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], 'db_layout.php', '') : '';
 			// Find backend layout / coumns
-			$backendLayout = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $this->id, $this);
+			$backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
 			if (count($backendLayout['__colPosList'])) {
 				$this->colPosList = implode(',', $backendLayout['__colPosList']);
 			}
@@ -964,7 +964,7 @@ class PageLayoutController {
 				// Setting up the tt_content columns to show:
 				if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
 					$colList = array();
-					$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->id, $this);
+					$tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
 					foreach ($tcaItems as $temp) {
 						$colList[] = $temp[1];
 					}

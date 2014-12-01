@@ -31,7 +31,7 @@ class BackendLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function setUp() {
 		$this->backendLayoutView = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Backend\\View\\BackendLayoutView',
+			\TYPO3\CMS\Backend\View\BackendLayoutView::class,
 			array('getPage', 'getRootLine'),
 			array(), '', FALSE
 		);

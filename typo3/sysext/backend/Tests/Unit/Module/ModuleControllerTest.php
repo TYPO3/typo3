@@ -27,7 +27,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $moduleController;
 
 	protected function setUp() {
-		$this->moduleController = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Module\\ModuleController', array('getLanguageService'), array(), '', FALSE);
+		$this->moduleController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Module\ModuleController::class, array('getLanguageService'), array(), '', FALSE);
 	}
 
 	/**
@@ -35,7 +35,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createEntryFromRawDataGeneratesMenuEntry() {
 		$entry = $this->moduleController->_call('createEntryFromRawData', array());
-		$this->assertInstanceOf('TYPO3\\CMS\\Backend\\Domain\\Model\\Module\\BackendModule', $entry);
+		$this->assertInstanceOf(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class, $entry);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'navigationComponentId' => 'navigationComponentIdTest'
 		);
 
-		$languageServiceMock = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$languageServiceMock = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$languageServiceMock->expects($this->once())->method('sL')->will($this->returnValue('titleTest'));
 		$this->moduleController->expects($this->once())->method('getLanguageService')->will($this->returnValue($languageServiceMock));
 

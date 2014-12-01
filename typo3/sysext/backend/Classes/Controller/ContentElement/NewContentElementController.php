@@ -176,7 +176,7 @@ class NewContentElementController {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
 					$hookObject = GeneralUtility::getUserObj($classData);
 					if (!$hookObject instanceof \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\Wizard\\NewContentElementWizardHookInterface', 1227834741);
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface::class, 1227834741);
 					}
 					$hookObject->manipulateWizardItems($wizardItems, $this);
 				}
@@ -264,7 +264,7 @@ class NewContentElementController {
 				$code = $GLOBALS['LANG']->getLL('sel2', 1) . '<br /><br />';
 
 				// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-				$colPosArray = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->id, $this);
+				$colPosArray = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
 				$colPosIds = array_column($colPosArray, 1);
 				// Removing duplicates, if any
 				$colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));

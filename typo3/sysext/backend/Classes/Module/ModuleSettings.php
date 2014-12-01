@@ -160,7 +160,7 @@ class ModuleSettings {
 	public function setStoreList($storeList) {
 		$this->storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
+			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
 		}
 	}
 
@@ -174,7 +174,7 @@ class ModuleSettings {
 		$storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
 		$this->storeList = array_merge($this->storeList, $storeList);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
+			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
 		}
 	}
 
@@ -194,7 +194,7 @@ class ModuleSettings {
 		}
 		unset($this->storeList[$this->prefix . '_storedSettings']);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
+			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
 		}
 	}
 
@@ -290,7 +290,7 @@ class ModuleSettings {
 		$writeArray = array();
 		if (is_array($storeControl)) {
 			if ($this->writeDevLog) {
-				GeneralUtility::devLog('Store command: ' . GeneralUtility::arrayToLogString($storeControl), 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
+				GeneralUtility::devLog('Store command: ' . GeneralUtility::arrayToLogString($storeControl), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
 			}
 			// Processing LOAD
 			if ($storeControl['LOAD'] and $storeIndex) {
@@ -340,7 +340,7 @@ class ModuleSettings {
 		$writeArray[$this->prefix . '_storedSettings'] = serialize($this->storedSettings);
 		$GLOBALS['SOBE']->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, $writeArray, $mconfName ? $mconfName : $GLOBALS['SOBE']->MCONF['name'], $this->type);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Settings stored:' . $this->msg, 'TYPO3\\CMS\\Backend\\ModuleSettings', 0);
+			GeneralUtility::devLog('Settings stored:' . $this->msg, \TYPO3\CMS\Backend\ModuleSettings::class, 0);
 		}
 	}
 

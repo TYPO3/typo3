@@ -31,7 +31,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected function setUp() {
 		// @todo Use $this->buildAccessibleProxy() if properties are protected
 		$this->subject = new \TYPO3\CMS\Backend\Form\Element\InlineElement();
-		$this->subject->fObj = $this->getMock('TYPO3\\CMS\\Backend\\Form\\FormEngine', array(), array(), '', FALSE);
+		$this->subject->fObj = $this->getMock(\TYPO3\CMS\Backend\Form\FormEngine::class, array(), array(), '', FALSE);
 	}
 
 	/**

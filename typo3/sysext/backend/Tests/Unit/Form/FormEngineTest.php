@@ -30,7 +30,7 @@ class FormEngineTest extends UnitTestCase {
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->subject = $this->getMock('TYPO3\\CMS\\Backend\\Form\\FormEngine', array('dummy'), array(), '', FALSE);
+		$this->subject = $this->getMock(\TYPO3\CMS\Backend\Form\FormEngine::class, array('dummy'), array(), '', FALSE);
 	}
 
 	/**

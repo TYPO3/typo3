@@ -566,7 +566,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->expects($this->any())->method('sL')
 			->will($this->returnCallback(
 				function($name) {
@@ -599,9 +599,9 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->charSet = 'utf-8';
-		$GLOBALS['LANG']->csConvObj = $this->getMock('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$GLOBALS['LANG']->csConvObj = $this->getMock(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		$GLOBALS['LANG']->expects($this->any())->method('sL')
 			->will($this->returnCallback(
 				function($name) {
@@ -639,9 +639,9 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->charSet = 'utf-8';
-		$GLOBALS['LANG']->csConvObj = $this->getMock('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
+		$GLOBALS['LANG']->csConvObj = $this->getMock(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		$GLOBALS['LANG']->expects($this->any())->method('sL')
 			->will($this->returnCallback(
 				function($name) {
@@ -778,7 +778,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TCA'] = $tca;
 
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->expects($this->any())->method('sL')
 			->will($this->returnCallback(
 				function($name) {
@@ -882,7 +882,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService', array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->expects($this->any())->method('sL')
 			->will($this->returnCallback(
 				function($name) {
@@ -1141,7 +1141,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function replaceMarkersInWhereClauseReturnsValidWhereClause($whereClause, $tsConfig, $expected) {
 		// Mock TYPO3_DB and let it return same values that came in
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('quoteStr')
 			->will($this->returnCallback(
 				function($quoteStr, $table) {
@@ -1167,7 +1167,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function replaceMarkersInWhereClauseCleansIdList() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('cleanIntList')->with('1,a,2,b,3,c');
 		$where = ' AND dummytable.uid IN (###PAGE_TSCONFIG_IDLIST###)';
 		$tsConfig = array(
@@ -1195,7 +1195,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
-		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
 		$GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(array('value' => NULL, 'properties' => NULL)));
 
@@ -1353,11 +1353,11 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function replaceL10nModeFieldsReplacesFields($table, $row, $tca, $originalRow, $expected) {
 		$GLOBALS['TCA'] = $tca;
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue($originalRow));
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('dummy'));
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Utility\BackendUtility::class, array('dummy'));
 		$this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
 	}
 }

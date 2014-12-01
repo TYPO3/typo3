@@ -549,7 +549,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
-					$tcaItems = GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $id, $this);
+					$tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $id, $this);
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $this->getLanguageService()->sL($item[0]);
@@ -1451,7 +1451,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			foreach ($drawItemHooks as $hookClass) {
 				$hookObject = GeneralUtility::getUserObj($hookClass);
 				if (!$hookObject instanceof PageLayoutViewDrawItemHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\View\\PageLayoutViewDrawItemHookInterface', 1218547409);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface::class, 1218547409);
 				}
 				$hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
 			}

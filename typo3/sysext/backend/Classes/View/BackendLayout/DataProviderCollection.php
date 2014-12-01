@@ -57,7 +57,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface {
 
 		if (!$dataProvider instanceof DataProviderInterface) {
 			throw new \LogicException(
-				$className . ' must implement interface TYPO3\\CMS\\Backend\\View\\BackendLayout\\DataProviderInterface',
+				$className . ' must implement interface ' . \TYPO3\CMS\Backend\View\BackendLayout\DataProviderInterface::class,
 				1381269811
 			);
 		}

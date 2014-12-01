@@ -529,7 +529,7 @@ class BackendUtility {
 			}
 			// Sort fields by the translated value
 			if (count($excludeArrayTable) > 0) {
-				usort($excludeArrayTable, array('TYPO3\\CMS\\Backend\\Form\\FlexFormsHelper', 'compareArraysByFirstValue'));
+				usort($excludeArrayTable, array(\TYPO3\CMS\Backend\Form\FlexFormsHelper::class, 'compareArraysByFirstValue'));
 				$finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
 			}
 		}
@@ -2941,7 +2941,7 @@ class BackendUtility {
 	 */
 	static public function setUpdateSignal($set = '', $params = '') {
 		$beUser = static::getBackendUserAuthentication();
-		$modData = $beUser->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
+		$modData = $beUser->getModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', 'ses');
 		if ($set) {
 			$modData[$set] = array(
 				'set' => $set,
@@ -2951,7 +2951,7 @@ class BackendUtility {
 			// clear the module data
 			$modData = array();
 		}
-		$beUser->pushModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', $modData);
+		$beUser->pushModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', $modData);
 	}
 
 	/**
@@ -2964,7 +2964,7 @@ class BackendUtility {
 	 */
 	static public function getUpdateSignalCode() {
 		$signals = array();
-		$modData = static::getBackendUserAuthentication()->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
+		$modData = static::getBackendUserAuthentication()->getModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', 'ses');
 		if (!count($modData)) {
 			return '';
 		}

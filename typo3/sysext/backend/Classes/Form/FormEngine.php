@@ -662,11 +662,11 @@ class FormEngine {
 			'inline' => array('appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly')
 		);
 		// Create instance of InlineElement only if this a non-IRRE-AJAX call:
-		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement::') !== 0) {
+		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '::') !== 0) {
 			$this->inline = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\InlineElement::class);
 		}
 		// Create instance of \TYPO3\CMS\Backend\Form\Element\SuggestElement only if this a non-Suggest-AJAX call:
-		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement::') !== 0) {
+		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], \TYPO3\CMS\Backend\Form\Element\SuggestElement::class . '::') !== 0) {
 			$this->suggest = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\SuggestElement::class);
 		}
 		// Prepare user defined objects (if any) for hooks which extend this function:
@@ -2408,7 +2408,7 @@ class FormEngine {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
 				if (!$hookObject instanceof DatabaseFileIconsHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\Form\\DatabaseFileIconsHookInterface', 1290167704);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface::class, 1290167704);
 				}
 				$additionalParams = array(
 					'mode' => $mode,

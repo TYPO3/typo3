@@ -74,7 +74,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getTestSubjectFolderObject($identifier) {
-		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
 		$mockedStorage->expects($this->any())->method('getRootLevelFolder')->will($this->returnValue(
 			new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
 		));
@@ -89,8 +89,8 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
 	protected function getTestSubjectFileObject($extension) {
-		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(array(), $mockedStorage));
+		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
+		$mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(array(), $mockedStorage));
 		$mockedFile->expects($this->once())->method('getExtension')->will($this->returnValue($extension));
 
 		return $mockedFile;
@@ -755,7 +755,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$classReference = uniqid('user_overrideResourceIconHook');
 		$folderObject = $this->getTestSubjectFolderObject('/test');
-		$hookMock = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\IconUtilityOverrideResourceIconHookInterface', array('overrideResourceIcon'), array(), $classReference);
+		$hookMock = $this->getMock(\TYPO3\CMS\Backend\Utility\IconUtilityOverrideResourceIconHookInterface::class, array('overrideResourceIcon'), array(), $classReference);
 		$hookMock->expects($this->once())->method('overrideResourceIcon');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'][$classReference] = $classReference;
 		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = $hookMock;
