@@ -165,7 +165,7 @@ class TagBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resetResetsTagBuilder() {
-		$tagBuilder = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder', array('dummy'));
+		$tagBuilder = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('dummy'));
 		$tagBuilder->setTagName('tagName');
 		$tagBuilder->setContent('some content');
 		$tagBuilder->forceClosingTag(TRUE);

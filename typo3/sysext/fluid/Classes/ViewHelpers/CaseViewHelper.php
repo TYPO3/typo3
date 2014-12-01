@@ -30,17 +30,17 @@ class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 */
 	public function render($value = NULL, $default = FALSE) {
 		$viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-		if (!$viewHelperVariableContainer->exists('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression')) {
+		if (!$viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression')) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The case View helper can only be used within a switch View helper', 1368112037);
 		}
 		if (is_null($value) && $default === FALSE) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The case View helper must have either value or default argument', 1382867521);
 		}
-		$switchExpression = $viewHelperVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression');
+		$switchExpression = $viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
 
 		// non-type-safe comparison by intention
 		if ($default === TRUE || $switchExpression == $value) {
-			$viewHelperVariableContainer->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break', TRUE);
+			$viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', TRUE);
 			return $this->renderChildren();
 		}
 		return '';

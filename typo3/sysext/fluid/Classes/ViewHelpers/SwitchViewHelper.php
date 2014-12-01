@@ -74,24 +74,24 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$this->backupSwitchState();
 		$templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
 
-		$templateVariableContainer->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression', $expression);
-		$templateVariableContainer->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break', FALSE);
+		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression', $expression);
+		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', FALSE);
 
 		foreach ($this->childNodes as $childNode) {
 			if (
 				!$childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
-				|| $childNode->getViewHelperClassName() !== 'TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper'
+				|| $childNode->getViewHelperClassName() !== \TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper::class
 			) {
 				continue;
 			}
 			$content = $childNode->evaluate($this->renderingContext);
-			if ($templateVariableContainer->get('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break') === TRUE) {
+			if ($templateVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break') === TRUE) {
 				break;
 			}
 		}
 
-		$templateVariableContainer->remove('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression');
-		$templateVariableContainer->remove('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break');
+		$templateVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
+		$templateVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break');
 
 		$this->restoreSwitchState();
 		return $content;
@@ -103,11 +103,11 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @return void
 	 */
 	protected function backupSwitchState() {
-		if ($this->renderingContext->getViewHelperVariableContainer()->exists('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression')) {
-			$this->backupSwitchExpression = $this->renderingContext->getViewHelperVariableContainer()->get('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'switchExpression');
+		if ($this->renderingContext->getViewHelperVariableContainer()->exists(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression')) {
+			$this->backupSwitchExpression = $this->renderingContext->getViewHelperVariableContainer()->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
 		}
-		if ($this->renderingContext->getViewHelperVariableContainer()->exists('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break')) {
-			$this->backupBreakState = $this->renderingContext->getViewHelperVariableContainer()->get('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break');
+		if ($this->renderingContext->getViewHelperVariableContainer()->exists(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break')) {
+			$this->backupBreakState = $this->renderingContext->getViewHelperVariableContainer()->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break');
 		}
 	}
 
@@ -119,13 +119,13 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	protected function restoreSwitchState() {
 		if ($this->backupSwitchExpression !== NULL) {
 			$this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(
-				'TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper',
+				\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class,
 				'switchExpression',
 				$this->backupSwitchExpression
 			);
 		}
 		if ($this->backupBreakState !== FALSE) {
-			$this->renderingContext->getViewHelperVariableContainer()->addOrUpdate('TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper', 'break', TRUE);
+			$this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', TRUE);
 		}
 	}
 }

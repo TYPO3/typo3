@@ -20,7 +20,7 @@ class NumberViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function formatNumberDefaultsToEnglishNotationWithTwoDecimals() {
-		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\NumberViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper::class, array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('3,333.33', $actualResult);
@@ -30,7 +30,7 @@ class NumberViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function formatNumberWithDecimalsDecimalPointAndSeparator() {
-		$viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\NumberViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper::class, array('renderChildren'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
 		$actualResult = $viewHelper->render(3, ',', '.');
 		$this->assertEquals('3.333,333', $actualResult);

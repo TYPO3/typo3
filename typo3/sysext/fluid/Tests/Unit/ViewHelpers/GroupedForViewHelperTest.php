@@ -23,7 +23,7 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\GroupedForViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -184,7 +184,7 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
 		$invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
 		$groupBy = 'customer.name';
 		/** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper $accessibleMock */
-		$accessibleMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\GroupedForViewHelper', array('dummy'));
+		$accessibleMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper::class, array('dummy'));
 		$expectedResult = array(
 			'keys' => array(
 				'Anton Abel' => 'Anton Abel',

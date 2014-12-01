@@ -22,7 +22,7 @@ class HtmlentitiesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesViewHelper', array('renderChildren', 'resolveDefaultEncoding'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesViewHelper::class, array('renderChildren', 'resolveDefaultEncoding'));
 		$this->viewHelper->expects($this->any())->method('resolveDefaultEncoding')->will($this->returnValue('UTF-8'));
 	}
 

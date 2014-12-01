@@ -43,7 +43,7 @@ abstract class AbstractGenerator {
 	 */
 	public function __construct() {
 		\TYPO3\CMS\Fluid\Fluid::$debugMode = TRUE; // We want ViewHelper argument documentation
-		$this->abstractViewHelperReflectionClass = new \TYPO3\CMS\Extbase\Reflection\ClassReflection('TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper');
+		$this->abstractViewHelperReflectionClass = new \TYPO3\CMS\Extbase\Reflection\ClassReflection(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
 	}
 
 	/**
@@ -55,7 +55,7 @@ abstract class AbstractGenerator {
 	protected function getClassNamesInNamespace($namespace) {
 		$affectedViewHelperClassNames = array();
 
-		$allViewHelperClassNames = $this->reflectionService->getAllSubClassNamesForClass('TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper');
+		$allViewHelperClassNames = $this->reflectionService->getAllSubClassNamesForClass(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
 		foreach ($allViewHelperClassNames as $viewHelperClassName) {
 			if ($this->reflectionService->isClassAbstract($viewHelperClassName)) {
 				continue;

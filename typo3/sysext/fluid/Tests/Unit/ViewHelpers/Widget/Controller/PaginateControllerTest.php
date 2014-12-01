@@ -27,7 +27,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->controller = $this->getAccessibleMock('TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController', array('dummy'), array(), '', FALSE);
+		$this->controller = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class, array('dummy'), array(), '', FALSE);
 	}
 
 	/**

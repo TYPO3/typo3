@@ -267,7 +267,7 @@ EOD;
 	protected function convertObjectAccessorNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode $node) {
 		return array(
 			'initialization' => '',
-			'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ObjectAccessorNode::getPropertyPath($renderingContext->getTemplateVariableContainer(), \'%s\', $renderingContext)', $node->getObjectPath())
+			'execution' => sprintf(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class . '::getPropertyPath($renderingContext->getTemplateVariableContainer(), \'%s\', $renderingContext)', $node->getObjectPath())
 		);
 	}
 
@@ -348,14 +348,14 @@ EOD;
 
 			return array(
 				'initialization' => $initializationPhpCode . $convertedLeftSide['initialization'] . $convertedRightSide['initialization'],
-				'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\BooleanNode::evaluateComparator(\'%s\', %s, %s)', $node->getComparator(), $convertedLeftSide['execution'], $convertedRightSide['execution'])
+				'execution' => sprintf(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::class . '::evaluateComparator(\'%s\', %s, %s)', $node->getComparator(), $convertedLeftSide['execution'], $convertedRightSide['execution'])
 			);
 		} else {
 			// simple case, no comparator.
 			$converted = $this->convert($node->getSyntaxTreeNode());
 			return array(
 				'initialization' => $initializationPhpCode . $converted['initialization'],
-				'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\BooleanNode::convertToBoolean(%s)', $converted['execution'])
+				'execution' => sprintf(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::class . '::convertToBoolean(%s)', $converted['execution'])
 			);
 		}
 	}

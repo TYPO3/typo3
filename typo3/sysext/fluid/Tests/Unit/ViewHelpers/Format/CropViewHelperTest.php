@@ -43,10 +43,10 @@ class CropViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
-		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array(), array(), '', FALSE);
+		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		$this->mockConfigurationManager->expects($this->any())->method('getContentObject')->will($this->returnValue($this->mockContentObject));
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\CropViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\CropViewHelper::class, array('renderChildren'));
 		$this->viewHelper->injectConfigurationManager($this->mockConfigurationManager);
 		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Some Content'));
 	}

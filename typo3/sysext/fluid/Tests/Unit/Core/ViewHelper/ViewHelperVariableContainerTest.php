@@ -30,11 +30,11 @@ class ViewHelperVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function storedDataCanBeReadOutAgain() {
 		$variable = 'Hello world';
-		$this->assertFalse($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\TestViewHelper', 'test'));
-		$this->viewHelperVariableContainer->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\TestViewHelper', 'test', $variable);
-		$this->assertTrue($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\TestViewHelper', 'test'));
+		$this->assertFalse($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\TestViewHelper::class, 'test'));
+		$this->viewHelperVariableContainer->add(\TYPO3\CMS\Fluid\ViewHelpers\TestViewHelper::class, 'test', $variable);
+		$this->assertTrue($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\TestViewHelper::class, 'test'));
 
-		$this->assertEquals($variable, $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\TestViewHelper', 'test'));
+		$this->assertEquals($variable, $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\TestViewHelper::class, 'test'));
 	}
 
 	/**
@@ -84,7 +84,7 @@ class ViewHelperVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 * @test
 	 */
 	public function viewCanBeReadOutAgain() {
-		$view = $this->getMock('TYPO3\\CMS\\Fluid\\View\\AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'hasTemplate', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
+		$view = $this->getMock(\TYPO3\CMS\Fluid\View\AbstractTemplateView::class, array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'hasTemplate', 'canRender', 'getTemplateIdentifier', 'getLayoutIdentifier', 'getPartialIdentifier'));
 		$this->viewHelperVariableContainer->setView($view);
 		$this->assertSame($view, $this->viewHelperVariableContainer->getView());
 	}

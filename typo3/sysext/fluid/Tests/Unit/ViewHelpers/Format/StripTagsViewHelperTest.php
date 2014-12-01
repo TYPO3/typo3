@@ -22,7 +22,7 @@ class StripTagsViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\StripTagsViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\StripTagsViewHelper::class, array('renderChildren'));
 	}
 
 	/**

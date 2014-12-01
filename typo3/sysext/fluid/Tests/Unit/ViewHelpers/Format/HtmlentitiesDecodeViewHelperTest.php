@@ -22,7 +22,7 @@ class HtmlentitiesDecodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\Format\\HtmlentitiesDecodeViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlentitiesDecodeViewHelper::class, array('renderChildren'));
 	}
 
 	/**

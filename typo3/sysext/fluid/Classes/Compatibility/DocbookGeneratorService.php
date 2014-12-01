@@ -43,7 +43,7 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->injectDocCommentParser($this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\DocCommentParser::class));
 		$this->injectReflectionService($this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class));
-		return $this->generateDocbook('TYPO3\CMS\Fluid\ViewHelpers');
+		return $this->generateDocbook(\TYPO3\CMS\Fluid\ViewHelpers::class);
 	}
 
 	/**

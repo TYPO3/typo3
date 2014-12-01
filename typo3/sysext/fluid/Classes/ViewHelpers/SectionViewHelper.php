@@ -92,8 +92,8 @@ class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @api
 	 */
 	public function render() {
-		if ($this->viewHelperVariableContainer->exists('TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper', 'isCurrentlyRenderingSection')) {
-			$this->viewHelperVariableContainer->remove('TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper', 'isCurrentlyRenderingSection');
+		if ($this->viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection')) {
+			$this->viewHelperVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection');
 			return $this->renderChildren();
 		}
 		return '';

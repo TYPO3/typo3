@@ -22,7 +22,7 @@ class BytesViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $viewHelper;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper::class, array('renderChildren'));
 	}
 
 	/**

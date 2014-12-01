@@ -32,7 +32,7 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	/**
 	 * @var array
 	 */
-	protected $supportedRequestTypes = array('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
+	protected $supportedRequestTypes = array(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
 
 	/**
 	 * Configuration for this widget.

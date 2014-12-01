@@ -233,7 +233,7 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 			}
 			$section = $sections[$sectionName];
 
-			$renderingContext->getViewHelperVariableContainer()->add('TYPO3\\CMS\\Fluid\\ViewHelpers\\SectionViewHelper', 'isCurrentlyRenderingSection', 'TRUE');
+			$renderingContext->getViewHelperVariableContainer()->add(\TYPO3\CMS\Fluid\ViewHelpers\SectionViewHelper::class, 'isCurrentlyRenderingSection', 'TRUE');
 
 			$this->startRendering($renderingTypeOnNextLevel, $parsedTemplate, $renderingContext);
 			$output = $section->evaluate($renderingContext);
