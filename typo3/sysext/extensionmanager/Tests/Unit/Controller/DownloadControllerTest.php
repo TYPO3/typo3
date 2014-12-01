@@ -30,13 +30,13 @@ class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage);
 
 		$dummyExtensionName = 'dummy_extension';
-		$dummyExtension = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension');
+		$dummyExtension = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
 		$dummyExtension->expects($this->any())->method('getExtensionKey')->will($this->returnValue($dummyExtensionName));
 
 		$downloadUtilityMock = $this->getMock('\\TYPO3\\CMS\\Extensionmanager\\Utility\\DownloadUtility');
 		$downloadUtilityMock->expects($this->any())->method('setDownloadPath')->willThrowException($dummyException);
 
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\DownloadController', array('dummy'));
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\DownloadController::class, array('dummy'));
 		$subject->_set('downloadUtility', $downloadUtilityMock);
 
 		$result = $subject->_call('installFromTer', $dummyExtension);

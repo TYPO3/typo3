@@ -26,7 +26,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getCurrentConfigurationReturnsExtensionConfigurationAsValuedConfiguration() {
 		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$configurationUtility = $this->getMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class,
 			array('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
 		);
 		$configurationUtility
@@ -62,7 +62,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getDefaultConfigurationFromExtConfTemplateAsValuedArrayReturnsExpectedExampleArray() {
 		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$configurationUtility = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class,
 			array('getDefaultConfigurationRawString', 'getExtensionPathInformation')
 		);
 		$configurationUtility
@@ -75,14 +75,14 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('getExtensionPathInformation')
 			->will($this->returnValue(NULL));
 
-		$tsStyleConfig = $this->getMock('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
+		$tsStyleConfig = $this->getMock(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class);
 
-		$objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$objectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$configurationUtility->_set('objectManager', $objectManagerMock);
 		$objectManagerMock
 			->expects($this->once())
 			->method('get')
-			->with('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm')
+			->with(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class)
 			->will($this->returnValue($tsStyleConfig));
 
 		$constants = array(
@@ -248,7 +248,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function convertValuedToNestedConfiguration(array $configuration, array $expected) {
 		/** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array('dummy'), array(), '', FALSE);
 		$this->assertEquals($expected, $subject->convertValuedToNestedConfiguration($configuration));
 	}
 
@@ -314,7 +314,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function convertNestedToValuedConfiguration(array $configuration, array $expected) {
 		/** @var $subject \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array('dummy'), array(), '', FALSE);
 		$this->assertEquals($expected, $subject->convertNestedToValuedConfiguration($configuration));
 	}
 }

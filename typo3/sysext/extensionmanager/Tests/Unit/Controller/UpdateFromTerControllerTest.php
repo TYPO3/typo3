@@ -41,10 +41,10 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $repositoryHelperMock;
 
 	public function setUp() {
-		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$this->repositoryRepositoryMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findByUid'), array($this->mockObjectManager));
-		$this->extensionRepositoryMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array(), array($this->mockObjectManager));
-		$this->repositoryHelperMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array('updateExtList'), array(), '', FALSE);
+		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+		$this->repositoryRepositoryMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findByUid'), array($this->mockObjectManager));
+		$this->extensionRepositoryMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array(), array($this->mockObjectManager));
+		$this->repositoryHelperMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, array('updateExtList'), array(), '', FALSE);
 	}
 
 	/**
@@ -52,11 +52,11 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function updateExtensionListFromTerCallsUpdateExtListIfExtensionListIsEmpty() {
-		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
-		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
+		$controllerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class, array('dummy'));
+		$repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
 
-		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'), array(), '', FALSE);
-		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
+		$viewMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('assign'), array(), '', FALSE);
+		$requestMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
 		$this->repositoryRepositoryMock->expects($this->once())->method('findByUid')->with(1)->will($this->returnValue($repositoryModelMock));
 		$this->repositoryHelperMock->expects($this->once())->method('updateExtList');
@@ -75,10 +75,10 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function updateExtensionListFromTerDoesNotCallsUpdateExtListIfExtensionListIsNotEmpty() {
-		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
-		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
-		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'), array(), '', FALSE);
-		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
+		$controllerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class, array('dummy'));
+		$repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
+		$viewMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('assign'), array(), '', FALSE);
+		$requestMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
 		$this->repositoryRepositoryMock->expects($this->once())->method('findByUid')->with(1)->will($this->returnValue($repositoryModelMock));
 		$this->repositoryHelperMock->expects($this->never())->method('updateExtList');
@@ -97,10 +97,10 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function updateExtensionListFromTerCallsUpdateExtListIfForceUpdateCheckIsSet() {
-		$controllerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Controller\\UpdateFromTerController', array('dummy'));
-		$repositoryModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository', array('getLastUpdate'));
-		$viewMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\View\\TemplateView', array('assign'), array(), '', FALSE);
-		$requestMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('hasArgument', 'getArgument'));
+		$controllerMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\UpdateFromTerController::class, array('dummy'));
+		$repositoryModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class, array('getLastUpdate'));
+		$viewMock = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('assign'), array(), '', FALSE);
+		$requestMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('hasArgument', 'getArgument'));
 		$viewMock->expects($this->any())->method('assign')->will($this->returnValue($viewMock));
 		$this->repositoryRepositoryMock->expects($this->once())->method('findByUid')->with(1)->will($this->returnValue($repositoryModelMock));
 		$this->repositoryHelperMock->expects($this->once())->method('updateExtList');

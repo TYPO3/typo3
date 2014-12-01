@@ -31,9 +31,9 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $fixture;
 
 	public function setUp() {
-		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		/** @var $fixture \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\RepositoryRepository', array('findAll'), array($this->mockObjectManager));
+		$this->fixture = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findAll'), array($this->mockObjectManager));
 	}
 
 	/**
@@ -53,12 +53,12 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function findOneTypo3OrgRepositoryReturnsRepositoryWithCorrectTitle() {
-		$mockModelOne = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository');
+		$mockModelOne = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class);
 		$mockModelOne
 			->expects(($this->once()))
 			->method('getTitle')
 			->will($this->returnValue('foo'));
-		$mockModelTwo = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Repository');
+		$mockModelTwo = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class);
 		$mockModelTwo
 			->expects(($this->once()))
 			->method('getTitle')

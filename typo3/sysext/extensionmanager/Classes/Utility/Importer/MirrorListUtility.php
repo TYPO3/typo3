@@ -83,7 +83,7 @@ class MirrorListUtility implements \SplObserver {
 	 */
 	public function update(\SplSubject $subject) {
 		// TODO mirrorxml_abstract_parser
-		if (is_subclass_of($subject, 'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\AbstractXmlParser')) {
+		if (is_subclass_of($subject, \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractXmlParser::class)) {
 			$this->arrTmpMirrors[] = $subject->getAll();
 		}
 	}

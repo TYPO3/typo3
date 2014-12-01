@@ -38,11 +38,11 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	public function setUp() {
 		// Mock system under test to make protected methods accessible
 		$this->configurationItemRepository = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository',
+			\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository::class,
 			array('dummy')
 		);
 
-		$this->injectedObjectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface', array(), array(), '', FALSE);
+		$this->injectedObjectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class, array(), array(), '', FALSE);
 		$this->configurationItemRepository->_set(
 			'objectManager',
 			$this->injectedObjectManagerMock
@@ -90,14 +90,14 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		);
 
 		$configurationItemRepository = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository',
+			\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository::class,
 			array('mergeWithExistingConfiguration', 'translate')
 		);
 		$configurationItemRepository->_set(
 			'objectManager',
 			$this->injectedObjectManagerMock
 		);
-		$configurationUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility', array(), array(), '', FALSE);
+		$configurationUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array(), array(), '', FALSE);
 		$configurationUtilityMock
 			->expects($this->once())
 			->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
@@ -238,8 +238,8 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 					'type' => 'user[EXT:saltedpasswords/classes/class.tx_saltedpasswords_emconfhelper.php:TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE]',
 					'label' => 'Hashing method for the frontend: Defines salted hashing method to use. Choose "Portable PHP password hashing" to stay compatible with other CMS (e.g. Drupal, Wordpress). Choose "MD5 salted hashing" to reuse TYPO3 passwords for OS level authentication (other servers could use TYPO3 passwords). Choose "Blowfish salted hashing" for advanced security to reuse passwords on OS level (Blowfish might not be supported on your system TODO).',
 					'name' => 'FE.saltedPWHashingMethod',
-					'value' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
-					'default_value' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'value' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+					'default_value' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
 					'comparisonGeneric' => 'EXT:saltedpasswords/classes/class.tx_saltedpasswords_emconfhelper.php:TYPO3\\CMS\\Saltedpasswords\\Utility\\ExtensionManagerConfigurationUtility->buildHashMethodSelectorFE'
 				)
 			)
@@ -322,7 +322,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function mergeDefaultConfigurationCatchesExceptionOfConfigurationManagerIfNoLocalConfigurationExists() {
 		$exception = $this->getMock('RuntimeException');
-		$configurationManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManagerMock = $this->getMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManagerMock
 			->expects($this->once())
 			->method('getConfigurationValueByPath')
@@ -345,7 +345,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 */
 	public function mergeDefaultConfigurationWithNoCurrentValuesReturnsTheDefaultConfiguration() {
 		$exception = $this->getMock('RuntimeException');
-		$configurationManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManagerMock = $this->getMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManagerMock
 			->expects($this->once())
 			->method('getConfigurationValueByPath')
@@ -373,14 +373,14 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		$localConfiguration = serialize(array(
 			'FE.' => array(
 				'enabled' => '1',
-				'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface_sha1'
+				'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface_sha1::class
 			),
 			'CLI.' => array(
 				'enabled' => '0'
 			)
 		));
 
-		$configurationManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+		$configurationManagerMock = $this->getMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManagerMock
 			->expects($this->once())
 			->method('getConfigurationValueByPath')
@@ -397,13 +397,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 				'value' => '0'
 			),
 			'FE.saltedPWHashingMethod' => array(
-				'value' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt'
+				'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
 			),
 			'BE.enabled' => array(
 				'value' => '1'
 			),
 			'BE.saltedPWHashingMethod' => array(
-				'value' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt'
+				'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
 			)
 		);
 
@@ -412,13 +412,13 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 				'value' => '1'
 			),
 			'FE.saltedPWHashingMethod' => array(
-				'value' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface_sha1'
+				'value' => \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface_sha1::class
 			),
 			'BE.enabled' => array(
 				'value' => '1'
 			),
 			'BE.saltedPWHashingMethod' => array(
-				'value' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt'
+				'value' => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class
 			),
 			'CLI.enabled' => array(
 				'value' => '0'

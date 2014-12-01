@@ -48,7 +48,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'key' => $this->extensionKey
 		);
 		$this->installMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			array(
 				'isLoaded',
 				'loadExtension',
@@ -66,7 +66,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
+		$dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
 		$this->installMock->_set('dependencyUtility', $dependencyUtility);
 		$this->installMock->expects($this->any())
 			->method('enrichExtensionWithDetails')
@@ -116,7 +116,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('processRuntimeDatabaseUpdates')
 			->with($this->extensionKey);
 
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->install($this->extensionKey);
@@ -126,7 +126,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function installCallsLoadExtension() {
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->expects($this->once())->method('loadExtension');
@@ -138,7 +138,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function installCallsFlushCachesIfClearCacheOnLoadIsSet() {
 		$this->extensionData['clearcacheonload'] = TRUE;
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCaches');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->install($this->extensionKey);
@@ -149,7 +149,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function installCallsFlushCachesIfClearCacheOnLoadCamelCasedIsSet() {
 		$this->extensionData['clearCacheOnLoad'] = TRUE;
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCaches');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->install($this->extensionKey);
@@ -159,7 +159,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function installationOfAnExtensionWillCallEnsureThatDirectoriesExist() {
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->expects($this->once())->method('ensureConfiguredDirectoriesExist');
@@ -170,7 +170,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function installCallsReloadCaches() {
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->expects($this->once())->method('reloadCaches');
@@ -181,7 +181,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function installCallsSaveDefaultConfigurationWithExtensionKey() {
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
 		$this->installMock->_set('cacheManager', $cacheManagerMock);
 		$this->installMock->expects($this->once())->method('saveDefaultConfiguration')->with('dummy');
@@ -206,13 +206,13 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fileContent = 'DUMMY TEXT TO COMPARE';
 		file_put_contents($extTablesFile, $fileContent);
 		$installMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			array('updateDbWithExtTablesSql', 'importStaticSqlFile', 'importT3DFile'),
 			array(),
 			'',
 			FALSE
 		);
-		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
+		$dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
 		$installMock->_set('dependencyUtility', $dependencyUtility);
 
 		$installMock->expects($this->once())->method('updateDbWithExtTablesSql')->with($this->stringStartsWith($fileContent));
@@ -226,13 +226,13 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$extKey = $this->createFakeExtension();
 		$extRelPath = 'typo3temp/' . $extKey . '/';
 		$installMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			array('importStaticSqlFile', 'updateDbWithExtTablesSql', 'importT3DFile'),
 			array(),
 			'',
 			FALSE
 		);
-		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
+		$dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
 		$installMock->_set('dependencyUtility', $dependencyUtility);
 		$installMock->expects($this->once())->method('importStaticSqlFile')->with($extRelPath);
 		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
@@ -263,13 +263,13 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . '/Initialisation');
 		file_put_contents($absPath . '/Initialisation/' . $fileName, 'DUMMY');
 		$installMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			array('updateDbWithExtTablesSql', 'importStaticSqlFile', 'importT3DFile'),
 			array(),
 			'',
 			FALSE
 		);
-		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
+		$dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
 		$installMock->_set('dependencyUtility', $dependencyUtility);
 		$installMock->expects($this->once())->method('importT3DFile')->with($this->fakedExtensions[$extKey]['siteRelPath']);
 		$installMock->processDatabaseUpdates($this->fakedExtensions[$extKey]);
@@ -327,13 +327,13 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			));
 		$installMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility',
+			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			array('getRegistry', 'getImportExportUtility'),
 			array(),
 			'',
 			FALSE
 		);
-		$dependencyUtility = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\DependencyUtility');
+		$dependencyUtility = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility::class);
 		$installMock->_set('dependencyUtility', $dependencyUtility);
 		$installMock->_set('registry', $registryMock);
 		$installMock->expects($this->never())->method('getImportExportUtility');

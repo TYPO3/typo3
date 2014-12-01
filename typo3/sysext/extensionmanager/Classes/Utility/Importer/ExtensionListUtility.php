@@ -200,7 +200,7 @@ class ExtensionListUtility implements \SplObserver {
 	 * @return void
 	 */
 	public function update(\SplSubject $subject) {
-		if (is_subclass_of($subject, 'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\AbstractExtensionXmlParser')) {
+		if (is_subclass_of($subject, \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser::class)) {
 			$this->loadIntoDatabase($subject);
 		}
 	}

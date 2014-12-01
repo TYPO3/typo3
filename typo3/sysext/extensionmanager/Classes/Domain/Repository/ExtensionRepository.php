@@ -158,7 +158,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				AND current_version = 1 AND review_state >= 0';
 		$order = 'position DESC';
 		$result = $this->databaseConnection->exec_SELECTgetRows($select, self::TABLE_NAME, $where, '', $order);
-		return $this->dataMapper->map('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Extension', $result);
+		return $this->dataMapper->map(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, $result);
 	}
 
 	/**

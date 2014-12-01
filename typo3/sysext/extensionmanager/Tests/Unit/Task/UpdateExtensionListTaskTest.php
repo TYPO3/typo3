@@ -38,7 +38,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Tests need EXT:scheduler loaded.');
 		}
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->repositoryHelper = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper', array(), array(), '', FALSE);
+		$this->repositoryHelper = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class, array(), array(), '', FALSE);
 	}
 
 	/**
@@ -53,8 +53,8 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function updateExtensionListTaskIsInstanceOfAbstractTask() {
-		$taskMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Task\\UpdateExtensionListTask');
-		$this->assertInstanceOf('TYPO3\\CMS\\Scheduler\\Task\\AbstractTask', $taskMock);
+		$taskMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class);
+		$this->assertInstanceOf(\TYPO3\CMS\Scheduler\Task\AbstractTask::class, $taskMock);
 	}
 
 	/**
@@ -65,22 +65,22 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->expects($this->once())
 				->method('updateExtList');
 
-		$objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$objectManagerMock
 				->expects($this->at(0))
 				->method('get')
-				->with('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper')
+				->with(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class)
 				->will($this->returnValue($this->repositoryHelper));
 
-		$persistenceManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$persistenceManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 		$objectManagerMock
 				->expects($this->at(1))
 				->method('get')
 				->will($this->returnValue($persistenceManagerMock));
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $objectManagerMock);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
-		$task = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Task\\UpdateExtensionListTask', array('dummy'), array(), '', FALSE);
+		$task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, array('dummy'), array(), '', FALSE);
 		$task->execute();
 	}
 
@@ -88,14 +88,14 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function executeCallsPersistAllOnPersistenceManager() {
-		$objectManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$objectManagerMock
 			->expects($this->at(0))
 			->method('get')
-			->with('TYPO3\\CMS\\Extensionmanager\\Utility\\Repository\\Helper')
+			->with(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class)
 			->will($this->returnValue($this->repositoryHelper));
 
-		$persistenceManagerMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$persistenceManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 		$persistenceManagerMock
 			->expects($this->once())
 			->method('persistAll');
@@ -105,9 +105,9 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->method('get')
 				->will($this->returnValue($persistenceManagerMock));
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $objectManagerMock);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
-		$task = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Task\\UpdateExtensionListTask', array('dummy'), array(), '', FALSE);
+		$task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, array('dummy'), array(), '', FALSE);
 		$task->execute();
 	}
 }

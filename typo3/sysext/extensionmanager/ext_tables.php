@@ -24,7 +24,7 @@ if (TYPO3_MODE === 'BE') {
 
 	// Register extension status report system
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
-		'TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus';
+		\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class;
 }
 
 // Register specific icon for update script button

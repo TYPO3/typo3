@@ -32,9 +32,9 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		));
 		/** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility', array('dummy'));
-		$objectManagerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('get'));
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('dummy'));
+		$dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, array('dummy'));
+		$objectManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class, array('get'));
+		$dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, array('dummy'));
 		$objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
 		$dependencyUtility->_set('objectManager', $objectManagerMock);
 		$objectStorage = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
@@ -54,9 +54,9 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		));
 		/** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility', array('dummy'));
-		$objectManagerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('get'));
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('setIdentifier'));
+		$dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, array('dummy'));
+		$objectManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class, array('get'));
+		$dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, array('setIdentifier'));
 		$objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
 		$dependencyUtility->_set('objectManager', $objectManagerMock);
 		$dependencyModelMock->expects($this->at(0))->method('setIdentifier')->with('php');
@@ -127,9 +127,9 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function convertDependenciesToObjectSetsVersion(array $dependencies, array $returnValue) {
 		$serializedDependencies = serialize($dependencies);
 		/** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility', array('dummy'));
-		$objectManagerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('get'));
-		$dependencyModelMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency', array('setHighestVersion', 'setLowestVersion'));
+		$dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, array('dummy'));
+		$objectManagerMock = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class, array('get'));
+		$dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, array('setHighestVersion', 'setLowestVersion'));
 		$objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
 		$dependencyUtility->_set('objectManager', $objectManagerMock);
 		$dependencyModelMock->expects($this->atLeastOnce())->method('setLowestVersion')->with($this->identicalTo($returnValue[0]));
@@ -146,7 +146,7 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$serializedDependencies = serialize($dependencies);
 		/** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
-		$dependencyUtility = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\ExtensionModelUtility', array('dummy'));
+		$dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, array('dummy'));
 		$dependencyObject = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
 		$this->assertSame(0, $dependencyObject->count());
 	}
