@@ -37,7 +37,7 @@ class ObjectStorageConverter extends AbstractTypeConverter {
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage';
+	protected $targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class;
 
 	/**
 	 * @var int

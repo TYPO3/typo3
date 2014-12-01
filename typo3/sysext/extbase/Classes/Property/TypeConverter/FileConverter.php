@@ -28,12 +28,12 @@ class FileConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFi
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\File';
+	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\File::class;
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\File';
+	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\File::class;
 
 	/**
 	 * @param string|int $source

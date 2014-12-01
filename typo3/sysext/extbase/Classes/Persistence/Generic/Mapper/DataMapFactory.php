@@ -105,7 +105,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$classHierarchy = array_merge(array($className), class_parents($className));
 			foreach ($classHierarchy as $currentClassName) {
-				if (in_array($currentClassName, array('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity', 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject'))) {
+				if (in_array($currentClassName, array(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class, \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class))) {
 					break;
 				}
 				$currentClassSettings = $frameworkConfiguration['persistence']['classes'][$currentClassName];

@@ -25,7 +25,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $debugger;
 
 	public function setUp() {
-		$this->debugger = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Utility\\DebuggerUtility', array('dummy'));
+		$this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, array('dummy'));
 	}
 
 	/**
@@ -34,7 +34,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function debuggerRewindsInstancesOfIterator() {
 		/** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
-		$objectStorage = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('dummy'));
+		$objectStorage = $this->getMock(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, array('dummy'));
 		for ($i = 0; $i < 5; $i++) {
 			$obj = new \StdClass();
 			$obj->property = $i;
@@ -57,7 +57,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 
 		/** @var $arguments \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments */
-		$arguments = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\Arguments', array('dummy'), array('arguments' => $parameters));
+		$arguments = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\Arguments::class, array('dummy'), array('arguments' => $parameters));
 
 		$arguments->expects($this->never())->method('rewind');
 		$this->debugger->var_dump($arguments, NULL, 8, TRUE, FALSE, TRUE);

@@ -54,9 +54,9 @@ class ObjectConverterTest extends UnitTestCase {
 	 * @throws \RuntimeException
 	 */
 	public function setUp() {
-		$this->mockReflectionService = $this->getMock('TYPO3\CMS\Extbase\Reflection\ReflectionService');
-		$this->mockObjectManager = $this->getMock('TYPO3\CMS\Extbase\Object\ObjectManagerInterface');
-		$this->mockContainer = $this->getMock('\TYPO3\CMS\Extbase\Object\Container\Container');
+		$this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
+		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+		$this->mockContainer = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 
 		$this->converter = new ObjectConverter();
 		$this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
@@ -79,9 +79,9 @@ class ObjectConverterTest extends UnitTestCase {
 	public function dataProviderForCanConvert() {
 		return array(
 			// Is entity => cannot convert
-			array('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\Entity', FALSE),
+			array(\TYPO3\CMS\Extbase\Tests\Fixture\Entity::class, FALSE),
 			// Is valueobject => cannot convert
-			array('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ValueObject', FALSE),
+			array(\TYPO3\CMS\Extbase\Tests\Fixture\ValueObject::class, FALSE),
 			// Is no entity and no value object => can convert
 			array('stdClass', TRUE)
 		);
@@ -111,7 +111,7 @@ class ObjectConverterTest extends UnitTestCase {
 		$this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue('TheTargetType'));
 
 		$configuration = new PropertyMappingConfiguration();
-		$configuration->setTypeConverterOptions('TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter', array());
+		$configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, array());
 		$this->assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
 	}
 

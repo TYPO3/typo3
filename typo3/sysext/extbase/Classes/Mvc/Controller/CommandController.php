@@ -168,7 +168,7 @@ class CommandController implements CommandControllerInterface {
 			} elseif ($argument->isRequired()) {
 				$commandArgumentDefinition = $this->objectManager->get(CommandArgumentDefinition::class, $argumentName, TRUE, NULL);
 				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $commandArgumentDefinition->getDashedName() . '" is not set.', 1306755520);
-				$this->forward('error', 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', array('exception' => $exception));
+				$this->forward('error', \TYPO3\CMS\Extbase\Command\HelpCommandController::class, array('exception' => $exception));
 			}
 		}
 	}

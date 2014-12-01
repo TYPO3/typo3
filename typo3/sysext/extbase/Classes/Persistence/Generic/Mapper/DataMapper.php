@@ -155,7 +155,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function createEmptyObject($className) {
 		// Note: The class_implements() function also invokes autoload to assure that the interfaces
 		// and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
-		if (!in_array('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface', class_implements($className))) {
+		if (!in_array(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class, class_implements($className))) {
 			throw new CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className
 				. '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
 		}
@@ -214,7 +214,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 						// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
 						break;
 					case 'SplObjectStorage':
-					case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
+					case \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class:
 						$propertyValue = $this->mapResultToPropertyValue(
 							$object,
 							$propertyName,
@@ -288,7 +288,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
-			if ($propertyMetaData['type'] === 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage') {
+			if ($propertyMetaData['type'] === \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class) {
 				$result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue);
 			} else {
 				if (empty($fieldValue)) {
@@ -475,14 +475,14 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			$propertyValue = $result;
 		} else {
 			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage'), TRUE)) {
+			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class), TRUE)) {
 				$objects = array();
 				foreach ($result as $value) {
 					$objects[] = $value;
 				}
 				if ($propertyMetaData['type'] === 'ArrayObject') {
 					$propertyValue = new \ArrayObject($objects);
-				} elseif (in_array($propertyMetaData['type'], array('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage'), TRUE)) {
+				} elseif (in_array($propertyMetaData['type'], array(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class), TRUE)) {
 					$propertyValue = new Persistence\ObjectStorage();
 					foreach ($objects as $object) {
 						$propertyValue->attach($object);

@@ -226,7 +226,7 @@ tt_content.' . $pluginSignature . ' {
 			$moduleConfiguration['vendorName'] = $vendorName;
 		}
 		$moduleConfiguration['extensionName'] = $extensionName;
-		$moduleConfiguration['configureModuleFunction'] = array('TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility', 'configureModule');
+		$moduleConfiguration['configureModuleFunction'] = array(\TYPO3\CMS\Extbase\Utility\ExtensionUtility::class, 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = array();

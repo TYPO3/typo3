@@ -69,7 +69,7 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric() {
-		$this->assertInstanceOf('TYPO3\CMS\Extbase\Error\Error', $this->converter->convertFrom('not numeric', 'float'));
+		$this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'float'));
 	}
 
 	/**

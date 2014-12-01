@@ -106,12 +106,12 @@ class FlexFormServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		// The subject calls xml2array statically, which calls getHash and setHash statically, which uses
 		// caches, those need to be mocked.
-		$cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array(), array(), '', FALSE);
-		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class, array(), array(), '', FALSE);
+		$cacheMock = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$cacheManagerMock->expects($this->any())->method('getCache')->will($this->returnValue($cacheMock));
-		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $cacheManagerMock);
+		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManagerMock);
 
-		$flexFormService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\FlexFormService', array('dummy'), array(), '', FALSE);
+		$flexFormService = $this->getMock(\TYPO3\CMS\Extbase\Service\FlexFormService::class, array('dummy'), array(), '', FALSE);
 		$convertedFlexFormArray = $flexFormService->convertFlexFormContentToArray($input);
 		$this->assertSame($expected, $convertedFlexFormArray);
 	}

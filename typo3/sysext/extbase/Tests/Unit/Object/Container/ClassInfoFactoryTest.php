@@ -53,8 +53,8 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function buildClassInfoDetectsPropertiesToInjectByAnnotation() {
-		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithInjectProperties');
-		$this->assertEquals(array('secondDummyClass' => 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SecondDummyClass'), $classInfo->getInjectProperties());
+		$classInfo = $this->classInfoFactory->buildClassInfoFromClassName(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithInjectProperties::class);
+		$this->assertEquals(array('secondDummyClass' => \TYPO3\CMS\Extbase\Tests\Fixture\SecondDummyClass::class), $classInfo->getInjectProperties());
 	}
 
 	/**
@@ -63,7 +63,7 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function buildClassInfoReturnsCustomClassInfoForDateTime() {
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory $classInfoFactory */
-		$classInfoFactory = $this->getMock('TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory', array('dummy'));
+		$classInfoFactory = $this->getMock(\TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory::class, array('dummy'));
 		$classInfoFactory->expects($this->never())->method('getConstructorArguments');
 
 		$classInfo = $classInfoFactory->buildClassInfoFromClassName('DateTime');

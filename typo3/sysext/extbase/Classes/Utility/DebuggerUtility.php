@@ -47,13 +47,13 @@ class DebuggerUtility {
 	 */
 	static protected $blacklistedClassNames = array(
 		'PHPUnit_Framework_MockObject_InvocationMocker',
-		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\IdentityMap',
-		'TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService',
-		'TYPO3\\CMS\\Extbase\\Object\\ObjectManager',
-		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper',
-		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager',
-		'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory',
-		'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
+		\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap::class,
+		\TYPO3\CMS\Extbase\Reflection\ReflectionService::class,
+		\TYPO3\CMS\Extbase\Object\ObjectManager::class,
+		\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class,
+		\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class,
+		\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class,
+		\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
 	);
 
 	/**

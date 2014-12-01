@@ -42,9 +42,9 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->view = $this->getMock('TYPO3\CMS\Extbase\Mvc\View\JsonView', array('loadConfigurationFromYamlFile'));
-		$this->controllerContext = $this->getMock('TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext', array(), array(), '', FALSE);
-		$this->response = $this->getMock('TYPO3\CMS\Extbase\Mvc\Web\Response', array());
+		$this->view = $this->getMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('loadConfigurationFromYamlFile'));
+		$this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', FALSE);
+		$this->response = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Response::class, array());
 		$this->controllerContext->expects($this->any())->method('getResponse')->will($this->returnValue($this->response));
 		$this->view->setControllerContext($this->controllerContext);
 	}
@@ -150,7 +150,7 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider jsonViewTestData
 	 */
 	public function testTransformValue($object, $configuration, $expected, $description) {
-		$jsonView = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\View\JsonView', array('dummy'), array(), '', FALSE);
+		$jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('dummy'), array(), '', FALSE);
 
 		$actual = $jsonView->_call('transformValue', $object, $configuration);
 
@@ -191,8 +191,8 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider objectIdentifierExposureTestData
 	 */
 	public function testTransformValueWithObjectIdentifierExposure($object, $configuration, $expected, $dummyIdentifier, $description) {
-		$persistenceManagerMock = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('getIdentifierByObject'));
-		$jsonView = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\View\JsonView', array('dummy'), array(), '', FALSE);
+		$persistenceManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('getIdentifierByObject'));
+		$jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('dummy'), array(), '', FALSE);
 		$jsonView->_set('persistenceManager', $persistenceManagerMock);
 
 		$persistenceManagerMock->expects($this->once())->method('getIdentifierByObject')->with($object->value1)->will($this->returnValue($dummyIdentifier));
@@ -249,12 +249,12 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			)
 		);
-		$reflectionService = $this->getMock('TYPO3\CMS\Extbase\Reflection\ReflectionService');
+		$reflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 		$reflectionService->expects($this->any())->method('getClassNameByObject')->will($this->returnCallback(function($object) {
 			return get_class($object);
 		}));
 
-		$jsonView = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\View\JsonView', array('dummy'), array(), '', FALSE);
+		$jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('dummy'), array(), '', FALSE);
 		$this->inject($jsonView, 'reflectionService', $reflectionService);
 		$actual = $jsonView->_call('transformValue', $object, $configuration);
 		$this->assertEquals($expected, $actual);

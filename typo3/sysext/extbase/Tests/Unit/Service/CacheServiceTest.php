@@ -31,7 +31,7 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->cacheService = new \TYPO3\CMS\Extbase\Service\CacheService();
-		$this->cacheManagerMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+		$this->cacheManagerMock = $this->getMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		$this->cacheService->injectCacheManager($this->cacheManagerMock);
 	}
 

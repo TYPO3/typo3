@@ -28,12 +28,12 @@ class FileReferenceConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\A
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference';
+	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\FileReference::class;
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\FileReference';
+	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\FileReference::class;
 
 	/**
 	 * @param int $source

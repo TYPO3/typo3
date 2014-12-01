@@ -25,14 +25,14 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $commandController;
 
 	public function setUp() {
-		$this->commandController = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\CommandController', array('dummyCommand'));
+		$this->commandController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\CommandController::class, array('dummyCommand'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function outputAppendsGivenStringToTheResponseContent() {
-		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
 		$mockResponse->expects($this->once())->method('appendContent')->with('some text');
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('output', 'some text');
@@ -42,7 +42,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function outputReplacesArgumentsInGivenString() {
-		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
 		$mockResponse->expects($this->once())->method('appendContent')->with('some text');
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('output', '%2$s %1$s', array('text', 'some'));
@@ -52,7 +52,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function outputLineAppendsGivenStringAndNewlineToTheResponseContent() {
-		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
 		$mockResponse->expects($this->once())->method('appendContent')->with('some text' . PHP_EOL);
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('outputLine', 'some text');
@@ -63,7 +63,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 */
 	public function quitThrowsStopActionException() {
-		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('quit');
 	}
@@ -73,7 +73,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 */
 	public function quitSetsResponseExitCode() {
-		$mockResponse = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Response');
+		$mockResponse = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Response::class);
 		$mockResponse->expects($this->once())->method('setExitCode')->with(123);
 		$this->commandController->_set('response', $mockResponse);
 		$this->commandController->_call('quit', 123);
@@ -83,7 +83,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function settingRequestAdminPropertySetsAdminRoleInUserAuthentication() {
-		$mockedUserAuthentication = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+		$mockedUserAuthentication = $this->getMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
 		$mockedUserAuthentication->user['admin'] = 42;
 		$this->commandController->expects($this->once())
 			->method('dummyCommand')

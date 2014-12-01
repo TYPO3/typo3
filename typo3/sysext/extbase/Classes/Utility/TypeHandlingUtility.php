@@ -30,7 +30,7 @@ class TypeHandlingUtility {
 	/**
 	 * @var array
 	 */
-	static protected $collectionTypes = array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+	static protected $collectionTypes = array('array', 'ArrayObject', 'SplObjectStorage', \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 
 	/**
 	 * Returns an array with type information, including element type for
@@ -110,7 +110,7 @@ class TypeHandlingUtility {
 	 * @return bool
 	 */
 	static public function isCoreType($type) {
-		return is_subclass_of($type, 'TYPO3\\CMS\\Core\\Type\\TypeInterface');
+		return is_subclass_of($type, \TYPO3\CMS\Core\Type\TypeInterface::class);
 	}
 
 	/**

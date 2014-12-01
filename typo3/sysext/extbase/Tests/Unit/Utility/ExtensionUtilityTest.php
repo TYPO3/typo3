@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr', 'exec_SELECTgetRows'));
 
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->tmpl = new \stdClass();
@@ -34,19 +34,19 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'extensionname_someplugin' => 'USER',
 			'extensionname_someplugin.' => array(
-				'userFunc' => 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run',
+				'userFunc' => \TYPO3\CMS\Extbase\Core\Bootstrap::class . '->run',
 				'extensionName' => 'ExtensionName',
 				'pluginName' => 'SomePlugin'
 			),
 			'someotherextensionname_secondplugin' => 'USER',
 			'someotherextensionname_secondplugin.' => array(
-				'userFunc' => 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run',
+				'userFunc' => \TYPO3\CMS\Extbase\Core\Bootstrap::class . '->run',
 				'extensionName' => 'SomeOtherExtensionName',
 				'pluginName' => 'SecondPlugin'
 			),
 			'extensionname_thirdplugin' => 'USER',
 			'extensionname_thirdplugin.' => array(
-				'userFunc' => 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run',
+				'userFunc' => \TYPO3\CMS\Extbase\Core\Bootstrap::class . '->run',
 				'extensionName' => 'ExtensionName',
 				'pluginName' => 'ThirdPlugin'
 			)

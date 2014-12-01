@@ -48,7 +48,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function emailAddressValidatorReturnsNoErrorsForAValidEmailAddress($address) {
 		/** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'));
+		$subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
 		$this->assertFalse($subject->validate($address)->hasErrors());
 	}
 
@@ -78,7 +78,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function emailAddressValidatorReturnsFalseForAnInvalidEmailAddress($address) {
 		/** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'));
+		$subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
 		$this->assertTrue($subject->validate($address)->hasErrors());
 	}
 
@@ -87,7 +87,7 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function emailValidatorCreatesTheCorrectErrorForAnInvalidEmailAddress() {
 		/** @var \TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'));
+		$subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
 		$this->assertEquals(1, count($subject->validate('notAValidMail@Address')->getErrors()));
 	}
 }

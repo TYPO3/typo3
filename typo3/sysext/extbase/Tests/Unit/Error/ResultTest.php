@@ -107,7 +107,7 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function forPropertyShouldReturnSubResult() {
 		$container2 = $this->result->forProperty('foo.bar');
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Error\\Result', $container2);
+		$this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Result::class, $container2);
 		$this->assertSame($container2, $this->result->forProperty('foo')->forProperty('bar'));
 	}
 

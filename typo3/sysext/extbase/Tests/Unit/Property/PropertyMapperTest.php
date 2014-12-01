@@ -37,8 +37,8 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
-		$this->mockConfigurationBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationBuilder');
-		$this->mockConfiguration = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfigurationInterface');
+		$this->mockConfigurationBuilder = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder::class);
+		$this->mockConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
 	}
 
 	/**
@@ -63,7 +63,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sourceTypeCanBeCorrectlyDetermined($source, $sourceType) {
 		/** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$propertyMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$this->assertEquals($sourceType, $propertyMapper->_call('determineSourceType', $source));
 	}
 
@@ -87,7 +87,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sourceWhichIsNoSimpleTypeThrowsException($source) {
 		/** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$propertyMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$propertyMapper->_call('determineSourceType', $source);
 	}
 
@@ -99,7 +99,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getMockTypeConverter($name = '', $canConvertFrom = TRUE, $properties = array(), $typeOfSubObject = '') {
-		$mockTypeConverter = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\TypeConverterInterface');
+		$mockTypeConverter = $this->getMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 		$mockTypeConverter->_name = $name;
 		$mockTypeConverter->expects($this->any())->method('canConvertFrom')->will($this->returnValue($canConvertFrom));
 		$mockTypeConverter->expects($this->any())->method('convertFrom')->will($this->returnValue($name));
@@ -116,7 +116,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockTypeConverter = $this->getMockTypeConverter();
 		$this->mockConfiguration->expects($this->any())->method('getTypeConverter')->will($this->returnValue($mockTypeConverter));
 		/** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$propertyMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$this->assertSame($mockTypeConverter, $propertyMapper->_call('findTypeConverter', 'someSource', 'someTargetType', $this->mockConfiguration));
 	}
 
@@ -160,7 +160,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param mixed $expectedTypeConverter
 	 */
 	public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter) {
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$propertyMapper->_set('typeConverters', $typeConverters);
 		$actualTypeConverter = $propertyMapper->_call('findTypeConverter', $source, $targetType, $this->mockConfiguration);
 		$this->assertSame($expectedTypeConverter, $actualTypeConverter->_name);
@@ -252,7 +252,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				$interfaceName2 => array(2 => $this->getMockTypeConverter('Interface2Converter')),
 				$interfaceName3 => array(2 => $this->getMockTypeConverter('Interface3Converter')),
 			),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\DuplicateTypeConverterException'
+			'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException::class
 		);
 
 		// If no interface converter wants to handle it, a converter for "object" is looked up.
@@ -274,7 +274,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'target' => 'SomeNotExistingClassName',
 			'expectedConverter' => 'GenericObjectConverter-HighPriority',
 			'typeConverters' => array(),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\InvalidTargetException'
+			'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException::class
 		);
 
 		// if the type converter is not found, we expect an exception
@@ -282,7 +282,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'target' => $className3,
 			'expectedConverter' => 'Class3Converter',
 			'typeConverters' => array(),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\TypeConverterException'
+			'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException::class
 		);
 
 		// If The target type is no string, we expect an exception.
@@ -290,7 +290,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'target' => new \stdClass(),
 			'expectedConverter' => '',
 			'typeConverters' => array(),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\InvalidTargetException'
+			'shouldFailWithException' => \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException::class
 		);
 		return $data;
 	}
@@ -307,7 +307,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = FALSE) {
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$propertyMapper->_set('typeConverters', array('string' => $typeConverters));
 		try {
 			$actualTypeConverter = $propertyMapper->_call('findTypeConverter', 'someSourceString', $targetClass, $this->mockConfiguration);
@@ -327,7 +327,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function convertShouldAskConfigurationBuilderForDefaultConfiguration() {
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$this->inject($propertyMapper, 'configurationBuilder', $this->mockConfigurationBuilder);
 
 		$this->mockConfigurationBuilder->expects($this->once())->method('build')->will($this->returnValue($this->mockConfiguration));
@@ -348,8 +348,8 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function findFirstEligibleTypeConverterInObjectHierarchyShouldReturnNullIfSourceTypeIsUnknown() {
 		/** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$propertyMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Property\\PropertyMapper', array('dummy'));
-		$this->assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', 'TYPO3\\CMS\\Extbase\\Core\\Bootstrap'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
+		$this->assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', \TYPO3\CMS\Extbase\Core\Bootstrap::class));
 	}
 
 	/**
@@ -357,9 +357,9 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function doMappingReturnsSourceUnchangedIfAlreadyConverted() {
 		$source = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$targetType = 'TYPO3\CMS\Extbase\Persistence\ObjectStorage';
+		$targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class;
 		$propertyPath = '';
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$this->assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
 	}
 
@@ -368,9 +368,9 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function doMappingReturnsSourceUnchangedIfAlreadyConvertedToCompositeType() {
 		$source = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$targetType = 'TYPO3\CMS\Extbase\Persistence\ObjectStorage<SomeEntity>';
+		$targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class . '<SomeEntity>';
 		$propertyPath = '';
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$this->assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
 	}
 
@@ -389,7 +389,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$configuration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$propertyMapper->_set('typeConverters', $typeConverters);
 
 		$propertyMapper->convert($source, 'stdClass', $configuration->allowProperties('firstProperty')->skipProperties('secondProperty'));
@@ -410,7 +410,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$configuration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 
-		$propertyMapper = $this->getAccessibleMock('TYPO3\CMS\Extbase\Property\PropertyMapper', array('dummy'));
+		$propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, array('dummy'));
 		$propertyMapper->_set('typeConverters', $typeConverters);
 
 		$propertyMapper->convert($source, 'stdClass', $configuration->allowProperties('firstProperty')->skipUnknownProperties());

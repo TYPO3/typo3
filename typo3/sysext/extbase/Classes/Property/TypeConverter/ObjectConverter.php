@@ -78,7 +78,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	 * @return bool
 	 */
 	public function canConvertFrom($source, $targetType) {
-		return !is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
+		return !is_subclass_of($targetType, \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::class);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
-		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\ObjectConverter', self::CONFIGURATION_TARGET_TYPE);
+		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, self::CONFIGURATION_TARGET_TYPE);
 		if ($configuredTargetType !== NULL) {
 			return $configuredTargetType;
 		}
@@ -178,7 +178,7 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 			if ($configuration === NULL) {
 				throw new \InvalidArgumentException('A property mapping configuration must be given, not NULL.', 1326277369);
 			}
-			if ($configuration->getConfigurationValue('TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter', self::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED) !== TRUE) {
+			if ($configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, self::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED) !== TRUE) {
 				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('Override of target type not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED" to TRUE.', 1317050430);
 			}
 

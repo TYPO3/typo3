@@ -75,7 +75,7 @@ class PersistentObjectConverter extends ObjectConverter {
 	 * @return bool
 	 */
 	public function canConvertFrom($source, $targetType) {
-		return is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject');
+		return is_subclass_of($targetType, \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject::class);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class PersistentObjectConverter extends ObjectConverter {
 	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 */
 	public function getTypeOfChildProperty($targetType, $propertyName, \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration) {
-		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_TARGET_TYPE);
+		$configuredTargetType = $configuration->getConfigurationFor($propertyName)->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_TARGET_TYPE);
 		if ($configuredTargetType !== NULL) {
 			return $configuredTargetType;
 		}
@@ -133,7 +133,7 @@ class PersistentObjectConverter extends ObjectConverter {
 		if (is_array($source)) {
 			if (
 				class_exists($targetType)
-				&& is_subclass_of($targetType, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject')
+				&& is_subclass_of($targetType, \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class)
 			) {
 				// Unset identity for valueobject to use constructor mapping, since the identity is determined from
 				// constructor arguments
@@ -178,11 +178,11 @@ class PersistentObjectConverter extends ObjectConverter {
 		if (isset($source['__identity'])) {
 			$object = $this->fetchObjectFromPersistence($source['__identity'], $targetType);
 
-			if (count($source) > 1 && ($configuration === NULL || $configuration->getConfigurationValue('TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter', self::CONFIGURATION_MODIFICATION_ALLOWED) !== TRUE)) {
+			if (count($source) > 1 && ($configuration === NULL || $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_MODIFICATION_ALLOWED) !== TRUE)) {
 				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('Modification of persistent objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_MODIFICATION_ALLOWED" to TRUE.', 1297932028);
 			}
 		} else {
-			if ($configuration === NULL || $configuration->getConfigurationValue('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', self::CONFIGURATION_CREATION_ALLOWED) !== TRUE) {
+			if ($configuration === NULL || $configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, self::CONFIGURATION_CREATION_ALLOWED) !== TRUE) {
 				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('Creation of objects not allowed. To enable this, you need to set the PropertyMappingConfiguration Value "CONFIGURATION_CREATION_ALLOWED" to TRUE');
 			}
 			$object = $this->buildObject($convertedChildProperties, $targetType);

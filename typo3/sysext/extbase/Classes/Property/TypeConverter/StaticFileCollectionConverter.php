@@ -28,12 +28,12 @@ class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConv
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\StaticFileCollection';
+	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\StaticFileCollection::class;
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\Collection\\StaticFileCollection';
+	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class;
 
 	/**
 	 * @param int $source

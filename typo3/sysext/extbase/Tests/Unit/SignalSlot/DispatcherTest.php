@@ -25,7 +25,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $signalSlotDispatcher;
 
 	public function setUp() {
-		$accessibleClassName = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher', array('dummy'));
+		$accessibleClassName = $this->getAccessibleMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class, array('dummy'));
 		$this->signalSlotDispatcher = new $accessibleClassName();
 	}
 
@@ -89,7 +89,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$slotClassName = uniqid('Mock_');
 		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
 		$mockSlot = new $slotClassName();
-		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
@@ -105,7 +105,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dispatchHandsOverArgumentsReturnedByAFormerSlot() {
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 
-		$firstMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$firstMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$firstMockSlot->expects($this->once())
 			->method('slot')
 			->will($this->returnCallback(
@@ -113,7 +113,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 							return array('modified_' . $foo, 'modified_' . $baz);}
 					));
 
-		$secondMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$secondMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$secondMockSlot->expects($this->once())
 			->method('slot')
 			->with('modified_bar', 'modified_quux');
@@ -131,7 +131,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dispatchHandsOverArgumentsReturnedByAFormerSlotWithoutInterferingWithSignalSlotInformation() {
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 
-		$firstMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$firstMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$firstMockSlot->expects($this->once())
 			->method('slot')
 			->will($this->returnCallback(
@@ -139,7 +139,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 							return array('modified_' . $foo, 'modified_' . $baz);}
 					));
 
-		$secondMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$secondMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$secondMockSlot->expects($this->once())
 			->method('slot')
 			->with('modified_bar', 'modified_quux');
@@ -156,7 +156,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dispatchHandsOverFormerArgumentsIfPreviousSlotDoesNotReturnAnything() {
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 
-		$firstMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$firstMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$firstMockSlot->expects($this->once())
 			->method('slot')
 			->will($this->returnCallback(
@@ -164,11 +164,11 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 							return array('modified_' . $foo, 'modified_' . $baz);}
 					));
 
-		$secondMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$secondMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$secondMockSlot->expects($this->once())
 			->method('slot');
 
-		$thirdMockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$thirdMockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$thirdMockSlot->expects($this->once())
 			->method('slot')
 			->with('modified_bar', 'modified_quux');
@@ -188,7 +188,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dispatchThrowsAnExceptionIfTheSlotReturnsNonArray() {
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 
-		$mockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$mockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$mockSlot->expects($this->once())
 			->method('slot')
 			->will($this->returnCallback(
@@ -207,7 +207,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dispatchThrowsAnExceptionIfTheSlotReturnsDifferentNumberOfItems() {
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 
-		$mockSlot = $this->getMock('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\SlotFixture');
+		$mockSlot = $this->getMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
 		$mockSlot->expects($this->once())
 			->method('slot')
 			->will($this->returnCallback(
@@ -224,7 +224,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown() {
-		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with('NonExistingClassName')->will($this->returnValue(FALSE));
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
@@ -240,7 +240,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$slotClassName = uniqid('Mock_');
 		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
 		$mockSlot = new $slotClassName();
-		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
@@ -258,7 +258,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockSlot = function () use (&$arguments) {
 			($arguments = func_get_args());
 		};
-		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, NULL, TRUE);
 		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);

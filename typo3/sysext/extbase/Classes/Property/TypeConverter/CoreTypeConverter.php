@@ -39,7 +39,7 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Core\\Type\\TypeInterface';
+	protected $targetType = \TYPO3\CMS\Core\Type\TypeInterface::class;
 
 	/**
 	 * @var int

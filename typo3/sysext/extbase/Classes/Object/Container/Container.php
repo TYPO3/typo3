@@ -134,13 +134,13 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getInstanceInternal($className, $givenConstructorArguments = array()) {
 		$className = $this->getImplementationClassName($className);
-		if ($className === 'TYPO3\\CMS\\Extbase\\Object\\Container\\Container') {
+		if ($className === \TYPO3\CMS\Extbase\Object\Container\Container::class) {
 			return $this;
 		}
-		if ($className === 'TYPO3\\CMS\\Core\\Cache\\CacheManager') {
+		if ($className === \TYPO3\CMS\Core\Cache\CacheManager::class) {
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 		}
-		if ($className === 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
+		if ($className === \TYPO3\CMS\Core\Package\PackageManager::class) {
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 		}
 		$className = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
@@ -187,7 +187,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$constructorArguments = $this->getConstructorArguments($className, $classInfo, $givenConstructorArguments);
 		array_unshift($constructorArguments, $className);
-		$instance = call_user_func_array(array('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'makeInstance'), $constructorArguments);
+		$instance = call_user_func_array(array(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'), $constructorArguments);
 		if ($classIsSingleton) {
 			$this->singletonInstances[$className] = $instance;
 		}

@@ -89,7 +89,7 @@ class ObjectManager implements ObjectManagerInterface {
 		array_shift($arguments);
 		if ($objectName === 'DateTime') {
 			array_unshift($arguments, $objectName);
-			$instance = call_user_func_array(array('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'makeInstance'), $arguments);
+			$instance = call_user_func_array(array(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'), $arguments);
 		} else {
 			$instance = $this->objectContainer->getInstance($objectName, $arguments);
 		}

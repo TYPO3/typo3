@@ -28,12 +28,12 @@ class FolderBasedFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\Typ
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\FolderBasedFileCollection';
+	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\FolderBasedFileCollection::class;
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\Collection\\FolderBasedFileCollection';
+	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection::class;
 
 	/**
 	 * @param int $source

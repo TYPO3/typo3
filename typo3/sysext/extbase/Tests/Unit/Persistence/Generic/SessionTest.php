@@ -124,7 +124,7 @@ class SessionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function objectCanBeRegisteredAsReconstituted() {
 		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
-		$entity = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
+		$entity = $this->getMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class);
 		$persistenceSession->registerReconstitutedEntity($entity);
 		$reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
 		$this->assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
@@ -135,7 +135,7 @@ class SessionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function objectCanBeUnregisteredAsReconstituted() {
 		$persistenceSession = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
-		$entity = $this->getMock('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity');
+		$entity = $this->getMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class);
 		$persistenceSession->registerReconstitutedEntity($entity);
 		$persistenceSession->unregisterReconstitutedEntity($entity);
 		$reconstitutedObjects = $persistenceSession->getReconstitutedEntities();

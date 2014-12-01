@@ -37,7 +37,7 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
 	 * @api
 	 */
 	public function allowCreationForSubProperty($propertyPath) {
-		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
+		$this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
 	}
 
 	/**
@@ -48,7 +48,7 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
 	 * @api
 	 */
 	public function allowModificationForSubProperty($propertyPath) {
-		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, TRUE);
+		$this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, TRUE);
 	}
 
 	/**
@@ -62,6 +62,6 @@ class MvcPropertyMappingConfiguration extends \TYPO3\CMS\Extbase\Property\Proper
 	 * @api
 	 */
 	public function setTargetTypeForSubProperty($propertyPath, $targetType) {
-		$this->forProperty($propertyPath)->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
+		$this->forProperty($propertyPath)->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, $targetType);
 	}
 }

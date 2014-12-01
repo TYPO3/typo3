@@ -24,7 +24,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructResolvesExtensionnameFromOldStyle() {
 		$className = uniqid('Tx_Extbase_Tests_Fixtures_Controller');
-		eval('class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\Mvc\\Controller\\AbstractController { function getExtensionName() { return $this->extensionName; } }');
+		eval('class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class . ' { function getExtensionName() { return $this->extensionName; } }');
 		$mockController = new $className();
 		$expectedResult = 'Extbase';
 		$actualResult = $mockController->getExtensionName();
@@ -36,7 +36,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructResolvesExtensionnameFromNamespaced() {
 		$className = uniqid('DummyController');
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\Mvc\\Controller\\AbstractController { function getExtensionName() { return $this->extensionName; } }');
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class . ' { function getExtensionName() { return $this->extensionName; } }');
 		$classNameNamespaced = __NAMESPACE__ . '\\' . $className;
 		$mockController = new $classNameNamespaced();
 		$expectedResult = 'Extbase';
@@ -101,7 +101,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addFlashMessageAddsFlashMessageObjectToFlashMessageQueue($expectedMessage, $messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK, $storeInSession = TRUE) {
 		$flashMessageQueue = $this->getMock(
-			'TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue',
+			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
 			array('enqueue'),
 			array(uniqid('identifier_', TRUE))
 		);
@@ -113,7 +113,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$controllerContext->expects($this->once())->method('getFlashMessageQueue')->will($this->returnValue($flashMessageQueue));
 
-		$controller = $this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\AbstractController',
+		$controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
 			array(),
 			'',
 			FALSE,
@@ -131,7 +131,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addFlashMessageThrowsExceptionOnInvalidMessageBody() {
-		$controller = $this->getMockForAbstractClass('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\AbstractController',
+		$controller = $this->getMockForAbstractClass(\TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
 			array(),
 			'',
 			FALSE,

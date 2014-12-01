@@ -25,7 +25,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties() {
 		$domainObjectName = uniqid('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
 			public $bar;
 		}');
@@ -42,7 +42,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards() {
 		$domainObjectName = uniqid('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
 			public $bar;
 		}');
@@ -60,7 +60,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties() {
 		$domainObjectName = uniqid('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
 			public $bar;
 		}');
@@ -77,13 +77,13 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties() {
 		$domainObjectName = uniqid('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
 			public $bar;
 		}');
 		$secondDomainObjectName = uniqid('DomainObject_');
 		$secondDomainObjectNameWithNS = __NAMESPACE__ . '\\' . $secondDomainObjectName;
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $secondDomainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $secondDomainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
 			public $bar;
 		}');

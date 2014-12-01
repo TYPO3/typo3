@@ -148,7 +148,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 		foreach ($methodParameters as $parameterName => $methodParameter) {
 			/** @var ConjunctionValidator $validatorConjunction */
-			$validatorConjunction = $this->createValidator('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
+			$validatorConjunction = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class);
 
 			if (!array_key_exists('type', $methodParameter)) {
 				throw new Exception\InvalidTypeHintException('Missing type information, probably no @param annotation for parameter "$' . $parameterName . '" in ' . $className . '->' . $methodName . '()', 1281962564);
@@ -267,7 +267,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 				$propertyTargetClassName = $parsedType['type'];
 				if (\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCollectionType($propertyTargetClassName) === TRUE) {
-					$collectionValidator = $this->createValidator('TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator', array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
+					$collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
 					$objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
 				} elseif (class_exists($propertyTargetClassName) && !\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
 					$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $validationGroups);
@@ -453,7 +453,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 		if (class_exists($possibleClassName)) {
 			$possibleClassNameInterfaces = class_implements($possibleClassName);
-			if (!in_array('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', $possibleClassNameInterfaces)) {
+			if (!in_array(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class, $possibleClassNameInterfaces)) {
 				// The guessed validatorname is a valid class name, but does not implement the ValidatorInterface
 				throw new NoSuchValidatorException('Validator class ' . $validatorName . ' must implement \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface', 1365776838);
 			}

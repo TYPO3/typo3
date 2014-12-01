@@ -29,7 +29,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var string
 	 */
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\CollectionValidator';
+	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
@@ -55,7 +55,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$this->mockValidatorResolver = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver',
+			\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class,
 			array('createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction')
 		);
 		$this->validator = $this->getValidator();
@@ -84,7 +84,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockValidatorResolver->expects($this->exactly(4))
 			->method('createValidator')
 			->with('EmailAddress')
-			->will($this->returnValue($this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\EmailAddressValidator', array('translateErrorMessage'))));
+			->will($this->returnValue($this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'))));
 		$this->validator->_set('validatorResolver', $this->mockValidatorResolver);
 		$arrayOfEmailAddresses = array(
 			'foo@bar.de',
@@ -115,9 +115,9 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 
 		// Create validators
-		$aValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator', array('translateErrorMessage'), array(array()));
+		$aValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array('translateErrorMessage'), array(array()));
 		$this->validator->_set('options', array('elementValidator' => 'Integer'));
-		$integerValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\IntegerValidator', array('translateErrorMessage'), array(array()));
+		$integerValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class, array('translateErrorMessage'), array(array()));
 
 		$this->mockValidatorResolver->expects($this->any())
 			->method('createValidator')

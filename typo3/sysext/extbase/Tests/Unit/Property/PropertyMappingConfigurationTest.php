@@ -111,7 +111,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function setTypeConverterOptionsCanBeRetrievedAgain() {
-		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+		$mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 
 		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
 		$this->assertEquals('v1', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k1'));
@@ -129,7 +129,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function setTypeConverterOptionsShouldOverrideAlreadySetOptions() {
-		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+		$mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
 		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k3' => 'v3'));
 
@@ -141,7 +141,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function setTypeConverterOptionShouldOverrideAlreadySetOptions() {
-		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+		$mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 		$this->propertyMappingConfiguration->setTypeConverterOptions($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'));
 		$this->propertyMappingConfiguration->setTypeConverterOption($mockTypeConverterClass, 'k1', 'v3');
 
@@ -160,7 +160,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function getTypeConverterReturnsTypeConverterIfItHasBeenSet() {
-		$mockTypeConverter = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\TypeConverterInterface');
+		$mockTypeConverter = $this->getMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 		$this->propertyMappingConfiguration->setTypeConverter($mockTypeConverter);
 		$this->assertSame($mockTypeConverter, $this->propertyMappingConfiguration->getTypeConverter());
 	}
@@ -188,7 +188,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @return array Signature: $methodToTestForFluentInterface [, $argumentsForMethod = array() ]
 	 */
 	public function fluentInterfaceMethodsDataProvider() {
-		$mockTypeConverterClass = $this->getMockClass('TYPO3\CMS\Extbase\Property\TypeConverterInterface');
+		$mockTypeConverterClass = $this->getMockClass(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
 
 		return array(
 			array('allowAllProperties'),
@@ -197,7 +197,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			array('setMapping', array('k1', 'k1a')),
 			array('setTypeConverterOptions', array($mockTypeConverterClass, array('k1' => 'v1', 'k2' => 'v2'))),
 			array('setTypeConverterOption', array($mockTypeConverterClass, 'k1', 'v3')),
-			array('setTypeConverter', array($this->getMock('TYPO3\CMS\Extbase\Property\TypeConverterInterface'))),
+			array('setTypeConverter', array($this->getMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class))),
 		);
 	}
 

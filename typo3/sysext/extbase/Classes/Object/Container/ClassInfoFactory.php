@@ -146,7 +146,7 @@ class ClassInfoFactory {
 	 * @return bool
 	 */
 	private function getIsSingleton($classname) {
-		return in_array('TYPO3\\CMS\\Core\\SingletonInterface', class_implements($classname));
+		return in_array(\TYPO3\CMS\Core\SingletonInterface::class, class_implements($classname));
 	}
 
 	/**

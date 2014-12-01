@@ -28,12 +28,12 @@ class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 	/**
 	 * @var string
 	 */
-	protected $targetType = 'TYPO3\\CMS\\Extbase\\Domain\\Model\\Folder';
+	protected $targetType = \TYPO3\CMS\Extbase\Domain\Model\Folder::class;
 
 	/**
 	 * @var string
 	 */
-	protected $expectedObjectType = 'TYPO3\\CMS\\Core\\Resource\\Folder';
+	protected $expectedObjectType = \TYPO3\CMS\Core\Resource\Folder::class;
 
 	/**
 	 * @param string $source

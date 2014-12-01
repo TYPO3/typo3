@@ -40,8 +40,8 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this test case
 	 */
 	public function setUp() {
-		$this->request = $this->getAccessibleMock('TYPO3\CMS\Extbase\Mvc\Cli\Request', array('dummy'));
-		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class, array('dummy'));
+		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->request->_set('objectManager', $this->mockObjectManager);
 	}
 
@@ -52,7 +52,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getCommandReturnsTheCommandObjectReflectingTheRequestInformation() {
 		$this->request->setControllerObjectName('Tx_Extbase_Command_CacheCommandController');
 		$this->request->setControllerCommandName('flush');
-		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', 'Tx_Extbase_Command_CacheCommandController', 'flush');
+		$this->mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, 'Tx_Extbase_Command_CacheCommandController', 'flush');
 		$this->request->getCommand();
 	}
 
@@ -66,7 +66,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->request->getCommand();
 		$this->request->setControllerObjectName('Tx_SomeExtension_Command_BeerCommandController');
 		$this->request->setControllerCommandName('drink');
-		$this->mockObjectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Mvc\\Cli\\Command', 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
+		$this->mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, 'Tx_SomeExtension_Command_BeerCommandController', 'drink');
 		$this->request->getCommand();
 	}
 
@@ -75,7 +75,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setControllerObjectNameProperlyResolvesExtensionNameWithNamespaces() {
 		$mockCliRequest = new \TYPO3\CMS\Extbase\Mvc\Cli\Request;
-		$mockCliRequest->setControllerObjectName('TYPO3\CMS\Extbase\Command\NamespacedMockCommandController');
+		$mockCliRequest->setControllerObjectName(\TYPO3\CMS\Extbase\Command\NamespacedMockCommandController::class);
 
 		$this->assertSame('Extbase', $mockCliRequest->getControllerExtensionName());
 	}

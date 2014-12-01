@@ -50,15 +50,15 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->query = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\Query', array('dummy'), array('someType'));
-		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, array('dummy'), array('someType'));
+		$this->querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
 		$this->query->_set('querySettings', $this->querySettings);
-		$this->persistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
-		$this->backend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\BackendInterface');
+		$this->persistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+		$this->backend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$this->backend->expects($this->any())->method('getQomFactory')->will($this->returnValue(NULL));
 		$this->persistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($this->backend));
 		$this->query->_set('persistenceManager', $this->persistenceManager);
-		$this->dataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
+		$this->dataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
 		$this->query->_set('dataMapper', $this->dataMapper);
 	}
 
@@ -67,10 +67,10 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function executeReturnsQueryResultInstanceAndInjectsItself() {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->query->_set('objectManager', $objectManager);
-		$queryResult = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array(), array(), '', FALSE);
-		$objectManager->expects($this->once())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface', $this->query)->will($this->returnValue($queryResult));
+		$queryResult = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, array(), array(), '', FALSE);
+		$objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class, $this->query)->will($this->returnValue($queryResult));
 		$actualResult = $this->query->execute();
 		$this->assertSame($queryResult, $actualResult);
 	}
@@ -140,12 +140,12 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function equalsForCaseSensitiveFalseLowercasesOperand($propertyName, $operand, $expectedOperand) {
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $dynamicOperand */
-		$dynamicOperand = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\PropertyValueInterface');
+		$dynamicOperand = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface::class);
 		$objectManager->expects($this->any())->method('get')->will($this->returnValue($dynamicOperand));
 		/** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
-		$qomFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory', array('comparison'));
+		$qomFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class, array('comparison'));
 		$qomFactory->_set('objectManager', $objectManager);
 		$qomFactory->expects($this->once())->method('comparison')->with($this->anything(), $this->anything(), $expectedOperand);
 		$this->query->_set('qomFactory', $qomFactory);

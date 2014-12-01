@@ -30,8 +30,8 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $taskExecutor;
 
 	public function setUp() {
-		$this->taskExecutor = $this->getMock('TYPO3\\CMS\\Extbase\\Scheduler\\TaskExecutor', array('execute'), array(), '', FALSE);
-		$this->task = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Scheduler\\Task', array('logException', '__wakeup'), array(), '', FALSE);
+		$this->taskExecutor = $this->getMock(\TYPO3\CMS\Extbase\Scheduler\TaskExecutor::class, array('execute'), array(), '', FALSE);
+		$this->task = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Scheduler\Task::class, array('logException', '__wakeup'), array(), '', FALSE);
 	}
 
 	/**

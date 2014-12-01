@@ -30,10 +30,10 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $extensionService;
 
 	public function setUp() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr', 'exec_SELECTgetRows'));
 		$GLOBALS['TSFE'] = new \stdClass();
-		$this->extensionService = $this->getAccessibleMock('TYPO3\CMS\Extbase\Service\ExtensionService', array('dummy'));
-		$this->mockConfigurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface');
+		$this->extensionService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class, array('dummy'));
+		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
 		$this->extensionService->_set('configurationManager', $this->mockConfigurationManager);
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'] = array(
 			'ExtensionName' => array(
@@ -215,7 +215,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto() {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
 		$pluginSignature = 'extensionname_someplugin';
-		$GLOBALS['TSFE']->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('enableFields'));
 		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->with('tt_content')->will($this->returnValue(' AND enable_fields'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->with($pluginSignature, 'tt_content')->will($this->returnValue('"pluginSignature"'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with('pid', 'tt_content', 'list_type="pluginSignature" AND CType="list" AND enable_fields AND sys_language_uid=', '', '')->will($this->returnValue(array(array('pid' => '321'))));
@@ -229,7 +229,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined() {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$GLOBALS['TSFE']->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('enableFields'));
 		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array()));
@@ -242,7 +242,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound() {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
-		$GLOBALS['TSFE']->sys_page = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('enableFields'));
 		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array(array('pid' => 123), array('pid' => 124))));

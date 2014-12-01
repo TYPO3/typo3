@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  */
 class FloatValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\FloatValidator';
+	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator::class;
 
 	public function setup() {
 		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));

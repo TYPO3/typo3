@@ -50,12 +50,12 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
+		$this->mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
 		$this->mockPersistenceManager->expects($this->any())->method('getObjectDataByQuery')->will($this->returnValue(array('one', 'two')));
 		$this->mockPersistenceManager->expects($this->any())->method('getObjectCountByQuery')->will($this->returnValue(2));
-		$this->mockDataMapper = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
-		$this->mockQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$this->queryResult = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\QueryResult', array('dummy'), array($this->mockQuery));
+		$this->mockDataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
+		$this->mockQuery = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
+		$this->queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, array('dummy'), array($this->mockQuery));
 		$this->queryResult->_set('persistenceManager', $this->mockPersistenceManager);
 		$this->queryResult->_set('dataMapper', $this->mockDataMapper);
 		$this->sampleResult = array(array('foo' => 'Foo1', 'bar' => 'Bar1'), array('foo' => 'Foo2', 'bar' => 'Bar2'));
@@ -66,7 +66,7 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getQueryReturnsQueryObject() {
-		$this->assertInstanceOf('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface', $this->queryResult->getQuery());
+		$this->assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class, $this->queryResult->getQuery());
 	}
 
 	/**
@@ -114,7 +114,7 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function countDoesNotInitializeProxy() {
-		$queryResult = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('initialize'), array($this->mockQuery));
+		$queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, array('initialize'), array($this->mockQuery));
 		$queryResult->_set('persistenceManager', $this->mockPersistenceManager);
 		$queryResult->expects($this->never())->method('initialize');
 		$queryResult->count();
@@ -124,7 +124,7 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function countCallsGetObjectCountByQueryOnPersistenceManager() {
-		$queryResult = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('initialize'), array($this->mockQuery));
+		$queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, array('initialize'), array($this->mockQuery));
 		$queryResult->_set('persistenceManager', $this->mockPersistenceManager);
 		$this->assertEquals(2, $queryResult->count());
 	}
@@ -155,7 +155,7 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeExecutesQueryWithArrayFetchMode() {
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$queryResult = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult', array('dummy'), array($this->mockQuery));
+		$queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, array('dummy'), array($this->mockQuery));
 		$queryResult->_set('persistenceManager', $this->mockPersistenceManager);
 		$queryResult->_set('dataMapper', $this->mockDataMapper);
 		$this->mockPersistenceManager->expects($this->once())->method('getObjectDataByQuery')->with($this->mockQuery)->will($this->returnValue(array('FAKERESULT')));

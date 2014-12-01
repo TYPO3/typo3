@@ -25,7 +25,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockObjectManager;
 
 	public function setUp() {
-		$this->mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 	}
 
 	/**
@@ -35,10 +35,10 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$entity2 = new \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2();
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorage->attach($entity2);
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->once())->method('setAggregateRootObjects')->with($objectStorage);
 
-		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$manager->_set('backend', $mockBackend);
 		$manager->add($entity2);
 
@@ -52,10 +52,10 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$entity2 = new \TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2();
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorage->attach($entity2);
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->once())->method('setDeletedEntities')->with($objectStorage);
 
-		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$manager->_set('backend', $mockBackend);
 		$manager->remove($entity2);
 
@@ -69,11 +69,11 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fakeUuid = 'fakeUuid';
 		$object = new \stdClass();
 
-		$mockBackend = $this->getMock('TYPO3\\CMS\Extbase\\Persistence\\Generic\\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
 
 		/** @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $manager */
-		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$manager->_set('backend', $mockBackend);
 
 
@@ -87,11 +87,11 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fakeUuid = 'fakeUuid';
 		$object = new \stdClass();
 
-		$mockSession = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\Session');
+		$mockSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
 		$mockSession->expects($this->once())->method('hasIdentifier')->with($fakeUuid)->will($this->returnValue(TRUE));
 		$mockSession->expects($this->once())->method('getObjectByIdentifier')->with($fakeUuid)->will($this->returnValue($object));
 
-		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$manager->_set('persistenceSession', $mockSession);
 
 		$this->assertEquals($manager->getObjectByIdentifier($fakeUuid), $object);
@@ -105,13 +105,13 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$object = new \stdClass();
 		$fakeEntityType = get_class($object);
 
-		$mockSession = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\Session');
+		$mockSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
 		$mockSession->expects($this->once())->method('hasIdentifier')->with($fakeUuid)->will($this->returnValue(FALSE));
 
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->once())->method('getObjectByIdentifier')->with($fakeUuid, $fakeEntityType)->will($this->returnValue($object));
 
-		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$manager->_set('persistenceSession', $mockSession);
 		$manager->_set('backend', $mockBackend);
 
@@ -125,13 +125,13 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fakeUuid = '42';
 		$fakeEntityType = 'foobar';
 
-		$mockSession = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\Session');
+		$mockSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
 		$mockSession->expects($this->once())->method('hasIdentifier')->with($fakeUuid, $fakeEntityType)->will($this->returnValue(FALSE));
 
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->once())->method('getObjectByIdentifier')->with($fakeUuid, $fakeEntityType)->will($this->returnValue(NULL));
 
-		$manager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$manager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$manager->_set('persistenceSession', $mockSession);
 		$manager->_set('backend', $mockBackend);
 
@@ -213,7 +213,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$className = uniqid('BazFixture');
 		eval ('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
-			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+			class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 				protected $uid = 42;
 			}
 		');
@@ -224,13 +224,13 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
 		$repositorClassNameWithNamespace = __NAMESPACE__ . '\\Domain\\Repository\\' . $className . 'Repository';
 
-		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session();
 		$changedEntities = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$entity1 = new $classNameWithNamespace();
 		$repository = $this->getAccessibleMock($repositorClassNameWithNamespace, array('dummy'), array($this->mockObjectManager));
 		$repository->_set('objectType', get_class($entity1));
-		$mockBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend'), array('commit', 'setChangedEntities'), array(), '', FALSE);
+		$mockBackend = $this->getMock($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class), array('commit', 'setChangedEntities'), array(), '', FALSE);
 		$mockBackend->expects($this->once())
 			->method('setChangedEntities')
 			->with($this->equalTo($changedEntities));
@@ -253,12 +253,12 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockObject = $this->getMock('TYPO3\CMS\Extbase\Persistence\Aspect\PersistenceMagicInterface');
 		$mockObject->Persistence_Object_Identifier = 'abcdefg';
 
-		$mockSession = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\Session');
+		$mockSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
 		$mockSession->expects($this->any())->method('hasIdentifier')->will($this->returnValue(FALSE));
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->any())->method('getObjectDataByIdentifier')->will($this->returnValue(FALSE));
 
-		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$persistenceManager->_set('persistenceSession', $mockSession);
 		$persistenceManager->_set('backend', $mockBackend);
 
@@ -273,10 +273,10 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tearDownWithBackendNotSupportingTearDownDoesNothing() {
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface');
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$mockBackend->expects($this->never())->method('tearDown');
 
-		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$persistenceManager->_set('backend', $mockBackend);
 
 		$persistenceManager->tearDown();
@@ -286,11 +286,11 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tearDownWithBackendSupportingTearDownDelegatesCallToBackend() {
-		$methods = array_merge(get_class_methods('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface'), array('tearDown'));
-		$mockBackend = $this->getMock('TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface', $methods);
+		$methods = array_merge(get_class_methods(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class), array('tearDown'));
+		$mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class, $methods);
 		$mockBackend->expects($this->once())->method('tearDown');
 
-		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$persistenceManager->_set('backend', $mockBackend);
 
 		$persistenceManager->tearDown();
@@ -306,17 +306,17 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function persistAllAddsReconstitutedObjectFromSessionToBackendsAggregateRootObjects() {
 		$className = uniqid('BazFixture');
 		eval ('
-			class Foo_Bar_Domain_Model_' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+			class Foo_Bar_Domain_Model_' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {}
 		');
 		eval ('
 			class Foo_Bar_Domain_Repository_' . $className . 'Repository {}
 		');
-		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$fullClassName = 'Foo_Bar_Domain_Model_' . $className;
 		$entity1 = new $fullClassName();
 		$aggregateRootObjects->attach($entity1);
-		$mockBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend'), array('commit', 'setAggregateRootObjects', 'setDeletedEntities'), array(), '', FALSE);
+		$mockBackend = $this->getMock($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class), array('commit', 'setAggregateRootObjects', 'setDeletedEntities'), array(), '', FALSE);
 		$mockBackend->expects($this->once())
 			->method('setAggregateRootObjects')
 			->with($this->equalTo($aggregateRootObjects));
@@ -332,18 +332,18 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$className = uniqid('BazFixture');
 		eval ('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
-			class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+			class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {}
 		');
 		eval ('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Repository;
 			class  ' . $className . 'Repository {}
 		');
-		$persistenceManager = $this->getAccessibleMock('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager', array('dummy'));
+		$persistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('dummy'));
 		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$classNameWithNamespace = __NAMESPACE__ . '\\Domain\\Model\\' . $className;
 		$entity1 = new $classNameWithNamespace();
 		$aggregateRootObjects->attach($entity1);
-		$mockBackend = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend'), array('commit', 'setAggregateRootObjects', 'setDeletedEntities'), array(), '', FALSE);
+		$mockBackend = $this->getMock($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class), array('commit', 'setAggregateRootObjects', 'setDeletedEntities'), array(), '', FALSE);
 		$mockBackend->expects($this->once())
 			->method('setAggregateRootObjects')
 			->with($this->equalTo($aggregateRootObjects));

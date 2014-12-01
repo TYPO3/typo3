@@ -28,7 +28,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  */
 class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\AbstractValidatorTestcase {
 
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\RawValidator';
+	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\RawValidator::class;
 
 	/**
 	 * @test

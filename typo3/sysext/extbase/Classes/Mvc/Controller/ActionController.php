@@ -71,7 +71,7 @@ class ActionController extends AbstractController {
 	 * @var string
 	 * @api
 	 */
-	protected $defaultViewObjectName = 'TYPO3\\CMS\\Fluid\\View\\TemplateView';
+	protected $defaultViewObjectName = \TYPO3\CMS\Fluid\View\TemplateView::class;
 
 	/**
 	 * Name of the action method

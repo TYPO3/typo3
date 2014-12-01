@@ -78,7 +78,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentsCallsSetArgumentForEveryArrayEntry() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setArgument'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setArgument'));
 		$request->expects($this->at(0))->method('setArgument')->with('key1', 'value1');
 		$request->expects($this->at(1))->method('setArgument')->with('key2', 'value2');
 		$request->setArguments(array('key1' => 'value1', 'key2' => 'value2'));
@@ -88,7 +88,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerExtensionNameIfPackageKeyIsGiven() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerExtensionName'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setControllerExtensionName'));
 		$request->expects($this->any())->method('setControllerExtensionName')->with('MyExtension');
 		$request->setArgument('@extension', 'MyExtension');
 		$this->assertFalse($request->hasArgument('@extension'));
@@ -98,7 +98,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerSubpackageKeyIfSubpackageKeyIsGiven() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerSubpackageKey'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setControllerSubpackageKey'));
 		$request->expects($this->any())->method('setControllerSubpackageKey')->with('MySubPackage');
 		$request->setArgument('@subpackage', 'MySubPackage');
 		$this->assertFalse($request->hasArgument('@subpackage'));
@@ -108,7 +108,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerNameIfControllerIsGiven() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerName'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setControllerName'));
 		$request->expects($this->any())->method('setControllerName')->with('MyController');
 		$request->setArgument('@controller', 'MyController');
 		$this->assertFalse($request->hasArgument('@controller'));
@@ -118,7 +118,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setArgumentShouldSetControllerActionNameIfActionIsGiven() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setControllerActionName'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setControllerActionName'));
 		$request->expects($this->any())->method('setControllerActionName')->with('foo');
 		$request->setArgument('@action', 'foo');
 		$this->assertFalse($request->hasArgument('@action'));
@@ -128,7 +128,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setArgumentShouldSetFormatIfFormatIsGiven() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setFormat'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setFormat'));
 		$request->expects($this->any())->method('setFormat')->with('txt');
 		$request->setArgument('@format', 'txt');
 		$this->assertFalse($request->hasArgument('@format'));
@@ -138,7 +138,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setArgumentShouldSetVendorIfVendorIsGiven() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('setFormat'));
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setFormat'));
 		$request->expects($this->any())->method('setVendor')->with('VENDOR');
 		$request->setArgument('@vendor', 'VENDOR');
 		$this->assertFalse($request->hasArgument('@vendor'));
@@ -212,7 +212,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theActionNameCanBeSetAndRetrieved() {
-		$request = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('getControllerObjectName'), array(), '', FALSE);
+		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('getControllerObjectName'), array(), '', FALSE);
 		$request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue(''));
 		$request->setControllerActionName('theAction');
 		$this->assertEquals('theAction', $request->getControllerActionName());
@@ -272,7 +272,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'subpackageKey' => 'ViewHelpers\\Widget',
 					'controllerName' => 'Paginate',
 				),
-				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\Controller\\PaginateController',
+				\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
 			),
 			'Vendor VENDOR, extension, controller given' => array(
 				array(
@@ -322,7 +322,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getControllerObjectNameResolvesControllerObjectNameCorrectly($controllerArguments, $controllerObjectName) {
 		/** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('dummy'));
+		$request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('dummy'));
 		$request->_set('controllerVendorName', $controllerArguments['vendorName']);
 		$request->_set('controllerExtensionName', $controllerArguments['extensionName']);
 		$request->_set('controllerSubpackageKey', $controllerArguments['subpackageKey']);
@@ -340,7 +340,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setControllerObjectNameResolvesControllerObjectNameArgumentsCorrectly($controllerArguments, $controllerObjectName) {
 		/** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-		$request = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Request', array('dummy'));
+		$request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('dummy'));
 		$request->setControllerObjectName($controllerObjectName);
 
 		$actualControllerArguments = array(

@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
  */
 class StringLengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	protected $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator';
+	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator::class;
 
 	public function setup() {
 		$this->validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'));
