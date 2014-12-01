@@ -37,5 +37,5 @@ if (TYPO3_MODE === 'BE') {
 
 	// Register AJAX Controller
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('PermissionAjaxController::dispatch',
-		'TYPO3\\CMS\\Beuser\\Controller\\PermissionAjaxController->dispatch');
+		\TYPO3\CMS\Beuser\Controller\PermissionAjaxController::class . '->dispatch');
 }

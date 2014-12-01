@@ -23,11 +23,11 @@ class WorkspaceRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
-		$querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
-		$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$objectManager->expects($this->any())->method('get')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($querySettings));
+		$querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
+		$objectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->will($this->returnValue($querySettings));
 		$querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(FALSE);
-		$subject = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\WorkspaceRepository', array('setDefaultQuerySettings'), array($objectManager));
+		$subject = $this->getMock(\TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository::class, array('setDefaultQuerySettings'), array($objectManager));
 		$subject->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
 		$subject->initializeObject();
 	}

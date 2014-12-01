@@ -207,7 +207,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @return void
 	 */
 	protected function configurePropertyMapperForDateTimeFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMapperDate) {
-		$propertyMapperDate->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, $this->settings['dateFormat'] . ' ' . $this->settings['timeFormat']);
+		$propertyMapperDate->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, $this->settings['dateFormat'] . ' ' . $this->settings['timeFormat']);
 	}
 
 	/**
