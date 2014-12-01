@@ -46,13 +46,13 @@ if (TYPO3_MODE === 'BE') {
 			),
 			'lang' => array(
 				'type' => 'select',
-				'itemsProcFunc' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController->renderLanguageSelect',
+				'itemsProcFunc' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '->renderLanguageSelect',
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:language',
 				'csh' => 'language'
 			),
 			'startModule' => array(
 				'type' => 'select',
-				'itemsProcFunc' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController->renderStartModuleSelect',
+				'itemsProcFunc' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '->renderStartModuleSelect',
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:startModule',
 				'csh' => 'startModule'
 			),

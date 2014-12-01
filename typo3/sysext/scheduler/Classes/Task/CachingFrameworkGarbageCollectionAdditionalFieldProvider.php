@@ -36,8 +36,8 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 			$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = array();
 			if ($parentObject->CMD === 'add') {
 				// In case of new task, set to dbBackend if it's available
-				if (in_array('TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend', $this->getRegisteredBackends())) {
-					$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'][] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend';
+				if (in_array(\TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class, $this->getRegisteredBackends())) {
+					$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'][] = \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class;
 				}
 			} elseif ($parentObject->CMD === 'edit') {
 				// In case of editing the task, set to currently selected value

@@ -74,7 +74,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				} else {
 					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('User found: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), 'TYPO3\\CMS\\Sv\\AuthenticationService');
+						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('User found: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), \TYPO3\CMS\Sv\AuthenticationService::class);
 					}
 				}
 			} else {
@@ -111,7 +111,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				}
 				if ($this->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], 'TYPO3\\CMS\\Sv\\AuthenticationService', 2);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], \TYPO3\CMS\Sv\AuthenticationService::class, 2);
 				}
 			}
 			// Checking the domain (lockToDomain)
@@ -155,7 +155,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 			if (count($groups)) {
 				$list = implode(',', $groups);
 				if ($this->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups with id: ' . $list, 'TYPO3\\CMS\\Sv\\AuthenticationService');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups with id: ' . $list, \TYPO3\CMS\Sv\AuthenticationService::class);
 				}
 				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
 				if (!$this->authInfo['showHiddenRecords']) {
@@ -170,7 +170,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				}
 			} else {
 				if ($this->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No usergroups found.', 'TYPO3\\CMS\\Sv\\AuthenticationService', 2);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No usergroups found.', \TYPO3\CMS\Sv\AuthenticationService::class, 2);
 				}
 			}
 		} elseif ($this->mode == 'getGroupsBE') {

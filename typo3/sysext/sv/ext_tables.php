@@ -6,6 +6,6 @@ if (TYPO3_MODE === 'BE') {
 		'title' => 'LLL:EXT:sv/Resources/Private/Language/locallang.xlf:report_title',
 		'description' => 'LLL:EXT:sv/Resources/Private/Language/locallang.xlf:report_description',
 		'icon' => 'EXT:sv/Resources/Public/Images/service-reports.png',
-		'report' => 'TYPO3\\CMS\\Sv\\Report\\ServicesListReport'
+		'report' => \TYPO3\CMS\Sv\Report\ServicesListReport::class
 	);
 }
