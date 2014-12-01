@@ -89,7 +89,7 @@ class SaltedPasswordsUtility {
 			'onlyAuthService' => '0',
 			'forceSalted' => '0',
 			'updatePasswd' => '1',
-			'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+			'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
 			'enabled' => '1'
 		);
 	}
@@ -103,7 +103,7 @@ class SaltedPasswordsUtility {
 	 */
 	static public function getDefaultSaltingHashingMethod($mode = TYPO3_MODE) {
 		$extConf = self::returnExtConf($mode);
-		$classNameToUse = 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt';
+		$classNameToUse = \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class;
 		if (in_array($extConf['saltedPWHashingMethod'], array_keys(\TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods()))) {
 			$classNameToUse = $extConf['saltedPWHashingMethod'];
 		}

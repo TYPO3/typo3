@@ -61,9 +61,9 @@ class SaltFactory {
 	 */
 	static protected function getDefaultSaltMethods() {
 		return array(
-			'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt',
-			'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt',
-			'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt'
+			\TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class,
+			\TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class,
+			\TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class
 		);
 	}
 
@@ -134,13 +134,13 @@ class SaltFactory {
 	/**
 	 * Method sets a custom salting hashing method class.
 	 *
-	 * @param string $resource Object resource to use (e.g. 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt')
+	 * @param string $resource Object resource to use (e.g. \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class)
 	 * @return \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt An instance of salting hashing method object
 	 */
 	static public function setPreferredHashingMethod($resource) {
 		self::$instance = NULL;
 		$objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($resource);
-		if (is_object($objectInstance) && is_subclass_of($objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\AbstractSalt')) {
+		if (is_object($objectInstance) && is_subclass_of($objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt::class)) {
 			self::$instance = $objectInstance;
 		}
 		return self::$instance;

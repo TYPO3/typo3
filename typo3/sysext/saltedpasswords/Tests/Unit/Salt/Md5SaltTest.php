@@ -34,7 +34,7 @@ class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->objectInstance = $this->getMock('TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt', array('dummy'));
+		$this->objectInstance = $this->getMock(\TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class, array('dummy'));
 	}
 
 	/**
@@ -54,10 +54,10 @@ class Md5SaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function hasCorrectBaseClass() {
-		$hasCorrectBaseClass = get_class($this->objectInstance) === 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt';
+		$hasCorrectBaseClass = get_class($this->objectInstance) === \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class;
 		// XCLASS ?
 		if (!$hasCorrectBaseClass && FALSE != get_parent_class($this->objectInstance)) {
-			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt');
+			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class);
 		}
 		$this->assertTrue($hasCorrectBaseClass);
 	}

@@ -34,7 +34,7 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->objectInstance = $this->getMock('TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt', array('dummy'));
+		$this->objectInstance = $this->getMock(\TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class, array('dummy'));
 	}
 
 	/**
@@ -52,10 +52,10 @@ class BlowfishSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function hasCorrectBaseClass() {
-		$hasCorrectBaseClass = get_class($this->objectInstance) === 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt';
+		$hasCorrectBaseClass = get_class($this->objectInstance) === \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class;
 		// XCLASS ?
 		if (!$hasCorrectBaseClass && FALSE != get_parent_class($this->objectInstance)) {
-			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt');
+			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class);
 		}
 		$this->assertTrue($hasCorrectBaseClass);
 	}

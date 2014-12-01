@@ -34,17 +34,17 @@ class PhpassSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->objectInstance = $this->getMock('TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt', array('dummy'));
+		$this->objectInstance = $this->getMock(\TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class, array('dummy'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function hasCorrectBaseClass() {
-		$hasCorrectBaseClass = get_class($this->objectInstance) === 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt';
+		$hasCorrectBaseClass = get_class($this->objectInstance) === \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class;
 		// XCLASS ?
 		if (!$hasCorrectBaseClass && FALSE != get_parent_class($this->objectInstance)) {
-			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt');
+			$hasCorrectBaseClass = is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class);
 		}
 		$this->assertTrue($hasCorrectBaseClass);
 	}

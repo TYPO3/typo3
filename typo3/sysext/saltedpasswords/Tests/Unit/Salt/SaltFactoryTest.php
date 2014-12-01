@@ -49,19 +49,19 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectInstanceExtendsAbstractClass() {
-		$this->assertTrue(is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\AbstractSalt'));
+		$this->assertTrue(is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt::class));
 	}
 
 	/**
 	 * @test
 	 */
 	public function objectInstanceImplementsInterface() {
-		$this->assertTrue(method_exists($this->objectInstance, 'checkPassword'), 'Missing method checkPassword() from interface TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface.');
-		$this->assertTrue(method_exists($this->objectInstance, 'isHashUpdateNeeded'), 'Missing method isHashUpdateNeeded() from interface TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface.');
-		$this->assertTrue(method_exists($this->objectInstance, 'isValidSalt'), 'Missing method isValidSalt() from interface TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface.');
-		$this->assertTrue(method_exists($this->objectInstance, 'isValidSaltedPW'), 'Missing method isValidSaltedPW() from interface TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface.');
-		$this->assertTrue(method_exists($this->objectInstance, 'getHashedPassword'), 'Missing method getHashedPassword() from interface TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface.');
-		$this->assertTrue(method_exists($this->objectInstance, 'getSaltLength'), 'Missing method getSaltLength() from interface TYPO3\\CMS\\Saltedpasswords\\Salt\\SaltInterface.');
+		$this->assertTrue(method_exists($this->objectInstance, 'checkPassword'), 'Missing method checkPassword() from interface ' . \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class . '.');
+		$this->assertTrue(method_exists($this->objectInstance, 'isHashUpdateNeeded'), 'Missing method isHashUpdateNeeded() from interface ' . \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class . '.');
+		$this->assertTrue(method_exists($this->objectInstance, 'isValidSalt'), 'Missing method isValidSalt() from interface ' . \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class . '.');
+		$this->assertTrue(method_exists($this->objectInstance, 'isValidSaltedPW'), 'Missing method isValidSaltedPW() from interface ' . \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class . '.');
+		$this->assertTrue(method_exists($this->objectInstance, 'getHashedPassword'), 'Missing method getHashedPassword() from interface ' . \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class . '.');
+		$this->assertTrue(method_exists($this->objectInstance, 'getSaltLength'), 'Missing method getSaltLength() from interface ' . \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface::class . '.');
 	}
 
 	/**
@@ -88,7 +88,7 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectInstanceForMD5Salts() {
 		$saltMD5 = '$1$rasmusle$rISCgZzpwk3UhDidwXvin0';
 		$this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltMD5);
-		$this->assertTrue(get_class($this->objectInstance) == 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt' || is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt'));
+		$this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class));
 	}
 
 	/**
@@ -97,7 +97,7 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectInstanceForBlowfishSalts() {
 		$saltBlowfish = '$2a$07$abcdefghijklmnopqrstuuIdQV69PAxWYTgmnoGpe0Sk47GNS/9ZW';
 		$this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltBlowfish);
-		$this->assertTrue(get_class($this->objectInstance) == 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt' || is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt'));
+		$this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class));
 	}
 
 	/**
@@ -106,7 +106,7 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function objectInstanceForPhpassSalts() {
 		$saltPhpass = '$P$CWF13LlG/0UcAQFUjnnS4LOqyRW43c.';
 		$this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltPhpass);
-		$this->assertTrue(get_class($this->objectInstance) == 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt' || is_subclass_of($this->objectInstance, 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt'));
+		$this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class));
 	}
 
 	/**
@@ -114,7 +114,7 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function resettingFactoryInstanceSucceeds() {
 		$defaultClassNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod();
-		if ($defaultClassNameToUse == 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt') {
+		if ($defaultClassNameToUse == \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class) {
 			$saltedPW = '$P$CWF13LlG/0UcAQFUjnnS4LOqyRW43c.';
 		} else {
 			$saltedPW = '$1$rasmusle$rISCgZzpwk3UhDidwXvin0';
