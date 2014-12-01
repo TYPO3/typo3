@@ -131,8 +131,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		foreach ($noGroupShortcuts as $shortcut) {
 
 			$shortcutMenu[] = '
-				<li class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '">
-					<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . '; return false;">' .
+				<li class="shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '">
+					<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">' .
 						$shortcut['icon'] . ' ' .
 						htmlspecialchars($shortcut['label']) .
 					'</a>
@@ -149,7 +149,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					$shortcutGroup .= '<li class="divider"></li>';
 				}
 				$shortcutGroup .= '
-					<li class="dropdown-header" id="shortcut-group-' . $groupId . '">
+					<li class="dropdown-header" id="shortcut-group-' . (int)$groupId . '">
 						' . $groupLabel . '
 					</li>';
 				$shortcuts = $this->getShortcutsByGroup($groupId);
@@ -157,8 +157,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				foreach ($shortcuts as $shortcut) {
 					$i++;
 					$shortcutGroup .= '
-					<li class="shortcut" data-shortcutid="' . $shortcut['raw']['uid'] . '" data-shortcutgroup="' . $groupId . '">
-						<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . $shortcut['action'] . '; return false;">' .
+					<li class="shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '" data-shortcutgroup="' . (int)$groupId . '">
+						<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">' .
 							$shortcut['icon'] . ' ' .
 							htmlspecialchars($shortcut['label']) .
 						'</a>
@@ -291,7 +291,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			$shortcut['group'] = $shortcutGroup;
 			$shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcut['label'], $row['module_name'], $row['M_module_name']);
-			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($this->getTokenUrl($row['url'])) . '\'),\'' . $moduleName . '\',\'' . $moduleParts[0] . '\', ' . (int)$pageId . ');';
+			$shortcut['action'] = 'jump(' . GeneralUtility::quoteJSvalue($this->getTokenUrl($row['url'])) . ',' . GeneralUtility::quoteJSvalue($moduleName) . ',' . GeneralUtility::quoteJSvalue($moduleParts[0]) . ', ' . (int)$pageId . ');';
 
 			$shortcuts[] = $shortcut;
 		}
@@ -396,14 +396,14 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				$label = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_group_' . abs($groupId), TRUE);
 				if (empty($label)) {
 					// Fallback label
-					$label = $languageService->getLL('bookmark_group', 1) . ' ' . abs($groupId);
+					$label = $languageService->getLL('bookmark_group', TRUE) . ' ' . abs($groupId);
 				}
 			}
 			if ($groupId < 0) {
 				// Global group
 				$label = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmark_global', TRUE) . ': ' . (!empty($label) ? $label : abs($groupId));
 				if ($groupId === self::SUPERGLOBAL_GROUP) {
-					$label = $languageService->getLL('bookmark_global', 1) . ': ' . $languageService->getLL('bookmark_all', 1);
+					$label = $languageService->getLL('bookmark_global', TRUE) . ': ' . $languageService->getLL('bookmark_all', TRUE);
 				}
 			}
 			$this->shortcutGroups[$groupId] = $label;
@@ -496,7 +496,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		// Determine shortcut type
 		$url = rawurldecode($url);
 		$queryParts = parse_url($url);
-		$queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], 1);
+		$queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], TRUE);
 		// Proceed only if no scheme is defined, as URL is expected to be relative
 		if (empty($queryParts['scheme'])) {
 			if (is_array($queryParameters['edit'])) {
@@ -504,10 +504,10 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
 				if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
 					$shortcut['type'] = 'edit';
-					$shortcutNamePrepend = $languageService->getLL('shortcut_edit', 1);
+					$shortcutNamePrepend = $languageService->getLL('shortcut_edit', TRUE);
 				} elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
 					$shortcut['type'] = 'new';
-					$shortcutNamePrepend = $languageService->getLL('shortcut_create', 1);
+					$shortcutNamePrepend = $languageService->getLL('shortcut_create', TRUE);
 				}
 			} else {
 				$shortcut['type'] = 'other';

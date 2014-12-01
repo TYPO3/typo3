@@ -85,14 +85,14 @@ class UserToolbarItem implements ToolbarItemInterface {
 				/** @var BackendModule $module */
 				$moduleIcon = $module->getIcon();
 				$dropdown[] ='<li'
-					. ' id="' . $module->getName() . '"'
-					. ' class="typo3-module-menu-item submodule mod-' . $module->getName() . '" '
-					. ' data-modulename="' . $module->getName() . '"'
-					. ' data-navigationcomponentid="' . $module->getNavigationComponentId() . '"'
-					. ' data-navigationframescript="' . $module->getNavigationFrameScript() . '"'
-					. ' data-navigationframescriptparameters="' . $module->getNavigationFrameScriptParameters() . '"'
+					. ' id="' . htmlspecialchars($module->getName()) . '"'
+					. ' class="typo3-module-menu-item submodule mod-' . htmlspecialchars($module->getName()) . '" '
+					. ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
+					. ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
+					. ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
+					. ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
 					. '>';
-				$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . $module->getLink() . '" class="dropdown-list-link modlink">';
+				$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
 				$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
 				$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
 				$dropdown[] = '</a>';
