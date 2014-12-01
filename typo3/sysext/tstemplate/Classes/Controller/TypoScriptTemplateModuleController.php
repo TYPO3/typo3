@@ -246,7 +246,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		if ($this->id && $this->access) {
 			// View page
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
-			if ($this->extClassConf['name'] == 'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController') {
+			if ($this->extClassConf['name'] == \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class) {
 				// NEW button
 				$urlParameters = array(
 					'id' => $this->id,
@@ -269,10 +269,10 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
 					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
 				}
-			} elseif ($this->extClassConf['name'] == 'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController' && count($this->MOD_MENU['constant_editor_cat'])) {
+			} elseif ($this->extClassConf['name'] === \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController::class && count($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
 				$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'));
-			} elseif ($this->extClassConf['name'] == 'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController') {
+			} elseif ($this->extClassConf['name'] === \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
 				if (!empty($this->sObj)) {
 					// BACK
 					$urlParameters = array(
@@ -336,7 +336,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		if ($newStandardTemplate) {
 			// Hook to change output, implemented for statictemplates
 			if (isset(
-				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateView']
+				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateView']
 			)) {
 				$selector = '';
 				$staticsText = '';
@@ -345,7 +345,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 					'staticsText' => &$staticsText
 				);
 				GeneralUtility::callUserFunction(
-					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateView'],
+					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateView'],
 					$reference,
 					$this
 				);
@@ -421,14 +421,14 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			$recData = array();
 			// Hook to handle row data, implemented for statictemplates
 			if (isset(
-				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateHandler']
+				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateHandler']
 			)) {
 				$reference = array(
 					'recData' => &$recData,
 					'id' => $id,
 				);
 				GeneralUtility::callUserFunction(
-					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateHandler'],
+					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateHandler'],
 					$reference,
 					$this
 				);

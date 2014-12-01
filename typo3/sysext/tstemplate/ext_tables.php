@@ -13,28 +13,28 @@ if (TYPO3_MODE === 'BE') {
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateConstantEditorModuleFunctionController',
+		\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController::class,
 		NULL,
 		'LLL:EXT:tstemplate/ts/locallang.xlf:constantEditor'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController',
+		\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class,
 		NULL,
 		'LLL:EXT:tstemplate/ts/locallang.xlf:infoModify'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController',
+		\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController::class,
 		NULL,
 		'LLL:EXT:tstemplate/ts/locallang.xlf:objectBrowser'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_ts',
-		'TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController',
+		\TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController::class,
 		NULL,
 		'LLL:EXT:tstemplate/ts/locallang.xlf:templateAnalyzer'
 	);

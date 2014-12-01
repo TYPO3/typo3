@@ -7,14 +7,14 @@ defined('TYPO3_MODE') or die();
 ');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-	'TYPO3\\CMS\\Backend\\Utility\\IconUtility',
+	\TYPO3\CMS\Backend\Utility\IconUtility::class,
 	'buildSpriteHtmlIconTag',
-	'TYPO3\\CMS\\T3skin\\Slot\\IconStyleModifier',
+	\TYPO3\CMS\T3skin\Slot\IconStyleModifier::class,
 	'buildSpriteHtmlIconTag'
 );
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
-	'TYPO3\\CMS\\Backend\\Utility\\IconUtility',
+	\TYPO3\CMS\Backend\Utility\IconUtility::class,
 	'buildSpriteIconClasses',
-	'TYPO3\\CMS\\T3skin\\Slot\\IconStyleModifier',
+	\TYPO3\CMS\T3skin\Slot\IconStyleModifier::class,
 	'buildSpriteIconClasses'
 );

@@ -122,7 +122,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 			} else {
 				// Error if the task is not an instance of \TYPO3\CMS\Taskcenter\TaskInterface
-				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'TYPO3\\CMS\\Taskcenter\\TaskInterface'), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, \TYPO3\CMS\Taskcenter\TaskInterface::class), $GLOBALS['LANG']->getLL('error_header'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$actionContent .= $flashMessage->render();
 			}
 		} else {

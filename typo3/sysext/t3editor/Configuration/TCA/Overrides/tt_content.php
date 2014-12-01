@@ -5,7 +5,7 @@ defined('TYPO3_MODE') or die();
 $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['t3editor'] = array(
 	'enableByTypeConfig' => 1,
 	'type' => 'userFunc',
-	'userFunc' => 'TYPO3\\CMS\\T3editor\\FormWizard->main',
+	'userFunc' => \TYPO3\CMS\T3editor\FormWizard::class . '->main',
 	'title' => 't3editor',
 	'icon' => 'wizard_table.gif',
 	'module' => array(
