@@ -428,7 +428,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['getTable'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\RecordList\\RecordListGetTableHookInterface', 1195114460);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface::class, 1195114460);
 				}
 				$hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
 			}
@@ -903,7 +903,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
 							$hookObject = GeneralUtility::getUserObj($classData);
 							if (!$hookObject instanceof \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface) {
-								throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface', 1195567850);
+								throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface::class, 1195567850);
 							}
 							$cells = $hookObject->renderListHeaderActions($table, $currentIdList, $cells, $this);
 						}
@@ -1012,7 +1012,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface', 1195567855);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface::class, 1195567855);
 				}
 				$theData = $hookObject->renderListHeader($table, $currentIdList, $theData, $this);
 			}
@@ -1368,7 +1368,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface', 1195567840);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface::class, 1195567840);
 				}
 				$cells = $hookObject->makeControl($table, $row, $cells, $this);
 			}
@@ -1466,7 +1466,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Recordlist\\RecordList\\RecordListHookInterface', 1195567845);
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Recordlist\RecordList\RecordListHookInterface::class, 1195567845);
 				}
 				$cells = $hookObject->makeClip($table, $row, $cells, $this);
 			}

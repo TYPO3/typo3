@@ -111,7 +111,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $table => $conf) {
 				if (is_array($conf)) {
 					foreach ($conf as $key => $value) {
-						if (!is_array($value) && $value === 'TYPO3\\CMS\\Core\\Cache\\Backend\\MemcachedBackend') {
+						if (!is_array($value) && $value === \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend::class) {
 							$memcachedServers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$table]['options']['servers'];
 							break;
 						}

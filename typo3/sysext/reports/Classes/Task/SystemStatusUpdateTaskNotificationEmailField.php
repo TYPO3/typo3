@@ -97,7 +97,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
 	 */
 	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task) {
 		if (!$task instanceof \TYPO3\CMS\Reports\Task\SystemStatusUpdateTask) {
-			throw new \InvalidArgumentException('Expected a task of type TYPO3\\CMS\\Reports\\Task\\SystemStatusUpdateTask, but got ' . get_class($task), 1295012802);
+			throw new \InvalidArgumentException('Expected a task of type ' . \TYPO3\CMS\Reports\Task\SystemStatusUpdateTask::class . ', but got ' . get_class($task), 1295012802);
 		}
 		$task->setNotificationEmail($submittedData[$this->fieldPrefix . 'NotificationEmail']);
 	}

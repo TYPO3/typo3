@@ -80,14 +80,14 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 					$isProcessed = TRUE;
 				} else {
 					if ($this->pObj->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Process login data: Failed to RSA decrypt password', 'TYPO3\\CMS\\Rsaauth\\RsaAuthService');
+						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Process login data: Failed to RSA decrypt password', \TYPO3\CMS\Rsaauth\RsaAuthService::class);
 					}
 				}
 				// Remove the key
 				$storage->put(NULL);
 			} else {
 				if ($this->pObj->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Process login data: passwordTransmissionStrategy has been set to "rsa" but no rsa encrypted password has been found.', 'TYPO3\\CMS\\Rsaauth\\RsaAuthService');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Process login data: passwordTransmissionStrategy has been set to "rsa" but no rsa encrypted password has been found.', \TYPO3\CMS\Rsaauth\RsaAuthService::class);
 				}
 			}
 		}

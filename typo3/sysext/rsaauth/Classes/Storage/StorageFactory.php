@@ -28,7 +28,7 @@ class StorageFactory {
 	 *
 	 * @var string
 	 */
-	static protected $preferredStorage = 'TYPO3\\CMS\\Rsaauth\\Storage\\SplitStorage';
+	static protected $preferredStorage = \TYPO3\CMS\Rsaauth\Storage\SplitStorage::class;
 
 	/**
 	 * An instance of the storage. This member is set in the getStorage() function.

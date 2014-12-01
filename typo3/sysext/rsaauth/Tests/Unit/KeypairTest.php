@@ -36,7 +36,7 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	 */
 	public function classIsSingleton() {
 		$this->assertInstanceOf(
-			'TYPO3\\CMS\\Core\\SingletonInterface',
+			\TYPO3\CMS\Core\SingletonInterface::class,
 			$this->subject
 		);
 	}

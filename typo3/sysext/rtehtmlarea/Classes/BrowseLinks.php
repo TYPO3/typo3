@@ -451,14 +451,14 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			case 'file':
 			case 'folder':
 				$content .= $this->addAttributesForm();
-				$content .= $this->getFileSelectorHtml('TYPO3\\CMS\\Rtehtmlarea\\FolderTree');
+				$content .= $this->getFileSelectorHtml(\TYPO3\CMS\Rtehtmlarea\FolderTree::class);
 				break;
 			case 'spec':
 				$content .= $this->getUserLinkSelectorHtml();
 				break;
 			case 'page':
 				$content .= $this->addAttributesForm();
-				$content .= $this->getPageSelectorHtml('TYPO3\\CMS\\Rtehtmlarea\\PageTree');
+				$content .= $this->getPageSelectorHtml(\TYPO3\CMS\Rtehtmlarea\PageTree::class);
 				break;
 			default:
 				// call hook

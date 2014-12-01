@@ -29,8 +29,8 @@ class BackendFactory {
 	 * @var array
 	 */
 	static protected $availableBackends = array(
-		'TYPO3\\CMS\\Rsaauth\\Backend\\PhpBackend',
-		'TYPO3\\CMS\\Rsaauth\\Backend\\CommandLineBackend'
+		\TYPO3\CMS\Rsaauth\Backend\PhpBackend::class,
+		\TYPO3\CMS\Rsaauth\Backend\CommandLineBackend::class
 	);
 
 	/**
