@@ -25,15 +25,11 @@ TYPO3.DocumentationApplication = {
 	// Initializes the list view
 	documentationListView: function(getVars) {
 		this.datatable = jQuery('#typo3-documentation-list').dataTable({
-			'bPaginate': false,
-			'bJQueryUI': true,
-			'bLengthChange': false,
-			'iDisplayLength': 15,
-			'bStateSave': true,
-			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-			}
+			'paging': false,
+			'jQueryUI': true,
+			'lengthChange': false,
+			'pageLength': 15,
+			'stateSave': true
 		});
 
 		// restore filter
@@ -44,16 +40,12 @@ TYPO3.DocumentationApplication = {
 	// Initializes the download view
 	documentationDownloadView: function(getVars) {
 		this.datatable = jQuery('#typo3-documentation-download').dataTable({
-			'bPaginate': false,
-			'bJQueryUI': true,
-			'bLengthChange': false,
-			'iDisplayLength': 15,
-			'bStateSave': true,
-			'aaSorting': [[ 1, 'asc' ]],
-			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-			}
+			'paging': false,
+			'jQueryUI': true,
+			'lengthChange': false,
+			'pageLength': 15,
+			'stateSave': true,
+			'order': [[ 1, 'asc' ]]
 		});
 
 		// restore filter

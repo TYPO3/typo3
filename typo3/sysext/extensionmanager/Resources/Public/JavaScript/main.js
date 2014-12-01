@@ -45,24 +45,20 @@
 
 	function manageExtensionListing() {
 		datatable = $('#typo3-extension-list').dataTable({
-			"bPaginate": false,
-			"bJQueryUI":true,
-			"bLengthChange":false,
-			'iDisplayLength':15,
-			"oLanguage": {"sSearch": TYPO3.l10n.localize('extensionList.search')},
-			"bStateSave":true,
-			"fnDrawCallback": bindActions,
-			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-			},
-			'aoColumns': [
+			'paging': false,
+			'jQueryUI': true,
+			'lengthChange': false,
+			'pageLength': 15,
+			'language': {'search': TYPO3.l10n.localize('extensionList.search')},
+			'stateSave': true,
+			'drawCallback': bindActions,
+			'columns': [
 				null,
 				null,
 				null,
 				null,
-				{ 'sType': 'version' },
-				{ 'bSortable': false },
+				{ 'type': 'version' },
+				{ 'orderable': false },
 				null
 			]
 		});

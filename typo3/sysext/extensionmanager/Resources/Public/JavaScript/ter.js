@@ -3,41 +3,33 @@
 
 	$(document).ready(function() {
 		$('#terTable').dataTable({
-			"bJQueryUI":true,
-			"bLengthChange": false,
-			'iDisplayLength': 15,
-			"bStateSave": false,
-			"bInfo": false,
-			"bPaginate": false,
-			"bFilter": false,
-			"bSort": false,
-			"fnDrawCallback": bindDownload,
-			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-			}
+			'jQueryUI': true,
+			'lengthChange': false,
+			'pageLength': 15,
+			'stateSave': false,
+			'info': false,
+			'paging': false,
+			'searching': false,
+			'ordering': false,
+			'drawCallback': bindDownload
 		});
 
 		$('#terVersionTable').dataTable({
-			"bJQueryUI":true,
-			"bLengthChange":false,
-			'iDisplayLength':15,
-			"bStateSave":false,
-			"bInfo":false,
-			"bPaginate":false,
-			"bFilter":false,
-			"fnDrawCallback":bindDownload,
-			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-			},
-			"aaSorting": [
+			'jQueryUI': true,
+			'lengthChange': false,
+			'pageLength': 15,
+			'stateSave': false,
+			'info': false,
+			'paging': false,
+			'searching': false,
+			'drawCallback': bindDownload,
+			'order': [
 				[2, 'asc']
 			],
-			'aoColumns': [
-				{ 'bSortable': false },
+			'columns': [
+				{ 'orderable': false },
 				null,
-				{ 'sType': 'version' },
+				{ 'type': 'version' },
 				null,
 				null,
 				null
@@ -45,21 +37,16 @@
 		});
 
 		$('#terSearchTable').dataTable({
-			"bPaginate": false,
-			"bJQueryUI":true,
-			"bLengthChange": false,
-			'iDisplayLength': 15,
-			"bStateSave": false,
-			"bFilter": false,
-			"oLanguage": {
-				"sSearch": "Filter results:"
+			'paging': false,
+			'jQueryUI': true,
+			'lengthChange': false,
+			'stateSave': false,
+			'searching': false,
+			'language': {
+				'search': 'Filter results:'
 			},
-			"bSort": false,
-			"fnDrawCallback": bindDownload,
-			"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-				// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-				return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-			}
+			'order': false,
+			'drawCallback': bindDownload
 		});
 
 		bindDownload();

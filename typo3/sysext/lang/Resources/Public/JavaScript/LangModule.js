@@ -26,20 +26,16 @@ var languageModule = {
 	 * @var object
 	 */
 	tableSetup: {
-		iDisplayLength: 1000,
-		bPaginate: false,
-		bSearch: false,
-		bInfo: false,
-		bFilter: false,
-		sScrollY: '96px',
-		aoColumnDefs: [{
-			bSortable: false,
-			aTargets: ['notSortable']
-		}],
-		"fnCookieCallback": function (sNameFile, oData, sExpires, sPath) {
-			// append mod.php to cookiePath to avoid sending cookie-data to images etc. without reason
-			return sNameFile + "=" + encodeURIComponent($.fn.dataTableExt.oApi._fnJsonString(oData)) + "; expires=" + sExpires +"; path=" + sPath + "mod.php";
-		}
+		'pageLength': 1000,
+		'paging': false,
+		'info': false,
+		'searching': false,
+		'scrollY': '96px',
+		'columnDefs': [{
+			'searchable': false,
+			'orderable': false,
+			'targets': ['notSortable']
+		}]
 	},
 
 	/**
