@@ -34,6 +34,11 @@ form ol {
 
 #formwizard-left {
 	padding: 10px;
+	padding-right: 0;
+}
+
+#formwizard-left > div ul {
+	margin-bottom: 0;
 }
 
 #formwizard-left .x-tab-panel-header {
@@ -49,13 +54,14 @@ form ol {
 	background-image: url("../../../../../../../typo3/sysext/t3skin/extjs/images/form/exclamation.gif");
 	background-position: right 1px;
 	background-repeat: no-repeat;
+	margin-right: 14px;
 }
 
 #formwizard-left .x-tab-panel-body-content {
 	border: 1px solid #C0C0C0;
 	border-top-width: 0;
 	padding: 10px;
-	background-image: -moz-linear-gradient(center top , #FFFFFF 0pt, #ECECEC 100px);
+	background: #ECECEC;
 }
 
 #formwizard-left .x-accordion-hd,
@@ -315,3 +321,14 @@ li.formwizard-element.form.hover {
 	background-color: none;
 }
 
+.x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
+	color: black;
+}
+
+.x-combo-list-item {
+	background:#e7e7e7;
+}
+
+#formwizard .x-btn-text {
+	color: black;
+}
