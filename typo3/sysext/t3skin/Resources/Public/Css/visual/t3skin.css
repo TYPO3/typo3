@@ -6480,7 +6480,6 @@ table.t3-table-info td {
 }
 .t3-row-header span.t3-icon {
   margin-right: 3px;
-  color: #212424;
 }
 .typo3-tstemplate-ceditor-control {
   margin-right: 6px;
@@ -13068,6 +13067,9 @@ Web > Page
   color: #999999;
   font-family: Verdana, sans-serif;
   text-align: left;
+}
+.t3-page-colHeader a > span.t3-icon {
+  color: #212424;
 }
 .t3-page-colHeader-label {
   text-align: left;
