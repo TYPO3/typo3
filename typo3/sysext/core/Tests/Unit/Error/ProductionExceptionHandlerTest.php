@@ -30,7 +30,7 @@ class ProductionExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler', array('discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'), array(), '', FALSE);
+		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Error\ProductionExceptionHandler::class, array('discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'), array(), '', FALSE);
 		$this->fixture->expects($this->any())->method('discloseExceptionInformation')->will($this->returnValue(TRUE));
 	}
 

@@ -162,7 +162,7 @@ class ClassNamingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 			array(
-				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\Controller\\PaginateController',
+				\TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController::class,
 				array(
 					'vendorName' => 'TYPO3\\CMS',
 					'extensionName' => 'Fluid',

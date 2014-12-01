@@ -167,8 +167,8 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function aSecondLogWriterToTheSameFileDoesNotOpenTheFileTwice() {
 		$this->setUpVfsStream();
 
-		$firstWriter = $this->getMock('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter', array('dummy'));
-		$secondWriter = $this->getMock('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter', array('createLogFile'));
+		$firstWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array('dummy'));
+		$secondWriter = $this->getMock(\TYPO3\CMS\Core\Log\Writer\FileWriter::class, array('createLogFile'));
 
 		$secondWriter->expects($this->never())->method('createLogFile');
 

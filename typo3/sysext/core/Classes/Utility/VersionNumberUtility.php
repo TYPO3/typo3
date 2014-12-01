@@ -41,7 +41,7 @@ class VersionNumberUtility {
 	 */
 	static public function convertIntegerToVersionNumber($versionInteger) {
 		if (!is_int($versionInteger)) {
-			throw new \InvalidArgumentException('TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility::convertIntegerToVersionNumber() supports an integer argument only!', 1334072223);
+			throw new \InvalidArgumentException(\TYPO3\CMS\Core\Utility\VersionNumberUtility::class . '::convertIntegerToVersionNumber() supports an integer argument only!', 1334072223);
 		}
 		$versionString = str_pad($versionInteger, 9, '0', STR_PAD_LEFT);
 		$parts = array(

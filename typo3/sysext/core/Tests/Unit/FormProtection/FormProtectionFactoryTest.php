@@ -47,48 +47,48 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function getForClassThatIsNoFormProtectionSubclassThrowsException() {
-		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\FormProtectionFactoryTest');
+		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\FormProtectionFactoryTest::class);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection() {
-		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
-		$this->assertTrue(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection') instanceof \TYPO3\CMS\Core\FormProtection\BackendFormProtection);
+		$this->assertTrue(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class) instanceof \TYPO3\CMS\Core\FormProtection\BackendFormProtection);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance() {
-		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
-		$this->assertSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'));
+		$this->assertSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getForTypeInstallToolReturnsInstallToolFormProtection() {
-		$this->assertTrue(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection') instanceof \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection);
+		$this->assertTrue(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class) instanceof \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getForTypeInstallToolCalledTwoTimesReturnsTheSameInstance() {
-		$this->assertSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'));
+		$this->assertSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getForTypesInstallToolAndBackEndReturnsDifferentInstances() {
-		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\CMS\Core\Authentication\BackendUserAuthentication', array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
-		$this->assertNotSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'));
+		$this->assertNotSame(\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class), \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class));
 	}
 
 	/////////////////////////
@@ -99,8 +99,8 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setSetsInstanceForType() {
 		$instance = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
-		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection', $instance);
-		$this->assertSame($instance, \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'));
+		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class, $instance);
+		$this->assertSame($instance, \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class));
 	}
 
 	/**
@@ -108,8 +108,8 @@ class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setNotSetsInstanceForOtherType() {
 		$instance = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
-		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection', $instance);
-		$this->assertNotSame($instance, \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'));
+		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class, $instance);
+		$this->assertNotSame($instance, \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class));
 	}
 
 }

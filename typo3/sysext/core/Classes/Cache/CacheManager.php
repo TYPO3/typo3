@@ -57,8 +57,8 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array Default cache configuration as fallback
 	 */
 	protected $defaultCacheConfiguration = array(
-		'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
-		'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
+		'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+		'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 		'options' => array(),
 		'groups' => array('all')
 	);

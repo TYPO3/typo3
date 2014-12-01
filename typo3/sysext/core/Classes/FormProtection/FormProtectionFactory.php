@@ -81,14 +81,14 @@ class FormProtectionFactory {
 	static protected function getClassNameByState() {
 		switch (TRUE) {
 			case self::isInstallToolSession():
-				$className = 'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection';
+				$className = \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class;
 				break;
 			case self::isBackendSession():
-				$className = 'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection';
+				$className = \TYPO3\CMS\Core\FormProtection\BackendFormProtection::class;
 				break;
 			case self::isFrontendSession():
 			default:
-				$className = 'TYPO3\\CMS\\Core\\FormProtection\\DisabledFormProtection';
+				$className = \TYPO3\CMS\Core\FormProtection\DisabledFormProtection::class;
 		}
 		return $className;
 	}
@@ -133,7 +133,7 @@ class FormProtectionFactory {
 		}
 		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
 		if (!$instance instanceof AbstractFormProtection) {
-			throw new \InvalidArgumentException('$className must be a subclass of ' . 'TYPO3\\CMS\\Core\\FormProtection\\AbstractFormProtection, but actually was "' . $className . '".', 1285353026);
+			throw new \InvalidArgumentException('$className must be a subclass of ' . \TYPO3\CMS\Core\FormProtection\AbstractFormProtection::class . ', but actually was "' . $className . '".', 1285353026);
 		}
 		self::$instances[$className] = $instance;
 	}

@@ -178,7 +178,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @param ResourceStorage $storageObject
 	 */
 	protected function emitPostProcessStorageSignal(ResourceStorage $storageObject) {
-		$this->signalSlotDispatcher->dispatch('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', self::SIGNAL_PostProcessStorage, array($this, $storageObject));
+		$this->signalSlotDispatcher->dispatch(\TYPO3\CMS\Core\Resource\ResourceFactory::class, self::SIGNAL_PostProcessStorage, array($this, $storageObject));
 	}
 
 	/**
@@ -303,7 +303,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @return ResourceStorage
 	 */
 	public function createStorageObject(array $storageRecord, array $storageConfiguration = NULL) {
-		$className = 'TYPO3\\CMS\\Core\\Resource\\ResourceStorage';
+		$className = \TYPO3\CMS\Core\Resource\ResourceStorage::class;
 		if (!$storageConfiguration) {
 			$storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
 		}

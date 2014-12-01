@@ -120,7 +120,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 * @return void
 	 */
 	public function getCollectedRecordsReturnsEmptyRecordSet() {
-		$method = new \ReflectionMethod('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', 'getCollectedRecords');
+		$method = new \ReflectionMethod(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, 'getCollectedRecords');
 		$method->setAccessible(TRUE);
 		$records = $method->invoke($this->fixture);
 		$this->assertInternalType('array', $records);

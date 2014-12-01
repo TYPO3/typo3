@@ -34,12 +34,12 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->storageMock = $this->getMock('TYPO3\CMS\Core\Resource\ResourceStorage', array(), array(), '', FALSE);
+		$this->storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
 		$this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
 
-		$mockedMetaDataRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository');
+		$mockedMetaDataRepository = $this->getMock(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
 		$mockedMetaDataRepository->expects($this->any())->method('findByFile')->will($this->returnValue(array('file' => 1)));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', $mockedMetaDataRepository);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, $mockedMetaDataRepository);
 	}
 
 	public function tearDown() {
@@ -146,17 +146,17 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'storage' => 'first',
 		);
 		$subject = $this->getMock(
-			'TYPO3\\CMS\\Core\\Resource\\File',
+			\TYPO3\CMS\Core\Resource\File::class,
 			array('loadStorage'),
 			array($fileProperties, $this->storageMock)
 		);
-		$mockedNewStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$mockedResourceFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$mockedNewStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
+		$mockedResourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 		$mockedResourceFactory
 			->expects($this->once())
 			->method('getStorageObject')
 			->will($this->returnValue($mockedNewStorage));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $mockedResourceFactory);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $mockedResourceFactory);
 
 		$subject->updateProperties(array('storage' => 'different'));
 		$this->assertSame($mockedNewStorage, $subject->getStorage());
@@ -168,8 +168,8 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function copyToCallsCopyOperationOnTargetFolderStorage() {
-		$targetStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$targetFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
+		$targetStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
+		$targetFolder = $this->getMock(\TYPO3\CMS\Core\Resource\Folder::class, array(), array(), '', FALSE);
 		$targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
 		$targetStorage->expects($this->once())->method('copyFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
@@ -180,8 +180,8 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function moveToCallsMoveOperationOnTargetFolderStorage() {
-		$targetStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$targetFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
+		$targetStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
+		$targetFolder = $this->getMock(\TYPO3\CMS\Core\Resource\Folder::class, array(), array(), '', FALSE);
 		$targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array(), $this->storageMock);
 		$targetStorage->expects($this->once())->method('moveFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
@@ -236,7 +236,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function hasPropertyReturnsTrueIfMetadataPropertyExists() {
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\File', array('dummy'), array(array(), $this->storageMock));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, array('dummy'), array(array(), $this->storageMock));
 		$fixture->_set('metaDataLoaded', TRUE);
 		$fixture->_set('metaDataProperties', array('testproperty' => 'testvalue'));
 		$this->assertTrue($fixture->hasProperty('testproperty'));

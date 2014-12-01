@@ -368,7 +368,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordUpdatedSignal(array $data) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', 'recordUpdated', array($data));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordUpdated', array($data));
 	}
 
 	/**
@@ -378,7 +378,7 @@ class FileIndexRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordCreatedSignal(array $data) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', 'recordCreated', array($data));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordCreated', array($data));
 	}
 
 	/**
@@ -388,6 +388,6 @@ class FileIndexRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordDeletedSignal($fileUid) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\FileIndexRepository', 'recordDeleted', array($fileUid));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordDeleted', array($fileUid));
 	}
 }

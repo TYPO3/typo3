@@ -51,7 +51,7 @@ class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function registerExtractionService($className) {
 		if (!class_exists($className)) {
 			throw new \RuntimeException('The Class you are registering is not available');
-		} elseif (!in_array('TYPO3\\CMS\\Core\\Resource\\Index\\ExtractorInterface', class_implements($className))) {
+		} elseif (!in_array(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class, class_implements($className))) {
 			throw new \RuntimeException('The extractor needs to implement the ExtractorInterface');
 		} else {
 			$this->extractors[] = $className;

@@ -31,7 +31,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Core\\SystemEnvironmentBuilder', array('dummy'));
+		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, array('dummy'));
 	}
 
 	/**

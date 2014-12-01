@@ -29,9 +29,9 @@ class FlashMessageQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $frontendUser;
 
 	public function setUp() {
-		$this->frontendUser = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication', array('dummy'));
+		$this->frontendUser = $this->getMock(\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class, array('dummy'));
 		$this->flashMessageQueue = $this->getAccessibleMock(
-			'TYPO3\CMS\Core\Messaging\FlashMessageQueue',
+			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class,
 			array('getUserByContext'),
 			array('core.template.flashMessages')
 		);

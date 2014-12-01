@@ -50,7 +50,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$writer = new \TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\WriterFixture();
 		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, $writer);
 		$returnValue = $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $returnValue);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Log\Logger::class, $returnValue);
 	}
 
 	/**
@@ -59,7 +59,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function loggerReturnsItselfAfterLoggingWithoutWriter() {
 		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$returnValue = $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $returnValue);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Log\Logger::class, $returnValue);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$writer = new \TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\WriterFixture();
 		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY, $writer);
 		$returnValue = $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $returnValue);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Log\Logger::class, $returnValue);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$message = 'test';
 		$logger = new \TYPO3\CMS\Core\Log\Logger($component);
 		/** @var $processor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface */
-		$processor = $this->getMock('TYPO3\\CMS\\Core\\Log\\Processor\\NullProcessor', array('processLogRecord'));
+		$processor = $this->getMock(\TYPO3\CMS\Core\Log\Processor\NullProcessor::class, array('processLogRecord'));
 		$processor->expects($this->once())->method('processLogRecord')->will($this->returnValue(new \TYPO3\CMS\Core\Log\LogRecord($component, $level, $message)));
 		$logger->addProcessor($level, $processor);
 			// we need a writer, otherwise we will not process log records
@@ -95,7 +95,7 @@ class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function loggerLogsRecord() {
 		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
-		$writer = $this->getMock('TYPO3\\CMS\\Core\\Log\\Writer\\NullWriter', array('writeLog'));
+		$writer = $this->getMock(\TYPO3\CMS\Core\Log\Writer\NullWriter::class, array('writeLog'));
 		$writer->expects($this->once())->method('writeLog');
 		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, $writer);
 		$logger->warning('test');

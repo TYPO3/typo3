@@ -3962,7 +3962,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstanceCalledTwoTimesForSingletonClassReturnsSameInstance() {
-		$className = get_class($this->getMock('TYPO3\\CMS\\Core\\SingletonInterface'));
+		$className = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
 		$this->assertSame(Utility\GeneralUtility::makeInstance($className), Utility\GeneralUtility::makeInstance($className));
 	}
 
@@ -3970,7 +3970,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstanceCalledTwoTimesForSingletonClassWithPurgeInstancesInbetweenReturnsDifferentInstances() {
-		$className = get_class($this->getMock('TYPO3\\CMS\\Core\\SingletonInterface'));
+		$className = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
 		$instance = Utility\GeneralUtility::makeInstance($className);
 		Utility\GeneralUtility::purgeInstances();
 		$this->assertNotSame($instance, Utility\GeneralUtility::makeInstance($className));
@@ -3981,7 +3981,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setSingletonInstanceForEmptyClassNameThrowsException() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		Utility\GeneralUtility::setSingletonInstance('', $instance);
 	}
 
@@ -3990,8 +3990,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setSingletonInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface', array('foo'));
-		$singletonClassName = get_class($this->getMock('TYPO3\\CMS\\Core\\SingletonInterface'));
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class, array('foo'));
+		$singletonClassName = get_class($this->getMock(\TYPO3\CMS\Core\SingletonInterface::class));
 		Utility\GeneralUtility::setSingletonInstance($singletonClassName, $instance);
 	}
 
@@ -3999,7 +3999,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setSingletonInstanceMakesMakeInstanceReturnThatInstance() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		$singletonClassName = get_class($instance);
 		Utility\GeneralUtility::setSingletonInstance($singletonClassName, $instance);
 		$this->assertSame($instance, Utility\GeneralUtility::makeInstance($singletonClassName));
@@ -4009,7 +4009,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setSingletonInstanceCalledTwoTimesMakesMakeInstanceReturnLastSetInstance() {
-		$instance1 = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance1 = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		$singletonClassName = get_class($instance1);
 		$instance2 = new $singletonClassName();
 		Utility\GeneralUtility::setSingletonInstance($singletonClassName, $instance1);
@@ -4021,7 +4021,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getSingletonInstancesContainsPreviouslySetSingletonInstance() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		$instanceClassName = get_class($instance);
 		Utility\GeneralUtility::setSingletonInstance($instanceClassName, $instance);
 		$registeredSingletonInstances = Utility\GeneralUtility::getSingletonInstances();
@@ -4033,7 +4033,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resetSingletonInstancesResetsPreviouslySetInstance() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		$instanceClassName = get_class($instance);
 		Utility\GeneralUtility::setSingletonInstance($instanceClassName, $instance);
 		Utility\GeneralUtility::resetSingletonInstances(array());
@@ -4045,7 +4045,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resetSingletonInstancesSetsGivenInstance() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		$instanceClassName = get_class($instance);
 		Utility\GeneralUtility::resetSingletonInstances(
 			array($instanceClassName => $instance)
@@ -4079,7 +4079,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function addInstanceWithSingletonInstanceThrowsException() {
-		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instance = $this->getMock(\TYPO3\CMS\Core\SingletonInterface::class);
 		Utility\GeneralUtility::addInstance(get_class($instance), $instance);
 	}
 
@@ -4360,7 +4360,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function callUserFunctionCanCallMethod() {
 		$inputData = array('foo' => 'bar');
-		$result = Utility\GeneralUtility::callUserFunction('TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest->user_calledUserFunction', $inputData, $this);
+		$result = Utility\GeneralUtility::callUserFunction(\TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest::class . '->user_calledUserFunction', $inputData, $this);
 		$this->assertEquals('Worked fine', $result);
 	}
 
@@ -4507,7 +4507,7 @@ text with a ' . $urlMatch . '$|s'),
 	 * @param string $expected Text with correctly detected URLs
 	 */
 	public function substUrlsInPlainText($input, $expected) {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$this->assertTrue(preg_match($expected, Utility\GeneralUtility::substUrlsInPlainText($input, 1, 'http://example.com/index.php')) == 1);
 	}
 

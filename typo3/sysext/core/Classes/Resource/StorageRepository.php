@@ -29,7 +29,7 @@ class StorageRepository extends AbstractRepository {
 	/**
 	 * @var string
 	 */
-	protected $objectType = 'TYPO3\\CMS\\Core\\Resource\\ResourceStorage';
+	protected $objectType = \TYPO3\CMS\Core\Resource\ResourceStorage::class;
 
 	/**
 	 * @var string

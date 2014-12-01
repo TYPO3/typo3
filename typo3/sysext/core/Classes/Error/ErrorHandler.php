@@ -95,7 +95,7 @@ class ErrorHandler implements ErrorHandlerInterface {
 			// We need to manually require the exception classes in case
 			// the autoloader is not available at this point yet.
 			// @see http://forge.typo3.org/issues/23444
-			if (!class_exists('TYPO3\\CMS\\Core\\Error\\Exception', FALSE)) {
+			if (!class_exists(\TYPO3\CMS\Core\Error\Exception::class, FALSE)) {
 				require_once PATH_site . 'typo3/sysext/core/Classes/Exception.php';
 				require_once PATH_site . 'typo3/sysext/core/Classes/Error/Exception.php';
 			}

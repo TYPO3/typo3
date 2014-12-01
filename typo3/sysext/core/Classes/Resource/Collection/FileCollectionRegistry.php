@@ -54,7 +54,7 @@ class FileCollectionRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1391295613);
 		}
 
-		if (!in_array('TYPO3\\CMS\\Core\\Resource\\Collection\\AbstractFileCollection', class_parents($className), TRUE)) {
+		if (!in_array(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class, class_parents($className), TRUE)) {
 			throw new \InvalidArgumentException('FileCollection ' . $className . ' needs to extend the AbstractFileCollection.', 1391295633);
 		}
 

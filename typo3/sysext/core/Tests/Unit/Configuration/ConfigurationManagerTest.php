@@ -40,7 +40,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function createFixtureWithMockedMethods(array $methods) {
 		$this->fixture = $this->getMock(
-			'TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager',
+			\TYPO3\CMS\Core\Configuration\ConfigurationManager::class,
 			$methods
 		);
 	}
@@ -355,7 +355,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Not available on Windows');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 
 		$directory = 'typo3temp/' . uniqid('test_');
 		$absoluteDirectory = PATH_site . $directory;
@@ -383,7 +383,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Not available on Windows');
 		}
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 
 		$file = 'typo3temp/' . uniqid('test_');
 		$absoluteFile = PATH_site . $file;
@@ -406,7 +406,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 
 		$directory = 'typo3temp/' . uniqid('test_');
 		$absoluteDirectory = PATH_site . $directory;
@@ -477,7 +477,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createLocalConfigurationFromFactoryConfigurationThrowsExceptionIfFileExists() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 
 		$file = 'typo3temp/' . uniqid('test_');
 		$absoluteFile = PATH_site . $file;
@@ -493,7 +493,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('writeLocalConfiguration'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('writeLocalConfiguration'));
 		$fixture->_set('localConfigurationFile', 'typo3temp/' . uniqid('dummy_'));
 
 		$factoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
@@ -525,7 +525,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('writeLocalConfiguration'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('writeLocalConfiguration'));
 		$fixture->_set('localConfigurationFile', 'typo3temp/' . uniqid('dummy_'));
 
 		$factoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
@@ -569,7 +569,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isValidLocalConfigurationPathAcceptsWhitelistedPath() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 		$fixture->_set('whiteListedLocalConfigurationPaths', array('foo/bar'));
 		$this->assertTrue($fixture->_call('isValidLocalConfigurationPath', 'foo/bar/baz'));
 	}
@@ -579,7 +579,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isValidLocalConfigurationPathDeniesNotWhitelistedPath() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, array('dummy'));
 		$fixture->_set('whiteListedLocalConfigurationPaths', array('foo/bar'));
 		$this->assertFalse($fixture->_call('isValidLocalConfigurationPath', 'bar/baz'));
 	}

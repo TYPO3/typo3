@@ -60,16 +60,16 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/', 0770, TRUE);
 		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/composer.json', '{"name": "acme/myapp", "type": "flow-test"}');
-		$package1 = new \TYPO3\Flow\Package\Package($this->getMock('TYPO3\Flow\Package\PackageManager'), 'Acme.MyApp', 'vfs://Test/Packages/Application/Acme.MyApp/', 'Classes');
+		$package1 = new \TYPO3\Flow\Package\Package($this->getMock(\TYPO3\Flow\Package\PackageManager::class), 'Acme.MyApp', 'vfs://Test/Packages/Application/Acme.MyApp/', 'Classes');
 
 		mkdir('vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/', 0770, TRUE);
 		file_put_contents('vfs://Test/Packages/Application/Acme.MyAppAddon/composer.json', '{"name": "acme/myappaddon", "type": "flow-test"}');
-		$package2 = new \TYPO3\Flow\Package\Package($this->getMock('TYPO3\Flow\Package\PackageManager'), 'Acme.MyAppAddon', 'vfs://Test/Packages/Application/Acme.MyAppAddon/', 'Classes');
+		$package2 = new \TYPO3\Flow\Package\Package($this->getMock(\TYPO3\Flow\Package\PackageManager::class), 'Acme.MyAppAddon', 'vfs://Test/Packages/Application/Acme.MyAppAddon/', 'Classes');
 
-		$mockClassAliasMap = $this->getMock('TYPO3\\CMS\\Core\\Core\\ClassAliasMap', array('setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead', 'buildMappingFiles'), array(), '', FALSE);
+		$mockClassAliasMap = $this->getMock(\TYPO3\CMS\Core\Core\ClassAliasMap::class, array('setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead', 'buildMappingFiles'), array(), '', FALSE);
 		$mockClassAliasMap->expects($this->any())->method('setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead')->will($this->returnValue(array()));
 
-		$this->orinalClassAliasMap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap');
+		$this->orinalClassAliasMap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class);
 		$this->classLoader = new \TYPO3\CMS\Core\Core\ClassLoader(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getApplicationContext());
 		$this->classLoader->injectClassAliasMap($mockClassAliasMap);
 		$this->classLoader->setPackages(array('Acme.MyApp' => $package1, 'Acme.MyAppAddon' => $package2));

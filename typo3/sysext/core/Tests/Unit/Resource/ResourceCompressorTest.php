@@ -33,7 +33,7 @@ class ResourceCompressorTest extends BaseTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ResourceCompressor', array('compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory'));
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceCompressor::class, array('compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory'));
 	}
 
 	/**

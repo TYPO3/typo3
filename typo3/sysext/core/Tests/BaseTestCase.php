@@ -120,7 +120,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 
 		eval(
 			$abstractModifier . 'class ' . $accessibleClassName .
-				' extends ' . $className . ' implements \TYPO3\CMS\Core\Tests\AccessibleObjectInterface {' .
+				' extends ' . $className . ' implements ' . \TYPO3\CMS\Core\Tests\AccessibleObjectInterface::class . ' {' .
 					'public function _call($methodName) {' .
 						'if ($methodName === \'\') {' .
 							'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .

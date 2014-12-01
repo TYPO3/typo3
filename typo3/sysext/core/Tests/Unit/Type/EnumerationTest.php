@@ -75,7 +75,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function loadValuesSetsStaticEnumConstants() {
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy')
 		);
 
@@ -97,7 +97,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorSetsValue() {
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),
 			array(1)
 		);
@@ -109,7 +109,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setValueSetsValue() {
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),
 			array(1)
 		);
@@ -123,7 +123,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setValueToAnInvalidValueThrowsException() {
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),
 			array(1)
 		);
@@ -196,7 +196,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isValidDoesTypeLooseComparison($enumerationValue, $testValue, $expectation) {
 		$mockName = uniqid('CompleteEnumerationMock');
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),
 			array(),
 			$mockName,
@@ -237,7 +237,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function castReturnsObjectOfEnumerationTypeIfSimpleValueIsGiven() {
 		$enumeration = Enumeration\CompleteEnumeration::cast(1);
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration', $enumeration);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class, $enumeration);
 	}
 
 	/**
@@ -246,7 +246,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function castReturnsObjectOfCalledEnumerationTypeIfCalledWithValueOfDifferentType() {
 		$initialEnumeration = new Enumeration\MissingDefaultEnumeration(1);
 		$enumeration = Enumeration\CompleteEnumeration::cast($initialEnumeration);
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration', $enumeration);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class, $enumeration);
 	}
 
 	/**
@@ -263,7 +263,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function castCastsStringToEnumerationWithCorrespondingValue() {
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),
 			array('1')
 		);
@@ -275,7 +275,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function castCastsIntegerToEnumerationWithCorrespondingValue() {
 		$enumeration = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Tests\\Unit\\Type\\Fixture\\Enumeration\\CompleteEnumeration',
+			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),
 			array(1)
 		);

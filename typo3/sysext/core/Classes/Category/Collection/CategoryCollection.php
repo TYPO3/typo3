@@ -46,7 +46,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 		if (!empty($tableName)) {
 			$this->setItemTableName($tableName);
 		} elseif (empty($this->itemTableName)) {
-			throw new \RuntimeException('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection needs a valid itemTableName.', 1341826168);
+			throw new \RuntimeException(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class . ' needs a valid itemTableName.', 1341826168);
 		}
 		if (!empty($fieldName)) {
 			$this->setRelationFieldName($fieldName);

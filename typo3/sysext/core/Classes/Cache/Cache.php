@@ -47,11 +47,11 @@ class Cache {
 		if (!self::isCachingFrameworkInitialized()) {
 			// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
 			self::$cacheManager = new CacheManager();
-			GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', self::$cacheManager);
+			GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, self::$cacheManager);
 			self::$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 			// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
 			self::$cacheFactory = new CacheFactory('production', self::$cacheManager);
-			GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheFactory', self::$cacheFactory);
+			GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheFactory::class, self::$cacheFactory);
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
 		return self::$cacheManager;
@@ -75,8 +75,8 @@ class Cache {
 	 */
 	static public function flagCachingFrameworkForReinitialization() {
 		self::$isCachingFrameworkInitialized = FALSE;
-		GeneralUtility::removeSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', self::$cacheManager);
-		GeneralUtility::removeSingletonInstance('TYPO3\\CMS\\Core\\Cache\\CacheFactory', self::$cacheFactory);
+		GeneralUtility::removeSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, self::$cacheManager);
+		GeneralUtility::removeSingletonInstance(\TYPO3\CMS\Core\Cache\CacheFactory::class, self::$cacheFactory);
 		self::$cacheManager = NULL;
 		self::$cacheFactory = NULL;
 	}

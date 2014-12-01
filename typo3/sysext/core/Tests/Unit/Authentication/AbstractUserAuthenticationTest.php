@@ -24,11 +24,11 @@ class AbstractUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @test
 	 */
 	public function getAuthInfoArrayReturnsEmptyPidListIfNoCheckPidValueIsGiven() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('cleanIntList'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('cleanIntList'));
 		$GLOBALS['TYPO3_DB']->expects($this->never())->method('cleanIntList');
 
 		/** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
-		$mock = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', array('dummy'));
+		$mock = $this->getMock(\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, array('dummy'));
 		$mock->checkPid = TRUE;
 		$mock->checkPid_value = NULL;
 		$result = $mock->getAuthInfoArray();

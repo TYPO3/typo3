@@ -997,7 +997,7 @@ class GraphicalFunctions {
 					$offsetInfo[5] += $calc[5] - $calc[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceBefore'] - (int)$strCfg['ySpaceAfter'];
 				}
 			} else {
-				debug('cannot read file: ' . $fontFile, 'TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions::ImageTTFBBoxWrapper()');
+				debug('cannot read file: ' . $fontFile, \TYPO3\CMS\Core\Imaging\GraphicalFunctions::class . '::ImageTTFBBoxWrapper()');
 			}
 		}
 		return $offsetInfo;
@@ -1047,7 +1047,7 @@ class GraphicalFunctions {
 				$x += $wordInf[2] - $wordInf[0] + (int)$splitRendering['compX'] + (int)$strCfg['xSpaceAfter'];
 				$y += $wordInf[5] - $wordInf[7] - (int)$splitRendering['compY'] - (int)$strCfg['ySpaceAfter'];
 			} else {
-				debug('cannot read file: ' . $fontFile, 'TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions::ImageTTFTextWrapper()');
+				debug('cannot read file: ' . $fontFile, \TYPO3\CMS\Core\Imaging\GraphicalFunctions::class . '::ImageTTFTextWrapper()');
 			}
 		}
 	}

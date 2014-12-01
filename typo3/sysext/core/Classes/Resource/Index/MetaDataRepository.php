@@ -177,7 +177,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordPostRetrievalSignal(\ArrayObject $data) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordPostRetrieval', array($data));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordPostRetrieval', array($data));
 	}
 
 	/**
@@ -187,7 +187,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordUpdatedSignal(array $data) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordUpdated', array($data));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordUpdated', array($data));
 	}
 
 	/**
@@ -197,7 +197,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordCreatedSignal(array $data) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordCreated', array($data));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordCreated', array($data));
 	}
 
 	/**
@@ -207,7 +207,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @signal
 	 */
 	protected function emitRecordDeletedSignal($fileUid) {
-		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Resource\\Index\\MetaDataRepository', 'recordDeleted', array($fileUid));
+		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, 'recordDeleted', array($fileUid));
 	}
 
 	/**

@@ -31,21 +31,21 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function loadCachedTcaRequiresCacheFileIfCacheEntryExists() {
 		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$bootstrapInstance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			\TYPO3\CMS\Core\Core\Bootstrap::class,
 			array('dummy'),
 			array(),
 			'',
 			FALSE
 		);
 		$mockCache = $this->getMock(
-			'TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend',
+			\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class,
 			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
 			array(),
 			'',
 			FALSE
 		);
 		$mockCacheManager = $this->getMock(
-			'TYPO3\\CMS\\Core\\Cache\\CacheManager',
+			\TYPO3\CMS\Core\Cache\CacheManager::class,
 			array('getCache')
 		);
 		$mockCacheManager
@@ -59,7 +59,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockCache
 			->expects($this->once())
 			->method('get');
-		$bootstrapInstance->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
+		$bootstrapInstance->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
 		$bootstrapInstance->loadCachedTca();
 	}
 
@@ -69,21 +69,21 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function loadCachedTcaSetsCacheEntryIfNoCacheEntryExists() {
 		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$bootstrapInstance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			\TYPO3\CMS\Core\Core\Bootstrap::class,
 			array('loadExtensionTables'),
 			array(),
 			'',
 			FALSE
 		);
 		$mockCache = $this->getMock(
-			'TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend',
+			\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class,
 			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'),
 			array(),
 			'',
 			FALSE
 		);
 		$mockCacheManager = $this->getMock(
-			'TYPO3\\CMS\\Core\\Cache\\CacheManager',
+			\TYPO3\CMS\Core\Cache\CacheManager::class,
 			array('getCache')
 		);
 		$mockCacheManager
@@ -97,7 +97,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockCache
 			->expects($this->once())
 			->method('set');
-		$bootstrapInstance->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', $mockCacheManager);
+		$bootstrapInstance->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
 		$bootstrapInstance->loadCachedTca();
 	}
 
@@ -122,7 +122,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function transferDeprecatedCurlSettings($curlProxyServer, $proxyHost, $proxyPort) {
 		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$bootstrapInstance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			\TYPO3\CMS\Core\Core\Bootstrap::class,
 			array('dummy'),
 			array(),
 			'',
@@ -140,7 +140,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function curlProxyServerDoesNotOverwriteHttpSettings() {
 		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$bootstrapInstance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			\TYPO3\CMS\Core\Core\Bootstrap::class,
 			array('dummy'),
 			array(),
 			'',
@@ -169,7 +169,7 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function curlAdapterUsedIfCurlUse() {
 		/** @var $bootstrapInstance \TYPO3\CMS\Core\Core\Bootstrap|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$bootstrapInstance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+			\TYPO3\CMS\Core\Core\Bootstrap::class,
 			array('dummy'),
 			array(),
 			'',

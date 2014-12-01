@@ -54,7 +54,7 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function registerRendererClass($className) {
 		if (!class_exists($className)) {
 			throw new \InvalidArgumentException('The class you are registering is not available', 1411840171);
-		} elseif (!in_array('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', class_implements($className), TRUE)) {
+		} elseif (!in_array(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, class_implements($className), TRUE)) {
 			throw new \InvalidArgumentException('The renderer needs to implement the FileRendererInterface', 1411840172);
 		} else {
 			$this->classNames[] = $className;

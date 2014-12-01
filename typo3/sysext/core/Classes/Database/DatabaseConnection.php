@@ -1713,7 +1713,7 @@ class DatabaseConnection {
 		if ($error || (int)$this->debugOutput === 2) {
 			\TYPO3\CMS\Core\Utility\DebugUtility::debug(
 				array(
-					'caller' => 'TYPO3\\CMS\\Core\\Database\\DatabaseConnection::' . $func,
+					'caller' => \TYPO3\CMS\Core\Database\DatabaseConnection::class . '::' . $func,
 					'ERROR' => $error,
 					'lastBuiltQuery' => $query ? $query : $this->debug_lastBuiltQuery,
 					'debug_backtrace' => \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail()

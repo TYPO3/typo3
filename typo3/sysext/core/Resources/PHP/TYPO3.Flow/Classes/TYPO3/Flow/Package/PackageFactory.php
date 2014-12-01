@@ -56,7 +56,7 @@ class PackageFactory {
 				throw new \TYPO3\Flow\Package\Exception\CorruptPackageException(sprintf('The package "%s" does not contain a valid package class. Check if the file "%s" really contains a class called "%s".', $packageKey, $packageClassPathAndFilename, $packageClassName), 1327587091);
 			}
 		} else {
-			$packageClassName = 'TYPO3\Flow\Package\Package';
+			$packageClassName = \TYPO3\Flow\Package\Package::class;
 		}
 		$packagePath = Files::concatenatePaths(array($packagesBasePath, $packagePath)) . '/';
 

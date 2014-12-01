@@ -38,7 +38,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function registeredDriverClassesCanBeRetrieved() {
-		$className = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver'));
+		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
 		$this->fixture->registerDriverClass($className, 'foobar');
 		$returnedClassName = $this->fixture->getDriverClass('foobar');
 		$this->assertEquals($className, $returnedClassName);
@@ -57,8 +57,8 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314979451);
-		$className = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver'));
-		$className2 = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverInterface'));
+		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
+		$className2 = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\DriverInterface::class));
 		$this->fixture->registerDriverClass($className, 'foobar');
 		$this->fixture->registerDriverClass($className2, 'foobar');
 	}
@@ -75,7 +75,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDriverClassAcceptsClassNameIfClassIsRegistered() {
-		$className = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver'));
+		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
 		$this->fixture->registerDriverClass($className, 'foobar');
 		$this->assertEquals($className, $this->fixture->getDriverClass($className));
 	}
@@ -84,7 +84,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function driverRegistryIsInitializedWithPreconfiguredDrivers() {
-		$className = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver'));
+		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
 		$shortName = uniqid();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
 			$shortName => array(
@@ -99,7 +99,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function driverExistsReturnsTrueForAllExistingDrivers() {
-		$className = get_class($this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver'));
+		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
 		$shortName = uniqid();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
 			$shortName => array(

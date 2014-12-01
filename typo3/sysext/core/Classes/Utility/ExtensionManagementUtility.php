@@ -521,7 +521,7 @@ class ExtensionManagementUtility {
 			),
 			'filter' => array(
 				array(
-					'userFunc' => 'TYPO3\\CMS\\Core\\Resource\\Filter\\FileExtensionFilter->filterInlineChildren',
+					'userFunc' => \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class . '->filterInlineChildren',
 					'parameters' => array(
 						'allowedFileExtensions' => $allowedFileExtensions,
 						'disallowedFileExtensions' => $disallowedFileExtensions
@@ -770,7 +770,7 @@ class ExtensionManagementUtility {
 		$moduleConfiguration['name'] = $moduleSignature;
 		$moduleConfiguration['script'] = 'extjspaneldummy.html';
 		$moduleConfiguration['extensionName'] = $extensionName;
-		$moduleConfiguration['configureModuleFunction'] = array('TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', 'configureModule');
+		$moduleConfiguration['configureModuleFunction'] = array(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 		self::addModule($mainModuleName, $subModuleName, $position);
 	}

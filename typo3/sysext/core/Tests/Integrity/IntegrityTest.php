@@ -37,7 +37,7 @@ class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function standardSingletonIsRegistered() {
 		$registeredSingletons = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
-		$this->assertArrayHasKey('TYPO3\\CMS\\Core\\Cache\\CacheManager', $registeredSingletons);
-		$this->assertTrue($registeredSingletons['TYPO3\\CMS\\Core\\Cache\\CacheManager'] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
+		$this->assertArrayHasKey(\TYPO3\CMS\Core\Cache\CacheManager::class, $registeredSingletons);
+		$this->assertTrue($registeredSingletons[\TYPO3\CMS\Core\Cache\CacheManager::class] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
 	}
 }

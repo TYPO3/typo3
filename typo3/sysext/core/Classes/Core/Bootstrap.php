@@ -103,7 +103,7 @@ class Bootstrap {
 			$applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
 			self::$instance = new static($applicationContext);
 			// Establish an alias for Flow/Package interoperability
-			class_alias(get_class(static::$instance), 'TYPO3\\Flow\\Core\\Bootstrap');
+			class_alias(get_class(static::$instance), \TYPO3\Flow\Core\Bootstrap::class);
 		}
 		return static::$instance;
 	}
@@ -166,7 +166,7 @@ class Bootstrap {
 	 */
 	public function redirectToInstallerIfEssentialConfigurationDoesNotExist($pathUpToDocumentRoot = '') {
 		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
-		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', $configurationManager);
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
 		if (!file_exists($configurationManager->getLocalConfigurationFileLocation()) || !file_exists(PATH_typo3conf . 'PackageStates.php')) {
 			define('TYPO3_enterInstallScript', '1');
 			$this->defineTypo3RequestTypes();
@@ -221,7 +221,7 @@ class Bootstrap {
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function loadConfigurationAndInitialize($allowCaching = TRUE, $packageManagerClassName = 'TYPO3\\CMS\\Core\\Package\\PackageManager') {
+	public function loadConfigurationAndInitialize($allowCaching = TRUE, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class) {
 		$this->initializeClassLoader()
 			->populateLocalConfiguration();
 		if (!$allowCaching) {
@@ -256,11 +256,11 @@ class Bootstrap {
 	 */
 	public function initializeClassLoader() {
 		$classLoader = new ClassLoader($this->applicationContext);
-		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader', $classLoader);
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class, $classLoader);
 		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array)include __DIR__ . '/../../ext_autoload.php');
 		$classAliasMap = new ClassAliasMap();
 		$classAliasMap->injectClassLoader($classLoader);
-		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap', $classAliasMap);
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class, $classAliasMap);
 		$classLoader->injectClassAliasMap($classAliasMap);
 		spl_autoload_register(array($classLoader, 'loadClass'), TRUE, TRUE);
 		return $this;
@@ -273,7 +273,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function unregisterClassLoader() {
-		$currentClassLoader = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
+		$currentClassLoader = $this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class);
 		spl_autoload_unregister(array($currentClassLoader, 'loadClass'));
 		return $this;
 	}
@@ -286,9 +286,9 @@ class Bootstrap {
 	 */
 	public function initializeClassLoaderCaches() {
 		/** @var $classLoader ClassLoader */
-		$classLoader = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader');
-		$classLoader->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
-		$classLoader->injectClassesCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_classes'));
+		$classLoader = $this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class);
+		$classLoader->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
+		$classLoader->injectClassesCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_classes'));
 		return $this;
 	}
 
@@ -303,13 +303,13 @@ class Bootstrap {
 	public function initializePackageManagement($packageManagerClassName) {
 		/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
 		$packageManager = new $packageManagerClassName();
-		$this->setEarlyInstance('TYPO3\\Flow\\Package\\PackageManager', $packageManager);
+		$this->setEarlyInstance(\TYPO3\Flow\Package\PackageManager::class, $packageManager);
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
-		$packageManager->injectClassLoader($this->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader'));
-		$packageManager->injectCoreCache($this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core'));
+		$packageManager->injectClassLoader($this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class));
+		$packageManager->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
 		$packageManager->injectDependencyResolver(Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class));
 		$packageManager->initialize($this);
-		Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Package\\PackageManager', $packageManager);
+		Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
 		return $this;
 	}
 
@@ -322,7 +322,7 @@ class Bootstrap {
 	protected function initializeRuntimeActivatedPackagesFromConfiguration() {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
 			/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
-			$packageManager = $this->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
+			$packageManager = $this->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] as $runtimeAddedPackageKey) {
 				$packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
 			}
@@ -381,10 +381,10 @@ class Bootstrap {
 	 */
 	public function populateLocalConfiguration() {
 		try {
-			$configurationManager = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager');
+			$configurationManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		} catch(\TYPO3\CMS\Core\Exception $exception) {
 			$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
-			$this->setEarlyInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', $configurationManager);
+			$this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
 		}
 		$configurationManager->exportConfiguration();
 		return $this;
@@ -398,9 +398,9 @@ class Bootstrap {
 	 */
 	public function disableCoreAndClassesCache() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_classes']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\TransientMemoryBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class;
 		return $this;
 	}
 
@@ -438,18 +438,18 @@ class Bootstrap {
 	 */
 	protected function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider', 'web', 'user,group');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', 'TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', 'TYPO3\\CMS\\Backend\\Search\\LiveSearch\\ExtDirect\\LiveSearchDataProvider', 'web_list', 'user,group');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', 'TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class, 'web', 'user,group');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class, 'web', 'user,group');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', \TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class, 'web', 'user,group');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', \TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect\LiveSearchDataProvider::class, 'web_list', 'user,group');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class);
 			if (Utility\ExtensionManagementUtility::isLoaded('context_help')) {
-				Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.CSH.ExtDirect', 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
+				Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.CSH.ExtDirect', \TYPO3\CMS\ContextHelp\ExtDirect\ContextHelpDataProvider::class);
 			}
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', 'TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', \TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider::class);
 			Utility\ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.DragAndDrop.CommandController',
-				Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:TYPO3\\CMS\\Backend\\View\\PageLayout\\ExtDirect\\ExtdirectPageCommands', 'web', 'user,group'
+				Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:' . \TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands::class, 'web', 'user,group'
 			);
 		}
 		return $this;
@@ -462,7 +462,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function initializeCachingFramework() {
-		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager', \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework());
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework());
 		return $this;
 	}
 
@@ -682,7 +682,7 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function setFinalCachingFrameworkCacheConfiguration() {
-		$this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		$this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 		return $this;
 	}
 
@@ -879,7 +879,7 @@ class Bootstrap {
 	public function loadCachedTca() {
 		$cacheIdentifier = 'tca_fe_' . sha1((TYPO3_version . PATH_site . 'tca_fe'));
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-		$codeCache = $this->getEarlyInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_core');
+		$codeCache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
 		if ($codeCache->has($cacheIdentifier)) {
 			// substr is necessary, because the php frontend wraps php code around the cache value
 			$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));

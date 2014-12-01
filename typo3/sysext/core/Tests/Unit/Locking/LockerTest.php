@@ -62,7 +62,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function constructorUsesDefaultValueForLoops() {
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Locking\\Locker', array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED));
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED));
 		$this->assertSame(150, $instance->_get('loops'));
 	}
 
@@ -70,7 +70,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function constructorSetsLoopsToGivenNumberOfLoops() {
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Locking\\Locker', array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED, 10));
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED, 10));
 		$this->assertSame(10, $instance->_get('loops'));
 	}
 
@@ -78,7 +78,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function constructorUsesDefaultValueForSteps() {
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Locking\\Locker', array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED));
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED));
 		$this->assertSame(200, $instance->_get('step'));
 	}
 
@@ -86,7 +86,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function constructorSetsStepToGivenNumberOfStep() {
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Locking\\Locker', array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED, 0, 10));
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Core\Locking\Locker::class, array('dummy'), array('999999999', Locker::LOCKING_METHOD_DISABLED, 0, 10));
 		$this->assertSame(10, $instance->_get('step'));
 	}
 
@@ -200,7 +200,7 @@ class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create instance, set lockfile to invalid path
 		$instance = new Locker(999999999, $lockMethod);
 		$instance->setEnableLogging(FALSE);
-		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
+		$t3libLockReflection = new \ReflectionClass(\TYPO3\CMS\Core\Locking\Locker::class);
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('resource');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$t3libLockReflectionResourceProperty->setValue($instance, $file);

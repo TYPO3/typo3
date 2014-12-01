@@ -6,23 +6,23 @@ $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TY
 
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	$signalSlotDispatcher->connect(
-		'TYPO3\\CMS\\Core\\Resource\\ResourceFactory',
+		\TYPO3\CMS\Core\Resource\ResourceFactory::class,
 		\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage,
-		'TYPO3\\CMS\\Core\\Resource\\Security\\StoragePermissionsAspect',
+		\TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect::class,
 		'addUserPermissionsToStorage'
 	);
 	$signalSlotDispatcher->connect(
 		'PackageManagement',
 		'packagesMayHaveChanged',
-		'TYPO3\\CMS\\Core\\Package\\PackageManager',
+		\TYPO3\CMS\Core\Package\PackageManager::class,
 		'scanAvailablePackages'
 	);
 }
 
 $signalSlotDispatcher->connect(
-	'TYPO3\\CMS\\Core\\Resource\\ResourceStorage',
+	\TYPO3\CMS\Core\Resource\ResourceStorage::class,
 	\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileDelete,
-	'TYPO3\\CMS\\Core\\Resource\\Processing\\FileDeletionAspect',
+	\TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect::class,
 	'removeFromRepository'
 );
 
@@ -32,5 +32,5 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = 'EXT:core/Resourc
 
 /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
 $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-$rendererRegistry->registerRendererClass('TYPO3\\CMS\\Core\\Resource\\Rendering\\AudioTagRenderer');
-$rendererRegistry->registerRendererClass('TYPO3\\CMS\\Core\\Resource\\Rendering\\VideoTagRenderer');
+$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer::class);
+$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class);

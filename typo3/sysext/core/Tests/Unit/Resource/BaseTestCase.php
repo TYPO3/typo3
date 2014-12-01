@@ -126,7 +126,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getSimpleFileMock($identifier, $mockedMethods = array()) {
-		return $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\File', $identifier, $mockedMethods);
+		return $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\File::class, $identifier, $mockedMethods);
 	}
 
 	/**
@@ -137,7 +137,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getSimpleFolderMock($identifier, $mockedMethods = array()) {
-		return $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\Folder', $identifier, $mockedMethods);
+		return $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, $mockedMethods);
 	}
 
 	/**
@@ -150,7 +150,7 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getFolderMock($identifier, $mockedMethods = array(), $subfolders = array(), $files = array()) {
-		$folder = $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\Folder', $identifier, array_merge($mockedMethods, array('getFiles', 'getSubfolders')));
+		$folder = $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, array_merge($mockedMethods, array('getFiles', 'getSubfolders')));
 		$folder->expects($this->any())->method('getSubfolders')->will($this->returnValue($subfolders));
 		$folder->expects($this->any())->method('getFiles')->will($this->returnValue($files));
 		return $folder;

@@ -53,7 +53,7 @@ class StaticRecordCollection extends AbstractRecordCollection implements Editabl
 		if (!empty($tableName)) {
 			$this->setItemTableName($tableName);
 		} elseif (empty($this->itemTableName)) {
-			throw new \RuntimeException('TYPO3\\CMS\\Core\\Collection\\StaticRecordCollection needs a valid itemTableName.', 1330293778);
+			throw new \RuntimeException(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class . ' needs a valid itemTableName.', 1330293778);
 		}
 	}
 

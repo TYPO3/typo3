@@ -26,7 +26,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function renderMethodCallsResetInAnyCase() {
-		$pageRenderer = $this->getMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'));
+		$pageRenderer = $this->getMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart'));
 		$pageRenderer->expects($this->exactly(3))->method('reset');
 
 		$pageRenderer->render(PageRenderer::PART_COMPLETE);
@@ -40,7 +40,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function includingNotAvailableLocalJqueryVersionThrowsException() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
 		$subject->_set('availableLocalJqueryVersions', array('1.1.1'));
 		$subject->loadJquery('2.2.2');
 	}
@@ -51,7 +51,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function includingJqueryWithNonAlphnumericNamespaceThrowsException() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
 		$subject->loadJquery(NULL, NULL, '12sd.12fsd');
 		$subject->render();
 	}
@@ -61,7 +61,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addBodyContentAddsContent() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
 		$expectedReturnValue = 'ABCDE';
 		$subject->addBodyContent('A');
 		$subject->addBodyContent('B');
@@ -77,7 +77,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
 		$fileReference = uniqid('file_');
 		$selectionPrefix = uniqid('prefix_');
 		$stripFromSelectionName = uniqid('strip_');
@@ -101,7 +101,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
 		$fileReference1 = uniqid('file1_');
 		$selectionPrefix1 = uniqid('prefix1_');
 		$stripFromSelectionName1 = uniqid('strip1_');
@@ -136,7 +136,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Page\\PageRenderer', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
 		$fileReference = uniqid('file2_');
 		$selectionPrefix = uniqid('prefix2_');
 		$stripFromSelectionName = uniqid('strip2_');

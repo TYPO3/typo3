@@ -34,7 +34,7 @@ class FileRepository extends AbstractRepository {
 	 *
 	 * @var string
 	 */
-	protected $objectType = 'TYPO3\\CMS\\Core\\Resource\\File';
+	protected $objectType = \TYPO3\CMS\Core\Resource\File::class;
 
 	/**
 	 * Main File object storage table. Note that this repository also works on

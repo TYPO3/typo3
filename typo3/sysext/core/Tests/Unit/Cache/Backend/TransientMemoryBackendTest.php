@@ -38,7 +38,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'Some data';
@@ -52,7 +52,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'Some data';
@@ -66,7 +66,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function itIsPossibleToRemoveEntryFromCache() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'Some data';
@@ -81,7 +81,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'Some data';
@@ -97,7 +97,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'Some data';
@@ -113,7 +113,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$identifier = 'NonExistingIdentifier';
@@ -125,7 +125,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$identifier = 'NonExistingIdentifier';
@@ -137,7 +137,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'some data' . microtime();
@@ -154,7 +154,7 @@ class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function flushRemovesAllCacheEntries() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$backend = new \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend('Testing');
 		$backend->setCache($cache);
 		$data = 'some data' . microtime();

@@ -97,7 +97,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
 	->disableCoreAndClassesCache()
 	->initializeCachingFramework()
 	->initializeClassLoaderCaches()
-	->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
+	->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class);
 
 /**
  * Creates directory (recursively if required).

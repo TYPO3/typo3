@@ -51,8 +51,8 @@ return array(
 				'priority' => 'xlf,xml'
 			),
 			'parser' => array(
-				'xml' => 'TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser',
-				'xlf' => 'TYPO3\\CMS\\Core\\Localization\\Parser\\XliffParser'
+				'xml' => \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class,
+				'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class
 			)
 		),
 		'sitename' => 'TYPO3',					// Name of the base-site. This title shows up in the root of the tree structure if you're an 'admin' backend user.
@@ -120,38 +120,38 @@ return array(
 				// The cache_core cache is is for core php code only and must
 				// not be abused by third party extensions.
 				'cache_core' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
 					'groups' => array('system')
 				),
 				'cache_classes' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\StringFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
 					'groups' => array('system')
 				),
 				'cache_hash' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 					'options' => array(),
 					'groups' => array('pages', 'all')
 				),
 				'cache_pages' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 					'options' => array(
 						'compression' => TRUE
 					),
 					'groups' => array('pages', 'all')
 				),
 				'cache_pagesection' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 					'options' => array(
 						'compression' => TRUE,
 						'defaultLifetime' => 2592000   //  30 days; set this to a lower value in case your cache gets too big
@@ -159,44 +159,44 @@ return array(
 					'groups' => array('pages', 'all')
 				),
 				'cache_phpcode' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\FileBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
 					'groups' => array('system')
 				),
 				'cache_runtime' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class,
 					'options' => array(),
 					'groups' => array()
 				),
 				'cache_rootline' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 					'options' => array(),
 					'groups' => array('pages', 'all')
 				),
 				'l10n' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
 					'groups' => array('system')
 				),
 				'extbase_object' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
 					'groups' => array('system')
 				),
 				'extbase_reflection' => array(
-					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
 					'options' => array(
 						'defaultLifetime' => 0,
 					),
@@ -206,9 +206,9 @@ return array(
 		),
 		'defaultCategorizedTables' => 'pages,tt_content,sys_file_metadata', // List of comma separated tables that are categorizable by default.
 		'displayErrors' => -1,		// <p>Integer (-1, 0, 1, 2). Configures whether PHP errors or Exceptions should be displayed.</p><dl><dt>0</dt><dd>Do not display any PHP error message. Sets PHP "display_errors" setting to 0. Overrides the value of [SYS][exceptionalErrors] and sets it to 0 (= no errors are turned into exceptions). The configured [SYS][productionExceptionHandler] is used as exception handler.</dd><dt>1</dt><dd>Display error messages with the registered [SYS][errorHandler]. Sets PHP "display_errors" setting to 1. The configured [SYS][debugExceptionHandler] is used as exception handler.</dd><dt>2</dt><dd>Lets the [SYS][devIPmask] decide if this setting shall be "1" (user's IP matches) or "0" (IP does not match).</dd><dt>-1</dt><dd>Default setting. TYPO3 CMS does not touch the PHP "display_errors" setting. If [SYS][devIPmask] matches the user's IP address, the configured [SYS][debugExceptionHandler] is used instead of the [SYS][productionExceptionHandler] to handle exceptions.</dd></dl>
-		'productionExceptionHandler' => 'TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler',		// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler". This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if [SYS][displayErrors] is set to "0" or is set to "-1" and [SYS][devIPmask] doesn't match the user's IP.
-		'debugExceptionHandler' => 'TYPO3\\CMS\\Core\\Error\\DebugExceptionHandler',		// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "TYPO3\\CMS\\Core\\Error\\DebugExceptionHandler". This exception handler displays the complete stack trace of any encountered exception. The error message and the stack trace is logged to the configured logs. Note: The configured "debugExceptionHandler" is used if [SYS][displayErrors] is set to "1" or is set to "-1" or "2" and the [SYS][devIPmask] matches the user's IP.
-		'errorHandler' => 'TYPO3\\CMS\\Core\\Error\\ErrorHandler',		// String: Classname to handle PHP errors. E.g.: TYPO3\CMS\Core\Error\ErrorHandler. This class displays and logs all errors that are registered as [SYS][errorHandlerErrors]. Leave empty to disable error handling. Errors can be logged to syslog (see: [SYS][systemLog]), to the installed developer log and to the "syslog" table. If an error is registered in [SYS][exceptionalErrors] it will be turned into an exception to be handled by the configured exceptionHandler.
+		'productionExceptionHandler' => \TYPO3\CMS\Core\Error\ProductionExceptionHandler::class,		// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "TYPO3\\CMS\\Core\\Error\\ProductionExceptionHandler". This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if [SYS][displayErrors] is set to "0" or is set to "-1" and [SYS][devIPmask] doesn't match the user's IP.
+		'debugExceptionHandler' => \TYPO3\CMS\Core\Error\DebugExceptionHandler::class,		// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: "TYPO3\\CMS\\Core\\Error\\DebugExceptionHandler". This exception handler displays the complete stack trace of any encountered exception. The error message and the stack trace is logged to the configured logs. Note: The configured "debugExceptionHandler" is used if [SYS][displayErrors] is set to "1" or is set to "-1" or "2" and the [SYS][devIPmask] matches the user's IP.
+		'errorHandler' => \TYPO3\CMS\Core\Error\ErrorHandler::class,		// String: Classname to handle PHP errors. E.g.: TYPO3\CMS\Core\Error\ErrorHandler. This class displays and logs all errors that are registered as [SYS][errorHandlerErrors]. Leave empty to disable error handling. Errors can be logged to syslog (see: [SYS][systemLog]), to the installed developer log and to the "syslog" table. If an error is registered in [SYS][exceptionalErrors] it will be turned into an exception to be handled by the configured exceptionHandler.
 		'errorHandlerErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR),		// Integer: The E_* constant that will be handled by the [SYS][errorHandler]. Not all PHP error types can be handled! Default is 30466 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).
 		'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),		// Integer: The E_* constant that will be converted into an exception by the default [SYS][errorHandler]. Default is 20480 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).
 		'enable_errorDLOG' => 0,	// Boolean: If set, errors are written to the developer log (requires an installed *devlog* extension).
@@ -221,7 +221,7 @@ return array(
 		'fal' => array(
 			'registeredDrivers' => array(
 				'Local' => array(
-					'class' => 'TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver',
+					'class' => \TYPO3\CMS\Core\Resource\Driver\LocalDriver::class,
 					'shortName' => 'Local',
 					'flexFormDS' => 'FILE:EXT:core/Configuration/Resource/Driver/LocalDriverFlexForm.xml',
 					'label' => 'Local filesystem'
@@ -229,18 +229,18 @@ return array(
 			),
 			'defaultFilterCallbacks' => array(
 				array(
-					'TYPO3\\CMS\\Core\\Resource\\Filter\\FileNameFilter',
+					\TYPO3\CMS\Core\Resource\Filter\FileNameFilter::class,
 					'filterHiddenFilesAndFolders'
 				)
 			),
 			'processingTaskTypes' => array(
-				'Image.Preview' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImagePreviewTask',
-				'Image.CropScaleMask' => 'TYPO3\\CMS\\Core\\Resource\\Processing\\ImageCropScaleMaskTask'
+				'Image.Preview' => \TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask::class,
+				'Image.CropScaleMask' => \TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask::class
 			),
 			'registeredCollections' => array(
-				'static' => 'TYPO3\\CMS\\Core\\Resource\\Collection\\StaticFileCollection',
-				'folder' => 'TYPO3\\CMS\\Core\\Resource\\Collection\\FolderBasedFileCollection',
-				'category' => 'TYPO3\\CMS\\Core\\Resource\\Collection\\CategoryBasedFileCollection',
+				'static' => \TYPO3\CMS\Core\Resource\Collection\StaticFileCollection::class,
+				'folder' => \TYPO3\CMS\Core\Resource\Collection\FolderBasedFileCollection::class,
+				'category' => \TYPO3\CMS\Core\Resource\Collection\CategoryBasedFileCollection::class,
 			)
 		),
 		'isInitialInstallationInProgress' => FALSE,		// Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
@@ -254,14 +254,14 @@ return array(
 		'extConf' => array(
 			'saltedpasswords' => serialize(array(
 				'BE.' => array(
-					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
 					'forceSalted' => 0,
 					'onlyAuthService' => 0,
 					'updatePasswd' => 1,
 				),
 				'FE.' => array(
 					'enabled' => 0,
-					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
 					'forceSalted' => 0,
 					'onlyAuthService' => 0,
 					'updatePasswd' => 1,
@@ -599,106 +599,106 @@ return array(
 		'flexformForceCDATA' => 0,							// Boolean:  If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.
 		'explicitConfirmationOfTranslation' => FALSE,		// If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.
 		'versionNumberInFilename' => FALSE,					// <p>Boolean: If TRUE, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)</p><p>If FALSE the filemtime will be appended as a query-string.</p>
-		'spriteIconGenerator_handler' => 'TYPO3\\CMS\\Backend\\Sprite\\SimpleSpriteHandler',		// String: Used to register own/other spriteGenerating Handler, they have to implement the interface \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface. If set to "\TYPO3\CMS\Backend\Sprite\SpriteBuildingHandler" icons from extensions will automatically merged into sprites.
+		'spriteIconGenerator_handler' => \TYPO3\CMS\Backend\Sprite\SimpleSpriteHandler::class,		// String: Used to register own/other spriteGenerating Handler, they have to implement the interface \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface. If set to "\TYPO3\CMS\Backend\Sprite\SpriteBuildingHandler" icons from extensions will automatically merged into sprites.
 		'debug' => FALSE,									// Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!
 		'AJAX' => array(									// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php for more information.
 			'SC_alt_db_navframe::expandCollapse' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\PageTreeNavigationController->ajaxExpandCollapse',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\PageTreeNavigationController::class . '->ajaxExpandCollapse',
 				'csrfTokenCheck' => TRUE
 			),
 			'SC_alt_file_navframe::expandCollapse' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController->ajaxExpandCollapse',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController::class . '->ajaxExpandCollapse',
 				'csrfTokenCheck' => TRUE
 			),
 			'TYPO3_tcefile::process' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\File\\FileController->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\File\FileController::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::createNewRecord' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::getRecordDetails' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::setExpandedCollapsedState' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\InlineElement->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_suggest::searchRecord' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Form\\Element\\SuggestElement->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\SuggestElement::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::getShortcutEditForm' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->getAjaxShortcutEditForm',
+				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '->getAjaxShortcutEditForm',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::saveShortcut' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->setAjaxShortcut',
+				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '->setAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::render' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->renderAjaxMenu',
+				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '->renderAjaxMenu',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::delete' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->deleteAjaxShortcut',
+				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '->deleteAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
 			'ShortcutMenu::create' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Backend\\ToolbarItems\\ShortcutToolbarItem->createAjaxShortcut',
+				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '->createAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
 			'ModuleMenu::reload' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\BackendController->getModuleMenuForReload',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\BackendController::class . '->getModuleMenuForReload',
 				'csrfTokenCheck' => TRUE
 			),
 			'BackendLogin::login' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->login',
+				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->login',
 				// Needs to be unprotected
 				'csrfTokenCheck' => FALSE
 			),
 			'BackendLogin::logout' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->logout',
+				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->logout',
 				// Needs to be unprotected
 				'csrfTokenCheck' => FALSE
 			),
 			'BackendLogin::refreshLogin' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->refreshLogin',
+				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->refreshLogin',
 				// Needs to be unprotected
 				'csrfTokenCheck' => FALSE
 			),
 			'BackendLogin::isTimedOut' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->isTimedOut',
+				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->isTimedOut',
 				// Needs to be unprotected
 				'csrfTokenCheck' => FALSE
 			),
 			'BackendLogin::getChallenge' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\AjaxLoginHandler->getChallenge',
+				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->getChallenge',
 				// Needs to be unprotected
 				'csrfTokenCheck' => FALSE
 			),
 			'ExtDirect::getAPI' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectApi->getAPI',
+				'callbackMethod' => \TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class . '->getAPI',
 				// No need to be CSRF protected
 				'csrfTokenCheck' => FALSE
 			),
 			'ExtDirect::route' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectRouter->route',
+				'callbackMethod' => \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter::class . '->route',
 				// All ExtJS calls are CSRF protected with another token
 				'csrfTokenCheck' => FALSE
 			),
 			'DocumentTemplate::getFlashMessages' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate->renderFlashMessages',
+				'callbackMethod' => \TYPO3\CMS\Backend\Template\DocumentTemplate::class . '->renderFlashMessages',
 				'csrfTokenCheck' => TRUE
 			),
 			'ContextMenu::load' => array(
-				'callbackMethod' => 'TYPO3\\CMS\\Backend\\Controller\\ClickMenuController->printContentForAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\ClickMenuController::class . '->printContentForAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 		),
@@ -799,7 +799,7 @@ return array(
 	'LOG' => array(
 		'writerConfiguration' => array(
 			\TYPO3\CMS\Core\Log\LogLevel::DEBUG => array(
-				'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array(
+				\TYPO3\CMS\Core\Log\Writer\FileWriter::class => array(
 					'logFile' => 'typo3temp/logs/typo3.log'
 				)
 			)
@@ -807,7 +807,7 @@ return array(
 		'deprecated' => array(
 			'writerConfiguration' => array(
 				\TYPO3\CMS\Core\Log\LogLevel::WARNING => array(
-					'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array(
+					\TYPO3\CMS\Core\Log\Writer\FileWriter::class => array(
 						'logFile' => 'typo3conf/deprecation.log'
 					)
 				)
@@ -820,16 +820,16 @@ return array(
 		// Here you can more or less freely define additional configuration for scripts in TYPO3. Of course the features supported depends on the script. See documentation "Inside TYPO3" for examples. Keys in the array are the relative path of a script (for output scripts it should be the "script ID" as found in a comment in the HTML header ) and values can then be anything that scripts wants to define for itself. The key "GLOBAL" is reserved.
 		'GLOBAL' => array(
 			'softRefParser' => array(
-				'substitute' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'notify' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'images' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'typolink' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'typolink_tag' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'TSconfig' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'TStemplate' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'ext_fileref' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'email' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
-				'url' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
+				'substitute' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'notify' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'images' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'typolink' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'typolink_tag' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'TSconfig' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'TStemplate' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'ext_fileref' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'email' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
+				'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
 			),
 			'softRefParser_GL' => array(),
 			// Global soft reference parsers

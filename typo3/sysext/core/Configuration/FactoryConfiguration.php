@@ -18,14 +18,14 @@ return array(
 			'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',
 			'saltedpasswords' => serialize(array(
 				'BE.' => array(
-					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
 					'forceSalted' => 0,
 					'onlyAuthService' => 0,
 					'updatePasswd' => 1,
 				),
 				'FE.' => array(
 					'enabled' => 1,
-					'saltedPWHashingMethod' => 'TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt',
+					'saltedPWHashingMethod' => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
 					'forceSalted' => 0,
 					'onlyAuthService' => 0,
 					'updatePasswd' => 1,

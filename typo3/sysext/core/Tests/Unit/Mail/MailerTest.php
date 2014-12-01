@@ -27,7 +27,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Mail\\Mailer', array('noMethodMocked'), array(), '', FALSE);
+		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Mail\Mailer::class, array('noMethodMocked'), array(), '', FALSE);
 	}
 
 	//////////////////////////
@@ -63,7 +63,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'smtp but no host' => array(array('transport' => 'smtp')),
 			'sendmail but no command' => array(array('transport' => 'sendmail')),
 			'mbox but no file' => array(array('transport' => 'mbox')),
-			'no instance of Swift_Transport' => array(array('transport' => 'TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage'))
+			'no instance of Swift_Transport' => array(array('transport' => \TYPO3\CMS\Core\Messaging\ErrorpageMessage::class))
 		);
 	}
 

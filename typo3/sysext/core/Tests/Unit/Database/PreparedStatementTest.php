@@ -46,7 +46,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	private function setUpAndReturnDatabaseStub() {
 		$GLOBALS['TYPO3_DB'] = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			\TYPO3\CMS\Core\Database\DatabaseConnection::class,
 			array('prepare_PREPAREDquery'),
 			array(),
 			'',

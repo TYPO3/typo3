@@ -77,7 +77,7 @@ class PathUtility {
 	 * @return NULL|string
 	 */
 	static public function getCommonPrefix(array $paths) {
-		$paths = array_map(array('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'fixWindowsFilePath'), $paths);
+		$paths = array_map(array(\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'fixWindowsFilePath'), $paths);
 		$commonPath = NULL;
 		if (count($paths) === 1) {
 			$commonPath = array_shift($paths);

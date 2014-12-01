@@ -797,7 +797,7 @@ return array(
 					array('', ''),
 					array('LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout.none', -1)
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutView->addBackendLayoutItems',
+				'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->addBackendLayoutItems',
 				'selicon_cols' => 5,
 				'size' => 1,
 				'maxitems' => 1,
@@ -812,7 +812,7 @@ return array(
 					array('', ''),
 					array('LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout.none', -1)
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Backend\\View\\BackendLayoutView->addBackendLayoutItems',
+				'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->addBackendLayoutItems',
 				'selicon_cols' => 5,
 				'size' => 1,
 				'maxitems' => 1,

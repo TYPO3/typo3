@@ -27,7 +27,7 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getTableReturnsPreviouslySetTable() {
 		$logTable = uniqid('logtable_');
 		/** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\Core\Log\\Writer\\DatabaseWriter', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
 		$subject->setLogTable($logTable);
 		$this->assertSame($logTable, $subject->getLogTable());
 	}
@@ -37,12 +37,12 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function writeLogThrowsExceptionIfDatabaseInsertFailed() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->will($this->returnValue(FALSE));
 		/** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$logRecordMock = $this->getMock('TYPO3\\CMS\\Core\\Log\\LogRecord', array(), array(), '', FALSE);
+		$logRecordMock = $this->getMock(\TYPO3\CMS\Core\Log\LogRecord::class, array(), array(), '', FALSE);
 		/** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\Core\Log\\Writer\\DatabaseWriter', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
 		$subject->writeLog($logRecordMock);
 	}
 
@@ -51,12 +51,12 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function writeLogInsertsToSpecifiedTable() {
 		$logTable = uniqid('logtable_');
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($logTable, $this->anything());
 		/** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$logRecordMock = $this->getMock('TYPO3\\CMS\\Core\\Log\\LogRecord', array(), array(), '', FALSE);
+		$logRecordMock = $this->getMock(\TYPO3\CMS\Core\Log\LogRecord::class, array(), array(), '', FALSE);
 		/** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\Core\Log\\Writer\\DatabaseWriter', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
 		$subject->setLogTable($logTable);
 		$subject->writeLog($logRecordMock);
 	}
@@ -74,7 +74,7 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'data' => '',
 		);
 		/** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$logRecordMock = $this->getMock('TYPO3\\CMS\\Core\\Log\\LogRecord', array(), array(), '', FALSE);
+		$logRecordMock = $this->getMock(\TYPO3\CMS\Core\Log\LogRecord::class, array(), array(), '', FALSE);
 		$logRecordMock->expects($this->at(0))->method('offsetGet')->with('requestId')->will($this->returnValue($logRecordData['request_id']));
 		$logRecordMock->expects($this->at(1))->method('offsetGet')->with('created')->will($this->returnValue($logRecordData['time_micro']));
 		$logRecordMock->expects($this->at(2))->method('offsetGet')->with('component')->will($this->returnValue($logRecordData['component']));
@@ -82,9 +82,9 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$logRecordMock->expects($this->at(4))->method('offsetGet')->with('message')->will($this->returnValue($logRecordData['message']));
 
 		/** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\Core\Log\\Writer\\DatabaseWriter', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
 
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $logRecordData);
 
 		$subject->writeLog($logRecordMock);

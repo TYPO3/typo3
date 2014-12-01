@@ -34,7 +34,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', FALSE);
 		$subject->_set('isConnected', TRUE);
 		$subject
 			->expects($this->any())
@@ -59,7 +59,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$testStringWithBinary = @gzcompress('sdfkljer4587');
 
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', FALSE);
 		$subject->_set('isConnected', TRUE);
 		$subject
 			->expects($this->any())
@@ -88,7 +88,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function listQueryWithIntegerCommaAsValue() {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('quoteStr'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', FALSE);
 		$subject->_set('isConnected', TRUE);
 		$subject
 			->expects($this->any())
@@ -106,7 +106,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function listQueryThrowsExceptionIfValueContainsComma() {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('quoteStr'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', FALSE);
 		$subject->_set('isConnected', TRUE);
 		$subject->listQuery('aField', 'foo,bar', 'aTable');
 	}
@@ -183,7 +183,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function searchQueryCreatesQuery($expectedResult, $searchWords, $fields, $table, $constraint) {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('quoteStr'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('quoteStr'), array(), '', FALSE);
 		$subject
 			->expects($this->any())
 			->method('quoteStr')
@@ -204,7 +204,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function escapeStringForLikeComparison() {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', FALSE);
 		$this->assertEquals('foo\\_bar\\%', $subject->escapeStrForLike('foo_bar%', 'table'));
 	}
 
@@ -242,7 +242,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult) {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', FALSE);
 		$strippedQuery = $subject->stripOrderBy($orderByClause);
 		$this->assertEquals($expectedResult, $strippedQuery);
 	}
@@ -281,7 +281,7 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult) {
 		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('dummy'), array(), '', FALSE);
+		$subject = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('dummy'), array(), '', FALSE);
 		$strippedQuery = $subject->stripGroupBy($groupByClause);
 		$this->assertEquals($expectedResult, $strippedQuery);
 	}

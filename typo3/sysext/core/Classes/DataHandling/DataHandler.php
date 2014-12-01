@@ -3574,7 +3574,7 @@ class DataHandler {
 									$sysRefObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
 									$error = $sysRefObj->setReferenceValue($rteFileRecord['hash'], \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($copyDestName), FALSE, TRUE);
 									if ($error) {
-										echo $this->newlog('TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error, 1);
+										echo $this->newlog(\TYPO3\CMS\Core\Database\ReferenceIndex::class . '::setReferenceValue(): ' . $error, 1);
 									}
 								} else {
 									$this->newlog('File "' . $copyDestName . '" was not created!', 1);

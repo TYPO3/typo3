@@ -30,7 +30,7 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function setUp() {
-		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$accessibleClassName = $this->buildAccessibleProxy(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		$this->typoScriptParser = new $accessibleClassName();
 	}
 

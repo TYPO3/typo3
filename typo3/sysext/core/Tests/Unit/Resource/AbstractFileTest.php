@@ -28,18 +28,18 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$parentIdentifier = '/parent/';
 		$currentIdentifier = '/parent/current/';
 
-		$mockedStorageForParent = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorageForParent = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
 
 		/** @var \TYPO3\CMS\Core\Resource\AbstractFile $parentFolderFixture */
-		$parentFolderFixture = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\AbstractFile');
+		$parentFolderFixture = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractFile::class);
 		$parentFolderFixture->setIdentifier($parentIdentifier)->setStorage($mockedStorageForParent);
 
-		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', FALSE);
+		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array('getFolderIdentifierFromFileIdentifier', 'getFolder'), array(), '', FALSE);
 		$mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
 		$mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
 
 		/** @var \TYPO3\CMS\Core\Resource\AbstractFile $currentFolderFixture */
-		$currentFolderFixture = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\AbstractFile');
+		$currentFolderFixture = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractFile::class);
 		$currentFolderFixture->setIdentifier($currentIdentifier)->setStorage($mockedStorage);
 
 		$this->assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());

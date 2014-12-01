@@ -34,8 +34,8 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $pageContextMock;
 
 	protected function setUp() {
-		$this->pageContextMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-		$this->fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Utility\\RootlineUtility', array('enrichWithRelationFields'), array(1, '', $this->pageContextMock));
+		$this->pageContextMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, array('enrichWithRelationFields'), array(1, '', $this->pageContextMock));
 	}
 
 	protected function tearDown() {
@@ -257,7 +257,7 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter() {
 		/** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $cacheFrontendMock */
-		$cacheFrontendMock = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), '', FALSE);
+		$cacheFrontendMock = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), '', FALSE);
 		$this->pageContextMock->sys_language_uid = 8;
 		$this->pageContextMock->versioningWorkspaceId = 15;
 		$this->pageContextMock->versioningPreview = TRUE;
@@ -285,7 +285,7 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->with(2, $pageDataTranslated)
 			->will($this->returnArgument(1));
 
-		$databaseConnectionMock = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$databaseConnectionMock = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$databaseConnectionMock
 			->expects($this->once())
 			->method('exec_SELECTgetSingleRow')

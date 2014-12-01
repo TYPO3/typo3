@@ -26,7 +26,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry
 	 */
 	protected function getTestRendererRegistry(array $createsRendererInstances = array()) {
-		$rendererRegistry = $this->getMockBuilder('TYPO3\\CMS\\Core\\Resource\\Rendering\\RendererRegistry')
+		$rendererRegistry = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class)
 			->setMethods(array('createRendererInstance'))
 			->getMock();
 
@@ -44,7 +44,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function registeredFileRenderClassCanBeRetrieved() {
 		$rendererClass = uniqid('myRenderer');
-		$rendererObject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array(), array(), $rendererClass);
+		$rendererObject = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass);
 
 		$rendererRegistry = $this->getTestRendererRegistry(array(array($rendererClass, $rendererObject)));
 
@@ -78,15 +78,15 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function registerRendererClassWithHighestPriorityIsFirstInResult() {
 		$rendererClass1 = uniqid('myRenderer1');
-		$rendererObject1 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array(), array(), $rendererClass1);
+		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
 		$rendererClass2 = uniqid('myRenderer2');
-		$rendererObject2 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array(), array(), $rendererClass2);
+		$rendererObject2 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass2);
 		$rendererObject2->expects($this->any())->method('getPriority')->will($this->returnValue(10));
 
 		$rendererClass3 = uniqid('myRenderer3');
-		$rendererObject3 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array(), array(), $rendererClass3);
+		$rendererObject3 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass3);
 		$rendererObject3->expects($this->any())->method('getPriority')->will($this->returnValue(2));
 
 		$createdRendererInstances = array(
@@ -111,11 +111,11 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function registeredFileRendererClassWithSamePriorityAreReturnedInSameOrderAsTheyWereAdded() {
 		$rendererClass1 = uniqid('myRenderer1');
-		$rendererObject1 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array(), array(), $rendererClass1);
+		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
 		$rendererClass2 = uniqid('myRenderer2');
-		$rendererObject2 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array(), array(), $rendererClass2);
+		$rendererObject2 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass2);
 		$rendererObject2->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
 		$createdRendererInstances = array(
@@ -140,16 +140,16 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->markTestSkipped('Test triggers a error this is known PHP bug - http://stackoverflow.com/questions/3235387/usort-array-was-modified-by-the-user-comparison-function)');
 
 		$rendererClass1 = uniqid('myVideoRenderer');
-		$rendererObject1 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array('getPriority', 'canRender', 'render'), array(), $rendererClass1);
+		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array('getPriority', 'canRender', 'render'), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 		$rendererObject1->expects($this->once())->method('canRender')->will($this->returnValue(TRUE));
 
 		$rendererClass2 = uniqid('myAudioRenderer');
-		$rendererObject2 = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Rendering\\FileRendererInterface', array('getPriority', 'canRender', 'render'), array(), $rendererClass2);
+		$rendererObject2 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array('getPriority', 'canRender', 'render'), array(), $rendererClass2);
 		$rendererObject2->expects($this->any())->method('getPriority')->will($this->returnValue(10));
 		$rendererObject2->expects($this->once())->method('canRender')->will($this->returnValue(FALSE));
 
-		$fileResourceMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
+		$fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
 
 		$createdRendererInstances = array(
 			array($rendererClass1, $rendererObject1),
@@ -174,10 +174,10 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getRendererReturnsCorrectInstance2() {
 
 		$rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-		$rendererRegistry->registerRendererClass('TYPO3\\CMS\\Core\\Resource\\Rendering\\AudioTagRenderer');
-		$rendererRegistry->registerRendererClass('TYPO3\\CMS\\Core\\Resource\\Rendering\\VideoTagRenderer');
+		$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer::class);
+		$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class);
 
-		$fileResourceMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
+		$fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
 		$fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
 
 
@@ -185,7 +185,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$renderer = $rendererRegistry->getRenderer($fileResourceMock);
 
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Rendering\\VideoTagRenderer', $renderer);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class, $renderer);
 	}
 }
 

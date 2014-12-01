@@ -40,7 +40,7 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logManagerReturnsLoggerWhenRequestedWithGetLogger() {
-		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $this->logManagerInstance->getLogger('test'));
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Log\Logger::class, $this->logManagerInstance->getLogger('test'));
 	}
 
 	/**
@@ -73,7 +73,7 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function configuresLoggerWithConfiguredWriter() {
 		$component = 'test';
-		$writer = 'TYPO3\\CMS\\Core\\Log\\Writer\\NullWriter';
+		$writer = \TYPO3\CMS\Core\Log\Writer\NullWriter::class;
 		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
 		$GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['writerConfiguration'] = array(
 			$level => array(
@@ -91,7 +91,7 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function configuresLoggerWithConfiguredProcessor() {
 		$component = 'test';
-		$processor = 'TYPO3\\CMS\\Core\\Log\\Processor\\NullProcessor';
+		$processor = \TYPO3\CMS\Core\Log\Processor\NullProcessor::class;
 		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
 		$GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['processorConfiguration'] = array(
 			$level => array(

@@ -216,7 +216,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function doesCheckModifyAccessListHookGetsCalled() {
 		$hookClass = uniqid('tx_coretest');
-		$hookMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface', array('checkModifyAccessList'), array(), $hookClass);
+		$hookMock = $this->getMock(\TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface::class, array('checkModifyAccessList'), array(), $hookClass);
 		$hookMock->expects($this->once())->method('checkModifyAccessList');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
@@ -287,7 +287,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(TRUE));
 
 		/** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
-		$backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backEndUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backEndUser->workspace = 1;
 		$backEndUser->workspaceRec = array('freeze' => FALSE);
 		$backEndUser->expects($this->once())->method('workspaceAllowAutoCreation')->will($this->returnValue(TRUE));
@@ -331,7 +331,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled() {
-		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUser->expects($this->once())->method('writelog');
 		$this->subject->enableLogging = TRUE;
 		$this->subject->BE_USER = $backendUser;
@@ -342,7 +342,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled() {
-		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUser->expects($this->never())->method('writelog');
 		$this->subject->enableLogging = FALSE;
 		$this->subject->BE_USER = $backendUser;
@@ -353,7 +353,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logAddsEntryToLocalErrorLogArray() {
-		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$this->subject->BE_USER = $backendUser;
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
@@ -366,7 +366,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray() {
-		$backendUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$this->subject->BE_USER = $backendUser;
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
@@ -645,7 +645,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		/** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
-		$mockRelationHandler = $this->getMock('TYPO3\\CMS\\Core\\Database\\RelationHandler', array(), array(), '', FALSE);
+		$mockRelationHandler = $this->getMock(\TYPO3\CMS\Core\Database\RelationHandler::class, array(), array(), '', FALSE);
 		$mockRelationHandler->itemArray = array(
 			'1' => array('table' => uniqid('bar_'), 'id' => 67)
 		);

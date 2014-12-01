@@ -62,7 +62,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 			}
 		} else {
 			$emConfPath = Files::concatenatePaths(array($packagePath, 'ext_emconf.php'));
-			$packageClassName = @file_exists($emConfPath) ? 'TYPO3\CMS\Core\Package\Package' : 'TYPO3\Flow\Package\Package';
+			$packageClassName = @file_exists($emConfPath) ? \TYPO3\CMS\Core\Package\Package::class : \TYPO3\Flow\Package\Package::class;
 		}
 
 		/** @var $package \TYPO3\Flow\Package\PackageInterface */

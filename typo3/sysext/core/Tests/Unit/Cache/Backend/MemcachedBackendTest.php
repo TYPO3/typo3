@@ -199,14 +199,14 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushRemovesOnlyOwnEntries() {
 		$backendOptions = array('servers' => array('localhost:11211'));
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
-		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
+		$thisCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
 		$thisBackend = new MemcachedBackend('Testing', $backendOptions);
 		$thisBackend->setCache($thisCache);
 		$thisBackend->initializeObject();
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
-		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
+		$thatCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend::class, array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
 		$thatBackend = new MemcachedBackend('Testing', $backendOptions);
 		$thatBackend->setCache($thatCache);
@@ -263,7 +263,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function setUpBackend(array $backendOptions = array(), $accessible = FALSE) {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		if ($backendOptions == array()) {
 			$backendOptions = array('servers' => array('localhost:11211'));
 		}

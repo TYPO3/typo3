@@ -31,7 +31,7 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$this->fixture = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection',
+			\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class,
 			array('dummy')
 		);
 	}

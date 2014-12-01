@@ -25,7 +25,7 @@ class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $flashMessageService;
 
 	public function setUp() {
-		$this->flashMessageService = $this->getAccessibleMock('TYPO3\CMS\Core\Messaging\FlashMessageService', array('dummy'));
+		$this->flashMessageService = $this->getAccessibleMock(\TYPO3\CMS\Core\Messaging\FlashMessageService::class, array('dummy'));
 	}
 
 	/**

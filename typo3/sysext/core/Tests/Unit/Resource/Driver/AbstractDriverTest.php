@@ -34,7 +34,7 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
 	 */
 	protected function createDriverFixture() {
-		return $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), '', FALSE);
+		return $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, array(), '', FALSE);
 	}
 
 	/**

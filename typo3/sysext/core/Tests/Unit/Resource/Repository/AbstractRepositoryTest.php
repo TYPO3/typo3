@@ -29,12 +29,12 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockedDb;
 
 	protected function createDatabaseMock() {
-		$this->mockedDb = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		$this->mockedDb = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB'] = $this->mockedDb;
 	}
 
 	public function setUp() {
-		$this->subject = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\AbstractRepository', array(), '', FALSE);
+		$this->subject = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractRepository::class, array(), '', FALSE);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		/** @var \TYPO3\CMS\Core\Resource\StorageRepository|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $storageRepositoryMock */
 		$storageRepositoryMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Resource\\StorageRepository',
+			\TYPO3\CMS\Core\Resource\StorageRepository::class,
 			array('dummy'),
 			array(),
 			'',
@@ -88,14 +88,14 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getWhereClauseForEnabledFieldsCallsSysPageForDeletedFlagInFrontend() {
 		$GLOBALS['TSFE'] = new \stdClass();
-		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sysPageMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$GLOBALS['TSFE']->sys_page = $sysPageMock;
 		$sysPageMock
 			->expects($this->once())
 			->method('deleteClause')
 			->with('sys_file_storage');
 		$storageRepositoryMock = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Core\\Resource\\StorageRepository',
+			\TYPO3\CMS\Core\Resource\StorageRepository::class,
 			array('getEnvironmentMode'),
 			array(),
 			'',

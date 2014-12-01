@@ -23,8 +23,8 @@ class ProcessedFileRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function cleanUnavailableColumnsWorks() {
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository', array('dummy'), array(), '', FALSE);
-		$databaseMock = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('admin_get_fields'));
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class, array('dummy'), array(), '', FALSE);
+		$databaseMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('admin_get_fields'));
 		$databaseMock->expects($this->once())->method('admin_get_fields')->will($this->returnValue(array('storage' => '', 'checksum' => '')));
 		$fixture->_set('databaseConnection', $databaseMock);
 

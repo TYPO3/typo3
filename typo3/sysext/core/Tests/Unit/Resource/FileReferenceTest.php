@@ -42,8 +42,8 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return \TYPO3\CMS\Core\Resource\FileReference|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties) {
-		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array('dummy'), array(), '', FALSE);
-		$originalFileMock = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
+		$fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\FileReference::class, array('dummy'), array(), '', FALSE);
+		$originalFileMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
 		$originalFileMock->expects($this->any())
 			->method('getProperties')
 			->will($this->returnValue($originalFileProperties)

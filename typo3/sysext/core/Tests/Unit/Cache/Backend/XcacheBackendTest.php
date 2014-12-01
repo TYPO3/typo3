@@ -181,13 +181,13 @@ class XcacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function flushRemovesOnlyOwnEntries() {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
-		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$thisCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
 		$thisBackend = new XcacheBackend('Testing');
 		$thisBackend->setCache($thisCache);
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
-		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$thatCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
 		$thatBackend = new XcacheBackend('Testing');
 		$thatBackend->setCache($thatCache);
@@ -241,7 +241,7 @@ class XcacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function setUpBackend($accessible = FALSE) {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		if ($accessible) {
 			$accessibleClassName = $this->buildAccessibleProxy('\\TYPO3\\CMS\\Core\\Cache\\Backend\\XcacheBackend');
 			$backend = new $accessibleClassName('Testing');

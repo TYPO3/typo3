@@ -28,7 +28,7 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Database\\RelationHandler', array('purgeVersionedIds', 'purgeLiveVersionedIds'));
+		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Database\RelationHandler::class, array('purgeVersionedIds', 'purgeLiveVersionedIds'));
 	}
 
 	/**

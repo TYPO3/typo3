@@ -29,6 +29,6 @@ class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$invalidConfiguration = array(
 			'foo' => 'bar'
 		);
-		$this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Log\\Writer\\AbstractWriter', array($invalidConfiguration));
+		$this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, array($invalidConfiguration));
 	}
 }

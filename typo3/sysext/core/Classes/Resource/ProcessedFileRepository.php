@@ -30,7 +30,7 @@ class ProcessedFileRepository extends AbstractRepository {
 	 *
 	 * @var string
 	 */
-	protected $objectType = 'TYPO3\\CMS\\Core\\Resource\\ProcessedFile';
+	protected $objectType = \TYPO3\CMS\Core\Resource\ProcessedFile::class;
 
 	/**
 	 * Main File object storage table. Note that this repository also works on

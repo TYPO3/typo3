@@ -32,7 +32,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	 * Saving the singletons
 	 */
 	public function setUp() {
-		$this->pageRepositoryMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$this->pageRepositoryMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$GLOBALS['TSFE'] = new \stdClass;
 		$GLOBALS['TSFE']->sys_page = $this->pageRepositoryMock;
 	}
@@ -57,10 +57,10 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	 * @test
 	 */
 	public function imageFieldIsFilledWithPathOfImage() {
-		$fileReference = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array(), array(), '', FALSE);
+		$fileReference = $this->getMock(\TYPO3\CMS\Core\Resource\FileReference::class, array(), array(), '', FALSE);
 		$fileReference->expects($this->any())
 			->method('getOriginalFile')
-			->will($this->returnValue($this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE)));
+			->will($this->returnValue($this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE)));
 		$fileReference->expects($this->any())
 			->method('getPublicUrl')
 			->will($this->returnValue('path/to/file'));
@@ -123,13 +123,13 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	 * @dataProvider conteRowsOfDifferentTypesDataProvider
 	 */
 	public function migrationOfLegacyFieldsIsOnlyDoneWhenRelationFieldIsVisibleInType($dbRow, $expectedCaption, $fileProperties) {
-		$fileReference = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileReference', array(), array(), '', FALSE);
+		$fileReference = $this->getMock(\TYPO3\CMS\Core\Resource\FileReference::class, array(), array(), '', FALSE);
 		$fileReference->expects($this->once())
 			->method('getProperties')
 			->will($this->returnValue($fileProperties));
 		$fileReference->expects($this->any())
 			->method('getOriginalFile')
-			->will($this->returnValue($this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE)));
+			->will($this->returnValue($this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE)));
 		$fileReference->expects($this->any())
 			->method('getPublicUrl')
 			->will($this->returnValue('path/to/file'));
@@ -275,7 +275,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	 * @return \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected function getAccessibleFrontendContentAdapterServiceWithEmptyConfiguration() {
-		$frontendContentAdapterService = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Resource\\Service\\FrontendContentAdapterService', array('dummy'));
+		$frontendContentAdapterService = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::class, array('dummy'));
 		$frontendContentAdapterService->_setStatic('migrateFields', array());
 		return $frontendContentAdapterService;
 	}

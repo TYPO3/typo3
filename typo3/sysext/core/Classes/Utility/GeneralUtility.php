@@ -2383,7 +2383,7 @@ class GeneralUtility {
 				} catch (\Exception $e) {
 					$errorMessage = 'Error minifying java script: ' . $e->getMessage();
 					$error .= $errorMessage;
-					static::devLog($errorMessage, 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 2, array(
+					static::devLog($errorMessage, \TYPO3\CMS\Core\Utility\GeneralUtility::class, 2, array(
 						'JavaScript' => $script,
 						'Stack trace' => $e->getTrace(),
 						'hook' => $hookMethod
@@ -4243,7 +4243,7 @@ Connection: close
 					if ($errorMode == 2) {
 						throw new \InvalidArgumentException($errorMsg, 1294585865);
 					} elseif (!$errorMode) {
-						debug($errorMsg, 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility::callUserFunction');
+						debug($errorMsg, \TYPO3\CMS\Core\Utility\GeneralUtility::class . '::callUserFunction');
 					}
 				}
 			} else {
@@ -4251,7 +4251,7 @@ Connection: close
 				if ($errorMode == 2) {
 					throw new \InvalidArgumentException($errorMsg, 1294585866);
 				} elseif (!$errorMode) {
-					debug($errorMsg, 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility::callUserFunction');
+					debug($errorMsg, \TYPO3\CMS\Core\Utility\GeneralUtility::class . '::callUserFunction');
 				}
 			}
 		} else {
@@ -4263,7 +4263,7 @@ Connection: close
 				if ($errorMode == 2) {
 					throw new \InvalidArgumentException($errorMsg, 1294585867);
 				} elseif (!$errorMode) {
-					debug($errorMsg, 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility::callUserFunction');
+					debug($errorMsg, \TYPO3\CMS\Core\Utility\GeneralUtility::class . '::callUserFunction');
 				}
 			}
 		}
@@ -5031,7 +5031,7 @@ Connection: close
 		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
 		if (in_array('file', $log) !== FALSE) {
 			// In case lock is acquired before autoloader was defined:
-			if (class_exists('TYPO3\\CMS\\Core\\Locking\\Locker') === FALSE) {
+			if (class_exists(\TYPO3\CMS\Core\Locking\Locker::class) === FALSE) {
 				require_once ExtensionManagementUtility::extPath('core') . 'Classes/Locking/Locker.php';
 			}
 			// Write a longer message to the deprecation log
