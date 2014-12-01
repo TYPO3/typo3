@@ -34,21 +34,21 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function prepareSubject($driver, array $configuration) {
 		/** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection', array('getFieldInfoCache'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('getFieldInfoCache'), array(), '', FALSE);
 
 		$subject->conf = $configuration;
 
 		// Disable caching
-		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend', array(), array(), '', FALSE);
+		$mockCacheFrontend = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class, array(), array(), '', FALSE);
 		$subject->expects($this->any())->method('getFieldInfoCache')->will($this->returnValue($mockCacheFrontend));
 
 		// Inject SqlParser - Its logic is tested with the tests, too.
-		$sqlParser = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\SqlParser', array('dummy'), array(), '', FALSE);
+		$sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', FALSE);
 		$sqlParser->_set('databaseConnection', $subject);
 		$subject->SQLparser = $sqlParser;
 
 		// Mock away schema migration service from install tool
-		$installerSqlMock = $this->getMock('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService', array('getFieldDefinitions_fileContent'), array(), '', FALSE);
+		$installerSqlMock = $this->getMock(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class, array('getFieldDefinitions_fileContent'), array(), '', FALSE);
 		$installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
 		$subject->_set('installerSql', $installerSqlMock);
 

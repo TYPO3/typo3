@@ -28,9 +28,9 @@ class SqlParserTest extends AbstractTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		$subject = $this->getAccessibleMock('TYPO3\\CMS\\Dbal\\Database\\SqlParser', array('dummy'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', FALSE);
 
-		$mockDatabaseConnection = $this->getMock('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$mockDatabaseConnection = $this->getMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$mockDatabaseConnection->lastHandlerKey = '_DEFAULT';
 		$subject->_set('databaseConnection', $mockDatabaseConnection);
 

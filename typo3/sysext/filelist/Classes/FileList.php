@@ -768,7 +768,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		}
 		// Display PASTE button, if directory:
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
-		if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\Folder') && count($elFromTable) && $fileOrFolderObject->checkActionPermission('write')) {
+		if (is_a($fileOrFolderObject, \TYPO3\CMS\Core\Resource\Folder::class) && count($elFromTable) && $fileOrFolderObject->checkActionPermission('write')) {
 			$cells[] = '<a class="btn" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullIdentifier, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_pasteInto', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';
 		}
 		// Compile items into a DIV-element:
@@ -786,7 +786,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		$fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
 		// Edit metadata of file
 		try {
-			if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File') && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('write')) {
+			if (is_a($fileOrFolderObject, \TYPO3\CMS\Core\Resource\File::class) && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('write')) {
 				$metaData = $fileOrFolderObject->_getMetaData();
 				$data = array(
 					'sys_file_metadata' => array($metaData['uid'] => 'edit')
@@ -802,7 +802,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$cells['editmetadata'] = $this->spaceIcon;
 		}
 		// Edit file content (if editable)
-		if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File') && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
+		if (is_a($fileOrFolderObject, \TYPO3\CMS\Core\Resource\File::class) && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
 			$url = BackendUtility::getModuleUrl('file_edit', array('target' => $fullIdentifier));
 			$editOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
 			$cells['edit'] = '<a href="#" class="btn" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.editcontent') . '">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
@@ -818,9 +818,9 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$cells['rename'] = $this->spaceIcon;
 		}
 		if ($fileOrFolderObject->checkActionPermission('read')) {
-			if (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\Folder')) {
+			if (is_a($fileOrFolderObject, \TYPO3\CMS\Core\Resource\Folder::class)) {
 				$infoOnClick = 'top.launchView( \'_FOLDER\', \'' . $fullIdentifier . '\');return false;';
-			} elseif (is_a($fileOrFolderObject, 'TYPO3\\CMS\\Core\\Resource\\File')) {
+			} elseif (is_a($fileOrFolderObject, \TYPO3\CMS\Core\Resource\File::class)) {
 				$infoOnClick = 'top.launchView( \'_FILE\', \'' . $fullIdentifier . '\');return false;';
 			}
 			$cells['info'] = '<a href="#" class="btn" onclick="' . $infoOnClick . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.info') . '">' . IconUtility::getSpriteIcon('status-dialog-information') . '</a>';

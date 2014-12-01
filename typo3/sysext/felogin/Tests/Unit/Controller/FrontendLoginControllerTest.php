@@ -48,9 +48,9 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->testTableName = 'sys_domain';
 		$this->testHostName = 'hostname.tld';
 		$this->testSitePath = '/';
-		$this->accessibleFixture = $this->getAccessibleMock('TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController', array('dummy'));
-		$this->accessibleFixture->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+		$this->accessibleFixture = $this->getAccessibleMock(\TYPO3\CMS\Felogin\Controller\FrontendLoginController::class, array('dummy'));
+		$this->accessibleFixture->cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
 		$this->setUpFakeSitePathAndHost();
 	}
 
@@ -66,7 +66,7 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Mock database
 	 */
 	protected function setUpDatabaseMock() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
 		$GLOBALS['TYPO3_DB']
 			->expects($this->any())
 			->method('exec_SELECTgetRows')

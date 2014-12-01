@@ -10,13 +10,13 @@ if (TYPO3_MODE === 'BE') {
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_info',
-		'TYPO3\\CMS\\IndexedSearch\\Controller\\IndexedPagesController',
+		\TYPO3\CMS\IndexedSearch\Controller\IndexedPagesController::class,
 		NULL,
 		'LLL:EXT:indexed_search/locallang.xlf:mod_indexed_search'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_info',
-		'TYPO3\\CMS\\IndexedSearch\\Controller\\IndexingStatisticsController',
+		\TYPO3\CMS\IndexedSearch\Controller\IndexingStatisticsController::class,
 		NULL,
 		'LLL:EXT:indexed_search/locallang.xlf:mod2_indexed_search'
 	);
