@@ -59,10 +59,10 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getDropDown() {
 		$actionMenu = array();
-		$actionMenu[] = '<ul>';
+		$actionMenu[] = '<ul class="dropdown-list">';
 		foreach ($this->actionEntries as $linkConf) {
 			$actionMenu[] = '<li>';
-			$actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content">';
+			$actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content" class="dropdown-list-link">';
 			$actionMenu[] = $linkConf[2] . htmlspecialchars($linkConf[0]);
 			$actionMenu[] = '</a>';
 			$actionMenu[] = '</li>';
