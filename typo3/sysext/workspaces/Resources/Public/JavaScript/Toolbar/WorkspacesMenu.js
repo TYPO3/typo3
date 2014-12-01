@@ -70,16 +70,18 @@ define('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu', ['jquery'], function($) {
 					fsMod.recentIds['web'] = response.pageId;
 					var url = TYPO3.Backend.ContentContainer.getUrl();
 					url += (url.indexOf('?') == -1 ? '?' : '&') + '&id=' + response.pageId;
-					TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					if (TYPO3.Backend.NavigationContainer.PageTree) {
+						TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					}
 					TYPO3.Backend.ContentContainer.setUrl(url);
 
 				// when in web module reload, otherwise send the user to the web module
 				} else if (currentModuleLoaded.indexOf('web_') === 0) {
-					TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					if (TYPO3.Backend.NavigationContainer.PageTree) {
+						TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					}
 					TYPO3.ModuleMenu.App.reloadFrames();
-
 				} else if (TYPO3.configuration.pageModule) {
-					TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 					TYPO3.ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
 				}
 
