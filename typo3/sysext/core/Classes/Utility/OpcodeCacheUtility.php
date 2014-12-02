@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Core\Utility;
  * Class with helper functions for clearing the PHP opcache.
  * It auto detects the opcache system and invalidates/resets it.
  * http://forge.typo3.org/issues/55252
- * Supported opcaches are: OPcache (PHP 5.5), APC, WinCache, XCache, eAccelerator, ZendOptimizerPlus
+ * Supported opcaches are: OPcache >= 7.0 (PHP 5.5), WinCache, XCache >= 3.0.1
  *
  * @author Alexander Opitz <opitz@pluspol-interactive.de>
  */
@@ -40,7 +40,6 @@ class OpcodeCacheUtility {
 	 * Initialize the cache properties
 	 */
 	static protected function initialize() {
-		$apcVersion = phpversion('apc');
 		$xcVersion = phpversion('xcache');
 
 		static::$supportedCaches = array(
@@ -64,35 +63,11 @@ class OpcodeCacheUtility {
 				}
 			),
 
-			// The Alternative PHP Cache aka APC
-			// http://www.php.net/manual/de/book.apc.php
-			'APC' => array(
-				// Currently APCu identifies itself both as "apcu" and "apc" (for compatibility) although it doesn't
-				// provide the APC-opcache functionality
-				'active' => extension_loaded('apc') && !extension_loaded('apcu') && ini_get('apc.enabled') === '1',
-				'version' => $apcVersion,
-				// apc_clear_cache() since APC 2.0.0 so default yes. In cli it do not clear the http cache.
-				'canReset' => TRUE,
-				'canInvalidate' => self::canApcInvalidate(),
-				// Versions lower then 3.1.7 are known as malfunction
-				'error' => $apcVersion && VersionNumberUtility::convertVersionNumberToInteger($apcVersion) < 3001007,
-				'clearCallback' => function ($fileAbsPath) {
-					if ($fileAbsPath !== NULL && OpcodeCacheUtility::getCanInvalidate('APC')) {
-						// This may output a warning like: PHP Warning: apc_delete_file(): Could not stat file
-						// This warning isn't true, this means that apc was unable to generate the cache key
-						// which depends on the configuration of APC.
-						apc_delete_file($fileAbsPath);
-					} else {
-						apc_clear_cache('opcode');
-					}
-				}
-			),
-
 			// http://www.php.net/manual/de/book.wincache.php
 			'WinCache' => array(
 				'active' => extension_loaded('wincache') && ini_get('wincache.ocenabled') === '1',
 				'version' => phpversion('wincache'),
-				'canReset' => FALSE,
+				'canReset' => TRUE,
 				'canInvalidate' => TRUE, // wincache_refresh_if_changed()
 				'error' => FALSE,
 				'clearCallback' => function ($fileAbsPath) {
@@ -109,53 +84,13 @@ class OpcodeCacheUtility {
 			'XCache' => array(
 				'active' => extension_loaded('xcache'),
 				'version' => $xcVersion,
-				'canReset' => TRUE, // xcache_clear_cache()
-				'canInvalidate' => FALSE,
-				'error' => FALSE,
-				// API changed with XCache 3.0.0
-				// http://xcache.lighttpd.net/wiki/XcacheApi?action=diff&version=23&old_version=22
-				'clearCallback' => (
-					$xcVersion && VersionNumberUtility::convertVersionNumberToInteger($xcVersion) < 3000000 ?
-						function ($fileAbsPath) {
-							if (!ini_get('xcache.admin.enable_auth')) {
-								xcache_clear_cache(XC_TYPE_PHP, 0);
-							}
-						}
-						:
-						function ($fileAbsPath) {
-							if (!ini_get('xcache.admin.enable_auth')) {
-								xcache_clear_cache(XC_TYPE_PHP);
-							}
-						}
-				)
-			),
-
-			// https://github.com/eaccelerator/eaccelerator
-			//
-			// @see https://github.com/eaccelerator/eaccelerator/blob/master/doc/php/info.php
-	        // Only possible if we are in eaccelerator.admin_allowed_path and we can only remove data
-			// "that isn't used in the current requests"
-			'eAccelerator' => array(
-				'active' => extension_loaded('eAccelerator'),
-				'version' => phpversion('eaccelerator'),
-				'canReset' => FALSE,
-				'canInvalidate' => FALSE,
-				'error' => TRUE, // eAccelerator is more or less out of date and not functional for what we need.
-				'clearCallback' => function ($fileAbsPath) {
-					eaccelerator_clear();
-				}
-			),
-
-			// https://github.com/zendtech/ZendOptimizerPlus
-			// http://files.zend.com/help/Zend-Server/zend-server.htm#zendoptimizerplus.html
-			'ZendOptimizerPlus' => array(
-				'active' => extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.enable') === '1',
-				'version' => phpversion('Zend Optimizer+'),
-				'canReset' => TRUE, // accelerator_reset()
+				'canReset' => !ini_get('xcache.admin.enable_auth'), // xcache_clear_cache()
 				'canInvalidate' => FALSE,
 				'error' => FALSE,
 				'clearCallback' => function ($fileAbsPath) {
-					accelerator_reset();
+					if (!ini_get('xcache.admin.enable_auth')) {
+						xcache_clear_cache(XC_TYPE_PHP);
+					}
 				}
 			),
 		);
@@ -207,36 +142,5 @@ class OpcodeCacheUtility {
 			static::initialize();
 		}
 		return static::$activeCaches;
-	}
-
-	/**
-	 * Checks if the APC configuration is useable to clear cache of one file.
-	 * https://bugs.php.net/bug.php?id=66819
-	 *
-	 * @return bool Returns TRUE if file can be invalidated and FALSE if complete cache needs to be removed
-	 */
-	static public function canApcInvalidate() {
-		// apc_delete_file() should exists since APC 3.1.1 but you never know so default is no
-		$canInvalidate = FALSE;
-
-		if (function_exists('apc_delete_file')) {
-			// Deleting files from cache depends on generating the cache key.
-			// This cache key generation depends on unnecessary configuration options
-			// http://git.php.net/?p=pecl/caching/apc.git;a=blob;f=apc_cache.c;h=d15cf8c1b4b9d09b9bac75b16c062c8b40458dda;hb=HEAD#l931
-
-			// If stat=0 then canonicalized path may be used
-			$stat = (int)ini_get('apc.stat');
-			// If canonicalize (default = 1) then file_update_protection isn't checked
-			$canonicalize = (int)ini_get('apc.canonicalize');
-			// If file file_update_protection is checked, then we will fail, 'cause we generated the file and then try to
-			// remove it. But the file is not older than file_update_protection and therefore hash generation will stop with error.
-			$protection = (int)ini_get('apc.file_update_protection');
-
-			if ($protection === 0 || ($stat === 0 && $canonicalize === 1)) {
-				$canInvalidate = TRUE;
-			}
-		}
-
-		return $canInvalidate;
 	}
 }
