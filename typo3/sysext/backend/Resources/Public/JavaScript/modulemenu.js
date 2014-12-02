@@ -33,7 +33,7 @@ TYPO3.ModuleMenu.App = {
 
 		// load the start module
 		if (top.startInModule && top.startInModule[0] && TYPO3.jQuery('#' + top.startInModule[0]).length > 0) {
-			me.showModule(top.startInModule[0]);
+			me.showModule(top.startInModule[0], top.startInModule[1]);
 		} else {
 			// fetch first module
 			me.showModule(TYPO3.jQuery('.typo3-module-menu-item:first').attr('id'));
