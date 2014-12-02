@@ -66,7 +66,15 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function menuConfig() {
 		$this->MOD_MENU = array('mode' => array());
 		$this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/locallang.xlf:task_overview');
-		$this->MOD_MENU['mode']['tasks'] = 'Tasks';
+		$this->MOD_MENU['mode']['tasks'] =  $this->getLanguageService()->sL('LLL:EXT:taskcenter/locallang.xlf:task_tasks');
+		/* Copied from parent::menuConfig, because parent is hardcoded to menu.function,
+		 * however menu.function is already used for the individual tasks.
+		 * Therefore we use menu.mode here.
+		 */
+		// Page/be_user TSconfig settings and blinding of menu-items
+		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
+		$this->MOD_MENU['mode'] = $this->mergeExternalItems($this->MCONF['name'], 'mode', $this->MOD_MENU['mode']);
+		$this->MOD_MENU['mode'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['mode'], 'menu.mode');
 		parent::menuConfig();
 	}
 
