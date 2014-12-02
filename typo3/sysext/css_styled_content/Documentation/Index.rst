@@ -16,7 +16,7 @@ css_styled_content
       css_styled_content
 
 :Version:
-      6.2
+      |release|
 
 :Language:
       en
@@ -28,7 +28,7 @@ css_styled_content
       css_styled_content, content elements, rendering, TypoScript
 
 :Copyright:
-      2000-2013
+      2000-2014
 
 :Author:
       TYPO3 CMS Core Development Team

@@ -16,7 +16,7 @@ htmlArea RTE
       rtehtmlarea
 
 :Version:
-      6.2
+      |release|
 
 :Language:
       en
@@ -28,7 +28,7 @@ htmlArea RTE
       rte, rich text editor
 
 :Copyright:
-      2000-2013
+      2000-2014
 
 :Author:
       TYPO3 CMS Core Development Team

@@ -16,7 +16,7 @@ Linkvalidator
       linkvalidator
 
 :Version:
-      6.2
+      |release|
 
 :Language:
       en
@@ -32,7 +32,7 @@ Linkvalidator
       link validation, linkvalidator
 
 :Copyright:
-      2000-2013
+      2000-2014
 
 :Author:
       TYPO3 CMS Core Development Team

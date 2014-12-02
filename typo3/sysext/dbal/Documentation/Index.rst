@@ -16,7 +16,7 @@ Database Abstraction Layer
       dbal
 
 :Version:
-      6.2
+      |release|
 
 :Language:
       en
@@ -30,7 +30,7 @@ Database Abstraction Layer
       database, abstraction, oracle, postgresql, mssql
 
 :Copyright:
-      2000-2013
+      2000-2014
 
 :Author:
       TYPO3 CMS Core Development Team

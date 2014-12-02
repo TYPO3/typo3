@@ -16,7 +16,7 @@ Form
       form
 
 :Version:
-      6.2
+      |release|
 
 :Language:
       en

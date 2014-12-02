@@ -16,7 +16,7 @@ RSA authentication
       rsaauth
 
 :Version:
-      6.2
+      |release|
 
 :Language:
       en
@@ -28,7 +28,7 @@ RSA authentication
       rsa authentication, rsa, encryption
 
 :Copyright:
-      2000-2013
+      2000-2014
 
 :Author:
       TYPO3 CMS Core Development Team

@@ -6,6 +6,6 @@
 conf.py:
   copyright: 1997-2014
   project: Form Library, Plugin and Wizard
-  version: 7.1.0
-  release: 7.1.0
+  version: 7
+  release: 7
 ...
