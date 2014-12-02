@@ -406,8 +406,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$label = $theKey ? $theKey : ($bType == 'setup' ? $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('setupRoot'), 'toUpper') : $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('constantRoot'), 'toUpper'));
 			$theOutput .= $this->pObj->doc->sectionEnd();
 
-			$theOutput .= '<h2>' . $label . ' ' . $remove . '</h2>';
-			$theOutput .= '<div class="text-nowrap">' . $tree  .  '</div>';
+			$theOutput .= '<div class="panel panel-default">';
+			$theOutput .= '<div class="panel-heading">';
+			$theOutput .= '<strong>' . $label . ' ' . $remove . '</strong>';
+			$theOutput .= '</div>';
+			$theOutput .= '<div class="panel-body">' . $tree  .  '</div>';
+			$theOutput .= '</div>';
 
 			// second row options
 			$menu = '<div class="tsob-menu-row2">';
