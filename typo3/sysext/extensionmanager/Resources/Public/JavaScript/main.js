@@ -11,7 +11,7 @@
 
 		$('.dataTables_wrapper .dataTables_filter input').clearable({
 			onClear: function() {
-				datatable.search('');
+				datatable.search('').draw();
 			}
 		});
 
@@ -67,7 +67,7 @@
 
 		// restore filter
 		if(datatable.length && getVars['search']) {
-			datatable.search(getVars['search']);
+			datatable.search(getVars['search']).draw();
 		}
 	}
 
