@@ -45,7 +45,7 @@
 			'language': {
 				'search': 'Filter results:'
 			},
-			'order': false,
+			'ordering': false,
 			'drawCallback': bindDownload
 		});
 
