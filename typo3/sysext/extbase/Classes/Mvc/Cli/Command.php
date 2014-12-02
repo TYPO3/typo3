@@ -124,7 +124,7 @@ class Command {
 	 * @return string A short description
 	 */
 	public function getShortDescription() {
-		$lines = explode(chr(10), $this->getCommandMethodReflection()->getDescription());
+		$lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
 		return count($lines) > 0 ? trim($lines[0]) : '<no description available>';
 	}
 
@@ -136,7 +136,7 @@ class Command {
 	 * @return string A longer description of this command
 	 */
 	public function getDescription() {
-		$lines = explode(chr(10), $this->getCommandMethodReflection()->getDescription());
+		$lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
 		array_shift($lines);
 		$descriptionLines = array();
 		foreach ($lines as $line) {
@@ -145,7 +145,7 @@ class Command {
 				$descriptionLines[] = $trimmedLine;
 			}
 		}
-		return implode(chr(10), $descriptionLines);
+		return implode(LF, $descriptionLines);
 	}
 
 	/**

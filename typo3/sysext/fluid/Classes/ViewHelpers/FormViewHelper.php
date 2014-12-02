@@ -133,9 +133,9 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$formContent = $this->renderChildren();
 
 		if ($this->arguments['hiddenFieldClassName'] !== NULL) {
-			$content = chr(10) . '<div class="' . htmlspecialchars($this->arguments['hiddenFieldClassName']) . '">';
+			$content = LF . '<div class="' . htmlspecialchars($this->arguments['hiddenFieldClassName']) . '">';
 		} else {
-			$content = chr(10) . '<div>';
+			$content = LF . '<div>';
 		}
 
 		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
@@ -145,7 +145,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		// Render the trusted list of all properties after everything else has been rendered
 		$content .= $this->renderTrustedPropertiesField();
 
-		$content .= chr(10) . '</div>' . chr(10);
+		$content .= LF . '</div>' . LF;
 		$content .= $formContent;
 		$this->tag->setContent($content);
 		$this->removeFieldNamePrefixFromViewHelperVariableContainer();
@@ -183,7 +183,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 			$additionalIdentityProperties = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, 'additionalIdentityProperties');
 			$output = '';
 			foreach ($additionalIdentityProperties as $identity) {
-				$output .= chr(10) . $identity;
+				$output .= LF . $identity;
 			}
 			return $output;
 		}
@@ -203,14 +203,14 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$vendorName = $request->getControllerVendorName();
 		$controllerName = $request->getControllerName();
 		$actionName = $request->getControllerActionName();
-		$result = chr(10);
-		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . chr(10);
+		$result = LF;
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . LF;
 		if ($vendorName !== NULL) {
-			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@vendor]') . '" value="' . $vendorName . '" />' . LF;
 		}
-		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . chr(10);
-		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . chr(10);
-		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . chr(10);
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . LF;
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . LF;
+		$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . LF;
 
 		return $result;
 	}

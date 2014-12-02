@@ -237,7 +237,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	 */
 	protected function createFieldsValuesArray($in) {
 		$ret = array();
-		$in = explode(chr(10), $in);
+		$in = explode(LF, $in);
 		foreach ($in as $v) {
 			$fv = explode('=', $v);
 			$ret[$fv[0]] = $fv[1];

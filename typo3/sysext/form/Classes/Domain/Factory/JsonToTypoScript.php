@@ -381,24 +381,24 @@ class JsonToTypoScript {
 
 			case 'typo3-form-wizard-elements-basic-textline':
 				if ($value === 'back') {
-					$parent[$elementCounter . '.']['layout'] = '<input />' . chr(10) . '<label />';
+					$parent[$elementCounter . '.']['layout'] = '<input />' . LF . '<label />';
 				}
 				break;
 			case 'typo3-form-wizard-elements-basic-checkbox':
 
 			case 'typo3-form-wizard-elements-basic-radio':
 				if ($value === 'front') {
-					$parent[$elementCounter . '.']['layout'] = '<label />' . chr(10) . '<input />';
+					$parent[$elementCounter . '.']['layout'] = '<label />' . LF . '<input />';
 				}
 				break;
 			case 'typo3-form-wizard-elements-basic-select':
 				if ($value === 'back') {
-					$parent[$elementCounter . '.']['layout'] = '<select>' . chr(10) . '<elements />' . chr(10) . '</select>' . chr(10) . '<label />';
+					$parent[$elementCounter . '.']['layout'] = '<select>' . LF . '<elements />' . LF . '</select>' . LF . '<label />';
 				}
 				break;
 			case 'typo3-form-wizard-elements-basic-textarea':
 				if ($value === 'back') {
-					$parent[$elementCounter . '.']['layout'] = '<textarea />' . chr(10) . '<label />';
+					$parent[$elementCounter . '.']['layout'] = '<textarea />' . LF . '<label />';
 				}
 				break;
 			default:
@@ -542,18 +542,18 @@ class JsonToTypoScript {
 	protected function typoscriptArrayToString(array $typoscriptArray, $addKey = '', $tabCount = -1) {
 		$typoscript = '';
 		if ($addKey != '') {
-			$typoscript .= str_repeat(chr(9), $tabCount) . str_replace('.', '', $addKey) . ' {' . chr(10);
+			$typoscript .= str_repeat(TAB, $tabCount) . str_replace('.', '', $addKey) . ' {' . LF;
 		}
 		$tabCount++;
 		foreach ($typoscriptArray as $key => $value) {
 			if (!is_array($value)) {
-				if (strstr($value, chr(10))) {
-					$typoscript .= str_repeat(chr(9), $tabCount) . $key . ' (' . chr(10);
-					$value = str_replace(chr(10), chr(10) . str_repeat(chr(9), ($tabCount + 1)), $value);
-					$typoscript .= str_repeat(chr(9), ($tabCount + 1)) . $value . chr(10);
-					$typoscript .= str_repeat(chr(9), $tabCount) . ')' . chr(10);
+				if (strstr($value, LF)) {
+					$typoscript .= str_repeat(TAB, $tabCount) . $key . ' (' . LF;
+					$value = str_replace(LF, LF . str_repeat(TAB, ($tabCount + 1)), $value);
+					$typoscript .= str_repeat(TAB, ($tabCount + 1)) . $value . LF;
+					$typoscript .= str_repeat(TAB, $tabCount) . ')' . LF;
 				} else {
-					$typoscript .= str_repeat(chr(9), $tabCount) . $key . ' = ' . $value . chr(10);
+					$typoscript .= str_repeat(TAB, $tabCount) . $key . ' = ' . $value . LF;
 				}
 			} else {
 				$typoscript .= $this->typoscriptArrayToString($value, $key, $tabCount);
@@ -561,7 +561,7 @@ class JsonToTypoScript {
 		}
 		if ($addKey != '') {
 			$tabCount--;
-			$typoscript .= str_repeat(chr(9), $tabCount) . '}' . chr(10);
+			$typoscript .= str_repeat(TAB, $tabCount) . '}' . LF;
 		}
 		return $typoscript;
 	}

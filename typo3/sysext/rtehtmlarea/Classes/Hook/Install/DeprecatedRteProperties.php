@@ -209,7 +209,7 @@ class DeprecatedRteProperties extends AbstractUpdate {
 		}
 		$db = $this->getDatabaseConnection();
 		$res = $db->exec_SELECTquery($fields, $table, $where);
-		$dbQueries[] = str_replace(chr(10), ' ', $db->debug_lastBuiltQuery);
+		$dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
 		if ($db->sql_error()) {
 			$customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
 		}
@@ -256,7 +256,7 @@ class DeprecatedRteProperties extends AbstractUpdate {
 				'TSconfig' => $page['TSconfig']
 			);
 			$db->exec_UPDATEquery($table, $where, $field_values);
-			$dbQueries[] = str_replace(chr(10), ' ', $db->debug_lastBuiltQuery);
+			$dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
 			if ($db->sql_error()) {
 				$customMessages .= 'SQL-ERROR: ' . htmlspecialchars($db->sql_error()) . LF . LF;
 			}

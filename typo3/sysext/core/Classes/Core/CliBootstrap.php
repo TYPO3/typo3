@@ -34,7 +34,7 @@ class CliBootstrap {
 		if (substr(php_sapi_name(), 0, 3) === 'cgi') {
 			self::initializeCgiCompatibilityLayerOrDie();
 		} elseif (php_sapi_name() !== 'cli') {
-			die('Not called from a command line interface (e.g. a shell or scheduler).' . chr(10));
+			die('Not called from a command line interface (e.g. a shell or scheduler).' . LF);
 		}
 	}
 
@@ -84,10 +84,10 @@ class CliBootstrap {
 		$checkEnvVars = array('HTTP_USER_AGENT', 'HTTP_HOST', 'SERVER_NAME', 'REMOTE_ADDR', 'REMOTE_PORT', 'SERVER_PROTOCOL');
 		foreach ($checkEnvVars as $var) {
 			if (array_key_exists($var, $_SERVER)) {
-				echo 'SECURITY CHECK FAILED! This script cannot be used within your browser!' . chr(10);
-				echo 'If you are sure that we run in a shell or cronjob, please unset' . chr(10);
-				echo 'environment variable ' . $var . ' (usually using \'unset ' . $var . '\')' . chr(10);
-				echo 'before starting this script.' . chr(10);
+				echo 'SECURITY CHECK FAILED! This script cannot be used within your browser!' . LF;
+				echo 'If you are sure that we run in a shell or cronjob, please unset' . LF;
+				echo 'environment variable ' . $var . ' (usually using \'unset ' . $var . '\')' . LF;
+				echo 'before starting this script.' . LF;
 				die;
 			}
 		}

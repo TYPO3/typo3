@@ -153,7 +153,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 		if ($command->getDescription() !== '') {
 			$this->outputLine();
 			$this->outputLine('DESCRIPTION:');
-			$descriptionLines = explode(chr(10), $command->getDescription());
+			$descriptionLines = explode(LF, $command->getDescription());
 			foreach ($descriptionLines as $descriptionLine) {
 				$this->outputLine('%-2s%s', array(' ', $descriptionLine));
 			}

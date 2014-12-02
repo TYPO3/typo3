@@ -134,11 +134,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		if ($this->hasArgument('prependOptionLabel')) {
 			$value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
 			$label = $this->arguments['prependOptionLabel'];
-			$output .= $this->renderOptionTag($value, $label, FALSE) . chr(10);
+			$output .= $this->renderOptionTag($value, $label, FALSE) . LF;
 		}
 		foreach ($options as $value => $label) {
 			$isSelected = $this->isSelected($value);
-			$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+			$output .= $this->renderOptionTag($value, $label, $isSelected) . LF;
 		}
 		return $output;
 	}

@@ -297,7 +297,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				$tableOptions = array('postgres' => 'WITHOUT OIDS');
 				// Fetch table/index generation query:
 				$tableName = $this->databaseConnection->quoteName($components['TABLE'], NULL, TRUE);
-				$query = array_merge($this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->CreateTableSQL($tableName, implode(',' . chr(10), $fieldsKeys), $tableOptions), $indexKeys);
+				$query = array_merge($this->databaseConnection->handlerInstance[$this->databaseConnection->lastHandlerKey]->DataDictionary->CreateTableSQL($tableName, implode(',' . LF, $fieldsKeys), $tableOptions), $indexKeys);
 				break;
 		}
 		return $query;

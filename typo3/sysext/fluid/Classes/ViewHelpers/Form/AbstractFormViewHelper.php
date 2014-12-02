@@ -71,12 +71,12 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 		// Using that one breaks re-submission of data in forms in case of an error.
 		$identifier = $object->getUid();
 		if ($identifier === NULL) {
-			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
+			return LF . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . LF;
 		}
 		$name = $this->prefixFieldName($name) . '[__identity]';
 		$this->registerFieldNameForFormTokenGeneration($name);
 
-		return chr(10) . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . chr(10);
+		return LF . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . LF;
 	}
 
 	/**

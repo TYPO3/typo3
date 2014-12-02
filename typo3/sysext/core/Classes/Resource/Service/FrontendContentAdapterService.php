@@ -120,7 +120,7 @@ class FrontendContentAdapterService {
 							$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
 						} else {
 							// For all other fields, separate by newline
-							$fieldContents = implode(chr(10), $fileFieldContents[$oldFieldType]);
+							$fieldContents = implode(LF, $fileFieldContents[$oldFieldType]);
 						}
 						$row[$oldFieldName] = $fieldContents;
 					}

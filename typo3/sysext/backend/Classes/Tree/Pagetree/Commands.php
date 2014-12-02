@@ -112,7 +112,7 @@ class Commands {
 			$data['pages'][$node->getWorkspaceId()][$node->getTextSourceField()] = $updatedLabel;
 			self::processTceCmdAndDataMap(array(), $data);
 		} else {
-			throw new \RuntimeException(implode(chr(10), array('Editing title of page id \'' . $node->getWorkspaceId() . '\' failed. Editing default language is not allowed.')), 1365513336);
+			throw new \RuntimeException(implode(LF, array('Editing title of page id \'' . $node->getWorkspaceId() . '\' failed. Editing default language is not allowed.')), 1365513336);
 		}
 	}
 
@@ -211,7 +211,7 @@ class Commands {
 		}
 		// check errors
 		if (count($tce->errorLog)) {
-			throw new \RuntimeException(implode(chr(10), $tce->errorLog), 1333754629);
+			throw new \RuntimeException(implode(LF, $tce->errorLog), 1333754629);
 		}
 		return $returnValues;
 	}

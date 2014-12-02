@@ -39,12 +39,12 @@ class DocCommentParser {
 	public function parseDocComment($docComment) {
 		$this->description = '';
 		$this->tags = array();
-		$lines = explode(chr(10), $docComment);
+		$lines = explode(LF, $docComment);
 		foreach ($lines as $line) {
 			if (strlen($line) > 0 && strpos($line, '@') !== FALSE) {
 				$this->parseTag(substr($line, strpos($line, '@')));
 			} elseif (count($this->tags) === 0) {
-				$this->description .= preg_replace('/\\s*\\/?[\\\\*]*(.*)$/', '$1', $line) . chr(10);
+				$this->description .= preg_replace('/\\s*\\/?[\\\\*]*(.*)$/', '$1', $line) . LF;
 			}
 		}
 		$this->description = trim($this->description);

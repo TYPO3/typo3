@@ -49,7 +49,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstr
 			$childElement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $modelChild, $spaces);
 			$elementContent = $childElement->render();
 			if ($elementContent != '') {
-				$content = $childElement->render() . chr(10);
+				$content = $childElement->render() . LF;
 			}
 		}
 		return $content;

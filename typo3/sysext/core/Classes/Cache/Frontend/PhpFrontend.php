@@ -60,7 +60,7 @@ class PhpFrontend extends StringFrontend {
 				throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1264023825);
 			}
 		}
-		$sourceCode = '<?php' . chr(10) . $sourceCode . chr(10) . '#';
+		$sourceCode = '<?php' . LF . $sourceCode . LF . '#';
 		$this->backend->set($entryIdentifier, $sourceCode, $tags, $lifetime);
 	}
 

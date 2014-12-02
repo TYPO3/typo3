@@ -216,8 +216,8 @@ class CompatVersionUpdate extends AbstractUpdate {
 		$upgradeWizardBoxes = '';
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
 			if ($details['version'] > $oldVersion && $details['version'] <= $newVersion) {
-				$description = str_replace(chr(10), '<br />', $details['description']);
-				$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
+				$description = str_replace(LF, '<br />', $details['description']);
+				$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(LF, '<br />', $details['description_acknowledge']) : '';
 				$upgradeWizardBoxes .= '
 					<div style="border: 1px solid; padding: 0 10px 10px 10px; margin: 10px; width: 500px;">
 						<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>

@@ -708,7 +708,7 @@ class FormsController {
 					if ($vv['type'] == 'select' || $vv['type'] == 'radio') {
 						$options = str_replace(',', '', $vv['options']);
 						$options = str_replace(
-							array(CR . LF, CR, LF),
+							array(CRLF, CR, LF),
 							', ',
 							$options);
 						$thisLine[2] = $options;

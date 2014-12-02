@@ -94,7 +94,7 @@ class HtmlView extends \TYPO3\CMS\Form\View\Mail\Html\Element\ContainerElementVi
 	 */
 	public function get() {
 		$node = $this->render('element', FALSE);
-		$content = chr(10) . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8') . chr(10);
+		$content = LF . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8') . LF;
 		return $content;
 	}
 

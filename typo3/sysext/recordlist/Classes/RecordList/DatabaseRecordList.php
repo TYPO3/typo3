@@ -1786,7 +1786,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// versions lower then 9. See for more information: http://support.microsoft.com/kb/323308
 		header("Cache-Control: ''");
 		// Printing the content of the CSV lines:
-		echo implode(chr(13) . chr(10), $this->csvLines);
+		echo implode(CRLF, $this->csvLines);
 		// Exits:
 		die;
 	}

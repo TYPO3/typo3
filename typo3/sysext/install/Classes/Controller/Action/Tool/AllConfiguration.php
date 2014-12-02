@@ -69,7 +69,7 @@ class AllConfiguration extends Action\AbstractAction {
 				if (isset($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key])) {
 					// Don't allow editing stuff which is added by extensions
 					// Make sure we fix potentially duplicated entries from older setups
-					$potentialValue = str_replace(array('\'.chr(10).\'', '\' . LF . \''), array(LF, LF), $value);
+					$potentialValue = str_replace(array('\' . LF . \'', '\' . LF . \''), array(LF, LF), $value);
 					while (preg_match('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', '', $potentialValue)) {
 						$potentialValue = preg_replace('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', '', $potentialValue);
 					}
@@ -86,7 +86,7 @@ class AllConfiguration extends Action\AbstractAction {
 					$itemData['description'] = $description;
 					if ($isTextarea) {
 						$itemData['type'] = 'textarea';
-						$itemData['value'] = str_replace(array('\'.chr(10).\'', '\' . LF . \''), array(LF, LF), $value);
+						$itemData['value'] = str_replace(array('\' . LF . \'', '\' . LF . \''), array(LF, LF), $value);
 					} elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
 						$itemData['type'] = 'checkbox';
 						$itemData['value'] = $value ? '1' : '0';

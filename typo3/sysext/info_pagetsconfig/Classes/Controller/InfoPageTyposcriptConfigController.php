@@ -91,7 +91,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 						$onclickUrl = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
 						$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $GLOBALS['LANG']->getLL('editTSconfig', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					}
-					$TScontent = nl2br(htmlspecialchars(trim($v) . chr(10)));
+					$TScontent = nl2br(htmlspecialchars(trim($v) . LF));
 					$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 					$tsparser->lineNumberOffset = 0;
 					$TScontent = $tsparser->doSyntaxHighlight(trim($v) . LF);

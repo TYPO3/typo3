@@ -205,29 +205,29 @@ EOD;
 	 * @see convert()
 	 */
 	protected function convertViewHelperNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $node) {
-		$initializationPhpCode = '// Rendering ViewHelper ' . $node->getViewHelperClassName() . chr(10);
+		$initializationPhpCode = '// Rendering ViewHelper ' . $node->getViewHelperClassName() . LF;
 
 		// Build up $arguments array
 		$argumentsVariableName = $this->variableName('arguments');
-		$initializationPhpCode .= sprintf('%s = array();', $argumentsVariableName) . chr(10);
+		$initializationPhpCode .= sprintf('%s = array();', $argumentsVariableName) . LF;
 
 		$alreadyBuiltArguments = array();
 		foreach ($node->getArguments() as $argumentName => $argumentValue) {
 			$converted = $this->convert($argumentValue);
 			$initializationPhpCode .= $converted['initialization'];
-			$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $argumentsVariableName, $argumentName, $converted['execution']) . chr(10);
+			$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $argumentsVariableName, $argumentName, $converted['execution']) . LF;
 			$alreadyBuiltArguments[$argumentName] = TRUE;
 		}
 
 		foreach ($node->getUninitializedViewHelper()->prepareArguments() as $argumentName => $argumentDefinition) {
 			if (!isset($alreadyBuiltArguments[$argumentName])) {
-				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $argumentsVariableName, $argumentName, var_export($argumentDefinition->getDefaultValue(), TRUE)) . chr(10);
+				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $argumentsVariableName, $argumentName, var_export($argumentDefinition->getDefaultValue(), TRUE)) . LF;
 			}
 		}
 
 		// Build up closure which renders the child nodes
 		$renderChildrenClosureVariableName = $this->variableName('renderChildrenClosure');
-		$initializationPhpCode .= sprintf('%s = %s;', $renderChildrenClosureVariableName, $this->wrapChildNodesInClosure($node)) . chr(10);
+		$initializationPhpCode .= sprintf('%s = %s;', $renderChildrenClosureVariableName, $this->wrapChildNodesInClosure($node)) . LF;
 
 		if ($node->getUninitializedViewHelper() instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface) {
 			// ViewHelper is compilable
@@ -245,13 +245,13 @@ EOD;
 		// ViewHelper is not compilable, so we need to instanciate it directly and render it.
 		$viewHelperVariableName = $this->variableName('viewHelper');
 
-		$initializationPhpCode .= sprintf('%s = $self->getViewHelper(\'%s\', $renderingContext, \'%s\');', $viewHelperVariableName, $viewHelperVariableName, $node->getViewHelperClassName()) . chr(10);
-		$initializationPhpCode .= sprintf('%s->setArguments(%s);', $viewHelperVariableName, $argumentsVariableName) . chr(10);
-		$initializationPhpCode .= sprintf('%s->setRenderingContext($renderingContext);', $viewHelperVariableName) . chr(10);
+		$initializationPhpCode .= sprintf('%s = $self->getViewHelper(\'%s\', $renderingContext, \'%s\');', $viewHelperVariableName, $viewHelperVariableName, $node->getViewHelperClassName()) . LF;
+		$initializationPhpCode .= sprintf('%s->setArguments(%s);', $viewHelperVariableName, $argumentsVariableName) . LF;
+		$initializationPhpCode .= sprintf('%s->setRenderingContext($renderingContext);', $viewHelperVariableName) . LF;
 
-		$initializationPhpCode .= sprintf('%s->setRenderChildrenClosure(%s);', $viewHelperVariableName, $renderChildrenClosureVariableName) . chr(10);
+		$initializationPhpCode .= sprintf('%s->setRenderChildrenClosure(%s);', $viewHelperVariableName, $renderChildrenClosureVariableName) . LF;
 
-		$initializationPhpCode .= '// End of ViewHelper ' . $node->getViewHelperClassName() . chr(10);
+		$initializationPhpCode .= '// End of ViewHelper ' . $node->getViewHelperClassName() . LF;
 
 		return array(
 			'initialization' => $initializationPhpCode,
@@ -277,22 +277,22 @@ EOD;
 	 * @see convert()
 	 */
 	protected function convertArrayNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ArrayNode $node) {
-		$initializationPhpCode = '// Rendering Array' . chr(10);
+		$initializationPhpCode = '// Rendering Array' . LF;
 		$arrayVariableName = $this->variableName('array');
 
-		$initializationPhpCode .= sprintf('%s = array();', $arrayVariableName) . chr(10);
+		$initializationPhpCode .= sprintf('%s = array();', $arrayVariableName) . LF;
 
 		foreach ($node->getInternalArray() as $key => $value) {
 			if ($value instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode) {
 				$converted = $this->convert($value);
 				$initializationPhpCode .= $converted['initialization'];
-				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $arrayVariableName, $key, $converted['execution']) . chr(10);
+				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $arrayVariableName, $key, $converted['execution']) . LF;
 			} elseif (is_numeric($value)) {
 				// this case might happen for simple values
-				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $arrayVariableName, $key, $value) . chr(10);
+				$initializationPhpCode .= sprintf('%s[\'%s\'] = %s;', $arrayVariableName, $key, $value) . LF;
 			} else {
 				// this case might happen for simple values
-				$initializationPhpCode .= sprintf('%s[\'%s\'] = \'%s\';', $arrayVariableName, $key, $this->escapeTextForUseInSingleQuotes($value)) . chr(10);
+				$initializationPhpCode .= sprintf('%s[\'%s\'] = \'%s\';', $arrayVariableName, $key, $this->escapeTextForUseInSingleQuotes($value)) . LF;
 			}
 		}
 		return array(
@@ -319,13 +319,13 @@ EOD;
 				return $converted;
 			default:
 				$outputVariableName = $this->variableName('output');
-				$initializationPhpCode = sprintf('%s = \'\';', $outputVariableName) . chr(10);
+				$initializationPhpCode = sprintf('%s = \'\';', $outputVariableName) . LF;
 
 				foreach ($node->getChildNodes() as $childNode) {
 					$converted = $this->convert($childNode);
 
-					$initializationPhpCode .= $converted['initialization'] . chr(10);
-					$initializationPhpCode .= sprintf('%s .= %s;', $outputVariableName, $converted['execution']) . chr(10);
+					$initializationPhpCode .= $converted['initialization'] . LF;
+					$initializationPhpCode .= sprintf('%s .= %s;', $outputVariableName, $converted['execution']) . LF;
 				}
 
 				return array(
@@ -341,7 +341,7 @@ EOD;
 	 * @see convert()
 	 */
 	protected function convertBooleanNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode $node) {
-		$initializationPhpCode = '// Rendering Boolean node' . chr(10);
+		$initializationPhpCode = '// Rendering Boolean node' . LF;
 		if ($node->getComparator() !== NULL) {
 			$convertedLeftSide = $this->convert($node->getLeftSide());
 			$convertedRightSide = $this->convert($node->getRightSide());
@@ -374,10 +374,10 @@ EOD;
 	 */
 	public function wrapChildNodesInClosure(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
 		$closure = '';
-		$closure .= 'function() use ($renderingContext, $self) {' . chr(10);
+		$closure .= 'function() use ($renderingContext, $self) {' . LF;
 		$convertedSubNodes = $this->convertListOfSubNodes($node);
 		$closure .= $convertedSubNodes['initialization'];
-		$closure .= sprintf('return %s;', $convertedSubNodes['execution']) . chr(10);
+		$closure .= sprintf('return %s;', $convertedSubNodes['execution']) . LF;
 		$closure .= '}';
 		return $closure;
 	}
