@@ -11693,6 +11693,8 @@ fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.active {
   right: 5px;
 }
 .typo3-topbar-navigation-items .dropdown-menu {
+  left: auto;
+  right: 0;
   margin: 0;
   padding: 8px 16px;
   color: #dddddd;
@@ -11899,6 +11901,8 @@ fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.active {
   margin-top: -8px;
 }
 .live-search-list {
+  left: auto;
+  right: 0;
   margin: 0;
   padding: 8px 16px;
   color: #dddddd;
@@ -11910,6 +11914,7 @@ fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.active {
   border-radius: 0 0 2px 2px;
   -webkit-box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.15);
   box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.15);
+  right: auto;
   padding: 0;
 }
 .live-search-list a {
