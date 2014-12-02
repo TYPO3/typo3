@@ -598,6 +598,17 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @param string $packageKey
 	 */
 	public function deactivatePackage($packageKey) {
+		$this->sortAvailablePackagesByDependencies();
+
+		foreach ($this->packageStatesConfiguration['packages'] as $packageStateKey => $packageStateConfiguration) {
+			if ($packageKey === $packageStateKey || empty($packageStateConfiguration['dependencies']) || $packageStateConfiguration['state'] !== 'active') {
+				continue;
+			}
+			if (in_array($packageKey, $packageStateConfiguration['dependencies'])) {
+				$this->deactivatePackage($packageStateKey);
+			}
+		}
+
 		$package = $this->getPackage($packageKey);
 		parent::deactivatePackage($package->getPackageKey());
 	}
