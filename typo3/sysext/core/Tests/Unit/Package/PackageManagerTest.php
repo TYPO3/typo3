@@ -38,7 +38,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockCache->expects($this->any())->method('set')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
 		$mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
-		$this->packageManager = $this->getAccessibleMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('sortAndSavePackageStates'));
+		$this->packageManager = $this->getAccessibleMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies'));
 
 		mkdir('vfs://Test/Packages/Application', 0700, TRUE);
 		mkdir('vfs://Test/Configuration');
