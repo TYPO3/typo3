@@ -43,22 +43,28 @@ script:
     echo "Running unit tests";
     ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml
   - >
-    echo;
-    export typo3DatabaseName="typo3";
-    export typo3DatabaseHost="localhost";
-    export typo3DatabaseUsername="root";
-    export typo3DatabasePassword="";
-    find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+    if [[ "$TRAVIS_PHP_VERSION" != "hhvm-nightly" ]]; then
+        echo;
+        export typo3DatabaseName="typo3";
+        export typo3DatabaseHost="localhost";
+        export typo3DatabaseUsername="root";
+        export typo3DatabasePassword="";
+        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+    fi
   - >
-    echo;
-    echo "Running php lint";
-    /bin/bash -c "
-        if ! find typo3/ -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
-            grep -v \"No syntax errors detected in\" /tmp/errors;
-            exit 99;
-        fi
-    "
+    if [[ "$TRAVIS_PHP_VERSION" != "hhvm-nightly" ]]; then
+        echo;
+        echo "Running php lint";
+        /bin/bash -c "
+            if ! find typo3/ -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
+                grep -v \"No syntax errors detected in\" /tmp/errors;
+                exit 99;
+            fi
+        "
+    fi
   - >
-    echo;
-    echo "Running XLF checker";
-    ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
+    if [[ "$TRAVIS_PHP_VERSION" != "hhvm-nightly" ]]; then
+        echo;
+        echo "Running XLF checker";
+        ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
+    fi
