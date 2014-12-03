@@ -134,7 +134,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				$theCode .= '<div class="checkbox"><label for="hidePagesInMenus"><input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />' . $GLOBALS['LANG']->getLL('wiz_newPages_hidePagesInMenus') . '</label></div>';
 				$theCode .= '<input type="submit" name="create" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $GLOBALS['LANG']->getLL('wiz_newPages_lReset') . '" /><br />';
 
-				/** @var \TYPO3\CMS\Core\Page\PageRenderer */
+				/** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 				$pageRenderer->loadJquery();
 				$pageRenderer->loadRequireJsModule('TYPO3/CMS/WizardCrpages/WizardCreatePages');
@@ -142,7 +142,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				$inlineJavaScriptCode = 'var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;';
 				$pageRenderer->addJsInlineCode('wizard_crpages', $inlineJavaScriptCode);
 
-				$pageRenderer->addCssInlineBlock('TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController', '
+				$pageRenderer->addCssInlineBlock(__CLASS__, '
 				#formFieldContainer {float: left; margin: 0 0 10px 0;}
 				.clearLeft {clear: left;}
 				#formFieldContainer label {width: 70px; display: inline-block;}
