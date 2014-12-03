@@ -107,7 +107,7 @@ class PreviewController extends AbstractController {
 			}
 		}
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
-		$uriBuilder = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$wsSettingsPath = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\ReviewController', 'workspaces', 'web_workspacesworkspaces');
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
