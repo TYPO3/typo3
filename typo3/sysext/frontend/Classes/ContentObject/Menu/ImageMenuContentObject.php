@@ -13,13 +13,15 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ImageMap based menus
  *
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject {
+class ImageMenuContentObject extends AbstractMenuContentObject {
 
 	/**
 	 * Calls procesItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
@@ -33,6 +35,8 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 		$splitCount = count($this->menuArr);
 		if ($splitCount) {
 			list($NOconf) = $this->procesItemStates($splitCount);
+		} else {
+			$NOconf = array();
 		}
 		if ($this->mconf['debugItemConf']) {
 			echo '<h3>$NOconf:</h3>';
@@ -56,22 +60,20 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 			$conf = array();
 		}
 		if (is_array($this->mconf['main.'])) {
-			$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
+			$gifCreator = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder');
 			$gifCreator->init();
 			$itemsConf = $conf;
 			$conf = $this->mconf['main.'];
 			if (is_array($conf)) {
-				$gifObjCount = 0;
-				$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($conf);
+				$sKeyArray = TemplateService::sortedKeyList($conf);
 				$gifObjCount = (int)end($sKeyArray);
-				$lastOriginal = $gifObjCount;
 				// Now we add graphical objects to the gifbuilder-setup
 				$waArr = array();
 				foreach ($itemsConf as $key => $val) {
 					if (is_array($val)) {
 						$gifObjCount++;
 						$waArr[$key]['free'] = $gifObjCount;
-						$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($val);
+						$sKeyArray = TemplateService::sortedKeyList($val);
 						foreach ($sKeyArray as $theKey) {
 							$theValue = $val[$theKey];
 							if ((int)$theKey && ($theValArr = $val[$theKey . '.'])) {
@@ -102,7 +104,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 										$theValArr['imgMap.']['target'] = $LD['target'];
 									}
 									if (is_array($theValArr['imgMap.']['altText.'])) {
-										$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+										$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 										$cObj->start($cObjData, 'pages');
 										if (isset($theValArr['imgMap.']['altText.'])) {
 											$theValArr['imgMap.']['altText'] = $cObj->stdWrap($theValArr['imgMap.']['altText'], $theValArr['imgMap.']['altText.']);
@@ -110,7 +112,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 										unset($theValArr['imgMap.']['altText.']);
 									}
 									if (is_array($theValArr['imgMap.']['titleText.'])) {
-										$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+										$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 										$cObj->start($cObjData, 'pages');
 										if (isset($theValArr['imgMap.']['titleText.'])) {
 											$theValArr['imgMap.']['titleText'] = $cObj->stdWrap($theValArr['imgMap.']['titleText'], $theValArr['imgMap.']['titleText.']);
@@ -121,7 +123,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 								// This code goes one level in if the object is an image. If 'file' and/or 'mask' appears to be GIFBUILDER-objects, they are both searched for TEXT objects, and if a textobj is found, it's checked with the currently loaded record!!
 								if ($theValue == 'IMAGE') {
 									if ($theValArr['file'] == 'GIFBUILDER') {
-										$temp_sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($theValArr['file.']);
+										$temp_sKeyArray = TemplateService::sortedKeyList($theValArr['file.']);
 										foreach ($temp_sKeyArray as $temp_theKey) {
 											if ($theValArr['mask.'][$temp_theKey] == 'TEXT') {
 												$gifCreator->data = $this->menuArr[$key] ?: array();
@@ -132,7 +134,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 										}
 									}
 									if ($theValArr['mask'] == 'GIFBUILDER') {
-										$temp_sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($theValArr['mask.']);
+										$temp_sKeyArray = TemplateService::sortedKeyList($theValArr['mask.']);
 										foreach ($temp_sKeyArray as $temp_theKey) {
 											if ($theValArr['mask.'][$temp_theKey] == 'TEXT') {
 												$gifCreator->data = $this->menuArr[$key] ?: array();
@@ -147,7 +149,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 								$setObjFlag = 1;
 								if ($theValArr['if.']) {
 									/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-									$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+									$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 									$cObj->start($cObjData, 'pages');
 									if (!empty($theValArr['if.']) && !$cObj->checkIf($theValArr['if.'])) {
 										$setObjFlag = 0;
@@ -165,6 +167,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 				}
 				$gifCreator->start($conf, $GLOBALS['TSFE']->page);
 				// calculations
+				$dConf = array();
 				foreach ($waArr as $key => $val) {
 					if ($dConf[$key] = $itemsConf[$key]['distrib']) {
 						$textBB = $gifCreator->objBB[$val['textNum']];
@@ -173,10 +176,10 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 							array($textBB[0], $textBB[1]),
 							$dConf[$key]
 						);
-						$dConf[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $gifCreator->calcOffset($dConf[$key]));
+						$dConf[$key] = GeneralUtility::intExplode(',', $gifCreator->calcOffset($dConf[$key]));
 					}
 				}
-				$workArea = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $gifCreator->calcOffset($this->mconf['dWorkArea']));
+				$workArea = GeneralUtility::intExplode(',', $gifCreator->calcOffset($this->mconf['dWorkArea']));
 				foreach ($waArr as $key => $val) {
 					$index = $val['free'];
 					$gifCreator->setup[$index] = 'WORKAREA';
@@ -193,8 +196,9 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 				$gifCreator->createTempSubDir('menu/');
 				$gifFileName = $gifCreator->fileName('menu/');
 				// Gets the ImageMap from the cache...
+				$cache = $this->getCache();
 				$imgHash = md5($gifFileName);
-				$imgMap = $this->sys_page->getHash($imgHash);
+				$imgMap = $cache->get($imgHash);
 				// File exists
 				if ($imgMap && file_exists($gifFileName)) {
 					$info = @getimagesize($gifFileName);
@@ -208,10 +212,10 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 					$gifCreator->output($gifFileName);
 					$gifCreator->destroy();
 					$imgMap = $gifCreator->map;
-					$this->sys_page->storeHash($imgHash, $imgMap, 'MENUIMAGEMAP');
+					$cache->set($imgHash, $imgMap, array('ident_MENUIMAGEMAP'), 0);
 				}
 				$imgMap .= $this->mconf['imgMapExtras'];
-				$gifFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($gifFileName);
+				$gifFileName = GeneralUtility::png_to_gif_by_imagemagick($gifFileName);
 				$this->result = array('output_file' => $gifFileName, 'output_w' => $w, 'output_h' => $h, 'imgMap' => $imgMap);
 			}
 		}
@@ -228,7 +232,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 		if ($this->result) {
 			$res = &$this->result;
 			// shortMD5 260900
-			$menuName = 'menu_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($res['imgMap']);
+			$menuName = 'menu_' . GeneralUtility::shortMD5($res['imgMap']);
 			$result = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $res['output_file'] . '" width="' . $res['output_w'] . '" height="' . $res['output_h'] . '" usemap="#' . $menuName . '" border="0" ' . $this->mconf['params'];
 			// Adding alt attribute if not set.
 			if (!strstr($result, 'alt="')) {
@@ -238,6 +242,7 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 			$GLOBALS['TSFE']->imagesOnPage[] = $res['output_file'];
 			return $this->tmpl->wrap($result, $this->mconf['wrap']);
 		}
+		return '';
 	}
 
 }

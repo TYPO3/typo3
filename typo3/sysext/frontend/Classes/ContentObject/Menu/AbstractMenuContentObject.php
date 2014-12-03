@@ -892,10 +892,11 @@ class AbstractMenuContentObject {
 			} else {
 				$cacheTimeout = $GLOBALS['TSFE']->get_cache_timeout();
 			}
-			$cachedData = $this->sys_page->getHash($this->hash);
+			$cache = $this->getCache();
+			$cachedData = $cache->get($this->hash);
 			if (!is_array($cachedData)) {
 				$this->generate();
-				$this->sys_page->storeHash($this->hash, $this->result, 'MENUDATA', $cacheTimeout);
+				$cache->set($this->hash, $this->result, array('ident_MENUDATA'), (int)$cacheTimeout);
 			} else {
 				$this->result = $cachedData;
 			}
@@ -1917,4 +1918,12 @@ class AbstractMenuContentObject {
 	public function getParentContentObject() {
 		return $this->parent_cObj;
 	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+	 */
+	protected function getCache() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_hash');
+	}
+
 }
