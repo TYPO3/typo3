@@ -53,7 +53,7 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	 * @return string The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	public function writeMenu() {
-		if (!is_array($this->result) || empty($this->result)) {
+		if (empty($this->result)) {
 			return '';
 		}
 

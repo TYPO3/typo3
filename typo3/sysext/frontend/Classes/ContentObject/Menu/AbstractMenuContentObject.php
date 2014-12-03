@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -482,10 +483,11 @@ abstract class AbstractMenuContentObject {
 		} else {
 			$cacheTimeout = $this->getTypoScriptFrontendController()->get_cache_timeout();
 		}
-		$cachedData = $this->sys_page->getHash($this->hash);
+		$cache = $this->getCache();
+		$cachedData = $cache->get($this->hash);
 		if (!is_array($cachedData)) {
 			$this->generate();
-			$this->sys_page->storeHash($this->hash, $this->result, 'MENUDATA', $cacheTimeout);
+			$cache->set($this->hash, $this->result, array('ident_MENUDATA'), (int)$cacheTimeout);
 		} else {
 			$this->result = $cachedData;
 		}
@@ -2153,6 +2155,13 @@ abstract class AbstractMenuContentObject {
 	 */
 	protected function getTimeTracker() {
 		return $GLOBALS['TT'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+	 */
+	protected function getCache() {
+		return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
 	}
 
 }

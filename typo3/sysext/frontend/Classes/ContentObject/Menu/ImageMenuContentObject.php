@@ -197,8 +197,9 @@ class ImageMenuContentObject extends AbstractMenuContentObject {
 				$gifCreator->createTempSubDir('menu/');
 				$gifFileName = $gifCreator->fileName('menu/');
 				// Gets the ImageMap from the cache...
+				$cache = $this->getCache();
 				$imgHash = md5($gifFileName);
-				$imgMap = $this->sys_page->getHash($imgHash);
+				$imgMap = $cache->get($imgHash);
 				// File exists
 				if ($imgMap && file_exists($gifFileName)) {
 					$info = @getimagesize($gifFileName);
@@ -212,7 +213,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject {
 					$gifCreator->output($gifFileName);
 					$gifCreator->destroy();
 					$imgMap = $gifCreator->map;
-					$this->sys_page->storeHash($imgHash, $imgMap, 'MENUIMAGEMAP');
+					$cache->set($imgHash, $imgMap, array('ident_MENUIMAGEMAP'), 0);
 				}
 				$imgMap .= $this->mconf['imgMapExtras'];
 				$gifFileName = GraphicalFunctions::pngToGifByImagemagick($gifFileName);

@@ -365,108 +365,108 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 * @return string The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	public function writeMenu() {
-		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
-			$this->WMresult = '';
-			$this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
-			$this->WMmenuItems = count($this->result['NO']);
-			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
-			$this->extProc_init();
-			$tsfe = $this->getTypoScriptFrontendController();
-			if (!isset($tsfe->additionalJavaScript['JSImgCode'])) {
-				$tsfe->additionalJavaScript['JSImgCode'] = '';
-			}
-			for ($key = 0; $key < $this->WMmenuItems; $key++) {
-				if ($this->result['NO'][$key]['output_file']) {
-					// Initialize the cObj with the page record of the menu item
-					$this->WMcObj->start($this->menuArr[$key], 'pages');
-					$this->I = array();
-					$this->I['key'] = $key;
-					$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
-					$this->I['val'] = $this->result['NO'][$key];
-					$this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
-					$this->I['uid'] = $this->menuArr[$key]['uid'];
-					$this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
-					$this->I['pid'] = $this->menuArr[$key]['pid'];
-					$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
-					if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) {
-						$this->I['spacer'] = 1;
-					}
-					$this->I['noLink'] = $this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]);
-					// !count($this->menuArr[$key]) means that this item is a dummyItem
-					$this->I['name'] = '';
-					// Set access key
-					if ($this->mconf['accessKey']) {
-						$this->I['accessKey'] = $this->accessKey($this->I['title']);
-					} else {
-						$this->I['accessKey'] = array();
-					}
-					// Make link tag
-					$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
-					if (isset($this->I['val']['additionalParams.'])) {
-						$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
-					}
-					$this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
-					// Title attribute of links:
-					$titleAttrValue = isset($this->I['val']['ATagTitle.']) ? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt'] : $this->I['val']['ATagTitle'] . $this->I['accessKey']['alt'];
-					if ($titleAttrValue !== '') {
-						$this->I['linkHREF']['title'] = $titleAttrValue;
-					}
-					// Set rollover
-					if ($this->result['RO'][$key] && !$this->I['noLink']) {
-						$this->I['theName'] = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'];
-						$this->I['name'] = ' ' . $this->nameAttribute . '="' . $this->I['theName'] . '"';
-						$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(\'' . $this->I['theName'] . '\');';
-						$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(\'' . $this->I['theName'] . '\');';
-						$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '"; ';
-						$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $tsfe->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
-						$tsfe->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
-						$tsfe->setJS('mouseOver');
-						$this->extProc_RO($key);
-					}
-					// Set altText
-					$this->I['altText'] = $this->I['title'] . $this->I['accessKey']['alt'];
-					// Calling extra processing function
-					$this->extProc_beforeLinking($key);
-					// Set linking
-					if (!$this->I['noLink']) {
-						$this->setATagParts();
-					} else {
-						$this->I['A1'] = '';
-						$this->I['A2'] = '';
-					}
-					$this->I['IMG'] = '<img src="' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . $this->parent_cObj->getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
-					// Make before, middle and after parts
-					$this->I['parts'] = array();
-					$this->I['parts']['ATag_begin'] = $this->I['A1'];
-					$this->I['parts']['image'] = $this->I['IMG'];
-					$this->I['parts']['ATag_end'] = $this->I['A2'];
-					// Passing I to a user function
-					if ($this->mconf['IProcFunc']) {
-						$this->I = $this->userProcess('IProcFunc', $this->I);
-					}
-					// Putting the item together.
-					// Merge parts + beforeAllWrap
-					$this->I['theItem'] = implode('', $this->I['parts']);
-					$this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
-					// wrap:
-					$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $this->I['val']['wrap']);
-					// allWrap:
-					$allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
-					$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
-					if ($this->I['val']['subst_elementUid']) {
-						$this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
-					}
-					// allStdWrap:
-					if (is_array($this->I['val']['allStdWrap.'])) {
-						$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
-					}
-					$tsfe->imagesOnPage[] = $this->I['val']['output_file'];
-					$this->extProc_afterLinking($key);
-				}
-			}
-			return $this->extProc_finish();
+		if (!is_array($this->menuArr) || empty($this->result) || !is_array($this->result['NO'])) {
+			return '';
 		}
-		return '';
+		$this->WMresult = '';
+		$this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
+		$this->WMmenuItems = count($this->result['NO']);
+		$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
+		$this->extProc_init();
+		$tsfe = $this->getTypoScriptFrontendController();
+		if (!isset($tsfe->additionalJavaScript['JSImgCode'])) {
+			$tsfe->additionalJavaScript['JSImgCode'] = '';
+		}
+		for ($key = 0; $key < $this->WMmenuItems; $key++) {
+			if ($this->result['NO'][$key]['output_file']) {
+				// Initialize the cObj with the page record of the menu item
+				$this->WMcObj->start($this->menuArr[$key], 'pages');
+				$this->I = array();
+				$this->I['key'] = $key;
+				$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
+				$this->I['val'] = $this->result['NO'][$key];
+				$this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
+				$this->I['uid'] = $this->menuArr[$key]['uid'];
+				$this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
+				$this->I['pid'] = $this->menuArr[$key]['pid'];
+				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
+				if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) {
+					$this->I['spacer'] = 1;
+				}
+				$this->I['noLink'] = $this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]);
+				// !count($this->menuArr[$key]) means that this item is a dummyItem
+				$this->I['name'] = '';
+				// Set access key
+				if ($this->mconf['accessKey']) {
+					$this->I['accessKey'] = $this->accessKey($this->I['title']);
+				} else {
+					$this->I['accessKey'] = array();
+				}
+				// Make link tag
+				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
+				if (isset($this->I['val']['additionalParams.'])) {
+					$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
+				}
+				$this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
+				// Title attribute of links:
+				$titleAttrValue = isset($this->I['val']['ATagTitle.']) ? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt'] : $this->I['val']['ATagTitle'] . $this->I['accessKey']['alt'];
+				if ($titleAttrValue !== '') {
+					$this->I['linkHREF']['title'] = $titleAttrValue;
+				}
+				// Set rollover
+				if ($this->result['RO'][$key] && !$this->I['noLink']) {
+					$this->I['theName'] = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'];
+					$this->I['name'] = ' ' . $this->nameAttribute . '="' . $this->I['theName'] . '"';
+					$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(\'' . $this->I['theName'] . '\');';
+					$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(\'' . $this->I['theName'] . '\');';
+					$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '"; ';
+					$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $tsfe->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
+					$tsfe->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
+					$tsfe->setJS('mouseOver');
+					$this->extProc_RO($key);
+				}
+				// Set altText
+				$this->I['altText'] = $this->I['title'] . $this->I['accessKey']['alt'];
+				// Calling extra processing function
+				$this->extProc_beforeLinking($key);
+				// Set linking
+				if (!$this->I['noLink']) {
+					$this->setATagParts();
+				} else {
+					$this->I['A1'] = '';
+					$this->I['A2'] = '';
+				}
+				$this->I['IMG'] = '<img src="' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . $this->parent_cObj->getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
+				// Make before, middle and after parts
+				$this->I['parts'] = array();
+				$this->I['parts']['ATag_begin'] = $this->I['A1'];
+				$this->I['parts']['image'] = $this->I['IMG'];
+				$this->I['parts']['ATag_end'] = $this->I['A2'];
+				// Passing I to a user function
+				if ($this->mconf['IProcFunc']) {
+					$this->I = $this->userProcess('IProcFunc', $this->I);
+				}
+				// Putting the item together.
+				// Merge parts + beforeAllWrap
+				$this->I['theItem'] = implode('', $this->I['parts']);
+				$this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
+				// wrap:
+				$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $this->I['val']['wrap']);
+				// allWrap:
+				$allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
+				$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
+				if ($this->I['val']['subst_elementUid']) {
+					$this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
+				}
+				// allStdWrap:
+				if (is_array($this->I['val']['allStdWrap.'])) {
+					$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
+				}
+				$tsfe->imagesOnPage[] = $this->I['val']['output_file'];
+				$this->extProc_afterLinking($key);
+			}
+		}
+		return $this->extProc_finish();
 	}
 
 	/**
