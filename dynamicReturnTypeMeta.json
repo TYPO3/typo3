@@ -1,0 +1,19 @@
+{
+	// configuration file for PHPStorm Plugin: http://plugins.jetbrains.com/plugin/7251
+	"methodCalls": [
+		// Do not add the methods getMock or getAccessibleMock to this configuration
+		// because additive type information gets lost. Use comments to define object types.
+		{
+			"class": "\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility",
+			"method": "makeInstance",
+			"position": 0
+		},
+		{
+			"class": "\\TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface",
+			"method": "get",
+			"position": 0
+		}
+	],
+	"functionCalls": [
+	]
+}
