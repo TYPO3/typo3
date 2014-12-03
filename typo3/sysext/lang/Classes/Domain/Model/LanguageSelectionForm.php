@@ -56,7 +56,7 @@ class LanguageSelectionForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	 * @return void
 	 */
 	public function setSelectedLanguages(array $selectedLanguages) {
-		$this->selectedLanguages = $selectedLanguages;
+		$this->selectedLanguages = array_values(array_filter($selectedLanguages));
 	}
 
 	/**
@@ -79,6 +79,7 @@ class LanguageSelectionForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 			foreach ($this->selectedLanguages as $language) {
 				$locales[] = $language->getLocale();
 			}
+
 			return implode(',', $locales);
 		}
 		return '';

@@ -71,14 +71,12 @@ class LanguageSelectionFormTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setSelectedLanguagesSetsSelectedLanguages() {
-		$selectedLanguages = array(
-			'nl' => '1',
-			'de' => '0',
-		);
+		$selectedLanguages = array('', '', '', '', 'de', '', '', 'nl');
+		$cleanedSelectedLanguages = array('de', 'nl');
 		$this->fixture->setSelectedLanguages($selectedLanguages);
 
 		$this->assertSame(
-			$selectedLanguages,
+			$cleanedSelectedLanguages,
 			$this->fixture->getSelectedLanguages()
 		);
 	}
