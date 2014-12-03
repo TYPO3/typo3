@@ -43,7 +43,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-edit' => 'fa-pencil',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide' => 'fa-toggle-on',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-paste' => 'fa-paste',
-		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-paste-after' => 'fa-caret-square-o-down',
+		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-paste-after' => 'fa-clipboard',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date' => 'fa-calendar',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-rename' => 'fa-quote-right',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo' => 'fa-undo',
