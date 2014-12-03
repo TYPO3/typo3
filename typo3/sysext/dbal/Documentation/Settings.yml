@@ -4,8 +4,8 @@
 
 ---
 conf.py:
-  copyright: 1997-2013
+  copyright: 1997-2014
   project: Database Abstraction Layer
-  version: 7.0.0
-  release: 7.0.0
+  version: 7.1.0
+  release: 7.1.0
 ...
