@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-09-10T14:22:34Z" product-name="core">
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1417684108" source-language="en" datatype="plaintext" original="messages" date="2014-12-04T09:12:34Z" product-name="core">
 		<header/>
 		<body>
 			<trans-unit id="sys_language.language_isocode.ab" xml:space="preserve">
