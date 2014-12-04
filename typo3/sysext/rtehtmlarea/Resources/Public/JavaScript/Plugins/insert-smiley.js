@@ -13,7 +13,7 @@
 /**
  * Insert Smiley Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.InsertSmiley = function (Plugin, UserAgent) {
+HTMLArea.InsertSmiley = function (Plugin, UserAgent, Event) {
 
 	var InsertSmiley = Ext.extend(Plugin, {
 
@@ -113,42 +113,54 @@ HTMLArea.InsertSmiley = function (Plugin, UserAgent) {
 			});
 			this.show();
 		},
-		/*
+
+		/**
 		 * Render the array of emoticon
 		 *
-		 * @param	object		component: the box containing the emoticons
-		 *
-		 * @return	void
+		 * @param object component: the box containing the emoticons
+		 * @return void
 		 */
 		render: function (component) {
 			component.tpl.overwrite(component.el, this.icons);
-			component.mon(component.el, 'click', this.insertImageTag, this, {delegate: 'a'});
+			var self = this;
+			Event.on(component.el.dom, 'click', function (event) { return self.insertImageTag(event); }, {delegate: 'a'});
 		},
 
 		/**
 		 * Insert the selected emoticon
 		 *
-		 * @param object event: the Ext event
-		 * @param HTMLelement target: the html element target
+		 * @param object event: the jQuery click event
 		 * @return void
 		 */
-		insertImageTag: function (event, target) {
-			event.stopEvent();
+		insertImageTag: function (event) {
+			Event.stopEvent(event);
+			var icon = event.target;
 			this.restoreSelection();
-			var icon = target.firstChild;
 			var imgTag = this.editor.document.createElement('img');
 			imgTag.setAttribute('src', icon.getAttribute('src'));
-			imgTag.setAttribute('alt', target.getAttribute('ext:qtitle'));
-			imgTag.setAttribute('title', target.getAttribute('ext:qtip'));
+			imgTag.setAttribute('alt', icon.parentNode.getAttribute('ext:qtitle'));
+			imgTag.setAttribute('title', icon.parentNode.getAttribute('ext:qtip'));
 			this.editor.getSelection().insertNode(imgTag);
 			if (!UserAgent.isIEBeforeIE9) {
 				this.editor.getSelection().selectNode(imgTag, false);
 			}
 			this.close();
 			return false;
+		},
+
+		/**
+		 * Remove listeners before closing the window
+		 */		
+		removeListeners: function () {
+			var components = this.dialog.findByType('box');
+			for (var i = components.length; --i > 0;) {
+				if (components[i].el) {
+					Event.off(components[i].el.dom);
+				}
+			}			
 		}
 	});
 
 	return InsertSmiley;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.Event);

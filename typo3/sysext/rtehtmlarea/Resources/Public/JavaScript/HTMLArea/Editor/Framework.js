@@ -13,7 +13,7 @@
 /**
  * Framework extends Ext.Panel and is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */
-HTMLArea.Framework = function(Typo3) {
+HTMLArea.Framework = function(Typo3, Event) {
 
 	var Framework = Ext.extend(Ext.Panel, {
 
@@ -27,13 +27,6 @@ HTMLArea.Framework = function(Typo3) {
 			this.statusBar = this.getBottomToolbar();
 			this.iframe = this.getComponent('iframe');
 			this.textAreaContainer = this.getComponent('textAreaContainer');
-			this.addEvents(
-				/*
-				 * @event HTMLAreaEventFrameworkReady
-				 * Fires when the iframe is ready and all components are rendered
-				 */
-				'HTMLAreaEventFrameworkReady'
-			);
 			this.addListener({
 				beforedestroy: {
 					fn: this.onBeforeDestroy,
@@ -41,7 +34,8 @@ HTMLArea.Framework = function(Typo3) {
 				}
 			});
 			// Monitor iframe becoming ready
-			this.mon(this.iframe, 'HTMLAreaEventIframeReady', this.onIframeReady, this, {single: true});
+			var self = this;
+			Event.one(this.iframe, 'HTMLAreaEventIframeReady', function (event) { Event.stopEvent(event); self.onIframeReady(); return false; });
 			// Let the framefork render itself, but it will fail to do so if inside a hidden tab or inline element
 			if (!this.isNested || Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 				this.render(this.textArea.parentNode, this.textArea.id);
@@ -57,6 +51,7 @@ HTMLArea.Framework = function(Typo3) {
 		 * Initiate events monitoring
 		 */
 		initEventListeners: function () {
+			var self = this;
 			// Make the framework resizable, if configured by the user
 			this.makeResizable();
 			// Monitor textArea container becoming shown or hidden as it may change the height of the status bar
@@ -74,7 +69,7 @@ HTMLArea.Framework = function(Typo3) {
 					}
 					form.htmlAreaPreviousOnReset.push(form.onreset);
 				}
-				this.mon(Ext.get(form), 'reset', this.onReset, this);
+				Event.on(form, 'reset', function (event) { return self.onReset(event); });
 			}
 			this.addListener({
 				resize: {
@@ -283,11 +278,18 @@ HTMLArea.Framework = function(Typo3) {
 				if (!this.getEditor().config.showStatusBar) {
 					this.statusBar.hide();
 				}
-					// Set the initial size of the framework
+				// Set the initial size of the framework
 				this.onWindowResize();
-				this.fireEvent('HTMLAreaEventFrameworkReady');
+				/**
+				 * @event HTMLAreaEventFrameworkReady
+				 * Fires when the iframe is ready and all components are rendered
+				 */
+				Event.trigger(this, 'HTMLAreaEventFrameworkReady');
 			} else {
-				this.onIframeReady.defer(50, this);
+				var self = this;
+				window.setTimeout(function () {
+					self.onIframeReady();	
+				}, 50);
 			}
 		},
 
@@ -299,12 +301,13 @@ HTMLArea.Framework = function(Typo3) {
 			this.getEditor().setHTML(this.textArea.value);
 			this.toolbar.update();
 			// Invoke previous reset handlers, if any
-			var htmlAreaPreviousOnReset = event.getTarget().dom.htmlAreaPreviousOnReset;
+			var htmlAreaPreviousOnReset = event.target.htmlAreaPreviousOnReset;
 			if (typeof htmlAreaPreviousOnReset !== 'undefined') {
 				for (var i = 0, n = htmlAreaPreviousOnReset.length; i < n; i++) {
 					htmlAreaPreviousOnReset[i]();
 				}
 			}
+			return true;
 		},
 
 		/**
@@ -332,5 +335,5 @@ HTMLArea.Framework = function(Typo3) {
 
 	return Framework;
 
-}(HTMLArea.util.TYPO3);
+}(HTMLArea.util.TYPO3, HTMLArea.Event);
 Ext.reg('htmlareaframework', HTMLArea.Framework);

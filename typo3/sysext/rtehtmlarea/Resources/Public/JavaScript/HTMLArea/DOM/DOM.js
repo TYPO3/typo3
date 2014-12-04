@@ -414,7 +414,7 @@ HTMLArea.DOM = function (UserAgent) {
 		 * @return	void
 		 */
 		makeUrlsAbsolute: function (node, baseUrl, walker) {
-			walker.walk(node, true, 'HTMLArea.DOM.makeImageSourceAbsolute(node, args[0]) || HTMLArea.DOM.makeLinkHrefAbsolute(node, args[0])', 'function(){}', [baseUrl]);
+			walker.walk(node, true, 'HTMLArea.DOM.makeImageSourceAbsolute(node, args[0]) || HTMLArea.DOM.makeLinkHrefAbsolute(node, args[0])', 'HTMLArea.util.emptyFunction', [baseUrl]);
 		},
 
 		/**

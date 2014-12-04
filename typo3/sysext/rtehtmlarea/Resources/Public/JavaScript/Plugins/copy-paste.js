@@ -13,7 +13,7 @@
 /**
  * Copy Paste for TYPO3 htmlArea RTE
  */
-HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
+HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom, Event) {
 
 	var CopyPaste = Ext.extend(Plugin, {
 
@@ -40,7 +40,8 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the buttons
 			 */
 			for (var buttonId in this.buttonList) {
@@ -58,7 +59,8 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: {
@@ -66,30 +68,32 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 			Cut	: [null, 'x', 'cut', true],
 			Paste	: [null, 'v', 'paste', false]
 		},
-		/*
+
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
-			this.editor.iframe.mon(Ext.get(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'cut', this.cutHandler, this);
+			var self = this;
+			Event.on(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'cut', function (event) { return self.cutHandler(event); });
 			for (var buttonId in this.buttonList) {
 				var button = this.buttonList[buttonId];
-					// Remove button from toolbar, if command is not supported
-					// Starting with Safari 5 and Chrome 6, cut and copy commands are not supported anymore by WebKit
-					// Starting with Firefox 29, cut, copy and paste commands are not supported anymore by Firefox
+				// Remove button from toolbar, if command is not supported
+				// Starting with Safari 5 and Chrome 6, cut and copy commands are not supported anymore by WebKit
+				// Starting with Firefox 29, cut, copy and paste commands are not supported anymore by Firefox
 				if (UserAgent.isGecko || !this.editor.document.queryCommandSupported(buttonId)) {
 					this.editor.toolbar.remove(buttonId);
 				}
-					// Add hot key handling if the button is not enabled in the toolbar
+				// Add hot key handling if the button is not enabled in the toolbar
 				if (!this.getButton(buttonId)) {
+					var self = this;
 					this.editor.iframe.hotKeyMap.addBinding({
-						key: button[1].toUpperCase(),
+						key: button[1],
 						ctrl: true,
 						shift: false,
 						alt: false,
-						handler: this.onHotKey,
-						scope: this
+						handler: function (event) { return self.onHotKey(event); }
 					});
-						// Ensure the hot key can be translated
+					// Ensure the hot key can be translated
 					this.editorConfiguration.hotKeyList[button[1]] = {
 						id	: button[1],
 						cmd	: buttonId
@@ -97,7 +101,8 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when a button or a hotkey was pressed.
 		 *
 		 * @param	object		editor: the editor instance
@@ -131,14 +136,16 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 						break;
 					case 'Paste':
 						if (buttonId == id) {
-								// If we are handling a button, not a hotkey
+							// If we are handling a button, not a hotkey
 							this.applyBrowserCommand(buttonId);
 						}
-							// In FF3, the paste operation will indeed trigger the onPaste event not in FF2; nor in Opera
+						// In FF3, the paste operation will indeed trigger the onPaste event not in FF2; nor in Opera
 						if (UserAgent.isOpera || UserAgent.isGecko2) {
 							var cleaner = this.getButton('CleanWord');
 							if (cleaner) {
-								cleaner.fireEvent.defer(250, cleaner, ['click', cleaner]);
+								window.setTimeout(function () {
+									cleaner.fireEvent('click', cleaner);	
+								}, 250);
 							}
 						}
 						break;
@@ -156,7 +163,10 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 					this.editor.inhibitKeyboardInput = true;
 					var bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
 					var html = this.editor.getInnerHTML();
-					this.revertPaste.defer(200, this, [html, bookmark]);
+					var self = this;
+					window.setTimeout(function () {
+						self.revertPaste(html, bookmark);	
+					}, 200);
 				}
 				return false;
 			}
@@ -176,23 +186,33 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 		applyBrowserCommand: function (buttonId) {
 			this.editor.getSelection().execCommand(buttonId, false, null);
 		},
-		/*
+
+		/**
 		 * Handler for hotkeys configured through the hotKeyMap while button not enabled in toolbar (see onGenerate above)
 		 */
-		onHotKey: function (key, event) {
+		onHotKey: function (event) {
+			var key = Event.getKey(event);
 			var hotKey = String.fromCharCode(key).toLowerCase();
-				// Stop the event if it was handled here
+			// Stop the event if it was handled here
 			if (!this.onButtonPress(this, hotKey)) {
-				event.stopEvent();
+				Event.stopEvent(event);
+				return false;
 			}
+			return true;
 		},
-		/*
+
+		/**
 		 * This function removes any link left over by the cut operation
 		 */
 		cutHandler: function (event) {
-			this.removeEmptyLink.defer(50, this);
+			var self = this;
+			window.setTimeout(function () {
+				self.removeEmptyLink();	
+			}, 50);
+			return true;
 		},
-		/*
+
+		/**
 		 * This function unlinks any empty link left over by the cut operation
 		 */
 		removeEmptyLink: function() {
@@ -431,4 +451,4 @@ HTMLArea.CopyPaste = function (Plugin, UserAgent, Dom) {
 
 	return CopyPaste;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.Event);

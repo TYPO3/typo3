@@ -13,14 +13,14 @@
 /**
  * Context Menu Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
+HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom, Event) {
 
 	var ContextMenu = Ext.extend(Plugin, {
 
 		/**
 		 * This function gets called by the class constructor
 		 */
-		configurePlugin : function(editor) {
+		configurePlugin: function(editor) {
 			this.pageTSConfiguration = this.editorConfiguration.contextMenu;
 			if (!this.pageTSConfiguration) {
 				this.pageTSConfiguration = {};
@@ -51,6 +51,7 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 		 * This function gets called when the editor gets generated
 		 */
 		onGenerate: function() {
+			var self = this;
 			// Build the context menu
 			this.menu = new Ext.menu.Menu(Util.applyIf({
 				cls: 'htmlarea-context-menu',
@@ -71,9 +72,9 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 				},
 				items: this.buildItemsConfig()
 			}, this.pageTSConfiguration));
-				// Monitor contextmenu clicks on the iframe
-			this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this);
-				// Monitor editor being destroyed
+			// Monitor contextmenu clicks on the iframe
+			Event.on(this.editor.document.documentElement, 'contextmenu', function (event) { return self.show(event, event.target); });
+			// Monitor editor being destroyed
 			this.menu.mon(this.editor, 'beforedestroy', this.onBeforeDestroy, this, {single: true});
 		},
 		/**
@@ -140,27 +141,37 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 			});
 			return itemsConfig;
 		},
-		/*
+
+		/**
 		 * Handler when the menu gets shown
 		 */
 		onShow: function () {
-			this.menu.mon(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu, {single: true});
+			var self = this;
+			Event.one(this.editor.document.documentElement, 'mousedown.contextmeu', function (event) { Event.stopEvent(event); self.menu.hide(); return false; });
 		},
-		/*
+
+		/**
 		 * Handler when the menu gets hidden
 		 */
 		onHide: function () {
-			this.menu.mun(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu);
+			var self = this;
+			Event.off(this.editor.document.documentElement, 'mousedown.contextmeu');
 		},
-		/*
+
+		/**
 		 * Handler to show the context menu
 		 */
 		show: function (event, target) {
-			event.stopEvent();
-				// Need to wait a while for the toolbar state to be updated
-			this.showMenu.defer(150, this, [target]);
+			Event.stopEvent(event);
+			// Need to wait a while for the toolbar state to be updated
+			var self = this;
+			window.setTimeout(function () {
+				self.showMenu(target);
+			}, 150);
+			return false;
 		},
-		/*
+
+		/**
 		 * Show the context menu
 		 */
 		showMenu: function (target) {
@@ -220,7 +231,8 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 				lastVisible.setVisible(false);
 			}
 		},
-		/*
+
+		/**
 		 * Handler invoked when a menu item is clicked on
 		 */
 		onItemClick: function (item, event) {
@@ -229,7 +241,11 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 			}
 			var button = this.getButton(item.getItemId());
 			if (button) {
-				button.fireEvent('HTMLAreaEventContextMenu', button, event);
+				/**
+				 * @event HTMLAreaEventContextMenu
+				 * Fires when the button is triggered from the context menu
+				 */
+				Event.trigger(button, 'HTMLAreaEventContextMenu', [button]);
 			} else if (item.getItemId() === 'DeleteTarget') {
 					// Do not leave a non-ie table cell empty
 				var parent = this.deleteTarget.parentNode;
@@ -250,7 +266,8 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 				this.editor.updateToolbar();
 			}
 		},
-		/*
+
+		/**
 		 * Handler invoked when the editor is about to be destroyed
 		 */
 		onBeforeDestroy: function () {
@@ -264,4 +281,4 @@ HTMLArea.ContextMenu = function (Plugin, UserAgent, Util, Dom) {
 
 	return ContextMenu;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM, HTMLArea.Event);

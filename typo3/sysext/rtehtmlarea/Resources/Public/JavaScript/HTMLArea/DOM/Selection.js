@@ -13,7 +13,7 @@
 /***************************************************
  *  HTMLArea.DOM.Selection: Selection object
  ***************************************************/
-HTMLArea.DOM.Selection = function(UserAgent, Util, Dom) {
+HTMLArea.DOM.Selection = function(UserAgent, Util, Dom, Event) {
 
 	/**
 	 * Constructor method
@@ -775,12 +775,12 @@ HTMLArea.DOM.Selection = function(UserAgent, Util, Dom) {
 	 * Detect emails and urls as they are typed in non-IE browsers
 	 * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
 	 *
-	 * @param	object		event: the ExtJS key event
+	 * @param object event: the browser key event
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	Selection.prototype.detectURL = function (event) {
-		var ev = event.browserEvent;
+		var key = Event.getKey(event);
 		var editor = this.editor;
 		var selection = this.get().selection;
 		if (!/^(a)$/i.test(this.getParentElement().nodeName)) {
@@ -808,17 +808,17 @@ HTMLArea.DOM.Selection = function(UserAgent, Util, Dom) {
 				editor.unlinkOnUndo = true;
 				return a;
 			};
-			switch (ev.which) {
-					// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
-				case 13:
-				case 32:
+			switch (key) {
+				// Space or Enter, see if the text just typed looks like a URL, or email address and link it accordingly
+				case Event.ENTER:
+				case Event.SPACE:
 					if (selection && selection.isCollapsed && selection.anchorNode.nodeType === Dom.TEXT_NODE && selection.anchorNode.data.length > 3 && selection.anchorNode.data.indexOf('.') >= 0) {
 						var midStart = selection.anchorNode.data.substring(0,selection.anchorOffset).search(/[a-zA-Z0-9]+\S{3,}$/);
 						if (midStart == -1) {
 							break;
 						}
 						if (this.getFirstAncestorOfType('a')) {
-								// already in an anchor
+							// already in an anchor
 							break;
 						}
 						var matchData = selection.anchorNode.data.substring(0,selection.anchorOffset).replace(/^.*?(\S*)$/, '$1');
@@ -851,16 +851,16 @@ HTMLArea.DOM.Selection = function(UserAgent, Util, Dom) {
 					}
 					break;
 				default:
-					if (ev.keyCode == 27 || (editor.unlinkOnUndo && ev.ctrlKey && ev.which == 122)) {
+					if (key === Event.ESC || (editor.unlinkOnUndo && (event.ctrlKey || event.metaKey) && key === Event.F11)) {
 						if (editor.unLink) {
 							editor.unLink();
-							event.stopEvent();
+							Event.stopEvent(event);
 						}
 						break;
-					} else if (ev.which || ev.keyCode == 8 || ev.keyCode == 46) {
+					} else if (key) {
 						editor.unlinkOnUndo = false;
 						if (selection.anchorNode && selection.anchorNode.nodeType === Dom.TEXT_NODE) {
-								// See if we might be changing a link
+							// See if we might be changing a link
 							var a = this.getFirstAncestorOfType('a');
 							if (!a) {
 								break;
@@ -1081,4 +1081,4 @@ HTMLArea.DOM.Selection = function(UserAgent, Util, Dom) {
 
 	return Selection;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM, HTMLArea.Event);

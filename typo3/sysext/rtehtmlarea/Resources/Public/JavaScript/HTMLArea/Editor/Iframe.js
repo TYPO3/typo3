@@ -13,7 +13,7 @@
 /**
  * HTMLArea.Iframe extends Ext.BoxComponent
  */
-HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
+HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
 
 	var Iframe = Ext.extend(Ext.BoxComponent, {
 
@@ -22,18 +22,6 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 		 */
 		initComponent: function () {
 			Iframe.superclass.initComponent.call(this);
-			this.addEvents(
-				/*
-				 * @event HTMLAreaEventIframeReady
-				 * Fires when the iframe style sheets become accessible
-				 */
-				'HTMLAreaEventIframeReady',
-				/*
-				 * @event HTMLAreaEventWordCountChange
-				 * Fires when the word count may have changed
-				 */
-				'HTMLAreaEventWordCountChange'
-			);
 			this.addListener({
 				afterrender: {
 					fn: this.initEventListeners,
@@ -55,58 +43,62 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 				this.addClass('noStatusBar');
 			}
 		},
-		/*
+
+		/**
 		 * Initialize event listeners and the document after the iframe has rendered
 		 */
 		initEventListeners: function () {
 			this.initStyleChangeEventListener();
 			if (UserAgent.isOpera) {
-				this.mon(this.getEl(), 'load', this.initializeIframe , this, {single: true});
+				var self = this;
+				Event.one(this.getEl().dom, 'load', function (event) { Event.stopEvent(event); self.initializeIframe(event); return false; })
 			} else {
 				this.initializeIframe();
 			}
 		},
-		/*
+
+		/**
 		 * The editor iframe may become hidden with style.display = "none" on some parent div
 		 * This breaks the editor in Firefox: the designMode attribute needs to be reset after the style.display of the container div is reset to "block"
 		 * In all browsers, it breaks the evaluation of the framework dimensions
 		 */
 		initStyleChangeEventListener: function () {
 			if (this.isNested && UserAgent.isGecko) {
+				var self = this;
 				var options = {
-					stopEvent: true,
 					delay: 50
 				};
 				for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
-					var nestedElement = Ext.get(this.nestedParentElements.sorted[i]);
-					this.mon(
+					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
+					Event.on(
 						nestedElement,
-						UserAgent.isIE ? 'propertychange' : 'DOMAttrModified',
-						this.onNestedShow,
-						this,
+						'DOMAttrModified',
+						function (event) { return self.onNestedShow(event); },
 						options
 					);
-					this.mon(
-						nestedElement.parent(),
-						UserAgent.isIE ? 'propertychange' : 'DOMAttrModified',
-						this.onNestedShow,
-						this,
+					Event.on(
+						nestedElement.parentNode,
+						'DOMAttrModified',
+						function (event) { return self.onNestedShow(event); },
 						options
 					);
 				}
 			}
 		},
-		/*
+
+		/**
 		 * editorId should be set in config
 		 */
 		editorId: null,
-		/*
+
+		/**
 		 * Get a reference to the editor
 		 */
-		getEditor: function() {
+		getEditor: function () {
 			return RTEarea[this.editorId].editor;
 		},
-		/*
+
+		/**
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function () {
@@ -183,10 +175,15 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 				this.hide();
 				// Set iframe ready
 				this.ready = true;
-				this.fireEvent('HTMLAreaEventIframeReady');
+				/**
+				 * @event HTMLAreaEventIframeReady
+				 * Fires when the iframe style sheets become accessible
+				 */
+				Event.trigger(this, 'HTMLAreaEventIframeReady');
 			}
 		},
-		/*
+
+		/**
 		 * Create one of each of the configured custom tags so they are properly parsed by the walker when using IE
 		 * See: http://en.wikipedia.org/wiki/HTML5_Shiv
 		 *
@@ -321,209 +318,265 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 				} catch(e) {}
 			}
 		},
-		/*
+
+		/**
 		 * Handler invoked when an hidden TYPO3 hidden nested tab or inline element is shown
 		 */
-		onNestedShow: function (event, target) {
-			var styleEvent = true;
+		onNestedShow: function (event) {
+			Event.stopEvent(event);
+			var target = event.target;
+			var delay = event.data.delay;
+			var self = this;
+			window.setTimeout(function () {
+				var styleEvent = true;
 				// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
-			if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera) {
-				styleEvent = (event.browserEvent.attrName == 'style') || (event.browserEvent.attrName == 'className');
-			} else if (UserAgent.isIE) {
-				styleEvent = (event.browserEvent.propertyName == 'style.display');
-			}
-			if (styleEvent && (this.nestedParentElements.sorted.indexOf(target.id) != -1 || this.nestedParentElements.sorted.indexOf(target.id.replace('_div', '_fields')) != -1)) {
-					// Check if all container nested elements are displayed
-				if (Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-					if (this.getEditor().getMode() === 'wysiwyg') {
-						if (UserAgent.isGecko) {
-							this.setDesignMode(true);
-						}
-						this.fireEvent('show');
-					} else {
-						this.ownerCt.textAreaContainer.fireEvent('show');
-					}
-					this.getToolbar().update();
-					return false;
+				if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera) {
+					//styleEvent = (event.browserEvent.attrName == 'style') || (event.browserEvent.attrName == 'className');
+					styleEvent = (event.attrName == 'style') || (event.attrName == 'className');
+				} else if (UserAgent.isIE) {
+					//styleEvent = (event.browserEvent.propertyName == 'style.display');
+					styleEvent = (event.propertyName == 'style.display');
 				}
-			}
+				if (styleEvent && (self.nestedParentElements.sorted.indexOf(target.id) != -1 || self.nestedParentElements.sorted.indexOf(target.id.replace('_div', '_fields')) != -1)) {
+					// Check if all container nested elements are displayed
+					if (Typo3.allElementsAreDisplayed(self.nestedParentElements.sorted)) {
+						if (self.getEditor().getMode() === 'wysiwyg') {
+							if (UserAgent.isGecko) {
+								self.setDesignMode(true);
+							}
+							self.fireEvent('show');
+						} else {
+							self.ownerCt.textAreaContainer.fireEvent('show');
+						}
+						self.getToolbar().update();
+					}
+				}
+			}, delay);
+			return false;
 		},
-		/*
+
+		/**
 		 * Instance of DOM walker
 		 */
 		htmlRenderer: {},
-		/*
+
+		/**
 		 * Get the HTML content of the iframe
 		 */
 		getHTML: function () {
 			return this.htmlRenderer.render(this.document.body, false);
 		},
-		/*
+
+		/**
 		 * Start listening to things happening in the iframe
 		 */
 		startListening: function () {
-				// Create keyMap so that plugins may bind key handlers
-			this.keyMap = new Ext.KeyMap(Ext.get(this.document.documentElement), [], (UserAgent.isIE || UserAgent.isWebKit) ? 'keydown' : 'keypress');
-				// Special keys map
-			this.keyMap.addBinding([
+			var self = this;
+			// Create keyMap so that plugins may bind key handlers
+			this.keyMap = new KeyMap(this.document.documentElement, (UserAgent.isIE || UserAgent.isWebKit) ? 'keydown' : 'keypress');
+			// Special keys map
+			this.keyMap.addBinding(
 				{
-					key: [Ext.EventObject.DOWN, Ext.EventObject.UP, Ext.EventObject.LEFT, Ext.EventObject.RIGHT],
+					key: [Event.DOWN, Event.UP, Event.LEFT, Event.RIGHT],
 					alt: false,
-					handler: this.onArrow,
-					scope: this
-				},
+					handler: function (event) { return self.onArrow(event); }
+				}
+			);
+			this.keyMap.addBinding(
 				{
-					key: Ext.EventObject.TAB,
+					key: Event.TAB,
 					ctrl: false,
 					alt: false,
-					handler: this.onTab,
-					scope: this
-				},
+					handler: function (event) { return self.onTab(event); }
+				}
+			);
+			this.keyMap.addBinding(
 				{
-					key: Ext.EventObject.SPACE,
+					key: Event.SPACE,
 					ctrl: true,
 					shift: false,
 					alt: false,
-					handler: this.onCtrlSpace,
-					scope: this
+					handler: function (event) { return self.onCtrlSpace(event); }
 				}
-			]);
+			);
 			if (UserAgent.isGecko || UserAgent.isIE || UserAgent.isWebKit) {
 				this.keyMap.addBinding(
 				{
-					key: [Ext.EventObject.BACKSPACE, Ext.EventObject.DELETE],
+					key: [Event.BACKSPACE, Event.DELETE],
 					alt: false,
-					handler: this.onBackSpace,
-					scope: this
+					handler: function (event) { return self.onBackSpace(event); }
 				});
 			}
 			if (!UserAgent.isIE && !this.config.disableEnterParagraphs) {
 				this.keyMap.addBinding(
 				{
-					key: Ext.EventObject.ENTER,
+					key: Event.ENTER,
 					shift: false,
-					handler: this.onEnter,
-					scope: this
+					handler: function (event) { return self.onEnter(event); }
 				});
 			}
 			if (UserAgent.isWebKit) {
 				this.keyMap.addBinding(
 				{
-					key: Ext.EventObject.ENTER,
+					key: Event.ENTER,
 					alt: false,
-					handler: this.onWebKitEnter,
-					scope: this
+					handler: function (event) { return self.onWebKitEnter(event); }
 				});
 			}
 			// Hot key map (on keydown for all browsers)
-			var hotKeys = '';
+			var hotKeys = [];
 			for (var key in this.config.hotKeyList) {
-				if (key.length == 1) {
-					hotKeys += key.toUpperCase();
+				if (key.length === 1) {
+					hotKeys.push(key);
 				}
 			}
-				// Make hot key map available, even if empty, so that plugins may add bindings
-			this.hotKeyMap = new Ext.KeyMap(Ext.get(this.document.documentElement));
+			// Make hot key map available, even if empty, so that plugins may add bindings
+			this.hotKeyMap = new KeyMap(this.document.documentElement, 'keydown');
 			if (hotKeys.length > 0) {
 				this.hotKeyMap.addBinding({
 					key: hotKeys,
 					ctrl: true,
 					shift: false,
 					alt: false,
-					handler: this.onHotKey,
-					scope: this
+					handler: function (event) { return self.onHotKey(event); }
 				});
 			}
-			this.mon(Ext.get(this.document.documentElement), (UserAgent.isIE || UserAgent.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
-			this.mon(Ext.get(this.document.documentElement), 'mouseup', this.onMouse, this);
-			this.mon(Ext.get(this.document.documentElement), 'click', this.onMouse, this);
+			Event.on(
+				this.document.documentElement,
+				(UserAgent.isIE || UserAgent.isWebKit) ? 'keydown' : 'keypress',
+				function (event) { return self.onAnyKey(event); }
+			);
+			Event.on(
+				this.document.documentElement,
+				'mouseup',
+				function (event) { return self.onMouse(event); }
+			);
+			Event.on(
+				this.document.documentElement,
+				'click',
+				function (event) { return self.onMouse(event); }
+			);
 			if (UserAgent.isGecko) {
-				this.mon(Ext.get(this.document.documentElement), 'paste', this.onPaste, this);
+				Event.on(
+					this.document.documentElement,
+					'paste',
+					function (event) { return self.onPaste(event); }
+				);
 			}
-			this.mon(Ext.get(this.document.documentElement), 'drop', this.onDrop, this);
+			Event.on(
+				this.document.documentElement,
+				'drop',
+				function (event) { return self.onDrop(event); }
+			);
 			if (UserAgent.isWebKit) {
-				this.mon(Ext.get(this.document.body), 'dragend', this.onDrop, this);
+				Event.on(
+					this.document.body,
+					'dragend',
+					function (event) { return self.onDrop(event); }
+				);
 			}
 		},
-		/*
+
+		/**
 		 * Handler for other key events
 		 */
-		onAnyKey: function(event) {
+		onAnyKey: function (event) {
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
-			this.fireEvent('HTMLAreaEventWordCountChange', 100);
-			if (!event.altKey && !event.ctrlKey) {
-					// Detect URL in non-IE browsers
-				if (!UserAgent.isIE && (event.getKey() != Ext.EventObject.ENTER || (event.shiftKey && !UserAgent.isWebKit))) {
+			/**
+			 * @event HTMLAreaEventWordCountChange
+			 * Fires when the word count may have changed
+			 */
+			Event.trigger(this, 'HTMLAreaEventWordCountChange', [100]);
+			if (!event.altKey && !(event.ctrlKey || event.metaKey)) {
+				var key = Event.getKey(event);
+				// Detect URL in non-IE browsers
+				if (!UserAgent.isIE && (key !== Event.ENTER || (event.shiftKey && !UserAgent.isWebKit))) {
 					this.getEditor().getSelection().detectURL(event);
 				}
-					// Handle option+SPACE for Mac users
-				if (UserAgent.isMac && event.browserEvent.charCode == 160) {
-					return this.onOptionSpace(event.browserEvent.charCode, event);
+				// Handle option+SPACE for Mac users
+				if (UserAgent.isMac && key === Event.NON_BREAKING_SPACE) {
+					return this.onOptionSpace(key, event);
 				}
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * On any key input event, check if input is currently inhibited
 		 */
 		inhibitKeyboardInput: function (event) {
-				// Inhibit key events while server-based cleaning is being processed
+			// Inhibit key events while server-based cleaning is being processed
 			if (this.getEditor().inhibitKeyboardInput) {
-				event.stopEvent();
+				Event.stopEvent(event);
 				return true;
 			} else {
 				return false;
 			}
 		},
-		/*
+
+		/**
 		 * Handler for mouse events
 		 */
-		onMouse: function (event, target) {
-				// In WebKit, select the image when it is clicked
-			if (UserAgent.isWebKit && /^(img)$/i.test(target.nodeName) && event.browserEvent.type == 'click') {
-				this.getEditor().getSelection().selectNode(target);
+		onMouse: function (event) {
+			// In WebKit, select the image when it is clicked
+			if (UserAgent.isWebKit && /^(img)$/i.test(event.target.nodeName) && event.type === 'click') {
+				this.getEditor().getSelection().selectNode(event.target);
 			}
-			this.getToolbar().updateLater.delay(100);
+			this.getToolbar().updateLater(100);
 			return true;
 		},
-		/*
+
+		/**
 		 * Handler for paste operations in Gecko
 		 */
 		onPaste: function (event) {
-				// Make src and href urls absolute
+			// Make src and href urls absolute
 			if (UserAgent.isGecko) {
-				Dom.makeUrlsAbsolute.defer(50, this, [this.getEditor().document.body, this.config.baseURL, this.htmlRenderer]);
+				var self = this;
+				window.setTimeout(function () {
+					Dom.makeUrlsAbsolute(self.getEditor().document.body, self.config.baseURL, self.htmlRenderer);	
+				}, 50);
 			}
-		},
-		/*
-		 * Handler for drag and drop operations
-		 */
-		onDrop: function (event, target) {
-				// Clean up span elements added by WebKit
-			if (UserAgent.isWebKit) {
-				this.getEditor().getDomNode().cleanAppleStyleSpans.defer(50, this.getEditor(), [this.getEditor().document.body]);
-			}
-				// Make src url absolute in Firefox
-			if (UserAgent.isGecko) {
-				Dom.makeUrlsAbsolute.defer(50, this, [target, this.config.baseURL, this.htmlRenderer]);
-			}
-			this.getToolbar().updateLater.delay(100);
-		},
-		/*
-		 * Handler for UP, DOWN, LEFT and RIGHT keys
-		 */
-		onArrow: function () {
-			this.getToolbar().updateLater.delay(100);
 			return true;
 		},
-		/*
+
+		/**
+		 * Handler for drag and drop operations
+		 */
+		onDrop: function (event) {
+			var self = this;
+			// Clean up span elements added by WebKit
+			if (UserAgent.isWebKit) {
+				window.setTimeout(function () {
+					self.getEditor().getDomNode().cleanAppleStyleSpans(self.getEditor().document.body);
+				}, 50);
+			}
+			// Make src url absolute in Firefox
+			if (UserAgent.isGecko) {
+				window.setTimeout(function () {
+					Dom.makeUrlsAbsolute(event.target, self.config.baseURL, self.htmlRenderer);
+				}, 50);
+			}
+			this.getToolbar().updateLater(100);
+			return true;
+		},
+
+		/**
+		 * Handler for UP, DOWN, LEFT and RIGHT arrow keys
+		 */
+		onArrow: function (event) {
+			this.getToolbar().updateLater(100);
+			return true;
+		},
+
+		/**
 		 * Handler for TAB and SHIFT-TAB keys
 		 *
 		 * If available, BlockElements plugin will handle the TAB key
 		 */
-		onTab: function (key, event) {
+		onTab: function (event) {
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
@@ -531,49 +584,59 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 			if (this.config.hotKeyList[keyName] && this.config.hotKeyList[keyName].cmd) {
 				var button = this.getButton(this.config.hotKeyList[keyName].cmd);
 				if (button) {
-					event.stopEvent();
-					button.fireEvent('HTMLAreaEventHotkey', keyName, event);
+					Event.stopEvent(event);
+					/**
+					 * @event HTMLAreaEventHotkey
+					 * Fires when the button hotkey is pressed
+					 */
+					Event.trigger(button, 'HTMLAreaEventHotkey', [keyName, event]);
 					return false;
 				}
 			}
-			event.stopEvent();
-			return false;
+			return true;
 		},
-		/*
+
+		/**
 		 * Handler for BACKSPACE and DELETE keys
 		 */
-		onBackSpace: function (key, event) {
+		onBackSpace: function (event) {
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
 			if ((!UserAgent.isIE && !event.shiftKey) || UserAgent.isIE) {
 				if (this.getEditor().getSelection().handleBackSpace()) {
-					event.stopEvent();
+					Event.stopEvent(event);
+					return false;
 				}
 			}
-				// Update the toolbar state after some time
-			this.getToolbar().updateLater.delay(200);
-			return false;
+			// Update the toolbar state after some time
+			this.getToolbar().updateLater(200);
+			return true;
 		},
-		/*
+
+		/**
 		 * Handler for ENTER key in non-IE browsers
 		 */
-		onEnter: function (key, event) {
+		onEnter: function (event) {
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
 			this.getEditor().getSelection().detectURL(event);
 			if (this.getEditor().getSelection().checkInsertParagraph()) {
-				event.stopEvent();
-			}
+				Event.stopEvent(event);
 				// Update the toolbar state after some time
-			this.getToolbar().updateLater.delay(200);
-			return false;
+				this.getToolbar().updateLater(200);
+				return false;
+			}
+			// Update the toolbar state after some time
+			this.getToolbar().updateLater(200);
+			return true;
 		},
-		/*
+
+		/**
 		 * Handler for ENTER key in WebKit browsers
 		 */
-		onWebKitEnter: function (key, event) {
+		onWebKitEnter: function (event) {
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
@@ -584,7 +647,7 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 					var brNode = editor.document.createElement('br');
 					editor.getSelection().insertNode(brNode);
 					brNode.parentNode.normalize();
-						// Selection issue when an URL was detected
+					// Selection issue when an URL was detected
 					if (editor._unlinkOnUndo) {
 						brNode = brNode.parentNode.parentNode.insertBefore(brNode, brNode.parentNode.nextSibling);
 					}
@@ -593,25 +656,30 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 						secondBrNode = brNode.parentNode.appendChild(secondBrNode);
 					}
 					editor.getSelection().selectNode(brNode, false);
-					event.stopEvent();
+					Event.stopEvent(event);
+					// Update the toolbar state after some time
+					this.getToolbar().updateLater(200);
+					return false;
 				}
 			}
-				// Update the toolbar state after some time
-			this.getToolbar().updateLater.delay(200);
-			return false;
+			// Update the toolbar state after some time
+			this.getToolbar().updateLater(200);
+			return true;
 		},
-		/*
+
+		/**
 		 * Handler for CTRL-SPACE keys
 		 */
-		onCtrlSpace: function (key, event) {
+		onCtrlSpace: function (event) {
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
 			this.getEditor().getSelection().insertHtml('&nbsp;');
-			event.stopEvent();
+			Event.stopEvent(event);
 			return false;
 		},
-		/*
+
+		/**
 		 * Handler for OPTION-SPACE keys on Mac
 		 */
 		onOptionSpace: function (key, event) {
@@ -619,18 +687,24 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 				return false;
 			}
 			this.getEditor().getSelection().insertHtml('&nbsp;');
-			event.stopEvent();
+			Event.stopEvent(event);
 			return false;
 		},
-		/*
+
+		/**
 		 * Handler for configured hotkeys
 		 */
-		onHotKey: function (key, event) {
+		onHotKey: function (event) {
+			var key = Event.getKey(event);
 			if (this.inhibitKeyboardInput(event)) {
 				return false;
 			}
 			var hotKey = String.fromCharCode(key).toLowerCase();
-			this.getButton(this.config.hotKeyList[hotKey].cmd).fireEvent('HTMLAreaEventHotkey', hotKey, event);
+			/**
+			 * @event HTMLAreaEventHotkey
+			 * Fires when the button hotkey is pressed
+			 */
+			Event.trigger(this.getButton(this.config.hotKeyList[hotKey].cmd), 'HTMLAreaEventHotkey', [hotKey, event]);
 			return false;
 		},
 
@@ -638,30 +712,27 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 		 * Cleanup
 		 */
 		onBeforeDestroy: function () {
-			// ExtJS KeyMap object makes IE leak memory
-			// Nullify EXTJS private handlers
-			for (var index = this.keyMap.bindings.length; --index >= 0;) {
-				this.keyMap.bindings[index] = null;
+			// Remove listeners on nested elements
+			if (this.isNested && UserAgent.isGecko) {
+				for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
+					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
+					Event.off(
+						nestedElement,
+						'DOMAttrModified'
+					);
+					Event.off(
+						nestedElement.parentNode,
+						'DOMAttrModified'
+					);
+				}
 			}
-			this.keyMap.handleKeyDown = null;
-			for (var index = this.hotKeyMap.bindings.length; --index >= 0;) {
-				this.hotKeyMap.bindings[index] = null;
-			}
-			this.hotKeyMap.handleKeyDown = null;
-			this.keyMap.disable();
-			this.hotKeyMap.disable();
+			Event.off(this);
+			Event.off(this.getEl().dom);
+			Event.off(this.document.body);
+			Event.off(this.document.documentElement);
 			// Cleaning references to DOM in order to avoid IE memory leaks
-			Ext.get(this.document.body).purgeAllListeners();
-			Ext.get(this.document.body).dom = null;
-			Ext.get(this.document.documentElement).purgeAllListeners();
-			Ext.get(this.document.documentElement).dom = null;
 			this.document = null;
 			this.getEditor().document = null;
-			for (var index = this.nestedParentElements.sorted.length; --index >= 0;) {
-				var nested = this.nestedParentElements.sorted[index];
-				Ext.get(nested).purgeAllListeners();
-				Ext.get(nested).dom = null;
-			}
 			Ext.destroy(this.autoEl, this.el, this.resizeEl, this.positionEl);
 			return true;
 		}
@@ -669,5 +740,5 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom) {
 
 	return Iframe;
 
-}(HTMLArea.UserAgent, HTMLArea.DOM.Walker, HTMLArea.util.TYPO3, HTMLArea.DOM);
+}(HTMLArea.UserAgent, HTMLArea.DOM.Walker, HTMLArea.util.TYPO3, HTMLArea.DOM, HTMLArea.Event, HTMLArea.Event.KeyMap);
 Ext.reg('htmlareaiframe', HTMLArea.Iframe);

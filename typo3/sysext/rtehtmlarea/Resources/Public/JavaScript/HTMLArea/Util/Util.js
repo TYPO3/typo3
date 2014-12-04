@@ -45,6 +45,11 @@ HTMLArea.util = function() {
 		},
 
 		/**
+		 * Empty function
+		 */
+		emptyFunction: function () {},
+
+		/**
 		 * Copies all the properties of config to obj.
 		 * @param Object obj The receiver of the properties
 		 * @param Object config The source of the properties

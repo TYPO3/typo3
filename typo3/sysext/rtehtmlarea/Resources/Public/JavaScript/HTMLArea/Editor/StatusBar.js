@@ -13,7 +13,7 @@
 /**
  * HTMLArea.StatusBar extends Ext.Container
  */
-HTMLArea.StatusBar = function (UserAgent, Dom) {
+HTMLArea.StatusBar = function (UserAgent, Dom, Event) {
 
 	var StatusBar = Ext.extend(Ext.Container, {
 
@@ -22,8 +22,6 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 		 */
 		initComponent: function () {
 			StatusBar.superclass.initComponent.call(this);
-			// Build the deferred word count update task
-			this.updateWordCountLater = new Ext.util.DelayedTask(this.updateWordCount, this);
 			this.addListener({
 				render: {
 					fn: this.addComponents,
@@ -46,13 +44,14 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 					single: true
 				}
 			});
+			var self = this;
 			// Monitor toolbar updates in order to refresh the contents of the statusbar
 			// The toolbar must have been rendered
-			this.mon(this.ownerCt.toolbar, 'HTMLAreaEventToolbarUpdate', this.onUpdateToolbar, this);
+			Event.on(this.ownerCt.toolbar, 'HTMLAreaEventToolbarUpdate', function (event, mode, selectionEmpty, ancestors, endPointsInSameBlock) { Event.stopEvent(event); self.onUpdateToolbar(mode, selectionEmpty, ancestors, endPointsInSameBlock); return false; });
 			// Monitor editor changing mode
-			this.mon(this.getEditor(), 'HTMLAreaEventModeChange', this.onModeChange, this);
+			Event.on(this.getEditor(), 'HTMLAreaEventModeChange', function (event, mode) { Event.stopEvent(event); self.onModeChange(mode); return false; });
 			// Monitor word count change
-			this.mon(this.ownerCt.iframe, 'HTMLAreaEventWordCountChange', this.onWordCountChange, this);
+			Event.on(this.ownerCt.iframe, 'HTMLAreaEventWordCountChange', function (event, delay) { Event.stopEvent(event); self.onWordCountChange(delay); return false; });
 		},
 
 		/**
@@ -101,8 +100,8 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 			var node = this.statusBarTree.firstChild;
 			while (node) {
 				if (/^(a)$/i.test(node.nodeName)) {
+					Event.off(node);
 					var extNode = Ext.get(node);
-					extNode.removeAllListeners();
 					Ext.QuickTips.unregister(extNode);
 					extNode.dom = null;
 				}
@@ -119,7 +118,9 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 		noUpdate: false,
 
 		/**
-		 * Update the status bar
+		 * Update the status bar when the toolbar was updated
+		 *
+		 * @return void
 		 */
 		onUpdateToolbar: function (mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 			if (mode === 'wysiwyg' && !this.noUpdate) {
@@ -166,10 +167,11 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 					element.innerHTML = text;
 					element = path.parentNode.insertBefore(element, path.nextSibling);
 					element.ancestor = ancestor;
-					Ext.get(element).on('click', this.onClick, this);
-					Ext.get(element).on('mousedown', this.onClick, this);
+					var self = this;
+					Event.on(element, 'click', function (event) { return self.onClick(event); });
+					Event.on(element, 'mousedown', function (event) { return self.onClick(event); });
 					if (!UserAgent.isOpera) {
-						Ext.get(element).on('contextmenu', this.onContextMenu, this);
+						Event.on(element, 'contextmenu', function (event) { return self.onContextMenu(event); });
 					}
 					if (index) {
 						var separator = document.createElement('span');
@@ -184,9 +186,22 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 
 		/**
 		 * Handler when the word count may have changed
+		 *
+		 * @param integer delay: the delay before updating the word count
+		 * @return void
 		 */
-		onWordCountChange: function(delay) {
-			this.updateWordCountLater.delay(delay ? delay : 0);
+		onWordCountChange: function (delay) {
+			if (this.updateWordCountLater) {
+				window.clearTimeout(this.updateWordCountLater);
+			}
+			if (delay) {
+				var self = this;
+				this.updateWordCountLater = window.setTimeout(function () {
+					self.updateWordCount();
+				}, delay);
+			} else {
+				this.updateWordCount();
+			}
 		},
 
 		/**
@@ -215,7 +230,8 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 		/**
 		 * Adapt status bar to current editor mode
 		 *
-		 * @param	string	mode: the mode to which the editor got switched to
+		 * @param string mode: the mode to which the editor got switched to
+		 * @return void
 		 */
 		onModeChange: function (mode) {
 			switch (mode) {
@@ -281,18 +297,18 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 		/**
 		 * Click handler
 		 */
-		onClick: function (event, element) {
-			this.selectElement(element);
-			event.stopEvent();
+		onClick: function (event) {
+			this.selectElement(event.target);
+			Event.stopEvent(event);
 			return false;
 		},
 
 		/**
 		 * ContextMenu handler
 		 */
-		onContextMenu: function (event, target) {
-			this.selectElement(target);
-			return this.getEditor().getPlugin('ContextMenu') ? this.getEditor().getPlugin('ContextMenu').show(event, target.ancestor) : false;
+		onContextMenu: function (event) {
+			this.selectElement(event.target);
+			return this.getEditor().getPlugin('ContextMenu') ? this.getEditor().getPlugin('ContextMenu').show(event, event.target.ancestor) : false;
 		},
 
 		/**
@@ -309,5 +325,5 @@ HTMLArea.StatusBar = function (UserAgent, Dom) {
 
 	return StatusBar;
 
-}(HTMLArea.UserAgent, HTMLArea.DOM);
+}(HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.Event);
 Ext.reg('htmlareastatusbar', HTMLArea.StatusBar);

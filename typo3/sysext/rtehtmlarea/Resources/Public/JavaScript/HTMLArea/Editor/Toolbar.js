@@ -13,7 +13,7 @@
 /**
  * HTMLArea.Toolbar extends Ext.Container
  */
-HTMLArea.Toolbar = function () {
+HTMLArea.Toolbar = function (Event) {
 
 	Toolbar = Ext.extend(Ext.Container, {
 
@@ -22,16 +22,7 @@ HTMLArea.Toolbar = function () {
 		 */
 		initComponent: function () {
 			Toolbar.superclass.initComponent.call(this);
-			this.addEvents(
-				/*
-				 * @event HTMLAreaEventToolbarUpdate
-				 * Fires when the toolbar is updated
-				 */
-				'HTMLAreaEventToolbarUpdate'
-			);
-				// Build the deferred toolbar update task
-			this.updateLater = new Ext.util.DelayedTask(this.update, this);
-				// Add the toolbar items
+			// Add the toolbar items
 			this.addItems();
 			this.addListener({
 				afterrender: {
@@ -40,7 +31,8 @@ HTMLArea.Toolbar = function () {
 				}
 			});
 		},
-		/*
+
+		/**
 		 * Initialize listeners
 		 */
 		initEventListeners: function () {
@@ -50,19 +42,23 @@ HTMLArea.Toolbar = function () {
 					single: true
 				}
 			});
-				// Monitor editor becoming ready
-			this.mon(this.getEditor(), 'HTMLAreaEventEditorReady', this.update, this, {single: true});
+			// Monitor editor becoming ready
+			var self = this;
+			Event.one(this.getEditor(), 'HtmlAreaEventEditorReady', function (event) { Event.stopEvent(event); self.update(); return false; });
 		},
-		/*
+
+		/**
 		 * editorId should be set in config
 		 */
 		editorId: null,
-		/*
+
+		/**
 		 * Get a reference to the editor
 		 */
 		getEditor: function() {
 			return RTEarea[this.editorId].editor;
 		},
+
 		/**
 		 * Create the toolbar items based on editor toolbar configuration
 		 */
@@ -120,13 +116,32 @@ HTMLArea.Toolbar = function () {
 				cls: 'x-form-clear-left'
 			});
 		},
-		/*
+
+		/**
 		 * Retrieve a toolbar item by itemId
 		 */
 		getButton: function (buttonId) {
 			return this.find('itemId', buttonId)[0];
 		},
-		/*
+
+		/**
+		 * Update the toolbar after some delay
+		 */
+		updateLater: function (delay) {
+			if (this.updateToolbarLater) {
+				window.clearTimeout(this.updateToolbarLater);
+			}
+			if (delay) {
+				var self = this;
+				this.updateToolbarLater = window.setTimeout(function () {
+					self.update();
+				}, delay);
+			} else {
+				this.update();
+			}
+		},
+
+		/**
 		 * Update the state of the toolbar
 		 */
 		update: function() {
@@ -141,12 +156,18 @@ HTMLArea.Toolbar = function () {
 				ancestors = selection.getAllAncestors();
 				endPointsInSameBlock = selection.endPointsInSameBlock();
 			}
-			this.fireEvent('HTMLAreaEventToolbarUpdate', mode, selectionEmpty, ancestors, endPointsInSameBlock);
+			/**
+			 * @event HTMLAreaEventToolbarUpdate
+			 * Fires when the toolbar is updated
+			 */
+			Event.trigger(this, 'HTMLAreaEventToolbarUpdate', [mode, selectionEmpty, ancestors, endPointsInSameBlock]);
 		},
-		/*
+
+		/**
 		 * Cleanup
 		 */
 		onBeforeDestroy: function () {
+			Event.off(this);
 			this.removeAll(true);
 			return true;
 		}
@@ -154,5 +175,5 @@ HTMLArea.Toolbar = function () {
 
 	return Toolbar;
 
-}();
+}(HTMLArea.Event);
 Ext.reg('htmlareatoolbar', HTMLArea.Toolbar);

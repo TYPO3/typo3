@@ -13,7 +13,7 @@
 /**
  * Paste as Plain Text Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
+HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Event, Walker) {
 
 	var PlainText = Ext.extend(Plugin, {
 
@@ -109,10 +109,12 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 			if (this.buttonsConfiguration && this.buttonsConfiguration['pastetoggle'] && this.buttonsConfiguration['pastetoggle'].setActiveOnRteOpen) {
 				this.toggleButton('PasteToggle');
 			}
-				// Start monitoring paste events
-			this.editor.iframe.mon(Ext.get(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.onPaste, this);
+			// Start monitoring paste events
+			var self = this;
+			Event.on(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'paste', function (event) { return self.onPaste(event); });
 		},
-		/*
+
+		/**
 		 * This function toggles the state of a button
 		 *
 		 * @param	string		buttonId: id of button to be toggled
@@ -235,7 +237,7 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 		/**
 		 * Handler for paste event
 		 *
-		 * @param object event: the paste event
+		 * @param object event: the jQuery paste event
 		 * @return boolean false, if the event was handled, true otherwise
 		 */
 		onPaste: function (event) {
@@ -266,9 +268,9 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 								)
 							);
 							if (UserAgent.isIEBeforeIE9) {
-								event.browserEvent.returnValue = false;
+								Event.getBrowserEvent(event).returnValue = false;
 							} else {
-								event.stopEvent();
+								Event.stopEvent(event);
 							}
 							return false;
 						} else {
@@ -278,7 +280,7 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 							// WebKit seems to be pondering a very long time over what is happenning here...
 							var self = this;
 							window.setTimeout(function () {
-								return self.processPastedContent();
+								self.processPastedContent();
 							}, UserAgent.isWebKit ? 500 : 50);
 						}
 						break;
@@ -289,25 +291,25 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 			return true;
 		},
 
-		/*
+		/**
 		 * Grab the text content directly from the clipboard
 		 * If successful, stop the paste event
 		 *
-		 * @param	object		event: the paste event
-		 *
-		 * @return	string		clipboard content, in plain text, if access was granted
+		 * @param object event: the jQuery paste event
+		 * @return string clipboard content, in plain text, if access was granted
 		 */
 		grabClipboardText: function (event) {
 			var clipboardText = '';
-				// Grab the text content
-			if (window.clipboardData || event.browserEvent.clipboardData || event.browserEvent.dataTransfer) {
-				clipboardText = (window.clipboardData || event.browserEvent.clipboardData || event.browserEvent.dataTransfer).getData('text');
+			var browserEvent = Event.getBrowserEvent(event);
+			// Grab the text content
+			if (window.clipboardData || browserEvent.clipboardData || browserEvent.dataTransfer) {
+				clipboardText = (window.clipboardData || browserEvent.clipboardData || browserEvent.dataTransfer).getData('text');
 			}
 			if (clipboardText) {
-					// Stop the event
-				event.stopEvent();
+				// Stop the event
+				Event.stopEvent(event);
 			} else {
-					// If the user denied access to the clipboard, let the browser paste without intervention
+				// If the user denied access to the clipboard, let the browser paste without intervention
 				TYPO3.Dialog.InformationDialog({
 					title: this.localize('Paste-as-Plain-Text'),
 					msg: this.localize('Access-to-clipboard-denied')
@@ -315,7 +317,8 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 			}
 			return clipboardText;
 		},
-		/*
+
+		/**
 		 * Redirect the paste operation towards a hidden section
 		 *
 		 * @return	void
@@ -399,7 +402,7 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 						}
 					},
 					close: {
-						fn: this.onClose,
+						fn: this.onPastingPadClose,
 						scope: this
 					}
 				},
@@ -440,12 +443,13 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 			this.pastingPadDocument = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
 			this.pastingPadBody = this.pastingPadDocument.body;
 			this.pastingPadBody.contentEditable = true;
+			var self = this;
 			// Start monitoring paste events
-			this.dialog.mon(Ext.get(this.pastingPadBody), 'paste', this.onPastingPadPaste, this);
+			Event.on(this.pastingPadBody, 'paste', function (event) { return self.onPastingPadPaste(); });
 			// Try to keep focus on the pasting pad
-			this.dialog.mon(Ext.get(this.editor.document.documentElement), 'mouseover', function (event) { this.focusOnPastingPad(); }, this);
-			this.dialog.mon(Ext.get(this.editor.document.body), 'focus', function (event) { this.focusOnPastingPad(); }, this);
-			this.dialog.mon(Ext.get(this.pastingPadDocument.documentElement), 'mouseover', function (event) { this.focusOnPastingPad(); }, this);
+			Event.on(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'mouseover', function (event) { return self.focusOnPastingPad(); });
+			Event.on(this.editor.document.body, 'focus', function (event) { return self.focusOnPastingPad(); });
+			Event.on(UserAgent.isIE ? this.pastingPadBody: this.pastingPadDocument.documentElement, 'mouseover', function (event) { return self.focusOnPastingPad(); });
 			this.focusOnPastingPad();
 		},
 
@@ -454,8 +458,11 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 		 */
 		focusOnPastingPad: function () {
 			this.pastingPadBody.focus();
-			this.pastingPadDocument.getSelection().selectAllChildren(this.pastingPadBody);
+			if (!UserAgent.isIE) {
+				this.pastingPadDocument.getSelection().selectAllChildren(this.pastingPadBody);
+			}
 			this.pastingPadDocument.getSelection().collapseToEnd();
+			return false;
 		},
 
 		/**
@@ -467,6 +474,7 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 			window.setTimeout(function () {
 				self.cleanPastingPadContents();
 			}, 50);
+			return true;
 		},
 
 		/**
@@ -502,6 +510,16 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 		},
 
 		/**
+		 * Remove the listeners on the pasing pad
+		 */
+		removeListeners: function () {
+			if(this.pastingPadBody) {
+				Event.off(this.pastingPadBody);
+				Event.off(this.pastingPadDocument.documentElement);
+			}
+		},
+
+		/**
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
@@ -519,4 +537,4 @@ HTMLArea.PlainText = function (Plugin, UserAgent, Dom, Walker) {
 
 	return PlainText;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.DOM.Walker);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.Event, HTMLArea.DOM.Walker);

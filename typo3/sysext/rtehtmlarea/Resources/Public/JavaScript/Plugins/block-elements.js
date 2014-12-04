@@ -13,7 +13,7 @@
 /**
  * BlockElements Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.BlockElements = function (Plugin, UserAgent, Dom) {
+HTMLArea.BlockElements = function (Plugin, UserAgent, Dom, Event) {
 
 	var BlockElements = Ext.extend(Plugin, {
 
@@ -938,30 +938,30 @@ HTMLArea.BlockElements = function (Plugin, UserAgent, Dom) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the plugin is generated
 		 */
 		onGenerate: function () {
-				// Register the enter key handler for IE when the cursor is at the end of a dt or a dd element
+			// Register the enter key handler for IE when the cursor is at the end of a dt or a dd element
 			if (UserAgent.isIE) {
+				var self = this;
 				this.editor.iframe.keyMap.addBinding({
-					key: Ext.EventObject.ENTER,
+					key: Event.ENTER,
 					shift: false,
-					handler: this.onKey,
-					scope: this
+					handler: function (event) { return self.onKey(event); }
 				});
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the enter key was pressed in IE
 		 * It will process the enter key for IE when the cursor is at the end of a dt or a dd element
 		 *
-		 * @param	string		key: the key code
-		 * @param	object		event: the Ext event object (keydown)
-		 *
-		 * @return	boolean		false, if the event was taken care of
+		 * @param object event: the Ext event object (keydown)
+		 * @return boolean false, if the event was taken care of
 		 */
-		onKey: function (key, event) {
+		onKey: function (event) {
 			if (this.editor.getSelection().isEmpty()) {
 				var range = this.editor.getSelection().createRange();
 				var parentElement = this.editor.getSelection().getParentElement();
@@ -976,7 +976,7 @@ HTMLArea.BlockElements = function (Plugin, UserAgent, Dom) {
 						var item = parentElement.parentNode.insertBefore(this.editor.document.createElement((parentElement.nodeName.toLowerCase() === "dt") ? "dd" : "dt"), parentElement.nextSibling);
 						item.innerHTML = "\x20";
 						this.editor.getSelection().selectNodeContents(item, true);
-						event.stopEvent();
+						Event.stopEvent(event);
 						return false;
 					}
 				} else if (/^(li)$/i.test(parentElement.nodeName)
@@ -986,13 +986,14 @@ HTMLArea.BlockElements = function (Plugin, UserAgent, Dom) {
 					var item = parentElement.parentNode.parentNode.insertBefore(this.editor.document.createTextNode("\x20"), parentElement.parentNode.nextSibling);
 					this.editor.getSelection().selectNodeContents(parentElement.parentNode.parentNode, false);
 					parentElement.parentNode.removeChild(parentElement);
-					event.stopEvent();
+					Event.stopEvent(event);
 					return false;
 				}
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * This function removes any disallowed class or mutually exclusive classes from the class attribute of the node
 		 */
 		cleanClasses: function (node) {
@@ -1202,4 +1203,4 @@ HTMLArea.BlockElements = function (Plugin, UserAgent, Dom) {
 
 	return BlockElements;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.Event);

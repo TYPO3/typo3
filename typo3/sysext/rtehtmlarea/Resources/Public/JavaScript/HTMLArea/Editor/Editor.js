@@ -13,7 +13,7 @@
 /**
  * Editor extends Ext.util.Observable
  */
-HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node, Typo3, Framework) {
+HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework) {
 
 	var Editor = Ext.extend(Ext.util.Observable, {
 
@@ -69,20 +69,8 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node
 			this.ajax = new Ajax({
 				editor: this
 			});
-				// Initialize keyboard input inhibit flag
+			// Initialize keyboard input inhibit flag
 			this.inhibitKeyboardInput = false;
-			this.addEvents(
-				/*
-				 * @event HTMLAreaEventEditorReady
-				 * Fires when initialization of the editor is complete
-				 */
-				'HTMLAreaEventEditorReady',
-				/*
-				 * @event HTMLAreaEventModeChange
-				 * Fires when the editor changes mode
-				 */
-				'HTMLAreaEventModeChange'
-			);
 		},
 		/*
 		 * Flag set to true when the editor initialization has completed
@@ -219,8 +207,8 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node
 			this.iframe = this.htmlArea.getComponent('iframe');
 			this.textAreaContainer = this.htmlArea.getComponent('textAreaContainer');
 			// Get triggered when the framework becomes ready
-			this.relayEvents(this.htmlArea, ['HTMLAreaEventFrameworkReady']);
-			this.on('HTMLAreaEventFrameworkReady', this.onFrameworkReady, this, {single: true});
+			var self = this;
+			Event.one(this.htmlArea, 'HTMLAreaEventFrameworkReady', function (event) { Event.stopEvent(event); self.onFrameworkReady(); return false; });
 		},
 		/**
 		 * Initialize the editor
@@ -290,7 +278,11 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node
 				}
 			}
 			this.ready = true;
-			this.fireEvent('HTMLAreaEventEditorReady');
+			/**
+			 * @event EditorReady
+			 * Fires when initialization of the editor is complete
+			 */
+			Event.trigger(this, 'HtmlAreaEventEditorReady');
 			this.appendToLog('HTMLArea.Editor', 'onFrameworkReady', 'Editor ready.', 'info');
 		},
 	
@@ -326,13 +318,18 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node
 					this.mode = mode;
 					break;
 			}
-			this.fireEvent('HTMLAreaEventModeChange', this.mode);
+			/**
+			 * @event HTMLAreaEventModeChange
+			 * Fires when the editor changes mode
+			 */
+			Event.trigger(this, 'HTMLAreaEventModeChange', [this.mode]);
 			this.focus();
 			for (var pluginId in this.plugins) {
 				this.getPlugin(pluginId).onMode(this.mode);
 			}
 		},
-		/*
+
+		/**
 		 * Get current editor mode
 		 */
 		getMode: function () {
@@ -482,18 +479,21 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node
 				}
 			}
 		},
-		/*
+
+		/**
 		 * Add listeners
 		 */
 		initEventsListening: function () {
 			if (UserAgent.isOpera) {
 				this.iframe.startListening();
 			}
-				// Add unload handler
+			// Add unload handler
 			var iframe = this.iframe.getEl().dom;
-			Ext.EventManager.on(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', this.onUnload, this, {single: true});
+			var self = this;
+			Event.one(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', function (event) { return self.onUnload(event); });
 		},
-		/*
+
+		/**
 		 * Make the editor framework visible
 		 */
 		show: function () {
@@ -523,17 +523,18 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Selection, BookMark, Node
 				this.textArea.value = this.getHTML();
 			}
 			// Cleanup
-			Ext.TaskMgr.stopAll();
 			for (var pluginId in this.plugins) {
 				this.unRegisterPlugin(pluginId);
 			}
+			Event.off(this.textarea);
 			this.purgeListeners();
 			RTEarea[this.editorId].editor = null;
 			// ExtJS is not releasing any resources when the iframe is unloaded
 			this.htmlArea.destroy();
+			return true;
 		}
 	});
 
 	return Editor;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.Ajax, HTMLArea.DOM, HTMLArea.DOM.Selection, HTMLArea.DOM.BookMark, HTMLArea.DOM.Node, HTMLArea.util.TYPO3, HTMLArea.Framework);
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.Ajax, HTMLArea.DOM, HTMLArea.Event, HTMLArea.DOM.Selection, HTMLArea.DOM.BookMark, HTMLArea.DOM.Node, HTMLArea.util.TYPO3, HTMLArea.Framework);

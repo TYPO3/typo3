@@ -13,7 +13,7 @@
 /**
  * Table Operations Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TableOperations = function (Plugin, UserAgent, Util, Dom, Color) {
+HTMLArea.TableOperations = function (Plugin, UserAgent, Util, Dom, Event, Color) {
 
 	var TableOperations = Ext.extend(Plugin, {
 
@@ -618,25 +618,27 @@ HTMLArea.TableOperations = function (Plugin, UserAgent, Util, Dom, Color) {
 			this.reStyleTable(table);
 			this.close();
 		},
-		/*
+
+		/**
 		 * This function gets called when the plugin is generated
 		 */
 		onGenerate: function () {
-				// Set table borders if requested by configuration
+			// Set table borders if requested by configuration
 			if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnRTEOpen) {
 				this.toggleBorders(true);
 			}
-				// Register handler for the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
+			// Register handler for the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
 			if ((UserAgent.isIE || UserAgent.isOpera) && this.disableEnterParagraphs) {
+				var self = this;
 				this.editor.iframe.keyMap.addBinding({
-					key: Ext.EventObject.ENTER,
+					key: Event.ENTER,
 					shift: false,
-					handler: this.onKey,
-					scope: this
+					handler: function (event) { return self.onKey(event); }
 				});
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the toolbar is being updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
@@ -2581,12 +2583,10 @@ HTMLArea.TableOperations = function (Plugin, UserAgent, Util, Dom, Color) {
 		 * This function gets called by the editor key map when a key was pressed.
 		 * It will process the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
 		 *
-		 * @param	string		key: the key code
-		 * @param	object		event: the Ext event object (keydown)
-		 *
-		 * @return	boolean		false, if the event was taken care of
+		 * @param object event: the jQuery event object (keydown)
+		 * @return boolean false, if the event was taken care of
 		 */
-		onKey: function (key, event) {
+		onKey: function (event) {
 			var range = this.editor.getSelection().createRange();
 			var parentElement = this.editor.getSelection().getParentElement();
 			while (parentElement && !Dom.isBlockElement(parentElement)) {
@@ -2605,7 +2605,7 @@ HTMLArea.TableOperations = function (Plugin, UserAgent, Util, Dom, Color) {
 						this.editor.getSelection().selectNodeContents(brNode, false);
 					}
 				}
-				event.stopEvent();
+				Event.stopEvent(event);
 				return false;
 			}
 			return true;
@@ -2614,4 +2614,4 @@ HTMLArea.TableOperations = function (Plugin, UserAgent, Util, Dom, Color) {
 
 	return TableOperations;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM, HTMLArea.util.Color);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM, HTMLArea.Event, HTMLArea.util.Color);

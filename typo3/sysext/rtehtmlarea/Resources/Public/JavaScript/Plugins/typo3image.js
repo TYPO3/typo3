@@ -13,7 +13,7 @@
 /**
  * TYPO3Image plugin for htmlArea RTE
  */
-HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
+HTMLArea.TYPO3Image = function (Plugin, UserAgent, Event) {
 
 	var TYPO3Image = Ext.extend(Plugin, {
 
@@ -37,7 +37,8 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the button
 			 */
 			var buttonId = 'InsertImage';
@@ -51,8 +52,9 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 			};
 			this.registerButton(buttonConfiguration);
 			return true;
-		 },
-		/*
+		},
+
+		/**
 		 * This function gets called when the button was pressed
 		 *
 		 * @param	object		editor: the editor instance
@@ -61,7 +63,7 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 		 * @return	boolean		false if action is completed
 		 */
 		onButtonPress: function (editor, id) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			var additionalParameter;
@@ -84,10 +86,12 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 				),
 				this.makeUrlFromModulePath(this.imageModulePath, additionalParameter)
 			);
-			this.dialog.mon(Ext.get(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'drop', this.onDrop, this, {single: true});
+			var self = this;
+			Event.one(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'drop.TYPO3Image', function (event) { return self.onDrop(event); });
 			return false;
 		},
-		/*
+
+		/**
 		 * Insert the image
 		 * This function is called from the TYPO3 image script
 		 */
@@ -96,7 +100,8 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 			this.editor.getSelection().insertHtml(image);
 			this.close();
 		},
-		/*
+
+		/**
 		 * Handlers for drag and drop operations
 		 */
 		onDrop: function (event) {
@@ -104,6 +109,14 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 				this.editor.iframe.onDrop();
 			}
 			this.close();
+			return true;
+		},
+
+		/**
+		 * Remove the event listeners
+		 */
+		removeListeners: function () {
+			Event.off(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, '.TYPO3Image');
 		},
 
 		/**
@@ -126,4 +139,4 @@ HTMLArea.TYPO3Image = function (Plugin, UserAgent) {
 
 	return TYPO3Image;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.Event);

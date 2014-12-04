@@ -13,7 +13,7 @@
 /**
  * DefinitionList Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.DefinitionList = function (BlockElements, UserAgent, Dom) {
+HTMLArea.DefinitionList = function (BlockElements, UserAgent, Util, Dom) {
 
 	var DefinitionList = Ext.extend(BlockElements, {
 
@@ -72,7 +72,8 @@ HTMLArea.DefinitionList = function (BlockElements, UserAgent, Dom) {
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: [
@@ -80,13 +81,15 @@ HTMLArea.DefinitionList = function (BlockElements, UserAgent, Dom) {
 			['Outdent', null, 'SHIFT-TAB', 'outdent', false, 'outdent'],
 			['DefinitionList', null, null, 'definitionlist', true, 'definition-list'],
 			['DefinitionItem', 'dd,dt', null, 'definitionitem', false, 'definition-list-item']
-		 ],
-		/*
+		],
+
+		/**
 		 * This function gets called when the plugin is generated
 		 * Avoid re-execution of the base function
 		 */
-		onGenerate: Ext.emptyFn,
-		/*
+		onGenerate: Util.emptyFunction,
+
+		/**
 		 * This function gets called when a button was pressed.
 		 *
 		 * @param	object		editor: the editor instance
@@ -328,4 +331,4 @@ HTMLArea.DefinitionList = function (BlockElements, UserAgent, Dom) {
 
 	return DefinitionList;
 
-}(HTMLArea.BlockElements, HTMLArea.UserAgent, HTMLArea.DOM);
+}(HTMLArea.BlockElements, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);

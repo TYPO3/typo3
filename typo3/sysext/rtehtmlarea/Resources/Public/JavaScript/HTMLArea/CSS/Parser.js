@@ -1,7 +1,7 @@
 /***************************************************
  *  HTMLArea.CSS.Parser: CSS Parser
  ***************************************************/
-HTMLArea.CSS.Parser = function (UserAgent, Util) {
+HTMLArea.CSS.Parser = function (UserAgent, Util, Event) {
 
 	var Parser = Ext.extend(Ext.util.Observable, {
 
@@ -22,13 +22,6 @@ HTMLArea.CSS.Parser = function (UserAgent, Util) {
 			if (this.editor.config.styleSheetsMaximumAttempts) {
 				this.parseAttemptsMaximumNumber = this.editor.config.styleSheetsMaximumAttempts;
 			}
-			this.addEvents(
-				/*
-				 * @event HTMLAreaEventCssParsingComplete
-				 * Fires when parsing of the stylesheets of the iframe is complete
-				 */
-				'HTMLAreaEventCssParsingComplete'
-			);
 			this.parsedClasses = {};
 			this.ready = false;
 		},
@@ -92,7 +85,11 @@ HTMLArea.CSS.Parser = function (UserAgent, Util) {
 				if (!this.cssLoaded) {
 					if (/Security/i.test(this.error)) {
 						this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
-						this.fireEvent('HTMLAreaEventCssParsingComplete');
+						/**
+						 * @event HTMLAreaEventCssParsingComplete
+						 * Fires when parsing of the stylesheets of the iframe is complete
+						 */
+						Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
 					} else if (this.parseAttemptsCounter < this.parseAttemptsMaximumNumber) {
 						this.parseAttemptsCounter++;
 						var self = this;
@@ -101,14 +98,22 @@ HTMLArea.CSS.Parser = function (UserAgent, Util) {
 						}, 200);
 					} else {
 						this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error, 'error');
-						this.fireEvent('HTMLAreaEventCssParsingComplete');
+						/**
+						 * @event HTMLAreaEventCssParsingComplete
+						 * Fires when parsing of the stylesheets of the iframe is complete
+						 */
+						Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
 					}
 				} else {
 					this.attemptTimeout = null;
 					this.ready = true;
 					this.filterAllowedClasses();
 					this.sort();
-					this.fireEvent('HTMLAreaEventCssParsingComplete');
+					/**
+					 * @event HTMLAreaEventCssParsingComplete
+					 * Fires when parsing of the stylesheets of the iframe is complete
+					 */
+					Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
 				}
 			}
 		},
@@ -364,4 +369,4 @@ HTMLArea.CSS.Parser = function (UserAgent, Util) {
 
 	return Parser;
 
-}(HTMLArea.UserAgent, HTMLArea.util);
+}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.Event);

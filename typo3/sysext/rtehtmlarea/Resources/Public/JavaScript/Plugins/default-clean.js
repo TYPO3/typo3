@@ -13,7 +13,7 @@
 /**
  * Default Clean Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.DefaultClean = function (Plugin, UserAgent, Util, Dom) {
+HTMLArea.DefaultClean = function (Plugin, UserAgent, Util, Dom, Event) {
 
 	var DefaultClean = Ext.extend(Plugin, {
 
@@ -50,28 +50,31 @@ HTMLArea.DefaultClean = function (Plugin, UserAgent, Util, Dom) {
 			};
 			this.registerButton(buttonConfiguration);
 		},
-		/*
+
+		/**
 		 * This function gets called when the button was pressed.
 		 *
-		 * @param	object		editor: the editor instance
-		 * @param	string		id: the button id or the key
-		 *
-		 * @return	boolean		false if action is completed
+		 * @param object editor: the editor instance
+		 * @param string id: the button id or the key
+		 * @return boolean false if action is completed
 		 */
 		onButtonPress: function (editor, id, target) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			this.clean();
 			return false;
 		},
-		/*
+
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
-			this.editor.iframe.mon(Ext.get(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
+			var self = this;
+			Event.on(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'paste', function (event) { return self.wordCleanHandler(event); });
 		},
-		/*
+
+		/**
 		 * This function cleans all nodes in the node tree below the input node
 		 *
 		 * @param	object	node: the root of the node tree to clean
@@ -164,10 +167,14 @@ HTMLArea.DefaultClean = function (Plugin, UserAgent, Util, Dom) {
 		 * Handler for paste, dragdrop and drop events
 		 */
 		wordCleanHandler: function (event) {
-			this.clean.defer(250, this);
+			var self = this;
+			window.setTimeout(function () {
+				self.clean();
+			}, 250);
+			return true;
 		}
 	});
 
 	return DefaultClean;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM, HTMLArea.Event);

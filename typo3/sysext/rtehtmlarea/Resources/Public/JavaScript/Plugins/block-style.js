@@ -13,7 +13,7 @@
 /**
  * Block Style Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
+HTMLArea.BlockStyle = function (Plugin, Dom, Event, Parser) {
 
 	var BlockStyle = Ext.extend(Plugin, {
 
@@ -42,7 +42,7 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 			this.showTagFreeClasses = this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false;
 			this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
 			this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
-			/*
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -55,7 +55,7 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the drop-down list
 			 */
 			var dropDownId = 'BlockStyle';
@@ -86,7 +86,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 			this.registerDropDown(dropDownConfiguration);
 			return true;
 		},
-		/*
+
+		/**
 		 * This handler gets called when some block style was selected in the drop-down list
 		 */
 		onChange: function (editor, combo, record, index) {
@@ -106,7 +107,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function applies the class change to the node
 		 */
 		applyClassChange: function (node, className) {
@@ -140,12 +142,14 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				}
 			}
 		},
+
 		/**
 		 * This handler gets called when the editor is generated
 		 */
 		onGenerate: function () {
+			var self = this;
 			// Monitor editor changing mode
-			this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
+			Event.on(this.editor, 'HTMLAreaEventModeChange', function (event, mode) { Event.stopEvent(event); self.onModeChange(mode); return false; });
 			// Create CSS Parser object
 			this.blockStyles = new Parser({
 				prefixLabelWithClassName: this.prefixLabelWithClassName,
@@ -160,10 +164,11 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				dropDown.setDisabled(true);
 			}
 			// Monitor css parsing being completed
-			this.editor.iframe.mon(this.blockStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+			Event.one(this.blockStyles, 'HTMLAreaEventCssParsingComplete', function (event) { Event.stopEvent(event); self.onCssParsingComplete(); return false; }); 
 			this.blockStyles.parse();
 		},
-		/*
+
+		/**
 		 * This handler gets called when parsing of css classes is completed
 		 */
 		onCssParsingComplete: function () {
@@ -174,7 +179,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This handler gets called when the toolbar is being updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
@@ -182,7 +188,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				this.updateValue(button.itemId);
 			}
 		},
-		/*
+
+		/**
 		 * This handler gets called when the editor has changed its mode to "wysiwyg"
 		 */
 		onModeChange: function(mode) {
@@ -190,7 +197,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				this.updateValue('BlockStyle');
 			}
 		},
-		/*
+
+		/**
 		 * This function updates the current value of the dropdown list
 		 */
 		updateValue: function(dropDownId) {
@@ -216,7 +224,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function reinitializes the options of the dropdown
 		 */
 		initializeDropDown: function (dropDown) {
@@ -228,7 +237,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 			}));
 			dropDown.setValue('none');
 		},
-		/*
+
+		/**
 		 * This function builds the options to be displayed in the dropDown box
 		 */
 		buildDropDownOptions: function (dropDown, nodeName) {
@@ -260,7 +270,8 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function sets the selected option of the dropDown box
 		 */
 		setSelectedOption: function (dropDown, classNames, noUnknown, defaultClass) {
@@ -307,4 +318,4 @@ HTMLArea.BlockStyle = function (Plugin, Dom, Parser) {
 
 	return BlockStyle;
 
-}(HTMLArea.Plugin, HTMLArea.DOM, HTMLArea.CSS.Parser);
+}(HTMLArea.Plugin, HTMLArea.DOM, HTMLArea.Event, HTMLArea.CSS.Parser);

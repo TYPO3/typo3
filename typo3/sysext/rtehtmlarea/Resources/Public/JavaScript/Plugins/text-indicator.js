@@ -13,7 +13,7 @@
 /**
  * TextIndicator Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TextIndicator = function (Plugin, UserAgent, Color) {
+HTMLArea.TextIndicator = function (Plugin, UserAgent, Event, Color) {
 
 	var TextIndicator = Ext.extend(Plugin, {
 
@@ -54,19 +54,21 @@ HTMLArea.TextIndicator = function (Plugin, UserAgent, Color) {
 		 * This handler gets called when the editor is generated
 		 */
 		onGenerate: function () {
-				// Ensure text indicator is updated AFTER style sheets are loaded
+			var self = this;
+			// Ensure text indicator is updated AFTER style sheets are loaded
 			var blockStylePlugin = this.getPluginInstance('BlockStyle');
 			if (blockStylePlugin && blockStylePlugin.blockStyles) {
-					// Monitor css parsing being completed
-				this.editor.iframe.mon(blockStylePlugin.blockStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+				// Monitor css parsing being completed
+				Event.one(blockStylePlugin.blockStyles, 'HTMLAreaEventCssParsingComplete', function (event) { Event.stopEvent(event); self.onCssParsingComplete(); return false; }); 
 			}
 			var textStylePlugin = this.getPluginInstance('TextStyle');
 			if (textStylePlugin && textStylePlugin.textStyles) {
-					// Monitor css parsing being completed
-				this.editor.iframe.mon(textStylePlugin.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+				// Monitor css parsing being completed
+				Event.one(textStylePlugin.textStyles, 'HTMLAreaEventCssParsingComplete', function (event) { Event.stopEvent(event); self.onCssParsingComplete(); return false; });
 			}
 		},
-		/*
+
+		/**
 		 * This handler gets called when parsing of css classes is completed
 		 */
 		onCssParsingComplete: function () {
@@ -123,4 +125,4 @@ HTMLArea.TextIndicator = function (Plugin, UserAgent, Color) {
 
 	return TextIndicator;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.util.Color);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.Event, HTMLArea.util.Color);

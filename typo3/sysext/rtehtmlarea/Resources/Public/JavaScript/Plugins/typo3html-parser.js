@@ -13,7 +13,7 @@
 /**
  * TYPO3HtmlParser Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent) {
+HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent, Event) {
 
 	var TYPO3HtmlParser = Ext.extend(Plugin, {
 
@@ -37,7 +37,8 @@ HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent) {
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the (hidden) button
 			 */
 			var buttonId = 'CleanWord';
@@ -50,7 +51,8 @@ HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent) {
 			};
 			this.registerButton(buttonConfiguration);
 		},
-		/*
+
+		/**
 		 * This function gets called when the button was pressed.
 		 *
 		 * @param	object		editor: the editor instance
@@ -59,18 +61,24 @@ HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent) {
 		 * @return	boolean		false if action is completed
 		 */
 		onButtonPress: function (editor, id) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			this.clean();
 			return false;
 		},
-		/*
+
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
-			this.editor.iframe.mon(Ext.get(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
+			var self = this;
+			Event.on(UserAgent.isIE ? this.editor.document.body : this.editor.document.documentElement, 'paste', function (event) { return self.wordCleanHandler(event); });
 		},
+
+		/**
+		 * This function posts a cleaning request to the server
+		 */
 		clean: function() {
 			this.editor.inhibitKeyboardInput = true;
 			var editor = this.editor;
@@ -83,7 +91,7 @@ HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent) {
 				editorNo : this.editorId,
 				content	 : editor.getInnerHTML()
 			};
-				// Server-based cleaning of pasted content
+			// Server-based cleaning of pasted content
 			this.postData(	url,
 					content,
 					function (options, success, response) {
@@ -106,9 +114,10 @@ HTMLArea.TYPO3HtmlParser = function (Plugin, UserAgent) {
 			window.setTimeout(function () {
 				self.clean();
 			}, 50);
+			return true;
 		}
 	});
 
 	return TYPO3HtmlParser;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.Event);

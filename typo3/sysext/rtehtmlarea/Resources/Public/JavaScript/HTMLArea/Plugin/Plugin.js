@@ -319,7 +319,7 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 	 *
 	 * @return	void
 	 */
-	Plugin.prototype.init = function () {};
+	Plugin.prototype.init = Util.emptyFunction;
 
 	/**
 	 * The toolbar refresh handler of the plugin
@@ -328,7 +328,7 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 	 *
 	 * @return	boolean
 	 */
-	Plugin.prototype.onUpdateToolbar = function () {};
+	Plugin.prototype.onUpdateToolbar = Util.emptyFunction;
 
 	/**
 	 * The onMode event handler
@@ -352,7 +352,7 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 	 *
 	 * @return	boolean
 	 */
-	Plugin.prototype.onGenerate = function () {};
+	Plugin.prototype.onGenerate = Util.emptyFunction;
 
 	/**
 	 * Localize a string
@@ -570,9 +570,18 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 	};
 
 	/**
+	 * Remove listeners
+	 * This function may be defined by the plugin subclass.
+	 * The function is invoked when a plugin dialog is closed
+	 * @return void
+	 */
+	Plugin.prototype.removeListeners = Util.emptyFunction;
+
+	/**
 	 * Close the dialogue window (after saving the selection, if IE)
 	 */
 	Plugin.prototype.close = function () {
+		this.removeListeners();
 		this.saveSelection();
 		this.dialog.close();
 	};
@@ -581,6 +590,7 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 	 * Dialogue window onClose handler
 	 */
 	Plugin.prototype.onClose = function () {
+		this.removeListeners();
 		this.editor.focus();
 		this.restoreSelection();
 	 	this.editor.updateToolbar();
@@ -590,6 +600,7 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 	 * Handler for window cancel
 	 */
 	Plugin.prototype.onCancel = function () {
+		this.removeListeners();
 		this.dialog.close();
 		this.editor.focus();
 	};

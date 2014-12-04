@@ -43,7 +43,7 @@ HTMLArea.UndoRedo = function (Plugin, UserAgent) {
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the buttons
 			 */
 			var buttonList = this.buttonList, buttonId;
@@ -62,44 +62,46 @@ HTMLArea.UndoRedo = function (Plugin, UserAgent) {
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: [
 			['Undo', null, 'z', 'undo'],
 			['Redo', null, 'y', 'redo']
 		],
-		/*
+
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
-				// Start undo snapshots
-			if (this.customUndo) {
-				this.task = {
-					run: this.takeSnapshot,
-					scope: this,
-					interval: this.undoTimeout
-				};
-				this.start();
-			}
+			// Start undo snapshots
+			this.start();
 		},
-		/*
+
+		/**
 		 * Start the undo/redo snapshot task
 		 */
 		start: function () {
 			if (this.customUndo) {
-				Ext.TaskMgr.start(this.task);
+				this.stop();
+				var self = this;
+				this.task = window.setInterval(function () {
+					self.takeSnapshot();
+				}, this.undoTimeout);
 			}
 		},
-		/*
-		 * Start the undo/redo snapshot task
+
+		/**
+		 * Stop the undo/redo snapshot task
 		 */
 		stop: function () {
-			if (this.customUndo) {
-				Ext.TaskMgr.stop(this.task);
+			if (this.customUndo && this.task) {
+				window.clearInterval(this.task);
 			}
 		},
-		/*
+
+		/**
 		 * Take a snapshot of the current contents for undo
 		 */
 		takeSnapshot: function () {

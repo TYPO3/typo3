@@ -13,7 +13,7 @@
 /**
  * Character Map Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.CharacterMap = function (Plugin, UserAgent) {
+HTMLArea.CharacterMap = function (Plugin, UserAgent, Event) {
 
 	var CharacterMap = Ext.extend(Plugin, {
 
@@ -34,7 +34,8 @@ HTMLArea.CharacterMap = function (Plugin, UserAgent) {
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the buttons
 			 */
 			for (var i = 0, n = this.buttons.length; i < n; ++i) {
@@ -50,7 +51,8 @@ HTMLArea.CharacterMap = function (Plugin, UserAgent) {
 				};
 				this.registerButton(buttonConfiguration);
 			}
-			/*
+
+			/**
 			 * Localizing the maps
 			 */
 			for (var key in this.maps) {
@@ -60,15 +62,17 @@ HTMLArea.CharacterMap = function (Plugin, UserAgent) {
 				}
 			}
 			return true;
-		 },
-		/*
+		},
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttons: [
 			['InsertCharacter', null, 'character-insert-from-map'],
 			['InsertSoftHyphen', null, 'soft-hyphen-insert']
 		],
-		/*
+
+		/**
 		 * Character maps
 		 */
 		maps: {
@@ -427,29 +431,29 @@ HTMLArea.CharacterMap = function (Plugin, UserAgent) {
 			}
 			return tabItems;
 		},
-		/*
+
+		/**
 		 * Render an array of characters
 		 *
-		 * @param	object		component: the box containing the characters
-		 *
-		 * @return	void
+		 * @param object component: the box containing the characters
+		 * @return void
 		 */
 		renderMap: function (component) {
 			component.tpl.overwrite(component.el, this.maps[component.itemId]);
-			component.mon(component.el, 'click', this.insertCharacter, this, {delegate: 'a'});
+			var self = this;
+			Event.on(component.el.dom, 'click', function (event) { return self.insertCharacter(event); }, {delegate: 'a'});
 		},
 
 		/**
 		 * Handle the click on an item of the map
 		 *
-		 * @param object event: the Ext event
-		 * @param HTMLelement target: the html element target
+		 * @param object event: the jQuery event
 		 * @return boolean
 		 */
-		insertCharacter: function (event, target) {
-			event.stopEvent();
+		insertCharacter: function (event) {
+			Event.stopEvent(event);
 			this.restoreSelection();
-			var entity = target.innerHTML;
+			var entity = event.target.innerHTML;
 			this.insertEntity(entity);
 			this.saveSelection();
 			return false;
@@ -472,14 +476,28 @@ HTMLArea.CharacterMap = function (Plugin, UserAgent) {
 				this.editor.getSelection().selectNode(node, false);
 			}
 		},
-		/*
+
+		/**
 		 * Reset focus on the the current selection, if at all possible
 		 *
 		 */
 		resetFocus: function () {
 			this.restoreSelection();
+		},
+
+		/**
+		 * Remove listeners before closing the window
+		 */		
+		removeListeners: function () {
+			var components = this.dialog.findByType('box');
+			for (var i = components.length; --i > 0;) {
+				if (components[i].el) {
+					Event.off(components[i].el.dom);
+				}
+			}			
 		}
 	});
 
 	return CharacterMap;
-}(HTMLArea.Plugin, HTMLArea.UserAgent);
+
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.Event);

@@ -13,7 +13,7 @@
 /**
  * Text Style Plugin for TYPO3 htmlArea RTE
  */
-HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
+HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Event, Parser) {
 
 	var TextStyle = Ext.extend(Plugin, {
 
@@ -180,13 +180,15 @@ HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
 				}
 			}
 		},
+
 		/**
 		 * This function gets called when the plugin is generated
 		 * Get the classes configuration and initiate the parsing of the style sheets
 		 */
 		onGenerate: function () {
+			var self = this;
 			// Monitor editor changing mode
-			this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
+			Event.on(this.editor, 'HTMLAreaEventModeChange', function (event, mode) { Event.stopEvent(event); self.onModeChange(mode); return false; });
 			// Create CSS Parser object
 			this.textStyles = new Parser({
 				prefixLabelWithClassName: this.prefixLabelWithClassName,
@@ -201,10 +203,11 @@ HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
 				dropDown.setDisabled(true);
 			}
 			// Monitor css parsing being completed
-			this.editor.iframe.mon(this.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+			Event.one(this.textStyles, 'HTMLAreaEventCssParsingComplete', function (event) { Event.stopEvent(event); self.onCssParsingComplete(); return false; }); 
 			this.textStyles.parse();
 		},
-		/*
+
+		/**
 		 * This handler gets called when parsing of css classes is completed
 		 */
 		onCssParsingComplete: function () {
@@ -215,7 +218,8 @@ HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This handler gets called when the toolbar is being updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
@@ -223,7 +227,8 @@ HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
 				this.updateToolbar(button.itemId);
 			}
 		},
-		/*
+
+		/**
 		 * This handler gets called when the editor has changed its mode to "wysiwyg"
 		 */
 		onModeChange: function (mode) {
@@ -231,7 +236,8 @@ HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
 				this.updateToolbar('TextStyle');
 			}
 		},
-		/*
+
+		/**
 		* This function gets called when the drop-down list needs to be refreshed
 		*/
 		updateToolbar: function (dropDownId) {
@@ -386,4 +392,4 @@ HTMLArea.TextStyle = function (Plugin, UserAgent, Dom, Parser) {
 
 	return TextStyle;
 
-}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.CSS.Parser);
+}(HTMLArea.Plugin, HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.Event, HTMLArea.CSS.Parser);
