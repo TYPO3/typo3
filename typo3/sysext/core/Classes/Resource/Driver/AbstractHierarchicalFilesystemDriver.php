@@ -55,6 +55,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 	 *
 	 * @param string $fileIdentifier The file path (including the file name!)
 	 * @return string
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 */
 	protected function canonicalizeAndCheckFileIdentifier($fileIdentifier) {
 		if ($fileIdentifier !== '') {

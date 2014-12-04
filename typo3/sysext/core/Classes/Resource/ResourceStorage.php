@@ -1842,6 +1842,10 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param Folder $folderObject
 	 * @param bool $deleteRecursively
 	 * @throws \RuntimeException
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
+	 * @throws Exception\FileOperationErrorException
+	 * @throws Exception\InvalidPathException
 	 * @return bool
 	 */
 	public function deleteFolder($folderObject, $deleteRecursively = FALSE) {

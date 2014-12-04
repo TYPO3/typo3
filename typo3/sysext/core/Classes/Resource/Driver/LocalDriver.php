@@ -581,6 +581,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $fileIdentifier
 	 * @return string
+	 * @throws Exception\InvalidPathException
 	 */
 	protected function getAbsolutePath($fileIdentifier) {
 		$relativeFilePath = ltrim($this->canonicalizeAndCheckFileIdentifier($fileIdentifier), '/');
@@ -1018,6 +1019,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param bool $deleteRecursively
 	 * @return bool
 	 * @throws Exception\FileOperationErrorException
+	 * @throws Exception\InvalidPathException
 	 */
 	public function deleteFolder($folderIdentifier, $deleteRecursively = FALSE) {
 		$folderPath = $this->getAbsolutePath($folderIdentifier);
