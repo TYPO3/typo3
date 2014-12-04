@@ -1508,6 +1508,82 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for the stdWrap_strtotime test
+	 *
+	 * @return array
+	 * @see stdWrap_strtotime
+	 */
+	public function stdWrap_strtotimeReturnsTimestampDataProvider() {
+		return array(
+			'date from content' => array(
+				'2014-12-04',
+				array(
+					'strtotime' => '1',
+				),
+				1417651200,
+			),
+			'manipulation of date from content' => array(
+				'2014-12-04',
+				array(
+					'strtotime' => '+ 2 weekdays',
+				),
+				1417996800,
+			),
+			'date from configuration' => array(
+				'',
+				array(
+					'strtotime' => '2014-12-04',
+				),
+				1417651200,
+			),
+			'manipulation of date from configuration' => array(
+				'',
+				array(
+					'strtotime' => '2014-12-04 + 2 weekdays',
+				),
+				1417996800,
+			),
+			'empty input' => array(
+				'',
+				array(
+					'strtotime' => '1',
+				),
+				FALSE,
+			),
+			'date from content and configuration' => array(
+				'2014-12-04',
+				array(
+					'strtotime' => '2014-12-05',
+				),
+				FALSE,
+			),
+		);
+	}
+
+	/**
+	 * @param string|NULL $content
+	 * @param array $configuration
+	 * @param integer $expected
+	 * @dataProvider stdWrap_strtotimeReturnsTimestampDataProvider
+	 * @test
+	 */
+	public function stdWrap_strtotimeReturnsTimestamp($content, $configuration, $expected) {
+		// Set exec_time to a hard timestamp
+		$GLOBALS['EXEC_TIME'] = 1417392000;
+		// Save current timezone and set to UTC to make the system under test behave
+		// the same in all server timezone settings
+		$timezoneBackup = date_default_timezone_get();
+		date_default_timezone_set('UTC');
+
+		$result = $this->subject->stdWrap_strtotime($content, $configuration);
+
+		// Reset timezone
+		date_default_timezone_set($timezoneBackup);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * @param string|NULL $content
 	 * @param array $configuration
 	 * @param string $expected

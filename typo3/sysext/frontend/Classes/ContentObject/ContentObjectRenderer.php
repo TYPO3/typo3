@@ -146,6 +146,8 @@ class ContentObjectRenderer {
 		'expandList.' => 'array',
 		'date' => 'dateconf',
 		'date.' => 'array',
+		'strtotime' => 'strtotimeconf',
+		'strtotime.' => 'array',
 		'strftime' => 'strftimeconf',
 		'strftime.' => 'array',
 		'age' => 'boolean',
@@ -2934,6 +2936,21 @@ class ContentObjectRenderer {
 			$content = $GLOBALS['TSFE']->csConv($content, $tmp_charset);
 		}
 		return $content;
+	}
+
+	/**
+	 * strtotime
+	 * Will return a timestamp based on configuration given according to PHP strtotime
+	 *
+	 * @param string $content Input value undergoing processing in this function.
+	 * @param array $conf stdWrap properties for strtotime.
+	 * @return string The processed input value
+	 */
+	public function stdWrap_strtotime($content = '', $conf = array()) {
+		if ($conf['strtotime'] !== '1') {
+			$content .= ' ' . $conf['strtotime'];
+		}
+		return strtotime($content, $GLOBALS['EXEC_TIME']);
 	}
 
 	/**
