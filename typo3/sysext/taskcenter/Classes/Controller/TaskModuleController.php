@@ -31,13 +31,22 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $pageinfo;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'user_task';
+
+	/**
 	 * Initializes the Module
 	 *
 	 * @return void
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:taskcenter/task/locallang.xlf');
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+		$this->MCONF = array(
+			'name' => $this->moduleName
+		);
 		parent::init();
 		// Initialize document
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
@@ -320,7 +329,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		);
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
 		}
 		return $buttons;
 	}
