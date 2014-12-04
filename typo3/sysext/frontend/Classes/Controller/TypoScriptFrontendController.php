@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -3158,7 +3159,7 @@ class TypoScriptFrontendController {
 			$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 			$parameter = $this->page['uid'];
 			$type = GeneralUtility::_GET('type');
-			if ($type) {
+			if ($type && MathUtility::canBeInterpretedAsInteger($type)) {
 				$parameter .= ',' . $type;
 			}
 			$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
