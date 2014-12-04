@@ -833,7 +833,7 @@ var inline = {
 		var valueObj = document.getElementsByName(elName);
 		var icon = $(objectId + '_disabled');
 
-		var $container = TYPO3.jQuery('#' + objectId + '_div');
+		var $container = TYPO3.jQuery('#' + inline.escapeObjectId(objectId) + '_div');
 
 			// It might be the case that there's no hidden field
 		if (formObj.length && valueObj.length) {
