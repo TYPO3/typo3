@@ -77,14 +77,22 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected $view;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'system_txschedulerM1';
+
+	/**
 	 * @return \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:scheduler/Resources/Private/Language/locallang.xlf');
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
-
+		$this->MCONF = array(
+			'name' => $this->moduleName,
+		);
 		$this->backPath = $GLOBALS['BACK_PATH'];
-		$this->cshKey = '_MOD_' . $GLOBALS['MCONF']['name'];
+		$this->cshKey = '_MOD_' . $this->moduleName;
 		$this->backendTemplatePath = ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Backend/SchedulerModule/';
 		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$this->view->getRequest()->setControllerExtensionName('scheduler');
@@ -1454,7 +1462,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected function getShortcutButton() {
 		$result = '';
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
+			$result = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
 		}
 		return $result;
 	}

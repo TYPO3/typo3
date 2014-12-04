@@ -7,7 +7,18 @@ if (TYPO3_MODE === 'BE') {
 		'system',
 		'txschedulerM1',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+		array(
+			'script' => '_DISPATCH',
+			'access' => 'admin',
+			'name' => 'system_txschedulerM1',
+			'labels' => array(
+				'tabs_images' => array(
+					'tab' => '../Resources/Public/Icons/module-scheduler.png',
+				),
+				'll_ref' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
+			),
+		)
 	);
 
 	// Add context sensitive help (csh) to the backend module
