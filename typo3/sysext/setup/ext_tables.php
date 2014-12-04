@@ -6,7 +6,18 @@ if (TYPO3_MODE === 'BE') {
 		'user',
 		'setup',
 		'after:task',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod/'
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod/',
+		array(
+			'script' => '_DISPATCH',
+			'access' => 'group,user',
+			'name' => 'user_setup',
+			'labels' => array(
+				'tabs_images' => array(
+					'tab' => '../Resources/Public/Icons/module-setup.png',
+				),
+				'll_ref' => 'LLL:EXT:setup/mod/locallang_mod.xlf',
+			),
+		)
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_user_setup',

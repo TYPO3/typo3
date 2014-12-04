@@ -27,11 +27,6 @@ class SetupModuleController {
 	/**
 	 * @var array
 	 */
-	public $MCONF = array();
-
-	/**
-	 * @var array
-	 */
 	public $MOD_MENU = array();
 
 	/**
@@ -127,6 +122,13 @@ class SetupModuleController {
 	 * @var string
 	 */
 	protected $simUser = '';
+
+	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'user_setup';
 
 	/**
 	 * Instantiate the form protection before a simulated user is initialized.
@@ -277,11 +279,10 @@ class SetupModuleController {
 	 */
 	public function init() {
 		$GLOBALS['LANG']->includeLLFile('EXT:setup/mod/locallang.xlf');
-		$this->MCONF = $GLOBALS['MCONF'];
+
 		// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
-		// ... and checking module access for the logged in user.
-		$scriptUser->modAccess($this->MCONF, 1);
+
 		$this->isAdmin = $scriptUser->isAdmin();
 		// Getting the 'override' values as set might be set in User TSconfig
 		$this->overrideConf = $GLOBALS['BE_USER']->getTSConfigProp('setup.override');
@@ -420,7 +421,7 @@ class SetupModuleController {
 		$buttons['csh'] = BackendUtility::cshItem('_MOD_user_setup', '');
 		$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->moduleName);
 		}
 		return $buttons;
 	}
