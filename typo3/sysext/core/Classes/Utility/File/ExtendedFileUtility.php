@@ -447,21 +447,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 			}
 		} else {
 			try {
-				/** @var $fileObject \TYPO3\CMS\Core\Resource\FolderInterface */
-				if ($fileObject->getFileCount() > 0) {
-					// render a message that the folder could not be deleted because it still contains files
-					$flashMessage = GeneralUtility::makeInstance(
-						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderNotDeletedHasFiles'), $fileObject->getName()),
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderNotDeletedHasFiles'),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING,
-						TRUE
-					);
-					$this->addFlashMessage($flashMessage);
-				} else {
-					$result = $fileObject->delete(TRUE);
-
+				/** @var \TYPO3\CMS\Core\Resource\Folder $fileObject */
+				$result = $fileObject->delete(TRUE);
+				if ($result) {
 					// notify the user that the folder was deleted
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
 					$flashMessage = GeneralUtility::makeInstance(
 						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
@@ -473,13 +463,14 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 					// Log success
 					$this->writelog(4, 0, 3, 'Directory "%s" deleted', array($fileObject->getIdentifier()));
 				}
-
+			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
+				$this->writelog(4, 1, 120, 'Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).', array($fileObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
 				$this->writelog(4, 1, 123, 'You are not allowed to access the directory', array($fileObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
 				$this->writelog(4, 1, 121, 'Target was not within your mountpoints! T="%s"', array($fileObject->getIdentifier()));
-			} catch (\RuntimeException $e) {
-				$this->writelog(4, 1, 120, 'Could not delete directory! Write-permission problem? Is directory "%s" empty? (You are not allowed to delete directories recursively).', array($fileObject->getIdentifier()));
+			} catch (\TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException $e) {
+				$this->writelog(4, 1, 120, 'Could not delete directory "%s"! Write-permission problem?', array($fileObject->getIdentifier()));
 			}
 		}
 		return $result;

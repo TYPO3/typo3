@@ -580,6 +580,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $fileIdentifier
 	 * @return string
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 */
 	protected function getAbsolutePath($fileIdentifier) {
 		$relativeFilePath = ltrim($this->canonicalizeAndCheckFileIdentifier($fileIdentifier), '/');
@@ -1017,6 +1018,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param boolean $deleteRecursively
 	 * @return boolean
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 */
 	public function deleteFolder($folderIdentifier, $deleteRecursively = FALSE) {
 		$folderPath = $this->getAbsolutePath($folderIdentifier);

@@ -1890,6 +1890,10 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param Folder $folderObject
 	 * @param bool $deleteRecursively
 	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidPathException
 	 * @return bool
 	 */
 	public function deleteFolder($folderObject, $deleteRecursively = FALSE) {
