@@ -151,7 +151,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->standaloneView
 			->expects($this->any())
 			->method('setTemplatePathAndFilename')
-			->with('bar');
+			->with(PATH_site . 'bar');
 		$this->subject->render(array('file' => 'foo'));
 	}
 
