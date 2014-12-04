@@ -13,7 +13,7 @@
 /**
  * Ajax object
  */
-HTMLArea.Ajax = function(Util) {
+HTMLArea.Ajax = function($, Util) {
 
 	/**
 	 * Constructor method
@@ -32,21 +32,26 @@ HTMLArea.Ajax = function(Util) {
 	 * @return	boolean		true on success of the request submission
 	 */
 	Ajax.prototype.getJavascriptFile = function (url, callback, scope) {
-		var success = false;
-		var self = this;
-		Ext.Ajax.request({
-			method: 'GET',
-			url: url,
-			callback: callback,
-			success: function (response) {
-				success = true;
-			},
-			failure: function (response) {
-				self.editor.inhibitKeyboardInput = false;
-				self.editor.appendToLog('HTMLArea.Ajax', 'getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status, 'error');
-			},
-			scope: scope
-		});
+		var success = false,
+			self = this,
+			options = {
+				callback: callback,
+				complete: function (response, status) {
+					this.callback.call(scope, options, success, response);
+				},
+				dataType: 'script',
+				error: function (response, status, error) {
+					self.editor.inhibitKeyboardInput = false;
+					self.editor.appendToLog('HTMLArea/Ajax/Ajax', 'getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + error, 'error');
+				},
+				success: function (data, status, response) {
+					success = true;
+				},
+				scope: scope,
+				type: 'GET',
+				url: url
+			};
+		$.ajax(options);
 		return success;
 	};
 
@@ -61,37 +66,39 @@ HTMLArea.Ajax = function(Util) {
 	 * @return	boolean		true on success
 	 */
 	Ajax.prototype.postData = function (url, data, callback, scope) {
-		var success = false;
-		var self = this;
+		var success = false,
+			self = this;
 		data.charset = this.editor.config.typo3ContentCharset ? this.editor.config.typo3ContentCharset : 'utf-8';
 		var params = '';
 		for (var parameter in data) {
 			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(data[parameter]);
 		}
 		params += this.editor.config.RTEtsConfigParams;
-		Ext.Ajax.request({
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			},
-			url: url,
-			params: params,
+		var options = {
 			callback: typeof callback === 'function' ? callback : function (options, success, response) {
 				if (!success) {
-					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' failed. Server reported ' + response.status, 'error');
+					self.editor.appendToLog('HTMLArea/Ajax/Ajax', 'postData', 'Post request to ' + url + ' failed. Server reported ' + response.status, 'error');
 				}
+			},
+			complete: function (response, status) {
+				this.callback.call(scope, options, success, response);
+			},
+			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			data: params,
+			error: function (response) {
+				self.editor.appendToLog('HTMLArea/Ajax/Ajax', 'postData', 'Unable to post ' + url + ' . Server reported ' + response.status, 'error');
 			},
 			success: function (response) {
 				success = true;
 			},
-			failure: function (response) {
-				self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Unable to post ' + url + ' . Server reported ' + response.status, 'error');
-			},
-			scope: scope
-		});
+			scope: scope,
+			type: 'POST',
+			url: url
+		};
+		$.ajax(options);
 		return success;
 	};
 
 	return Ajax;
 
-}(HTMLArea.util);
+}(HTMLArea.jQuery, HTMLArea.util);

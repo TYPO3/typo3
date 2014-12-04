@@ -226,6 +226,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		$this->addSkin();
 		$this->pageRenderer->addCssFile($this->siteURL . 'typo3/js/extjs/ux/resize.css');
 		// Add RTE JavaScript
+		$this->pageRenderer->loadJquery();
 		$this->addRteJsFiles($this->TCEform->RTEcounter);
 		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
 		$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
