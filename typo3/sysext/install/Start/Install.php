@@ -94,7 +94,7 @@
  */
 
 if (version_compare(PHP_VERSION, '5.5.0', '<')) {
-	throw new \Exception('TYPO3 CMS requires PHP 5.5 or above', 1415878732);
+	die('TYPO3 CMS requires PHP 5.5 or above');
 }
 
 define('TYPO3_MODE', 'BE');
