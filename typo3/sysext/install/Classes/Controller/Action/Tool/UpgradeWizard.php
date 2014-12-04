@@ -105,6 +105,10 @@ class UpgradeWizard extends Action\AbstractAction {
 				);
 				if ($identifier === 'initialUpdateDatabaseSchema') {
 					$availableUpdates['initialUpdateDatabaseSchema']['renderNext'] = $this->needsInitialUpdateDatabaseSchema;
+					// initialUpdateDatabaseSchema is always the first update
+					// we stop immediately here as the remaining updates may
+					// require the new fields to be present in order to avoid SQL errors
+					break;
 				} elseif ($identifier === 'finalUpdateDatabaseSchema') {
 					// Okay to check here because finalUpdateDatabaseSchema is last element in array
 					$availableUpdates['finalUpdateDatabaseSchema']['renderNext'] = count($availableUpdates) === 1;
