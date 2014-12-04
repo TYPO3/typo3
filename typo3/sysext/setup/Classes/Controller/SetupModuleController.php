@@ -522,6 +522,7 @@ class SetupModuleController {
 				$html = GeneralUtility::callUserFunction($config['userFunc'], $config, $this, '');
 				break;
 			case 'button':
+				$html = '';
 				if ($config['onClick']) {
 					$onClick = $config['onClick'];
 					if ($config['onClickLabels']) {
@@ -536,8 +537,10 @@ class SetupModuleController {
 			default:
 				$html = '';
 			}
-			$code[$i][1] = $label;
-			$code[$i++][2] = $html;
+			if ($html) {
+				$code[$i][1] = $label;
+				$code[$i++][2] = $html;
+			}
 		}
 		if ($this->dividers2tabs == 0) {
 			$tabLabel = $firstTabLabel;
