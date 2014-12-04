@@ -36,8 +36,8 @@ class ApcPreset extends Configuration\AbstractPreset {
 	 */
 	protected $configurationValues = array(
 		'SYS/caching/cacheConfigurations/extbase_object' => array(
-			'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-			'backend' => 'TYPO3\CMS\Core\Cache\Backend\ApcBackend',
+			'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+			'backend' => \TYPO3\CMS\Core\Cache\Backend\ApcBackend::class,
 			'options' => array(
 				'defaultLifetime' => 0,
 			),

@@ -28,7 +28,7 @@ class PhpErrorCodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Setup the test case scenario
 	 */
 	public function setUp() {
-		$this->viewHelper = $this->getMock('TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper', array('dummy'));
+		$this->viewHelper = $this->getMock(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class, array('dummy'));
 	}
 
 	/**

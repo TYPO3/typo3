@@ -48,7 +48,7 @@ class EnvironmentAndFolders extends AbstractStepAction {
 			// Create a PackageStates.php with all packages activated marked as "part of factory default"
 			if (!file_exists(PATH_typo3conf . 'PackageStates.php')) {
 				/** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-				$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
+				$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
 				$packages = $packageManager->getAvailablePackages();
 				foreach ($packages as $package) {
 					/** @var $package \TYPO3\CMS\Core\Package\PackageInterface */

@@ -61,112 +61,112 @@ class DefaultFactory {
 			'children' => array(
 				array(
 					'name' => 'index.php',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\LinkNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
 					'target' => 'typo3_src/index.php',
 				),
 				array(
 					'name' => 'typo3',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\LinkNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
 					'target' => 'typo3_src/typo3',
 				),
 				array(
 					'name' => 'typo3_src',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\LinkNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\LinkNode::class,
 				),
 				array(
 					'name' => 'typo3temp',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 					'targetPermission' => $directoryPermission,
 					'children' => array(
 						array(
 							'name' => 'index.html',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 							'targetPermission' => $filePermission,
 							'targetContent' => '',
 						),
 						array(
 							'name' => 'compressor',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'cs',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'Cache',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'GB',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'llxml',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'locks',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'pics',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'sprites',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'temp',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 					),
 				),
 				array(
 					'name' => 'typo3conf',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 					'targetPermission' => $directoryPermission,
 					'children' => array(
 						array(
 							'name' => 'ext',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 						array(
 							'name' => 'l10n',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 						),
 					),
 				),
 				array(
 					'name' => 'uploads',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 					'targetPermission' => $directoryPermission,
 					'children' => array(
 						array(
 							'name' => 'index.html',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 							'targetPermission' => $filePermission,
 							'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/uploads-index.html',
 						),
 						array(
 							'name' => 'media',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 							'children' => array(
 								array(
 									'name' => 'index.html',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 									'targetPermission' => $filePermission,
 									'targetContent' => '',
 								),
@@ -174,12 +174,12 @@ class DefaultFactory {
 						),
 						array(
 							'name' => 'pics',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 							'children' => array(
 								array(
 									'name' => 'index.html',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 									'targetPermission' => $filePermission,
 									'targetContent' => '',
 								),
@@ -187,12 +187,12 @@ class DefaultFactory {
 						),
 						array(
 							'name' => 'tf',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 							'children' => array(
 								array(
 									'name' => 'index.html',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 									'targetPermission' => $filePermission,
 									'targetContent' => '',
 								),
@@ -202,23 +202,23 @@ class DefaultFactory {
 				),
 				array(
 					'name' => !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') : 'fileadmin',
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 					'targetPermission' => $directoryPermission,
 					'children' => array(
 						array(
 							'name' => '_temp_',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 							'children' => array(
 								array(
 									'name' => '.htaccess',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 									'targetPermission' => $filePermission,
 									'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess',
 								),
 								array(
 									'name' => 'index.html',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 									'targetPermission' => $filePermission,
 									'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
 								),
@@ -226,34 +226,34 @@ class DefaultFactory {
 						),
 						array(
 							'name' => 'user_upload',
-							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 							'targetPermission' => $directoryPermission,
 							'children' => array(
 								array(
 									'name' => '_temp_',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 									'targetPermission' => $directoryPermission,
 									'children' => array(
 										array(
 											'name' => 'index.html',
-											'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+											'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 											'targetPermission' => $filePermission,
 											'targetContent' => '',
 										),
 										array(
 											'name' => 'importexport',
-											'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+											'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 											'targetPermission' => $directoryPermission,
 											'children' => array(
 												array(
 													'name' => '.htaccess',
-													'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+													'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 													'targetPermission' => $filePermission,
 													'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-user_upload-temp-importexport-htaccess',
 												),
 												array(
 													'name' => 'index.html',
-													'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+													'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 													'targetPermission' => $filePermission,
 													'targetContentFile' => PATH_site . 'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html',
 												),
@@ -263,7 +263,7 @@ class DefaultFactory {
 								),
 								array(
 									'name' => 'index.html',
-									'type' => 'TYPO3\\CMS\\install\\FolderStructure\\FileNode',
+									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
 									'targetPermission' => $filePermission,
 									'targetContent' => '',
 								),

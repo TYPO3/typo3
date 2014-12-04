@@ -29,10 +29,10 @@ class FeatureManager {
 	 * @var array List of feature class names
 	 */
 	protected $featureRegistry = array(
-		'TYPO3\\CMS\\Install\\Configuration\\Charset\\CharsetFeature',
-		'TYPO3\\CMS\\Install\\Configuration\\Context\\ContextFeature',
-		'TYPO3\\CMS\\Install\\Configuration\\Image\\ImageFeature',
-		'TYPO3\\CMS\\Install\\Configuration\\ExtbaseObjectCache\\ExtbaseObjectCacheFeature',
+		\TYPO3\CMS\Install\Configuration\Charset\CharsetFeature::class,
+		\TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
+		\TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
+		\TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
 	);
 
 	/**
@@ -49,7 +49,7 @@ class FeatureManager {
 			$featureInstance = $this->objectManager->get($featureClass);
 			if (!($featureInstance instanceof FeatureInterface)) {
 				throw new Exception(
-					'Feature ' . $featureClass . ' doen not implement FeatureInterface',
+					'Feature ' . $featureClass . ' does not implement FeatureInterface',
 					1378644593
 				);
 			}

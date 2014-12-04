@@ -106,7 +106,7 @@ class AbstractController {
 			if (isset($postValues['token'])) {
 				/** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
 				$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-					'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'
+					\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
 				);
 				$action = $this->getAction();
 				if ($action === '') {
@@ -335,7 +335,7 @@ class AbstractController {
 		}
 		/** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
 		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-			'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'
+			\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
 		);
 		return $formProtection->generateToken('installTool', $action);
 	}
@@ -410,7 +410,7 @@ class AbstractController {
 		if ($this->isDbalEnabled()) {
 			require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['backend']
-				= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+				= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['options'] = array();
 		}
 
@@ -418,19 +418,19 @@ class AbstractController {
 		require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('fluid') . 'ext_localconf.php');
 
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_object']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_object']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns']['options'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['backend']
-			= 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend';
+			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['options'] = array();
 
 		/** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */

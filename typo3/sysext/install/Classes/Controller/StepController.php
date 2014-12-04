@@ -295,7 +295,7 @@ class StepController extends AbstractController {
 
 		try {
 			/** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-			$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
+			$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
 
 			// Activate all packages required for a minimal usable system
 			$packages = $packageManager->getAvailablePackages();

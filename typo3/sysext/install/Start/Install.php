@@ -105,18 +105,18 @@ require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/sysext/install/Start/')
 	->startOutputBuffering()
-	->loadConfigurationAndInitialize(FALSE, 'TYPO3\\CMS\\Core\\Package\\FailsafePackageManager');
+	->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
 
 // Execute 'tool' or 'step' controller depending on install[controller] GET/POST parameter
 $getPost = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');
-$controllerClassName = 'TYPO3\\CMS\\Install\\Controller\\StepController';
+$controllerClassName = \TYPO3\CMS\Install\Controller\StepController::class;
 if (isset($getPost['controller'])) {
 	switch ($getPost['controller']) {
 		case 'tool':
-			$controllerClassName = 'TYPO3\\CMS\\Install\\Controller\\ToolController';
+			$controllerClassName = \TYPO3\CMS\Install\Controller\ToolController::class;
 			break;
 		case 'ajax':
-			$controllerClassName = 'TYPO3\\CMS\\Install\\Controller\\AjaxController';
+			$controllerClassName = \TYPO3\CMS\Install\Controller\AjaxController::class;
 			break;
 	}
 }

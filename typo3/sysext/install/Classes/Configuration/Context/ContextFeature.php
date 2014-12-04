@@ -30,8 +30,8 @@ class ContextFeature extends Configuration\AbstractFeature implements Configurat
 	 * @var array List of preset classes
 	 */
 	protected $presetRegistry = array(
-		'TYPO3\\CMS\\Install\\Configuration\\Context\\ProductionPreset',
-		'TYPO3\\CMS\\Install\\Configuration\\Context\\DevelopmentPreset',
-		'TYPO3\\CMS\\Install\\Configuration\\Context\\CustomPreset',
+		\TYPO3\CMS\Install\Configuration\Context\ProductionPreset::class,
+		\TYPO3\CMS\Install\Configuration\Context\DevelopmentPreset::class,
+		\TYPO3\CMS\Install\Configuration\Context\CustomPreset::class,
 	);
 }

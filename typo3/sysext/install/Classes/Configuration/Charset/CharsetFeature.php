@@ -30,9 +30,9 @@ class CharsetFeature extends Configuration\AbstractFeature implements Configurat
 	 * @var array List of preset classes
 	 */
 	protected $presetRegistry = array(
-		'TYPO3\\CMS\\Install\\Configuration\\Charset\\MbstringPreset',
-		'TYPO3\\CMS\\Install\\Configuration\\Charset\\IconvPreset',
-		'TYPO3\\CMS\\Install\\Configuration\\Charset\\CoreInternalPreset',
-		'TYPO3\\CMS\\Install\\Configuration\\Charset\\CustomPreset',
+		\TYPO3\CMS\Install\Configuration\Charset\MbstringPreset::class,
+		\TYPO3\CMS\Install\Configuration\Charset\IconvPreset::class,
+		\TYPO3\CMS\Install\Configuration\Charset\CoreInternalPreset::class,
+		\TYPO3\CMS\Install\Configuration\Charset\CustomPreset::class,
 	);
 }

@@ -41,19 +41,19 @@ class UpgradeWizard extends Action\AbstractAction {
 		$this->loadExtLocalconfDatabaseAndExtTables();
 
 		// To make sure initialUpdateDatabaseSchema is first wizard, it is added here instead of ext_localconf.php
-		$initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance('TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate', 'initialUpdateDatabaseSchema');
+		$initialUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class, 'initialUpdateDatabaseSchema');
 		if ($initialUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-				array('initialUpdateDatabaseSchema' => 'TYPO3\\CMS\\Install\\Updates\\InitialDatabaseSchemaUpdate'),
+				array('initialUpdateDatabaseSchema' => \TYPO3\CMS\Install\Updates\InitialDatabaseSchemaUpdate::class),
 				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
 			);
 			$this->needsInitialUpdateDatabaseSchema = TRUE;
 		}
 
 		// To make sure finalUpdateDatabaseSchema is last wizard, it is added here instead of ext_localconf.php
-		$finalUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance('TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate', 'finalUpdateDatabaseSchema');
+		$finalUpdateDatabaseSchemaUpdateObject = $this->getUpdateObjectInstance(\TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class, 'finalUpdateDatabaseSchema');
 		if ($finalUpdateDatabaseSchemaUpdateObject->shouldRenderWizard()) {
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = 'TYPO3\\CMS\\Install\\Updates\\FinalDatabaseSchemaUpdate';
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['finalUpdateDatabaseSchema'] = \TYPO3\CMS\Install\Updates\FinalDatabaseSchemaUpdate::class;
 		}
 
 		// Perform silent cache framework table upgrade

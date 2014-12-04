@@ -56,7 +56,7 @@ class ClearCacheService {
 			->initializeClassLoader()
 			->initializeCachingFramework()
 			->initializeClassLoaderCaches()
-			->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\PackageManager');
+			->initializePackageManagement(\TYPO3\CMS\Core\Package\PackageManager::class);
 
 		// Get all table names starting with 'cf_' and truncate them
 		$database = $this->getDatabaseConnection();

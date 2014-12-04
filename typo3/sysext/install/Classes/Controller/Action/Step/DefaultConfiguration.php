@@ -57,7 +57,7 @@ class DefaultConfiguration extends AbstractStepAction {
 
 		/** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
 		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get(
-			'TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'
+			\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class
 		);
 		$formProtection->clean();
 

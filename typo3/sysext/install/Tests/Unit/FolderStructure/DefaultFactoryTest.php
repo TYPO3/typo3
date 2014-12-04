@@ -24,6 +24,6 @@ class DefaultFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getStructureReturnsInstanceOfStructureFacadeInterface() {
 		$object = new \TYPO3\CMS\Install\FolderStructure\DefaultFactory();
-		$this->assertInstanceOf('TYPO3\\CMS\\Install\\FolderStructure\\StructureFacadeInterface', $object->getStructure());
+		$this->assertInstanceOf(\TYPO3\CMS\Install\FolderStructure\StructureFacadeInterface::class, $object->getStructure());
 	}
 }

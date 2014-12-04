@@ -25,9 +25,9 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorThrowsExceptionIfParentIsNotNull() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$falseParent = $this->getMock(
-			'TYPO3\CMS\Install\FolderStructure\RootNodeInterface',
+			\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class,
 			array(),
 			array(),
 			'',
@@ -42,7 +42,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorThrowsExceptionIfAbsolutePathIsNotSet() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$structure = array(
 			'type' => 'root',
 		);
@@ -55,7 +55,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnWindows() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')
@@ -72,7 +72,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorThrowsExceptionIfAbsolutePathIsNotAbsoluteOnUnix() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')
@@ -88,7 +88,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorSetsParentToNull() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')
@@ -105,7 +105,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getChildrenReturnsChildCreatedByConstructor() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')
@@ -115,7 +115,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'name' => '/foo',
 			'children' => array(
 				array(
-					'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+					'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
 					'name' => $childName,
 				),
 			),
@@ -124,7 +124,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$children = $node->_call('getChildren');
 		/** @var $child \TYPO3\CMS\install\FolderStructure\NodeInterface */
 		$child = $children[0];
-		$this->assertInstanceOf('TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode', $child);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\FolderStructure\DirectoryNode::class, $child);
 		$this->assertSame($childName, $child->getName());
 	}
 
@@ -133,7 +133,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorSetsTargetPermission() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')
@@ -152,7 +152,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constructorSetsName() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')
@@ -168,7 +168,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getStatusReturnsArrayWithOkStatusAndCallsOwnStatusMethods() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\FolderStructure\\RootNode',
+			\TYPO3\CMS\Install\FolderStructure\RootNode::class,
 			array('getAbsolutePath', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'),
 			array(),
 			'',
@@ -194,7 +194,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getStatusCallsGetChildrenStatusForStatus() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\FolderStructure\\RootNode',
+			\TYPO3\CMS\Install\FolderStructure\RootNode::class,
 			array('getAbsolutePath', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect', 'getChildrenStatus'),
 			array(),
 			'',
@@ -208,7 +208,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node->expects($this->any())->method('isDirectory')->will($this->returnValue(TRUE));
 		$node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(TRUE));
 		$node->expects($this->any())->method('isWritable')->will($this->returnValue(TRUE));
-		$childStatusMock = $this->getMock('TYPO3\\CMS\\Install\\Status\\ErrorStatus', array(), array(), '', FALSE);
+		$childStatusMock = $this->getMock(\TYPO3\CMS\Install\Status\ErrorStatus::class, array(), array(), '', FALSE);
 		$node->expects($this->once())->method('getChildrenStatus')->will($this->returnValue(array($childStatusMock)));
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
@@ -223,7 +223,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getAbsolutePathReturnsGivenName() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\RootNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\RootNode', array('isWindowsOs'), array(), '', FALSE);
+		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\RootNode::class, array('isWindowsOs'), array(), '', FALSE);
 		$node
 			->expects($this->any())
 			->method('isWindowsOs')

@@ -24,8 +24,8 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function updateVersionMatrixStoresVersionMatrixInRegistry() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
-		$registry = $this->getMock('TYPO3\CMS\Core\Registry');
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
+		$registry = $this->getMock(\TYPO3\CMS\Core\Registry::class);
 		$versionArray = array(uniqId());
 		$registry->expects($this->once())->method('set')->with('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
 		$instance->_set('registry', $registry);
@@ -38,8 +38,8 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function updateVersionMatrixRemovesOldReleasesFromMatrix() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
-		$registry = $this->getMock('TYPO3\CMS\Core\Registry');
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
+		$registry = $this->getMock(\TYPO3\CMS\Core\Registry::class);
 		$versionArray = array(
 			'6.2' => array(),
 			'6.1' => array(),
@@ -58,7 +58,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('getInstalledVersion'), array(), '', FALSE);
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('getInstalledVersion'), array(), '', FALSE);
 		$instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('6.2.0'));
 		$this->assertTrue($instance->isInstalledVersionAReleasedVersion());
 	}
@@ -68,7 +68,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('getInstalledVersion'), array(), '', FALSE);
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('getInstalledVersion'), array(), '', FALSE);
 		$instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('6.2-dev'));
 		$this->assertFalse($instance->isInstalledVersionAReleasedVersion());
 	}
@@ -80,7 +80,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getTarGzSha1OfVersionThrowsExceptionIfSha1DoesNotExistInMatrix() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getMinorVersion', 'ensureVersionExistsInMatrix'),
 			array(),
 			'',
@@ -105,7 +105,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getMinorVersion', 'ensureVersionExistsInMatrix'),
 			array(),
 			'',
@@ -124,7 +124,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isYoungerPatchReleaseAvailableReturnsTrueIfYoungerReleaseIsAvailable() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getInstalledVersion'),
 			array(),
 			'',
@@ -157,7 +157,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isYoungerReleaseAvailableReturnsFalseIfNoYoungerReleaseExists() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getInstalledVersion'),
 			array(),
 			'',
@@ -190,7 +190,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isYoungerReleaseAvailableReturnsFalseIfOnlyADevelopmentReleaseIsYounger() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getInstalledVersion'),
 			array(),
 			'',
@@ -223,7 +223,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isYoungerDevelopmentReleaseAvailableReturnsTrueIfADevelopmentReleaseIsYounger() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getInstalledVersion'),
 			array(),
 			'',
@@ -256,7 +256,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isUpdateSecurityRelevantReturnsTrueIfAnUpdateIsSecurityRelevant() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getInstalledVersion'),
 			array(),
 			'',
@@ -289,7 +289,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isUpdateSecurityRelevantReturnsFalseIfUpdateIsNotSecurityRelevant() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getInstalledVersion'),
 			array(),
 			'',
@@ -319,7 +319,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getInstalledMinorVersionFetchesInstalledVersionNumber() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('getInstalledVersion'), array(), '', FALSE);
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('getInstalledVersion'), array(), '', FALSE);
 		$instance->expects($this->once())->method('getInstalledVersion')->will($this->returnValue('6.2.0'));
 		$this->assertSame('6.2', $instance->_call('getInstalledMinorVersion'));
 	}
@@ -354,7 +354,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getMinorVersionReturnsCorrectMinorVersion($version, $expectedMajor) {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('dummy'), array(), '', FALSE);
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('dummy'), array(), '', FALSE);
 		$this->assertSame($expectedMajor, $instance->_call('getMinorVersion', $version));
 	}
 
@@ -364,8 +364,8 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getVersionMatrixThrowsExceptionIfVersionMatrixIsNotYetSetInRegistry() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
-		$registry = $this->getMock('TYPO3\CMS\Core\Registry');
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
+		$registry = $this->getMock(\TYPO3\CMS\Core\Registry::class);
 		$registry->expects($this->once())->method('get')->will($this->returnValue(NULL));
 		$instance->_set('registry', $registry);
 		$instance->_call('getVersionMatrix');
@@ -376,8 +376,8 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getVersionMatrixReturnsMatrixFromRegistry() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
-		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreVersionService', array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
-		$registry = $this->getMock('TYPO3\CMS\Core\Registry');
+		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
+		$registry = $this->getMock(\TYPO3\CMS\Core\Registry::class);
 		$versionArray = array(uniqId());
 		$registry->expects($this->once())->method('get')->will($this->returnValue($versionArray));
 		$instance->_set('registry', $registry);
@@ -398,7 +398,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getMinorVersion', 'ensureVersionExistsInMatrix'),
 			array(),
 			'',
@@ -416,7 +416,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getMinorVersion', 'ensureVersionExistsInMatrix'),
 			array(),
 			'',
@@ -435,7 +435,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getMinorVersion'),
 			array(),
 			'',
@@ -454,7 +454,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$versionMatrixFixtureFile = __DIR__ . '/Fixtures/VersionMatrixFixture.php';
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(
-			'TYPO3\\CMS\\Install\\Service\\CoreVersionService',
+			\TYPO3\CMS\Install\Service\CoreVersionService::class,
 			array('getVersionMatrix', 'getMinorVersion'),
 			array(),
 			'',
