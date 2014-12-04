@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -3020,7 +3021,7 @@ class TypoScriptFrontendController {
 		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$parameter = $this->page['uid'];
 		$type = GeneralUtility::_GET('type');
-		if ($type) {
+		if ($type && MathUtility::canBeInterpretedAsInteger($type)) {
 			$parameter .= ',' . $type;
 		}
 		$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
