@@ -25,14 +25,14 @@
 	padding:0px 1px;
 	margin:0;
 }
-.editorWrap .resizable {
+.editorWrap .resizable .statusBar,
+.editorWrap .resizable .noStatusBar {
 	background-image: url("images/status/resizable.gif");
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
-.editorWrap div.resizable {
-	padding-right: 7px;
-	padding-bottom: 5px;
+.editorWrap .resizable .noStatusBar {
+	padding-bottom: 10px;
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
@@ -159,14 +159,13 @@
 }
 .htmlarea .editorIframe {
 	clear:both;
-	width:100%;
 	border:1px solid #c7c7c7;
 	border-bottom: none;
 	margin:0;
 	padding:0;
 }
-div.resizable .editorIframe {
-	margin-right: 7px !important;
+.editorWrap .resizable .editorIframe {
+	margin-bottom: -3px;
 }
 .htmlarea .noStatusBar {
 	border-bottom:1px solid #A2AAB8;
@@ -195,6 +194,7 @@ div.resizable .editorIframe {
 }
 .htmlarea .statusBar .statusBarWordCount {
 	float: right;
+	padding-right: 8px;
 }
 /* Selectors for dialogue windows */
 .htmlarea-window .x-panel-icon {
