@@ -11,6 +11,17 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'txrecyclerM1',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+		array(
+			'script' => '_DISPATCH',
+			'access' => 'user,group',
+			'name' => 'web_txrecyclerM1',
+			'labels' => array(
+				'tabs_images' => array(
+					'tab' => '../Resources/Public/Icons/module-recycler.png',
+				),
+				'll_ref' => 'LLL:EXT:recycler/mod1/locallang_mod.xlf',
+			),
+		)
 	);
 }

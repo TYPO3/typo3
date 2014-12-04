@@ -71,6 +71,13 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	protected $languageService;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'web_txrecyclerM1';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -78,7 +85,10 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		$this->languageService->includeLLFile('EXT:recycler/mod1/locallang.xlf');
 
 		$this->backendUser = $GLOBALS['BE_USER'];
-		$this->backendUser->modAccess($GLOBALS['MCONF'], TRUE);
+
+		$this->MCONF = array(
+			'name' => $this->moduleName,
+		);
 	}
 
 	/**
@@ -268,7 +278,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	protected function getShortcutButton() {
 		$result = '';
 		if ($this->backendUser->mayMakeShortcut()) {
-			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
+			$result = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
 		}
 		return $result;
 	}
