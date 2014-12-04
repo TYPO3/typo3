@@ -8,7 +8,18 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'ts',
 		'',
-		$extensionPath . 'ts/'
+		$extensionPath . 'ts/',
+		array(
+			'script' => '_DISPATCH',
+			'access' => 'admin',
+			'name' => 'web_ts',
+			'labels' => array(
+				'tabs_images' => array(
+					'tab' => '../Resources/Public/Icons/module-tstemplate.png',
+				),
+				'll_ref' => 'LLL:EXT:tstemplate/ts/locallang_mod.xlf',
+			),
+		)
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
