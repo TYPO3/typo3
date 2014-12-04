@@ -541,3 +541,27 @@
 .htmlarea-action-unordered-list { background-position: 0 -4756px !important; }
 .htmlarea-action-user-element-edit { background-position: 0 -4814px !important; }
 .htmlarea-action-variable { background-position: 0 -4872px !important; }
+
+/* ExtJs combo boxes */
+.x-combo-list {
+	border-color:#bcbcbc;
+	background-color:#eaeaea;
+}
+.x-combo-list-inner {
+	background-color:#fff;
+}
+.x-combo-list-hd {
+	color:#55545E;
+	background-image: url(../../Images/panel-title-light-bg.gif);
+	border-bottom-color:#bcbcbc;
+}
+.x-combo-list-item {
+	border-color:#fff;
+}
+.x-combo-list .x-combo-selected {
+	border-color:#b9b9b9 !important;
+	background-color:#e7e7e7;
+}
+.x-combo-list .x-toolbar {
+	border-top-color:#bcbcbc;
+}
