@@ -38,6 +38,7 @@ class ConfigurationView {
 
 	/**
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $MCONF = array();
 
@@ -69,10 +70,16 @@ class ConfigurationView {
 	public $content;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'system_config';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
 		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$this->view->getRequest()->setControllerExtensionName('lowlevel');
 	}
@@ -83,7 +90,6 @@ class ConfigurationView {
 	 * @return void
 	 */
 	public function init() {
-		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -119,7 +125,7 @@ class ConfigurationView {
 			'fixedLgd' => ''
 		);
 		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
 	}
 
 	/**
@@ -202,7 +208,7 @@ class ConfigurationView {
 			$update = 1;
 		}
 		if ($update) {
-			$GLOBALS['BE_USER']->pushModuleData($this->MCONF['name'], $this->MOD_SETTINGS);
+			$GLOBALS['BE_USER']->pushModuleData($this->moduleName, $this->MOD_SETTINGS);
 		}
 		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']];
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
@@ -310,7 +316,7 @@ class ConfigurationView {
 		);
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
 		}
 		return $buttons;
 	}

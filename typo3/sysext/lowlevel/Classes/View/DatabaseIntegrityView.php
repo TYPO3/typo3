@@ -26,6 +26,7 @@ class DatabaseIntegrityView {
 
 	/**
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $MCONF = array();
 
@@ -57,11 +58,17 @@ class DatabaseIntegrityView {
 	protected $formName = 'queryform';
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'system_dbint';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xlf');
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
 	}
 
 	/**
@@ -70,7 +77,6 @@ class DatabaseIntegrityView {
 	 * @return void
 	 */
 	public function init() {
-		$this->MCONF = $GLOBALS['MCONF'];
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -147,11 +153,11 @@ class DatabaseIntegrityView {
 			'sword' => ''
 		);
 		// CLEAN SETTINGS
-		$OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, '', $this->MCONF['name'], 'ses');
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], 'ses');
+		$OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, '', $this->moduleName, 'ses');
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName, 'ses');
 		if (GeneralUtility::_GP('queryConfig')) {
 			$qA = GeneralUtility::_GP('queryConfig');
-			$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, array('queryConfig' => serialize($qA)), $this->MCONF['name'], 'ses');
+			$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, array('queryConfig' => serialize($qA)), $this->moduleName, 'ses');
 		}
 		$addConditionCheck = GeneralUtility::_GP('qG_ins');
 		foreach ($OLD_MOD_SETTINGS as $key => $val) {
@@ -172,7 +178,7 @@ class DatabaseIntegrityView {
 			} else {
 				$this->MOD_SETTINGS['queryLimit'] = '0';
 			}
-			$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->MCONF['name'], 'ses');
+			$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->moduleName, 'ses');
 		}
 	}
 
@@ -232,7 +238,7 @@ class DatabaseIntegrityView {
 		);
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function,search,search_query_makeQuery', $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function,search,search_query_makeQuery', $this->moduleName);
 		}
 		return $buttons;
 	}
