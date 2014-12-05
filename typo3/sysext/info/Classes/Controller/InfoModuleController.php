@@ -50,6 +50,13 @@ class InfoModuleController extends BaseScriptClass {
 	protected $languageService;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'web_info';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -57,7 +64,10 @@ class InfoModuleController extends BaseScriptClass {
 		$this->languageService->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
 
 		$this->backendUser = $GLOBALS['BE_USER'];
-		$this->backendUser->modAccess($GLOBALS['MCONF'], TRUE);
+
+		$this->MCONF = array(
+			'name' => $this->moduleName,
+		);
 	}
 
 	/**
@@ -94,7 +104,7 @@ class InfoModuleController extends BaseScriptClass {
 			$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_info')) .
+			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
 				'" method="post" name="webinfoForm">';
 			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
@@ -163,7 +173,7 @@ class InfoModuleController extends BaseScriptClass {
 		if ($this->backendUser->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon(
 				'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-				implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+				implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 		}
 		return $buttons;
 	}
