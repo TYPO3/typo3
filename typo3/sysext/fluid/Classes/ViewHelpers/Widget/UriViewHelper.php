@@ -78,7 +78,7 @@ class UriViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 			$action = $this->controllerContext->getRequest()->getControllerActionName();
 		}
 		$arguments['id'] = $GLOBALS['TSFE']->id;
-		// TODO page type should be configurable
+		// @todo page type should be configurable
 		$arguments['type'] = 7076;
 		$arguments['fluid-widget-id'] = $this->controllerContext->getRequest()->getWidgetContext()->getAjaxWidgetIdentifier();
 		$arguments['action'] = $action;

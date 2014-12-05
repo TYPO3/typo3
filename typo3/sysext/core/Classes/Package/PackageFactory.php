@@ -52,7 +52,7 @@ class PackageFactory extends \TYPO3\Flow\Package\PackageFactory {
 		if (@file_exists($packageClassPathAndFilename)) {
 			require_once($packageClassPathAndFilename);
 			if (substr($packagePath, 0, strlen(PATH_typo3)) === PATH_typo3 && strpos($packageKey, '.') === FALSE) {
-				//TODO Remove this exception once the systextension are renamed to proper Flow naming scheme packages
+				// @todo Remove this exception once the systextension are renamed to proper Flow naming scheme packages
 				$packageClassName = 'TYPO3\\CMS\\' . \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($packageKey) . '\Package';
 			} else {
 				$packageClassName = str_replace('.', '\\', $packageKey) . '\Package';

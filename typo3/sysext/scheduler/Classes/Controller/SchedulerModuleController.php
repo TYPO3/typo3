@@ -541,7 +541,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					if (!empty($taskInfo['interval']) || !empty($taskInfo['croncmd'])) {
 						// Guess task type from the existing information
 						// If an interval or a cron command is defined, it's a recurring task
-						// FIXME: remove magic numbers for the type, use class constants instead
+						// @todo remove magic numbers for the type, use class constants instead
 						$taskInfo['type'] = 2;
 						$taskInfo['frequency'] = $taskInfo['interval'] ?: $taskInfo['croncmd'];
 					} else {

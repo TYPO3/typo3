@@ -528,7 +528,7 @@ class SqlParser {
 							$result['KEY'] = $fieldKey;
 							break;
 						case 'DROPPRIMARYKEY':
-							// ??? todo!
+							// @todo ???
 							break;
 						case 'DEFAULTCHARACTERSET':
 							$result['charset'] = $fieldKey;
@@ -654,7 +654,7 @@ class SqlParser {
 		if (strlen($parseString) == 0) {
 			return $stack;
 		}
-		// FIXME - should never happen, why does it?
+		// @todo - should never happen, why does it?
 		// Pointer to positions in $stack
 		$pnt = 0;
 		// Indicates the parenthesis level we are at.

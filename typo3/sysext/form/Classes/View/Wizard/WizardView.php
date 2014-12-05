@@ -236,7 +236,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 * @return void
 	 */
 	protected function loadCss() {
-		// TODO Set to TRUE when finished
+		// @todo Set to TRUE when finished
 		$compress = FALSE;
 		$cssFiles = array(
 			'Wizard/Form.css',

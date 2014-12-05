@@ -960,7 +960,7 @@ class GeneralUtility {
 		$labelArr = explode('|', $labels);
 		// Find size:
 		if ($sizeInBytes > 900) {
-			// TODO find out which locale is used for current BE user to cover the BE case as well
+			// @todo find out which locale is used for current BE user to cover the BE case as well
 			$locale = is_object($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
 			$oldLocale = setlocale(LC_NUMERIC, 0);
 			if ($locale) {

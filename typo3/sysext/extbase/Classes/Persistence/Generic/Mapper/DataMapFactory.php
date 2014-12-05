@@ -122,7 +122,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
 		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($tcaColumnsDefinition, $columnMapping);
-		// TODO Is this is too powerful?
+		// @todo Is this is too powerful?
 
 		foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {
 			if (isset($columnDefinition['mapOnProperty'])) {
@@ -130,7 +130,8 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			} else {
 				$propertyName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
 			}
-			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
+			// if (in_array($propertyName, $classPropertyNames)) {
+			// @todo Enable check for property existance
 			$columnMap = $this->createColumnMap($columnName, $propertyName);
 			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$columnMap = $this->setType($columnMap, $columnDefinition['config']);

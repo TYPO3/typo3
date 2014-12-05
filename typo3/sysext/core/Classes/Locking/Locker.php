@@ -171,7 +171,7 @@ class Locker {
 	 * @deprecated since 6.2 - will be removed two versions later; use new API instead
 	 */
 	public function acquire() {
-		// TODO refactor locking in TSFE to use the new API, then this call can be logged
+		// @todo refactor locking in TSFE to use the new API, then this call can be logged
 		// GeneralUtility::logDeprecatedFunction();
 
 		// Default is TRUE, which means continue without caring for other clients.

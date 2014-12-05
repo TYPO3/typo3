@@ -94,7 +94,7 @@ class TreeDataProviderFactory {
 			$dataProvider->setItemUnselectableList($unselectableUids);
 
 		} elseif ($tcaConfiguration['internal_type'] === 'file' && $dataProvider === NULL) {
-			// TODO Not implemented yet
+			// @todo Not implemented yet
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet', 1288215891);
 		} elseif ($dataProvider === NULL) {
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=' . $tcaConfiguration['internal_type'] . '" not implemented yet', 1288215892);

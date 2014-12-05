@@ -69,7 +69,7 @@ class PreviewController extends AbstractController {
 			$this->pageRenderer->addJsFile($resourcePathJavaScript . $jsFile);
 		}
 		$this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
-		// todo this part should be done with inlineLocallanglabels
+		// @todo this part should be done with inlineLocallanglabels
 		$this->pageRenderer->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
 	}
 

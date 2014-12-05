@@ -164,7 +164,7 @@ class Query implements QueryInterface {
 
 	/**
 	 * Returns the selectorn name or an empty string, if the source is not a selector
-	 * TODO This has to be checked at another place
+	 * @todo This has to be checked at another place
 	 *
 	 * @return string The selector name
 	 */

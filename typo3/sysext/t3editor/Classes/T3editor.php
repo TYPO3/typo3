@@ -302,7 +302,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Gets the labels to be used in JavaScript in the Ext JS interface.
-	 * TODO this method is copied from EXT:Recycler, maybe this should be refactored into a helper class
+	 * @todo this method is copied from EXT:Recycler, maybe this should be refactored into a helper class
 	 *
 	 * @return array The labels to be used in JavaScript
 	 */
@@ -314,7 +314,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Gets labels to be used in JavaScript fetched from the current locallang file.
-	 * TODO this method is copied from EXT:Recycler, maybe this should be refactored into a helper class
+	 * @todo this method is copied from EXT:Recycler, maybe this should be refactored into a helper class
 	 *
 	 * @param string $selectionPrefix Prefix to select the correct labels (default: 'js.')
 	 * @param string $stripFromSelectionName Sub-prefix to be removed from label names in the result (default: '')

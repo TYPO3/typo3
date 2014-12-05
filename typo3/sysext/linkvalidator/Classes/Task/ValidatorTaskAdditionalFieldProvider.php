@@ -184,7 +184,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 	 */
 	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		$isValid = TRUE;
-		//TODO add validation to validate the $submittedData['configuration'] which is normally a comma separated string
+		// @todo add validation to validate the $submittedData['configuration'] which is normally a comma separated string
 		if (!empty($submittedData['linkvalidator']['email'])) {
 			$emailList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $submittedData['linkvalidator']['email']);
 			foreach ($emailList as $emailAdd) {

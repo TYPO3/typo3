@@ -46,7 +46,7 @@ interface PersistenceManagerInterface {
 	 */
 	public function isNewObject($object);
 
-	// TODO realign with Flow PersistenceManager again
+	// @todo realign with Flow PersistenceManager again
 
 	/**
 	 * Returns the (internal) identifier for the object, if it is known to the

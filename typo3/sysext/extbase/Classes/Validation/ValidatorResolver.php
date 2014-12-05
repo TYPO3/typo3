@@ -87,7 +87,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	public function createValidator($validatorType, array $validatorOptions = array()) {
 		try {
 			/**
-			 * todo: remove throwing Exceptions in resolveValidatorObjectName
+			 * @todo remove throwing Exceptions in resolveValidatorObjectName
 			 */
 			$validatorObjectName = $this->resolveValidatorObjectName($validatorType);
 

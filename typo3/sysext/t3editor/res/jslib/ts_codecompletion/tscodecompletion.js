@@ -51,7 +51,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	var parser = new TsParser(tsRef, extTsObjTree);
 	loadExtTemplatesAsync();
 
-	// TODO port plugin to t3editor.js
+	// @todo port plugin to t3editor.js
 
 	// plugin-array will be retrieved through AJAX from the conf array
 	// plugins can be attached by regular TYPO3-extensions
@@ -206,7 +206,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	 * replaces editor functions insertNewlineAtCursor and indentAtCursor
 	 * with modified ones that only execute when codecompletion box is not shown
 	 */
-//	TODO check if this wokrs correctly after updating the codemirror base
+//	@todo check if this wokrs correctly after updating the codemirror base
 	function prepareLinefeeds() {
 		mirror.win.select.insertNewlineAtCursor_original = mirror.win.select.insertNewlineAtCursor;
 		mirror.win.select.insertNewlineAtCursor = function(window) {

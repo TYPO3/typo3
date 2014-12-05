@@ -3874,7 +3874,7 @@ class BackendUtility {
 						$versionState = VersionState::cast($wsAlt['t3ver_state']);
 					}
 					if ($versionState->equals(VersionState::MOVE_POINTER)) {
-						// TODO: Same problem as frontend in versionOL(). See TODO point there.
+						// @todo Same problem as frontend in versionOL(). See TODO point there.
 						$row = FALSE;
 						return;
 					}

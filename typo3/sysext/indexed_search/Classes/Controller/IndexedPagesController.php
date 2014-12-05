@@ -923,7 +923,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @return void
 	 */
 	public function removeIndexedPhashRow($phashList, $clearPageCache = 1) {
-		// FIXME: This is only a workaround
+		// @todo This is only a workaround
 		if ($phashList == 'ALL') {
 			$this->drawTableOfIndexedPages();
 			$phashRows = $this->allPhashListed;

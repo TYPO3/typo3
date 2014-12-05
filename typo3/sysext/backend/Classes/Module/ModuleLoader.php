@@ -170,7 +170,7 @@ class ModuleLoader {
 						} else {
 							// 'CLASSIC' submodule
 							// Checking for typo3/mod/xxx/ module existence...
-							// FIXME what about $path = 1; from above and using $path as string here?
+							// @todo what about $path = 1; from above and using $path as string here?
 							$theTempSubMod = $this->checkMod($mods . '_' . $valsub, $path . $mods . '/' . $valsub);
 							// Default sub-module in either main-module-path, be it the default or the userdefined.
 							if (is_array($theTempSubMod)) {
@@ -189,7 +189,7 @@ class ModuleLoader {
 				// This must be done in order to fill out the select-lists for modules correctly!!
 				if (is_array($subMod)) {
 					foreach ($subMod as $valsub) {
-						// FIXME path can only be NULL here, or not?
+						// @todo path can only be NULL here, or not?
 						$this->checkMod($mods . '_' . $valsub, $path . $mods . '/' . $valsub);
 					}
 				}

@@ -54,7 +54,7 @@ class StringLengthValidator extends AbstractValidator {
 			return;
 		}
 
-		// TODO Use \TYPO3\CMS\Core\Charset\CharsetConverter::strlen() instead; How do we get the charset?
+		// @todo Use \TYPO3\CMS\Core\Charset\CharsetConverter::strlen() instead; How do we get the charset?
 		$stringLength = strlen($value);
 		$isValid = TRUE;
 		if ($stringLength < $this->options['minimum']) {

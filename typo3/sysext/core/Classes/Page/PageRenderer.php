@@ -2219,7 +2219,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			// Swedish
 			$localeMap['se'] = 'se_SV';
 			$extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
-			// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
+			// @todo autoconvert file from UTF8 to current BE charset if necessary!!!!
 			$extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
 				$out .= '<script src="' . $this->processJsFile(($this->backPath . $extJsLocaleFile)) . '" type="text/javascript" charset="utf-8"></script>' . LF;

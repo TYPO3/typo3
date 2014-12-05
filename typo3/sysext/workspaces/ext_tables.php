@@ -45,7 +45,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('Workspaces::setWorkspace', \TYPO3\CMS\Workspaces\Controller\AjaxController::class . '->setWorkspace');
 }
 
-// todo move icons to Core sprite or keep them here and remove the todo note ;)
+// @todo move icons to Core sprite or keep them here and remove the todo note ;)
 $icons = array(
 	'sendtonextstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
 	'sendtoprevstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/version-workspace-sendtoprevstage.png',

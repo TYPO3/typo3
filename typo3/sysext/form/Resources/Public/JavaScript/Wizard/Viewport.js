@@ -53,7 +53,7 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 	 *
 	 * Add the left and right part to the viewport
 	 * Add the history buttons
-	 * TODO Move the buttons to the docheader
+	 * @todo Move the buttons to the docheader
 	 */
 	initComponent: function() {
 		var config = {

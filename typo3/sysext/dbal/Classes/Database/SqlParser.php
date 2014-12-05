@@ -154,7 +154,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							$outputParts[$k] .= ' ' . $v['sortDir'];
 						}
 					}
-					// TODO: Handle SQL hints in comments according to current DBMS
+					// @todo Handle SQL hints in comments according to current DBMS
 					if (FALSE && $selectFields[0]['comments']) {
 						$output = $selectFields[0]['comments'] . ' ';
 					}
@@ -341,7 +341,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 					case 'DEFAULTCHARACTERSET':
 
 					case 'ENGINE':
-						// ??? todo!
+						// @todo ???
 						break;
 				}
 				break;

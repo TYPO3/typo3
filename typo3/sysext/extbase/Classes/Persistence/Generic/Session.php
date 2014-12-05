@@ -30,7 +30,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Reconstituted entity data (effectively their clean state)
 	 * Currently unused in Extbase
-	 * TODO make use of it in Extbase
+	 * @todo make use of it in Extbase
 	 *
 	 * @var array
 	 */
@@ -119,7 +119,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 		return $this->reconstitutedEntities->contains($entity);
 	}
 
-	// TODO implement the is dirty checking behaviour of the Flow persistence session here
+	// @todo implement the is dirty checking behaviour of the Flow persistence session here
 
 	/**
 	 * Checks whether the given object is known to the identity map

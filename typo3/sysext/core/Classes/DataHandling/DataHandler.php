@@ -2883,7 +2883,7 @@ class DataHandler {
 				$id = 0;
 				$this->log($table, $id, 2, 0, 1, 'Attempt to modify table \'%s\' without permission', 1, array($table));
 			}
-			// FIXME: $id not set here (Comment added by Sebastian Kurfürst)
+			// @todo $id not set here (Comment added by Sebastian Kurfürst)
 			// Check basic permissions and circumstances:
 			if (isset($GLOBALS['TCA'][$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList) {
 				// Traverse the command map:

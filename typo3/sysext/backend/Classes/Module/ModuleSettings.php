@@ -414,7 +414,7 @@ class ModuleSettings {
 			$code .= '
 			<div><strong>' . htmlspecialchars($this->msg) . '</strong></div>';
 		}
-		// TODO need to add parameters
+		// @todo need to add parameters
 		if ($useOwnForm and trim($code)) {
 			$code = '
 		<form action="' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">' . $code . '</form>';

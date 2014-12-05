@@ -51,7 +51,7 @@ class EquiJoinCondition implements EquiJoinConditionInterface {
 	 * @param string $property2Name the property name in the second selector; non-null
 	 */
 	public function __construct($selector1Name, $property1Name, $selector2Name, $property2Name) {
-		// TODO Test for selector1Name = selector2Name -> exception
+		// @todo Test for selector1Name = selector2Name -> exception
 		$this->selector1Name = $selector1Name;
 		$this->property1Name = $property1Name;
 		$this->selector2Name = $selector2Name;

@@ -545,7 +545,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
+			// @todo We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
 			if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== 'uid' && $propertyName !== 'pid' && $propertyName !== 'isClone') {
 				if ($propertyValue === NULL) {
 					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
@@ -589,7 +589,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * @todo add deprecation notice after getUidOfAlreadyPersistedValueObject is adjusted
 	 */
 	protected function replacePlaceholders(&$sqlString, array $parameters, $tableName = 'foo') {
-		// TODO profile this method again
+		// @todo profile this method again
 		if (substr_count($sqlString, '?') !== count($parameters)) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
 		}

@@ -1593,7 +1593,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return FileInterface
 	 */
 	public function renameFile($file, $targetFileName) {
-		// TODO add $conflictMode setting
+		// @todo add $conflictMode setting
 
 		// The name should be different from the current.
 		if ($file->getName() === $targetFileName) {
@@ -1708,13 +1708,13 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return Folder
 	 */
 	public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
-		// TODO add tests
+		// @todo add tests
 		$originalFolder = $folderToMove->getParentFolder();
 		$this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
 		$sourceStorage = $folderToMove->getStorage();
 		$returnObject = NULL;
 		$sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToMove->getName());
-		// TODO check if folder already exists in $targetParentFolder, handle this conflict then
+		// @todo check if folder already exists in $targetParentFolder, handle this conflict then
 		$this->emitPreFolderMoveSignal($folderToMove, $targetParentFolder, $sanitizedNewFolderName);
 		// Get all file objects now so we are able to update them after moving the folder
 		$fileObjects = $this->getAllFileObjectsInFolder($folderToMove);
@@ -1758,7 +1758,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return Folder The new (copied) folder object
 	 */
 	public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
-		// TODO implement the $conflictMode handling
+		// @todo implement the $conflictMode handling
 		$this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
 		$returnObject = NULL;
 		$sanitizedNewFolderName = $this->driver->sanitizeFileName($newFolderName ?: $folderToCopy->getName());

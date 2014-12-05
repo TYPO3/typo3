@@ -3961,7 +3961,7 @@ class ContentObjectRenderer {
 		$crop2space = trim($options[2]) === '1' ? TRUE : FALSE;
 		// Split $content into an array(even items in the array are outside the tags, odd numbers are tag-blocks).
 		$tags = 'a|b|blockquote|body|div|em|font|form|h1|h2|h3|h4|h5|h6|i|li|map|ol|option|p|pre|sub|sup|select|span|strong|table|thead|tbody|tfoot|td|textarea|tr|u|ul|br|hr|img|input|area|link';
-		// TODO We should not crop inside <script> tags.
+		// @todo We should not crop inside <script> tags.
 		$tagsRegEx = '
 			(
 				(?:

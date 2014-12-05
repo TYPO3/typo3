@@ -174,7 +174,7 @@ class CommandUtility {
 			if ($validPath) {
 				if (TYPO3_OS == 'WIN') {
 						// Windows OS
-						// TODO Why is_executable() is not called here?
+						// @todo Why is_executable() is not called here?
 					if (@is_file($path . $cmd)) {
 						self::$applications[$cmd]['app'] = $cmd;
 						self::$applications[$cmd]['path'] = $path;

@@ -173,7 +173,7 @@ class ColumnMap {
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	public function __construct($columnName, $propertyName) {
-		// TODO Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
+		// @todo Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
 		$this->setColumnName($columnName);
 		$this->setPropertyName($propertyName);
 	}

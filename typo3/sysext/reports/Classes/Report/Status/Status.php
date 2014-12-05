@@ -197,7 +197,7 @@ class Status implements ReportInterface {
 		unset($statusCollection['typo3'], $statusCollection['system'], $statusCollection['security'], $statusCollection['configuration']);
 		// Assemble list of secondary status collections with left-over collections
 		// Change their keys using localized labels if available
-		// TODO extract into getLabel() method
+		// @todo extract into getLabel() method
 		$secondaryStatuses = array();
 		foreach ($statusCollection as $statusProviderId => $collection) {
 			$label = '';

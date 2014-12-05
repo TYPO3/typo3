@@ -31,7 +31,7 @@ class AutoPublishService {
 	 */
 	public function autoPublishWorkspaces() {
 		// Temporarily set admin rights
-		// FIXME: once workspaces are cleaned up a better solution should be implemented
+		// @todo once workspaces are cleaned up a better solution should be implemented
 		$currentAdminStatus = $GLOBALS['BE_USER']->user['admin'];
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 		// Select all workspaces that needs to be published / unpublished:

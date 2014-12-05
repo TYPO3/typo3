@@ -436,7 +436,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 			$propertyName = $operand->getPropertyName();
 			$className = '';
 			if ($source instanceof Qom\SelectorInterface) {
-				// FIXME Only necessary to differ from  Join
+				// @todo Only necessary to differ from  Join
 				$className = $source->getNodeTypeName();
 				$tableName = $this->dataMapper->convertClassNameToTableName($className);
 				while (strpos($propertyName, '.') !== FALSE) {
@@ -742,7 +742,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
 		}
-		// TODO check if there is another solution for this
+		// @todo check if there is another solution for this
 		$sql['keywords']['distinct'] = 'DISTINCT';
 		$propertyPath = $explodedPropertyPath[1];
 		$tableName = $childTableName;

@@ -638,7 +638,7 @@ class BackendController {
 	 * @throws \InvalidArgumentException
 	 */
 	public function addJavascript($javascript) {
-		// TODO do we need more checks?
+		// @todo do we need more checks?
 		if (!is_string($javascript)) {
 			throw new \InvalidArgumentException('parameter $javascript must be of type string', 1195129553);
 		}
@@ -653,7 +653,7 @@ class BackendController {
 	 */
 	public function addJavascriptFile($javascriptFile) {
 		$jsFileAdded = FALSE;
-		//TODO add more checks if necessary
+		// @todo add more checks if necessary
 		if (file_exists(GeneralUtility::resolveBackPath(PATH_typo3 . $javascriptFile))) {
 			$this->jsFiles[] = $javascriptFile;
 			$jsFileAdded = TRUE;

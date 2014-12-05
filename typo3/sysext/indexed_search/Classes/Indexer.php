@@ -513,7 +513,7 @@ class Indexer {
 			while ($this->embracingTags($headPart, 'meta', $dummy, $headPart, $meta[$i])) {
 				$i++;
 			}
-			// TODO The code below stops at first unset tag. Is that correct?
+			// @todo The code below stops at first unset tag. Is that correct?
 			for ($i = 0; isset($meta[$i]); $i++) {
 				$meta[$i] = GeneralUtility::get_tag_attributes($meta[$i]);
 				if (stristr($meta[$i]['name'], 'keywords')) {

@@ -35,7 +35,7 @@ class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setFieldlist($fieldlist) {
-		// TODO think about exploding this to an array
+		// @todo think about exploding this to an array
 		$this->fieldlist = $fieldlist;
 	}
 

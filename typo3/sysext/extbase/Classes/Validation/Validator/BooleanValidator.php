@@ -25,7 +25,7 @@ class BooleanValidator extends AbstractValidator {
 		// The default is set to NULL here, because we need to be backward compatible here, because this
 		// BooleanValidator is called automatically on boolean action arguments. If we would set it to TRUE,
 		// every FALSE value for an action argument would break.
-		// TODO with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
+		// @todo with next patches: deprecate this BooleanValidator and introduce a BooleanValueValidator, like
 		// in Flow, which won't be called on boolean action arguments.
 		'is' => array(NULL, 'Boolean value', 'boolean|string|integer')
 	);

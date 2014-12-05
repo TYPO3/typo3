@@ -189,7 +189,7 @@ class ElementInformationController {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
 				$typeRenderObj = GeneralUtility::getUserObj($classRef);
-				// @TODO should have an interface
+				// @todo should have an interface
 				if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
 					if ($typeRenderObj->isValid($this->type, $this)) {
 						$this->content .= $typeRenderObj->render($this->type, $this);
@@ -237,7 +237,7 @@ class ElementInformationController {
 	 * @return string
 	 */
 	protected function renderPreview() {
-		// Perhaps @TODO in future: Also display preview for records - without fileObject
+		// Perhaps @todo in future: Also display preview for records - without fileObject
 		if (!$this->fileObject) {
 			return;
 		}
