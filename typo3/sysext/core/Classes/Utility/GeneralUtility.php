@@ -4696,7 +4696,7 @@ Connection: close
 	 * @param string $string Content to encode
 	 * @param int $maxlen Length of the lines, default is 76
 	 * @return string The QP encoded string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use mailer API instead
 	 */
 	static public function quoted_printable($string, $maxlen = 76) {
 		static::logDeprecatedFunction();
@@ -4756,7 +4756,7 @@ Connection: close
 	 * @param string $enc Encoding type: "base64" or "quoted-printable". Default value is "quoted-printable".
 	 * @param string $charset Charset used for encoding
 	 * @return string The encoded string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use mailer API instead
 	 */
 	static public function encodeHeader($line, $enc = 'quoted-printable', $charset = 'utf-8') {
 		static::logDeprecatedFunction();
@@ -4812,7 +4812,7 @@ Connection: close
 	 * @param string $index_script_url URL of index script (see makeRedirectUrl())
 	 * @return string Processed message content
 	 * @see makeRedirectUrl()
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use mailer API instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use mailer API instead
 	 */
 	static public function substUrlsInPlainText($message, $urlmode = '76', $index_script_url = '') {
 		static::logDeprecatedFunction();

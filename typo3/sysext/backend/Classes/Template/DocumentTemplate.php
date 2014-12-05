@@ -165,7 +165,7 @@ function jumpToUrl(URL) {
 	 * If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
 	 *
 	 * @var int
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $endJS = 1;
 
@@ -175,47 +175,47 @@ function jumpToUrl(URL) {
 	/**
 	 * Light background color
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $bgColor = '#F7F3EF';
 
 	/**
 	 * Steel-blue
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $bgColor2 = '#9BA1A8';
 
 	/**
 	 * dok.color
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $bgColor3 = '#F6F2E6';
 
 	/**
 	 * light tablerow background, brownish
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $bgColor4 = '#D9D5C9';
 
 	/**
 	 * light tablerow background, greenish
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $bgColor5 = '#ABBBB4';
 
 	/**
 	 * light tablerow background, yellowish, for section headers. Light.
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $bgColor6 = '#E7DBA8';
 
 	/**
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $hoverColor = '#254D7B';
 
@@ -244,7 +244,7 @@ function jumpToUrl(URL) {
 	 * Background image of page (relative to PATH_typo3)
 	 *
 	 * @var string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use a stylesheet instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use a stylesheet instead
 	 */
 	public $backGroundImage = '';
 
@@ -320,7 +320,7 @@ function jumpToUrl(URL) {
 	 * internal character set, nowadays utf-8 for everything
 	 *
 	 * @var string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, as it is always utf-8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as it is always utf-8
 	 */
 	protected $charset = 'utf-8';
 
@@ -1080,7 +1080,7 @@ function jumpToUrl(URL) {
 	 * Further a JavaScript section is outputted which will update the top.busy session-expiry object (unless $this->endJS is set to FALSE)
 	 *
 	 * @return string HTML content (<script> tag section)
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, nothing there to output anymore
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, nothing there to output anymore
 	 */
 	public function endPageJS() {
 		GeneralUtility::logDeprecatedFunction();
@@ -1297,7 +1297,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use proper HTML directly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use proper HTML directly
 	 */
 	public function dfw($string) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1309,7 +1309,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $string Input string
 	 * @return string Output string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use proper HTML directly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use proper HTML directly
 	 */
 	public function rfw($string) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1417,7 +1417,7 @@ function jumpToUrl(URL) {
 	 * @param array $arr2 Secondary items
 	 * @param array $arr3 Third-level items
 	 * @return string HTML content, <table>...</table>
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function menuTable($arr1, $arr2 = array(), $arr3 = array()) {
 		GeneralUtility::logDeprecatedFunction();

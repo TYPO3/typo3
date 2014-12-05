@@ -1176,7 +1176,7 @@ class ClickMenu {
 	 *
 	 * @param string $str HTML content to wrap in table.
 	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed CMS 8,
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function wrapColorTableCM($str) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1320,7 +1320,7 @@ class ClickMenu {
 	 *
 	 * @param string $iconCode The icon-image tag
 	 * @return string The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function excludeIcon($iconCode) {
 		GeneralUtility::logDeprecatedFunction();

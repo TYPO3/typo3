@@ -48,7 +48,7 @@ class ModuleMenuView {
 
 	/**
 	 * Constructor, initializes several variables
-	 * @deprecated since TYPO3 CMS 7, not in use, as everything can be done via the ModuleMenuRepository directly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, not in use, as everything can be done via the ModuleMenuRepository directly
 	 */
 	public function __construct() {
 		GeneralUtility::logDeprecatedFunction();

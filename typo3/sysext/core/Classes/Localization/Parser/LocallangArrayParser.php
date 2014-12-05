@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  *
- * @deprecated since TYPO3 CMS 7, the class + file will be removed in CMS 8. Please use XLF files for
+ * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8. Please use XLF files for
  * translation handling. Also note that the extension "extdeveval" has a converter from PHP and XML to XLF.
  */
 class LocallangArrayParser implements LocalizationParserInterface {
@@ -53,7 +53,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 	/**
 	 * Initializes the parser.
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8. Use xlf format for parsing translations
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use xlf format for parsing translations
 	 * @return void
 	 */
 	public function __construct() {

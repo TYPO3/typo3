@@ -31,7 +31,7 @@ class StringUtility {
 	 * @param string $needle Reference string which must be found as the "last part" of the full string
 	 * @throws \InvalidArgumentException
 	 * @return bool TRUE if $needle was found to be equal to the last part of $str
-	 * @deprecated since 7.0, use endsWith() instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use endsWith() instead
 	 */
 	static public function isLastPartOfString($haystack, $needle) {
 		GeneralUtility::logDeprecatedFunction();

@@ -161,7 +161,7 @@ class ExtendedTemplateService extends TemplateService {
 	public $ext_noPMicons = 0;
 
 	/**
-	 * @deprecated since CMS 7.0, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 *
 	 * @var int
 	 */
@@ -501,7 +501,7 @@ class ExtendedTemplateService extends TemplateService {
 	/**
 	 * @param array $theValue
 	 * @return array
-	 * @deprecated since CMS 7.0, will be removed in CMS 8  - use htmlspecialchars() directly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use htmlspecialchars() directly
 	 */
 	public function makeHtmlspecialchars($theValue) {
 		GeneralUtility::logDeprecatedFunction();

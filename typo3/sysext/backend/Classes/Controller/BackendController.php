@@ -697,7 +697,7 @@ class BackendController {
 	 * @param string $toolbarItemClassName Toolbar item class name, f.e. tx_toolbarExtension_coolItem
 	 * @return void
 	 * @throws \UnexpectedValueException
-	 * @deprecated since CMS 7, will be removed with CMS 8. Toolbar items are registered in $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'] now.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Toolbar items are registered in $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'] now.
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
 		GeneralUtility::logDeprecatedFunction();

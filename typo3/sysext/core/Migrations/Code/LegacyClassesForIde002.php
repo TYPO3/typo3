@@ -4,6 +4,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 die('Access denied');
 
 /**
- * @deprecated since 7.0 will be removed in 8.0
+ * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
  */
 class Acronym extends \TYPO3\CMS\Rtehtmlarea\Extension\Abbreviation {}

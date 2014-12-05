@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Backend\Controller;
  * Script Class for redirecting shortcut actions to the correct script
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @deprecated this logic is not needed anymore, and will be removed with CMS 8
+ * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, this logic is not needed anymore
  */
 class ListFrameLoaderController {
 
@@ -26,7 +26,7 @@ class ListFrameLoaderController {
 	 * Main content generated
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function main() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();

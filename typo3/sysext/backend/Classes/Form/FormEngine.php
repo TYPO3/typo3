@@ -61,7 +61,7 @@ class FormEngine {
 
 	/**
 	 * @var string
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $defStyle = '';
 
@@ -393,7 +393,7 @@ class FormEngine {
 	 * Contains current color scheme
 	 *
 	 * @var array
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $colorScheme = array();
 
@@ -401,7 +401,7 @@ class FormEngine {
 	 * Contains current class scheme
 	 *
 	 * @var array
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $classScheme = array();
 
@@ -409,7 +409,7 @@ class FormEngine {
 	 * Contains the default color scheme
 	 *
 	 * @var array
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $defColorScheme = array();
 
@@ -417,7 +417,7 @@ class FormEngine {
 	 * Contains the default class scheme
 	 *
 	 * @var array
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $defClassScheme = array();
 
@@ -425,7 +425,7 @@ class FormEngine {
 	 * Contains field style values
 	 *
 	 * @var array|NULL
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $fieldStyle = NULL;
 
@@ -433,7 +433,7 @@ class FormEngine {
 	 * Contains border style values
 	 *
 	 * @var array|NULL
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $borderStyle = NULL;
 
@@ -1286,7 +1286,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\InputElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\InputElement
 	 */
 	public function getSingleField_typeInput($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1359,7 +1359,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\TextElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\TextElement
 	 */
 	public function getSingleField_typeText($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1376,7 +1376,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\CheckboxElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\CheckboxElement
 	 */
 	public function getSingleField_typeCheck($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1393,7 +1393,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\RadioElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\RadioElement
 	 */
 	public function getSingleField_typeRadio($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1411,7 +1411,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\SelectElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\SelectElement
 	 */
 	public function getSingleField_typeSelect($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1445,7 +1445,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\NoneElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\NoneElement
 	 */
 	public function getSingleField_typeNone($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1514,7 +1514,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\FlexElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\FlexElement
 	 */
 	public function getSingleField_typeFlex($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1580,7 +1580,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\UnknownElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\UnknownElement
 	 */
 	public function getSingleField_typeUnknown($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1596,7 +1596,7 @@ class FormEngine {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
-	 * @deprecated since 7.0 - will be removed two versions later; Use \TYPO3\CMS\Backend\Form\Element\UserElement
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Backend\Form\Element\UserElement
 	 */
 	public function getSingleField_typeUser($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
@@ -1965,7 +1965,7 @@ class FormEngine {
 	 * @param string $field Specify the field name.
 	 * @return array|NULL
 	 * @see getSpecConfFromString(), BackendUtility::getTCAtypes()
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getSpecConfForField($table, $row, $field) {
 		GeneralUtility::logDeprecatedFunction();
@@ -3011,7 +3011,7 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @return string CSS attributes
 	 * @see formElStyleClassValue()
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function formElStyle($type) {
 		GeneralUtility::logDeprecatedFunction();
@@ -3024,7 +3024,7 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @return string CSS attributes
 	 * @see formElStyleClassValue()
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function formElClass($type) {
 		GeneralUtility::logDeprecatedFunction();
@@ -3037,7 +3037,7 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @param bool $class If set, will return value only if prefixed with CLASS, otherwise must not be prefixed "CLASS
 	 * @return string CSS attributes
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function formElStyleClassValue($type, $class = FALSE) {
 		GeneralUtility::logDeprecatedFunction();
@@ -3671,7 +3671,7 @@ class FormEngine {
 	 *
 	 * @param string $inTemplate Template string with markers to be substituted.
 	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function rplColorScheme($inTemplate) {
 		GeneralUtility::logDeprecatedFunction();
@@ -3771,7 +3771,7 @@ class FormEngine {
 	 *
 	 * @param string $scheme A color scheme string.
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function setColorScheme($scheme) {
 		GeneralUtility::logDeprecatedFunction();
@@ -3802,7 +3802,7 @@ class FormEngine {
 	 * Reset color schemes.
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function resetSchemes() {
 		GeneralUtility::logDeprecatedFunction();
@@ -3815,7 +3815,7 @@ class FormEngine {
 	 * Store current color scheme
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function storeSchemes() {
 		GeneralUtility::logDeprecatedFunction();
@@ -3829,7 +3829,7 @@ class FormEngine {
 	 * Restore the saved color scheme
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function restoreSchemes() {
 		GeneralUtility::logDeprecatedFunction();
@@ -4110,7 +4110,7 @@ class FormEngine {
 	 * @param string $table Database Tablename
 	 * @param int $pid PID value (positive / negative)
 	 * @return array|NULL "default" row.
-	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getDefaultRecord($table, $pid = 0) {
 		GeneralUtility::logDeprecatedFunction();
