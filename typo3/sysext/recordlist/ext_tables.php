@@ -10,7 +10,18 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'list',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/'
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+		array(
+			'script' => '_DISPATCH',
+			'access' => 'user,group',
+			'name' => 'web_list',
+			'labels' => array(
+				'tabs_images' => array(
+					'tab' => '../Resources/Public/Icons/module-list.png',
+				),
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_web_list.xlf',
+			),
+		)
 	);
 
 	// Register element browser wizard

@@ -133,6 +133,7 @@ class RecordList {
 	 * Module configuration
 	 *
 	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8.
 	 */
 	public $MCONF = array();
 
@@ -158,11 +159,17 @@ class RecordList {
 	public $content;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'web_list';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
-		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);
 	}
 
 	/**
@@ -171,8 +178,6 @@ class RecordList {
 	 * @return void
 	 */
 	public function init() {
-		// Setting module configuration / page select clause
-		$this->MCONF = $GLOBALS['MCONF'];
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// GPvars:
 		$this->id = (int)GeneralUtility::_GP('id');
@@ -203,9 +208,9 @@ class RecordList {
 			'localization' => ''
 		);
 		// Loading module configuration:
-		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 		// Clean up settings:
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
 	}
 
 	/**
