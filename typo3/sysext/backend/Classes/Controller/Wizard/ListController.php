@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class ListController {
+class ListController extends AbstractWizardController {
 
 	/**
 	 * @var int
@@ -54,7 +54,7 @@ class ListController {
 	 * Initialization of the class, setting GPvars.
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 		$this->P = GeneralUtility::_GP('P');
 		$this->table = GeneralUtility::_GP('table');

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class TableController {
+class TableController extends AbstractWizardController {
 
 	/**
 	 * document template object
@@ -104,7 +104,7 @@ class TableController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();
@@ -126,7 +126,7 @@ class TableController {
 		$this->inputStyle = isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
 		// Document template object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->backPath = $this->getBackPath();
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_table.html');
 		// Setting form tag:
 		list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
@@ -142,9 +142,9 @@ class TableController {
 	 */
 	public function main() {
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), $this->tableWizard(), 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), $this->tableWizard(), 0, 1);
 		} else {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', TRUE) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -186,13 +186,13 @@ class TableController {
 			// CSH Buttons
 			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons');
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
 			// Save
-			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />';
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />';
 			// Save & Close
-			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />';
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />';
 			// Reload
-			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . IconUtility::skinImg($this->doc->backPath, 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', TRUE) . '" />';
+			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . IconUtility::skinImg($this->doc->backPath, 'gfx/refresh_n.gif') . ' title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '" />';
 		}
 		return $buttons;
 	}
@@ -320,17 +320,17 @@ class TableController {
 				$ctrl = '';
 				$brTag = $this->inputStyle ? '' : '<br />';
 				if ($k != 0) {
-					$ctrl .= '<input type="image" name="TABLE[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_up', TRUE) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '" />' . $brTag;
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_bottom', TRUE) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '" />' . $brTag;
 				}
-				$ctrl .= '<input type="image" name="TABLE[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_removeRow', TRUE) . '" />' . $brTag;
+				$ctrl .= '<input type="image" name="TABLE[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '" />' . $brTag;
 				if ($k + 1 != $countLines) {
-					$ctrl .= '<input type="image" name="TABLE[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_down', TRUE) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '" />' . $brTag;
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_top', TRUE) . '" />' . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '" />' . $brTag;
 				}
-				$ctrl .= '<input type="image" name="TABLE[row_add][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_addRow', TRUE) . '" />' . $brTag;
+				$ctrl .= '<input type="image" name="TABLE[row_add][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '" />' . $brTag;
 				$tRows[] = '
 					<tr class="bgColor4">
 						<td class="bgColor5"><a name="ANC_' . ($k + 1) * 2 . '"></a><span class="c-wizButtonsV">' . $ctrl . '</span></td>
@@ -354,17 +354,17 @@ class TableController {
 			foreach ($firstRow as $temp) {
 				$ctrl = '';
 				if ($a != 0) {
-					$ctrl .= '<input type="image" name="TABLE[col_left][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_left', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_left][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_left', TRUE) . '" />';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[col_end][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_end', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_end][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_end', TRUE) . '" />';
 				}
-				$ctrl .= '<input type="image" name="TABLE[col_remove][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_removeColumn', TRUE) . '" />';
+				$ctrl .= '<input type="image" name="TABLE[col_remove][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_removeColumn', TRUE) . '" />';
 				if ($a + 1 != $cols) {
-					$ctrl .= '<input type="image" name="TABLE[col_right][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_right', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_right][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_right', TRUE) . '" />';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[col_start][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_start', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_start][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_start', TRUE) . '" />';
 				}
-				$ctrl .= '<input type="image" name="TABLE[col_add][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_addColumn', TRUE) . '" />';
+				$ctrl .= '<input type="image" name="TABLE[col_add][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_addColumn', TRUE) . '" />';
 				$cells[] = '<span class="c-wizButtonsH">' . $ctrl . '</span>';
 				// Incr. counter:
 				$a++;
@@ -393,7 +393,7 @@ class TableController {
 				Input mode check box:
 			-->
 			<div id="c-inputMode">
-				' . '<input type="hidden" name="TABLE[textFields]" value="0" />' . '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' /> <label for="textFields">' . $GLOBALS['LANG']->getLL('table_smallFields') . '</label>
+				' . '<input type="hidden" name="TABLE[textFields]" value="0" />' . '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' /> <label for="textFields">' . $this->getLanguageService()->getLL('table_smallFields') . '</label>
 			</div>
 
 			<br /><br />
@@ -578,36 +578,5 @@ class TableController {
 		}
 		// Return configuration array:
 		return $cfgArr;
-	}
-
-	/**
-	 * Checks access for element
-	 *
-	 * @param string $table Table name
-	 * @param int $uid Record uid
-	 * @return bool
-	 * @todo: Refactor to remove duplicate code (see FormsController, RteController)
-	 */
-	protected function checkEditAccess($table, $uid) {
-		$calcPRec = BackendUtility::getRecord($table, $uid);
-		BackendUtility::fixVersioningPid($table, $calcPRec);
-		if (is_array($calcPRec)) {
-			// If pages:
-			if ($table == 'pages') {
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
-				$hasAccess = $CALC_PERMS & 2 ? TRUE : FALSE;
-			} else {
-				// Fetching pid-record first.
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-				$hasAccess = $CALC_PERMS & 16 ? TRUE : FALSE;
-			}
-			// Check internals regarding access:
-			if ($hasAccess) {
-				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
-			}
-		} else {
-			$hasAccess = FALSE;
-		}
-		return $hasAccess;
 	}
 }

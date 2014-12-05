@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class RteController {
+class RteController extends AbstractWizardController {
 
 	/**
 	 * document template object
@@ -64,7 +64,7 @@ class RteController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();
@@ -84,7 +84,7 @@ class RteController {
 		$this->MCONF['name'] = 'wizard_rte';
 		// Starting the document template object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->backPath = $this->getBackPath();
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_rte.html');
 		// Need to NOT have the page wrapped in DIV since if we do that we destroy
 		// the feature that the RTE spans the whole height of the page!!!
@@ -99,7 +99,7 @@ class RteController {
 	 */
 	public function main() {
 		// Translate id to the workspace version:
-		if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->P['table'], $this->P['uid'], 'uid')) {
+		if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord($this->getBackendUserAuthentication()->workspace, $this->P['table'], $this->P['uid'], 'uid')) {
 			$this->P['uid'] = $versionRec['uid'];
 		}
 		// If all parameters are available:
@@ -175,7 +175,7 @@ class RteController {
 			$this->content .= $tceforms->printNeededJSFunctions_top() . $formContent . $tceforms->printNeededJSFunctions();
 		} else {
 			// ERROR:
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', TRUE) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -216,18 +216,18 @@ class RteController {
 			$closeUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
 			// Getting settings for the undo button:
 			$undoButton = 0;
-			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . (int)$this->P['uid'], '', 'tstamp DESC', '1');
-			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
+			$undoRes = $this->getDatabaseConnection()->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . (int)$this->P['uid'], '', 'tstamp DESC', '1');
+			if ($undoButtonR = $this->getDatabaseConnection()->sql_fetch_assoc($undoRes)) {
 				$undoButton = 1;
 			}
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($closeUrl) . '\')); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($closeUrl) . '\')); return false;') . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 			// Save
-			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
+			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 			// Save & View
-			$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
+			$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input type="image" class="c-inputButton" name="_savedokview" src="clear.gif" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
 			// Save & Close
-			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" onclick="' . htmlspecialchars('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
+			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" onclick="' . htmlspecialchars('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
 			// Undo/Revert:
 			if ($undoButton) {
 				$aOnClick = 'window.location.href=' .
@@ -242,45 +242,13 @@ class RteController {
 							)
 						)
 					) . '; return false;';
-				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
+				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 			}
 			// Shortcut
-			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			if ($this->getBackendUserAuthentication()->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('P', '', $this->MCONF['name'], 1);
 			}
 		}
 		return $buttons;
 	}
-
-	/**
-	 * Checks access for element
-	 *
-	 * @param string $table Table name
-	 * @param int $uid Record uid
-	 * @return bool
-	 * @todo: Refactor to remove duplicate code (see FormsController, TableController)
-	 */
-	public function checkEditAccess($table, $uid) {
-		$calcPRec = BackendUtility::getRecord($table, $uid);
-		BackendUtility::fixVersioningPid($table, $calcPRec);
-		if (is_array($calcPRec)) {
-			// If pages:
-			if ($table == 'pages') {
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
-				$hasAccess = $CALC_PERMS & 2 ? TRUE : FALSE;
-			} else {
-				// Fetching pid-record first.
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-				$hasAccess = $CALC_PERMS & 16 ? TRUE : FALSE;
-			}
-			// Check internals regarding access:
-			if ($hasAccess) {
-				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
-			}
-		} else {
-			$hasAccess = FALSE;
-		}
-		return $hasAccess;
-	}
-
 }

@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class AddController {
+class AddController extends AbstractWizardController {
 
 	/**
 	 * Content accumulation for the module.
@@ -78,7 +78,7 @@ class AddController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();

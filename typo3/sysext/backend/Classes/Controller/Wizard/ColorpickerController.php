@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Peter Kühn <peter@kuehn.com>
  * @author Kasper Skårhøj <typo3@typo3.com>
  */
-class ColorpickerController {
+class ColorpickerController extends AbstractWizardController {
 
 	/**
 	 * Wizard parameters, coming from TCEforms linking to the wizard.
@@ -115,7 +115,7 @@ class ColorpickerController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();
@@ -157,7 +157,7 @@ class ColorpickerController {
 		}
 		// Initialize document object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->backPath = $this->getBackPath();
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function checkReference() {	//
 				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"]) {
@@ -189,7 +189,7 @@ class ColorpickerController {
 			}
 		');
 		// Start page:
-		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('colorpicker_title'));
+		$this->content .= $this->doc->startPage($this->getLanguageService()->getLL('colorpicker_title'));
 	}
 
 	/**
@@ -210,12 +210,12 @@ class ColorpickerController {
 					' . $this->colorImage() . '
 
 						<!-- Value box: -->
-					<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_colorValue', TRUE) . '</p>
+					<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_colorValue', TRUE) . '</p>
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td><input type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" /></td>
-							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">&nbsp;<span style="color: black;">' . $GLOBALS['LANG']->getLL('colorpicker_black', TRUE) . '</span>&nbsp;<span style="color: white;">' . $GLOBALS['LANG']->getLL('colorpicker_white', TRUE) . '</span>&nbsp;</td>
-							<td><input type="submit" name="save_close" value="' . $GLOBALS['LANG']->getLL('colorpicker_setClose', TRUE) . '" /></td>
+							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">&nbsp;<span style="color: black;">' . $this->getLanguageService()->getLL('colorpicker_black', TRUE) . '</span>&nbsp;<span style="color: white;">' . $this->getLanguageService()->getLL('colorpicker_white', TRUE) . '</span>&nbsp;</td>
+							<td><input type="submit" name="save_close" value="' . $this->getLanguageService()->getLL('colorpicker_setClose', TRUE) . '" /></td>
 						</tr>
 					</table>
 
@@ -236,7 +236,7 @@ class ColorpickerController {
 				');
 			}
 			// Output:
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('colorpicker_title'), $content, 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('colorpicker_title'), $content, 0, 1);
 		}
 	}
 
@@ -259,13 +259,13 @@ class ColorpickerController {
 	 * @return void
 	 */
 	public function frameSet() {
-		$GLOBALS['TBE_TEMPLATE']->JScode = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$this->getDocumentTemplate()->JScode = $this->getDocumentTemplate()->wrapScriptTags('
 				if (!window.opener) {
 					alert("ERROR: Sorry, no link to main window... Closing");
 					close();
 				}
 		');
-		$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->getLL('colorpicker_title'));
+		$this->getDocumentTemplate()->startPage($this->getLanguageService()->getLL('colorpicker_title'));
 
 		// URL for the inner main frame:
 		$url = BackendUtility::getModuleUrl(
@@ -281,7 +281,7 @@ class ColorpickerController {
 				'fieldChangeFuncHash' => $this->P['fieldChangeFuncHash'],
 			)
 		);
-		$this->content = $GLOBALS['TBE_TEMPLATE']->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) . '
+		$this->content = $this->getDocumentTemplate()->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="' . htmlspecialchars($url) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
@@ -326,7 +326,7 @@ class ColorpickerController {
 			$rows++;
 		}
 		$table = '
-			<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromMatrix', TRUE) . '</p>
+			<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromMatrix', TRUE) . '</p>
 			<table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px solid black; cursor:crosshair;">' . implode('', $tRows) . '
 			</table>';
 		return $table;
@@ -349,7 +349,7 @@ class ColorpickerController {
 		}
 		// Compile selector box and return result:
 		$output = '
-			<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromList', TRUE) . '</p>
+			<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromList', TRUE) . '</p>
 			<select onchange="document.colorform.colorValue.value = this.options[this.selectedIndex].value; document.colorform.submit(); return false;">
 				' . implode('
 				', $opt) . '
@@ -370,7 +370,7 @@ class ColorpickerController {
 					$this->colorValue = '#' . $this->getIndex(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile($this->pickerImage), GeneralUtility::_POST('coords_x'), GeneralUtility::_POST('coords_y'));
 				}
 				$pickerFormImage = '
-				<p class="c-head">' . $GLOBALS['LANG']->getLL('colorpicker_fromImage', TRUE) . '</p>
+				<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromImage', TRUE) . '</p>
 				<input type="image" src="../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->pickerImage) . '" name="coords" style="cursor:crosshair;" /><br />';
 			} else {
 				$pickerFormImage = '';

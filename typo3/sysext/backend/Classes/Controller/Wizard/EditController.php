@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class EditController {
+class EditController extends AbstractWizardController {
 
 	/**
 	 * Wizard parameters, coming from TCEforms linking to the wizard.
@@ -43,7 +43,7 @@ class EditController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();
