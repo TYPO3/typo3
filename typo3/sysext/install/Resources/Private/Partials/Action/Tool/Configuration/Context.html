@@ -6,22 +6,13 @@
 	<div class="toggleData" style="display:none">
 		<div class="toggleDataContent">
 			<p>
-				TYPO3 can be run in a specific application context by using the environment
-				variable "TYPO3_CONTEXT", which is usually set in your webserver configuration
-				(e.g. in htaccess). Built-in contexts are "Production" (default), "Development"
-				or "Testing".
-				This can be used to provide specific configuration sets for each context.
+				In this panel it is possible to select a configuration preset which optimizes multiple settings
+				to be suited best for production or development environments.
+				The "Production" preset configures your TYPO3 installation for maximum performance
+				and suppresses debug and error messages, so that nothing is disclosed to website visitors.
+				The "Development" preset enables most debug and error messages which is helpful during development.
+				As a third option it is possible to manually customize each setting for specific needs.
 			</p>
-			<p>
-				However, if you don't set a context environment variable, you can still
-				use the install tool to select a configuration preset for "Production"
-				or "Development" context. The goal is to configure a production instance
-				with maximum performance and no debug output that is possibly shown to users,
-				while development instances should enable error output. The configuration
-				preset for "Production" is set by default.
-				As a third alternative, you can enter a custom configuration.
-			</p>
-
 			<f:for each="{feature.presetsOrderedByPriority}" as="preset">
 				<f:render partial="Action/Tool/Configuration/{feature.name}/{preset.name}" arguments="{_all}" />
 			</f:for>
