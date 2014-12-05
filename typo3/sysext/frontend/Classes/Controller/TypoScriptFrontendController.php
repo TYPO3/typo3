@@ -1495,7 +1495,7 @@ class TypoScriptFrontendController {
 		// If the page is a mountpoint which should be overlaid with the contents of the mounted page,
 		// it must never be accessible directly, but only in the mountpoint context. Therefore we change
 		// the current ID and the user is redirected by checkPageForMountpointRedirect().
-		if ($this->page['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol']) {
+		if ($this->page['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT && $this->page['mount_pid_ol']) {
 			$this->originalMountPointPage = $this->page;
 			$this->page = $this->sys_page->getPage($this->page['mount_pid']);
 			if (empty($this->page)) {
@@ -2989,7 +2989,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	public function checkPageForMountpointRedirect() {
-		if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] === PageRepository::DOKTYPE_MOUNTPOINT) {
+		if (!empty($this->originalMountPointPage) && $this->originalMountPointPage['doktype'] == PageRepository::DOKTYPE_MOUNTPOINT) {
 			$this->redirectToCurrentPage();
 		}
 	}
