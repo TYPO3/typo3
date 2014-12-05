@@ -188,6 +188,7 @@ $TSFE->handleDataSubmission();
 
 // Check for shortcut page and redirect
 $TSFE->checkPageForShortcutRedirect();
+$TSFE->checkPageForMountpointRedirect();
 
 // Generate page
 $TSFE->setUrlIdToken();
