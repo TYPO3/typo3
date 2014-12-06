@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -6571,7 +6571,7 @@ button.close {
 /*!
  * TYPO3
  */
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -6802,7 +6802,7 @@ Background color classes
 .message-error a {
   color: #aa0225;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -6828,7 +6828,7 @@ TYPO3 debug panel
   top: 0;
   left: 0;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -6871,7 +6871,7 @@ table#typo3-clipboard tr.bgColor5 td a {
 table#typo3-clipboard tr.bgColor5 td img {
   vertical-align: middle;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7127,7 +7127,7 @@ div.typo3-view-help div.c-toc a,
 div.typo3-view-help p a {
   text-decoration: underline;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7190,7 +7190,7 @@ div#contentMenu1 {
   position: absolute;
   z-index: 20;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7310,7 +7310,7 @@ DocHeader
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a:hover {
   color: #000;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7341,7 +7341,7 @@ table#typo3-history img,
 table#typo3-history-item img {
   margin: 1px 1px 1px 1px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7411,7 +7411,7 @@ table#typo3-history-item img {
 .alert-danger a:hover {
   color: #a32e2e;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7812,7 +7812,7 @@ Indicator Bar
   top: 5px;
   position: absolute;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7951,7 +7951,7 @@ body#ext-rte-app-rte-select-image-php a {
 body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
   text-decoration: underline;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -7972,7 +7972,7 @@ span.spinner {
   height: 16px;
   background-image: url('../../../../images/spinner/f1f1f1.gif');
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -8057,7 +8057,7 @@ div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
   margin: 0;
   padding: 0;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -9331,7 +9331,7 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
 .table-fit > .t3-table > tfoot > tr > td {
   white-space: nowrap;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -9354,7 +9354,7 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
   border: 0;
   margin: 0;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10134,7 +10134,7 @@ TCEforms Tree
   margin: 0 0 0 1px;
   vertical-align: middle;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10378,7 +10378,7 @@ AJAX Page Tree
 #tree-toolbar-filter-item.active {
   background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png");
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10398,7 +10398,7 @@ AJAX Page Tree
   display: inline-block;
   margin: -2px 0;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10439,7 +10439,7 @@ AJAX Page Tree
   font-weight: bold;
   font-style: italic;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10575,7 +10575,7 @@ AJAX Page Tree
 #typo3-index-php #t3-login-copyright a:hover {
   color: #000;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10644,7 +10644,7 @@ Decorations (shadows etc.)
   background-position: bottom center;
   background-repeat: no-repeat;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -10851,7 +10851,7 @@ span.warningboxheader {
 .t3-btn {
   cursor: pointer;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -11214,7 +11214,7 @@ a.typo3-goBack {
   right: 5px;
   top: 5px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -11247,7 +11247,7 @@ iframe {
   height: 100%;
   overflow: auto;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -11327,7 +11327,7 @@ Loadingbar and Animations
   -o-animation: fullexpand 5s linear infinite;
   -ms-animation: fullexpand 5s linear infinite;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -11497,7 +11497,7 @@ Module menu
 .typo3-module-menu-snapped .typo3-module-menu-item-title {
   display: none;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12231,7 +12231,7 @@ fieldset[disabled] .live-search-list .x-btn button.active {
   margin-top: 0.5em;
   margin-bottom: 0;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12312,7 +12312,7 @@ Sys notes
 #typo3-dblist-sysnotes .single-note:hover .header span {
   color: #d7d7d7;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12339,7 +12339,7 @@ Sys notes
 .contentelement-wizard li:last-child {
   margin-bottom: 0px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12368,7 +12368,7 @@ body#typo3-move-el-php img#c-recIcon {
 body#typo3-move-el-php label.t3-label-valign-top {
   vertical-align: top;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12419,7 +12419,7 @@ table.ver-verElement {
   margin-right: 5px;
   float: left;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12471,7 +12471,7 @@ body#typo3-wizard-rte-php table#typo3-rtewizard tr td#c-formContent {
 body#typo3-wizard-colorpicker-php p.c-head {
   margin-top: 4px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12517,7 +12517,7 @@ body#typo3-file-edit-php div#c-submit,
 body#typo3-file-edit-php div#c-edit {
   margin-top: 10px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12535,7 +12535,7 @@ body#typo3-file-edit-php div#c-edit {
 #typo3-mod-user-ws-index-php .typo3-dyntabmenu-divs {
   padding: 10px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12676,7 +12676,7 @@ div#typo3-listOptions {
   vertical-align: text-bottom !important;
   margin-right: 10px !important;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12798,7 +12798,7 @@ td.t3-page-column.t3-gridCell .t3-page-colHeader {
 tr:first-child td.t3-page-column.t3-gridCell .t3-page-colHeader {
   padding-top: 0;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12822,7 +12822,7 @@ extJS icons
 .t3iconstyle-center {
   background-position: center center;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12881,7 +12881,7 @@ pre.ts-hl .ts-linenum {
   background-color: #eee;
   color: #212424;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -12982,7 +12982,7 @@ table.ver-subtree tr.typo3-ver-noComp td {
 .ver-wl-current-user {
   font-weight: bold;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -13101,7 +13101,7 @@ div.t3-upload-queue-progress {
 .error .t3-upload-queue-progress-bar {
   background-color: #BF383F;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -13126,7 +13126,7 @@ File Upload Window
   text-align: left;
   text-indent: 6px;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -13156,7 +13156,7 @@ table#langTable td.c-ok {
 table#langTable td.c-leftLine {
   border-left: 1px solid #a2aab8;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -13182,7 +13182,7 @@ table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-multipleVersions {
 table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-oneVersion {
   background-color: #9999cc;
 }
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under

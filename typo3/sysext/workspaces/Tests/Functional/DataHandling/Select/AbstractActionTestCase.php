@@ -1,7 +1,7 @@
 <?php
 namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Select;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under

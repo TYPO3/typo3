@@ -1,6 +1,6 @@
 /*<![CDATA[*/
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under

@@ -5,7 +5,7 @@ use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatche
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under

@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
