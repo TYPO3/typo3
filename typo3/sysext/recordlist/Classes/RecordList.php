@@ -398,7 +398,11 @@ class RecordList {
 		}
 		// access
 		// Begin to compile the whole page, starting out with page header:
-		$this->body = $this->doc->header($this->pageinfo['title']);
+		if (!$this->id) {
+			$this->body = $this->doc->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+		} else {
+			$this->body = $this->doc->header($this->pageinfo['title']);
+		}
 		$this->body .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">';
 		$this->body .= $dblist->HTMLcode;
 		$this->body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
