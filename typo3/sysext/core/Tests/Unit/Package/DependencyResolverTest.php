@@ -38,7 +38,7 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
 		);
 
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getPackageKeysInBasePath'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('getPackageKeysInBasePath'));
 		$dependencyResolver->expects($this->any())->method('getPackageKeysInBasePath')->will($this->returnValueMap($basePathAssignment));
 		$dependencyGraph = $dependencyResolver->_call('buildDependencyGraph', $unsortedPackageStatesConfiguration);
 
@@ -57,7 +57,7 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
 		);
 
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getPackageKeysInBasePath'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('getPackageKeysInBasePath'));
 		$dependencyResolver->expects($this->any())->method('getPackageKeysInBasePath')->will($this->returnValueMap($basePathAssignment));
 		$sortedPackageStatesConfiguration = $dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 
@@ -69,7 +69,7 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider buildDependencyGraphForPackagesBuildsCorrectGraphDataProvider
 	 */
 	public function buildDependencyGraphForPackagesBuildsCorrectGraph($packages, $expectedGraph) {
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('dummy'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('dummy'));
 		$dependencyGraph = $dependencyResolver->_call('buildDependencyGraphForPackages', $packages, array_keys($packages));
 
 		$this->assertEquals($expectedGraph, $dependencyGraph);
@@ -98,7 +98,7 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), array()),
 		);
 
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('getActivePackageKeysOfType'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('getActivePackageKeysOfType'));
 		$dependencyResolver->expects($this->any())->method('getActivePackageKeysOfType')->will($this->returnValueMap($basePathAssignment));
 		$dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 	}
@@ -113,7 +113,7 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'dependencies' => array('B'),
 			)
 		);
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('dummy'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('dummy'));
 		$dependencyResolver->_call('buildDependencyGraphForPackages', $packages, array_keys($packages));
 	}
 
@@ -869,7 +869,7 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider findPathInGraphReturnsCorrectPathDataProvider
 	 */
 	public function findPathInGraphReturnsCorrectPath(array $graph, $from, $to, array $expected) {
-		$dependencyResolver = $this->getAccessibleMock('\TYPO3\CMS\Core\Package\DependencyResolver', array('dummy'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('dummy'));
 		$path = $dependencyResolver->_call('findPathInGraph', $graph, $from, $to);
 
 		$this->assertSame($expected, $path);

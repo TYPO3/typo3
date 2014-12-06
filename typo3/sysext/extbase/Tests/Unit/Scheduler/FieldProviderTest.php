@@ -51,7 +51,7 @@ class FieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		/** @var \TYPO3\CMS\Extbase\Scheduler\FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject $fieldProvider */
 		$fieldProvider = $this->getAccessibleMock(
-			'\TYPO3\CMS\Extbase\Scheduler\FieldProvider',
+			\TYPO3\CMS\Extbase\Scheduler\FieldProvider::class,
 			array('getActionLabel'),
 			array(),
 			'',
@@ -86,7 +86,7 @@ class FieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function validateAdditionalFieldsReturnsTrue() {
 		/** @var \TYPO3\CMS\Extbase\Scheduler\FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject $fieldProvider */
 		$fieldProvider = $this->getAccessibleMock(
-			'\TYPO3\CMS\Extbase\Scheduler\FieldProvider',
+			\TYPO3\CMS\Extbase\Scheduler\FieldProvider::class,
 			array('dummy'),
 			array(),
 			'',
@@ -133,7 +133,7 @@ class FieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		/** @var \TYPO3\CMS\Extbase\Scheduler\FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject $fieldProvider */
 		$fieldProvider = $this->getAccessibleMock(
-			'\TYPO3\CMS\Extbase\Scheduler\FieldProvider',
+			\TYPO3\CMS\Extbase\Scheduler\FieldProvider::class,
 			array('getActionLabel', 'getArgumentLabel', 'getCommandControllerActionArgumentFields'),
 			array(),
 			'',

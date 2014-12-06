@@ -169,7 +169,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createValidatorThrowsNoSuchValidatorExceptionIfAValidatorCouldNotBeResolved() {
 		$this->markTestSkipped('');
 		$className = uniqid('Test');
-		$this->setExpectedException('\\TYPO3\\CMS\\Extbase\\Validation\\Exception\NoSuchValidatorException', '', 1365799920);
+		$this->setExpectedException(\TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException::class, '', 1365799920);
 		$this->validatorResolver->createValidator($className);
 	}
 

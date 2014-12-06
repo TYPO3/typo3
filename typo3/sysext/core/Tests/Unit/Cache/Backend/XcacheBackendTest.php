@@ -243,7 +243,7 @@ class XcacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
 		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		if ($accessible) {
-			$accessibleClassName = $this->buildAccessibleProxy('\\TYPO3\\CMS\\Core\\Cache\\Backend\\XcacheBackend');
+			$accessibleClassName = $this->buildAccessibleProxy(XcacheBackend::class);
 			$backend = new $accessibleClassName('Testing');
 		} else {
 			$backend = new XcacheBackend('Testing');

@@ -156,7 +156,7 @@ class BackendController {
 			if (!$toolbarItemInstance instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
 				throw new \RuntimeException(
 					'class ' . $className . ' is registered as toolbar item but does not implement'
-						. '\TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface',
+						. \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface::class,
 					1415958218
 				);
 			}

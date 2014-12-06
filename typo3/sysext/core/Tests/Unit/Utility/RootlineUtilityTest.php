@@ -309,8 +309,8 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function enrichWithRelationFieldsCreatesWhereClauseForDisabledField() {
-		$mockDatabaseConnection = $this->getMock('\TYPO3\CMS\Core\Database\DatabaseConnection', array('exec_SELECTgetRows'), array(), '', FALSE);
-		$subject = $this->getAccessibleMock('\TYPO3\CMS\Core\Utility\RootlineUtility', array('columnHasRelationToResolve'), array(1, '', $this->pageContextMock));
+		$mockDatabaseConnection = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'), array(), '', FALSE);
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, array('columnHasRelationToResolve'), array(1, '', $this->pageContextMock));
 		$subject->_set('databaseConnection', $mockDatabaseConnection);
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] = '';
 		$foreign_table = uniqid('foreign_table');

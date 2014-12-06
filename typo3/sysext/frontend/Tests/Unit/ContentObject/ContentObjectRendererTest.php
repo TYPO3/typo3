@@ -1425,7 +1425,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 		);
-		$this->subject = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
 		$this->subject->start(array(), 'tt_content');
 		$conf = array(
 			'recursive' => '15',
@@ -1462,7 +1462,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				)
 			),
 		);
-		$this->subject = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('getTreeList'));
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));
 		$GLOBALS['TSFE']->id = 27;
 		$this->subject->start(array(), 'tt_content');
 		$conf = array(

@@ -114,7 +114,7 @@ class CategoryMenuUtility {
 				uasort(
 					$pages,
 					array(
-						'\TYPO3\CMS\Frontend\ContentObject\Menu\CategoryMenuUtility',
+						\TYPO3\CMS\Frontend\ContentObject\Menu\CategoryMenuUtility::class,
 						'sortPagesUtility'
 					)
 				);

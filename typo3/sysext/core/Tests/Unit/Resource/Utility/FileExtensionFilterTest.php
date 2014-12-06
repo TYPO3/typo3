@@ -127,7 +127,7 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function extensionFilterIgnoresCaseInAllowedExtensionCheck($fileExtension, $allowedExtensions, $disallowedExtensions, $isAllowed) {
 		/** @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter $filter */
-		$filter = $this->getAccessibleMock('\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter', array('dummy'));
+		$filter = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class, array('dummy'));
 		$filter->setAllowedFileExtensions($allowedExtensions);
 		$filter->setDisallowedFileExtensions($disallowedExtensions);
 		$result = $filter->_call('isAllowed', 'file.' . $fileExtension);

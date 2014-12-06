@@ -185,7 +185,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\OkStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $status);
 	}
 
 	/**
@@ -214,8 +214,8 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$statusSelf = $statusArray[0];
 		$statusOfChild = $statusArray[1];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\OkStatus', $statusSelf);
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $statusOfChild);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $statusSelf);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $statusOfChild);
 	}
 
 	/**

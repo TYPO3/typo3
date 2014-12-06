@@ -144,7 +144,7 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		/** @var $backendMock \PHPUnit_Framework_MockObject_MockObject|ApcBackend */
 		$backendMock = $this->getMock(
-			\TYPO3\CMS\Core\Cache\Backend\ApcBackend::class,
+			ApcBackend::class,
 			array('setIdentifierPrefix','getCurrentUserData','getPathSite'),
 			array('testcontext')
 		);
@@ -279,7 +279,7 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
 		$cache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class, array(), array(), '', FALSE);
 		if ($accessible) {
-			$accessibleClassName = $this->buildAccessibleProxy('\\TYPO3\\CMS\\Core\\Cache\\Backend\\ApcBackend');
+			$accessibleClassName = $this->buildAccessibleProxy(ApcBackend::class);
 			$backend = new $accessibleClassName('Testing');
 		} else {
 			$backend = new ApcBackend('Testing');

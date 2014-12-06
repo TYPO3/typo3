@@ -210,7 +210,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\WarningStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\WarningStatus::class, $status);
 	}
 
 	/**
@@ -237,7 +237,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $status);
 	}
 
 	/**
@@ -264,7 +264,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $status);
 	}
 
 	/**
@@ -291,7 +291,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $status);
 	}
 
 	/**
@@ -318,7 +318,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $status);
 	}
 
 	/**
@@ -345,7 +345,7 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\OkStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $status);
 	}
 
 	/**

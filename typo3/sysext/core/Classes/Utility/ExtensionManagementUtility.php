@@ -770,7 +770,7 @@ class ExtensionManagementUtility {
 		$moduleConfiguration['name'] = $moduleSignature;
 		$moduleConfiguration['script'] = 'extjspaneldummy.html';
 		$moduleConfiguration['extensionName'] = $extensionName;
-		$moduleConfiguration['configureModuleFunction'] = array(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule');
+		$moduleConfiguration['configureModuleFunction'] = array(ExtensionManagementUtility::class, 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 		self::addModule($mainModuleName, $subModuleName, $position);
 	}
@@ -1763,7 +1763,7 @@ tt_content.' . $key . $prefix . ' {
 				// Add ext_tables.php content of extension
 				$phpCodeToCache[] = trim(GeneralUtility::getUrl($extensionDetails['ext_tables.php']));
 				$phpCodeToCache[] = '';
-				$phpCodeToCache[] = '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();';
+				$phpCodeToCache[] = ExtensionManagementUtility::class . '::loadNewTcaColumnsConfigFiles();';
 				$phpCodeToCache[] = '';
 			}
 		}
@@ -1899,7 +1899,7 @@ tt_content.' . $key . $prefix . ' {
 		// Update the category registry
 		$result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options);
 		if ($result === FALSE) {
-			$message = '\TYPO3\CMS\Core\Category\CategoryRegistry: no category registered for table "%s". Key was already registered.';
+			$message = CategoryRegistry::class . ': no category registered for table "%s". Key was already registered.';
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */
 			$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 			$logger->warning(

@@ -42,7 +42,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_LOADED_EXT'] = array();
 		$this->templateService = new \TYPO3\CMS\Core\TypoScript\TemplateService();
 		$this->templateService->tt_track = FALSE;
-		$this->templateServiceMock = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\TypoScript\\TemplateService', array('dummy'));
+		$this->templateServiceMock = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
 		$this->templateServiceMock->tt_track = FALSE;
 	}
 

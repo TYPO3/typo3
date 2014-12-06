@@ -573,7 +573,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 * @dataProvider executePositionedStringInsertionTrimsCorrectCharactersDataProvider
 	 */
 	public function executePositionedStringInsertionTrimsCorrectCharacters($string, $expectedResult) {
-		$extensionManagementUtility = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility', array('dummy'));
+		$extensionManagementUtility = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, array('dummy'));
 		$string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
 		$this->assertEquals($expectedResult, $string);
 	}

@@ -362,7 +362,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$items = $this->retrieveFileAndFoldersInPath($realPath, $recursive, $includeFiles, $includeDirs);
 		uksort(
 			$items,
-			array('\\TYPO3\\CMS\\Core\\Utility\\ResourceUtility', 'recursiveFileListSortingHelper')
+			array(\TYPO3\CMS\Core\Utility\ResourceUtility::class, 'recursiveFileListSortingHelper')
 		);
 
 		$iterator = new \ArrayIterator($items);

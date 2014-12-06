@@ -316,7 +316,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$absPath = PATH_site . $this->fakedExtensions[$extKey]['siteRelPath'];
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absPath . 'Initialisation');
 		file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
-		$registryMock = $this->getMock('\\TYPO3\\CMS\\Core\\Registry', array('get', 'set'));
+		$registryMock = $this->getMock(\TYPO3\CMS\Core\Registry::class, array('get', 'set'));
 		$registryMock
 			->expects($this->any())
 			->method('get')

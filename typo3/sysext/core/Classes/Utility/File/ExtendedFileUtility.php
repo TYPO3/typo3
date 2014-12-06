@@ -358,7 +358,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 
 				// render a message that the file could not be deleted
 				$flashMessage = GeneralUtility::makeInstance(
-					'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					FlashMessage::class,
 					sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotDeletedHasReferences'), $fileObject->getName()) . '<br />' . implode('<br />', $shortcutContent),
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotDeletedHasReferences'),
 					FlashMessage::WARNING,
@@ -371,7 +371,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 
 					// show the user that the file was deleted
 					$flashMessage = GeneralUtility::makeInstance(
-						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						FlashMessage::class,
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileDeleted'), $fileObject->getName()),
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileDeleted'),
 						FlashMessage::OK,
@@ -394,7 +394,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 				if ($fileObject->getFileCount() > 0) {
 					// render a message that the folder could not be deleted because it still contains files
 					$flashMessage = GeneralUtility::makeInstance(
-						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						FlashMessage::class,
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderNotDeletedHasFiles'), $fileObject->getName()),
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderNotDeletedHasFiles'),
 						FlashMessage::WARNING,
@@ -406,7 +406,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 
 					// notify the user that the folder was deleted
 					$flashMessage = GeneralUtility::makeInstance(
-						'\\TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						FlashMessage::class,
 						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderDeleted'),
 						FlashMessage::OK,
@@ -947,7 +947,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	/**
 	 * Add flash message to message queue
 	 *
-	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage
+	 * @param FlashMessage $flashMessage
 	 * @return void
 	 */
 	protected function addFlashMessage(FlashMessage $flashMessage) {

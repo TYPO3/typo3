@@ -151,7 +151,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\WarningStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\WarningStatus::class, $status);
 	}
 
 	/**
@@ -177,7 +177,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $status);
 	}
 
 	/**
@@ -203,7 +203,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $status);
 	}
 
 	/**
@@ -229,7 +229,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\NoticeStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\NoticeStatus::class, $status);
 	}
 
 	/**
@@ -255,7 +255,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusArray = $node->getStatus();
 		/** @var $status \TYPO3\CMS\Install\Status\StatusInterface */
 		$status = $statusArray[0];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\OkStatus', $status);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $status);
 	}
 
 	/**
@@ -305,8 +305,8 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$status = $node->getStatus();
 		$statusOfDirectory = $status[0];
 		$statusOfChild = $status[1];
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\OkStatus', $statusOfDirectory);
-		$this->assertInstanceOf('\TYPO3\CMS\Install\Status\ErrorStatus', $statusOfChild);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\OkStatus::class, $statusOfDirectory);
+		$this->assertInstanceOf(\TYPO3\CMS\Install\Status\ErrorStatus::class, $statusOfChild);
 	}
 
 	/**

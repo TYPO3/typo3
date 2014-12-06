@@ -124,7 +124,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Doctrine.Common' => $mockCommonPackage
 		);
 
-		$packageManager = $this->getAccessibleMock('\TYPO3\Flow\Package\PackageManager', array('dummy'));
+		$packageManager = $this->getAccessibleMock(\TYPO3\Flow\Package\PackageManager::class, array('dummy'));
 		$packageManager->_set('packages', $packages);
 		$dependencyArray = $packageManager->_call('getDependencyArrayForPackage', 'TYPO3.Flow');
 
@@ -459,7 +459,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
-		$packageManager = $this->getAccessibleMock('\TYPO3\Flow\Package\PackageManager', array('resolvePackageDependencies'));
+		$packageManager = $this->getAccessibleMock(\TYPO3\Flow\Package\PackageManager::class, array('resolvePackageDependencies'));
 		$packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
 
 		$this->assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));

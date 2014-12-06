@@ -33,7 +33,7 @@ class DownloadControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dummyExtension = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class);
 		$dummyExtension->expects($this->any())->method('getExtensionKey')->will($this->returnValue($dummyExtensionName));
 
-		$downloadUtilityMock = $this->getMock('\\TYPO3\\CMS\\Extensionmanager\\Utility\\DownloadUtility');
+		$downloadUtilityMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class);
 		$downloadUtilityMock->expects($this->any())->method('setDownloadPath')->willThrowException($dummyException);
 
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Controller\DownloadController::class, array('dummy'));

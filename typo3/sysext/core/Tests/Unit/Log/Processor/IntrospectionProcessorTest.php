@@ -61,7 +61,7 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUp() {
 		$this->processor = $this->getAccessibleMock(
-			'\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor',
+			\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class,
 			array('getDebugBacktrace', 'formatDebugBacktrace')
 		);
 	}

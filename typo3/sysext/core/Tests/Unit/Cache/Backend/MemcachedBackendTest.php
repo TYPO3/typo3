@@ -268,7 +268,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$backendOptions = array('servers' => array('localhost:11211'));
 		}
 		if ($accessible) {
-			$accessibleClassName = $this->buildAccessibleProxy('\\TYPO3\\CMS\\Core\\Cache\\Backend\\MemcachedBackend');
+			$accessibleClassName = $this->buildAccessibleProxy(MemcachedBackend::class);
 			$backend = new $accessibleClassName('Testing', $backendOptions);
 		} else {
 			$backend = new MemcachedBackend('Testing', $backendOptions);

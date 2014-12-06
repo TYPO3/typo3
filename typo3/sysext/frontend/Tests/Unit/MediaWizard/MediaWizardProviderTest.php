@@ -29,7 +29,7 @@ class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Setup
 	 */
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProvider', array('dummy'), array(), '', FALSE);
+		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider::class, array('dummy'), array(), '', FALSE);
 	}
 
 	/**

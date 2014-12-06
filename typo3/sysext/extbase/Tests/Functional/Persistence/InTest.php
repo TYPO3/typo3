@@ -198,7 +198,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$blog = $this->blogRepository->findByUid(1);
 
 		$this->assertInstanceOf(
-			'\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage',
+			\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
 			$blog->getPosts()
 		);
 
@@ -218,7 +218,7 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$blog = $this->blogRepository->findByUid(1);
 
 		$this->assertInstanceOf(
-			'\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage',
+			\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
 			$blog->getPosts()
 		);
 

@@ -108,7 +108,7 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$flashMessageQueue->expects($this->once())->method('enqueue')->with($this->equalTo($expectedMessage));
 
 		$controllerContext = $this->getMock(
-			'\\TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext',
+			\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class,
 			array('getFlashMessageQueue')
 		);
 		$controllerContext->expects($this->once())->method('getFlashMessageQueue')->will($this->returnValue($flashMessageQueue));

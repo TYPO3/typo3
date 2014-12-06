@@ -101,7 +101,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function canCreateDummyCollection() {
 		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord);
-		$this->assertInstanceOf('\TYPO3\CMS\Core\Category\Collection\CategoryCollection', $collection);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $collection);
 	}
 
 	/**
@@ -111,7 +111,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function canCreateDummyCollectionAndFillItems() {
 		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord, TRUE);
-		$this->assertInstanceOf('\TYPO3\CMS\Core\Category\Collection\CategoryCollection', $collection);
+		$this->assertInstanceOf(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $collection);
 	}
 
 	/**

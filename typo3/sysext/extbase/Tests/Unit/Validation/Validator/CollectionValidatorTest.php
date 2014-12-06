@@ -140,7 +140,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function collectionValidatorIsValidEarlyReturnsOnUnitializedLazyObjectStorages() {
 		$parentObject  = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
-		$elementType = '\TYPO3\CMS\Extbase\Tests\Fixture\Entity';
+		$elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
 		$lazyObjectStorage = new \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage(
 			$parentObject,
 			'someProperty',
@@ -159,7 +159,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function collectionValidatorCallsCollectionElementValidatorWhenValidatingObjectStorages() {
 		$entity = new \TYPO3\CMS\Extbase\Tests\Fixture\Entity('Foo');
-		$elementType = '\TYPO3\CMS\Extbase\Tests\Fixture\Entity';
+		$elementType = \TYPO3\CMS\Extbase\Tests\Fixture\Entity::class;
 		$objectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorage->attach($entity);
 		$aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
