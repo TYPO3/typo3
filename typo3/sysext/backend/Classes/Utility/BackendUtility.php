@@ -1153,14 +1153,15 @@ class BackendUtility {
 	 * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 	 */
 	static public function getPagesTSconfig($id, $rootLine = NULL, $returnPartArray = FALSE) {
-		static $pagesTSconfig_cache = array();
+		static $pagesTSconfig_cacheReference = array();
+		static $combinedTSconfig_cache = array();
 
 		$id = (int)$id;
 		if ($returnPartArray === FALSE
 			&& $rootLine === NULL
-			&& isset($pagesTSconfig_cache[$id])
+			&& isset($pagesTSconfig_cacheReference[$id])
 		) {
-			return $pagesTSconfig_cache[$id];
+			return $combinedTSconfig_cache[$pagesTSconfig_cacheReference[$id]];
 		} else {
 			$TSconfig = array();
 			if (!is_array($rootLine)) {
@@ -1191,14 +1192,19 @@ class BackendUtility {
 			if ($res) {
 				$TSconfig = $res['TSconfig'];
 			}
+			$cacheHash = $res['hash'];
 			// Get User TSconfig overlay
 			$userTSconfig = $GLOBALS['BE_USER']->userTS['page.'];
 			if (is_array($userTSconfig)) {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($TSconfig, $userTSconfig);
+				$cacheHash .= '_user' . $GLOBALS['BE_USER']->user['uid'];
 			}
 
 			if ($useCacheForCurrentPageId) {
-				$pagesTSconfig_cache[$id] = $TSconfig;
+				if (!isset($combinedTSconfig_cache[$cacheHash])) {
+					$combinedTSconfig_cache[$cacheHash] = $TSconfig;
+				}
+				$pagesTSconfig_cacheReference[$id] = $cacheHash;
 			}
 		}
 		return $TSconfig;
