@@ -5138,7 +5138,8 @@ class ContentObjectRenderer {
 
 	/**
 	 * Finds URLS in text and makes it to a real link.
-	 * Will find all strings prefixed with "http://" in the $data string and make them into a link, linking to the URL we should have found.
+	 * Will find all strings prefixed with "http://" and "https://" in the $data string and make them into a link,
+	 * linking to the URL we should have found.
 	 *
 	 * @param string $data The string in which to search for "http://
 	 * @param array $conf Configuration for makeLinks, see link
@@ -5147,62 +5148,66 @@ class ContentObjectRenderer {
 	 */
 	public function http_makelinks($data, $conf) {
 		$aTagParams = $this->getATagParams($conf);
-		$textpieces = explode('http://', $data);
-		$pieces = count($textpieces);
-		$textstr = $textpieces[0];
-		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
-		for ($i = 1; $i < $pieces; $i++) {
-			$len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
-			if (trim(substr($textstr, -1)) == '' && $len) {
-				$lastChar = substr($textpieces[$i], $len - 1, 1);
-				if (!preg_match('/[A-Za-z0-9\\/#_-]/', $lastChar)) {
-					$len--;
-				}
-				// Included '\/' 3/12
-				$parts[0] = substr($textpieces[$i], 0, $len);
-				$parts[1] = substr($textpieces[$i], $len);
-				$keep = $conf['keep'];
-				$linkParts = parse_url('http://' . $parts[0]);
-				$linktxt = '';
-				if (strstr($keep, 'scheme')) {
-					$linktxt = 'http://';
-				}
-				$linktxt .= $linkParts['host'];
-				if (strstr($keep, 'path')) {
-					$linktxt .= $linkParts['path'];
-					// Added $linkParts['query'] 3/12
-					if (strstr($keep, 'query') && $linkParts['query']) {
-						$linktxt .= '?' . $linkParts['query'];
-					} elseif ($linkParts['path'] == '/') {
-						$linktxt = substr($linktxt, 0, -1);
+		$schemes = array('http://', 'https://');
+		foreach ($schemes as $scheme) {
+			$textpieces = explode($scheme, $data);
+			$pieces = count($textpieces);
+			$textstr = $textpieces[0];
+			$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
+			for ($i = 1; $i < $pieces; $i++) {
+				$len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
+				if (trim(substr($textstr, -1)) == '' && $len) {
+					$lastChar = substr($textpieces[$i], $len - 1, 1);
+					if (!preg_match('/[A-Za-z0-9\\/#_-]/', $lastChar)) {
+						$len--;
 					}
-				}
-				if (isset($conf['extTarget'])) {
-					if (isset($conf['extTarget.'])) {
-						$target = $this->stdWrap($conf['extTarget'], $conf['extTarget.']);
+					// Included '\/' 3/12
+					$parts[0] = substr($textpieces[$i], 0, $len);
+					$parts[1] = substr($textpieces[$i], $len);
+					$keep = $conf['keep'];
+					$linkParts = parse_url($scheme . $parts[0]);
+					$linktxt = '';
+					if (strstr($keep, 'scheme')) {
+						$linktxt = $scheme;
+					}
+					$linktxt .= $linkParts['host'];
+					if (strstr($keep, 'path')) {
+						$linktxt .= $linkParts['path'];
+						// Added $linkParts['query'] 3/12
+						if (strstr($keep, 'query') && $linkParts['query']) {
+							$linktxt .= '?' . $linkParts['query'];
+						} elseif ($linkParts['path'] == '/') {
+							$linktxt = substr($linktxt, 0, -1);
+						}
+					}
+					if (isset($conf['extTarget'])) {
+						if (isset($conf['extTarget.'])) {
+							$target = $this->stdWrap($conf['extTarget'], $conf['extTarget.']);
+						} else {
+							$target = $conf['extTarget'];
+						}
 					} else {
-						$target = $conf['extTarget'];
+						$target = $GLOBALS['TSFE']->extTarget;
 					}
+					if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
+						$jumpurl = 'http://' . $parts[0];
+						$juHash = GeneralUtility::hmac($jumpurl, 'jumpurl');
+						$res = '<a' . ' href="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($jumpurl))) . '&juHash=' . $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
+					} else {
+						$res = '<a' . ' href="' . $scheme . htmlspecialchars($parts[0]) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
+					}
+					$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+					if ($conf['ATagBeforeWrap']) {
+						$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
+					} else {
+						$res = $this->wrap($res . $linktxt . '</a>', $wrap);
+					}
+					$textstr .= $res . $parts[1];
 				} else {
-					$target = $GLOBALS['TSFE']->extTarget;
+					$textstr .= $scheme . $textpieces[$i];
 				}
-				if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
-					$jumpurl = 'http://' . $parts[0];
-					$juHash = GeneralUtility::hmac($jumpurl, 'jumpurl');
-					$res = '<a' . ' href="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($jumpurl))) . '&juHash=' . $juHash . $GLOBALS['TSFE']->getMethodUrlIdToken . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
-				} else {
-					$res = '<a' . ' href="http://' . htmlspecialchars($parts[0]) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
-				}
-				$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-				if ($conf['ATagBeforeWrap']) {
-					$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
-				} else {
-					$res = $this->wrap($res . $linktxt . '</a>', $wrap);
-				}
-				$textstr .= $res . $parts[1];
-			} else {
-				$textstr .= 'http://' . $textpieces[$i];
 			}
+			$data = $textstr;
 		}
 		return $textstr;
 	}
