@@ -52,7 +52,8 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 			if ($checkMD5 == $storedMD5) {
 				$res = array(
 					'TSconfig' => $storedData['TSconfig'],
-					'cached' => 1
+					'cached' => 1,
+					'hash' => $hash
 				);
 			} else {
 				$shash = md5($checkMD5 . $hash);
@@ -61,14 +62,16 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 					$storedData = $cachedSpec;
 					$res = array(
 						'TSconfig' => $storedData['TSconfig'],
-						'cached' => 1
+						'cached' => 1,
+						'hash' => $shash
 					);
 				} else {
 					$storeData = $this->parseWithConditions($TStext);
 					BackendUtility::storeHash($shash, $storeData, $type . '_TSconfig');
 					$res = array(
 						'TSconfig' => $storeData['TSconfig'],
-						'cached' => 0
+						'cached' => 0,
+						'hash' => $shash
 					);
 				}
 			}
@@ -78,7 +81,8 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 			BackendUtility::storeHash($hash, array($storeData, $md5), $type . '_TSconfig');
 			$res = array(
 				'TSconfig' => $storeData['TSconfig'],
-				'cached' => 0
+				'cached' => 0,
+				'hash' => $hash
 			);
 		}
 		return $res;
