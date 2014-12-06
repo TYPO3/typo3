@@ -264,6 +264,9 @@ return array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden,title,language_isocode,flag')
+		'1' => array('showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
+										title,language_isocode,flag,
+									--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
+										hidden,')
 	)
 );
