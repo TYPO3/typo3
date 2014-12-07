@@ -13,7 +13,11 @@
 /***************************************************
  *  HTMLArea.DOM.BookMark: BookMark object
  ***************************************************/
-HTMLArea.DOM.BookMark = function(UserAgent, Util, Dom) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
+	function (UserAgent, Util, Dom) {
 
 	/**
 	 * Constructor method
@@ -329,4 +333,4 @@ HTMLArea.DOM.BookMark = function(UserAgent, Util, Dom) {
 
 	return BookMark;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);
+});

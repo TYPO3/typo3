@@ -13,7 +13,9 @@
 /***************************************************
  * HTMLArea.util.TYPO3: Utility functions for dealing with tabs and inline elements in TYPO3 forms
  ***************************************************/
-HTMLArea.util.TYPO3 = function (UserAgent) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
+	function (UserAgent) {
 
 	return {
 
@@ -132,4 +134,4 @@ HTMLArea.util.TYPO3 = function (UserAgent) {
 			return size;
 		}
 	}
-}(HTMLArea.UserAgent);
+});

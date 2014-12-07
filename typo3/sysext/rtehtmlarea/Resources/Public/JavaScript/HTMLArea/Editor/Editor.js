@@ -13,7 +13,18 @@
 /**
  * Editor extends Ext.util.Observable
  */
-HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Ajax/Ajax',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Node',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework'],
+	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework) {
 
 	var Editor = Ext.extend(Ext.util.Observable, {
 
@@ -65,7 +76,7 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 					this.registerPlugin(plugin);
 				}
 			}
-				// Create Ajax object
+			// Create Ajax object
 			this.ajax = new Ajax({
 				editor: this
 			});
@@ -126,9 +137,23 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 		},
 
 		/**
-		 * Create the htmlArea framework
+		 * Generate the editor framework
 		 */
 		generate: function () {
+			if (this.allPluginsRegistered()) {
+				this.createFramework();
+			} else {
+				var self = this;
+				window.setTimeout(function () {
+					self.generate();
+				}, 50);
+			}
+		},
+
+		/**
+		 * Create the htmlArea framework
+		 */
+		createFramework: function () {
 			// Create the editor framework
 			this.htmlArea = new Framework({
 				id: this.editorId + '-htmlArea',
@@ -210,6 +235,7 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 			var self = this;
 			Event.one(this.htmlArea, 'HTMLAreaEventFrameworkReady', function (event) { Event.stopEvent(event); self.onFrameworkReady(); return false; });
 		},
+
 		/**
 		 * Initialize the editor
 		 */
@@ -373,7 +399,8 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 					return '';
 			}
 		},
-		/*
+
+		/**
 		 * Replace the html content
 		 *
 		 * @param	string		html: the textual html
@@ -390,32 +417,44 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 					break;
 			}
 		},
-	
+
 		/**
-		 * Instantiate the specified plugin and register it with the editor
+		 * Require and instantiate the specified plugin and register it with the editor
 		 *
-		 * @param	string		plugin: the name of the plugin
-		 *
-		 * @return	boolean		true if the plugin was successfully registered
+		 * @param string plugin: the name of the plugin
+		 * @return void
 		 */
 		registerPlugin: function (pluginName) {
-			var plugin = HTMLArea[pluginName],
-				isRegistered = false;
-			if (typeof plugin === 'function') {
-				var pluginInstance = new plugin(this, pluginName);
+			var self = this;
+			require(['TYPO3/CMS/Rtehtmlarea/Plugins/' + pluginName], function (Plugin) {
+				var pluginInstance = new Plugin(self, pluginName);
 				if (pluginInstance) {
 					var pluginInformation = pluginInstance.getPluginInformation();
 					pluginInformation.instance = pluginInstance;
-					this.plugins[pluginName] = pluginInformation;
-					isRegistered = true;
+					self.plugins[pluginName] = pluginInformation;
+				} else {
+					self.appendToLog('HTMLArea.Editor', 'registerPlugin', 'Could not register plugin ' + pluginName + '.', 'warn');
+				}
+			});
+		},
+
+		/**
+		 * Determine if all configured plugins are registered
+		 *
+		 * @return true if all configured plugins are registered
+		 */
+		allPluginsRegistered: function () {
+			for (var plugin in this.config.plugin) {
+				if (this.config.plugin[plugin]) {
+					if (!this.plugins[plugin]) {
+						return false;
+					}
 				}
 			}
-			if (!isRegistered) {
-				this.appendToLog('HTMLArea.Editor', 'registerPlugin', 'Could not register plugin ' + pluginName + '.', 'warn');
-			}
-			return isRegistered;
+			return true;
 		},
-		/*
+
+		/**
 		 * Generate registered plugins
 		 */
 		generatePlugins: function () {
@@ -424,7 +463,8 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 				plugin.onGenerate();
 			}
 		},
-		/*
+
+		/**
 		 * Get the instance of the specified plugin, if it exists
 		 *
 		 * @param	string		pluginName: the name of the plugin
@@ -433,7 +473,8 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 		getPlugin: function(pluginName) {
 			return (this.plugins[pluginName] ? this.plugins[pluginName].instance : null);
 		},
-		/*
+
+		/**
 		 * Unregister the instance of the specified plugin
 		 *
 		 * @param	string		pluginName: the name of the plugin
@@ -443,7 +484,8 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 			delete this.plugins[pluginName].instance;
 			delete this.plugins[pluginName];
 		},
-		/*
+
+		/**
 		 * Update the edito toolbar
 		 */
 		updateToolbar: function (noStatus) {
@@ -537,4 +579,4 @@ HTMLArea.Editor = function(UserAgent, Util, Ajax, Dom, Event, Selection, BookMar
 
 	return Editor;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.Ajax, HTMLArea.DOM, HTMLArea.Event, HTMLArea.DOM.Selection, HTMLArea.DOM.BookMark, HTMLArea.DOM.Node, HTMLArea.util.TYPO3, HTMLArea.Framework);
+});

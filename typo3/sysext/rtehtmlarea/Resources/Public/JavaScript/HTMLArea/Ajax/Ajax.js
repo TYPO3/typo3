@@ -13,7 +13,10 @@
 /**
  * Ajax object
  */
-HTMLArea.Ajax = function($, Util) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Ajax/Ajax',
+	['jquery',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function($, Util) {
 
 	/**
 	 * Constructor method
@@ -101,4 +104,4 @@ HTMLArea.Ajax = function($, Util) {
 
 	return Ajax;
 
-}(HTMLArea.jQuery, HTMLArea.util);
+});

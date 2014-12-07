@@ -13,7 +13,13 @@
 /**
  * Framework extends Ext.Panel and is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */
-HTMLArea.Framework = function(Typo3, Event) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar'],
+	function (Typo3, Event, Toolbar, Iframe, Statusbar) {
 
 	var Framework = Ext.extend(Ext.Panel, {
 
@@ -21,7 +27,8 @@ HTMLArea.Framework = function(Typo3, Event) {
 		 * Constructor
 		 */
 		initComponent: function () {
-			Framework.superclass.initComponent.call(this);
+			this.superClass = Framework.superclass;
+			this.superClass.initComponent.call(this);
 			// Set some references
 			this.toolbar = this.getTopToolbar();
 			this.statusBar = this.getBottomToolbar();
@@ -145,7 +152,7 @@ HTMLArea.Framework = function(Typo3, Event) {
 				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
 				var parentElements = [].concat(this.nestedParentElements.sorted);
 				// Walk through all nested tabs and inline levels to get correct sizes
-				Typo3.accessParentElements(parentElements, 'HTMLArea.Framework.superclass.doLayout.call(args[0])', [this]);
+				Typo3.accessParentElements(parentElements, 'args[0].superClass.doLayout.call(args[0])', [this]);
 			}
 		},
 
@@ -159,7 +166,7 @@ HTMLArea.Framework = function(Typo3, Event) {
 				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
 				var parentElements = [].concat(this.nestedParentElements.sorted);
 				// Walk through all nested tabs and inline levels to get correct sizes
-				Typo3.accessParentElements(parentElements, 'HTMLArea.Framework.superclass.onLayout.call(args[0])', [this]);
+				Typo3.accessParentElements(parentElements, 'args[0].superClass.onLayout.call(args[0])', [this]);
 			}
 		},
 
@@ -335,5 +342,4 @@ HTMLArea.Framework = function(Typo3, Event) {
 
 	return Framework;
 
-}(HTMLArea.util.TYPO3, HTMLArea.Event);
-Ext.reg('htmlareaframework', HTMLArea.Framework);
+});

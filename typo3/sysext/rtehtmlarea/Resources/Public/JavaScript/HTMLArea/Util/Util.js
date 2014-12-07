@@ -13,7 +13,7 @@
 /***************************************************
  *  UTILITY FUNCTIONS
  ***************************************************/
-HTMLArea.util = function() {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util', [], function() {
 
 	var Util = {
 
@@ -89,4 +89,4 @@ HTMLArea.util = function() {
 
 	return Util;
 
-}();
+});

@@ -13,7 +13,14 @@
 /**
  * HTMLArea.Iframe extends Ext.BoxComponent
  */
-HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/KeyMap'],
+	function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
 
 	var Iframe = Ext.extend(Ext.BoxComponent, {
 
@@ -149,16 +156,23 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
 		 * Proceed to build the iframe document head and ensure style sheets are available after the iframe document becomes available
 		 */
 		initializeIframe: function () {
+			var self = this;
 			var iframe = this.getEl().dom;
 			// All browsers
 			if (!iframe || (!iframe.contentWindow && !iframe.contentDocument)) {
-				this.initializeIframe.defer(50, this);
+				window.setTimeout(function () {
+					self.initializeIframe();
+				}, 50);
 			// All except WebKit
 			} else if (iframe.contentWindow && !UserAgent.isWebKit && (!iframe.contentWindow.document || !iframe.contentWindow.document.documentElement)) {
-				this.initializeIframe.defer(50, this);
+				window.setTimeout(function () {
+					self.initializeIframe();
+				}, 50);
 			// WebKit
 			} else if (UserAgent.isWebKit && (!iframe.contentDocument.documentElement || !iframe.contentDocument.body)) {
-				this.initializeIframe.defer(50, this);
+				window.setTimeout(function () {
+					self.initializeIframe();
+				}, 50);
 			} else {
 				this.document = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
 				this.getEditor().document = this.document;
@@ -716,14 +730,8 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
 			if (this.isNested && UserAgent.isGecko) {
 				for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
 					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
-					Event.off(
-						nestedElement,
-						'DOMAttrModified'
-					);
-					Event.off(
-						nestedElement.parentNode,
-						'DOMAttrModified'
-					);
+					Event.off(nestedElement);
+					Event.off(nestedElement.parentNode);
 				}
 			}
 			Event.off(this);
@@ -738,7 +746,7 @@ HTMLArea.Iframe = function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
 		}
 	});
 
+	Ext.reg('htmlareaiframe', Iframe);
 	return Iframe;
 
-}(HTMLArea.UserAgent, HTMLArea.DOM.Walker, HTMLArea.util.TYPO3, HTMLArea.DOM, HTMLArea.Event, HTMLArea.Event.KeyMap);
-Ext.reg('htmlareaiframe', HTMLArea.Iframe);
+});

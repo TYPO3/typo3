@@ -13,7 +13,12 @@
 /**
  * Initialization script of TYPO3 htmlArea RTE
  */
-HTMLArea = function(UserAgent, Util, Config, Editor) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor'],
+	function (UserAgent, Util, Config, Editor) {
 
 	var HtmlArea = {
 
@@ -35,20 +40,22 @@ HTMLArea = function(UserAgent, Util, Config, Editor) {
 		init: function () {
 			if (!HTMLArea.isReady) {
 				// Apply global configuration settings
-				Util.apply(HTMLArea, RTEarea[0]);
-				if (!HTMLArea.editorSkin) {
-					HTMLArea.editorSkin = HTMLArea.editorUrl + 'Resources/Public/Css/Skin/';
+				Util.apply(HtmlArea, RTEarea[0]);
+				if (!HtmlArea.editorSkin) {
+					HtmlArea.editorSkin = HtmlArea.editorUrl + 'Resources/Public/Css/Skin/';
 				}
-				if (!HTMLArea.editorCSS) {
-					HTMLArea.editorCSS = HTMLArea.editorUrl + 'Resources/Public/Css/Skin/htmlarea.css';
+				if (!HtmlArea.editorCSS) {
+					HtmlArea.editorCSS = HtmlArea.editorUrl + 'Resources/Public/Css/Skin/htmlarea.css';
 				}
-				if (typeof HTMLArea.editedContentCSS !== 'string' || HTMLArea.editedContentCSS === '') {
-					HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
+				if (typeof HtmlArea.editedContentCSS !== 'string' || HtmlArea.editedContentCSS === '') {
+					HtmlArea.editedContentCSS = HtmlArea.editorSkin + 'htmlarea-edited-content.css';
 				}
 				HTMLArea.isReady = true;
-				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HTMLArea.editorUrl, 'info');
-				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor skin CSS set to: ' + HTMLArea.editorCSS, 'info');
-				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HTMLArea.editedContentCSS, 'info');
+				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HtmlArea.editorUrl, 'info');
+				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor skin CSS set to: ' + HtmlArea.editorCSS, 'info');
+				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HtmlArea.editedContentCSS, 'info');
+
+				Util.apply(HTMLArea, HtmlArea);
 			}
 		},
 
@@ -64,8 +71,9 @@ HTMLArea = function(UserAgent, Util, Config, Editor) {
 					document.getElementById('pleasewait' + editorId).style.display = 'block';
 					document.getElementById('editorWrap' + editorId).style.visibility = 'hidden';
 					if (!HTMLArea.isReady) {
+						var self = this;
 						window.setTimeout(function () {
-							return HtmlArea.initEditor(editorId);
+							return self.initEditor(editorId);
 						}, 150);
 					} else {
 						// Create an editor for the textarea
@@ -127,4 +135,4 @@ HTMLArea = function(UserAgent, Util, Config, Editor) {
 
 	return Util.apply(HTMLArea, HtmlArea);
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.Config, HTMLArea.Editor);
+});

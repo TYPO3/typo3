@@ -1,7 +1,23 @@
+/**
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /***************************************************
  *  HTMLArea.CSS.Parser: CSS Parser
  ***************************************************/
-HTMLArea.CSS.Parser = function (UserAgent, Util, Event) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+	function (UserAgent, Util, Event) {
 
 	var Parser = Ext.extend(Ext.util.Observable, {
 
@@ -369,4 +385,4 @@ HTMLArea.CSS.Parser = function (UserAgent, Util, Event) {
 
 	return Parser;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.Event);
+});

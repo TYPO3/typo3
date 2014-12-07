@@ -13,7 +13,10 @@
 /**
  * Configuration of af an Editor of TYPO3 htmlArea RTE
  */
-HTMLArea.Config = function(Util) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (UserAgent, Util) {
 
 	/**
 	 *  Constructor: Sets editor configuration defaults
@@ -81,16 +84,16 @@ HTMLArea.Config = function(Util) {
 			htmlareabutton: {
 				cls: 'button',
 				overCls: 'buttonHover',
-					// Erratic behaviour of click event in WebKit and IE browsers
-				clickEvent: (HTMLArea.UserAgent.isWebKit || HTMLArea.UserAgent.isIE) ? 'mousedown' : 'click'
+				// Erratic behaviour of click event in WebKit and IE browsers
+				clickEvent: (UserAgent.isWebKit || UserAgent.isIE) ? 'mousedown' : 'click'
 			},
 			htmlareacombo: {
 				cls: 'select',
 				typeAhead: true,
 				lastQuery: '',
 				triggerAction: 'all',
-				editable: !HTMLArea.UserAgent.isIE,
-				selectOnFocus: !HTMLArea.UserAgent.isIE,
+				editable: !UserAgent.isIE,
+				selectOnFocus: !UserAgent.isIE,
 				validationEvent: false,
 				validateOnBlur: false,
 				submitValue: false,
@@ -152,7 +155,7 @@ HTMLArea.Config = function(Util) {
 						url: config.storeUrl
 					});
 				}
-				config.hideLabel = typeof config.fieldLabel !== 'string' || !config.fieldLabel.length || HTMLArea.UserAgent.isIE6;
+				config.hideLabel = typeof config.fieldLabel !== 'string' || !config.fieldLabel.length || UserAgent.isIE6;
 				config.helpTitle = config.tooltip;
 				break;
 			default:
@@ -192,4 +195,4 @@ HTMLArea.Config = function(Util) {
 
 	return Config;
 
-}(HTMLArea.util);
+});

@@ -13,7 +13,11 @@
 /**
  * HTMLArea.StatusBar extends Ext.Container
  */
-HTMLArea.StatusBar = function (UserAgent, Dom, Event) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+	function (UserAgent, Dom, Event) {
 
 	var StatusBar = Ext.extend(Ext.Container, {
 
@@ -323,7 +327,7 @@ HTMLArea.StatusBar = function (UserAgent, Dom, Event) {
 		}
 	});
 
+	Ext.reg('htmlareastatusbar', StatusBar);
 	return StatusBar;
 
-}(HTMLArea.UserAgent, HTMLArea.DOM, HTMLArea.Event);
-Ext.reg('htmlareastatusbar', HTMLArea.StatusBar);
+});

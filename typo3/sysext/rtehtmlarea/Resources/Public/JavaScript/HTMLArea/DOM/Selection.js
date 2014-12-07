@@ -13,7 +13,12 @@
 /***************************************************
  *  HTMLArea.DOM.Selection: Selection object
  ***************************************************/
-HTMLArea.DOM.Selection = function(UserAgent, Util, Dom, Event) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+	function (UserAgent, Util, Dom, Event) {
 
 	/**
 	 * Constructor method
@@ -1081,4 +1086,4 @@ HTMLArea.DOM.Selection = function(UserAgent, Util, Dom, Event) {
 
 	return Selection;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM, HTMLArea.Event);
+});

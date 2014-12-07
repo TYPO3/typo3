@@ -476,6 +476,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Add RTE JavaScript
 			$this->addRteJsFiles($this->TCEform->RTEcounter);
 			$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
+			//$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea');
 			$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 			/* =======================================
 			 * DRAW THE EDITOR
@@ -819,39 +820,44 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			'DOM/Selection',
 			'DOM/Walker',
 			'Configuration/Config',
-			'Extjs/ux/Ext.ux.HTMLAreaButton',
-			'Extjs/ux/Ext.ux.Toolbar.HTMLAreaToolbarText',
-			'Extjs/ux/Ext.ux.form.HTMLAreaCombo',
+			'Extjs/ux/Button',
+			'Extjs/ux/ToolbarText',
+			'Extjs/ux/Combo',
+			'Extjs/ColorPalette',
+			'Extjs/ux/ColorMenu',
+			'Extjs/ux/ColorPaletteField',
+			'LoremIpsum',
+			'Plugin/Plugin'
+		);
+		$components2 = array(
 			'Editor/Toolbar',
 			'Editor/Iframe',
 			'Editor/StatusBar',
 			'Editor/Framework',
 			'Editor/Editor',
-			'HTMLArea',
-			'Extjs/Ext.ColorPalette',
-			'Extjs/ux/Ext.ux.menu.HTMLAreaColorMenu',
-			'Extjs/ux/Ext.ux.form.ColorPaletteField',
-			'LoremIpsum',
-			'Plugin/Plugin'
+			'HTMLArea'
 		);
 		foreach ($components as $component) {
 			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/JavaScript/HTMLArea/' . $component . '.js'));
 		}
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
-			$pluginName = strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', '$1-$2$3', $pluginId));
-			$fileName = 'EXT:' . $extensionKey . '/Resources/Public/JavaScript/Plugins/' . $pluginName . '.js';
+			$fileName = 'EXT:' . $extensionKey . '/Resources/Public/JavaScript/Plugins/' . $pluginId . '.js';
 			$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
 			if (file_exists($absolutePath)) {
 				$this->pageRenderer->addJsFile($this->getFullFileName($fileName));
 			} else {
 				// Backward compatibility
+				$pluginName = strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', '$1-$2$3', $pluginId));
 				$fileName = 'EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . $pluginName . '.js';
 				$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
 				if (file_exists($absolutePath)) {
 					$this->pageRenderer->addJsFile($this->getFullFileName($fileName));
 				}
 			}
+		}
+		foreach ($components2 as $component) {
+			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/JavaScript/HTMLArea/' . $component . '.js'));
 		}
 		$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/JavaScript/HTMLArea/Util/Wrap.close.js'));
 	}
@@ -862,7 +868,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return string RTE initialization inline JavaScript code
 	 */
 	protected function getRteInitJsCode() {
-		return '
+		return 'require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea"], function (HTMLArea) {
 			if (typeof RTEarea === "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
@@ -892,7 +898,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					}
 				};
 			}
-			RTEarea.init();';
+			RTEarea.init();
+		});';
 	}
 
 	/**

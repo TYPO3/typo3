@@ -13,7 +13,8 @@
 /**
  * Identify the current user agent
  */
-HTMLArea.UserAgent = function () {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent', [], function () {
+
 	var userAgent = navigator.userAgent.toLowerCase();
 	var documentMode = document.documentMode,
 		isOpera = /opera/i.test(userAgent),
@@ -56,4 +57,4 @@ HTMLArea.UserAgent = function () {
 			return isGecko || isWebKit || isOpera || isIE;
 		}
 	};
-}();
+});

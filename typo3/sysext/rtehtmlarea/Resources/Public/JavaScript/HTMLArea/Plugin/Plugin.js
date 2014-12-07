@@ -16,7 +16,10 @@
  * Every plugin should be a subclass of this class
  *
  */
-HTMLArea.Plugin = function(UserAgent, Util) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (UserAgent, Util) {
 
 	/**
 	 * Constructor method
@@ -653,4 +656,4 @@ HTMLArea.Plugin = function(UserAgent, Util) {
 
 	return Plugin;
 
-}(HTMLArea.UserAgent, HTMLArea.util);
+});

@@ -13,7 +13,11 @@
 /***************************************************
  *  HTMLArea.DOM.Walker: DOM tree walk
  ***************************************************/
-HTMLArea.DOM.Walker = function(UserAgent, Util, Dom) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
+	function (UserAgent, Util, Dom) {
 
 	/**
 	 * Constructor method
@@ -253,4 +257,4 @@ HTMLArea.DOM.Walker = function(UserAgent, Util, Dom) {
 
 	return Walker;
 
-}(HTMLArea.UserAgent, HTMLArea.util, HTMLArea.DOM);
+});

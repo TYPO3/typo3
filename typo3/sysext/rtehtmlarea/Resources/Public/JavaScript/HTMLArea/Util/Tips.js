@@ -5,8 +5,11 @@
  * Intercept Ext.form.Field.afterRender in order to provide tips on form fields and menu items
  * Adapted from: http://www.extjs.com/forum/showthread.php?t=36642
  */
-HTMLArea.util.Tips = function (UserAgent) {
-	return {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Tips',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
+	function (UserAgent) {
+
+	Tips = {
 		tipsOnFormFields: function () {
 			if (this.helpText || this.helpTitle) {
 				if (!this.helpDisplay) {
@@ -46,7 +49,10 @@ HTMLArea.util.Tips = function (UserAgent) {
 				});
 			}
 		}
-	}
-}(HTMLArea.UserAgent);
-Ext.form.Field.prototype.afterRender = Ext.form.Field.prototype.afterRender.createInterceptor(HTMLArea.util.Tips.tipsOnFormFields);
-Ext.menu.BaseItem.prototype.afterRender = Ext.menu.BaseItem.prototype.afterRender.createInterceptor(HTMLArea.util.Tips.tipsOnMenuItems);
+	};
+
+	Ext.form.Field.prototype.afterRender = Ext.form.Field.prototype.afterRender.createInterceptor(Tips.tipsOnFormFields);
+	Ext.menu.BaseItem.prototype.afterRender = Ext.menu.BaseItem.prototype.afterRender.createInterceptor(Tips.tipsOnMenuItems);
+
+	return Tips;
+});

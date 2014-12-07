@@ -13,9 +13,14 @@
 /**
  * HTMLArea.Toolbar extends Ext.Container
  */
-HTMLArea.Toolbar = function (Event) {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ToolbarText'],
+	function (Event, Combo, Button, ToolbarText) {
 
-	Toolbar = Ext.extend(Ext.Container, {
+	var Toolbar = Ext.extend(Ext.Container, {
 
 		/**
 		 * Constructor
@@ -173,7 +178,7 @@ HTMLArea.Toolbar = function (Event) {
 		}
 	});
 
+	Ext.reg('htmlareatoolbar', Toolbar);
 	return Toolbar;
 
-}(HTMLArea.Event);
-Ext.reg('htmlareatoolbar', HTMLArea.Toolbar);
+});
