@@ -82,13 +82,14 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 *
 	 * @var string
 	 */
-	public $moduleName = 'web_ts';
+	protected $moduleName = 'web_ts';
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xlf');
+
 		$this->MCONF = array(
 			'name' => $this->moduleName
 		);

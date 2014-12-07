@@ -75,7 +75,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				} else {
 					unset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)]);
 				}
-				$GLOBALS['BE_USER']->pushModuleData($this->pObj->moduleName, $this->pObj->MOD_SETTINGS);
+				$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
 			}
 			if (count($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
 				$modMenu['ts_browser_toplevel_' . $bType]['-'] = '---';
@@ -272,7 +272,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$update = 1;
 		}
 		if ($update) {
-			$GLOBALS['BE_USER']->pushModuleData($this->pObj->moduleName, $this->pObj->MOD_SETTINGS);
+			$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
 		}
 		$tmpl->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
 		$tmpl->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
