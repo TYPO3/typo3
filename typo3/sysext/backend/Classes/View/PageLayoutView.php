@@ -498,7 +498,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
 						$singleElementHTML = '';
 						if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
-							$defLanguageCount[$key][] = $row['uid'];
+							$defLanguageCount[$key][] = (isset($row['_ORIG_uid']) ? $row['_ORIG_uid'] : $row['uid']);
 						}
 						$editUidList .= $row['uid'] . ',';
 						$disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
@@ -1494,14 +1494,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
 		if ($lP && !empty($defLanguageCount)) {
 			// Select all translations here:
-			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . (int)$lP
-				. ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
-			$result = $this->getDatabase()->exec_SELECT_queryArray($queryParts);
+			$where = 'sys_language_uid=' . intval($lP) . ' AND l18n_parent IN ('
+				. implode(',', $defLanguageCount) . ')'
+				. BackendUtility::deleteClause('tt_content');
+			$rowArr = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tt_content', $where);
+
 			// Flip uids:
 			$defLanguageCount = array_flip($defLanguageCount);
 			// Traverse any selected elements and unset original UID if any:
-			$rowArr = $this->getResult($result);
 			foreach ($rowArr as $row) {
+				BackendUtility::workspaceOL('tt_content', $row);
 				unset($defLanguageCount[$row['l18n_parent']]);
 			}
 			// Flip again:
