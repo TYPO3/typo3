@@ -300,7 +300,7 @@ class PathUtility {
 	 * Strip first part of a path, equal to the length of PATH_site
 	 *
 	 * @param string $path
-	 * @return array
+	 * @return string
 	 * @internal
 	 */
 	static public function stripPathSitePrefix($path) {
