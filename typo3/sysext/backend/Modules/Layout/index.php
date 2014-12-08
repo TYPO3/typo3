@@ -90,8 +90,8 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 
 }
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\PageLayoutController::class);
-$SOBE->init();
-$SOBE->clearCache();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\PageLayoutController::class);
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->clearCache();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

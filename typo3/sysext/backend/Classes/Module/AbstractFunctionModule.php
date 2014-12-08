@@ -78,8 +78,8 @@ use TYPO3\CMS\Lang\LanguageService;
  * times inclusion sections in their index.php scripts. For example (from web_func):
  *
  * Make instance:
- * $SOBE = GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
- * $SOBE->init();
+ * $GLOBALS['SOBE'] = GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
+ * $GLOBALS['SOBE']->init();
  *
  * Anyways, the final interesting thing is to see what the framework
  * "func_wizard" actually does:

@@ -25,8 +25,8 @@
  */
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList::class);
-$SOBE->init();
-$SOBE->clearCache();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList::class);
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->clearCache();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

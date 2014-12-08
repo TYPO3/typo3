@@ -34,5 +34,5 @@ if (!defined('PATH_typo3conf')) {
 }
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ShowImageController::class);
-$SOBE->execute();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\ShowImageController::class);
+$GLOBALS['SOBE']->execute();

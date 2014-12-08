@@ -293,6 +293,7 @@ class Bootstrap {
 		} elseif (TYPO3_MODE == 'BE') {
 			$this->availableRequestHandlers = array(
 				\TYPO3\CMS\Backend\RequestHandler::class,
+				\TYPO3\CMS\Backend\BackendModuleRequestHandler::class,
 				\TYPO3\CMS\Backend\AjaxRequestHandler::class,
 				\TYPO3\CMS\Backend\CliRequestHandler::class
 			);

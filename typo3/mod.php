@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,45 +15,10 @@
  */
 
 /**
- * Module Dispatch script
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Module entry script
+ * Main entry point for all modules (wizards, backend modules, module functions etc)
+ * which usually uses the BackendModuleRequestHandler
  */
-unset($MCONF);
-require __DIR__ . '/init.php';
-// Find module path:
-$moduleName = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M');
-$isDispatched = FALSE;
-$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-if (!$formProtection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('moduleToken'), 'moduleCall', $moduleName)) {
-	throw new UnexpectedValueException('Invalid form/module token detected. Access Denied!', 1392409507);
-}
-if ($temp_path = $GLOBALS['TBE_MODULES']['_PATHS'][$moduleName]) {
-	if (file_exists($temp_path . 'conf.php')) {
-		require $temp_path . 'conf.php';
-		$moduleConfiguration = $GLOBALS['MCONF'];
-	} else {
-		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
-	}
-	if (!empty($moduleConfiguration['access'])) {
-		$GLOBALS['BE_USER']->modAccess($moduleConfiguration, TRUE);
-	}
-
-	$BACK_PATH = '';
-	require $temp_path . 'index.php';
-	$isDispatched = TRUE;
-} else {
-	if (is_array($GLOBALS['TBE_MODULES']['_dispatcher'])) {
-		foreach ($GLOBALS['TBE_MODULES']['_dispatcher'] as $dispatcherClassName) {
-			$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)->get($dispatcherClassName);
-			if ($dispatcher->callModule($moduleName) === TRUE) {
-				$isDispatched = TRUE;
-				break;
-			}
-		}
-	}
-}
-if ($isDispatched === FALSE) {
-	throw new UnexpectedValueException('No module "' . htmlspecialchars($moduleName) . '" could be found.', 1294585070);
-}
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
+define('TYPO3_MODE', 'BE');
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/')->shutdown();

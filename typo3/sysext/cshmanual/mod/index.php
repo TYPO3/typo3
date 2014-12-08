@@ -11,7 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Cshmanual\Controller\HelpModuleController::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Cshmanual\Controller\HelpModuleController::class);
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

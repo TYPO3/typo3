@@ -60,17 +60,17 @@ use TYPO3\CMS\Lang\LanguageService;
  * }
  *
  * MAKE INSTANCE OF THE SCRIPT CLASS AND CALL init()
- * $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Vendor\Prototype\Controller\PrototypeController::class);
- * $SOBE->init();
+ * $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Vendor\Prototype\Controller\PrototypeController::class);
+ * $GLOBALS['SOBE']->init();
  *
  *
  * THEN WE WILL CHECK IF THERE IS A 'SUBMODULE' REGISTERED TO BE INITIALIZED AS WELL:
- * $SOBE->checkExtObj();
+ * $GLOBALS['SOBE']->checkExtObj();
  *
  * THEN WE CALL THE main() METHOD AND THIS SHOULD SPARK THE CREATION OF THE MODULE OUTPUT.
- * $SOBE->main();
+ * $GLOBALS['SOBE']->main();
  * FINALLY THE printContent() FUNCTION WILL OUTPUT THE ACCUMULATED CONTENT
- * $SOBE->printContent();
+ * $GLOBALS['SOBE']->printContent();
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */

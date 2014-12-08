@@ -12,9 +12,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Setup\Controller\SetupModuleController::class);
-$SOBE->simulateUser();
-$SOBE->storeIncomingData();
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Setup\Controller\SetupModuleController::class);
+$GLOBALS['SOBE']->simulateUser();
+$GLOBALS['SOBE']->storeIncomingData();
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

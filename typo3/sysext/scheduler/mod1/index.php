@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->render();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class);
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->render();

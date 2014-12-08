@@ -75,7 +75,7 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	'The new element class is moved to an own module. Please use BackendUtility::getModuleUrl(\'new_content_element\') to link to db_new_content_el.php. This script will be removed with version 8.'
 );
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class);
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

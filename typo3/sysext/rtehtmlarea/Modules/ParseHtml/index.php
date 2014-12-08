@@ -19,7 +19,7 @@
  */
 
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\ParseHtmlController::class);
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\ParseHtmlController::class);
+$GLOBALS['SOBE']->init();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

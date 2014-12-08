@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;

@@ -20,13 +20,13 @@
  */
 
 /** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
-$SOBE->init();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Func\Controller\PageFunctionsController::class);
+$GLOBALS['SOBE']->init();
 
 // Checking for first level external objects
-$SOBE->checkExtObj();
+$GLOBALS['SOBE']->checkExtObj();
 
 // Checking second level external objects
-$SOBE->checkSubExtObj();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE']->checkSubExtObj();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

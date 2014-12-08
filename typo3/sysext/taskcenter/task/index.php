@@ -12,6 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController::class);
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController::class);
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

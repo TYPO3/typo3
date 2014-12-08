@@ -12,11 +12,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class);
-$SOBE->init();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class);
+$GLOBALS['SOBE']->init();
 
 // Checking for first level external objects
-$SOBE->checkExtObj();
-$SOBE->clearCache();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE']->checkExtObj();
+$GLOBALS['SOBE']->clearCache();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();

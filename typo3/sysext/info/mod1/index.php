@@ -18,13 +18,13 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Info\Controller\InfoModuleController::class);
-$SOBE->init();
+$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Info\Controller\InfoModuleController::class);
+$GLOBALS['SOBE']->init();
 
 // Checking for first level external objects
-$SOBE->checkExtObj();
+$GLOBALS['SOBE']->checkExtObj();
 
 // Checking second level external objects
-$SOBE->checkSubExtObj();
-$SOBE->main();
-$SOBE->printContent();
+$GLOBALS['SOBE']->checkSubExtObj();
+$GLOBALS['SOBE']->main();
+$GLOBALS['SOBE']->printContent();
