@@ -1249,8 +1249,8 @@ var inline = {
 		escapedSelectorObjectId = escapedObjectId.replace(/\\:/g, '\\\\\\:');
 		escapedSelectorObjectId = escapedSelectorObjectId.replace(/\\\./g, '\\\\\\.');
 		return escapedSelectorObjectId;
-	},
-}
+	}
+};
 
 Object.extend(Array.prototype, {
 	diff: function(current) {
