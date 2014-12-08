@@ -66,7 +66,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			// Monitor iframe becoming shown or hidden as it may change the height of the status bar
 			this.mon(this.iframe, 'show', this.resizable ? this.onIframeShow : this.onWindowResize, this);
 			// Monitor window resizing
-			Ext.EventManager.onWindowResize(this.onWindowResize, this);
+			Event.on(window, 'resize', function (event) { self.onWindowResize(); });
 			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
 			var form = this.textArea.form;
 			if (form) {
@@ -198,36 +198,44 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		},
 
 		/**
+		 * Handle the window resize event
+		 * Buffer the event for IE
+		 */
+		onWindowResize: function () {
+			var self = this;
+			if (this.windowResizeTimeoutId) {
+				window.clearTimeout(this.windowResizeTimeoutId);
+     			}
+     			this.windowResizeTimeoutId = window.setTimeout(function () { self.doWindowResize(); }, 10);
+		},
+
+		/**
 		 * Size the iframe according to initial textarea size as set by Page and User TSConfig
 		 */
-		onWindowResize: function (width, height) {
+		doWindowResize: function () {
 			if (!this.isNested || Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				this.resizeFramework(width, height);
+				this.resizeFramework();
 			} else {
 				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
 				var parentElements = [].concat(this.nestedParentElements.sorted);
 				// Walk through all nested tabs and inline levels to get correct sizes
-				Typo3.accessParentElements(parentElements, 'args[0].resizeFramework(args[1], args[2])', [this, width, height]);
+				Typo3.accessParentElements(parentElements, 'args[0].resizeFramework()', [this]);
 			}
 		},
 
 		/**
 		 * Resize the framework to its initial size
 		 */
-		resizeFramework: function (width, height) {
+		resizeFramework: function () {
 			var frameworkHeight = parseInt(this.textAreaInitialSize.height);
 			if (this.textAreaInitialSize.width.indexOf('%') === -1) {
 				// Width is specified in pixels
+				// Initial framework sizing
 				var frameworkWidth = parseInt(this.textAreaInitialSize.width) - this.getFrameWidth();
 			} else {
 				// Width is specified in %
-				if (typeof width === 'number' && isFinite(width)) {
-					// Framework sizing on actual window resize
-					var frameworkWidth = parseInt(((width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
-				} else {
-					// Initial framework sizing
-					var frameworkWidth = parseInt(((Typo3.getWindowSize().width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
-				}
+				// Framework sizing on actual window resize
+				var frameworkWidth = parseInt(((Typo3.getWindowSize().width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
 			}
 			if (this.resizable) {
 				this.resizer.resizeTo(frameworkWidth, frameworkHeight);
@@ -321,12 +329,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Cleanup on framework destruction
 		 */
 		onBeforeDestroy: function () {
-			Ext.EventManager.removeResizeListener(this.onWindowResize, this);
+			Event.off(window);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			var form = this.textArea.form;
 			if (form) {
+				Event.off(form);
 				form.htmlAreaPreviousOnReset = null;
-				Ext.get(form).dom = null;
 			}
 			Ext.getBody().dom = null;
 			// ExtJS is not releasing any resources when the iframe is unloaded
