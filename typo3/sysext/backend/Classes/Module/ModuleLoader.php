@@ -310,11 +310,6 @@ class ModuleLoader {
 					$finalModuleConfiguration['script'] = 'dummy.php';
 				}
 
-				// Default tab setting
-				if ($setupInformation['configuration']['defaultMod']) {
-					$finalModuleConfiguration['defaultMod'] = $setupInformation['configuration']['defaultMod'];
-				}
-
 				// Navigation Frame Script (GET params could be added)
 				if ($setupInformation['configuration']['navFrameScript']) {
 					$navFrameScript = explode('?', $setupInformation['configuration']['navFrameScript']);
