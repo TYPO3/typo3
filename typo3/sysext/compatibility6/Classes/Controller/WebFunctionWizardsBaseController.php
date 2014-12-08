@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\FuncWizards\Controller;
+namespace TYPO3\CMS\Compatibility6\Controller;
 
 /**
  * This file is part of the TYPO3 CMS project.
