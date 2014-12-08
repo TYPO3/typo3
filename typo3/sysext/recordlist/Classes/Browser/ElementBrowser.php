@@ -1574,10 +1574,12 @@ class ElementBrowser {
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree(FALSE);
 		list(, , $specUid) = explode('_', $this->PM);
-		if ($this->mode == 'filedrag') {
-			$folders = $this->TBE_dragNDrop($this->selectedFolder, $parameters[3]);
-		} else {
-			$folders = $this->TBE_expandSubFolders($this->selectedFolder);
+		if ($this->selectedFolder) {
+			if ($this->mode == 'filedrag') {
+				$folders = $this->TBE_dragNDrop($this->selectedFolder, $parameters[3]);
+			} else {
+				$folders = $this->TBE_expandSubFolders($this->selectedFolder);
+			}
 		}
 		// Putting the parts together, side by side:
 		$content .= '
@@ -2067,13 +2069,14 @@ class ElementBrowser {
 		$folderIcon = $aTag;
 		$folderIcon .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif',
 				'width="18" height="16"') . ' alt="" />';
-		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($baseFolder), $titleLength));
+		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($baseFolder->getName(), $titleLength));
 		$folderIcon .= '</a>';
 		$content .= $folderIcon . '<br />';
 
 		$lines = array();
 		// Traverse the folder list:
-		foreach ($folders as $folderPath) {
+		foreach ($folders as $subFolder) {
+			$folderPath = $subFolder->getPublicUrl();
 			$pathInfo = pathinfo($folderPath);
 			// Create folder icon:
 			$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'
@@ -2100,7 +2103,7 @@ class ElementBrowser {
 			$aTag_e = '</a>';
 			// Combine icon and folderpath:
 			$foldernameAndIcon = $aTag_alt . $icon
-				. htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folderPath), $titleLength)) . $aTag_e;
+				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($subFolder->getName(), $titleLength)) . $aTag_e;
 			if ($this->P['itemName'] != '') {
 				$lines[] = '
 					<tr class="bgColor4">
