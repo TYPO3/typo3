@@ -80,8 +80,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 			}, this.pageTSConfiguration));
 			// Monitor contextmenu clicks on the iframe
 			Event.on(this.editor.document.documentElement, 'contextmenu', function (event) { return self.show(event, event.target); });
-			// Monitor editor being destroyed
-			this.menu.mon(this.editor, 'beforedestroy', this.onBeforeDestroy, this, {single: true});
+			// Monitor editor being unloaded
+			var iframe = this.editor.iframe.getEl().dom;
+			Event.one(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', function (event) { self.onBeforeDestroy(event); return  true; });
 		},
 		/**
 		 * Create the menu items config
@@ -276,7 +277,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 		/**
 		 * Handler invoked when the editor is about to be destroyed
 		 */
-		onBeforeDestroy: function () {
+		onBeforeDestroy: function (event) {
 			this.menu.items.each(function (menuItem) {
 				Ext.QuickTips.unregister(menuItem);
 			});
