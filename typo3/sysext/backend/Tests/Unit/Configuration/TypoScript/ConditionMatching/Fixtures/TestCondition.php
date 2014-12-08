@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures;
+namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -32,5 +32,4 @@ class TestCondition extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMa
 			throw new TestConditionException('All Ok', 1411581139);
 		}
 	}
-
 }

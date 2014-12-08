@@ -79,24 +79,9 @@ class ConditionMatcher extends AbstractConditionMatcher {
 					}
 					break;
 				default:
-					list($conditionClassName, $conditionParameters) = GeneralUtility::trimExplode(' ', $string, FALSE, 2);
-
-					// Check if the condition class name is a valid class
-					// This is necessary to not stop here for the conditions ELSE and GLOBAL
-					if (class_exists($conditionClassName)) {
-						// Use like this: [MyCompany\MyPackage\ConditionMatcher\MyOwnConditionMatcher = myvalue]
-						/** @var \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition $conditionObject */
-						$conditionObject = GeneralUtility::makeInstance($conditionClassName);
-						if (($conditionObject instanceof \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition) === FALSE) {
-							throw new \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException(
-								'"' . $key . '" is not a valid TypoScript Condition object.',
-								1410286153
-							);
-						}
-
-						$conditionParameters = $this->parseUserFuncArguments($conditionParameters);
-						$conditionObject->setConditionMatcherInstance($this);
-						return $conditionObject->matchCondition($conditionParameters);
+					$conditionResult = parent::evaluateCustomDefinedCondition($string);
+					if ($conditionResult !== NULL) {
+						return $conditionResult;
 					}
 			}
 		}

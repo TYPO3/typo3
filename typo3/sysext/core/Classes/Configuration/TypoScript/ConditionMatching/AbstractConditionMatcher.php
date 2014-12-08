@@ -427,6 +427,40 @@ abstract class AbstractConditionMatcher {
 	}
 
 	/**
+	 * Evaluates a TypoScript condition given as input with a custom class name,
+	 * e.g. "[MyCompany\MyPackage\ConditionMatcher\MyOwnConditionMatcher = myvalue]"
+	 *
+	 * @param string $condition The condition to match
+	 * @return NULL|boolean Result of the evaluation; NULL if condition could not be evaluated
+	 * @throws \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException
+	 */
+	protected function evaluateCustomDefinedCondition($condition) {
+		$conditionResult = NULL;
+
+		list($conditionClassName, $conditionParameters) = GeneralUtility::trimExplode(' ', $condition, FALSE, 2);
+
+		// Check if the condition class name is a valid class
+		// This is necessary to not stop here for the conditions ELSE and GLOBAL
+		if (class_exists($conditionClassName)) {
+			// Use like this: [MyCompany\MyPackage\ConditionMatcher\MyOwnConditionMatcher = myvalue]
+			/** @var \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition $conditionObject */
+			$conditionObject = GeneralUtility::makeInstance($conditionClassName);
+			if (($conditionObject instanceof \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractCondition) === FALSE) {
+				throw new \TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException(
+					'"' . $conditionClassName . '" is not a valid TypoScript Condition object.',
+					1410286153
+				);
+			}
+
+			$conditionParameters = $this->parseUserFuncArguments($conditionParameters);
+			$conditionObject->setConditionMatcherInstance($this);
+			$conditionResult = $conditionObject->matchCondition($conditionParameters);
+		}
+
+		return $conditionResult;
+	}
+
+	/**
 	 * Parses arguments to the userFunc.
 	 *
 	 * @param string $arguments

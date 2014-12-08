@@ -88,6 +88,11 @@ class ConditionMatcher extends AbstractConditionMatcher {
 						}
 					}
 					break;
+				default:
+					$conditionResult = parent::evaluateCustomDefinedCondition($string);
+					if ($conditionResult !== NULL) {
+						return $conditionResult;
+					}
 			}
 		}
 		return FALSE;

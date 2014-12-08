@@ -998,4 +998,11 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 	}
 
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching\Fixtures\TestConditionException
+	 */
+	public function matchCallsTestConditionAndHandsOverParameters() {
+		$this->matchCondition->match('[TYPO3\\CMS\\Backend\\Tests\\Unit\\Configuration\\TypoScript\\ConditionMatching\\Fixtures\\TestCondition = 7, != 6]');
+	}
 }
