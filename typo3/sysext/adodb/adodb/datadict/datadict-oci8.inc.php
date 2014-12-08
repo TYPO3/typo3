@@ -116,6 +116,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 
 	function AddColumnSQL($tabname, $flds)
 	{
+		$tabname = $this->TableName ($tabname);
 		$f = array();
 		list($lines,$pkey) = $this->_GenFields($flds);
 		$s = "ALTER TABLE $tabname ADD (";
@@ -130,6 +131,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 
 	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
+		$tabname = $this->TableName ($tabname);
 		$f = array();
 		list($lines,$pkey) = $this->_GenFields($flds);
 		$s = "ALTER TABLE $tabname MODIFY(";
@@ -143,6 +145,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
 
 	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
 	{
+		$tabname = $this->TableName ($tabname);
 		if (!is_array($flds)) $flds = explode(',',$flds);
 		foreach ($flds as $k => $v) $flds[$k] = $this->NameQuote($v);
 
