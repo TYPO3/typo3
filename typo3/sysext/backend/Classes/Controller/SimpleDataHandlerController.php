@@ -246,4 +246,42 @@ class SimpleDataHandlerController {
 		}
 	}
 
+	/**
+	 * Processes all AJAX calls and returns a JSON formatted string
+	 *
+	 * @param array $parameters
+	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
+	 */
+	public function processAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
+		// do the regular / main logic
+		$this->initClipboard();
+		$this->main();
+
+		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+
+		$content = array(
+			'redirect' => $this->redirect,
+			'messages' => array(),
+			'hasErrors' => FALSE
+		);
+
+		// Prints errors (= write them to the message queue)
+		if ($this->prErr) {
+			$content['hasErrors'] = TRUE;
+			$this->tce->printLogErrorMessages($this->redirect);
+		}
+
+		$messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+		if (!empty($messages)) {
+			foreach ($messages as $message) {
+				$content['messages'][] = array(
+					'title'    => $message->getTitle(),
+					'message'  => $message->getMessage(),
+					'severity' => $message->getSeverity()
+				);
+			}
+		}
+		$ajaxRequestHandler->setContentFormat('json');
+		$ajaxRequestHandler->setContent($content);
+	}
 }

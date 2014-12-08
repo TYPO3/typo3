@@ -631,7 +631,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					' . $tableHeader . '
 					</div>
 					<div class="table-fit">
-						<table class="table table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
+						<table data-table="' . htmlspecialchars($table) . '" class="table table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
 							' . $out . '
 						</table>
 					</div>
@@ -792,6 +792,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$this->addElement_tdCssClass['_LOCALIZATION_'] = 'col-localizationa';
 			$this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
 			// Create element in table cells:
+			$theData['uid'] = $row['uid'];
 			$iOut .= $this->addelement(1, $theIcon, $theData, $row_bgColor);
 			// Finally, return table row element:
 			return $iOut;
@@ -1274,16 +1275,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						|| $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $hiddenField))
 				) {
 					if ($row[$hiddenField]) {
-						$params = '&data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
-						$cells['hide'] = '<a class="btn" href="#" onclick="'
-							. htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')
-							. '" title="' . $GLOBALS['LANG']->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
+						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
+						$cells['hide'] = '<a class="btn t3js-record-hide" data-state="hidden" href="#"'
+							. ' data-params="' . htmlspecialchars($params) . '"'
+							. ' title="' . $GLOBALS['LANG']->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
 							. IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
 					} else {
-						$params = '&data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
-						$cells['hide'] = '<a class="btn" href="#" onclick="'
-							. htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');')
-							. '" title="' . $GLOBALS['LANG']->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
+						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
+						$cells['hide'] = '<a class="btn t3js-record-hide" data-state="visible" href="#"'
+							. ' data-params="' . htmlspecialchars($params) . '"'
+							. ' title="' . $GLOBALS['LANG']->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
 							. IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
 					}
 				}

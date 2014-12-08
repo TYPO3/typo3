@@ -209,7 +209,7 @@ abstract class AbstractRecordList {
 		// Start up:
 		$out = '
 		<!-- Element, begin: -->
-		<tr ' . $rowParams . '>';
+		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '">';
 		// Show icon and lines
 		if ($this->showIcon) {
 			$out .= '

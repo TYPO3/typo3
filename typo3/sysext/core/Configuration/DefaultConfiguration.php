@@ -701,6 +701,10 @@ return array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Controller\ClickMenuController::class . '->printContentForAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
+			'DataHandler::process' => array(
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\SimpleDataHandlerController::class . '->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			)
 		),
 		'toolbarItems' => array(), // Array: Registered toolbar items classes
 		'HTTP' => array(
