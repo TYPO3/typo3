@@ -697,7 +697,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
 				}
 				// Setup filelist indexed elements:
-				$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
+				$this->doc->JScode .= $this->doc->wrapScriptTags('
+				require(["TYPO3/CMS/Backend/BrowseLinks"], function(BrowseLinks) {
+					BrowseLinks.addElements(' . json_encode($this->elements) . ');
+				});');
 				// Wrap tree
 				$this->content .= '
 

@@ -345,10 +345,10 @@ class ElementBrowser {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		// Load the Prototype library and browse_links.js
+		// Load the Prototype library and the tree
 		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib('js/browse_links.js');
 		$this->doc->loadJavascriptLib('js/tree.js');
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
 	}
 
 	/**
@@ -1540,7 +1540,10 @@ class ElementBrowser {
 		// Add some space
 		$content .= '<br /><br />';
 		// Setup indexed elements:
-		$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
+		$this->doc->JScode .= $this->doc->wrapScriptTags('
+		require(["TYPO3/CMS/Backend/BrowseLinks"], function(BrowseLinks) {
+			BrowseLinks.addElements(' . json_encode($this->elements) . ');
+		});');
 		// Ending page, returning content:
 		$content .= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
