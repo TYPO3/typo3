@@ -73,17 +73,23 @@ class ClassLoader {
 	protected $runtimeClassLoadingInformationCache = array();
 
 	/**
-	 * @var array A list of namespaces this class loader is definitely responsible for
+	 * A list of namespaces this class loader is definitely responsible for
+	 *
+	 * @var array
 	 */
 	protected $packageNamespaces = array();
 
 	/**
-	 * @var array A list of packages and their replaces pointing to class paths
+	 * A list of packages and their replaces pointing to class paths
+	 *
+	 * @var array
 	 */
 	protected $packageClassesPaths = array();
 
 	/**
-	 * @var bool Is TRUE while loading the Locker class to prevent a deadlock in the implicit call to loadClass
+	 * Is TRUE while loading the Locker class to prevent a deadlock in the implicit call to loadClass
+	 *
+	 * @var bool
 	 */
 	protected $isLoadingLocker = FALSE;
 
@@ -91,6 +97,13 @@ class ClassLoader {
 	 * @var \TYPO3\CMS\Core\Locking\Locker
 	 */
 	protected $lockObject = NULL;
+
+	/**
+	 * Is set to TRUE if the shutdown function for die in lock is registered, so it won't be registered twice.
+	 *
+	 * @var bool
+	 */
+	protected $shutdownRegistered = FALSE;
 
 	/**
 	 * Constructor
@@ -480,6 +493,7 @@ class ClassLoader {
 	/**
 	 * Builds the package namespaces and classes paths for the given packages
 	 *
+	 * @throws \Exception
 	 * @return void
 	 */
 	protected function buildPackageNamespacesAndClassesPaths() {
@@ -633,16 +647,6 @@ class ClassLoader {
 	}
 
 	/**
-	 * Cleares the complete cache for class loader.
-	 *
-	 * @return void
-	 */
-	protected function clearClassesCache() {
-		$this->coreCache->flush();
-		$this->classesCache->flush();
-	}
-
-	/**
 	 * Sorts longer package namespaces first, to find specific matches before generic ones
 	 *
 	 * @return void
@@ -724,6 +728,12 @@ class ClassLoader {
 				if (!$lockObject->acquireExclusiveLock()) {
 					throw new \RuntimeException('Could not acquire lock for ClassLoader cache creation.', 1394480725);
 				}
+
+				if (!$this->shutdownRegistered) {
+					$this->shutdownRegistered = TRUE;
+					register_shutdown_function(array($this, 'checkForCrashAndCleanup'));
+				}
+
 				return TRUE;
 			}
 		}
@@ -731,10 +741,38 @@ class ClassLoader {
 	}
 
 	/**
+	 * Clean the cache and release lock
+	 *
+	 * If building the cache for classes failed, we don't know in which state we are. So we need to clear the cache
+	 * completely and remove the lock which should exist.
+	 * If the PHP process receives either the SIGTERM or SIGKILL signal, this function will NOT be called.
+	 * It might still be called on a SIGSEGV signal though, but we can't trust the members of this class then,
+	 * hence, the contents of $this->* might be nonsense and its usage might lead to undesired behavior.
+	 *
+	 * This function needs to be public, so it can be called as shutdown-function, but this function may be changed,
+	 * renamed or deleted without deprecation, also in bugfix-releases.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	public function checkForCrashAndCleanup() {
+		// As we are used as shutdownFunction we need to test if we get called while the lock is set.
+		// If this is the case, the cache creation has crashed.
+		$error = error_get_last();
+
+		// $this->lockObject can be null in installer context without typo3temp, but then this method shouldn't
+		// be registered as shutdown-function due to caching being disabled in this case.
+		// See @getLocker for more information.
+		if ($error !== NULL && $this->lockObject !== NULL && $this->lockObject->getLockStatus()) {
+			$this->clearClassesCache();
+			$this->releaseLock(TRUE);
+		}
+	}
+
+	/**
 	 * Releases a lock
 	 *
 	 * @param bool $needRelease The result of the call to acquireLock()
-	 *
 	 * @return void
 	 */
 	protected function releaseLock($needRelease) {
@@ -742,6 +780,16 @@ class ClassLoader {
 			$lockObject = $this->getLocker();
 			$lockObject->release();
 		}
+	}
+
+	/**
+	 * Cleares the complete cache for class loader.
+	 *
+	 * @return void
+	 */
+	protected function clearClassesCache() {
+		$this->coreCache->flush();
+		$this->classesCache->flush();
 	}
 
 	/**
