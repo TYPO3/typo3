@@ -260,7 +260,7 @@ class SqlSchemaMigrationService {
 								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`', '', $fieldN);
 									if ($fieldN == 'COLLATE') {
-										// TODO: collation support is currently disabled (needs more testing)
+										// @todo collation support is currently disabled (needs more testing)
 										continue;
 									}
 									if (!isset($FDcomp[$table][$theKey][$fieldN])) {
@@ -449,7 +449,8 @@ class SqlSchemaMigrationService {
 							if ($info['extra']) {
 								foreach ($info['extra'] as $k => $v) {
 									if ($k == 'COLLATE' || $k == 'CLEAR') {
-										// Skip these special statements. TODO: collation support is currently disabled (needs more testing)
+										// Skip these special statements.
+										// @todo collation support is currently disabled (needs more testing)
 										continue;
 									}
 									// Add extra attributes like ENGINE, CHARSET, etc.

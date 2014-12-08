@@ -35,7 +35,7 @@ class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$autopubObj->autoPublishWorkspaces();
 		// There's no feedback from the publishing process,
 		// so there can't be any failure.
-		// TODO: This could certainly be improved.
+		// @todo This could certainly be improved.
 		return TRUE;
 	}
 

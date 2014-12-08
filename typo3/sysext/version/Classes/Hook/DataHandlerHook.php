@@ -424,8 +424,8 @@ class DataHandlerHook {
 				$stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 				$newStage = $stageService->getStageTitle((int)$stageId);
 			} else {
-				// TODO: CONSTANTS SHOULD BE USED - tx_service_workspace_workspaces
-				// TODO: use localized labels
+				// @todo CONSTANTS SHOULD BE USED - tx_service_workspace_workspaces
+				// @todo use localized labels
 				// Compile label:
 				switch ((int)$stageId) {
 					case 1:

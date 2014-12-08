@@ -462,7 +462,7 @@ class TemplateService {
 			if (is_array($cc)) {
 				// If currentPageData was actually there, we match the result (if this wasn't done already in $TSFE->getFromCache()...)
 				if (!$cc['match']) {
-					// TODO: check if this can ever be the case - otherwise remove
+					// @todo check if this can ever be the case - otherwise remove
 					$cc = $this->matching($cc);
 					ksort($cc);
 				}
@@ -821,7 +821,7 @@ class TemplateService {
 	public function addExtensionStatics($idList, $templateID, $pid, $row) {
 		$this->extensionStaticsProcessed = TRUE;
 
-		// @TODO: Change to use new API
+		// @todo Change to use new API
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $files) {
 			if ((is_array($files) || $files instanceof \ArrayAccess) && ($files['ext_typoscript_constants.txt'] || $files['ext_typoscript_setup.txt'])) {
 				$mExtKey = str_replace('_', '', $extKey);

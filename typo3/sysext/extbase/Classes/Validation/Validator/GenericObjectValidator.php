@@ -56,7 +56,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	 * @return mixed
 	 */
 	protected function getPropertyValue($object, $propertyName) {
-		// TODO: add support for lazy loading proxies, if needed
+		// @todo add support for lazy loading proxies, if needed
 		if (ObjectAccess::isPropertyGettable($object, $propertyName)) {
 			return ObjectAccess::getProperty($object, $propertyName);
 		} else {

@@ -389,7 +389,7 @@ class CommandUtility {
 		}
 
 			// Add path from environment
-			// TODO: how does this work for WIN
+			// @todo how does this work for WIN
 		if ($GLOBALS['_SERVER']['PATH']) {
 			$sep = (TYPO3_OS == 'WIN' ? ';' : ':');
 			$envPath = GeneralUtility::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], TRUE);

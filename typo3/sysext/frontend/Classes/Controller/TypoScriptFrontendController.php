@@ -1125,9 +1125,9 @@ class TypoScriptFrontendController {
 		if ($_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(TRUE);
 			$GLOBALS['TT']->push('Back End user initialized', '');
-			// TODO: validate the comment below: is this necessary? if so,
-			// formfield_status should be set to "" in \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
-			// which is a subclass of \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+			// @todo validate the comment below: is this necessary? if so,
+			//   formfield_status should be set to "" in \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+			//   which is a subclass of \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 			// ----
 			// the value this->formfield_status is set to empty in order to
 			// disable login-attempts to the backend account through this script

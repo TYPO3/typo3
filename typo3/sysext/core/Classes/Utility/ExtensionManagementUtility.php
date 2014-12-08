@@ -39,7 +39,7 @@ class ExtensionManagementUtility {
 	 * the access to the cache file to read the single ext_tables.php if it was
 	 * already read from cache
 	 *
-	 * @TODO : See if we can get rid of the 'load multiple times' scenario in fe
+	 * @todo See if we can get rid of the 'load multiple times' scenario in fe
 	 * @var bool
 	 */
 	static protected $extTablesWasReadFromCacheOnce = FALSE;
@@ -794,7 +794,7 @@ class ExtensionManagementUtility {
 			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
 			$iconPathAndFilename = self::extPath($extensionKey) . $relativePath;
 		}
-		// TODO: skin support
+		// @todo skin support
 		$moduleLabels = array(
 			'tabs_images' => array(
 				'tab' => $iconPathAndFilename

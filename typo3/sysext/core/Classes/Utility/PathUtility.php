@@ -244,7 +244,7 @@ class PathUtility {
 		// Replace backslashes with slashes to work with Windows paths if given
 		$path = trim(str_replace('\\', '/', $path));
 
-		// TODO: do we really need this? Probably only in testing context for vfs?
+		// @todo do we really need this? Probably only in testing context for vfs?
 		$protocol = '';
 		if (strpos($path, '://') !== FALSE) {
 			list($protocol, $path) = explode('://', $path);

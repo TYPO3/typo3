@@ -1211,7 +1211,7 @@ class DatabaseConnection {
 			$this->setSqlMode();
 			$this->checkConnectionCharset();
 		} else {
-			// @TODO: This should raise an exception. Would be useful especially to work during installation.
+			// @todo This should raise an exception. Would be useful especially to work during installation.
 			$error_msg = $this->link->connect_error;
 			$this->link = NULL;
 			GeneralUtility::sysLog(
@@ -1771,7 +1771,7 @@ class DatabaseConnection {
 	 * If $this->explainOutput is set, SELECT queries will be explained here. Only queries with more than one possible result row will be displayed.
 	 * The output is either printed as raw HTML output or embedded into the TS admin panel (checkbox must be enabled!)
 	 *
-	 * TODO: Feature is not DBAL-compliant
+	 * @todo Feature is not DBAL-compliant
 	 *
 	 * @param string $query SQL query
 	 * @param string $from_table Table(s) from which to select. This is what comes right after "FROM ...". Required value.

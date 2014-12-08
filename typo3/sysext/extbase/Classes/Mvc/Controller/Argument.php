@@ -240,7 +240,7 @@ class Argument {
 		$this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
 		$this->validationResults = $this->propertyMapper->getMessages();
 		if ($this->validator !== NULL) {
-			// TODO: Validation API has also changed!!!
+			// @todo Validation API has also changed!!!
 			$validationMessages = $this->validator->validate($this->value);
 			$this->validationResults->merge($validationMessages);
 		}

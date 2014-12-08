@@ -69,7 +69,7 @@ unset($webRoot);
 
 /**
  * We need to fake the current script to be the cli dispatcher to satisfy some GeneralUtility::getIndpEnv tests
- * TODO: properly mock these tests
+ * @todo properly mock these tests
  */
 define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
 $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
@@ -90,7 +90,7 @@ $configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager()
 $GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
 
 // Avoid failing tests that rely on HTTP_HOST retrieval
-// TODO: Check if we could do better mocking in these tests
+// @todo Check if we could do better mocking in these tests
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
 
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()

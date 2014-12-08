@@ -3056,8 +3056,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						$this->checkConnectionCharset();
 					}
 
-					// TODO:
-
 					$output = TRUE;
 				} else {
 					GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);

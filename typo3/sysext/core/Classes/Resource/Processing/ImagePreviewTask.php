@@ -58,12 +58,13 @@ class ImagePreviewTask extends AbstractGraphicalTask {
 	 * Returns TRUE if the file has to be processed at all, such as e.g. the original file does.
 	 *
 	 * Note: This does not indicate if the concrete ProcessedFile attached to this task has to be (re)processed.
-	 * This check is done in ProcessedFile::isOutdated(). @todo isOutdated()/needsReprocessing()?
+	 * This check is done in ProcessedFile::isOutdated().
+	 * @todo isOutdated()/needsReprocessing()?
 	 *
 	 * @return bool
 	 */
 	public function fileNeedsProcessing() {
-		// TODO: Implement fileNeedsProcessing() method.
+		// @todo Implement fileNeedsProcessing() method.
 
 		/**
 		 * Checks to perform:

@@ -59,9 +59,9 @@ Will report lost files.';
 	 * Find lost files in uploads/ folder
 	 * FIX METHOD: Simply delete the file...
 	 *
-	 * TODO: Add parameter to exclude filepath
-	 * TODO: Add parameter to list more file names/patterns to ignore
-	 * TODO: Add parameter to include RTEmagic images
+	 * @todo Add parameter to exclude filepath
+	 * @todo Add parameter to list more file names/patterns to ignore
+	 * @todo Add parameter to include RTEmagic images
 	 *
 	 * @return array
 	 */

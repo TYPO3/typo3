@@ -78,7 +78,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		unset($this->errorParams);
 		// Ignore FAL file references
 		if (substr($url, 0, 5) === 'file:') {
-			// TODO: validate this resource file
+			// @todo validate this resource file
 			return TRUE;
 		}
 		// Defines the linked page and anchor (if any).

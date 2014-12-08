@@ -164,7 +164,7 @@ class JsonToTypoScript {
 	 * @return void
 	 */
 	protected function getForm(array $element, array &$parent, $elementCounter) {
-		// TODO: Put at the top of the form
+		// @todo Put at the top of the form
 		if (!empty($this->validationRules)) {
 			$parent[$elementCounter . '.']['rules'] = $this->validationRules;
 		}

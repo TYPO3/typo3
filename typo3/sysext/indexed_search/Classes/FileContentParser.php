@@ -558,7 +558,7 @@ class FileContentParser {
 				$this->setLocaleForServerFileSystem();
 				// Raw text
 				$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absFile);
-				// TODO: Implement auto detection of charset (currently assuming utf-8)
+				// @todo Implement auto detection of charset (currently assuming utf-8)
 				$contentCharset = 'utf-8';
 				$content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
 				$contentArr = $this->pObj->splitRegularContent($content);

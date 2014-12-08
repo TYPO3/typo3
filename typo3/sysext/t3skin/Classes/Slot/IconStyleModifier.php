@@ -50,14 +50,14 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide' => 'fa-toggle-off warning',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload' => 'fa-upload',
 		't3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear' => 'fa-times-circle',
-		// TODO: t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
+		// @todo t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-down t3-btn t3-btn-moveoption-down' => 'fa-angle-down t3-btn t3-btn-moveoption-down',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-to-bottom t3-btn t3-btn-moveoption-bottom' => 'fa-angle-double-down t3-btn t3-btn-moveoption-bottom',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-to-bottom' => 'fa-angle-double-down',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-down' => 'fa-angle-down',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-left' => 'fa-angle-left',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-right' => 'fa-angle-right',
-		// TODO: t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
+		// @todo t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-to-top' => 'fa-angle-double-up',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-to-top t3-btn t3-btn-moveoption-top' => 'fa-angle-double-up t3-btn t3-btn-moveoption-top',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-up t3-btn t3-btn-moveoption-up' => 'fa-angle-up t3-btn t3-btn-moveoption-up',
@@ -65,7 +65,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-move' => 'fa-arrows',
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-new' => 'fa-plus-square',
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open' => 'fa-pencil',
-		// TODO: t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
+		// @todo t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
 		't3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete t3-btn t3-btn-removeoption' => 'fa-times t3-btn t3-btn-removeoption',
 		't3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete' => 'fa-remove',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-backend-user-emulate' => 'fa-sign-in',

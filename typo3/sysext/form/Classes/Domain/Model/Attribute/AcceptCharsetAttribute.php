@@ -38,7 +38,7 @@ class AcceptCharsetAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\Abst
 	 *
 	 * RFC2045: For a complete list, see http://www.iana.org/assignments/character-sets/
 	 *
-	 * TODO: Perhaps we once can add a list of all character-sets to TYPO3
+	 * @todo Perhaps we once can add a list of all character-sets to TYPO3
 	 *
 	 * @return string Attribute value
 	 */

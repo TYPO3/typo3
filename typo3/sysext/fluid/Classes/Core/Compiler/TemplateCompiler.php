@@ -73,7 +73,7 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 
 		if ($parsingState->getVariableContainer()->exists('sections')) {
 			$sections = $parsingState->getVariableContainer()->get('sections');
-			// TODO: refactor to $parsedTemplate->getSections()
+			// @todo refactor to $parsedTemplate->getSections()
 			foreach ($sections as $sectionName => $sectionRootNode) {
 				$generatedRenderFunctions .= $this->generateCodeForSection($this->convertListOfSubNodes($sectionRootNode), 'section_' . sha1($sectionName), 'section ' . $sectionName);
 			}

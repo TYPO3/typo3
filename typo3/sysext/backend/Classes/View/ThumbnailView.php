@@ -106,7 +106,7 @@ class ThumbnailView {
 			/** @var File $filePathOrCombinedFileIdentifier */
 			$fileObject = ResourceFactory::getInstance()->getFileObject($filePathOrCombinedFileIdentifier);
 		} elseif (count($parts) <= 1 || !MathUtility::canBeInterpretedAsInteger($parts[0])) {
-			// TODO: Historically, the input parameter could also be an absolute path. This should be supported again to stay compatible.
+			// @todo Historically, the input parameter could also be an absolute path. This should be supported again to stay compatible.
 			// We assume the FilePath to be a relative file path (as in backwards compatibility mode)
 			$relativeFilePath = $filePathOrCombinedFileIdentifier;
 			// The incoming relative path is relative to the typo3/ directory, but we need it relative to PATH_site. This is corrected here:

@@ -32,7 +32,7 @@ class AcceptAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAtt
 	 * when prompting a user to select files to be sent to the server (cf. the INPUT element when type="file").
 	 * RFC2045: For a complete list, see http://www.iana.org/assignments/media-types/
 	 *
-	 * TODO: Perhaps we once can add a list of all content-types to TYPO3
+	 * @todo Perhaps we once can add a list of all content-types to TYPO3
 	 *
 	 * @return string Attribute value
 	 */

@@ -196,7 +196,7 @@ class InlineElement {
 		// We need that pid for ajax calls, so that they would know where the action takes place on the page structure
 		if (!isset($this->inlineFirstPid)) {
 			// If this record is not new, try to fetch the inlineView states
-			// @TODO: Add checking/cleaning for unused tables, records, etc. to save space in uc-field
+			// @todo Add checking/cleaning for unused tables, records, etc. to save space in uc-field
 			if (MathUtility::canBeInterpretedAsInteger($row['uid'])) {
 				$inlineView = unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 				$this->inlineView = $inlineView[$table][$row['uid']];
@@ -823,7 +823,7 @@ class InlineElement {
 		// Using "form_type" locally in this script
 		$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $foreign_selector);
 		$config = $PA['fieldConf']['config'];
-		//TODO: $disabled is not present - should be read from config?
+		// @todo $disabled is not present - should be read from config?
 		$disabled = FALSE;
 		if (!$disabled) {
 			// Create option tags:

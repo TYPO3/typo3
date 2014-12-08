@@ -239,7 +239,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
 			// Setup check screen
 			case 'check':
-				// TODO: move check to the report module
+				// @todo move check to the report module
 				$content .= $this->checkScreenAction();
 				break;
 
@@ -476,7 +476,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * Clears the registered running executions from the task
 	 * Note that this doesn't actually stop the running script. It just unmarks
 	 * all executions.
-	 * TODO: find a way to really kill the running task
+	 * @todo find a way to really kill the running task
 	 *
 	 * @return void
 	 */

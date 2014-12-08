@@ -74,7 +74,7 @@ class WidgetContext {
 	/**
 	 * The rendering context of the ViewHelperChildNodes.
 	 * Only available inside non-AJAX requests.
-	 * TODO: rename to something more meaningful.
+	 * @todo rename to something more meaningful.
 	 *
 	 * @var \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
 	 * @transient

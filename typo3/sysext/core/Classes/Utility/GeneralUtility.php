@@ -1115,8 +1115,8 @@ class GeneralUtility {
 	 * errors. This function will return TRUE if current mail sending method has
 	 * problem with recipient name in recipient/sender argument for mail().
 	 *
-	 * TODO: 4.3 should have additional configuration variable, which is combined
-	 * by || with the rest in this function.
+	 * @todo 4.3 should have additional configuration variable, which is combined
+	 *   by || with the rest in this function.
 	 *
 	 * @return bool TRUE if mail() does not accept recipient name
 	 */
@@ -4279,7 +4279,7 @@ Connection: close
 	 * Just prefix the function call with "&": "$objRef = &\TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
 	 * This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
 	 *
-	 * @TODO : Deprecate the whole method in several steps:
+	 * @todo Deprecate the whole method in several steps:
 	 *      1. Deprecated singleton pattern,
 	 *      2. Deprecate file prefix/ require file,
 	 *      3. Deprecate usage without valid class name.

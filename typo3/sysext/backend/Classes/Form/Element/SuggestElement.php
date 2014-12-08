@@ -199,7 +199,7 @@ class SuggestElement {
 		if (isset($fieldConfig['allowed'])) {
 			if ($fieldConfig['allowed'] === '*') {
 				foreach ($GLOBALS['TCA'] as $tableName => $tableConfig) {
-					// TODO: Refactor function to BackendUtility
+					// @todo Refactor function to BackendUtility
 					if (empty($tableConfig['ctrl']['hideTable'])
 						&& ($GLOBALS['BE_USER']->isAdmin()
 							|| (empty($tableConfig['ctrl']['adminOnly'])

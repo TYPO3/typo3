@@ -165,7 +165,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
 					}
-				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				// @todo use $this->persistenceManager->isNewObject() once it is implemented
 				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
 					$key = $this->persistenceManager->getIdentifierByObject($value);
 				} elseif (method_exists($value, '__toString')) {
@@ -184,7 +184,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 					}
 				} elseif (method_exists($value, '__toString')) {
 					$value = (string)$value;
-				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				// @todo use $this->persistenceManager->isNewObject() once it is implemented
 				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
 					$value = $this->persistenceManager->getIdentifierByObject($value);
 				}
@@ -246,7 +246,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 			if ($this->hasArgument('optionValueField')) {
 				return \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($valueElement, $this->arguments['optionValueField']);
 			} else {
-				// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				// @todo use $this->persistenceManager->isNewObject() once it is implemented
 				if ($this->persistenceManager->getIdentifierByObject($valueElement) !== NULL) {
 					return $this->persistenceManager->getIdentifierByObject($valueElement);
 				} else {

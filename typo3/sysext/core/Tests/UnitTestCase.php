@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 abstract class UnitTestCase extends BaseTestCase {
 
 	/**
-	 * TODO: make LoadedExtensionsArray serializable instead
+	 * @todo make LoadedExtensionsArray serializable instead
 	 *
 	 * @var array
 	 */

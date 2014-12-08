@@ -166,7 +166,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 					if (!empty($requiredPackageKey)) {
 						$composerManifest->require->$requiredPackageKey = $requiredPackageVersion;
 					} else {
-						// TODO: throw meaningful exception or fail silently?
+						// @todo throw meaningful exception or fail silently?
 					}
 				}
 			}
@@ -176,7 +176,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 					if (!empty($conflictingPackageKey)) {
 						$composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
 					} else {
-						// TODO: throw meaningful exception or fail silently?
+						// @todo throw meaningful exception or fail silently?
 					}
 				}
 			}
@@ -186,7 +186,7 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 					if (!empty($suggestedPackageKey)) {
 						$composerManifest->suggest->$suggestedPackageKey = $suggestedPackageVersion;
 					} else {
-						// TODO: throw meaningful exception or fail silently?
+						// @todo throw meaningful exception or fail silently?
 					}
 				}
 			}

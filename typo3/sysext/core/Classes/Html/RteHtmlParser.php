@@ -468,7 +468,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 								if ($fileOrFolderObject instanceof Resource\FileInterface) {
 									$fileIdentifier = $fileOrFolderObject->getIdentifier();
 									$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
-									// TODO: if the retrieved file is a processed file, get the original file...
+									// @todo if the retrieved file is a processed file, get the original file...
 									$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
 								}
 							} catch (Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {

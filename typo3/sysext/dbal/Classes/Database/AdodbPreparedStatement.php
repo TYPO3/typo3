@@ -71,7 +71,7 @@ class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection
 	 * @return bool TRUE on success or FALSE on failure
 	 */
 	public function prepare() {
-		// TODO: actually prepare the query with ADOdb, if supported by the underlying DBMS
+		// @todo actually prepare the query with ADOdb, if supported by the underlying DBMS
 		// see: http://phplens.com/lens/adodb/docs-adodb.htm#prepare
 		return TRUE;
 	}

@@ -54,7 +54,7 @@ class WidgetRequestBuilder extends \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder {
 			$request->setArguments(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
 		}
 		$rawGetArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
-		// TODO: rename to @action, to be consistent with normal naming?
+		// @todo rename to @action, to be consistent with normal naming?
 		if (isset($rawGetArguments['action'])) {
 			$request->setControllerActionName($rawGetArguments['action']);
 		}

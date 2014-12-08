@@ -157,7 +157,7 @@ class LinkAnalyzer {
 				// Re-init selectFields for table
 				$selectFields = 'uid, pid';
 				$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
-				// TODO: only select rows that have content in at least one of the relevant fields (via OR)
+				// @todo only select rows that have content in at least one of the relevant fields (via OR)
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 				// Get record rows of table
 				while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {

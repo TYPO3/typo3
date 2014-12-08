@@ -33,10 +33,8 @@ class XmlParserFactory {
 	/**
 	 * Keeps array of all available parsers.
 	 *
-	 * TODO: This would better be moved to
-	 * a global configuration array like
-	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'].
-	 * (might require EM to be moved in a sysext)
+	 * @todo This would better be moved to a global configuration array like
+	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']. (might require EM to be moved in a sysext)
 	 *
 	 * @var array
 	 */

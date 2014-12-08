@@ -5647,7 +5647,7 @@ class ContentObjectRenderer {
 					return $fileObject->getProperty($requestedFileInformationKey);
 			}
 		} else {
-			// TODO: fail silently as is common in tslib_content
+			// @todo fail silently as is common in tslib_content
 			return 'Error: no file object';
 		}
 	}
@@ -7125,7 +7125,7 @@ class ContentObjectRenderer {
 	 * @param array $config TypoScript configuration (naturally of a USER or COA cObject)
 	 * @return bool Whether the class is available
 	 * @link http://forge.typo3.org/issues/19510
-	 * @TODO This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
+	 * @todo This method was introduced in TYPO3 4.3 and can be removed if the autoload was integrated
 	 */
 	protected function isClassAvailable($className, array $config = NULL) {
 		if (class_exists($className)) {

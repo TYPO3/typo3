@@ -157,7 +157,7 @@ tt_content.' . $pluginSignature . ' {
 			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
 			$iconPathAndFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
 		}
-		// TODO: skin support
+		// @todo skin support
 		$moduleLabels = array(
 			'tabs_images' => array(
 				'tab' => $iconPathAndFilename
