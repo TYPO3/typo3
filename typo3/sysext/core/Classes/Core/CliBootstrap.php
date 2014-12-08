@@ -95,9 +95,9 @@ class CliBootstrap {
 		ini_set('html_errors', 0);
 		ini_set('implicit_flush', 1);
 		ini_set('max_execution_time', 0);
-		define(STDIN, fopen('php://stdin', 'r'));
-		define(STDOUT, fopen('php://stdout', 'w'));
-		define(STDERR, fopen('php://stderr', 'w'));
+		define('STDIN', fopen('php://stdin', 'r'));
+		define('STDOUT', fopen('php://stdout', 'w'));
+		define('STDERR', fopen('php://stderr', 'w'));
 	}
 
 }
