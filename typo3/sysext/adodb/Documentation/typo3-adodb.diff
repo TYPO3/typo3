@@ -1,0 +1,208 @@
+diff --git a/adodb.inc.php b/adodb.inc.php
+index e9011e9..51d6313 100644
+--- a/adodb.inc.php
++++ b/adodb.inc.php
+@@ -2037,7 +2037,8 @@ if (!defined('_ADODB_LAYER')) {
+ 
+ 	function SetCharSet($charset)
+ 	{
+-		return false;
++		$this->charSet = $charset;
++		return TRUE;
+ 	}
+ 
+ 	function IfNull( $field, $ifNull )
+diff --git a/datadict/datadict-access.inc.php b/datadict/datadict-access.inc.php
+index 6a0a2cd..cabcab8 100644
+--- a/datadict/datadict-access.inc.php
++++ b/datadict/datadict-access.inc.php
+@@ -77,14 +77,14 @@ class ADODB2_access extends ADODB_DataDict {
+ 	{
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported");
+ 		return array();
+ 	}
+ 
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported");
+ 		return array();
+diff --git a/datadict/datadict-db2.inc.php b/datadict/datadict-db2.inc.php
+index 5bbca1d..95a693f 100644
+--- a/datadict/datadict-db2.inc.php
++++ b/datadict/datadict-db2.inc.php
+@@ -58,14 +58,14 @@ class ADODB2_db2 extends ADODB_DataDict {
+ 		return $suffix;
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported");
+ 		return array();
+ 	}
+ 
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported");
+ 		return array();
+diff --git a/datadict/datadict-generic.inc.php b/datadict/datadict-generic.inc.php
+index b3736f5..e6336da 100644
+--- a/datadict/datadict-generic.inc.php
++++ b/datadict/datadict-generic.inc.php
+@@ -49,14 +49,14 @@ class ADODB2_generic extends ADODB_DataDict {
+ 		}
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported");
+ 		return array();
+ 	}
+ 
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported");
+ 		return array();
+diff --git a/datadict/datadict-ibase.inc.php b/datadict/datadict-ibase.inc.php
+index 13f028e..e08ae3c 100644
+--- a/datadict/datadict-ibase.inc.php
++++ b/datadict/datadict-ibase.inc.php
+@@ -49,14 +49,14 @@ class ADODB2_ibase extends ADODB_DataDict {
+ 		}
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported");
+ 		return array();
+ 	}
+ 
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported");
+ 		return array();
+diff --git a/datadict/datadict-informix.inc.php b/datadict/datadict-informix.inc.php
+index 1bc6880..76c7585 100644
+--- a/datadict/datadict-informix.inc.php
++++ b/datadict/datadict-informix.inc.php
+@@ -49,14 +49,14 @@ class ADODB2_informix extends ADODB_DataDict {
+ 		}
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported");
+ 		return array();
+ 	}
+ 
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported");
+ 		return array();
+diff --git a/datadict/datadict-mssql.inc.php b/datadict/datadict-mssql.inc.php
+index 6610fc4..3374ebd 100644
+--- a/datadict/datadict-mssql.inc.php
++++ b/datadict/datadict-mssql.inc.php
+@@ -137,7 +137,7 @@ class ADODB2_mssql extends ADODB_DataDict {
+ 	}
+ 	*/
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		$tabname = $this->TableName ($tabname);
+ 		if (!is_array($flds))
+diff --git a/datadict/datadict-oci8.inc.php b/datadict/datadict-oci8.inc.php
+index 0f03389..b8bd4cf 100644
+--- a/datadict/datadict-oci8.inc.php
++++ b/datadict/datadict-oci8.inc.php
+@@ -116,6 +116,7 @@ class ADODB2_oci8 extends ADODB_DataDict {
+ 
+ 	function AddColumnSQL($tabname, $flds)
+ 	{
++		$tabname = $this->TableName ($tabname);
+ 		$f = array();
+ 		list($lines,$pkey) = $this->_GenFields($flds);
+ 		$s = "ALTER TABLE $tabname ADD (";
+@@ -128,8 +129,9 @@ class ADODB2_oci8 extends ADODB_DataDict {
+ 		return $sql;
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
++		$tabname = $this->TableName ($tabname);
+ 		$f = array();
+ 		list($lines,$pkey) = $this->_GenFields($flds);
+ 		$s = "ALTER TABLE $tabname MODIFY(";
+@@ -141,8 +143,9 @@ class ADODB2_oci8 extends ADODB_DataDict {
+ 		return $sql;
+ 	}
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
++		$tabname = $this->TableName ($tabname);
+ 		if (!is_array($flds)) $flds = explode(',',$flds);
+ 		foreach ($flds as $k => $v) $flds[$k] = $this->NameQuote($v);
+ 
+diff --git a/datadict/datadict-sapdb.inc.php b/datadict/datadict-sapdb.inc.php
+index aaa4820..8241b20 100644
+--- a/datadict/datadict-sapdb.inc.php
++++ b/datadict/datadict-sapdb.inc.php
+@@ -100,7 +100,7 @@ class ADODB2_sapdb extends ADODB_DataDict {
+ 		return array( 'ALTER TABLE ' . $tabname . ' ADD (' . implode(', ',$lines) . ')' );
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		$tabname = $this->TableName ($tabname);
+ 		$sql = array();
+@@ -108,7 +108,7 @@ class ADODB2_sapdb extends ADODB_DataDict {
+ 		return array( 'ALTER TABLE ' . $tabname . ' MODIFY (' . implode(', ',$lines) . ')' );
+ 	}
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		$tabname = $this->TableName ($tabname);
+ 		if (!is_array($flds)) $flds = explode(',',$flds);
+diff --git a/datadict/datadict-sqlite.inc.php b/datadict/datadict-sqlite.inc.php
+index 81fb016..5ff76b9 100644
+--- a/datadict/datadict-sqlite.inc.php
++++ b/datadict/datadict-sqlite.inc.php
+@@ -67,13 +67,13 @@ class ADODB2_sqlite extends ADODB_DataDict {
+ 		return $suffix;
+ 	}
+ 
+-	function AlterColumnSQL($tabname, $flds)
++	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported natively by SQLite");
+ 		return array();
+ 	}
+ 
+-	function DropColumnSQL($tabname, $flds)
++	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
+ 	{
+ 		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported natively by SQLite");
+ 		return array();
