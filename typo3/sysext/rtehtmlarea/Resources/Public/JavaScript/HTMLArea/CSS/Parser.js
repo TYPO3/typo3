@@ -31,6 +31,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
 			tags: null,
 			editor: null
 		};
+		// config.editor MUST be set!
 		Util.apply(this, config, configDefaults);
 		if (this.editor.config.styleSheetsMaximumAttempts) {
 			this.parseAttemptsMaximumNumber = this.editor.config.styleSheetsMaximumAttempts;
@@ -92,39 +93,47 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
 	 */
 	Parser.prototype.parse = function() {
 		if (this.editor.document) {
-			this.parseStyleSheets();
-			if (!this.cssLoaded) {
-				if (/Security/i.test(this.error)) {
-					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
-					/**
-					 * @event HTMLAreaEventCssParsingComplete
-					 * Fires when parsing of the stylesheets of the iframe is complete
-					 */
-					Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
-				} else if (this.parseAttemptsCounter < this.parseAttemptsMaximumNumber) {
-					this.parseAttemptsCounter++;
-					var self = this;
-					this.attemptTimeout = window.setTimeout(function () {
-						self.parse();
-					}, 200);
+			var self = this;
+			if (!this.editor.classesConfigurationIsLoaded()) {
+				this.attemptTimeout = window.setTimeout(function () {
+					self.parse();
+				}, 100);
+			} else {
+				this.parseStyleSheets();
+				if (!this.cssLoaded) {
+					if (/Security/i.test(this.error)) {
+						this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
+						/**
+						 * @event HTMLAreaEventCssParsingComplete
+						 * Fires when parsing of the stylesheets of the iframe is complete
+						 */
+						Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
+					} else if (this.parseAttemptsCounter < this.parseAttemptsMaximumNumber) {
+						this.parseAttemptsCounter++;
+						this.attemptTimeout = window.setTimeout(function () {
+							self.parse();
+						}, 200);
+					} else {
+						this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error, 'error');
+						/**
+						 * @event HTMLAreaEventCssParsingComplete
+						 * Fires when parsing of the stylesheets of the iframe is complete
+						 */
+						Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
+					}
 				} else {
-					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error, 'error');
+					if (this.attemptTimeout) {
+						window.clearTimeout(this.attemptTimeout);
+					}
+					this.ready = true;
+					this.filterAllowedClasses();
+					this.sort();
 					/**
 					 * @event HTMLAreaEventCssParsingComplete
 					 * Fires when parsing of the stylesheets of the iframe is complete
 					 */
 					Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
 				}
-			} else {
-				this.attemptTimeout = null;
-				this.ready = true;
-				this.filterAllowedClasses();
-				this.sort();
-				/**
-				 * @event HTMLAreaEventCssParsingComplete
-				 * Fires when parsing of the stylesheets of the iframe is complete
-				 */
-				Event.trigger(this, 'HTMLAreaEventCssParsingComplete');
 			}
 		}
 	};

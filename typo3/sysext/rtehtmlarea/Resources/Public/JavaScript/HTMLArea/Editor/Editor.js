@@ -79,6 +79,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		this.ajax = new Ajax({
 			editor: this
 		});
+
+		// Initiate loading of the CSS classes configuration
+		this.getClassesConfiguration();
+
 		// Initialize keyboard input inhibit flag
 		this.inhibitKeyboardInput = false;
 
@@ -267,41 +271,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		this.getDomNode();
 		// Initiate events listening
 		this.initEventsListening();
-		// Load the classes configuration
-		this.getClassesConfiguration();
-	};
-
-	/**
-	 * Get the classes configuration
-	 * This is required before plugins are generated
-	 *
-	 * @return void
-	 */
-	Editor.prototype.getClassesConfiguration = function () {
-		if (this.config.classesUrl && typeof HTMLArea.classesLabels === 'undefined') {
-			this.ajax.getJavascriptFile(this.config.classesUrl, function (options, success, response) {
-				if (success) {
-					try {
-						if (typeof HTMLArea.classesLabels === 'undefined') {
-							eval(response.responseText);
-						}
-					} catch(e) {
-						this.appendToLog('HTMLArea.Editor', 'getClassesConfiguration', 'Error evaluating contents of Javascript file: ' + this.config.classesUrl, 'error');
-					}
-				}
-				this.initializeEditor();
-			}, this);
-		} else {
-			this.initializeEditor();
-		}
-	};
-
-	/**
-	 * Complete editor initialization
-	 *
-	 * @return void
-	 */
-	Editor.prototype.initializeEditor = function () {
 		// Generate plugins
 		this.generatePlugins();
 		// Make the editor visible
@@ -327,6 +296,41 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		 */
 		Event.trigger(this, 'HtmlAreaEventEditorReady');
 		this.appendToLog('HTMLArea.Editor', 'onFrameworkReady', 'Editor ready.', 'info');
+	};
+
+	/**
+	 * Get the CSS classes configuration
+	 *
+	 * @return void
+	 */
+	Editor.prototype.getClassesConfiguration = function () {
+		this.classesConfigurationLoaded = false;
+		if (this.config.classesUrl && typeof HTMLArea.classesLabels === 'undefined') {
+			this.ajax.getJavascriptFile(this.config.classesUrl, function (options, success, response) {
+				if (success) {
+					try {
+						if (typeof HTMLArea.classesLabels === 'undefined') {
+							eval(response.responseText);
+						}
+					} catch(e) {
+						this.appendToLog('HTMLArea.Editor', 'getClassesConfiguration', 'Error evaluating contents of Javascript file: ' + this.config.classesUrl, 'error');
+					}
+					this.classesConfigurationLoaded = true;
+				}
+			}, this);
+		} else {
+			// There is no classes configuration to be loaded
+			this.classesConfigurationLoaded = true;
+		}
+	};
+
+	/**
+	 * Gets the status of the loading process of the CSS classes configuration
+	 *
+	 * @return boolean true if the classes configuration is loaded
+	 */
+	Editor.prototype.classesConfigurationIsLoaded = function() {
+		return this.classesConfigurationLoaded;
 	};
 
 	/**
