@@ -18,8 +18,9 @@
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (UserAgent, Util) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+	function (UserAgent, Util, Event) {
 
 	/**
 	 * Constructor method
@@ -562,8 +563,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	 * Show the dialogue window
 	 */
 	Plugin.prototype.show = function () {
-			// Close the window if the editor changes mode
-		this.dialog.mon(this.editor, 'HTMLAreaEventModeChange', this.close, this, {single: true });
+		// Close the window if the editor changes mode
+		var self = this;
+		Event.one(this.editor, 'HTMLAreaEventModeChange', function (event) { self.close(); });
 		this.saveSelection();
 		if (typeof this.dialogueWindowDimensions !== 'undefined') {
 			this.dialog.setPosition(this.dialogueWindowDimensions.positionFromLeft, this.dialogueWindowDimensions.positionFromTop);
