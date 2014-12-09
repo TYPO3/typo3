@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Soft References:
  * if ($conf['softref'] && (strong)$value !== ''))	{	// Check if a TCA configured field has softreferences defined (see TYPO3 Core API document)
  * $softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']);		// Explode the list of softreferences/parameters
+ * if ($softRefs !== FALSE) { // If there are soft references
  * foreach($softRefs as $spKey => $spParams)	{	// Traverse soft references
  * $softRefObj = &\TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);	// create / get object
  * if (is_object($softRefObj))	{	// If there was an object returned...:

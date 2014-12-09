@@ -241,19 +241,21 @@ class LinkAnalyzer {
 			if ($conf['softref'] && (string)$valueField !== '') {
 				// Explode the list of soft references/parameters
 				$softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
-				// Traverse soft references
-				foreach ($softRefs as $spKey => $spParams) {
-					/** @var $softRefObj \TYPO3\CMS\Core\Database\SoftReferenceIndex */
-					$softRefObj = BackendUtility::softRefParserObj($spKey);
-					// If there is an object returned...
-					if (is_object($softRefObj)) {
-						// Do processing
-						$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
-						if (!empty($resultArray['elements'])) {
-							if ($spKey == 'typolink_tag') {
-								$this->analyseTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
-							} else {
-								$this->analyseLinks($resultArray, $results, $record, $field, $table);
+				if ($softRefs !== FALSE) {
+					// Traverse soft references
+					foreach ($softRefs as $spKey => $spParams) {
+						/** @var $softRefObj \TYPO3\CMS\Core\Database\SoftReferenceIndex */
+						$softRefObj = BackendUtility::softRefParserObj($spKey);
+						// If there is an object returned...
+						if (is_object($softRefObj)) {
+							// Do processing
+							$resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
+							if (!empty($resultArray['elements'])) {
+								if ($spKey == 'typolink_tag') {
+									$this->analyseTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
+								} else {
+									$this->analyseLinks($resultArray, $results, $record, $field, $table);
+								}
 							}
 						}
 					}

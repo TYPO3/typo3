@@ -535,21 +535,24 @@ class ReferenceIndex {
 					}
 				}
 				// Soft References:
-				if ((string)$value !== '' && ($softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']))) {
+				if ((string)$value !== '') {
 					$softRefValue = $value;
-					foreach ($softRefs as $spKey => $spParams) {
-						$softRefObj = BackendUtility::softRefParserObj($spKey);
-						if (is_object($softRefObj)) {
-							$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
-							if (is_array($resultArray)) {
-								$outRow[$field]['softrefs']['keys'][$spKey] = $resultArray['elements'];
-								if ((string)$resultArray['content'] !== '') {
-									$softRefValue = $resultArray['content'];
+					$softRefs = BackendUtility::explodeSoftRefParserList($conf['softref']);
+					if ($softRefs !== FALSE) {
+						foreach ($softRefs as $spKey => $spParams) {
+							$softRefObj = BackendUtility::softRefParserObj($spKey);
+							if (is_object($softRefObj)) {
+								$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
+								if (is_array($resultArray)) {
+									$outRow[$field]['softrefs']['keys'][$spKey] = $resultArray['elements'];
+									if ((string)$resultArray['content'] !== '') {
+										$softRefValue = $resultArray['content'];
+									}
 								}
 							}
 						}
 					}
-					if (is_array($outRow[$field]['softrefs']) && count($outRow[$field]['softrefs']) && (string)$value !== (string)$softRefValue && strstr($softRefValue, '{softref:')) {
+					if (!empty($outRow[$field]['softrefs']) && (string)$value !== (string)$softRefValue && strpos($softRefValue, '{softref:') !== FALSE) {
 						$outRow[$field]['softrefs']['tokenizedContent'] = $softRefValue;
 					}
 				}
@@ -613,21 +616,24 @@ class ReferenceIndex {
 			$this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
 		}
 		// Soft References:
-		if ((is_array($dataValue) || (string)$dataValue !== '') && $softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref'])) {
+		if (is_array($dataValue) || (string)$dataValue !== '') {
 			$softRefValue = $dataValue;
-			foreach ($softRefs as $spKey => $spParams) {
-				$softRefObj = BackendUtility::softRefParserObj($spKey);
-				if (is_object($softRefObj)) {
-					$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
-					if (is_array($resultArray) && is_array($resultArray['elements'])) {
-						$this->temp_flexRelations['softrefs'][$structurePath]['keys'][$spKey] = $resultArray['elements'];
-						if ((string)$resultArray['content'] !== '') {
-							$softRefValue = $resultArray['content'];
+			$softRefs = BackendUtility::explodeSoftRefParserList($dsConf['softref']);
+			if ($softRefs !== FALSE) {
+				foreach ($softRefs as $spKey => $spParams) {
+					$softRefObj = BackendUtility::softRefParserObj($spKey);
+					if (is_object($softRefObj)) {
+						$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
+						if (is_array($resultArray) && is_array($resultArray['elements'])) {
+							$this->temp_flexRelations['softrefs'][$structurePath]['keys'][$spKey] = $resultArray['elements'];
+							if ((string)$resultArray['content'] !== '') {
+								$softRefValue = $resultArray['content'];
+							}
 						}
 					}
 				}
 			}
-			if (count($this->temp_flexRelations['softrefs']) && (string)$dataValue !== (string)$softRefValue) {
+			if (!empty($this->temp_flexRelations['softrefs']) && (string)$dataValue !== (string)$softRefValue) {
 				$this->temp_flexRelations['softrefs'][$structurePath]['tokenizedContent'] = $softRefValue;
 			}
 		}
