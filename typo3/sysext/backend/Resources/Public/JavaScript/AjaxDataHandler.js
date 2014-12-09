@@ -14,12 +14,12 @@
 /**
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
-define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'], function ($) {
+define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashMessages', 'TYPO3/CMS/Backend/Modal'], function ($) {
 	var AjaxDataHandler = {};
 
 	AjaxDataHandler.initialize = function() {
 
-		// click events for all action icons to hide/unhide
+		// HIDE/UNHIDE: click events for all action icons to hide/unhide
 		$(document).on('click', '.t3js-record-hide', function(evt) {
 			evt.preventDefault();
 			var $anchorElement = $(this);
@@ -43,9 +43,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashM
 				AjaxDataHandler._hideSpinnerIcon($iconElement);
 				// print messages on errors
 				if (result.hasErrors) {
-					$.each(result.messages, function(position, message) {
-						top.TYPO3.Flashmessage.display(message.severity, message.title, message.message);
-					});
+					AjaxDataHandler.handleErrors(result);
 					// revert to the old class
 					$iconElement.addClass(removeClass);
 				} else {
@@ -62,13 +60,111 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashM
 						$rowElement.fadeTo('fast', 1);
 					});
 
-					if (table === 'pages' && top.TYPO3 && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer && top.TYPO3.Backend.NavigationContainer.PageTree) {
-						top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+					if (table === 'pages') {
+						AjaxDataHandler.refreshPageTree();
 					}
 				}
-
 			});
 		});
+
+		// DELETE: click events for all action icons to delete
+		$(document).on('click', '.t3js-record-delete', function(evt) {
+			evt.preventDefault();
+			var $anchorElement = $(this);
+			TYPO3.Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), TYPO3.Severity.error, [
+				{
+					text: TYPO3.lang['button.cancel'],
+					active: true,
+					trigger: function() {
+						TYPO3.Modal.dismiss();
+					}
+				},
+				{
+					text: TYPO3.lang['button.delete'],
+					btnClass: 'btn-danger',
+					trigger: function() {
+						TYPO3.Modal.dismiss();
+						AjaxDataHandler.deleteRecord($anchorElement);
+					}
+				}
+			]);
+		});
+	};
+
+	/**
+	 * delete record by given element (icon in table)
+	 * don't call it directly!
+	 *
+	 * @param element
+	 */
+	AjaxDataHandler.deleteRecord = function(element) {
+		var $anchorElement = $(element);
+		var elementClass = 'fa-trash';
+		var params = $anchorElement.data('params');
+		var $iconElement = $anchorElement.find('span');
+
+		// add a spinner
+		$iconElement.removeClass(elementClass);
+		AjaxDataHandler._showSpinnerIcon($iconElement);
+
+		// make the AJAX call to toggle the visibility
+		AjaxDataHandler._call(params).done(function(result) {
+			AjaxDataHandler._hideSpinnerIcon($iconElement);
+			// revert to the old class
+			$iconElement.addClass(elementClass);
+			// print messages on errors
+			if (result.hasErrors) {
+				AjaxDataHandler.handleErrors(result);
+			} else {
+				var $table = $anchorElement.closest('table[data-table]');
+				var $panel = $anchorElement.closest('.panel');
+				var $panelHeading = $panel.find('.panel-heading');
+				var table = $table.data('table');
+				var $rowElements = $anchorElement.closest('tr[data-uid]');
+				var uid = $rowElements.data('uid');
+				var $translatedRowElements = $table.find('[data-l10parent=' + uid + ']').closest('tr[data-uid]');
+				$rowElements = $rowElements.add($translatedRowElements);
+
+				$rowElements.fadeTo('slow', 0.4, function() {
+					$rowElements.slideUp('slow', 0, function() {
+						$rowElements.remove();
+						if ($table.find('tbody tr').length === 0) {
+							$panel.slideUp('slow');
+						}
+					});
+				});
+				if ($anchorElement.data('l10parent') === '0' || $anchorElement.data('l10parent') === '') {
+					var count = Number($panelHeading.find('.t3js-table-total-items').html());
+					$panelHeading.find('.t3js-table-total-items').html(count-1);
+				}
+
+				if (table === 'pages') {
+					AjaxDataHandler.refreshPageTree();
+				}
+			}
+		});
+	};
+
+	/**
+	 * handle the errors from result object
+	 *
+	 * @param result
+	 * @private
+	 */
+	AjaxDataHandler.handleErrors = function(result) {
+		$.each(result.messages, function(position, message) {
+			top.TYPO3.Flashmessage.display(message.severity, message.title, message.message);
+		});
+	};
+
+	/**
+	 * refresh the page tree
+	 * @private
+	 */
+	AjaxDataHandler.refreshPageTree = function() {
+		if (top.TYPO3 && top.TYPO3.Backend && top.TYPO3.Backend.NavigationContainer && top.TYPO3.Backend.NavigationContainer.PageTree) {
+			top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
+		}
 	};
 
 	/**

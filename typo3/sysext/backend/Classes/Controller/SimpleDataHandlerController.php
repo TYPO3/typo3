@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -272,6 +273,9 @@ class SimpleDataHandlerController {
 					'message'  => $message->getMessage(),
 					'severity' => $message->getSeverity()
 				);
+				if ($message->getSeverity() === AbstractMessage::ERROR) {
+					$content['hasErrors'] = TRUE;
+				}
 			}
 		}
 		$ajaxRequestHandler->setContentFormat('json');

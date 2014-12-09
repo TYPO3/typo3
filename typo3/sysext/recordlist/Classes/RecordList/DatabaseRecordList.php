@@ -489,12 +489,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$theData = array();
 			if ($this->disableSingleTableView) {
 				$theData[$titleCol] = '<span class="c-table">' . BackendUtility::wrapInHelp($table, '', $tableTitle)
-					. '</span> (' . $this->totalItems . ')';
+					. '</span> (<span class="t3js-table-total-items">' . $this->totalItems . '</span>)';
 			} else {
 				$icon = $this->table
 					? IconUtility::getSpriteIcon('actions-view-table-collapse', array('title' => $GLOBALS['LANG']->getLL('contractView', TRUE)))
 					: IconUtility::getSpriteIcon('actions-view-table-expand', array('title' => $GLOBALS['LANG']->getLL('expandView', TRUE)));
-				$theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (' . $this->totalItems . ') ' . $icon);
+				$theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $this->totalItems . '</span>) ' . $icon);
 			}
 			if ($listOnlyInSingleTableMode) {
 				$tableHeader .= BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
@@ -1307,18 +1307,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					}
 
 					$titleOrig = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
-					$title = GeneralUtility::slashJS(GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
-					$warningText = GeneralUtility::quoteJSvalue(
-						$GLOBALS['LANG']->getLL($actionName . 'Warning') . ' "' . $title . '" ' . $refCountMsg
-					);
+					$title = GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL);
+					$warningText = $GLOBALS['LANG']->getLL($actionName . 'Warning') . ' "' . $title . '" ' . '[' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
 
-					$params = '&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-					$onClick = 'if (confirm(' . $warningText . ')) {jumpToUrl(\''
-						. $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');} return false;';
-
+					$params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
 					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
 					$linkTitle = $GLOBALS['LANG']->getLL($actionName, TRUE);
-					$cells['delete'] = '<a class="btn" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitle . '">' . $icon . '</a>';
+					$cells['delete'] = '<a class="btn t3js-record-delete" href="#" '
+						. ' data-l10parent="' . htmlspecialchars($row['l10n_parent']) . '"'
+						. ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($titleOrig) . '"'
+						. ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
+						. '>' . $icon . '</a>';
 				}
 				// "Levels" links: Moving pages into new levels...
 				if ($permsEdit && $table == 'pages' && !$this->searchLevels) {

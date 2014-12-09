@@ -4406,6 +4406,12 @@ class DataHandler {
 				$this->deleteSpecificPage($deleteId, $forceHardDelete);
 			}
 		} else {
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($res), '', FlashMessage::ERROR, TRUE);
+			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+			$flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
+
 			$this->newlog($res, 1);
 		}
 	}

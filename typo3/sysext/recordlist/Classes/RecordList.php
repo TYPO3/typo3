@@ -206,6 +206,7 @@ class RecordList {
 		$this->menuConfig();
 		// Store session data
 		$GLOBALS['BE_USER']->setAndSaveSessionData(\TYPO3\CMS\Recordlist\RecordList::class, $sessionData);
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
 	}
 
 	/**

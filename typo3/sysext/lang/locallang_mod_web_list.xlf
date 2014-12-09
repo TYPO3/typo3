@@ -159,6 +159,13 @@
 			<trans-unit id="noRecordsOnThisPage" xml:space="preserve">
 				<source>There are no records on this page.</source>
 			</trans-unit>
+			<trans-unit id="button.cancel" xml:space="preserve">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="button.delete" xml:space="preserve">
+				<source>Delete</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
