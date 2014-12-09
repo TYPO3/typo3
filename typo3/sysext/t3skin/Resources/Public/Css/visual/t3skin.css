@@ -12338,6 +12338,9 @@ Sys notes
 .contentelement-wizard li:last-child {
   margin-bottom: 0px;
 }
+.contentelement-wizard a {
+  display: inline-block;
+}
 /*
  * This file is part of the TYPO3 CMS project.
  *
