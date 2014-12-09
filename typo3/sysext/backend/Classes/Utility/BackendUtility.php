@@ -48,6 +48,14 @@ use TYPO3\CMS\Lang\LanguageService;
  */
 class BackendUtility {
 
+	/**
+	 * Cache the TCA configuration of tables with their types during runtime
+	 *
+	 * @var array
+	 * @see getTCAtypes()
+	 */
+	static protected $tcaTableTypeConfigurationCache = array();
+
 	/*******************************************
 	 *
 	 * SQL-related, selecting records, searching
@@ -732,6 +740,13 @@ class BackendUtility {
 		if ($GLOBALS['TCA'][$table]) {
 			// Get type value:
 			$fieldValue = self::getTCAtypeValue($table, $rec);
+			$cacheIdentifier = $table . '-type-' . $fieldValue . '-fnk-' . $useFieldNameAsKey;
+
+			// Fetch from first-level-cache if available
+			if (isset(self::$tcaTableTypeConfigurationCache[$cacheIdentifier])) {
+				return self::$tcaTableTypeConfigurationCache[$cacheIdentifier];
+			}
+
 			// Get typesConf
 			$typesConf = $GLOBALS['TCA'][$table]['types'][$fieldValue];
 			// Get fields list and traverse it
@@ -767,6 +782,10 @@ class BackendUtility {
 			if ($useFieldNameAsKey) {
 				$fieldList = $altFieldList;
 			}
+
+			// Add to first-level-cache
+			self::$tcaTableTypeConfigurationCache[$cacheIdentifier] = $fieldList;
+
 			// Return array:
 			return $fieldList;
 		}
