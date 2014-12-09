@@ -795,7 +795,9 @@ class DataHandler {
 		if (is_array($postFiles)) {
 			// Editing frozen:
 			if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
-				$this->newlog('All editing in this workspace has been frozen!', 1);
+				if ($this->enableLogging) {
+					$this->newlog('All editing in this workspace has been frozen!', 1);
+				}
 				return FALSE;
 			}
 			$subA = reset($postFiles);
@@ -912,7 +914,9 @@ class DataHandler {
 		$this->datamap = $this->unsetElementsToBeDeleted($this->datamap);
 		// Editing frozen:
 		if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
-			$this->newlog('All editing in this workspace has been frozen!', 1);
+			if ($this->enableLogging) {
+				$this->newlog('All editing in this workspace has been frozen!', 1);
+			}
 			return FALSE;
 		}
 		// First prepare user defined objects (if any) for hooks which extend this function:
@@ -941,9 +945,8 @@ class DataHandler {
 			//	   - the table is set with content in the data-array (if not, there's nothing to process...)
 			//	   - permissions for tableaccess OK
 			$modifyAccessList = $this->checkModifyAccessList($table);
-			if (!$modifyAccessList) {
-				$id = 0;
-				$this->log($table, $id, 2, 0, 1, 'Attempt to modify table \'%s\' without permission', 1, array($table));
+			if ($this->enableLogging && !$modifyAccessList) {
+				$this->log($table, 0, 2, 0, 1, 'Attempt to modify table \'%s\' without permission', 1, array($table));
 			}
 			if (isset($GLOBALS['TCA'][$table]) && !$this->tableReadOnly($table) && is_array($this->datamap[$table]) && $modifyAccessList) {
 				if ($this->reverseOrder) {
@@ -1043,14 +1046,18 @@ class DataHandler {
 									$this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray);
 									$recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, TRUE);
 									if (!$recordAccess) {
-										$this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
+										if ($this->enableLogging) {
+											$this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
+										}
 									} elseif (!$this->bypassWorkspaceRestrictions) {
 										// Workspace related processing:
 										// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
 										if ($res = $this->BE_USER->workspaceAllowLiveRecordsInPID($theRealPid, $table)) {
 											if ($res < 0) {
 												$recordAccess = FALSE;
-												$this->newlog('Stage for versioning root point and users access level did not allow for editing', 1);
+												if ($this->enableLogging) {
+													$this->newlog('Stage for versioning root point and users access level did not allow for editing', 1);
+												}
 											}
 										} else {
 											// So, if no live records were allowed, we have to create a new version of this record:
@@ -1058,7 +1065,9 @@ class DataHandler {
 												$createNewVersion = TRUE;
 											} else {
 												$recordAccess = FALSE;
-												$this->newlog('Record could not be created in this workspace in this branch', 1);
+												if ($this->enableLogging) {
+													$this->newlog('Record could not be created in this workspace in this branch', 1);
+												}
 											}
 										}
 									}
@@ -1073,13 +1082,17 @@ class DataHandler {
 							$fieldArray = array();
 							$recordAccess = $this->checkRecordUpdateAccess($table, $id, $incomingFieldArray, $hookObjectsArr);
 							if (!$recordAccess) {
-								$propArr = $this->getRecordProperties($table, $id);
-								$this->log($table, $id, 2, 0, 1, 'Attempt to modify record \'%s\' (%s) without permission. Or non-existing page.', 2, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
+								if ($this->enableLogging) {
+									$propArr = $this->getRecordProperties($table, $id);
+									$this->log($table, $id, 2, 0, 1, 'Attempt to modify record \'%s\' (%s) without permission. Or non-existing page.', 2, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
+								}
 							} else {
 								// Next check of the record permissions (internals)
 								$recordAccess = $this->BE_USER->recordEditAccessInternals($table, $id);
 								if (!$recordAccess) {
-									$this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
+									if ($this->enableLogging) {
+										$this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
+									}
 								} else {
 									// Here we fetch the PID of the record that we point to...
 									$tempdata = $this->recordInfo($table, $id, 'pid' . ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : ''));
@@ -1139,10 +1152,10 @@ class DataHandler {
 												$id = $this->autoVersionIdMap[$table][$id];
 												$recordAccess = TRUE;
 												$this->autoVersioningUpdate = TRUE;
-											} else {
+											} elseif ($this->enableLogging) {
 												$this->newlog('Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version failed!', 1);
 											}
-										} else {
+										} elseif ($this->enableLogging) {
 											$this->newlog('Could not be edited in offline workspace in the branch where found (failure state: \'' . $errorCode . '\'). Auto-creation of version not allowed in workspace!', 1);
 										}
 									}
@@ -1312,7 +1325,9 @@ class DataHandler {
 					}
 				}
 				if (count($newRecord)) {
-					$this->newlog2('Shadowing done on fields <i>' . implode(',', array_keys($newRecord)) . '</i> in placeholder record ' . $table . ':' . $liveRec['uid'] . ' (offline version UID=' . $id . ')', $table, $liveRec['uid'], $liveRec['pid']);
+					if ($this->enableLogging) {
+						$this->newlog2('Shadowing done on fields <i>' . implode(',', array_keys($newRecord)) . '</i> in placeholder record ' . $table . ':' . $liveRec['uid'] . ' (offline version UID=' . $id . ')', $table, $liveRec['uid'], $liveRec['pid']);
+					}
 					$this->updateDB($table, $liveRec['uid'], $newRecord);
 				}
 			}
@@ -1534,8 +1549,10 @@ class DataHandler {
 		if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
 			// If the user may not use this specific doktype, we issue a warning
 			if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
-				$propArr = $this->getRecordProperties($table, $id);
-				$this->log($table, $id, 5, 0, 1, 'You cannot change the \'doktype\' of page \'%s\' to the desired value.', 1, array($propArr['header']), $propArr['event_pid']);
+				if ($this->enableLogging) {
+					$propArr = $this->getRecordProperties($table, $id);
+					$this->log($table, $id, 5, 0, 1, 'You cannot change the \'doktype\' of page \'%s\' to the desired value.', 1, array($propArr['header']), $propArr['event_pid']);
+				}
 				return $res;
 			}
 			if ($status == 'update') {
@@ -1544,8 +1561,10 @@ class DataHandler {
 				if ($onlyAllowedTables) {
 					$theWrongTables = $this->doesPageHaveUnallowedTables($id, $value);
 					if ($theWrongTables) {
-						$propArr = $this->getRecordProperties($table, $id);
-						$this->log($table, $id, 5, 0, 1, '\'doktype\' of page \'%s\' could not be changed because the page contains records from disallowed tables; %s', 2, array($propArr['header'], $theWrongTables), $propArr['event_pid']);
+						if ($this->enableLogging) {
+							$propArr = $this->getRecordProperties($table, $id);
+							$this->log($table, $id, 5, 0, 1, '\'doktype\' of page \'%s\' could not be changed because the page contains records from disallowed tables; %s', 2, array($propArr['header'], $theWrongTables), $propArr['event_pid']);
+						}
 						return $res;
 					}
 				}
@@ -1829,7 +1848,9 @@ class DataHandler {
 			// if so, set this value to "0" again
 			if ($maxCheckedRecords && count($otherRecordsWithSameValue) >= $maxCheckedRecords) {
 				$value = 0;
-				$this->log($table, $id, 5, 0, 1, 'Could not activate checkbox for field "%s". A total of %s record(s) can have this checkbox activated. Uncheck other records first in order to activate the checkbox of this record.', -1, array($GLOBALS['LANG']->sL(BackendUtility::getItemLabel($table, $field)), $maxCheckedRecords));
+				if ($this->enableLogging) {
+					$this->log($table, $id, 5, 0, 1, 'Could not activate checkbox for field "%s". A total of %s record(s) can have this checkbox activated. Uncheck other records first in order to activate the checkbox of this record.', -1, array($GLOBALS['LANG']->sL(BackendUtility::getItemLabel($table, $field)), $maxCheckedRecords));
+				}
 			}
 		}
 		$res['value'] = $value;
@@ -2110,7 +2131,7 @@ class DataHandler {
 							$theFile = trim($theFile);
 							if (@is_file(($dest . '/' . $theFile))) {
 								$this->removeFilesStore[] = $dest . '/' . $theFile;
-							} elseif ($theFile) {
+							} elseif ($this->enableLogging && $theFile) {
 								$this->log($table, $id, 5, 0, 1, 'Could not delete file \'%s\' (does not exist). (%s)', 10, array($dest . '/' . $theFile, $recFID), $propArr['event_pid']);
 							}
 						}
@@ -2163,19 +2184,19 @@ class DataHandler {
 										}
 										$this->copiedFileMap[$theFile] = $theDestFile;
 										clearstatcache();
-										if (!@is_file($theDestFile)) {
+										if ($this->enableLogging && !@is_file($theDestFile)) {
 											$this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, array($theFile, dirname($theDestFile), $recFID), $propArr['event_pid']);
 										}
-									} else {
+									} elseif ($this->enableLogging) {
 										$this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: No destination file (%s) possible!. (%s)', 11, array($theFile, $theDestFile, $recFID), $propArr['event_pid']);
 									}
-								} else {
+								} elseif ($this->enableLogging) {
 									$this->log($table, $id, 5, 0, 1, 'File extension \'%s\' not allowed. (%s)', 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
 								}
-							} else {
+							} elseif ($this->enableLogging) {
 								$this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, array(GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID), $propArr['event_pid']);
 							}
-						} else {
+						} elseif ($this->enableLogging) {
 							$this->log($table, $id, 5, 0, 1, 'The destination (%s) or the source file (%s) does not exist. (%s)', 14, array($dest, $theFile, $recFID), $propArr['event_pid']);
 						}
 						// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
@@ -2256,16 +2277,16 @@ class DataHandler {
 											GeneralUtility::upload_copy_move($theFile, $theDestFile);
 											$this->copiedFileMap[$theFile] = $theDestFile;
 											clearstatcache();
-											if (!@is_file($theDestFile)) {
+											if ($this->enableLogging && !@is_file($theDestFile)) {
 												$this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)', 16, array($theFile, dirname($theDestFile), $recFID), $propArr['event_pid']);
 											}
-										} else {
+										} elseif ($this->enableLogging) {
 											$this->log($table, $id, 5, 0, 1, 'Copying file \'%s\' failed!: No destination file (%s) possible!. (%s)', 11, array($theFile, $theDestFile, $recFID), $propArr['event_pid']);
 										}
-									} else {
+									} elseif ($this->enableLogging) {
 										$this->log($table, $id, 5, 0, 1, 'File extension \'%s\' not allowed. (%s)', 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
 									}
-								} else {
+								} elseif ($this->enableLogging) {
 									$this->log($table, $id, 5, 0, 1, 'Filesize (%s) of file \'%s\' exceeds limit (%s). (%s)', 13, array(GeneralUtility::formatSize($fileSize), $theFile, GeneralUtility::formatSize($maxSize * 1024), $recFID), $propArr['event_pid']);
 								}
 								// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
@@ -3058,7 +3079,9 @@ class DataHandler {
 	public function process_cmdmap() {
 		// Editing frozen:
 		if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
-			$this->newlog('All editing in this workspace has been frozen!', 1);
+			if ($this->enableLogging) {
+				$this->newlog('All editing in this workspace has been frozen!', 1);
+			}
 			return FALSE;
 		}
 		// Hook initialization:
@@ -3077,11 +3100,9 @@ class DataHandler {
 		foreach ($this->cmdmap as $table => $_) {
 			// Check if the table may be modified!
 			$modifyAccessList = $this->checkModifyAccessList($table);
-			if (!$modifyAccessList) {
-				$id = 0;
-				$this->log($table, $id, 2, 0, 1, 'Attempt to modify table \'%s\' without permission', 1, array($table));
+			if ($this->enableLogging && !$modifyAccessList) {
+				$this->log($table, 0, 2, 0, 1, 'Attempt to modify table \'%s\' without permission', 1, array($table));
 			}
-			// @todo $id not set here (Comment added by Sebastian Kurfürst)
 			// Check basic permissions and circumstances:
 			if (isset($GLOBALS['TCA'][$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList) {
 				// Traverse the command map:
@@ -3297,13 +3318,13 @@ class DataHandler {
 							$this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
 						}
 						return $theNewSQLID;
-					} else {
+					} elseif ($this->enableLogging) {
 						$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record that did not exist!');
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without having permissions to do so. [' . $this->BE_USER->errorMsg . '].');
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without permission');
 			}
 		}
@@ -3348,12 +3369,14 @@ class DataHandler {
 					if (isset($newPid)) {
 						$this->copySpecificPage($thePageUid, $newPid, $copyTablesArray);
 					} else {
-						$this->log('pages', $uid, 5, 0, 1, 'Something went wrong during copying branch');
+						if ($this->enableLogging) {
+							$this->log('pages', $uid, 5, 0, 1, 'Something went wrong during copying branch');
+						}
 						break;
 					}
 				}
 			}
-		} else {
+		} elseif ($this->enableLogging) {
 			$this->log('pages', $uid, 5, 0, 1, 'Attempt to copy page without permission to this table');
 		}
 	}
@@ -3447,10 +3470,10 @@ class DataHandler {
 						$this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
 						return $this->copyMappingArray[$table][$uid] = $theNewSQLID;
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log($table, $uid, 3, 0, 1, 'Attempt to rawcopy/versionize record that did not exist!');
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to rawcopy/versionize record without copy permission');
 			}
 		}
@@ -3777,19 +3800,19 @@ class DataHandler {
 									/** @var ReferenceIndex $sysRefObj */
 									$sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
 									$error = $sysRefObj->setReferenceValue($rteFileRecord['hash'], PathUtility::stripPathSitePrefix($copyDestName), FALSE, TRUE);
-									if ($error) {
+									if ($this->enableLogging && $error) {
 										echo $this->newlog(ReferenceIndex::class . '::setReferenceValue(): ' . $error, 1);
 									}
-								} else {
+								} elseif ($this->enableLogging) {
 									$this->newlog('File "' . $copyDestName . '" was not created!', 1);
 								}
-							} else {
+							} elseif ($this->enableLogging) {
 								$this->newlog('Could not construct new unique names for file!', 1);
 							}
-						} else {
+						} elseif ($this->enableLogging) {
 							$this->newlog('Maybe directory of file was not within "uploads/"?', 1);
 						}
-					} else {
+					} elseif ($this->enableLogging) {
 						$this->newlog('Trying to copy RTEmagic files (' . $rteFileRecord['ref_string'] . ' / ' . $fileInfo['original'] . ') but one or both were missing', 1);
 					}
 				}
@@ -3912,13 +3935,13 @@ class DataHandler {
 						if (!$recordWasMoved) {
 							$this->moveRecord_raw($table, $uid, $destPid);
 						}
-					} else {
+					} elseif ($this->enableLogging) {
 						$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) without having permissions to insert.', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) without having permissions to do so.', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 4, 0, 1, 'Attempt to move record "%s" (%s) without having permissions to do so. [' . $this->BE_USER->errorMsg . ']', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 			}
 		}
@@ -3983,18 +4006,20 @@ class DataHandler {
 						$hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
 					}
 				}
-				// Logging...
-				$newPropArr = $this->getRecordProperties($table, $uid);
-				$oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
-				$newpagePropArr = $this->getRecordProperties('pages', $destPid);
-				if ($destPid != $propArr['pid']) {
-					// Logged to old page
-					$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) to page \'%s\' (%s)', 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']);
-					// Logged to new page
-					$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) from page \'%s\' (%s)', 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
-				} else {
-					// Logged to new page
-					$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) on page \'%s\' (%s)', 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
+				if ($this->enableLogging) {
+					// Logging...
+					$oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
+					if ($destPid != $propArr['pid']) {
+						// Logged to old page
+						$newPropArr = $this->getRecordProperties($table, $uid);
+						$newpagePropArr = $this->getRecordProperties('pages', $destPid);
+						$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) to page \'%s\' (%s)', 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']);
+						// Logged to new page
+						$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) from page \'%s\' (%s)', 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
+					} else {
+						// Logged to new page
+						$this->log($table, $uid, 4, $destPid, 0, 'Moved record \'%s\' (%s) on page \'%s\' (%s)', 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
+					}
 				}
 				// Clear cache after moving
 				$this->registerRecordIdForPageCacheClearing($table, $uid);
@@ -4003,7 +4028,7 @@ class DataHandler {
 				if ($origDestPid < 0) {
 					$this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$destPropArr = $this->getRecordProperties('pages', $destPid);
 				$this->log($table, $uid, 4, 0, 1, 'Attempt to move page \'%s\' (%s) to inside of its own rootline (at page \'%s\' (%s))', 10, array($propArr['header'], $uid, $destPropArr['header'], $destPid), $propArr['pid']);
 			}
@@ -4036,18 +4061,20 @@ class DataHandler {
 								$hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
 							}
 						}
-						// Logging...
-						$newPropArr = $this->getRecordProperties($table, $uid);
-						$oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
-						if ($destPid != $propArr['pid']) {
-							$newpagePropArr = $this->getRecordProperties('pages', $destPid);
-							// Logged to old page
-							$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) to page \'%s\' (%s)', 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']);
-							// Logged to old page
-							$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) from page \'%s\' (%s)', 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
-						} else {
-							// Logged to old page
-							$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) on page \'%s\' (%s)', 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
+						if ($this->enableLogging) {
+							// Logging...
+							$oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
+							if ($destPid != $propArr['pid']) {
+								// Logged to old page
+								$newPropArr = $this->getRecordProperties($table, $uid);
+								$newpagePropArr = $this->getRecordProperties('pages', $destPid);
+								$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) to page \'%s\' (%s)', 2, array($propArr['header'], $table . ':' . $uid, $newpagePropArr['header'], $newPropArr['pid']), $propArr['pid']);
+								// Logged to old page
+								$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) from page \'%s\' (%s)', 3, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
+							} else {
+								// Logged to old page
+								$this->log($table, $uid, 4, 0, 0, 'Moved record \'%s\' (%s) on page \'%s\' (%s)', 4, array($propArr['header'], $table . ':' . $uid, $oldpagePropArr['header'], $propArr['pid']), $destPid);
+							}
 						}
 						// Clear cache after moving
 						$this->registerRecordIdForPageCacheClearing($table, $uid);
@@ -4057,12 +4084,12 @@ class DataHandler {
 						if ($origDestPid < 0) {
 							$this->fixCopyAfterDuplFields($table, $uid, abs($origDestPid), 1);
 						}
-					} else {
+					} elseif ($this->enableLogging) {
 						$destPropArr = $this->getRecordProperties('pages', $destPid);
 						$this->log($table, $uid, 4, 0, 1, 'Attempt to move page \'%s\' (%s) to inside of its own rootline (at page \'%s\' (%s))', 10, array($propArr['header'], $uid, $destPropArr['header'], $destPid), $propArr['pid']);
 					}
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after another record, although the table has no sorting row.', 13, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 			}
 		}
@@ -4260,25 +4287,25 @@ class DataHandler {
 												$newId = $theNewSQLID;
 											}
 										}
-									} else {
+									} elseif ($this->enableLogging) {
 										$this->newlog('Localization failed; There already was a localization for this language of the record!', 1);
 									}
-								} else {
+								} elseif ($this->enableLogging) {
 									$this->newlog('Localization failed; Source record contained a reference to an original default record (which is strange)!', 1);
 								}
-							} else {
+							} elseif ($this->enableLogging) {
 								$this->newlog('Localization failed; Source record had another language than "Default" or "All" defined!', 1);
 							}
-						} else {
+						} elseif ($this->enableLogging) {
 							$this->newlog('Attempt to localize record that did not exist!', 1);
 						}
-					} else {
+					} elseif ($this->enableLogging) {
 						$this->newlog('Attempt to localize record without permission', 1);
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->newlog('Sys language UID "' . $language . '" not found valid!', 1);
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->newlog('Localization failed; "languageField" and "transOrigPointerField" must be defined for the table!', 1);
 			}
 		}
@@ -4541,7 +4568,7 @@ class DataHandler {
 									// This deletes files that belonged to this record.
 									$this->extFileFunctions($table, $theField, $row[$theField], 'deleteAll');
 								}
-							} else {
+							} elseif ($this->enableLogging) {
 								$this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
 							}
 							$this->databaseConnection->sql_free_result($mres);
@@ -4550,22 +4577,24 @@ class DataHandler {
 						$this->databaseConnection->exec_DELETEquery($table, 'uid=' . (int)$uid);
 						$this->deleteL10nOverlayRecords($table, $uid);
 					}
-					// 1 means insert, 3 means delete
-					$state = $undeleteRecord ? 1 : 3;
-					if (!$this->databaseConnection->sql_error()) {
-						if ($forceHardDelete) {
-							$message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
+					if ($this->enableLogging) {
+						// 1 means insert, 3 means delete
+						$state = $undeleteRecord ? 1 : 3;
+						if (!$this->databaseConnection->sql_error()) {
+							if ($forceHardDelete) {
+								$message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
+							} else {
+								$message = $state == 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
+							}
+							$this->log($table, $uid, $state, 0, 0, $message, 0, array(
+								$propArr['header'],
+								$table . ':' . $uid,
+								$pagePropArr['header'],
+								$propArr['pid']
+							), $propArr['event_pid']);
 						} else {
-							$message = $state == 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
+							$this->log($table, $uid, $state, 0, 100, $this->databaseConnection->sql_error());
 						}
-						$this->log($table, $uid, $state, 0, 0, $message, 0, array(
-							$propArr['header'],
-							$table . ':' . $uid,
-							$pagePropArr['header'],
-							$propArr['pid']
-						), $propArr['event_pid']);
-					} else {
-						$this->log($table, $uid, $state, 0, 100, $this->databaseConnection->sql_error());
 					}
 					// Update reference index:
 					$this->updateRefIndex($table, $uid);
@@ -4577,10 +4606,10 @@ class DataHandler {
 						}
 						unset($this->updateRefIndexStack[$table][$uid]);
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions');
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions. [' . $this->BE_USER->errorMsg . ']');
 			}
 		}
@@ -4607,7 +4636,7 @@ class DataHandler {
 				if (@is_file($dat['ID_absFile'])) {
 					$file = $this->getResourceFactory()->retrieveFileOrFolderObject($dat['ID_absFile']);
 					$file->delete();
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log('', 0, 3, 0, 100, 'Delete: Referenced file \'' . $dat['ID_absFile'] . '\' that was supposed to be deleted together with its record which didn\'t exist');
 				}
 			}
@@ -4643,7 +4672,9 @@ class DataHandler {
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
 
-			$this->newlog($res, 1);
+			if ($this->enableLogging) {
+				$this->newlog($res, 1);
+			}
 		}
 	}
 
@@ -4799,7 +4830,7 @@ class DataHandler {
 			// The page containing the record is not deleted, thus the record can be undeleted:
 			if (!$page['deleted']) {
 				$result = TRUE;
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 'isRecordUndeletable', '', 1, 'Record cannot be undeleted since the page containing it is deleted! Undelete page "' . $page['title'] . ' (UID: ' . $page['uid'] . ')" first');
 			}
 		} else {
@@ -4987,22 +5018,22 @@ class DataHandler {
 								} else {
 									return $versionRecord['uid'];
 								}
-							} else {
+							} elseif ($this->enableLogging) {
 								$this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), 1);
 							}
-						} else {
+						} elseif ($this->enableLogging) {
 							$this->newlog('Record cannot be versioned because it is a placeholder for a moving operation', 1);
 						}
-					} else {
+					} elseif ($this->enableLogging) {
 						$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (pid=-1)!', 1);
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize did not exist!', 1);
 				}
-			} else {
+			} elseif ($this->enableLogging) {
 				$this->newlog('You didn\'t have correct permissions to make a new version (copy) of this record "' . $table . '" / ' . $id, 1);
 			}
-		} else {
+		} elseif ($this->enableLogging) {
 			$this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, 1);
 		}
 	}
@@ -5701,11 +5732,11 @@ class DataHandler {
 				$res = TRUE;
 				// Cache the result
 				$this->recInsertAccessCache[$insertTable][$pid] = $res;
-			} else {
+			} elseif ($this->enableLogging) {
 				$propArr = $this->getRecordProperties('pages', $pid);
 				$this->log($insertTable, $pid, $action, 0, 1, 'Attempt to insert record on page \'%s\' (%s) where this table, %s, is not allowed', 11, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
 			}
-		} else {
+		} elseif ($this->enableLogging) {
 			$propArr = $this->getRecordProperties('pages', $pid);
 			$this->log($insertTable, $pid, $action, 0, 1, 'Attempt to insert a record on page \'%s\' (%s) from table \'%s\' without permissions. Or non-existing page.', 12, array($propArr['header'], $pid, $insertTable), $propArr['event_pid']);
 		}
@@ -6087,23 +6118,25 @@ class DataHandler {
 				$this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$id, $fieldArray);
 				// If succeeds, do...:
 				if (!$this->databaseConnection->sql_error()) {
-					if ($this->checkStoredRecords) {
-						$newRow = $this->checkStoredRecord($table, $id, $fieldArray, 2);
-					}
 					// Update reference index:
 					$this->updateRefIndex($table, $id);
-					// Set log entry:
-					$propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-					$theLogId = $this->log($table, $id, 2, $propArr['pid'], 0, 'Record \'%s\' (%s) was updated.' . ($propArr['_ORIG_pid'] == -1 ? ' (Offline version).' : ' (Online).'), 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
-					// Set History data:
-					$this->setHistory($table, $id, $theLogId);
+					if ($this->enableLogging) {
+						if ($this->checkStoredRecords) {
+							$newRow = $this->checkStoredRecord($table, $id, $fieldArray, 2);
+						}
+						// Set log entry:
+						$propArr = $this->getRecordPropertiesFromRow($table, $newRow);
+						$theLogId = $this->log($table, $id, 2, $propArr['pid'], 0, 'Record \'%s\' (%s) was updated.' . ($propArr['_ORIG_pid'] == -1 ? ' (Offline version).' : ' (Online).'), 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
+						// Set History data:
+						$this->setHistory($table, $id, $theLogId);
+					}
 					// Clear cache for relevant pages:
 					$this->registerRecordIdForPageCacheClearing($table, $id);
 					// Unset the pageCache for the id if table was page.
 					if ($table == 'pages') {
 						unset($this->pageCache[$id]);
 					}
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log($table, $id, 2, 0, 2, 'SQL error: \'%s\' (%s)', 12, array($this->databaseConnection->sql_error(), $table . ':' . $id));
 				}
 			}
@@ -6154,23 +6187,27 @@ class DataHandler {
 						$this->substNEWwithIDs_table[$NEW_id] = $table;
 					}
 					// Checking the record is properly saved and writing to log
-					if ($this->checkStoredRecords) {
+					if ($this->enableLogging && $this->checkStoredRecords) {
 						$newRow = $this->checkStoredRecord($table, $id, $fieldArray, 1);
 					}
 					// Update reference index:
 					$this->updateRefIndex($table, $id);
 					if ($newVersion) {
-						$propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-						$this->log($table, $id, 1, 0, 0, 'New version created of table \'%s\', uid \'%s\'. UID of new version is \'%s\'', 10, array($table, $fieldArray['t3ver_oid'], $id), $propArr['event_pid'], $NEW_id);
+						if ($this->enableLogging) {
+							$propArr = $this->getRecordPropertiesFromRow($table, $newRow);
+							$this->log($table, $id, 1, 0, 0, 'New version created of table \'%s\', uid \'%s\'. UID of new version is \'%s\'', 10, array($table, $fieldArray['t3ver_oid'], $id), $propArr['event_pid'], $NEW_id);
+						}
 					} else {
-						$propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-						$page_propArr = $this->getRecordProperties('pages', $propArr['pid']);
-						$this->log($table, $id, 1, 0, 0, 'Record \'%s\' (%s) was inserted on page \'%s\' (%s)', 10, array($propArr['header'], $table . ':' . $id, $page_propArr['header'], $newRow['pid']), $newRow['pid'], $NEW_id);
+						if ($this->enableLogging) {
+							$propArr = $this->getRecordPropertiesFromRow($table, $newRow);
+							$page_propArr = $this->getRecordProperties('pages', $propArr['pid']);
+							$this->log($table, $id, 1, 0, 0, 'Record \'%s\' (%s) was inserted on page \'%s\' (%s)', 10, array($propArr['header'], $table . ':' . $id, $page_propArr['header'], $newRow['pid']), $newRow['pid'], $NEW_id);
+						}
 						// Clear cache for relevant pages:
 						$this->registerRecordIdForPageCacheClearing($table, $id);
 					}
 					return $id;
-				} else {
+				} elseif ($this->enableLogging) {
 					$this->log($table, $id, 1, 0, 2, 'SQL error: \'%s\' (%s)', 12, array($this->databaseConnection->sql_error(), $table . ':' . $id));
 				}
 			}
@@ -6202,7 +6239,7 @@ class DataHandler {
 					}
 				}
 				// Set log message if there were fields with unmatching values:
-				if (!empty($errors)) {
+				if ($this->enableLogging && !empty($errors)) {
 					$message = sprintf(
 						'These fields of record %d in table "%s" have not been saved correctly: %s! The values might have changed due to type casting of the database.',
 						$id,
@@ -6338,9 +6375,11 @@ class DataHandler {
 					}
 					return array('pid' => $row['pid'], 'sortNumber' => $sortNumber);
 				} else {
-					$propArr = $this->getRecordProperties($table, $uid);
-					// OK, don't insert $propArr['event_pid'] here...
-					$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after a non-existing record (uid=%s)', 1, array($propArr['header'], $table . ':' . $uid, abs($pid)), $propArr['pid']);
+					if ($this->enableLogging) {
+						$propArr = $this->getRecordProperties($table, $uid);
+						// OK, don't insert $propArr['event_pid'] here...
+						$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) to after a non-existing record (uid=%s)', 1, array($propArr['header'], $table . ':' . $uid, abs($pid)), $propArr['pid']);
+					}
 					// There MUST be a page or else this cannot work
 					return FALSE;
 				}
@@ -7013,7 +7052,7 @@ class DataHandler {
 							if (@is_file($theFileFullPath)) {
 								$file = $this->getResourceFactory()->retrieveFileOrFolderObject($theFileFullPath);
 								$file->delete();
-							} else {
+							} elseif ($this->enableLogging) {
 								$this->log($table, 0, 3, 0, 100, 'Delete: Referenced file that was supposed to be deleted together with it\'s record didn\'t exist');
 							}
 							break;
@@ -7348,7 +7387,7 @@ class DataHandler {
 	}
 
 	/**
-	 * Simple logging function meant to bridge the gap between newlog() and log() with a little more info, in particular the record table/uid and event_pid so we can filter messages pr page.
+	 * Simple logging function meant to bridge the gap between newlog() and log() with a little more info, in particular the record table/uid and event_pid so we can filter messages per page.
 	 *
 	 * @param string $message Message string
 	 * @param string $table Table name
