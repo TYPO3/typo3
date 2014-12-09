@@ -11,35 +11,40 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/**
+ * JavaScript functions for creating multiple pages
+ */
 define('TYPO3/CMS/WizardCrpages/WizardCreatePages', ['jquery'], function($) {
 
-	var WizardCreatePages = {};
-
-	var lineCounter = 9;
+	var WizardCreatePages = {
+		lineCounter: 9,
+		containerSelector: '#formFieldContainerBody',
+		addMoreFieldsButtonSelector: '#createNewFormFields'
+	};
 
 	WizardCreatePages.createNewFormFields = function() {
 		for (i = 0; i < 5; i++) {
-			var label = lineCounter + i + 1;
-			var line = String.format(tpl, (lineCounter + i), label);
-			$(line).appendTo('#formFieldContainerBody');
+			var label = this.lineCounter + i + 1;
+			var line = String.format(tpl, (this.lineCounter + i), label);
+			$(line).appendTo(this.containerSelector);
 		}
-		lineCounter += 5;
+		this.lineCounter += 5;
 	};
 
-	WizardCreatePages.actOnTypeSelectChange = function(element) {
-		var selectedElement = element.find(':selected');
-		element.css('background-image', selectedElement.css('background-image'));
+	WizardCreatePages.actOnTypeSelectChange = function($selectElement) {
+		var $optionElement = $selectElement.find(':selected');
+		$selectElement.css('background-image', $optionElement.css('background-image'));
 	};
 
 	/**
 	 * Register listeners
 	 */
 	WizardCreatePages.initializeEvents = function() {
-		$('#createNewFormFields').on('click', function() {
+		$(this.addMoreFieldsButtonSelector).on('click', function() {
 			WizardCreatePages.createNewFormFields();
 		});
 
-		$('#type-select').change(function() {
+		$(document).on('change', '.icon-select', function() {
 			WizardCreatePages.actOnTypeSelectChange($(this));
 		});
 	};
