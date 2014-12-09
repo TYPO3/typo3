@@ -6,6 +6,10 @@
 	margin: 10px;
 }
 
+.contentelement-wizard a {
+	display: inline-block;
+}
+
 .contentelement-wizard li {
 	margin-bottom: 10px;
 }
