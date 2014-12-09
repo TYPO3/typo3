@@ -3647,20 +3647,38 @@ class BackendUtility {
 	}
 
 	/**
+	 * Gets an instance of the runtime cache.
+	 *
+	 * @return VariableFrontend
+	 */
+	static protected function getRuntimeCache() {
+		return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_runtime');
+	}
+
+	/**
 	 * Returns array of soft parser references
 	 *
 	 * @param string $parserList softRef parser list
-	 * @return array Array where the parser key is the key and the value is the parameter string
+	 * @return array|bool Array where the parser key is the key and the value is the parameter string, FALSE if no parsers were found
 	 */
 	static public function explodeSoftRefParserList($parserList) {
+		$runtimeCache = self::getRuntimeCache();
+		$cacheId = 'backend-softRefList-' . md5($parserList);
+		if ($runtimeCache->has($cacheId)) {
+			return $runtimeCache->get($cacheId);
+		}
+
 		// Looking for global parsers:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) {
 			$parserList = implode(',', array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) . ',' . $parserList;
 		}
+
 		// Return immediately if list is blank:
-		if (!strlen($parserList)) {
+		if ($parserList === '') {
+			$runtimeCache->set($cacheId, FALSE);
 			return FALSE;
 		}
+
 		// Otherwise parse the list:
 		$keyList = GeneralUtility::trimExplode(',', $parserList, TRUE);
 		$output = array();
@@ -3672,6 +3690,7 @@ class BackendUtility {
 				$output[$val] = '';
 			}
 		}
+		$runtimeCache->set($cacheId, $output);
 		return $output;
 	}
 
