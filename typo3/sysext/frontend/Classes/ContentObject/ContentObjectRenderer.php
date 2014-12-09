@@ -7008,7 +7008,7 @@ class ContentObjectRenderer {
 			$old_conf = $confArr[$prop . '.'];
 			list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 			if (is_array($old_conf) && count($old_conf)) {
-				$conf = array_replace_recursive($conf, $old_conf);
+				$conf = array_replace_recursive(is_array($conf) ? $conf : array(), $old_conf);
 			}
 			$confArr[$prop . '.'] = $conf;
 		}
