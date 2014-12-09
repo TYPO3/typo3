@@ -255,11 +255,7 @@ class ModuleLoader {
 				if (is_object($GLOBALS['LANG'])) {
 					// $setupInformation['labels']['default']['tabs_images']['tab'] is for modules the reference
 					// to the module icon.
-					if (isset($setupInformation['configuration']['labels'])) {
-						$defaultLabels = $setupInformation['configuration']['labels'];
-					} else {
-						$defaultLabels = $setupInformation['labels']['default'];
-					}
+					$defaultLabels = $setupInformation['labels']['default'];
 
 					// Here the path is transformed to an absolute reference.
 					if ($defaultLabels['tabs_images']['tab']) {
@@ -367,7 +363,7 @@ class ModuleLoader {
 			// The conf-file is included. This must be valid PHP.
 			include $path . '/conf.php';
 
-			// move the global variables defined in conf.php into the local method
+			// Move the global variables defined in conf.php into the local method
 			if (is_array($MCONF)) {
 				$moduleSetupInformation['configuration'] = $MCONF;
 			} else {
@@ -376,12 +372,24 @@ class ModuleLoader {
 			$moduleSetupInformation['labels'] = $MLANG;
 		}
 
-		// overlay them with additional setup information and configuration
-		if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-			$moduleSetupInformation['configuration'] = array_merge_recursive($moduleSetupInformation['configuration'], $GLOBALS['TBE_MODULES']['_configuration'][$moduleName]);
+		$moduleConfiguration = !empty($GLOBALS['TBE_MODULES']['_configuration'][$moduleName]) ? $GLOBALS['TBE_MODULES']['_configuration'][$moduleName] : NULL;
+		if ($moduleConfiguration !== NULL) {
+			// Overlay setup with additional labels
+			if (!empty($moduleConfiguration['labels']) && is_array($moduleConfiguration['labels'])) {
+				if (empty($moduleSetupInformation['labels']['default']) || !is_array($moduleSetupInformation['labels']['default'])) {
+					$moduleSetupInformation['labels']['default'] = $moduleConfiguration['labels'];
+				} else {
+					$moduleSetupInformation['labels']['default'] = array_replace_recursive($moduleSetupInformation['labels']['default'], $moduleConfiguration['labels']);
+				}
+				unset($moduleConfiguration['labels']);
+			}
+			// Overlay setup with additional configuration
+			if (is_array($moduleConfiguration)) {
+				$moduleSetupInformation['configuration'] = array_replace_recursive($moduleSetupInformation['configuration'], $moduleConfiguration);
+			}
 		}
 
-		// add some default configuration
+		// Add some default configuration
 		if (!isset($moduleSetupInformation['configuration']['inheritNavigationComponentFromMainModule'])) {
 			$moduleSetupInformation['configuration']['inheritNavigationComponentFromMainModule'] = TRUE;
 		}
