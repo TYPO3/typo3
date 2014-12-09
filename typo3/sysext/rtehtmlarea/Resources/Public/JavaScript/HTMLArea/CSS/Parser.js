@@ -227,7 +227,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
 				// Import rule
 				try {
 					if (cssRules[rule].styleSheet && cssRules[rule].styleSheet.cssRules) {
-							this.parseRules(cssRules[rule].styleSheet.cssRules);
+						this.parseRules(cssRules[rule].styleSheet.cssRules);
 					}
 				} catch (e) {
 					if (/Security/i.test(e)) {

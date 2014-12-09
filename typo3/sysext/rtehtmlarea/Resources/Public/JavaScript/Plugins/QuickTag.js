@@ -243,10 +243,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/QuickTag',
 						}));
 					}
 				} else {
-						// ImportRule (Mozilla)
+					// ImportRule (Mozilla)
 					if (rule.styleSheet) {
 						try {
-							this.parseCssRule(rule.styleSheet.cssRules, valueStore);
+							if (rule.styleSheet.cssRules) {
+								this.parseCssRule(rule.styleSheet.cssRules, valueStore);
+							}
 						} catch (e) {
 							if (/Security/i.test(e)) {
 								this.appendToLog('parseCssRule', 'A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.', 'error');
@@ -255,11 +257,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/QuickTag',
 							}
 						}
 					}
-						// MediaRule (Mozilla)
+					// MediaRule (Mozilla)
 					if (rule.cssRules) {
 						this.parseCssRule(rule.cssRules, valueStore);
 					}
-						// IE imports
+					// IE imports
 					if (rule.imports) {
 						this.parseCssRule(rule.imports, valueStore);
 					}
