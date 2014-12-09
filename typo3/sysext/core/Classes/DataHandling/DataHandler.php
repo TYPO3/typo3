@@ -1448,9 +1448,17 @@ class DataHandler {
 		$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
-				// Write file configuration:
-				// inserted array_merge($currentRecord,$fieldArray) 170502
-				$eFile = \TYPO3\CMS\Core\Html\RteHtmlParser::evalWriteFile($vconf['spec']['static_write'], array_merge($currentRecord, $fieldArray));
+				$eFile = NULL;
+				if (isset($vconf['spec']['static_write']) && isset($GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath'])) {
+					// only do array_merge if static_write is enabled
+					$eFile = \TYPO3\CMS\Core\Html\RteHtmlParser::evalWriteFile($vconf['spec']['static_write'], array_merge($currentRecord, $fieldArray));
+					// RteHtmlParser::evalWriteFile will return a string if an error ocurrs
+					if (is_string($eFile)) {
+						$this->log($table, $id, 2, 0, 1, 'Write-file error: \'%s\'', 13, array($eFile), $realPid);
+						// Unset eFile to make checks cheaper
+						$eFile = NULL;
+					}
+				}
 				// RTE transformations:
 				if (!$this->dontProcessTransformations) {
 					if (isset($fieldArray[$vconf['field']])) {
@@ -1460,7 +1468,7 @@ class DataHandler {
 								$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 								$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
 								// Set alternative relative path for RTE images/links:
-								$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
+								$RTErelPath = isset($eFile) ? dirname($eFile['relEditFile']) : '';
 								// Get RTE object, draw form and set flag:
 								$RTEobj = BackendUtility::RTEgetObj();
 								if (is_object($RTEobj)) {
@@ -1473,7 +1481,7 @@ class DataHandler {
 					}
 				}
 				// Write file configuration:
-				if (is_array($eFile)) {
+				if (isset($eFile)) {
 					$mixedRec = array_merge($currentRecord, $fieldArray);
 					$SW_fileContent = GeneralUtility::getUrl($eFile['editFile']);
 					$parseHTML = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
@@ -1490,8 +1498,6 @@ class DataHandler {
 							$eFile['statusField'] => $eFile['relEditFile'] . ' updated ' . date('d-m-Y H:i:s') . ', bytes ' . strlen($mixedRec[$eFile['contentField']])
 						));
 					}
-				} elseif ($eFile && is_string($eFile)) {
-					$this->log($table, $id, 2, 0, 1, 'Write-file error: \'%s\'', 13, array($eFile), $realPid);
 				}
 			}
 		}
