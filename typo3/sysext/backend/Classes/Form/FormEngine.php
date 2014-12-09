@@ -6719,10 +6719,6 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 	 * @return string
 	 */
 	protected function getPlaceholderAttribute($table, $field, array $config, array $row) {
-		if (!isset($config['mode']) || $config['mode'] !== 'useOrOverridePlaceholder') {
-			return '';
-		}
-
 		$value = $this->getPlaceholderValue($table, $field, $config, $row);
 
 		// Cleanup the string and support 'LLL:'
