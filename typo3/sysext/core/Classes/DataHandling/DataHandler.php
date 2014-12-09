@@ -6920,13 +6920,12 @@ class DataHandler {
 						// point to real pages and caches at all. Flushing caches for
 						// those records does not make sense and decreases performance
 						if ($pageId >= 0) {
-							$tagsToClear[] = 'pageId_' . $pageId;
+							$tagsToClear['pageId_' . $pageId] = TRUE;
 						}
 					}
 					// Queue delete cache for current table and record
-					$tagsToClear[] = $table;
-					$tagsToClear[] = $table . '_' . $uid;
-					$tagsToClear = array_unique($tagsToClear);
+					$tagsToClear[$table] = TRUE;
+					$tagsToClear[$table . '_' . $uid] = TRUE;
 				}
 				// Clear cache for pages entered in TSconfig:
 				if (!empty($TSConfig['clearCacheCmd'])) {
@@ -6946,7 +6945,7 @@ class DataHandler {
 
 		/** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
 		$cacheManager = $this->getCacheManager();
-		foreach ($tagsToClear as $tag) {
+		foreach ($tagsToClear as $tag => $unusedValue) {
 			$cacheManager->flushCachesInGroupByTag('pages', $tag);
 		}
 
