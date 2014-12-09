@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Database;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -32,6 +33,55 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ReferenceIndex {
+
+	/**
+	 * Definition of tables to exclude from searching for relations
+	 *
+	 * Only tables which do not contain any relations and never did so far since references also won't be deleted for
+	 * these. Since only tables with an entry in $GLOBALS['TCA] are handled by ReferenceIndex there is no need to add
+	 * *_mm-tables.
+	 *
+	 * This is implemented as an array with fields as keys and booleans as values to be able to fast isset() instead of
+	 * slow in_array() lookup.
+	 *
+	 * @var array
+	 * @see updateRefIndexTable()
+	 * @todo #65461 Create configuration for tables to exclude from ReferenceIndex
+	 */
+	static protected $nonRelationTables = array(
+		'sys_log' => TRUE,
+		'sys_history' => TRUE,
+		'tx_extensionmanager_domain_model_extension' => TRUE
+	);
+
+	/**
+	 * Definition of fields to exclude from searching for relations
+	 *
+	 * This is implemented as an array with fields as keys and booleans as values to be able to fast isset() instead of
+	 * slow in_array() lookup.
+	 *
+	 * @var array
+	 * @see getRelations()
+	 * @see fetchTableRelationFields()
+	 * @todo #65460 Create configuration for fields to exclude from ReferenceIndex
+	 */
+	static protected $nonRelationFields = array(
+		'uid' => TRUE,
+		'perms_userid' => TRUE,
+		'perms_groupid' => TRUE,
+		'perms_user' => TRUE,
+		'perms_group' => TRUE,
+		'perms_everybody' => TRUE,
+		'pid' => TRUE
+	);
+
+	/**
+	 * Fields of tables that could contain relations are cached per table. This is the prefix for the cache entries since
+	 * the runtimeCache has a global scope.
+	 *
+	 * @var string
+	 */
+	static protected $cachePrefixTableRelationFields = 'core-refidx-tblRelFields-';
 
 	/**
 	 * @var array
@@ -66,6 +116,18 @@ class ReferenceIndex {
 	protected $workspaceId = 0;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+	 */
+	protected $runtimeCache = NULL;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
+	}
+
+	/**
 	 * Sets the current workspace id.
 	 *
 	 * @param int $workspaceId
@@ -87,36 +149,60 @@ class ReferenceIndex {
 	 * Call this function to update the sys_refindex table for a record (even one just deleted)
 	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
 	 *
-	 * @param string $table Table name
+	 * @param string $tableName Table name
 	 * @param int $uid UID of record
 	 * @param bool $testOnly If set, nothing will be written to the index but the result value will still report statistics on what is added, deleted and kept. Can be used for mere analysis.
 	 * @return array Array with statistics about how many index records were added, deleted and not altered plus the complete reference set for the record.
 	 */
-	public function updateRefIndexTable($table, $uid, $testOnly = FALSE) {
+	public function updateRefIndexTable($tableName, $uid, $testOnly = FALSE) {
+
 		// First, secure that the index table is not updated with workspace tainted relations:
 		$this->WSOL = FALSE;
+
 		// Init:
 		$result = array(
 			'keptNodes' => 0,
 			'deletedNodes' => 0,
 			'addedNodes' => 0
 		);
-		// Get current index from Database:
-		$currentRels = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . (int)$uid . ' AND workspace=' . (int)$this->getWorkspaceId(), '', '', '', 'hash');
-		// First, test to see if the record exists (including deleted-flagged)
-		if (BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid, 'uid')) {
+
+		// If this table cannot contain relations, skip it
+		if (isset(static::$nonRelationTables[$tableName])) {
+			return $result;
+		}
+
+		// Fetch tableRelationFields and save them in cache if not there yet
+		$cacheId = static::$cachePrefixTableRelationFields. $tableName;
+		if (!$this->runtimeCache->has($cacheId)) {
+			$tableRelationFields = $this->fetchTableRelationFields($tableName);
+			$this->runtimeCache->set($cacheId, $tableRelationFields);
+		} else {
+			$tableRelationFields = $this->runtimeCache->get($cacheId);
+		}
+
+		// Get current index from Database with hash as index using $uidIndexField
+		$currentRelations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex')
+			. ' AND recuid=' . (int)$uid . ' AND workspace=' . (int)$this->getWorkspaceId(),
+			'', '', '', 'hash'
+		);
+
+		// If the table has fields which could contain relations and the record does exist (including deleted-flagged)
+		if ($tableRelationFields !== '' && BackendUtility::getRecordRaw($tableName, 'uid=' . (int)$uid, 'uid')) {
 			// Then, get relations:
-			$relations = $this->generateRefIndexData($table, $uid);
+			$relations = $this->generateRefIndexData($tableName, $uid);
 			if (is_array($relations)) {
 				// Traverse the generated index:
 				foreach ($relations as $k => $datRec) {
-					if (!is_array($relations[$k])){
+					if (!is_array($relations[$k])) {
 						continue;
 					}
 					$relations[$k]['hash'] = md5(implode('///', $relations[$k]) . '///' . $this->hashVersion);
 					// First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
-					if (isset($currentRels[$relations[$k]['hash']])) {
-						unset($currentRels[$relations[$k]['hash']]);
+					if (isset($currentRelations[$relations[$k]['hash']])) {
+						unset($currentRelations[$relations[$k]['hash']]);
 						$result['keptNodes']++;
 						$relations[$k]['_ACTION'] = 'KEPT';
 					} else {
@@ -130,13 +216,14 @@ class ReferenceIndex {
 				}
 				$result['relations'] = $relations;
 			} else {
-				return FALSE;
+				return $result;
 			}
 		}
+
 		// If any old are left, remove them:
-		if (count($currentRels)) {
-			$hashList = array_keys($currentRels);
-			if (count($hashList)) {
+		if (!empty($currentRelations)) {
+			$hashList = array_keys($currentRelations);
+			if (!empty($hashList)) {
 				$result['deletedNodes'] = count($hashList);
 				$result['deletedNodes_hashList'] = implode(',', $hashList);
 				if (!$testOnly) {
@@ -144,6 +231,7 @@ class ReferenceIndex {
 				}
 			}
 		}
+
 		return $result;
 	}
 
@@ -151,62 +239,93 @@ class ReferenceIndex {
 	 * Returns array of arrays with an index of all references found in record from table/uid
 	 * If the result is used to update the sys_refindex table then ->WSOL must NOT be TRUE (no workspace overlay anywhere!)
 	 *
-	 * @param string $table Table name from $GLOBALS['TCA']
+	 * @param string $tableName Table name from $GLOBALS['TCA']
 	 * @param int $uid Record UID
-	 * @return array Index Rows
+	 * @return array|NULL Index Rows
 	 */
-	public function generateRefIndexData($table, $uid) {
-		if (isset($GLOBALS['TCA'][$table])) {
-			// Get raw record from DB:
-			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $table, 'uid=' . (int)$uid);
-			if (is_array($record)) {
-				// Deleted:
-				$deleted = $GLOBALS['TCA'][$table]['ctrl']['delete'] && $record[$GLOBALS['TCA'][$table]['ctrl']['delete']] ? 1 : 0;
-				// Get all relations from record:
-				$dbrels = $this->getRelations($table, $record);
-				// Traverse those relations, compile records to insert in table:
-				$this->relations = array();
-				foreach ($dbrels as $fieldname => $dat) {
-					// Based on type,
-					switch ((string)$dat['type']) {
-						case 'db':
-							$this->createEntryData_dbRels($table, $uid, $fieldname, '', $deleted, $dat['itemArray']);
-							break;
-						case 'file_reference':
-							// not used (see getRelations()), but fallback to file
-						case 'file':
-							$this->createEntryData_fileRels($table, $uid, $fieldname, '', $deleted, $dat['newValueFiles']);
-							break;
-						case 'flex':
-							// DB references:
-							if (is_array($dat['flexFormRels']['db'])) {
-								foreach ($dat['flexFormRels']['db'] as $flexpointer => $subList) {
-									$this->createEntryData_dbRels($table, $uid, $fieldname, $flexpointer, $deleted, $subList);
-								}
-							}
-							// File references (NOT TESTED!)
-							if (is_array($dat['flexFormRels']['file'])) {
-								// Not tested
-								foreach ($dat['flexFormRels']['file'] as $flexpointer => $subList) {
-									$this->createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $subList);
-								}
-							}
-							// Soft references in flexforms (NOT TESTED!)
-							if (is_array($dat['flexFormRels']['softrefs'])) {
-								foreach ($dat['flexFormRels']['softrefs'] as $flexpointer => $subList) {
-									$this->createEntryData_softreferences($table, $uid, $fieldname, $flexpointer, $deleted, $subList['keys']);
-								}
-							}
-							break;
+	public function generateRefIndexData($tableName, $uid) {
+
+		if (!isset($GLOBALS['TCA'][$tableName])) {
+			return NULL;
+		}
+
+		$this->relations = array();
+
+		// Fetch tableRelationFields and save them in cache if not there yet
+		$cacheId = static::$cachePrefixTableRelationFields . $tableName;
+		if (!$this->runtimeCache->has($cacheId)) {
+			$tableRelationFields = $this->fetchTableRelationFields($tableName);
+			$this->runtimeCache->set($cacheId, $tableRelationFields);
+		} else {
+			$tableRelationFields = $this->runtimeCache->get($cacheId);
+		}
+
+		// Return if there are no fields which could contain relations
+		if ($tableRelationFields === '') {
+			return $this->relations;
+		}
+
+		$deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'];
+
+		if ($tableRelationFields === '*') {
+			// If one field of a record is of type flex, all fields have to be fetched to be passed to BackendUtility::getFlexFormDS
+			$selectFields = '*';
+		} else {
+			// otherwise only fields that might contain relations are fetched
+			$selectFields = 'uid,' . $tableRelationFields . ($deleteField ? ',' . $deleteField : '');
+		}
+
+		// Get raw record from DB:
+		$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($selectFields, $tableName, 'uid=' . (int)$uid);
+		if (!is_array($record)) {
+			return NULL;
+		}
+
+		// Deleted:
+		$deleted = $deleteField && $record[$deleteField] ? 1 : 0;
+
+		// Get all relations from record:
+		$recordRelations = $this->getRelations($tableName, $record);
+		// Traverse those relations, compile records to insert in table:
+		foreach ($recordRelations as $fieldName => $fieldRelations) {
+			// Based on type,
+			switch ((string)$fieldRelations['type']) {
+				case 'db':
+					$this->createEntryData_dbRels($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['itemArray']);
+					break;
+				case 'file_reference':
+					// not used (see getRelations()), but fallback to file
+				case 'file':
+					$this->createEntryData_fileRels($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['newValueFiles']);
+					break;
+				case 'flex':
+					// DB references:
+					if (is_array($fieldRelations['flexFormRels']['db'])) {
+						foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
+							$this->createEntryData_dbRels($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList);
+						}
 					}
-					// Softreferences in the field:
-					if (is_array($dat['softrefs'])) {
-						$this->createEntryData_softreferences($table, $uid, $fieldname, '', $deleted, $dat['softrefs']['keys']);
+					// @todo #65463 Test correct handling of file references in flexforms
+					if (is_array($fieldRelations['flexFormRels']['file'])) {
+						foreach ($fieldRelations['flexFormRels']['file'] as $flexPointer => $subList) {
+							$this->createEntryData_fileRels($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList);
+						}
 					}
-				}
-				return $this->relations;
+					// @todo #65464 Test correct handling of soft references in flexforms
+					if (is_array($fieldRelations['flexFormRels']['softrefs'])) {
+						foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
+							$this->createEntryData_softreferences($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList['keys']);
+						}
+					}
+					break;
+			}
+			// Soft references in the field:
+			if (is_array($fieldRelations['softrefs'])) {
+				$this->createEntryData_softreferences($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['softrefs']['keys']);
 			}
 		}
+
+		return $this->relations;
 	}
 
 	/**
@@ -349,10 +468,9 @@ class ReferenceIndex {
 	public function getRelations($table, $row, $onlyField = '') {
 		// Initialize:
 		$uid = $row['uid'];
-		$nonFields = explode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,pid');
 		$outRow = array();
 		foreach ($row as $field => $value) {
-			if (!in_array($field, $nonFields) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && (!$onlyField || $onlyField === $field)) {
+			if (!isset(static::$nonRelationFields[$field]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && (!$onlyField || $onlyField === $field)) {
 				$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 				// Add files
 				$resultsFromFiles = $this->getRelations_procFiles($value, $conf, $uid);
@@ -397,7 +515,6 @@ class ReferenceIndex {
 				if ($conf['type'] == 'flex') {
 					// Get current value array:
 					// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
-					$dataStructArray = BackendUtility::getFlexFormDS($conf, $row, $table, $field, $this->WSOL);
 					$currentValueArray = GeneralUtility::xml2array($value);
 					// Traversing the XML structure, processing files:
 					if (is_array($currentValueArray)) {
@@ -456,7 +573,11 @@ class ReferenceIndex {
 		$structurePath = substr($structurePath, 5) . '/';
 		$dsConf = $dsArr['TCEforms']['config'];
 		// Implode parameter values:
-		list($table, $uid, $field) = array($PA['table'], $PA['uid'], $PA['field']);
+		list($table, $uid, $field) = array(
+			$PA['table'],
+			$PA['uid'],
+			$PA['field']
+		);
 		// Add files
 		$resultsFromFiles = $this->getRelations_procFiles($dataValue, $dsConf, $uid);
 		if (!empty($resultsFromFiles)) {
@@ -579,13 +700,15 @@ class ReferenceIndex {
 	 */
 	public function getRelations_procDB($value, $conf, $uid, $table = '', $field = '') {
 		// Get IRRE relations
-		if ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
+		if (empty($conf)) {
+			return FALSE;
+		} elseif ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
 			$dbAnalysis = $this->getRelationHandler();
 			$dbAnalysis->setUseLiveReferenceIds(FALSE);
 			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
 		// DB record lists:
-		} elseif ($this->isReferenceField($conf)) {
+		} elseif ($this->isDbReferenceField($conf)) {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			if ($conf['MM_opposite_field']) {
 				return array();
@@ -594,11 +717,14 @@ class ReferenceIndex {
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
 		} elseif ($conf['type'] == 'inline' && $conf['foreign_table'] == 'sys_file_reference') {
-			// @todo It looks like this was never called before since isReferenceField also checks for type 'inline' and any 'foreign_table'
+			// @todo It looks like this was never called before since isDbReferenceField also checks for type 'inline' and any 'foreign_table'
 			$files = (array)$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_local', 'sys_file_reference', ('tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid . ' AND deleted=0'));
 			$fileArray = array();
 			foreach ($files as $fileUid) {
-				$fileArray[] = array('table' => 'sys_file', 'id' => $fileUid['uid_local']);
+				$fileArray[] = array(
+					'table' => 'sys_file',
+					'id' => $fileUid['uid_local']
+				);
 			}
 			return $fileArray;
 		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && StringUtility::beginsWith($value, 'file:')) {
@@ -849,20 +975,74 @@ class ReferenceIndex {
 	 * Helper functions
 	 *
 	 *******************************/
+
 	/**
 	 * Returns TRUE if the TCA/columns field type is a DB reference field
 	 *
-	 * @param array $conf Config array for TCA/columns field
+	 * @param array $configuration Config array for TCA/columns field
 	 * @return bool TRUE if DB reference field (group/db or select with foreign-table)
 	 */
-	public function isReferenceField($conf) {
+	protected function isDbReferenceField(array $configuration) {
 		return (
-			($conf['type'] == 'group' && $conf['internal_type'] == 'db')
+			($configuration['type'] === 'group' && $configuration['internal_type'] === 'db')
 			|| (
-				($conf['type'] == 'select' || $conf['type'] == 'inline')
-				&& $conf['foreign_table']
+				($configuration['type'] === 'select' || $configuration['type'] === 'inline')
+				&& !empty($configuration['foreign_table'])
 			)
 		);
+	}
+
+	/**
+	 * Returns TRUE if the TCA/columns field type is a reference field
+	 *
+	 * @param array $configuration Config array for TCA/columns field
+	 * @return bool TRUE if reference field
+	 */
+	public function isReferenceField(array $configuration) {
+		return (
+			$this->isDbReferenceField($configuration)
+			||
+			($configuration['type'] === 'group' && ($configuration['internal_type'] === 'file' || $configuration['internal_type'] === 'file_reference')) // getRelations_procFiles
+			||
+			($configuration['type'] === 'input' && isset($configuration['wizards']['link'])) // getRelations_procDB
+			||
+			$configuration['type'] === 'flex'
+			||
+			isset($configuration['softref'])
+			||
+			(
+				// @deprecated global soft reference parsers are deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8
+				is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])
+				&& !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])
+			)
+		);
+	}
+
+	/**
+	 * Returns all fields of a table which could contain a relation
+	 *
+	 * @param string $tableName Name of the table
+	 * @return string Fields which could contain a relation
+	 */
+	protected function fetchTableRelationFields($tableName) {
+		$fields = array();
+
+		foreach ($GLOBALS['TCA'][$tableName]['columns'] as $field => $fieldDefinition) {
+			if (is_array($fieldDefinition['config'])) {
+				// Check for flex field
+				if (isset($fieldDefinition['config']['type']) && $fieldDefinition['config']['type'] === 'flex') {
+					// Fetch all fields if the is a field of type flex in the table definition because the complete row is passed to
+					// BackendUtility::getFlexFormDS in the end and might be needed in ds_pointerField or $hookObj->getFlexFormDS_postProcessDS
+					return '*';
+				}
+				// Only fetch this field if it can contain a reference
+				if ($this->isReferenceField($fieldDefinition['config'])) {
+					$fields[] = $field;
+				}
+			}
+		}
+
+		return implode(',', $fields);
 	}
 
 	/**
