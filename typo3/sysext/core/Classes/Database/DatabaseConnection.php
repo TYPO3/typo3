@@ -170,6 +170,22 @@ class DatabaseConnection {
 	protected $postProcessHookObjects = array();
 
 	/**
+	 * the date and time formats compatible with the database in general
+	 *
+	 * @var array
+	 */
+	static protected $dateTimeFormats = array(
+		'date' => array(
+			'empty' => '0000-00-00',
+			'format' => 'Y-m-d'
+		),
+		'datetime' => array(
+			'empty' => '0000-00-00 00:00:00',
+			'format' => 'Y-m-d H:i:s'
+		)
+	);
+
+	/**
 	 * Initialize the database connection
 	 *
 	 * @return void
@@ -956,16 +972,7 @@ class DatabaseConnection {
 	 * @return array
 	 */
 	public function getDateTimeFormats($table) {
-		return array(
-			'date' => array(
-				'empty' => '0000-00-00',
-				'format' => 'Y-m-d'
-			),
-			'datetime' => array(
-				'empty' => '0000-00-00 00:00:00',
-				'format' => 'Y-m-d H:i:s'
-			)
-		);
+		return self::$dateTimeFormats;
 	}
 
 	/**************************************
