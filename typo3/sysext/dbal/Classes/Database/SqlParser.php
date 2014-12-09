@@ -392,11 +392,11 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 					foreach ($fieldCfg['featureIndex'] as $feature => $featureDef) {
 						switch (TRUE) {
 							case $feature === 'UNSIGNED' && !$this->databaseConnection->runningADOdbDriver('mysql'):
-
-							case $feature === 'AUTO_INCREMENT':
-
 							case $feature === 'NOTNULL' && $this->databaseConnection->runningADOdbDriver('oci8'):
 								continue;
+							case $feature === 'AUTO_INCREMENT':
+								$cfg .= ' AUTOINCREMENT';
+								break;
 							case $feature === 'NOTNULL':
 								$cfg .= ' NOTNULL';
 								break;
