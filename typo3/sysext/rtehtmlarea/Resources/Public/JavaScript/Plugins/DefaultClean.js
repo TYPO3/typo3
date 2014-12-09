@@ -21,7 +21,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultClean',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 	function (Plugin, UserAgent, Util, Dom, Event) {
 
-	var DefaultClean = Ext.extend(Plugin, {
+	var DefaultClean = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(DefaultClean, Plugin);
+	Util.apply(DefaultClean.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

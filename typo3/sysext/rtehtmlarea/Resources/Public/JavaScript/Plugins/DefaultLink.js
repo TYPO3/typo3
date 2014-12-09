@@ -20,7 +20,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
 	function (Plugin, UserAgent, Util, Dom) {
 
-	var DefaultLink = Ext.extend(Plugin, {
+	var DefaultLink = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(DefaultLink, Plugin);
+	Util.apply(DefaultLink.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

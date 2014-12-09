@@ -57,15 +57,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util', [], function() {
 		 * @return Object obj
 		 */
 		apply: function (object, config, defaults){
-		    if (defaults){
-			Util.apply(object, defaults);
-		    }
-		    if (object && typeof object === 'object' && config && typeof config === 'object'){
-			for (var property in config) {
-			    object[property] = config[property];
+			if (defaults){
+				Util.apply(object, defaults);
 			}
-		    }
-		    return object;
+			if (object && typeof object === 'object' && config && typeof config === 'object'){
+				for (var property in config) {
+					object[property] = config[property];
+				}
+			}
+			return object;
 		},
 
 		/**
@@ -76,14 +76,31 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util', [], function() {
 		 * @return Object object
 		 */
 		applyIf: function (object, config) {
-		    if (object && typeof object === 'object' && config && typeof config === 'object') {
-			for (var property in config){
-			    if (typeof object[property] === 'undefined') {
-				object[property] = config[property];
-			    }
+			if (object && typeof object === 'object' && config && typeof config === 'object') {
+				for (var property in config){
+					if (typeof object[property] === 'undefined') {
+						object[property] = config[property];
+					}
+				}
 			}
-		    }
-		    return object;
+			return object;
+		},
+
+		/**
+		 * Simple inheritance
+		 * subClass inherits from superClass
+		 *
+		 * @param Object subClass The class that inherits
+		 * @param Object superClass The source of the properties
+		 * @return Object the subClass
+		 */
+		inherit: function (subClass, superClass) {
+		    	var Construct = Util.emptyFunction;
+		    	Construct.prototype = superClass.prototype;
+		    	subClass.prototype = new Construct;
+		    	subClass.prototype.constructor = subClass;
+			subClass.super = superClass;
+			return subClass;
 		}
 	};
 

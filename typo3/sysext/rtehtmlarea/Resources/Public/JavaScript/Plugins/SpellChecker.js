@@ -20,7 +20,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SpellChecker',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
 	function (Plugin, UserAgent, Util, Dom) {
 
-	var SpellChecker = Ext.extend(Plugin, {
+	var SpellChecker = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(SpellChecker, Plugin);
+	Util.apply(SpellChecker.prototype, {
 
 		/**
 		 * This function gets called by the class constructor
@@ -448,7 +452,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SpellChecker',
 				});
 				return false;
 			} else {
-				return HTMLArea.SpellChecker.superclass.onCancel.call(this);
+				return SpellChecker.super.prototype.onCancel.call(this);
 			}
 		},
 

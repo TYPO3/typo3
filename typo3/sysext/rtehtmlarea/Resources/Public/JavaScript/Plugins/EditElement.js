@@ -23,7 +23,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/EditElement',
 	'TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle'],
 	function (Plugin, Util, Dom, MicrodataSchema, Language, BlockStyle, TextStyle) {
 
-	var EditElement= Ext.extend(Plugin, {
+	var EditElement = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(EditElement, Plugin);
+	Util.apply(EditElement.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

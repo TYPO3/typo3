@@ -19,7 +19,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/QuickTag',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ColorPaletteField'],
 	function (Plugin, Util, ColorPaletteField) {
 
-	var QuickTag = Ext.extend(Plugin, {
+	var QuickTag = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(QuickTag, Plugin);
+	Util.apply(QuickTag.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

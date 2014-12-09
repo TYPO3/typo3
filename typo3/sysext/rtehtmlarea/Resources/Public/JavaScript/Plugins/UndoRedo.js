@@ -15,10 +15,15 @@
  */
 define('TYPO3/CMS/Rtehtmlarea/Plugins/UndoRedo',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
-	function (Plugin, UserAgent) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Util) {
 
-	var UndoRedo = Ext.extend(Plugin, {
+	var UndoRedo = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(UndoRedo, Plugin);
+	Util.apply(UndoRedo.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

@@ -14,8 +14,9 @@
  * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
  *****************************************************************/
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
-	function (UserAgent) {
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (UserAgent, Util) {
 
 	var Dom = {
 
@@ -428,7 +429,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 		 * @return	void
 		 */
 		makeUrlsAbsolute: function (node, baseUrl, walker) {
-			walker.walk(node, true, 'HTMLArea.DOM.makeImageSourceAbsolute(node, args[0]) || HTMLArea.DOM.makeLinkHrefAbsolute(node, args[0])', 'HTMLArea.util.emptyFunction', [baseUrl]);
+			walker.walk(node, true, 'args[0].makeImageSourceAbsolute(node, args[2]) || args[0].makeLinkHrefAbsolute(node, args[2])', 'args[1].emptyFunction', [Dom, Util, baseUrl]);
 		},
 
 		/**

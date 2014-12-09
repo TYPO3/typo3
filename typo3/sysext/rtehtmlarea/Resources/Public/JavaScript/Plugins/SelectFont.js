@@ -16,10 +16,15 @@
 define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
-	function (Plugin, UserAgent, Dom) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Dom, Util) {
 
-	var SelectFont = Ext.extend(Plugin, {
+	var SelectFont = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(SelectFont, Plugin);
+	Util.apply(SelectFont.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

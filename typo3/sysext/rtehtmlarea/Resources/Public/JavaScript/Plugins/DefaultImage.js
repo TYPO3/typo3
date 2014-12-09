@@ -19,7 +19,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultImage',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function (Plugin, UserAgent, Util) {
 
-	var DefaultImage = Ext.extend(Plugin, {
+	var DefaultImage = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(DefaultImage, Plugin);
+	Util.apply(DefaultImage.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

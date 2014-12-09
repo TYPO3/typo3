@@ -18,7 +18,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Abbreviation',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
 	function (Plugin, Util) {
 
-	var Abbreviation = Ext.extend(Plugin, {
+	var Abbreviation = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(Abbreviation, Plugin);
+	Util.apply(Abbreviation.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

@@ -17,10 +17,15 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (Plugin, UserAgent, Dom, Event) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Dom, Event, Util) {
 
-	var BlockElements = Ext.extend(Plugin, {
+	var BlockElements = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(BlockElements, Plugin);
+	Util.apply(BlockElements.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

@@ -14,13 +14,18 @@
  * DefinitionList Plugin for TYPO3 htmlArea RTE
  */
 define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
-	['TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+	'TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
-	function (BlockElements, UserAgent, Util, Dom) {
+	function (Plugin, BlockElements, UserAgent, Util, Dom) {
 
-	var DefinitionList = Ext.extend(BlockElements, {
+	var DefinitionList = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(DefinitionList, Plugin);
+	Util.apply(DefinitionList.prototype, {
 
 		/**
 		 * This function gets called by the class constructor
@@ -31,7 +36,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 			 * Setting up some properties from PageTSConfig
 			 */
 			this.buttonsConfiguration = this.editorConfiguration.buttons;
-			var parentPlugin = this.getPluginInstance('BlockElements');
+			this.parentPlugin = this.getPluginInstance('BlockElements');
+			var parentPlugin = this.parentPlugin;
 			this.tags = parentPlugin.tags;
 			this.useClass = parentPlugin.useClass;
 			this.useBlockquote = parentPlugin.useBlockquote;
@@ -105,7 +111,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 		 * @return	boolean		false if action is completed
 		 */
 		onButtonPress: function (editor, id, target, className) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			var range = this.editor.getSelection().createRange();
@@ -122,14 +128,14 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 					if (/^(dd|dt)$/i.test(parentElement.nodeName) && this.indentDefinitionList(parentElement)) {
 						break;
 					} else {
-						DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
+						this.parentPlugin.onButtonPress(editor, id, target, className);
 					}
 					break;
 				case 'Outdent' :
 					if (/^(dt)$/i.test(parentElement.nodeName) && this.outdentDefinitionList()) {
 						break;
 					} else {
-						DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
+						this.parentPlugin.onButtonPress(editor, id, target, className);
 					}
 					break;
 				case 'DefinitionList':
@@ -143,7 +149,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 					this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 					break;
 				default:
-					DefinitionList.superclass.onButtonPress.call(this, editor, id, target, className);
+					this.parentPlugin.onButtonPress(editor, id, target, className);
 			}
 			return false;
 		},
@@ -189,7 +195,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 			}
 			return newNode;
 		},
-		/*
+
+		/**
 		 * Insert a definition list
 		 */
 		insertDefinitionList: function () {
@@ -209,9 +216,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 					endBlocks.start = this.remapNode(endBlocks.start, 'dt');
 				}
 			} else if (endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)) {
-					// We wrap the selected elements in a dl element
+				// We wrap the selected elements in a dl element
 				var paragraphs = endBlocks.start.nodeName.toLowerCase() === 'p';
-				list = this.wrapSelectionInBlockElement('dl');
+				list = this.parentPlugin.wrapSelectionInBlockElement('dl');
 				var items = list.childNodes;
 				for (var i = 0, n = items.length; i < n; ++i) {
 					var paragraphItem = items[i].nodeName.toLowerCase() === 'p';
@@ -220,7 +227,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 			}
 			return list;
 		},
-		/*
+
+		/**
 		 * Indent a definition list
 		 */
 		indentDefinitionList: function (parentElement) {
@@ -244,9 +252,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 				var sibling = endBlocks.start.previousSibling;
 				var bookmark = this.editor.getBookMark().get(range);
 				if (/^dd$/i.test(sibling.nodeName)) {
-					var list = this.wrapSelectionInBlockElement('dl');
+					var list = this.parentPlugin.wrapSelectionInBlockElement('dl');
 					list = sibling.appendChild(list);
-						// May need to merge the list if it has a previous sibling
+					// May need to merge the list if it has a previous sibling
 					if (list.previousSibling && /^dl$/i.test(list.previousSibling.nodeName)) {
 						while (list.firstChild) {
 							list.previousSibling.appendChild(list.firstChild);
@@ -255,7 +263,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 					}
 				} else if (/^dt$/i.test(sibling.nodeName)) {
 					var definition = this.editor.document.createElement('dd');
-					definition.appendChild(this.wrapSelectionInBlockElement('dl'));
+					definition.appendChild(this.parentPlugin.wrapSelectionInBlockElement('dl'));
 					sibling.parentNode.insertBefore(definition, sibling.nextSibling);
 				}
 				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
@@ -263,7 +271,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 			}
 			return false;
 		},
-		/*
+
+		/**
 		 * Outdent a definition list
 		 */
 		outdentDefinitionList: function () {
@@ -278,7 +287,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 				if (this.editor.getSelection().isEmpty()) {
 					dd.parentNode.insertBefore(endBlocks.start, dd.nextSibling);
 				} else {
-					var selected = this.wrapSelectionInBlockElement('dl');
+					var selected = this.parentPlugin.wrapSelectionInBlockElement('dl');
 					while (selected.lastChild) {
 						dd.parentNode.insertBefore(selected.lastChild, dd.nextSibling);
 					}
@@ -315,18 +324,18 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 									&& !endBlocks.end.nextSibling) {
 								button.setDisabled(false);
 							} else {
-								DefinitionList.superclass.onUpdateToolbar.call(this, button, mode, selectionEmpty, ancestors);
+								this.parentPlugin.onUpdateToolbar(button, mode, selectionEmpty, ancestors);
 							}
 							break;
 						case 'DefinitionList':
 							button.setDisabled(!(selectionEmpty && /^(p|div|address|pre|blockquote|h[1-6]|li|td|dd)$/i.test(endBlocks.start.nodeName))
-														&& !(endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)));
+										&& !(endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)));
 							break;
 					}
 				} else {
 					switch (button.itemId) {
 						case 'Outdent':
-							DefinitionList.superclass.onUpdateToolbar.call(this, button, mode, selectionEmpty, ancestors);
+							this.parentPlugin.onUpdateToolbar(button, mode, selectionEmpty, ancestors);
 							break;
 					}
 				}

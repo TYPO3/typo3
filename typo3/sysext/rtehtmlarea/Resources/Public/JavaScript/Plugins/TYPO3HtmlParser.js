@@ -16,10 +16,15 @@
 define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3HtmlParser',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (Plugin, UserAgent, Event) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Event, Util) {
 
-	var TYPO3HtmlParser = Ext.extend(Plugin, {
+	var TYPO3HtmlParser = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(TYPO3HtmlParser, Plugin);
+	Util.apply(TYPO3HtmlParser.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

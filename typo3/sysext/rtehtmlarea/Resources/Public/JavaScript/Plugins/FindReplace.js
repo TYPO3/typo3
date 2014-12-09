@@ -14,10 +14,15 @@
  * Find and Replace Plugin for TYPO3 htmlArea RTE
  */
 define('TYPO3/CMS/Rtehtmlarea/Plugins/FindReplace',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin'],
-	function (Plugin) {
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, Util) {
 
-	var FindReplace = Ext.extend(Plugin, {
+	var FindReplace = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(FindReplace, Plugin);
+	Util.apply(FindReplace.prototype, {
 
 		/**
 		 * This function gets called by the class constructor
@@ -481,7 +486,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/FindReplace',
 			this.replaces = 0;
 			this.spans = new Array();
 		},
-		/*
+
+		/**
 		 * Clear the document before leaving on 'Done' button
 		 */
 		onCancel: function () {
@@ -490,7 +496,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/FindReplace',
 			if (plugin) {
 				plugin.start();
 			}
-			FindReplace.superclass.onCancel.call(this);
+			FindReplace.super.prototype.onCancel.call(this);
 		},
 
 		/**
@@ -502,7 +508,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/FindReplace',
 			if (plugin) {
 				plugin.start();
 			}
-			FindReplace.superclass.onClose.call(this);
+			FindReplace.super.prototype.onClose.call(this);
 		}
 	});
 

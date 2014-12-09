@@ -18,10 +18,15 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker'],
-	function (Plugin, UserAgent, Dom, Event, Walker) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Dom, Event, Walker, Util) {
 
-	var PlainText = Ext.extend(Plugin, {
+	var PlainText = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(PlainText, Plugin);
+	Util.apply(PlainText.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

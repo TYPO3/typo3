@@ -18,10 +18,15 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Color',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Color',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ColorPalette'],
-	function (Plugin, UserAgent, Dom, Color, ColorPalette) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ColorPalette',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Dom, Color, ColorPalette, Util) {
 
-	var TYPO3Color = Ext.extend(Plugin, {
+	var TYPO3Color = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(TYPO3Color, Plugin);
+	Util.apply(TYPO3Color.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

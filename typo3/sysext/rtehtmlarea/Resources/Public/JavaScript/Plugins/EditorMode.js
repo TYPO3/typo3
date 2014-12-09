@@ -14,10 +14,15 @@
  * EditorMode Plugin for TYPO3 htmlArea RTE
  */
 define('TYPO3/CMS/Rtehtmlarea/Plugins/EditorMode',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin'],
-	function (Plugin) {
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, Util) {
 
-	var EditorMode = Ext.extend(Plugin, {
+	var EditorMode = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(EditorMode, Plugin);
+	Util.apply(EditorMode.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

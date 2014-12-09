@@ -21,7 +21,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
 	function (Plugin, UserAgent, Util, Dom, Event) {
 
-	var ContextMenu = Ext.extend(Plugin, {
+	var ContextMenu = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(ContextMenu, Plugin);
+	Util.apply(ContextMenu.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

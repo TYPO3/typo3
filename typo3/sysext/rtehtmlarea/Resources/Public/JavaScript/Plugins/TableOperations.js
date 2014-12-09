@@ -26,7 +26,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 	'TYPO3/CMS/Rtehtmlarea/Plugins/Language'],
 	function (Plugin, UserAgent, Util, Dom, Event, Color, ColorPaletteField, BlockStyle, BlockElements, Language) {
 
-	var TableOperations = Ext.extend(Plugin, {
+	var TableOperations = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(TableOperations, Plugin);
+	Util.apply(TableOperations.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

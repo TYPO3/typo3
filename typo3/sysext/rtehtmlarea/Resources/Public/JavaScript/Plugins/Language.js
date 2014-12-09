@@ -16,10 +16,15 @@
 define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
-	function (Plugin, UserAgent, Dom) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Dom, Util) {
 
-	var Language = Ext.extend(Plugin, {
+	var Language = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(Language, Plugin);
+	Util.apply(Language.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

@@ -18,10 +18,15 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser'],
-	function (Plugin, UserAgent, Dom, Event, Parser) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, UserAgent, Dom, Event, Parser, Util) {
 
-	var TextStyle = Ext.extend(Plugin, {
+	var TextStyle = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(TextStyle, Plugin);
+	Util.apply(TextStyle.prototype, {
 
 		/**
 		 * This function gets called by the class constructor

@@ -14,16 +14,22 @@
  * About Plugin for TYPO3 htmlArea RTE
  */
 define('TYPO3/CMS/Rtehtmlarea/Plugins/AboutEditor',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin'],
-	function (Plugin) {
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
+	function (Plugin, Util) {
 
-	var AboutEditor = Ext.extend(Plugin, {
+	var AboutEditor = function (editor, pluginName) {
+		this.constructor.super.call(this, editor, pluginName);
+	};
+	Util.inherit(AboutEditor, Plugin);
+	Util.apply(AboutEditor.prototype, {
 
 		/**
 		 * This function gets called by the class constructor
 		 */
 		configurePlugin: function(editor) {
-			/*
+
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -36,7 +42,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/AboutEditor',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+			/**
 			 * Registering the button
 			 */
 			var buttonId = 'About';
