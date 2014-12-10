@@ -1,3 +1,9 @@
+2014-12-10  d72f00c                  [RELEASE] Release of TYPO3 4.5.39 (TYPO3 Release Team)
+2014-12-10  63ae7dd  #62723          [!!!][SECURITY] Fix link spoofing in prefixLocalAnchors (Helmut Hummel)
+2014-12-08  5c267d2  #62967          [BUGFIX] Exclude CDATA from t3lib_parsehtml->XHTML_clean (Nicole Cordes)
+2014-11-27  60be4f6                  [TASK] Set TYPO3 version to 4.5.39-dev (TYPO3 Release Team)
+
+
 2014-11-27  7d66912                  [RELEASE] Release of TYPO3 4.5.38 (TYPO3 Release Team)
 2014-11-19  61d8b25  #58053          [BUGFIX] Handle opacity for IE in prototype.js (Jigal van Hemert)
 2014-11-15  42de3e0  #62984          [BUGFIX] PHP warning on saving TypoScript with t3editor (Oliver Hader)
