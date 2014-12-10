@@ -1458,7 +1458,7 @@ class DataHandler {
 		}
 		// Checking for RTE-transformations of fields:
 		$types_fieldConfig = BackendUtility::getTCAtypes($table, $currentRecord);
-		$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
+		$theTypeString = NULL;
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
 				// RTE transformations:
@@ -1467,6 +1467,9 @@ class DataHandler {
 						// Look for transformation flag:
 						switch ((string)$incomingFieldArray[('_TRANSFORM_' . $vconf['field'])]) {
 							case 'RTE':
+								if ($theTypeString === NULL) {
+									$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
+								}
 								$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 								$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
 								// Get RTE object, draw form and set flag:
