@@ -868,11 +868,14 @@ class t3lib_parsehtml {
 											}
 											if ($params['prefixLocalAnchors']) {
 												if (substr($tagAttrib[0][$attr], 0, 1) == '#') {
-													$prefix = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-													$tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
-													if ($params['prefixLocalAnchors'] == 2 && t3lib_div::isFirstPartOfStr($prefix, t3lib_div::getIndpEnv('TYPO3_SITE_URL'))) {
-														$tagAttrib[0][$attr] = substr($tagAttrib[0][$attr], strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+													if ($params['prefixLocalAnchors'] == 2) {
+														/** @var tslib_cObj $contentObjectRenderer */
+														$contentObjectRenderer = t3lib_div::makeInstance('tslib_cObj');
+														$prefix = $contentObjectRenderer->getUrlToCurrentLocation();
+													} else {
+														$prefix = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 													}
+													$tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
 												}
 											}
 											if ($params['prefixRelPathWith']) {

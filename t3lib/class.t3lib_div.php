@@ -4013,7 +4013,7 @@ final class t3lib_div {
 					$retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') .
 							($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
 				} else {
-					$retVal = $_SERVER['REQUEST_URI'];
+					$retVal = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
 				}
 					// add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {

@@ -6110,6 +6110,29 @@ class tslib_cObj {
 	}
 
 	/**
+	 * Returns the canonical URL to the current "location", which include the current page ID and type
+	 * and optionally the query string
+	 *
+	 * @param bool $addQueryString Whether additional GET arguments in the query string should be included or not
+	 * @return string
+	 */
+	public function getUrlToCurrentLocation($addQueryString = TRUE) {
+		$conf = array();
+		$conf['parameter'] = $GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type;
+		if ($addQueryString) {
+			$conf['addQueryString'] = '1';
+			$linkVars = implode(',', array_keys(t3lib_div::explodeUrl2Array($GLOBALS['TSFE']->linkVars)));
+			$conf['addQueryString.'] = array(
+				'method' => 'GET',
+				'exclude' => 'id,type,cHash' . ($linkVars ? ',' . $linkVars : '')
+			);
+			$conf['useCacheHash'] = t3lib_div::_GET('cHash') ? '1' : '0';
+		}
+
+		return $this->typoLink_URL($conf);
+	}
+
+	/**
 	 * Returns the URL of a "typolink" create from the input parameter string, url-parameters and target
 	 *
 	 * @param string $params Link parameter; eg. "123" for page id, "kasperYYYY@typo3.com" for email address, "http://...." for URL, "fileadmin/blabla.txt" for file.
