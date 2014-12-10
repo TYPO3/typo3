@@ -1,3 +1,7 @@
+2014-12-10  e8cd85e                  [RELEASE] Release of TYPO3 7.0.1 (TYPO3 Release Team)
+2014-12-02  97d2ee0                  [TASK] Set TYPO3 version to 7.0.1-dev (TYPO3 Release Team)
+
+
 2014-12-02  4539ea7                  [RELEASE] Release of TYPO3 7.0.0 (TYPO3 Release Team)
 2014-12-02  f68fa93  #63531          [BUGFIX] Fix broken unit tests for PackageManager (Markus Klein)
 2014-12-02  1645b2e  #63530          [BUGFIX] Make clearable in EM work again (Andreas Fernandez)
