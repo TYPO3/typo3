@@ -23,8 +23,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Node',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework'],
-	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar'],
+	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework, Toolbar, Iframe, StatusBar) {
 
 	/**
 	 * Editor constructor method
@@ -179,7 +182,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		this.htmlArea = new Framework({
 			id: this.editorId + '-htmlArea',
 			layout: 'anchor',
-			baseCls: 'htmlarea',
+			cls: 'htmlarea',
 			editorId: this.editorId,
 			textArea: this.textArea,
 			textAreaInitialSize: this.textAreaInitialSize,
@@ -188,18 +191,17 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 			maxHeight: this.config.maxHeight,
 			isNested: this.isNested,
 			nestedParentElements: this.nestedParentElements,
-			// The toolbar
-			tbar: {
-				xtype: 'htmlareatoolbar',
+			items: [new Toolbar ({
+				// The toolbar
 				id: this.editorId + '-toolbar',
+				itemId: 'toolbar',
 				anchor: '100%',
 				layout: 'form',
 				cls: 'toolbar',
 				editorId: this.editorId
-			},
-			items: [{
+				}),
+				new Iframe({
 					// The iframe
-					xtype: 'htmlareaiframe',
 					itemId: 'iframe',
 					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
 					height: parseInt(this.textAreaInitialSize.height),
@@ -212,7 +214,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
 					editorId: this.editorId
-				},{
+				}),
+				{
 					// Box container for the textarea
 					xtype: 'box',
 					itemId: 'textAreaContainer',
@@ -237,19 +240,19 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 							scope: this
 						}
 					}
-				}
-			],
-			// The status bar
-			bbar: {
-				xtype: 'htmlareastatusbar',
-				anchor: '100%',
-				cls: 'statusBar',
-				editorId: this.editorId
-			}
+				},
+				new StatusBar({
+					// The status bar
+					anchor: '100%',
+					cls: 'statusBar',
+					editorId: this.editorId,
+					itemId: 'statusBar'
+				})
+			]
 		});
 		// Set some references
-		this.toolbar = this.htmlArea.getTopToolbar();
-		this.statusBar = this.htmlArea.getBottomToolbar();
+		this.toolbar = this.htmlArea.getComponent('toolbar');
+		this.statusBar = this.htmlArea.getComponent('statusBar');
 		this.iframe = this.htmlArea.getComponent('iframe');
 		this.textAreaContainer = this.htmlArea.getComponent('textAreaContainer');
 		// Get triggered when the framework becomes ready

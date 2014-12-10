@@ -21,7 +21,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar'],
 	function (Typo3, Event, Toolbar, Iframe, Statusbar) {
 
-	var Framework = Ext.extend(Ext.Panel, {
+	var Framework = Ext.extend(Ext.Container, {
 
 		/**
 		 * Constructor
@@ -30,8 +30,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			this.superClass = Framework.superclass;
 			this.superClass.initComponent.call(this);
 			// Set some references
-			this.toolbar = this.getTopToolbar();
-			this.statusBar = this.getBottomToolbar();
+			this.toolbar = this.getComponent('toolbar');
+			this.statusBar = this.getComponent('statusBar');
 			this.iframe = this.getComponent('iframe');
 			this.textAreaContainer = this.getComponent('textAreaContainer');
 			this.addListener({
@@ -227,11 +227,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Resize the framework to its initial size
 		 */
 		resizeFramework: function () {
-			var frameworkHeight = parseInt(this.textAreaInitialSize.height);
+			var frameworkHeight = this.fullScreen ? Typo3.getWindowSize().height - 20 : parseInt(this.textAreaInitialSize.height) + this.toolbar.getHeight() - this.statusBar.getHeight();
 			if (this.textAreaInitialSize.width.indexOf('%') === -1) {
 				// Width is specified in pixels
 				// Initial framework sizing
-				var frameworkWidth = parseInt(this.textAreaInitialSize.width) - this.getFrameWidth();
+				var frameworkWidth = parseInt(this.textAreaInitialSize.width);
 			} else {
 				// Width is specified in %
 				// Framework sizing on actual window resize
@@ -279,7 +279,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Calculate the height available for the editing iframe
 		 */
 		getInnerHeight: function () {
-			return this.getSize().height - this.toolbar.getHeight() - this.statusBar.getHeight();
+			return this.getSize().height - this.toolbar.getHeight() - this.statusBar.getHeight() - 5;
+		},
+
+		/**
+		 * Calculate the width available for the editing iframe
+		 */
+		getInnerWidth: function () {
+			return this.getSize().width;
 		},
 
 		/**

@@ -23,7 +23,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ToolbarText',
 		 * Constructor
 		 */
 		initComponent: function () {
-			Ext.ux.Toolbar.HTMLAreaToolbarText.superclass.initComponent.call(this);
+			ToolbarText.superclass.initComponent.call(this);
 			this.addListener({
 				afterrender: {
 					fn: this.initEventListeners,
@@ -66,8 +66,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ToolbarText',
 		}
 	});
 
-	Ext.ux.Toolbar.HTMLAreaToolbarText = ToolbarText;
-	Ext.reg('htmlareatoolbartext', ToolbarText);
 	return ToolbarText;
 
 });

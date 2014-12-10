@@ -24,7 +24,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 		 * Constructor
 		 */
 		initComponent: function () {
-			Ext.ux.form.HTMLAreaCombo.superclass.initComponent.call(this);
+			this.superClass = Combo.superclass;
+			this.superClass.initComponent.call(this);
 			this.addListener({
 				afterrender: {
 					fn: this.initEventListeners,
@@ -104,7 +105,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 		 * In IE, need to reclaim lost focus for the editor in order to restore the selection
 		 */
 		onTriggerClick: function () {
-			Ext.ux.form.HTMLAreaCombo.superclass.onTriggerClick.call(this);
+			this.superClass.onTriggerClick.call(this);
 			// In IE, avoid focus being stolen and selection being lost
 			if (UserAgent.isIE) {
 				this.triggered = true;
@@ -117,7 +118,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 		 */
 		onViewClick: function (doFocus) {
 			// Avoid stealing focus from the editor
-			Ext.ux.form.HTMLAreaCombo.superclass.onViewClick.call(this, false);
+			this.superClass.onViewClick.call(this, false);
 		},
 
 		/**
@@ -202,8 +203,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 		}
 	});
 
-	Ext.reg('htmlareacombo', Combo);
-	Ext.ux.form.HTMLAreaCombo = Combo;
 	return Combo;
 
 });

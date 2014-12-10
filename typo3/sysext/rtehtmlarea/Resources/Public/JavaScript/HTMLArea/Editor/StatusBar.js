@@ -327,7 +327,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		}
 	});
 
-	Ext.reg('htmlareastatusbar', StatusBar);
 	return StatusBar;
 
 });

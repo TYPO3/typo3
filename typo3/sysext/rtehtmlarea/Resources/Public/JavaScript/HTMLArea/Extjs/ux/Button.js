@@ -147,8 +147,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 		}
 	});
 
-	Ext.reg('htmlareabutton', Button);
-	Ext.ux.HTMLAreaButton = Button;
 	return Button;
 
 });

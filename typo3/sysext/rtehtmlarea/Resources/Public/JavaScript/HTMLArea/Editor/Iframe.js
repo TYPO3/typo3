@@ -109,41 +109,45 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function () {
-			return this.ownerCt.getTopToolbar();
+			return this.ownerCt.toolbar;
 		},
-		/*
+
+		/**
 		 * Get a reference to the statusBar
 		 */
 		getStatusBar: function () {
-			return this.ownerCt.getBottomToolbar();
+			return this.ownerCt.statusBar;
 		},
-		/*
+
+		/**
 		 * Get a reference to a button
 		 */
 		getButton: function (buttonId) {
 			return this.getToolbar().getButton(buttonId);
 		},
-		/*
+
+		/**
 		 * Flag set to true when the iframe becomes usable for editing
 		 */
 		ready: false,
-		/*
+
+		/**
 		 * Create the iframe element at rendering time
 		 */
 		onRender: function (ct, position){
-				// from Ext.Component
+			// from Ext.Component
 			if (!this.el && this.autoEl) {
 				if (typeof this.autoEl === 'string' && this.autoEl.length > 0) {
 					this.el = document.createElement(this.autoEl);
 				} else {
-						// ExtJS Default method will not work with iframe element
+					// ExtJS Default method will not work with iframe element
 					this.el = Ext.DomHelper.append(ct, this.autoEl, true);
 				}
 				if (!this.el.id) {
 					this.el.id = this.getId();
 				}
 			}
-				// from Ext.BoxComponent
+			// from Ext.BoxComponent
 			if (this.resizeEl){
 				this.resizeEl = Ext.get(this.resizeEl);
 			}
@@ -210,7 +214,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * Build the iframe document head
 		 */
 		createHead: function () {
@@ -746,7 +751,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		}
 	});
 
-	Ext.reg('htmlareaiframe', Iframe);
 	return Iframe;
 
 });

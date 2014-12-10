@@ -108,7 +108,19 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 							var itemConfig = editor.config.buttonsConfig[item];
 							if (typeof itemConfig === 'object' && itemConfig !== null) {
 								itemConfig.id = this.editorId + '-' + itemConfig.id;
-								this.add(itemConfig);
+								switch (itemConfig.xtype) {
+									case 'htmlareabutton':
+										this.add(new Button(itemConfig));
+										break;
+									case 'htmlareacombo':
+										this.add(new Combo(itemConfig));
+										break;
+									case 'htmlareatoolbartext':
+										this.add(new ToolbarText(itemConfig));
+										break;
+									default:
+										this.add(itemConfig);
+								}
 								firstInGroup = firstInGroup && itemConfig.hidden;
 								firstOnRow = firstOnRow && firstInGroup;
 							}
@@ -178,7 +190,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		}
 	});
 
-	Ext.reg('htmlareatoolbar', Toolbar);
 	return Toolbar;
 
 });
