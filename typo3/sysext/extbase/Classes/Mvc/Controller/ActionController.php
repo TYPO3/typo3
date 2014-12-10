@@ -261,7 +261,7 @@ class ActionController extends AbstractController {
 			if (isset($methodTagsValues['ignorevalidation'])) {
 				$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
 			}
-			// if there exists more errors than in ignoreValidationAnnotations_=> call error method
+			// if there exist errors which are not ignored with @ignorevalidation => call error method
 			// else => call action method
 			$shouldCallActionMethod = TRUE;
 			foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
@@ -272,6 +272,7 @@ class ActionController extends AbstractController {
 					continue;
 				}
 				$shouldCallActionMethod = FALSE;
+				break;
 			}
 			if ($shouldCallActionMethod) {
 				$this->emitBeforeCallActionMethodSignal($preparedArguments);
