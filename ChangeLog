@@ -1,3 +1,8 @@
+2014-12-10  a0ee566                  [RELEASE] Release of TYPO3 7.0.2 (TYPO3 Release Team)
+2014-12-10  c407bee  #62723          [!!!][SECURITY] Fix link spoofing in prefixLocalAnchors (Helmut Hummel)
+2014-12-10  3b85e49                  [TASK] Set TYPO3 version to 7.0.2-dev (TYPO3 Release Team)
+
+
 2014-12-10  e8cd85e                  [RELEASE] Release of TYPO3 7.0.1 (TYPO3 Release Team)
 2014-12-02  97d2ee0                  [TASK] Set TYPO3 version to 7.0.1-dev (TYPO3 Release Team)
 
