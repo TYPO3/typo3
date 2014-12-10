@@ -1523,12 +1523,13 @@ class DataHandler {
 	 * @param string $id The record-uid, mainly - but not exclusively - used for logging
 	 * @param string $status 'update' or 'new' flag
 	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
-	 * @param int $tscPID tscPID
+	 * @param int $tscPID TSconfig PID
 	 * @return array Returns the evaluated $value as key "value" in this array. Can be checked with isset($res['value']) ...
 	 */
 	public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID) {
 		// Result array
 		$res = array();
+
 		// Processing special case of field pages.doktype
 		if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
 			// If the user may not use this specific doktype, we issue a warning
@@ -1550,6 +1551,7 @@ class DataHandler {
 				}
 			}
 		}
+
 		$curValue = NULL;
 		if ((int)$id !== 0) {
 			// Get current value:
@@ -1558,10 +1560,21 @@ class DataHandler {
 				$curValue = $curValueRec[$field];
 			}
 		}
+
 		// Getting config for the field
 		$tcaFieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-		$recFID = $table . ':' . $id . ':' . $field;
-		// Preform processing:
+
+		// Create $recFID only for those types that need it
+		if (
+			$tcaFieldConf['type'] === 'flex'
+			|| $tcaFieldConf['type'] === 'group' && ($tcaFieldConf['internal_type'] === 'file' || $tcaFieldConf['internal_type'] === 'file_reference')
+		) {
+			$recFID = $table . ':' . $id . ':' . $field;
+		} else {
+			$recFID = NULL;
+		}
+
+		// Perform processing:
 		$res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $this->uploadedFileArray[$table][$id][$field], $tscPID);
 		return $res;
 	}
@@ -1592,10 +1605,9 @@ class DataHandler {
 			return $res;
 		}
 
-		$PP = array($table, $id, $curValue, $status, $realPid, $recFID, $tscPID);
 		switch ($tcaFieldConf['type']) {
 			case 'text':
-				$res = $this->checkValue_text($res, $value, $tcaFieldConf, $PP, $field);
+				$res = $this->checkValueForText($value, $tcaFieldConf);
 				break;
 			case 'passthrough':
 			case 'imageManipulation':
@@ -1603,25 +1615,25 @@ class DataHandler {
 				$res['value'] = $value;
 				break;
 			case 'input':
-				$res = $this->checkValue_input($res, $value, $tcaFieldConf, $PP, $field);
+				$res = $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field);
 				break;
 			case 'check':
-				$res = $this->checkValue_check($res, $value, $tcaFieldConf, $PP, $field);
+				$res = $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
 				break;
 			case 'radio':
-				$res = $this->checkValue_radio($res, $value, $tcaFieldConf, $PP);
+				$res = $this->checkValueForRadio($res, $value, $tcaFieldConf);
 				break;
 			case 'group':
 			case 'select':
-				$res = $this->checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
+				$res = $this->checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $recFID, $uploadedFiles, $field);
 				break;
 			case 'inline':
-				$res = $this->checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, $additionalData);
+				$res = $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData);
 				break;
 			case 'flex':
 				// FlexForms are only allowed for real fields.
 				if ($field) {
-					$res = $this->checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
+					$res = $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $uploadedFiles, $field);
 				}
 				break;
 			default:
@@ -1639,8 +1651,21 @@ class DataHandler {
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
 	 * @return array Modified $res array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '') {
+		GeneralUtility::logDeprecatedFunction();
+		return $this->checkValueForText($value, $tcaFieldConf);
+	}
+
+	/**
+	 * Evaluate "text" type values.
+	 *
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+	 */
+	protected function checkValueForText($value, $tcaFieldConf) {
 		if (!isset($tcaFieldConf['eval']) || $tcaFieldConf['eval'] === '') {
 			return array('value' => $value);
 		}
@@ -1663,11 +1688,30 @@ class DataHandler {
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
 	 * @return array Modified $res array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function checkValue_input($res, $value, $tcaFieldConf, $PP, $field = '') {
-		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+		GeneralUtility::logDeprecatedFunction();
+		list($table, $id, , , $realPid) = $PP;
+		return $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field);
+	}
+
+	/**
+	 * Evaluate "input" type values.
+	 *
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param string $table Table name
+	 * @param int $id UID of record
+	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param string $field Field name
+	 * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+	 */
+	protected function checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field) {
 		// Handle native date/time fields
 		$isDateOrDateTimeField = FALSE;
+		$format = '';
+		$emptyValue = '';
 		if (isset($tcaFieldConf['dbType']) && ($tcaFieldConf['dbType'] === 'date' || $tcaFieldConf['dbType'] === 'datetime')) {
 			$isDateOrDateTimeField = TRUE;
 			$dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
@@ -1736,9 +1780,27 @@ class DataHandler {
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param string $field Field name
 	 * @return array Modified $res array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function checkValue_check($res, $value, $tcaFieldConf, $PP, $field = '') {
-		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+		GeneralUtility::logDeprecatedFunction();
+		list($table, $id, , , $realPid) = $PP;
+		return $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
+	}
+
+	/**
+	 * Evaluates 'check' type values.
+	 *
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param string $table Table name
+	 * @param int $id UID of record
+	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param string $field Field name
+	 * @return array Modified $res array
+	 */
+	protected function checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field) {
 		$itemC = count($tcaFieldConf['items']);
 		if (!$itemC) {
 			$itemC = 1;
@@ -1782,8 +1844,22 @@ class DataHandler {
 	 * @param array $tcaFieldConf Field configuration from TCA
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @return array Modified $res array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function checkValue_radio($res, $value, $tcaFieldConf, $PP) {
+		GeneralUtility::logDeprecatedFunction();
+		return $this->checkValueForRadio($res, $value, $tcaFieldConf);
+	}
+
+	/**
+	 * Evaluates 'radio' type values.
+	 *
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @return array Modified $res array
+	 */
+	protected function checkValueForRadio($res, $value, $tcaFieldConf) {
 		if (is_array($tcaFieldConf['items'])) {
 			foreach ($tcaFieldConf['items'] as $set) {
 				if ((string)$set[1] === (string)$value) {
@@ -1805,9 +1881,30 @@ class DataHandler {
 	 * @param array $uploadedFiles
 	 * @param string $field Field name
 	 * @return array Modified $res array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
-		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+		GeneralUtility::logDeprecatedFunction();
+		list($table, $id, $curValue, $status, , $recFID) = $PP;
+		return $this->checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $recFID, $uploadedFiles, $field);
+	}
+
+	/**
+	 * Evaluates 'group' or 'select' type values.
+	 *
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param string $table Table name
+	 * @param int $id UID of record
+	 * @param mixed $curValue Current value of the field
+	 * @param string $status 'update' or 'new' flag
+	 * @param string $recFID Field identifier [table:uid:field] for flexforms
+	 * @param array $uploadedFiles
+	 * @param string $field Field name
+	 * @return array Modified $res array
+	 */
+	protected function checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $recFID, $uploadedFiles, $field) {
 		// Detecting if value sent is an array and if so, implode it around a comma:
 		if (is_array($value)) {
 			$value = implode(',', $value);
@@ -1861,6 +1958,7 @@ class DataHandler {
 			}
 		}
 		// For select types which has a foreign table attached:
+		$unsetResult = FALSE;
 		if ($tcaFieldConf['type'] == 'select' && $tcaFieldConf['foreign_table']) {
 			// check, if there is a NEW... id in the value, that should be substituted later
 			if (strpos($value, 'NEW') !== FALSE) {
@@ -1920,10 +2018,10 @@ class DataHandler {
 	 * @param array $tcaFieldConf Configuration array from TCA of the field
 	 * @param string $curValue Current value of the field
 	 * @param array $uploadedFileArray Array of uploaded files, if any
-	 * @param string $status Status ("update" or ?)
+	 * @param string $status 'update' or 'new' flag
 	 * @param string $table tablename of record
 	 * @param int $id UID of record
-	 * @param string $recFID Field identifier ([table:uid:field:....more for flexforms?]
+	 * @param string $recFID Field identifier [table:uid:field] for flexforms
 	 * @return array Modified value array
 	 * @see checkValue_group_select()
 	 */
@@ -2196,15 +2294,38 @@ class DataHandler {
 	 * Evaluates 'flex' type values.
 	 *
 	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-	 * @param string $value The value to set.
+	 * @param string|array $value The value to set.
 	 * @param array $tcaFieldConf Field configuration from TCA
 	 * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
 	 * @param array $uploadedFiles Uploaded files for the field
 	 * @param string $field Field name
 	 * @return array Modified $res array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function checkValue_flex($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field) {
-		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+		GeneralUtility::logDeprecatedFunction();
+		list($table, $id, $curValue, $status, $realPid, $recFID, $tscPID) = $PP;
+		$this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $uploadedFiles, $field);
+	}
+
+	/**
+	 * Evaluates 'flex' type values.
+	 *
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string|array $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param string $table Table name
+	 * @param int $id UID of record
+	 * @param mixed $curValue Current value of the field
+	 * @param string $status 'update' or 'new' flag
+	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
+	 * @param string $recFID Field identifier [table:uid:field] for flexforms
+	 * @param int $tscPID TSconfig PID
+	 * @param array $uploadedFiles Uploaded files for the field
+	 * @param string $field Field name
+	 * @return array Modified $res array
+	 */
+	protected function checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $uploadedFiles, $field) {
 
 		if (is_array($value)) {
 			// This value is necessary for flex form processing to happen on flexform fields in page records when they are copied.
@@ -2223,7 +2344,7 @@ class DataHandler {
 			}
 			// Remove all old meta for languages...
 			// Evaluation of input values:
-			$value['data'] = $this->checkValue_flex_procInData($value['data'], $currentValueArray['data'], $uploadedFiles['data'], $dataStructArray, $PP);
+			$value['data'] = $this->checkValue_flex_procInData($value['data'], $currentValueArray['data'], $uploadedFiles['data'], $dataStructArray, array($table, $id, $curValue, $status, $realPid, $recFID, $tscPID));
 			// Create XML from input value:
 			$xmlValue = $this->checkValue_flexArray2Xml($value, TRUE);
 
@@ -2322,7 +2443,25 @@ class DataHandler {
 	 * @return array Modified $res array
 	 */
 	public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = NULL) {
-		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
+		list($table, $id, , $status) = $PP;
+		$this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData);
+	}
+
+	/**
+	 * Evaluates 'inline' type values.
+	 * (partly copied from the select_group function on this issue)
+	 *
+	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
+	 * @param string $value The value to set.
+	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param string $table Table name
+	 * @param int $id UID of record
+	 * @param string $status 'update' or 'new' flag
+	 * @param string $field Field name
+	 * @param array $additionalData Additional data to be forwarded to sub-processors
+	 * @return array Modified $res array
+	 */
+	public function checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, array $additionalData = NULL) {
 		if (!$tcaFieldConf['foreign_table']) {
 			// Fatal error, inline fields should always have a foreign_table defined
 			return FALSE;

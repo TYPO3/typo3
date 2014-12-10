@@ -33,7 +33,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $singletonInstances = array();
 
 	/**
-	 * @var DataHandler
+	 * @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $subject;
 
@@ -56,7 +56,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->backEndUser = $this->getMock(BackendUserAuthentication::class);
 		$this->mockDatabaseConnection = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB'] = $this->mockDatabaseConnection;
-		$this->subject = new DataHandler();
+		$this->subject = $this->getAccessibleMock(DataHandler::class, ['dummy']);
 		$this->subject->start(array(), '', $this->backEndUser);
 	}
 
@@ -194,7 +194,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'upper' => '2000000'
 			)
 		);
-		$returnValue = $this->subject->checkValue_input(array(), $value, $tcaFieldConf, array());
+		$returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
 		$this->assertSame($returnValue['value'], $expectedReturnValue);
 	}
 
@@ -223,7 +223,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'dbType' => $dbType
 		);
 		$this->mockDatabaseConnection->expects($this->once())->method('getDateTimeFormats');
-		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+		$this->subject->_call('checkValueForInput', '', $tcaFieldConf, '', 0, 0, '');
 	}
 
 	/**
@@ -252,7 +252,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFields($tcaFieldConf) {
 		$this->mockDatabaseConnection->expects($this->never())->method('getDateTimeFormats');
-		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+		$this->subject->_call('checkValueForInput', '', $tcaFieldConf, '', 0, 0, '');
 	}
 
 
@@ -385,7 +385,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
-		$this->subject->checkValue_flex(array(), array(), array(), array(), array(), '');
+		$this->subject->_call('checkValueForFlex', [], [], [], '', 0, '', '', 0, 0, 0, [], '');
 	}
 
 	/////////////////////////////////////
@@ -769,7 +769,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array('Item 3', 0)
 			)
 		);
-		$this->assertSame($expectedResult, $this->subject->checkValue_check($result, $value, $tcaFieldConfiguration, array()));
+		$this->assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
 	}
 
 }
