@@ -1528,7 +1528,6 @@ class DataHandler {
 	public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID) {
 		// Result array
 		$res = array();
-		$recFID = $table . ':' . $id . ':' . $field;
 		// Processing special case of field pages.doktype
 		if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
 			// If the user may not use this specific doktype, we issue a warning
@@ -1550,11 +1549,17 @@ class DataHandler {
 				}
 			}
 		}
-		// Get current value:
-		$curValueRec = $this->recordInfo($table, $id, $field);
-		$curValue = $curValueRec[$field];
+		$curValue = NULL;
+		if ((int)$id !== 0) {
+			// Get current value:
+			$curValueRec = $this->recordInfo($table, $id, $field);
+			if (isset($curValueRec[$field])) {
+				$curValue = $curValueRec[$field];
+			}
+		}
 		// Getting config for the field
 		$tcaFieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+		$recFID = $table . ':' . $id . ':' . $field;
 		// Preform processing:
 		$res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $this->uploadedFileArray[$table][$id][$field], $tscPID);
 		return $res;
@@ -5864,16 +5869,13 @@ class DataHandler {
 	 */
 	public function recordInfo($table, $id, $fieldList) {
 		// Skip, if searching for NEW records or there's no TCA table definition
-		if (!(int)$id || !isset($GLOBALS['TCA'][$table])) {
+		if ((int)$id === 0 || !isset($GLOBALS['TCA'][$table])) {
 			return NULL;
 		}
 		/** @var DatabaseConnection $db */
 		$db = $GLOBALS['TYPO3_DB'];
 		$result = $db->exec_SELECTgetSingleRow($fieldList, $table, 'uid=' . (int)$id);
-		if ($result) {
-			return $result;
-		}
-		return NULL;
+		return $result ?: NULL;
 	}
 
 	/**
