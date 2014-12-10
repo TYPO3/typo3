@@ -1616,8 +1616,10 @@ class DataHandler {
 	public function checkValue_input($res, $value, $tcaFieldConf, $PP, $field = '') {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 		// Handle native date/time fields
-		$dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
+		$isDateOrDateTimeField = FALSE;
 		if (isset($tcaFieldConf['dbType']) && GeneralUtility::inList('date,datetime', $tcaFieldConf['dbType'])) {
+			$isDateOrDateTimeField = TRUE;
+			$dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
 			// Convert the date/time into a timestamp for the sake of the checks
 			$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
 			$format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
@@ -1653,10 +1655,8 @@ class DataHandler {
 			}
 		}
 		// Handle native date/time fields
-		if (isset($tcaFieldConf['dbType']) && GeneralUtility::inList('date,datetime', $tcaFieldConf['dbType'])) {
+		if ($isDateOrDateTimeField) {
 			// Convert the timestamp back to a date/time
-			$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-			$format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
 			$res['value'] = $res['value'] ? date($format, $res['value']) : $emptyValue;
 		}
 		return $res;

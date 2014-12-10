@@ -43,13 +43,19 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $backEndUser;
 
 	/**
+	 * @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $mockDatabaseConnection;
+
+	/**
 	 * Set up the tests
 	 */
 	public function setUp() {
 		$GLOBALS['TCA'] = array();
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->backEndUser = $this->getMock(BackendUserAuthentication::class);
-		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
+		$this->mockDatabaseConnection = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->mockDatabaseConnection;
 		$this->subject = new DataHandler();
 		$this->subject->start(array(), '', $this->backEndUser);
 	}
@@ -192,6 +198,64 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($returnValue['value'], $expectedReturnValue);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsDataProvider() {
+		return array(
+			'dbType = date' => array(
+				'date'
+			),
+			'dbType = datetime' => array(
+				'datetime'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsDataProvider
+	 * @param string $dbType
+	 */
+	public function inputValueCheckCallsGetDateTimeFormatsForDatetimeFields($dbType) {
+		$tcaFieldConf = array(
+			'input' => array(),
+			'dbType' => $dbType
+		);
+		$this->mockDatabaseConnection->expects($this->once())->method('getDateTimeFormats');
+		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+	}
+
+	/**
+	 * @return array
+	 */
+	public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider() {
+		return array(
+			'tca without dbType' => array(
+				array(
+					'input' => array()
+				)
+			),
+			'tca with dbType != date/datetime' => array(
+				array(
+					'input' => array(),
+					'dbType' => 'foo'
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @param array $tcaFieldConf
+	 * @dataProvider inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider
+	 */
+	public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFields($tcaFieldConf) {
+		$this->mockDatabaseConnection->expects($this->never())->method('getDateTimeFormats');
+		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+	}
+
+
 	///////////////////////////////////////////
 	// Tests concerning checkModifyAccessList
 	///////////////////////////////////////////
@@ -287,7 +351,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(TRUE));
 
 		/** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
-		$backEndUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+		$backEndUser = $this->getMock(BackendUserAuthentication::class);
 		$backEndUser->workspace = 1;
 		$backEndUser->workspaceRec = array('freeze' => FALSE);
 		$backEndUser->expects($this->once())->method('workspaceAllowAutoCreation')->will($this->returnValue(TRUE));
@@ -331,7 +395,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled() {
-		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+		$backendUser = $this->getMock(BackendUserAuthentication::class);
 		$backendUser->expects($this->once())->method('writelog');
 		$this->subject->enableLogging = TRUE;
 		$this->subject->BE_USER = $backendUser;
@@ -342,7 +406,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled() {
-		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+		$backendUser = $this->getMock(BackendUserAuthentication::class);
 		$backendUser->expects($this->never())->method('writelog');
 		$this->subject->enableLogging = FALSE;
 		$this->subject->BE_USER = $backendUser;
@@ -353,7 +417,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logAddsEntryToLocalErrorLogArray() {
-		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+		$backendUser = $this->getMock(BackendUserAuthentication::class);
 		$this->subject->BE_USER = $backendUser;
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
@@ -366,7 +430,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function logFormatsDetailMessageWithAdditionalDataInLocalErrorArray() {
-		$backendUser = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+		$backendUser = $this->getMock(BackendUserAuthentication::class);
 		$this->subject->BE_USER = $backendUser;
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
