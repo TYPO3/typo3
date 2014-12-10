@@ -3363,7 +3363,7 @@ Connection: close
 					// This is for ISS/CGI which does not have the REQUEST_URI available.
 					$retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') . ($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
 				} else {
-					$retVal = $_SERVER['REQUEST_URI'];
+					$retVal = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
 				}
 				// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
