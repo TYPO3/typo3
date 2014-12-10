@@ -11,47 +11,75 @@
  * The TYPO3 project - inspiring people to share!
  */
 /**
- * Framework extends Ext.Panel and is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
+ * Framework is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Resizable',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar'],
-	function (Typo3, Event, Toolbar, Iframe, Statusbar) {
+	function (Util, Resizable, Dom, Typo3, Event, Toolbar, Iframe, Statusbar) {
 
-	var Framework = Ext.extend(Ext.Container, {
+	/**
+	 * Framework constructor
+	 */
+	var Framework = function (config) {
+		Util.apply(this, config);
+		// Set some references
+		for (var i = 0, n = this.items.length; i < n; i++) {
+			var item = this.items[i];
+			item.framework = this;
+			this[item.itemId] = item;
+		}
+		// Monitor iframe becoming ready
+		var self = this;
+		Event.one(this.iframe, 'HTMLAreaEventIframeReady', function (event) { Event.stopEvent(event); self.onIframeReady(); return false; });
+		// Let the framefork render itself, but it will fail to do so if inside a hidden tab or inline element
+		if (!this.isNested || Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+			this.render(this.textArea.parentNode, this.textArea.id);
+		} else {
+			// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+			var parentElements = [].concat(this.nestedParentElements.sorted);
+			// Walk through all nested tabs and inline levels to get correct sizes
+			Typo3.accessParentElements(parentElements, 'args[0].render(args[0].textArea.parentNode, args[0].textArea.id)', [this]);
+		}
+	};
+
+	Framework.prototype = {
 
 		/**
-		 * Constructor
+		 * Render the framework
+		 *
+		 * @param object container: the container into which to insert the framework
+		 * @param string position: the id of the child element of the container before which the framework should be inserted
+		 * @return void
 		 */
-		initComponent: function () {
-			this.superClass = Framework.superclass;
-			this.superClass.initComponent.call(this);
-			// Set some references
-			this.toolbar = this.getComponent('toolbar');
-			this.statusBar = this.getComponent('statusBar');
-			this.iframe = this.getComponent('iframe');
-			this.textAreaContainer = this.getComponent('textAreaContainer');
-			this.addListener({
-				beforedestroy: {
-					fn: this.onBeforeDestroy,
-					single: true
-				}
-			});
-			// Monitor iframe becoming ready
-			var self = this;
-			Event.one(this.iframe, 'HTMLAreaEventIframeReady', function (event) { Event.stopEvent(event); self.onIframeReady(); return false; });
-			// Let the framefork render itself, but it will fail to do so if inside a hidden tab or inline element
-			if (!this.isNested || Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				this.render(this.textArea.parentNode, this.textArea.id);
-			} else {
-				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
-				var parentElements = [].concat(this.nestedParentElements.sorted);
-				// Walk through all nested tabs and inline levels to get correct sizes
-				Typo3.accessParentElements(parentElements, 'args[0].render(args[0].textArea.parentNode, args[0].textArea.id)', [this]);
+		render: function (container, position) {
+			this.el = document.createElement('div');
+			if (this.id) {
+				this.el.setAttribute('id', this.id);
 			}
+			if (this.cls) {
+				this.el.setAttribute('class', this.cls);
+			}
+			var position = document.getElementById(position);
+			this.el = container.insertBefore(this.el, position);
+			for (var i = 0, n = this.items.length; i < n; i++) {
+				var item = this.items[i];
+				item.render(this.el);
+			}
+			this.rendered = true;
+		},
+
+		/**
+		 * Get the element to which the framework is rendered
+		 */
+		getEl: function () {
+			return this.el;
 		},
 
 		/**
@@ -62,9 +90,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			// Make the framework resizable, if configured by the user
 			this.makeResizable();
 			// Monitor textArea container becoming shown or hidden as it may change the height of the status bar
-			this.mon(this.textAreaContainer, 'show', this.resizable ? this.onTextAreaShow : this.onWindowResize, this);
+			Event.on(this.textAreaContainer, 'HTMLAreaEventTextAreaContainerShow', function(event) { Event.stopEvent(event); self.resizable ? self.onTextAreaShow() : self.onWindowResize(); return false; });
 			// Monitor iframe becoming shown or hidden as it may change the height of the status bar
-			this.mon(this.iframe, 'show', this.resizable ? this.onIframeShow : this.onWindowResize, this);
+			Event.on(this.iframe, 'HTMLAreaEventIframeShow', function(event) { Event.stopEvent(event); self.resizable ? self.onIframeShow() : self.onWindowResize(); return false; });
 			// Monitor window resizing
 			Event.on(window, 'resize', function (event) { self.onWindowResize(); });
 			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
@@ -78,11 +106,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 				}
 				Event.on(form, 'reset', function (event) { return self.onReset(event); });
 			}
-			this.addListener({
-				resize: {
-					fn: this.onFrameworkResize
-				}
-			});
+			// Monitor the framework being resized
+			Event.on(this, 'HTMLAreaEventFrameworkResize', function (event) { Event.stopEvent(event); self.onFrameworkResize(); return false; });
 		},
 
 		/**
@@ -143,31 +168,31 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		},
 
 		/**
-		 * doLayout will fail if inside a hidden tab or inline element
+		 * Get the toolbar
 		 */
-		doLayout: function () {
-			if (!this.isNested || Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				Framework.superclass.doLayout.call(this);
-			} else {
-				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
-				var parentElements = [].concat(this.nestedParentElements.sorted);
-				// Walk through all nested tabs and inline levels to get correct sizes
-				Typo3.accessParentElements(parentElements, 'args[0].superClass.doLayout.call(args[0])', [this]);
-			}
+		getToolbar: function () {
+			return this.toolbar;
 		},
 
 		/**
-		 * onLayout will fail if inside a hidden tab or inline element
+		 * Get the iframe
 		 */
-		onLayout: function () {
-			if (!this.isNested || Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				Framework.superclass.onLayout.call(this);
-			} else {
-				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
-				var parentElements = [].concat(this.nestedParentElements.sorted);
-				// Walk through all nested tabs and inline levels to get correct sizes
-				Typo3.accessParentElements(parentElements, 'args[0].superClass.onLayout.call(args[0])', [this]);
-			}
+		getIframe: function () {
+			return this.iframe;
+		},
+
+		/**
+		 * Get the textarea container
+		 */
+		getTextAreaContainer: function () {
+			return this.textAreaContainer;
+		},
+
+		/**
+		 * Get the status bar
+		 */
+		getStatusBar: function () {
+			return this.statusBar;
 		},
 
 		/**
@@ -175,26 +200,23 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 */
 		makeResizable: function () {
 			if (this.resizable) {
-				this.addClass('resizable');
-				this.resizer = new Ext.Resizable(this.getEl(), {
+				var self = this;
+				Dom.addClass(this.getEl(), 'resizable');
+				this.resizer = Resizable.makeResizable(this.getEl(), {
+					minHeight: 200,
 					minWidth: 300,
 					maxHeight: this.maxHeight,
-					dynamic: false
+					stop: function (event, ui) { Event.stopEvent(event); self.onHtmlAreaResize(ui.size); return false; }
 				});
-				this.resizer.on('resize', this.onHtmlAreaResize, this);
 			}
 		},
 
 		/**
 		 * Resize the framework when the resizer handles are used
 		 */
-		onHtmlAreaResize: function (resizer, width, height, event) {
-			// Set width first as it may change the height of the toolbar and of the statusBar
-			this.setWidth(width);
-			// Set height of iframe and textarea
-			this.iframe.setHeight(this.getInnerHeight());
-			this.textArea.style.width = (this.getInnerWidth()-9) + 'px';
-			this.textArea.style.height = this.getInnerHeight() + 'px';
+		onHtmlAreaResize: function (size) {
+			Dom.setSize(this.getEl(), size);
+			this.onFrameworkResize();
 		},
 
 		/**
@@ -235,32 +257,26 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			} else {
 				// Width is specified in %
 				// Framework sizing on actual window resize
-				var frameworkWidth = parseInt(((Typo3.getWindowSize().width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
+				var frameworkWidth = parseInt(((Typo3.getWindowSize().width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Util.getScrollBarWidth()) - Dom.getPosition(this.getEl()).x - 15) * parseInt(this.textAreaInitialSize.width))/100);
 			}
-			if (this.resizable) {
-				this.resizer.resizeTo(frameworkWidth, frameworkHeight);
-			} else {
-				this.setSize(frameworkWidth, frameworkHeight);
-				this.doLayout();
-			}
+			Dom.setSize(this.getEl(), { width: frameworkWidth, height: frameworkHeight});
+			Event.trigger(this, 'HTMLAreaEventFrameworkResize');
 		},
 
 		/**
 		 * Resize the framework components
 		 */
 		onFrameworkResize: function () {
-			this.iframe.getEl().dom.style.width = (this.getInnerWidth()-9) + 'px';
-			this.iframe.setHeight(this.getInnerHeight());
-			this.textArea.style.width = (this.getInnerWidth()-9) + 'px';
-			this.textArea.style.height = this.getInnerHeight() + 'px';
+			Dom.setSize(this.iframe.getEl().dom, { width: this.getInnerWidth(), height: this.getInnerHeight()});
+			Dom.setSize(this.textArea, { width: this.getInnerWidth(), height: this.getInnerHeight()});
 		},
 
 		/**
 		 * Adjust the height to the changing size of the statusbar when the textarea is shown
 		 */
 		onTextAreaShow: function () {
-			this.iframe.setHeight(this.getInnerHeight());
-			this.textArea.style.height = this.getInnerHeight() + 'px';
+			Dom.setSize(this.iframe.getEl().dom, { height: this.getInnerHeight()});
+			Dom.setSize(this.textArea, { width: this.getInnerWidth(), height: this.getInnerHeight()});
 		},
 
 		/**
@@ -270,8 +286,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			if (this.getInnerHeight() <= 0) {
 				this.onWindowResize();
 			} else {
-				this.iframe.setHeight(this.getInnerHeight());
-				this.textArea.style.height = this.getInnerHeight() + 'px';
+				//this.iframe.setHeight(this.getInnerHeight());
+				Dom.setSize(this.iframe.getEl().dom, { height: this.getInnerHeight()});
+				Dom.setSize(this.textArea, { height: this.getInnerHeight()});
 			}
 		},
 
@@ -279,14 +296,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Calculate the height available for the editing iframe
 		 */
 		getInnerHeight: function () {
-			return this.getSize().height - this.toolbar.getHeight() - this.statusBar.getHeight() - 5;
+			return Dom.getSize(this.getEl()).height - this.toolbar.getHeight() - this.statusBar.getHeight() - 5;
 		},
 
 		/**
 		 * Calculate the width available for the editing iframe
 		 */
 		getInnerWidth: function () {
-			return this.getSize().width;
+			return Dom.getSize(this.getEl()).width;
 		},
 
 		/**
@@ -335,25 +352,28 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		/**
 		 * Cleanup on framework destruction
 		 */
-		onBeforeDestroy: function () {
+		destroy: function () {
 			Event.off(window);
+			Event.off(this.textAreaContainer);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			var form = this.textArea.form;
 			if (form) {
 				Event.off(form);
 				form.htmlAreaPreviousOnReset = null;
 			}
-			Ext.getBody().dom = null;
 			// ExtJS is not releasing any resources when the iframe is unloaded
 			this.toolbar.destroy();
 			this.statusBar.destroy();
-			this.removeAll(true);
-			if (this.resizer) {
-				this.resizer.destroy();
+			while (this.el.firstChild) {
+				this.el.removeChild(this.el.firstChild);
 			}
+			if (this.resizer) {
+				Resizable.destroy(this.resizer);
+			}
+			this.el = null;
 			return true;
 		}
-	});
+	};
 
 	return Framework;
 

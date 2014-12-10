@@ -34,6 +34,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 					fn: this.initEventListeners,
 					single: true
 				},
+				show: {
+					fn: function (iframe) {
+						Event.trigger(iframe, 'HTMLAreaEventIframeShow');
+					}
+				},
 				beforedestroy: {
 					fn: this.onBeforeDestroy,
 					single: true
@@ -109,14 +114,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function () {
-			return this.ownerCt.toolbar;
+			return this.framework.toolbar;
 		},
 
 		/**
 		 * Get a reference to the statusBar
 		 */
 		getStatusBar: function () {
-			return this.ownerCt.statusBar;
+			return this.framework.statusBar;
 		},
 
 		/**
@@ -365,7 +370,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 							}
 							self.fireEvent('show');
 						} else {
-							self.ownerCt.textAreaContainer.fireEvent('show');
+							self.framework.textAreaContainer.fireEvent('show');
 						}
 						self.getToolbar().update();
 					}

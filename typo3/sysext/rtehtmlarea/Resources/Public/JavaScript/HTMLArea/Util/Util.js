@@ -13,7 +13,9 @@
 /***************************************************
  *  UTILITY FUNCTIONS
  ***************************************************/
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util', [], function() {
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
+	function (UserAgent) {
 
 	var Util = {
 
@@ -101,6 +103,36 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util', [], function() {
 		    	subClass.prototype.constructor = subClass;
 			subClass.super = superClass;
 			return subClass;
+		},
+
+		/**
+		 * Width of the browser scrollbar
+		 */
+		scrollBarWidth: null,
+
+		/**
+		 * Utility method for getting the width of the browser scrollbar. This can differ depending on
+		 * operating system settings, such as the theme or font size.
+		 *
+		 * @return integer The width of the scrollbar.
+		 */
+		getScrollBarWidth: function (){
+			if (Util.scrollBarWidth === null) {
+				// Append a div, do calculation and then remove it
+				var div = document.createElement('div');
+				div.style.cssText = 'position:absolute!important;left:-10000px;top:-10000px;visibility:hidden;width:100px;height:50px;overflow:hidden;';
+				div = document.body.appendChild(div);
+				var innerDiv = document.createElement('div');
+				innerDiv.style.height = '200px';
+				innerDiv = div.appendChild(innerDiv);
+				var w1 = innerDiv.offsetWidth;
+				div.style.overflow = (UserAgent.isWebKit || UserAgent.isGecko) ? 'auto' : 'scroll';
+				var w2 = innerDiv.offsetWidth;
+				div.parentNode.removeChild(div);
+				// Need to add 2 to ensure we leave enough space
+				Util.scrollBarWidth = w1 - w2 + 2;
+		    }
+		    return Util.scrollBarWidth;
 		}
 	};
 

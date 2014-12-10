@@ -808,6 +808,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			'UserAgent/UserAgent',
 			'Util/Util',
 			'Util/Color',
+			'Util/Resizable',
 			'Util/Tips',
 			'Util/TYPO3',
 			'Ajax/Ajax',

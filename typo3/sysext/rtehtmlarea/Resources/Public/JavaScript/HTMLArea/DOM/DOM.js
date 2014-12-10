@@ -494,6 +494,51 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 				}
 			}
 			return absoluteUrl;
+		},
+
+		/**
+		 * Get the position of a node
+		 *
+		 * @param object node
+		 * @return object left and top coordinates
+		 */
+		getPosition: function (node) {
+			var x = 0, y = 0;
+			while (node && !isNaN(node.offsetLeft) && !isNaN(node.offsetTop)) {
+				x += node.offsetLeft - node.scrollLeft;
+				y += node.offsetTop - node.scrollTop;
+				node = node.offsetParent;
+			}
+			return { x: x, y: y };
+		},
+
+		/**
+		 * Get the current size of a node
+		 *
+		 * @param object node
+		 * @return object width and height
+		 */
+		getSize: function (node) {
+			return {
+				width:  Math.max(node.offsetWidth, node.clientWidth) || 0,
+				height: Math.max(node.offsetHeight, node.clientHeight) || 0
+			}
+		},
+
+		/**
+		 * Set the size of a node
+		 *
+		 * @param object node
+		 * @param object size: width and height
+		 * @return void
+		 */
+		setSize: function (node, size) {
+			if (typeof size.width !== 'undefined') {
+				node.style.width = size.width + 'px';
+			}
+			if (typeof size.height !== 'undefined') {
+				node.style.height = size.height + 'px';
+			}
 		}
 	};
 

@@ -181,7 +181,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		// Create the editor framework
 		this.htmlArea = new Framework({
 			id: this.editorId + '-htmlArea',
-			layout: 'anchor',
 			cls: 'htmlarea',
 			editorId: this.editorId,
 			textArea: this.textArea,
@@ -195,13 +194,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 				// The toolbar
 				id: this.editorId + '-toolbar',
 				itemId: 'toolbar',
-				anchor: '100%',
 				layout: 'form',
 				cls: 'toolbar',
 				editorId: this.editorId
 				}),
 				new Iframe({
 					// The iframe
+					id: this.editorId + '-iframe',
 					itemId: 'iframe',
 					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
 					height: parseInt(this.textAreaInitialSize.height),
@@ -215,11 +214,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 					nestedParentElements: this.nestedParentElements,
 					editorId: this.editorId
 				}),
-				{
+				new Ext.BoxComponent({
 					// Box container for the textarea
-					xtype: 'box',
+					id: this.editorId + '-textAreaContainer',
 					itemId: 'textAreaContainer',
-					anchor: '100%',
 					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
 					// Let the framework swallow the textarea and throw it back
 					listeners: {
@@ -238,23 +236,28 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 							},
 							single: true,
 							scope: this
+						},
+						show: {
+							fn: function (textAreaContainer) {
+								Event.trigger(textAreaContainer, 'HTMLAreaEventTextAreaContainerShow');
+							}
 						}
 					}
-				},
+				}),
 				new StatusBar({
 					// The status bar
-					anchor: '100%',
+					id: this.editorId + '-statusBar',
+					itemId: 'statusBar',
 					cls: 'statusBar',
-					editorId: this.editorId,
-					itemId: 'statusBar'
+					editorId: this.editorId
 				})
 			]
 		});
 		// Set some references
-		this.toolbar = this.htmlArea.getComponent('toolbar');
-		this.statusBar = this.htmlArea.getComponent('statusBar');
-		this.iframe = this.htmlArea.getComponent('iframe');
-		this.textAreaContainer = this.htmlArea.getComponent('textAreaContainer');
+		this.toolbar = this.htmlArea.getToolbar();
+		this.iframe = this.htmlArea.getIframe();
+		this.textAreaContainer = this.htmlArea.getTextAreaContainer();
+		this.statusBar = this.htmlArea.getStatusBar();
 		// Get triggered when the framework becomes ready
 		var self = this;
 		Event.one(this.htmlArea, 'HTMLAreaEventFrameworkReady', function (event) { Event.stopEvent(event); self.onFrameworkReady(); return false; });
