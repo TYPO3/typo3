@@ -4069,7 +4069,14 @@ class TypoScriptFrontendController {
 	 * @return void Works directly on $this->content
 	 */
 	public function prefixLocalAnchorsWithScript() {
-		$scriptPath = $GLOBALS['TSFE']->absRefPrefix . substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+		if (!$this->beUserLogin) {
+			$scriptPath = $this->cObj->getUrlToCurrentLocation();
+		} else {
+			// To break less existing sites, we allow the REQUEST_URI to be used for the prefix
+			$scriptPath = GeneralUtility::getIndpEnv('REQUEST_URI');
+			// Disable the cache so that these URI will not be the ones to be cached
+			$this->disableCache();
+		}
 		$originalContent = $this->content;
 		$this->content = preg_replace('/(<(?:a|area).*?href=")(#[^"]*")/i', '${1}' . htmlspecialchars($scriptPath) . '${2}', $originalContent);
 		// There was an error in the call to preg_replace, so keep the original content (behavior prior to PHP 5.2)
