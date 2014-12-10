@@ -37,10 +37,17 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $backEndUser;
 
+	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $mockDatabaseConnection;
+
 	public function setUp() {
 		$GLOBALS['TCA'] = array();
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+		$this->mockDatabaseConnection = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->mockDatabaseConnection;
 		$this->subject = new \TYPO3\CMS\Core\DataHandling\DataHandler();
 		$this->subject->start(array(), '', $this->backEndUser);
 	}
@@ -179,6 +186,64 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($returnValue['value'], $expectedReturnValue);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsDataProvider() {
+		return array(
+			'dbType = date' => array(
+				'date'
+			),
+			'dbType = datetime' => array(
+				'datetime'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider inputValueCheckCallsGetDateTimeFormatsForDatetimeFieldsDataProvider
+	 * @param string $dbType
+	 */
+	public function inputValueCheckCallsGetDateTimeFormatsForDatetimeFields($dbType) {
+		$tcaFieldConf = array(
+			'input' => array(),
+			'dbType' => $dbType
+		);
+		$this->mockDatabaseConnection->expects($this->once())->method('getDateTimeFormats');
+		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+	}
+
+	/**
+	 * @return array
+	 */
+	public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider() {
+		return array(
+			'tca without dbType' => array(
+				array(
+					'input' => array()
+				)
+			),
+			'tca with dbType != date/datetime' => array(
+				array(
+					'input' => array(),
+					'dbType' => 'foo'
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @param array $tcaFieldConf
+	 * @dataProvider inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider
+	 */
+	public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFields($tcaFieldConf) {
+		$this->mockDatabaseConnection->expects($this->never())->method('getDateTimeFormats');
+		$this->subject->checkValue_input(array(), '', $tcaFieldConf, array());
+	}
+
+
 	///////////////////////////////////////////
 	// Tests concerning checkModifyAccessList
 	///////////////////////////////////////////
@@ -187,7 +252,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Tests whether a wrong interface on the 'checkModifyAccessList' hook throws an exception.
 	 *
 	 * @test
-	 * @expectedException UnexpectedValueException
+	 * @expectedException \UnexpectedValueException
 	 */
 	public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface() {
 		$hookClass = uniqid('tx_coretest');
