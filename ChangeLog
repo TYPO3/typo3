@@ -1,3 +1,10 @@
+2014-12-10  d4f4f09                  [RELEASE] Release of TYPO3 6.2.9 (TYPO3 Release Team)
+2014-12-10  0f25df6  #62723          [!!!][SECURITY] Fix link spoofing in prefixLocalAnchors (Helmut Hummel)
+2014-12-10  03b36dc                  Revert "[BUGFIX] Memory consumption in DataHandler->processClearCacheQueue" (Oliver Hader)
+2014-12-10  31518c9  #63615          [BUGFIX] Memory consumption in DataHandler->processClearCacheQueue (Stephan Großberndt)
+2014-12-08  e4438c4                  [TASK] Set TYPO3 version to 6.2.9-dev (TYPO3 Release Team)
+
+
 2014-12-08  88a5b02                  [RELEASE] Release of TYPO3 6.2.8 (TYPO3 Release Team)
 2014-12-08  44a348f  #24481          [BUGFIX] Render favicon tag only if file exists (Sascha Egerer)
 2014-12-08  90f7166  #63660          [BUGFIX] Tiny syntax errors in jsfunc.inline.js (Oliver Hader)
