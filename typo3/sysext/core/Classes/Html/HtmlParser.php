@@ -866,11 +866,14 @@ class HtmlParser {
 											}
 											if ($params['prefixLocalAnchors']) {
 												if ($tagAttrib[0][$attr][0] === '#') {
-													$prefix = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-													$tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
-													if ($params['prefixLocalAnchors'] == 2 && GeneralUtility::isFirstPartOfStr($prefix, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
-														$tagAttrib[0][$attr] = substr($tagAttrib[0][$attr], strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+													if ($params['prefixLocalAnchors'] == 2) {
+														/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
+														$contentObjectRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+														$prefix = $contentObjectRenderer->getUrlToCurrentLocation();
+													} else {
+														$prefix = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 													}
+													$tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
 												}
 											}
 											if ($params['prefixRelPathWith']) {
