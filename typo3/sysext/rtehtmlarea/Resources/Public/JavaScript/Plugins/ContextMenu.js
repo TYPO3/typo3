@@ -41,7 +41,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 			if (this.pageTSConfiguration.hideButtons) {
 				this.hideButtons = this.pageTSConfiguration.hideButtons;
 			}
-			/*
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -88,6 +88,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 			var iframe = this.editor.iframe.getEl().dom;
 			Event.one(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', function (event) { self.onBeforeDestroy(event); return  true; });
 		},
+
 		/**
 		 * Create the menu items config
 		 */
@@ -117,7 +118,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 						if ((!this.showButtons || this.showButtons.indexOf(convertedItemId) !== -1)
 							&& (!this.hideButtons || this.hideButtons.indexOf(convertedItemId) === -1)) {
 							var button = this.getButton(itemId);
-							if (button && button.getXType() === 'htmlareabutton' && !button.hideInContextMenu) {
+							// xtype is set through applied button configuration
+							if (button && button.xtype === 'htmlareabutton' && !button.hideInContextMenu) {
 								var itemId = button.getItemId();
 								itemsConfig.push({
 									itemId: itemId,
@@ -194,7 +196,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 				// Show the context menu
 			this.menu.showAt([Ext.fly(target).getX() + iframeEl.getX(), Ext.fly(target).getY() + iframeEl.getY()]);
 		},
-		/*
+
+		/**
 		 * Show items depending on context
 		 */
 		showContextItems: function (target) {
@@ -215,7 +218,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 						menuItem.setVisible(!button.disabled);
 						lastIsButton = lastIsButton || !button.disabled;
 					} else {
-							// Special target delete item
+						// Special target delete item
 						this.deleteTarget = target;
 						if (/^(html|body)$/i.test(target.nodeName)) {
 							this.deleteTarget = null;
