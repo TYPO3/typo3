@@ -245,11 +245,9 @@ TYPO3.Form.Wizard.Elements = Ext.extend(Ext.Container, {
 	setConfigurationValue: function(formConfiguration) {
 		Ext.merge(this.configuration, formConfiguration);
 		TYPO3.Form.Wizard.Helpers.History.setHistory();
-		if (this.xtype != 'typo3-form-wizard-elements-basic-form') {
-			this.rendered = false;
-			this.render();
-			this.doLayout();
-		}
+		this.rendered = false;
+		this.render();
+		this.doLayout();
 		this.fireEvent('configurationChange', this);
 	},
 
