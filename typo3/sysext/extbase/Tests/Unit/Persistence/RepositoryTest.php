@@ -61,13 +61,13 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
-	 */
-	protected $querySettings;
+	*/
+	protected $mockQuerySettings;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
 	 */
-	protected $mockQuerySettings;
+	protected $mockConfigurationManager;
 
 	protected function setUp() {
 		$this->mockIdentityMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap::class);
@@ -76,9 +76,14 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockQuerySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
 		$this->mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
 		$this->mockQueryFactory->expects($this->any())->method('create')->will($this->returnValue($this->mockQuery));
-		$this->mockBackend = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface::class);
 		$this->mockSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
-		$this->mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
+		$this->mockBackend = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Backend::class, array('dummy'), array($this->mockConfigurationManager));
+		$this->inject($this->mockBackend, 'session', $this->mockSession);
+		$this->mockPersistenceManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class, array('createQueryForType'));
+		$this->inject($this->mockBackend, 'persistenceManager', $this->mockPersistenceManager);
+		$this->inject($this->mockPersistenceManager, 'persistenceSession', $this->mockSession);
+		$this->inject($this->mockPersistenceManager, 'backend', $this->mockBackend);
 		$this->mockPersistenceManager->expects($this->any())->method('createQueryForType')->will($this->returnValue($this->mockQuery));
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->repository = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Repository::class, array('dummy'), array($this->mockObjectManager));
@@ -142,25 +147,20 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function findByidentifierReturnsResultOfGetObjectByIdentifierCall() {
+	public function findByidentifierReturnsResultOfGetObjectByIdentifierCallFromBackend() {
 		$identifier = '42';
 		$object = new \stdClass();
 
 		$expectedResult = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
 		$expectedResult->expects($this->once())->method('getFirst')->will($this->returnValue($object));
 
-		$mockQuery = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
-		$mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
-		$mockQuery->expects($this->once())->method('matching')->will($this->returnValue($mockQuery));
-		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue($expectedResult));
+		$this->mockQuery->expects($this->any())->method('getQuerySettings')->will($this->returnValue($this->mockQuerySettings));
+		$this->mockQuery->expects($this->once())->method('matching')->will($this->returnValue($this->mockQuery));
+		$this->mockQuery->expects($this->once())->method('execute')->will($this->returnValue($expectedResult));
 
-		$session = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
-		$session->expects($this->once())->method('hasIdentifier')->will($this->returnValue(FALSE));
-
-		$repository = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Repository::class, array('createQuery'), array($this->mockObjectManager));
-		$repository->_set('session', $session);
-		$repository->expects($this->once())->method('createQuery')->will($this->returnValue($mockQuery));
-		$this->assertSame($object, $repository->findByIdentifier($identifier));
+		// skip backend, as we want to test the backend
+		$this->mockSession->expects($this->any())->method('hasIdentifier')->will($this->returnValue(FALSE));
+		$this->assertSame($object, $this->repository->findByIdentifier($identifier));
 	}
 
 	/**
