@@ -1102,9 +1102,11 @@ class DataHandler {
 						if ($recordAccess) {
 							// Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
 							list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
-							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-							if ($status == 'new' && $table == 'pages' && is_array($TSConfig['permissions.'])) {
-								$fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
+							if ($status === 'new' && $table === 'pages') {
+								$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+								if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
+									$fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
+								}
 							}
 							// Processing of all fields in incomingFieldArray and setting them in $fieldArray
 							$fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
