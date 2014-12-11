@@ -37,3 +37,12 @@ Deprecation
 	:glob:
 
 	Changelog/master/Deprecation-*
+
+Old changes
+===========
+
+.. toctree::
+	:maxdepth: 1
+	:titlesonly:
+
+	Changelog/7.0/Index
