@@ -907,7 +907,7 @@ class DataHandler {
 						$dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
 						foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
 							if (isset($incomingFieldArray[$column])) {
-								if (isset($config['config']['dbType']) && GeneralUtility::inList('date,datetime', $config['config']['dbType'])) {
+								if (isset($config['config']['dbType']) && ($config['config']['dbType'] === 'date' || $config['config']['dbType'] === 'datetime')) {
 									$emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
 									$format = $dateTimeFormats[$config['config']['dbType']]['format'];
 									$incomingFieldArray[$column] = $incomingFieldArray[$column] ? gmdate($format, $incomingFieldArray[$column]) : $emptyValue;
@@ -1315,7 +1315,7 @@ class DataHandler {
 		// - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
 		// If everything is OK, the field is entered into $fieldArray[]
 		foreach ($incomingFieldArray as $field => $fieldValue) {
-			if (!in_array(($table . '-' . $field), $this->exclude_array) && !$this->data_disableFields[$table][$id][$field]) {
+			if (!in_array(($table . '-' . $field), $this->exclude_array, TRUE) && !$this->data_disableFields[$table][$id][$field]) {
 				// The field must be editable.
 				// Checking if a value for language can be changed:
 				$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field && !$this->BE_USER->checkLanguageAccess($fieldValue);
@@ -1591,7 +1591,7 @@ class DataHandler {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 		// Handle native date/time fields
 		$isDateOrDateTimeField = FALSE;
-		if (isset($tcaFieldConf['dbType']) && GeneralUtility::inList('date,datetime', $tcaFieldConf['dbType'])) {
+		if (isset($tcaFieldConf['dbType']) && ($tcaFieldConf['dbType'] === 'date' || $tcaFieldConf['dbType'] === 'datetime')) {
 			$isDateOrDateTimeField = TRUE;
 			$dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
 			// Convert the date/time into a timestamp for the sake of the checks
@@ -1621,10 +1621,10 @@ class DataHandler {
 		// Process UNIQUE settings:
 		// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
 		if ($field && $realPid >= 0) {
-			if ($res['value'] && in_array('uniqueInPid', $evalCodesArray)) {
+			if ($res['value'] && in_array('uniqueInPid', $evalCodesArray, TRUE)) {
 				$res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
 			}
-			if ($res['value'] && in_array('unique', $evalCodesArray)) {
+			if ($res['value'] && in_array('unique', $evalCodesArray, TRUE)) {
 				$res['value'] = $this->getUnique($table, $field, $res['value'], $id);
 			}
 		}
@@ -1663,11 +1663,11 @@ class DataHandler {
 			$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
 			$otherRecordsWithSameValue = array();
 			$maxCheckedRecords = 0;
-			if (in_array('maximumRecordsCheckedInPid', $evalCodesArray)) {
+			if (in_array('maximumRecordsCheckedInPid', $evalCodesArray, TRUE)) {
 				$otherRecordsWithSameValue = $this->getRecordsWithSameValue($table, $id, $field, $value, $realPid);
 				$maxCheckedRecords = (int)$tcaFieldConf['validation']['maximumRecordsCheckedInPid'];
 			}
-			if (in_array('maximumRecordsChecked', $evalCodesArray)) {
+			if (in_array('maximumRecordsChecked', $evalCodesArray, TRUE)) {
 				$otherRecordsWithSameValue = $this->getRecordsWithSameValue($table, $id, $field, $value);
 				$maxCheckedRecords = (int)$tcaFieldConf['validation']['maximumRecordsChecked'];
 			}
@@ -1736,7 +1736,7 @@ class DataHandler {
 			$exclusiveKeys = GeneralUtility::trimExplode(',', $tcaFieldConf['exclusiveKeys']);
 			foreach ($valueArray as $kk => $vv) {
 				// $vv is the item key!
-				if (in_array($vv, $exclusiveKeys)) {
+				if (in_array($vv, $exclusiveKeys, TRUE)) {
 					$valueArray = array($kk => $vv);
 					break;
 				}
@@ -3006,7 +3006,7 @@ class DataHandler {
 						$tE = $this->getTableEntries($table, $TSConfig);
 						// Traverse ALL fields of the selected record:
 						foreach ($row as $field => $value) {
-							if (!in_array($field, $nonFields)) {
+							if (!in_array($field, $nonFields, TRUE)) {
 								// Get TCA configuration for the field:
 								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 								// Preparation/Processing of the value:
@@ -3108,7 +3108,7 @@ class DataHandler {
 		}
 		$copyTablesArray = array_unique($copyTablesArray);
 		// Begin to copy pages if we're allowed to:
-		if ($this->admin || in_array('pages', $copyTablesArray)) {
+		if ($this->admin || in_array('pages', $copyTablesArray, TRUE)) {
 			// Copy this page we're on. And set first-flag (this will trigger that the record is hidden if that is configured)!
 			$theNewRootID = $this->copySpecificPage($uid, $destPid, $copyTablesArray, 1);
 			// If we're going to copy recursively...:
@@ -3195,7 +3195,7 @@ class DataHandler {
 					$row = array_merge($row, $overrideArray);
 					// Traverse ALL fields of the selected record:
 					foreach ($row as $field => $value) {
-						if (!in_array($field, $nonFields)) {
+						if (!in_array($field, $nonFields, TRUE)) {
 							// Get TCA configuration for the field:
 							$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 							if (is_array($conf)) {
@@ -3999,7 +3999,11 @@ class DataHandler {
 													}
 													$overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
 												}
-											} elseif (GeneralUtility::inList('exclude,noCopy,mergeIfNotBlank', $fCfg['l10n_mode']) && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField'] && $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']) {
+											} elseif (
+												($fCfg['l10n_mode'] === 'exclude' || $fCfg['l10n_mode'] === 'noCopy' || $fCfg['l10n_mode'] === 'mergeIfNotBlank')
+ 												&& $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['languageField']
+ 												&& $fN != $GLOBALS['TCA'][$Ttable]['ctrl']['transOrigPointerField']
+											 ) {
 												// Otherwise, do not copy field (unless it is the language field or
 												// pointer to the original language)
 												$excludeFields[] = $fN;
@@ -4066,7 +4070,7 @@ class DataHandler {
 		$parts = GeneralUtility::trimExplode(',', $command);
 		$field = $parts[0];
 		$type = $parts[1];
-		if ($field && (GeneralUtility::inList('localize,synchronize', $type) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+		if ($field && (($type === 'localize' || $type === 'synchronize') || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$foreignTable = $config['foreign_table'];
 			$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
@@ -4117,7 +4121,7 @@ class DataHandler {
 							$item['id'] = $this->localize($item['table'], $item['id'], $language);
 							$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
 							$dbAnalysisCurrent->itemArray[] = $item;
-						} elseif (GeneralUtility::inList('localize,synchronize', $type)) {
+						} elseif ($type === 'localize' || $type === 'synchronize') {
 							foreach ($elementsOriginal as $originalId => $item) {
 								$item['id'] = $this->localize($item['table'], $item['id'], $language);
 								$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
@@ -5007,7 +5011,7 @@ class DataHandler {
 		// Traverse those references and map IDs:
 		foreach ($dbAnalysis->itemArray as $k => $v) {
 			$mapID = $this->copyMappingArray_merged[$v['table']][$v['id']];
-			if ($mapID && !in_array($v['table'], $dontRemapTables)) {
+			if ($mapID && !in_array($v['table'], $dontRemapTables, TRUE)) {
 				$dbAnalysis->itemArray[$k]['id'] = $mapID;
 				$set = TRUE;
 			}
@@ -5495,7 +5499,7 @@ class DataHandler {
 				: $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
 			// If all tables or the table is listed as a allowed type, return TRUE
-			if (strpos($allowedTableList, '*') !== FALSE || in_array($checkTable, $allowedArray)) {
+			if (strpos($allowedTableList, '*') !== FALSE || in_array($checkTable, $allowedArray, TRUE)) {
 				$allowed = TRUE;
 			}
 		}
@@ -5716,7 +5720,7 @@ class DataHandler {
 		$tableList = array();
 		foreach (array_keys($GLOBALS['TCA']) as $table) {
 			// If the table is not in the allowed list, check if there are records...
-			if (!in_array($table, $allowedArray)) {
+			if (!in_array($table, $allowedArray, TRUE)) {
 				$count = $this->databaseConnection->exec_SELECTcountRows('uid', $table, 'pid=' . (int)$page_uid);
 				if ($count) {
 					$tableList[] = $table;
@@ -6562,7 +6566,7 @@ class DataHandler {
 			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 				if ($conf['config']['type'] == 'input') {
 					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], TRUE);
-					if (in_array('uniqueInPid', $evalCodesArray)) {
+					if (in_array('uniqueInPid', $evalCodesArray, TRUE)) {
 						$newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
 						if ((string)$newV !== (string)$curData[$field]) {
 							$newData[$field] = $newV;
