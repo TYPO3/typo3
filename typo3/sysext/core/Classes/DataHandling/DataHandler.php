@@ -2389,6 +2389,9 @@ class DataHandler {
 					}
 					break;
 				default:
+					if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
+						break;
+					}
 					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
 						$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
@@ -2503,6 +2506,9 @@ class DataHandler {
 					$this->checkValue_input_ValidateEmail($value, $set);
 					break;
 				default:
+					if (empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
+						break;
+					}
 					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue')) {
 						$value = $evalObj->evaluateFieldValue($value, $is_in, $set);
