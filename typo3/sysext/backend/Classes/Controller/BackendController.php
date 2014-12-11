@@ -136,6 +136,9 @@ class BackendController {
 
 		// load FlashMessages functionality
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FlashMessages');
+
+		// load Modals
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
 		$this->css = '';
 		$this->initializeToolbarItems();
 		$this->menuWidth = isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) ? (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] : $this->menuWidthDefault;

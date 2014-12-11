@@ -1,0 +1,95 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+// Modal notice
+@modal-notice-bg:		@btn-default-bg;
+@modal-notice-color:	@btn-default-color;
+@modal-notice-border:	@btn-default-border;
+
+// Modal info
+@modal-info-bg:			@btn-info-bg;
+@modal-info-color:		@btn-info-color;
+@modal-info-border:		@btn-info-border;
+
+// Modal success
+@modal-success-bg:		@btn-success-bg;
+@modal-success-color:	@btn-success-color;
+@modal-success-border:	@btn-success-border;
+
+// Modal warning
+@modal-warning-bg:		@btn-warning-bg;
+@modal-warning-color:	@btn-warning-color;
+@modal-warning-border:	@btn-warning-border;
+
+// Modal danger
+@modal-danger-bg:		@btn-danger-bg;
+@modal-danger-color:	@btn-danger-color;
+@modal-danger-border:	@btn-danger-border;
+
+// Modal styling
+.modal {
+	&.t3-modal-notice .modal-header {
+		background-color: @modal-notice-bg;
+		color: @modal-notice-color;
+		border-bottom-color: @modal-notice-border;
+	}
+	&.t3-modal-info .modal-header {
+		background-color: @modal-info-bg;
+		color: @modal-info-color;
+		border-bottom-color: @modal-info-border;
+	}
+	&.t3-modal-success .modal-header {
+		background-color: @modal-success-bg;
+		color: @modal-success-color;
+		border-bottom-color: @modal-success-border;
+	}
+	&.t3-modal-warning .modal-header {
+		background-color: @modal-warning-bg;
+		color: @modal-warning-color;
+		border-bottom-color: @modal-warning-border;
+	}
+
+	&.t3-modal-danger .modal-header {
+		background-color: @modal-danger-bg;
+		color: @modal-danger-color;
+		border-bottom-color: @modal-danger-border;
+	}
+	.close {
+		color: inherit;
+		padding: 0;
+		margin: 0;
+		text-shadow: rgba(0,0,0,0.5) 0px 0px 3px;
+		.opacity(0.5);
+		.user-select('none');
+		&:hover,
+		&:active,
+		&:hover {
+			box-shadow: none;
+			outline: none;
+			background: none;
+			.opacity(1);
+		}
+	}
+}
+.modal-header,
+.modal-footer {
+	padding: 10px 15px;
+}
+.modal-footer .btn {
+	margin-right: 0;
+}
+.modal-content {
+	.transition(margin-top .1s ease-in);
+	border: none;
+	overflow: hidden;
+}

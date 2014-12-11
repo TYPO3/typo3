@@ -7660,6 +7660,78 @@ table#typo3-history-item img {
  *
  * The TYPO3 project - inspiring people to share!
  */
+.modal.t3-modal-notice .modal-header {
+  background-color: #828282;
+  color: #ffffff;
+  border-bottom-color: #757575;
+}
+.modal.t3-modal-info .modal-header {
+  background-color: #41b4dc;
+  color: #ffffff;
+  border-bottom-color: #2bacd8;
+}
+.modal.t3-modal-success .modal-header {
+  background-color: #1eb941;
+  color: #ffffff;
+  border-bottom-color: #1aa339;
+}
+.modal.t3-modal-warning .modal-header {
+  background-color: #f07814;
+  color: #ffffff;
+  border-bottom-color: #dc6c0e;
+}
+.modal.t3-modal-danger .modal-header {
+  background-color: #c83c3c;
+  color: #ffffff;
+  border-bottom-color: #b73434;
+}
+.modal .close {
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 3px;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -webkit-user-select: 'none';
+  -moz-user-select: 'none';
+  -ms-user-select: 'none';
+  user-select: 'none';
+}
+.modal .close:hover,
+.modal .close:active,
+.modal .close:hover {
+  box-shadow: none;
+  outline: none;
+  background: none;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.modal-header,
+.modal-footer {
+  padding: 10px 15px;
+}
+.modal-footer .btn {
+  margin-right: 0;
+}
+.modal-content {
+  -webkit-transition: margin-top 0.1s ease-in;
+  -o-transition: margin-top 0.1s ease-in;
+  transition: margin-top 0.1s ease-in;
+  border: none;
+  overflow: hidden;
+}
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 /* - - - - - - - - - - - - - - - - - - - - -
 Pagetree
 - - - - - - - - - - - - - - - - - - - - - */
