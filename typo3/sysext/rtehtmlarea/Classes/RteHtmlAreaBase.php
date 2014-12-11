@@ -476,7 +476,6 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			// Add RTE JavaScript
 			$this->addRteJsFiles($this->TCEform->RTEcounter);
 			$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
-			//$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea');
 			$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 			/* =======================================
 			 * DRAW THE EDITOR
@@ -554,6 +553,8 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Editing area style sheet
 		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
 		$this->addStyleSheet('rtehtmlarea-editing-area-skin', $this->editedContentCSS);
+		// jQuery UI Resizable style sheet
+		$this->addStyleSheet('jquery-ui-resizable', $skinDir . '/jquery-ui-resizable.css');
 		// Main skin
 		$this->addStyleSheet('rtehtmlarea-skin', $this->editorCSS);
 		// Additional icons from registered plugins

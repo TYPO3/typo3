@@ -201,7 +201,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		makeResizable: function () {
 			if (this.resizable) {
 				var self = this;
-				Dom.addClass(this.getEl(), 'resizable');
 				this.resizer = Resizable.makeResizable(this.getEl(), {
 					minHeight: 200,
 					minWidth: 300,
