@@ -213,12 +213,6 @@ class ReferenceIndex {
 						$this->createEntryData_softreferences($table, $uid, $fieldname, '', $deleted, $dat['softrefs']['keys']);
 					}
 				}
-				// Word indexing:
-				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-					if (GeneralUtility::inList('input,text', $conf['config']['type']) && (string)$record[$field] !== '' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
-						$this->words_strings[$field] = $record[$field];
-					}
-				}
 				return $this->relations;
 			}
 		}
