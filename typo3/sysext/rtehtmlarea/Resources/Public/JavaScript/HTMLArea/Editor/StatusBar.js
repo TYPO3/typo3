@@ -11,43 +11,48 @@
  * The TYPO3 project - inspiring people to share!
  */
 /**
- * HTMLArea.StatusBar extends Ext.Container
+ * The optional status bar at the bottom of the editor framework
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (UserAgent, Dom, Event) {
+	function (UserAgent, Util, Dom, Event) {
 
-	var StatusBar = Ext.extend(Ext.Container, {
+	/**
+	 * Status bar constructor
+	 */
+	var StatusBar = function (config) {
+		Util.apply(this, config);
+	};
+
+	StatusBar.prototype = {
 
 		/**
-		 * Constructor
+		 * Render the status bar (called by framework rendering)
+		 *
+		 * @param object container: the container into which to insert the status bar (that is the farmework
+		 * @return void
 		 */
-		initComponent: function () {
-			StatusBar.superclass.initComponent.call(this);
-			this.addListener({
-				render: {
-					fn: this.addComponents,
-					single: true
-				},
-				afterrender: {
-					fn: this.initEventListeners,
-					single: true
-				}
-			});
+		render: function (container) {
+			this.el = document.createElement('div');
+			if (this.id) {
+				this.el.setAttribute('id', this.id);
+			}
+			if (this.cls) {
+				this.el.setAttribute('class', this.cls);
+			}
+			this.el = container.appendChild(this.el);
+			this.addComponents();
+			this.rendered = true;
+			this.initEventListeners();
 		},
 
 		/**
-		 * Initialize listeners
+		 * Initialize listeners (after rendering)
 		 */
 		initEventListeners: function () {
-			this.addListener({
-				beforedestroy: {
-					fn: this.onBeforeDestroy,
-					single: true
-				}
-			});
 			var self = this;
 			// Monitor toolbar updates in order to refresh the contents of the statusbar
 			// The toolbar must have been rendered
@@ -55,7 +60,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			// Monitor editor changing mode
 			Event.on(this.getEditor(), 'HTMLAreaEventModeChange', function (event, mode) { Event.stopEvent(event); self.onModeChange(mode); return false; });
 			// Monitor word count change
-			Event.on(this.framework.iframe, 'HTMLAreaEventWordCountChange', function (event, delay) { Event.stopEvent(event); self.onWordCountChange(delay); return false; });
+			Event.on(this.framework.iframe, 'HTMLAreaEventWordCountChange', function (event, delay) { Event.stopEvent(event); self.onWordCountChange(delay); return false; });			
+		},
+
+		/**
+		 * Get the element to which the status bar is rendered
+		 */
+		getEl: function () {
+			return this.el;
+		},
+
+		/**
+		 * Get the current height of the status bar
+		 */
+		getHeight: function () {
+			return Dom.getSize(this.el).height;
 		},
 
 		/**
@@ -80,21 +99,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			wordCount.style.display = 'block';
 			wordCount.innerHTML = '&nbsp;';
 			Dom.addClass(wordCount, 'statusBarWordCount');
-			this.statusBarWordCount = this.getEl().dom.appendChild(wordCount);
+			this.statusBarWordCount = this.getEl().appendChild(wordCount);
 			// Element tree
 			var tree = document.createElement('span');
 			tree.id = this.editorId + '-statusBarTree';
 			tree.style.display = 'block';
 			tree.innerHTML = HTMLArea.localize('Path') + ': ';
 			Dom.addClass(tree, 'statusBarTree');
-			this.statusBarTree = this.getEl().dom.appendChild(tree);
+			this.statusBarTree = this.getEl().appendChild(tree);
 			// Text mode
 			var textMode = document.createElement('span');
 			textMode.id = this.editorId + '-statusBarTextMode';
 			textMode.style.display = 'none';
 			textMode.innerHTML = HTMLArea.localize('TEXT_MODE');
 			Dom.addClass(textMode, 'statusBarTextMode');
-			this.statusBarTextMode = this.getEl().dom.appendChild(textMode);
+			this.statusBarTextMode = this.getEl().appendChild(textMode);
 		},
 
 		/**
@@ -128,6 +147,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		 */
 		onUpdateToolbar: function (mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 			if (mode === 'wysiwyg' && !this.noUpdate) {
+				var self = this;
 				var text,
 					language,
 					languageObject = this.getEditor().getPlugin('Language'),
@@ -171,7 +191,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 					element.innerHTML = text;
 					element = path.parentNode.insertBefore(element, path.nextSibling);
 					element.ancestor = ancestor;
-					var self = this;
 					Event.on(element, 'click', function (event) { return self.onClick(event); });
 					Event.on(element, 'mousedown', function (event) { return self.onClick(event); });
 					if (!UserAgent.isOpera) {
@@ -318,14 +337,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		/**
 		 * Cleanup
 		 */
-		onBeforeDestroy: function() {
+		destroy: function() {
 			this.clear();
-			this.removeAll(true);
+			while (this.el.firstChild) {
+				this.el.removeChild(this.el.firstChild);
+			}
 			this.statusBarTree = null;
 			this.statusBarWordCount = null;
-			return true;
 		}
-	});
+	};
 
 	return StatusBar;
 

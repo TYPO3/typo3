@@ -106,8 +106,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 				}
 				Event.on(form, 'reset', function (event) { return self.onReset(event); });
 			}
-			// Monitor the framework being resized
-			Event.on(this, 'HTMLAreaEventFrameworkResize', function (event) { Event.stopEvent(event); self.onFrameworkResize(); return false; });
 		},
 
 		/**
@@ -259,7 +257,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 				var frameworkWidth = parseInt(((Typo3.getWindowSize().width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Util.getScrollBarWidth()) - Dom.getPosition(this.getEl()).x - 15) * parseInt(this.textAreaInitialSize.width))/100);
 			}
 			Dom.setSize(this.getEl(), { width: frameworkWidth, height: frameworkHeight});
-			Event.trigger(this, 'HTMLAreaEventFrameworkResize');
+			this.onFrameworkResize();
 		},
 
 		/**
