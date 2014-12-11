@@ -52,16 +52,6 @@ class ReferenceIndex {
 	public $relations = array();
 
 	/**
-	 * @var array
-	 */
-	public $words_strings = array();
-
-	/**
-	 * @var array
-	 */
-	public $words = array();
-
-	/**
 	 * Number which we can increase if a change in the code means we will have to force a re-generation of the index.
 	 *
 	 * @var int
@@ -165,9 +155,6 @@ class ReferenceIndex {
 			// Get raw record from DB:
 			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $table, 'uid=' . (int)$uid);
 			if (is_array($record)) {
-				// Initialize:
-				$this->words_strings = array();
-				$this->words = array();
 				// Deleted:
 				$deleted = $GLOBALS['TCA'][$table]['ctrl']['delete'] && $record[$GLOBALS['TCA'][$table]['ctrl']['delete']] ? 1 : 0;
 				// Get all relations from record:
@@ -210,12 +197,6 @@ class ReferenceIndex {
 					// Softreferences in the field:
 					if (is_array($dat['softrefs'])) {
 						$this->createEntryData_softreferences($table, $uid, $fieldname, '', $deleted, $dat['softrefs']['keys']);
-					}
-				}
-				// Word indexing:
-				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-					if (GeneralUtility::inList('input,text', $conf['config']['type']) && (string)$record[$field] !== '' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
-						$this->words_strings[$field] = $record[$field];
 					}
 				}
 				return $this->relations;
