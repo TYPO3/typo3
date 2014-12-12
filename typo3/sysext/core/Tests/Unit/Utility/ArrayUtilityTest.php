@@ -159,6 +159,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider filterByValueRecursive
+	 * @param array $needle
+	 * @param array $haystack
+	 * @param array $expectedResult
 	 */
 	public function filterByValueRecursiveCorrectlyFiltersArray($needle, $haystack, $expectedResult) {
 		$this->assertEquals(
@@ -247,6 +250,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * - Array to get value from
 	 * - String path
 	 * - Expected result
+	 * @return array
 	 */
 	public function getValueByPathInvalidPathDataProvider() {
 		return array(
@@ -296,6 +300,8 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider getValueByPathInvalidPathDataProvider
 	 * @expectedException \RuntimeException
+	 * @param array $array
+	 * @param string $path
 	 */
 	public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path) {
 		ArrayUtility::getValueByPath($array, $path);
@@ -396,6 +402,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getValueByPathValidDataProvider
+	 * @param array $array
+	 * @param string $path
+	 * @param mixed $expectedResult
 	 */
 	public function getValueByPathGetsCorrectValue(array $array, $path, $expectedResult) {
 		$this->assertEquals($expectedResult, ArrayUtility::getValueByPath($array, $path));
@@ -615,6 +624,10 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider setValueByPathSetsCorrectValueDataProvider
+	 * @param array $array
+	 * @param string $path
+	 * @param string $value
+	 * @param array $expectedResult
 	 */
 	public function setValueByPathSetsCorrectValue(array $array, $path, $value, $expectedResult) {
 		$this->assertEquals(
@@ -741,6 +754,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider removeByPathRemovesCorrectPathDataProvider
+	 * @param array $array
+	 * @param string $path
+	 * @param array $expectedResult
 	 */
 	public function removeByPathRemovesCorrectPath(array $array, $path, $expectedResult) {
 		$this->assertEquals(
@@ -907,6 +923,10 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider sortArraysByKeyCheckIfSortingIsCorrectDataProvider
+	 * @param array $array
+	 * @param string $key
+	 * @param bool $ascending
+	 * @param array $expectedResult
 	 */
 	public function sortArraysByKeyCheckIfSortingIsCorrect(array $array, $key, $ascending, $expectedResult) {
 		$sortedArray = ArrayUtility::sortArraysByKey($array, $key, $ascending);
@@ -1473,42 +1493,248 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @test
-	 * @param array $inputArray
-	 * @param array $expected
-	 * @dataProvider renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider
+	 * @return array
 	 */
-	public function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $inputArray, array $expected) {
-		$this->assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
+	public function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider() {
+		return array(
+			'Override array can reset string to array' => array(
+				array(
+					'first' => array(
+						'second' => 'foo',
+					),
+				),
+				array(
+					'first' => array(
+						'second' => array('third' => 'bar'),
+					),
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => array(
+						'second' => array('third' => 'bar'),
+					),
+				),
+			),
+			'Override array does not reset array to string (weird!)' => array(
+				array(
+					'first' => array(),
+				),
+				array(
+					'first' => 'foo',
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => array(), // This is rather unexpected, naive expectation: first => 'foo'
+				),
+			),
+			'Override array does override string with null' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'first' => NULL,
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => NULL,
+				),
+			),
+			'Override array does override null with string' => array(
+				array(
+					'first' => NULL,
+				),
+				array(
+					'first' => 'foo',
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => 'foo',
+				),
+			),
+			'Override array does override null with empty string' => array(
+				array(
+					'first' => NULL,
+				),
+				array(
+					'first' => '',
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => '',
+				),
+			),
+			'Override array does not override string with NULL if requested' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'first' => NULL,
+				),
+				TRUE,
+				FALSE, // no include empty values
+				TRUE,
+				array(
+					'first' => 'foo',
+				),
+			),
+			'Override array does override null with null' => array(
+				array(
+					'first' => NULL,
+				),
+				array(
+					'first' => NULL,
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => '',
+				),
+			),
+			'Override array can __UNSET values' => array(
+				array(
+					'first' => array(
+						'second' => 'second',
+						'third' => 'third',
+					),
+					'fifth' => array(),
+				),
+				array(
+					'first' => array(
+						'second' => 'overrule',
+						'third' => '__UNSET',
+						'fourth' => 'overrile',
+					),
+					'fifth' => '__UNSET',
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => array(
+						'second' => 'overrule',
+						'fourth' => 'overrile',
+					),
+				),
+			),
+			'Override can add keys' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'second' => 'bar',
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => 'foo',
+					'second' => 'bar',
+				),
+			),
+			'Override does not add key if __UNSET' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'second' => '__UNSET',
+				),
+				TRUE,
+				TRUE,
+				TRUE,
+				array(
+					'first' => 'foo',
+				),
+			),
+			'Override does not add key if not requested' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'second' => 'bar',
+				),
+				FALSE, // no add keys
+				TRUE,
+				TRUE,
+				array(
+					'first' => 'foo',
+				),
+			),
+			'Override does not add key if not requested with add include empty values' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'second' => 'bar',
+				),
+				FALSE, // no add keys
+				FALSE, // no include empty values
+				TRUE,
+				array(
+					'first' => 'foo',
+				),
+			),
+			'Override does not override string with empty string if requested' => array(
+				array(
+					'first' => 'foo',
+				),
+				array(
+					'first' => '',
+				),
+				TRUE,
+				FALSE, // no include empty values
+				TRUE,
+				array(
+					'first' => 'foo',
+				),
+			),
+			'Override array does merge instead of __UNSET if requested (weird!)' => array(
+				array(
+					'first' => array(
+						'second' => 'second',
+						'third' => 'third',
+					),
+					'fifth' => array(),
+				),
+				array(
+					'first' => array(
+						'second' => 'overrule',
+						'third' => '__UNSET',
+						'fourth' => 'overrile',
+					),
+					'fifth' => '__UNSET',
+				),
+				TRUE,
+				TRUE,
+				FALSE,
+				array(
+					'first' => array(
+						'second' => 'overrule',
+						'third' => '__UNSET', // overruled
+						'fourth' => 'overrile',
+					),
+					'fifth' => array(), // not overruled with string here, naive expectation: 'fifth' => '__UNSET'
+				),
+			),
+		);
 	}
-
 
 	/**
 	 * @test
+	 * @dataProvider mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider
 	 */
-	public function arrayMergeRecursiveOverruleDoesConsiderUnsetValues() {
-		$array1 = array(
-			'first' => array(
-				'second' => 'second',
-				'third' => 'third'
-			),
-			'fifth' => array()
-		);
-		$array2 = array(
-			'first' => array(
-				'second' => 'overrule',
-				'third' => '__UNSET',
-				'fourth' => 'overrile'
-			),
-			'fifth' => '__UNSET'
-		);
-		$expected = array(
-			'first' => array(
-				'second' => 'overrule',
-				'fourth' => 'overrile'
-			)
-		);
-		ArrayUtility::mergeRecursiveWithOverrule($array1, $array2);
-		$this->assertEquals($expected, $array1);
+	public function mergeRecursiveWithOverruleCalculatesExpectedResult($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature, $expected) {
+		ArrayUtility::mergeRecursiveWithOverrule($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature);
+		$this->assertEquals($expected, $input1);
 	}
 }
