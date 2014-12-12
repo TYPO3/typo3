@@ -268,12 +268,6 @@ class DataPreprocessor {
 			$data = $this->renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field);
 			$totalRecordContent[$field] = $data;
 		}
-		// Further processing may apply for each field in the record depending on the settings in the "types" configuration (the list of fields to currently display for a record in TCEforms).
-		// For instance this could be processing instructions for the Rich Text Editor.
-		$types_fieldConfig = BackendUtility::getTCAtypes($table, $totalRecordContent);
-		if (is_array($types_fieldConfig)) {
-			$totalRecordContent = $this->renderRecord_typesProc($totalRecordContent, $types_fieldConfig, $tscPID, $table, $pid);
-		}
 		// Register items, mostly for external use (overriding the regItem() function)
 		foreach ($totalRecordContent as $field => $data) {
 			$this->regItem($table, $id, $field, $data);
@@ -471,22 +465,10 @@ class DataPreprocessor {
 	 * @param int $pid PID value
 	 * @return array The processed version of $totalRecordContent
 	 * @access private
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function renderRecord_typesProc($totalRecordContent, $types_fieldConfig, $tscPID, $table, $pid) {
-		foreach ($types_fieldConfig as $vconf) {
-			// Find file to write to, if configured:
-			$eFile = \TYPO3\CMS\Core\Html\RteHtmlParser::evalWriteFile($vconf['spec']['static_write'], $totalRecordContent);
-			// Write file configuration:
-			if (is_array($eFile)) {
-				if ($eFile['loadFromFileField'] && $totalRecordContent[$eFile['loadFromFileField']]) {
-					// Read the external file, and insert the content between the ###TYPO3_STATICFILE_EDIT### markers:
-					$SW_fileContent = GeneralUtility::getUrl($eFile['editFile']);
-					$parseHTML = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
-					$parseHTML->init('', '');
-					$totalRecordContent[$vconf['field']] = $parseHTML->getSubpart($SW_fileContent, $eFile['markerField'] && trim($totalRecordContent[$eFile['markerField']]) ? trim($totalRecordContent[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###');
-				}
-			}
-		}
+		GeneralUtility::logDeprecatedFunction();
 		return $totalRecordContent;
 	}
 

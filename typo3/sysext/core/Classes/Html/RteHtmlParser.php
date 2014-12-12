@@ -125,6 +125,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 *
 	 * @param string $path The relative path from PATH_site to the place where the file being edited is. Eg. "fileadmin/static".
 	 * @return void There is no output, it is set in internal variables. With the above example of "fileadmin/static" as input this will yield ->relPath to be "fileadmin/static/" and ->relBackPath to be "../../
+	 * @TODO: Check if relPath and relBackPath are used for anything useful after removal of "static file edit" with #63818
 	 */
 	public function setRelPath($path) {
 		$path = trim($path);
@@ -149,36 +150,10 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param array $pArr Parameters for the current field as found in types-config
 	 * @param array $currentRecord Current record we are editing.
 	 * @return mixed On success an array with various information is returned, otherwise a string with an error message
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function evalWriteFile($pArr, $currentRecord) {
-		// Write file configuration:
-		if (is_array($pArr)) {
-			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath'] && substr($GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath'], -1) == '/' && @is_dir((PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath']))) {
-				$SW_p = $pArr['parameters'];
-				$SW_editFileField = trim($SW_p[0]);
-				$SW_editFile = $currentRecord[$SW_editFileField];
-				if ($SW_editFileField && $SW_editFile && GeneralUtility::validPathStr($SW_editFile)) {
-					$SW_relpath = $GLOBALS['TYPO3_CONF_VARS']['BE']['staticFileEditPath'] . $SW_editFile;
-					$SW_editFile = PATH_site . $SW_relpath;
-					if (@is_file($SW_editFile)) {
-						return array(
-							'editFile' => $SW_editFile,
-							'relEditFile' => $SW_relpath,
-							'contentField' => trim($SW_p[1]),
-							'markerField' => trim($SW_p[2]),
-							'loadFromFileField' => trim($SW_p[3]),
-							'statusField' => trim($SW_p[4])
-						);
-					} else {
-						return 'ERROR: Editfile \'' . $SW_relpath . '\' did not exist';
-					}
-				} else {
-					return 'ERROR: Edit file name could not be found or was bad.';
-				}
-			} else {
-				return 'ERROR: staticFileEditPath was not set, not set correctly or did not exist!';
-			}
-		}
+		GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**********************************************

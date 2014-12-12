@@ -89,9 +89,6 @@ class TextElement extends AbstractFormElement {
 					if (!$rteSetupConfiguration['disabled']) {
 						if (!$this->formEngine->disableRTE) {
 							$this->formEngine->RTEcounter++;
-							// Find alternative relative path for RTE images/links:
-							$evalWriteFile = RteHtmlParser::evalWriteFile($specialConfiguration['static_write'], $row);
-							$rteRelativePath = is_array($evalWriteFile) ? dirname($evalWriteFile['relEditFile']) : '';
 							// Get RTE object, draw form and set flag:
 							$rteObject = BackendUtility::RTEgetObj();
 							$item = $rteObject->drawRTE(
@@ -103,7 +100,7 @@ class TextElement extends AbstractFormElement {
 								$specialConfiguration,
 								$rteSetupConfiguration,
 								$rteTcaTypeValue,
-								$rteRelativePath,
+								'',
 								$tsConfigPid
 							);
 

@@ -66,6 +66,8 @@ class SilentConfigurationUpgradeService {
 		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TceformsUpdateWizard',
 		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TtContentUploadsUpdateWizard',
 		'INSTALL/wizardDone/TYPO3\\CMS\\Install\\Updates\\TruncateSysFileProcessedFileTable',
+		// #63818
+		'BE/staticFileEditPath',
 	);
 
 	/**

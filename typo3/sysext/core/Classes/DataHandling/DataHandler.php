@@ -1417,9 +1417,6 @@ class DataHandler {
 		$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
-				// Write file configuration:
-				// inserted array_merge($currentRecord,$fieldArray) 170502
-				$eFile = \TYPO3\CMS\Core\Html\RteHtmlParser::evalWriteFile($vconf['spec']['static_write'], array_merge($currentRecord, $fieldArray));
 				// RTE transformations:
 				if (!$this->dontProcessTransformations) {
 					if (isset($fieldArray[$vconf['field']])) {
@@ -1428,39 +1425,16 @@ class DataHandler {
 							case 'RTE':
 								$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 								$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
-								// Set alternative relative path for RTE images/links:
-								$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
 								// Get RTE object, draw form and set flag:
 								$RTEobj = BackendUtility::RTEgetObj();
 								if (is_object($RTEobj)) {
-									$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, $RTErelPath, $currentRecord['pid']);
+									$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, '', $currentRecord['pid']);
 								} else {
 									debug('NO RTE OBJECT FOUND!');
 								}
 								break;
 						}
 					}
-				}
-				// Write file configuration:
-				if (is_array($eFile)) {
-					$mixedRec = array_merge($currentRecord, $fieldArray);
-					$SW_fileContent = GeneralUtility::getUrl($eFile['editFile']);
-					$parseHTML = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
-					/** @var $parseHTML \TYPO3\CMS\Core\Html\RteHtmlParser */
-					$parseHTML->init('', '');
-					$eFileMarker = $eFile['markerField'] && trim($mixedRec[$eFile['markerField']]) ? trim($mixedRec[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###';
-					// Must replace the marker if present in content!
-					$insertContent = str_replace($eFileMarker, '', $mixedRec[$eFile['contentField']]);
-					$SW_fileNewContent = $parseHTML->substituteSubpart($SW_fileContent, $eFileMarker, LF . $insertContent . LF, 1, 1);
-					GeneralUtility::writeFile($eFile['editFile'], $SW_fileNewContent);
-					// Write status:
-					if (!strstr($id, 'NEW') && $eFile['statusField']) {
-						$this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$id, array(
-							$eFile['statusField'] => $eFile['relEditFile'] . ' updated ' . date('d-m-Y H:i:s') . ', bytes ' . strlen($mixedRec[$eFile['contentField']])
-						));
-					}
-				} elseif ($eFile && is_string($eFile)) {
-					$this->log($table, $id, 2, 0, 1, 'Write-file error: \'%s\'', 13, array($eFile), $realPid);
 				}
 			}
 		}

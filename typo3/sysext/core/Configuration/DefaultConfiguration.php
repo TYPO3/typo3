@@ -280,7 +280,6 @@ return array(
 		'RTEenabled' => TRUE,							// Boolean: If set, the Rich Text editor will be an option in the backend. Notice that the editor must be enabled per-user and options are configurable. See admin guide.
 		'RTE_imageStorageDir' => 'uploads/',			// Default storage directory for Rich Text Editor files
 		'RTE_reg' => array(),							// Contains arrays of possible RTEs available (keys=extKey, values=cfg-array). Each array contains a key, "objRef", which contains a user function call with prefixed script path and instanciating a persistent global object. This can report back if browser requirements are OK, draw the RTE and do the transformations needed.
-		'staticFileEditPath' => 'fileadmin/static/',	// Path to directory with static files for editing (see table sys_staticfiles_edit). Relative to PATH_site.
 		'lockRootPath' => '',							// This path is used to evaluate if paths outside of PATH_site should be allowed. Ending slash required!
 		'userHomePath' => '',							// Combined folder identifier of the directory where TYPO3 backend-users have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. '2:users/'. A home for backend user 2 would be: '2:users/2/'. Ending slash required!
 		'groupHomePath' => '',							// Combined folder identifier of the directory where TYPO3 backend-groups have their home-dirs. A combined folder identifier looks like this: [storageUid]:[folderIdentifier]. Eg. '2:groups/'. A home for backend group 1 would be: '2:groups/1/'. Ending slash required!
