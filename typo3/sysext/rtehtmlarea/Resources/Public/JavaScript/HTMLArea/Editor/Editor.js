@@ -26,8 +26,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar'],
-	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework, Toolbar, Iframe, StatusBar) {
+	function (UserAgent, Util, Ajax, Dom, Event, Selection, BookMark, Node, Typo3, Framework, Toolbar, Iframe, TextAreaContainer, StatusBar) {
 
 	/**
 	 * Editor constructor method
@@ -214,35 +215,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 					nestedParentElements: this.nestedParentElements,
 					editorId: this.editorId
 				}),
-				new Ext.BoxComponent({
-					// Box container for the textarea
+				new TextAreaContainer({
+					// The container for the textarea
 					id: this.editorId + '-textAreaContainer',
 					itemId: 'textAreaContainer',
 					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
-					// Let the framework swallow the textarea and throw it back
-					listeners: {
-						afterrender: {
-							fn: function (textAreaContainer) {
-								this.originalParent = this.textArea.parentNode;
-								textAreaContainer.getEl().appendChild(this.textArea);
-							},
-							single: true,
-							scope: this
-						},
-						beforedestroy: {
-							fn: function (textAreaContainer) {
-								this.originalParent.appendChild(this.textArea);
-								return true;
-							},
-							single: true,
-							scope: this
-						},
-						show: {
-							fn: function (textAreaContainer) {
-								Event.trigger(textAreaContainer, 'HTMLAreaEventTextAreaContainerShow');
-							}
-						}
-					}
+					textArea: this.textArea
 				}),
 				new StatusBar({
 					// The status bar

@@ -834,6 +834,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$components2 = array(
 			'Editor/Toolbar',
 			'Editor/Iframe',
+			'Editor/TextAreaContainer',
 			'Editor/StatusBar',
 			'Editor/Framework',
 			'Editor/Editor',

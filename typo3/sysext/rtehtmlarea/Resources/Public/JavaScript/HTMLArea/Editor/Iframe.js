@@ -399,7 +399,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 							}
 							Event.trigger(self, 'HTMLAreaEventIframeShow');
 						} else {
-							self.framework.textAreaContainer.fireEvent('show');
+							Event.trigger(self.framework.getTextAreaContainer(), 'HTMLAreaEventTextAreaContainerShow');
 						}
 						self.getToolbar().update();
 					}

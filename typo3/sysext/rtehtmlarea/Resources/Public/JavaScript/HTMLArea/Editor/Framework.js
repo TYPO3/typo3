@@ -353,8 +353,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 */
 		onBeforeDestroy: function () {
 			Event.off(window);
-			Event.off(this.iframe);
-			Event.off(this.textAreaContainer);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			var form = this.textArea.form;
 			if (form) {
