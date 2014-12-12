@@ -538,7 +538,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 	Editor.prototype.scrollToCaret = function () {
 		if (!UserAgent.isIE) {
 			var e = this.getSelection().getParentElement(),
-				w = this.iframe.getEl().dom.contentWindow ? this.iframe.getEl().dom.contentWindow : window,
+				w = this.iframe.getEl().contentWindow ? this.iframe.getEl().contentWindow : window,
 				h = w.innerHeight || w.height,
 				d = this.document,
 				t = d.documentElement.scrollTop || d.body.scrollTop;
@@ -556,9 +556,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 			this.iframe.startListening();
 		}
 		// Add unload handler
-		var iframe = this.iframe.getEl().dom;
 		var self = this;
-		Event.one(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', function (event) { return self.onUnload(event); });
+		Event.one(this.iframe.getIframeWindow(), 'unload', function (event) { return self.onUnload(event); });
 	};
 
 	/**
@@ -595,8 +594,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		}
 		Event.off(this.textarea);
 		RTEarea[this.editorId].editor = null;
-		// ExtJS is not releasing any resources when the iframe is unloaded
-		this.htmlArea.destroy();
 		return true;
 	};
 

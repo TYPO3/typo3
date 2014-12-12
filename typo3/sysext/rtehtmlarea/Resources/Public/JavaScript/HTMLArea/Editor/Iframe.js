@@ -11,40 +11,36 @@
  * The TYPO3 project - inspiring people to share!
  */
 /**
- * HTMLArea.Iframe extends Ext.BoxComponent
+ * The editor iframe
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/KeyMap'],
-	function (UserAgent, Walker, Typo3, Dom, Event, KeyMap) {
+	function (UserAgent, Walker, Typo3, Util, Dom, Event, KeyMap) {
 
-	var Iframe = Ext.extend(Ext.BoxComponent, {
+	/**
+	 * Editor iframe constructor
+	 */
+	var Iframe = function (config) {
+		Util.apply(this, config);
+	};
+
+	Iframe.prototype = {
 
 		/**
-		 * Constructor
+		 * Render the iframe (called by framework rendering)
+		 *
+		 * @param object container: the container into which to insert the iframe (that is the framework)
+		 * @return void
 		 */
-		initComponent: function () {
-			Iframe.superclass.initComponent.call(this);
-			this.addListener({
-				afterrender: {
-					fn: this.initEventListeners,
-					single: true
-				},
-				show: {
-					fn: function (iframe) {
-						Event.trigger(iframe, 'HTMLAreaEventIframeShow');
-					}
-				},
-				beforedestroy: {
-					fn: this.onBeforeDestroy,
-					single: true
-				}
-			});
+		render: function (container) {
 			this.config = this.getEditor().config;
+			this.createIframe(container);
 			this.htmlRenderer = new Walker({
 				keepComments: !this.config.htmlRemoveComments,
 				removeTags: this.config.htmlRemoveTags,
@@ -52,18 +48,30 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 				baseUrl: this.config.baseURL
 			});
 			if (!this.config.showStatusBar) {
-				this.addClass('noStatusBar');
+				Dom.addClass(this.getEl(), 'noStatusBar');
 			}
+			this.initEventListeners();
+		},
+
+		/**
+		 * Get the element to which the iframe is rendered
+		 */
+		getEl: function () {
+			return this.el;
 		},
 
 		/**
 		 * Initialize event listeners and the document after the iframe has rendered
 		 */
 		initEventListeners: function () {
+			var self = this;
 			this.initStyleChangeEventListener();
+			// Monitor editor becoming ready
+			var self = this;
+			Event.one(this.getEditor(), 'HtmlAreaEventEditorReady', function (event) { Event.stopEvent(event); self.onEditorReady(); return false; });
 			if (UserAgent.isOpera) {
 				var self = this;
-				Event.one(this.getEl().dom, 'load', function (event) { Event.stopEvent(event); self.initializeIframe(event); return false; })
+				Event.one(iframe, 'load', function (event) { self.initializeIframe(event); return true; })
 			} else {
 				this.initializeIframe();
 			}
@@ -75,7 +83,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 * In all browsers, it breaks the evaluation of the framework dimensions
 		 */
 		initStyleChangeEventListener: function () {
-			if (this.isNested && UserAgent.isGecko) {
+			if (this.isNested && !UserAgent.isWebKit) {
 				var self = this;
 				var options = {
 					delay: 50
@@ -84,13 +92,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
 					Event.on(
 						nestedElement,
-						'DOMAttrModified',
+						UserAgent.isIEBeforeIE9 ? 'propertychange' : 'DOMAttrModified',
 						function (event) { return self.onNestedShow(event); },
 						options
 					);
 					Event.on(
 						nestedElement.parentNode,
-						'DOMAttrModified',
+						UserAgent.isIEBeforeIE9 ? 'propertychange' : 'DOMAttrModified',
 						function (event) { return self.onNestedShow(event); },
 						options
 					);
@@ -138,27 +146,31 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 
 		/**
 		 * Create the iframe element at rendering time
+		 *
+		 * @param object container: the container into which to insert the iframe (that is the framework)
+		 * @return void
 		 */
-		onRender: function (ct, position){
-			// from Ext.Component
-			if (!this.el && this.autoEl) {
-				if (typeof this.autoEl === 'string' && this.autoEl.length > 0) {
-					this.el = document.createElement(this.autoEl);
-				} else {
-					// ExtJS Default method will not work with iframe element
-					this.el = Ext.DomHelper.append(ct, this.autoEl, true);
+		createIframe: function (container) {
+			if (this.autoEl && this.autoEl.tag) {
+				this.el = document.createElement(this.autoEl.tag);
+				if (this.autoEl.id) {
+					this.el.setAttribute('id', this.autoEl.id);
 				}
-				if (!this.el.id) {
-					this.el.id = this.getId();
+				if (this.autoEl.cls) {
+					this.el.setAttribute('class', this.autoEl.cls);
 				}
+				if (this.autoEl.src) {
+					this.el.setAttribute('src', this.autoEl.src);
+				}
+				this.el = container.appendChild(this.el);
 			}
-			// from Ext.BoxComponent
-			if (this.resizeEl){
-				this.resizeEl = Ext.get(this.resizeEl);
-			}
-			if (this.positionEl){
-				this.positionEl = Ext.get(this.positionEl);
-			}
+		},
+
+		/**
+		 * Get the content window of the iframe
+		 */
+		getIframeWindow: function () {
+			return this.el.contentWindow ? this.el.contentWindow : this.el.contentDocument;
 		},
 
 		/**
@@ -166,7 +178,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 */
 		initializeIframe: function () {
 			var self = this;
-			var iframe = this.getEl().dom;
+			var iframe = this.getEl();
 			// All browsers
 			if (!iframe || (!iframe.contentWindow && !iframe.contentDocument)) {
 				window.setTimeout(function () {
@@ -204,6 +216,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 				 */
 				Event.trigger(this, 'HTMLAreaEventIframeReady');
 			}
+		},
+
+		/**
+		 * Show the iframe
+		 */
+		show: function () {
+			this.getEl().style.display = '';
+			Event.trigger(this, 'HTMLAreaEventIframeShow');
+		},
+
+		/**
+		 * Hide the iframe
+		 */
+		hide: function () {
+			this.getEl().style.display = 'none';
 		},
 
 		/**
@@ -260,29 +287,32 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 				this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Content CSS set to: ' + link.href, 'info');
 			}
 		},
-		/*
+
+		/**
 		 * Focus on the iframe
 		 */
 		focus: function () {
 			try {
 				if (UserAgent.isWebKit) {
-					this.getEl().dom.focus();
-				} else {
-					this.getEl().dom.contentWindow.focus();
+					this.getEl().focus();
 				}
+				this.getEl().contentWindow.focus();
 			} catch(e) { }
 		},
-		/*
+
+		/**
 		 * Flag indicating whether the framework is inside a tab or inline element that may be hidden
 		 * Should be set in config
 		 */
 		isNested: false,
-		/*
+
+		/**
 		 * All nested tabs and inline levels in the sorting order they were applied
 		 * Should be set in config
 		 */
 		nestedParentElements: {},
-		/*
+
+		/**
 		 * Set designMode
 		 *
 		 * @param	boolean		on: if true set designMode to on, otherwise set to off
@@ -315,7 +345,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * Set editing mode options (if we can... raises exception in Firefox 3)
 		 *
 		 * @return	void
@@ -354,12 +385,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			window.setTimeout(function () {
 				var styleEvent = true;
 				// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
-				if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera) {
-					//styleEvent = (event.browserEvent.attrName == 'style') || (event.browserEvent.attrName == 'className');
-					styleEvent = (event.attrName == 'style') || (event.attrName == 'className');
-				} else if (UserAgent.isIE) {
-					//styleEvent = (event.browserEvent.propertyName == 'style.display');
-					styleEvent = (event.propertyName == 'style.display');
+				if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera || (UserAgent.isIE && !UserAgent.isIEBeforeIE9)) {
+					styleEvent = (event.originalEvent.attrName === 'style') || (event.originalEvent.attrName === 'className') || (event.originalEvent.attrName === 'class');
+				} else if (UserAgent.isIEBeforeIE9) {
+					styleEvent = (event.originalEvent.propertyName === 'style.display');
 				}
 				if (styleEvent && (self.nestedParentElements.sorted.indexOf(target.id) != -1 || self.nestedParentElements.sorted.indexOf(target.id.replace('_div', '_fields')) != -1)) {
 					// Check if all container nested elements are displayed
@@ -368,7 +397,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 							if (UserAgent.isGecko) {
 								self.setDesignMode(true);
 							}
-							self.fireEvent('show');
+							Event.trigger(self, 'HTMLAreaEventIframeShow');
 						} else {
 							self.framework.textAreaContainer.fireEvent('show');
 						}
@@ -733,6 +762,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		},
 
 		/**
+		 * When the editor becomes ready
+		 */
+		onEditorReady: function () {
+			var self = this;
+			// Monitor editor being unloaded
+			Event.one(this.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
+		},
+
+		/**
 		 * Cleanup
 		 */
 		onBeforeDestroy: function () {
@@ -745,16 +783,17 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 				}
 			}
 			Event.off(this);
-			Event.off(this.getEl().dom);
+			Event.off(this.getEl());
 			Event.off(this.document.body);
 			Event.off(this.document.documentElement);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			this.document = null;
 			this.getEditor().document = null;
-			Ext.destroy(this.autoEl, this.el, this.resizeEl, this.positionEl);
+			this.el = null;
+			delete this.el;
 			return true;
 		}
-	});
+	};
 
 	return Iframe;
 

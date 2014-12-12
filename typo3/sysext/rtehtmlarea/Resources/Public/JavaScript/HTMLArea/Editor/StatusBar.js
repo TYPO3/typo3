@@ -32,7 +32,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		/**
 		 * Render the status bar (called by framework rendering)
 		 *
-		 * @param object container: the container into which to insert the status bar (that is the farmework
+		 * @param object container: the container into which to insert the status bar (that is the framework)
 		 * @return void
 		 */
 		render: function (container) {
@@ -60,7 +60,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			// Monitor editor changing mode
 			Event.on(this.getEditor(), 'HTMLAreaEventModeChange', function (event, mode) { Event.stopEvent(event); self.onModeChange(mode); return false; });
 			// Monitor word count change
-			Event.on(this.framework.iframe, 'HTMLAreaEventWordCountChange', function (event, delay) { Event.stopEvent(event); self.onWordCountChange(delay); return false; });			
+			Event.on(this.framework.iframe, 'HTMLAreaEventWordCountChange', function (event, delay) { Event.stopEvent(event); self.onWordCountChange(delay); return false; });
+			// Monitor editor being unloaded
+			Event.one(this.framework.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
 		},
 
 		/**
@@ -120,17 +122,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		 * Clear the status bar tree
 		 */
 		clear: function () {
-			var node = this.statusBarTree.firstChild;
-			while (node) {
+			var node;
+			while (node = this.statusBarTree.firstChild) {
 				if (/^(a)$/i.test(node.nodeName)) {
 					Event.off(node);
-					var extNode = Ext.get(node);
-					Ext.QuickTips.unregister(extNode);
-					extNode.dom = null;
+					node.removeAttribute('ext:qtitle');
+					node.removeAttribute('ext:qtip');
 				}
-				var nextNode = node.nextSibling;
 				Dom.removeFromParent(node);
-				var node = nextNode;
 			}
 			this.setSelection(null);
 		},
@@ -337,13 +336,16 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		/**
 		 * Cleanup
 		 */
-		destroy: function() {
+		onBeforeDestroy: function() {
 			this.clear();
-			while (this.el.firstChild) {
-				this.el.removeChild(this.el.firstChild);
+			while (node = this.el.firstChild) {
+				this.el.removeChild(node);
 			}
 			this.statusBarTree = null;
 			this.statusBarWordCount = null;
+			this.el = null;
+			delete this.el;
+			return true;
 		}
 	};
 

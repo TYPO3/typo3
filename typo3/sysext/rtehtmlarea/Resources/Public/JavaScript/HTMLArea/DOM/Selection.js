@@ -49,7 +49,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 		/**
 		 * Reference to the editor iframe window
 		 */
-		this.window = this.editor.iframe.getEl().dom.contentWindow;
+		this.window = this.editor.iframe.getEl().contentWindow;
 
 		// Set current selection
 		this.get();

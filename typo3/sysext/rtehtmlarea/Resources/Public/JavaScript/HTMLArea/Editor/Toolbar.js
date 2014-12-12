@@ -41,15 +41,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		 * Initialize listeners
 		 */
 		initEventListeners: function () {
-			this.addListener({
-				beforedestroy: {
-					fn: this.onBeforeDestroy,
-					single: true
-				}
-			});
 			// Monitor editor becoming ready
 			var self = this;
-			Event.one(this.getEditor(), 'HtmlAreaEventEditorReady', function (event) { Event.stopEvent(event); self.update(); return false; });
+			Event.one(this.getEditor(), 'HtmlAreaEventEditorReady', function (event) { Event.stopEvent(event); self.onEditorReady(); return false; });
 		},
 
 		/**
@@ -178,6 +172,16 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 			 * Fires when the toolbar is updated
 			 */
 			Event.trigger(this, 'HTMLAreaEventToolbarUpdate', [mode, selectionEmpty, ancestors, endPointsInSameBlock]);
+		},
+
+		/**
+		 * When the editor becomes ready
+		 */
+		onEditorReady: function () {
+			var self = this;
+			// Monitor editor being unloaded
+			Event.one(this.framework.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
+			this.update();
 		},
 
 		/**

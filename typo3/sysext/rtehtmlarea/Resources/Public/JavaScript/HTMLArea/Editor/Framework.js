@@ -106,6 +106,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 				}
 				Event.on(form, 'reset', function (event) { return self.onReset(event); });
 			}
+			// Monitor editor being unloaded
+			Event.one(this.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
 		},
 
 		/**
@@ -264,7 +266,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Resize the framework components
 		 */
 		onFrameworkResize: function () {
-			Dom.setSize(this.iframe.getEl().dom, { width: this.getInnerWidth(), height: this.getInnerHeight()});
+			Dom.setSize(this.iframe.getEl(), { width: this.getInnerWidth(), height: this.getInnerHeight()});
 			Dom.setSize(this.textArea, { width: this.getInnerWidth(), height: this.getInnerHeight()});
 		},
 
@@ -272,7 +274,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Adjust the height to the changing size of the statusbar when the textarea is shown
 		 */
 		onTextAreaShow: function () {
-			Dom.setSize(this.iframe.getEl().dom, { height: this.getInnerHeight()});
+			Dom.setSize(this.iframe.getEl(), { height: this.getInnerHeight()});
 			Dom.setSize(this.textArea, { width: this.getInnerWidth(), height: this.getInnerHeight()});
 		},
 
@@ -284,7 +286,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 				this.onWindowResize();
 			} else {
 				//this.iframe.setHeight(this.getInnerHeight());
-				Dom.setSize(this.iframe.getEl().dom, { height: this.getInnerHeight()});
+				Dom.setSize(this.iframe.getEl(), { height: this.getInnerHeight()});
 				Dom.setSize(this.textArea, { height: this.getInnerHeight()});
 			}
 		},
@@ -349,20 +351,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		/**
 		 * Cleanup on framework destruction
 		 */
-		destroy: function () {
+		onBeforeDestroy: function () {
 			Event.off(window);
+			Event.off(this.iframe);
 			Event.off(this.textAreaContainer);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			var form = this.textArea.form;
 			if (form) {
 				Event.off(form);
 				form.htmlAreaPreviousOnReset = null;
-			}
-			// ExtJS is not releasing any resources when the iframe is unloaded
-			this.toolbar.destroy();
-			this.statusBar.destroy();
-			while (this.el.firstChild) {
-				this.el.removeChild(this.el.firstChild);
 			}
 			if (this.resizer) {
 				Resizable.destroy(this.resizer);

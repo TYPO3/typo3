@@ -85,8 +85,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 			// Monitor contextmenu clicks on the iframe
 			Event.on(this.editor.document.documentElement, 'contextmenu', function (event) { return self.show(event, event.target); });
 			// Monitor editor being unloaded
-			var iframe = this.editor.iframe.getEl().dom;
-			Event.one(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', function (event) { self.onBeforeDestroy(event); return  true; });
+			Event.one(this.editor.iframe.getIframeWindow(), 'unload', function (event) { self.onBeforeDestroy(event); return  true; });
 		},
 
 		/**
@@ -192,9 +191,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 			if (!UserAgent.isIEBeforeIE9) {
 				this.ranges = this.editor.getSelection().getRanges();
 			}
-			var iframeEl = this.editor.iframe.getEl();
-				// Show the context menu
-			this.menu.showAt([Ext.fly(target).getX() + iframeEl.getX(), Ext.fly(target).getY() + iframeEl.getY()]);
+			// Show the context menu
+			var targetPosition = Dom.getPosition(target);
+			var iframePosition = Dom.getPosition(this.editor.iframe.getEl());
+			this.menu.showAt([targetPosition.x + iframePosition.x, targetPosition.y + iframePosition.y]);
 		},
 
 		/**
@@ -223,9 +223,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 						if (/^(html|body)$/i.test(target.nodeName)) {
 							this.deleteTarget = null;
 						} else if (/^(table|thead|tbody|tr|td|th|tfoot)$/i.test(target.nodeName)) {
-							this.deleteTarget = Ext.fly(target).findParent('table');
+							this.deleteTarget = Dom.getFirstAncestorOfType(target, 'table');
 						} else if (/^(ul|ol|dl|li|dd|dt)$/i.test(target.nodeName)) {
-							this.deleteTarget = Ext.fly(target).findParent('ul') || Ext.fly(target).findParent('ol') || Ext.fly(target).findParent('dl');
+							this.deleteTarget = Dom.getFirstAncestorOfType(target, ['ul', 'ol', 'dl']);
 						}
 						if (this.deleteTarget) {
 							menuItem.setVisible(true);

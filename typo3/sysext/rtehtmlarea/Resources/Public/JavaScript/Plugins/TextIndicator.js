@@ -111,7 +111,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextIndicator',
 				} catch (e) { }
 				// queryCommandValue does not work in Gecko
 				if (UserAgent.isGecko) {
-					var computedStyle = editor.iframe.getEl().dom.contentWindow.getComputedStyle(editor.getSelection().getParentElement(), null);
+					var computedStyle = editor.iframe.getIframeWindow().getComputedStyle(editor.getSelection().getParentElement(), null);
 					if (computedStyle) {
 						style.color = computedStyle.getPropertyValue('color');
 						style.backgroundColor = computedStyle.getPropertyValue('background-color');

@@ -269,7 +269,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 				var types = [types];
 			}
 			// Is types a non-empty array?
-			if (types && toString.apply(types) === '[object Array]' && types.length > 0) {
+			if (types && Object.prototype.toString.call(types) === '[object Array]' && types.length > 0) {
 				types = new RegExp( '^(' + types.join('|') + ')$', 'i');
 				while (parent && parent.nodeType === Dom.ELEMENT_NODE && !/^(body)$/i.test(parent.nodeName)) {
 					if (types.test(parent.nodeName)) {
@@ -323,7 +323,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 				var allowedAttributes = [allowedAttributes];
 			}
 			// Is allowedAttributes an array?
-			if (allowedAttributes && toString.apply(allowedAttributes) === '[object Array]') {
+			if (allowedAttributes && Object.prototype.toString.call(allowedAttributes) === '[object Array]') {
 				for (var i = allowedAttributes.length; --i >= 0;) {
 					value = node.getAttribute(allowedAttributes[i]);
 					if (value) {
