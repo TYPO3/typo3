@@ -865,7 +865,7 @@ class ContentObjectRenderer {
 		if (!empty($exceptionHandlerClassName)) {
 			$exceptionHandler = GeneralUtility::makeInstance($exceptionHandlerClassName, $this->mergeExceptionHandlerConfiguration($configuration));
 			if (!$exceptionHandler instanceof ExceptionHandlerInterface) {
-				throw new ContentRenderingException('An exception handler was configured but the class does not exist or does not implement the ExceptionHandlerInterface', 1403653369, $exception);
+				throw new ContentRenderingException('An exception handler was configured but the class does not exist or does not implement the ExceptionHandlerInterface', 1403653369);
 			}
 		}
 
