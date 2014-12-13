@@ -1457,7 +1457,7 @@ return array(
 			),
 		),
 		'inline_2' => array( /** Taken from irre_tutorial 1nff */
-			'label' => '2 1:n foreign field to table with sheets',
+			'label' => '2 1:n foreign field to table with sheets with a custom text',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
@@ -1469,6 +1469,7 @@ return array(
 					'showAllLocalizationLink' => TRUE,
 					'showPossibleLocalizationRecords' => TRUE,
 					'showRemovedLocalizationRecords' => TRUE,
+					'newRecordLinkTitle' => 'Create a new relation "inline_2"',
 				),
 				'behaviour' => array(
 					'localizationMode' => 'select',
@@ -1478,7 +1479,7 @@ return array(
 		),
 		'inline_3' => array(
 			'exclude' => 1,
-			'label' => '3 m:m async, useCombination',
+			'label' => '3 m:m async, useCombination, newRecordLinkAddTitle',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_styleguide_forms_inline_3_mm',
@@ -1487,6 +1488,7 @@ return array(
 				'foreign_unique' => 'select_child',
 				'maxitems' => 9999,
 				'appearance' => array(
+					'newRecordLinkAddTitle' => 1,
 					'useCombination' => TRUE, /** @TODO: The "Create new relation" button throws a JS error */
 					'collapseAll' => FALSE,
 					'levelLinksPosition' => 'top',
