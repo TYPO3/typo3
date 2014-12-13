@@ -287,17 +287,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
-	 * Sets the deleted objects
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
-	 * @return void
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	public function setDeletedObjects(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects) {
-		$this->setDeletedEntities($objects);
-	}
-
-	/**
 	 * Traverse and persist all aggregate roots and their object graph.
 	 *
 	 * @return void

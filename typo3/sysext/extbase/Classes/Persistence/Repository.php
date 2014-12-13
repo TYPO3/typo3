@@ -24,13 +24,6 @@ use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 * @deprecated since 6.1 will be removed two versions later, use the persistence manager instead
-	 * @inject
-	 */
-	protected $session;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 * @inject
 	 */
@@ -94,17 +87,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
 			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363336);
 		}
 		$this->persistenceManager->remove($object);
-	}
-
-	/**
-	 * Replaces an object by another.
-	 *
-	 * @param object $existingObject The existing object
-	 * @param object $newObject The new object
-	 * @deprecated since 6.1, will be removed two versions later
-	 */
-	public function replace($existingObject, $newObject) {
-		// Does nothing here as explicit update replaces objects in persistence session already
 	}
 
 	/**
