@@ -79,13 +79,22 @@ return array(
 			),
 			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
+		'text_2' => array(
+			'label' => 'text_2 fixed font & tabs enabled',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 30,
+				'rows' => 6,
+			),
+			'defaultExtras' => 'fixed-font : enable-tab'
+		),
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable, input_1, text_1',
+		'showRecordFieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable, input_1, text_1, text_2',
 	),
 	'types' => array(
 		'0' => array(
-			'showitem' => 'input_1, text_1',
+			'showitem' => 'input_1, text_1, text_2',
 		),
 	),
 );
