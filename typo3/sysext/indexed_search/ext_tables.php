@@ -4,25 +4,6 @@ defined('TYPO3_MODE') or die();
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Indexed Search (experimental)');
 
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
-		'tools',
-		'isearch',
-		'after:log',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod/'
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-		'web_info',
-		\TYPO3\CMS\IndexedSearch\Controller\IndexedPagesController::class,
-		NULL,
-		'LLL:EXT:indexed_search/locallang.xlf:mod_indexed_search'
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-		'web_info',
-		\TYPO3\CMS\IndexedSearch\Controller\IndexingStatisticsController::class,
-		NULL,
-		'LLL:EXT:indexed_search/locallang.xlf:mod2_indexed_search'
-	);
-
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'TYPO3.CMS.IndexedSearch',
 		'web',
