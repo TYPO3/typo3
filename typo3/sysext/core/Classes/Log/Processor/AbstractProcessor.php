@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
 
 /**

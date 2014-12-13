@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**

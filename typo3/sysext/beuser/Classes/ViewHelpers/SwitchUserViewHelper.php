@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

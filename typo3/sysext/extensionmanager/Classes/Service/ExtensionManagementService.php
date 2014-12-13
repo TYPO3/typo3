@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**

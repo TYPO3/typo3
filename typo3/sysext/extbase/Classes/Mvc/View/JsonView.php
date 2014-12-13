@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Extbase\Mvc\Web\Response as WebResponse;
 
 /**

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

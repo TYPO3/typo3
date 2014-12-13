@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Form\Filter\TitleCaseFilter;
 

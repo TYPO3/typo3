@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Utility\FormUtility;
 
