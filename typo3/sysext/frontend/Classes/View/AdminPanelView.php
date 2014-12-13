@@ -360,9 +360,15 @@ class AdminPanelView {
 
 			$options = '';
 
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fe_groups.uid, fe_groups.title', 'fe_groups,pages', 'pages.uid=fe_groups.pid AND pages.deleted=0 ' . BackendUtility::deleteClause('fe_groups') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'fe_groups.uid, fe_groups.title',
+				'fe_groups,pages',
+				'pages.uid=fe_groups.pid AND pages.deleted=0 ' . BackendUtility::deleteClause('fe_groups') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1),
+				'',
+				'fe_groups.title ASC'
+			);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$options .= '<option value="' . $row['uid'] . '"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] == $row['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(('[' . $row['uid'] . '] ' . $row['title'])) . '</option>';
+				$options .= '<option value="' . $row['uid'] . '"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['preview_simulateUserGroup'] == $row['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($row['title'] . ' [' . $row['uid'] . ']')) . '</option>';
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($options) {
