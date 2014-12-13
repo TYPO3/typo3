@@ -100,6 +100,14 @@ class PageLayoutController {
 	public $edit_record;
 
 	/**
+	 * QuickEdit: If set, this variable tells quick edit that the last edited record had
+	 * this value as UID and we should look up the new, real uid value in sys_log.
+	 *
+	 * @var string
+	 */
+	public $new_unique_uid;
+
+	/**
 	 * Page select perms clause
 	 *
 	 * @var string
@@ -257,6 +265,7 @@ class PageLayoutController {
 		$this->clear_cache = GeneralUtility::_GP('clear_cache');
 		$this->popView = GeneralUtility::_GP('popView');
 		$this->edit_record = GeneralUtility::_GP('edit_record');
+		$this->new_unique_uid = GeneralUtility::_GP('new_unique_uid');
 		$this->search_field = GeneralUtility::_GP('search_field');
 		$this->search_levels = GeneralUtility::_GP('search_levels');
 		$this->showLimit = GeneralUtility::_GP('showLimit');
@@ -657,6 +666,14 @@ class PageLayoutController {
 			$url = $GLOBALS['BACK_PATH'] . 'alt_doc.php?edit[tt_content][' . implode(',', $idListA) . ']=edit&returnUrl=' . rawurlencode($this->local_linkThisScript(array('edit_record' => '')));
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
 		}
+		// If the former record edited was the creation of a NEW record, this will look up the created records uid:
+		if ($this->new_unique_uid) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid=' . (int)$GLOBALS['BE_USER']->user['uid'] . ' AND NEWid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
+			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			if (is_array($sys_log_row)) {
+				$edit_record = $sys_log_row['tablename'] . ':' . $sys_log_row['recuid'];
+			}
+		}
 		// Creating the selector box, allowing the user to select which element to edit:
 		$opt = array();
 		$is_selected = 0;
@@ -725,6 +742,7 @@ class PageLayoutController {
 		$R_URL_parts = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$R_URL_getvars = GeneralUtility::_GET();
 		unset($R_URL_getvars['popView']);
+		unset($R_URL_getvars['new_unique_uid']);
 		$R_URL_getvars['edit_record'] = $edit_record;
 		$this->R_URI = $R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $R_URL_getvars);
 		// Setting close url/return url for exiting this script:
@@ -803,7 +821,7 @@ class PageLayoutController {
 					<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
 					<input type="hidden" name="_disableRTE" value="' . $tceforms->disableRTE . '" />
 					<input type="hidden" name="edit_record" value="' . $edit_record . '" />
-					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? ExtensionManagementUtility::extRelPath('cms') . 'layout/db_layout.php?id=' . $this->id . '&returnUrl=' . rawurlencode($this->returnUrl) : $this->R_URI)) . '" />
+					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? ExtensionManagementUtility::extRelPath('cms') . 'layout/db_layout.php?id=' . $this->id . '&new_unique_uid=' . $new_unique_uid . '&returnUrl=' . rawurlencode($this->returnUrl) : $this->R_URI)) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 				// Add JavaScript as needed around the form:
 				$theCode = $tceforms->printNeededJSFunctions_top() . $theCode . $tceforms->printNeededJSFunctions();
@@ -1085,7 +1103,7 @@ class PageLayoutController {
 		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 		// Cache
 		if (!$this->modTSconfig['properties']['disableAdvanced']) {
@@ -1216,13 +1234,14 @@ class PageLayoutController {
 
 	/**
 	 * Returns URL to the current script.
-	 * In particular the "popView" get var is unset.
+	 * In particular the "popView" and "new_unique_uid" Get vars are unset.
 	 *
 	 * @param array $params Parameters array, merged with global GET vars.
 	 * @return string URL
 	 */
 	public function local_linkThisScript($params) {
 		$params['popView'] = '';
+		$params['new_unique_uid'] = '';
 		return GeneralUtility::linkThisScript($params);
 	}
 

@@ -172,10 +172,8 @@ class InfoModuleController extends BaseScriptClass {
 		// Shortcut
 		if ($this->backendUser->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon(
-				'id, edit_record, pointer, search_field, search_levels, showLimit',
-				implode(',', array_keys($this->MOD_MENU)),
-				$this->moduleName
-			);
+				'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+				implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 		}
 		return $buttons;
 	}
