@@ -1148,6 +1148,8 @@ class InlineElement {
 		if ($this->fObj->extJSCODE) {
 			$jsonArray['scriptCall'][] = $this->fObj->extJSCODE;
 		}
+		// activate "enable tabs" for textareas
+		$jsonArray['scriptCall'][] = 'changeTextareaElements();';
 	}
 
 	/**
