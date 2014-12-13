@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook\Frontend\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Frontend hook to add meta tag when rtehtmlarea is present and user agent is IE 11+
  *

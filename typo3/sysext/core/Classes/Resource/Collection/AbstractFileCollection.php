@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract collection.
  *

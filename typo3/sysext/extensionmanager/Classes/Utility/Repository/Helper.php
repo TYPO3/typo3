@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Central utility class for repository handling.
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class contains the abstract storage for the RSA private keys
  *

@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Copy Paste for TYPO3 htmlArea RTE
  */

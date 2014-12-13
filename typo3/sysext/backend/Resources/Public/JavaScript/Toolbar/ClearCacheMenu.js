@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * main functionality for clearing caches via the top bar
  * reloading the clear cache icon

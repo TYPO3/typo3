@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * TYPO3Image plugin for htmlArea RTE
  */

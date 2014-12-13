@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Workspaces\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Combined record class
  *

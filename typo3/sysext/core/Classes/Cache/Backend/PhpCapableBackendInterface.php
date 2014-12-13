@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A contract for a cache backend which is capable of storing, retrieving and
  * including PHP source code.

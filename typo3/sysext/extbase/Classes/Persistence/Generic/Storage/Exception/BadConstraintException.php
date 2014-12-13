@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An Bad Constraint exception
  */

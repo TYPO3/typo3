@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Performs a join between two node-tuple sources.
  */

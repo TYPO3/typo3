@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Various functions related to the Constant Editor
  * e.g. updating the field and working with colors

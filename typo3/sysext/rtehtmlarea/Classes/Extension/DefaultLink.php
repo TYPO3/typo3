@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Default Link extension for htmlArea RTE
  *

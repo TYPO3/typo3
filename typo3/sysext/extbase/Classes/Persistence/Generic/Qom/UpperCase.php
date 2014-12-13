@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Evaluates to the upper-case string value (or values, if multi-valued) of
  * operand.

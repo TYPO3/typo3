@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract repository implementing the basic repository methods
  *

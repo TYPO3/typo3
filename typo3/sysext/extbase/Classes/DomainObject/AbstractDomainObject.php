@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A generic Domain Object.
  *

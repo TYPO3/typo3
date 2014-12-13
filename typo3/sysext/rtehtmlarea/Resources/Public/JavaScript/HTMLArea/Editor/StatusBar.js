@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * The optional status bar at the bottom of the editor framework
  */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Category\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Category Collection to handle records attached to a category
  *

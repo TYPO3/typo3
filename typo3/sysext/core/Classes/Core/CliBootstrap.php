@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Core;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This class encapsulates cli specific bootstrap methods.
  *

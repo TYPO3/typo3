@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An operand whose value can be determined from static analysis of the query,
  * prior to its evaluation.

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\About\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Repository for TYPO3\CMS\About\Domain\Model\Extension
  */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A collection containing a a set files to be represented as a (virtual) folder.
  * This collection is persisted to the database with the accordant folder reference.

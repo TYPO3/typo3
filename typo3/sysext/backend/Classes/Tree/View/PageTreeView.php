@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Generate a page-tree, non-browsable.
  *

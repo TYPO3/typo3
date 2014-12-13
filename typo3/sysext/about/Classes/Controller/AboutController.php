@@ -13,6 +13,7 @@ namespace TYPO3\CMS\About\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Module 'about' shows some standard information for TYPO3 CMS: About-text, version number and so on.
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This model represents a backend usergroup.
  *

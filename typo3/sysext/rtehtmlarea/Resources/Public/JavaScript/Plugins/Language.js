@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Language Plugin for TYPO3 htmlArea RTE
  */

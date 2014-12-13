@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * renders the header of the results page
  *

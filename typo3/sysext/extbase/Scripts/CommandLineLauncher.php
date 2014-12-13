@@ -11,6 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Launcher for the bootstrap when executing via cli.
  *

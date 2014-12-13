@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A general purpose configuration manager used in backend mode.
  */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A query settings interface. This interface is NOT part of the FLOW3 API.
  */

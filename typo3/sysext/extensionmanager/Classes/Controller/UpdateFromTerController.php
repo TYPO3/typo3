@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Controller for actions relating to update of full extension list from TER
  *

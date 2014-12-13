@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An "Unsupported Order" exception: The order you specified in the query is not supported by now.
  */

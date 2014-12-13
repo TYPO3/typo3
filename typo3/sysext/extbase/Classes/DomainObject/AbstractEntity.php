@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An abstract Entity. An Entity is an object fundamentally defined not by its attributes,
  * but by a thread of continuity and identity (e.g. a person).

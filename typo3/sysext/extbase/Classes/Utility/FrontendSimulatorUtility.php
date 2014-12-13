@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utilities to simulate a frontend in backend context.
  *

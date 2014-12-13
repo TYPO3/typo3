@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Dispatches requests to the controller which was specified by the request and
  * returns the response the controller generated.

@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Configuration of af an Editor of TYPO3 htmlArea RTE
  */

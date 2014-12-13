@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains RESTORE_REGISTER class object.
  *

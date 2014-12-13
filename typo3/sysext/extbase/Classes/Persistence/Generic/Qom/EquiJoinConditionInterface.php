@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Tests whether the childSelector node is a child of the parentSelector node. A
  * node-tuple satisfies the constraint only if:

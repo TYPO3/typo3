@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\FilesContentObject
  *

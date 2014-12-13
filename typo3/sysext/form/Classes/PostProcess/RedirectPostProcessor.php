@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\PostProcess;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * The redirect post processor
  */

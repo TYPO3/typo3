@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Initialization script of TYPO3 htmlArea RTE
  */

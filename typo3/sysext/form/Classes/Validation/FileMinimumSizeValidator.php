@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Validation;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * File Minimum size rule
  * The file size must be bigger than the minimum

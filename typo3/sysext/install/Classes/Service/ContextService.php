@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Install\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Service for determining the current context (as a backend module or in standalone mode)
  */

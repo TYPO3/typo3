@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Test case
  */

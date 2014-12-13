@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * API for extending htmlArea RTE
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\SignalSlot\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * "Invalid Slot" Exception
  *

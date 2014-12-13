@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Undo Redo Plugin for TYPO3 htmlArea RTE
  */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class with common methods used across various classes in the indexed search.
  * Impementation is provided by various people from the TYPO3 community.

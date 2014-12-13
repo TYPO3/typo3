@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * TYPO3 Dependency Injection container
  *

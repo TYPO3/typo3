@@ -11,6 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * New content elements wizard
  * (Part of the 'cms' extension)

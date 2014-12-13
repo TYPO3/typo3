@@ -11,6 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * User defined content for htmlArea RTE
  *

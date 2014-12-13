@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Value object containing the relevant informations for a class,
  * this object is build by the classInfoFactory - or could also be restored from a cache

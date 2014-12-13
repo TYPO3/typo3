@@ -13,6 +13,7 @@ namespace Acme\Mypkg\Command;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * MockBCommandController Fixture
  */

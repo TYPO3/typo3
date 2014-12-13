@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Security;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A hash service which should be used to generate and validate hashes.
  *

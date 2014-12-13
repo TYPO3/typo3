@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Index search abstraction to search through the index
  *

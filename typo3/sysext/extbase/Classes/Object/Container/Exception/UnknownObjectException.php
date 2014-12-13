@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Object\Container\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * "Unknown Object" Exception
  */

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Filter;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utility methods for filtering filenames
  *

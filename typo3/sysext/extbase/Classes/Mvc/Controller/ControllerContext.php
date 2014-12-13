@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * The controller context contains information from the controller
  *

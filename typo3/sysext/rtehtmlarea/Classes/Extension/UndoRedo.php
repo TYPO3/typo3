@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Undo Redo plugin for htmlArea RTE
  *

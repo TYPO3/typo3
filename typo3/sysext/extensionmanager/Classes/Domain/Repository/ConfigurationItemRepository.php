@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A repository for extension configuration items
  *

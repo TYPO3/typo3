@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utilities to manage and convert TypoScript
  */

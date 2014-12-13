@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Storage backend interface
  */

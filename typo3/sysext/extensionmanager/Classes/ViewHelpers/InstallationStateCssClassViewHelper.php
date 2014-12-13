@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Returns a string meant to be used as css class stating whether an extension is
  * available or installed

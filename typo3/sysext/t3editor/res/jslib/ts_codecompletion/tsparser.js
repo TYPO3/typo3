@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * @fileoverview contains the TsParser class and the TreeNode helper class
  */

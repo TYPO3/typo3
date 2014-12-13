@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
  * SplObjectStorage introduced in PHP 5.3.

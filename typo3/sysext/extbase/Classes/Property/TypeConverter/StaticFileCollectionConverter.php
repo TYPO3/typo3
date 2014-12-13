@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\FileCollection.
  *

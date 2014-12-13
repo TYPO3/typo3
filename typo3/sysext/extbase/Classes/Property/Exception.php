@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Property;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An generic Property related exception
  */

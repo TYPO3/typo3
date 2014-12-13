@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Quick Tag Editor Plugin for TYPO3 htmlArea RTE
  */

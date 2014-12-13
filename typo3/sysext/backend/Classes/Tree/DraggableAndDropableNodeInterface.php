@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Tree;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Describes necessary methods if the nodes are draggable and dropable
  * within the tree.

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\About\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Render images that can be registered in the TYPO3 backend skinning API
  * Extends the default image view helper from fluid

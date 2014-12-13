@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A "No Such Controller" exception
  */

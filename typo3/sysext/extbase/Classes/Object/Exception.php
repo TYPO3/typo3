@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Object;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A generic Object Exception
  */

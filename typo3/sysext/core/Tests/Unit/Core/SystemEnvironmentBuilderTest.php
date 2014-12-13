@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Testcase
  *

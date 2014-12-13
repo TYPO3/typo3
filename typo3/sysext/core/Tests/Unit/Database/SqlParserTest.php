@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Testcase for TYPO3\CMS\Core\Database\SqlParser
  *

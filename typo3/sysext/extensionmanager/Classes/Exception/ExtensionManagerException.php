@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An exception when something is wrong within the extension manager
  *

@@ -11,6 +11,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Displays the page/file tree for browsing database records or files.
  * Used from TCEFORMS an other elements

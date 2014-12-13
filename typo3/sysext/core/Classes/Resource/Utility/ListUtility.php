@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utility function for working with resource-lists
  */

@@ -18,6 +18,7 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utility for dealing with files and folders
  *

@@ -12,6 +12,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * MockCCommandController Fixture
  */

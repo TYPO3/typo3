@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * The interface for a request handler
  *

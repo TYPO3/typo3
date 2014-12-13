@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Command;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A Command Controller which provides help for available commands
  *

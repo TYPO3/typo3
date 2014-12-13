@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Abstract parser for EM related TYPO3 xml files.
  *

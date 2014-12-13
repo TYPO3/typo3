@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Module: Extension manager - Mirror list importer
  *

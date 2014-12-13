@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This cache factory takes care of instantiating a cache frontend and injecting
  * a certain cache backend. After creation of the new cache, the cache object

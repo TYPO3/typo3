@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Module;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Model for the module storage
  *

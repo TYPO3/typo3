@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Type\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for Invalid value exception
  */

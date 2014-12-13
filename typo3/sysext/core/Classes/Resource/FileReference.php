@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Representation of a specific usage of a file with possibilities to override certain
  * properties of the original file just for this usage of the file.

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Download Queue - storage for extensions to be downloaded
  *

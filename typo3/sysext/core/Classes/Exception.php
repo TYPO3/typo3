@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An exception
  *

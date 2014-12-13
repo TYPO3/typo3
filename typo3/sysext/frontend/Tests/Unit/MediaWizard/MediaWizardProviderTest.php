@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\MediaWizard;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Testcase for TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider
  *

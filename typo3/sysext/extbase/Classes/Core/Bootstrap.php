@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Core;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, flexForm and returns the content to the v4 framework.

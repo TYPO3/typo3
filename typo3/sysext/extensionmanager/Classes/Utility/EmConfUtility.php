@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utility for dealing with ext_emconf
  *

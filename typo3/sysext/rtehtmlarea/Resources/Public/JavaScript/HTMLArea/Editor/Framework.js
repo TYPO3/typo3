@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Framework is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */

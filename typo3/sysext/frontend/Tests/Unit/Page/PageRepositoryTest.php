@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Test case
  *

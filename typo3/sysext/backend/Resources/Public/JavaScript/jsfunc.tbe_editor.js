@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contains JavaScript for TYPO3 Core Form generator - AKA "TCEforms"
  *

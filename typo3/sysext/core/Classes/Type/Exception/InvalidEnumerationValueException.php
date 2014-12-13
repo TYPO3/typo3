@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Type\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Exception for an invalid enumeration value
  */

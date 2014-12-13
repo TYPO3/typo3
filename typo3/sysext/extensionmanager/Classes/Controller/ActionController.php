@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Controller for handling extension related actions like
  * installing, removing, downloading of data or files

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A "No Such Cache" exception
  *

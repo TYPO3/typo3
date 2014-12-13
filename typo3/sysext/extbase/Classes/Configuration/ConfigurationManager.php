@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A configuration manager following the strategy pattern (GoF315). It hides the concrete
  * implementation of the configuration manager and provides an unified acccess point.

@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * toolbar menu for the workspaces functionality to switch between the workspaces
  * and jump to the workspaces module

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An "Invalid Object Type" exception
  */

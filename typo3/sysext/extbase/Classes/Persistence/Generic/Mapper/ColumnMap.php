@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
  */

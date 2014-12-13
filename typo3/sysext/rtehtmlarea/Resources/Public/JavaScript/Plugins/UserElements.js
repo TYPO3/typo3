@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * User Elements Plugin for TYPO3 htmlArea RTE
  */

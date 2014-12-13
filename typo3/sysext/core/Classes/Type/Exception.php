@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Type;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A generic Type exception
  */

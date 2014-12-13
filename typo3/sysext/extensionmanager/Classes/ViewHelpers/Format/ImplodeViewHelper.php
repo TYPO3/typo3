@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * View Helper for imploding arrays
  *

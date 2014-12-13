@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Interface for classes which provide a pagetree indicator.
  *

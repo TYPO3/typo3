@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contract for a Cache (frontend)
  *

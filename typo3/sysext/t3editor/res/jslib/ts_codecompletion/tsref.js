@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * @fileoverview contains the TsRef class
  * and the TsRefProperty and TsRefType helper classes

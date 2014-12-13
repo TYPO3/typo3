@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * This file provides a jQuery plugin for generating 'clearable' input fields.
  * These fields show a "clear"-button when someone hovers over them and

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An interface how to monitor changes on an object and its properties. All domain objects which should be persisted need to implement the below interface.
  *

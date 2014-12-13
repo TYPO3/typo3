@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Driver;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Registry for driver classes.
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearchMysql\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class that hooks into Indexed Search and replaces standard SQL queries with MySQL fulltext index queries.
  *

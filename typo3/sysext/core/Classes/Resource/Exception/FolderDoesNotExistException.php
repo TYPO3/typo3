@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An exception to throw if a folder does not exist
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Dbal\ExtensionManager;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class that renders fields for the Extension Manager configuration.
  *

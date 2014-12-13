@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Contract for a validator
  *

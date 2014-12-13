@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Tslib content adapter to modify $row array ($cObj->data[]) for backwards compatibility
  *

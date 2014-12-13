@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Collection for handling records from a single database-table.
  *

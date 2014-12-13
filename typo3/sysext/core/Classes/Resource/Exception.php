@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An exception when something is wrong with the file handling
  *

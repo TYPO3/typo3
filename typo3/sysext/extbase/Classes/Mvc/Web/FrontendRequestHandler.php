@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A request handler which can handle web requests invoked by the frontend.
  */

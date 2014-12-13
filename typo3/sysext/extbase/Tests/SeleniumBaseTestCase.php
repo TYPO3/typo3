@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Base Selenium testcase for the Extbase extension.
  */

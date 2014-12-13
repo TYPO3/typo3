@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Page browser for indexed search, and only useful here, as the
  * regular pagebrowser

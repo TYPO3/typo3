@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Display a deactivate / activate link
  *

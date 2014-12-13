@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * The not found view - a special case.
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Object\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * "Wrong Scope" Exception
  */

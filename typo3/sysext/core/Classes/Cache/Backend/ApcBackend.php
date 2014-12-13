@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A caching backend which stores cache entries by using APC.
  *

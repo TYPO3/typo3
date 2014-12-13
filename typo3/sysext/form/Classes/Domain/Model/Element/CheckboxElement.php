@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Checkbox model object
  *

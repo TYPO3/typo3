@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A little parser which creates tag objects from doc comments
  */

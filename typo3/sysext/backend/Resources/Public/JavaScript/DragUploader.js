@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * JavaScript RequireJS module called "TYPO3/CMS/Backend/DragUploader"
  *

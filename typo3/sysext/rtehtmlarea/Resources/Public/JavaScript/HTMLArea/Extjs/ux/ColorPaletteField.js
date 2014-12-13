@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Color palette trigger field
  * Based on http://www.extjs.com/forum/showthread.php?t=89312

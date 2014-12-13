@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A collection containing a static set of files. This collection is persisted
  * to the database with references to all files it contains.

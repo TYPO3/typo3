@@ -14,6 +14,7 @@ use \TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general

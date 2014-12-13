@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Parser for TYPO3's mirrors.xml file.
  *

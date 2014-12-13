@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\Example;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Index search frontend example hook
  *

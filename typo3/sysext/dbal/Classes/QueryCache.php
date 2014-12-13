@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Dbal;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Cache engine helper for generated queries.
  *

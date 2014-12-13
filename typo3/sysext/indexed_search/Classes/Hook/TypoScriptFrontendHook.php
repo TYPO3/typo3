@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Hooks for \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController (TSFE).
  *

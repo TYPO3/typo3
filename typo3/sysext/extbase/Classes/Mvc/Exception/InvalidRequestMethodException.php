@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An "Invalid Request Method" exception
  */

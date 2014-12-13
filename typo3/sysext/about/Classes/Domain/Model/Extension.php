@@ -13,6 +13,7 @@ namespace TYPO3\CMS\About\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An extension helper model to be used in ext:about context
  *

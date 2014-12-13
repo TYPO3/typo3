@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Render custom attribute data-htmlarea-clickenlarge
  *

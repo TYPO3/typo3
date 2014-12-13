@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An Invalid Configuration Type Exception
  */

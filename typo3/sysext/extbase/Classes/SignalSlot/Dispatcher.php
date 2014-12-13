@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
  * and passing them the method arguments which were originally passed to the

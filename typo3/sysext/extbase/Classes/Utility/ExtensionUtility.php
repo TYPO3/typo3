@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
  * file ext_autoload.php.

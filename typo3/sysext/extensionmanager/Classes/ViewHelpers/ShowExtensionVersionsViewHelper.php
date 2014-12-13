@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Display a link to show all versions of an extension
  *

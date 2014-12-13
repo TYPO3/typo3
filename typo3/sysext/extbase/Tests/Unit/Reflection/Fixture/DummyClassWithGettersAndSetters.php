@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Fixture class with getters and setters
  *

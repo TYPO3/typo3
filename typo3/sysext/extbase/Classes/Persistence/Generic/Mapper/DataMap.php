@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A data map to map a single table configured in $TCA on a domain object.
  */

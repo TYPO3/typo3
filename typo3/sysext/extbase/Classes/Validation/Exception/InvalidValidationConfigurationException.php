@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A "InvalidValidationConfiguration" Exception
  */

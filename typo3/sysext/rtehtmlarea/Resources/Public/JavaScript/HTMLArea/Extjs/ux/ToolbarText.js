@@ -10,6 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Ext.ux.Toolbar.HTMLAreaToolbarText extends Ext.Toolbar.TextItem
  */

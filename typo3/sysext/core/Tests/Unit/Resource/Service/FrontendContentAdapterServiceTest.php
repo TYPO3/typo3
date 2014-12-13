@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Tests for the Frontend Content Adapter
  */

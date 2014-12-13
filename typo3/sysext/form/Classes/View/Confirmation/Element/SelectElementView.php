@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * View object for the select element
  *

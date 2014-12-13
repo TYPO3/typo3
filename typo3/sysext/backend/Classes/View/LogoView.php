@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * class to render the TYPO3 logo in the backend
  *

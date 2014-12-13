@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Repository for accessing the file mounts
  *

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * An entity
  */

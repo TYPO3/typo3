@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Cli;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Builds a CLI request object from the raw command call
  *

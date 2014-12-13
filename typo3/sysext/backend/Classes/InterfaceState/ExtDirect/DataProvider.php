@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Backend\InterfaceState\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * ExtDirect DataProvider for State
  *

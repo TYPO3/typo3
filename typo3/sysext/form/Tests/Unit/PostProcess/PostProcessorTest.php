@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Testcase for PostProcessor
  */

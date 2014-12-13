@@ -13,6 +13,7 @@ namespace TYPO3\CMS\IndexedSearch;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * External standard parsers for indexed_search
  *

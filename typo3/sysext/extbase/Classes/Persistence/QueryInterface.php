@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * A persistence query interface
  *

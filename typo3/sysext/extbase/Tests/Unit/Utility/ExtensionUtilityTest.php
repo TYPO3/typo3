@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Testcase for class \TYPO3\CMS\Extbase\Utility\ExtensionUtility
  */

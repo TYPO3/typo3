@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Class for processing of the FAL soft references on img tags inserted in RTE content
  *
