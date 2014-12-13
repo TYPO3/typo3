@@ -194,9 +194,9 @@ abstract class AbstractConditionMatcher {
 	 * @return NULL|boolean Result of the evaluation; NULL if condition could not be evaluated
 	 */
 	protected function evaluateConditionCommon($key, $value) {
-		if (GeneralUtility::inList('browser,version,system,useragent', strtolower($key))) {
+		if (GeneralUtility::inList('browser,device,version,system,useragent', strtolower($key))) {
 			GeneralUtility::deprecationLog(
-				'Usage of client related conditions (browser, version, system, useragent) is deprecated since 7.0.'
+				'Usage of client related conditions (browser, device, version, system, useragent) is deprecated since 7.0.'
 			);
 			$browserInfo = $this->getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 		}
@@ -601,6 +601,7 @@ abstract class AbstractConditionMatcher {
 	 *
 	 * @param string $userAgent The useragent string, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
 	 * @return string Code for the specific device type
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	protected function getDeviceType($userAgent) {
 		return \TYPO3\CMS\Core\Utility\ClientUtility::getDeviceType($userAgent);
