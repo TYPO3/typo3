@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Extbase\Persistence\Exception;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *

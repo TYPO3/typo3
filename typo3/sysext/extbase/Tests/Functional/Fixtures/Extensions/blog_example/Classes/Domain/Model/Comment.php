@@ -1,5 +1,6 @@
 <?php
 namespace ExtbaseTeam\BlogExample\Domain\Model;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *

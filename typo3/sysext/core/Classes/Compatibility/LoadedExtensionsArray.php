@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Compatibility;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *

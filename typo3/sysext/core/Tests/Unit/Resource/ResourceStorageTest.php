@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
