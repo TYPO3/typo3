@@ -875,13 +875,13 @@ var inline = {
 		}
 
 		if ($icon.length) {
-			if ($icon.hasClass('t3-icon-edit-hide')) {
-				$icon.removeClass('t3-icon-edit-hide');
-				$icon.addClass('t3-icon-edit-unhide');
+			if ($icon.hasClass('fa-toggle-on')) {
+				$icon.removeClass('fa-toggle-on');
+				$icon.addClass('fa-toggle-off');
 				$container.addClass('t3-form-field-container-inline-hidden');
 			} else {
-				$icon.removeClass('t3-icon-edit-unhide');
-				$icon.addClass('t3-icon-edit-hide');
+				$icon.removeClass('fa-toggle-off');
+				$icon.addClass('fa-toggle-on');
 				$container.removeClass('t3-form-field-container-inline-hidden');
 			}
 		}
