@@ -57,7 +57,7 @@ class TranslationConfigurationProvider {
 			'flagIcon' => 'flags-multiple'
 		);
 		// Find all system languages:
-		$sysLanguages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', '');
+		$sysLanguages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_language', '1=1' . BackendUtility::BEenableFields('sys_language'));
 		foreach ($sysLanguages as $row) {
 			$languageIconTitles[$row['uid']] = $row;
 			if (!empty($row['language_isocode'])) {
