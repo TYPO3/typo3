@@ -85,6 +85,7 @@ CREATE TABLE tx_styleguide_forms (
 	text_11 text,
 	text_12 text,
 	text_13 text,
+	text_14 text,
 
 	checkbox_1 int(11) DEFAULT '0' NOT NULL,
 	checkbox_2 int(11) DEFAULT '0' NOT NULL,
@@ -235,6 +236,7 @@ CREATE TABLE tx_styleguide_forms_inline_2_child2 (
 	parentidentifier tinytext NOT NULL,
 	input_1 tinytext NOT NULL,
 	text_1 text,
+	text_2 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
