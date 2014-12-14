@@ -40,6 +40,11 @@ use TYPO3\CMS\Lang\LanguageService;
 class FormEngine {
 
 	/**
+	 * @var string A CSS class name prefix for all element types, single elements add their type to this string
+	 */
+	protected $cssClassTypeElementPrefix = 't3-formengine-field-';
+
+	/**
 	 * @var array
 	 */
 	public $palFieldArr = array();
@@ -2270,7 +2275,7 @@ class FormEngine {
 		if (!$selector) {
 			$isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
 			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
-				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" ' . $this->insertDefStyle('group', 'tceforms-multiselect'))
+				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="' . $this->cssClassTypeElementPrefix . 'group tceforms-multiselect"')
 				. ($isMultiple ? ' multiple="multiple"' : '')
 				. ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
 				. '</select>';
@@ -3045,8 +3050,10 @@ class FormEngine {
 	 * @param string $type Field type (eg. "check", "radio", "select")
 	 * @param string $additionalClass Additional class(es) to be added
 	 * @return string CSS attributes
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function insertDefStyle($type, $additionalClass = '') {
+		GeneralUtility::logDeprecatedFunction();
 		$cssClasses = trim('t3-formengine-field-' . $type . ' ' . $additionalClass);
 		return 'class="' . htmlspecialchars($cssClasses) . '"';
 	}

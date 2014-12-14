@@ -58,7 +58,7 @@ class RadioElement extends AbstractFormElement {
 				. '<label for="' . $radioId . '">'
 				. '<input '
 				. 'type="radio" '
-				. $this->formEngine->insertDefStyle('radio') . ' '
+				. 'class="' . $this->cssClassTypeElementPrefix . 'radio" '
 				. 'name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '" '
 				. 'id="' . $radioId . '" '
 				. 'value="' . htmlspecialchars($selectedItem[1]) . '" '

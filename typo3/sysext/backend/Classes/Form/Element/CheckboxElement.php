@@ -115,7 +115,7 @@ class CheckboxElement extends AbstractFormElement {
 			. '<input '
 			. 'type="checkbox" '
 			. 'value="1" '
-			. $this->formEngine->insertDefStyle('check') . ' '
+			. 'class="' . $this->cssClassTypeElementPrefix . 'check" '
 			. 'name="' . $checkboxName . '" '
 			. $checkboxParameters . ' '
 			. $additionalInformation['onFocus'] . ' '
