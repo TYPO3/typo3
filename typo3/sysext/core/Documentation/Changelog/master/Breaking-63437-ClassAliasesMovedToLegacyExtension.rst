@@ -17,7 +17,7 @@ especially during first load with empty caches.
 Impact
 ======
 
-If extensions still rely on old non-namespaced class names, ext:compatibility can
+If extensions still rely on old non-namespaced class names, ext:compatibility6 can
 be loaded to keep further backwards compatibility for now - with the side effect of
 drained performance.
 
