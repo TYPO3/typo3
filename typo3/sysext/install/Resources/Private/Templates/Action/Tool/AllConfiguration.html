@@ -37,6 +37,12 @@
 		<f:else>
 			<h3>Change configuration values</h3>
 
+			<p>
+				Changed values are written to LocalConfiguration.php. The optional file AdditionalConfiguration.php
+				is not controlled by the TYPO3 CMS core and may override single settings again. Administrators
+				must maintain AdditionalConfiguration.php on their own and should use it with care.
+			</p>
+
 			<form method="post">
 				<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 
