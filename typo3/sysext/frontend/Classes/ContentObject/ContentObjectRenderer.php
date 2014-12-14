@@ -4129,8 +4129,10 @@ class ContentObjectRenderer {
 	 * @return string The processed output value
 	 * @access private
 	 * @see stdWrap()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function textStyle($theValue, $conf) {
+		$this->typoScriptFrontendController->logDeprecatedTyposcript('textStyle', 'Deprecated since 7.1 and will be removed with CMS 8. Use CSS instead');
 		$conf['face.'][1] = 'Times New Roman';
 		$conf['face.'][2] = 'Verdana,Arial,Helvetica,Sans serif';
 		$conf['face.'][3] = 'Arial,Helvetica,Sans serif';
@@ -4208,8 +4210,10 @@ class ContentObjectRenderer {
 	 * @return string The processed output value
 	 * @access private
 	 * @see stdWrap()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function tableStyle($theValue, $conf) {
+		$this->typoScriptFrontendController->logDeprecatedTyposcript('tableStyle', 'Deprecated since 7.1 and will be removed with CMS 8. Use CSS instead');
 		$conf['color.'][240] = 'black';
 		$conf['color.'][241] = 'white';
 		$conf['color.'][242] = '#333333';
