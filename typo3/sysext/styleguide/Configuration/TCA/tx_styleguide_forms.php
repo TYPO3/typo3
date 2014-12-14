@@ -612,12 +612,12 @@ return array(
 
 
 		'radio_1' => array(
-			'label' => '1 Three options',
+			'label' => '1 Three options, one without label',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
 					array('foo', 1),
-					array('bar', 2),
+					array('', 2),
 					array('foobar', 3),
 				),
 			),
