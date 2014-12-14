@@ -98,6 +98,7 @@ CREATE TABLE tx_styleguide_forms (
 	checkbox_9 int(11) DEFAULT '0' NOT NULL,
 	checkbox_10 int(11) DEFAULT '0' NOT NULL,
 	checkbox_11 int(11) DEFAULT '0' NOT NULL,
+	checkbox_12 int(11) DEFAULT '0' NOT NULL,
 
 	radio_1 int(11) DEFAULT '0' NOT NULL,
 	radio_2 int(11) DEFAULT '0' NOT NULL,

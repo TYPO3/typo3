@@ -523,12 +523,12 @@ return array(
 			)
 		),
 		'checkbox_5' => array(
-			'label' => '5 Three checkboxes with labels',
+			'label' => '5 Three checkboxes, two with labels, one without',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
 					array('foo', ''),
-					array('bar', ''),
+					array('', ''),
 					array('foobar', ''),
 				),
 			),
@@ -606,6 +606,17 @@ return array(
 				'eval' => 'maximumRecordsCheckedInPid',
 				'validation' => array(
 					'maximumRecordsCheckedInPid' => 1,
+				),
+			),
+		),
+		'checkbox_12' => array(
+			'label' => '12 some checkboxes, readonly',
+			'config' => array(
+				'type' => 'check',
+				'readOnly' => 1,
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
 				),
 			),
 		),
@@ -1522,7 +1533,7 @@ return array(
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
-			checkbox_11,
+			checkbox_11, checkbox_12,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
@@ -1550,7 +1561,7 @@ return array(
 					text_10, text_11, text_12, text_13, text_14,
 				--div--;Check,
 					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
-					checkbox_10, checkbox_11,
+					checkbox_10, checkbox_11, checkbox_12,
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
