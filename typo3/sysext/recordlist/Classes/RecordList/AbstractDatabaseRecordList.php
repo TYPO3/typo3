@@ -477,7 +477,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		// Setting form-elements, if applicable:
 		$formElements = array('', '');
 		if ($formFields) {
-			$formElements = array('<form action="' . htmlspecialchars($this->listURL('', -1, 'firstElementNumber')) . '" method="post">', '</form>');
+			$formElements = array('<form action="' . htmlspecialchars($this->listURL('', -1, 'firstElementNumber,search_field')) . '" method="post">', '</form>');
 		}
 		// Make level selector:
 		$opt = array();
@@ -496,7 +496,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					' . $lMenu . '
 					<label for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', TRUE) . ': </label>
 					<input type="number" placeholder="10" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', TRUE) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' />
-					<input type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
+					<input type="submit" class="btn" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
 			' . $formElements[1] . '</div></div>';
 		return $content;
 	}
@@ -835,7 +835,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		if ($this->returnUrl) {
 			$urlParameters['returnUrl'] = $this->returnUrl;
 		}
-		if ($this->searchString) {
+		if ((!$exclList || !GeneralUtility::inList($exclList, 'search_field')) && $this->searchString) {
 			$urlParameters['search_field'] = $this->searchString;
 		}
 		if ($this->searchLevels) {
