@@ -51,7 +51,7 @@ class RadioElement extends AbstractFormElement {
 
 		// Traverse the items, making the form elements
 		foreach ($selectedItems as $checkbox => $selectedItem) {
-			$radioId = $additionalInformation['itemFormElID'] . '_' . $checkbox;
+			$radioId = htmlspecialchars($additionalInformation['itemFormElID'] . '_' . $checkbox);
 			$radioOnClick = implode('', $additionalInformation['fieldChangeFunc']);
 			$radioChecked = (string)$selectedItem[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
 			$item .= '<div class="radio' . $disabled . '">'
