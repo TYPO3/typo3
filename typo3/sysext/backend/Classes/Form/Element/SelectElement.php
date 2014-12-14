@@ -252,7 +252,7 @@ class SelectElement extends AbstractFormElement {
 			$multiSelectId = str_replace('.', '', uniqid('tceforms-multiselect-', TRUE));
 			$itemsToSelect = '
 				<select data-relatedfieldname="' . htmlspecialchars($PA['itemFormElName']) . '" data-exclusivevalues="'
-				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . $PA['itemFormElName'] . '_sel" '
+				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '_sel" '
 				. ' class="form-control t3js-formengine-select-itemstoselect" '
 				. ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"'
 				. $PA['onFocus'] . $selector_itemListStyle . '>
@@ -580,7 +580,7 @@ class SelectElement extends AbstractFormElement {
 				' . $prepend . '
 				<select'
 					. ' id="' . $selectId . '"'
-					. ' name="' . $PA['itemFormElName'] . '"'
+					. ' name="' . htmlspecialchars($PA['itemFormElName']) . '"'
 					. ' class="form-control form-control-adapt"'
 					. ($size ? ' size="' . $size . '"' : '')
 					. ' onchange="' . htmlspecialchars($sOnChange) . '"'
@@ -897,7 +897,7 @@ class SelectElement extends AbstractFormElement {
 		$size = $config['autoSizeMax']
 			? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
 			: $size;
-		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . $PA['itemFormElName'] . '[]" '
+		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . htmlspecialchars($PA['itemFormElName']) . '[]" '
 			. 'class="form-control ' . $cssPrefix . '"' . ($size ? ' size="' . $size . '" ' : '')
 			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus']
 			. ' ' . $selector_itemListStyle . $disabled . '>

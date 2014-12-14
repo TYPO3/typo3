@@ -162,7 +162,7 @@ class CheckboxElement extends AbstractFormElement {
 				<label>
 					<input type="checkbox"
 						value="1"
-						name="' . $checkboxName . '"
+						name="' . htmlspecialchars($checkboxName) . '"
 						' . $checkboxParameters . '
 						' . $additionalInformation['onFocus'] . '
 						' . (!$disabled ?: ' disabled="disabled"') . '

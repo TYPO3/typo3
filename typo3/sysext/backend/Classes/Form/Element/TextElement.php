@@ -225,13 +225,13 @@ class TextElement extends AbstractFormElement {
 				}
 				$attributes['rows'] = $rows;
 				$attributes['wrap'] = $specialConfiguration['nowrap'] ? 'off' : ($config['wrap'] ?: 'virtual');
-				$attributes['onChange'] = htmlspecialchars(implode('', $parameterArray['fieldChangeFunc']));
+				$attributes['onChange'] = implode('', $parameterArray['fieldChangeFunc']);
 				if (isset($config['max']) && (int)$config['max'] > 0) {
 					$attributes['maxlength'] = (int)$config['max'];
 				}
 				$attributeString = '';
 				foreach ($attributes as $attributeName => $attributeValue) {
-					$attributeString .= ' '. $attributeName . '="' . $attributeValue . '"';
+					$attributeString .= ' '. $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
 				}
 
 				// Build the textarea
