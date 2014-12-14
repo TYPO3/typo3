@@ -137,13 +137,6 @@ return array(
 				'default' => '0'
 			)
 		),
-		'disable_autocreate' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.disable_autocreate',
-			'config' => array(
-				'type' => 'check',
-				'default' => '0'
-			)
-		),
 		'swap_modes' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.swap_modes',
 			'config' => array(
@@ -271,6 +264,6 @@ return array(
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
 			--div--;LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_filemounts.tabs.staging,custom_stages,
-			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.other,freeze,live_edit,disable_autocreate,swap_modes,publish_access')
+			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_filemounts.tabs.other,freeze,live_edit,swap_modes,publish_access')
 	)
 );

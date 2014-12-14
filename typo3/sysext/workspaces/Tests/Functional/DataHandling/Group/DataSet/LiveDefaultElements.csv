@@ -1,5 +1,5 @@
 "sys_workspace"
-,"uid","pid","deleted","title","adminusers","members","reviewers","db_mountpoints","file_mountpoints","freeze","live_edit","vtypes","disable_autocreate","swap_modes","publish_access","custom_stages","stagechg_notification","edit_notification_mode","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_mode","publish_notification_defaults","publish_allow_notificaton_settings"
+,"uid","pid","deleted","title","adminusers","members","reviewers","db_mountpoints","file_mountpoints","freeze","live_edit","vtypes","swap_modes","publish_access","custom_stages","stagechg_notification","edit_notification_mode","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_mode","publish_notification_defaults","publish_allow_notificaton_settings"
 ,1,0,0,"Workspace #1",,,,,,0,0,0,0,0,0,0,0,0,,0,0,,0
 ,2,0,0,"Workspace #2",,,,,,0,0,0,0,0,0,0,0,0,,0,0,,0
 "sys_workspace_stage"

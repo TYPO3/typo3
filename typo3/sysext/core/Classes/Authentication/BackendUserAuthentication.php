@@ -1023,14 +1023,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		// enabled and look for workspace version of input record.
 		// If there is no versionized record found we will create one and save to that.
 		if (
-			$this->workspace !== 0 && !$this->workspaceRec['disable_autocreate']
+			$this->workspace !== 0
 			&& $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $recpid >= 0
 			&& !BackendUtility::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')
 		) {
 			// There must be no existing version of this record in workspace.
 			return TRUE;
-		} elseif ($this->workspaceRec['disable_autocreate']) {
-			GeneralUtility::deprecationLog('Usage of disable_autocreate feature is deprecated since 4.5.');
 		}
 		return FALSE;
 	}
