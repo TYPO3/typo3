@@ -104,6 +104,7 @@ CREATE TABLE tx_styleguide_forms (
 	radio_3 int(11) DEFAULT '0' NOT NULL,
 	radio_4 tinytext NOT NULL,
 	radio_5 int(11) DEFAULT '0' NOT NULL,
+	radio_6 int(11) DEFAULT '0' NOT NULL,
 
 	select_1 tinytext NOT NULL,
 	select_2 tinytext NOT NULL,

@@ -685,6 +685,17 @@ return array(
 			),
 		),
 		 */
+		'radio_6' => array(
+			'label' => '6 readonly',
+			'config' => array(
+				'type' => 'radio',
+				'readOnly' => 1,
+				'items' => array(
+					array('foo', 'foo'),
+					array('bar', 'bar'),
+				),
+			),
+		),
 
 
 		'select_1' => array(
@@ -1512,7 +1523,7 @@ return array(
 			text_11, text_12, text_13,text_14,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
 			checkbox_11,
-			radio_1, radio_2, radio_3, radio_4, radio_5,
+			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
@@ -1541,7 +1552,7 @@ return array(
 					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
 					checkbox_10, checkbox_11,
 				--div--;Radio,
-					radio_1, radio_2, radio_3, radio_4, radio_5,
+					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 					select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
