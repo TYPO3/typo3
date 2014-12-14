@@ -4530,10 +4530,9 @@ button.close {
   outline: 0;
 }
 .modal-backdrop {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
   left: 0;
   background-color: #000000;
 }
@@ -12529,7 +12528,6 @@ body#typo3-file-edit-php div#c-edit {
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 /**
  * Styling for the module User => Workspace
  */
@@ -13182,6 +13180,15 @@ table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-multipleVersions {
 }
 table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-oneVersion {
   background-color: #9999cc;
+}
+#db_list-searchbox-toolbar {
+  padding: 5px;
+}
+#db_list-searchbox-toolbar .container {
+  width: 100%;
+}
+#db_list-searchbox-toolbar input.btn-block {
+  margin-top: 23px;
 }
 /*
  * This file is part of the TYPO3 CMS project.
