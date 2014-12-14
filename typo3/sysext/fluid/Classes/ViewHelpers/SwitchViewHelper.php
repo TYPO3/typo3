@@ -74,7 +74,7 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$this->backupSwitchState();
 		$templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
 
-		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression', serialize($expression));
+		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression', $expression);
 		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', FALSE);
 
 		foreach ($this->childNodes as $childNode) {
