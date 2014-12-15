@@ -17,12 +17,11 @@
 
 	<f:render partial="List/UploadForm" />
 
-	<div class="headerRow ui-helper-clearfix">
-		<div class="typo3-extensionmanager-headerRowLeft">
+	<form class="form-inline">
+		<div class="form-group">
+			<f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control" />
 		</div>
-		<div class="typo3-extensionmanager-headerRowRight">
-		</div>
-	</div>
+	</form>
 	<table id="typo3-extension-list" class="t3-table typo3-extension-list">
 		<thead>
 			<tr>
