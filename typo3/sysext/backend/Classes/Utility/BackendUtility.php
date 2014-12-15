@@ -3483,11 +3483,37 @@ class BackendUtility {
 	 * @param int $pid Record pid
 	 * @return int
 	 * @internal
-	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getTSCpid()
 	 */
 	static public function getPidForModTSconfig($table, $uid, $pid) {
 		$retVal = $table == 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
 		return $retVal;
+	}
+
+	/**
+	 * Return the real pid of a record and caches the result.
+	 * The non-cached method needs database queries to do the job, so this method
+	 * can be used if code sometimes calls the same record multiple times to save
+	 * some queries. This should not be done if the calling code may change the
+	 * same record meanwhile.
+	 *
+	 * @param string $table Tablename
+	 * @param string $uid UID value
+	 * @param string $pid PID value
+	 * @return array Array of two integers; first is the real PID of a record, second is the PID value for TSconfig.
+	 */
+	static public function getTSCpidCached($table, $uid, $pid) {
+		// A local first level cache
+		static $firstLevelCache;
+
+		if (!is_array($firstLevelCache)) {
+			$firstLevelCache = array();
+		}
+
+		$key = $table . ':' . $uid . ':' . $pid;
+		if (!isset($firstLevelCache[$key])) {
+			$firstLevelCache[$key] = static::getTSCpid($table, $uid, $pid);
+		}
+		return $firstLevelCache[$key];
 	}
 
 	/**

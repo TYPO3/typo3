@@ -91,14 +91,6 @@ class FormEngine {
 	public $cachedAdditionalPreviewLanguages = NULL;
 
 	/**
-	 * Cache for the real PID of a record. The array key consists for a combined string "<table>:<uid>:<pid>".
-	 * The value is an array with two values: first is the real PID of a record, second is the PID value for TSconfig.
-	 *
-	 * @var array
-	 */
-	protected $cache_getTSCpid = array();
-
-	/**
 	 * @var array
 	 */
 	public $transformedRow = array();
@@ -4201,7 +4193,7 @@ class FormEngine {
 	 */
 	public function getRecordPath($table, $rec) {
 		BackendUtility::fixVersioningPid($table, $rec);
-		list($tscPID, $thePidValue) = $this->getTSCpid($table, $rec['uid'], $rec['pid']);
+		list($tscPID, $thePidValue) = BackendUtility::getTSCpidCached($table, $rec['uid'], $rec['pid']);
 		if ($thePidValue >= 0) {
 			return BackendUtility::getRecordPath($tscPID, $this->readPerms(), 15);
 		}
@@ -4287,13 +4279,11 @@ class FormEngine {
 	 * @param string $pid PID value
 	 * @return array Array of two integers; first is the real PID of a record, second is the PID value for TSconfig.
 	 * @see BackendUtility::getTSCpid()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getTSCpid($table, $uid, $pid) {
-		$key = $table . ':' . $uid . ':' . $pid;
-		if (!isset($this->cache_getTSCpid[$key])) {
-			$this->cache_getTSCpid[$key] = BackendUtility::getTSCpid($table, $uid, $pid);
-		}
-		return $this->cache_getTSCpid[$key];
+		GeneralUtility::logDeprecatedFunction();
+		return BackendUtility::getTSCpidCached($table, $uid, $pid);
 	}
 
 	/**
@@ -4360,7 +4350,7 @@ class FormEngine {
 		$mainKey = $table . ':' . $row['uid'];
 		if (!isset($this->cachedLanguageFlag[$mainKey])) {
 			BackendUtility::fixVersioningPid($table, $row);
-			list($tscPID) = $this->getTSCpid($table, $row['uid'], $row['pid']);
+			list($tscPID) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);
 			/** @var $t8Tools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
 			$t8Tools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 			$this->cachedLanguageFlag[$mainKey] = $t8Tools->getSystemLanguages($tscPID, $this->backPath);

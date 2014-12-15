@@ -85,7 +85,7 @@ class TextElement extends AbstractFormElement {
 			// If the field is configured for RTE and if any flag-field is not set to disable it.
 			if (isset($specialConfiguration['richtext']) && (!$parameters['flag'] || !$row[$parameters['flag']])) {
 				BackendUtility::fixVersioningPid($table, $row);
-				list($recordPid, $tsConfigPid) = $this->formEngine->getTSCpid($table, $row['uid'], $row['pid']);
+				list($recordPid, $tsConfigPid) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);
 				// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				if ($tsConfigPid >= 0) {
 					$rteSetup = $this->getBackendUserAuthentication()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($recordPid));
