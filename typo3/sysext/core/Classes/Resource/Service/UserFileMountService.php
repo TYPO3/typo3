@@ -115,7 +115,11 @@ class UserFileMountService {
 		$allFolderItems = array($parentFolder);
 		$subFolders = $parentFolder->getSubfolders();
 		foreach ($subFolders as $subFolder) {
-			$subFolderItems = $this->getSubfoldersForOptionList($subFolder, $level);
+			try {
+				$subFolderItems = $this->getSubfoldersForOptionList($subFolder, $level);
+			}  catch(\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException $e) {
+				$subFolderItems  = array();
+			}
 			$allFolderItems = array_merge($allFolderItems, $subFolderItems);
 		}
 		return $allFolderItems;
