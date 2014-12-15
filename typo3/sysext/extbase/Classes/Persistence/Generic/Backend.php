@@ -648,6 +648,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		}
 		$uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
 		$object->_setProperty('uid', (int)$uid);
+		$object->setPid((int)$row['pid']);
 		if ((int)$uid >= 1) {
 			$this->emitAfterInsertObjectSignal($object);
 		}
