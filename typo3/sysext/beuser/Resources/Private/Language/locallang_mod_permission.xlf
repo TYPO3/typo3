@@ -120,6 +120,12 @@
 			<trans-unit id="noGroups" xml:space="preserve">
 				<source>No user groups exist.</source>
 			</trans-unit>
+			<trans-unit id="selectNone" xml:space="preserve">
+				<source>   - none -   </source>
+			</trans-unit>
+			<trans-unit id="selectUnchanged" xml:space="preserve">
+				<source>   - leave unchanged -   </source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

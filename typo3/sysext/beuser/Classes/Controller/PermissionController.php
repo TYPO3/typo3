@@ -296,21 +296,21 @@ class PermissionController extends ActionController {
 				$beGroupArray = BackendUtility::blindGroupNames($beGroupArrayO, $beGroupKeys, 1);
 			}
 
-			// Owner selector:
-			$beUserDataArray = array();
-			$beUserDataArray[0] = '';
+			// Owner selector
+			$beUserDataArray = array(0 => LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectNone', 'beuser'));
 			foreach ($beUserArray as $uid => &$row) {
 				$beUserDataArray[$uid] = $row['username'];
 			}
+			$beUserDataArray[-1] = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectUnchanged', 'beuser');
 			$this->view->assign('currentBeUser', $this->pageInfo['perms_userid']);
 			$this->view->assign('beUserData', $beUserDataArray);
 
-			// Group selector:
-			$beGroupDataArray = array();
-			$beGroupDataArray[0] = '';
+			// Group selector
+			$beGroupDataArray = array(0 => LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectNone', 'beuser'));
 			foreach ($beGroupArray as $uid => $row) {
 				$beGroupDataArray[$uid] = $row['title'];
 			}
+			$beGroupDataArray[-1] = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:selectUnchanged', 'beuser');
 			$this->view->assign('currentBeGroup', $this->pageInfo['perms_groupid']);
 			$this->view->assign('beGroupData', $beGroupDataArray);
 			$this->view->assign('pageInfo', $this->pageInfo);
@@ -335,6 +335,13 @@ class PermissionController extends ActionController {
 		if ($this->checkAccess()) {
 			if (!empty($data['pages'])) {
 				foreach ($data['pages'] as $pageUid => $properties) {
+					// if the owner and group field shouldn't be touched, unset the option
+					if ((int)$properties['perms_userid'] === -1) {
+						unset($properties['perms_userid']);
+					}
+					if ((int)$properties['perms_groupid'] === -1) {
+						unset($properties['perms_groupid']);
+					}
 					$this->getDatabaseConnection()->exec_UPDATEquery(
 						'pages',
 						'uid = ' . (int)$pageUid,
