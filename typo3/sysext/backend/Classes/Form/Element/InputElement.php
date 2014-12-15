@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Resource\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -34,7 +35,7 @@ class InputElement extends AbstractFormElement {
 	 */
 	public function render($table, $field, $row, &$additionalInformation) {
 		$config = $additionalInformation['fieldConf']['config'];
-		$specConf = $this->formEngine->getSpecConfFromString($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
+		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
 		$size = MathUtility::forceIntegerInRange($config['size'] ? $config['size'] : 30, 5, $this->formEngine->maxInputWidth);
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		$classAndStyleAttributes = $this->formEngine->formWidthAsArray($size);

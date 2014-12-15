@@ -1540,8 +1540,10 @@ class FormEngine {
 	 * @param array $selectedLanguage
 	 * @param bool $multi
 	 * @return string HTML for menu
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getSingleField_typeFlex_langMenu($languages, $elName, $selectedLanguage, $multi = TRUE) {
+		GeneralUtility::logDeprecatedFunction();
 		$opt = array();
 		foreach ($languages as $lArr) {
 			$opt[] = '<option value="' . htmlspecialchars($lArr['ISOcode']) . '"'
@@ -1562,8 +1564,10 @@ class FormEngine {
 	 * @param string $elName Form element name of the field containing the sheet pointer
 	 * @param string $sheetKey Current sheet key
 	 * @return string HTML for menu
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getSingleField_typeFlex_sheetMenu($sArr, $elName, $sheetKey) {
+		GeneralUtility::logDeprecatedFunction();
 		$tCells = array();
 		$pct = round(100 / count($sArr));
 		foreach ($sArr as $sKey => $sheetCfg) {
@@ -2000,8 +2004,10 @@ class FormEngine {
 	 * @param string $defaultExtras The ['defaultExtras'] value from field configuration
 	 * @return array An array with the special options in.
 	 * @see getSpecConfForField(), BackendUtility::getSpecConfParts()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getSpecConfFromString($extraString, $defaultExtras) {
+		GeneralUtility::logDeprecatedFunction();
 		return BackendUtility::getSpecConfParts($extraString, $defaultExtras);
 	}
 

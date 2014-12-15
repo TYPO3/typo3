@@ -73,7 +73,7 @@ class SelectElement extends AbstractFormElement {
 			$disabled = ' disabled="disabled"';
 		}
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = $this->formEngine->getSpecConfFromString($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
+		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
 		$selItems = $this->getSelectItems($table, $field, $row, $additionalInformation);
 
 		// Creating the label for the "No Matching Value" entry.

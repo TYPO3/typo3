@@ -57,7 +57,7 @@ class GroupElement extends AbstractFormElement {
 		$this->formEngine->registerRequiredProperty('range', $additionalInformation['itemFormElName'], array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field));
 		$info = '';
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = $this->formEngine->getSpecConfFromString($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
+		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
 		$additionalInformation['itemFormElID_file'] = $additionalInformation['itemFormElID'] . '_files';
 		// whether the list and delete controls should be disabled
 		$noList = isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'list');
