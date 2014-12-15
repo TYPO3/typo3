@@ -4312,8 +4312,10 @@ class FormEngine {
 	 * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
 	 * @param bool $setDefault If set, an array entry for a default language is set.
 	 * @return array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getAvailableLanguages($onlyIsoCoded = TRUE, $setDefault = TRUE) {
+		GeneralUtility::logDeprecatedFunction();
 		$isL = ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system:
 		$db = $this->getDatabaseConnection();

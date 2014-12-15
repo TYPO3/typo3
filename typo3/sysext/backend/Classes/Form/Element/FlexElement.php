@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -74,7 +75,7 @@ class FlexElement extends AbstractFormElement {
 					. BackendUtility::versioningPlaceholderClause('pages_language_overlay');
 				$pageOverlays = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'pages_language_overlay', $where_clause, '', '', '', 'sys_language_uid');
 			}
-			$languages = $this->formEngine->getAvailableLanguages();
+			$languages = $this->getAvailableLanguages();
 			foreach ($languages as $lInfo) {
 				if (
 					$this->getBackendUserAuthentication()->checkLanguageAccess($lInfo['uid'])
@@ -203,6 +204,45 @@ class FlexElement extends AbstractFormElement {
 		return $item;
 	}
 
+	/**
+	 * Returns an array of available languages (to use for FlexForms)
+	 *
+	 * @param bool $onlyIsoCoded If set, only languages which are paired with a static_info_table / static_language record will be returned.
+	 * @param bool $setDefault If set, an array entry for a default language is set.
+	 * @return array
+	 */
+	protected function getAvailableLanguages($onlyIsoCoded = TRUE, $setDefault = TRUE) {
+		$isL = ExtensionManagementUtility::isLoaded('static_info_tables');
+		// Find all language records in the system:
+		$db = $this->getDatabaseConnection();
+		$res = $db->exec_SELECTquery('language_isocode,static_lang_isocode,title,uid', 'sys_language', 'pid=0 AND hidden=0' . BackendUtility::deleteClause('sys_language'), '', 'title');
+		// Traverse them:
+		$output = array();
+		if ($setDefault) {
+			$output[0] = array(
+				'uid' => 0,
+				'title' => 'Default language',
+				'ISOcode' => 'DEF'
+			);
+		}
+		while ($row = $db->sql_fetch_assoc($res)) {
+			$output[$row['uid']] = $row;
+			if (!empty($row['language_isocode'])) {
+				$output[$row['uid']]['ISOcode'] = $row['language_isocode'];
+			} elseif ($isL && $row['static_lang_isocode']) {
+				GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
+				$rr = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
+				if ($rr['lg_iso_2']) {
+					$output[$row['uid']]['ISOcode'] = $rr['lg_iso_2'];
+				}
+			}
+			if ($onlyIsoCoded && !$output[$row['uid']]['ISOcode']) {
+				unset($output[$row['uid']]);
+			}
+		}
+		$db->sql_free_result($res);
+		return $output;
+	}
 
 	/**
 	 * Recursive rendering of flexforms
