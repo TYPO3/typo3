@@ -136,6 +136,7 @@ return array(
 				'size' => 10,
 				'maxitems' => 100,
 				'items' => array(),
+				'enableMultiSelectFilterTextfield' => TRUE,
 				'softref' => 'ext_fileref'
 			)
 		),
