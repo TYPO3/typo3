@@ -126,7 +126,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 					if (!this.link) {
 						if (this.editor.getSelection().isEmpty()) {
 							TYPO3.Dialog.InformationDialog({
-								title: this.getButton(buttonId).tooltip.title,
+								title: this.getButton(buttonId).tooltip,
 								msg: this.localize('Select some text')
 							});
 							break;
@@ -146,7 +146,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 						// Open dialogue window
 					this.openDialogue(
 						buttonId,
-						this.getButton(buttonId).tooltip.title,
+						this.getButton(buttonId).tooltip,
 						this.getWindowDimensions(
 							{
 								width: 470,
@@ -389,9 +389,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 								node = el;
 							}
 							if (node != null && /^a$/i.test(node.nodeName)) {
-								button.setTooltip({ title: this.localize('Modify link') });
+								button.setTooltip(this.localize('Modify link'));
 							} else {
-								button.setTooltip({ title: this.localize('Insert link') });
+								button.setTooltip(this.localize('Insert link'));
 							}
 						}
 						break;

@@ -12,39 +12,50 @@
  */
 
 /**
- * HTMLArea.Toolbar extends Ext.Container
+ * The editor toolbar
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ToolbarText'],
-	function (Event, Combo, Button, ToolbarText) {
+	function (Util, Dom, Event, Combo, Button, ToolbarText) {
 
-	var Toolbar = Ext.extend(Ext.Container, {
+	/**
+	 * Editor toolbar constructor
+	 */
+	var Toolbar = function (config) {
+		Util.apply(this, config);
+	};
+
+	Toolbar.prototype = {
 
 		/**
-		 * Constructor
+		 * Render the toolbar (called by framework rendering)
+		 *
+		 * @param object container: the container into which to insert the toolbar (that is the framework)
+		 * @return void
 		 */
-		initComponent: function () {
-			Toolbar.superclass.initComponent.call(this);
-			// Add the toolbar items
+		render: function (container) {
+			this.el = document.createElement('div');
+			if (this.id) {
+				this.el.setAttribute('id', this.id);
+			}
+			if (this.cls) {
+				this.el.setAttribute('class', this.cls);
+			}
+			this.el = container.appendChild(this.el);
 			this.addItems();
-			this.addListener({
-				afterrender: {
-					fn: this.initEventListeners,
-					single: true
-				}
-			});
+			this.rendered = true;
 		},
 
 		/**
-		 * Initialize listeners
+		 * Get the element to which the toolbar is rendered
 		 */
-		initEventListeners: function () {
-			// Monitor editor becoming ready
-			var self = this;
-			Event.one(this.getEditor(), 'HtmlAreaEventEditorReady', function (event) { Event.stopEvent(event); self.onEditorReady(); return false; });
+		getEl: function () {
+			return this.el;
 		},
 
 		/**
@@ -60,6 +71,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		},
 
 		/**
+		 * The toolbar items
+		 */
+		items: {},
+
+		/**
 		 * Create the toolbar items based on editor toolbar configuration
 		 */
 		addItems: function () {
@@ -72,10 +88,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 				row = editor.config.toolbar[i];
 				if (!firstOnRow) {
 					// If a visible item was added to the previous line
-					this.add({
-						xtype: 'tbspacer',
-						cls: 'x-form-clear-left'
-					});
+					this.addSpacer('space-clear-left');
 				}
 				firstOnRow = true;
 				// Add the groups
@@ -84,25 +97,20 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 					// To do: this.config.keepButtonGroupTogether ...
 					if (!firstOnRow && !firstInGroup) {
 						// If a visible item was added to the line
-						this.add({
-							xtype: 'tbseparator',
-							cls: 'separator'
-						});
+						this.addSeparator();
 					}
 					firstInGroup = true;
 					// Add each item
 					for (k = 0, p = group.length; k < p; k++) {
 						item = group[k];
 						if (item == 'space') {
-							this.add({
-								xtype: 'tbspacer',
-								cls: 'space'
-							});
+							this.addSpacer();
 						} else {
 							// Get the item's config as registered by some plugin
 							var itemConfig = editor.config.buttonsConfig[item];
 							if (typeof itemConfig === 'object' && itemConfig !== null) {
 								itemConfig.id = this.editorId + '-' + itemConfig.id;
+								itemConfig.toolbar = this;
 								switch (itemConfig.xtype) {
 									case 'htmlareabutton':
 										this.add(new Button(itemConfig));
@@ -123,17 +131,106 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 					}
 				}
 			}
-			this.add({
-				xtype: 'tbspacer',
-				cls: 'x-form-clear-left'
-			});
+			this.addSpacer('space-clear-left');
+		},
+
+		/**
+		 * Add an item to the toolbar
+		 *
+		 * @param object item: the item to be added (not yet rendered)
+		 * @return void
+		 */
+		add: function (item) {
+			if (item.xtype === 'htmlareacombo') {
+				var wrapDiv = document.createElement('div');
+				Dom.addClass(wrapDiv, 'x-form-item');
+				wrapDiv = this.el.appendChild(wrapDiv);
+				item.render(wrapDiv);
+				if (item.helpTitle) {
+					item.getEl().dom.setAttribute('title', item.helpTitle);
+				}
+				wrapDiv.appendChild(item.getEl().dom);
+				if (item.fieldLabel) {
+					var textDiv = document.createElement('div');
+					Dom.addClass(textDiv, 'x-form-item');
+					var text = document.createElement('label');
+					text.innerHTML = item.fieldLabel;
+					Dom.addClass(text, 'x-form-item-label');
+					text.setAttribute('for', item.getEl().dom.id);
+					textDiv.appendChild(text);
+					this.el.insertBefore(textDiv, wrapDiv);
+				}
+			} else {
+				item.render(this.el);
+				var itemDiv = this.el.appendChild(item.getEl().dom);
+				Dom.addClass(item.getEl().dom, 'x-form-item');
+			}
+			if (item.xtype === 'htmlareatoolbartext') {
+				Dom.addClass(item.getEl().dom, 'x-form-item-label');
+			}
+			if (item.itemId) {
+				this.items[item.itemId] = item;
+			}
+		},
+
+		/**
+		 * Add a spacer to the toolbar
+		 *
+		 * @param string cls: a class to be added on the spacer
+		 * @return void
+		 */
+		addSpacer: function (cls) {
+			var spacer = document.createElement('div');
+			Dom.addClass(spacer, 'space');
+			if (typeof cls === 'string') {
+				Dom.addClass(spacer, cls);
+			}
+			this.el.appendChild(spacer);
+		},
+
+		/**
+		 * Add a separator to the toolbar
+		 *
+		 * @param string cls: a class to be added on the separator
+		 * @return void
+		 */
+		addSeparator: function (cls) {
+			var spacer = document.createElement('div');
+			Dom.addClass(spacer, 'separator');
+			if (typeof cls === 'string') {
+				Dom.addClass(spacer, cls);
+			}
+			this.el.appendChild(spacer);
+		},
+
+		/**
+		 * Remove a button from the toolbar
+		 *
+		 * @param string buttonId: the itemId of the item to remove
+		 * @return void
+		 */
+		remove: function (buttonId) {
+			var item = this.items[buttonId];
+			if (item) {
+				if (item.getEl()) {
+					Dom.removeFromParent(item.getEl().dom);
+				}
+				this.items[item.itemId] = null;
+			}
 		},
 
 		/**
 		 * Retrieve a toolbar item by itemId
 		 */
 		getButton: function (buttonId) {
-			return this.find('itemId', buttonId)[0];
+			return this.items[buttonId];
+		},
+
+		/**
+		 * Get the current height of the toolbar
+		 */
+		getHeight: function () {
+			return Dom.getSize(this.el).height;
 		},
 
 		/**
@@ -176,24 +273,22 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		},
 
 		/**
-		 * When the editor becomes ready
-		 */
-		onEditorReady: function () {
-			var self = this;
-			// Monitor editor being unloaded
-			Event.one(this.framework.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
-			this.update();
-		},
-
-		/**
-		 * Cleanup
+		 * Cleanup (called by framework onBeforeDestroy)
 		 */
 		onBeforeDestroy: function () {
 			Event.off(this);
-			this.removeAll(true);
-			return true;
+			while (node = this.el.firstChild) {
+				this.el.removeChild(node);
+			}
+			for (var itemId in this.items) {
+				if (typeof this.items[itemId].destroy === 'function') {
+					try {
+						this.items[itemId].destroy();
+					} catch (e) {}
+				}
+			}
 		}
-	});
+	};
 
 	return Toolbar;
 

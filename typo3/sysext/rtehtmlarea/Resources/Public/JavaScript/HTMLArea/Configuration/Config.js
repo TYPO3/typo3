@@ -106,7 +106,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 				displayField: 'text',
 				labelSeparator: '',
 				hideLabel: true,
-				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+				tpl: '<tpl for="."><div title="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 			}
 		};
 	};
@@ -166,7 +166,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 				break;
 		}
 		config.cmd = config.id;
-		config.tooltip = { title: config.tooltip };
+		config.tooltipType = 'title';
 		this.buttonsConfig[config.id] = config;
 		return true;
 	};

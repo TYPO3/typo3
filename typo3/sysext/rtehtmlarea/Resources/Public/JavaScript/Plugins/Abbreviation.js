@@ -100,7 +100,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Abbreviation',
 			};
 				// Open the dialogue window
 			this.openDialogue(
-				this.getButton(buttonId).tooltip.title,
+				this.getButton(buttonId).tooltip,
 				buttonId,
 				this.getWindowDimensions({ width: 580}, buttonId),
 				this.buildTabItemsConfig(abbr),
@@ -540,7 +540,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Abbreviation',
 			this.close();
 			event.stopEvent();
 		},
-		/*
+
+		/**
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
@@ -550,9 +551,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Abbreviation',
 					button.setDisabled(((el.nodeName.toLowerCase() == 'acronym' && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == 'abbr' && this.pageTSConfiguration.noAbbr)));
 					button.setInactive(!(el.nodeName.toLowerCase() == 'acronym' && !this.pageTSConfiguration.noAcronym) && !(el.nodeName.toLowerCase() == 'abbr' && !this.pageTSConfiguration.noAbbr));
 				}
-				button.setTooltip({
-					title: this.localize((button.disabled || button.inactive) ? 'Insert abbreviation' : 'Edit abbreviation')
-				});
+				button.setTooltip(this.localize((button.disabled || button.inactive) ? 'Insert abbreviation' : 'Edit abbreviation'));
 				button.contextMenuTitle = '';
 				if (this.dialog) {
 					this.dialog.focus();

@@ -46,14 +46,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ToolbarText',
 		 * Get a reference to the editor
 		 */
 		getEditor: function() {
-			return RTEarea[this.ownerCt.editorId].editor;
+			return RTEarea[this.toolbar.editorId].editor;
 		},
 
 		/**
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function() {
-			return this.ownerCt;
+			return this.toolbar;
 		},
 
 		/**

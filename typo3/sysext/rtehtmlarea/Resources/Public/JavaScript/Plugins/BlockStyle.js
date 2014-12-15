@@ -81,7 +81,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockStyle',
 				options: [[this.localize('No style'), 'none']],
 				action: 'onChange',
 				storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
-				tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+				tpl: '<tpl for="."><div title="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 			};
 			if (this.pageTSconfiguration) {
 				if (this.pageTSconfiguration.width) {

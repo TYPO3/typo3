@@ -51,13 +51,10 @@
 	height: 26px;
 	margin: 0 2px;
 }
-.htmlarea .toolbar .x-form-item-label {
-	border-style: none;
-	background-color: transparent;
-	margin: 0;
-	min-width: 110px;
-	padding: 3px 3px 0px 3px;
-	vertical-align: middle;
+.htmlarea .toolbar .toolbar-text .x-form-item-label {
+	display: block;
+	font-weight: normal;
+	width: auto;
 }
 .htmlarea .toolbar .button {
 	background-color: transparent;
@@ -69,23 +66,6 @@
 	height: 23px;
 	margin: 0 0 3px 0;
 	padding: 0;
-}
-.htmlarea .toolbar .x-btn-mc {
-	background-color: transparent;
-	background-image: none;
-	border-style: none;
-	margin: 0;
-	padding: 0;
-}
-.htmlarea .toolbar .x-btn-tl,
-.htmlarea .toolbar .x-btn-tc,
-.htmlarea .toolbar .x-btn-tr,
-.htmlarea .toolbar .x-btn-ml,
-.htmlarea .toolbar .x-btn-mr,
-.htmlarea .toolbar .x-btn-bl,
-.htmlarea .toolbar .x-btn-bc,
-.htmlarea .toolbar .x-btn-br {
-	display: none;
 }
 .htmlarea .toolbar .x-btn-text {
 	background-image: url("../../Images/Sprites/actions.png");
@@ -112,6 +92,7 @@
 	height: 18px;
 	overflow: hidden;
 	margin: 3px 1px 5px 1px;
+	padding: 0 2px 4px 0;
 	text-align: center;
 	width: 24px;
 }
@@ -128,16 +109,23 @@
 	width: 1px;
 }
 .htmlarea .toolbar .space {
-	height:22px;
-	border-style:none;
-	margin:0;padding:0 1px;
-	float:left;
+	background-color: transparent;
+	border-style: none;
+	float: left;
+	height: 22px;
+	margin: 0;
+	padding: 0 1px;
+	width: 2px;
+}
+.htmlarea .toolbar .space-clear-left {
+	clear: left;
+	font-size: 0;
+	height: 0;
+	line-height: 0;
+	overflow: hidden;
 }
 .htmlarea .toolbar .select {
 	height: 17px;
-}
-.htmlarea .toolbar .x-form-item label.x-form-item-label {
-	padding-right: 0;
 }
 .htmlarea .toolbar .x-form-field-wrap .x-form-trigger {
 	right: 0;

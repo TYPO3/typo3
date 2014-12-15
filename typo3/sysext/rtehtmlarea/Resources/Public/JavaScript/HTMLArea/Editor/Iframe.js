@@ -65,11 +65,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 * Initialize event listeners and the document after the iframe has rendered
 		 */
 		initEventListeners: function () {
-			var self = this;
 			this.initStyleChangeEventListener();
-			// Monitor editor becoming ready
-			var self = this;
-			Event.one(this.getEditor(), 'HtmlAreaEventEditorReady', function (event) { Event.stopEvent(event); self.onEditorReady(); return false; });
 			if (UserAgent.isOpera) {
 				var self = this;
 				Event.one(iframe, 'load', function (event) { self.initializeIframe(event); return true; })
@@ -763,16 +759,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		},
 
 		/**
-		 * When the editor becomes ready
-		 */
-		onEditorReady: function () {
-			var self = this;
-			// Monitor editor being unloaded
-			Event.one(this.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
-		},
-
-		/**
-		 * Cleanup
+		 * Cleanup (called by framework)
 		 */
 		onBeforeDestroy: function () {
 			// Remove listeners on nested elements
@@ -789,10 +776,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			Event.off(this.document.documentElement);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			this.document = null;
-			this.getEditor().document = null;
 			this.el = null;
 			delete this.el;
-			return true;
 		}
 	};
 

@@ -192,13 +192,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 			maxHeight: this.config.maxHeight,
 			isNested: this.isNested,
 			nestedParentElements: this.nestedParentElements,
-			items: [new Toolbar ({
-				// The toolbar
-				id: this.editorId + '-toolbar',
-				itemId: 'toolbar',
-				layout: 'form',
-				cls: 'toolbar',
-				editorId: this.editorId
+			items: [new Toolbar({
+					// The toolbar
+					id: this.editorId + '-toolbar',
+					itemId: 'toolbar',
+					cls: 'toolbar',
+					editorId: this.editorId
 				}),
 				new Iframe({
 					// The iframe
@@ -572,6 +571,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 			this.unRegisterPlugin(pluginId);
 		}
 		Event.off(this.textarea);
+		this.htmlArea.onBeforeDestroy();
 		RTEarea[this.editorId].editor = null;
 		return true;
 	};

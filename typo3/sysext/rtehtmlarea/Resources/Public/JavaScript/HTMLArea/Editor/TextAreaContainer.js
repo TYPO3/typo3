@@ -46,16 +46,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer',
 			this.el = container.appendChild(this.el);
 			this.swallow(this.textArea);
 			this.rendered = true;
-			this.initEventListeners();
-		},
-
-		/**
-		 * Initialize listeners (after rendering)
-		 */
-		initEventListeners: function () {
-			var self = this;
-			// Monitor editor being unloaded
-			Event.one(this.framework.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
 		},
 
 		/**
@@ -101,12 +91,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer',
 		},
 
 		/**
-		 * Throw back the texarea
+		 * Throw back the texarea (called by framework)
 		 */
 		onBeforeDestroy: function() {
 			this.originalParent.appendChild(this.textArea);
 			Event.off(this);
-			return true;
 		}
 	};
 

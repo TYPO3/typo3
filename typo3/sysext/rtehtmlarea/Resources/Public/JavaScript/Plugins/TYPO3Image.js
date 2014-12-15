@@ -86,7 +86,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
 			}
 			this.openContainerWindow(
 				buttonId,
-				this.getButton(buttonId).tooltip.title,
+				this.getButton(buttonId).tooltip,
 				this.getWindowDimensions(
 					{
 						width:	650,
@@ -139,9 +139,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
 					image = null;
 				}
 				if (image) {
-					button.setTooltip({ title: this.localize('Modify image') });
+					button.setTooltip(this.localize('Modify image'));
 				} else {
-					button.setTooltip({ title: this.localize('Insert image') });
+					button.setTooltip(this.localize('Insert image'));
 				}
 			}
 		}

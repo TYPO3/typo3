@@ -62,8 +62,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			Event.on(this.getEditor(), 'HTMLAreaEventModeChange', function (event, mode) { Event.stopEvent(event); self.onModeChange(mode); return false; });
 			// Monitor word count change
 			Event.on(this.framework.iframe, 'HTMLAreaEventWordCountChange', function (event, delay) { Event.stopEvent(event); self.onWordCountChange(delay); return false; });
-			// Monitor editor being unloaded
-			Event.one(this.framework.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
 		},
 
 		/**
@@ -335,7 +333,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		},
 
 		/**
-		 * Cleanup
+		 * Cleanup (called by framework)
 		 */
 		onBeforeDestroy: function() {
 			this.clear();
@@ -346,7 +344,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			this.statusBarWordCount = null;
 			this.el = null;
 			delete this.el;
-			return true;
 		}
 	};
 

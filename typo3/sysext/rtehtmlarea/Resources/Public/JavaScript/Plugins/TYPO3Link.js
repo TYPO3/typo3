@@ -161,7 +161,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 				}
 				this.openContainerWindow(
 					buttonId,
-					this.getButton(buttonId).tooltip.title,
+					this.getButton(buttonId).tooltip,
 					this.getWindowDimensions(
 						{
 							width:	550,
@@ -463,9 +463,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 								node = el;
 							}
 							if (node != null && /^a$/i.test(node.nodeName)) {
-								button.setTooltip({ title: this.localize('Modify link') });
+								button.setTooltip(this.localize('Modify link'));
 							} else {
-								button.setTooltip({ title: this.localize('Insert link') });
+								button.setTooltip(this.localize('Insert link'));
 							}
 						}
 						break;

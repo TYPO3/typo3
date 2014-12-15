@@ -130,6 +130,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextIndicator',
 					style.fontStyle = 'normal';
 				}
 				button.getEl().setStyle(style);
+				button.getEl().dom.setAttribute('title', button.tooltip);
 			}
 		}
 	});

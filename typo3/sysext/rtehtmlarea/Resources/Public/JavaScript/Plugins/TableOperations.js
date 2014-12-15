@@ -368,7 +368,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 				if (this.properties.required.indexOf('captionOrSummary') != -1) {
 					if (!/\S/.test(params.f_caption) && !/\S/.test(params.f_summary)) {
 						TYPO3.Dialog.ErrorDialog({
-							title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
+							title: this.getButton(this.dialog.arguments.buttonId).tooltip,
 							msg: this.localize('captionOrSummary' + '-required')
 						});
 						var field = this.dialog.find('itemId', 'f_caption')[0];
@@ -385,7 +385,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 					for (var item in required) {
 						if (!params[item] && this.properties.required.indexOf(required[item]) != -1) {
 							TYPO3.Dialog.ErrorDialog({
-								title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
+								title: this.getButton(this.dialog.arguments.buttonId).tooltip,
 								msg: this.localize(required[item] + '-required')
 							});
 							var field = this.dialog.find('itemId', item)[0];
@@ -410,7 +410,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 				for (var item in required) {
 					if (!params[item]) {
 						TYPO3.Dialog.ErrorDialog({
-							title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
+							title: this.getButton(this.dialog.arguments.buttonId).tooltip,
 							msg: this.localize(required[item])
 						});
 						var field = this.dialog.find('itemId', item)[0];
@@ -1030,7 +1030,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 					var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
 					if (!cell) {
 						TYPO3.Dialog.InformationDialog({
-							title: this.getButton('TO-cell-merge').tooltip.title,
+							title: this.getButton('TO-cell-merge').tooltip,
 							msg: this.localize('Please click into some cell')
 						});
 						break;

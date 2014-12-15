@@ -125,7 +125,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 									itemId: itemId,
 									cls: 'button',
 									overCls: 'hover',
-									text: (button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.title),
+									text: (button.contextMenuTitle ? button.contextMenuTitle : button.tooltip),
 									iconCls: button.iconCls,
 									helpText: (button.helpText ? button.helpText : this.localize(itemId + '-tooltip')),
 									hidden: true
@@ -211,7 +211,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 				} else if (xtype === 'menuitem') {
 					var button = this.getButton(menuItem.getItemId());
 					if (button) {
-						var text = button.contextMenuTitle ? button.contextMenuTitle : button.tooltip.title;
+						var text = button.contextMenuTitle ? button.contextMenuTitle : button.tooltip;
 						if (menuItem.text != text) {
 							menuItem.setText(text);
 						}

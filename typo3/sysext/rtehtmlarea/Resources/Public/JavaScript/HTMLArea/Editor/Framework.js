@@ -19,11 +19,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Resizable',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar'],
-	function (Util, Resizable, Dom, Typo3, Event, Toolbar, Iframe, Statusbar) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
+	function (Util, Resizable, Dom, Typo3, Event) {
 
 	/**
 	 * Framework constructor
@@ -107,8 +104,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 				}
 				Event.on(form, 'reset', function (event) { return self.onReset(event); });
 			}
-			// Monitor editor being unloaded
-			Event.one(this.iframe.getIframeWindow(), 'unload', function (event) { return self.onBeforeDestroy(); });
 		},
 
 		/**
@@ -286,7 +281,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			if (this.getInnerHeight() <= 0) {
 				this.onWindowResize();
 			} else {
-				//this.iframe.setHeight(this.getInnerHeight());
 				Dom.setSize(this.iframe.getEl(), { height: this.getInnerHeight()});
 				Dom.setSize(this.textArea, { height: this.getInnerHeight()});
 			}
@@ -363,8 +357,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			if (this.resizer) {
 				Resizable.destroy(this.resizer);
 			}
+			for (var i = 0, n = this.items.length; i < n; i++) {
+				if (typeof this.items[i].onBeforeDestroy === 'function') {
+					this.items[i].onBeforeDestroy();
+				}
+			}
 			this.el = null;
-			return true;
 		}
 	};
 

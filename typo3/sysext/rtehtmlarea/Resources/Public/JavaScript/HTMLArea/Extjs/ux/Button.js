@@ -25,6 +25,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 		 * Component initialization
 		 */
 		initComponent: function () {
+			this.template = new Ext.Template(
+				'<div id="{4}" class="x-btn {3}">',
+				'<em class="{2} x-unselectable" unselectable="on"><button type="{0}"></button></em>',
+				'</div>');
+                    	this.template.compile();
 			Button.superclass.initComponent.call(this);
 			this.addListener({
 				afterrender: {
@@ -50,14 +55,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 		 * Get a reference to the editor
 		 */
 		getEditor: function() {
-			return RTEarea[this.ownerCt.editorId].editor;
+			return RTEarea[this.toolbar.editorId].editor;
 		},
 
 		/**
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function() {
-			return this.ownerCt;
+			return this.toolbar;
 		},
 
 		/**
@@ -145,6 +150,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 				}
 				this.plugins['onUpdateToolbar'](this, mode, selectionEmpty, ancestors, endPointsInSameBlock);
 			}
+		},
+
+		/**
+		 * Update the tooltip text
+		 */
+		setTooltip: function (text) {
+			this.tooltip = text;
+			this.getEl().dom.firstChild.firstChild.title = text;
 		}
 	});
 

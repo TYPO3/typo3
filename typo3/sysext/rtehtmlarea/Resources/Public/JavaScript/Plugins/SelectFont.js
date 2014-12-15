@@ -79,7 +79,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 						tooltip: this.localize(buttonId.toLowerCase()),
 						storeUrl: this.buttonsConfiguration[dropDown[2]].dataUrl,
 						action: 'onChange',
-						tpl: this.disablePCexamples ? '' : '<tpl for="."><div ext:qtip="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
+						tpl: this.disablePCexamples ? '' : '<tpl for="."><div title="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
 					};
 					if (this.buttonsConfiguration[dropDown[2]]) {
 						if (this.editorConfiguration.buttons[dropDown[2]].width) {

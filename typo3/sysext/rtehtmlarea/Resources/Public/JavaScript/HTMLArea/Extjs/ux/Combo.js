@@ -16,8 +16,9 @@
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (UserAgent, Event) {
+	function (UserAgent, Dom, Event) {
 
 	var Combo = Ext.extend(Ext.form.ComboBox, {
 
@@ -27,6 +28,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 		initComponent: function () {
 			this.superClass = Combo.superclass;
 			this.superClass.initComponent.call(this);
+			this.isFirstExpand = true;
 			this.addListener({
 				afterrender: {
 					fn: this.initEventListeners,
@@ -56,21 +58,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 			// Monitor toolbar updates in order to refresh the state of the combo
 			Event.on(this.getToolbar(), 'HTMLAreaEventToolbarUpdate', function (event, mode, selectionEmpty, ancestors, endPointsInSameBlock) { Event.stopEvent(event); self.onUpdateToolbar(mode, selectionEmpty, ancestors, endPointsInSameBlock); return false; });
 			// Monitor framework becoming ready
-			Event.one(this.getToolbar().ownerCt, 'HTMLAreaEventFrameworkReady', function (event) { Event.stopEvent(event); self.onFrameworkReady(); return false; });
+			Event.one(this.getToolbar().framework, 'HTMLAreaEventFrameworkReady', function (event) { Event.stopEvent(event); self.onFrameworkReady(); return false; });
 		},
 
 		/**
 		 * Get a reference to the editor
 		 */
 		getEditor: function() {
-			return RTEarea[this.ownerCt.editorId].editor;
+			return RTEarea[this.toolbar.editorId].editor;
 		},
 
 		/**
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function() {
-			return this.ownerCt;
+			return this.toolbar;
 		},
 
 		/**
@@ -107,11 +109,35 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 		 */
 		onTriggerClick: function () {
 			this.superClass.onTriggerClick.call(this);
+			// If opening upward of the field, the list is not positioned correctly on first expand
+			if (this.isFirstExpand) {
+				this.collapse();
+				this.expand();
+				this.isFirstExpand = false;
+			}
 			// In IE, avoid focus being stolen and selection being lost
 			if (UserAgent.isIE) {
 				this.triggered = true;
 				this.getEditor().focus();
 			}
+		},
+
+		/**
+		 * Handler invoked when the trigger element is enabled
+		 */
+		onEnable: function(){
+			this.superClass.onEnable.apply(this, arguments);
+			this.getEl().dom.setAttribute('disabled', '');
+			Dom.removeClass(this.getEl().dom, 'buttonDisabled');
+		},
+
+		/**
+		 * Handler invoked when the trigger element is disabled
+		 */
+		onDisable: function(){
+			this.superClass.onDisable.apply(this, arguments);
+			this.getEl().dom.setAttribute('disabled', 'true');
+			Dom.addClass(this.getEl().dom, 'buttonDisabled');
 		},
 
 		/**
@@ -188,9 +214,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 			// Special handling for combo stealing focus in IE
 			if (UserAgent.isIE) {
 				// Take a bookmark in case the editor looses focus by activation of this combo
-				Event.on(iframe.getEl().dom, 'mouseleave', function (event) { self.saveSelection(event); return true; });
+				Event.on(iframe.getEl(), 'mouseleave', function (event) { self.saveSelection(event); return true; });
 				// Restore the selection if combo was triggered
-				Event.on(iframe.getEl().dom, 'focus', function (event) { self.restoreSelection(event); return true; });
+				Event.on(iframe.getEl(), 'focus', function (event) { self.restoreSelection(event); return true; });
 			}
 		},
 
