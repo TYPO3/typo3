@@ -32,7 +32,7 @@ class RadioElement extends AbstractFormElement {
 		$config = $additionalInformation['fieldConf']['config'];
 		$item = '';
 		$disabled = '';
-		if ($this->formEngine->renderReadonly || $config['readOnly']) {
+		if ($this->isRenderReadonly() || $config['readOnly']) {
 			$disabled = ' disabled';
 		}
 

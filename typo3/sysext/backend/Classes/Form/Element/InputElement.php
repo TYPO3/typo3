@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -98,7 +98,7 @@ class InputElement extends AbstractFormElement {
 			$cssClasses[] = 'tceforms-textfield tceforms-colorfield';
 		}
 		$inputId = str_replace('.', '', $inputId);
-		if ($this->formEngine->renderReadonly || $config['readOnly']) {
+		if ($this->isRenderReadonly() || $config['readOnly']) {
 			$itemFormElValue = $additionalInformation['itemFormElValue'];
 			if (in_array('date', $evalList)) {
 				$config['format'] = 'date';

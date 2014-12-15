@@ -175,7 +175,7 @@ class TreeElement extends AbstractFormElement {
 				tcaExclusiveKeys: "' . ($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
 				ucId: "' . md5(($table . '|' . $field)) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel,
-				disabled: ' . ($PA['fieldConf']['config']['readOnly'] || $this->formEngine->renderReadonly ? 'true' : 'false') . '
+				disabled: ' . ($PA['fieldConf']['config']['readOnly'] || $this->isRenderReadonly() ? 'true' : 'false') . '
 			});' . LF .
 				($autoSizeMax
 					? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'

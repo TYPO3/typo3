@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Form\Element\InlineElement;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -233,7 +234,7 @@ class FormEngine {
 	 *
 	 * @var bool
 	 */
-	public $renderReadonly = FALSE;
+	protected $renderReadonly = FALSE;
 
 	/**
 	 * Form field width compensation: Factor of "size=12" to "style="width: 12*9.58px"
@@ -639,6 +640,19 @@ class FormEngine {
 	protected $suggest;
 
 	/**
+	 * protected properties which were public
+	 * use old property name as key and new property name as value
+	 * e.g. 'foo_BarName' => 'fooBarName'
+	 *
+	 * For each property a getter and setter method must be implemented!
+	 * @see __set() and __get()
+	 * @var array
+	 */
+	protected $protectedProperties = array(
+		'renderReadonly' => 'renderReadonly'
+	);
+
+	/**
 	 * Constructor function, setting internal variables, loading the styles used.
 	 *
 	 */
@@ -680,6 +694,59 @@ class FormEngine {
 			}
 		}
 		$this->templateFile = 'sysext/backend/Resources/Private/Templates/FormEngine.html';
+	}
+
+	/**
+	 * Fallback method to protect public properties
+	 * This is only a temporary solution and will be removed in TYPO3 CMS 8
+	 *
+	 * @param string $name name of the property
+	 * @param mixed $value value of the property
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+	 */
+	public function __set($name, $value) {
+		if (array_key_exists($name, $this->protectedProperties)) {
+			$method = 'set' . ucfirst($this->protectedProperties[$name]);
+			if (is_callable(array($this, $method))) {
+				GeneralUtility::deprecationLog('direct access to "FormEngine::$' . $name . '" is deprecated, use "FormEngine::' . $method . '()" instead.');
+				call_user_func_array(array($this, $method), array($value));
+			}
+		}
+	}
+
+	/**
+	 * Fallback method to protect public properties
+	 * This is only a temporary solution and will be removed in TYPO3 CMS 8
+	 *
+	 * @param string $name name of the property
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+	 */
+	public function __get($name) {
+		if (array_key_exists($name, $this->protectedProperties)) {
+			$method = 'get' . ucfirst($this->protectedProperties[$name]);
+			if (is_callable(array($this, $method))) {
+				GeneralUtility::deprecationLog('direct access to "FormEngine::$' . $name . '" is deprecated, use "FormEngine::' . $method . '()" instead.');
+				call_user_func(array($this, $method));
+			}
+		}
+	}
+
+	/**
+	 * Set render read only flag
+	 *
+	 * @param bool $value
+	 */
+	public function setRenderReadonly($value) {
+		$this->renderReadonly = (bool)$value;
+	}
+
+	/**
+	 * Get render readonly flag
+	 *
+	 * @return bool
+	 */
+	public function getRenderReadonly() {
+		return $this->renderReadonly;
 	}
 
 	/**
@@ -1285,8 +1352,11 @@ class FormEngine {
 			if (!isset($typeClassNameMapping[$type])) {
 				$type = 'unknown';
 			}
-			$item = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\' . $typeClassNameMapping[$type], $this)
-				->render($table, $field, $row, $PA);
+			$formElement = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\Element\\' . $typeClassNameMapping[$type], $this);
+			if ($formElement instanceof AbstractFormElement) {
+				$formElement->setRenderReadonly($this->getRenderReadonly());
+			}
+			$item = $formElement->render($table, $field, $row, $PA);
 		}
 		return $item;
 	}
@@ -1383,6 +1453,7 @@ class FormEngine {
 	public function getSingleField_typeText($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\TextElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1400,6 +1471,7 @@ class FormEngine {
 	public function getSingleField_typeCheck($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\CheckboxElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1417,6 +1489,7 @@ class FormEngine {
 	public function getSingleField_typeRadio($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\RadioElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1435,6 +1508,7 @@ class FormEngine {
 	public function getSingleField_typeSelect($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\SelectElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1452,6 +1526,7 @@ class FormEngine {
 	public function getSingleField_typeGroup($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\GroupElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1469,6 +1544,7 @@ class FormEngine {
 	public function getSingleField_typeNone($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\NoneElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1521,6 +1597,7 @@ class FormEngine {
 	public function getSingleField_typeFlex($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\FlexElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1591,6 +1668,7 @@ class FormEngine {
 	public function getSingleField_typeUnknown($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\UnknownElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -1607,6 +1685,7 @@ class FormEngine {
 	public function getSingleField_typeUser($table, $field, $row, &$PA) {
 		GeneralUtility::logDeprecatedFunction();
 		return $item = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\UserElement::class, $this)
+			->setRenderReadonly($this->getRenderReadonly())
 			->render($table, $field, $row, $PA);
 	}
 
@@ -2238,7 +2317,7 @@ class FormEngine {
 	public function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array()) {
 		$languageService = $this->getLanguageService();
 		$disabled = '';
-		if ($this->renderReadonly || $params['readOnly']) {
+		if ($this->getRenderReadonly() || $params['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// Sets a flag which means some JavaScript is included on the page to support this element.

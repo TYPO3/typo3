@@ -36,12 +36,35 @@ abstract class AbstractFormElement {
 	protected $formEngine;
 
 	/**
+	 * @var bool If TRUE, the element will not be editable
+	 */
+	protected $renderReadonly = FALSE;
+
+	/**
 	 * Constructor function, setting the FormEngine
 	 *
 	 * @param FormEngine $formEngine
 	 */
 	public function __construct(FormEngine $formEngine) {
 		$this->formEngine = $formEngine;
+	}
+
+	/**
+	 * @return bool TRUE if field is set to read only
+	 */
+	public function isRenderReadonly() {
+		return $this->renderReadonly;
+	}
+
+	/**
+	 * Set render read only state
+	 *
+	 * @param bool $renderReadonly
+	 * @return AbstractFormElement
+	 */
+	public function setRenderReadonly($renderReadonly) {
+		$this->renderReadonly = (bool)$renderReadonly;
+		return $this;
 	}
 
 	/**

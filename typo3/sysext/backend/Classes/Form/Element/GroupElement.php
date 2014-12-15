@@ -50,7 +50,7 @@ class GroupElement extends AbstractFormElement {
 		$disallowed = trim($config['disallowed']);
 		$item = '';
 		$disabled = '';
-		if ($this->formEngine->renderReadonly || $config['readOnly']) {
+		if ($this->isRenderReadonly() || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		$item .= '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
