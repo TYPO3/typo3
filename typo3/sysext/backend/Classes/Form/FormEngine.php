@@ -1135,7 +1135,7 @@ class FormEngine {
 							list($thePalIcon, $palJSfunc) = $this->wrapOpenPalette(
 								IconUtility::getSpriteIcon(
 									'actions-system-options-view',
-									array('title' => htmlspecialchars($this->getLanguageService()>sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
+									array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
 								),
 								$table,
 								$row,
