@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the TCEforms.
@@ -627,6 +628,7 @@ class InlineElement {
 	 * @return string The HTML code with the control-icons
 	 */
 	public function renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config = array(), $isVirtualRecord = FALSE) {
+		$languageService = $this->getLanguageService();
 		// Initialize:
 		$cells = array();
 		$isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
@@ -655,9 +657,9 @@ class InlineElement {
 		// Icon to visualize that a required field is nested in this inline level:
 		$cells['required'] = '<img name="' . $nameObjectFtId . '_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
 		if (isset($rec['__create'])) {
-			$cells['localize.isLocalizable'] = IconUtility::getSpriteIcon('actions-edit-localize-status-low', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE)));
+			$cells['localize.isLocalizable'] = IconUtility::getSpriteIcon('actions-edit-localize-status-low', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE)));
 		} elseif (isset($rec['__remove'])) {
-			$cells['localize.wasRemovedInOriginal'] = IconUtility::getSpriteIcon('actions-edit-localize-status-high', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE)));
+			$cells['localize.wasRemovedInOriginal'] = IconUtility::getSpriteIcon('actions-edit-localize-status-high', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE)));
 		}
 		// "Info": (All records)
 		if ($enabledControls['info'] && !$isNewItem) {
@@ -668,7 +670,7 @@ class InlineElement {
 				$uid = $rec['uid'];
 				$table = $foreign_table;
 			}
-			$cells['info'] = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '</a>';
+			$cells['info'] = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '</a>';
 		}
 		// If the table is NOT a read-only table, then show these links:
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord) {
@@ -681,7 +683,7 @@ class InlineElement {
 						$style = ' style="' . $config['inline']['inlineNewButtonStyle'] . '"';
 					}
 					$cells['new'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"' . $class . $style . '>' . IconUtility::getSpriteIcon(('actions-' . ($isPagesTable ? 'page' : 'document') . '-new'), array(
-						'title' => $GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE)
+						'title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE)
 					)) . '</a>';
 				}
 			}
@@ -690,16 +692,16 @@ class InlineElement {
 				$onClick = 'return inline.changeSorting(\'' . $nameObjectFtId . '\', \'1\')';
 				// Up
 				$style = $config['inline']['first'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
-				$cells['sort.up'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingUp" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-up', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveUp', TRUE))) . '</a>';
+				$cells['sort.up'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingUp" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-up', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveUp', TRUE))) . '</a>';
 				$onClick = 'return inline.changeSorting(\'' . $nameObjectFtId . '\', \'-1\')';
 				// Down
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
-				$cells['sort.down'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingDown" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE))) . '</a>';
+				$cells['sort.down'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingDown" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE))) . '</a>';
 			}
 			// "Delete" link:
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
 				$onClick = 'inline.deleteRecord(\'' . $nameObjectFtId . '\');';
-				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
+				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
 			}
 
 			// "Hide/Unhide" links:
@@ -708,24 +710,24 @@ class InlineElement {
 				$onClick = 'return inline.enableDisableRecord(\'' . $nameObjectFtId . '\')';
 				if ($rec[$hiddenField]) {
 					$cells['hide.unhide'] = '<a href="#" class="hiddenHandle" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-edit-unhide', array(
-						'title' => $GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE),
+						'title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE),
 						'id' => ($nameObjectFtId . '_disabled')
 					)) . '</a>';
 				} else {
 					$cells['hide.hide'] = '<a href="#" class="hiddenHandle" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-edit-hide', array(
-						'title' => $GLOBALS['LANG']->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE),
+						'title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE),
 						'id' => ($nameObjectFtId . '_disabled')
 					)) . '</a>';
 				}
 			}
 			// Drag&Drop Sorting: Sortable handler for script.aculo.us
 			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
-				$cells['dragdrop'] = IconUtility::getSpriteIcon('actions-move-move', array('data-id' => $rec['uid'], 'class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
+				$cells['dragdrop'] = IconUtility::getSpriteIcon('actions-move-move', array('data-id' => $rec['uid'], 'class' => 'sortableHandle', 'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
 			}
 		} elseif ($isVirtualRecord && $isParentExisting) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = 'inline.synchronizeLocalizeRecords(\'' . $nameObjectFt . '\', ' . $rec['uid'] . ');';
-				$cells['localize'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-document-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE))) . '</a>';
+				$cells['localize'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-document-localize', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE))) . '</a>';
 			}
 		}
 		// If the record is edit-locked	by another user, we will show a little warning sign:
@@ -763,7 +765,7 @@ class InlineElement {
 				$comboRecord = $this->getNewRecord($this->inlineFirstPid, $comboConfig['foreign_table']);
 				$isNewRecord = TRUE;
 			}
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination'), '', FlashMessage::WARNING);
+			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination'), '', FlashMessage::WARNING);
 			$out = $flashMessage->render();
 			// Get the TCEforms interpretation of the TCA of the child table
 			$out .= $this->renderMainFields($comboConfig['foreign_table'], $comboRecord);
@@ -852,9 +854,9 @@ class InlineElement {
 			// there is only one record item in the select-box, that is selected by default
 			// The selector-box creates a new relation on using a onChange event (see some line above)
 			if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
-				$createNewRelationText = $GLOBALS['LANG']->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
+				$createNewRelationText = $this->getLanguageService()->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
 			} else {
-				$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
+				$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 			}
 			$item .= ' <a href="#" class="t3-button" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
 			$item = '<div class="t3-form-field-group">' . $item . '</div>';
@@ -879,9 +881,9 @@ class InlineElement {
 		$mode = 'db';
 		$showUpload = FALSE;
 		if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
-			$createNewRelationText = $GLOBALS['LANG']->sL($config['appearance']['createNewRelationLinkTitle'], TRUE);
+			$createNewRelationText = $this->getLanguageService()->sL($config['appearance']['createNewRelationLinkTitle'], TRUE);
 		} else {
-			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
+			$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 		}
 		if (is_array($config['appearance'])) {
 			if (isset($config['appearance']['elementBrowserType'])) {
@@ -920,7 +922,7 @@ class InlineElement {
 					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
 					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
 					><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload">&nbsp;</span>';
-				$item .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
+				$item .= $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
 				$item .= '</a>';
 
 				$this->loadDragUploadJs();
@@ -955,11 +957,12 @@ class InlineElement {
 	 * @return string The HTML code of the new link, wrapped in a div
 	 */
 	protected function getLevelInteractionLink($type, $objectPrefix, $conf = array()) {
+		$languageService = $this->getLanguageService();
 		$nameObject = $this->inlineNames['object'];
 		$attributes = array();
 		switch ($type) {
 			case 'newRecord':
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew', TRUE);
+				$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew', TRUE);
 				$icon = 'actions-document-new';
 				$className = 'typo3-newRecordLink';
 				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
@@ -969,22 +972,22 @@ class InlineElement {
 				}
 				if (!empty($conf['appearance']['newRecordLinkAddTitle'])) {
 					$title = sprintf(
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew.link', TRUE),
-						$GLOBALS['LANG']->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE)
+						$languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew.link', TRUE),
+						$languageService->sL($GLOBALS['TCA'][$conf['foreign_table']]['ctrl']['title'], TRUE)
 					);
 				} elseif (isset($conf['appearance']['newRecordLinkTitle']) && $conf['appearance']['newRecordLinkTitle'] !== '') {
-					$title = $GLOBALS['LANG']->sL($conf['appearance']['newRecordLinkTitle'], TRUE);
+					$title = $languageService->sL($conf['appearance']['newRecordLinkTitle'], TRUE);
 				}
 				break;
 			case 'localize':
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
+				$title = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
 				$icon = 'actions-document-localize';
 				$className = 'typo3-localizationLink';
 				$attributes['class'] = 't3-button';
 				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'localize\')';
 				break;
 			case 'synchronize':
-				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:synchronizeWithOriginalLanguage', TRUE);
+				$title = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:synchronizeWithOriginalLanguage', TRUE);
 				$icon = 'actions-document-synchronize';
 				$className = 'typo3-synchronizationLink';
 				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
@@ -1095,7 +1098,7 @@ class InlineElement {
 	 * @return void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_alt_doc.xlf');
 		// Create a new anonymous object:
 		$GLOBALS['SOBE'] = new \stdClass();
 		$GLOBALS['SOBE']->MOD_MENU = array(
@@ -1663,7 +1666,7 @@ class InlineElement {
 					unset($selItems[$tk]);
 				} else {
 					if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
-						$selItems[$tk][0] = htmlspecialchars($this->fObj->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
+						$selItems[$tk][0] = htmlspecialchars($this->getLanguageService()->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
 					}
 					if (isset($PA['fieldTSConfig']['altIcons.'][$p[1]])) {
 						$selItems[$tk][2] = $PA['fieldTSConfig']['altIcons.'][$p[1]];
@@ -2554,7 +2557,7 @@ class InlineElement {
 	protected function getJavaScriptAndStyleSheetsOfPageRenderer() {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = clone $GLOBALS['SOBE']->doc->getPageRenderer();
-		$pageRenderer->setCharSet($GLOBALS['LANG']->charSet);
+		$pageRenderer->setCharSet($this->getLanguageService()->charSet);
 		$pageRenderer->setTemplateFile('EXT:backend/Resources/Private/Templates/helper_javascript_css.html');
 		$javaScriptAndStyleSheets = $pageRenderer->render();
 		return $javaScriptAndStyleSheets;
@@ -2599,5 +2602,12 @@ class InlineElement {
 		}
 
 		return $flexFormParts;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

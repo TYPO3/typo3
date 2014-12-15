@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
@@ -378,6 +379,7 @@ class DataPreprocessor {
 		$dataAcc = array();
 		// For list selectors (multi-value):
 		if ((int)$fieldConfig['config']['maxitems'] > 1 || $fieldConfig['config']['renderMode'] === 'tree') {
+			$languageService = $this->getLanguageService();
 			// Add regular elements:
 			if (!is_array($fieldConfig['config']['items'])) {
 				$fieldConfig['config']['items'] = array();
@@ -386,7 +388,7 @@ class DataPreprocessor {
 			foreach ($fieldConfig['config']['items'] as $pvpv) {
 				foreach ($elements as $eKey => $value) {
 					if ((string)$value === (string)$pvpv[1]) {
-						$dataAcc[$eKey] = rawurlencode($pvpv[1]) . '|' . rawurlencode($this->sL($pvpv[0]));
+						$dataAcc[$eKey] = rawurlencode($pvpv[1]) . '|' . rawurlencode($languageService->sL($pvpv[0]));
 					}
 				}
 			}
@@ -605,6 +607,7 @@ class DataPreprocessor {
 	 * @see renderRecord_selectProc()
 	 */
 	public function selectAddSpecial($dataAcc, $elements, $specialKey) {
+		$languageService = $this->getLanguageService();
 		// Special select types:
 		switch ((string)$specialKey) {
 			case 'tables':
@@ -612,7 +615,7 @@ class DataPreprocessor {
 				foreach ($tNames as $tableName) {
 					foreach ($elements as $eKey => $value) {
 						if ((string)$tableName === (string)$value) {
-							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($GLOBALS['TCA'][$value]['ctrl']['title']));
+							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($languageService->sL($GLOBALS['TCA'][$value]['ctrl']['title']));
 						}
 					}
 				}
@@ -623,7 +626,7 @@ class DataPreprocessor {
 					foreach ($theTypes as $theTypesArrays) {
 						foreach ($elements as $eKey => $value) {
 							if ((string)$theTypesArrays[1] === (string)$value) {
-								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($theTypesArrays[0]));
+								$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($languageService->sL($theTypesArrays[0]));
 							}
 						}
 					}
@@ -674,7 +677,7 @@ class DataPreprocessor {
 							foreach ($coValue['items'] as $itemKey => $itemCfg) {
 								foreach ($elements as $eKey => $value) {
 									if (($coKey . ':' . $itemKey) === (string)$value) {
-										$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($this->sL($itemCfg[0]));
+										$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($languageService->sL($itemCfg[0]));
 									}
 								}
 							}
@@ -696,10 +699,10 @@ class DataPreprocessor {
 						// Add label for main module:
 						$pp = explode('_', $value);
 						if (count($pp) > 1) {
-							$label .= $GLOBALS['LANG']->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
+							$label .= $languageService->moduleLabels['tabs'][($pp[0] . '_tab')] . '>';
 						}
 						// Add modules own label now:
-						$label .= $GLOBALS['LANG']->moduleLabels['tabs'][$value . '_tab'];
+						$label .= $languageService->moduleLabels['tabs'][$value . '_tab'];
 						if ((string)$theModName === (string)$value) {
 							$dataAcc[$eKey] = rawurlencode($value) . '|' . rawurlencode($label);
 						}
@@ -725,6 +728,7 @@ class DataPreprocessor {
 	 * @see renderRecord_selectProc()
 	 */
 	public function selectAddForeign($dataAcc, $elements, $fieldConfig, $field, $TSconfig, $row, $table) {
+		$languageService = $this->getLanguageService();
 		// Init:
 		$recordList = array();
 		// Foreign_table
@@ -755,7 +759,7 @@ class DataPreprocessor {
 		// After this we can traverse the loadDBgroup values and match values with the list of possible values in $recordList:
 		foreach ($dataIds as $theId) {
 			if (isset($recordList[$theId])) {
-				$lPrefix = $this->sL($fieldConfig['config'][($theId > 0 ? '' : 'neg_') . 'foreign_table_prefix']);
+				$lPrefix = $languageService->sL($fieldConfig['config'][($theId > 0 ? '' : 'neg_') . 'foreign_table_prefix']);
 				if ($fieldConfig['config']['MM'] || $fieldConfig['config']['foreign_field']) {
 					$dataAcc[] = rawurlencode($theId) . '|' . rawurlencode(GeneralUtility::fixed_lgd_cs(($lPrefix . strip_tags($recordList[$theId])), $GLOBALS['BE_USER']->uc['titleLen']));
 				} else {
@@ -895,12 +899,14 @@ class DataPreprocessor {
 	/**
 	 * Local wrapper function for LANG->sL (returning language labels)
 	 *
-	 * @param string Language label key
+	 * @param string $in Language label key
 	 * @return string Localized label value.
 	 * @access private
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function sL($in) {
-		return $GLOBALS['LANG']->sL($in);
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getLanguageService()->sL($in);
 	}
 
 	/**
@@ -919,4 +925,10 @@ class DataPreprocessor {
 		return $liveDefaultId;
 	}
 
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }

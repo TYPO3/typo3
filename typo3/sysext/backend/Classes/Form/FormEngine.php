@@ -784,7 +784,7 @@ class FormEngine {
 		if ($GLOBALS['TCA'][$table]) {
 			// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
-				$this->getLanguageService()->loadSingleTableDescription($table);
+				$languageService->loadSingleTableDescription($table);
 			}
 			// Get the current "type" value for the record.
 			$typeNum = $this->getRTypeNum($table, $row);
@@ -847,13 +847,13 @@ class FormEngine {
 										// Remember on which sheet we're currently working:
 										$this->pushToDynNestedStack('tab', $tabIdentStringMD5 . '-' . ($out_sheet + 1));
 										$out_array[$out_sheet] = array();
-										$out_array_meta[$out_sheet]['title'] = $this->sL($fieldLabel);
+										$out_array_meta[$out_sheet]['title'] = $languageService->sL($fieldLabel);
 										// Register newline for Tab
 										$out_array_meta[$out_sheet]['newline'] = $additionalPalette == 'newline';
 									}
 								} else {
 									// Setting alternative title for "General" tab if "--div--" is the very first element.
-									$out_array_meta[$out_sheet]['title'] = $this->sL($fieldLabel);
+									$out_array_meta[$out_sheet]['title'] = $languageService->sL($fieldLabel);
 									// Only add the first tab to the dynNestedStack if there are more tabs:
 									if ($tabIdentString && strpos($itemList, '--div--', strlen($fieldInfo))) {
 										$this->pushToDynNestedStack('tab', $tabIdentStringMD5 . '-1');
@@ -863,9 +863,9 @@ class FormEngine {
 								if ($additionalPalette && !isset($this->palettesRendered[$this->renderDepth][$table][$additionalPalette])) {
 									// Render a 'header' if not collapsed
 									if ($GLOBALS['TCA'][$table]['palettes'][$additionalPalette]['canNotCollapse'] && $fieldLabel) {
-										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $additionalPalette, $this->sL($fieldLabel));
+										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $additionalPalette, $languageService->sL($fieldLabel));
 									} else {
-										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $additionalPalette, '', '', $this->sL($fieldLabel));
+										$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $additionalPalette, '', '', $languageService->sL($fieldLabel));
 									}
 									$this->palettesRendered[$this->renderDepth][$table][$additionalPalette] = 1;
 								}
@@ -1125,6 +1125,7 @@ class FormEngine {
 				if (in_array($field, $this->hiddenFieldListArr)) {
 					$this->hiddenFieldAccum[] = '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />';
 				} else {
+					$languageService = $this->getLanguageService();
 					// Render as a normal field:
 					// If the field is NOT a palette field, then we might create an icon which links to a palette for the field, if one exists.
 					$palJSfunc = '';
@@ -1135,7 +1136,7 @@ class FormEngine {
 							list($thePalIcon, $palJSfunc) = $this->wrapOpenPalette(
 								IconUtility::getSpriteIcon(
 									'actions-system-options-view',
-									array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
+									array('title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
 								),
 								$table,
 								$row,
@@ -1148,8 +1149,8 @@ class FormEngine {
 					$PA['onFocus'] = $palJSfunc && !$this->getBackendUserAuthentication()->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
 					$PA['label'] = $PA['altName'] ?: $PA['fieldConf']['label'];
 					$PA['label'] = $PA['fieldTSConfig']['label'] ?: $PA['label'];
-					$PA['label'] = $PA['fieldTSConfig']['label.'][$this->getLanguageService()->lang] ?: $PA['label'];
-					$PA['label'] = $this->sL($PA['label']);
+					$PA['label'] = $PA['fieldTSConfig']['label.'][$languageService->lang] ?: $PA['label'];
+					$PA['label'] = $languageService->sL($PA['label']);
 					// JavaScript code for event handlers:
 					$PA['fieldChangeFunc'] = array();
 					$PA['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged(\'' . $table . '\',\'' . $row['uid'] . '\',\'' . $field . '\',\'' . $PA['itemFormElName'] . '\');';
@@ -1195,7 +1196,7 @@ class FormEngine {
 							'<input type="hidden" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="0" />' .
 							'<input type="checkbox" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />' .
 							'<label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' .
-							sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'),
+							sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'),
 							BackendUtility::getRecordTitlePrep($placeholder, 20)) . '</label>' .
 						'</span>'
 						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render(
@@ -1575,7 +1576,7 @@ class FormEngine {
 			$tCells[] = '<td width="' . $pct . '%" style="'
 				. ($sKey == $sheetKey ? 'background-color: #9999cc; font-weight: bold;' : 'background-color: #aaaaaa;')
 				. ' cursor: hand;" onclick="' . htmlspecialchars($onClick) . '" align="center">'
-				. ($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey)
+				. ($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->getLanguageService()->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey)
 				. '</td>';
 		}
 		return '<table border="0" cellpadding="0" cellspacing="2" class="typo3-TCEforms-flexForm-sheetMenu"><tr>' . implode('', $tCells) . '</tr></table>';
@@ -2180,7 +2181,7 @@ class FormEngine {
 						BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1)
 					);
 					$item .= '<div class="t3-form-original-language-diff">
-						<div class="t3-form-original-language-diffheader">' . htmlspecialchars($this->getLanguageService()>sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig')) . '</div>
+						<div class="t3-form-original-language-diffheader">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig')) . '</div>
 						<div class="t3-form-original-language-diffcontent">' . $diffres . '</div>
 					</div>';
 				}
@@ -2575,7 +2576,7 @@ class FormEngine {
 					|| is_array($parametersOfWizards) && in_array($wid, $parametersOfWizards)) && ($RTE || !$wConf['RTEonly'])
 				) {
 					// Title / icon:
-					$iTitle = htmlspecialchars($this->sL($wConf['title']));
+					$iTitle = htmlspecialchars($this->getLanguageService()->sL($wConf['title']));
 					if ($wConf['icon']) {
 						$icon = $this->getIconHtml($wConf['icon'], $iTitle, $iTitle);
 					} else {
@@ -3122,10 +3123,11 @@ class FormEngine {
 	 * @return array An array of arrays with three elements; label, value, icon
 	 */
 	public function initItemArray($fieldValue) {
+		$languageService = $this->getLanguageService();
 		$items = array();
 		if (is_array($fieldValue['config']['items'])) {
 			foreach ($fieldValue['config']['items'] as $itemValue) {
-				$items[] = array($this->sL($itemValue[0]), $itemValue[1], $itemValue[2]);
+				$items[] = array($languageService->sL($itemValue[0]), $itemValue[1], $itemValue[2]);
 			}
 		}
 		return $items;
@@ -3142,6 +3144,7 @@ class FormEngine {
 	 * @return array The updated $item array
 	 */
 	public function addItems($items, $iArray) {
+		$languageService = $this->getLanguageService();
 		if (is_array($iArray)) {
 			foreach ($iArray as $value => $label) {
 				// if the label is an array (that means it is a subelement
@@ -3155,7 +3158,7 @@ class FormEngine {
 				} else {
 					$icon = '';
 				}
-				$items[] = array($this->sL($label), $value, $icon);
+				$items[] = array($languageService->sL($label), $value, $icon);
 			}
 		}
 		return $items;
@@ -3173,6 +3176,7 @@ class FormEngine {
 	 * @return array The modified $items array
 	 */
 	public function procItems($items, $iArray, $config, $table, $row, $field) {
+		$languageService = $this->getLanguageService();
 		$params = array();
 		$params['items'] = &$items;
 		$params['config'] = $config;
@@ -3187,10 +3191,10 @@ class FormEngine {
 		} catch (\Exception $exception) {
 			$fieldLabel = $field;
 			if (isset($GLOBALS['TCA'][$table]['columns'][$field]['label'])) {
-				$fieldLabel = $this->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+				$fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
 			}
 			$message = sprintf(
-				$this->sL('LLL:EXT:lang/locallang_core.xlf:error.items_proc_func_error'),
+				$languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.items_proc_func_error'),
 				$fieldLabel,
 				$exception->getMessage()
 			);
@@ -3255,7 +3259,7 @@ class FormEngine {
 		}
 		// If 'special' is configured:
 		if ($fieldValue['config']['special']) {
-			$lang = $this->getLanguageService();
+			$languageService = $this->getLanguageService();
 			switch ($fieldValue['config']['special']) {
 				case 'tables':
 					$temp_tc = array_keys($GLOBALS['TCA']);
@@ -3265,14 +3269,14 @@ class FormEngine {
 							$icon = IconUtility::mapRecordTypeToSpriteIconName($theTableNames, array());
 							// Add help text
 							$helpText = array();
-							$lang->loadSingleTableDescription($theTableNames);
+							$languageService->loadSingleTableDescription($theTableNames);
 							$helpTextArray = $GLOBALS['TCA_DESCR'][$theTableNames]['columns'][''];
 							if (!empty($helpTextArray['description'])) {
 								$helpText['description'] = $helpTextArray['description'];
 							}
 							// Item configuration:
 							$items[] = array(
-								$this->sL($GLOBALS['TCA'][$theTableNames]['ctrl']['title']),
+								$languageService->sL($GLOBALS['TCA'][$theTableNames]['ctrl']['title']),
 								$theTableNames,
 								$icon,
 								$helpText
@@ -3290,7 +3294,7 @@ class FormEngine {
 						}
 						// Item configuration:
 						$items[] = array(
-							$this->sL($theTypeArrays[0]),
+							$languageService->sL($theTypeArrays[0]),
 							$theTypeArrays[1],
 							$icon
 						);
@@ -3307,21 +3311,21 @@ class FormEngine {
 						if (!array_key_exists($theTable, $items)) {
 							$icon = IconUtility::mapRecordTypeToSpriteIconName($theTable, array());
 							$items[$theTable] = array(
-								$this->sL($GLOBALS['TCA'][$theTable]['ctrl']['title']),
+								$languageService->sL($GLOBALS['TCA'][$theTable]['ctrl']['title']),
 								'--div--',
 								$icon
 							);
 						}
 						// Add help text
 						$helpText = array();
-						$lang->loadSingleTableDescription($theTable);
+						$languageService->loadSingleTableDescription($theTable);
 						$helpTextArray = $GLOBALS['TCA_DESCR'][$theTable]['columns'][$theFullField];
 						if (!empty($helpTextArray['description'])) {
 							$helpText['description'] = $helpTextArray['description'];
 						}
 						// Item configuration:
 						$items[] = array(
-							rtrim($lang->sl($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') . ' (' . $theField . ')',
+							rtrim($languageService->sL($GLOBALS['TCA'][$theTable]['columns'][$theField]['label']), ':') . ' (' . $theField . ')',
 							$theTypeArrays[1],
 							'empty-empty',
 							$helpText
@@ -3366,7 +3370,7 @@ class FormEngine {
 							if (is_array($coValue['items'])) {
 								// Add header:
 								$items[] = array(
-									$lang->sl($coValue['header']),
+									$languageService->sL($coValue['header']),
 									'--div--'
 								);
 								// Traverse items:
@@ -3380,11 +3384,11 @@ class FormEngine {
 									// Add help text
 									$helpText = array();
 									if (!empty($itemCfg[2])) {
-										$helpText['description'] = $lang->sl($itemCfg[2]);
+										$helpText['description'] = $languageService->sL($itemCfg[2]);
 									}
 									// Add item to be selected:
 									$items[] = array(
-										$lang->sl($itemCfg[0]),
+										$languageService->sL($itemCfg[0]),
 										$coKey . ':' . preg_replace('/[:|,]/', '', $itemKey),
 										$icon,
 										$helpText
@@ -3403,14 +3407,14 @@ class FormEngine {
 					if (is_array($modList)) {
 						foreach ($modList as $theMod) {
 							// Icon:
-							$icon = $lang->moduleLabels['tabs_images'][$theMod . '_tab'];
+							$icon = $languageService->moduleLabels['tabs_images'][$theMod . '_tab'];
 							if ($icon) {
 								$icon = '../' . PathUtility::stripPathSitePrefix($icon);
 							}
 							// Add help text
 							$helpText = array(
-								'title' => $lang->moduleLabels['labels'][$theMod . '_tablabel'],
-								'description' => $lang->moduleLabels['labels'][$theMod . '_tabdescr']
+								'title' => $languageService->moduleLabels['labels'][$theMod . '_tablabel'],
+								'description' => $languageService->moduleLabels['labels'][$theMod . '_tabdescr']
 							);
 							// Item configuration:
 							$items[] = array(
@@ -3460,6 +3464,7 @@ class FormEngine {
 	 * @see addSelectOptionsToItemArray(), BackendUtility::exec_foreign_table_where_query()
 	 */
 	public function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = FALSE) {
+		$languageService = $this->getLanguageService();
 		// Init:
 		$pF = $pFFlag ? 'neg_' : '';
 		$f_table = $fieldValue['config'][$pF . 'foreign_table'];
@@ -3471,8 +3476,8 @@ class FormEngine {
 		if ($db->sql_error()) {
 			$msg = htmlspecialchars($db->sql_error());
 			$msg .= '<br />' . LF;
-			$msg .= $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
-			$msgTitle = $this->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
+			$msg .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch');
+			$msgTitle = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.database_schema_mismatch_title');
 			/** @var $flashMessage FlashMessage */
 			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $msg, $msgTitle, FlashMessage::ERROR, TRUE);
 			/** @var $flashMessageService FlashMessageService */
@@ -3483,7 +3488,7 @@ class FormEngine {
 			return array();
 		}
 		// Get label prefix.
-		$lPrefix = $this->sL($fieldValue['config'][$pF . 'foreign_table_prefix']);
+		$lPrefix = $languageService->sL($fieldValue['config'][$pF . 'foreign_table_prefix']);
 		// Get icon field + path if any:
 		$iField = $GLOBALS['TCA'][$f_table]['ctrl']['selicon_field'];
 		$iPath = trim($GLOBALS['TCA'][$f_table]['ctrl']['selicon_field_path']);
@@ -3604,23 +3609,23 @@ class FormEngine {
 	 */
 	public function replaceTableWrap($arr, $rec, $table) {
 		// Make "new"-label
-		$lang = $this->getLanguageService();
+		$languageService = $this->getLanguageService();
 		if (strstr($rec['uid'], 'NEW')) {
-			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . '</span>';
+			$newLabel = ' <span class="typo3-TCEforms-newToken">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . '</span>';
 			// BackendUtility::fixVersioningPid Should not be used here because NEW records are not offline workspace versions...
 			$truePid = BackendUtility::getTSconfig_pidValue($table, $rec['uid'], $rec['pid']);
 			$prec = BackendUtility::getRecordWSOL('pages', $truePid, 'title');
 			$pageTitle = BackendUtility::getRecordTitle('pages', $prec, TRUE, FALSE);
 			$rLabel = '<em>[PID: ' . $truePid . '] ' . $pageTitle . '</em>';
 			// Fetch translated title of the table
-			$tableTitle = $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+			$tableTitle = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
 			if ($table === 'pages') {
-				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', TRUE);
+				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewPage', TRUE);
 				$pageTitle = sprintf($label, $tableTitle);
 			} else {
-				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', TRUE);
+				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecord', TRUE);
 				if ($rec['pid'] == 0) {
-					$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', TRUE);
+					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.createNewRecordRootLevel', TRUE);
 				}
 				$pageTitle = sprintf($label, $tableTitle, $pageTitle);
 			}
@@ -3629,19 +3634,19 @@ class FormEngine {
 			$rLabel = BackendUtility::getRecordTitle($table, $rec, TRUE, FALSE);
 			$prec = BackendUtility::getRecordWSOL('pages', $rec['pid'], 'uid,title');
 			// Fetch translated title of the table
-			$tableTitle = $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+			$tableTitle = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
 			if ($table === 'pages') {
-				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
+				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
 				// Just take the record title and prepend an edit label.
 				$pageTitle = sprintf($label, $tableTitle, $rLabel);
 			} else {
-				$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
+				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
 				$pageTitle = BackendUtility::getRecordTitle('pages', $prec, TRUE, FALSE);
 				if ($rLabel === BackendUtility::getNoRecordTitle(TRUE)) {
-					$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
+					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
 				}
 				if ($rec['pid'] == 0) {
-					$label = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
+					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
 				}
 				if ($rLabel !== BackendUtility::getNoRecordTitle(TRUE)) {
 					// Just take the record title and prepend an edit label.
@@ -3666,7 +3671,7 @@ class FormEngine {
 					$pageTitle,
 					$newLabel,
 					$rLabel,
-					htmlspecialchars($this->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
+					htmlspecialchars($languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
 					IconUtility::getSpriteIconForRecord($table, $rec, array('title' => $this->getRecordPath($table, $rec)))
 				),
 				$arr[$k]
@@ -4214,8 +4219,10 @@ class FormEngine {
 	 *
 	 * @param string $str Language label reference, eg. 'LLL:EXT:lang/locallang_core.xlf:labels.blablabla'
 	 * @return string The value of the label, fetched for the current backend language.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function sL($str) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->getLanguageService()->sL($str);
 	}
 
@@ -4379,7 +4386,7 @@ class FormEngine {
 	protected function getMergeBehaviourIcon($l10nMode) {
 		$icon = '';
 		if ($l10nMode === 'mergeIfNotBlank') {
-			$icon = IconUtility::getSpriteIcon('actions-edit-merge-localization', array('title' => $this->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')));
+			$icon = IconUtility::getSpriteIcon('actions-edit-merge-localization', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank')));
 		}
 		return $icon;
 	}
@@ -4560,7 +4567,7 @@ class FormEngine {
 		$value = $this->getPlaceholderValue($table, $field, $config, $row);
 
 		// Cleanup the string and support 'LLL:'
-		$value = htmlspecialchars(trim($this->sL($value)));
+		$value = htmlspecialchars(trim($this->getLanguageService()->sL($value)));
 		return empty($value) ? '' : ' placeholder="' . $value . '" ';
 	}
 

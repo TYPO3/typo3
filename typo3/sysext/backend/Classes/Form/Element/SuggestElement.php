@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * TCEforms wizard for rendering an AJAX selector for records
@@ -62,6 +63,7 @@ class SuggestElement {
 	 * @return string The HTML code for the selector
 	 */
 	public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config) {
+		$languageService = $this->getLanguageService();
 		$this->suggestCount++;
 		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
 		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
@@ -74,9 +76,9 @@ class SuggestElement {
 		}
 		$selector = '
 		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
-			<input type="search" id="' . $fieldname . 'Suggest" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '" class="' . $this->cssClass . '-search" />
+			<input type="search" id="' . $fieldname . 'Suggest" value="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '" class="' . $this->cssClass . '-search" />
 			<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . $fieldname . 'SuggestIndicator">
-				<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:alttext.suggestSearching') . '" />
+				<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:alttext.suggestSearching') . '" />
 			</div>
 			<div class="' . $this->cssClass . '-choices" style="display: none;" id="' . $fieldname . 'SuggestChoices"></div>
 
@@ -110,7 +112,7 @@ class SuggestElement {
 		$jsObj = str_replace(' ', '', ucwords(str_replace(array('-', '.'), ' ', GeneralUtility::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
 			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ', "' . $type . '", ' . GeneralUtility::quoteJSvalue($jsRow) . ');' . LF
-				. $jsObj . '.defaultValue = "' . GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF;
+				. $jsObj . '.defaultValue = "' . GeneralUtility::slashJS($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF;
 		return $selector;
 	}
 
@@ -306,10 +308,16 @@ class SuggestElement {
 		if (count($listItems) > 0) {
 			$list = implode('', $listItems);
 		} else {
-			$list = '<li class="suggest-noresults"><i>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRecordFound') . '</i></li>';
+			$list = '<li class="suggest-noresults"><i>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRecordFound') . '</i></li>';
 		}
 		$list = '<ul class="' . $this->cssClass . '-resultlist">' . $list . '</ul>';
 		$ajaxObj->addContent(0, $list);
 	}
 
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }

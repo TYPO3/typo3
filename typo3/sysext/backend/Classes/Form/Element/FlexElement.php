@@ -44,13 +44,14 @@ class FlexElement extends AbstractFormElement {
 		}
 		// Get data structure:
 		if (is_array($dataStructArray)) {
+			$languageService = $this->getLanguageService();
 			// Get data:
 			$xmlData = $additionalInformation['itemFormElValue'];
 			$xmlHeaderAttributes = GeneralUtility::xmlGetHeaderAttribs($xmlData);
 			$storeInCharset = strtolower($xmlHeaderAttributes['encoding']);
 			if ($storeInCharset) {
-				$currentCharset = $this->getLanguageService()->charSet;
-				$xmlData = $this->getLanguageService()->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
+				$currentCharset = $languageService->charSet;
+				$xmlData = $languageService->csConvObj->conv($xmlData, $storeInCharset, $currentCharset, 1);
 			}
 			$editData = GeneralUtility::xml2array($xmlData);
 			// Must be XML parsing error...
@@ -184,9 +185,9 @@ class FlexElement extends AbstractFormElement {
 					}
 					// Add to tab:
 					$tabParts[] = array(
-						'label' => $dataStruct['ROOT']['TCEforms']['sheetTitle'] ? $this->formEngine->sL($dataStruct['ROOT']['TCEforms']['sheetTitle']) : $sheet,
-						'description' => $dataStruct['ROOT']['TCEforms']['sheetDescription'] ? $this->formEngine->sL($dataStruct['ROOT']['TCEforms']['sheetDescription']) : '',
-						'linkTitle' => $dataStruct['ROOT']['TCEforms']['sheetShortDescr'] ? $this->formEngine->sL($dataStruct['ROOT']['TCEforms']['sheetShortDescr']) : '',
+						'label' => $dataStruct['ROOT']['TCEforms']['sheetTitle'] ? $languageService->sL($dataStruct['ROOT']['TCEforms']['sheetTitle']) : $sheet,
+						'description' => $dataStruct['ROOT']['TCEforms']['sheetDescription'] ? $languageService->sL($dataStruct['ROOT']['TCEforms']['sheetDescription']) : '',
+						'linkTitle' => $dataStruct['ROOT']['TCEforms']['sheetShortDescr'] ? $languageService->sL($dataStruct['ROOT']['TCEforms']['sheetShortDescr']) : '',
 						'content' => $sheetContent
 					);
 				}
@@ -223,6 +224,7 @@ class FlexElement extends AbstractFormElement {
 		$mayRestructureFlexforms = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
 		// Data Structure array must be ... and array of course...
 		if (is_array($dataStruct)) {
+			$languageService = $this->getLanguageService();
 			foreach ($dataStruct as $key => $value) {
 				// Traversing fields in structure:
 				if (is_array($value)) {
@@ -236,7 +238,7 @@ class FlexElement extends AbstractFormElement {
 
 					// If there is a title, check for LLL label
 					if (strlen($theTitle) > 0) {
-						$theTitle = htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->formEngine->sL($theTitle),
+						$theTitle = htmlspecialchars(GeneralUtility::fixed_lgd_cs($languageService->sL($theTitle),
 							(int)$this->getBackendUserAuthentication()->uc['titleLen']));
 					}
 					// If it's a "section" or "container":
@@ -312,7 +314,7 @@ class FlexElement extends AbstractFormElement {
 								$this->formEngine->additionalJS_submit = $additionalJS_submit_saved;
 								$title = '';
 								if (isset($nCfg['title'])) {
-									$title = $this->formEngine->sL($nCfg['title']);
+									$title = $languageService->sL($nCfg['title']);
 								}
 								$newElementsLinks[] = '<a href="#" onclick="' . htmlspecialchars($onClickInsert) . '">'
 									. IconUtility::getSpriteIcon('actions-document-new')
@@ -323,7 +325,7 @@ class FlexElement extends AbstractFormElement {
 							// Adding the sections
 
 							// add the "toggle all" button for the sections
-							$toggleAll = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', TRUE);
+							$toggleAll = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.toggleall', TRUE);
 							$output .= '
 							<div class="t3-form-field-toggle-flexsection t3-form-flexsection-toggle">
 								<a href="#">'. IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '</a>
@@ -333,7 +335,7 @@ class FlexElement extends AbstractFormElement {
 							// add the "new" link
 							if ($mayRestructureFlexforms) {
 								$output .= '<div class="t3-form-field-add-flexsection"><strong>'
-										. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', TRUE)
+										. $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', TRUE)
 										. ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>';
 							}
 
@@ -425,7 +427,7 @@ class FlexElement extends AbstractFormElement {
 							if ($displayConditionResult) {
 								$fakePA = array();
 								$fakePA['fieldConf'] = array(
-									'label' => $this->formEngine->sL(trim($value['TCEforms']['label'])),
+									'label' => $languageService->sL(trim($value['TCEforms']['label'])),
 									'config' => $value['TCEforms']['config'],
 									'defaultExtras' => $value['TCEforms']['defaultExtras'],
 									'onChange' => $value['TCEforms']['onChange']

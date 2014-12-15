@@ -78,7 +78,7 @@ class SelectElement extends AbstractFormElement {
 
 		// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
-			? $this->formEngine->sL($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
+			? $this->getLanguageService()->sL($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
 			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 		// Prepare some values:
 		$maxitems = (int)$config['maxitems'];
@@ -169,7 +169,7 @@ class SelectElement extends AbstractFormElement {
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
 			} else {
 				if (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
-					$tvP[1] = rawurlencode($this->formEngine->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
+					$tvP[1] = rawurlencode($languageService->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
 				}
 				if (isset($PA['fieldTSConfig']['altIcons.'][$evalValue])) {
 					$tvP[2] = $PA['fieldTSConfig']['altIcons.'][$evalValue];
@@ -232,9 +232,9 @@ class SelectElement extends AbstractFormElement {
 			if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
 				$filterDropDownOptions = array();
 				foreach ($config['multiSelectFilterItems'] as $optionElement) {
-					$optionValue = $this->formEngine->sL(isset($optionElement[1]) && $optionElement[1] != '' ? $optionElement[1]
+					$optionValue = $languageService->sL(isset($optionElement[1]) && $optionElement[1] != '' ? $optionElement[1]
 						: $optionElement[0]);
-					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->formEngine->sL($optionElement[0])) . '">'
+					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($languageService->sL($optionElement[0])) . '">'
 						. htmlspecialchars($optionValue) . '</option>';
 				}
 				$filterSelectbox = '<select class="t3-form-multiselect-filter-dropdown form-control">
@@ -337,7 +337,7 @@ class SelectElement extends AbstractFormElement {
 			if (in_array($selectItem[1], $removeItems) || $languageDeny || $authModeDeny) {
 				unset($selectItems[$selectItemIndex]);
 			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$selectItem[1]])) {
-				$selectItems[$selectItemIndex][0] = htmlspecialchars($this->formEngine->sL($PA['fieldTSConfig']['altLabels.'][$selectItem[1]]));
+				$selectItems[$selectItemIndex][0] = htmlspecialchars($this->getLanguageService()->sL($PA['fieldTSConfig']['altLabels.'][$selectItem[1]]));
 			}
 
 			// Removing doktypes with no access:
@@ -909,8 +909,4 @@ class SelectElement extends AbstractFormElement {
 	public function isForceAlternativeFieldValueUse() {
 		return $this->forceAlternativeFieldValueUse;
 	}
-
-
-
-
 }

@@ -69,7 +69,7 @@ class TreeElement extends AbstractFormElement {
 				if ($additionalItem[1] !== '--div--') {
 					$item = new \stdClass();
 					$item->uid = $additionalItem[1];
-					$item->text = $GLOBALS['LANG']->sL($additionalItem[0]);
+					$item->text = $this->getLanguageService()->sL($additionalItem[0]);
 					$item->selectable = TRUE;
 					$item->leaf = TRUE;
 					$item->checked = in_array($additionalItem[1], $selectedNodes);

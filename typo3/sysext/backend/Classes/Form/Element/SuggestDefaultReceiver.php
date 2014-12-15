@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Default implementation of a handler class for an ajax record selector.
@@ -167,7 +168,14 @@ class SuggestDefaultReceiver {
 				$uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
 				$path = $this->getRecordPath($row, $uid);
 				if (strlen($path) > 30) {
-					$croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' . htmlspecialchars(($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) . '...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20))) . '</abbr>';
+					$languageService = $this->getLanguageService();
+					$croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
+						htmlspecialchars(
+								$languageService->csConvObj->crop($languageService->charSet, $path, 10)
+								. '...'
+								. $languageService->csConvObj->crop($languageService->charSet, $path, -20)
+						) .
+						'</abbr>';
 				} else {
 					$croppedPath = htmlspecialchars($path);
 				}
@@ -389,4 +397,10 @@ class SuggestDefaultReceiver {
 		return $entry;
 	}
 
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }

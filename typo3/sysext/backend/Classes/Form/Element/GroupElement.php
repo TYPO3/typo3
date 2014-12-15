@@ -225,8 +225,9 @@ class GroupElement extends AbstractFormElement {
 				// Creating string showing allowed types:
 				$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
 				$onlySingleTableAllowed = FALSE;
+				$languageService = $this->getLanguageService();
 				if (trim($tempFT[0]) === '*') {
-					$info .= '<span class="nobr">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables')) . '</span><br />';
+					$info .= '<span class="nobr">' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables')) . '</span><br />';
 				} elseif ($tempFT) {
 					$onlySingleTableAllowed = count($tempFT) == 1;
 					foreach ($tempFT as $theT) {
@@ -234,7 +235,7 @@ class GroupElement extends AbstractFormElement {
 						$info .= '<span class="nobr">
 									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'
 							. IconUtility::getSpriteIconForRecord($theT, array())
-							. htmlspecialchars($this->formEngine->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
+							. htmlspecialchars($languageService->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
 					}
 				}
 				$perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
