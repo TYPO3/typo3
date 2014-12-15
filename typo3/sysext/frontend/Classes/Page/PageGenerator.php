@@ -403,6 +403,9 @@ class PageGenerator {
 		$pageRenderer->setHtmlTag($htmlTag);
 		// Head tag:
 		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ?: '<head>';
+		if (isset($GLOBALS['TSFE']->pSetup['headTag.'])) {
+			$headTag = $GLOBALS['TSFE']->cObj->stdWrap($headTag, $GLOBALS['TSFE']->pSetup['headTag.']);
+		}
 		$pageRenderer->setHeadTag($headTag);
 		// Setting charset meta tag:
 		$pageRenderer->setCharSet($theCharset);
