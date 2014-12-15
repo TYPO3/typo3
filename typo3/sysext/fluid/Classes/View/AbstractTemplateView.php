@@ -253,10 +253,11 @@ abstract class AbstractTemplateView implements \TYPO3\CMS\Extbase\Mvc\View\ViewI
 	 * @return string
 	 */
 	public function renderPartial($partialName, $sectionName, array $variables) {
-		if (!isset($this->partialIdentifierCache[$partialName])) {
-			$this->partialIdentifierCache[$partialName] = $this->getPartialIdentifier($partialName);
+		$partialNameWithFormat = $partialName . '.' . $this->controllerContext->getRequest()->getFormat();
+		if (!isset($this->partialIdentifierCache[$partialNameWithFormat])) {
+			$this->partialIdentifierCache[$partialNameWithFormat] = $this->getPartialIdentifier($partialName);
 		}
-		$partialIdentifier = $this->partialIdentifierCache[$partialName];
+		$partialIdentifier = $this->partialIdentifierCache[$partialNameWithFormat];
 
 		if ($this->templateCompiler->has($partialIdentifier)) {
 			$parsedPartial = $this->templateCompiler->get($partialIdentifier);
