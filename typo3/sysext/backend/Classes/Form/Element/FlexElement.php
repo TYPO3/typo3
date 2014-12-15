@@ -498,7 +498,7 @@ class FlexElement extends AbstractFormElement {
 									. '<div class="t3-form-field-label t3-form-field-label-flex">' . $languageIcon
 									. BackendUtility::wrapInHelp($PA['_cshKey'], $key, $processedTitle) . '</div>
 									<div class="t3-form-field t3-form-field-flex">' . $theFormEl . $defInfo
-									. $this->formEngine->renderVDEFDiff($editData[$key], $vDEFkey) . '</div>
+									. $this->renderVDEFDiff($editData[$key], $vDEFkey) . '</div>
 								</div>';
 							}
 						}
@@ -510,5 +510,27 @@ class FlexElement extends AbstractFormElement {
 			}
 		}
 		return $output;
+	}
+
+	/**
+	 * Renders the diff-view of vDEF fields in flexforms
+	 *
+	 * @param array $vArray Record array of the record being edited
+	 * @param string $vDEFkey HTML of the form field. This is what we add the content to.
+	 * @return string Item string returned again, possibly with the original value added to.
+	 */
+	protected function renderVDEFDiff($vArray, $vDEFkey) {
+		$item = NULL;
+		if (
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
+			&& (string)$vArray[$vDEFkey . '.vDEFbase'] !== (string)$vArray['vDEF']
+		) {
+			// Create diff-result:
+			$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+			$diffres = $t3lib_diff_Obj->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF']);
+			$item = '<div class="typo3-TCEforms-diffBox">' . '<div class="typo3-TCEforms-diffBox-header">'
+				. htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig')) . ':</div>' . $diffres . '</div>';
+		}
+		return $item;
 	}
 }

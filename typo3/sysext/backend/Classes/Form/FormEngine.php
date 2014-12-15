@@ -2203,8 +2203,10 @@ class FormEngine {
 	 * @param string $vDEFkey HTML of the form field. This is what we add the content to.
 	 * @return string Item string returned again, possibly with the original value added to.
 	 * @see getSingleField(), registerDefaultLanguageData()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function renderVDEFDiff($vArray, $vDEFkey) {
+		GeneralUtility::logDeprecatedFunction();
 		$item = NULL;
 		if (
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && isset($vArray[$vDEFkey . '.vDEFbase'])
