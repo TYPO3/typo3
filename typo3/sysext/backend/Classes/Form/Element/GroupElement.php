@@ -226,7 +226,7 @@ class GroupElement extends AbstractFormElement {
 				$tempFT = GeneralUtility::trimExplode(',', $allowed, TRUE);
 				$onlySingleTableAllowed = FALSE;
 				if (trim($tempFT[0]) === '*') {
-					$info .= '<span class="nobr">' . htmlspecialchars($this->formEngine->getLL('l_allTables')) . '</span><br />';
+					$info .= '<span class="nobr">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables')) . '</span><br />';
 				} elseif ($tempFT) {
 					$onlySingleTableAllowed = count($tempFT) == 1;
 					foreach ($tempFT as $theT) {

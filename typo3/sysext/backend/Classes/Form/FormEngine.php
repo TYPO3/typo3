@@ -760,13 +760,14 @@ class FormEngine {
 	 * @see getSoloField()
 	 */
 	public function getMainFields($table, array $row, $depth = 0, array $overruleTypesArray = array()) {
+		$languageService = $this->getLanguageService();
 		$this->renderDepth = $depth;
 		// Init vars:
 		$out_array = array(array());
 		$out_array_meta = array(
 			array(
-				'title' => $this->getLL('l_generalTab')
-			)
+				'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.generalTab'),
+			),
 		);
 		$out_pointer = 0;
 		$out_sheet = 0;
@@ -889,7 +890,9 @@ class FormEngine {
 				if (!isset($this->palettesRendered[$this->renderDepth][$table][$mP])) {
 					$temp_palettesCollapsed = $this->palettesCollapsed;
 					$this->palettesCollapsed = FALSE;
-					$label = $i == 0 ? $this->getLL('l_generalOptions') : $this->getLL('l_generalOptions_more');
+					$label = $i == 0
+						? $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.generalOptions')
+						: $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.generalOptions_more');
 					$out_array[$out_sheet][$out_pointer] .= $this->getPaletteFields($table, $row, $mP, $label);
 					$this->palettesCollapsed = $temp_palettesCollapsed;
 					$this->palettesRendered[$this->renderDepth][$table][$mP] = 1;
@@ -1008,7 +1011,16 @@ class FormEngine {
 				$isHiddenPalette = !empty($GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']);
 				$thePalIcon = '';
 				if ($collapsed && $collapsedHeader !== NULL && !$isHiddenPalette) {
-					list($thePalIcon, ) = $this->wrapOpenPalette(IconUtility::getSpriteIcon('actions-system-options-view', array('title' => htmlspecialchars($this->getLL('l_moreOptions')))), $table, $row, $palette, 1);
+					list($thePalIcon, ) = $this->wrapOpenPalette(
+						IconUtility::getSpriteIcon(
+							'actions-system-options-view',
+							array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
+						),
+						$table,
+						$row,
+						$palette,
+						1
+					);
 					$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
 				}
 				$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row, $palette, $collapsed);
@@ -1120,7 +1132,16 @@ class FormEngine {
 					if (!$PA['palette']) {
 						$paletteFields = $this->loadPaletteElements($table, $row, $PA['pal']);
 						if ($PA['pal'] && $this->isPalettesCollapsed($table, $PA['pal']) && count($paletteFields)) {
-							list($thePalIcon, $palJSfunc) = $this->wrapOpenPalette(IconUtility::getSpriteIcon('actions-system-options-view', array('title' => htmlspecialchars($this->getLL('l_moreOptions')))), $table, $row, $PA['pal'], 1);
+							list($thePalIcon, $palJSfunc) = $this->wrapOpenPalette(
+								IconUtility::getSpriteIcon(
+									'actions-system-options-view',
+									array('title' => htmlspecialchars($this->getLanguageService()>sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
+								),
+								$table,
+								$row,
+								$PA['pal'],
+								1
+							);
 						}
 					}
 					// onFocus attribute to add to the field:
@@ -2159,7 +2180,7 @@ class FormEngine {
 						BackendUtility::getProcessedValue($table, $field, $dLVal['new'][$field], 0, 1)
 					);
 					$item .= '<div class="t3-form-original-language-diff">
-						<div class="t3-form-original-language-diffheader">' . htmlspecialchars($this->getLL('l_changeInOrig')) . '</div>
+						<div class="t3-form-original-language-diffheader">' . htmlspecialchars($this->getLanguageService()>sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig')) . '</div>
 						<div class="t3-form-original-language-diffcontent">' . $diffres . '</div>
 					</div>';
 				}
@@ -2186,7 +2207,7 @@ class FormEngine {
 			$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 			$diffres = $t3lib_diff_Obj->makeDiffDisplay($vArray[$vDEFkey . '.vDEFbase'], $vArray['vDEF']);
 			$item = '<div class="typo3-TCEforms-diffBox">' . '<div class="typo3-TCEforms-diffBox-header">'
-				. htmlspecialchars($this->getLL('l_changeInOrig')) . ':</div>' . $diffres . '</div>';
+				. htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.changeInOrig')) . ':</div>' . $diffres . '</div>';
 		}
 		return $item;
 	}
@@ -2214,6 +2235,7 @@ class FormEngine {
 	 * @throws \UnexpectedValueException
 	 */
 	public function dbFileIcons($fName, $mode, $allowed, $itemArray, $selector = '', $params = array(), $onFocus = '', $table = '', $field = '', $uid = '', $config = array()) {
+		$languageService = $this->getLanguageService();
 		$disabled = '';
 		if ($this->renderReadonly || $params['readOnly']) {
 			$disabled = ' disabled="disabled"';
@@ -2310,7 +2332,7 @@ class FormEngine {
 				$aOnClick = 'setFormValueOpenBrowser(\'' . $elementBrowserType . '\',\''
 					. ($fName . '|||' . $elementBrowserAllowed . '|' . $aOnClickInline) . '\'); return false;';
 				$spriteIcon = IconUtility::getSpriteIcon('actions-insert-record', array(
-					'title' => htmlspecialchars($this->getLL('l_browse_' . ($mode == 'db' ? 'db' : 'file')))
+					'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_' . ($mode == 'db' ? 'db' : 'file')))
 				));
 				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" class="btn btn-default">' . $spriteIcon . '</a>';
 			}
@@ -2319,24 +2341,24 @@ class FormEngine {
 					$icons['L'][] = IconUtility::getSpriteIcon('actions-move-to-top', array(
 						'data-fieldname' => $fName,
 						'class' => 't3-btn t3-btn-moveoption-top',
-						'title' => htmlspecialchars($this->getLL('l_move_to_top'))
+						'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_top'))
 					));
 				}
 				$icons['L'][] = IconUtility::getSpriteIcon('actions-move-up', array(
 					'data-fieldname' => $fName,
 					'class' => 't3-btn t3-btn-moveoption-up',
-					'title' => htmlspecialchars($this->getLL('l_move_up'))
+					'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_up'))
 				));
 				$icons['L'][] = IconUtility::getSpriteIcon('actions-move-down', array(
 					'data-fieldname' => $fName,
 					'class' => 't3-btn t3-btn-moveoption-down',
-					'title' => htmlspecialchars($this->getLL('l_move_down'))
+					'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_down'))
 				));
 				if ($sSize >= 5) {
 					$icons['L'][] = IconUtility::getSpriteIcon('actions-move-to-bottom', array(
 						'data-fieldname' => $fName,
 						'class' => 't3-btn t3-btn-moveoption-bottom',
-						'title' => htmlspecialchars($this->getLL('l_move_to_bottom'))
+						'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_bottom'))
 					));
 				}
 			}
@@ -2358,7 +2380,7 @@ class FormEngine {
 				}
 				$aOnClick .= 'return false;';
 				$spriteIcon1 = IconUtility::getSpriteIcon('actions-document-paste-into', array(
-					'title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements)))
+					'title' => htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements)))
 				));
 				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $spriteIcon1 . '</a>';
 			}
@@ -2368,7 +2390,7 @@ class FormEngine {
 				'onclick' => $rOnClickInline,
 				'data-fieldname' => $fName,
 				'class' => 't3-btn t3-btn-removeoption',
-				'title' => htmlspecialchars($this->getLL('l_remove_selected'))
+				'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remove_selected'))
 
 			));
 		}
@@ -2616,7 +2638,7 @@ class FormEngine {
 											// Current form value is passed as P[currentValue]!
 											$addJS = $wConf['popup_onlyOpenIfSelected']
 												? 'if (!TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')){alert('
-													. GeneralUtility::quoteJSvalue($this->getLL('m_noSelItemForEdit'))
+													. GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.noSelItemForEdit'))
 													. '); return false;}'
 												: '';
 											$curSelectedValues = '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')';
@@ -3905,6 +3927,7 @@ class FormEngine {
 	 * @return string A section with JavaScript - if $update is FALSE, embedded in <script></script>
 	 */
 	public function JSbottom($formname = 'forms[0]', $update = FALSE) {
+		$languageService = $this->getLanguageService();
 		$jsFile = array();
 		$elements = array();
 		$out = '';
@@ -4003,10 +4026,10 @@ class FormEngine {
 			TBE_EDITOR.prependFormFieldNamesCnt = ' . substr_count($this->prependFormFieldNames, '[') . ';
 			TBE_EDITOR.isPalettedoc = ' . ($this->isPalettedoc ? addslashes($this->isPalettedoc) : 'null') . ';
 			TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
-			TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
-			TBE_EDITOR.labels.fieldsMissing = ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
-			TBE_EDITOR.labels.refresh_login = ' . GeneralUtility::quoteJSvalue($this->getLL('m_refresh_login')) . ';
-			TBE_EDITOR.labels.onChangeAlert = ' . GeneralUtility::quoteJSvalue($this->getLL('m_onChangeAlert')) . ';
+			TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';
+			TBE_EDITOR.labels.fieldsMissing = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
+			TBE_EDITOR.labels.refresh_login = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login')) . ';
+			TBE_EDITOR.labels.onChangeAlert = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.onChangeAlert')) . ';
 			evalFunc.USmode = ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ';
 			TBE_EDITOR.backend_interface = "' . $beUserAuth->uc['interfaceSetup'] . '";
 
@@ -4205,8 +4228,10 @@ class FormEngine {
 	 *
 	 * @param string $str The label key
 	 * @return string The value of the label, fetched for the current backend language.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getLL($str) {
+		GeneralUtility::logDeprecatedFunction();
 		$content = '';
 		switch (substr($str, 0, 2)) {
 			case 'l_':

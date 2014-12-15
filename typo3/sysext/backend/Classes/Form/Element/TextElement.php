@@ -145,7 +145,7 @@ class TextElement extends AbstractFormElement {
 		if (!$rteWasLoaded) {
 			// Show message, if no RTE (field can only be edited with RTE!)
 			if ($specialConfiguration['rte_only']) {
-				$item = '<p><em>' . htmlspecialchars($this->formEngine->getLL('l_noRTEfound')) . '</em></p>';
+				$item = '<p><em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRTEfound')) . '</em></p>';
 			} else {
 				if ($specialConfiguration['nowrap']) {
 					$wrap = 'off';

@@ -79,7 +79,7 @@ class SelectElement extends AbstractFormElement {
 		// Creating the label for the "No Matching Value" entry.
 		$nMV_label = isset($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
 			? $this->formEngine->sL($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
-			: '[ ' . $this->formEngine->getLL('l_noMatchingValue') . ' ]';
+			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 		// Prepare some values:
 		$maxitems = (int)$config['maxitems'];
 		// If a SINGLE selector box...
@@ -125,6 +125,7 @@ class SelectElement extends AbstractFormElement {
 	 * @see getSingleField_typeSelect()
 	 */
 	public function getSingleField_typeSelect_multiple($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
+		$languageService = $this->getLanguageService();
 		$item = '';
 		$disabled = '';
 		if ($this->formEngine->renderReadonly || $config['readOnly']) {
@@ -259,8 +260,8 @@ class SelectElement extends AbstractFormElement {
 			'maxitems' => $maxitems,
 			'info' => '',
 			'headers' => array(
-				'selector' => $this->formEngine->getLL('l_selected') . ':<br />',
-				'items' => '<div class="pull-left">' . $this->formEngine->getLL('l_items') . ':</div>' . $selectBoxFilterContents
+				'selector' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.selected') . ':<br />',
+				'items' => '<div class="pull-left">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.items') . ':</div>' . $selectBoxFilterContents
 			),
 			'noBrowser' => 1,
 			'thumbnails' => $itemsToSelect,
@@ -673,7 +674,7 @@ class SelectElement extends AbstractFormElement {
 		// Add revert icon
 		if (!empty($restoreCmd)) {
 			$item .= '<a href="#" onclick="' . implode('', $restoreCmd) . ' return false;' . '">'
-				. IconUtility::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->formEngine->getLL('l_revertSelection')))) . '</a>';
+				. IconUtility::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')))) . '</a>';
 		}
 		return $item;
 	}
@@ -693,6 +694,7 @@ class SelectElement extends AbstractFormElement {
 	 * @see getSingleField_typeSelect()
 	 */
 	public function getSingleField_typeSelect_singlebox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
+		$languageService = $this->getLanguageService();
 		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->formEngine->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 		$item = '';
@@ -766,10 +768,10 @@ class SelectElement extends AbstractFormElement {
 					<td>
 					' . $selectBox . '
 					<br/>
-					<em>' . htmlspecialchars($this->formEngine->getLL('l_holdDownCTRL')) . '</em>
+					<em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL')) . '</em>
 					</td>
 					<td valign="top">
-						<a href="#" onclick="' . $onClick . '" title="' . htmlspecialchars($this->formEngine->getLL('l_revertSelection')) . '">'
+						<a href="#" onclick="' . $onClick . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')) . '">'
 			. IconUtility::getSpriteIcon('actions-edit-undo') . '</a>
 					</td>
 				</tr>
