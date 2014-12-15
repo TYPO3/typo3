@@ -110,7 +110,7 @@ class CheckboxElement extends AbstractFormElement {
 		);
 		$checkboxName = $additionalInformation['itemFormElName'] . '_' . $itemCounter;
 		$checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter;
-		return '<div class="checkbox">'
+		return '<div class="checkbox' . (!$disabled ?: ' disabled') . '">'
 			. '<label for="' . $checkboxId . '">'
 			. '<input '
 			. 'type="checkbox" '
