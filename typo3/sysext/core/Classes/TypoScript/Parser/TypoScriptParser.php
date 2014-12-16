@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * The TypoScript parser
@@ -471,7 +470,7 @@ class TypoScriptParser {
 							$this->lastComment .= rtrim($line) . LF;
 						}
 					}
-					if (StringUtility::beginsWith($line, '### ERROR')) {
+					if (GeneralUtility::isFirstPartOfStr($line, '### ERROR')) {
 						$this->error(substr($line, 11));
 					}
 				}
@@ -819,7 +818,7 @@ class TypoScriptParser {
 				// css_styled_content if those have been included through f.e.
 				// <INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/static/setup.txt">
 				$filePointer = strtolower($filename);
-				if (StringUtility::beginsWith($filePointer, 'ext:')) {
+				if (GeneralUtility::isFirstPartOfStr($filePointer, 'ext:')) {
 					$filePointerPathParts = explode('/', substr($filePointer, 4));
 
 					// remove file part, determine whether to load setup or constants
