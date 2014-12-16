@@ -5964,17 +5964,23 @@ class DataHandler {
 			$res = $this->databaseConnection->exec_SELECTquery('*', $table, 'uid=' . (int)$id);
 			if ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
 				// Traverse array of values that was inserted into the database and compare with the actually stored value:
-				$errorString = array();
+				$errors = array();
 				foreach ($fieldArray as $key => $value) {
 					if ($this->checkStoredRecords_loose && !$value && !$row[$key]) {
 
 					} elseif ((string)$value !== (string)$row[$key]) {
-						$errorString[] = $key;
+						$errors[] = $key;
 					}
 				}
 				// Set log message if there were fields with unmatching values:
-				if (count($errorString)) {
-					$this->log($table, $id, $action, 0, 1, 'These fields are not properly updated in database: (' . implode(',', $errorString) . ') Probably value mismatch with fieldtype.');
+				if (!empty($errors)) {
+					$message = sprintf(
+						'These fields of record %d in table "%s" have not been saved correctly: %s! The values might have changed due to type casting of the database.',
+						$id,
+						$table,
+						implode(', ', $errors)
+					);
+					$this->log($table, $id, $action, 0, 1, $message);
 				}
 				// Return selected rows:
 				return $row;
