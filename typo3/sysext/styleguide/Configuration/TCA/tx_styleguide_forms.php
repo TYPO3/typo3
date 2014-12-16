@@ -485,6 +485,15 @@ return array(
 			),
 			'defaultExtras' => 'fixed-font : enable-tab'
 		),
+		'text_15' => array(
+			'label' => '15 max=30',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 30,
+				'rows' => 4,
+				'max' => 30,
+			),
+		),
 		/**
 		 * @TODO: Add type text wizards
 		 */
@@ -1531,7 +1540,7 @@ return array(
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
 			input_31, input_32, input_33, input_34,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
-			text_11, text_12, text_13,text_14,
+			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
 			checkbox_11, checkbox_12,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
@@ -1558,7 +1567,7 @@ return array(
 					input_32, input_33, input_34,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
-					text_10, text_11, text_12, text_13, text_14,
+					text_10, text_11, text_12, text_13, text_14, text_15,
 				--div--;Check,
 					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
 					checkbox_10, checkbox_11, checkbox_12,
