@@ -536,4 +536,5 @@ class ArrayUtility {
 		// This line is kept for backward compatibility reasons.
 		reset($original);
 	}
+
 }

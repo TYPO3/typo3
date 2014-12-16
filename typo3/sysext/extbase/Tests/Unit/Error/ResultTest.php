@@ -255,4 +255,5 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame(array($error3), $this->result->getErrors());
 		$this->assertSame(array($error1, $error2), $this->result->forProperty('foo')->getErrors());
 	}
+
 }

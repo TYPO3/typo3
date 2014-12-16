@@ -2610,4 +2610,5 @@ class InlineElement {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

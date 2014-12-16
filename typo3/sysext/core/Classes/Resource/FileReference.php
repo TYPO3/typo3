@@ -480,4 +480,5 @@ class FileReference implements FileInterface {
 	public function getParentFolder() {
 		return $this->originalFile->getParentFolder();
 	}
+
 }

@@ -66,4 +66,5 @@ class Selector implements SelectorInterface {
 	public function getSelectorName() {
 		return $this->selectorName;
 	}
+
 }

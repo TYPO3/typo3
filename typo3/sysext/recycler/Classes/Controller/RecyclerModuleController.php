@@ -322,4 +322,5 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 		}
 		return $data;
 	}
+
 }

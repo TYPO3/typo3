@@ -61,4 +61,5 @@ class IfAdminViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditi
 			return $this->renderElseChild();
 		}
 	}
+
 }

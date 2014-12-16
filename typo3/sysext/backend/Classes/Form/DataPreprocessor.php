@@ -931,4 +931,5 @@ class DataPreprocessor {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

@@ -33,4 +33,5 @@ class EnvironmentStatus extends AbstractAjaxAction {
 		$environmentErrors = $statusUtility->filterBySeverity($environmentStatus, 'error');
 		return count($environmentErrors);
 	}
+
 }

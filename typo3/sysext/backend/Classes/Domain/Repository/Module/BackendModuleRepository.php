@@ -395,4 +395,5 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $iconFilename;
 	}
+
 }

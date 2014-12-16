@@ -262,4 +262,5 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertEquals($expectedResult, $this->fixture->isItemState('IFSUB', 0));
 	}
+
 }

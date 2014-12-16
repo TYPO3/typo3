@@ -137,4 +137,5 @@ class CategoryMenuUtility {
 	static public function sortPagesUtility($pageA, $pageB) {
 		return strnatcasecmp($pageA[self::$sortingField], $pageB[self::$sortingField]);
 	}
+
 }

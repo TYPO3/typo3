@@ -38,4 +38,5 @@ if (TYPO3_MODE === 'BE') {
 			'addExtensionCategoryDatabaseSchemaToTablesDefinition'
 		);
 	}
+
 }

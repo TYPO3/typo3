@@ -216,4 +216,5 @@ class MetaDataRepository implements SingletonInterface {
 	public static function getInstance() {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class);
 	}
+
 }

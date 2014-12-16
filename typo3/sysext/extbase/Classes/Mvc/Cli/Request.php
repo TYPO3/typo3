@@ -262,4 +262,5 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	public function getExceedingArguments() {
 		return $this->exceedingArguments;
 	}
+
 }

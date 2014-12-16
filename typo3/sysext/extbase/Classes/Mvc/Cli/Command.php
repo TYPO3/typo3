@@ -235,4 +235,5 @@ class Command {
 		}
 		return $this->commandMethodReflection;
 	}
+
 }

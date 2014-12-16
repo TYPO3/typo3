@@ -88,4 +88,5 @@ class ViewHelperVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		$this->viewHelperVariableContainer->setView($view);
 		$this->assertSame($view, $this->viewHelperVariableContainer->getView());
 	}
+
 }

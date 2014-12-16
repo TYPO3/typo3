@@ -160,4 +160,5 @@ class ClassInfoFactory {
 	private function getIsInitializeable($classname) {
 		return method_exists($classname, 'initializeObject');
 	}
+
 }

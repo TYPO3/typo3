@@ -58,4 +58,5 @@ class Ordering implements OrderingInterface {
 	public function getOrder() {
 		return $this->order;
 	}
+
 }

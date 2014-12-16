@@ -78,4 +78,5 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
 		$this->assertEquals($expected, $actual);
 	}
+
 }

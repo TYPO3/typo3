@@ -76,4 +76,5 @@ class EmConfUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture = new \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility();
 		$this->assertEquals($expected, $fixture->fixEmConf($input));
 	}
+
 }

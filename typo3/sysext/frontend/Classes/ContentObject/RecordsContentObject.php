@@ -230,4 +230,5 @@ class RecordsContentObject extends AbstractContentObject {
 	protected function getTimeTracker() {
 		return $GLOBALS['TT'];
 	}
+
 }

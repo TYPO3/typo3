@@ -909,4 +909,5 @@ class SelectElement extends AbstractFormElement {
 	public function isForceAlternativeFieldValueUse() {
 		return $this->forceAlternativeFieldValueUse;
 	}
+
 }

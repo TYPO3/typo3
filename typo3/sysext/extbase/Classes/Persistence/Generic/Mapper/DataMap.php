@@ -500,4 +500,5 @@ class DataMap {
 	public function getRootLevel() {
 		return $this->rootLevel;
 	}
+
 }

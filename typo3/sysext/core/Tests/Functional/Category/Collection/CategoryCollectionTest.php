@@ -278,4 +278,5 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->database->exec_INSERTquery('sys_category', $values);
 		$this->categoryUid = $this->database->sql_insert_id();
 	}
+
 }

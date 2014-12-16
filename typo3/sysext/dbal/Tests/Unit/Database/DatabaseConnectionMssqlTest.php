@@ -173,4 +173,5 @@ class DatabaseConnectionMssqlTest extends AbstractTestCase {
 		$expected = 'SELECT * FROM "tt_news_cat_mm" WHERE ISNULL("tt_news_cat_mm"."uid_foreign", 0) IN (21,22)';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
+
 }

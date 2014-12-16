@@ -584,4 +584,5 @@ class HelpModuleController {
 		$labelString = $GLOBALS['LANG']->sL($tableName) . ($field ? $mergeToken . rtrim(trim($GLOBALS['LANG']->sL($fieldName)), ':') : '');
 		return $labelString;
 	}
+
 }

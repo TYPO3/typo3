@@ -415,4 +415,5 @@ class ImportantActions extends Action\AbstractAction {
 		$message->setTitle('Analyzed current database');
 		return $message;
 	}
+
 }

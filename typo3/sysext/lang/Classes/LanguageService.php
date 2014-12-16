@@ -460,4 +460,5 @@ class LanguageService {
 			$GLOBALS['LOCAL_LANG']['default'][$index][0]['target'] = $value;
 		}
 	}
+
 }

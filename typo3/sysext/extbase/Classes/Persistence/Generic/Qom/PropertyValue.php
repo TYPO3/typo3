@@ -65,4 +65,5 @@ class PropertyValue implements PropertyValueInterface {
 	public function getPropertyName() {
 		return $this->propertyName;
 	}
+
 }

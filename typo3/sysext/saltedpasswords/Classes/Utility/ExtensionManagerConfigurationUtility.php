@@ -455,4 +455,5 @@ class ExtensionManagerConfigurationUtility {
 		}
 		return $postArray;
 	}
+
 }

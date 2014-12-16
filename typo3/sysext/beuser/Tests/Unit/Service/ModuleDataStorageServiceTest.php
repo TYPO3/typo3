@@ -45,4 +45,5 @@ class ModuleDataStorageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($moduleDataMock, $subject->loadModuleData());
 	}
+
 }

@@ -449,4 +449,5 @@ class DebuggerUtility {
 		}
 		return '';
 	}
+
 }

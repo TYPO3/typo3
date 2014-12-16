@@ -65,4 +65,5 @@ class FloatConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
 		}
 		return (float) $source;
 	}
+
 }

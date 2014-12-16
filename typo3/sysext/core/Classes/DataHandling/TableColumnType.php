@@ -48,4 +48,5 @@ class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration {
 
 		parent::__construct($type);
 	}
+
 }

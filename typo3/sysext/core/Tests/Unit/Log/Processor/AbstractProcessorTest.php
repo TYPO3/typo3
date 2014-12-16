@@ -47,4 +47,5 @@ class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$logger->addProcessor($level, $processor);
 		$logger->warning('test');
 	}
+
 }

@@ -65,4 +65,5 @@ class NumberRangeValidator extends AbstractValidator {
 			), 1221561046, array($minimum, $maximum));
 		}
 	}
+
 }

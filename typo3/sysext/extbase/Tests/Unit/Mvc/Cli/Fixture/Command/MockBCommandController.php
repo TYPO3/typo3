@@ -8,4 +8,5 @@ class MockBCommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command {
 
 	public function bazCommand() {
 	}
+
 }

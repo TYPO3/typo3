@@ -284,4 +284,5 @@ class SimpleDataHandlerController {
 		$ajaxRequestHandler->setContentFormat('json');
 		$ajaxRequestHandler->setContent($content);
 	}
+
 }

@@ -979,4 +979,5 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			)
 		);
 	}
+
 }

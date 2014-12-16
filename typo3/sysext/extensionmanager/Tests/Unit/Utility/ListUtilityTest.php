@@ -177,4 +177,5 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
 		$this->assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
 	}
+
 }

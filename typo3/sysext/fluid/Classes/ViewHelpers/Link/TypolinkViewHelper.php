@@ -153,4 +153,5 @@ class TypolinkViewHelper extends AbstractViewHelper {
 
 		return $typolinkConfiguration;
 	}
+
 }

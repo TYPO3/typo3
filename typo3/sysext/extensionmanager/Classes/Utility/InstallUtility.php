@@ -545,4 +545,5 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
+
 }

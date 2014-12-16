@@ -62,4 +62,5 @@ class CoreUpdateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		putenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER=1');
 		$this->assertFalse($instance->isCoreUpdateEnabled());
 	}
+
 }

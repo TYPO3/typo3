@@ -776,4 +776,5 @@ class ClassLoader {
 
 		return $this->lockObject;
 	}
+
 }

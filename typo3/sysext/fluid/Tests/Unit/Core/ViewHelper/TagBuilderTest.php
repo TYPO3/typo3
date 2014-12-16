@@ -205,4 +205,5 @@ class TagBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$tagBuilder->setTagName('');
 		$this->assertEquals('', $tagBuilder->render());
 	}
+
 }

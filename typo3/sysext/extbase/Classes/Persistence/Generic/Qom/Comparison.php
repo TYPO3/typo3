@@ -154,4 +154,5 @@ class Comparison implements ComparisonInterface {
 	 */
 	public function collectBoundVariableNames(&$boundVariables) {
 	}
+
 }

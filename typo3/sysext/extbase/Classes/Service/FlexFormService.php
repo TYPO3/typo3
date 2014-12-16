@@ -105,4 +105,5 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $nodeArray;
 	}
+
 }

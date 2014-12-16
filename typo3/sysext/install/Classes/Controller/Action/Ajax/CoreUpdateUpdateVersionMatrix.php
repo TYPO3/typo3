@@ -31,4 +31,5 @@ class CoreUpdateUpdateVersionMatrix extends AbstractCoreUpdate {
 			));
 		return $this->view->render();
 	}
+
 }

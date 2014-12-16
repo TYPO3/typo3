@@ -180,4 +180,5 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$bootstrapInstance->_call('transferDeprecatedCurlSettings');
 		$this->assertEquals('curl', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter']);
 	}
+
 }

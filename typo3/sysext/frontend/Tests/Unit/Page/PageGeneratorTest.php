@@ -145,4 +145,5 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $this->pageGeneratorFixture->callGenerateMetaTagHtml($typoScript, $xhtml, $this->contentObjectRenderer);
 		$this->assertSame($expectedTags, $result);
 	}
+
 }

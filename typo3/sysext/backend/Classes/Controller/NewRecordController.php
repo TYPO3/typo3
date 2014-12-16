@@ -658,4 +658,5 @@ class NewRecordController {
 	protected function getBackendUserAuthentication() {
 		return $GLOBALS['BE_USER'];
 	}
+
 }

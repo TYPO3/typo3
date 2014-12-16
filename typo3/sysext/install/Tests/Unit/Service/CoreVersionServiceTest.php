@@ -464,4 +464,5 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$instance->expects($this->once())->method('getVersionMatrix')->will($this->returnValue(require($versionMatrixFixtureFile)));
 		$instance->_call('ensureVersionExistsInMatrix', '6.2.5');
 	}
+
 }

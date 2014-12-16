@@ -66,4 +66,5 @@ class ConstraintTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertAttributeEquals(NULL, 'manualDateStop', $this->subject);
 	}
+
 }

@@ -122,4 +122,5 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $mock->_call('resolveParameterPlaceholders', $stmtParts, $parameters);
 		$this->assertSame($expected, $result['where']);
 	}
+
 }

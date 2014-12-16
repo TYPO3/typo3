@@ -58,4 +58,5 @@ class TaskTypeRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			$processedFile, $processingConfiguration
 		);
 	}
+
 }

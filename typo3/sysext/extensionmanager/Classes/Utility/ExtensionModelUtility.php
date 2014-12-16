@@ -85,4 +85,5 @@ class ExtensionModelUtility {
 		}
 		return $dependenciesObject;
 	}
+
 }

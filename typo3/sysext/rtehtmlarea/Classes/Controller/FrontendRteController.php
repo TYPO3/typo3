@@ -312,4 +312,5 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			'/*]]>*/'
 		));
 	}
+
 }

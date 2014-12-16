@@ -44,4 +44,5 @@ class StructureFacadeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$status = $facade->fix();
 		$this->assertInternalType('array', $status);
 	}
+
 }

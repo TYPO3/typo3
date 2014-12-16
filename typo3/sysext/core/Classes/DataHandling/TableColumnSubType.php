@@ -43,4 +43,5 @@ class TableColumnSubType extends \TYPO3\CMS\Core\Type\Enumeration {
 
 		parent::__construct($subType);
 	}
+
 }

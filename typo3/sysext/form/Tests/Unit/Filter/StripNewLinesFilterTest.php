@@ -54,4 +54,5 @@ text', 'some text'),
 			$this->fixture->filter($input)
 		);
 	}
+
 }

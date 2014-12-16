@@ -72,4 +72,5 @@ class UserFileInlineLabelService {
 		}
 		$params['title'] = '<dl>' . implode('', $title) . '</dl>';
 	}
+
 }

@@ -1380,4 +1380,5 @@ class PageRepository {
 
 		return $shouldFieldBeOverlaid;
 	}
+
 }

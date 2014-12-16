@@ -67,4 +67,5 @@ class UpperCase implements UpperCaseInterface {
 	public function getPropertyName() {
 		return 'UPPER' . $this->operand->getPropertyName();
 	}
+
 }

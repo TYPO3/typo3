@@ -25,4 +25,5 @@ class NotImplementedException extends \TYPO3\CMS\Extbase\Persistence\Exception {
 	public function __construct($method) {
 		parent::__construct(sprintf('Method %s is not supported by generic persistence"', $method), 1350213237);
 	}
+
 }

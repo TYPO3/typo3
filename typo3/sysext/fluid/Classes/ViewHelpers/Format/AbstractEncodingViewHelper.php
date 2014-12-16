@@ -35,4 +35,5 @@ abstract class AbstractEncodingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 		}
 		return self::$defaultEncoding;
 	}
+
 }

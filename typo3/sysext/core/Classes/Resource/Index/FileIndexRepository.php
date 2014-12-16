@@ -390,4 +390,5 @@ class FileIndexRepository implements SingletonInterface {
 	protected function emitRecordDeletedSignal($fileUid) {
 		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::class, 'recordDeleted', array($fileUid));
 	}
+
 }

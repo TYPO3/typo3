@@ -560,4 +560,5 @@ function Auth_OpenID_include_init() {
   if (Auth_OpenID_getMathLib() === null) {
     Auth_OpenID_setNoMathSupport();
   }
+
 }

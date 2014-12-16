@@ -119,4 +119,5 @@ class EnvironmentAndFolders extends AbstractStepAction {
 
 		return $this->view->render(!empty($alerts));
 	}
+
 }

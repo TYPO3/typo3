@@ -129,4 +129,5 @@ class RendererRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $matchingFileRenderer;
 	}
+
 }

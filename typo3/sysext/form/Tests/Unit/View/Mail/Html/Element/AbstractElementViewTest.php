@@ -41,4 +41,5 @@ class AbstractElementViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame('a&amp;<br />' . LF . 'b', $fixture->getInputValue());
 	}
+
 }

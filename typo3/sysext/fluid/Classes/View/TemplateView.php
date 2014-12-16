@@ -610,4 +610,5 @@ class TemplateView extends AbstractTemplateView {
 	protected function resolveFileNamePath($pathAndFilename) {
 		return GeneralUtility::getFileAbsFileName($pathAndFilename);
 	}
+
 }

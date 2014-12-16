@@ -81,4 +81,5 @@ abstract class AbstractStepAction extends \TYPO3\CMS\Install\Controller\Action\A
 		}
 		$this->view->assign('steps', $steps);
 	}
+
 }

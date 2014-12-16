@@ -2467,4 +2467,5 @@ class ResourceStorage implements ResourceStorageInterface {
 	public function isDefault() {
 		return $this->isDefault;
 	}
+
 }

@@ -33,4 +33,5 @@ class ArgumentDefinitionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($argumentDefinition->isRequired(), $isRequired, 'Required flag could not be retrieved correctly.');
 		$this->assertEquals($argumentDefinition->isMethodParameter(), $isMethodParameter, 'isMethodParameter flag could not be retrieved correctly.');
 	}
+
 }

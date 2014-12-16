@@ -501,4 +501,5 @@ class SystemEnvironmentBuilder {
 		header('Content-type: text/plain');
 		die($message);
 	}
+
 }

@@ -33,4 +33,5 @@ class AlphanumericValidator extends AbstractValidator {
 			$this->addError($this->translateErrorMessage('validator.alphanumeric.notvalid', 'extbase'), 1221551320);
 		}
 	}
+
 }

@@ -300,4 +300,5 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface 
 		$varSize = ini_get('xcache.var_size');
 		return php_sapi_name() === 'cli' || empty($varSize);
 	}
+
 }

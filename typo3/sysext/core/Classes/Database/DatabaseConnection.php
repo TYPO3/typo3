@@ -1887,4 +1887,5 @@ class DatabaseConnection {
 			'default_charset',
 		);
 	}
+
 }

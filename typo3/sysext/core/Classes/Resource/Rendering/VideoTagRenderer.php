@@ -82,4 +82,5 @@ class VideoTagRenderer implements FileRendererInterface {
 			$file->getMimeType()
 		);
 	}
+
 }

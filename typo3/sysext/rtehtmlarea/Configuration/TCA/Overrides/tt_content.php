@@ -18,4 +18,5 @@ foreach ($GLOBALS['TCA']['tt_content']['columns'] as $column => $config) {
 			$GLOBALS['TCA']['tt_content']['columns'][$column]['config']['softref'] = 'rtehtmlarea_images,typolink_tag';
 		}
 	}
+
 }

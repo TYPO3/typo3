@@ -38,4 +38,5 @@ class UpdateScriptController extends AbstractController {
 			->assign('updateScriptResult', $updateScriptResult)
 			->assign('extensionKey', $extensionKey);
 	}
+
 }

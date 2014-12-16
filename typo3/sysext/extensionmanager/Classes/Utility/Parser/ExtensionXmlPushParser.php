@@ -189,4 +189,5 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser {
 			}
 		}
 	}
+
 }

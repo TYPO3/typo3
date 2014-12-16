@@ -144,4 +144,5 @@ class ApplicationContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$rootContext = $parentContext->getParent();
 		$this->assertSame('Production', (string)$rootContext);
 	}
+
 }

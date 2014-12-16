@@ -77,4 +77,5 @@ class WidgetRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHan
 	public function getPriority() {
 		return 200;
 	}
+
 }

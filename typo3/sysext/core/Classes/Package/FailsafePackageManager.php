@@ -85,4 +85,5 @@ class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 	public function forceSortAndSavePackageStates() {
 		parent::sortAndSavePackageStates();
 	}
+
 }

@@ -177,4 +177,5 @@ class MailUtility {
 		}
 		return $addressList;
 	}
+
 }

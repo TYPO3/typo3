@@ -113,4 +113,5 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$controllerMock->_set('request', $requestMock);
 		$controllerMock->updateExtensionListFromTerAction(TRUE);
 	}
+
 }

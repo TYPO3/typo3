@@ -8172,4 +8172,5 @@ class ContentObjectRenderer {
 	protected function getEnvironmentVariable($key) {
 		return GeneralUtility::getIndpEnv($key);
 	}
+
 }

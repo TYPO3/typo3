@@ -199,4 +199,5 @@ class AllConfiguration extends Action\AbstractAction {
 		}
 		return $commentArray;
 	}
+
 }

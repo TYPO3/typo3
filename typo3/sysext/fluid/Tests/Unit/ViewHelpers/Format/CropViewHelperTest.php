@@ -86,4 +86,5 @@ class CropViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $this->viewHelper->render(123, '...', TRUE, FALSE);
 		$this->assertEquals('Cropped Content', $actualResult);
 	}
+
 }

@@ -594,4 +594,5 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$backend->flush();
 		$this->assertFalse($backend->isFrozen());
 	}
+
 }

@@ -491,4 +491,5 @@ class Locker {
 		}
 		$this->resource = $path . $this->id;
 	}
+
 }

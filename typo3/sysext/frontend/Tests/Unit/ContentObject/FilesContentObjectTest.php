@@ -827,4 +827,5 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}
+
 }

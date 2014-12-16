@@ -186,4 +186,5 @@ class ToolController extends AbstractController {
 		$toolAction->setLastError($this->getLastError());
 		$this->output($toolAction->handle());
 	}
+
 }

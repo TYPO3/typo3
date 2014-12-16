@@ -178,4 +178,5 @@ class Mailer extends \Swift_Mailer {
 	protected function emitPostInitializeMailerSignal() {
 		$this->getSignalSlotDispatcher()->dispatch('TYPO3\\CMS\\Core\\Mail\\Mailer', 'postInitializeMailer', array($this));
 	}
+
 }

@@ -298,4 +298,5 @@ class LocalizationUtility {
 		static::$configurationManager = $configurationManager;
 		return $configurationManager;
 	}
+
 }

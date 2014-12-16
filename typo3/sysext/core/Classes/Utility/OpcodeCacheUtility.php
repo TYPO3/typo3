@@ -143,4 +143,5 @@ class OpcodeCacheUtility {
 		}
 		return static::$activeCaches;
 	}
+
 }

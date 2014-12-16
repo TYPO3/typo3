@@ -44,4 +44,5 @@ class SwitchViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		$this->viewHelperVariableContainer->expects($this->at(4))->method('remove')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
 		$this->viewHelper->render('switchExpression');
 	}
+
 }

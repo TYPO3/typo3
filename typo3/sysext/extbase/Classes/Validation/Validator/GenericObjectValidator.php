@@ -181,4 +181,5 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer) {
 		$this->validatedInstancesContainer = $validatedInstancesContainer;
 	}
+
 }

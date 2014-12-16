@@ -163,4 +163,5 @@ class AjaxController extends AbstractController {
 		echo $content;
 		die;
 	}
+
 }

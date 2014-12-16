@@ -119,4 +119,5 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 		$output .= $doc->endPage();
 		return $output;
 	}
+
 }

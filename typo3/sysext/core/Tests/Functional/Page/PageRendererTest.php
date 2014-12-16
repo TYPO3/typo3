@@ -386,4 +386,5 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$out = $subject->render();
 		$this->assertRegExp($expectedRegExp, $out);
 	}
+
 }

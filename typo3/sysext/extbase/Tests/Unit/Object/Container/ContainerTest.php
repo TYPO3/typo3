@@ -875,4 +875,5 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$object->argumentTestClassTwo
 		);
 	}
+
 }

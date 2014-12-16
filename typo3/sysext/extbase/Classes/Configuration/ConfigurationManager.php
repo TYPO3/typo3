@@ -130,4 +130,5 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 		$configuration = $this->getConfiguration(self::CONFIGURATION_TYPE_FRAMEWORK);
 		return (bool)(isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);
 	}
+
 }

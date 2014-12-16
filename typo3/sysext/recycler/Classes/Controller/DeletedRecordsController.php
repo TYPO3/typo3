@@ -74,4 +74,5 @@ class DeletedRecordsController {
 		$jsonArray['total'] = $totalDeleted;
 		return json_encode($jsonArray);
 	}
+
 }

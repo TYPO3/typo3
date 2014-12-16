@@ -1906,4 +1906,5 @@ class AbstractMenuContentObject {
 	public function getParentContentObject() {
 		return $this->parent_cObj;
 	}
+
 }

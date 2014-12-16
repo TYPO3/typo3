@@ -771,4 +771,5 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->assertSame($expectedResult, $this->subject->checkValue_check($result, $value, $tcaFieldConfiguration, array()));
 	}
+
 }

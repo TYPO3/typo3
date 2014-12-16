@@ -413,4 +413,5 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function createColumnMap($columnName, $propertyName) {
 		return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, $columnName, $propertyName);
 	}
+
 }

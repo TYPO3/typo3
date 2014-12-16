@@ -61,4 +61,5 @@ class UserDomainClass {
 	public function getLastName() {
 		return $this->lastName;
 	}
+
 }

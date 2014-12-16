@@ -105,4 +105,5 @@ abstract class ViewHelperBaseTestcase extends \TYPO3\CMS\Core\Tests\UnitTestCase
 			$viewHelper->_set('tag', $this->tagBuilder);
 		}
 	}
+
 }

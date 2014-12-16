@@ -75,4 +75,5 @@ class VersionState extends \TYPO3\CMS\Core\Type\Enumeration {
 	public function indicatesPlaceholder() {
 		return (int)$this->__toString() > self::DEFAULT_STATE;
 	}
+
 }

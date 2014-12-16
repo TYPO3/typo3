@@ -83,4 +83,5 @@ class RootNode extends DirectoryNode implements RootNodeInterface {
 	public function getAbsolutePath() {
 		return $this->name;
 	}
+
 }

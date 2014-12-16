@@ -100,4 +100,5 @@ class AbstractWizardController {
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
+
 }

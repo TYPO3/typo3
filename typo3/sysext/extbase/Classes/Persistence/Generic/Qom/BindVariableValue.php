@@ -51,4 +51,5 @@ class BindVariableValue implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Bi
 	public function getBindVariableName() {
 		return $this->variableName;
 	}
+
 }

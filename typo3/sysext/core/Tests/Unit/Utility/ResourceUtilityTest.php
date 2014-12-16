@@ -67,4 +67,5 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertEquals($expectedList, $result);
 	}
+
 }

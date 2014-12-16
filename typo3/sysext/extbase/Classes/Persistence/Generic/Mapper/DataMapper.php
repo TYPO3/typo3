@@ -673,4 +673,5 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return (string)$value;
 	}
+
 }

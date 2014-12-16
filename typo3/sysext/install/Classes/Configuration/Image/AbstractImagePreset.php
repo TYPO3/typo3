@@ -151,4 +151,5 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset {
 		}
 		return $path;
 	}
+
 }

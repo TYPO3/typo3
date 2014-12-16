@@ -674,4 +674,5 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$templateParser->_call('textHandler', $mockState, 'string');
 	}
+
 }

@@ -391,4 +391,5 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 		$this->typeConverter = $typeConverter;
 		return $this;
 	}
+
 }

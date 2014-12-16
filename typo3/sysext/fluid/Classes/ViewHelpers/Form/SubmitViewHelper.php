@@ -67,4 +67,5 @@ class SubmitViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 
 		return $this->tag->render();
 	}
+
 }

@@ -49,4 +49,5 @@ class NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$stringToFormat = $this->renderChildren();
 		return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
 	}
+
 }

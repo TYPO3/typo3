@@ -71,4 +71,5 @@ class LogicalOr implements OrInterface {
 	public function getConstraint2() {
 		return $this->constraint2;
 	}
+
 }

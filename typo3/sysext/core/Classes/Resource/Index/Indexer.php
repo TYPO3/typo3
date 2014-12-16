@@ -343,4 +343,5 @@ class Indexer {
 	protected function getExtractorRegistry() {
 		return ExtractorRegistry::getInstance();
 	}
+
 }

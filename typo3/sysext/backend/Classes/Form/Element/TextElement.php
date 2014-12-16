@@ -231,4 +231,5 @@ class TextElement extends AbstractFormElement {
 		}
 		return $wTags;
 	}
+
 }

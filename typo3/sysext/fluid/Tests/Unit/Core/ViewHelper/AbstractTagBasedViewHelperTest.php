@@ -127,4 +127,5 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->viewHelper->expects($this->once())->method('registerArgument')->with('foo', 'string', 'Description', FALSE, NULL);
 		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 	}
+
 }

@@ -160,4 +160,5 @@ class ClassInfo {
 	public function hasInjectProperties() {
 		return count($this->injectProperties) > 0;
 	}
+
 }

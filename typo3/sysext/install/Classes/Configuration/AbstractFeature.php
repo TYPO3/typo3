@@ -129,4 +129,5 @@ abstract class AbstractFeature {
 	public function getName() {
 		return $this->name;
 	}
+
 }

@@ -58,4 +58,5 @@ abstract class AbstractContentObject {
 	public function getContentObject() {
 		return $this->cObj;
 	}
+
 }

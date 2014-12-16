@@ -208,4 +208,5 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 //		$this->assertFalse($this->validator->validate('überlang')->hasErrors());
 		$this->markTestSkipped('Validator needs to be adjusted regarding multibyte char lengths.');
 	}
+
 }

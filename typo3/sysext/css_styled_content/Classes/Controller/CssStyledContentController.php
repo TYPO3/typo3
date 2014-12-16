@@ -1278,4 +1278,5 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	protected function getResourceFactory() {
 		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 	}
+
 }

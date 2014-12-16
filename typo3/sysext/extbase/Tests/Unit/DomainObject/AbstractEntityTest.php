@@ -95,4 +95,5 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$domainObject->_memorizeCleanState();
 		$this->assertFalse($domainObject->_isDirty());
 	}
+
 }

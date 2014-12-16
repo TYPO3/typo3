@@ -179,4 +179,5 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getUpdateResult() {
 		return $this->updateResult;
 	}
+
 }

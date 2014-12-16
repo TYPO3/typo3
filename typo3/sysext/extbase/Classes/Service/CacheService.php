@@ -85,4 +85,5 @@ class CacheService implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->clearPageCache($pageIds);
 		}
 	}
+
 }

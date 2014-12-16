@@ -51,4 +51,5 @@ class LogicalNot implements NotInterface {
 	public function getConstraint() {
 		return $this->constraint;
 	}
+
 }

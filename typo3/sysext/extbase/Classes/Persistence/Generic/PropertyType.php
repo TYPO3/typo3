@@ -351,4 +351,5 @@ class PropertyType {
 
 		return $value;
 	}
+
 }

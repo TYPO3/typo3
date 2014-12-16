@@ -30,4 +30,5 @@ class ConstantViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	public function render($name) {
 		return constant($name);
 	}
+
 }

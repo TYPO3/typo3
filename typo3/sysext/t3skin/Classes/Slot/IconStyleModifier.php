@@ -152,4 +152,5 @@ class IconStyleModifier {
 			$cssClasses = 't3-icon fa ' . $this->flatSpriteIconName[$cssClasses];
 		}
 	}
+
 }

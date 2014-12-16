@@ -94,4 +94,5 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
+
 }

@@ -551,4 +551,5 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			$this->countInARun
 		);
 	}
+
 }

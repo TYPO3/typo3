@@ -339,4 +339,5 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject->expects($this->once())->method('columnHasRelationToResolve')->will($this->returnValue(TRUE));
 		$subject->_call('enrichWithRelationFields', 17, array());
 	}
+
 }

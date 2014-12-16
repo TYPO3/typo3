@@ -283,4 +283,5 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($viewHelper->_get('viewHelperVariableContainer'), $viewHelperVariableContainer);
 		$this->assertSame($viewHelper->_get('controllerContext'), $controllerContext);
 	}
+
 }

@@ -144,4 +144,5 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $this->hashService->validateAndStripHmac($hashedString);
 		$this->assertSame($string, $actualResult);
 	}
+
 }

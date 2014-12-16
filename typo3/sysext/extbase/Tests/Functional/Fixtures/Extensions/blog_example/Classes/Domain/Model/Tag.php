@@ -50,4 +50,5 @@ class Tag extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject {
 	public function __toString() {
 		return $this->getName();
 	}
+
 }

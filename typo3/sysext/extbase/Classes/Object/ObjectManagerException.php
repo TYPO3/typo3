@@ -132,4 +132,5 @@ class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerI
 	public function getEmptyObject($className) {
 		return $this->objectContainer->getEmptyObject($className);
 	}
+
 }

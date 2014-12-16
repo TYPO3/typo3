@@ -130,4 +130,5 @@ class FileDeletionAspect {
 			$this->removeFromRepository($processedFile);
 		}
 	}
+
 }

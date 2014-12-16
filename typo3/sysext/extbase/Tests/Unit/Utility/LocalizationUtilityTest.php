@@ -448,4 +448,5 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertNotNull($result);
 		$this->assertEquals('', $result);
 	}
+
 }

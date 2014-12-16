@@ -29,4 +29,5 @@ class ElementBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $subject->printCurrentUrl('Teststring');
 		$this->assertContains('Teststring', $result);
 	}
+
 }

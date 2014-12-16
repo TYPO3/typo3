@@ -329,4 +329,5 @@ class ElementConditionMatcher {
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
+
 }

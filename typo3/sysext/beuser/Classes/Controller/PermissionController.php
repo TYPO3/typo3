@@ -450,4 +450,5 @@ class PermissionController extends ActionController {
 		}
 		return FALSE;
 	}
+
 }

@@ -81,4 +81,5 @@ class LocalPreviewHelper {
 			'filePath' => $temporaryFileName,
 		);
 	}
+
 }

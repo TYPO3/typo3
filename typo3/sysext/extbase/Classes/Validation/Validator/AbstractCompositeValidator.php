@@ -147,4 +147,5 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 	public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer) {
 		$this->validatedInstancesContainer = $validatedInstancesContainer;
 	}
+
 }

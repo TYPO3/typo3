@@ -159,4 +159,5 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());
 	}
+
 }

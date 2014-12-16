@@ -2656,4 +2656,5 @@ class ElementBrowser {
 		}
 		return $folder->getFiles();
 	}
+
 }

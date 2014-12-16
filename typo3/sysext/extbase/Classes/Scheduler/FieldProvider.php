@@ -313,4 +313,5 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		}
 		return $html;
 	}
+
 }

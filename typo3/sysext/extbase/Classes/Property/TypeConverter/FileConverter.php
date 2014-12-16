@@ -43,4 +43,5 @@ class FileConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFi
 	protected function getOriginalResource($source) {
 		return $this->fileFactory->retrieveFileOrFolderObject($source);
 	}
+
 }

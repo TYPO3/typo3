@@ -235,4 +235,5 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node->__construct($structure, NULL);
 		$this->assertSame($path, $node->getAbsolutePath());
 	}
+
 }

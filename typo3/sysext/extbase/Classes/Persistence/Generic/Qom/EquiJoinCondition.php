@@ -112,4 +112,5 @@ class EquiJoinCondition implements EquiJoinConditionInterface {
 	public function getParentSelectorName() {
 		return '';
 	}
+
 }

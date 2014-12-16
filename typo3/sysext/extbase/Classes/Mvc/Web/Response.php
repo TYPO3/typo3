@@ -302,4 +302,5 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	protected function getDocumentTemplate() {
 		return $GLOBALS['TBE_TEMPLATE'];
 	}
+
 }

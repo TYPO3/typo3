@@ -331,4 +331,5 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	public function isPrototype($className) {
 		return !$this->isSingleton($className);
 	}
+
 }

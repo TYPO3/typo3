@@ -32,4 +32,5 @@ class LoadExtensions extends Action\AbstractAction {
 
 		return $this->view->render();
 	}
+
 }

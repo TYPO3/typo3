@@ -372,4 +372,5 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->accessibleFixture->conf['preserveGETvars'] = $preserveVars;
 		$this->assertSame($expected, $this->accessibleFixture->_call('getPreserveGetVars'));
 	}
+
 }

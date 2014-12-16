@@ -147,4 +147,5 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $this->command->getArgumentDefinitions();
 		$this->assertSame($expectedResult, $actualResult);
 	}
+
 }

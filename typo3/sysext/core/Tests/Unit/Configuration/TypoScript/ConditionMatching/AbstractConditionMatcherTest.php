@@ -221,4 +221,5 @@ class AbstractConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $method->invokeArgs($abstractConditionMatcherMock, array('IP', 'devIP'));
 		$this->assertSame($expectedResult, $actualResult);
 	}
+
 }

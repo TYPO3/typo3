@@ -26,4 +26,5 @@ class ElseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$actualResult = $viewHelper->render();
 		$this->assertEquals('foo', $actualResult);
 	}
+
 }

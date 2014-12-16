@@ -124,4 +124,5 @@ class VideoTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$VideoTagRenderer->render($fileResourceMock, '300m', '200', array('controls' => 0, 'autoplay' => 1))
 		);
 	}
+
 }

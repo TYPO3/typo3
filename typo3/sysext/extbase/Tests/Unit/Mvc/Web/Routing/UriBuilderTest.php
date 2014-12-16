@@ -832,4 +832,5 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
 }

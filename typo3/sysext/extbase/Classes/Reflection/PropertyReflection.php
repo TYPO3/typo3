@@ -90,4 +90,5 @@ class PropertyReflection extends \ReflectionProperty {
 		}
 		return $this->docCommentParser;
 	}
+
 }

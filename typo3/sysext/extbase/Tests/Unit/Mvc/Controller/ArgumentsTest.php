@@ -235,4 +235,5 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$arguments->removeAll();
 		$this->assertFalse($arguments->hasArgument('argumentName2'));
 	}
+
 }

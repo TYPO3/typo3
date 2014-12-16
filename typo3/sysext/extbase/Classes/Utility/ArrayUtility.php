@@ -323,4 +323,5 @@ class ArrayUtility {
 		}
 		return $array;
 	}
+
 }

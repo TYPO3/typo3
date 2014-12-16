@@ -82,4 +82,5 @@ class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 		// Replace font tag with span
 		return str_replace(array('<font', '</font>'), array('<span', '</span>'), $html);
 	}
+
 }

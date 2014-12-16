@@ -78,4 +78,5 @@ class ClassInfoCache {
 	private function initializeLevel2Cache() {
 		$this->level2Cache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('extbase_object');
 	}
+
 }

@@ -219,4 +219,5 @@ abstract class AbstractContextMenuDataProvider {
 		}
 		return $contentUrl;
 	}
+
 }

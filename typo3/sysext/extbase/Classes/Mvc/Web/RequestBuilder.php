@@ -278,4 +278,5 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $fieldPaths;
 	}
+
 }

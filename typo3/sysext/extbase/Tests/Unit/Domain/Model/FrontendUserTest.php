@@ -362,4 +362,5 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->setLastlogin($date);
 		$this->assertSame($date, $this->fixture->getLastlogin());
 	}
+
 }

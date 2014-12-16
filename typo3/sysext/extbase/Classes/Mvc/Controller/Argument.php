@@ -297,4 +297,5 @@ class Argument {
 	public function __toString() {
 		return (string)$this->value;
 	}
+
 }

@@ -888,4 +888,5 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		$this->queryRuntimeCache[$entryIdentifier] = $variable;
 		$this->queryCache->set($entryIdentifier, $variable, array(), 0);
 	}
+
 }

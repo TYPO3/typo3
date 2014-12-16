@@ -97,4 +97,5 @@ class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionVie
 			return $this->renderElseChild();
 		}
 	}
+
 }

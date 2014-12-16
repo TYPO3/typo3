@@ -198,4 +198,5 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	public function valid() {
 		return $this->current() !== FALSE;
 	}
+
 }

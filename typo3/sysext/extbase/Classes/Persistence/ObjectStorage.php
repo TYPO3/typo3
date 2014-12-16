@@ -342,4 +342,5 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
 
 		return $this->addedObjectsPositions[spl_object_hash($object)];
 	}
+
 }

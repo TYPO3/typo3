@@ -4749,4 +4749,5 @@ class TypoScriptFrontendController {
 		$domainData = $this->getDomainDataForPid($targetPid);
 		return $domainData ? $domainData['domainName'] : NULL;
 	}
+
 }

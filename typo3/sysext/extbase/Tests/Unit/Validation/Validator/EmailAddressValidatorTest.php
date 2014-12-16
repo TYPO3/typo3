@@ -90,4 +90,5 @@ class EmailAddressValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class, array('translateErrorMessage'));
 		$this->assertEquals(1, count($subject->validate('notAValidMail@Address')->getErrors()));
 	}
+
 }

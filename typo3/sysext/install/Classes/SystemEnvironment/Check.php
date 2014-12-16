@@ -1407,4 +1407,5 @@ class Check {
 		}
 		return (int)$bytes;
 	}
+
 }

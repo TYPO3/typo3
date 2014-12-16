@@ -172,4 +172,5 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 		return $item;
 	}
+
 }

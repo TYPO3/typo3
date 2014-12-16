@@ -106,4 +106,5 @@ class FailsafeView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 	public function setPartialRootPath($partialRootPath) {
 		$this->partialRootPath = $partialRootPath;
 	}
+
 }

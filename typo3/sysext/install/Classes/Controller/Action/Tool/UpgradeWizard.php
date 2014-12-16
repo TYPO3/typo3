@@ -304,4 +304,5 @@ class UpgradeWizard extends Action\AbstractAction {
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
+
 }

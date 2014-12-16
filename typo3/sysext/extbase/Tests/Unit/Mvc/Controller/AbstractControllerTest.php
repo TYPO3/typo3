@@ -142,4 +142,5 @@ class AbstractControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$controller->addFlashMessage(new \stdClass());
 	}
+
 }

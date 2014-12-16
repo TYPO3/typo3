@@ -62,4 +62,5 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTest
 		$result = $this->sqlSchemaMigrationService->performUpdateQueries($removeFieldDiff['drop'], $removeFieldDiff['drop']);
 		$this->assertTrue($result, 'performUpdateQueries() did not return TRUE, this means an error occurred: ' . (is_array($result) ? array_pop($result) : ''));
 	}
+
 }

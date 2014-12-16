@@ -120,4 +120,5 @@ abstract class AbstractPreset implements PresetInterface {
 	public function getConfigurationValues() {
 		return $this->configurationValues;
 	}
+
 }

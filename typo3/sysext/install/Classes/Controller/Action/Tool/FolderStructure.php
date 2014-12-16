@@ -65,4 +65,5 @@ class FolderStructure extends Action\AbstractAction {
 
 		return $this->view->render();
 	}
+
 }

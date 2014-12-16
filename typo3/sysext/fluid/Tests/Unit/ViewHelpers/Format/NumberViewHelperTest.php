@@ -35,4 +35,5 @@ class NumberViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $viewHelper->render(3, ',', '.');
 		$this->assertEquals('3.333,333', $actualResult);
 	}
+
 }

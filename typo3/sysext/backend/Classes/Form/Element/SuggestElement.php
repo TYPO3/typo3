@@ -320,4 +320,5 @@ class SuggestElement {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

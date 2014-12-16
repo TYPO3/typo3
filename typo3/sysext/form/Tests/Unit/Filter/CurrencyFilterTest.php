@@ -68,4 +68,5 @@ class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->setDecimalsPoint($decimalPoint);
 		$this->assertSame($expected, $this->fixture->filter($input));
 	}
+
 }

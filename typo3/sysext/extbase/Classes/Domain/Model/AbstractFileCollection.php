@@ -39,4 +39,5 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Extbase\DomainObject\Ab
 	public function getObject() {
 		return $this->object;
 	}
+
 }

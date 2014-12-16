@@ -48,4 +48,5 @@ class ImageFeature extends Configuration\AbstractFeature implements Configuratio
 		}
 		return $additionalPath;
 	}
+
 }

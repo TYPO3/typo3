@@ -273,4 +273,5 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setLastLoginDateAndTime(\DateTime $dateAndTime = NULL) {
 		$this->lastLoginDateAndTime = $dateAndTime;
 	}
+
 }

@@ -77,4 +77,5 @@ class Configuration extends Action\AbstractAction {
 		}
 		return $message;
 	}
+
 }

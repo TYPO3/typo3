@@ -250,4 +250,5 @@ class BackendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->setLastLoginDateAndTime($date);
 		$this->assertSame($date, $this->fixture->getLastLoginDateAndTime());
 	}
+
 }

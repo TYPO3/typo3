@@ -168,4 +168,5 @@ class LanguageRepository {
 			'languages' => $languages
 		);
 	}
+
 }

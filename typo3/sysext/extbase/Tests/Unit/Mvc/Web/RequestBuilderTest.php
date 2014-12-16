@@ -757,4 +757,5 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
 		$this->assertSame($untangledFiles, $result);
 	}
+
 }

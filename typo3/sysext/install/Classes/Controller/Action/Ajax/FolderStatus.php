@@ -45,4 +45,5 @@ class FolderStatus extends AbstractAjaxAction {
 
 		return count($folderStructureErrors);
 	}
+
 }

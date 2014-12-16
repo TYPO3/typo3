@@ -1058,4 +1058,5 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$expectedQuery = 'SELECT "uid", "pid" FROM "tt_content" WHERE ' . $expectedWhere;
 		$this->assertEquals($expectedQuery, $this->cleanSql($result));
 	}
+
 }

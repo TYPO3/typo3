@@ -38,4 +38,5 @@ class BackendHookForAjaxLogin {
 			$backendController->getPageRenderer()->addJsLibrary($file, $javascriptPath . $file);
 		}
 	}
+
 }

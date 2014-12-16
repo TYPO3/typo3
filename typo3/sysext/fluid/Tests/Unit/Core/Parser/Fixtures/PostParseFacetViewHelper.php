@@ -30,4 +30,5 @@ class PostParseFacetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 
 	public function render() {
 	}
+
 }

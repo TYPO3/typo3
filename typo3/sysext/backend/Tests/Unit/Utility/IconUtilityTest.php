@@ -777,4 +777,5 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject = $this->subject;
 		$subject::getSpriteIconForResource($folderObject);
 	}
+
 }

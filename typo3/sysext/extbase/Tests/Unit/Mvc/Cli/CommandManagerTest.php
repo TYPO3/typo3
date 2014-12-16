@@ -118,4 +118,5 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->commandManager->expects($this->once())->method('getAvailableCommands')->will($this->returnValue($mockCommands));
 		$this->commandManager->getCommandByIdentifier('controller:command');
 	}
+
 }

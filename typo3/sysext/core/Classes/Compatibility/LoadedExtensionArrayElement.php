@@ -217,4 +217,5 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 	public function toArray() {
 		return iterator_to_array($this);
 	}
+
 }

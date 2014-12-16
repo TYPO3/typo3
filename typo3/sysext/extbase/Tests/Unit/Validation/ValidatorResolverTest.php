@@ -557,4 +557,5 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $this->validatorResolver->_call('parseValidatorAnnotation', $annotation);
 		$this->assertEquals($result, $expectedResult);
 	}
+
 }

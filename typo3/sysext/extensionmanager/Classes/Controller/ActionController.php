@@ -138,4 +138,5 @@ class ActionController extends AbstractController {
 		}
 		$this->fileHandlingUtility->sendSqlDumpFileToBrowserAndDelete($filePath, $fileName);
 	}
+
 }

@@ -61,4 +61,5 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 	public function getPriority() {
 		return 100;
 	}
+
 }

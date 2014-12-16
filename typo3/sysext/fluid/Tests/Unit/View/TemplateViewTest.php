@@ -712,4 +712,5 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame('contentsOfMyCoolAction', $templateView->_call('getTemplateSource'));
 	}
+
 }

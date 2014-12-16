@@ -118,4 +118,5 @@ class AbstractTemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->view->assign('foo', 'FooValue');
 		$this->view->assignMultiple(array('foo' => 'FooValueOverridden', 'bar' => 'BarValue'));
 	}
+
 }

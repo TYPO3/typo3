@@ -62,4 +62,5 @@ class WidgetRequestBuilder extends \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder {
 		$request->setWidgetContext($widgetContext);
 		return $request;
 	}
+
 }

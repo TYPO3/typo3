@@ -56,4 +56,5 @@ class DatabaseConnectionMock {
 	public function sql_error() {
 		return '';
 	}
+
 }

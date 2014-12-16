@@ -288,4 +288,5 @@ class FrontendRequestHandler {
 		}
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
 	}
+
 }

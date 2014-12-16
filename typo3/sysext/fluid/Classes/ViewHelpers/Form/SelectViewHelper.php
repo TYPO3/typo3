@@ -274,4 +274,5 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		$output .= '>' . htmlspecialchars($label) . '</option>';
 		return $output;
 	}
+
 }

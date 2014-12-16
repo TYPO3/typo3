@@ -753,4 +753,5 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 			die;
 		}
 	}
+
 }

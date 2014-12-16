@@ -420,4 +420,5 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		$sqlString[] = $this->getDatabaseTableDefinition($extensionKey);
 		return array('sqlString' => $sqlString, 'extensionKey' => $extensionKey);
 	}
+
 }

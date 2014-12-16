@@ -559,4 +559,5 @@ class ActionController extends AbstractController {
 
 		return $result;
 	}
+
 }

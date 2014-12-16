@@ -36,4 +36,5 @@ class InstallToolDisabledAction extends Action\AbstractAction {
 		$this->view->assign('alerts', $alerts);
 		return $this->view->render(!empty($alerts));
 	}
+
 }

@@ -632,4 +632,5 @@ class SqlSchemaMigrationService {
 		unset($value);
 		return $whichTables;
 	}
+
 }

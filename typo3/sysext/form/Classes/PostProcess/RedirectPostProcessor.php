@@ -88,4 +88,5 @@ class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessor
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->destination);
 		return '';
 	}
+
 }

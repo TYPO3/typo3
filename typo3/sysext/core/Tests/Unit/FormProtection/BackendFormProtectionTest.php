@@ -232,4 +232,5 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function enqueueAjaxFlashMessageCallback(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
 		$this->assertFalse($flashMessage->isSessionMessage());
 	}
+
 }

@@ -31,4 +31,5 @@ class WorkspaceRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject->expects($this->once())->method('setDefaultQuerySettings')->with($querySettings);
 		$subject->initializeObject();
 	}
+
 }

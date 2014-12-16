@@ -30,4 +30,5 @@ class LoginForm extends Action\AbstractAction {
 		$this->view->assign('messages', $this->messages);
 		return $this->view->render();
 	}
+
 }

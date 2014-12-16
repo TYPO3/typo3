@@ -23,4 +23,5 @@ class Tx_Extbase_Command_MockCCommandController extends \TYPO3\CMS\Extbase\Mvc\C
 	 */
 	public function funcCCommand() {
 	}
+
 }

@@ -94,4 +94,5 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
 		return $this->imageService->getImageUri($processedImage);
 	}
+
 }

@@ -43,4 +43,5 @@ class StaticFileCollectionConverter extends \TYPO3\CMS\Extbase\Property\TypeConv
 	protected function getObject($source) {
 		return $this->fileFactory->getCollectionObject($source);
 	}
+
 }

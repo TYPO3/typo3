@@ -105,4 +105,5 @@ class ClassNamingUtility {
 
 		return $matches;
 	}
+
 }

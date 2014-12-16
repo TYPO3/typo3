@@ -26,4 +26,5 @@ class BackendUserSessionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		new \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository($objectManager);
 	}
+
 }

@@ -417,4 +417,5 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $this->view->render();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
 }

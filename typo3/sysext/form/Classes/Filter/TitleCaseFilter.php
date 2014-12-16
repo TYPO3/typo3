@@ -41,4 +41,5 @@ class TitleCaseFilter implements FilterInterface {
 	protected function getTypoScriptFrontendController() {
 		return $GLOBALS['TSFE'];
 	}
+
 }

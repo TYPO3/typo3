@@ -75,4 +75,5 @@ class TypoScriptService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $typoScriptArray;
 	}
+
 }

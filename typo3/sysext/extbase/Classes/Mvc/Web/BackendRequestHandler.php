@@ -40,4 +40,5 @@ class BackendRequestHandler extends AbstractRequestHandler {
 	public function canHandleRequest() {
 		return $this->environmentService->isEnvironmentInBackendMode() && !$this->environmentService->isEnvironmentInCliMode();
 	}
+
 }

@@ -289,4 +289,5 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_installTool'), $value, $message, $severity);
 	}
+
 }

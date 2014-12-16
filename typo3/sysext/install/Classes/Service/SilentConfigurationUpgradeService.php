@@ -377,4 +377,5 @@ class SilentConfigurationUpgradeService {
 			1379024938
 		);
 	}
+
 }

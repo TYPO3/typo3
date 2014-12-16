@@ -68,4 +68,5 @@ abstract class AbstractSpecifics {
 
 		return array_chunk($expressionList, $this->getSpecific(self::LIST_MAXEXPRESSIONS), $preserveArrayKeys);
 	}
+
 }

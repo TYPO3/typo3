@@ -68,4 +68,5 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertFalse($isSet);
 		$this->assertSame($originalPassword, $saltedPassword);
 	}
+
 }

@@ -80,4 +80,5 @@ class FileMinimumSizeValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->subject->isValid()
 		);
 	}
+
 }

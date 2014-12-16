@@ -40,4 +40,5 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$objectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will($this->returnValue($querySettings));
 		$fixture->initializeObject();
 	}
+
 }

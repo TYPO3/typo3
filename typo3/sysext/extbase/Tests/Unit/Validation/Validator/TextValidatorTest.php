@@ -77,4 +77,5 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
 		$expected = array(new \TYPO3\CMS\Extbase\Validation\Error(NULL, 1221565786));
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
+
 }

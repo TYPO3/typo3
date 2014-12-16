@@ -53,4 +53,5 @@ class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getRootNodeReturnsExpandedNode() {
 		$this->assertTrue($this->subject->getRoot()->isExpanded());
 	}
+
 }

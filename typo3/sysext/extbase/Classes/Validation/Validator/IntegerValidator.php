@@ -37,4 +37,5 @@ class IntegerValidator extends AbstractValidator {
 				), 1221560494);
 		}
 	}
+
 }

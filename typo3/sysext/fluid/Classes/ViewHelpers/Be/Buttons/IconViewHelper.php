@@ -80,4 +80,5 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 			return '<a href="' . $uri . '"' . $additionalAttributes . '>' . $icon . '</a>';
 		}
 	}
+
 }

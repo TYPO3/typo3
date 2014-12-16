@@ -453,4 +453,5 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$sortedArray = \TYPO3\CMS\Extbase\Utility\ArrayUtility::sortArrayWithIntegerKeys($arrayToSort);
 		$this->assertSame($sortedArray, $expectedArray);
 	}
+
 }

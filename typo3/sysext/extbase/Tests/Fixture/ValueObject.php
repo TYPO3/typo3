@@ -53,4 +53,5 @@ class ValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject {
 	public function getName() {
 		return $this->name;
 	}
+
 }

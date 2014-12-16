@@ -86,4 +86,5 @@ class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $this->fixture->_call('process_youtube', $url);
 		$this->assertEquals($expected, $result);
 	}
+
 }

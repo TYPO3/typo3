@@ -100,4 +100,5 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $controller;
 	}
+
 }

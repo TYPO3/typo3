@@ -43,4 +43,5 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 	public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured() {
 		$this->assertTrue($this->fixture->isCaseSensitiveFileSystem());
 	}
+
 }

@@ -58,4 +58,5 @@ class EqualsValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->subject->isValid()
 		);
 	}
+
 }

@@ -231,4 +231,5 @@ class QueryResult implements QueryResultInterface {
 	public function __sleep() {
 		return array('query');
 	}
+
 }

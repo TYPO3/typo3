@@ -151,4 +151,5 @@ class QueryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->query->_set('qomFactory', $qomFactory);
 		$this->query->equals($propertyName, $operand, FALSE);
 	}
+
 }

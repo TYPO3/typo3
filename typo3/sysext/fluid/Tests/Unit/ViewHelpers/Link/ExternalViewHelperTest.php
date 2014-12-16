@@ -91,4 +91,5 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 		$this->viewHelper->initialize();
 		$this->viewHelper->render('some-domain.tld', '');
 	}
+
 }

@@ -134,4 +134,5 @@ class Comment extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return $this->author . ' (' . $this->email . ') said on ' . $this->date->format('Y-m-d') . ':' . chr(10) .
 			$this->content . chr(10);
 	}
+
 }

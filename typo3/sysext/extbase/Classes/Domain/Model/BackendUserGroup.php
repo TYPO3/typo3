@@ -568,4 +568,5 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->fileOperationPermissions &= ~$permission;
 		}
 	}
+
 }

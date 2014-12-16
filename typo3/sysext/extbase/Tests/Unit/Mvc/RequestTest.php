@@ -352,4 +352,5 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($controllerArguments, $actualControllerArguments);
 	}
+
 }

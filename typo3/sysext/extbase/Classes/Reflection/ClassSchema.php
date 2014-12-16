@@ -233,4 +233,5 @@ class ClassSchema {
 	public function getIdentityProperties() {
 		return $this->identityProperties;
 	}
+
 }

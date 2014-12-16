@@ -362,4 +362,5 @@ class ObjectAccess {
 	static public function buildSetterMethodName($propertyName) {
 		return 'set' . ucfirst($propertyName);
 	}
+
 }

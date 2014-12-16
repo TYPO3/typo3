@@ -308,4 +308,5 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$input->expects($this->once())->method('getUid')->will($this->returnValue(23));
 		$this->assertSame(23, $dataMapper->getPlainValue($input));
 	}
+
 }

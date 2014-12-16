@@ -53,4 +53,5 @@ class Configuration {
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 	}
+
 }

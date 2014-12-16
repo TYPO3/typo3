@@ -31,4 +31,5 @@ class TemplateParserBuilder {
 		$templateParser = $objectManager->get(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class);
 		return $templateParser;
 	}
+
 }

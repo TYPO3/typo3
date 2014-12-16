@@ -583,4 +583,5 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->_set('whiteListedLocalConfigurationPaths', array('foo/bar'));
 		$this->assertFalse($fixture->_call('isValidLocalConfigurationPath', 'bar/baz'));
 	}
+
 }

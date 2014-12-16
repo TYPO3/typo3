@@ -547,4 +547,5 @@ class AdministrationRepository {
 	protected function getBackendUserAuthentication() {
 		return $GLOBALS['BE_USER'];
 	}
+
 }

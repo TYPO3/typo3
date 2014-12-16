@@ -251,4 +251,5 @@ class RteController extends AbstractWizardController {
 		}
 		return $buttons;
 	}
+
 }

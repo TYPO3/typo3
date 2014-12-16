@@ -105,4 +105,5 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getSelected() {
 		return $this->selected;
 	}
+
 }

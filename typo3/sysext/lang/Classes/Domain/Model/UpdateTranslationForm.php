@@ -68,4 +68,5 @@ class UpdateTranslationForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	public function getSelectedLanguages() {
 		return $this->selectedLanguages;
 	}
+
 }

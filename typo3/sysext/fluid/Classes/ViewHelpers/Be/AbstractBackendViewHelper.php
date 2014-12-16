@@ -49,4 +49,5 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper {
 
 		return $doc;
 	}
+
 }

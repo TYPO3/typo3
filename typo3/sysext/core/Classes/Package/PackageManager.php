@@ -773,4 +773,5 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	public function isPackageKeyValid($packageKey) {
 		return parent::isPackageKeyValid($packageKey) || preg_match(\TYPO3\CMS\Core\Package\Package::PATTERN_MATCH_EXTENSIONKEY, $packageKey) === 1;
 	}
+
 }

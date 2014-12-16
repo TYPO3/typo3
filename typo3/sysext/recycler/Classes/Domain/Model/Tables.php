@@ -90,4 +90,5 @@ class Tables {
 		$output = json_encode($jsonArray);
 		return $output;
 	}
+
 }

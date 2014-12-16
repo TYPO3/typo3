@@ -1163,4 +1163,5 @@ class PageGenerator {
 		}
 		return $metaTags;
 	}
+
 }

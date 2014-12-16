@@ -71,4 +71,5 @@ class ImagePreviewTask extends AbstractGraphicalTask {
 		 * - width/height smaller than image, keeping aspect ratio?
 		 */
 	}
+
 }

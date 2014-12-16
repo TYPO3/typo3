@@ -68,4 +68,5 @@ class ProductionPreset extends Configuration\AbstractPreset {
 		}
 		return $priority;
 	}
+
 }

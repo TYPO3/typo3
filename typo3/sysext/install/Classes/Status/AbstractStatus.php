@@ -78,4 +78,5 @@ abstract class AbstractStatus implements StatusInterface {
 	public function setMessage($message) {
 		$this->message = $message;
 	}
+
 }

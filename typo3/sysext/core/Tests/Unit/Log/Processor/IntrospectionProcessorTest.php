@@ -171,4 +171,5 @@ class IntrospectionProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertContains($this->dummyBacktrace[2], $logRecord['data']['backtrace']);
 		$this->assertContains($this->dummyBacktrace[3], $logRecord['data']['backtrace']);
 	}
+
 }

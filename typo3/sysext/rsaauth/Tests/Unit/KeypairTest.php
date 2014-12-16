@@ -194,4 +194,5 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 			$this->subject->isReady()
 		);
 	}
+
 }

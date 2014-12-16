@@ -187,4 +187,5 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 		$lookUpClassName = strtolower($className);
 		return isset($this->classNameToAliasMapping[$lookUpClassName]) ? $this->classNameToAliasMapping[$lookUpClassName] : array($className);
 	}
+
 }

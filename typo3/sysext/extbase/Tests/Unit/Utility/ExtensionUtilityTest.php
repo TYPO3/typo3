@@ -314,4 +314,5 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
 		);
 	}
+
 }

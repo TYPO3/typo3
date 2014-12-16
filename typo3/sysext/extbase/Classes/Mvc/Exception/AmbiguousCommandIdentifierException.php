@@ -46,4 +46,5 @@ class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Excepti
 	public function getMatchingCommands() {
 		return $this->matchingCommands;
 	}
+
 }

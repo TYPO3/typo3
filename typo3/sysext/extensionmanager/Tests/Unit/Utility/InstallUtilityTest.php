@@ -339,4 +339,5 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$installMock->expects($this->never())->method('getImportExportUtility');
 		$installMock->_call('importT3DFile', $this->fakedExtensions[$extKey]['siteRelPath']);
 	}
+
 }

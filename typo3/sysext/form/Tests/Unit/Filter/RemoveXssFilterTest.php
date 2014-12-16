@@ -50,4 +50,5 @@ class RemoveXssFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->fixture->filter($input)
 		);
 	}
+
 }

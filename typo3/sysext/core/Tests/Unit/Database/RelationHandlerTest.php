@@ -68,4 +68,5 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertTrue($this->fixture->purgeItemArray(0));
 	}
+
 }

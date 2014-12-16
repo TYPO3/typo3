@@ -153,4 +153,5 @@ class RecyclerAjaxController {
 		$beUser->uc['tx_recycler'][$identifier] = $data;
 		$beUser->writeUC();
 	}
+
 }

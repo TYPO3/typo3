@@ -118,4 +118,5 @@ class CategoryPermissionsAspect {
 		}
 		return $result;
 	}
+
 }

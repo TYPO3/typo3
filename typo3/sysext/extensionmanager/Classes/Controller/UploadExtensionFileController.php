@@ -266,4 +266,5 @@ class UploadExtensionFileController extends AbstractController {
 			$this->extensionBackupPath = '';
 		}
 	}
+
 }

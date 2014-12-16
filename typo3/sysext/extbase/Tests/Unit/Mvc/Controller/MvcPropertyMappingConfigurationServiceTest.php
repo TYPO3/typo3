@@ -297,4 +297,5 @@ class MvcPropertyMappingConfigurationServiceTest extends \TYPO3\CMS\Core\Tests\U
 
 		return $arguments;
 	}
+
 }

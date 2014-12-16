@@ -130,4 +130,5 @@ class ConjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$validatorConjunction->addValidator($validator2);
 		$this->assertSame(2, count($validatorConjunction));
 	}
+
 }

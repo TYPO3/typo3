@@ -80,4 +80,5 @@ class ModuleMenuViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $moduleMenuViewMock->_get('loadedModules');
 		$this->assertSame($expectedResult, $actualResult);
 	}
+
 }

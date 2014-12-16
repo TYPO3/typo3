@@ -72,4 +72,5 @@ class ExtensionCommandController extends CommandController {
 	protected function emitPackagesMayHaveChangedSignal() {
 		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
 	}
+
 }

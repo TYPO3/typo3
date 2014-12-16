@@ -112,4 +112,5 @@ class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode, \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler) {
 		return '\'\'';
 	}
+
 }

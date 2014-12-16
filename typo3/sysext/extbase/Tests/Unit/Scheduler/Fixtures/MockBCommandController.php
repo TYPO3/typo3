@@ -24,4 +24,5 @@ class MockBCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCo
 	 */
 	public function funcBCommand() {
 	}
+
 }

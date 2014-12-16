@@ -43,4 +43,5 @@ class FolderConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 	protected function getOriginalResource($source) {
 		return $this->fileFactory->getFolderObjectFromCombinedIdentifier($source);
 	}
+
 }

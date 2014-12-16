@@ -92,4 +92,5 @@ class CollectionValidator extends GenericObjectValidator {
 			$this->result->forProperty($index)->merge($collectionElementValidator->validate($collectionElement));
 		}
 	}
+
 }

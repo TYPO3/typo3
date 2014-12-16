@@ -83,4 +83,5 @@ abstract class AbstractCoreUpdate extends AbstractAjaxAction {
 		}
 		return $versionToHandle;
 	}
+
 }

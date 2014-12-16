@@ -455,4 +455,5 @@ class Folder implements FolderInterface {
 	public function getParentFolder() {
 		return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
 	}
+
 }

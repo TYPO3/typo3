@@ -50,4 +50,5 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		// we only test for the error code, after the translation Method for message is mocked anyway
 		$this->assertEquals(array(new \TYPO3\CMS\Extbase\Validation\Error(NULL, 1221565130)), $errors);
 	}
+
 }

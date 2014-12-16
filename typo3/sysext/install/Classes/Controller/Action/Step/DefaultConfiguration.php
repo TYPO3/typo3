@@ -92,4 +92,5 @@ class DefaultConfiguration extends AbstractStepAction {
 		$this->assignSteps();
 		return $this->view->render();
 	}
+
 }

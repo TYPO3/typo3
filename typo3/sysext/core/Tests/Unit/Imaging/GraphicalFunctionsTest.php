@@ -108,4 +108,5 @@ class GraphicalFunctionsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $this->fixture->getImageScale($info, $width, $height, $options);
 		$this->assertEquals($result, $expected);
 	}
+
 }

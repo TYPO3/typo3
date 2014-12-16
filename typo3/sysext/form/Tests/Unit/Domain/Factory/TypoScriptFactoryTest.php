@@ -47,4 +47,5 @@ class TypoScriptFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$element->getValue()
 		);
 	}
+
 }

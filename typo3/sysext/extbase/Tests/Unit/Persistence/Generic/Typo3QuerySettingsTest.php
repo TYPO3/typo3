@@ -176,4 +176,5 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setIncludeDeletedAllowsChaining() {
 		$this->assertTrue($this->typo3QuerySettings->setIncludeDeleted(TRUE) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
 	}
+
 }

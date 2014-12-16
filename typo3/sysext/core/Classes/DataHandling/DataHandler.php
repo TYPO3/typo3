@@ -7418,4 +7418,5 @@ class DataHandler {
 	protected function getCacheManager() {
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
 	}
+
 }

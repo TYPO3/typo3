@@ -4645,4 +4645,5 @@ class FormEngine {
 	protected function getDocumentTemplate() {
 		return $GLOBALS['TBE_TEMPLATE'];
 	}
+
 }

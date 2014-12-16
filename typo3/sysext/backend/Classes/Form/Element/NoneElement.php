@@ -33,4 +33,5 @@ class NoneElement extends AbstractFormElement {
 		$itemValue = $additionalInformation['itemFormElValue'];
 		return $this->formEngine->getSingleField_typeNone_render($config, $itemValue);
 	}
+
 }

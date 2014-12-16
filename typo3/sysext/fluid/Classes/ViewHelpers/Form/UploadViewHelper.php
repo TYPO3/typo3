@@ -72,4 +72,5 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		$this->setErrorClassAttribute();
 		return $this->tag->render();
 	}
+
 }

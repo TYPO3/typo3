@@ -65,4 +65,5 @@ class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$bootstrapMock->_set('configurationManager', $configurationManagerMock);
 		$bootstrapMock->configureObjectManager();
 	}
+
 }

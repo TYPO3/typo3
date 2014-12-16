@@ -54,4 +54,5 @@ class OpenidEid {
 	protected function getSignature($parameter) {
 		return GeneralUtility::hmac($parameter, 'openid');
 	}
+
 }

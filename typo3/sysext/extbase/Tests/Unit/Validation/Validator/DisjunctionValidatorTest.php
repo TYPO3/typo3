@@ -81,4 +81,5 @@ class DisjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$validatorDisjunction->addValidator($secondValidatorObject);
 		$this->assertEquals(array($error1, $error2), $validatorDisjunction->validate('some subject')->getErrors());
 	}
+
 }

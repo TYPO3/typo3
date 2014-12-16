@@ -78,4 +78,5 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
 	public function addChildNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface $childNode) {
 		$this->childNodes[] = $childNode;
 	}
+
 }

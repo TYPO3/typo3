@@ -107,4 +107,5 @@ class IntegerConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray() {
 		$this->assertEquals(array(), $this->converter->getSourceChildPropertiesToBeConverted('myString'));
 	}
+
 }

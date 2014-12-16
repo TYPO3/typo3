@@ -113,4 +113,5 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $recordData;
 	}
+
 }

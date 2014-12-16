@@ -235,4 +235,5 @@ class TagBuilder {
 		}
 		return $output;
 	}
+
 }

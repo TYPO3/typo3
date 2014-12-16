@@ -77,4 +77,5 @@ class LanguageIsoCodeUpdate extends AbstractUpdate {
 		$this->markWizardAsDone();
 		return TRUE;
 	}
+
 }

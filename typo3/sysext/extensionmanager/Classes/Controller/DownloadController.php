@@ -244,4 +244,5 @@ class DownloadController extends AbstractController {
 
 		return array($result, $errorMessages);
 	}
+
 }

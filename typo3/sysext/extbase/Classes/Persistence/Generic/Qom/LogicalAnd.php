@@ -69,4 +69,5 @@ class LogicalAnd implements AndInterface {
 	public function getConstraint2() {
 		return $this->constraint2;
 	}
+
 }

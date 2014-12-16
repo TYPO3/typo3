@@ -45,4 +45,5 @@ class ErrorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$error = new \TYPO3\CMS\Extbase\Error\Error('', $errorCode);
 		$this->assertEquals($errorCode, $error->getCode());
 	}
+
 }

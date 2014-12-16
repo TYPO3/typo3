@@ -196,4 +196,5 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function bindVariable($bindVariableName) {
 		return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\BindVariableValue::class, $bindVariableName);
 	}
+
 }

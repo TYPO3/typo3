@@ -93,4 +93,5 @@ class ArrayConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canConvertFromReturnsCorrectBooleans($source, $expectedResult) {
 		$this->assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
 	}
+
 }

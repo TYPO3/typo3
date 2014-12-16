@@ -86,4 +86,5 @@ class CoreUpdateIsUpdateAvailable extends AbstractCoreUpdate {
 			'action' => $action,
 		);
 	}
+
 }

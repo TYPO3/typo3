@@ -237,4 +237,5 @@ class BackendFormProtection extends AbstractFormProtection {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

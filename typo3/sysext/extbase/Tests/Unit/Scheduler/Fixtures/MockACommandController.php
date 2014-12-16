@@ -28,4 +28,5 @@ class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCo
 	public function funcACommand($arg = 1) {
 		return 'Foo';
 	}
+
 }

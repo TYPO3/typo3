@@ -84,4 +84,5 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 		$factory->registerMenuType('foo', array());
 	}
+
 }

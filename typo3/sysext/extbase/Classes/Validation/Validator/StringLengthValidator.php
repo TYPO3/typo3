@@ -96,4 +96,5 @@ class StringLengthValidator extends AbstractValidator {
 			}
 		}
 	}
+
 }

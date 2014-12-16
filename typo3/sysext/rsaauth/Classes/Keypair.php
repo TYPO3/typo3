@@ -162,4 +162,5 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function hasPublicKeyModulus() {
 		return $this->getPublicKeyModulus() !== 0;
 	}
+
 }

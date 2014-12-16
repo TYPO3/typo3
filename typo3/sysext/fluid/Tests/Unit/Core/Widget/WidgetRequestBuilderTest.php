@@ -139,4 +139,5 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actual = $this->widgetRequestBuilder->build();
 		$this->assertSame($expected, $actual);
 	}
+
 }

@@ -121,4 +121,5 @@ class AudioTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$audioTagRenderer->render($fileResourceMock, '300m', '200', array('controls' => 0, 'autoplay' => 1))
 		);
 	}
+
 }

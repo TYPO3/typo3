@@ -76,4 +76,5 @@ class ProductionExceptionHandler implements ExceptionHandlerInterface {
 	protected function getLogger() {
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
 	}
+
 }

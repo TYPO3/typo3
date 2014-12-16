@@ -31,4 +31,5 @@ class CoreUpdateMove extends AbstractCoreUpdate {
 			));
 		return $this->view->render();
 	}
+
 }

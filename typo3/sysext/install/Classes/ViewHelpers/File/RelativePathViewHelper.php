@@ -39,4 +39,5 @@ class RelativePathViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		$absolutePath = $this->renderChildren();
 		return \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($absolutePath);
 	}
+
 }

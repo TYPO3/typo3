@@ -743,4 +743,5 @@ class StagesService {
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
+
 }

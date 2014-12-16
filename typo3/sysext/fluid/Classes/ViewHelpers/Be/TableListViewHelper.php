@@ -106,4 +106,5 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		$dblist->generateList();
 		return $dblist->HTMLcode;
 	}
+
 }

@@ -302,4 +302,5 @@ class JsonView extends AbstractView {
 			return $propertiesToRender;
 		}
 	}
+
 }

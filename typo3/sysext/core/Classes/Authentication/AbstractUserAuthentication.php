@@ -1562,4 +1562,5 @@ abstract class AbstractUserAuthentication {
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
+
 }

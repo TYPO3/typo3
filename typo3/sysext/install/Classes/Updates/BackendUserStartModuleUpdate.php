@@ -75,4 +75,5 @@ class BackendUserStartModuleUpdate extends AbstractUpdate {
 		$this->markWizardAsDone();
 		return TRUE;
 	}
+
 }

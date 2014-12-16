@@ -189,4 +189,5 @@ class TranslationTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertSame('B EN:Post1', $posts[1]->getTitle());
 		$this->assertSame('Post3', $posts[2]->getTitle());
 	}
+
 }

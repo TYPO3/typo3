@@ -40,4 +40,5 @@ class AbstractCompilerTemplateTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->assertSame('ISO-8859-1', $fullClassName::resolveDefaultEncoding());
 	}
+
 }

@@ -75,4 +75,5 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 		$this->tag->forceClosingTag(TRUE);
 		return $this->tag->render();
 	}
+
 }

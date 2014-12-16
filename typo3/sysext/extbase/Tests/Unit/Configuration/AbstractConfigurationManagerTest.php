@@ -495,4 +495,5 @@ class AbstractConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$this->abstractConfigurationManager->setContentObject($mockContentObject);
 		$this->assertSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);
 	}
+
 }

@@ -388,4 +388,5 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		$actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
 }

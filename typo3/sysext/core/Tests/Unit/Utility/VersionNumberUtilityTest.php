@@ -179,4 +179,5 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$versions = VersionNumberUtility::convertVersionsStringToVersionNumbers($versionString);
 		$this->assertEquals($expectedResult, $versions);
 	}
+
 }

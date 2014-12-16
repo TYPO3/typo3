@@ -242,4 +242,5 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->_set('metaDataProperties', array('testproperty' => 'testvalue'));
 		$this->assertTrue($fixture->hasProperty('testproperty'));
 	}
+
 }

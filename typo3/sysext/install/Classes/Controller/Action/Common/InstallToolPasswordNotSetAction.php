@@ -29,4 +29,5 @@ class InstallToolPasswordNotSetAction extends Action\AbstractAction {
 	protected function executeAction() {
 		return $this->view->render();
 	}
+
 }

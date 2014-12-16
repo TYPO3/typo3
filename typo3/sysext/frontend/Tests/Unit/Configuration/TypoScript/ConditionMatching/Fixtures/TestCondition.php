@@ -32,4 +32,5 @@ class TestCondition extends \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMa
 			throw new TestConditionException('All Ok', 1411581139);
 		}
 	}
+
 }

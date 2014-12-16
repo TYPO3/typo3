@@ -208,4 +208,5 @@ class TreeElement extends AbstractFormElement {
 		// deliberately empty as this class is not used the same way
 		return '';
 	}
+
 }

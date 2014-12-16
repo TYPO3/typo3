@@ -45,4 +45,5 @@ class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $this->flashMessageQueues[$identifier];
 	}
+
 }

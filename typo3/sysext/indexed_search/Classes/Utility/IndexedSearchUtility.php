@@ -47,4 +47,5 @@ class IndexedSearchUtility {
 	static public function md5inthash($stringToHash) {
 		return hexdec(substr(md5($stringToHash), 0, 7));
 	}
+
 }

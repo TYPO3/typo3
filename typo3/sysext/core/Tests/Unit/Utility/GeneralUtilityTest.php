@@ -4574,4 +4574,5 @@ text with a ' . $urlMatch . '$|s'),
 	public function stripHttpHeadersStripsHeadersFromHttpResponse($httpResponse, $expected) {
 		$this->assertEquals($expected, GeneralUtilityFixture::stripHttpHeaders($httpResponse));
 	}
+
 }

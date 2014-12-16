@@ -63,4 +63,5 @@ class FrontendRequestHandler extends AbstractRequestHandler {
 	public function canHandleRequest() {
 		return $this->environmentService->isEnvironmentInFrontendMode();
 	}
+
 }

@@ -1360,4 +1360,5 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Utility\BackendUtility::class, array('dummy'));
 		$this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
 	}
+
 }

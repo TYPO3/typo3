@@ -53,4 +53,5 @@ class DatabasePreset extends Configuration\AbstractPreset {
 	public function isAvailable() {
 		return TRUE;
 	}
+
 }

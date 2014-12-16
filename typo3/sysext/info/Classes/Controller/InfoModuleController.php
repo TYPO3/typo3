@@ -177,4 +177,5 @@ class InfoModuleController extends BaseScriptClass {
 		}
 		return $buttons;
 	}
+
 }

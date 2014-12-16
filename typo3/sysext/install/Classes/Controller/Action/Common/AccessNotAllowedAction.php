@@ -29,4 +29,5 @@ class AccessNotAllowedAction extends Action\AbstractAction {
 	public function executeAction() {
 		return $this->view->render();
 	}
+
 }

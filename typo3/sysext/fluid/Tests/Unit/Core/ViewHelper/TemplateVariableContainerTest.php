@@ -128,4 +128,5 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function addingVariableNamedAllShouldThrowException() {
 		$this->variableContainer->add('_all', 'foo');
 	}
+
 }

@@ -53,4 +53,5 @@ class Entity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getName() {
 		return $this->name;
 	}
+
 }

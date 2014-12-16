@@ -28,4 +28,5 @@ abstract class AbstractValueObject extends \TYPO3\CMS\Extbase\DomainObject\Abstr
 	public function getValue() {
 		return $this->__toString();
 	}
+
 }

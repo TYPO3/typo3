@@ -42,4 +42,5 @@ class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validato
 		$this->assertFalse($rawValidator->validate(FALSE)->hasErrors());
 		$this->assertFalse($rawValidator->validate(new \ArrayObject())->hasErrors());
 	}
+
 }

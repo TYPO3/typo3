@@ -74,4 +74,5 @@ class Typo3StatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$statusObject = $result['registeredXclass'];
 		$this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
 	}
+
 }

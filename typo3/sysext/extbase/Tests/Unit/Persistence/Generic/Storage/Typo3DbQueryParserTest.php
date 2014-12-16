@@ -386,4 +386,5 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($expectedSql, $sql);
 	}
+
 }

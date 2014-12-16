@@ -157,4 +157,5 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
 		return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
 	}
+
 }

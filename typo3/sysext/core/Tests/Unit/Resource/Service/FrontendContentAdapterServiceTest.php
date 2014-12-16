@@ -280,4 +280,5 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 		$frontendContentAdapterService->_setStatic('migrateFields', array());
 		return $frontendContentAdapterService;
 	}
+
 }

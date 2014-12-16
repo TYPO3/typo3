@@ -765,4 +765,5 @@ class FileNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path . '/' . $link));
 		$this->assertFalse($node->_call('isFile'));
 	}
+
 }

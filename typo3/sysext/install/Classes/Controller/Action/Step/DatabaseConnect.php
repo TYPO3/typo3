@@ -643,4 +643,5 @@ class DatabaseConnect extends AbstractStepAction {
 		$socket = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']) ? $GLOBALS['TYPO3_CONF_VARS']['DB']['socket'] : '';
 		return $socket;
 	}
+
 }

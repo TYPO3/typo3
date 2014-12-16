@@ -86,4 +86,5 @@ class FileNameFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$expected
 		);
 	}
+
 }

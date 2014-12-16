@@ -41,4 +41,5 @@ class ParameterReflection extends \ReflectionParameter {
 		}
 		return is_object($class) ? new ClassReflection($class->getName()) : NULL;
 	}
+
 }

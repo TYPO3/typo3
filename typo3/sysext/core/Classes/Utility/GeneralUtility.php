@@ -5263,4 +5263,5 @@ Connection: close
 	static public function isRunningOnCgiServerApi() {
 		return in_array(PHP_SAPI, self::$supportedCgiServerApis, TRUE);
 	}
+
 }

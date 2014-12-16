@@ -89,4 +89,5 @@ class FileInfoHook {
 
 		return $content;
 	}
+
 }

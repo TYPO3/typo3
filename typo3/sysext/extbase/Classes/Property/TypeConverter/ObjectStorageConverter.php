@@ -90,4 +90,5 @@ class ObjectStorageConverter extends AbstractTypeConverter {
 		$parsedTargetType = \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::parseType($targetType);
 		return $parsedTargetType['elementType'];
 	}
+
 }

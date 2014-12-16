@@ -698,4 +698,5 @@ class SqlParserTest extends AbstractTestCase {
 		$expected = 'SELECT * FROM pages WHERE pid = 12 AND timestamp < 1281782690 AND title != \'How to test?\'';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
+
 }

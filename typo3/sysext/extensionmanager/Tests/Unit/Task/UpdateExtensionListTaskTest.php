@@ -110,4 +110,5 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$task = $this->getMock(\TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask::class, array('dummy'), array(), '', FALSE);
 		$task->execute();
 	}
+
 }

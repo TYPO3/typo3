@@ -415,4 +415,5 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function __destruct() {
 		session_write_close();
 	}
+
 }

@@ -91,4 +91,5 @@ class ImageMagick6Preset extends AbstractImagePreset implements Configuration\Pr
 		}
 		return $result;
 	}
+
 }

@@ -73,4 +73,5 @@ class GeneralUtilityFixture extends GeneralUtility {
 	static public function stripHttpHeaders($content) {
 		return parent::stripHttpHeaders($content);
 	}
+
 }

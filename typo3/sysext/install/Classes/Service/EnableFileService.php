@@ -172,4 +172,5 @@ class EnableFileService {
 	static protected function getFirstInstallFilePath() {
 		return PATH_site . self::FIRST_INSTALL_FILE_PATH;
 	}
+
 }

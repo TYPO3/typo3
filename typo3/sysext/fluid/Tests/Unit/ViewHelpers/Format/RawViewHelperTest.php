@@ -51,4 +51,5 @@ class RawViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $this->viewHelper->render();
 		$this->assertEquals($childNodes, $actualResult);
 	}
+
 }

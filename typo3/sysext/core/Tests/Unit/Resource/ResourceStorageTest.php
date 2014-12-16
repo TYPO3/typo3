@@ -717,4 +717,5 @@ class ResourceStorageTest extends BaseTestCase {
 
 		$this->assertSame(FolderInterface::ROLE_DEFAULT, $role);
 	}
+
 }

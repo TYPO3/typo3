@@ -119,4 +119,5 @@ class Bootstrap {
 			$_GET = $this->currentGetArguments;
 		}
 	}
+
 }

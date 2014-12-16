@@ -294,4 +294,5 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 		$this->initialize();
 		return parent::getPosition($object);
 	}
+
 }

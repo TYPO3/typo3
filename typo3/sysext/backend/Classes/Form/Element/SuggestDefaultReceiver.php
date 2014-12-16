@@ -403,4 +403,5 @@ class SuggestDefaultReceiver {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

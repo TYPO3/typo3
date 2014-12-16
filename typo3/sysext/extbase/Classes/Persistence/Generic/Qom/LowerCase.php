@@ -65,4 +65,5 @@ class LowerCase implements LowerCaseInterface {
 	public function getPropertyName() {
 		return 'LOWER' . $this->operand->getPropertyName();
 	}
+
 }

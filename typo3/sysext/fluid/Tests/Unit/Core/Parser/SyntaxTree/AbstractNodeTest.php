@@ -45,4 +45,5 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function childNodeCanBeReadOutAgain() {
 		$this->assertSame($this->abstractNode->getChildNodes(), array($this->childNode));
 	}
+
 }

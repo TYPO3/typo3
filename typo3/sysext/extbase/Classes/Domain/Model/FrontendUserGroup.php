@@ -158,4 +158,5 @@ class FrontendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getSubgroup() {
 		return $this->subgroup;
 	}
+
 }

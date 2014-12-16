@@ -197,4 +197,5 @@ class FlashMessageQueue extends \SplQueue {
 			parent::dequeue();
 		}
 	}
+
 }

@@ -103,4 +103,5 @@ class SqlExpectedSchemaService {
 		}
 		return $sqlString;
 	}
+
 }

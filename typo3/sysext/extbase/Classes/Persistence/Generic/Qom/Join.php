@@ -89,4 +89,5 @@ class Join implements JoinInterface {
 	public function getJoinCondition() {
 		return $this->joinCondition;
 	}
+
 }

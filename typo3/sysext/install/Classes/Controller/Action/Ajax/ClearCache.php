@@ -35,4 +35,5 @@ class ClearCache extends AbstractAjaxAction {
 		$clearCacheService->clearAll();
 		return 'OK';
 	}
+
 }

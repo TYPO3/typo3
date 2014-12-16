@@ -52,4 +52,5 @@ class FileMetadataOverlayAspect {
 	protected function getTsfe() {
 		return $GLOBALS['TSFE'];
 	}
+
 }

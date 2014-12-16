@@ -159,4 +159,5 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	static protected function getFrontendObject() {
 		return $GLOBALS['TSFE'];
 	}
+
 }

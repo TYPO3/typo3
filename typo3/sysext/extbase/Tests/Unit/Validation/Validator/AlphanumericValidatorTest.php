@@ -61,4 +61,5 @@ class AlphanumericValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class, array('translateErrorMessage'));
 		$this->assertFalse($subject->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
 	}
+
 }

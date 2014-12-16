@@ -256,4 +256,5 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 
 		Utility\GeneralUtility::writeFile($this->errorProtocolFile, json_encode($errors));
 	}
+
 }

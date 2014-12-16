@@ -141,4 +141,5 @@ class SessionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
+
 }

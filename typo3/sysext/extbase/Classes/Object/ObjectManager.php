@@ -121,4 +121,5 @@ class ObjectManager implements ObjectManagerInterface {
 	public function getEmptyObject($className) {
 		return $this->objectContainer->getEmptyObject($className);
 	}
+
 }

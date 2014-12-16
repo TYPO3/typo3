@@ -159,4 +159,5 @@ class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 	protected function getFrontendObject() {
 		return $GLOBALS['TSFE'];
 	}
+
 }

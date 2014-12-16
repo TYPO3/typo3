@@ -79,4 +79,5 @@ class Response implements \TYPO3\CMS\Extbase\Mvc\ResponseInterface {
 	public function __toString() {
 		return $this->getContent();
 	}
+
 }

@@ -73,4 +73,5 @@ class RadioElement extends AbstractFormElement {
 		}
 		return $item;
 	}
+
 }

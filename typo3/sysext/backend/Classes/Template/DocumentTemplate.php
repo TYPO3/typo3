@@ -2023,4 +2023,5 @@ function jumpToUrl(URL) {
 	protected function getBackendFavicon() {
 		return IconUtility::skinImg($this->backPath, 'gfx/favicon.ico', '', 1);
 	}
+
 }

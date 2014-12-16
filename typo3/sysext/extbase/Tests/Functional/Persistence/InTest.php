@@ -239,4 +239,5 @@ class InTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertSame(10, $newInQuery->count());
 	}
+
 }

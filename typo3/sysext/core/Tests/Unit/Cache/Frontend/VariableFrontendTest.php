@@ -211,4 +211,5 @@ class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$cache->initializeObject();
 		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
 	}
+
 }

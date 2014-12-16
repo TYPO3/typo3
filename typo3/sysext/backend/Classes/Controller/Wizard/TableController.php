@@ -579,4 +579,5 @@ class TableController extends AbstractWizardController {
 		// Return configuration array:
 		return $cfgArr;
 	}
+
 }

@@ -150,4 +150,5 @@ class ExtensionModelUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$dependencyObject = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
 		$this->assertSame(0, $dependencyObject->count());
 	}
+
 }

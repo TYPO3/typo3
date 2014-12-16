@@ -269,4 +269,5 @@ class CleanUp extends Action\AbstractAction {
 
 		return $data;
 	}
+
 }

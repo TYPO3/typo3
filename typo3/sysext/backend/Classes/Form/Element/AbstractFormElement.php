@@ -91,4 +91,5 @@ abstract class AbstractFormElement {
 		// These classes do not inherit from any common class, but they all seem to have a "doc" member
 		return $GLOBALS['SOBE']->doc;
 	}
+
 }

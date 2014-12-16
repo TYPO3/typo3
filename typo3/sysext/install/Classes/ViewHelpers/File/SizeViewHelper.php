@@ -53,4 +53,5 @@ class SizeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		}
 		return $size;
 	}
+
 }

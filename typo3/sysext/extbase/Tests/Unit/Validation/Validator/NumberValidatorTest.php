@@ -53,4 +53,5 @@ class NumberValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error(NULL, 1221563685));
 		$this->assertEquals($expectedResult, $this->validator->validate('not a number'));
 	}
+
 }

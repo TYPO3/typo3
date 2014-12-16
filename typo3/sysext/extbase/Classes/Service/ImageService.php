@@ -176,4 +176,5 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $compatibilityImageResourceValues;
 	}
+
 }

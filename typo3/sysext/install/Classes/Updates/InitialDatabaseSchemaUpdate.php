@@ -165,4 +165,5 @@ class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 
 		return TRUE;
 	}
+
 }

@@ -74,4 +74,5 @@ class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->setIsAbsolutePath(TRUE);
 		$this->assertTrue($this->fixture->getIsAbsolutePath());
 	}
+
 }

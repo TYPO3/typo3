@@ -57,4 +57,5 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTes
 
 		$this->assertEquals($expectedResult, $result);
 	}
+
 }

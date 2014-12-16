@@ -101,4 +101,5 @@ class ExtensionRepository {
 
 		return $extensionIcon;
 	}
+
 }

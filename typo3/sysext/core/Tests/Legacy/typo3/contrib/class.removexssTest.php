@@ -434,4 +434,5 @@ class RemoveXSSTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			RemoveXSS::process($input)
 		);
 	}
+
 }

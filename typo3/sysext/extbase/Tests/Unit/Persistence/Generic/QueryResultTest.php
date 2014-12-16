@@ -170,4 +170,5 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = current($queryResult);
 		$this->assertNull($actualResult);
 	}
+
 }

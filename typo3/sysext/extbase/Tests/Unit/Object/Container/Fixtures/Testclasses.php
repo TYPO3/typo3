@@ -466,4 +466,5 @@ class t3lib_object_prototypeNeedsSingletonInConstructor {
 	public function __construct(\t3lib_object_singleton $dependency) {
 		$this->dependency = $dependency;
 	}
+
 }

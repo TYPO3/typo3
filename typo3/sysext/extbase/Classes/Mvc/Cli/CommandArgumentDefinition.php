@@ -80,4 +80,5 @@ class CommandArgumentDefinition {
 	public function isRequired() {
 		return $this->required;
 	}
+
 }

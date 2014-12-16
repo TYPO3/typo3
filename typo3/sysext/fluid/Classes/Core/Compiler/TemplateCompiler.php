@@ -391,4 +391,5 @@ EOD;
 	public function variableName($prefix) {
 		return '$' . $prefix . $this->variableCounter++;
 	}
+
 }

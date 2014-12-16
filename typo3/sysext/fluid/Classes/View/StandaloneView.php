@@ -480,4 +480,5 @@ class StandaloneView extends AbstractTemplateView {
 		$templateIdentifier = str_replace('/', '_', str_replace('.', '_', $templateIdentifier));
 		return $templateIdentifier;
 	}
+
 }

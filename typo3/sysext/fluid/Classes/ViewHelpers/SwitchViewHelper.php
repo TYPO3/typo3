@@ -128,4 +128,5 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 			$this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', TRUE);
 		}
 	}
+
 }

@@ -80,4 +80,5 @@ class AudioTagRenderer implements FileRendererInterface {
 			$file->getMimeType()
 		);
 	}
+
 }

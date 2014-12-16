@@ -573,4 +573,5 @@ class ExtensionStatusTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$loadedResult = $result->existingoutdated;
 		$this->assertSame($statusMock, $loadedResult);
 	}
+
 }

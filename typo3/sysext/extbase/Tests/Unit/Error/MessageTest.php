@@ -85,4 +85,5 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, array('baz', 'qux'));
 		$this->assertEquals('Foo is baz and Bar is qux', $error);
 	}
+
 }

@@ -203,4 +203,5 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$value = isset($splitArgument[1]) ? $splitArgument[1] : '';
 		return $value;
 	}
+
 }

@@ -541,4 +541,5 @@ abstract class AbstractFile implements FileInterface {
 	public function getParentFolder() {
 		return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
 	}
+
 }

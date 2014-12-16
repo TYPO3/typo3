@@ -147,4 +147,5 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);
 		$this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
 	}
+
 }

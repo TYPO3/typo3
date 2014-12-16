@@ -121,4 +121,5 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$port = $this->fixture->getTransport()->getPort();
 		$this->assertEquals(12345, $port);
 	}
+
 }

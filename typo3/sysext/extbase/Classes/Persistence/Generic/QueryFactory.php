@@ -61,4 +61,5 @@ class QueryFactory implements QueryFactoryInterface, \TYPO3\CMS\Core\SingletonIn
 		$query->setQuerySettings($querySettings);
 		return $query;
 	}
+
 }

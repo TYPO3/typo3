@@ -102,4 +102,5 @@ class RenderChildrenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 			$templateVariableContainer->remove($identifier);
 		}
 	}
+
 }

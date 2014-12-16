@@ -44,4 +44,5 @@ class FlashMessageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages')
 		);
 	}
+
 }

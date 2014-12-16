@@ -40,4 +40,5 @@ class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertArrayHasKey(\TYPO3\CMS\Core\Cache\CacheManager::class, $registeredSingletons);
 		$this->assertTrue($registeredSingletons[\TYPO3\CMS\Core\Cache\CacheManager::class] instanceof \TYPO3\CMS\Core\Cache\CacheManager);
 	}
+
 }

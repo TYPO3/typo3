@@ -97,4 +97,5 @@ class HtmlentitiesDecodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertSame($source, $actualResult);
 	}
+
 }

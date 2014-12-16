@@ -119,4 +119,5 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		);
 
 	}
+
 }

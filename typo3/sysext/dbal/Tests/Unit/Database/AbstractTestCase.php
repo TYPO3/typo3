@@ -80,4 +80,5 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$sql = preg_replace('/\\s+/', ' ', $sql);
 		return trim($sql);
 	}
+
 }

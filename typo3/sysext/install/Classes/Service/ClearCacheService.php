@@ -112,4 +112,5 @@ class ClearCacheService {
 		}
 		return $database;
 	}
+
 }

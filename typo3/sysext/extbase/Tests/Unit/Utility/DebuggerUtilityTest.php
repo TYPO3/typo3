@@ -72,4 +72,5 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $this->debugger->var_dump($testObject, NULL, 8, TRUE, FALSE, TRUE);
 		$this->assertRegExp('/foo.*bar/', $result);
 	}
+
 }

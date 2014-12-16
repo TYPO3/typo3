@@ -262,4 +262,5 @@ abstract class AbstractAction implements ActionInterface {
 		$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, 'BE');
 		return $saltFactory->getHashedPassword($password);
 	}
+
 }

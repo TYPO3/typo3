@@ -18,4 +18,5 @@ class EmptySyntaxTreeNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHe
 
 	public function __construct() {
 	}
+
 }

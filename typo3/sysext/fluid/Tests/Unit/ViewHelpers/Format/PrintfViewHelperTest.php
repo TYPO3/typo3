@@ -35,4 +35,5 @@ class PrintfViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $viewHelper->render(array(123, 'foo', 'bar'));
 		$this->assertEquals('foo 123 bar foo', $actualResult);
 	}
+
 }

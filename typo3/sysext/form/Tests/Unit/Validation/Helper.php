@@ -69,4 +69,5 @@ class Helper extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function has($key) {
 		return isset($this->mockData[$key]);
 	}
+
 }

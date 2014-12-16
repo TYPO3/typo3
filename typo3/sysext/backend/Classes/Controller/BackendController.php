@@ -765,4 +765,5 @@ class BackendController {
 		}
 		return $view;
 	}
+
 }

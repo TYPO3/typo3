@@ -53,4 +53,5 @@ class DistributionController extends AbstractController {
 		$this->view->assign('configurationLink', $configurationLink);
 		$this->view->assign('extension', $extension);
 	}
+
 }

@@ -361,4 +361,5 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			wordwrap($this->content, 70, chr(10)) . chr(10) .
 			implode(', ', $this->tags->toArray());
 	}
+
 }

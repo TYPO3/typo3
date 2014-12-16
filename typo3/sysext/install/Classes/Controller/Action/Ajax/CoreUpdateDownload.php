@@ -32,4 +32,5 @@ class CoreUpdateDownload extends AbstractCoreUpdate {
 		return $this->view->render();
 
 	}
+
 }

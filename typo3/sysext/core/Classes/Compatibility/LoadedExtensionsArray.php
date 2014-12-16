@@ -215,4 +215,5 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 			iterator_to_array($this)
 		);
 	}
+
 }

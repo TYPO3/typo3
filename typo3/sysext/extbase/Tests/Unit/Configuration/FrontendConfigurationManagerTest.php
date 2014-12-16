@@ -577,4 +577,5 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 			$frontendConfigurationManager->_call('overrideConfigurationFromPlugin', $frameworkConfiguration)
 		);
 	}
+
 }

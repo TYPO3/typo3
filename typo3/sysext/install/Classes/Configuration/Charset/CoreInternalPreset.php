@@ -47,4 +47,5 @@ class CoreInternalPreset extends Configuration\AbstractPreset {
 	public function isAvailable() {
 		return TRUE;
 	}
+
 }

@@ -807,4 +807,5 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 
 		return $this->pageRepository;
 	}
+
 }

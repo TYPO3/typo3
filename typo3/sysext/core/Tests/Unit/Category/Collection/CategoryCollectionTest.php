@@ -30,4 +30,5 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function missingTableNameArgumentForObjectCategoryCollection() {
 		new \TYPO3\CMS\Core\Category\Collection\CategoryCollection();
 	}
+
 }

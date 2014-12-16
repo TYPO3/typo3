@@ -65,4 +65,5 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 	protected function emitPackagesMayHaveChangedSignal() {
 		$this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
 	}
+
 }

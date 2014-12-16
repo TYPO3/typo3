@@ -51,4 +51,5 @@ class ClassWithSettersAndConstructor {
 	public function setProperty2($property2) {
 		$this->property2 = $property2;
 	}
+
 }

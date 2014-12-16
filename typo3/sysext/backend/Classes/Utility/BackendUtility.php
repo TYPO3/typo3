@@ -4392,4 +4392,5 @@ class BackendUtility {
 	static protected function getDocumentTemplate() {
 		return $GLOBALS['TBE_TEMPLATE'];
 	}
+
 }

@@ -52,4 +52,5 @@ class ImageCropScaleMaskTask extends AbstractGraphicalTask {
 	public function fileNeedsProcessing() {
 		// @todo Implement fileNeedsProcessing() method.
 	}
+
 }

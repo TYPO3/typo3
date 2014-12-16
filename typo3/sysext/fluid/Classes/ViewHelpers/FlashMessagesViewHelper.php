@@ -162,4 +162,5 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 		$this->tag->setContent($tagContent);
 		return $this->tag->render();
 	}
+
 }

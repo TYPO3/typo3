@@ -467,4 +467,5 @@ class Result {
 	public function getSubResults() {
 		return $this->propertyResults;
 	}
+
 }

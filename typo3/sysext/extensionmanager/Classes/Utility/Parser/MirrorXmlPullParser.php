@@ -152,4 +152,5 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser {
 		}
 		return $value;
 	}
+
 }

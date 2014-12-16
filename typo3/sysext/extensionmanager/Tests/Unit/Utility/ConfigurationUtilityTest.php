@@ -317,4 +317,5 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility::class, array('dummy'), array(), '', FALSE);
 		$this->assertEquals($expected, $subject->convertNestedToValuedConfiguration($configuration));
 	}
+
 }

@@ -129,4 +129,5 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setParent(\TYPO3\CMS\Extbase\Domain\Model\Category $parent) {
 		$this->parent = $parent;
 	}
+
 }

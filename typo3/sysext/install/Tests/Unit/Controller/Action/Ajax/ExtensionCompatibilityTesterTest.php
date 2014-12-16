@@ -259,4 +259,5 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$fileContent = file_get_contents($extensionCompatibilityTesterMock->_get('protocolFile'));
 		$this->assertEquals($expectedExtensions, $fileContent);
 	}
+
 }

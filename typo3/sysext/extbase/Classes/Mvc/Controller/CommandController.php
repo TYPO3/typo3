@@ -300,4 +300,5 @@ class CommandController implements CommandControllerInterface {
 		$this->response->send();
 		die($exitCode);
 	}
+
 }

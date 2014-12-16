@@ -88,4 +88,5 @@ class ValidationResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 		$this->templateVariableContainer->remove($as);
 		return $output;
 	}
+
 }

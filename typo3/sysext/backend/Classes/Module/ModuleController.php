@@ -149,4 +149,5 @@ class ModuleController {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

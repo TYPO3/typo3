@@ -139,4 +139,5 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 
 		return empty($customMessagesArray);
 	}
+
 }

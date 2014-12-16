@@ -86,4 +86,5 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
 		$this->assertSame(2, $query->count());
 	}
+
 }

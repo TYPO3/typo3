@@ -100,4 +100,5 @@ class NotEmptyValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Val
 		$countableObject->attach(new \StdClass());
 		$this->assertFalse($this->validator->validate($countableObject)->hasErrors());
 	}
+
 }

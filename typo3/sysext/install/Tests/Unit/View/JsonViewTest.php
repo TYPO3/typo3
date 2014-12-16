@@ -51,4 +51,5 @@ class JsonViewTest extends UnitTestCase {
 		$this->assertSame('aTitle', $return['title']);
 		$this->assertSame('aMessage', $return['message']);
 	}
+
 }

@@ -35,4 +35,5 @@ class PageGeneratorFixture extends PageGenerator {
 	public function callGenerateMetaTagHtml(array $metaTagTypoScript, $xhtml, ContentObjectRenderer $cObj) {
 		return self::generateMetaTagHtml($metaTagTypoScript, $xhtml, $cObj);
 	}
+
 }

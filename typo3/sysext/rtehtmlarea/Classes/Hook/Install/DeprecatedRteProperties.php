@@ -262,4 +262,5 @@ class DeprecatedRteProperties extends AbstractUpdate {
 			}
 		}
 	}
+
 }

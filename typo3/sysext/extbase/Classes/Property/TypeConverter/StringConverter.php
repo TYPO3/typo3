@@ -56,4 +56,5 @@ class StringConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstract
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		return (string)$source;
 	}
+
 }

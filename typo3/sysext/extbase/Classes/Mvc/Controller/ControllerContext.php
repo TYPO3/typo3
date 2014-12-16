@@ -154,4 +154,5 @@ class ControllerContext {
 
 		return $this->flashMessageQueue;
 	}
+
 }

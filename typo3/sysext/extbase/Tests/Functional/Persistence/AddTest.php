@@ -69,4 +69,5 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$newBlogCount = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
 		$this->assertSame(1, $newBlogCount);
 	}
+
 }

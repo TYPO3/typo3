@@ -70,4 +70,5 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
 
 		return $this->tag->render();
 	}
+
 }

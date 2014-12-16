@@ -70,4 +70,5 @@ class DevelopmentPreset extends Configuration\AbstractPreset {
 		}
 		return $priority;
 	}
+
 }

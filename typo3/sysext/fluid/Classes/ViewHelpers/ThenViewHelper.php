@@ -28,4 +28,5 @@ class ThenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	public function render() {
 		return $this->renderChildren();
 	}
+
 }

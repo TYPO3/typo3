@@ -133,4 +133,5 @@ class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $filter->_call('isAllowed', 'file.' . $fileExtension);
 		$this->assertEquals($isAllowed, $result);
 	}
+
 }

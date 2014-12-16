@@ -625,4 +625,5 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->with('baz', array('foo' => 'bar'));
 		$this->subject->render($configuration);
 	}
+
 }

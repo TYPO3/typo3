@@ -101,4 +101,5 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame(94, $this->controller->_get('displayRangeStart'));
 		$this->assertSame(100, $this->controller->_get('displayRangeEnd'));
 	}
+
 }

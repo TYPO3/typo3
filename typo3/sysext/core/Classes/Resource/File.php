@@ -399,4 +399,5 @@ class File extends AbstractFile {
 	public function _getPropertyRaw($key) {
 		return parent::getProperty($key);
 	}
+
 }

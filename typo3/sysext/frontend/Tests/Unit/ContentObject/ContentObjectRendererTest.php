@@ -2907,4 +2907,5 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			});
 		return $contentObjectFixture;
 	}
+
 }

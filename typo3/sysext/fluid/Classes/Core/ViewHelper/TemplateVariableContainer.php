@@ -182,4 +182,5 @@ class TemplateVariableContainer implements \ArrayAccess {
 	public function offsetGet($identifier) {
 		return $this->get($identifier);
 	}
+
 }

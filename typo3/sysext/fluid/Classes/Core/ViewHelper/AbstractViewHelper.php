@@ -477,4 +477,5 @@ abstract class AbstractViewHelper {
 	 */
 	public function resetState() {
 	}
+
 }

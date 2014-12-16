@@ -155,4 +155,5 @@ class TwoConstructorArgumentsBothOptional {
 		$this->argumentTestClass = $argumentTestClass;
 		$this->argumentTestClassTwo = $argumentTestClassTwo;
 	}
+
 }

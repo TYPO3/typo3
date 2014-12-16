@@ -129,4 +129,5 @@ class TaskExecutor implements \TYPO3\CMS\Core\SingletonInterface {
 		$reflectionService = $this->objectManager->get(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
 		$reflectionService->shutdown();
 	}
+
 }

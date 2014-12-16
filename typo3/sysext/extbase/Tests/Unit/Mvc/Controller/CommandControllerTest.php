@@ -103,4 +103,5 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame(42, $mockedUserAuthentication->user['admin']);
 	}
+
 }

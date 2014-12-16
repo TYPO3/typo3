@@ -366,4 +366,5 @@ class AdministrationController extends ActionController {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

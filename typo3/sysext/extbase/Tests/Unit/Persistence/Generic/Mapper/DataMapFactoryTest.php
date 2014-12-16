@@ -493,4 +493,5 @@ class DataMapFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($type, (string)$columnMap->getType());
 		$this->assertEquals($internalType, (string)$columnMap->getInternalType());
 	}
+
 }

@@ -59,4 +59,5 @@ class AbstractCompositeValidatorClass extends \TYPO3\CMS\Extbase\Validation\Vali
 	public function validate($value) {
 		return new \TYPO3\CMS\Extbase\Error\Result();
 	}
+
 }

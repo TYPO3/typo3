@@ -607,4 +607,5 @@ class AbstractController {
 			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
 			: 'TYPO3 CMS install tool';
 	}
+
 }

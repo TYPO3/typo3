@@ -41,4 +41,5 @@ class FloatValidator extends AbstractValidator {
 				), 1221560288);
 		}
 	}
+
 }

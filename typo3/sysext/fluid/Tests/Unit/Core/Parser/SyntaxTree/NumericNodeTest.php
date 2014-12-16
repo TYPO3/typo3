@@ -50,4 +50,5 @@ class NumericNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$node = new \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NumericNode('1');
 		$node->addChildNode(clone $node);
 	}
+
 }

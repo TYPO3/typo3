@@ -66,4 +66,5 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 
 		return $this->tag->render();
 	}
+
 }

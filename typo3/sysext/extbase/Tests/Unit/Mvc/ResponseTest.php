@@ -67,4 +67,5 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockResponse->_set('content', 'foo');
 		$this->assertSame('foo', (string)$this->mockResponse);
 	}
+
 }

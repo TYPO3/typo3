@@ -89,4 +89,5 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$subject->writeLog($logRecordMock);
 	}
+
 }

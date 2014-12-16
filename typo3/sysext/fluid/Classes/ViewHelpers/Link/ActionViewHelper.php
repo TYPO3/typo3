@@ -74,4 +74,5 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
 		$this->tag->forceClosingTag(TRUE);
 		return $this->tag->render();
 	}
+
 }

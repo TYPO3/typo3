@@ -37,4 +37,5 @@ class StringValidator extends AbstractValidator {
 				), 1238108067);
 		}
 	}
+
 }

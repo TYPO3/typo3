@@ -577,4 +577,5 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getLastlogin() {
 		return $this->lastlogin;
 	}
+
 }

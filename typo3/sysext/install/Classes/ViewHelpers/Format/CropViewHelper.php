@@ -55,4 +55,5 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		$stringToTruncate = $this->renderChildren();
 		return substr($stringToTruncate, 0, $maxCharacters);
 	}
+
 }

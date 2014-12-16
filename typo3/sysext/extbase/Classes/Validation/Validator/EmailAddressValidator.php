@@ -47,4 +47,5 @@ class EmailAddressValidator extends AbstractValidator {
 	protected function validEmail($emailAddress) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($emailAddress);
 	}
+
 }

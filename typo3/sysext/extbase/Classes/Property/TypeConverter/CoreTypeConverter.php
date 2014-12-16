@@ -71,4 +71,5 @@ class CoreTypeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 			return new \TYPO3\CMS\Extbase\Error\Error($exception->getMessage(), 1381680012);
 		}
 	}
+
 }

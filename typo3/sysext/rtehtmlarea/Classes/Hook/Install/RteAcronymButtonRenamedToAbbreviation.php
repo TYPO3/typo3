@@ -162,4 +162,5 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate {
 			}
 		}
 	}
+
 }

@@ -416,4 +416,5 @@ class ColumnMap {
 	public function getType() {
 		return $this->type;
 	}
+
 }

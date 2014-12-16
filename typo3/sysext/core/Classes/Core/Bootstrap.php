@@ -1093,4 +1093,5 @@ class Bootstrap {
 		$GLOBALS['TBE_TEMPLATE'] = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		return $this;
 	}
+
 }

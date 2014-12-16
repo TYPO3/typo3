@@ -187,4 +187,5 @@ class DocbookGenerator extends \TYPO3\CMS\Fluid\Service\AbstractGenerator {
 			}
 		}
 	}
+
 }

@@ -382,4 +382,5 @@ class DeletedRecords {
 	public function getTable() {
 		return $this->table;
 	}
+
 }

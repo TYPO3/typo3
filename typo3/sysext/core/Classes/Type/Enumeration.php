@@ -198,4 +198,5 @@ abstract class Enumeration implements TypeInterface {
 	public function __toString() {
 		return (string)$this->value;
 	}
+
 }

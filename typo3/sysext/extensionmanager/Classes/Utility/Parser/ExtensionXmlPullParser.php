@@ -183,4 +183,5 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser {
 		}
 		return $value;
 	}
+
 }

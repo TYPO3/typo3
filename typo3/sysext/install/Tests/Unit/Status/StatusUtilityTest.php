@@ -58,4 +58,5 @@ class StatusUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$return = $statusUtility->filterBySeverity(array($errorMock, $warningMock), 'error');
 		$this->assertSame(array($errorMock), $return);
 	}
+
 }

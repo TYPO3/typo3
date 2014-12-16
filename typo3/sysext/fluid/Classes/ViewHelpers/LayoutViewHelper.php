@@ -63,4 +63,5 @@ class LayoutViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 */
 	public function render() {
 	}
+
 }

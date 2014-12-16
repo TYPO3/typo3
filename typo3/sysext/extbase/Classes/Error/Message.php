@@ -135,4 +135,5 @@ class Message {
 	public function __toString() {
 		return $this->render();
 	}
+
 }

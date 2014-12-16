@@ -176,4 +176,5 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected function logException(\Exception $e) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, 3);
 	}
+
 }

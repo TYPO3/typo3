@@ -343,4 +343,5 @@ class ConfigurationView {
 
 		return $this->flashMessageQueue;
 	}
+
 }

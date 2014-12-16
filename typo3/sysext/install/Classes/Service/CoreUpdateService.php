@@ -457,4 +457,5 @@ class CoreUpdateService {
 	protected function getDownloadTarGzTargetPath($version) {
 		return $this->downloadTargetPath . $version . '.tar.gz';
 	}
+
 }

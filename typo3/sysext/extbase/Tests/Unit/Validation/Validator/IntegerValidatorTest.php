@@ -90,4 +90,5 @@ class IntegerValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 	public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject() {
 		$this->assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
 	}
+
 }

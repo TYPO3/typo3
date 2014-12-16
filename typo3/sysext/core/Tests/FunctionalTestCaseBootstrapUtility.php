@@ -737,4 +737,5 @@ class FunctionalTestCaseBootstrapUtility {
 		// This line is kept for backward compatibility reasons.
 		reset($original);
 	}
+
 }

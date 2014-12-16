@@ -294,4 +294,5 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			$this->children[] = new $child['type']($child, $this);
 		}
 	}
+
 }

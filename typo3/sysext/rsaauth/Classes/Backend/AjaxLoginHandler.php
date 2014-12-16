@@ -40,4 +40,5 @@ class AjaxLoginHandler {
 			$parent->setError('No OpenSSL backend could be obtained for rsaauth.');
 		}
 	}
+
 }

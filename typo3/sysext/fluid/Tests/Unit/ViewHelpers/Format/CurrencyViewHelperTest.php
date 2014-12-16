@@ -155,4 +155,5 @@ class CurrencyViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$actualResult = $viewHelper->render('', ',', '.', FALSE, TRUE, 3);
 		$this->assertEquals('54.321,000', $actualResult);
 	}
+
 }

@@ -30,4 +30,5 @@ class BackendControllerHook {
 	public function addJavaScript(array $configuration, \TYPO3\CMS\Backend\Controller\BackendController $backendController) {
 		$backendController->getPageRenderer()->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
 	}
+
 }

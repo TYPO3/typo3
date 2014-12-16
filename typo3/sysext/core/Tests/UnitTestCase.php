@@ -97,4 +97,5 @@ abstract class UnitTestCase extends BaseTestCase {
 		}
 		$this->testFilesToDelete = array();
 	}
+
 }

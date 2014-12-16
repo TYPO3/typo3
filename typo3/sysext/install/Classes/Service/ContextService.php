@@ -60,4 +60,5 @@ class ContextService {
 	public function getContextString() {
 		return ( $this->isBackendContext() ? 'backend' : 'standalone' );
 	}
+
 }

@@ -553,4 +553,5 @@ class Request implements RequestInterface {
 		}
 		return $this->internalArguments[$argumentName];
 	}
+
 }

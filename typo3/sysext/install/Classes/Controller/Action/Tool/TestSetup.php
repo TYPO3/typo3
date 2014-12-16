@@ -671,4 +671,5 @@ class TestSetup extends Action\AbstractAction {
 		$database = $this->objectManager->get(\TYPO3\CMS\Install\Database\DatabaseConnectionMock::class);
 		$GLOBALS['TYPO3_DB'] = $database;
 	}
+
 }

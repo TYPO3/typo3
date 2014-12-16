@@ -182,4 +182,5 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// SubResponse is returned
 		$this->assertSame($response, $output);
 	}
+
 }

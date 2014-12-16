@@ -63,4 +63,5 @@ class StatusUtility {
 		}
 		return $filteredObjects;
 	}
+
 }

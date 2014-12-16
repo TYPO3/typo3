@@ -72,4 +72,5 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$classInfo
 		);
 	}
+
 }

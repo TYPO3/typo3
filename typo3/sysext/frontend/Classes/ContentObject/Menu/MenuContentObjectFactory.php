@@ -71,4 +71,5 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$this->menuTypeToClassMapping[strtoupper($type)] = $className;
 	}
+
 }

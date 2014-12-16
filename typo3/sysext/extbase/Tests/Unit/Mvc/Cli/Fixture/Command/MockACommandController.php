@@ -33,4 +33,5 @@ class MockACommandController extends \TYPO3\CMS\Extbase\Mvc\Cli\Command {
 	 */
 	public function barCommand($someArgument) {
 	}
+
 }

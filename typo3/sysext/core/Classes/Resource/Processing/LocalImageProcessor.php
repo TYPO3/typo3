@@ -182,4 +182,5 @@ class LocalImageProcessor implements ProcessorInterface {
 
 		return $graphicalFunctionsObject;
 	}
+
 }

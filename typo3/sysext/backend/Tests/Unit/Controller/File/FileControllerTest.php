@@ -169,4 +169,5 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->fileController->processAjaxRequest(array(), $this->mockAjaxRequestHandler);
 	}
+
 }

@@ -429,4 +429,5 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
+
 }
