@@ -17,10 +17,11 @@
 define('TYPO3/CMS/Rtehtmlarea/Plugins/TextIndicator',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Color',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util'],
-	function (Plugin, UserAgent, Event, Color, Util) {
+	function (Plugin, UserAgent, Dom, Event, Color, Util) {
 
 	var TextIndicator = function (editor, pluginName) {
 		this.constructor.super.call(this, editor, pluginName);
@@ -129,8 +130,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextIndicator',
 				} catch(e) {
 					style.fontStyle = 'normal';
 				}
-				button.getEl().setStyle(style);
-				button.getEl().dom.setAttribute('title', button.tooltip);
+				Dom.setStyle(button.getEl(), style);
 			}
 		}
 	});

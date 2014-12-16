@@ -823,7 +823,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			'DOM/Walker',
 			'Configuration/Config',
 			'Extjs/ux/Button',
-			'Extjs/ux/ToolbarText',
+			'Toolbar/ToolbarText',
 			'Extjs/ux/Combo',
 			'Extjs/ColorPalette',
 			'Extjs/ux/ColorMenu',

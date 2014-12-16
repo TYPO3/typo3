@@ -20,7 +20,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/ToolbarText'],
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText'],
 	function (Util, Dom, Event, Combo, Button, ToolbarText) {
 
 	/**
@@ -141,36 +141,39 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		 * @return void
 		 */
 		add: function (item) {
-			if (item.xtype === 'htmlareacombo') {
-				var wrapDiv = document.createElement('div');
-				Dom.addClass(wrapDiv, 'x-form-item');
-				wrapDiv = this.el.appendChild(wrapDiv);
-				item.render(wrapDiv);
-				if (item.helpTitle) {
-					item.getEl().dom.setAttribute('title', item.helpTitle);
-				}
-				wrapDiv.appendChild(item.getEl().dom);
-				if (item.fieldLabel) {
-					var textDiv = document.createElement('div');
-					Dom.addClass(textDiv, 'x-form-item');
-					Dom.addClass(textDiv, 'toolbar-text');
-					var text = document.createElement('label');
-					text.innerHTML = item.fieldLabel;
-					Dom.addClass(text, 'x-form-item-label');
-					text.setAttribute('for', item.getEl().dom.id);
-					textDiv.appendChild(text);
-					this.el.insertBefore(textDiv, wrapDiv);
-				}
-			} else {
-				item.render(this.el);
-				var itemDiv = this.el.appendChild(item.getEl().dom);
-				Dom.addClass(item.getEl().dom, 'x-form-item');
-			}
-			if (item.xtype === 'htmlareatoolbartext') {
-				Dom.addClass(item.getEl().dom, 'x-form-item-label');
-			}
 			if (item.itemId) {
 				this.items[item.itemId] = item;
+			}
+			switch (item.xtype) {
+				case 'htmlareacombo':
+					var wrapDiv = document.createElement('div');
+					Dom.addClass(wrapDiv, 'x-form-item');
+					wrapDiv = this.el.appendChild(wrapDiv);
+					item.render(wrapDiv);
+					if (item.helpTitle) {
+						item.getEl().dom.setAttribute('title', item.helpTitle);
+					}
+					wrapDiv.appendChild(item.getEl().dom);
+					if (item.fieldLabel) {
+						var textDiv = document.createElement('div');
+						Dom.addClass(textDiv, 'x-form-item');
+						Dom.addClass(textDiv, 'toolbar-text');
+						var text = document.createElement('label');
+						text.innerHTML = item.fieldLabel;
+						Dom.addClass(text, 'x-form-item-label');
+						text.setAttribute('for', item.getEl().dom.id);
+						textDiv.appendChild(text);
+						this.el.insertBefore(textDiv, wrapDiv);
+					}
+					break;
+				case 'htmlareabutton':
+					item.render(this.el);
+					var itemDiv = this.el.appendChild(item.getEl().dom);
+					Dom.addClass(item.getEl().dom, 'x-form-item');
+					break;
+				case 'htmlareatoolbartext':
+					item.render(this.el);
+					break;
 			}
 		},
 

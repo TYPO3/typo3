@@ -539,6 +539,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 			if (typeof size.height !== 'undefined') {
 				node.style.height = size.height + 'px';
 			}
+		},
+
+		/**
+		 * Set the style of a node
+		 *
+		 * @param object node
+		 * @param object style
+		 * @return void
+		 */
+		setStyle: function (node, style) {
+			for (var property in style) {
+				if (typeof style[property] !== 'undefined') {
+					node.style[property] = style[property];
+				}
+			}
 		}
 	};
 
