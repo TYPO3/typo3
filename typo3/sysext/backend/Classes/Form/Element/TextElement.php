@@ -189,11 +189,15 @@ class TextElement extends AbstractFormElement {
 					}
 				}
 				$textOnChange = implode('', $additionalInformation['fieldChangeFunc']);
+				$additionalAttributes = '';
+				if (isset($config['max']) && (int)$config['max'] > 0) {
+					$additionalAttributes = ' maxlength="' . (int)$config['max'] . '"';
+				}
 				$item .= '
 							<textarea ' . 'id="' . str_replace('.', '', uniqid('tceforms-textarea-', TRUE)) . '" ' . 'name="' . $additionalInformation['itemFormElName']
 					. '"' . $formWidthText . $class . ' ' . 'rows="' . $rows . '" ' . 'wrap="' . $wrap . '" ' . 'onchange="'
 					. htmlspecialchars($textOnChange) . '"' . $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
-					. $additionalInformation['onFocus'] . '>' . GeneralUtility::formatForTextarea($additionalInformation['itemFormElValue']) . '</textarea>';
+					. $additionalInformation['onFocus'] . $additionalAttributes . '>' . GeneralUtility::formatForTextarea($additionalInformation['itemFormElValue']) . '</textarea>';
 				$item = $this->formEngine->renderWizards(
 					array($item, $altItem),
 					$config['wizards'],
