@@ -153,6 +153,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 				if (item.fieldLabel) {
 					var textDiv = document.createElement('div');
 					Dom.addClass(textDiv, 'x-form-item');
+					Dom.addClass(textDiv, 'toolbar-text');
 					var text = document.createElement('label');
 					text.innerHTML = item.fieldLabel;
 					Dom.addClass(text, 'x-form-item-label');
