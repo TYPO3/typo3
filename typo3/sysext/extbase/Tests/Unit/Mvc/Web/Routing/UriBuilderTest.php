@@ -747,18 +747,18 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tansientObjectsAreRecursivelyConverted() {
-		$className = uniqid('FixturesObject_');
+		$className = 'FixturesObject_' . md5(uniqid(microtime(), true));
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $name; public $uid; }');
 		$mockInnerValueObject2 = new $classNameWithNS();
 		$mockInnerValueObject2->name = 'foo';
 		$mockInnerValueObject2->uid = 99;
-		$className = uniqid('FixturesObject_');
+		$className = 'FixturesObject_' . md5(uniqid(microtime(), true));
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $object; public $uid; }');
 		$mockInnerValueObject1 = new $classNameWithNS();
 		$mockInnerValueObject1->object = $mockInnerValueObject2;
-		$className = uniqid('FixturesObject_');
+		$className = 'FixturesObject_' . md5(uniqid(microtime(), true));
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $object; public $uid; }');
 		$mockValueObject = new $classNameWithNS();

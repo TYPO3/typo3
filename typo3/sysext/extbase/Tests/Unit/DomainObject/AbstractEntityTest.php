@@ -75,13 +75,13 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties() {
-		$domainObjectName = uniqid('DomainObject_');
+		$domainObjectName = 'DomainObject_' . md5(uniqid(microtime(), true));
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
-		$secondDomainObjectName = uniqid('DomainObject_');
+		$secondDomainObjectName = 'DomainObject_' . md5(uniqid(microtime(), true));
 		$secondDomainObjectNameWithNS = __NAMESPACE__ . '\\' . $secondDomainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $secondDomainObjectName . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
