@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Recordlist;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -416,8 +417,20 @@ class RecordList {
 		} else {
 			$this->body = $this->doc->header($this->pageinfo['title']);
 		}
+
+		if (!empty($dblist->HTMLcode)) {
+			$output = $dblist->HTMLcode;
+		} else {
+			$output = $flashMessage = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				$GLOBALS['LANG']->getLL('noRecordsOnThisPage'),
+				'',
+				FlashMessage::INFO
+			)->render();
+		}
+
 		$this->body .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">';
-		$this->body .= $dblist->HTMLcode;
+		$this->body .= $output;
 		$this->body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
 		// If a listing was produced, create the page footer with search form etc:
 		if ($dblist->HTMLcode) {

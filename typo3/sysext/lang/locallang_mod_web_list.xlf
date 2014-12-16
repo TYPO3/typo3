@@ -156,6 +156,9 @@
 			<trans-unit id="missingTcaColumnsMessage" xml:space="preserve">
 				<source>Warning: No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
 			</trans-unit>
+			<trans-unit id="noRecordsOnThisPage" xml:space="preserve">
+				<source>There are no records on this page.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
