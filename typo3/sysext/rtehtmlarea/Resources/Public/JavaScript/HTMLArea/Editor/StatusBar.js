@@ -184,8 +184,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 					}
 					var element = document.createElement('a');
 					element.href = '#';
-					element.setAttribute('ext:qtitle', HTMLArea.localize('statusBarStyle'));
-					element.setAttribute('ext:qtip', ancestor.style.cssText.split(';').join('<br />'));
+					if (ancestor.style.cssText) {
+						element.setAttribute('title', HTMLArea.localize('statusBarStyle') + ':\x0D ' + ancestor.style.cssText.split(';').join('\x0D'));
+					}
 					element.innerHTML = text;
 					element = path.parentNode.insertBefore(element, path.nextSibling);
 					element.ancestor = ancestor;
