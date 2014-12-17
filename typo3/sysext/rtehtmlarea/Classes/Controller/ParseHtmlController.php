@@ -66,7 +66,7 @@ class ParseHtmlController {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function
 	 *
 	 * @return 	[type]		...
 	 */
@@ -76,7 +76,7 @@ class ParseHtmlController {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Print content
 	 *
 	 * @return 	[type]		...
 	 */

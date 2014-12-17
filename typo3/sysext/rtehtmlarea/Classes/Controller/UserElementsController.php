@@ -122,7 +122,7 @@ class UserElementsController {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function
 	 *
 	 * @return 	[type]		...
 	 */
@@ -132,7 +132,7 @@ class UserElementsController {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Print content
 	 *
 	 * @return 	[type]		...
 	 */

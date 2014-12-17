@@ -800,7 +800,7 @@ class DoubleMetaPhoneUtility {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Is vowel?
 	 *
 	 * @param 	[type]		$string: ...
 	 * @param 	[type]		$pos: ...
@@ -811,7 +811,7 @@ class DoubleMetaPhoneUtility {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Is slavogermanic?
 	 *
 	 * @param 	[type]		$string: ...
 	 * @return 	[type]		...

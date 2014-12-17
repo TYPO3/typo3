@@ -129,7 +129,7 @@ class ConfigurationView {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function
 	 *
 	 * @return void
 	 */
