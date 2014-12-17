@@ -174,14 +174,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		/**
 		 * Add a spacer to the toolbar
 		 *
-		 * @param string cls: a class to be added on the spacer
+		 * @param string cls: a class to be added on the spacer rather than 'space' (default)
 		 * @return void
 		 */
 		addSpacer: function (cls) {
 			var spacer = document.createElement('div');
-			Dom.addClass(spacer, 'space');
 			if (typeof cls === 'string') {
 				Dom.addClass(spacer, cls);
+			} else {
+				Dom.addClass(spacer, 'space');
 			}
 			this.el.appendChild(spacer);
 		},
