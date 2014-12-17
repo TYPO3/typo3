@@ -46,8 +46,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			}
 			this.el = container.appendChild(this.el);
 			this.addComponents();
-			this.rendered = true;
 			this.initEventListeners();
+			if (!this.getEditor().config.showStatusBar) {
+				this.hide();
+			}
+			this.rendered = true;
 		},
 
 		/**
@@ -115,6 +118,20 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			textMode.innerHTML = HTMLArea.localize('TEXT_MODE');
 			Dom.addClass(textMode, 'statusBarTextMode');
 			this.statusBarTextMode = this.getEl().appendChild(textMode);
+		},
+
+		/**
+		 * Show the status bar
+		 */
+		show: function () {
+			this.getEl().style.display = '';
+		},
+
+		/**
+		 * Hide the status bar
+		 */
+		hide: function () {
+			this.getEl().style.display = 'none';
 		},
 
 		/**

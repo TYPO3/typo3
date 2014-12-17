@@ -308,9 +308,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			if (this.ready) {
 				this.initEventListeners();
 				this.textAreaContainer.show();
-				if (!this.getEditor().config.showStatusBar) {
-					this.statusBar.hide();
-				}
 				// Set the initial size of the framework
 				this.onWindowResize();
 				/**
