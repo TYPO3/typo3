@@ -172,7 +172,7 @@ class LinkAnalyzer {
 					foreach ($results[$key] as $entryKey => $entryValue) {
 						$table = $entryValue['table'];
 						$record = array();
-						$record['headline'] = $entryValue['row'][$GLOBALS['TCA'][$table]['ctrl']['label']];
+						$record['headline'] = BackendUtility::getRecordTitle($table, $entryValue['row']);
 						$record['record_pid'] = $entryValue['row']['pid'];
 						$record['record_uid'] = $entryValue['uid'];
 						$record['table_name'] = $table;
