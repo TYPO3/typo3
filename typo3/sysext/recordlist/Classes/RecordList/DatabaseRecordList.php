@@ -785,7 +785,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			} elseif ($fCol == '_LOCALIZATION_b') {
 				// deliberately empty
 			} else {
-				$tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid']);
+				$pageId = $table === 'pages' ? $row['uid'] : $row['pid'];
+				$tmpProc = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid'], TRUE, $pageId);
 				$theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
 				if ($this->csvOutput) {
 					$row[$fCol] = BackendUtility::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid']);

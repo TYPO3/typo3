@@ -1945,26 +1945,45 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name, present in TCA
 	 * @param string $column Field name
-	 * @param string $key Key or comma-separated list of keys.
+	 * @param string $keyList Key or comma-separated list of keys.
+	 * @param array $columnTsConfig page TSConfig for $column (TCEMAIN.<table>.<column>)
 	 * @return string Comma-separated list of localized labels
 	 */
-	static public function getLabelsFromItemsList($table, $column, $key) {
+	static public function getLabelsFromItemsList($table, $column, $keyList, array $columnTsConfig = array()) {
+		// Check if there is an "items" array
+		if (
+			!isset($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])
+			|| !is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])
+			|| $keyList === ''
+		) {
+			return '';
+		}
+
+		$keys = GeneralUtility::trimExplode(',', $keyList, TRUE);
 		$labels = array();
-		$values = GeneralUtility::trimExplode(',', $key, TRUE);
-		if (!empty($values)) {
-			// Check if there is an "items" array
-			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
-				// Loop on all selected values
-				foreach ($values as $aValue) {
-					foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
-						// Loop on all available items
-						// Keep matches and move on to next value
-						if ((string)$aValue === (string)$itemConfiguration[1]) {
-							$labels[] = static::getLanguageService()->sL($itemConfiguration[0]);
-							break;
-						}
+		// Loop on all selected values
+		foreach ($keys as $key) {
+			$label = NULL;
+			if ($columnTsConfig) {
+				// Check if label has been defined or redefined via pageTsConfig
+				if (isset($columnTsConfig['addItems.'][$key])) {
+					$label = $columnTsConfig['addItems.'][$key];
+				} elseif (isset($columnTsConfig['altLabels.'][$key])) {
+					$label = $columnTsConfig['altLabels.'][$key];
+				}
+			}
+			if ($label === NULL) {
+				// Otherwise lookup the label in TCA items list
+				foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
+					list($currentLabel, $currentKey) = $itemConfiguration;
+					if ((string)$key === (string)$currentKey) {
+						$label = $currentLabel;
+						break;
 					}
 				}
+			}
+			if ($label !== NULL) {
+				$labels[] = static::getLanguageService()->sL($label);
 			}
 		}
 		return implode(', ', $labels);
@@ -2137,9 +2156,11 @@ class BackendUtility {
 	 * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
 	 * @param int $uid Uid of the current record
 	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
+	 * @param int $pid Optional page uid is used to evaluate page TSConfig for the given field
+	 * @throws \InvalidArgumentException
 	 * @return string|NULL
 	 */
-	static public function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = FALSE, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
+	static public function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = FALSE, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE, $pid = 0) {
 		if ($col === 'uid') {
 			// uid is not in TCA-array
 			return $value;
@@ -2209,7 +2230,14 @@ class BackendUtility {
 						$l = 'N/A';
 					}
 				} else {
-					$l = self::getLabelsFromItemsList($table, $col, $value);
+					$columnTsConfig = array();
+					if ($pid) {
+						$pageTsConfig = self::getPagesTSconfig($pid);
+						if (isset($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'])) {
+							$columnTsConfig = $pageTsConfig['TCEFORM.'][$table . '.'][$col . '.'];
+						}
+					}
+					$l = self::getLabelsFromItemsList($table, $col, $value, $columnTsConfig);
 					if ($theColConf['foreign_table'] && !$l && $GLOBALS['TCA'][$theColConf['foreign_table']]) {
 						if ($noRecordLookup) {
 							$l = $value;
@@ -2427,11 +2455,12 @@ class BackendUtility {
 	 * @param int $fixed_lgd_chars The max amount of characters the value may occupy
 	 * @param int $uid Uid of the current record
 	 * @param bool $forceResult If BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
+	 * @param int $pid Optional page uid is used to evaluate page TSConfig for the given field
 	 * @return string
 	 * @see getProcessedValue()
 	 */
-	static public function getProcessedValueExtra($table, $fN, $fV, $fixed_lgd_chars = 0, $uid = 0, $forceResult = TRUE) {
-		$fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 1, 0, $uid, $forceResult);
+	static public function getProcessedValueExtra($table, $fN, $fV, $fixed_lgd_chars = 0, $uid = 0, $forceResult = TRUE, $pid = 0) {
+		$fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 1, 0, $uid, $forceResult, $pid);
 		if (!isset($fVnew)) {
 			if (is_array($GLOBALS['TCA'][$table])) {
 				if ($fN == $GLOBALS['TCA'][$table]['ctrl']['tstamp'] || $fN == $GLOBALS['TCA'][$table]['ctrl']['crdate']) {

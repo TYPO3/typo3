@@ -21,14 +21,19 @@ use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMR
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ExcludeFieldsReturnsCorrectFieldListFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ExcludeFieldsReturnsCorrectListWithFlexFormFieldsFixture;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class BackendUtilityTest extends UnitTestCase {
 
 	///////////////////////////////////////
 	// Tests concerning calcAge
@@ -114,6 +119,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider calcAgeDataProvider
+	 * @param int $seconds
+	 * @param string $expectedLabel
 	 */
 	public function calcAgeReturnsExpectedValues($seconds, $expectedLabel) {
 		$this->assertSame($expectedLabel, BackendUtility::calcAge($seconds));
@@ -210,10 +217,10 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getProcessedValueForSelectWithMMRelation() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
 			->will($this->returnCallback(
-				function($quoteStr, $table) {
+				function($quoteStr) {
 					return "'" . $quoteStr . "'";
 				}
 			));
@@ -221,7 +228,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_free_result');
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')
 			->will($this->returnCallback(
-				function($res) {
+				function() {
 					static $called = 0;
 					++$called;
 					switch ($called) {
@@ -252,6 +259,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 						case 6:
 							return NULL;
 					}
+					return NULL;
 				}
 			));
 
@@ -396,6 +404,11 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
+	 * @param string $table
+	 * @param string $prefix
+	 * @param array $presetFields
+	 * @param array $tca
+	 * @param string $expectedFields
 	 */
 	public function getCommonSelectFieldsReturnsCorrectFields($table, $prefix = '', array $presetFields, array $tca, $expectedFields = '') {
 		$GLOBALS['TCA'][$table] = $tca;
@@ -478,6 +491,11 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
+	 * @param string $table
+	 * @param string $col
+	 * @param string $key
+	 * @param array $tca
+	 * @param string $expectedLabel
 	 */
 	public function getLabelFromItemlistReturnsCorrectFields($table, $col = '', $key = '', array $tca, $expectedLabel = '') {
 		$GLOBALS['TCA'][$table] = $tca;
@@ -542,6 +560,12 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
+	 * @param int $pageId
+	 * @param string $table
+	 * @param string $column
+	 * @param string $key
+	 * @param array $tca
+	 * @param string $expectedLabel
 	 */
 	public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '') {
 		$GLOBALS['TCA'][$table] = $tca;
@@ -560,40 +584,77 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertStringMatchesFormat('<input %Svalue="1"%S/>', BackendUtility::getFuncCheck('params', 'test', TRUE));
 	}
 
-	/**
+	/*
 	 * Tests concerning getLabelsFromItemsList
 	 */
 
 	/**
-	 * @test
+	 * @return array
 	 */
-	public function getLabelsFromItemsListReturnsValueIfItemIsFound() {
-		$table = 'foobar';
-		$col = 'someColumn';
-		$tca = array(
-			'columns' => array(
-				'someColumn' => array(
-					'config' => array(
-						'items' => array(
-							'0' => array('aFooLabel', 'foo'),
-							'1' => array('aBarLabel', 'bar')
+	public function getLabelsFromItemsListDataProvider() {
+		return array(
+			'return value if found' => array(
+				'foobar', // table
+				'someColumn', // col
+				'foo, bar', // keyList
+				array( // TCA
+					'columns' => array(
+						'someColumn' => array(
+							'config' => array(
+								'items' => array(
+									'0' => array('aFooLabel', 'foo'),
+									'1' => array('aBarLabel', 'bar')
+								)
+							)
 						)
 					)
-				)
+				),
+				array(), // page TSconfig
+				'aFooLabel, aBarLabel' // expected
+			),
+			'page TSconfig overrules TCA' => array(
+				'foobar', // table
+				'someColumn', // col
+				'foo,bar, add', // keyList
+				array( // TCA
+					'columns' => array(
+						'someColumn' => array(
+							'config' => array(
+								'items' => array(
+									'0' => array('aFooLabel', 'foo'),
+									'1' => array('aBarLabel', 'bar')
+								)
+							)
+						)
+					)
+				),
+				array( // page TSconfig
+					'addItems.' => array('add' => 'aNewLabel'),
+					'altLabels.' => array('bar' => 'aBarDiffLabel'),
+				),
+				'aFooLabel, aBarDiffLabel, aNewLabel' // expected
 			)
 		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getLabelsFromItemsListDataProvider
+	 * @param string $table
+	 * @param string $col
+	 * @param string $keyList
+	 * @param array $tca
+	 * @param array $pageTsConfig
+	 * @param string $expectedLabel
+	 */
+	public function getLabelsFromItemsListReturnsCorrectValue($table, $col, $keyList, $tca, array $pageTsConfig, $expectedLabel) {
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
-		$GLOBALS['LANG']->expects($this->any())->method('sL')
-			->will($this->returnCallback(
-				function($name) {
-					return $name;
-				}
-			));
+		$GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', FALSE);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = BackendUtility::getLabelsFromItemsList($table, $col, 'foo,bar');
-		$this->assertEquals('aFooLabel, aBarLabel', $label);
+		$label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList,$pageTsConfig);
+		$this->assertEquals($expectedLabel, $label);
 	}
 
 	/**
@@ -616,21 +677,12 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->charSet = 'utf-8';
-		$GLOBALS['LANG']->csConvObj = $this->getMock(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-		$GLOBALS['LANG']->expects($this->any())->method('sL')
-			->will($this->returnCallback(
-				function($name) {
-					return $name;
-				}
-			));
-		$GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')
-			->will($this->returnCallback(
-				function($charset, $string, $len, $crop = '') {
-					return $string;
-				}
-			));
+		$GLOBALS['LANG']->csConvObj = $this->getMock(CharsetConverter::class);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
+
+		$GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')->will($this->returnArgument(1));
 
 		$GLOBALS['TCA'][$table] = $tca;
 		$label = BackendUtility::getProcessedValue($table, $col, 'foo,invalidKey,bar');
@@ -656,21 +708,12 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', FALSE);
 		$GLOBALS['LANG']->charSet = 'utf-8';
-		$GLOBALS['LANG']->csConvObj = $this->getMock(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-		$GLOBALS['LANG']->expects($this->any())->method('sL')
-			->will($this->returnCallback(
-				function($name) {
-					return $name;
-				}
-			));
-		$GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')
-			->will($this->returnCallback(
-				function($charset, $string, $len, $crop = '') {
-					return $string;
-				}
-			));
+		$GLOBALS['LANG']->csConvObj = $this->getMock(CharsetConverter::class);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
+
+		$GLOBALS['LANG']->csConvObj->expects($this->any())->method('crop')->will($this->returnArgument(1));
 
 		$GLOBALS['TCA'][$table] = $tca;
 		$label = BackendUtility::getProcessedValue($table, $col, 'invalidKey');
@@ -783,13 +826,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TCA'] = $tca;
 
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
-		$GLOBALS['LANG']->expects($this->any())->method('sL')
-			->will($this->returnCallback(
-				function($name) {
-					return $name;
-				}
-			));
+		$GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', FALSE);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
 		$this->assertSame($expected, ExcludeFieldsReturnsCorrectFieldListFixture::getExcludeFields());
 	}
@@ -887,13 +925,8 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 
 		// Stub LanguageService and let sL() return the same value that came in again
-		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
-		$GLOBALS['LANG']->expects($this->any())->method('sL')
-			->will($this->returnCallback(
-				function($name) {
-					return $name;
-				}
-			));
+		$GLOBALS['LANG'] = $this->getMock(LanguageService::class, array(), array(), '', FALSE);
+		$GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
 		$this->assertSame($expectedResult, ExcludeFieldsReturnsCorrectListWithFlexFormFieldsFixture::getExcludeFields());
 	}
@@ -1090,28 +1123,22 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider replaceMarkersInWhereClauseDataProvider
+	 * @param string $whereClause
+	 * @param array $tsConfig
+	 * @param string $expected
+	 * @throws \PHPUnit_Framework_Exception
 	 */
-	public function replaceMarkersInWhereClauseReturnsValidWhereClause($whereClause, $tsConfig, $expected) {
+	public function replaceMarkersInWhereClauseReturnsValidWhereClause($whereClause, array $tsConfig, $expected) {
 		// Mock TYPO3_DB and let it return same values that came in
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('quoteStr')
-			->will($this->returnCallback(
-				function($quoteStr, $table) {
-					return $quoteStr;
-				}
-			));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('quoteStr')->will($this->returnArgument(0));
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
 			->will($this->returnCallback(
-				function($quoteStr, $table) {
+				function($quoteStr) {
 					return "'" . $quoteStr . "'";
 				}
 			));
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('cleanIntList')
-			->will($this->returnCallback(
-				function($intList) {
-					return $intList;
-				}
-			));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('cleanIntList')->will($this->returnArgument(0));
 		$this->assertSame($expected, BackendUtility::replaceMarkersInWhereClause($whereClause, 'dummytable', 'dummyfield', $tsConfig));
 	}
 
@@ -1119,7 +1146,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function replaceMarkersInWhereClauseCleansIdList() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('cleanIntList')->with('1,a,2,b,3,c');
 		$where = ' AND dummytable.uid IN (###PAGE_TSCONFIG_IDLIST###)';
 		$tsConfig = array(
@@ -1147,12 +1174,12 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
-		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
+		$GLOBALS['BE_USER'] = $this->getMock(BackendUserAuthentication::class, array(), array(), '', FALSE);
 		$GLOBALS['BE_USER']->expects($this->at(0))->method('getTSConfig')->will($this->returnValue($completeConfiguration));
 		$GLOBALS['BE_USER']->expects($this->at(1))->method('getTSConfig')->will($this->returnValue(array('value' => NULL, 'properties' => NULL)));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
 		$className = $this->getUniqueId('BackendUtility');
+		/** @var \PHPUnit_Framework_MockObject_MockObject|BackendUtility $subject */
 		$subject = __NAMESPACE__ . '\\' . $className;
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
@@ -1302,14 +1329,21 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider replaceL10nModeFieldsReplacesFieldsDataProvider
+	 * @param string $table
+	 * @param array $row
+	 * @param array $tca
+	 * @param array $originalRow
+	 * @param array $expected
+	 * @throws \InvalidArgumentException
+	 * @throws \PHPUnit_Framework_Exception
 	 */
-	public function replaceL10nModeFieldsReplacesFields($table, $row, $tca, $originalRow, $expected) {
+	public function replaceL10nModeFieldsReplacesFields($table, array $row, array $tca, array $originalRow, $expected) {
 		$GLOBALS['TCA'] = $tca;
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetSingleRow')->will($this->returnValue($originalRow));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Utility\BackendUtility::class, array('dummy'));
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|BackendUtility $subject */
+		$subject = $this->getAccessibleMock(BackendUtility::class, array('dummy'));
 		$this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
 	}
 
