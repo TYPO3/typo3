@@ -12,31 +12,62 @@
  */
 
 /**
- * Ext.ux.HTMLAreaButton extends Ext.Button
+ * A button in the toolbar
  */
-define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
+define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (UserAgent, Event) {
+	function (UserAgent, Dom, Util, Event) {
 
-	var Button = Ext.extend(Ext.Button, {
+	/**
+	 * Button constructor
+	 */
+	var Button = function (config) {
+		Util.apply(this, config);		
+	};
+
+	Button.prototype = {
+
+		render: function () {
+			this.el = document.createElement('div');
+			Dom.addClass(this.el, 'x-form-item');
+			Dom.addClass(this.el, 'button');
+			Dom.addClass(this.el, 'unselectable');
+			this.el.setAttribute('unselectable', 'on');
+			if (this.id) {
+				this.el.setAttribute('id', this.id);
+			}
+			if (typeof this.cls === 'string') {
+				Dom.addClass(this.el, this.cls);
+			}
+			if (typeof this.text === 'string') {
+				this.el.innerHTML = this.text;
+			}
+			if (typeof this.tooltip === 'string') {
+				this.el.setAttribute('title', this.tooltip);
+			}
+			if (this.hidden) {
+				Dom.setStyle(this.el, { display: 'none' } );
+			}
+			this.buttonElement = document.createElement('button');
+			this.buttonElement.setAttribute('type', 'button');
+			Dom.addClass(this.buttonElement, 'btn-text');
+			if (typeof this.iconCls === 'string') {
+				Dom.addClass(this.buttonElement, this.iconCls);
+			}
+			this.buttonElement.innerHTML = '&nbsp;';
+			this.el.appendChild(this.buttonElement);
+			this.getToolbar().getEl().appendChild(this.el);
+			this.initEventListeners();
+		},
 
 		/**
-		 * Component initialization
+		 * Get the element to which the item is rendered
 		 */
-		initComponent: function () {
-			this.template = new Ext.Template(
-				'<div id="{4}" class="x-btn {3}">',
-				'<em class="{2} x-unselectable" unselectable="on"><button type="{0}"></button></em>',
-				'</div>');
-                    	this.template.compile();
-			Button.superclass.initComponent.call(this);
-			this.addListener({
-				afterrender: {
-					fn: this.initEventListeners,
-					single: true
-				}
-			});
+		getEl: function () {
+			return this.el;
 		},
 
 		/**
@@ -46,7 +77,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 			var self = this;
 			Event.on(this, 'HTMLAreaEventHotkey', function (event, key, keyEvent) { return self.onHotKey(key, keyEvent); });
 			Event.on(this, 'HTMLAreaEventContextMenu', function (event, button) { return self.onButtonClick(button, event); });
-			this.setHandler(this.onButtonClick, this);
+			Event.on(this.el, this.clickEvent, function (event) { return self.onButtonClick(self, event); });
+			Event.on(this.el, 'mouseover', function (event) { return self.onMouseOver(event); });
+			Event.on(this.el, 'mouseout', function (event) { return self.onMouseOut(event); });
 			// Monitor toolbar updates in order to refresh the state of the button
 			Event.on(this.getToolbar(), 'HTMLAreaEventToolbarUpdate', function (event, mode, selectionEmpty, ancestors, endPointsInSameBlock) { Event.stopEvent(event); self.onUpdateToolbar(mode, selectionEmpty, ancestors, endPointsInSameBlock); return false; });
 		},
@@ -66,13 +99,20 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 		},
 
 		/**
+		 * Get the itemId of the button
+		 */
+		getItemId: function() {
+			return this.itemId;
+		},
+
+		/**
 		 * Add properties and function to set button active or not depending on current selection
 		 */
 		inactive: true,
 		activeClass: 'buttonActive',
 		setInactive: function (inactive) {
 			this.inactive = inactive;
-			return inactive ? this.removeClass(this.activeClass) : this.addClass(this.activeClass);
+			return inactive ? Dom.removeClass(this.el, this.activeClass) : Dom.addClass(this.el, this.activeClass);
 		},
 
 		/**
@@ -133,6 +173,22 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 		},
 
 		/**
+		 * Handler invoked when the mouse goes over the button
+		 */
+		onMouseOver: function (event) {
+			if (!this.buttonElement.disabled && this.inactive) {
+				Dom.addClass(this.el, 'buttonHover');
+			}
+		},
+
+		/**
+		 * Handler invoked when the mouse moves out of the button
+		 */
+		onMouseOut: function (event) {
+			Dom.removeClass(this.el, 'buttonHover');
+		},
+
+		/**
 		 * Handler invoked when the hotkey configured for this button is pressed
 		 */
 		onHotKey: function (key, event) {
@@ -157,9 +213,37 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
 		 */
 		setTooltip: function (text) {
 			this.tooltip = text;
-			this.getEl().dom.firstChild.firstChild.title = text;
+			this.buttonElement.title = text;
+		},
+
+		/**
+		 * Setting disabled/enabled by boolean.
+		 * @param boolean disabled
+		 * @return void
+		 */
+		disabledClass: 'buttonDisabled',
+		setDisabled: function(disabled){
+			this.buttonElement.disabled = disabled;
+			if (disabled) {
+				Dom.addClass(this.el, this.disabledClass);
+			} else {
+				Dom.removeClass(this.el, this.disabledClass);
+			}
+		},
+
+		/**
+		 * Cleanup (called by toolbar onBeforeDestroy)
+		 */
+		onBeforeDestroy: function () {
+			Event.off(this);
+			Event.off(this.el);
+			while (node = this.el.firstChild) {
+				this.el.removeChild(node);
+			}
+			delete this.e;
+			this.el = null;
 		}
-	});
+	};
 
 	return Button;
 

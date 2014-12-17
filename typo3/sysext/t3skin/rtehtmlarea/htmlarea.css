@@ -35,6 +35,15 @@
 	padding-bottom: 10px;
 }
 /* Selectors for the editor toolbar */
+.htmlarea .unselectable,
+.htmlarea .unselectable * {
+	user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	cursor: default;
+}
 .htmlarea .toolbar {
 	cursor: default;
 	margin: 0;
@@ -59,18 +68,31 @@
 }
 .htmlarea .toolbar .button {
 	background-color: transparent;
-	color: ButtonText;
 	border-style: solid;
 	border-width: 1px;
 	border-color: transparent;
 	border-collapse: separate;
+	color: ButtonText;
+	cursor: pointer;
+	float: left;
 	height: 23px;
 	margin: 0 0 3px 0;
 	padding: 0;
-	float: left;
 }
-.htmlarea .toolbar .x-btn-text {
+.htmlarea .toolbar .button button {
+	background-color: transparent;
+	border: 0 none;
+	cursor: pointer;
+	margin: 0;
+	-moz-outline: 0 none;
+	outline: 0 none;
+	overflow: visible;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+.htmlarea .toolbar .btn-text {
 	background-image: url("images/sprites/actions.png");
+	background-position: center;
 	background-repeat: no-repeat;
 	width: 20px;
 	height: 18px;
@@ -78,7 +100,7 @@
 	margin: 1px 0 1px 2px;
 }
 .htmlarea .toolbar .buttonHover {
-	opacity: 1.00;
+	background-color: #DCDCDC;
 }
 .htmlarea .toolbar .buttonActive,
 .htmlarea .toolbar .buttonPressed,

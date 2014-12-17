@@ -342,8 +342,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 			}
 			this.statusBarTree = null;
 			this.statusBarWordCount = null;
-			this.el = null;
 			delete this.el;
+			this.el = null;
 		}
 	};
 

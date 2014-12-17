@@ -19,7 +19,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Button',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText'],
 	function (Util, Dom, Event, Combo, Button, ToolbarText) {
 
@@ -166,14 +166,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 						this.el.insertBefore(textDiv, wrapDiv);
 					}
 					break;
-				case 'htmlareabutton':
+				default:
 					item.render(this.el);
-					var itemDiv = this.el.appendChild(item.getEl().dom);
-					Dom.addClass(item.getEl().dom, 'x-form-item');
-					break;
-				case 'htmlareatoolbartext':
-					item.render(this.el);
-					break;
 			}
 		},
 
@@ -289,6 +283,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 					try {
 						this.items[itemId].destroy();
 					} catch (e) {}
+				}
+				if (typeof this.items[itemId].onBeforeDestroy === 'function') {
+					this.items[itemId].onBeforeDestroy();
 				}
 			}
 		}

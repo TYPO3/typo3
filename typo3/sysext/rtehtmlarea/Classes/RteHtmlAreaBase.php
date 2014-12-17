@@ -822,7 +822,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			'DOM/Selection',
 			'DOM/Walker',
 			'Configuration/Config',
-			'Extjs/ux/Button',
+			'Toolbar/Button',
 			'Toolbar/ToolbarText',
 			'Extjs/ux/Combo',
 			'Extjs/ColorPalette',
@@ -1560,5 +1560,4 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		return implode('; ', $nStyle);
 	}
-
 }

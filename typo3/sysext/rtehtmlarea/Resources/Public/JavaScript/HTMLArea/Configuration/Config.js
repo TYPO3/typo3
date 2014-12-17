@@ -79,8 +79,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 				textMode: false,
 				selection: false,
 				dialog: false,
-				hidden: false,
-				hideMode: 'display'
+				hidden: false
 			},
 			htmlareabutton: {
 				cls: 'button',

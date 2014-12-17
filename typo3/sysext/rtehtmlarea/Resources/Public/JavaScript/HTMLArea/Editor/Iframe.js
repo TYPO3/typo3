@@ -776,8 +776,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			Event.off(this.document.documentElement);
 			// Cleaning references to DOM in order to avoid IE memory leaks
 			this.document = null;
-			this.el = null;
 			delete this.el;
+			this.el = null;
 		}
 	};
 
