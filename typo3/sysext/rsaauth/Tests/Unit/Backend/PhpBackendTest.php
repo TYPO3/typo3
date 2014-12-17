@@ -35,17 +35,19 @@ class PhpBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	 * @test
 	 */
 	public function createNewKeyPairCreatesReadyKeyPair() {
-		$this->assertTrue(
-			$this->subject->createNewKeyPair()->isReady()
-		);
+		$keyPair = $this->subject->createNewKeyPair();
+		$this->assertNotNull($keyPair, 'Test fails because of broken environment: PHP OpenSSL extension is not working properly.');
+		$this->assertTrue($keyPair->isReady());
 	}
 
 	/**
 	 * @test
 	 */
 	public function createNewKeyPairCalledTwoTimesReturnsSameKeyPairInstance() {
+		$keyPair1 = $this->subject->createNewKeyPair();
+		$this->assertNotNull($keyPair1, 'Test fails because of broken environment: PHP OpenSSL extension is not working properly.');
 		$this->assertSame(
-			$this->subject->createNewKeyPair(),
+			$keyPair1,
 			$this->subject->createNewKeyPair()
 		);
 	}
