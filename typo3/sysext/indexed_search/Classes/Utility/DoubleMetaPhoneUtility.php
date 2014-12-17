@@ -802,9 +802,9 @@ class DoubleMetaPhoneUtility {
 	/**
 	 * Is vowel?
 	 *
-	 * @param 	[type]		$string: ...
-	 * @param 	[type]		$pos: ...
-	 * @return 	[type]		...
+	 * @param string $string
+	 * @param int $pos
+	 * @return bool|int
 	 */
 	public function IsVowel($string, $pos) {
 		return preg_match('/[AEIOUY]/', substr($string, $pos, 1));
@@ -813,8 +813,8 @@ class DoubleMetaPhoneUtility {
 	/**
 	 * Is slavogermanic?
 	 *
-	 * @param 	[type]		$string: ...
-	 * @return 	[type]		...
+	 * @param string $string
+	 * @return bool|int
 	 */
 	public function SlavoGermanic($string) {
 		return preg_match('/W|K|CZ|WITZ/', $string);

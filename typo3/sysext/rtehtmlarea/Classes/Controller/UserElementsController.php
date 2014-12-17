@@ -61,7 +61,7 @@ class UserElementsController {
 	}
 
 	/**
-	 * @return 	[type]		...
+	 * @return void
 	 */
 	public function init() {
 		$this->editorNo = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('editorNo');
@@ -124,7 +124,7 @@ class UserElementsController {
 	/**
 	 * Main function
 	 *
-	 * @return 	[type]		...
+	 * @return void
 	 */
 	public function main() {
 		$this->content = '';
@@ -134,7 +134,7 @@ class UserElementsController {
 	/**
 	 * Print content
 	 *
-	 * @return 	[type]		...
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -146,10 +146,10 @@ class UserElementsController {
 	 *
 	 *********************************/
 	/**
-	 * @param 	[type]		$imgInfo: ...
-	 * @param 	[type]		$maxW: ...
-	 * @param 	[type]		$maxH: ...
-	 * @return 	[type]		...
+	 * @param array $imgInfo
+	 * @param int $maxW
+	 * @param int $maxH
+	 * @return array
 	 */
 	public function calcWH($imgInfo, $maxW = 380, $maxH = 500) {
 		$IW = $imgInfo[0];
@@ -169,8 +169,8 @@ class UserElementsController {
 	/**
 	 * Rich Text Editor (RTE) user element selector
 	 *
-	 * @param 	[type]		$openKeys: ...
-	 * @return 	[type]		...
+	 * @param array $openKeys
+	 * @return string
 	 */
 	public function main_user($openKeys) {
 		// Starting content:

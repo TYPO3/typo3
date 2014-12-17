@@ -1504,14 +1504,14 @@ class DataHandler {
 	 * @param string $value The value to set.
 	 * @param array $tcaFieldConf Field configuration from $GLOBALS['TCA']
 	 * @param string $table Table name
-	 * @param int $id Return UID
-	 * @param [type] $curValue
-	 * @param [type] $status
+	 * @param int $id UID of record
+	 * @param mixed $curValue Current value of the field
+	 * @param string $status 'update' or 'new' flag
 	 * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted. If $realPid is -1 it means that a new version of the record is being inserted.
-	 * @param [type] $recFID
+	 * @param string $recFID Field identifier [table:uid:field] for flexforms
 	 * @param string $field Field name. Must NOT be set if the call is for a flexform field (since flexforms are not allowed within flexforms).
-	 * @param [type] $uploadedFiles
-	 * @param [type] $tscPID
+	 * @param array $uploadedFiles
+	 * @param int $tscPID TSconfig PID
 	 * @param array $additionalData Additional data to be forwarded to sub-processors
 	 * @return array Returns the evaluated $value as key "value" in this array.
 	 */

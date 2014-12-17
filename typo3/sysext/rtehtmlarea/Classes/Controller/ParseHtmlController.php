@@ -51,7 +51,7 @@ class ParseHtmlController {
 	public $prefixId = 'TYPO3HtmlParser';
 
 	/**
-	 * @return 	[type]		...
+	 * @return void
 	 */
 	public function init() {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
@@ -68,7 +68,7 @@ class ParseHtmlController {
 	/**
 	 * Main function
 	 *
-	 * @return 	[type]		...
+	 * @return void
 	 */
 	public function main() {
 		$this->content .= $this->main_parse_html($this->modData['openKeys']);
@@ -78,7 +78,7 @@ class ParseHtmlController {
 	/**
 	 * Print content
 	 *
-	 * @return 	[type]		...
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -87,8 +87,8 @@ class ParseHtmlController {
 	/**
 	 * Rich Text Editor (RTE) html parser
 	 *
-	 * @param 	[type]		$openKeys: ...
-	 * @return 	[type]		...
+	 * @param array $openKeys Unused
+	 * @return string
 	 */
 	public function main_parse_html($openKeys) {
 		$editorNo = GeneralUtility::_GP('editorNo');

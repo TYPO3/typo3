@@ -1511,8 +1511,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 *
 	 ***************************/
 	/**
-	 * @return 	[type]		...
-	 * @desc
+	 * @return string
 	 */
 	public function RTEtsConfigParams() {
 		if ($this->is_FE()) {
@@ -1523,6 +1522,12 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 	}
 
+	/**
+	 * Clean list
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	public function cleanList($str) {
 		if (strstr($str, '*')) {
 			$str = '*';
