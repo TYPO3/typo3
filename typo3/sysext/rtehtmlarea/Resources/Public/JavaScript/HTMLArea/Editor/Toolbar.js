@@ -264,6 +264,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 				ancestors = selection.getAllAncestors();
 				endPointsInSameBlock = selection.endPointsInSameBlock();
 			}
+			this.framework.getStatusBar().onUpdateToolbar(mode, selectionEmpty, ancestors, endPointsInSameBlock);
 			/**
 			 * @event HTMLAreaEventToolbarUpdate
 			 * Fires when the toolbar is updated

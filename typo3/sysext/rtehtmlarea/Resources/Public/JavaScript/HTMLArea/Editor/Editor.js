@@ -259,6 +259,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 		this.generatePlugins();
 		// Make the editor visible
 		this.show();
+		this.toolbar.update();
 		// Make the wizards visible again
 		if (this.wizards && this.wizards.nodeType === Dom.ELEMENT_NODE) {
 			this.wizards.style.display = '';
