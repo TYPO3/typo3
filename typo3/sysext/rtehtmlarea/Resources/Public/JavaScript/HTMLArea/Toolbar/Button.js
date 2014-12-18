@@ -236,12 +236,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 */
 		onBeforeDestroy: function () {
 			Event.off(this);
-			Event.off(this.el);
-			while (node = this.el.firstChild) {
-				this.el.removeChild(node);
+			if (this.el) {
+				Event.off(this.el);
+				var node;
+				while (node = this.el.firstChild) {
+					this.el.removeChild(node);
+				}
+				this.el = null;
 			}
-			delete this.e;
-			this.el = null;
 		}
 	};
 

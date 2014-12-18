@@ -104,6 +104,19 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 			} else {
 				Dom.removeClass(this.el, this.disabledClass);
 			}
+		},
+
+		/**
+		 * Cleanup (called by toolbar onBeforeDestroy)
+		 */
+		onBeforeDestroy: function () {
+			if (this.el) {
+				var node;
+				while (node = this.el.firstChild) {
+					this.el.removeChild(node);
+				}
+				this.el = null;
+			}
 		}
 	};
 

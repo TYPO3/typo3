@@ -350,12 +350,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/StatusBar',
 		 */
 		onBeforeDestroy: function() {
 			this.clear();
+			var node;
 			while (node = this.el.firstChild) {
 				this.el.removeChild(node);
 			}
 			this.statusBarTree = null;
 			this.statusBarWordCount = null;
-			delete this.el;
 			this.el = null;
 		}
 	};

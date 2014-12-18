@@ -277,19 +277,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		 */
 		onBeforeDestroy: function () {
 			Event.off(this);
-			while (node = this.el.firstChild) {
-				this.el.removeChild(node);
-			}
 			for (var itemId in this.items) {
 				if (typeof this.items[itemId].destroy === 'function') {
 					try {
 						this.items[itemId].destroy();
 					} catch (e) {}
 				}
-				if (typeof this.items[itemId].onBeforeDestroy === 'function') {
+				if (typeof this.items[itemId].onBeforeDestroy === 'function' && this.items[itemId].xtype !== 'htmlareacombo') {
 					this.items[itemId].onBeforeDestroy();
 				}
 			}
+			var node;
+			while (node = this.el.firstChild) {
+				this.el.removeChild(node);
+			}
+			this.el = null;
 		}
 	};
 

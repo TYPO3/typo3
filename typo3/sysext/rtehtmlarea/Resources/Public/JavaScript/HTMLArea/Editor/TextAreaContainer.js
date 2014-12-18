@@ -96,6 +96,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/TextAreaContainer',
 		onBeforeDestroy: function() {
 			this.originalParent.appendChild(this.textArea);
 			Event.off(this);
+			this.el = null;
 		}
 	};
 
