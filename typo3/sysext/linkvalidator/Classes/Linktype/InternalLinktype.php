@@ -76,9 +76,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		$this->responseContent = TRUE;
 		// Might already contain values - empty it
 		unset($this->errorParams);
-		// Ignore FAL file references
-		if (substr($url, 0, 5) === 'file:') {
-			// @todo validate this resource file
+		// Only check pages records. Content elements will also be checked
+		// as we extract the anchor in the next step.
+		if (strpos($softRefEntry['substr']['recordRef'], 'pages:') !== 0) {
 			return TRUE;
 		}
 		// Defines the linked page and anchor (if any).
