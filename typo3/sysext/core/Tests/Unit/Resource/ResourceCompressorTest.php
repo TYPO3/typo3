@@ -31,7 +31,7 @@ class ResourceCompressorTest extends BaseTestCase {
 	 */
 	protected function setUp() {
 		parent::setUp();
-		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceCompressor::class, array('compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory'));
+		$this->subject = $this->getAccessibleMock(ResourceCompressor::class, array('compressCssFile', 'compressJsFile', 'createMergedCssFile', 'createMergedJsFile', 'getFilenameFromMainDir', 'checkBaseDirectory'));
 	}
 
 	/**
@@ -69,6 +69,8 @@ class ResourceCompressorTest extends BaseTestCase {
 	/**
 	 * @test
 	 * @dataProvider cssFixStatementsDataProvider
+	 * @param string $input
+	 * @param string $expected
 	 */
 	public function cssFixStatementsMovesStatementsToTopIfNeeded($input, $expected) {
 		$result = $this->subject->_call('cssFixStatements', $input);
@@ -81,7 +83,7 @@ class ResourceCompressorTest extends BaseTestCase {
 	 */
 	public function compressedCssFileIsFlaggedToNotCompressAgain() {
 		$fileName = 'fooFile.css';
-		$compressedFileName = $fileName . '.gz';
+		$compressedFileName = $fileName . '.gzip';
 		$testFileFixture = array(
 			$fileName => array(
 				'file' => $fileName,
@@ -105,7 +107,7 @@ class ResourceCompressorTest extends BaseTestCase {
 	 */
 	public function compressedJsFileIsFlaggedToNotCompressAgain() {
 		$fileName = 'fooFile.js';
-		$compressedFileName = $fileName . '.gz';
+		$compressedFileName = $fileName . '.gzip';
 		$testFileFixture = array(
 			$fileName => array(
 				'file' => $fileName,
@@ -202,10 +204,65 @@ class ResourceCompressorTest extends BaseTestCase {
 	/**
 	 * @test
 	 * @dataProvider calcStatementsDataProvider
+	 * @param string $input
+	 * @param string $expected
 	 */
 	public function calcFunctionMustRetainWhitespaces($input, $expected) {
 		$result = $this->subject->_call('compressCssString', $input);
 		$this->assertSame($expected, trim($result));
-    }
+	}
 
+	/**
+	 * @return array
+	 */
+	public function compressCssFileContentDataProvider() {
+		$path = dirname(__FILE__) . '/ResourceCompressorTest/Fixtures/';
+		return array(
+			// File. Tests:
+			// - Stripped comments and white-space.
+			// - Retain white-space in selectors. (http://drupal.org/node/472820)
+			// - Retain pseudo-selectors. (http://drupal.org/node/460448)
+			0 => array(
+				$path . 'css_input_without_import.css',
+				$path . 'css_input_without_import.css.optimized.css'
+			),
+			// File. Tests:
+			// - Retain comment hacks.
+			2 => array(
+				$path . 'comment_hacks.css',
+				$path . 'comment_hacks.css.optimized.css'
+			),/*
+			// File. Tests:
+			// - Any @charset declaration at the beginning of a file should be
+			//   removed without breaking subsequent CSS.*/
+			6 => array(
+				$path . 'charset_sameline.css',
+				$path . 'charset.css.optimized.css'
+			),
+			7 => array(
+				$path . 'charset_newline.css',
+				$path . 'charset.css.optimized.css'
+			),
+		);
+	}
+
+	/**
+	 * Tests optimizing a CSS asset group.
+	 *
+	 * @test
+	 * @dataProvider compressCssFileContentDataProvider
+	 * @param string $cssFile
+	 * @param string $expected
+	 */
+	function compressCssFileContent($cssFile, $expected) {
+		$cssContent = file_get_contents($cssFile);
+		$compressedCss = $this->subject->_call('compressCssString', $cssContent);
+		// we have to fix relative paths, if we aren't working on a file in our target directory
+		$relativeFilename = str_replace(PATH_site, '', $cssFile);
+		if (strpos($relativeFilename, $this->subject->_get('targetDirectory')) === FALSE) {
+			$filenameRelativeToMainDir = substr($relativeFilename, strlen($this->subject->_get('backPath')));
+			$compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, dirname($filenameRelativeToMainDir) . '/');
+		}
+		$this->assertEquals(file_get_contents($expected), $compressedCss, 'Group of file CSS assets optimized correctly.');
+	}
 }

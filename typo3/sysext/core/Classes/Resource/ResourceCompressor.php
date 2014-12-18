@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,18 +24,36 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ResourceCompressor {
 
+	/**
+	 * @var string
+	 */
 	protected $targetDirectory = 'typo3temp/compressor/';
 
+	/**
+	 * @var string
+	 */
 	protected $relativePath = '';
 
+	/**
+	 * @var string
+	 */
 	protected $rootPath = '';
 
+	/**
+	 * @var string
+	 */
 	protected $backPath = '';
 
-	// gzipped versions are only created if $TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] is set
+	/**
+	 * gzipped versions are only created if $TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] is set
+	 *
+	 * @var bool
+	 */
 	protected $createGzipped = FALSE;
 
-	// default compression level is -1
+	/**
+	 * @var int
+	 */
 	protected $gzipCompressionLevel = -1;
 
 	protected $htaccessTemplate = '<FilesMatch "\\.(js|css)(\\.gzip)?$">
@@ -50,7 +69,7 @@ class ResourceCompressor {
 	 */
 	public function __construct() {
 		// we check for existence of our targetDirectory
-		if (!is_dir((PATH_site . $this->targetDirectory))) {
+		if (!is_dir(PATH_site . $this->targetDirectory)) {
 			GeneralUtility::mkdir(PATH_site . $this->targetDirectory);
 		}
 		// if enabled, we check whether we should auto-create the .htaccess file
@@ -67,7 +86,7 @@ class ResourceCompressor {
 		if (extension_loaded('zlib') && $compressionLevel) {
 			$this->createGzipped = TRUE;
 			// $compressionLevel can also be TRUE
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($compressionLevel)) {
+			if (MathUtility::canBeInterpretedAsInteger($compressionLevel)) {
 				$this->gzipCompressionLevel = (int)$compressionLevel;
 			}
 		}
@@ -363,7 +382,7 @@ class ResourceCompressor {
 	 * baseDirectories If set, only include files below one of the base directories
 	 *
 	 * removes comments and whitespaces
-	 * Adopted from http://drupal.org/files/issues/minify_css.php__1.txt
+	 * Adopted from https://github.com/drupal/drupal/blob/8.0.x/core/lib/Drupal/Core/Asset/CssOptimizer.php
 	 *
 	 * @param string $filename Source filename, relative to requested page
 	 * @return string Compressed filename, relative to requested page
@@ -382,13 +401,11 @@ class ResourceCompressor {
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
 		// only create it, if it doesn't exist, yet
 		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
-			$contents = GeneralUtility::getUrl($filenameAbsolute);
-			// Compress CSS Content
-			$contents = $this->compressCssString($contents);
-			// Ensure file ends in newline.
+			$contents = $this->compressCssString(GeneralUtility::getUrl($filenameAbsolute));
 			// we have to fix relative paths, if we aren't working on a file in our target directory
-			if (strpos($filename, $this->targetDirectory) === FALSE) {
-				$filenameRelativeToMainDir = substr($filename, strlen($this->backPath));
+			$relativeFilename = str_replace(PATH_site, '', $filenameAbsolute);
+			if (strpos($relativeFilename, $this->targetDirectory) === FALSE) {
+				$filenameRelativeToMainDir = substr($relativeFilename, strlen($this->backPath));
 				$contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filenameRelativeToMainDir) . '/');
 			}
 			$this->writeFileAndCompressed($targetFile, $contents);
@@ -402,8 +419,10 @@ class ResourceCompressor {
 	 * @see compressCssFile
 	 * @param array $matches
 	 * @return string the compressed string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, not in use anymore
 	 */
 	static public function compressCssPregCallback($matches) {
+		GeneralUtility::logDeprecatedFunction();
 		if ($matches[1]) {
 			// Group 1: Double quoted string.
 			return $matches[1];
@@ -680,8 +699,8 @@ class ResourceCompressor {
 		$externalContent = GeneralUtility::getUrl($url);
 		$filename = $this->targetDirectory . 'external-' . md5($url);
 		// write only if file does not exist and md5 of the content is not the same as fetched one
-		if (!file_exists(PATH_site . $filename) &&
-				(md5($externalContent) !== md5(GeneralUtility::getUrl(PATH_site . $filename)))
+		if (!file_exists(PATH_site . $filename)
+			&& (md5($externalContent) !== md5(GeneralUtility::getUrl(PATH_site . $filename)))
 		) {
 			GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
 		}
@@ -695,41 +714,46 @@ class ResourceCompressor {
 	 * @return string
 	 */
 	protected function compressCssString($contents) {
+		// Remove multiple charset declarations for standards compliance (and fixing Safari problems).
+		$contents = preg_replace('/^@charset\s+[\'"](\S*?)\b[\'"];/i', '', $contents);
 		// Perform some safe CSS optimizations.
-		$contents = str_replace(CR, '', $contents);
-		// Strip any and all carriage returns.
-		// Match and process strings, comments and everything else, one chunk at a time.
-		// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
-		$contents = preg_replace_callback('%
-				# One-regex-to-rule-them-all! - version: 20100220_0100
-				# Group 1: Match a double quoted string.
-				("[^"\\\\]*+(?:\\\\.[^"\\\\]*+)*+") |  # or...
-				# Group 2: Match a single quoted string.
-				(\'[^\'\\\\]*+(?:\\\\.[^\'\\\\]*+)*+\') |  # or...
-				# Group 3: Match a regular non-MacIE5-hack comment.
-				(/\\*[^\\\\*]*+\\*++(?:[^\\\\*/][^\\\\*]*+\\*++)*+/) |  # or...
-				# Group 4: Match a MacIE5-type1 comment.
-				(/\\*(?:[^*\\\\]*+\\**+(?!/))*+\\\\[^*]*+\\*++(?:[^*/][^*]*+\\*++)*+/(?<!\\\\\\*/)) |  # or...
-				# Group 5: Match a MacIE5-type2 comment.
-				(/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/(?<=\\\\\\*/))  # folllowed by...
-				# Group 6: Match everything up to final closing regular comment
-				([^/]*+(?:(?!\\*)/[^/]*+)*?)
-				# Group 7: Match final closing regular comment
-				(/\\*[^/]++(?:(?<!\\*)/(?!\\*)[^/]*+)*+/(?<=(?<!\\\\)\\*/)) |  # or...
-				# Group 8: Match a calc function (see http://www.w3.org/TR/2006/WD-css3-values-20060919/#calc)
-				(?:calc(\\((?:(?:[^\\(\\)]+)|(?8))*+\\))) | # or...
-				# Group 9: Match regular non-string, non-comment text.
-				((?:[^"\'/](?!calc))*+(?:(?!/\\*)/(?:[^"\'/](?!calc))*+)*+)
-				%Ssx', array('self', 'compressCssPregCallback'), $contents);
-		// Do it!
-		$contents = preg_replace('/^\\s++/', '', $contents);
-		// Strip leading whitespace.
-		$contents = preg_replace('/[ \\t]*+\\n\\s*+/S', '
-', $contents);
-		// Consolidate multi-lines space.
-		$contents = preg_replace('/(?<!\\s)\\s*+$/S', '
-', $contents);
-
+		// Regexp to match comment blocks.
+		$comment = '/\*[^*]*\*+(?:[^/*][^*]*\*+)*/';
+		// Regexp to match double quoted strings.
+		$double_quot = '"[^"\\\\]*(?:\\\\.[^"\\\\]*)*"';
+		// Regexp to match single quoted strings.
+		$single_quot = "'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'";
+		// Strip all comment blocks, but keep double/single quoted strings.
+		$contents = preg_replace(
+			"<($double_quot|$single_quot)|$comment>Ss",
+			"$1",
+			$contents
+		);
+		// Remove certain whitespace.
+		// There are different conditions for removing leading and trailing
+		// whitespace.
+		// @see http://php.net/manual/regexp.reference.subpatterns.php
+		$contents = preg_replace('<
+				# Strip leading and trailing whitespace.
+				\s*([@{};,])\s*
+				# Strip only leading whitespace from:
+				# - Closing parenthesis: Retain "@media (bar) and foo".
+				| \s+([\)])
+				# Strip only trailing whitespace from:
+				# - Opening parenthesis: Retain "@media (bar) and foo".
+				# - Colon: Retain :pseudo-selectors.
+				| ([\(:])\s+
+				>xS',
+			// Only one of the three capturing groups will match, so its reference
+			// will contain the wanted value and the references for the
+			// two non-matching groups will be replaced with empty strings.
+			'$1$2$3',
+			$contents
+		);
+		// End the file with a new line.
+		$contents = trim($contents);
+		// Ensure file ends in newline.
+		$contents .= LF;
 		return $contents;
 	}
 
