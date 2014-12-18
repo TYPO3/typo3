@@ -3979,18 +3979,24 @@ Connection: close
 	/**
 	 * Returns auto-filename for locallang-XML localizations.
 	 *
-	 * @param string $fileRef Absolute file reference to locallang-XML file. Must be inside system/global/local extension
+	 * @param string $fileRef Absolute file reference to locallang-XML file.
 	 * @param string $language Language key
 	 * @param bool $sameLocation if TRUE, then locallang-XML localization file name will be returned with same directory as $fileRef
-	 * @return string Returns the filename reference for the language unless error occurred (or local mode is used) in which case it will be NULL
+	 * @return string Returns the filename reference for the language unless error occurred in which case it will be NULL
 	 */
 	static public function llXmlAutoFileName($fileRef, $language, $sameLocation = FALSE) {
-		if ($sameLocation) {
-			$location = 'EXT:';
-		} else {
-			// Default location of translations
-			$location = 'typo3conf/l10n/' . $language . '/';
+		// If $fileRef is already prefixed with "[language key]" then we should return it as this
+		$fileName = basename($fileRef);
+		if (self::isFirstPartOfStr($fileName, $language . '.')) {
+			return $fileRef;
 		}
+
+		if ($sameLocation) {
+			return str_replace($fileName, $language . '.' . $fileName, $fileRef);
+		}
+
+		// Default location of translations
+		$location = 'typo3conf/l10n/' . $language . '/';
 		// Analyse file reference:
 		// Is system:
 		if (self::isFirstPartOfStr($fileRef, PATH_typo3 . 'sysext/')) {
@@ -4017,10 +4023,6 @@ Connection: close
 			}
 			// Add empty first-entry if not there.
 			list($file_extPath, $file_fileName) = $temp;
-			// If $fileRef is already prefix with "[language key]" then we should return it as this
-			if (substr($file_fileName, 0, strlen($language) + 1) === $language . '.') {
-				return $fileRef;
-			}
 			// The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
 			return $location . $file_extKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
 		} else {
