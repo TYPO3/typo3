@@ -86,6 +86,7 @@ CREATE TABLE tx_styleguide_forms (
 	text_12 text,
 	text_13 text,
 	text_14 text,
+	text_15 text,
 
 	checkbox_1 int(11) DEFAULT '0' NOT NULL,
 	checkbox_2 int(11) DEFAULT '0' NOT NULL,
