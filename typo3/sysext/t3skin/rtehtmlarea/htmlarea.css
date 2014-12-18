@@ -125,7 +125,9 @@
 	width: 24px;
 }
 .htmlarea .toolbar .buttonDisabled {
+	cursor: default;
 	filter: gray() alpha(opacity=25);
+	-moz-opacity: 0.25;
 	opacity: 0.25;
 }
 .htmlarea .toolbar .separator {

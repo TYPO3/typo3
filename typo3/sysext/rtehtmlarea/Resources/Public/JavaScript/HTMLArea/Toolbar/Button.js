@@ -223,6 +223,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 */
 		disabledClass: 'buttonDisabled',
 		setDisabled: function(disabled){
+			this.disabled = disabled;
 			this.buttonElement.disabled = disabled;
 			if (disabled) {
 				Dom.addClass(this.el, this.disabledClass);
