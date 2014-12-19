@@ -1493,6 +1493,16 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 * @param array $inputArray
+	 * @param array $expected
+	 * @dataProvider renumberKeysToAvoidLeapsIfKeysAreAllNumericDataProvider
+	 */
+	public function renumberKeysToAvoidLeapsIfKeysAreAllNumericReturnsExpectedOrder(array $inputArray, array $expected) {
+		$this->assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
+	}
+
+	/**
 	 * @return array
 	 */
 	public function mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider() {
