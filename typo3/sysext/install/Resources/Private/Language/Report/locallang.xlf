@@ -75,6 +75,21 @@
 			<trans-unit id="status_newVersion" xml:space="preserve">
 				<source>There is a new version of TYPO3 available. You can update to version %s</source>
 			</trans-unit>
+			<trans-unit id="status_installToolPassword" xml:space="preserve">
+				<source>Install Tool Password</source>
+			</trans-unit>
+			<trans-unit id="status_installTool" xml:space="preserve">
+				<source>Install Tool</source>
+			</trans-unit>
+			<trans-unit id="status_enabledPermanently" xml:space="preserve">
+				<source>Enabled permanently</source>
+			</trans-unit>
+			<trans-unit id="status_enabledTemporarily" xml:space="preserve">
+				<source>Enabled temporarily</source>
+			</trans-unit>
+			<trans-unit id="status_installEnabledTemporarily" xml:space="preserve">
+				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 
 /**
@@ -28,19 +27,16 @@ use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 
 	/**
-	 * Determines the Install Tool's status, mainly concerning its protection.
+	 * Determines the security of this TYPO3 installation
 	 *
-	 * @return array List of statuses
+	 * @return \TYPO3\CMS\Reports\Status[] List of statuses
 	 */
 	public function getStatus() {
-		$this->executeAdminCommand();
 		$statuses = array(
 			'adminUserAccount' => $this->getAdminAccountStatus(),
 			'encryptionKeyEmpty' => $this->getEncryptionKeyStatus(),
 			'fileDenyPattern' => $this->getFileDenyPatternStatus(),
 			'htaccessUpload' => $this->getHtaccessUploadStatus(),
-			'installToolEnabled' => $this->getInstallToolProtectionStatus(),
-			'installToolPassword' => $this->getInstallToolPasswordStatus(),
 			'saltedpasswords' => $this->getSaltedPasswordsStatus()
 		);
 		return $statuses;
@@ -164,51 +160,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 	/**
-	 * Executes commands like removing the Install Tool enable file.
-	 *
-	 * @return void
-	 */
-	protected function executeAdminCommand() {
-		$command = GeneralUtility::_GET('adminCmd');
-		switch ($command) {
-			case 'remove_ENABLE_INSTALL_TOOL':
-				EnableFileService::removeInstallToolEnableFile();
-				break;
-			default:
-				// Do nothing
-		}
-	}
-
-	/**
-	 * Checks whether the Install Tool password is set to its default value.
-	 *
-	 * @return \TYPO3\CMS\Reports\Status An object representing the security of the install tool password
-	 */
-	protected function getInstallToolPasswordStatus() {
-		$value = $GLOBALS['LANG']->getLL('status_ok');
-		$message = '';
-		$severity = \TYPO3\CMS\Reports\Status::OK;
-		$validPassword = TRUE;
-		$installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
-		$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($installToolPassword);
-		if (is_object($saltFactory)) {
-			$validPassword = !$saltFactory->checkPassword('joh316', $installToolPassword);
-		} elseif ($installToolPassword === md5('joh316')) {
-			$validPassword = FALSE;
-		}
-		if (!$validPassword) {
-			$value = $GLOBALS['LANG']->getLL('status_insecure');
-			$severity = \TYPO3\CMS\Reports\Status::ERROR;
-			$changeInstallToolPasswordUrl = BackendUtility::getModuleUrl('system_InstallInstall');
-			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.installtool_default_password'),
-				'<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">', '</a>');
-		}
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
-			$GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity);
-	}
-
-	/**
-	 * Checks whether the Install Tool password is set to its default value.
+	 * Checks whether salted Passwords are configured or not.
 	 *
 	 * @return \TYPO3\CMS\Reports\Status An object representing the security of the saltedpassswords extension
 	 */
@@ -251,43 +203,6 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		}
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
 			$GLOBALS['LANG']->getLL('status_saltedPasswords'), $value, $message, $severity);
-	}
-
-	/**
-	 * Checks for the existence of the ENABLE_INSTALL_TOOL file.
-	 *
-	 * @return \TYPO3\CMS\Reports\Status An object representing whether ENABLE_INSTALL_TOOL exists
-	 */
-	protected function getInstallToolProtectionStatus() {
-		$enableInstallToolFile = PATH_site . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
-		$value = $GLOBALS['LANG']->getLL('status_disabled');
-		$message = '';
-		$severity = \TYPO3\CMS\Reports\Status::OK;
-		if (EnableFileService::installToolEnableFileExists()) {
-			if (EnableFileService::isInstallToolEnableFilePermanent()) {
-				$severity = \TYPO3\CMS\Reports\Status::WARNING;
-				$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
-				$value = $GLOBALS['LANG']->getLL('status_enabledPermanently');
-				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled'),
-					'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
-				$message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
-			} else {
-				if (EnableFileService::installToolEnableFileLifetimeExpired()) {
-					EnableFileService::removeInstallToolEnableFile();
-				} else {
-					$severity = \TYPO3\CMS\Reports\Status::NOTICE;
-					$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
-					$value = $GLOBALS['LANG']->getLL('status_enabledTemporarily');
-					$message = sprintf($GLOBALS['LANG']->getLL('status_installEnabledTemporarily'),
-						'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>', floor((@filemtime($enableInstallToolFile) + EnableFileService::INSTALL_TOOL_ENABLE_FILE_LIFETIME - time()) / 60));
-					$message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
-				}
-			}
-		}
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
-			$GLOBALS['LANG']->getLL('status_installTool'), $value, $message, $severity);
 	}
 
 }
