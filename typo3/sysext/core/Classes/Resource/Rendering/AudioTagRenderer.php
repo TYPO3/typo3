@@ -76,7 +76,7 @@ class AudioTagRenderer implements FileRendererInterface {
 		return sprintf(
 			'<audio%s><source src="%s" type="%s"></audio>',
 			empty($additionalAttributes) ? '' : ' ' . implode(' ', $additionalAttributes),
-			$file->getPublicUrl($usedPathsRelativeToCurrentScript),
+			htmlspecialchars($file->getPublicUrl($usedPathsRelativeToCurrentScript)),
 			$file->getMimeType()
 		);
 	}

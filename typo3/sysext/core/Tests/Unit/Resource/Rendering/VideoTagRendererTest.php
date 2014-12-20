@@ -69,10 +69,10 @@ class VideoTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
 		$fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-		$fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myVideoFile'));
+		$fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myVideoFile?foo=bar&baz=true'));
 
 		$this->assertSame(
-			'<video width="300" height="200" controls><source src="//:path/myVideoFile" type="video/mp4"></video>',
+			'<video width="300" height="200" controls><source src="//:path/myVideoFile?foo=bar&amp;baz=true" type="video/mp4"></video>',
 			$VideoTagRenderer->render($fileResourceMock, '300m', '200')
 		);
 	}

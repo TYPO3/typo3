@@ -66,10 +66,10 @@ class AudioTagRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$fileResourceMock = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
 		$fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
-		$fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myAudioFile'));
+		$fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue('//:path/myAudioFile?foo=bar&baz=true'));
 
 		$this->assertSame(
-			'<audio controls><source src="//:path/myAudioFile" type="audio/mpeg"></audio>',
+			'<audio controls><source src="//:path/myAudioFile?foo=bar&amp;baz=true" type="audio/mpeg"></audio>',
 			$audioTagRenderer->render($fileResourceMock, '300m', '200')
 		);
 	}
