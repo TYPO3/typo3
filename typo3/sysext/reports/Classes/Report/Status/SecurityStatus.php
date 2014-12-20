@@ -259,29 +259,29 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 * @return \TYPO3\CMS\Reports\Status An object representing whether ENABLE_INSTALL_TOOL exists
 	 */
 	protected function getInstallToolProtectionStatus() {
-		$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';
+		$enableInstallToolFile = PATH_site . EnableFileService::INSTALL_TOOL_ENABLE_FILE_PATH;
 		$value = $GLOBALS['LANG']->getLL('status_disabled');
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 		if (EnableFileService::installToolEnableFileExists()) {
 			if (EnableFileService::isInstallToolEnableFilePermanent()) {
 				$severity = \TYPO3\CMS\Reports\Status::WARNING;
-				$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+				$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
 				$value = $GLOBALS['LANG']->getLL('status_enabledPermanently');
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled'),
 					'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
-				$message .= ' <a href="' . $disableInstallToolUrl . '">' .
+				$message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
 			} else {
 				if (EnableFileService::installToolEnableFileLifetimeExpired()) {
 					EnableFileService::removeInstallToolEnableFile();
 				} else {
 					$severity = \TYPO3\CMS\Reports\Status::NOTICE;
-					$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+					$disableInstallToolUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&adminCmd=remove_ENABLE_INSTALL_TOOL';
 					$value = $GLOBALS['LANG']->getLL('status_enabledTemporarily');
 					$message = sprintf($GLOBALS['LANG']->getLL('status_installEnabledTemporarily'),
-						'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>', floor($enableInstallToolFileTtl / 60));
-					$message .= ' <a href="' . $disableInstallToolUrl . '">' .
+						'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>', floor((@filemtime($enableInstallToolFile) + EnableFileService::INSTALL_TOOL_ENABLE_FILE_LIFETIME - time()) / 60));
+					$message .= ' <a href="' . htmlspecialchars($disableInstallToolUrl) . '">' .
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_enabled_cmd') . '</a>';
 				}
 			}
