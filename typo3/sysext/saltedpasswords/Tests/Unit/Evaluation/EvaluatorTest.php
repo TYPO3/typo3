@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Evaluation;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator;
+
 /**
  * Testcase for SaltedPasswordsUtility
  *
@@ -22,12 +25,15 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Evaluation;
 class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator
+	 * @var Evaluator
 	 */
-	protected $fixture;
+	protected $subject;
 
+	/**
+	 * Set up the a test
+	 */
 	public function setUp() {
-		$this->fixture = $this->getMock(\TYPO3\CMS\Saltedpasswords\Evaluation\Evaluator::class, array('dummy'));
+		$this->subject = $this->getMock(Evaluator::class, array('dummy'));
 
 		// Make sure SaltedPasswordsUtility::isUsageEnabled() returns TRUE
 		unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
@@ -40,10 +46,10 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function passwordIsTurnedIntoSaltedString() {
 		$isSet = NULL;
 		$originalPassword = 'password';
-		$saltedPassword = $this->fixture->evaluateFieldValue($originalPassword, '', $isSet);
+		$saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
 		$this->assertTrue($isSet);
 		$this->assertNotEquals($originalPassword, $saltedPassword);
-		$this->assertTrue(\TYPO3\CMS\Core\Utility\GeneralUtility::inList('$1$,$2$,$2a,$P$', substr($saltedPassword, 0, 3)));
+		$this->assertTrue(GeneralUtility::inList('$1$,$2$,$2a,$P$', substr($saltedPassword, 0, 3)));
 	}
 
 	/**
@@ -52,10 +58,10 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function md5HashIsUpdatedToTemporarySaltedString() {
 		$isSet = NULL;
 		$originalPassword = '5f4dcc3b5aa765d61d8327deb882cf99';
-		$saltedPassword = $this->fixture->evaluateFieldValue($originalPassword, '', $isSet);
+		$saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
 		$this->assertTrue($isSet);
 		$this->assertNotEquals($originalPassword, $saltedPassword);
-		$this->assertTrue(\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($saltedPassword, 'M$'));
+		$this->assertTrue(GeneralUtility::isFirstPartOfStr($saltedPassword, 'M$'));
 	}
 
 	/**
@@ -64,8 +70,8 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function temporarySaltedStringIsNotTouched() {
 		$isSet = NULL;
 		$originalPassword = 'M$P$CibIRipvLfaPlaaeH8ifu9g21BrPjp.';
-		$saltedPassword = $this->fixture->evaluateFieldValue($originalPassword, '', $isSet);
-		$this->assertFalse($isSet);
+		$saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+		$this->assertSame(NULL, $isSet);
 		$this->assertSame($originalPassword, $saltedPassword);
 	}
 

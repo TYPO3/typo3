@@ -2415,7 +2415,7 @@ class DataHandler {
 					break;
 				case 'required':
 					if (!$value) {
-						$set = 0;
+						$set = FALSE;
 					}
 					break;
 				default:
