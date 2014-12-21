@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides Check Link Handler plugin implementation
@@ -115,7 +116,7 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @return string fetched type
 	 */
 	public function fetchType($value, $type, $key) {
-		if ($type == 'string' && strtolower(substr($value['tokenValue'], 0, 7)) == 'record:') {
+		if ($value['type'] === 'string' && GeneralUtility::isFirstPartOfStr(strtolower($value['tokenValue']), 'record:')) {
 			$type = 'linkhandler';
 		}
 		return $type;
