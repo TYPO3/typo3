@@ -816,13 +816,13 @@ class TypoScriptFrontendController {
 	 * Also sets internal clientInfo array (browser information) and a unique string (->uniqueString) for this script instance; A md5 hash of the microtime()
 	 *
 	 * @param array $TYPO3_CONF_VARS The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
-	 * @param mixed $id The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
-	 * @param int $type The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type')
-	 * @param bool|string $no_cache The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'), evaluated to 1/0
-	 * @param string $cHash The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash')
-	 * @param string $jumpurl The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl')
-	 * @param string $MP The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP')
-	 * @param string $RDCT The value of \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
+	 * @param mixed $id The value of GeneralUtility::_GP('id')
+	 * @param int $type The value of GeneralUtility::_GP('type')
+	 * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0
+	 * @param string $cHash The value of GeneralUtility::_GP('cHash')
+	 * @param string $jumpurl The value of GeneralUtility::_GP('jumpurl')
+	 * @param string $MP The value of GeneralUtility::_GP('MP')
+	 * @param string $RDCT The value of GeneralUtility::_GP('RDCT')
 	 * @see index_ts.php
 	 */
 	public function __construct($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '') {
@@ -1048,7 +1048,7 @@ class TypoScriptFrontendController {
 			$this->gr_list .= ',' . implode(',', $gr_array);
 		}
 		if ($this->fe_user->writeDevLog) {
-			GeneralUtility::devLog('Valid usergroups for TSFE: ' . $this->gr_list, \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class);
+			GeneralUtility::devLog('Valid usergroups for TSFE: ' . $this->gr_list, __CLASS__);
 		}
 	}
 
@@ -1225,7 +1225,7 @@ class TypoScriptFrontendController {
 				// For Live workspace: Check root line for proper connection to tree root (done because of possible preview of page / branch versions)
 				if (!$this->fePreview && $this->whichWorkspace() === 0) {
 					// Initialize the page-select functions to check rootline:
-					$temp_sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+					$temp_sys_page = GeneralUtility::makeInstance(PageRepository::class);
 					$temp_sys_page->init($this->showHiddenPage);
 					// If root line contained NO records and ->error_getRootLine_failPid tells us that it was because of a pid=-1 (indicating a "version" record)...:
 					if (!count($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
@@ -1299,13 +1299,13 @@ class TypoScriptFrontendController {
 	 * @return bool
 	 */
 	protected function determineIdIsHiddenPage() {
-		$field = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
+		$field = MathUtility::canBeInterpretedAsInteger($this->id) ? 'uid' : 'alias';
 		$pageSelectCondition = $field . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages');
 		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages', $pageSelectCondition . ' AND pid>=0 AND deleted=0');
 		$workspace = $this->whichWorkspace();
 		if ($workspace !== 0 && $workspace !== FALSE) {
 			// Fetch overlay of page if in workspace and check if it is hidden
-			$pageSelectObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+			$pageSelectObject = GeneralUtility::makeInstance(PageRepository::class);
 			$pageSelectObject->versioningPreview = TRUE;
 			$pageSelectObject->init(FALSE);
 			$targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
@@ -1328,7 +1328,7 @@ class TypoScriptFrontendController {
 	public function fetch_the_id() {
 		$GLOBALS['TT']->push('fetch_the_id initialize/', '');
 		// Initialize the page-select functions.
-		$this->sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$this->sys_page = GeneralUtility::makeInstance(PageRepository::class);
 		$this->sys_page->versioningPreview = $this->fePreview === 2 || (int)$this->workspacePreview || (bool)GeneralUtility::_GP('ADMCMD_view');
 		$this->sys_page->versioningWorkspaceId = $this->whichWorkspace();
 		$this->sys_page->init($this->showHiddenPage);
@@ -2070,7 +2070,7 @@ class TypoScriptFrontendController {
 	 * @access private
 	 */
 	public function checkAndSetAlias() {
-		if ($this->id && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->id)) {
+		if ($this->id && !MathUtility::canBeInterpretedAsInteger($this->id)) {
 			$aid = $this->sys_page->getPageIdFromAlias($this->id);
 			if ($aid) {
 				$this->id = $aid;
@@ -4609,7 +4609,7 @@ class TypoScriptFrontendController {
 	 * config.cache.42 = tt_news:15,tt_address:16
 	 *
 	 * @return array Array of 'tablename:pid' pairs. There is at least a current page id in the array
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
+	 * @see TypoScriptFrontendController::calculatePageCacheTimeout()
 	 */
 	protected function getCurrentPageCacheConfiguration() {
 		$result = array('tt_content:' . $this->id);
@@ -4629,7 +4629,7 @@ class TypoScriptFrontendController {
 	 * @param int $now "Now" time value
 	 * @throws \InvalidArgumentException
 	 * @return int Value of the next start/stop time or PHP_INT_MAX if not found
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::calculatePageCacheTimeout()
+	 * @see TypoScriptFrontendController::calculatePageCacheTimeout()
 	 */
 	protected function getFirstTimeValueForRecord($tableDef, $now) {
 		$result = PHP_INT_MAX;
