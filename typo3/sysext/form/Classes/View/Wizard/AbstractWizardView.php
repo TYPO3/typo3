@@ -36,12 +36,22 @@ abstract class AbstractWizardView {
 	protected $repository;
 
 	/**
+	 * Returns an instance of LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
 	 * Creates the object and calls the initialize() method.
 	 *
 	 * @param ContentRepository $repository
 	 */
 	public function __construct(ContentRepository $repository) {
 		$this->setRepository($repository);
+		$this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
 	}
 
 	/**

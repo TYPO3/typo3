@@ -41,11 +41,6 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected $pageRenderer;
 
 	/**
-	 * @var \TYPO3\CMS\Lang\LanguageService;
-	 */
-	protected $languageService;
-
-	/**
 	 * Constructs this view
 	 *
 	 * Defines the global variable SOBE. Normally this is used by the wizards
@@ -59,8 +54,6 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository) {
 		parent::__construct($repository);
-		$this->languageService = $GLOBALS['LANG'];
-		$this->languageService->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
 		$GLOBALS['SOBE'] = $this;
 		// Define the document template object
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
@@ -101,7 +94,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		// Getting the body content
 		$markers['CONTENT'] = $this->getBodyContent();
 		// Build the HTML for the module
-		$content = $this->doc->startPage($this->languageService->getLL('title', TRUE));
+		$content = $this->doc->startPage($this->getLanguageService()->getLL('title', TRUE));
 		$content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
 		$content .= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
@@ -271,8 +264,8 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 * @return void
 	 */
 	protected function loadLocalization() {
-		$wizardLabels = $this->languageService->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf', FALSE, TRUE);
-		$controllerLabels = $this->languageService->includeLLFile('EXT:form/Resources/Private/Language/locallang_controller.xlf', FALSE, TRUE);
+		$wizardLabels = $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf', FALSE, TRUE);
+		$controllerLabels = $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_controller.xlf', FALSE, TRUE);
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($controllerLabels, $wizardLabels);
 		$this->pageRenderer->addInlineLanguageLabelArray($controllerLabels['default']);
 	}
@@ -335,7 +328,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		// Close
 		$getPostVariables = GeneralUtility::_GP('P');
 		$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array(
-			'title' => $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE)
+			'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE)
 		)) . '</a>';
 		return $buttons;
 	}
@@ -353,7 +346,10 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			$bodyContent = '';
 		} else {
 			/** @var $flashMessage FlashMessage */
-			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->languageService->getLL('errorMessage', TRUE), $this->languageService->getLL('errorTitle', TRUE), FlashMessage::ERROR);
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class,
+				$this->getLanguageService()->getLL('errorMessage', TRUE),
+				$this->getLanguageService()->getLL('errorTitle', TRUE),
+				FlashMessage::ERROR);
 			$bodyContent = $flashMessage->render();
 		}
 		return $bodyContent;

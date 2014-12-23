@@ -34,7 +34,7 @@ class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 	/**
-	 * Construct the reponse header
+	 * Construct the response header
 	 *
 	 * @param mixed $jsonObject JSON string, FALSE if not succeeded
 	 * @return void
@@ -42,7 +42,7 @@ class LoadWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function headerOutput($jsonObject) {
 		if (!$jsonObject) {
 			header('HTTP/1.1 500 Internal Server Error');
-			$jsonArray = array('message' => 'Failed to save the form');
+			$jsonArray = array('message' => $this->getLanguageService()->getLL('action_load_message_failed', FALSE));
 		} else {
 			$jsonArray = array('configuration' => $jsonObject);
 		}

@@ -40,7 +40,7 @@ class SaveWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 	/**
-	 * Construct the reponse header
+	 * Construct the response header
 	 *
 	 * @param string $success JSON string
 	 * @return void
@@ -48,9 +48,9 @@ class SaveWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function headerOutput($success) {
 		if (!$success) {
 			header('HTTP/1.1 500 Internal Server Error');
-			$jsonArray = array('message' => 'Failed to save the form');
+			$jsonArray = array('message' => $this->getLanguageService()->getLL('action_save_message_failed', FALSE));
 		} else {
-			$jsonArray = array('message' => 'Changes saved successfully');
+			$jsonArray = array('message' => $this->getLanguageService()->getLL('action_save_message_saved', FALSE));
 		}
 		$json = json_encode($jsonArray);
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');

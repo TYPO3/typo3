@@ -39,6 +39,15 @@
 			<trans-unit id="action_save_error">
 				<source>Server-side failure with status code</source>
 			</trans-unit>
+			<trans-unit id="action_save_message_failed">
+				<source>Failed to save the form</source>
+			</trans-unit>
+			<trans-unit id="action_save_message_saved">
+				<source>Changes saved successfully</source>
+			</trans-unit>
+			<trans-unit id="action_load_message_failed">
+				<source>Failed to save the form</source>
+			</trans-unit>
 			<trans-unit id="button_remove">
 				<source>Remove</source>
 			</trans-unit>
