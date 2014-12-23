@@ -51,6 +51,27 @@
 			<trans-unit id="sys_action.type.5" xml:space="preserve">
 				<source>New Record</source>
 			</trans-unit>
+			<trans-unit id="sys_action.tab.access" xml:space="preserve">
+				<source>Access</source>
+			</trans-unit>
+			<trans-unit id="sys_action.tab.create_user.settings" xml:space="preserve">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="sys_action.tab.record_list.settings" xml:space="preserve">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="sys_action.tab.edit_records.settings" xml:space="preserve">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="sys_action.tab.new_record.settings" xml:space="preserve">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="sys_action.new_record.pid" xml:space="preserve">
+				<source>Select the page for the new record to be stored</source>
+			</trans-unit>
+			<trans-unit id="sys_action.new_record.tablename" xml:space="preserve">
+				<source>Record type</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

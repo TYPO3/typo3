@@ -165,11 +165,66 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden,type,title,description,assign_to_groups,'),
-		'1' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t1_userprefix,t1_copy_of_user,t1_allowed_groups,t1_create_user_dir'),
-		'2' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,'),
-		'3' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t3_listPid,t3_tables;'),
-		'4' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t4_recordsToEdit'),
-		'5' => array('showitem' => 'hidden,type,title,description,assign_to_groups,--div--,t3_listPid;Where to create records,t3_tables;Create records in table:')
+		'0' => array('showitem' => '
+			type,
+			title,
+			description,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
+				hidden,
+				assign_to_groups
+		'),
+		'1' => array('showitem' => '
+			type,
+			title,
+			description,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.create_user.settings,
+				t1_userprefix,t1_copy_of_user,
+				t1_allowed_groups,
+				t1_create_user_dir,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
+				hidden,
+				assign_to_groups
+		'),
+		'2' => array('showitem' => '
+			type,
+			title,
+			description,
+			--div--,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
+				hidden,
+				assign_to_groups
+		'),
+		'3' => array('showitem' => '
+			type,
+			title,
+			description,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.record_list.settings,
+				t3_listPid,
+				t3_tables,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
+				hidden,
+				assign_to_groups
+		'),
+		'4' => array('showitem' => '
+			type,
+			title,
+			description,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.edit_records.settings,
+				t4_recordsToEdit,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
+				hidden,
+				assign_to_groups
+		'),
+		'5' => array('showitem' => '
+			type,
+			title,
+			description,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.new_record.settings,
+				t3_listPid;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.new_record.pid,
+				t3_tables;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.new_record.tablename,
+			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
+				hidden,
+				assign_to_groups
+		')
 	)
 );
