@@ -657,8 +657,36 @@ class DataHandler {
 	 *
 	 * @var array
 	 */
-	protected static $recordsToClearCacheFor = array();
+	static protected $recordsToClearCacheFor = array();
 
+	/**
+	 * Database layer. Identical to $GLOBALS['TYPO3_DB']
+	 *
+	 * @var DatabaseConnection
+	 */
+	protected $databaseConnection;
+
+	/**
+	 * Runtime Cache to store and retrieve data computed for a single request
+	 *
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
+	 */
+	protected $runtimeCache = NULL;
+
+	/**
+	 * Prefix for the cache entries of nested element calls since the runtimeCache has a global scope.
+	 *
+	 * @var string
+	 */
+	protected $cachePrefixNestedElementCalls = 'core-datahandler-nestedElementCalls-';
+
+	/**
+	 *
+	 */
+	public function __construct() {
+		$this->databaseConnection = $GLOBALS['TYPO3_DB'];
+		$this->runtimeCache = $this->getMemoryCache();
+	}
 
 	/**
 	 * @param array $control
@@ -1647,9 +1675,17 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue_text($res, $value, $tcaFieldConf, $PP, $field = '') {
-		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
-		$res = $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
-		return $res;
+		if (!isset($tcaFieldConf['eval']) || $tcaFieldConf['eval'] === '') {
+			return array('value' => $value);
+		}
+		$cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
+		if ($this->runtimeCache->has($cacheId)) {
+			$evalCodesArray = $this->runtimeCache->get($cacheId);
+		} else {
+			$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
+			$this->runtimeCache->set($cacheId, $evalCodesArray);
+		}
+		return $this->checkValue_text_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
 	}
 
 	/**
@@ -1691,19 +1727,33 @@ class DataHandler {
 				$value = $tcaFieldConf['range']['lower'];
 			}
 		}
-		// Process evaluation settings:
-		$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
-		$res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
-		// Process UNIQUE settings:
-		// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
-		if ($field && $realPid >= 0) {
-			if ($res['value'] && in_array('uniqueInPid', $evalCodesArray)) {
-				$res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
+
+		if (empty($tcaFieldConf['eval'])) {
+			$res = array('value' => $value);
+		} else {
+			// Process evaluation settings:
+			$cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
+			if ($this->runtimeCache->has($cacheId)) {
+				$evalCodesArray = $this->runtimeCache->get($cacheId);
+			} else {
+				$evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], TRUE);
+				$this->runtimeCache->set($cacheId, $evalCodesArray);
 			}
-			if ($res['value'] && in_array('unique', $evalCodesArray)) {
-				$res['value'] = $this->getUnique($table, $field, $res['value'], $id);
+
+			$res = $this->checkValue_input_Eval($value, $evalCodesArray, $tcaFieldConf['is_in']);
+
+			// Process UNIQUE settings:
+			// Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning and if PID is -1 ($realPid<0) then versioning is happening...
+			if ($field && $realPid >= 0 && !empty($res['value'])) {
+				if (in_array('uniqueInPid', $evalCodesArray, TRUE)) {
+					$res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
+				}
+				if ($res['value'] && in_array('unique', $evalCodesArray, TRUE)) {
+					$res['value'] = $this->getUnique($table, $field, $res['value'], $id);
+				}
 			}
 		}
+
 		// Handle native date/time fields
 		if ($isDateOrDateTimeField) {
 			// Convert the timestamp back to a date/time
@@ -7474,7 +7524,7 @@ class DataHandler {
 	}
 
 	/**
-	 * Gets an instance of the memory cache.
+	 * Gets an instance of the runtime cache.
 	 *
 	 * @return \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
 	 */
@@ -7492,7 +7542,7 @@ class DataHandler {
 	 * @return boolean
 	 */
 	protected function isNestedElementCallRegistered($table, $id, $identifier) {
-		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
+		$nestedElementCalls = (array)$this->runtimeCache->get($this->cachePrefixNestedElementCalls);
 		return isset($nestedElementCalls[$identifier][$table][$id]);
 	}
 
@@ -7506,9 +7556,9 @@ class DataHandler {
 	 * @return void
 	 */
 	protected function registerNestedElementCall($table, $id, $identifier) {
-		$nestedElementCalls = (array) $this->getMemoryCache()->get('nestedElementCalls');
+		$nestedElementCalls = (array)$this->runtimeCache->get($this->cachePrefixNestedElementCalls);
 		$nestedElementCalls[$identifier][$table][$id] = TRUE;
-		$this->getMemoryCache()->set('nestedElementCalls', $nestedElementCalls);
+		$this->runtimeCache->set($this->cachePrefixNestedElementCalls, $nestedElementCalls);
 	}
 
 	/**
@@ -7517,7 +7567,7 @@ class DataHandler {
 	 * @return void
 	 */
 	protected function resetNestedElementCalls() {
-		$this->getMemoryCache()->remove('nestedElementCalls');
+		$this->runtimeCache->remove($this->cachePrefixNestedElementCalls);
 	}
 
 	/**
@@ -7532,7 +7582,7 @@ class DataHandler {
 	 * @see versionizeRecord
 	 */
 	protected function isElementToBeDeleted($table, $id) {
-		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
+		$elementsToBeDeleted = (array)$this->runtimeCache->get('core-datahandler-elementsToBeDeleted');
 		return isset($elementsToBeDeleted[$table][$id]);
 	}
 
@@ -7543,8 +7593,8 @@ class DataHandler {
 	 * @see process_datamap
 	 */
 	protected function registerElementsToBeDeleted() {
-		$elementsToBeDeleted = (array) $this->getMemoryCache()->get('core-t3lib_TCEmain-elementsToBeDeleted');
-		$this->getMemoryCache()->set('core-t3lib_TCEmain-elementsToBeDeleted', array_merge($elementsToBeDeleted, $this->getCommandMapElements('delete')));
+		$elementsToBeDeleted = (array)$this->runtimeCache->get('core-datahandler-elementsToBeDeleted');
+		$this->runtimeCache->set('core-datahandler-elementsToBeDeleted', array_merge($elementsToBeDeleted, $this->getCommandMapElements('delete')));
 	}
 
 	/**
@@ -7554,7 +7604,7 @@ class DataHandler {
 	 * @see process_datamap
 	 */
 	protected function resetElementsToBeDeleted() {
-		$this->getMemoryCache()->remove('core-t3lib_TCEmain-elementsToBeDeleted');
+		$this->runtimeCache->remove('core-datahandler-elementsToBeDeleted');
 	}
 
 	/**
@@ -7632,6 +7682,16 @@ class DataHandler {
 				$haystack[$key] = NULL;
 			}
 		}
+	}
+
+	/**
+	 * Return the cache entry identifier for field evals
+	 *
+	 * @param string $additionalIdentifier
+	 * @return string
+	 */
+	protected function getFieldEvalCacheIdentifier($additionalIdentifier) {
+		return 'core-datahandler-eval-' . md5($additionalIdentifier);
 	}
 
 	/**
