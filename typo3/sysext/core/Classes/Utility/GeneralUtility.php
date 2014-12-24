@@ -1899,15 +1899,19 @@ class GeneralUtility {
 	 *
 	 * @param string $string XML data input
 	 * @param int $depth Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
+	 * @param array $parserOptions Options that will be passed to PHP's xml_parser_set_option()
 	 * @return mixed The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
 	 * @author bisqwit at iki dot fi dot not dot for dot ads dot invalid / http://dk.php.net/xml_parse_into_struct + kasperYYYY@typo3.com
 	 */
-	static public function xml2tree($string, $depth = 999) {
+	static public function xml2tree($string, $depth = 999, $parserOptions = array()) {
 		$parser = xml_parser_create();
 		$vals = array();
 		$index = array();
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
+		foreach ($parserOptions as $option => $value) {
+			xml_parser_set_option($parser, $option, $value);
+		}
 		xml_parse_into_struct($parser, $string, $vals, $index);
 		if (xml_get_error_code($parser)) {
 			return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
