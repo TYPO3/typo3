@@ -1666,7 +1666,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * includes a AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request
+	 * includes a AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request,
+	 * additionally allowing to execute JavaScript code afterwards
 	 *
 	 * this function only works for AMD-ready JS modules, used like "define('TYPO3/CMS/Backend/FormEngine..."
 	 * in the JS file
@@ -1678,15 +1679,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *		"FormEngine": FileName in the Resources/Public/JavaScript folder
 	 *
 	 * @param string $mainModuleName Must be in the form of "TYPO3/CMS/PackageName/ModuleName" e.g. "TYPO3/CMS/Backend/FormEngine"
+	 * @param string $callBackFunction loaded right after the requireJS loading, must be wrapped in function() {}
 	 * @return void
 	 */
-	public function loadRequireJsModule($mainModuleName) {
-
+	public function loadRequireJsModule($mainModuleName, $callBackFunction = NULL) {
+		$inlineCodeKey = $mainModuleName
 		// make sure requireJS is initialized
 		$this->loadRequireJs();
 
-		// execute the main module
-		$this->addJsInlineCode('RequireJS-Module-' . $mainModuleName, 'require(["' . $mainModuleName . '"]);');
+		// execute the main module, and load a possible callback function
+		$javaScriptCode = 'require(["' . $mainModuleName . '"]';
+		if ($callBackFunction !== NULL) {
+			$inlineCodeKey .= sha1($callBackFunction);
+			$javaScriptCode .= ', ' . $callBackFunction;
+		}
+		$javaScriptCode .= ');';
+		$this->addJsInlineCode('RequireJS-Module-' . $inlineCodeKey, $javaScriptCode);
 	}
 
 	/**
