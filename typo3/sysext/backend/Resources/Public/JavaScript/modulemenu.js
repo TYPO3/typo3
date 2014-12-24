@@ -39,19 +39,21 @@ TYPO3.ModuleMenu.App = {
 			me.showModule(TYPO3.jQuery('.typo3-module-menu-item:first').attr('id'));
 		}
 
-		// check if there are collapsed items in the local storage
-		var collapsedMainMenuItems = this.getCollapsedMainMenuItems();
-		TYPO3.jQuery.each(collapsedMainMenuItems, function(key, itm) {
-			var $group = TYPO3.jQuery('#' + key);
-			if ($group.length > 0) {
-				var $groupContainer = $group.find('.typo3-module-menu-group-container');
-				$group.addClass('collapsed').removeClass('expanded');
-				$groupContainer.hide().promise().done(function() {
-					TYPO3.Backend.doLayout();
-				});
-			}
+		// check if there are collapsed items in the users' configuration
+		require(['TYPO3/CMS/Backend/Storage'], function() {
+			var collapsedMainMenuItems = me.getCollapsedMainMenuItems();
+			TYPO3.jQuery.each(collapsedMainMenuItems, function(key, itm) {
+				var $group = TYPO3.jQuery('#' + key);
+				if ($group.length > 0) {
+					var $groupContainer = $group.find('.typo3-module-menu-group-container');
+					$group.addClass('collapsed').removeClass('expanded');
+					$groupContainer.hide().promise().done(function() {
+						TYPO3.Backend.doLayout();
+					});
+				}
+			});
+			me.initializeEvents();
 		});
-		me.initializeEvents();
 	},
 
 	initializeEvents: function() {
@@ -221,8 +223,8 @@ TYPO3.ModuleMenu.App = {
 	 * @returns {*}
 	 */
 	getCollapsedMainMenuItems: function() {
-		if (typeof localStorage.getItem('t3-modulemenu') !== "undefined" && typeof localStorage.getItem('t3-modulemenu') !== "null" && localStorage.getItem('t3-modulemenu') != 'undefined' && localStorage.getItem('t3-modulemenu')) {
-			return JSON.parse(localStorage.getItem('t3-modulemenu'));
+		if (TYPO3.Storage.Persistent.isset('modulemenu')) {
+			return JSON.parse(TYPO3.Storage.Persistent.get('modulemenu'));
 		} else {
 			return {};
 		}
@@ -235,7 +237,7 @@ TYPO3.ModuleMenu.App = {
 	addCollapsedMainMenuItem: function(item) {
 		var existingItems = this.getCollapsedMainMenuItems();
 		existingItems[item] = true;
-		localStorage.setItem('t3-modulemenu', JSON.stringify(existingItems));
+		TYPO3.Storage.Persistent.set('modulemenu', JSON.stringify(existingItems));
 	},
 
 	/**
@@ -245,7 +247,7 @@ TYPO3.ModuleMenu.App = {
 	removeCollapseMainMenuItem: function(item) {
 		var existingItems = this.getCollapsedMainMenuItems();
 		existingItems[item] = null;
-		localStorage.setItem('t3-modulemenu', JSON.stringify(TYPO3.jQuery.existingItems));
+		TYPO3.Storage.Persistent.set('modulemenu', JSON.stringify(existingItems));
 	}
 
 };
