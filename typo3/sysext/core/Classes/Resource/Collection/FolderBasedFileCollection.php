@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Folder;
+
 /**
  * A collection containing a a set files to be represented as a (virtual) folder.
  * This collection is persisted to the database with the accordant folder reference.
@@ -43,6 +45,11 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 	protected $folder;
 
 	/**
+	 * @var bool
+	 */
+	protected $recursive;
+
+	/**
 	 * Populates the content-entries of the storage
 	 *
 	 * Queries the underlying storage for entries of the collection
@@ -55,8 +62,8 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 	 * @return void
 	 */
 	public function loadContents() {
-		if ($this->folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
-			$entries = $this->folder->getFiles();
+		if ($this->folder instanceof Folder) {
+			$entries = $this->folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $this->recursive);
 			foreach ($entries as $entry) {
 				$this->add($entry);
 			}
@@ -99,6 +106,7 @@ class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\Abst
 		$this->uid = $array['uid'];
 		$this->title = $array['title'];
 		$this->description = $array['description'];
+		$this->recursive = (bool)$array['recursive'];
 		if (!empty($array['folder']) && !empty($array['storage'])) {
 			/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
 			$storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);

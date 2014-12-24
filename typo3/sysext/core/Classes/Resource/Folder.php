@@ -245,11 +245,12 @@ class Folder implements FolderInterface {
 	 * @param int $start The item to start at
 	 * @param int $numberOfItems The number of items to return
 	 * @param int $filterMode The filter mode to use for the file list.
+	 * @param bool $recursive
 	 * @return Folder[]
 	 */
-	public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS) {
+	public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = FALSE) {
 		list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
-		$folderObjects = $this->storage->getFoldersInFolder($this, $start, $numberOfItems, $useFilters);
+		$folderObjects = $this->storage->getFoldersInFolder($this, $start, $numberOfItems, $useFilters, $recursive);
 		$this->restoreBackedUpFiltersInStorage($backedUpFilters);
 		return $folderObjects;
 	}

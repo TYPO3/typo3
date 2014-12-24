@@ -158,11 +158,12 @@ class FileCollector implements \Countable {
 	 * Add files to the collection from multiple folders
 	 *
 	 * @param array $folderIdentifiers The folder identifiers
+	 * @param bool $recursive Add files recursive from given folders
 	 * @return void
 	 */
-	public function addFilesFromFolders(array $folderIdentifiers = array()) {
+	public function addFilesFromFolders(array $folderIdentifiers = array(), $recursive = FALSE) {
 		foreach ($folderIdentifiers as $folderIdentifier) {
-			$this->addFilesFromFolder($folderIdentifier);
+			$this->addFilesFromFolder($folderIdentifier, $recursive);
 		}
 	}
 
@@ -170,15 +171,15 @@ class FileCollector implements \Countable {
 	 * Add files to the collection from one single folder
 	 *
 	 * @param string $folderIdentifier The folder identifier
+	 * @param bool $recursive Add files recursive from given folders
 	 */
-	public function addFilesFromFolder($folderIdentifier) {
+	public function addFilesFromFolder($folderIdentifier, $recursive = FALSE) {
 		if ($folderIdentifier) {
 			try {
 				$folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
 				if ($folder instanceof Folder) {
-					$files = array_values($folder->getFiles());
-
-					$this->addFileObjects($files);
+					$files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive);
+					$this->addFileObjects(array_values($files));
 				}
 			} catch (Exception $e) {
 				$this->getLogger()->warning(

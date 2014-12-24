@@ -156,6 +156,14 @@ return array(
 				'itemsProcFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php:TYPO3\CMS\Core\Resource\Service\UserFileMountService->renderTceformsSelectDropdown',
 			)
 		),
+		'recursive' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.recursive',
+			'config' => array(
+				'type' => 'check',
+				'default' => 0
+			)
+		),
 		'category' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.category',
@@ -184,7 +192,7 @@ return array(
 			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, files',
 		),
 		'folder' => array(
-			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, storage, folder',
+			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, storage, folder, recursive',
 		),
 		'category' => array(
 			'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, category',

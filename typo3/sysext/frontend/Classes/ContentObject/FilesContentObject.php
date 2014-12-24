@@ -130,7 +130,7 @@ class FilesContentObject extends AbstractContentObject {
 
 		if ($conf['folders'] || $conf['folders.']) {
 			$folderIdentifiers = GeneralUtility::trimExplode(',', $this->cObj->stdWrapValue('folders', $conf));
-			$fileCollector->addFilesFromFolders($folderIdentifiers);
+			$fileCollector->addFilesFromFolders($folderIdentifiers, !empty($conf['folders.']['recursive']));
 		}
 
 		// Enable sorting for multiple fileObjects

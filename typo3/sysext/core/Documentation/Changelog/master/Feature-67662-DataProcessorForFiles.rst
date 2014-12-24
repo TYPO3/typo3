@@ -35,9 +35,10 @@ over processed data automatically.
 			# + stdWrap
 			collections = 13,14
 
-			# A list of FAL Folder identifiers
+			# A list of FAL Folder identifiers and files fetched recursive from all folders
 			# + stdWrap
 			folders = 1:introduction/images/,1:introduction/posters/
+			folders.recursive = 1
 
 			# Property of which the files should be sorted after they have been accumulated
 			# can be any property of sys_file, sys_file_metadata

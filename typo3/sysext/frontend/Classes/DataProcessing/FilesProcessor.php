@@ -90,7 +90,7 @@ class FilesProcessor implements DataProcessorInterface {
 		$folders = $cObj->stdWrapValue('folders', $processorConfiguration);
 		if (!empty($folders)) {
 			$folders = GeneralUtility::trimExplode(',', $folders, TRUE);
-			$fileCollector->addFilesFromFolders($folders);
+			$fileCollector->addFilesFromFolders($folders, !empty($processorConfiguration['folders.']['recursive']));
 		}
 
 		// make sure to sort the files

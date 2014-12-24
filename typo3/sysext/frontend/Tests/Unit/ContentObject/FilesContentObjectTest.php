@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
@@ -807,6 +809,37 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				'<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
 			),
+			'Multiple folders recursively' => array(
+				array(
+					'folders' => '1:myfolder/',
+					'folders.' => array(
+						'recursive' => '1'
+					),
+					'renderObj' => 'TEXT',
+					'renderObj.' => array(
+						'data' => 'file:current:name',
+						'wrap' => '<p>|</p>',
+					),
+				),
+				'<p>File 7</p><p>File 8</p><p>File 9</p><p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p>',
+				TRUE
+			),
+			'Multiple folders recursively, sorted by name' => array(
+				array(
+					'folders' => '1:myfolder/',
+					'folders.' => array(
+						'recursive' => '1'
+					),
+					'sorting' => 'name',
+					'renderObj' => 'TEXT',
+					'renderObj.' => array(
+						'data' => 'file:current:name',
+						'wrap' => '<p>|</p>',
+					),
+				),
+				'<p>File 1</p><p>File 2</p><p>File 3</p><p>File 4</p><p>File 5</p><p>File 6</p><p>File 7</p><p>File 8</p><p>File 9</p>',
+				TRUE
+			),
 		);
 	}
 
@@ -814,13 +847,15 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider renderReturnsFilesForFoldersDataProvider
 	 */
-	public function renderReturnsFilesForFolders($configuration, $expected) {
+	public function renderReturnsFilesForFolders($configuration, $expected, $recursive = FALSE) {
 		$folderMap = array();
+		$folders = array();
 		$fileCount = 1;
+		$filesArrayForFolder = [];
 		for ($i = 1; $i < 4; $i++) {
-			$fileArray = array();
+			$filesArrayForFolder[$i] = [];
 			for ($j = 1; $j < 4; $j++) {
-				$file = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(), '', FALSE);
+				$file = $this->getMock(File::class, [], [], '', FALSE);
 				$file->expects($this->any())
 					->method('getName')
 					->will($this->returnValue('File ' . $fileCount));
@@ -833,16 +868,37 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					->with('name')
 					->will($this->returnValue('File ' . $fileCount));
 
-				$fileArray[] = $file;
+				$filesArrayForFolder[$i][] = $file;
 				$fileCount++;
 			}
 
-			$folder = $this->getMock(\TYPO3\CMS\Core\Resource\Folder::class, array(), array(), '', FALSE);
-			$folder->expects($this->any())
-				->method('getFiles')
-				->will($this->returnValue($fileArray));
+			$folder = $this->getMock(Folder::class, array(), array(), '', FALSE);
 
-			$folderMap[] = array($i . ':myfolder/', $folder);
+			if ($recursive) {
+				if ($i < 3) {
+					$folders[$i] = $folder;
+					$folderMap[$i] = array('1:myfolder/mysubfolder-' . $i . '/', $folder);
+				} else {
+					$folder->expects($this->any())
+						->method('getSubfolders')
+						->will($this->returnValue($folders));
+					$folderMap[$i] = array('1:myfolder/', $folder);
+				}
+			} else {
+				$folderMap[$i] = array($i . ':myfolder/', $folder);
+			}
+		}
+		foreach ($folderMap as $i => $folderMapInfo) {
+			if ($i < 3 || !$recursive) {
+				$folderMapInfo[1]->expects($this->any())
+					->method('getFiles')
+					->will($this->returnValue($filesArrayForFolder[$i]));
+			} else {
+				$recursiveFiles = array_merge($filesArrayForFolder[3], $filesArrayForFolder[1], $filesArrayForFolder[2]);
+				$folderMapInfo[1]->expects($this->any())
+					->method('getFiles')
+					->will($this->returnValue($recursiveFiles));
+			}
 		}
 
 		$resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
