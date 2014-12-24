@@ -139,6 +139,11 @@ class BackendController {
 
 		// load Modals
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+
+		// load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage', 'function(Storage) {
+			Storage.Persistent.load(' . json_encode($GLOBALS['BE_USER']->uc) . ');
+		}');
 		$this->css = '';
 		$this->initializeToolbarItems();
 		$this->menuWidth = isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) ? (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] : $this->menuWidthDefault;

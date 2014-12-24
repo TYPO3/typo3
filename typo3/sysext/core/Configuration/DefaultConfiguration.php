@@ -703,6 +703,10 @@ return array(
 			'DataHandler::process' => array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Controller\SimpleDataHandlerController::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
+			),
+			'UserSettings::process' => array(
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\UserSettingsController::class . '->processAjaxRequest',
+				'csrfTokenCheck' => TRUE
 			)
 		),
 		'toolbarItems' => array(), // Array: Registered toolbar items classes
