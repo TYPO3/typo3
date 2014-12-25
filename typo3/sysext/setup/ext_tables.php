@@ -55,6 +55,12 @@ if (TYPO3_MODE === 'BE') {
 				'table' => 'be_users',
 				'csh' => 'newPasswordAgain',
 			),
+			'passwordCurrent' => array(
+				'type' => 'password',
+				'label' => 'LLL:EXT:setup/mod/locallang.xlf:passwordCurrent',
+				'table' => 'be_users',
+				'csh' => 'passwordCurrent',
+			),
 			'lang' => array(
 				'type' => 'select',
 				'itemsProcFunc' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '->renderLanguageSelect',
@@ -139,7 +145,8 @@ if (TYPO3_MODE === 'BE') {
 				'access' => 'admin'
 			)
 		),
-		'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xlf:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
+		'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xlf:personal_data,realName,email,emailMeAtLogin,lang,
+				--div--;LLL:EXT:setup/mod/locallang.xml:passwordHeader,passwordCurrent,password,password2,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:opening,startModule,thumbnailsByDefault,titleLen,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:adminFunctions,debugInWindow'

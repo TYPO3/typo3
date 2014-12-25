@@ -25,6 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SetupModuleController {
 
+	const PASSWORD_NOT_UPDATED = 0;
+	const PASSWORD_UPDATED = 1;
+	const PASSWORD_NOT_THE_SAME = 2;
+	const PASSWORD_OLD_WRONG = 3;
+
 	/**
 	 * @var array
 	 */
@@ -83,9 +88,9 @@ class SetupModuleController {
 	protected $saveData = FALSE;
 
 	/**
-	 * @var bool
+	 * @var int
 	 */
-	protected $passwordIsUpdated = FALSE;
+	protected $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
 
 	/**
 	 * @var bool
@@ -192,7 +197,7 @@ class SetupModuleController {
 						continue;
 					}
 					if ($config['table']) {
-						if ($config['table'] === 'be_users' && !in_array($field, array('password', 'password2', 'email', 'realName', 'admin'))) {
+						if ($config['table'] === 'be_users' && !in_array($field, array('password', 'password2', 'passwordCurrent', 'email', 'realName', 'admin'))) {
 							if (!isset($config['access']) || $this->checkAccess($config) && $beUser->user[$field] !== $d['be_users'][$field]) {
 								if ($config['type'] === 'check') {
 									$fieldValue = isset($d['be_users'][$field]) ? 1 : 0;
@@ -232,8 +237,16 @@ class SetupModuleController {
 				}
 				// Update the password:
 				if ($passwordIsConfirmed) {
-					$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
-					$this->passwordIsUpdated = TRUE;
+					$currentPasswordHashed = $GLOBALS['BE_USER']->user['password'];
+					$saltFactory = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($currentPasswordHashed);
+					if ($saltFactory->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed)) {
+						$this->passwordIsUpdated = self::PASSWORD_UPDATED;
+						$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password'];
+					} else {
+						$this->passwordIsUpdated = self::PASSWORD_OLD_WRONG;
+					}
+				} else {
+					$this->passwordIsUpdated = self::PASSWORD_NOT_THE_SAME;
 				}
 				$this->saveData = TRUE;
 			}
@@ -262,7 +275,7 @@ class SetupModuleController {
 				$tce->bypassWorkspaceRestrictions = TRUE;
 				$tce->process_datamap();
 				unset($tce);
-				if (!$this->passwordIsUpdated || count($storeRec['be_users'][$beUserId]) > 1) {
+				if ($this->passwordIsUpdated === self::PASSWORD_NOT_UPDATED || count($storeRec['be_users'][$beUserId]) > 1) {
 					$this->setupIsUpdated = TRUE;
 				}
 			}
@@ -293,6 +306,7 @@ class SetupModuleController {
 		// id password is disabled, disable repeat of password too (password2)
 		if (isset($this->tsFieldConf['password.']) && $this->tsFieldConf['password.']['disabled']) {
 			$this->tsFieldConf['password2.']['disabled'] = 1;
+			$this->tsFieldConf['passwordCurrent.']['disabled'] = 1;
 		}
 		// Create instance of object for output of data
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
@@ -368,12 +382,21 @@ class SetupModuleController {
 		}
 		// If password is updated, output whether it failed or was OK.
 		if ($this->passwordIsSubmitted) {
-			if ($this->passwordIsUpdated) {
-				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('newPassword_ok'), $this->getLanguageService()->getLL('newPassword'));
-			} else {
-				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('newPassword_failed'), $this->getLanguageService()->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$flashMessage = NULL;
+			switch ($this->passwordIsUpdated) {
+				case self::PASSWORD_OLD_WRONG:
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('oldPassword_failed'), $this->getLanguageService()->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					break;
+				case self::PASSWORD_NOT_THE_SAME:
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('newPassword_failed'), $this->getLanguageService()->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					break;
+				case self::PASSWORD_UPDATED:
+					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('newPassword_ok'), $this->getLanguageService()->getLL('newPassword'));
+					break;
 			}
-			$this->content .= $flashMessage->render();
+			if ($flashMessage) {
+				$this->content .= $flashMessage->render();
+			}
 		}
 
 		// Render user switch

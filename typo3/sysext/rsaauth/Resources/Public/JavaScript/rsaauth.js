@@ -5,13 +5,18 @@ function tx_rsaauth_encryptUserSetup() {
 
 	var password = document.getElementById('field_password').value;
 	var password2 = document.getElementById('field_password2').value;
+	var passwordCurrent = document.getElementById('field_passwordCurrent').value;
 
-	if (password || password2) {
-		var res = rsa.encrypt(password);
-		var res2 = rsa.encrypt(password2);
-		if (res && res2) {
+	if (password || password2 || passwordCurrent) {
+		var res;
+		if (res = rsa.encrypt(password)) {
 			document.getElementById('field_password').value = 'rsa:' + hex2b64(res);
-			document.getElementById('field_password2').value = 'rsa:' + hex2b64(res2);
+		}
+		if (res = rsa.encrypt(password2)) {
+			document.getElementById('field_password2').value = 'rsa:' + hex2b64(res);
+		}
+		if (res = rsa.encrypt(passwordCurrent)) {
+			document.getElementById('field_passwordCurrent').value = 'rsa:' + hex2b64(res);
 		}
 	}
 	return false;
