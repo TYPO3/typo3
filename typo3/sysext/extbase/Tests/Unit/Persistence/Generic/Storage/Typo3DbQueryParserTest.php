@@ -228,55 +228,6 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expectedSql, $sql);
 	}
 
-	/**
-	 * @test
-	 */
-	public function comparisonStatementGenerationWorksWithArrayAsOperand2() {
-		$dummyClassname = 'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Persistence\\Generic\\Storage\\DummyClass';
-		$dummyTablename = 'tx_extbase_tests_dummytable';
-		$mockSource = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector::class, array('getNodeTypeName'), array(), '', FALSE);
-		$mockSource->expects($this->any())->method('getNodeTypeName')->will($this->returnValue($dummyClassname));
-
-		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('', '');
-		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
-		$columnMap->setRelationTableName('sys_category_record_mm');
-		$columnMap->setRelationTableMatchFields(array(
-			'tablenames' => $dummyTablename,
-			'fieldname' => 'categories'
-		));
-		$columnMap->setParentKeyFieldName('uid_foreign');
-		$columnMap->setChildKeyFieldName('uid_local');
-
-		$mockDataMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, array('getColumnMap'), array(), '', FALSE);
-		$mockDataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
-
-		$mockDataMapper = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, array('convertPropertyNameToColumnName', 'convertClassNameToTableName', 'getDataMap'), array(), '', FALSE);
-		$mockDataMapper->expects($this->any())->method('convertClassNameToTableName')->with($dummyClassname)->will($this->returnValue($dummyTablename));
-		$mockDataMapper->expects($this->any())->method('convertPropertyNameToColumnName')->will($this->returnValue('converted_fieldname'));
-		$mockDataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($mockDataMap));
-
-		$mockDatabaseHandle = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr'), array(), '', FALSE);
-		$mockDatabaseHandle->expects($this->at(0))->method('fullQuoteStr')->with($dummyTablename, 'sys_category_record_mm')->will($this->returnValue('\'' . $dummyTablename . '\''));
-		$mockDatabaseHandle->expects($this->at(1))->method('fullQuoteStr')->with('categories', 'sys_category_record_mm')->will($this->returnValue("'categories'"));
-
-		$sql = array();
-		$comparison = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison(
-			/* operand1 */
-			new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValue($dummyTablename,'categories'),
-			/* operator */
-			\TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_CONTAINS,
-			/* operand2 */
-			array(1, 3)
-		);
-		$comparison->setParameterIdentifier('categories');
-		$mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, array('dummy'), array(), '', FALSE);
-		$mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
-		$mockTypo3DbQueryParser->_set('databaseHandle', $mockDatabaseHandle);
-		$mockTypo3DbQueryParser->_callRef('parseComparison', $comparison, $mockSource, $sql);
-		$expectedSql = array('where' => array($dummyTablename . '.uid IN (SELECT uid_foreign FROM sys_category_record_mm WHERE uid_local IN (:categories) AND tablenames = \'' . $dummyTablename . '\' AND fieldname = \'categories\')'));
-		$this->assertSame($expectedSql, $sql);
-	}
-
 	public function providerForVisibilityConstraintStatement() {
 		return array(
 			'in be: include all' => array('BE', TRUE, array(), TRUE, NULL),
