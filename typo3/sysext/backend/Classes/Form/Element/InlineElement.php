@@ -300,7 +300,8 @@ class InlineElement {
 		if (in_array($config['appearance']['levelLinksPosition'], array('both', 'top'))) {
 			$item .= $levelLinks . $localizationLinks;
 		}
-		$item .= '<div id="' . $nameObject . '_records">';
+		$title = $this->getLanguageService()->sL($PA['fieldConf']['label']);
+		$item .= '<div id="' . $nameObject . '_records" data-title="' . htmlspecialchars($title) . '">';
 		$relationList = array();
 		if (count($relatedRecords['records'])) {
 			foreach ($relatedRecords['records'] as $rec) {

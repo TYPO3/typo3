@@ -76,6 +76,9 @@
 				<source>There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
+			<trans-unit id="labels.maxItemsAllowed" xml:space="preserve">
+				<source>A maximum of {0} child records are allowed.</source>
+			</trans-unit>
 			<trans-unit id="labels.noRTEfound" xml:space="preserve">
 				<source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
 			</trans-unit>

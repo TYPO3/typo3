@@ -2620,8 +2620,10 @@ class BackendUtility {
 					$wrappedText .= ' data-description="' . htmlspecialchars($overloadHelpText['description']) . '"';
 				}
 			}
-			$wrappedText .= '>' . $text . '</span>';
+		} else {
+			$wrappedText = '<span data-table="' . $table . '" data-field="' . $field . '"';
 		}
+		$wrappedText .= '>' . $text . '</span>';
 		return $wrappedText;
 	}
 
