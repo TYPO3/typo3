@@ -562,7 +562,7 @@ var inline = {
 		} else {
 			var $head = TYPO3.jQuery('head');
 			if ($head.length) {
-				return $head[0];
+				return $head.get(0);
 			}
 		}
 		return false;
@@ -642,38 +642,36 @@ var inline = {
 	},
 
 	dragAndDropSorting: function (element) {
-		require(['jquery'], function ($) {
-			var objectId = element.getAttribute('id').replace(/_records$/, '');
-			var objectName = inline.prependFormFieldNames + inline.parseObjectId('parts', objectId, 3, 0, true);
-			var formObj = document.getElementsByName(objectName);
-			var $element = TYPO3.jQuery(element);
+		var objectId = element.getAttribute('id').replace(/_records$/, '');
+		var objectName = inline.prependFormFieldNames + inline.parseObjectId('parts', objectId, 3, 0, true);
+		var formObj = document.getElementsByName(objectName);
+		var $element = TYPO3.jQuery(element);
 
-			if (!formObj.length) {
-				return;
-			}
+		if (!formObj.length) {
+			return;
+		}
 
-			var checked = [];
-			var order = [];
-			$element.find('.sortableHandle').each(function (i, e) {
-				order.push($(e).data('id').toString());
-			});
-			var records = formObj[0].value.split(',');
-
-			// check if ordered uid is really part of the records
-			// virtually deleted items might still be there but ordering shouldn't saved at all on them
-			for (var i = 0; i < order.length; i++) {
-				if (records.indexOf(order[i]) != -1) {
-					checked.push(order[i]);
-				}
-			}
-
-			formObj[0].value = checked.join(',');
-
-			if (inline.data.config && inline.data.config[objectId]) {
-				var table = inline.data.config[objectId].table;
-				inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
-			}
+		var checked = [];
+		var order = [];
+		$element.find('.sortableHandle').each(function (i, e) {
+			order.push(TYPO3.jQuery(e).data('id').toString());
 		});
+		var records = formObj[0].value.split(',');
+
+		// check if ordered uid is really part of the records
+		// virtually deleted items might still be there but ordering shouldn't saved at all on them
+		for (var i = 0; i < order.length; i++) {
+			if (records.indexOf(order[i]) != -1) {
+				checked.push(order[i]);
+			}
+		}
+
+		formObj[0].value = checked.join(',');
+
+		if (inline.data.config && inline.data.config[objectId]) {
+			var table = inline.data.config[objectId].table;
+			inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
+		}
 	},
 
 	createDragAndDropSorting: function (objectId) {
@@ -939,12 +937,12 @@ var inline = {
 		if (TBE_EDITOR && TBE_EDITOR.removeElement) {
 			var removeStack = [];
 			// Iterate over all child records:
-			inlineRecords = Element.select(objectId + '_div', '.inlineRecord');
+			inlineRecords = TYPO3.jQuery('.inlineRecord', '#' + objectId + '_div');
 			// Remove nested child records from TBE_EDITOR required/range checks:
 			for (i = inlineRecords.length - 1; i >= 0; i--) {
-				if (inlineRecords[i].value.length) {
-					records = inlineRecords[i].value.split(',');
-					childObjectId = this.data.map[inlineRecords[i].name];
+				if (inlineRecords.get(i).value.length) {
+					records = inlineRecords.get(i).value.split(',');
+					childObjectId = this.data.map[inlineRecords.get(i).name];
 					childTable = this.data.config[childObjectId].table;
 					for (j = records.length - 1; j >= 0; j--) {
 						removeStack.push(this.prependFormFieldNames + '[' + childTable + '][' + records[j] + ']');
@@ -956,10 +954,7 @@ var inline = {
 		}
 
 		// Mark this container as deleted
-		var $deletedRecordContainer = TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div');
-		if ($deletedRecordContainer.length) {
-			$deletedRecordContainer.addClass('inlineIsDeletedRecord');
-		}
+		TYPO3.jQuery('#' + this.escapeObjectId(objectId) + '_div').addClass('inlineIsDeletedRecord');
 
 		// If the record is new and was never saved before, just remove it from DOM:
 		if (this.isNewRecord(objectId) || options && options.forceDirectRemoval) {
@@ -967,7 +962,7 @@ var inline = {
 			// If the record already exists in storage, mark it to be deleted on clicking the save button:
 		} else {
 			document.getElementsByName('cmd' + shortName + '[delete]')[0].disabled = false;
-			new Effect.Fade(objectId + '_div');
+			TYPO3.jQuery('#' + objectId + '_div').fadeOut();
 		}
 
 		var recordCount = this.memorizeRemoveRecord(
@@ -1214,33 +1209,18 @@ var inline = {
 	},
 
 	hideElementsWithClassName: function (selector, parentElement) {
-		this.setVisibilityOfElementsWithClassName('hide', selector, parentElement);
+		TYPO3.jQuery('#' + parentElement).find(selector).fadeOut();
 	},
 
 	showElementsWithClassName: function (selector, parentElement) {
-		this.setVisibilityOfElementsWithClassName('show', selector, parentElement);
-	},
-
-	setVisibilityOfElementsWithClassName: function (action, selector, parentElement) {
-		var domObjects = Selector.findChildElements($(parentElement), [selector]);
-		if (action == 'hide') {
-			TYPO3.jQuery.each(domObjects, function (index, domObject) {
-				new Effect.Fade(domObject);
-			});
-		} else if (action == 'show') {
-			TYPO3.jQuery.each(domObjects, function (index, domObject) {
-				new Effect.Appear(domObject);
-			});
-		}
+		TYPO3.jQuery('#' + parentElement).find(selector).fadeIn();
 	},
 
 	fadeOutFadeIn: function (objectId) {
-		var optIn = { duration: 0.5, transition: Effect.Transitions.linear, from: 0.50, to: 1.00 };
-		var optOut = { duration: 0.5, transition: Effect.Transitions.linear, from: 1.00, to: 0.50 };
-		optOut.afterFinish = function () {
-			new Effect.Opacity(objectId, optIn);
-		};
-		new Effect.Opacity(objectId, optOut);
+		objectId = this.escapeObjectId(objectId);
+		TYPO3.jQuery('#' + objectId).fadeTo(500, 0.5, 'linear', function() {
+			TYPO3.jQuery('#' + objectId).fadeTo(500, 1, 'linear');
+		});
 	},
 
 	isNewRecord: function (objectId) {
@@ -1279,11 +1259,9 @@ var inline = {
 	},
 
 	fadeAndRemove: function (element) {
-		if (TYPO3.jQuery('#' + this.escapeObjectId(element)).length) {
-			new Effect.Fade(element, { afterFinish: function () {
-				Element.remove(element);
-			}    });
-		}
+		TYPO3.jQuery('#' + this.escapeObjectId(element)).fadeOut(500, function() {
+			TYPO3.jQuery(this).remove();
+		});
 	},
 
 	getContext: function (objectId) {
