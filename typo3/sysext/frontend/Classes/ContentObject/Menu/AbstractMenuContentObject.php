@@ -2018,15 +2018,15 @@ abstract class AbstractMenuContentObject {
 	 * @param string $script Alternative script name (unused)
 	 * @param array|string $overrideArray Array to override values in $page, empty string to skip override
 	 * @param string $addParams Parameters to add to URL
-	 * @param string $typeOverride "type" value
+	 * @param int|string $typeOverride "type" value, empty string means "not set"
 	 * @return array See linkData
 	 */
 	public function menuTypoLink($page, $oTarget, $no_cache, $script, $overrideArray = '', $addParams = '', $typeOverride = '') {
 		$conf = array(
 			'parameter' => is_array($overrideArray) && $overrideArray['uid'] ? $overrideArray['uid'] : $page['uid']
 		);
-		if ($typeOverride && MathUtility::canBeInterpretedAsInteger($typeOverride)) {
-			$conf['parameter'] .= ',' . $typeOverride;
+		if (MathUtility::canBeInterpretedAsInteger($typeOverride)) {
+			$conf['parameter'] .= ',' . (int)$typeOverride;
 		}
 		if ($addParams) {
 			$conf['additionalParams'] = $addParams;
