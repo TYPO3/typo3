@@ -385,6 +385,18 @@ class AbstractMenuContentObject {
 				// Temporarily removing fe_group checking!
 				$this->sys_page->where_groupAccess = '';
 			}
+
+			// additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
+			if (isset($this->mconf['additionalWhere']) || isset($this->mconf['additionalWhere.'])) {
+				if (isset($this->mconf['additionalWhere.'])) {
+					$additionalWhere = $this->parent_cObj->stdWrap($this->mconf['additionalWhere'], $this->mconf['additionalWhere.']);
+				} else {
+					$additionalWhere = $this->mconf['additionalWhere'];
+				}
+			} else {
+				$additionalWhere = '';
+			}
+
 			// Begin production of menu:
 			$temp = array();
 			$altSortFieldValue = trim($this->mconf['alternativeSortingField']);
@@ -742,7 +754,7 @@ class AbstractMenuContentObject {
 								$recArr['index'] = $this->sys_page->getPage($recArr['up']['pid']);
 							}
 							// prev / next is found
-							$prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $altSortField));
+							$prevnext_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($value_rec['pid'], '*', $altSortField, $additionalWhere));
 							$lastKey = 0;
 							$nextActive = 0;
 							foreach ($prevnext_menu as $k_b => $v_b) {
@@ -765,12 +777,12 @@ class AbstractMenuContentObject {
 							// prevsection / nextsection is found
 							// You can only do this, if there is a valid page two levels up!
 							if (is_array($recArr['index'])) {
-								$prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $altSortField));
+								$prevnextsection_menu = $this->removeInaccessiblePages($this->sys_page->getMenu($recArr['index']['uid'], '*', $altSortField, $additionalWhere));
 								$lastKey = 0;
 								$nextActive = 0;
 								foreach ($prevnextsection_menu as $k_b => $v_b) {
 									if ($nextActive) {
-										$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($v_b['uid'], '*', $altSortField));
+										$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($v_b['uid'], '*', $altSortField, $additionalWhere));
 										if (count($sectionRec_temp)) {
 											reset($sectionRec_temp);
 											$recArr['nextsection'] = pos($sectionRec_temp);
@@ -781,7 +793,7 @@ class AbstractMenuContentObject {
 									}
 									if ($v_b['uid'] == $value_rec['pid']) {
 										if ($lastKey) {
-											$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $altSortField));
+											$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $altSortField, $additionalWhere));
 											if (count($sectionRec_temp)) {
 												reset($sectionRec_temp);
 												$recArr['prevsection'] = pos($sectionRec_temp);
@@ -839,9 +851,8 @@ class AbstractMenuContentObject {
 			} elseif ($this->mconf['sectionIndex']) {
 				$temp = $this->sectionIndex($altSortField);
 			} else {
-				// Default:
-				// gets the menu
-				$temp = $this->sys_page->getMenu($this->id, '*', $altSortField);
+				// Default, gets a hierarchical menu based on subpages of $this->id
+				$temp = $this->sys_page->getMenu($this->id, '*', $altSortField, $additionalWhere);
 			}
 			$c = 0;
 			$c_b = 0;
