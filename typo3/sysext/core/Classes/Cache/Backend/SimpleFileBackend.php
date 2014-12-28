@@ -175,7 +175,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 				}
 			}
 		}
-		// After this point all paths have '/' as directory seperator
+		// After this point all paths have '/' as directory separator
 		if ($cacheDirectory[strlen($cacheDirectory) - 1] !== '/') {
 			$cacheDirectory .= '/';
 		}

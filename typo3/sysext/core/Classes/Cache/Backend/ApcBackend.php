@@ -45,7 +45,7 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {
 
 	/**
-	 * A prefix to seperate stored data from other data possible stored in the APC
+	 * A prefix to separate stored data from other data possible stored in the APC
 	 *
 	 * @var string
 	 */

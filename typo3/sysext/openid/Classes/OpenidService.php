@@ -76,7 +76,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	static protected $openIDLibrariesIncluded = FALSE;
 
 	/**
-	 * Contructs the OpenID authentication service.
+	 * Constructs the OpenID authentication service.
 	 */
 	public function __construct() {
 		// Auth_Yadis_Yadis::getHTTPFetcher() will use a cURL fetcher if the functionality

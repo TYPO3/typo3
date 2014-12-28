@@ -12,7 +12,7 @@
 How pages are indexed
 ^^^^^^^^^^^^^^^^^^^^^
 
-First of all a page must be cachable. For pages where the cache is
+First of all a page must be cacheable. For pages where the cache is
 disabled, no indexing will occur.
 
 The "phash" is a unique identification of a "page" with regard to the
@@ -32,7 +32,7 @@ more phash-rows matching one single page. Obviously the type-parameter
 would normally always be only one, namely the type-number of the
 content page. And the cHash may be of importance for the result as
 well with regard to plugins using that. For instance a message board
-may make pages cachable by using the cHash params. If so, each cached
+may make pages cacheable by using the cHash params. If so, each cached
 page will also be indexed. Thus many phash-rows for a single page-id.
 
 But the most tricky reason for having multiple phash-rows for a single

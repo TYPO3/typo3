@@ -110,7 +110,7 @@ var languageModule = {
 	 * @return void
 	 */
 	processRows: function(rows) {
-			// Intialize processing within first run
+			// Initialize processing within first run
 		if (rows) {
 			languageModule.addElementsToStack(rows);
 			languageModule.toggleEventHandlers('off');

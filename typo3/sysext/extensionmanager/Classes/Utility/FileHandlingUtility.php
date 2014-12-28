@@ -214,7 +214,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Wrapper method for directory existance check
+	 * Wrapper method for directory existence check
 	 *
 	 * @param string $directory
 	 * @return bool

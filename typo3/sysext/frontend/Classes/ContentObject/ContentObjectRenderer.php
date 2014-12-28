@@ -3370,7 +3370,7 @@ class ContentObjectRenderer {
 
 	/**
 	 * insertData
-	 * Can fetch additional content the same way data does and replaces any occurence of {field:whatever} with this content
+	 * Can fetch additional content the same way data does and replaces any occurrence of {field:whatever} with this content
 	 *
 	 * @param string $content Input value undergoing processing in this function.
 	 * @param array $conf stdWrap properties for insertData.

@@ -142,7 +142,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 						. gettype($slotReturn) . ').', 1376683067);
 				} elseif (count($slotReturn) !== count($signalArguments)) {
 					throw new Exception\InvalidSlotReturnException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() returned a different number ('
-						. count($slotReturn) . ') of arguments, than it recieved (' . count($signalArguments) . ').', 1376683066);
+						. count($slotReturn) . ') of arguments, than it received (' . count($signalArguments) . ').', 1376683066);
 				} else {
 					$signalArguments = $slotReturn;
 				}

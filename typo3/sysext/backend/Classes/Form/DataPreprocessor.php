@@ -285,7 +285,7 @@ class DataPreprocessor {
 	 * Function with the switch() construct which triggers functions for processing of the data value depending on the TCA-config field type.
 	 *
 	 * @param string $data Value to process
-	 * @param array $fieldConfig TCA/columns array for field	(independant of TCA for flexforms - coming from XML then)
+	 * @param array $fieldConfig TCA/columns array for field	(independent of TCA for flexforms - coming from XML then)
 	 * @param array $TSconfig TSconfig	(blank for flexforms for now)
 	 * @param string $table Table name
 	 * @param array $row The row array, always of the real record (also for flexforms)

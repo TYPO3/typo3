@@ -687,7 +687,7 @@ class TemplateParser {
 	protected function callInterceptor(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface &$node, $interceptionPoint, \TYPO3\CMS\Fluid\Core\Parser\ParsingState $state) {
 		if ($this->configuration !== NULL) {
 			// $this->configuration is UNSET inside the arguments of a ViewHelper.
-			// That's why the interceptors are only called if the object accesor is not inside a ViewHelper Argument
+			// That's why the interceptors are only called if the object accessor is not inside a ViewHelper Argument
 			// This could be a problem if We have a ViewHelper as an argument to another ViewHelper, and an ObjectAccessor nested inside there.
 			// @todo Clean up this.
 			$interceptors = $this->configuration->getInterceptors($interceptionPoint);

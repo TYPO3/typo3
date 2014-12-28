@@ -239,7 +239,7 @@ abstract class AbstractController implements ControllerInterface {
 	/**
 	 * Forwards the request to another action and / or controller.
 	 *
-	 * Request is directly transfered to the other action / controller
+	 * Request is directly transferred to the other action / controller
 	 * without the need for a new request.
 	 *
 	 * @param string $actionName Name of the action to forward to

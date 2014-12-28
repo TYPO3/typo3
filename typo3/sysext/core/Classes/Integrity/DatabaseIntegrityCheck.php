@@ -487,7 +487,7 @@ class DatabaseIntegrityCheck {
 				continue;
 			}
 			foreach ($files as $file => $references) {
-				// Direct file references have often many references (removes occurences in the moreReferences section of the result array)
+				// Direct file references have often many references (removes occurrences in the moreReferences section of the result array)
 				if ($references > 1) {
 					$references = 1;
 				}

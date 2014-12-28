@@ -10,7 +10,7 @@ The :php:`\TYPO3\CMS\Core\Utility\PhpOptionsUtility` functions isSafeModeEnabled
 Impact
 ======
 
-Extensions that still use one of the removed funtions won't work.
+Extensions that still use one of the removed functions won't work.
 
 
 Affected installations

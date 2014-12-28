@@ -1784,7 +1784,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename=' . $filename);
 		// Cache-Control header is needed here to solve an issue with browser IE and
-		// versions lower then 9. See for more information: http://support.microsoft.com/kb/323308
+		// versions lower than 9. See for more information: http://support.microsoft.com/kb/323308
 		header("Cache-Control: ''");
 		// Printing the content of the CSV lines:
 		echo implode(CRLF, $this->csvLines);

@@ -15,7 +15,7 @@ Nesting definition lists (Indent/TAB)
 Whiledtdoes not allow any blockelements inside,dddoes, and you may
 also nest definition lists.
 
-This is usefull if you have a term that has different definitions in
+This is useful if you have a term that has different definitions in
 different contexts. The nesting can be achieved using indent/outdent
 buttons as for the other list types.
 

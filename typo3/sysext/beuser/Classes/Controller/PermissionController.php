@@ -85,7 +85,7 @@ class PermissionController extends ActionController {
 			$this->id = (int)$this->request->getArgument('id');
 		}
 
-		// determine depth paramter
+		// determine depth parameter
 		$this->depth = ((int)GeneralUtility::_GP('depth') > 0) ? (int) GeneralUtility::_GP('depth') :
 			$this->getBackendUser()->getSessionData(self::SESSION_PREFIX . 'depth');
 		if ($this->request->hasArgument('depth')) {

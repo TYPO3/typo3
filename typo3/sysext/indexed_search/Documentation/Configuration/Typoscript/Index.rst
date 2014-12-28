@@ -48,7 +48,7 @@ show.forbiddenRecords
          boolean
 
    Description
-         Explicitely display search hits although the visitor has no access to
+         Explicitly display search hits although the visitor has no access to
          it.
 
 

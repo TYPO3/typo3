@@ -164,7 +164,7 @@ define('TYPO3/CMS/Scheduler/Scheduler', ['jquery'], function($) {
 		});
 	};
 
-	// intialize and return the Scheduler object
+	// initialize and return the Scheduler object
 	return function() {
 		$(document).ready(function() {
 			Scheduler.initializeEvents();

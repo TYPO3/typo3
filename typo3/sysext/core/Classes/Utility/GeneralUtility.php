@@ -3828,7 +3828,7 @@ Connection: close
 	 * Verifies the input filename against the 'fileDenyPattern'. Returns TRUE if OK.
 	 *
 	 * Filenames are not allowed to contain control characters. Therefore we
-	 * allways filter on [[:cntrl:]].
+	 * always filter on [[:cntrl:]].
 	 *
 	 * @param string $filename File path to evaluate
 	 * @return bool

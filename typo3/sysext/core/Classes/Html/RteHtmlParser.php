@@ -203,7 +203,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		if ($direction == 'rte') {
 			$modes = array_reverse($modes);
 		}
-		// Getting additional HTML cleaner configuration. These are applied either before or after the main transformation is done and is thus totally independant processing options you can set up:
+		// Getting additional HTML cleaner configuration. These are applied either before or after the main transformation is done and is thus totally independent processing options you can set up:
 		$entry_HTMLparser = $this->procOptions['entryHTMLparser_' . $direction] ? $this->HTMLparserConfig($this->procOptions['entryHTMLparser_' . $direction . '.']) : '';
 		$exit_HTMLparser = $this->procOptions['exitHTMLparser_' . $direction] ? $this->HTMLparserConfig($this->procOptions['exitHTMLparser_' . $direction . '.']) : '';
 		// Line breaks of content is unified into char-10 only (removing char 13)
@@ -840,7 +840,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 		if ($this->TS_transform_db_safecounter < 0) {
 			return $value;
 		}
-		// Split the content from RTE by the occurence of these blocks:
+		// Split the content from RTE by the occurrence of these blocks:
 		$blockSplit = $this->splitIntoBlock('TABLE,BLOCKQUOTE,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList, $value);
 		$cc = 0;
 		$aC = count($blockSplit);
@@ -998,7 +998,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @see TS_transform_db()
 	 */
 	public function TS_transform_rte($value, $css = 0) {
-		// Split the content from database by the occurence of the block elements
+		// Split the content from database by the occurrence of the block elements
 		$blockElementList = 'TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,' . ($this->procOptions['preserveDIVSections'] ? 'DIV,' : '') . $this->blockElementList;
 		$blockSplit = $this->splitIntoBlock($blockElementList, $value);
 		// Traverse the blocks

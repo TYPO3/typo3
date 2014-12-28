@@ -506,7 +506,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Returns the most important properties of the link validator task as a
-	 * comma seperated string that will be displayed in the scheduler module.
+	 * comma separated string that will be displayed in the scheduler module.
 	 *
 	 * @return string
 	 */

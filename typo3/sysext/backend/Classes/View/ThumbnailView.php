@@ -229,7 +229,7 @@ class ThumbnailView {
 					header('Content-type: image/' . $outext);
 					header('Last-Modified: ' . date('r', $fileModificationTime));
 					header('Etag: ' . md5($this->output) . '-' . $fileModificationTime);
-					// Expiration time is choosen arbitrary to 1 month
+					// Expiration time is chosen arbitrary to 1 month
 					header('Expires: ' . date('r', ($fileModificationTime + 30 * 24 * 60 * 60)));
 					fpassthru($fd);
 					fclose($fd);

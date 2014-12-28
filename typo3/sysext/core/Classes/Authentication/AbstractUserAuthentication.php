@@ -454,7 +454,7 @@ abstract class AbstractUserAuthentication {
 				GeneralUtility::callUserFunction($funcName, $_params, $this);
 			}
 		}
-		// Set $this->gc_time if not explicitely specified
+		// Set $this->gc_time if not explicitly specified
 		if ($this->gc_time == 0) {
 			// Default to 1 day if $this->auth_timeout_field is 0
 			$this->gc_time = $this->auth_timeout_field == 0 ? 86400 : $this->auth_timeout_field;

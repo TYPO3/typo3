@@ -489,7 +489,7 @@ class HtmlParser {
 
 	/**
 	 * Returns the first tag in $str
-	 * Actually everything from the begining of the $str is returned, so you better make sure the tag is the first thing...
+	 * Actually everything from the beginning of the $str is returned, so you better make sure the tag is the first thing...
 	 *
 	 * @param string $str HTML string with tags
 	 * @return string

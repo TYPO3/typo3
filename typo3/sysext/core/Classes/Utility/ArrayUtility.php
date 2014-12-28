@@ -90,7 +90,7 @@ class ArrayUtility {
 	 *
 	 * @param array $array Given array
 	 * @param string $path Path to test, 'foo/bar/foobar'
-	 * @param string $delimiter Delimeter for path, default /
+	 * @param string $delimiter Delimiter for path, default /
 	 * @return bool TRUE if path exists in array
 	 */
 	static public function isValidPath(array $array, $path, $delimiter = '/') {

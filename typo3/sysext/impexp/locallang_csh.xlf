@@ -375,7 +375,7 @@ Before importing make sure you change any editable soft references that are show
 				<source>Upload import file</source>
 			</trans-unit>
 			<trans-unit id="upload.description" xml:space="preserve">
-				<source>Select a file to import from your local computer and upload it here. If the upload completes succesfully you can immediately see its content displayed in the preview display.</source>
+				<source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
 			</trans-unit>
 			<trans-unit id="upload.details" xml:space="preserve">
 				<source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files at around 2 MB in which case nothing will happen.</source>

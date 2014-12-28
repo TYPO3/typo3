@@ -272,7 +272,7 @@ Ext.onReady(function() {
 
 /*******************************************************************************
 *
-* Backwards compatability handling down here
+* Backwards compatibility handling down here
 *
 ******************************************************************************/
 

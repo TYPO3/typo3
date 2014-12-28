@@ -2157,7 +2157,7 @@ class TypoScriptFrontendController {
 
 	/**
 	 * Will disable caching if the cHash value was not set.
-	 * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cachable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
+	 * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cacheable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
 	 *
 	 * @return void
 	 * @see makeCacheHash(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_cHashCheck()
@@ -4176,7 +4176,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Traverses the ->rootLine and returns an array with the first occurrance of storage pid and siteroot pid
 	 *
-	 * @return array Array with keys '_STORAGE_PID' and '_SITEROOT' set to the first occurances found.
+	 * @return array Array with keys '_STORAGE_PID' and '_SITEROOT' set to the first occurrences found.
 	 */
 	public function getStorageSiterootPids() {
 		$res = array();

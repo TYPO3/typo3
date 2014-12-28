@@ -48,7 +48,7 @@ index_config:timer_offset</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="timer_next_indexing.description" xml:space="preserve">
-				<source>This field contains the date and time of the next occuring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
+				<source>This field contains the date and time of the next occurring indexing session. If left blank the next indexing will occur as soon as the cron-script is run again (typically within the next minute) and afterwards set to the next time according to frequency and offset.</source>
 			</trans-unit>
 			<trans-unit id="_timer_next_indexing.seeAlso" xml:space="preserve">
 				<source>index_config:timer_offset,
@@ -98,7 +98,7 @@ Example value: "&amp;showUid=###UID###"</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="chashcalc.description" xml:space="preserve">
-				<source>If checked, the URL in the search result for records will be encoded with a "&amp;cHash" parameter to make it cachable. Use only if supported by the plugin!</source>
+				<source>If checked, the URL in the search result for records will be encoded with a "&amp;cHash" parameter to make it cacheable. Use only if supported by the plugin!</source>
 			</trans-unit>
 			<trans-unit id="_chashcalc.seeAlso" xml:space="preserve">
 				<source>index_config:table2index</source>

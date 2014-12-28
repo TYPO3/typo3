@@ -106,7 +106,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 	 * @param mixed $object Object to use for the form. Use in conjunction with the "property" attribute on the sub tags
 	 * @param int $pageType Target page type
 	 * @param bool $noCache set this to disable caching for the target page. You should not need this.
-	 * @param bool $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
+	 * @param bool $noCacheHash set this to suppress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section The anchor to be added to the action URI (only active if $actionUri is not set)
 	 * @param string $format The requested format (e.g. ".html") of the target page (only active if $actionUri is not set)
 	 * @param array $additionalParams additional action URI query parameters that won't be prefixed like $arguments (overrule $arguments) (only active if $actionUri is not set)

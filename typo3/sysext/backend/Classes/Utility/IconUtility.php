@@ -281,7 +281,7 @@ class IconUtility {
 		if (isset($cachedSkinImages[$imageId])) {
 			return $cachedSkinImages[$imageId];
 		}
-		// Setting source key. If the icon is refered to inside an extension, we homogenize the prefix to "ext/":
+		// Setting source key. If the icon is referred to inside an extension, we homogenize the prefix to "ext/":
 		$srcKey = preg_replace('/^(\\.\\.\\/typo3conf\\/ext|sysext|ext)\\//', 'ext/', $src);
 		// LOOKING for alternative icons:
 		if ($GLOBALS['TBE_STYLES']['skinImg'][$srcKey]) {

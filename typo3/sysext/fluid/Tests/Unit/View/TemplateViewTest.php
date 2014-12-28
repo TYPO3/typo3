@@ -649,7 +649,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\file_put_contents('vfs://MyPartials/SomePartial', 'contentsOfSomePartial');
 
 		$paths = array(
-			'vfs://NonExistantDir/UnknowFile.html',
+			'vfs://NonExistentDir/UnknowFile.html',
 			'vfs://MyPartials/SomePartial.html',
 			'vfs://MyPartials/SomePartial'
 		);
@@ -679,7 +679,7 @@ class TemplateViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 
 		$paths = array(
-			'vfs://NonExistantDir/UnknownFile.html',
+			'vfs://NonExistentDir/UnknownFile.html',
 			'vfs://MyTemplates/@action.html'
 		);
 

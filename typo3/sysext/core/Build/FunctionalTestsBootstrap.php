@@ -13,7 +13,7 @@
  */
 
 /**
- * This file is defined in FuntionalTests.xml and called by phpunit
+ * This file is defined in FunctionalTests.xml and called by phpunit
  * before instantiating the test suites, it must also be included
  * with phpunit parameter --bootstrap if executing single test case classes.
  */

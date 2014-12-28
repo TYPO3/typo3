@@ -55,7 +55,7 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBased
 	 * @param int $pageUid target page. See TypoLink destination
 	 * @param int $pageType type of the target page. See typolink.parameter
 	 * @param bool $noCache set this to disable caching for the target page. You should not need this.
-	 * @param bool $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
+	 * @param bool $noCacheHash set this to suppress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section the anchor to be added to the URI
 	 * @param string $format The requested format, e.g. ".html
 	 * @param bool $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.

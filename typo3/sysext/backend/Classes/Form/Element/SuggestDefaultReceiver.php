@@ -247,10 +247,10 @@ class SuggestDefaultReceiver {
 	}
 
 	/**
-	 * Selects all subpages of one page, optionally only upto a certain level
+	 * Selects all subpages of one page, optionally only up to a certain level
 	 *
 	 * @param int $uid The uid of the page
-	 * @param int $depth The depth to select upto. Defaults to 99
+	 * @param int $depth The depth to select up to. Defaults to 99
 	 * @return array of page IDs
 	 */
 	protected function getAllSubpagesOfPage($uid, $depth = 99) {

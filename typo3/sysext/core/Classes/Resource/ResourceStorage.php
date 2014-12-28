@@ -2300,7 +2300,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function getUniqueName(Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
 		static $maxNumber = 99, $uniqueNamePrefix = '';
-		// Fetches info about path, name, extention of $theFile
+		// Fetches info about path, name, extension of $theFile
 		$origFileInfo = GeneralUtility::split_fileref($theFile);
 		// Adds prefix
 		if ($uniqueNamePrefix) {

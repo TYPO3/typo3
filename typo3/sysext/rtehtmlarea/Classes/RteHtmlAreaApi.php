@@ -47,7 +47,7 @@ abstract class RteHtmlAreaApi {
 	// Reference to RTE PageTSConfig
 	protected $toolbar;
 
-	// Refrence to RTE toolbar array
+	// Reference to RTE toolbar array
 	protected $LOCAL_LANG;
 
 	// Frontend language array

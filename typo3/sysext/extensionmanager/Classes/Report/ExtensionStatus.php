@@ -84,7 +84,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 	/**
-	 * Check main repository status: existance, has extensions, last update younger than 7 days
+	 * Check main repository status: existence, has extensions, last update younger than 7 days
 	 *
 	 * @return \TYPO3\CMS\Reports\Report\Status\Status
 	 */

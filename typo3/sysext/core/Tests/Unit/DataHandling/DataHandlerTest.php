@@ -168,7 +168,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'0',
 				0
 			),
-			'"-1999999" is interpreted correctly as -1999999 and is lot lower then -200000' => array(
+			'"-1999999" is interpreted correctly as -1999999 and is lot lower than -200000' => array(
 				'-1999999',
 				-1999999
 			),

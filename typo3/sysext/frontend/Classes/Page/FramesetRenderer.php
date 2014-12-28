@@ -92,7 +92,7 @@ class FramesetRenderer {
 	 * Creates the attributes for a <frameset> tag based on a conf array($setup)
 	 *
 	 * @param array $setup The setup array(TypoScript properties)
-	 * @return string Attributes with preceeding space.
+	 * @return string Attributes with preceding space.
 	 * @access private
 	 * @see make()
 	 */

@@ -73,7 +73,7 @@
 				<source>Ordered List</source>
 			</trans-unit>
 			<trans-unit id="InsertOrderedList-helpText" xml:space="preserve">
-				<source>Makes an ordered list from the curent selection</source>
+				<source>Makes an ordered list from the current selection</source>
 			</trans-unit>
 			<trans-unit id="InsertUnorderedList-Tooltip" xml:space="preserve">
 				<source>Bulleted List</source>

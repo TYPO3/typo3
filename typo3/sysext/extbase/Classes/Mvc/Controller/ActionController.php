@@ -337,7 +337,7 @@ class ActionController extends AbstractController {
 			$view->injectSettings($this->settings);
 		}
 		$view->initializeView();
-		// In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely
+		// In FLOW3, solved through Object Lifecycle methods, we need to call it explicitly
 		$view->assign('settings', $this->settings);
 		// same with settings injection.
 		return $view;

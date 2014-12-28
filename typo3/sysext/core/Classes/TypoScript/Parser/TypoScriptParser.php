@@ -1046,7 +1046,7 @@ class TypoScriptParser {
 					$optionalProperties = $matches[3];
 
 					$expectedEndTag = '### <INCLUDE_TYPOSCRIPT: source="' . $inIncludePart . ':' . $fileName . '"' . $optionalProperties . '> END';
-					// Strip all whitespace characters to make comparision safer
+					// Strip all whitespace characters to make comparison safer
 					$expectedEndTag = strtolower(preg_replace('/\s/', '', $expectedEndTag));
 				} else {
 					// If this is not a beginning commented include statement this line goes into the rest content

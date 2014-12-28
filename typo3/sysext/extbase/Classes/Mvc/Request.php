@@ -129,7 +129,7 @@ class Request implements RequestInterface {
 	 * The dispatcher will try to dispatch the request again if it has not been
 	 * addressed yet.
 	 *
-	 * @return bool TRUE if this request has been disptached sucessfully
+	 * @return bool TRUE if this request has been disptached successfully
 	 * @api
 	 */
 	public function isDispatched() {

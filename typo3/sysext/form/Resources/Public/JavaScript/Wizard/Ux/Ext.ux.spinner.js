@@ -382,11 +382,11 @@ Ext.ux.Spinner = Ext.extend(Ext.util.Observable, {
 		(down == true) ? v -= incr : v += incr;
 
 		v = (isNaN(v)) ? this.defaultValue : v;
-		v = this.fixBoundries(v);
+		v = this.fixBoundaries(v);
 		this.field.setRawValue(v);
 	},
 
-	fixBoundries: function(value){
+	fixBoundaries: function(value){
 		var v = value;
 
 		if (this.field.minValue != undefined && v < this.field.minValue) {

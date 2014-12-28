@@ -3027,7 +3027,7 @@ The data-record /Behind the scene:
 
 When the menu-records are selected it works like this: The parent page record is used as the "base" for the menu-record. That means that any "no_cache" or "target"-properties of the parent page is used for the whole menu.
 
-But of course some fields from the tt_content records are transfered: This is how it mapped:
+But of course some fields from the tt_content records are transferred: This is how it mapped:
 
 $temp[$row[uid]]=$basePageRow;
 
@@ -5541,7 +5541,7 @@ This adds the tables tt_content, tt_address, tt_links, tx_myexttable]]></descrip
 	<type id="SEARCHRESULT">
 		<property name="addExtUrlsAndShortCuts" type="boolean">
 			<description><![CDATA[If set, then the doktypes 3 and 4 (External URLS and Shortcuts) are added to the doktypes being searched.
-However at this point in time, no pages will be select if they do not have at least one tt_content record on them! That is because the pages and tt_content (or other) table is joined. So there must at least one occurance of a tt_content element on a External URL / Shortcut page for them to show up.]]></description>
+However at this point in time, no pages will be select if they do not have at least one tt_content record on them! That is because the pages and tt_content (or other) table is joined. So there must at least one occurrence of a tt_content element on a External URL / Shortcut page for them to show up.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

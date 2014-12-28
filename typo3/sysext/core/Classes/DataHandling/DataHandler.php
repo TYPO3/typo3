@@ -797,7 +797,7 @@ class DataHandler {
 	 *
 	 * @param object $hookObjectsArr (reference) Array with hook objects
 	 * @param string $status (reference) Status of the current operation, 'new' or 'update
-	 * @param string $table (refrence) The table currently processing data for
+	 * @param string $table (reference) The table currently processing data for
 	 * @param string $id (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')
 	 * @param array $fieldArray (reference) The field array of a record
 	 * @return void

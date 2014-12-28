@@ -413,7 +413,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function getValueByPathAccpetsDifferentDelimeter() {
+	public function getValueByPathAcceptsDifferentDelimiter() {
 		$input = array(
 			'foo' => array(
 				'bar' => array(
@@ -424,10 +424,10 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$searchPath = 'foo%bar%baz';
 		$expected = 42;
-		$delimeter = '%';
+		$delimiter = '%';
 		$this->assertEquals(
 			$expected,
-			ArrayUtility::getValueByPath($input, $searchPath, $delimeter)
+			ArrayUtility::getValueByPath($input, $searchPath, $delimiter)
 		);
 	}
 

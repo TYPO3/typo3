@@ -131,7 +131,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$propertyName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($columnName);
 			}
 			// if (in_array($propertyName, $classPropertyNames)) {
-			// @todo Enable check for property existance
+			// @todo Enable check for property existence
 			$columnMap = $this->createColumnMap($columnName, $propertyName);
 			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 			$columnMap = $this->setType($columnMap, $columnDefinition['config']);

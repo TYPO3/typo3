@@ -272,7 +272,7 @@ showAccordions
    Description
          Comma-separated list of the accordions that are allowed to be shown in
          the wizard. This does not mean they are all shown by default, but
-         depends on the choosen element type.
+         depends on the chosen element type.
 
          Some tabs have further configuration which is described below.
 
@@ -303,7 +303,7 @@ showProperties
 
    Description
          Comma-separated list of the attributes that are allowed to be shown in
-         the accordion. The appearance of an attribute depends on the choosen
+         the accordion. The appearance of an attribute depends on the chosen
          element type. If an element type does not support an attribute, it
          will not be shown.
 
@@ -337,7 +337,7 @@ showProperties
 
    Description
          Comma-separated list of the label options that are allowed to be shown
-         in the accordion. The appearance of an option depends on the choosen
+         in the accordion. The appearance of an option depends on the chosen
          element type. If an element type does not support an option, it will
          not be shown.
 
@@ -734,7 +734,7 @@ showAccordions
    Description
          Comma-separated list of the accordions that are allowed to be shown in
          the wizard. This does not mean they are all shown by default, but
-         depends on the choosen element type.
+         depends on the chosen element type.
 
          Some accordions have further properties, which are described below.
 

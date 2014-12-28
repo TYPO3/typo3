@@ -33,10 +33,10 @@ Rules:
 #. If there is no marker at all, everything is included.
 
 #. If the first found marker is an "end" marker, the previous content
-   until that point is included and the preceeding code until next
+   until that point is included and the preceding code until next
    "begin" marker is excluded.
 
 #. If the first found marker is a "begin" marker, the previous content
-   until that point is excluded and preceeding content until next "end"
+   until that point is excluded and preceding content until next "end"
    marker is included.
 

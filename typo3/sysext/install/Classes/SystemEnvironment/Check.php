@@ -1371,7 +1371,7 @@ class Check {
 	}
 
 	/**
-	 * Helper method to explode a string by delimeter and throw away empty values.
+	 * Helper method to explode a string by delimiter and throw away empty values.
 	 * Removes empty values from result array.
 	 *
 	 * @param string $delimiter Delimiter string to explode with

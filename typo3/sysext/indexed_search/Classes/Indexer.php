@@ -239,7 +239,7 @@ class Indexer {
 	 * @param string The MP variable (Mount Points), &MP=
 	 * @param array Rootline array of only UIDs.
 	 * @param array Array of GET variables to register with this indexing
-	 * @param bool If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cachable pages from the backend!
+	 * @param bool If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cacheable pages from the backend!
 	 * @return void
 	 */
 	public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = array(), $createCHash = FALSE) {
@@ -577,7 +577,7 @@ class Indexer {
 	}
 
 	/**
-	 * Finds first occurence of embracing tags and returns the embraced content and the original string with
+	 * Finds first occurrence of embracing tags and returns the embraced content and the original string with
 	 * the tag removed in the two passed variables. Returns FALSE if no match found. ie. useful for finding
 	 * <title> of document or removing <script>-sections
 	 *
@@ -1239,7 +1239,7 @@ class Indexer {
 			}
 			// Priority used for flagBitMask feature (see extension configuration)
 			$retArr[$val]['cmp'] = $retArr[$val]['cmp'] | pow(2, $offset);
-			// Increase number of occurences
+			// Increase number of occurrences
 			$retArr[$val]['count']++;
 			$this->wordcount++;
 		}
@@ -1257,7 +1257,7 @@ class Indexer {
 			$val = substr($val, 0, 60);
 			// Cut after 60 chars because the index_words.baseword varchar field has this length. This MUST be the same.
 			if (!isset($retArr[$val])) {
-				// First occurence (used for ranking results)
+				// First occurrence (used for ranking results)
 				$retArr[$val]['first'] = $key;
 				// Word ID (wid)
 				$retArr[$val]['hash'] = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($val);
@@ -1269,7 +1269,7 @@ class Indexer {
 			if ($this->storeMetaphoneInfoAsWords) {
 				$this->metaphoneContent .= ' ' . $retArr[$val]['metaphone'];
 			}
-			// Increase number of occurences
+			// Increase number of occurrences
 			$retArr[$val]['count']++;
 			$this->wordcount++;
 		}

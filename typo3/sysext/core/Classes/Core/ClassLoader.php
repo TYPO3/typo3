@@ -201,7 +201,7 @@ class ClassLoader {
 	 *  - NULL if the cache identifier is invalid (cache failure)
 	 *
 	 * @param string $cacheEntryIdentifier The identifier to fetch entry from cache
-	 * @return array|FALSE The class information, empty array if class is unkown or FALSE if class information was not found in cache.
+	 * @return array|FALSE The class information, empty array if class is unknown or FALSE if class information was not found in cache.
 	 */
 	public function getClassLoadingInformationFromCache($cacheEntryIdentifier) {
 		$rawClassLoadingInformation = $this->classesCache->get($cacheEntryIdentifier);
@@ -225,7 +225,7 @@ class ClassLoader {
 	 * @param string $cacheEntryIdentifier Cache identifier for this class
 	 * @param string $className Name of class this information is for
 	 *
-	 * @return array|FALSE The class information, empty array if class is unkown or FALSE if class information was not found in cache.
+	 * @return array|FALSE The class information, empty array if class is unknown or FALSE if class information was not found in cache.
 	 */
 	protected function buildCachedClassLoadingInformation($cacheEntryIdentifier, $className) {
 		// We do not need locking if we are in earlyCache mode
@@ -556,7 +556,7 @@ class ClassLoader {
 	 */
 	protected function buildPackageNamespace(\TYPO3\Flow\Package\PackageInterface $package) {
 		$packageNamespace = $package->getNamespace();
-		// Ignore legacy extensions with unkown vendor name
+		// Ignore legacy extensions with unknown vendor name
 		if ($packageNamespace[0] !== '*') {
 			$this->packageNamespaces[$packageNamespace] = array(
 				'namespaceLength' => strlen($packageNamespace),

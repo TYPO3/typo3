@@ -171,7 +171,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'properties' => NULL,
 				),
 			),
-			'one level, not existant string' => array(
+			'one level, not existent string' => array(
 				$completeConfiguration,
 				'foo',
 				array(
@@ -179,7 +179,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'properties' => NULL,
 				),
 			),
-			'two level, not existant string' => array(
+			'two level, not existent string' => array(
 				$completeConfiguration,
 				'foo.bar',
 				array(

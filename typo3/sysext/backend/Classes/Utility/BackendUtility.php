@@ -1945,7 +1945,7 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name, present in $GLOBALS['TCA']
 	 * @param string $col Field name
-	 * @param string $printAllWrap Wrap value - set function description - this parameter is deprecated since TYPO3 6.2 and is removed two versions later. This paramater is a conceptual failure, as the content can then never be HSCed afterwards (which is how the method is used all the time), and then the code would be HSCed twice.
+	 * @param string $printAllWrap Wrap value - set function description - this parameter is deprecated since TYPO3 6.2 and is removed two versions later. This parameter is a conceptual failure, as the content can then never be HSCed afterwards (which is how the method is used all the time), and then the code would be HSCed twice.
 	 * @return string or NULL if $col is not found in the TCA table
 	 */
 	static public function getItemLabel($table, $col, $printAllWrap = '') {
@@ -2734,7 +2734,7 @@ class BackendUtility {
 			if (!$beUser->user['admin'] && strlen($beUser->groupData['allowed_languages'])) {
 				$allowedLanguages = array_flip(explode(',', $beUser->groupData['allowed_languages']));
 			}
-			// Traverse the view order, match first occurence:
+			// Traverse the view order, match first occurrence:
 			$languageOrder = GeneralUtility::intExplode(',', $viewLanguageOrder);
 			foreach ($languageOrder as $langUid) {
 				if (is_array($allowedLanguages) && count($allowedLanguages)) {
