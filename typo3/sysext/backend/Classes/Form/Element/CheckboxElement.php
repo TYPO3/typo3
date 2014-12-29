@@ -59,11 +59,22 @@ class CheckboxElement extends AbstractFormElement {
 			$colWidth = floor(12 / $cols);
 			$colLeftover = 12 - $colWidth * $cols;
 			for ($counter = 0; $counter < $numberOfItems; $counter++) {
+				// use "default" for typical single checkboxes
+				$tsConfigKey = ($numberOfItems === 1 ? 'default' : $items[$counter][1]);
+				// useful for e.g. pages.l18n_cfg, where there is no value set
+				if ($tsConfigKey === '') {
+					$tsConfigKey = $counter;
+				}
+				if (isset($additionalInformation['fieldTSConfig']['altLabels.'][$tsConfigKey])) {
+					$label = $this->getLanguageService()->sL($additionalInformation['fieldTSConfig']['altLabels.'][$tsConfigKey]);
+				} else {
+					$label = $items[$counter][0];
+				}
 				if (!($counter % $cols)) {
 					$item .= '<div class="row">';
 				}
 				$item .= '<div class="col-md-' . $colWidth . '">'
-					. $this->renderSingleCheckboxElement($items[$counter][0], $counter,  $formElementValue, $numberOfItems, $additionalInformation, $disabled)
+					. $this->renderSingleCheckboxElement($label, $counter,  $formElementValue, $numberOfItems, $additionalInformation, $disabled)
 					. '</div>';
 				if ($counter % $cols + 1 == $cols) {
 					$item .= ($colLeftover > 0 ? '<div class="col-md-' . $colLeftover . '"></div>' : '') . '</div>';
@@ -80,7 +91,18 @@ class CheckboxElement extends AbstractFormElement {
 			}
 		} else {
 			for ($counter = 0; $counter < $numberOfItems; $counter++) {
-				$item .=  $this->renderSingleCheckboxElement($items[$counter][0], $counter, $formElementValue, $numberOfItems, $additionalInformation, $disabled);
+				// use "default" for typical single checkboxes
+				$tsConfigKey = ($numberOfItems === 1 ? 'default' : $items[$counter][1]);
+				// useful for e.g. pages.l18n_cfg, where there is no value set
+				if ($tsConfigKey === '') {
+					$tsConfigKey = $counter;
+				}
+				if (isset($additionalInformation['fieldTSConfig']['altLabels.'][$tsConfigKey])) {
+					$label = $this->getLanguageService()->sL($additionalInformation['fieldTSConfig']['altLabels.'][$tsConfigKey]);
+				} else {
+					$label = $items[$counter][0];
+				}
+				$item .=  $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $additionalInformation, $disabled);
 			}
 		}
 		if (!$disabled) {

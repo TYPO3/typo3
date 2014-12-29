@@ -50,8 +50,15 @@ class RadioElement extends AbstractFormElement {
 		}
 
 		// Traverse the items, making the form elements
-		foreach ($selectedItems as $checkbox => $selectedItem) {
-			$radioId = htmlspecialchars($additionalInformation['itemFormElID'] . '_' . $checkbox);
+		foreach ($selectedItems as $radioButton => $selectedItem) {
+			if (isset($additionalInformation['fieldTSConfig']['altLabels.'][$radioButton])) {
+				$label = $this->getLanguageService()->sL(
+					$additionalInformation['fieldTSConfig']['altLabels.'][$radioButton]
+				);
+			} else {
+				$label =  $selectedItem[0];
+			}
+			$radioId = htmlspecialchars($additionalInformation['itemFormElID'] . '_' . $radioButton);
 			$radioOnClick = implode('', $additionalInformation['fieldChangeFunc']);
 			$radioChecked = (string)$selectedItem[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
 			$item .= '<div class="radio' . $disabled . '">'
@@ -67,7 +74,7 @@ class RadioElement extends AbstractFormElement {
 				. $disabled . ' '
 				. 'onclick="' . htmlspecialchars($radioOnClick) . '" '
 				. '/>'
-				. htmlspecialchars($selectedItem[0])
+				. htmlspecialchars($label)
 				. '</label>'
 			. '</div>';
 		}
