@@ -718,7 +718,7 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = TRUE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
-		foreach (array_keys($overrule) as $key) {
+		foreach ($overrule as $key => $_) {
 			if ($enableUnsetFeature && $overrule[$key] === '__UNSET') {
 				unset($original[$key]);
 				continue;

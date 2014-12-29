@@ -103,7 +103,7 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function hasPropertyReturnsTrueForAllMergedPropertyKeys($fileReferenceProperties, $originalFileProperties, $expectedMergedProperties) {
 		$fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
-		foreach (array_keys($expectedMergedProperties) as $key) {
+		foreach ($expectedMergedProperties as $key => $_) {
 			$this->assertTrue($fixture->hasProperty($key));
 		}
 	}

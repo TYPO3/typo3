@@ -3884,7 +3884,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$type = $fieldConfig['type'];
 			if (is_array($TSconfig['config']) && is_array($this->allowOverrideMatrix[$type])) {
 				// Check if the keys in TSconfig['config'] are allowed to override TCA field config:
-				foreach (array_keys($TSconfig['config']) as $key) {
+				foreach ($TSconfig['config'] as $key => $_) {
 					if (!in_array($key, $this->allowOverrideMatrix[$type], TRUE)) {
 						unset($TSconfig['config'][$key]);
 					}
@@ -5280,8 +5280,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			$lang = $this->getLanguageService();
 			switch ($fieldValue['config']['special']) {
 				case 'tables':
-					$temp_tc = array_keys($GLOBALS['TCA']);
-					foreach ($temp_tc as $theTableNames) {
+					foreach ($GLOBALS['TCA'] as $theTableNames => $_) {
 						if (!$GLOBALS['TCA'][$theTableNames]['ctrl']['adminOnly']) {
 							// Icon:
 							$icon = IconUtility::mapRecordTypeToSpriteIconName($theTableNames, array());

@@ -33,7 +33,7 @@ class Tables {
 	public function getTables($format, $withAllOption = 0, $startUid, $depth = 0) {
 		$deletedRecordsTotal = 0;
 		$tables = array();
-		foreach (array_keys($GLOBALS['TCA']) as $tableName) {
+		foreach ($GLOBALS['TCA'] as $tableName => $_) {
 			$deletedField = \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getDeletedField($tableName);
 			if ($deletedField) {
 				// Determine whether the table has deleted records:

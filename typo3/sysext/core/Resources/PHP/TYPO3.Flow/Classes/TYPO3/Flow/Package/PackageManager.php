@@ -451,7 +451,7 @@ class PackageManager implements \TYPO3\Flow\Package\PackageManagerInterface {
 		$package = $this->packageFactory->create($this->packagesBasePath, $packagePath, $packageKey, PackageInterface::DIRECTORY_CLASSES);
 
 		$this->packages[$packageKey] = $package;
-		foreach (array_keys($this->packages) as $upperCamelCasedPackageKey) {
+		foreach ($this->packages as $upperCamelCasedPackageKey => $_) {
 			$this->packageKeys[strtolower($upperCamelCasedPackageKey)] = $upperCamelCasedPackageKey;
 		}
 

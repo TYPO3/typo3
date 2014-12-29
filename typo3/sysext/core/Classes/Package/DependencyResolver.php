@@ -52,7 +52,7 @@ class DependencyResolver {
 
 		// Filter extensions with no incoming edge
 		$rootPackageKeys = array();
-		foreach (array_keys($dependencyGraph) as $packageKey) {
+		foreach ($dependencyGraph as $packageKey => $_) {
 			if (!$this->getIncomingEdgeCount($dependencyGraph, $packageKey)) {
 				$rootPackageKeys[] = $packageKey;
 			}
@@ -66,8 +66,7 @@ class DependencyResolver {
 			$currentPackageKey = array_shift($rootPackageKeys);
 			array_push($sortedPackageKeys, $currentPackageKey);
 
-			$dependingPackageKeys = array_keys(array_filter($dependencyGraph[$currentPackageKey]));
-			foreach ($dependingPackageKeys as $dependingPackageKey) {
+			foreach (array_filter($dependencyGraph[$currentPackageKey]) as $dependingPackageKey => $_) {
 				// Remove the edge to this dependency
 				$dependencyGraph[$currentPackageKey][$dependingPackageKey] = FALSE;
 				if (!$this->getIncomingEdgeCount($dependencyGraph, $dependingPackageKey)) {
@@ -174,7 +173,7 @@ class DependencyResolver {
 	 * @return array Nodes of the found path; empty if no path is found
 	 */
 	protected function findPathInGraph(array $graph, $from, $to) {
-		foreach (array_keys(array_filter($graph[$from])) as $node) {
+		foreach (array_filter($graph[$from]) as $node => $_) {
 			if ($node === $to) {
 				return array($from, $to);
 			} else {
@@ -200,7 +199,7 @@ class DependencyResolver {
 	 */
 	protected function addDependencyToFrameworkToAllExtensions(array $packageStateConfiguration, array $dependencyGraph) {
 		$rootPackageKeys = array();
-		foreach (array_keys($dependencyGraph) as $packageKey) {
+		foreach ($dependencyGraph as $packageKey => $_) {
 			if (!$this->getIncomingEdgeCount($dependencyGraph, $packageKey)) {
 				$rootPackageKeys[] = $packageKey;
 			}
