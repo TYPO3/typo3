@@ -1683,7 +1683,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function loadRequireJsModule($mainModuleName, $callBackFunction = NULL) {
-		$inlineCodeKey = $mainModuleName
+		$inlineCodeKey = $mainModuleName;
 		// make sure requireJS is initialized
 		$this->loadRequireJs();
 
