@@ -77,7 +77,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		// logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
 		$GLOBALS['BE_USER'] = $this->getMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array(), array(), '', FALSE);
-		$GLOBALS['BE_USER']->user = array('uid' => uniqid());
+		$GLOBALS['BE_USER']->user = array('uid' => $this->getUniqueId());
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class, array('dummy'), array(), '', FALSE);

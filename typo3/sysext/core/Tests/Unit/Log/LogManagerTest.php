@@ -61,7 +61,7 @@ class LogManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function managerReturnsSameLoggerOnRepeatedRequest() {
-		$loggerName = uniqid('test.core.log');
+		$loggerName = $this->getUniqueId('test.core.log');
 		$this->logManagerInstance->registerLogger($loggerName);
 		$logger1 = $this->logManagerInstance->getLogger($loggerName);
 		$logger2 = $this->logManagerInstance->getLogger($loggerName);

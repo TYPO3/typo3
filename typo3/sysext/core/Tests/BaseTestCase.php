@@ -114,7 +114,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string Fully qualified name of the built class, will not be empty
 	 */
 	protected function buildAccessibleProxy($className) {
-		$accessibleClassName = str_replace('.', '', uniqid('Tx_Phpunit_AccessibleProxy', TRUE));
+		$accessibleClassName = str_replace('.', '', $this->getUniqueId('Tx_Phpunit_AccessibleProxy'));
 		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
@@ -265,6 +265,19 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 		} else {
 			throw new \RuntimeException('Could not inject ' . $name . ' into object of type ' . get_class($target));
 		}
+	}
+
+	/**
+	 * Create and return a unique id optionally prepended by a given string
+	 *
+	 * This function is used because on windows and in cygwin environments uniqid() has a resolution of one second which
+	 * results in identical ids if simply uniqid('Foo'); is called.
+	 *
+	 * @param string $prefix
+	 * @return string
+	 */
+	protected function getUniqueId($prefix = '') {
+		return $prefix . str_replace('.', '', uniqid(mt_rand(), TRUE));
 	}
 
 }

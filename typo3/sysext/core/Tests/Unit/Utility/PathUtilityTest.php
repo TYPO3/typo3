@@ -338,7 +338,7 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getCanonicalPathCorrectlyCleansPathDataProvider
 	 */
 	public function getCanonicalPathCorrectlyCleansPath($inputName, $expectedResult) {
-		$className = uniqid('PathUtilityFixture');
+		$className = $this->getUniqueId('PathUtilityFixture');
 		$fixtureClassString = '
 			namespace ' . ltrim(__NAMESPACE__, '\\') . ';
 			class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\PathUtility {

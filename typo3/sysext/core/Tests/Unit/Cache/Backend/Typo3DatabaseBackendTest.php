@@ -109,7 +109,7 @@ class Typo3DatabaseBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 
 		$backend->expects($this->once())->method('remove');
-		$data = uniqid('someData');
+		$data = $this->getUniqueId('someData');
 		$entryIdentifier = 'anIdentifier';
 		$backend->set($entryIdentifier, $data, array(), 500);
 	}

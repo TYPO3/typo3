@@ -51,7 +51,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function createLogger($name = '') {
 		if (empty($name)) {
-			$name = uniqid('test.core.log.');
+			$name = $this->getUniqueId('test.core.log.');
 		}
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->registerLogger($name);
 		/** @var \TYPO3\CMS\Core\Log\Logger $logger */
@@ -119,8 +119,8 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function logsToFileDataProvider() {
-		$simpleRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, uniqid('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
-		$recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, uniqid('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', array('foo' => array('bar' => 'baz')));
+		$simpleRecord = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
+		$recordWithData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', array('foo' => array('bar' => 'baz')));
 		return array(
 			'simple record' => array($simpleRecord, trim((string)$simpleRecord)),
 			'record with data' => array($recordWithData, trim((string)$recordWithData))
@@ -172,7 +172,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$secondWriter->expects($this->never())->method('createLogFile');
 
-		$logFilePrefix = uniqid('unique');
+		$logFilePrefix = $this->getUniqueId('unique');
 		$firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
 		$secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
 
@@ -183,7 +183,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createsHtaccessForNewDirectory() {
 		$this->setUpVfsStream();
-		$directory = uniqid('Log');
+		$directory = $this->getUniqueId('Log');
 		$logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;
 		$this->createWriter()->setLogFile($logFile);
 		$this->assertFileExists('vfs://LogRoot/' . $directory . '/.htaccess');
@@ -194,7 +194,7 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createsNoHtaccessForExistingDirectory() {
 		$this->setUpVfsStream();
-		$directory = uniqid('Log');
+		$directory = $this->getUniqueId('Log');
 			// create a directory
 		vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory($directory));
 		$logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;

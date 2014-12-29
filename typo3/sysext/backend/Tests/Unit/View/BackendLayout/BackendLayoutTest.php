@@ -26,9 +26,9 @@ class BackendLayoutTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \UnexpectedValueException
 	 */
 	public function invalidIdentifierIsRecognizedOnCreation() {
-		$identifier = uniqid('identifier__');
-		$title = uniqid('title');
-		$configuration = uniqid('configuration');
+		$identifier = $this->getUniqueId('identifier__');
+		$title = $this->getUniqueId('title');
+		$configuration = $this->getUniqueId('configuration');
 		new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
 	}
 
@@ -36,9 +36,9 @@ class BackendLayoutTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectIsCreated() {
-		$identifier = uniqid('identifier');
-		$title = uniqid('title');
-		$configuration = uniqid('configuration');
+		$identifier = $this->getUniqueId('identifier');
+		$title = $this->getUniqueId('title');
+		$configuration = $this->getUniqueId('configuration');
 		$backendLayout = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
 
 		$this->assertEquals($identifier, $backendLayout->getIdentifier());

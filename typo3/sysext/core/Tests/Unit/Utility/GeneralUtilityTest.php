@@ -2063,7 +2063,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function unlink_tempfileRemovesValidFileInTypo3temp() {
 		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		$testFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.gif';
 		@copy($fixtureFile, $testFilename);
 		Utility\GeneralUtility::unlink_tempfile($testFilename);
 		$fileExists = file_exists($testFilename);
@@ -2075,7 +2075,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function unlink_tempfileRemovesHiddenFile() {
 		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-		$testFilename = PATH_site . 'typo3temp/' . uniqid('.test_') . '.gif';
+		$testFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_') . '.gif';
 		@copy($fixtureFile, $testFilename);
 		Utility\GeneralUtility::unlink_tempfile($testFilename);
 		$fileExists = file_exists($testFilename);
@@ -2087,7 +2087,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function unlink_tempfileReturnsTrueIfFileWasRemoved() {
 		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		$testFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.gif';
 		@copy($fixtureFile, $testFilename);
 		$returnValue = Utility\GeneralUtility::unlink_tempfile($testFilename);
 		$this->assertTrue($returnValue);
@@ -2097,7 +2097,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function unlink_tempfileReturnsNullIfFileDoesNotExist() {
-		$returnValue = Utility\GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/' . uniqid('i_do_not_exist'));
+		$returnValue = Utility\GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/' . $this->getUniqueId('i_do_not_exist'));
 		$this->assertNull($returnValue);
 	}
 
@@ -2554,7 +2554,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function readLLfileHandlesLocallangXMLOverride() {
-		$unique = uniqid('locallangXMLOverrideTest');
+		$unique = 'locallangXMLOverrideTest' . substr($this->getUniqueId(), 0, 10);
 		$xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 			<T3locallang>
 				<data type="array">
@@ -2684,7 +2684,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function minifyJavaScriptReturnsInputStringIfNoHookIsRegistered() {
 		unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript']);
-		$testString = uniqid('string');
+		$testString = $this->getUniqueId('string');
 		$this->assertSame($testString, Utility\GeneralUtility::minifyJavaScript($testString));
 	}
 
@@ -2695,7 +2695,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function minifyJavaScriptCallsRegisteredHookWithInputString() {
-		$hookClassName = uniqid('tx_coretest');
+		$hookClassName = $this->getUniqueId('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
 		$functionName = '&' . $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
@@ -2727,7 +2727,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function minifyJavaScriptReturnsErrorStringOfHookException() {
-		$hookClassName = uniqid('tx_coretest');
+		$hookClassName = $this->getUniqueId('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
 		$functionName = '&' . $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
@@ -2747,10 +2747,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function minifyJavaScriptWritesExceptionMessageToDevLog() {
-		$t3libDivMock = uniqid('GeneralUtility');
+		$t3libDivMock = $this->getUniqueId('GeneralUtility');
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  public static function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
 		$t3libDivMock = __NAMESPACE__ . '\\' . $t3libDivMock;
-		$hookClassName = uniqid('tx_coretest');
+		$hookClassName = $this->getUniqueId('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
 		$functionName = '&' . $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
@@ -2790,7 +2790,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
 		}
 		// Create and prepare test file
-		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		$this->testFilesToDelete[] = $filename;
 		$currentGroupId = posix_getegid();
@@ -2809,7 +2809,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test file
-		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		$this->testFilesToDelete[] = $filename;
 		chmod($filename, 482);
@@ -2829,7 +2829,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test file
-		$filename = PATH_site . 'typo3temp/' . uniqid('.test_');
+		$filename = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		$this->testFilesToDelete[] = $filename;
 		chmod($filename, 482);
@@ -2849,7 +2849,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		chmod($directory, 1551);
@@ -2869,7 +2869,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		chmod($directory, 1551);
@@ -2890,7 +2890,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory
-		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_');
 		Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		chmod($directory, 1551);
@@ -2911,7 +2911,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory and file structure
-		$baseDirectory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$baseDirectory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::mkdir($baseDirectory);
 		$this->testFilesToDelete[] = $baseDirectory;
 		chmod($baseDirectory, 1751);
@@ -2962,7 +2962,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test file
-		$filename = PATH_site . 'typo3temp/../typo3temp/' . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/../typo3temp/' . $this->getUniqueId('test_');
 		touch($filename);
 		chmod($filename, 482);
 		// Set target permissions and run method
@@ -2980,7 +2980,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
-		$filename = 'typo3temp/' . uniqid('test_');
+		$filename = 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filename, '42');
 		$this->testFilesToDelete[] = PATH_site . $filename;
 		chmod(PATH_site . $filename, 482);
@@ -2999,7 +2999,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
-		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		$this->testFilesToDelete[] = $filename;
 		chmod($filename, 482);
@@ -3017,7 +3017,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		chmod($directory, 1551);
@@ -3035,7 +3035,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function mkdirCreatesDirectory() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		$mkdirResult = Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		clearstatcache();
@@ -3047,7 +3047,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function mkdirCreatesHiddenDirectory() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('.test_');
 		$mkdirResult = Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		clearstatcache();
@@ -3059,7 +3059,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function mkdirCreatesDirectoryWithTrailingSlash() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_') . '/';
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '/';
 		$mkdirResult = Utility\GeneralUtility::mkdir($directory);
 		$this->testFilesToDelete[] = $directory;
 		clearstatcache();
@@ -3074,7 +3074,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('mkdirSetsPermissionsOfCreatedDirectory() test not available on Windows');
 		}
-		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('test_');
 		$oldUmask = umask(19);
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0772';
 		Utility\GeneralUtility::mkdir($directory);
@@ -3098,7 +3098,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$swapGroup = $this->checkGroups(__FUNCTION__);
 		if ($swapGroup !== FALSE) {
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
-			$directory = uniqid('mkdirtest_');
+			$directory = $this->getUniqueId('mkdirtest_');
 			Utility\GeneralUtility::mkdir(PATH_site . 'typo3temp/' . $directory);
 			$this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
 			clearstatcache();
@@ -3148,7 +3148,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function mkdirDeepCreatesDirectory() {
-		$directory = 'typo3temp/' . uniqid('test_');
+		$directory = 'typo3temp/' . $this->getUniqueId('test_');
 		Utility\GeneralUtility::mkdir_deep(PATH_site, $directory);
 		$this->testFilesToDelete[] = PATH_site . $directory;
 		$this->assertTrue(is_dir(PATH_site . $directory));
@@ -3158,7 +3158,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function mkdirDeepCreatesSubdirectoriesRecursive() {
-		$directory = 'typo3temp/' . uniqid('test_');
+		$directory = 'typo3temp/' . $this->getUniqueId('test_');
 		$subDirectory = $directory . '/foo';
 		Utility\GeneralUtility::mkdir_deep(PATH_site, $subDirectory);
 		$this->testFilesToDelete[] = PATH_site . $directory;
@@ -3172,7 +3172,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('mkdirDeepFixesPermissionsOfCreatedDirectory() test not available on Windows.');
 		}
-		$directory = uniqid('mkdirdeeptest_');
+		$directory = $this->getUniqueId('mkdirdeeptest_');
 		$oldUmask = umask(19);
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
 		Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
@@ -3189,7 +3189,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('mkdirDeepFixesPermissionsOnNewParentDirectory() test not available on Windows.');
 		}
-		$directory = uniqid('mkdirdeeptest_');
+		$directory = $this->getUniqueId('mkdirdeeptest_');
 		$subDirectory = $directory . '/bar';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
 		$oldUmask = umask(19);
@@ -3208,8 +3208,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories() test not available on Windows.');
 		}
 		$baseDirectory = PATH_site . 'typo3temp/';
-		$existingDirectory = uniqid('test_existing_') . '/';
-		$newSubDirectory = uniqid('test_new_');
+		$existingDirectory = $this->getUniqueId('test_existing_') . '/';
+		$newSubDirectory = $this->getUniqueId('test_new_');
 		@mkdir(($baseDirectory . $existingDirectory));
 		$this->testFilesToDelete[] = $baseDirectory . $existingDirectory;
 		chmod($baseDirectory . $existingDirectory, 482);
@@ -3224,7 +3224,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$swapGroup = $this->checkGroups(__FUNCTION__);
 		if ($swapGroup !== FALSE) {
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
-			$directory = uniqid('mkdirdeeptest_');
+			$directory = $this->getUniqueId('mkdirdeeptest_');
 			Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
 			$this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
 			clearstatcache();
@@ -3241,7 +3241,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$swapGroup = $this->checkGroups(__FUNCTION__);
 		if ($swapGroup !== FALSE) {
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
-			$directory = uniqid('mkdirdeeptest_');
+			$directory = $this->getUniqueId('mkdirdeeptest_');
 			$subDirectory = $directory . '/bar';
 			Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
 			$this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
@@ -3259,7 +3259,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$swapGroup = $this->checkGroups(__FUNCTION__);
 		if ($swapGroup !== FALSE) {
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
-			$directory = uniqid('mkdirdeeptest_');
+			$directory = $this->getUniqueId('mkdirdeeptest_');
 			$subDirectory = $directory . '/bar';
 			Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
 			$this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $directory;
@@ -3278,7 +3278,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('mkdirDeepCreatesDirectoryInVfsStream() test not available with this phpunit version.');
 		}
 		vfsStreamWrapper::register();
-		$baseDirectory = uniqid('test_');
+		$baseDirectory = $this->getUniqueId('test_');
 		vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
 		Utility\GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
 		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
@@ -3316,7 +3316,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirRemovesFile() {
-		$file = PATH_site . 'typo3temp/' . uniqid('file_');
+		$file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
 		touch($file);
 		Utility\GeneralUtility::rmdir($file);
 		$this->assertFalse(file_exists($file));
@@ -3326,7 +3326,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirReturnTrueIfFileWasRemoved() {
-		$file = PATH_site . 'typo3temp/' . uniqid('file_');
+		$file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
 		touch($file);
 		$this->assertTrue(Utility\GeneralUtility::rmdir($file));
 	}
@@ -3335,7 +3335,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirReturnFalseIfNoFileWasRemoved() {
-		$file = PATH_site . 'typo3temp/' . uniqid('file_');
+		$file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
 		$this->assertFalse(Utility\GeneralUtility::rmdir($file));
 	}
 
@@ -3343,7 +3343,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirRemovesDirectory() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('directory_');
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_');
 		mkdir($directory);
 		Utility\GeneralUtility::rmdir($directory);
 		$this->assertFalse(file_exists($directory));
@@ -3353,7 +3353,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirRemovesDirectoryWithTrailingSlash() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('directory_') . '/';
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_') . '/';
 		mkdir($directory);
 		Utility\GeneralUtility::rmdir($directory);
 		$this->assertFalse(file_exists($directory));
@@ -3363,9 +3363,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirDoesNotRemoveDirectoryWithFilesAndReturnsFalseIfRecursiveDeletionIsOff() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('directory_') . '/';
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_') . '/';
 		mkdir($directory);
-		$file = uniqid('file_');
+		$file = $this->getUniqueId('file_');
 		touch($directory . $file);
 		$this->testFilesToDelete[] = $directory;
 		$return = Utility\GeneralUtility::rmdir($directory);
@@ -3378,7 +3378,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function rmdirRemovesDirectoriesRecursiveAndReturnsTrue() {
-		$directory = PATH_site . 'typo3temp/' . uniqid('directory_') . '/';
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_') . '/';
 		mkdir($directory);
 		mkdir($directory . 'sub/');
 		touch($directory . 'sub/file');
@@ -3394,10 +3394,10 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
-		$existingDirectory = PATH_site . 'typo3temp/' . uniqid('notExists_') . '/';
+		$existingDirectory = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_') . '/';
 		mkdir($existingDirectory);
 		$this->testFilesToDelete[] = $existingDirectory;
-		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
+		$symlinkName = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
 		symlink($existingDirectory, $symlinkName);
 		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
 		$this->assertFalse(is_link($symlinkName));
@@ -3410,8 +3410,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
-		$notExistingDirectory = PATH_site . 'typo3temp/' . uniqid('notExists_') . '/';
-		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
+		$notExistingDirectory = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_') . '/';
+		$symlinkName = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
 		symlink($notExistingDirectory, $symlinkName);
 		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
 		$this->assertFalse(is_link($symlinkName));
@@ -3424,8 +3424,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
-		$notExistingFile = PATH_site . 'typo3temp/' . uniqid('notExists_');
-		$symlinkName = PATH_site . 'typo3temp/' . uniqid('link_');
+		$notExistingFile = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_');
+		$symlinkName = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
 		symlink($notExistingFile, $symlinkName);
 		Utility\GeneralUtility::rmdir($symlinkName, TRUE);
 		$this->assertFalse(is_link($symlinkName));
@@ -3781,7 +3781,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function splitFileRefReturnsFileTypeNotForFolders() {
-		$directoryName = uniqid('test_') . '.com';
+		$directoryName = $this->getUniqueId('test_') . '.com';
 		$directoryPath = PATH_site . 'typo3temp/';
 		$directory = $directoryPath . $directoryName;
 		mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
@@ -3951,7 +3951,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstancePassesParametersToConstructor() {
-		$className = 'testingClass' . uniqid();
+		$className = $this->getUniqueId('testingClass');
 		if (!class_exists($className, FALSE)) {
 			eval('class ' . $className . ' {' . '  public $constructorParameter1;' . '  public $constructorParameter2;' . '  public function __construct($parameter1, $parameter2) {' . '    $this->constructorParameter1 = $parameter1;' . '    $this->constructorParameter2 = $parameter2;' . '  }' . '}');
 		}
@@ -3964,7 +3964,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstanceInstanciatesConfiguredImplementation() {
-		$classNameOriginal = get_class($this->getMock(uniqid('foo')));
+		$classNameOriginal = get_class($this->getMock($this->getUniqueId('foo')));
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$classNameOriginal] = array('className' => $classNameOriginal . 'Other');
 		eval('class ' . $classNameOriginal . 'Other extends ' . $classNameOriginal . ' {}');
 		$this->assertInstanceOf($classNameOriginal . 'Other', Utility\GeneralUtility::makeInstance($classNameOriginal));
@@ -3974,7 +3974,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstanceResolvesConfiguredImplementationsRecursively() {
-		$classNameOriginal = get_class($this->getMock(uniqid('foo')));
+		$classNameOriginal = get_class($this->getMock($this->getUniqueId('foo')));
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$classNameOriginal] = array('className' => $classNameOriginal . 'Other');
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$classNameOriginal . 'Other'] = array('className' => $classNameOriginal . 'OtherOther');
 		eval('class ' . $classNameOriginal . 'Other extends ' . $classNameOriginal . ' {}');
@@ -4232,12 +4232,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function copyDirectoryCopiesFilesAndDirectoriesWithRelativePaths() {
-		$sourceDirectory = 'typo3temp/' . uniqid('test_') . '/';
+		$sourceDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
 		$absoluteSourceDirectory = PATH_site . $sourceDirectory;
 		$this->testFilesToDelete[] = $absoluteSourceDirectory;
 		Utility\GeneralUtility::mkdir($absoluteSourceDirectory);
 
-		$targetDirectory = 'typo3temp/' . uniqid('test_') . '/';
+		$targetDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
 		$absoluteTargetDirectory = PATH_site . $targetDirectory;
 		$this->testFilesToDelete[] = $absoluteTargetDirectory;
 		Utility\GeneralUtility::mkdir($absoluteTargetDirectory);
@@ -4256,12 +4256,12 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function copyDirectoryCopiesFilesAndDirectoriesWithAbsolutePaths() {
-		$sourceDirectory = 'typo3temp/' . uniqid('test_') . '/';
+		$sourceDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
 		$absoluteSourceDirectory = PATH_site . $sourceDirectory;
 		$this->testFilesToDelete[] = $absoluteSourceDirectory;
 		Utility\GeneralUtility::mkdir($absoluteSourceDirectory);
 
-		$targetDirectory = 'typo3temp/' . uniqid('test_') . '/';
+		$targetDirectory = 'typo3temp/' . $this->getUniqueId('test_') . '/';
 		$absoluteTargetDirectory = PATH_site . $targetDirectory;
 		$this->testFilesToDelete[] = $absoluteTargetDirectory;
 		Utility\GeneralUtility::mkdir($absoluteTargetDirectory);
@@ -4290,7 +4290,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
 		unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']);
-		$testLogFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.txt';
+		$testLogFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.txt';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		// Call method, get actual permissions and clean up
@@ -4308,7 +4308,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('deprecationLogFixesPermissionsOnLogFile() test not available on Windows.');
 		}
 		// Create extending class and let getDeprecationLogFileName return something within typo3temp/
-		$className = uniqid('GeneralUtility');
+		$className = $this->getUniqueId('GeneralUtility');
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Utility\GeneralUtility $subject */
 		$subject = __NAMESPACE__ . '\\' . $className;
 		eval(

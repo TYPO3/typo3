@@ -64,7 +64,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', FALSE);
 		$parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', FALSE);
-		$name = uniqid('test_');
+		$name = $this->getUniqueId('test_');
 		$node->__construct(array('name' => $name), $parent);
 		$this->assertSame($name, $node->getName());
 	}
@@ -76,7 +76,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('dummy'), array(), '', FALSE);
 		$parent = $this->getMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class, array(), array(), '', FALSE);
-		$target = '../' . uniqid('test_');
+		$target = '../' . $this->getUniqueId('test_');
 		$node->__construct(array('target' => $target), $parent);
 		$this->assertSame($target, $node->_call('getTarget'));
 	}
@@ -93,7 +93,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertInternalType('array', $node->getStatus());
 	}
@@ -110,7 +110,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->once())->method('isWindowsOs')->will($this->returnValue(TRUE));
 		$statusArray = $node->getStatus();
@@ -131,7 +131,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(FALSE));
 		$node->expects($this->once())->method('exists')->will($this->returnValue(FALSE));
@@ -243,8 +243,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('link_');
-		$target = PATH_site . uniqid('linkTarget_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+		$target = PATH_site . $this->getUniqueId('linkTarget_');
 		symlink($target, $path);
 		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
@@ -261,7 +261,7 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock(\TYPO3\CMS\Install\FolderStructure\LinkNode::class, array('exists', 'getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('file_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
 		touch($path);
 		$this->testFilesToDelete[] = $path;
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
@@ -324,8 +324,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
-		$path = PATH_site . 'typo3temp/' . uniqid('link_');
-		$target = uniqid('linkTarget_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+		$target = $this->getUniqueId('linkTarget_');
 		symlink($target, $path);
 		$this->testFilesToDelete[] = $path;
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
@@ -349,8 +349,8 @@ class LinkNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
-		$path = PATH_site . 'typo3temp/' . uniqid('link_');
-		$target = uniqid('linkTarget_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+		$target = $this->getUniqueId('linkTarget_');
 		symlink($target, $path);
 		$this->testFilesToDelete[] = $path;
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\LinkNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */

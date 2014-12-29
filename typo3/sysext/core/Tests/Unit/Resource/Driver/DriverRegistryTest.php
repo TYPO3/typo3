@@ -49,7 +49,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function registerDriverClassThrowsExceptionIfClassDoesNotExist() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314979197);
-		$this->fixture->registerDriverClass(uniqid());
+		$this->fixture->registerDriverClass($this->getUniqueId());
 	}
 
 	/**
@@ -68,7 +68,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getDriverClassThrowsExceptionIfClassIsNotRegistered() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314085990);
-		$this->fixture->getDriverClass(uniqid());
+		$this->fixture->getDriverClass($this->getUniqueId());
 	}
 
 	/**
@@ -85,7 +85,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function driverRegistryIsInitializedWithPreconfiguredDrivers() {
 		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
-		$shortName = uniqid();
+		$shortName = $this->getUniqueId();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
 			$shortName => array(
 				'class' => $className
@@ -100,7 +100,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function driverExistsReturnsTrueForAllExistingDrivers() {
 		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class));
-		$shortName = uniqid();
+		$shortName = $this->getUniqueId();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
 			$shortName => array(
 				'class' => $className
@@ -108,7 +108,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->initializeFixture();
 		$this->assertTrue($this->fixture->driverExists($shortName));
-		$this->assertFalse($this->fixture->driverExists(uniqid()));
+		$this->assertFalse($this->fixture->driverExists($this->getUniqueId()));
 	}
 
 	/**
@@ -118,7 +118,7 @@ class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
 		);
 		$this->initializeFixture();
-		$this->assertFalse($this->fixture->driverExists(uniqid()));
+		$this->assertFalse($this->fixture->driverExists($this->getUniqueId()));
 	}
 
 }

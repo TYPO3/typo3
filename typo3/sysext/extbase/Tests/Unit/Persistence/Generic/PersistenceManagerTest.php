@@ -210,7 +210,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function updateSchedulesAnObjectForPersistence() {
-		$className = uniqid('BazFixture');
+		$className = $this->getUniqueId('BazFixture');
 		eval ('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
@@ -304,7 +304,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * underscore class names instead of namespaced class names
 	 */
 	public function persistAllAddsReconstitutedObjectFromSessionToBackendsAggregateRootObjects() {
-		$className = uniqid('BazFixture');
+		$className = $this->getUniqueId('BazFixture');
 		eval ('
 			class Foo_Bar_Domain_Model_' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {}
 		');
@@ -329,7 +329,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function persistAllAddsNamespacedReconstitutedObjectFromSessionToBackendsAggregateRootObjects() {
-		$className = uniqid('BazFixture');
+		$className = $this->getUniqueId('BazFixture');
 		eval ('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {}

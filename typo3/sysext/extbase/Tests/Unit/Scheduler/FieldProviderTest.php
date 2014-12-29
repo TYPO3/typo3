@@ -70,7 +70,7 @@ class FieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Stefan Neufeind <info@speedpartner.de>
 	 */
 	public function constructResolvesExtensionnameFromNamespaced() {
-		$className = uniqid('DummyController');
+		$className = $this->getUniqueId('DummyController');
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class . ' { function getExtensionName() { return $this->extensionName; } }');
 		$classNameNamespaced = __NAMESPACE__ . '\\' . $className;
 		$mockController = new $classNameNamespaced();

@@ -40,8 +40,8 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TCA']['pages']['columns'] = array();
 		$this->subject = new \TYPO3\CMS\Core\Category\CategoryRegistry();
 		$this->tables = array(
-			'first' => uniqid('first'),
-			'second' => uniqid('second')
+			'first' => $this->getUniqueId('first'),
+			'second' => $this->getUniqueId('second')
 		);
 		foreach ($this->tables as $tableName) {
 			$GLOBALS['TCA'][$tableName] = array(

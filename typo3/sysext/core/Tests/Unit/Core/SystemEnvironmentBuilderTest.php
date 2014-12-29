@@ -41,7 +41,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function fileDenyPatternMatchesPhpExtensionDataProvider() {
-		$fileName = uniqid('filename');
+		$fileName = $this->getUniqueId('filename');
 		$data = array();
 		$phpExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'php,php3,php4,php5,php6,phpsh,phtml', TRUE);
 		foreach ($phpExtensions as $extension) {
@@ -66,7 +66,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getPathThisScriptCliReadsLocalPartFromArgv() {
-		$fakedLocalPart = uniqid('Test');
+		$fakedLocalPart = $this->getUniqueId('Test');
 		$GLOBALS['_SERVER']['argv'][0] = $fakedLocalPart;
 		$this->assertStringEndsWith($fakedLocalPart, $this->fixture->_call('getPathThisScriptCli'));
 	}
@@ -75,7 +75,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getPathThisScriptCliReadsLocalPartFromEnv() {
-		$fakedLocalPart = uniqid('Test');
+		$fakedLocalPart = $this->getUniqueId('Test');
 		unset($GLOBALS['_SERVER']['argv']);
 		$GLOBALS['_ENV']['_'] = $fakedLocalPart;
 		$this->assertStringEndsWith($fakedLocalPart, $this->fixture->_call('getPathThisScriptCli'));
@@ -85,7 +85,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getPathThisScriptCliReadsLocalPartFromServer() {
-		$fakedLocalPart = uniqid('Test');
+		$fakedLocalPart = $this->getUniqueId('Test');
 		unset($GLOBALS['_SERVER']['argv']);
 		unset($GLOBALS['_ENV']['_']);
 		$GLOBALS['_SERVER']['_'] = $fakedLocalPart;
@@ -100,7 +100,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
 		$GLOBALS['_SERVER']['argv'][0] = 'foo';
-		$fakedAbsolutePart = '/' . uniqid('Absolute') . '/';
+		$fakedAbsolutePart = '/' . $this->getUniqueId('Absolute') . '/';
 		$_SERVER['PWD'] = $fakedAbsolutePart;
 		$this->assertStringStartsWith($fakedAbsolutePart, $this->fixture->_call('getPathThisScriptCli'));
 	}

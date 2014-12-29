@@ -51,8 +51,8 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function constructorArgumentsAreAvailableAtRuntime() {
-		$path = uniqid();
-		$name = uniqid();
+		$path = $this->getUniqueId();
+		$name = $this->getUniqueId();
 		$mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
 		$fixture = $this->createFolderFixture($path, $name, $mockedStorage);
 		$this->assertSame($mockedStorage, $fixture->getStorage());

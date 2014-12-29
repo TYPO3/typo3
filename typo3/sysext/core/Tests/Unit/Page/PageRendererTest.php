@@ -79,9 +79,9 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$fileReference = uniqid('file_');
-		$selectionPrefix = uniqid('prefix_');
-		$stripFromSelectionName = uniqid('strip_');
+		$fileReference = $this->getUniqueId('file_');
+		$selectionPrefix = $this->getUniqueId('prefix_');
+		$stripFromSelectionName = $this->getUniqueId('strip_');
 		$errorMode = 0;
 
 		$expectedInlineLanguageLabelFile = array(
@@ -103,9 +103,9 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$fileReference1 = uniqid('file1_');
-		$selectionPrefix1 = uniqid('prefix1_');
-		$stripFromSelectionName1 = uniqid('strip1_');
+		$fileReference1 = $this->getUniqueId('file1_');
+		$selectionPrefix1 = $this->getUniqueId('prefix1_');
+		$stripFromSelectionName1 = $this->getUniqueId('strip1_');
 		$errorMode1 = 0;
 		$expectedInlineLanguageLabelFile1 = array(
 			'fileRef' => $fileReference1,
@@ -113,9 +113,9 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'stripFromSelectionName' => $stripFromSelectionName1,
 			'errorMode' => $errorMode1
 		);
-		$fileReference2 = uniqid('file2_');
-		$selectionPrefix2 = uniqid('prefix2_');
-		$stripFromSelectionName2 = uniqid('strip2_');
+		$fileReference2 = $this->getUniqueId('file2_');
+		$selectionPrefix2 = $this->getUniqueId('prefix2_');
+		$stripFromSelectionName2 = $this->getUniqueId('strip2_');
 		$errorMode2 = 0;
 		$expectedInlineLanguageLabelFile2 = array(
 			'fileRef' => $fileReference2,
@@ -138,9 +138,9 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice() {
 		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
-		$fileReference = uniqid('file2_');
-		$selectionPrefix = uniqid('prefix2_');
-		$stripFromSelectionName = uniqid('strip2_');
+		$fileReference = $this->getUniqueId('file2_');
+		$selectionPrefix = $this->getUniqueId('prefix2_');
+		$stripFromSelectionName = $this->getUniqueId('strip2_');
 		$errorMode = 0;
 
 		$subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName, $errorMode);

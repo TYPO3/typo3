@@ -43,7 +43,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function registeredFileRenderClassCanBeRetrieved() {
-		$rendererClass = uniqid('myRenderer');
+		$rendererClass = $this->getUniqueId('myRenderer');
 		$rendererObject = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass);
 
 		$rendererRegistry = $this->getTestRendererRegistry(array(array($rendererClass, $rendererObject)));
@@ -59,7 +59,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function registerRendererClassThrowsExceptionIfClassDoesNotExist() {
 		$rendererRegistry = $this->getTestRendererRegistry();
-		$rendererRegistry->registerRendererClass(uniqid());
+		$rendererRegistry->registerRendererClass($this->getUniqueId());
 	}
 
 	/**
@@ -77,15 +77,15 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function registerRendererClassWithHighestPriorityIsFirstInResult() {
-		$rendererClass1 = uniqid('myRenderer1');
+		$rendererClass1 = $this->getUniqueId('myRenderer1');
 		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
-		$rendererClass2 = uniqid('myRenderer2');
+		$rendererClass2 = $this->getUniqueId('myRenderer2');
 		$rendererObject2 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass2);
 		$rendererObject2->expects($this->any())->method('getPriority')->will($this->returnValue(10));
 
-		$rendererClass3 = uniqid('myRenderer3');
+		$rendererClass3 = $this->getUniqueId('myRenderer3');
 		$rendererObject3 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass3);
 		$rendererObject3->expects($this->any())->method('getPriority')->will($this->returnValue(2));
 
@@ -110,11 +110,11 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function registeredFileRendererClassWithSamePriorityAreReturnedInSameOrderAsTheyWereAdded() {
-		$rendererClass1 = uniqid('myRenderer1');
+		$rendererClass1 = $this->getUniqueId('myRenderer1');
 		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
-		$rendererClass2 = uniqid('myRenderer2');
+		$rendererClass2 = $this->getUniqueId('myRenderer2');
 		$rendererObject2 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass2);
 		$rendererObject2->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 
@@ -139,12 +139,12 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->markTestSkipped('Test triggers a error this is known PHP bug - http://stackoverflow.com/questions/3235387/usort-array-was-modified-by-the-user-comparison-function)');
 
-		$rendererClass1 = uniqid('myVideoRenderer');
+		$rendererClass1 = $this->getUniqueId('myVideoRenderer');
 		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array('getPriority', 'canRender', 'render'), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
 		$rendererObject1->expects($this->once())->method('canRender')->will($this->returnValue(TRUE));
 
-		$rendererClass2 = uniqid('myAudioRenderer');
+		$rendererClass2 = $this->getUniqueId('myAudioRenderer');
 		$rendererObject2 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array('getPriority', 'canRender', 'render'), array(), $rendererClass2);
 		$rendererObject2->expects($this->any())->method('getPriority')->will($this->returnValue(10));
 		$rendererObject2->expects($this->once())->method('canRender')->will($this->returnValue(FALSE));

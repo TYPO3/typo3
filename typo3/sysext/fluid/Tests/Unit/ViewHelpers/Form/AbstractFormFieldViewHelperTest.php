@@ -23,7 +23,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
 
-		$className = 'Object' . uniqid();
+		$className = $this->getUniqueId('Object');
 		$fullClassName = 'TYPO3\\Fluid\\ViewHelpers\\Form\\' . $className;
 		eval('namespace TYPO3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' {
 			public function __clone() {}
@@ -125,7 +125,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$formViewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper::class, array('isObjectAccessorMode', 'addAdditionalIdentityPropertiesIfNeeded'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 
-		$className = 'test_' . uniqid();
+		$className = $this->getUniqueId('test_');
 		$mockObject = eval('
 			class ' . $className . ' {
 				public function getSomething() {
@@ -250,7 +250,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function addAdditionalIdentityPropertiesIfNeededCallsRenderIdentityFieldWithTheRightParameters() {
-		$className = 'test_' . uniqid();
+		$className = $this->getUniqueId('test_');
 		$mockFormObject = eval('
 			class ' . $className . ' {
 				public function getSomething() {
@@ -283,7 +283,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function addAdditionalIdentityPropertiesIfNeededCallsRenderIdentityFieldWithTheRightParametersWithMoreHierarchyLevels() {
-		$className = 'test_' . uniqid();
+		$className = $this->getUniqueId('test_');
 		$mockFormObject = eval('
 			class ' . $className . ' {
 				public function getSomething() {

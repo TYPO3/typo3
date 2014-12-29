@@ -61,7 +61,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function commonPropertiesAreAvailableWithOwnGetters() {
 		$properties = array(
-			'name' => uniqid(),
+			'name' => $this->getUniqueId(),
 			'storage' => $this->storageMock,
 			'size' => 1024
 		);
@@ -85,7 +85,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function updatePropertiesUpdatesFileProperties() {
-		$identifier = '/' . uniqid();
+		$identifier = '/' . $this->getUniqueId();
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'identifier' => '/test'), $this->storageMock);
 		$fixture->updateProperties(array('identifier' => $identifier));
 		$this->assertEquals($identifier, $fixture->getIdentifier());

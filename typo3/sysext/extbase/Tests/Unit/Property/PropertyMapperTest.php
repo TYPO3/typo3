@@ -172,13 +172,13 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dataProviderForObjectTypeConverters() {
 		$data = array();
 
-		$className1 = uniqid('TYPO3_Flow_Testclass1_', FALSE);
-		$className2 = uniqid('TYPO3_Flow_Testclass2_', FALSE);
-		$className3 = uniqid('TYPO3_Flow_Testclass3_', FALSE);
+		$className1 = $this->getUniqueId('TYPO3_Flow_Testclass1_', FALSE);
+		$className2 = $this->getUniqueId('TYPO3_Flow_Testclass2_', FALSE);
+		$className3 = $this->getUniqueId('TYPO3_Flow_Testclass3_', FALSE);
 
-		$interfaceName1 = uniqid('TYPO3_Flow_TestInterface1_', FALSE);
-		$interfaceName2 = uniqid('TYPO3_Flow_TestInterface2_', FALSE);
-		$interfaceName3 = uniqid('TYPO3_Flow_TestInterface3_', FALSE);
+		$interfaceName1 = $this->getUniqueId('TYPO3_Flow_TestInterface1_', FALSE);
+		$interfaceName2 = $this->getUniqueId('TYPO3_Flow_TestInterface2_', FALSE);
+		$interfaceName3 = $this->getUniqueId('TYPO3_Flow_TestInterface3_', FALSE);
 
 		eval("
 			interface $interfaceName2 {}

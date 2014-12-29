@@ -30,7 +30,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$prologueString = $expectedPrologueString = '<?xml version="1.0" encoding="utf-8" ?>';
 		$subject->setXmlPrologAndDocType($prologueString);
 
-		$title = uniqid('aTitle-');
+		$title = $this->getUniqueId('aTitle-');
 		$subject->setTitle($title);
 		$expectedTitleString = '<title>' . $title . '</title>';
 
@@ -50,7 +50,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$metaTag = $expectedMetaTagString = '<meta name="author" content="Anna Lyse">';
 		$subject->addMetaTag($metaTag);
 
-		$inlineComment = uniqid('comment');
+		$inlineComment = $this->getUniqueId('comment');
 		$subject->addInlineComment($inlineComment);
 		$expectedInlineCommentString = '<!-- ' . LF . $inlineComment . '-->';
 
@@ -63,15 +63,15 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$subject->addJsFile('fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 		$expectedJsFileRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
 
-		$jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . uniqid('jsInline-') . '"';
-		$subject->addJsInlineCode(uniqid(), $jsInlineCode);
+		$jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . $this->getUniqueId('jsInline-') . '"';
+		$subject->addJsInlineCode($this->getUniqueId(), $jsInlineCode);
 
-		$extOnReadyCode = $expectedExtOnReadyCodePartOne = uniqid('extOnReady-');
+		$extOnReadyCode = $expectedExtOnReadyCodePartOne = $this->getUniqueId('extOnReady-');
 		$expectedExtOnReadyCodePartTwo = 'Ext.onReady(function() {';
 		$subject->loadExtJS();
 		$subject->addExtOnReadyCode($extOnReadyCode);
 
-		$cssFile = uniqid('cssFile-');
+		$cssFile = $this->getUniqueId('cssFile-');
 		$expectedCssFileString = 'wrapBefore<link rel="stylesheet" type="text/css" href="' . $cssFile . '" media="print" />wrapAfter';
 		$subject->addCssFile($cssFile, 'stylesheet', 'print', '', TRUE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 
@@ -95,7 +95,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$subject->loadExtJS(TRUE, TRUE, 'jquery');
 		$expectedExtJsRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#m';
 
-		$expectedBodyContent = uniqid('ABCDE-');
+		$expectedBodyContent = $this->getUniqueId('ABCDE-');
 		$subject->setBodyContent($expectedBodyContent);
 
 		$renderedString = $subject->render();
@@ -146,8 +146,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$expectedJsFooterRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
 		$subject->addJsFooterFile('fileadmin/test.js', 'text/javascript', FALSE, FALSE, 'wrapBeforeXwrapAfter', FALSE, 'X');
 
-		$jsFooterInlineCode = $expectedJsFooterInlineCodeString = 'var x = "' . uniqid('jsFooterInline-') . '"';
-		$subject->addJsFooterInlineCode(uniqid(), $jsFooterInlineCode);
+		$jsFooterInlineCode = $expectedJsFooterInlineCodeString = 'var x = "' . $this->getUniqueId('jsFooterInline-') . '"';
+		$subject->addJsFooterInlineCode($this->getUniqueId(), $jsFooterInlineCode);
 
 		// Bunch of label tests
 		$subject->loadExtJS();

@@ -313,9 +313,9 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Utility\RootlineUtility::class, array('columnHasRelationToResolve'), array(1, '', $this->pageContextMock));
 		$subject->_set('databaseConnection', $mockDatabaseConnection);
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] = '';
-		$foreign_table = uniqid('foreign_table');
-		$foreign_field = uniqid('foreign_field');
-		$GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'] = uniqid('disabled');
+		$foreign_table = $this->getUniqueId('foreign_table');
+		$foreign_field = $this->getUniqueId('foreign_field');
+		$GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'] = $this->getUniqueId('disabled');
 		$GLOBALS['TCA']['pages']['columns'] = array(
 			'test' => array(
 				'config' => array(

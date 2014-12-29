@@ -30,7 +30,7 @@ class AbstractCompilerTemplateTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isDefaultEncodingIsSetThanDefaultEncodingWillReturned() {
-		$className = 'AbstractCompiledTemplate' . uniqid();
+		$className = $this->getUniqueId('AbstractCompiledTemplate');
 		$fullClassName = 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\' . $className;
 		eval(
 			'namespace TYPO3\\CMS\\Fluid\\Core\\Compiler;' .

@@ -69,8 +69,8 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->fixture = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $this->tableName);
 		$this->collectionRecord = array(
 			'uid' => 0,
-			'title' => uniqid('title'),
-			'description' => uniqid('description'),
+			'title' => $this->getUniqueId('title'),
+			'description' => $this->getUniqueId('description'),
 			'table_name' => $this->tableName,
 		);
 		$GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
@@ -163,7 +163,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$fakeRecord = array(
 			'uid' => $this->numberOfRecords + 1,
 			'pid' => 0,
-			'title' => uniqid('title'),
+			'title' => $this->getUniqueId('title'),
 			'categories' => 0
 		);
 		// Check the number of records
@@ -181,7 +181,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$fakeRecord = array(
 			'uid' => $this->numberOfRecords + 1,
 			'pid' => 0,
-			'title' => uniqid('title'),
+			'title' => $this->getUniqueId('title'),
 			'categories' => 0
 		);
 		// Check the number of records
@@ -211,7 +211,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	private function populateDummyTable() {
 		for ($index = 1; $index <= $this->numberOfRecords; $index++) {
 			$values = array(
-				'title' => uniqid('title')
+				'title' => $this->getUniqueId('title')
 			);
 			$this->database->exec_INSERTquery($this->tableName, $values);
 		}
@@ -272,7 +272,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 			$this->database->sql_query($_sql);
 		}
 		$values = array(
-			'title' => uniqid('title'),
+			'title' => $this->getUniqueId('title'),
 			'is_dummy_record' => 1
 		);
 		$this->database->exec_INSERTquery('sys_category', $values);

@@ -30,7 +30,7 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 * @test
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID() {
-		$className = 'Object' . uniqid();
+		$className = $this->getUniqueId('Object');
 		$fullClassName = '\\TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\' . $className;
 		eval('namespace TYPO3\\CMS\\Fluid\\ViewHelpers\\Form; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 		}');
@@ -47,7 +47,7 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 * @test
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldIfObjectIsNewButAClone() {
-		$className = 'Object' . uniqid();
+		$className = $this->getUniqueId('Object');
 		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 		}');
 		$object = $this->getAccessibleMock($className, array('dummy'));

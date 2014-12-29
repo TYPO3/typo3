@@ -63,7 +63,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function extensionStaticFilesAreNotProcessedIfNotExplicitlyRequested() {
-		$identifier = uniqid('test');
+		$identifier = $this->getUniqueId('test');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$identifier => array(
 				'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
@@ -82,7 +82,7 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function extensionStaticsAreProcessedIfExplicitlyRequested() {
-		$identifier = uniqid('test');
+		$identifier = $this->getUniqueId('test');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
 			$identifier => array(
 				'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(

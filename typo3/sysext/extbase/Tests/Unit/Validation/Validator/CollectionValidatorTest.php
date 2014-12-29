@@ -103,9 +103,9 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping() {
-		$classNameA = 'A' . md5(uniqid(mt_rand(), TRUE));
+		$classNameA = $this->getUniqueId('A');
 		eval('class ' . $classNameA . '{ public $b = array(); public $integer = 5; }');
-		$classNameB = 'B' . md5(uniqid(mt_rand(), TRUE));
+		$classNameB = $this->getUniqueId('B');
 		eval('class ' . $classNameB . '{ public $a; public $c; public $integer = "Not an integer"; }');
 		$A = new $classNameA();
 		$B = new $classNameB();

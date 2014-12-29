@@ -23,7 +23,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties() {
-		$domainObjectName = uniqid('DomainObject_');
+		$domainObjectName = $this->getUniqueId('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
@@ -40,7 +40,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards() {
-		$domainObjectName = uniqid('DomainObject_');
+		$domainObjectName = $this->getUniqueId('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
@@ -58,7 +58,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties() {
-		$domainObjectName = uniqid('DomainObject_');
+		$domainObjectName = $this->getUniqueId('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
@@ -75,13 +75,13 @@ class AbstractEntityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties() {
-		$domainObjectName = 'DomainObject_' . md5(uniqid(microtime(), true));
+		$domainObjectName = $this->getUniqueId('DomainObject_');
 		$domainObjectNameWithNS = __NAMESPACE__ . '\\' . $domainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $domainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;
 			public $bar;
 		}');
-		$secondDomainObjectName = 'DomainObject_' . md5(uniqid(microtime(), true));
+		$secondDomainObjectName = $this->getUniqueId('DomainObject_');
 		$secondDomainObjectNameWithNS = __NAMESPACE__ . '\\' . $secondDomainObjectName;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $secondDomainObjectName . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
 			public $foo;

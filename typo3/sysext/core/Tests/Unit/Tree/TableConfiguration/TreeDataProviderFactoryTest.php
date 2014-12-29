@@ -82,7 +82,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function configuredDataProviderClassIsInstantiated() {
-		$dataProviderMockClassName = uniqid('tx_coretest_tree_data_provider');
+		$dataProviderMockClassName = $this->getUniqueId('tx_coretest_tree_data_provider');
 		eval('class ' . $dataProviderMockClassName . ' {
 			function __construct($configuration) {
 			}
@@ -98,7 +98,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor() {
-		$dataProviderMockClassName = uniqid('tx_coretest_tree_data_provider');
+		$dataProviderMockClassName = $this->getUniqueId('tx_coretest_tree_data_provider');
 		$tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
 		$classCode = 'class ' . $dataProviderMockClassName . ' {
 			function __construct($configuration) {

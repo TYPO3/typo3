@@ -48,7 +48,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 	 * @expectedExceptionCode 1391295613
 	 */
 	public function registerFileCollectionClassThrowsExceptionIfClassDoesNotExist() {
-		$this->testSubject->registerFileCollectionClass(uniqid(), uniqid());
+		$this->testSubject->registerFileCollectionClass($this->getUniqueId(), substr($this->getUniqueId(), 0, 30));
 	}
 
 	/**
@@ -90,7 +90,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 	 * @expectedExceptionCode 1391295644
 	 */
 	public function getFileCollectionClassThrowsExceptionIfClassIsNotRegistered() {
-		$this->testSubject->getFileCollectionClass(uniqid());
+		$this->testSubject->getFileCollectionClass($this->getUniqueId());
 	}
 
 	/**
@@ -107,7 +107,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 	 */
 	public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections() {
 		$className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
-		$type = uniqid();
+		$type = substr($this->getUniqueId(), 0, 30);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = array(
 			$type => $className
 		);
@@ -135,7 +135,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 	public function fileCollectionExistsReturnsFalseIfFileCollectionDoesNotExist() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = array();
 		$this->initializeTestSubject();
-		$this->assertFalse($this->testSubject->fileCollectionTypeExists(uniqid()));
+		$this->assertFalse($this->testSubject->fileCollectionTypeExists($this->getUniqueId()));
 	}
 
 	/**

@@ -75,7 +75,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @return string
 	 */
 	protected function createRealTestdir() {
-		$basedir = PATH_site . 'typo3temp/' . uniqid('fal-test-');
+		$basedir = PATH_site . 'typo3temp/' . $this->getUniqueId('fal-test-');
 		mkdir($basedir);
 		$this->testDirs[] = $basedir;
 		return $basedir;
@@ -405,7 +405,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function getPublicUrlReturnsCorrectUriForConfiguredBaseUri() {
-		$baseUri = 'http://example.org/foobar/' . uniqid();
+		$baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
 		$this->addToMount(array(
 			'file.ext' => 'asdf',
 			'subfolder' => array(
@@ -438,7 +438,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @dataProvider getPublicUrlReturnsValidUrlContainingSpecialCharacters_dataProvider
 	 */
 	public function getPublicUrlReturnsValidUrlContainingSpecialCharacters($fileIdentifier) {
-		$baseUri = 'http://example.org/foobar/' . uniqid();
+		$baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
 		$fixture = $this->createDriverFixture(array(
 			'baseUri' => $baseUri
 		));
@@ -773,7 +773,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function hashingWithUnsupportedAlgorithmFails() {
 		$this->setExpectedException('InvalidArgumentException', '', 1304964032);
 		$fixture = $this->createDriverFixture();
-		$fixture->hash('/hashFile', uniqid());
+		$fixture->hash('/hashFile', $this->getUniqueId());
 	}
 
 	/**
@@ -980,7 +980,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function filesCanBeCopiedWithinStorage() {
-		$fileContents = uniqid();
+		$fileContents = $this->getUniqueId();
 		$this->addToMount(array(
 			'someFile' => $fileContents,
 			'targetFolder' => array()
@@ -997,7 +997,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function filesCanBeMovedWithinStorage() {
-		$fileContents = uniqid();
+		$fileContents = $this->getUniqueId();
 		$this->addToMount(array(
 			'targetFolder' => array(),
 			'someFile' => $fileContents
@@ -1013,7 +1013,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function fileMetadataIsChangedAfterMovingFile() {
-		$fileContents = uniqid();
+		$fileContents = $this->getUniqueId();
 		$this->addToMount(array(
 			'targetFolder' => array(),
 			'someFile' => $fileContents
@@ -1197,7 +1197,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function foldersCanBeMovedWithinStorage() {
-		$fileContents =  uniqid();
+		$fileContents = $this->getUniqueId();
 		$this->addToMount(array(
 			'sourceFolder' => array(
 				'file' => $fileContents,
@@ -1237,7 +1237,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function folderCanBeRenamedWhenMoving() {
 		$this->addToMount(array(
 			'sourceFolder' => array(
-				'file' => uniqid(),
+				'file' => $this->getUniqueId(),
 			),
 			'targetFolder' => array(),
 		));
@@ -1252,7 +1252,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function copyFolderWithinStorageCopiesSingleFileToNewFolderName() {
 		$this->addToMount(array(
 			'sourceFolder' => array(
-				'file' => uniqid(),
+				'file' => $this->getUniqueId(),
 			),
 			'targetFolder' => array(),
 		));
@@ -1280,7 +1280,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		list($basePath, $fixture) = $this->prepareRealTestEnvironment();
 		GeneralUtility::mkdir_deep($basePath, '/sourceFolder/subFolder');
 		GeneralUtility::mkdir_deep($basePath, '/targetFolder');
-		file_put_contents($basePath . '/sourceFolder/subFolder/file', uniqid());
+		file_put_contents($basePath . '/sourceFolder/subFolder/file', $this->getUniqueId());
 		GeneralUtility::fixPermissions($basePath . '/sourceFolder/subFolder/file');
 
 		$fixture->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');

@@ -136,7 +136,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function persistSessionTokenWritesTokenToSession() {
-		$sessionToken = uniqid('test_');
+		$sessionToken = $this->getUniqueId('test_');
 		$this->subject->_set('sessionToken', $sessionToken);
 		$this->getBackendUser()
 			->expects($this->once())

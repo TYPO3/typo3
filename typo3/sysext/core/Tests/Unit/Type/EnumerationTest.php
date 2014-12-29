@@ -194,7 +194,7 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider isValidComparisonExpectations
 	 */
 	public function isValidDoesTypeLooseComparison($enumerationValue, $testValue, $expectation) {
-		$mockName = uniqid('CompleteEnumerationMock');
+		$mockName = $this->getUniqueId('CompleteEnumerationMock');
 		$enumeration = $this->getAccessibleMock(
 			\TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration::class,
 			array('dummy'),

@@ -41,7 +41,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
 		$backend = new WincacheBackend('Testing');
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 	}
 
@@ -51,7 +51,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
 		$this->assertTrue($inCache, 'WinCache backend failed to set and check entry');
@@ -63,7 +63,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
 		$this->assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
@@ -75,7 +75,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
@@ -88,7 +88,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
@@ -102,7 +102,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function findIdentifiersByTagFindsSetEntries() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
 		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
@@ -116,7 +116,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
@@ -128,7 +128,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('NonExistingIdentifier');
 		$inCache = $backend->has($identifier);
 		$this->assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
 	}
@@ -138,7 +138,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('NonExistingIdentifier');
 		$inCache = $backend->remove($identifier);
 		$this->assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
 	}
@@ -203,7 +203,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function largeDataIsStored() {
 		$backend = $this->setUpBackend();
 		$data = str_repeat('abcde', 1024 * 1024);
-		$identifier = 'tooLargeData' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('tooLargeData');
 		$backend->set($identifier, $data);
 		$this->assertTrue($backend->has($identifier));
 		$this->assertEquals($backend->get($identifier), $data);
@@ -213,7 +213,7 @@ class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setTagsOnlyOnceToIdentifier() {
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$tags = array('UnitTestTag%test', 'UnitTestTag%boring');
 
 		$backend = $this->setUpBackend(TRUE);

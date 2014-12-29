@@ -145,10 +145,10 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds() {
 		$expectedPackageKeys = array(
-			'TYPO3.Flow' . md5(uniqid(mt_rand(), TRUE)),
-			'TYPO3.Flow.Test' . md5(uniqid(mt_rand(), TRUE)),
-			'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), TRUE)),
-			'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), TRUE))
+			$this->getUniqueId('TYPO3.Flow'),
+			$this->getUniqueId('TYPO3.Flow.Test'),
+			$this->getUniqueId('TYPO3.YetAnotherTestPackage'),
+			$this->getUniqueId('RobertLemke.Flow.NothingElse')
 		);
 
 		foreach ($expectedPackageKeys as $packageKey) {
@@ -179,10 +179,10 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function scanAvailablePackagesKeepsExistingPackageConfiguration() {
 		$expectedPackageKeys = array(
-			'TYPO3.Flow' . md5(uniqid(mt_rand(), TRUE)),
-			'TYPO3.Flow.Test' . md5(uniqid(mt_rand(), TRUE)),
-			'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), TRUE)),
-			'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), TRUE))
+			$this->getUniqueId('TYPO3.Flow'),
+			$this->getUniqueId('TYPO3.Flow.Test'),
+			$this->getUniqueId('TYPO3.YetAnotherTestPackage'),
+			$this->getUniqueId('RobertLemke.Flow.NothingElse')
 		);
 
 		foreach ($expectedPackageKeys as $packageKey) {
@@ -224,9 +224,9 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function packageStatesConfigurationContainsRelativePaths() {
 		$packageKeys = array(
-			'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), TRUE)),
-			'TYPO3.Flow' . md5(uniqid(mt_rand(), TRUE)),
-			'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), TRUE)),
+			$this->getUniqueId('RobertLemke.Flow.NothingElse'),
+			$this->getUniqueId('TYPO3.Flow'),
+			$this->getUniqueId('TYPO3.YetAnotherTestPackage')
 		);
 
 		foreach ($packageKeys as $packageKey) {

@@ -158,7 +158,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
 		$this->setUpBackend();
-		$this->backend->set('identifier' . uniqid(), array());
+		$this->backend->set($this->getUniqueId('identifier'), array());
 	}
 
 	/**
@@ -167,7 +167,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setThrowsExceptionIfLifetimeIsNegative() {
 		$this->setUpBackend();
-		$this->backend->set('identifier' . uniqid(), 'data', array(), -42);
+		$this->backend->set($this->getUniqueId('identifier'), 'data', array(), -42);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger() {
 		$this->setUpBackend();
-		$this->backend->set('identifier' . uniqid(), 'data', array(), array());
+		$this->backend->set($this->getUniqueId('identifier'), 'data', array(), array());
 	}
 
 	/**
@@ -186,7 +186,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->setUpRedis();
 		$this->redis->select(1);
 		$this->setUpBackend(array('database' => 1));
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$this->assertTrue($this->redis->exists('identData:' . $identifier));
 	}
@@ -197,7 +197,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesStringDataTypeForIdentifierToDataEntry() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$this->assertSame(\Redis::REDIS_STRING, $this->redis->type('identData:' . $identifier));
 	}
@@ -208,7 +208,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesEntryWithDefaultLifeTime() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$defaultLifetime = 42;
 		$this->backend->setDefaultLifetime($defaultLifetime);
 		$this->backend->set($identifier, 'data');
@@ -222,7 +222,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesEntryWithSpecifiedLifeTime() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$lifetime = 43;
 		$this->backend->set($identifier, 'data', array(), $lifetime);
 		$lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
@@ -235,7 +235,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesEntryWithUnlimitedLifeTime() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data', array(), 0);
 		$lifetimeRegisteredInBackend = $this->redis->ttl('identData:' . $identifier);
 		$this->assertSame(31536000, $lifetimeRegisteredInBackend);
@@ -247,7 +247,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setOverwritesExistingEntryWithNewData() {
 		$this->setUpBackend();
 		$data = 'data 1';
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, $data);
 		$otherData = 'data 2';
 		$this->backend->set($identifier, $otherData);
@@ -262,7 +262,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->setUpBackend();
 		$this->setUpRedis();
 		$data = 'data';
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, $data);
 		$lifetime = 42;
 		$this->backend->set($identifier, $data, array(), $lifetime);
@@ -277,7 +277,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->setUpBackend();
 		$this->setUpRedis();
 		$data = 'data';
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$lifetime = 42;
 		$this->backend->set($identifier, $data, array(), $lifetime);
 		$newDefaultLifetime = 43;
@@ -294,7 +294,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->setUpBackend();
 		$this->setUpRedis();
 		$data = 'data';
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$lifetime = 42;
 		$this->backend->set($identifier, $data, array(), $lifetime);
 		$this->backend->set($identifier, $data, array(), 0);
@@ -308,7 +308,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesSetDataTypeForIdentifierToTagsSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data', array('tag'));
 		$this->assertSame(\Redis::REDIS_SET, $this->redis->type('identTags:' . $identifier));
 	}
@@ -319,7 +319,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesSpecifiedTagsInIdentifierToTagsSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tags = array('thatTag', 'thisTag');
 		$this->backend->set($identifier, 'data', $tags);
 		$savedTags = $this->redis->sMembers('identTags:' . $identifier);
@@ -333,7 +333,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setRemovesAllPreviouslySetTagsFromIdentifierToTagsSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tags = array('fooTag', 'barTag');
 		$this->backend->set($identifier, 'data', $tags);
 		$this->backend->set($identifier, 'data', array());
@@ -346,7 +346,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setRemovesMultiplePreviouslySetTagsFromIdentifierToTagsSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$firstTagSet = array('tag1', 'tag2', 'tag3', 'tag4');
 		$this->backend->set($identifier, 'data', $firstTagSet);
 		$secondTagSet = array('tag1', 'tag3');
@@ -362,7 +362,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesSetDataTypeForTagToIdentifiersSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'tag';
 		$this->backend->set($identifier, 'data', array($tag));
 		$this->assertSame(\Redis::REDIS_SET, $this->redis->type('tagIdents:' . $tag));
@@ -374,7 +374,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setSavesIdentifierInTagToIdentifiersSetOfSpecifiedTag() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'thisTag';
 		$this->backend->set($identifier, 'data', array($tag));
 		$savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
@@ -387,10 +387,10 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setAppendsSecondIdentifierInTagToIdentifiersEntry() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$firstIdentifier = 'identifier' . uniqid();
+		$firstIdentifier = $this->getUniqueId('identifier');
 		$tag = 'thisTag';
 		$this->backend->set($firstIdentifier, 'data', array($tag));
-		$secondIdentifier = 'identifier' . uniqid();
+		$secondIdentifier = $this->getUniqueId('identifier');
 		$this->backend->set($secondIdentifier, 'data', array($tag));
 		$savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
 		sort($savedTagToIdentifiersMemberArray);
@@ -405,7 +405,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setRemovesIdentifierFromTagToIdentifiersEntryIfTagIsOmittedOnConsecutiveSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'thisTag';
 		$this->backend->set($identifier, 'data', array($tag));
 		$this->backend->set($identifier, 'data', array());
@@ -419,7 +419,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setAddsIdentifierInTagToIdentifiersEntryIfTagIsAddedOnConsecutiveSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$tag = 'thisTag';
 		$this->backend->set($identifier, 'data', array($tag));
@@ -435,7 +435,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'compression' => TRUE
 		));
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$data = 'some data ' . microtime();
 		$this->backend->set($identifier, $data);
 		$uncompresedStoredData = '';
@@ -456,7 +456,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'compressionLevel' => 0
 		));
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$data = 'some data ' . microtime();
 		$this->backend->set($identifier, $data);
 		$this->assertGreaterThan(0, substr_count($this->redis->get('identData:' . $identifier), $data), 'Plaintext data not found');
@@ -476,7 +476,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function hasReturnsFalseForNotExistingEntry() {
 		$this->setUpBackend();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->assertFalse($this->backend->has($identifier));
 	}
 
@@ -485,7 +485,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function hasReturnsTrueForPreviouslySetEntry() {
 		$this->setUpBackend();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$this->assertTrue($this->backend->has($identifier));
 	}
@@ -507,7 +507,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'compression' => TRUE
 		));
 		$data = 'data';
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, $data);
 		$fetchedData = $this->backend->get($identifier);
 		$this->assertSame($data, $fetchedData);
@@ -519,7 +519,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getReturnsPreviouslySetEntry() {
 		$this->setUpBackend();
 		$data = 'data';
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, $data);
 		$fetchedData = $this->backend->get($identifier);
 		$this->assertSame($data, $fetchedData);
@@ -539,7 +539,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removeReturnsFalseIfNoEntryWasDeleted() {
 		$this->setUpBackend();
-		$this->assertFalse($this->backend->remove('identifier' . uniqid()));
+		$this->assertFalse($this->backend->remove($this->getUniqueId('identifier')));
 	}
 
 	/**
@@ -547,7 +547,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removeReturnsTrueIfAnEntryWasDeleted() {
 		$this->setUpBackend();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$this->assertTrue($this->backend->remove($identifier));
 	}
@@ -557,7 +557,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removeDeletesEntryFromCache() {
 		$this->setUpBackend();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$this->backend->remove($identifier);
 		$this->assertFalse($this->backend->has($identifier));
@@ -569,7 +569,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function removeDeletesIdentifierToTagEntry() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'thisTag';
 		$this->backend->set($identifier, 'data', array($tag));
 		$this->backend->remove($identifier);
@@ -582,7 +582,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function removeDeletesIdentifierFromTagToIdentifiersSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'thisTag';
 		$this->backend->set($identifier, 'data', array($tag));
 		$this->backend->remove($identifier);
@@ -596,8 +596,8 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function removeDeletesIdentifierFromTagToIdentifiersSetWithMultipleEntries() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$firstIdentifier = 'identifier' . uniqid();
-		$secondIdentifier = 'identifier' . uniqid();
+		$firstIdentifier = $this->getUniqueId('identifier');
+		$secondIdentifier = $this->getUniqueId('identifier');
 		$tag = 'thisTag';
 		$this->backend->set($firstIdentifier, 'data', array($tag));
 		$this->backend->set($secondIdentifier, 'data', array($tag));
@@ -628,9 +628,9 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function findIdentifiersByTagReturnsAllIdentifiersTagedWithSpecifiedTag() {
 		$this->setUpBackend();
-		$firstIdentifier = 'identifier' . uniqid();
-		$secondIdentifier = 'identifier' . uniqid();
-		$thirdIdentifier = 'identifier' . uniqid();
+		$firstIdentifier = $this->getUniqueId('identifier');
+		$secondIdentifier = $this->getUniqueId('identifier');
+		$thirdIdentifier = $this->getUniqueId('identifier');
 		$tagsForFirstIdentifier = array('thisTag');
 		$tagsForSecondIdentifier = array('thatTag');
 		$tagsForThirdIdentifier = array('thisTag', 'thatTag');
@@ -649,7 +649,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushRemovesAllEntriesFromCache() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier, 'data');
 		$this->backend->flush();
 		$this->assertSame(array(), $this->redis->getKeys('*'));
@@ -669,7 +669,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function flushByTagRemovesEntriesTaggedWithSpecifiedTag() {
 		$this->setUpBackend();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier . 'A', 'data', array('tag1'));
 		$this->backend->set($identifier . 'B', 'data', array('tag2'));
 		$this->backend->set($identifier . 'C', 'data', array('tag1', 'tag2'));
@@ -689,7 +689,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushByTagRemovesTemporarySet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier . 'A', 'data', array('tag1'));
 		$this->backend->set($identifier . 'C', 'data', array('tag1', 'tag2'));
 		$this->backend->flushByTag('tag1');
@@ -702,7 +702,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushByTagRemovesIdentifierToTagsSetOfEntryTaggedWithGivenTag() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'tag1';
 		$this->backend->set($identifier, 'data', array($tag));
 		$this->backend->flushByTag($tag);
@@ -715,10 +715,10 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushByTagDoesNotRemoveIdentifierToTagsSetOfUnrelatedEntry() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifierToBeRemoved = 'identifier' . uniqid();
+		$identifierToBeRemoved = $this->getUniqueId('identifier');
 		$tagToRemove = 'tag1';
 		$this->backend->set($identifierToBeRemoved, 'data', array($tagToRemove));
-		$identifierNotToBeRemoved = 'identifier' . uniqid();
+		$identifierNotToBeRemoved = $this->getUniqueId('identifier');
 		$tagNotToRemove = 'tag2';
 		$this->backend->set($identifierNotToBeRemoved, 'data', array($tagNotToRemove));
 		$this->backend->flushByTag($tagToRemove);
@@ -731,7 +731,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushByTagRemovesTagToIdentifiersSetOfGivenTag() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$tag = 'tag1';
 		$this->backend->set($identifier, 'data', array($tag));
 		$this->backend->flushByTag($tag);
@@ -744,7 +744,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function flushByTagRemovesIdentifiersTaggedWithGivenTagFromTagToIdentifiersSets() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier . 'A', 'data', array('tag1', 'tag2'));
 		$this->backend->set($identifier . 'B', 'data', array('tag1', 'tag2'));
 		$this->backend->set($identifier . 'C', 'data', array('tag2'));
@@ -758,7 +758,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function collectGarbageDoesNotRemoveNotExpiredIdentifierToDataEntry() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier . 'A', 'data', array('tag'));
 		$this->backend->set($identifier . 'B', 'data', array('tag'));
 		$this->redis->delete('identData:' . $identifier . 'A');
@@ -772,7 +772,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function collectGarbageRemovesLeftOverIdentifierToTagsSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier . 'A', 'data', array('tag'));
 		$this->backend->set($identifier . 'B', 'data', array('tag'));
 		$this->redis->delete('identData:' . $identifier . 'A');
@@ -791,7 +791,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function collectGarbageRemovesExpiredIdentifierFromTagsToIdentifierSet() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$identifier = 'identifier' . uniqid();
+		$identifier = $this->getUniqueId('identifier');
 		$this->backend->set($identifier . 'A', 'data', array('tag1', 'tag2'));
 		$this->backend->set($identifier . 'B', 'data', array('tag2'));
 		$this->redis->delete('identData:' . $identifier . 'A');

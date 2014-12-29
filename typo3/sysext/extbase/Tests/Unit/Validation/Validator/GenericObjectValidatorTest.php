@@ -62,7 +62,7 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$resultWithError1->addError($error1);
 		$resultWithError2 = new \TYPO3\CMS\Extbase\Error\Result();
 		$resultWithError2->addError($error2);
-		$classNameForObjectWithPrivateProperties = 'B' . md5(uniqid(mt_rand(), TRUE));
+		$classNameForObjectWithPrivateProperties = $this->getUniqueId('B');
 		eval('class ' . $classNameForObjectWithPrivateProperties . '{ protected $foo = \'foovalue\'; protected $bar = \'barvalue\'; }');
 		$objectWithPrivateProperties = new $classNameForObjectWithPrivateProperties();
 		return array(
@@ -97,9 +97,9 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validateCanHandleRecursiveTargetsWithoutEndlessLooping() {
-		$classNameA = 'B' . md5(uniqid(mt_rand(), TRUE));
+		$classNameA = $this->getUniqueId('B');
 		eval('class ' . $classNameA . '{ public $b; }');
-		$classNameB = 'B' . md5(uniqid(mt_rand(), TRUE));
+		$classNameB = $this->getUniqueId('B');
 		eval('class ' . $classNameB . '{ public $a; }');
 		$A = new $classNameA();
 		$B = new $classNameB();
@@ -119,9 +119,9 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validateDetectsFailuresInRecursiveTargetsI() {
-		$classNameA = 'A' . md5(uniqid(mt_rand(), TRUE));
+		$classNameA = $this->getUniqueId('A');
 		eval('class ' . $classNameA . '{ public $b; }');
-		$classNameB = 'B' . md5(uniqid(mt_rand(), TRUE));
+		$classNameB = $this->getUniqueId('B');
 		eval('class ' . $classNameB . '{ public $a; public $uuid = 0xF; }');
 		$A = new $classNameA();
 		$B = new $classNameB();
@@ -146,9 +146,9 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validateDetectsFailuresInRecursiveTargetsII() {
-		$classNameA = 'A' . md5(uniqid(mt_rand(), TRUE));
+		$classNameA = $this->getUniqueId('A');
 		eval('class ' . $classNameA . '{ public $b; public $uuid = 0xF; }');
-		$classNameB = 'B' . md5(uniqid(mt_rand(), TRUE));
+		$classNameB = $this->getUniqueId('B');
 		eval('class ' . $classNameB . '{ public $a; public $uuid = 0xF; }');
 		$A = new $classNameA();
 		$B = new $classNameB();

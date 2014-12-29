@@ -203,7 +203,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isValidPathReturnsTrueIfPathExists() {
-		$className = uniqid('ArrayUtility');
+		$className = $this->getUniqueId('ArrayUtility');
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
@@ -220,7 +220,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isValidPathReturnsFalseIfPathDoesNotExist() {
-		$className = uniqid('ArrayUtility');
+		$className = $this->getUniqueId('ArrayUtility');
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
