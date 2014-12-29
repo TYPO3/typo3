@@ -91,7 +91,7 @@ class DataHandlerHook {
 				$where .= BackendUtility::deleteClause($tcaTable);
 				$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tcaTable, $where, '', '', '', 'uid');
 				if (is_array($records)) {
-					foreach (array_keys($records) as $recordId) {
+					foreach ($records as $recordId => $_) {
 						$command[$tcaTable][$recordId]['version']['action'] = 'flush';
 					}
 				}

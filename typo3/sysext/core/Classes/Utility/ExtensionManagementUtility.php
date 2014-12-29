@@ -367,7 +367,7 @@ class ExtensionManagementUtility {
 			$types = &$GLOBALS['TCA'][$table]['types'];
 			if (is_array($types)) {
 				// Iterate through all types and search for the field that defines the palette to be extended:
-				foreach (array_keys($types) as $type) {
+				foreach ($types as $type => $_) {
 					$items = self::explodeItemList($types[$type]['showitem']);
 					if (isset($items[$field])) {
 						// If the field already has a palette, extend it:
@@ -1796,7 +1796,7 @@ tt_content.' . $key . $prefix . ' {
 	static public function loadNewTcaColumnsConfigFiles() {
 		global $TCA;
 
-		foreach (array_keys($TCA) as $tableName) {
+		foreach ($TCA as $tableName => $_) {
 			if (!isset($TCA[$tableName]['columns'])) {
 				$columnsConfigFile = $TCA[$tableName]['ctrl']['dynamicConfigFile'];
 				if ($columnsConfigFile) {

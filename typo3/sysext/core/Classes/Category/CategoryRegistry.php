@@ -209,7 +209,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function applyTcaForPreRegisteredTables() {
 		$this->registerDefaultCategorizedTables();
 		foreach ($this->registry as $tableName => $fields) {
-			foreach (array_keys($fields) as $fieldName) {
+			foreach ($fields as $fieldName => $_) {
 				$this->applyTcaForTableAndField($tableName, $fieldName);
 			}
 		}

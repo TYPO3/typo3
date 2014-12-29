@@ -612,7 +612,7 @@ class ClassLoader {
 	 */
 	protected function buildPackageClassPathsForLegacyExtension(PackageInterface $package) {
 		$this->packageClassesPaths[$package->getPackageKey()] = $package->getClassesPath();
-		foreach (array_keys($package->getPackageReplacementKeys()) as $packageToReplace) {
+		foreach ($package->getPackageReplacementKeys() as $packageToReplace => $_) {
 			$this->packageClassesPaths[$packageToReplace] = $package->getClassesPath();
 		}
 	}

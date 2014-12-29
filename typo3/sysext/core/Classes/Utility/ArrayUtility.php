@@ -432,8 +432,7 @@ class ArrayUtility {
 	 */
 	public static function intersectRecursive(array $source, array $mask = array()) {
 		$intersection = array();
-		$sourceArrayKeys = array_keys($source);
-		foreach ($sourceArrayKeys as $key) {
+		foreach ($source as $key => $_) {
 			if (!array_key_exists($key, $mask)) {
 				continue;
 			}
@@ -477,7 +476,7 @@ class ArrayUtility {
 	static public function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = array(), $level = 0) {
 		$level++;
 		$allKeysAreNumeric = TRUE;
-		foreach (array_keys($array) as $key) {
+		foreach ($array as $key => $_) {
 			if (is_numeric($key) === FALSE) {
 				$allKeysAreNumeric = FALSE;
 				break;
@@ -517,7 +516,7 @@ class ArrayUtility {
 	 * @return void
 	 */
 	static public function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = TRUE, $includeEmptyValues = TRUE, $enableUnsetFeature = TRUE) {
-		foreach ($overrule as $key => $unusedValue) {
+		foreach ($overrule as $key => $_) {
 			if ($enableUnsetFeature && $overrule[$key] === '__UNSET') {
 				unset($original[$key]);
 				continue;

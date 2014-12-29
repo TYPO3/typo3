@@ -126,7 +126,7 @@ class BackendUtility {
 			$row = self::getRecord($table, $uid, $internalFields, $where, $useDeleteClause);
 			self::workspaceOL($table, $row, -99, $unsetMovePointers);
 			if (is_array($row)) {
-				foreach (array_keys($row) as $key) {
+				foreach ($row as $key => $_) {
 					if (!GeneralUtility::inList($fields, $key) && $key[0] !== '_') {
 						unset($row[$key]);
 					}
@@ -479,13 +479,12 @@ class BackendUtility {
 	static public function getExcludeFields() {
 		$finalExcludeArray = array();
 
-		// All TCA keys
-		$tableNamesFromTca = array_keys($GLOBALS['TCA']);
 		// Fetch translations for table names
 		$tableToTranslation = array();
 		$lang = static::getLanguageService();
-		foreach ($tableNamesFromTca as $table) {
-			$tableToTranslation[$table] = $lang->sl($GLOBALS['TCA'][$table]['ctrl']['title']);
+		// All TCA keys
+		foreach ($GLOBALS['TCA'] as $table => $conf) {
+			$tableToTranslation[$table] = $lang->sl($conf['ctrl']['title']);
 		}
 		// Sort by translations
 		asort($tableToTranslation);
@@ -497,8 +496,7 @@ class BackendUtility {
 					&& empty($GLOBALS['TCA'][$table]['ctrl']['adminOnly'])
 					&& (empty($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) || !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']))
 			) {
-				$fieldKeys = array_keys($GLOBALS['TCA'][$table]['columns']);
-				foreach ($fieldKeys as $field) {
+				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['exclude']) {
 						// Get human readable names of fields
 						$translatedField = $lang->sl($GLOBALS['TCA'][$table]['columns'][$field]['label']);
@@ -560,12 +558,10 @@ class BackendUtility {
 		);
 		// All TCA keys:
 		$allowDenyOptions = array();
-		$tc_keys = array_keys($GLOBALS['TCA']);
-		foreach ($tc_keys as $table) {
+		foreach ($GLOBALS['TCA'] as $table => $_) {
 			// All field names configured:
 			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
-				$f_keys = array_keys($GLOBALS['TCA'][$table]['columns']);
-				foreach ($f_keys as $field) {
+				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $_) {
 					$fCfg = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 					if ($fCfg['type'] == 'select' && $fCfg['authMode']) {
 						// Check for items:
@@ -1980,7 +1976,7 @@ class BackendUtility {
 
 		$originalTable = self::getOriginalTranslationTable($table);
 		$originalRow = self::getRecord($originalTable, $row[$originalUidField]);
-		foreach (array_keys($row) as $field) {
+		foreach ($row as $field => $_) {
 			$l10n_mode = isset($GLOBALS['TCA'][$originalTable]['columns'][$field]['l10n_mode'])
 				? $GLOBALS['TCA'][$originalTable]['columns'][$field]['l10n_mode']
 				: '';

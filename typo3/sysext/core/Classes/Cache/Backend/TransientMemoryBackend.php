@@ -91,7 +91,7 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
 	public function remove($entryIdentifier) {
 		if (isset($this->entries[$entryIdentifier])) {
 			unset($this->entries[$entryIdentifier]);
-			foreach (array_keys($this->tagsAndEntries) as $tag) {
+			foreach ($this->tagsAndEntries as $tag => $_) {
 				if (isset($this->tagsAndEntries[$tag][$entryIdentifier])) {
 					unset($this->tagsAndEntries[$tag][$entryIdentifier]);
 				}

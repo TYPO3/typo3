@@ -90,7 +90,7 @@ class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getHandler() {
 		$columnSettings = array();
-		foreach (array_keys($this->columns) as $columnName) {
+		foreach ($this->columns as $columnName => $_) {
 			$columnSettings[] = 'TYPO3.Workspaces.extension.AdditionalColumn.' . $columnName;
 		}
 		return $columnSettings;

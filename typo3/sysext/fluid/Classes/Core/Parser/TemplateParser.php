@@ -530,7 +530,7 @@ class TemplateParser {
 			$expectedArgumentNames[] = $expectedArgument->getName();
 		}
 
-		foreach (array_keys($actualArguments) as $argumentName) {
+		foreach ($actualArguments as $argumentName => $_) {
 			if (!in_array($argumentName, $expectedArgumentNames)) {
 				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Argument "' . $argumentName . '" was not registered.', 1237823695);
 			}

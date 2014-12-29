@@ -976,7 +976,7 @@ class ImportExport {
 		if (!isset($this->dat['header']['records']['sys_file']) || !is_array($this->dat['header']['records']['sys_file'])) {
 			return;
 		}
-		foreach (array_keys($this->dat['header']['records']['sys_file']) as $sysFileUid) {
+		foreach ($this->dat['header']['records']['sys_file'] as $sysFileUid => $_) {
 			$recordData = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
 			$file = ResourceFactory::getInstance()->createFileObject($recordData);
 			$this->export_addSysFile($file);
@@ -1529,7 +1529,7 @@ class ImportExport {
 			return;
 		}
 		$sysFileStorageUidsToBeResetToDefaultStorage = array();
-		foreach (array_keys($this->dat['header']['records']['sys_file_storage']) as $sysFileStorageUid) {
+		foreach ($this->dat['header']['records']['sys_file_storage'] as $sysFileStorageUid => $_) {
 			$storageRecord = $this->dat['records']['sys_file_storage:' . $sysFileStorageUid]['data'];
 			// continue with Local, writable and online storage only
 			if ($storageRecord['driver'] === 'Local' && $storageRecord['is_writable'] && $storageRecord['is_online']) {
@@ -1610,7 +1610,7 @@ class ImportExport {
 
 		$sanitizedFolderMappings = array();
 
-		foreach (array_keys($this->dat['header']['records']['sys_file']) as $sysFileUid) {
+		foreach ($this->dat['header']['records']['sys_file'] as $sysFileUid => $_) {
 			$fileRecord = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
 
 			$temporaryFile = NULL;
@@ -1746,7 +1746,7 @@ class ImportExport {
 			return;
 		}
 
-		foreach (array_keys($this->dat['header']['records']['sys_file_reference']) as $sysFileReferenceUid) {
+		foreach ($this->dat['header']['records']['sys_file_reference'] as $sysFileReferenceUid => $_) {
 			$fileReferenceRecord = $this->dat['records']['sys_file_reference:' . $sysFileReferenceUid]['data'];
 			if ($fileReferenceRecord['uid_local'] == $oldFileUid) {
 				$fileReferenceRecord['uid_local'] = $newFileUid;

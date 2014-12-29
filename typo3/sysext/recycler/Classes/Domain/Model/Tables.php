@@ -55,7 +55,7 @@ class Tables {
 	public function getTables($format, $withAllOption = TRUE, $startUid, $depth = 0) {
 		$deletedRecordsTotal = 0;
 		$tables = array();
-		foreach (array_keys($GLOBALS['TCA']) as $tableName) {
+		foreach ($GLOBALS['TCA'] as $tableName => $_) {
 			$deletedField = RecyclerUtility::getDeletedField($tableName);
 			if ($deletedField) {
 				// Determine whether the table has deleted records:

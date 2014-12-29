@@ -2303,7 +2303,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function addAjaxUrlsToInlineSettings() {
 		$ajaxUrls = array();
-		foreach (array_keys($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']) as $ajaxHandler) {
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'] as $ajaxHandler => $_) {
 			$ajaxUrls[$ajaxHandler] = BackendUtility::getAjaxUrl($ajaxHandler);
 		}
 		$this->inlineSettings['ajaxUrls'] = $ajaxUrls;

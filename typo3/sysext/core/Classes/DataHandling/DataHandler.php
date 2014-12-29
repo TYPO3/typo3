@@ -2852,7 +2852,7 @@ class DataHandler {
 		}
 		$pasteDatamap = array();
 		// Traverse command map:
-		foreach (array_keys($this->cmdmap) as $table) {
+		foreach ($this->cmdmap as $table => $_) {
 			// Check if the table may be modified!
 			$modifyAccessList = $this->checkModifyAccessList($table);
 			if (!$modifyAccessList) {
@@ -4422,7 +4422,7 @@ class DataHandler {
 	public function deleteSpecificPage($uid, $forceHardDelete = FALSE) {
 		$uid = (int)$uid;
 		if ($uid) {
-			foreach (array_keys($GLOBALS['TCA']) as $table) {
+			foreach ($GLOBALS['TCA'] as $table => $_) {
 				if ($table != 'pages') {
 					$mres = $this->databaseConnection->exec_SELECTquery('uid', $table, 'pid=' . (int)$uid . $this->deleteClause($table));
 					while ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
@@ -5685,7 +5685,7 @@ class DataHandler {
 	 */
 	public function getExcludeListArray() {
 		$list = array();
-		foreach (array_keys($GLOBALS['TCA']) as $table) {
+		foreach ($GLOBALS['TCA'] as $table => $_) {
 			if (isset($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
 					if ($config['exclude'] && !GeneralUtility::inList($this->BE_USER->groupData['non_exclude_fields'], ($table . ':' . $field))) {
@@ -5718,7 +5718,7 @@ class DataHandler {
 			return FALSE;
 		}
 		$tableList = array();
-		foreach (array_keys($GLOBALS['TCA']) as $table) {
+		foreach ($GLOBALS['TCA'] as $table => $_) {
 			// If the table is not in the allowed list, check if there are records...
 			if (!in_array($table, $allowedArray, TRUE)) {
 				$count = $this->databaseConnection->exec_SELECTcountRows('uid', $table, 'pid=' . (int)$page_uid);
@@ -6781,7 +6781,7 @@ class DataHandler {
 	public function noRecordsFromUnallowedTables($inList) {
 		$inList = trim($this->rmComma(trim($inList)));
 		if ($inList && !$this->admin) {
-			foreach (array_keys($GLOBALS['TCA']) as $table) {
+			foreach ($GLOBALS['TCA'] as $table => $_) {
 				$count = $this->databaseConnection->exec_SELECTcountRows('uid', $table, 'pid IN (' . $inList . ')' . BackendUtility::deleteClause($table));
 				if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
 					return FALSE;
@@ -6925,7 +6925,7 @@ class DataHandler {
 
 		/** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
 		$cacheManager = $this->getCacheManager();
-		foreach ($tagsToClear as $tag => $unusedValue) {
+		foreach ($tagsToClear as $tag => $_) {
 			$cacheManager->flushCachesInGroupByTag('pages', $tag);
 		}
 

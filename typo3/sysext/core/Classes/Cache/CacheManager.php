@@ -258,7 +258,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 				$flushDoctrineProxyCache = FALSE;
 				if (count($modifiedClassNamesWithUnderscores) > 0) {
 					$reflectionStatusCache = $this->getCache('FLOW3_Reflection_Status');
-					foreach (array_keys($modifiedClassNamesWithUnderscores) as $classNameWithUnderscores) {
+					foreach ($modifiedClassNamesWithUnderscores as $classNameWithUnderscores => $_) {
 						$reflectionStatusCache->remove($classNameWithUnderscores);
 						if ($flushDoctrineProxyCache === FALSE && preg_match('/_Domain_Model_(.+)/', $classNameWithUnderscores) === 1) {
 							$flushDoctrineProxyCache = TRUE;
@@ -278,7 +278,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 			case 'FLOW3_ConfigurationFiles':
 				$policyChangeDetected = FALSE;
 				$routesChangeDetected = FALSE;
-				foreach (array_keys($changedFiles) as $pathAndFilename) {
+				foreach ($changedFiles as $pathAndFilename => $_) {
 					$filename = basename($pathAndFilename);
 					if (!in_array($filename, array('Policy.yaml', 'Routes.yaml'))) {
 						continue;
@@ -337,7 +337,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function createAllCaches() {
-		foreach (array_keys($this->cacheConfigurations) as $identifier) {
+		foreach ($this->cacheConfigurations as $identifier => $_) {
 			if (!isset($this->caches[$identifier])) {
 				$this->createCache($identifier);
 			}

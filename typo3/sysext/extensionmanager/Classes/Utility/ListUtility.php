@@ -114,7 +114,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getAvailableAndInstalledExtensions(array $availableExtensions) {
-		foreach (array_keys($this->packageManager->getActivePackages()) as $extKey) {
+		foreach ($this->packageManager->getActivePackages() as $extKey => $_) {
 			if (isset($availableExtensions[$extKey])) {
 				$availableExtensions[$extKey]['installed'] = TRUE;
 			}
