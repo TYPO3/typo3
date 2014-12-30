@@ -127,12 +127,23 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		$value = $GLOBALS['LANG']->getLL('status_updateComplete');
 		$message = '';
 		$severity = Status::OK;
-		if (!GeneralUtility::compat_version(TYPO3_branch)) {
-			$value = $GLOBALS['LANG']->getLL('status_updateIncomplete');
-			$severity = Status::WARNING;
-			$url = BackendUtility::getModuleUrl('system_InstallInstall');
-			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
+
+		// check if there are update wizards left to perform
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
+				$versionAsInt = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
+				$updateObject = GeneralUtility::makeInstance($className, $identifier, $versionAsInt, NULL, $this);
+				if ($updateObject->shouldRenderWizard()) {
+					// at least one wizard was found
+					$value = $GLOBALS['LANG']->getLL('status_updateIncomplete');
+					$severity = Status::WARNING;
+					$url = BackendUtility::getModuleUrl('system_InstallInstall');
+					$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_update'), '<a href="' . htmlspecialchars($url) . '">', '</a>');
+					break;
+				}
+			}
 		}
+
 		return GeneralUtility::makeInstance(Status::class, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remainingUpdates'), $value, $message, $severity);
 	}
 

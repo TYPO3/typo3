@@ -780,8 +780,7 @@ class GeneralUtility {
 	 * @todo Still needs a function to convert versions to branches
 	 */
 	static public function compat_version($verNumberStr) {
-		$currVersionStr = $GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] ?: TYPO3_branch;
-		return VersionNumberUtility::convertVersionNumberToInteger($currVersionStr) >= VersionNumberUtility::convertVersionNumberToInteger($verNumberStr);
+		return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >= VersionNumberUtility::convertVersionNumberToInteger($verNumberStr);
 	}
 
 	/**

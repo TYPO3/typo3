@@ -41,7 +41,6 @@ return array(
 		'jpg_quality' => '80',
 	),
 	'SYS' => array(
-		'compat_version' => '7.0',
 		'isInitialInstallationInProgress' => TRUE,
 		'sitename' => 'New TYPO3 site',
 	),

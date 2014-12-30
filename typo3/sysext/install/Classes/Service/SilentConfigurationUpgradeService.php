@@ -69,7 +69,9 @@ class SilentConfigurationUpgradeService {
 		// #63818
 		'BE/staticFileEditPath',
 		// #64226
-		'BE/accessListRenderMode'
+		'BE/accessListRenderMode',
+		// #24900
+		'SYS/compat_version'
 	);
 
 	/**

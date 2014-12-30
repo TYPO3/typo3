@@ -613,35 +613,32 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Tests whether the compatibility version can be evaluated.
-	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 * (e.g. 7.9 is compatible to 7.0 but not to 15.0)
 	 *
 	 * @test
 	 */
 	public function compatVersionConditionMatchesOlderRelease() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] = '4.9';
-		$this->assertTrue($this->matchCondition->match('[compatVersion = 4.0]'));
+		$this->assertTrue($this->matchCondition->match('[compatVersion = 7.0]'));
 	}
 
 	/**
 	 * Tests whether the compatibility version can be evaluated.
-	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 * (e.g. 7.9 is compatible to 7.0 but not to 15.0)
 	 *
 	 * @test
 	 */
 	public function compatVersionConditionMatchesSameRelease() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] = '4.9';
-		$this->assertTrue($this->matchCondition->match('[compatVersion = 4.9]'));
+		$this->assertTrue($this->matchCondition->match('[compatVersion = ' . TYPO3_branch . ']'));
 	}
 
 	/**
 	 * Tests whether the compatibility version can be evaluated.
-	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 * (e.g. 7.9 is compatible to 7.0 but not to 15.0)
 	 *
 	 * @test
 	 */
 	public function compatVersionConditionDoesNotMatchNewerRelease() {
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] = '4.9';
-		$this->assertFalse($this->matchCondition->match('[compatVersion = 5.0]'));
+		$this->assertFalse($this->matchCondition->match('[compatVersion = 15.0]'));
 	}
 
 	/**
