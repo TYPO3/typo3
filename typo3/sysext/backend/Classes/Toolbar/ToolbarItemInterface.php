@@ -62,7 +62,7 @@ interface ToolbarItemInterface {
 	 *     'data-foo' => '42',
 	 * )
 	 *
-	 * @return string List item HTML attributes
+	 * @return array List item HTML attributes
 	 */
 	public function getAdditionalAttributes();
 
