@@ -509,7 +509,7 @@ class ElementBrowser {
 				cur_params=params;
 				add_params="&curUrl[params]="+escape(params);
 			}
-		';
+		' . $this->doc->redirectUrls();
 		// Functions used, if the link selector is in wizard mode (= TCEforms fields)
 		if ($this->mode == 'wizard') {
 			if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(TRUE)) {
