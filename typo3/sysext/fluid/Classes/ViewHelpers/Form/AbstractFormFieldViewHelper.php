@@ -124,7 +124,20 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 			$this->addAdditionalIdentityPropertiesIfNeeded();
 		}
 
-		if ($convertObjects && is_object($value)) {
+		if ($convertObjects) {
+			$value = $this->convertToPlainValue($value);
+		}
+		return $value;
+	}
+
+	/**
+	 * Converts an arbitrary value to a plain value
+	 *
+	 * @param mixed $value The value to convert
+	 * @return mixed
+	 */
+	protected function convertToPlainValue($value) {
+		if (is_object($value)) {
 			$identifier = $this->persistenceManager->getIdentifierByObject($value);
 			if ($identifier !== NULL) {
 				$value = $identifier;

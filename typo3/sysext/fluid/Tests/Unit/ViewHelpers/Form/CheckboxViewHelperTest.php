@@ -11,19 +11,23 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
+use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper;
+
 /**
  * Test for the "Checkbox" Form view helper
  */
 class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper
+	 * @var CheckboxViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $viewHelper;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
+		$this->viewHelper = $this->getAccessibleMock(CheckboxViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
 		$this->arguments['property'] = '';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
@@ -33,7 +37,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderCorrectlySetsTagNameAndDefaultAttributes() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
@@ -52,7 +56,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderSetsCheckedAttributeIfSpecified() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -70,7 +74,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderIgnoresValueOfBoundPropertyIfCheckedIsSet() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -90,7 +94,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeBoolean() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -110,7 +114,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderAppendsSquareBracketsToNameAttributeIfBoundToAPropertyOfTypeArray() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo[]');
@@ -130,7 +134,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArray() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -150,7 +154,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderCorrectlySetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayObject() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -170,7 +174,7 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 * @test
 	 */
 	public function renderSetsCheckedAttributeIfBoundPropertyIsNotNull() {
-		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
@@ -181,6 +185,38 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(new \stdClass()));
 		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderSetsCheckedAttributeForListOfObjects() {
+		$mockTagBuilder = $this->getMock(TagBuilder::class, array('setTagName', 'addAttribute'));
+		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
+		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
+		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 2);
+		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+
+		$object1 = new \stdClass();
+		$object2 = new \stdClass();
+		$object3 = new \stdClass();
+
+		$this->viewHelper->expects($this->any())->method('getName')->willReturn('foo');
+		$this->viewHelper->expects($this->any())->method('getValue')->willReturn(2);
+		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->willReturn(TRUE);
+		$this->viewHelper->expects($this->any())->method('getPropertyValue')->willReturn(array($object1, $object2, $object3));
+		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$mockPersistenceManager = $this->getMock(PersistenceManagerInterface::class);
+		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValueMap(array(
+			array($object1, 1),
+			array($object2, 2),
+			array($object3, 3),
+		)));
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();

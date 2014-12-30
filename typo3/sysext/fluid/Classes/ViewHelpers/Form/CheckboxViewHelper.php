@@ -86,6 +86,7 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 				$propertyValue = iterator_to_array($propertyValue);
 			}
 			if (is_array($propertyValue)) {
+				$propertyValue = array_map(array($this, 'convertToPlainValue'), $propertyValue);
 				if ($checked === NULL) {
 					$checked = in_array($valueAttribute, $propertyValue);
 				}
