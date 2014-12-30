@@ -9756,7 +9756,11 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms
 - - - - - - - - - - - - - - - - - - - - - */
-.typo3-TCEforms div.typo3-dyntabmenu-divs {
+.typo3-TCEforms .typo3-dyntabmenu-divs {
+  border-top: 1px solid #cccccc;
+}
+.typo3-TCEforms .typo3-dyntabmenu-tabs + .typo3-dyntabmenu-divs {
+  border-top: none;
   padding: 0;
 }
 .typo3-TCEforms .c-tablayer div,

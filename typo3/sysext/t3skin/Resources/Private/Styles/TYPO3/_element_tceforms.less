@@ -18,8 +18,12 @@ TCEforms
 // Special handling of Tabs within FormEngine
 .typo3-TCEforms {
 
-	// Move dyntab inner padding into fieldset for horizontal HR
-	div.typo3-dyntabmenu-divs {
+	// Move dyntab inner padding into fieldset for horizontal HR (only when tabs are there)
+	.typo3-dyntabmenu-divs {
+		border-top: 1px solid @nav-tabs-border-color;
+	}
+	.typo3-dyntabmenu-tabs + .typo3-dyntabmenu-divs {
+		border-top: none;
 		padding: 0;
 	}
 

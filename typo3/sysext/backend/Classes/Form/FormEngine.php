@@ -963,41 +963,38 @@ class FormEngine {
 			}
 		}
 		// Return the imploded $out_array:
-		// There were --div-- dividers around...
-		if ($out_sheet > 0) {
-			// Create parts array for the tab menu:
-			$parts = array();
-			foreach ($out_array as $idx => $sheetContent) {
-				$content = implode('', $sheetContent);
-				if ($content) {
-					// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
-					$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $content . '</table>';
-				}
-				$parts[$idx] = array(
-					'label' => $out_array_meta[$idx]['title'],
-					'content' => $content,
-					'newline' => $out_array_meta[$idx]['newline']
-				);
+		// Create parts array for the tab menu:
+		$parts = array();
+		foreach ($out_array as $idx => $sheetContent) {
+			$content = implode('', $sheetContent);
+			if ($content) {
+				// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
+				$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $content . '</table>';
 			}
-			if (count($parts) > 1) {
-				// Unset the current level of tab menus:
-				$this->popFromDynNestedStack('tab', $tabIdentStringMD5 . '-' . ($out_sheet + 1));
-				$output = $this->getDynTabMenu($parts, $tabIdentString);
-			} else {
-				// If there is only one tab/part there is no need to wrap it into the dynTab code
-				$output = isset($parts[0]) ? trim($parts[0]['content']) : '';
-			}
-			$output = '
-				<tr>
-					<td colspan="2">
-					' . $output . '
-					</td>
-				</tr>';
+			$parts[$idx] = array(
+				'label' => $out_array_meta[$idx]['title'],
+				'content' => $content,
+				'newline' => $out_array_meta[$idx]['newline']
+			);
+		}
+		if (count($parts) > 1) {
+			// Unset the current level of tab menus:
+			$this->popFromDynNestedStack('tab', $tabIdentStringMD5 . '-' . ($out_sheet + 1));
+			$output = $this->getDynTabMenu($parts, $tabIdentString);
 		} else {
-			// Only one tab, so just implode and wrap the background image (= tab container) around:
-			$output = implode('', $out_array[$out_sheet]);
+			// If there is only one tab/part there is no need to wrap it into the dynTab code
+			$output = isset($parts[0]) ? trim($parts[0]['content']) : '';
+		}
+		// Only one tab, so just implode and wrap the background image (= tab container) around:
+		if ($out_sheet === 0) {
 			$output = '<div class="typo3-dyntabmenu-divs">' . $output . '</div>';
 		}
+		$output = '
+			<tr>
+				<td colspan="2">
+				' . $output . '
+				</td>
+			</tr>';
 
 		return $output;
 	}
