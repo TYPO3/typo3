@@ -154,6 +154,7 @@ class PageGenerator {
 					$GLOBALS['TSFE']->xhtmlVersion = 110;
 					break;
 				case 'xhtml_2':
+					GeneralUtility::deprecationLog('The option "config.xhtmlDoctype=xhtml_2" is deprecated since TYPO3 CMS 7, and will be removed with CMS 8');
 					$GLOBALS['TSFE']->xhtmlVersion = 200;
 					break;
 				default:
