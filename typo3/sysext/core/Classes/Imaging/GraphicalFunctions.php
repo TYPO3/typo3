@@ -227,7 +227,7 @@ class GraphicalFunctions {
 	public $absPrefix = '';
 
 	/**
-	 * ImageMagick scaling command; "-geometry" eller "-sample". Used in makeText() and imageMagickConvert()
+	 * ImageMagick scaling command; "-geometry" or "-sample". Used in makeText() and imageMagickConvert()
 	 *
 	 * @var string
 	 */
@@ -2234,7 +2234,7 @@ class GraphicalFunctions {
 				if (file_exists($output)) {
 					$info[3] = $output;
 					$info[2] = $newExt;
-					// params could realisticly change some imagedata!
+					// params might change some image data!
 					if ($params) {
 						$info = $this->getImageDimensions($info[3]);
 					}
@@ -2261,7 +2261,7 @@ class GraphicalFunctions {
 			if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
 				return $returnArr;
 			} else {
-				if ($temp = @getImageSize($imageFile)) {
+				if ($temp = @getimagesize($imageFile)) {
 					$returnArr = array($temp[0], $temp[1], strtolower($reg[0]), $imageFile);
 				} else {
 					$returnArr = $this->imageMagickIdentify($imageFile);
@@ -2276,61 +2276,75 @@ class GraphicalFunctions {
 	}
 
 	/**
-	 * Cache the result of the getImageDimensions function into the database. Does not check if the
-	 * file exists!
+	 * Caches the result of the getImageDimensions function into the database. Does not check if the file exists.
 	 *
 	 * @param array $identifyResult Result of the getImageDimensions function
-	 * @return bool TRUE if operation was successful
+	 *
+	 * @return bool always TRUE
 	 */
-	public function cacheImageDimensions($identifyResult) {
-		// Create md5 hash of filemtime and filesize
-		$fileStatus = stat($identifyResult[3]);
-		$md5Hash = md5($fileStatus['mtime'] . $fileStatus['size']);
-		$result = FALSE;
-		if ($md5Hash) {
-			$fieldArray = array(
-				'md5hash' => $md5Hash,
-				'md5filename' => md5($identifyResult[3]),
-				'tstamp' => $GLOBALS['EXEC_TIME'],
-				'filename' => $identifyResult[3],
-				'imagewidth' => $identifyResult[0],
-				'imageheight' => $identifyResult[1]
-			);
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_imagesizes', $fieldArray);
-			if (!($err = $GLOBALS['TYPO3_DB']->sql_error())) {
-				$result = TRUE;
-			}
+	public function cacheImageDimensions(array $identifyResult) {
+		$filePath = $identifyResult[3];
+		$statusHash = $this->generateCacheKeyForImageFile($filePath);
+
+		/** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
+		$cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
+		$imageDimensions = array(
+			'hash'        => $statusHash,
+			'imagewidth'  => $identifyResult[0],
+			'imageheight' => $identifyResult[1],
+		);
+		$cache->set($statusHash, $imageDimensions);
+
+		return TRUE;
+	}
+
+	/**
+	 * Fetches the cached image dimensions from the cache. Does not check if the image file exists.
+	 *
+	 * @param string $filePath the image file path
+	 *
+	 * @return array|bool an array where [0]/[1] is w/h, [2] is extension and [3] is the file name,
+	 *                    or FALSE for a cache miss
+	 */
+	public function getCachedImageDimensions($filePath) {
+		$statusHash = $this->generateCacheKeyForImageFile($filePath);
+		/** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
+		$cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
+		$cachedImageDimensions = $cache->get($statusHash);
+		if (!isset($cachedImageDimensions['hash'])) {
+			return FALSE;
 		}
+
+		if ($cachedImageDimensions['hash'] !== $statusHash) {
+			// The file has changed. Delete the cache entry.
+			$cache->remove($filePath);
+			$result = FALSE;
+		} else {
+			preg_match('/([^\\.]*)$/', $filePath, $imageExtension);
+			$result = array(
+				(int)$cachedImageDimensions['imagewidth'],
+				(int)$cachedImageDimensions['imageheight'],
+				strtolower($imageExtension[0]),
+				$filePath
+			);
+		}
+
 		return $result;
 	}
 
 	/**
-	 * Fetch the cached imageDimensions from the MySQL database. Does not check if the image file exists!
+	 * Creates the key for the image dimensions cache for an image file.
 	 *
-	 * @param string $imageFile The image filepath
-	 * @return array Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
+	 * This method does not check if the image file actually exists.
+	 *
+	 * @param string $filePath
+	 *
+	 * @return string the hash key (an SHA1 hash), will not be empty
 	 */
-	public function getCachedImageDimensions($imageFile) {
-		// Create md5 hash of filemtime and filesize
-		$fileStatus = stat($imageFile);
-		$md5Hash = md5($fileStatus['mtime'] . $fileStatus['size']);
-		$cachedImageDimensions = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('md5hash, md5filename, imagewidth, imageheight', 'cache_imagesizes', 'md5filename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(md5($imageFile), 'cache_imagesizes'));
-		$result = FALSE;
-		if (is_array($cachedImageDimensions)) {
-			if ($cachedImageDimensions['md5hash'] != $md5Hash) {
-				// File has changed, delete the row
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_imagesizes', 'md5filename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($cachedImageDimensions['md5filename'], 'cache_imagesizes'));
-			} else {
-				preg_match('/([^\\.]*)$/', $imageFile, $imageExtension);
-				$result = array(
-					(int)$cachedImageDimensions['imagewidth'],
-					(int)$cachedImageDimensions['imageheight'],
-					strtolower($imageExtension[0]),
-					$imageFile
-				);
-			}
-		}
-		return $result;
+	protected function generateCacheKeyForImageFile($filePath) {
+		$fileStatus = stat($filePath);
+
+		return sha1($fileStatus['mtime'] . $fileStatus['size']);
 	}
 
 	/**

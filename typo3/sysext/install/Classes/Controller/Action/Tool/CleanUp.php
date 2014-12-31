@@ -63,10 +63,6 @@ class CleanUp extends Action\AbstractAction {
 				'description' => 'Backend user sessions'
 			),
 			array(
-				'name' => 'cache_imagesizes',
-				'description' => 'Cached image sizes',
-			),
-			array(
 				'name' => 'cache_md5params',
 				'description' => 'Frontend redirects',
 			),
