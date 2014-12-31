@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
  *
  * @author Kasper Skårhøj	<kasperYYYY@typo3.com>
+ * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
  */
 class ThumbnailView {
 
@@ -87,6 +88,7 @@ class ThumbnailView {
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
 	 */
 	public function init() {
+		GeneralUtility::deprecationLog('The class ThumbnailView is deprecated since TYPO3 CMS 7 and will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality');
 		// Setting GPvars:
 		// Only needed for MD5 sum calculation of backwards-compatibility uploads/ files thumbnails.
 		$size = GeneralUtility::_GP('size');

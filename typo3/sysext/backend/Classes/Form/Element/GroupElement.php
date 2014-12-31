@@ -145,7 +145,7 @@ class GroupElement extends AbstractFormElement {
 										$table,
 										$field,
 										'',
-										'thumbs.php',
+										'',
 										$config['uploadfolder'],
 										0,
 										' align="middle"'

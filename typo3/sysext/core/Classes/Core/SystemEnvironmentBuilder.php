@@ -368,13 +368,13 @@ class SystemEnvironmentBuilder {
 	 * We have two main scenarios for entry points:
 	 * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php sets $relativePathPart to
 	 * empty string to hint this code that the document root is identical to the directory the script is located at.
-	 * - An indirect include of typo3/init.php (-> a backend module, the install tool, or scripts like thumbs.php).
+	 * - An indirect include of typo3/init.php (-> a backend module, the install tool, or scripts like ajax.php).
 	 * If init.php is included we distinguish two cases:
 	 * -- A backend module defines 'TYPO3_MOD_PATH': This is the case for "old" modules that are not called through
 	 * "mod.php" dispatcher, and in the install tool. The TYPO3_MOD_PATH defines the relative path to the typo3/
 	 * directory. This is taken as base to calculate the document root.
 	 * -- A script includes init.php and does not define 'TYPO3_MOD_PATH': This is the case for the mod.php dispatcher
-	 * and other entry scripts like 'cli_dispatch.phpsh' or 'thumbs.php' that are located parallel to init.php. In
+	 * and other entry scripts like 'cli_dispatch.phpsh' or 'ajax.php' that are located parallel to init.php. In
 	 * this case init.php sets 'typo3/' as $relativePathPart as base to calculate the document root.
 	 *
 	 * This basically boils down to the following code:

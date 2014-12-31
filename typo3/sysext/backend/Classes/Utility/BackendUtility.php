@@ -1709,8 +1709,10 @@ class BackendUtility {
 	 * @param string $tparams The additional attributes for the image tag
 	 * @param string $size The size of the thumbnail send along to thumbs.php
 	 * @return string Image tag
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
 	 */
 	static public function getThumbNail($thumbScript, $theFile, $tparams = '', $size = '') {
+		GeneralUtility::logDeprecatedFunction();
 		$size = trim($size);
 		$check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$params = '&file=' . rawurlencode($theFile);

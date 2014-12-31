@@ -2230,7 +2230,7 @@ class FormEngine {
 								$table,
 								$field,
 								'',
-								'thumbs.php',
+								'',
 								$config['config']['uploadfolder'], 0, ' align="middle"'
 							) .
 							($absFilePath ? $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($fileIcon, $absFilePath, 0, 1, '', '+copy,info,edit,view') : $fileIcon) . $imgPath .
