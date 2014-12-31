@@ -132,6 +132,7 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface {
 
 		$as = (!empty($configuration['as']) ? $configuration['as'] : NULL);
 		$this->getRenderer()->addSection($section, $as);
+		$this->reset();
 	}
 
 	/**
@@ -175,6 +176,17 @@ class Collector implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function getFrontendController() {
 		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * Collector needs to be reset after attaching a section, otherwise records will pile up.
+	 *
+	 * @return void
+	 */
+	protected function reset() {
+		$this->structure = array();
+		$this->structurePaths = array();
+		$this->records = array();
 	}
 
 }
