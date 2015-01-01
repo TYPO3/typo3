@@ -57,7 +57,6 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 	->initializeSpriteManager()
 	->initializeBackendUser()
 	->initializeBackendAuthentication()
-	->initializeBackendUserMounts()
 	->initializeLanguageObject()
 	->initializeBackendTemplate()
 	->endOutputBufferingAndCleanPreviousOutput()

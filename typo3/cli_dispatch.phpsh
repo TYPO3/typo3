@@ -43,7 +43,6 @@ require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 	->loadExtensionTables(TRUE)
 	->initializeBackendUser()
 	->initializeBackendAuthentication()
-	->initializeBackendUserMounts()
 	->initializeLanguageObject();
 
 	// Make sure output is not buffered, so command-line output and interaction can take place

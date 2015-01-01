@@ -711,7 +711,6 @@ class Bootstrap {
 		unset($GLOBALS['TBE_STYLES']);
 		unset($GLOBALS['FILEICONS']);
 		// Those set in init.php:
-		unset($GLOBALS['WEBMOUNTS']);
 		unset($GLOBALS['BE_USER']);
 		// Those set otherwise:
 		unset($GLOBALS['TBE_MODULES_EXT']);
@@ -1000,18 +999,6 @@ class Bootstrap {
 	public function initializeBackendAuthentication() {
 		$GLOBALS['BE_USER']->checkCLIuser();
 		$GLOBALS['BE_USER']->backendCheckLogin();
-		return $this;
-	}
-
-	/**
-	 * Initialize backend user mount points
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function initializeBackendUserMounts() {
-		// Includes deleted mount pages as well! @TODO: Figure out why ...
-		$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 		return $this;
 	}
 

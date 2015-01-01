@@ -95,7 +95,7 @@ abstract class AbstractTreeView {
 	public $BE_USER = '';
 
 	/**
-	 * Needs to be initialized with e.g. $GLOBALS['WEBMOUNTS']
+	 * Needs to be initialized with e.g. $GLOBALS['BE_USER']->returnWebmounts()
 	 * Default setting in init() is 0 => 0
 	 * The keys are mount-ids (can be anything basically) and the
 	 * values are the ID of the root element (COULD be zero or anything else.

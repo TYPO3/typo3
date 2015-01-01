@@ -119,7 +119,6 @@ class BasicFileUtility {
 	 * $this->mounts is traversed in the function checkPathAgainstMounts($thePath), and it is checked that $thePath is actually below one of the mount-paths
 	 * The mountpaths are with a trailing '/'. $thePath must be with a trailing '/' also!
 	 * As you can see, $this->mounts is very critical! This is the array that decides where the user will be allowed to copy files!!
-	 * Typically the global var $WEBMOUNTS would be passed along as $mounts
 	 *
 	 * A typical example of the array $f_ext is this:
 	 * $f_ext['webspace']['allow']='';

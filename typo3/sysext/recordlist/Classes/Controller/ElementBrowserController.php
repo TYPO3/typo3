@@ -99,7 +99,6 @@ class ElementBrowserController {
 		}
 		if ($altMountPoints) {
 			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
-			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 		}
 		$this->content = '';
 		// Look for alternative mountpoints
@@ -111,7 +110,6 @@ class ElementBrowserController {
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
 				if ($altMountPoints) {
 					$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
-					$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 				}
 		}
 		// Render type by user func

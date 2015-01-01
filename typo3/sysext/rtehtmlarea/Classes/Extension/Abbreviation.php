@@ -192,7 +192,6 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			if ($altMountPoints) {
 				$savedGroupDataWebmounts = $GLOBALS['BE_USER']->groupData['webmounts'];
 				$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
-				$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 			}
 			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -210,7 +209,6 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			// Restoring webmounts
 			if ($altMountPoints) {
 				$GLOBALS['BE_USER']->groupData['webmounts'] = $savedGroupDataWebmounts;
-				$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();
 			}
 			$queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
 			foreach ($pids as $key => $val) {
