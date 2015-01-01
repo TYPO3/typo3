@@ -479,7 +479,7 @@ class BackendController {
 	 */
 	protected function generateJavascript() {
 
-		// Needed for tceform manipulation (date picker)
+		// Needed for FormEngine manipulation (date picker)
 		$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
 		$this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 		// define the window size of the element browser etc.

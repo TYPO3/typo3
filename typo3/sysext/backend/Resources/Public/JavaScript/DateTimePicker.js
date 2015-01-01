@@ -20,7 +20,7 @@ define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
 	var DateTimePicker = {
 		options: {
 			fieldSelector: '.t3js-datetimepicker',
-			format: top.TYPO3.settings.DateTimePicker.DateFormat
+			format: (opener ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat
 		}
 	};
 
