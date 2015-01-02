@@ -43,7 +43,7 @@ class ConditionMatcher extends AbstractConditionMatcher {
 	 */
 	protected function evaluateCondition($string) {
 		list($key, $value) = GeneralUtility::trimExplode('=', $string, FALSE, 2);
-		$result = parent::evaluateConditionCommon($key, $value);
+		$result = $this->evaluateConditionCommon($key, $value);
 		if (is_bool($result)) {
 			return $result;
 		} else {
@@ -89,7 +89,7 @@ class ConditionMatcher extends AbstractConditionMatcher {
 					}
 					break;
 				default:
-					$conditionResult = parent::evaluateCustomDefinedCondition($string);
+					$conditionResult = $this->evaluateCustomDefinedCondition($string);
 					if ($conditionResult !== NULL) {
 						return $conditionResult;
 					}
@@ -107,7 +107,7 @@ class ConditionMatcher extends AbstractConditionMatcher {
 	 */
 	protected function getVariable($var) {
 		$vars = explode(':', $var, 2);
-		return parent::getVariableCommon($vars);
+		return $this->getVariableCommon($vars);
 	}
 
 	/**
