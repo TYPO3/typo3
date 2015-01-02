@@ -15,7 +15,10 @@ namespace TYPO3\CMS\Backend\Module;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Parent class for 'ScriptClasses' in backend modules.
@@ -36,8 +39,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * class PrototypeController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
  * 	public function __construct() {
- * 		$GLOBALS['LANG']->includeLLFile('EXT:prototype/Resources/Private/Language/locallang.xlf');
- * 		$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], TRUE);
+ * 		$this->getLanguageService()->includeLLFile('EXT:prototype/Resources/Private/Language/locallang.xlf');
+ * 		$this->getBackendUser()->modAccess($GLOBALS['MCONF'], TRUE);
  * 	}
  * }
  *
@@ -198,7 +201,7 @@ class BaseScriptClass {
 		}
 		$this->id = (int)GeneralUtility::_GP('id');
 		$this->CMD = GeneralUtility::_GP('CMD');
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		$this->menuConfig();
 		$this->handleExternalFunctionValue();
 	}
@@ -233,8 +236,8 @@ class BaseScriptClass {
 		$mergeArray = $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
 		if (is_array($mergeArray)) {
 			foreach ($mergeArray as $k => $v) {
-				if (((string)$v['ws'] === '' || $GLOBALS['BE_USER']->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $GLOBALS['BE_USER']->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $GLOBALS['BE_USER']->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
-					$menuArr[$k] = $GLOBALS['LANG']->sL($v['title']);
+				if (((string)$v['ws'] === '' || $this->getBackendUser()->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $this->getBackendUser()->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $this->getBackendUser()->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
+					$menuArr[$k] = $this->getLanguageService()->sL($v['title']);
 				}
 			}
 		}
@@ -267,7 +270,10 @@ class BaseScriptClass {
 	 * @see handleExternalFunctionValue()
 	 */
 	public function getExternalItemConfig($modName, $menuKey, $value = '') {
-		return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+		if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
+			return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+		}
+		return NULL;
 	}
 
 	/**
@@ -319,10 +325,36 @@ class BaseScriptClass {
 	 * @return void
 	 */
 	public function extObjContent() {
-		$this->extObj->pObj = $this;
-		if (is_callable(array($this->extObj, 'main'))) {
-			$this->content .= $this->extObj->main();
+		if ($this->extObj === NULL) {
+			$flashMessage = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_errors.xlf:no_modules_registered'),
+				$this->getLanguageService()->getLL('title'),
+				FlashMessage::ERROR
+			);
+			$this->content .= $flashMessage->render();
+		} else {
+			$this->extObj->pObj = $this;
+			if (is_callable(array($this->extObj, 'main'))) {
+				$this->content .= $this->extObj->main();
+			}
 		}
+	}
+
+	/**
+	 * Returns the Language Service
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the Backend User
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
