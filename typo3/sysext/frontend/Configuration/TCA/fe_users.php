@@ -30,7 +30,7 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
-				'max' => '50',
+				'max' => '255',
 				'eval' => 'nospace,lower,uniqueInPid,required'
 			)
 		),
@@ -141,7 +141,7 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'eval' => 'trim',
-				'max' => '80'
+				'max' => '255'
 			)
 		),
 		'title' => array(
