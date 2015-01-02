@@ -386,15 +386,10 @@ class AbstractMenuContentObject {
 				$this->sys_page->where_groupAccess = '';
 			}
 
-			// additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
-			if (isset($this->mconf['additionalWhere']) || isset($this->mconf['additionalWhere.'])) {
-				if (isset($this->mconf['additionalWhere.'])) {
-					$additionalWhere = $this->parent_cObj->stdWrap($this->mconf['additionalWhere'], $this->mconf['additionalWhere.']);
-				} else {
-					$additionalWhere = $this->mconf['additionalWhere'];
-				}
-			} else {
-				$additionalWhere = '';
+			// Additional where clause, usually starts with AND (as usual with all additionalWhere functionality in TS)
+			$additionalWhere = isset($this->mconf['additionalWhere']) ? $this->mconf['additionalWhere'] : '';
+			if (isset($this->mconf['additionalWhere.'])) {
+				$additionalWhere = $this->parent_cObj->stdWrap($additionalWhere, $this->mconf['additionalWhere.']);
 			}
 
 			// Begin production of menu:
