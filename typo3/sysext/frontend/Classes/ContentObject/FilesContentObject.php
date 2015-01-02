@@ -148,7 +148,11 @@ class FilesContentObject extends AbstractContentObject {
 					return 0;
 				}
 			});
-			if (is_array($conf['sorting.']) && isset($conf['sorting.']['direction']) && strtolower($conf['sorting.']['direction']) === 'desc') {
+			$sortingDirection = isset($conf['sorting.']['direction']) ? $conf['sorting.']['direction'] : '';
+			if (isset($conf['sorting.']['direction.'])) {
+				$sortingDirection = $this->cObj->stdWrap($sortingDirection, $conf['sorting.']['direction.']);
+			}
+			if (strtolower($sortingDirection) === 'desc') {
 				$fileObjects = array_reverse($fileObjects);
 			}
 		}
