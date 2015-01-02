@@ -1,5 +1,5 @@
 ===================================================
-Breaking: #53568 - option alternateBgColors removed
+Breaking: #53658 - option alternateBgColors removed
 ===================================================
 
 Description
