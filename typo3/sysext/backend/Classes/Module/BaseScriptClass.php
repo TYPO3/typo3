@@ -15,7 +15,10 @@ namespace TYPO3\CMS\Backend\Module;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Parent class for 'ScriptClasses' in backend modules.
@@ -24,20 +27,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * As for examples there are lots of them if you search for classes which extends \TYPO3\CMS\Backend\Module\BaseScriptClass
  * However you can see a prototype example of how a module might use this class in an index.php file typically hosting a backend module.
- * NOTICE: This example only outlines the basic structure of how this class is used. You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *
- * TYPICAL 'HEADER' OF A BACKEND MODULE:
- * unset($MCONF);
- * require ('conf.php');
- * require ($BACK_PATH.'init.php');
- * $GLOBALS['LANG']->includeLLFile('EXT:prototype/locallang.php');
- * $GLOBALS['BE_USER']->modAccess($MCONF,1);
+ * NOTICE: This example only outlines the basic structure of how this class is used.
+ * You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *
- * SC_mod_prototype EXTENDS THE CLASS \TYPO3\CMS\Backend\Module\BaseScriptClass with a main() and printContent() function:
+ * TYPICAL SETUP OF A BACKEND MODULE:
  *
- * class SC_mod_prototype extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+ * PrototypeController EXTENDS THE CLASS \TYPO3\CMS\Backend\Module\BaseScriptClass with a main() and printContent() function:
+ *
+ * namespace Vendor\Prototype\Controller;
+ *
+ * class PrototypeController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+ * 	public function __construct() {
+ * 		$this->getLanguageService()->includeLLFile('EXT:prototype/Resources/Private/Language/locallang.xlf');
+ * 		$this->getBackendUser()->modAccess($GLOBALS['MCONF'], TRUE);
+ * 	}
+ * }
+ *
  * MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
- * function main() {
+ * public function main() {
  * TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
  * $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
  * TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
@@ -207,7 +215,7 @@ class BaseScriptClass {
 		}
 		$this->id = (int)GeneralUtility::_GP('id');
 		$this->CMD = GeneralUtility::_GP('CMD');
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		$this->menuConfig();
 		$this->handleExternalFunctionValue();
 	}
@@ -245,7 +253,7 @@ class BaseScriptClass {
 		if (is_array($mergeArray)) {
 			foreach ($mergeArray as $k => $v) {
 				if (((string) $v['ws'] === '' || $GLOBALS['BE_USER']->workspace === 0 && GeneralUtility::inList($v['ws'], 'online')) || $GLOBALS['BE_USER']->workspace === -1 && GeneralUtility::inList($v['ws'], 'offline') || $GLOBALS['BE_USER']->workspace > 0 && GeneralUtility::inList($v['ws'], 'custom')) {
-					$menuArr[$k] = $GLOBALS['LANG']->sL($v['title']);
+					$menuArr[$k] = $this->getLanguageService()->sL($v['title']);
 				}
 			}
 		}
@@ -285,7 +293,10 @@ class BaseScriptClass {
 	 * @todo Define visibility
 	 */
 	public function getExternalItemConfig($modName, $menuKey, $value = '') {
-		return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+		if (isset($GLOBALS['TBE_MODULES_EXT'][$modName])) {
+			return (string)$value !== '' ? $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey][$value] : $GLOBALS['TBE_MODULES_EXT'][$modName]['MOD_MENU'][$menuKey];
+		}
+		return NULL;
 	}
 
 	/**
@@ -342,10 +353,36 @@ class BaseScriptClass {
 	 * @todo Define visibility
 	 */
 	public function extObjContent() {
-		$this->extObj->pObj = $this;
-		if (is_callable(array($this->extObj, 'main'))) {
-			$this->content .= $this->extObj->main();
+		if ($this->extObj === NULL) {
+			$flashMessage = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_errors.xlf:no_modules_registered'),
+				$this->getLanguageService()->getLL('title'),
+				FlashMessage::ERROR
+			);
+			$this->content .= $flashMessage->render();
+		} else {
+			$this->extObj->pObj = $this;
+			if (is_callable(array($this->extObj, 'main'))) {
+				$this->content .= $this->extObj->main();
+			}
 		}
+	}
+
+	/**
+	 * Returns the Language Service
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the Backend User
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
