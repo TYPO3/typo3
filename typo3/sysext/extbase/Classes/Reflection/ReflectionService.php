@@ -18,8 +18,8 @@ use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
- * A backport of the FLOW3 reflection service for aquiring reflection based information.
- * Most of the code is based on the FLOW3 reflection service.
+ * A backport of the TYPO3.Flow reflection service for aquiring reflection based information.
+ * Most of the code is based on the TYPO3.Flow reflection service.
  *
  * @api
  */

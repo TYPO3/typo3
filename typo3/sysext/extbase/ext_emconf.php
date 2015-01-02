@@ -1,7 +1,7 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Extbase Framework for Extensions',
-	'description' => 'A framework to build extensions in the style of FLOW3 by now.',
+	'description' => 'A framework to build extensions in the style of TYPO3 Flow for TYPO3 CMS.',
 	'category' => 'misc',
 	'author' => 'Extbase Team',
 	'author_email' => '',

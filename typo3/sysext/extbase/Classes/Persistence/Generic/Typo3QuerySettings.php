@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Query settings. This class is NOT part of the FLOW3 API.
+ * Query settings. This class is NOT part of the TYPO3.Flow API.
  * It reflects the settings unique to TYPO3 CMS.
  *
  * @api

@@ -124,7 +124,7 @@ class Query implements QueryInterface {
 	 *
 	 * @param QuerySettingsInterface $querySettings The Query Settings
 	 * @return void
-	 * @api This method is not part of FLOW3 API
+	 * @api This method is not part of TYPO3.Flow API
 	 */
 	public function setQuerySettings(QuerySettingsInterface $querySettings) {
 		$this->querySettings = $querySettings;
@@ -135,7 +135,7 @@ class Query implements QueryInterface {
 	 *
 	 * @throws Exception
 	 * @return QuerySettingsInterface $querySettings The Query Settings
-	 * @api This method is not part of FLOW3 API
+	 * @api This method is not part of TYPO3.Flow API
 	 */
 	public function getQuerySettings() {
 		if (!$this->querySettings instanceof QuerySettingsInterface) {

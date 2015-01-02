@@ -225,7 +225,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $convolutedFiles The _FILES superglobal
 	 * @return array Untangled files
-	 * @see TYPO3\FLOW3\Utility\Environment
+	 * @see TYPO3\Flow\Utility\Environment
 	 */
 	protected function untangleFilesArray(array $convolutedFiles) {
 		$untangledFiles = array();

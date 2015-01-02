@@ -1,7 +1,7 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A Blog Example for the Extbase Framework',
-	'description' => 'An example extension demonstrating the features of the Extbase Framework. It is the back-ported and tweaked Blog Example package of FLOW3. Have fun playing with it!',
+	'description' => 'An example extension demonstrating the features of the Extbase Framework. It is the back-ported and tweaked Blog Example package of TYPO3.Flow. Have fun playing with it!',
 	'category' => 'example',
 	'author' => 'TYPO3 core team',
 	'author_company' => '',

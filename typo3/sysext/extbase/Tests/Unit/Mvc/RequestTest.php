@@ -55,7 +55,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentValueIsAnObject() {
-		$this->markTestSkipped('Differing behavior from FLOW3 because of backwards compatibility reasons.');
+		$this->markTestSkipped('Differing behavior from TYPO3.Flow because of backwards compatibility reasons.');
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setArgument('theKey', new \stdClass());
 	}
@@ -232,7 +232,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function theRepresentationFormatIsAutomaticallyLowercased() {
-		$this->markTestSkipped('Different behavior from FLOW3 because of backwards compatibility.');
+		$this->markTestSkipped('Different behavior from TYPO3.Flow because of backwards compatibility.');
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
 		$request->setFormat('hTmL');
 		$this->assertEquals('html', $request->getFormat());

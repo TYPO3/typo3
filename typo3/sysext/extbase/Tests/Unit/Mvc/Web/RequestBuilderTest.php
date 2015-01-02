@@ -568,7 +568,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see TYPO3\FLOW3\Tests\Unit\Utility\EnvironmentTest
+	 * @see TYPO3\Flow\Tests\Unit\Utility\EnvironmentTest
 	 */
 	public function untangleFilesArrayTransformsTheFilesSuperglobalIntoAManageableForm() {
 		$convolutedFiles = array(
