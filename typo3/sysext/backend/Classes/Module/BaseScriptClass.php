@@ -328,7 +328,7 @@ class BaseScriptClass {
 		if ($this->extObj === NULL) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_errors.xlf:no_modules_registered'),
+				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:no_modules_registered'),
 				$this->getLanguageService()->getLL('title'),
 				FlashMessage::ERROR
 			);

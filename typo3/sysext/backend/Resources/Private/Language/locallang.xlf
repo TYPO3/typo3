@@ -6,6 +6,9 @@
 			<trans-unit id="no_modules_registered" xml:space="preserve">
 				<source>No modules have been registered. Please contact your system administrator.</source>
 			</trans-unit>
+			<trans-unit id="show_references" xml:space="preserve">
+				<source>Show references</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

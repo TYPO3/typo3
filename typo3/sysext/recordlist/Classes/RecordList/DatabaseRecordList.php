@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -1486,13 +1487,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @return string HTML of reference a link, will be empty if there are no
 	 */
 	protected function createReferenceHtml($tableName, $uid) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'tablename, recuid, field',
+		$referenceCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
+			'*',
 			'sys_refindex',
-			'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') .
+			'ref_table = ' . $this->getDatabaseConnection()->fullQuoteStr($tableName, 'sys_refindex') .
 			' AND ref_uid = ' . $uid . ' AND deleted = 0'
 		);
-		return $this->generateReferenceToolTip($rows, '\'' . $tableName . '\', \'' . $uid . '\'');
+		return $this->generateReferenceToolTip($referenceCount, '\'' . $tableName . '\', \'' . $uid . '\'');
 	}
 
 	/**
@@ -1790,6 +1791,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		echo implode(CRLF, $this->csvLines);
 		// Exits:
 		die;
+	}
+
+	/**
+	 * Returns the database connection
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
