@@ -3933,6 +3933,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function makeInstanceWithBeginningSlashInClassNameThrowsException() {
+		Utility\GeneralUtility::makeInstance('\\TYPO3\\CMS\\Backend\\Controller\\BackendController');
+	}
+
+	/**
+	 * @test
 	 */
 	public function makeInstanceReturnsClassInstance() {
 		$className = get_class($this->getMock('foo'));
