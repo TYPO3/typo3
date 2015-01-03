@@ -845,14 +845,21 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Get all registered tasks
 		// Just to get the number of entries
 		$query = array(
-			'SELECT' => '*',
-			'FROM' => 'tx_scheduler_task',
+			'SELECT' => '
+				tx_scheduler_task.*,
+				tx_scheduler_task_group.groupName as taskGroupName,
+				tx_scheduler_task_group.description as taskGroupDescription,
+				tx_scheduler_task_group.deleted as isTaskGroupDeleted
+				',
+			'FROM' => '
+				tx_scheduler_task
+				LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task_group.uid = tx_scheduler_task.task_group
+				',
 			'WHERE' => '1=1',
-			'ORDERBY' => ''
+			'ORDERBY' => 'tx_scheduler_task_group.sorting'
 		);
 		$res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
 		$numRows = $this->getDatabaseConnection()->sql_num_rows($res);
-		$this->getDatabaseConnection()->sql_free_result($res);
 
 		// No tasks defined, display information message
 		if ($numRows == 0) {
@@ -879,32 +886,27 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 							<td>' . $this->getLanguageService()->getLL('label.nextExecution', TRUE). '</td>
 						</tr></thead>';
 
-			foreach ($registeredTaskGroups as $taskGroup) {
-				$query = array(
-					'SELECT' => '*',
-					'FROM' => 'tx_scheduler_task',
-					'WHERE' => 'task_group=' . $taskGroup['uid'],
-					'ORDERBY' => 'nextexecution'
-				);
-
-				$res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
-				$numRows = $this->getDatabaseConnection()->sql_num_rows($res);
-
-				if ($numRows === 0) {
-					continue;
+			// Loop on all tasks
+			$temporaryResult = array();
+			while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+				if ($row['taskGroupName'] === NULL || $row['isTaskGroupDeleted'] === '1') {
+					$row['taskGroupName'] = '';
+					$row['taskGroupDescription'] = '';
+					$row['task_group'] = 0;
 				}
-
-				if ($taskGroup['groupName'] !== '') {
-					$groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
-					if (!empty($taskGroup['description'])) {
-						$groupText .= '<br />' . nl2br(htmlspecialchars($taskGroup['description']));
+				$temporaryResult[$row['task_group']]['groupName'] = $row['taskGroupName'];
+				$temporaryResult[$row['task_group']]['groupDescription'] = $row['taskGroupDescription'];
+				$temporaryResult[$row['task_group']]['tasks'][] = $row;
+			}
+			foreach ($temporaryResult as $taskGroup) {
+				$groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
+					if (!empty($taskGroup['groupDescription'])) {
+						$groupText .= '<br />' . nl2br(htmlspecialchars($taskGroup['groupDescription']));
 					}
 					$table[] = '<tr><td colspan="10">' . $groupText . '</td></tr>';
-				}
 
-				// Loop on all tasks
-				while ($schedulerRecord = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-					// Define action icons
+
+				foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
 					$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.delete') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
@@ -1056,8 +1058,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 								</tr>';
 					}
 				}
-				$this->getDatabaseConnection()->sql_free_result($res);
 			}
+			$this->getDatabaseConnection()->sql_free_result($res);
 
 			$this->view->assign('table', '<table class="t3-table">' . implode(LF, $table) . '</table>');
 
@@ -1358,7 +1360,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$query = array(
 			'SELECT' => '*',
 			'FROM' => 'tx_scheduler_task_group',
-			'WHERE' => '1=1' . BackendUtility::BEenableFields('tx_scheduler_task_group'),
+			'WHERE' => '1=1'
+				. BackendUtility::BEenableFields('tx_scheduler_task_group')
+				. BackendUtility::deleteClause('tx_scheduler_task_group'),
 			'ORDERBY' => 'sorting'
 		);
 		$res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
