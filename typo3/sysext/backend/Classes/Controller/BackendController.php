@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class for rendering the TYPO3 backend version 4.2+
+ * Class for rendering the TYPO3 backend
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
@@ -28,12 +28,12 @@ class BackendController {
 	/**
 	 * @var string
 	 */
-	protected $content;
+	protected $content = '';
 
 	/**
 	 * @var string
 	 */
-	protected $css;
+	protected $css = '';
 
 	/**
 	 * @var array
@@ -43,12 +43,12 @@ class BackendController {
 	/**
 	 * @var string
 	 */
-	protected $js;
+	protected $js = '';
 
 	/**
 	 * @var array
 	 */
-	protected $jsFiles;
+	protected $jsFiles = array();
 
 	/**
 	 * @var array
@@ -56,19 +56,19 @@ class BackendController {
 	protected $toolbarItems = array();
 
 	/**
-	 * @var int Intentionally private as nobody should modify defaults
-	 */
-	private $menuWidthDefault = 190;
-
-	/**
 	 * @var int
 	 */
-	protected $menuWidth;
+	protected $menuWidth = 190;
 
 	/**
 	 * @var bool
 	 */
 	protected $debug;
+
+	/**
+	 * @var string
+	 */
+	protected $templatePath = 'EXT:backend/Resources/Private/Templates/';
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository
@@ -111,7 +111,6 @@ class BackendController {
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', FALSE);
 		$this->pageRenderer->addExtDirectCode();
 		// Add default BE javascript
-		$this->js = '';
 		$this->jsFiles = array(
 			'locallang' => $this->getLocalLangFileName(),
 			'modernizr' => 'contrib/modernizr/modernizr.min.js',
@@ -145,8 +144,11 @@ class BackendController {
 			Storage.Persistent.load(' . json_encode($GLOBALS['BE_USER']->uc) . ');
 		}');
 		$this->css = '';
+		
 		$this->initializeToolbarItems();
-		$this->menuWidth = isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) ? (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] : $this->menuWidthDefault;
+		if (isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'])) {
+			$this->menuWidth = (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
+		}
 		$this->executeHook('constructPostProcess');
 	}
 
@@ -194,7 +196,7 @@ class BackendController {
 		$this->executeHook('renderPreProcess');
 
 		// Prepare the scaffolding, at this point extension may still add javascript and css
-		$view = $this->getFluidTemplateObject('EXT:backend/Resources/Private/Templates/Backend/Main.html');
+		$view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 		// @todo: kick logo view class and move all logic to Fluid
 		$view->assign('logo', GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\LogoView::class)->render());
 		$view->assign('moduleMenu', $this->generateModuleMenu());
@@ -770,7 +772,7 @@ class BackendController {
 		// get all modules except the user modules for the side menu
 		$moduleStorage = $this->backendModuleRepository->loadAllowedModules(array('user', 'help'));
 
-		$view = $this->getFluidTemplateObject('EXT:backend/Resources/Private/Templates/ModuleMenu/Main.html');
+		$view = $this->getFluidTemplateObject($this->templatePath . 'ModuleMenu/Main.html');
 		$view->assign('modules', $moduleStorage);
 		return $view->render();
 	}
