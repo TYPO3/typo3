@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -466,6 +467,9 @@ class NewRecordController {
 									$iconFile[$_EXTKEY] = '';
 								}
 							} else {
+								if ($table === 'pages_language_overlay' && !$this->checkIfLanguagesExist()) {
+									continue;
+								}
 								$_EXTKEY = 'system';
 								$thisTitle = $GLOBALS['LANG']->getLL('system_records');
 								$iconFile['system'] = IconUtility::getSpriteIcon('apps-pagetree-root');
@@ -651,12 +655,34 @@ class NewRecordController {
 	}
 
 	/**
+	 * Checks if sys_language records are present
+	 *
+	 * @return bool
+	 */
+	protected function checkIfLanguagesExist() {
+		$languageCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', '1=1');
+		if ($languageCount) {
+			$languageCount = TRUE;
+		}
+		return $languageCount;
+	}
+
+	/**
 	 * Returns the global BackendUserAuthentication object.
 	 *
 	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
 	protected function getBackendUserAuthentication() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

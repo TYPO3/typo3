@@ -208,9 +208,7 @@ return array(
 				'type' => 'select',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
-				)
+				'items' => array() // no default language here, as the pages table is always the default language
 			)
 		),
 		'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
