@@ -14,10 +14,15 @@ namespace TYPO3\CMS\Scheduler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Module 'TYPO3 Scheduler administration module' for the 'scheduler' extension.
@@ -899,14 +904,21 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Get all registered tasks
 		// Just to get the number of entries
 		$query = array(
-			'SELECT' => '*',
-			'FROM' => 'tx_scheduler_task',
+			'SELECT' => '
+				tx_scheduler_task.*,
+				tx_scheduler_task_group.groupName as taskGroupName,
+				tx_scheduler_task_group.description as taskGroupDescription,
+				tx_scheduler_task_group.deleted as isTaskGroupDeleted
+				',
+			'FROM' => '
+				tx_scheduler_task
+				LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task_group.uid = tx_scheduler_task.task_group
+				',
 			'WHERE' => '1=1',
-			'ORDERBY' => ''
+			'ORDERBY' => 'tx_scheduler_task_group.sorting'
 		);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
-		$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$res = $this->getDatabaseConnection()->exec_SELECT_queryArray($query);
+		$numRows = $this->getDatabaseConnection()->sql_num_rows($res);
 
 		// No tasks defined, display information message
 		if ($numRows == 0) {
@@ -968,42 +980,38 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.nextExecution');
 			$tr++;
 
-			foreach ($registeredTaskGroups as $taskGroup) {
-				$query = array(
-					'SELECT' => '*',
-					'FROM' => 'tx_scheduler_task',
-					'WHERE' => 'task_group=' . $taskGroup['uid'],
-					'ORDERBY' => 'nextexecution'
-				);
-
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
-				$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-
-				if ($numRows === 0) {
-					continue;
+			// Loop on all tasks
+			$temporaryResult = array();
+			while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+				if ($row['taskGroupName'] === NULL || $row['isTaskGroupDeleted'] === '1') {
+					$row['taskGroupName'] = '';
+					$row['taskGroupDescription'] = '';
+					$row['task_group'] = 0;
 				}
-
-				if ($taskGroup['groupName'] !== '') {
-					$tableLayout[$tr] = $taskGroupRow;
-					$groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
-					if (!empty($taskGroup['description'])) {
-						$groupText .= '<br />' . nl2br(htmlspecialchars($taskGroup['description']));
+				$temporaryResult[$row['task_group']]['groupName'] = $row['taskGroupName'];
+				$temporaryResult[$row['task_group']]['groupDescription'] = $row['taskGroupDescription'];
+				$temporaryResult[$row['task_group']]['tasks'][] = $row;
+			}
+			foreach ($temporaryResult as $taskGroup) {
+				if (!empty($taskGroup['groupName'])) {
+					$groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . ' </strong>';
+					if (!empty($taskGroup['groupDescription'])) {
+						$groupText .= '<br />' . nl2br(htmlspecialchars($taskGroup['groupDescription']));
 					}
-					$table[$tr][] = $groupText;
-					$tr++;
+					$table[$tr++][] = '<tr><td colspan="10">' . $groupText . '</td></tr>';
 				}
 
-				// Loop on all tasks
-				while ($schedulerRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					// Define action icons
-					$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
-							IconUtility::getSpriteIcon('actions-document-open') . '</a>';
-					$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
-							IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
-					$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
-							'<img ' . IconUtility::skinImg($this->backPath, (ExtensionManagementUtility::extRelPath('scheduler') . '/res/gfx/stop.png')) . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:stop') . '" /></a>';
-					$runAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&tx_scheduler[execute][]=' . $schedulerRecord['uid'] . '" title="' . $GLOBALS['LANG']->getLL('action.run_task') . '" class="icon">' .
-							IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
+
+
+				foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
+					$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
+						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.delete') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
+						IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.stop') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
+						'<img ' . IconUtility::skinImg($this->backPath, (ExtensionManagementUtility::extRelPath('scheduler') . '/Resources/Public/Images/stop.png')) . ' alt="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop') . '" /></a>';
+					$runAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&tx_scheduler[execute][]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->getLL('action.run_task') . '" class="icon">' .
+						IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
 
 					// Define some default values
 					$lastExecution = '-';
@@ -1153,8 +1161,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					}
 					$tr++;
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
+			$this->getDatabaseConnection()->sql_free_result($res);
 
 			// Render table
 			$content .= $this->doc->table($table, $tableLayout);
@@ -1472,7 +1480,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$query = array(
 			'SELECT' => '*',
 			'FROM' => 'tx_scheduler_task_group',
-			'WHERE' => '1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_scheduler_task_group'),
+			'WHERE' => '1=1'
+				. BackendUtility::BEenableFields('tx_scheduler_task_group')
+				. BackendUtility::deleteClause('tx_scheduler_task_group'),
 			'ORDERBY' => 'sorting'
 		);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($query);
@@ -1562,6 +1572,24 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
 		}
 		return $result;
+	}
+
+	/**
+	 * Returns the global BackendUserAuthentication object.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
