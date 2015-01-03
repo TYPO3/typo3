@@ -1105,16 +1105,30 @@ class PageGenerator {
 	/**
 	 * Generate title for page.
 	 * Takes the settings [config][noPageTitle], [config][pageTitleFirst], [config][titleTagFunction]
-	 * and [config][pageTitle] as stdWrap into account.
-	 * Furthermore $GLOBALS['TSFE']->altPageTitle is observed.
+	 * [config][pageTitleSeparator] and [config][noPageTitle] into account.
+	 * Furthermore $GLOBALS[TSFE]->altPageTitle is observed.
 	 *
 	 * @return void
 	 */
 	static public function generatePageTitle() {
+		$pageTitleSeparator = '';
+
+		// check for a custom pageTitleSeparator, and perform stdWrap on it
+		if (isset($GLOBALS['TSFE']->config['config']['pageTitleSeparator']) && $GLOBALS['TSFE']->config['config']['pageTitleSeparator'] !== '') {
+			$pageTitleSeparator = $GLOBALS['TSFE']->config['config']['pageTitleSeparator'];
+
+			if (isset($GLOBALS['TSFE']->config['config']['pageTitleSeparator.']) && is_array($GLOBALS['TSFE']->config['config']['pageTitleSeparator.'])) {
+				$pageTitleSeparator = $GLOBALS['TSFE']->cObj->stdWrap($pageTitleSeparator, $GLOBALS['TSFE']->config['config']['pageTitleSeparator.']);
+			} else {
+				$pageTitleSeparator .= ' ';
+			}
+		}
+
 		$titleTagContent = $GLOBALS['TSFE']->tmpl->printTitle(
-			$GLOBALS['TSFE']->altPageTitle ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'],
+			$GLOBALS['TSFE']->altPageTitle ?: $GLOBALS['TSFE']->page['title'],
 			$GLOBALS['TSFE']->config['config']['noPageTitle'],
-			$GLOBALS['TSFE']->config['config']['pageTitleFirst']
+			$GLOBALS['TSFE']->config['config']['pageTitleFirst'],
+			$pageTitleSeparator
 		);
 		if ($GLOBALS['TSFE']->config['config']['titleTagFunction']) {
 			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction(

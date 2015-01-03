@@ -1269,29 +1269,24 @@ class TemplateService {
 	 * @param string $pageTitle The input title string, typically the "title" field of a page's record.
 	 * @param bool $noTitle If set, then only the site title is outputted (from $this->setup['sitetitle'])
 	 * @param bool $showTitleFirst If set, then "sitetitle" and $title is swapped
+	 * @param string $pageTitleSeparator an alternative to the ": " as the separator between site title and page title
 	 * @return string The page title on the form "[sitetitle]: [input-title]". Not htmlspecialchar()'ed.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::tempPageCacheContent(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContentWithHeader()
 	 */
-	public function printTitle($pageTitle, $noTitle = FALSE, $showTitleFirst = FALSE) {
+	public function printTitle($pageTitle, $noTitle = FALSE, $showTitleFirst = FALSE, $pageTitleSeparator = '') {
 		$siteTitle = trim($this->setup['sitetitle']);
 		$pageTitle = $noTitle ? '' : $pageTitle;
-		$pageTitleSeparator = '';
 		if ($showTitleFirst) {
 			$temp = $siteTitle;
 			$siteTitle = $pageTitle;
 			$pageTitle = $temp;
 		}
-		if ($pageTitle != '' && $siteTitle != '') {
+		// only show a separator if there are both site title and page title
+		if ($pageTitle === '' || $siteTitle === '') {
+			$pageTitleSeparator = '';
+		// use the default separator if non given
+		} elseif (empty($pageTitleSeparator)) {
 			$pageTitleSeparator = ': ';
-			if (isset($this->setup['config.']['pageTitleSeparator']) && $this->setup['config.']['pageTitleSeparator']) {
-				$pageTitleSeparator = $this->setup['config.']['pageTitleSeparator'];
-
-				if (is_object($GLOBALS['TSFE']->cObj) && isset($this->setup['config.']['pageTitleSeparator.']) && is_array($this->setup['config.']['pageTitleSeparator.'])) {
-					$pageTitleSeparator = $GLOBALS['TSFE']->cObj->stdWrap($pageTitleSeparator, $this->setup['config.']['pageTitleSeparator.']);
-				} else {
-					$pageTitleSeparator .= ' ';
-				}
-			}
 		}
 		return $siteTitle . $pageTitleSeparator . $pageTitle;
 	}
