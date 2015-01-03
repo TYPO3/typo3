@@ -618,7 +618,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 
 		// Load necessary JavaScript
-		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->loadJquery();
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
