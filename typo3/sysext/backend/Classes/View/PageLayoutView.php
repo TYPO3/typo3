@@ -569,6 +569,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$out = '';
 				if ($this->tt_contentConfig['languageMode']) {
 					// in language mode process the content elements, but only fill $languageColumn. output will be generated later
+					$sortedLanguageColumn = array();
 					foreach ($cList as $key) {
 						$languageColumn[$key][$lP] = $head[$key] . $content[$key];
 						if (!$this->defLangBinding) {
@@ -577,7 +578,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								$lP
 							);
 						}
+						// We sort $languageColumn again according to $cList as it may contain data already from above.
+						$sortedLanguageColumn[$key] = $languageColumn[$key];
 					}
+					$languageColumn = $sortedLanguageColumn;
 				} else {
 					$backendLayout = $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
 					// GRID VIEW:
