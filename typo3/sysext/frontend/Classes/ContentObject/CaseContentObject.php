@@ -39,8 +39,12 @@ class CaseContentObject extends AbstractContentObject {
 		}
 		$key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];
 		$key = strlen($conf[$key]) ? $key : 'default';
-		$name = $conf[$key];
-		$theValue = $this->cObj->cObjGetSingle($name, $conf[$key . '.'], $key);
+		// If no "default" property is available, then an empty string is returned
+		if ($key === 'default' && $conf['default'] === NULL) {
+			$theValue = '';
+		} else {
+			$theValue = $this->cObj->cObjGetSingle($conf[$key], $conf[$key . '.'], $key);
+		}
 		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
