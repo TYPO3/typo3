@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Extension class creating graphic based menus (PNG or GIF files)
@@ -36,13 +38,14 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 		if ($splitCount) {
 			list($NOconf, $ROconf) = $this->procesItemStates($splitCount);
 			//store initial count value
-			$temp_HMENU_MENUOBJ = $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'];
-			$temp_MENUOBJ = $GLOBALS['TSFE']->register['count_MENUOBJ'];
+			$tsfe = $this->getTypoScriptFrontendController();
+			$temp_HMENU_MENUOBJ = $tsfe->register['count_HMENU_MENUOBJ'];
+			$temp_MENUOBJ = $tsfe->register['count_MENUOBJ'];
 			// Now we generate the giffiles:
 			$this->makeGifs($NOconf, 'NO');
 			// store count from NO obj
-			$tempcnt_HMENU_MENUOBJ = $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'];
-			$tempcnt_MENUOBJ = $GLOBALS['TSFE']->register['count_MENUOBJ'];
+			$tempcnt_HMENU_MENUOBJ = $tsfe->register['count_HMENU_MENUOBJ'];
+			$tempcnt_MENUOBJ = $tsfe->register['count_MENUOBJ'];
 			if ($this->mconf['debugItemConf']) {
 				echo '<h3>$NOconf:</h3>';
 				debug($NOconf);
@@ -50,8 +53,8 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 			// RollOver
 			if ($ROconf) {
 				// Start recount for rollover with initial values
-				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = $temp_HMENU_MENUOBJ;
-				$GLOBALS['TSFE']->register['count_MENUOBJ'] = $temp_MENUOBJ;
+				$tsfe->register['count_HMENU_MENUOBJ'] = $temp_HMENU_MENUOBJ;
+				$tsfe->register['count_MENUOBJ'] = $temp_MENUOBJ;
 				$this->makeGifs($ROconf, 'RO');
 				if ($this->mconf['debugItemConf']) {
 					echo '<h3>$ROconf:</h3>';
@@ -59,8 +62,8 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				}
 			}
 			// Use count from NO obj
-			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = $tempcnt_HMENU_MENUOBJ;
-			$GLOBALS['TSFE']->register['count_MENUOBJ'] = $tempcnt_MENUOBJ;
+			$tsfe->register['count_HMENU_MENUOBJ'] = $tempcnt_HMENU_MENUOBJ;
+			$tsfe->register['count_MENUOBJ'] = $tempcnt_MENUOBJ;
 		}
 	}
 
@@ -71,7 +74,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 * @param array $conf Array with configuration for each item.
 	 * @param string $resKey Type of images: normal ("NO") or rollover ("RO"). Valid values are "NO" and "RO
 	 * @return void
-	 * @access private
+	 * @internal
 	 * @see generate()
 	 */
 	public function makeGifs($conf, $resKey) {
@@ -81,10 +84,14 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 		}
 		$totalWH = array();
 		$items = count($conf);
+		$minDim = 0;
+		$maxDim = 0;
+		$Hcounter = 0;
+		$Wcounter = 0;
+		$Hobjs = array();
+		$Wobjs = array();
 		if ($isGD) {
 			// Generate the gif-files. the $menuArr is filled with some values like output_w, output_h, output_file
-			$Hcounter = 0;
-			$Wcounter = 0;
 			$Hobjs = $this->mconf['applyTotalH'];
 			if ($Hobjs) {
 				$Hobjs = GeneralUtility::intExplode(',', $Hobjs);
@@ -115,8 +122,8 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 		$maxFlag = 0;
 		$distributeAccu = array('H' => 0, 'W' => 0);
 		foreach ($conf as $key => $val) {
-			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
-			$GLOBALS['TSFE']->register['count_MENUOBJ']++;
+			$this->getTypoScriptFrontendController()->register['count_HMENU_MENUOBJ']++;
+			$this->getTypoScriptFrontendController()->register['count_MENUOBJ']++;
 			if ($items == $c + 1 && $minDim) {
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
 				if ($Lobjs) {
@@ -142,9 +149,10 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				}
 			}
 			$c++;
+			$gifCreator = NULL;
 			if ($isGD) {
 				// Pre-working the item
-				$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+				$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 				$gifCreator->init();
 				$gifCreator->start($val, $this->menuArr[$key]);
 				// If useLargestItemH/W is specified
@@ -158,7 +166,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					}
 					// Regenerate the new values...
 					$val['XY'] = implode(',', $tempXY);
-					$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+					$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 					$gifCreator->init();
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
@@ -179,7 +187,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					}
 					// Regenerate the new values...
 					$val['XY'] = implode(',', $tempXY);
-					$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+					$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 					$gifCreator->init();
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
@@ -187,7 +195,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				if ($maxDim) {
 					$tempXY = explode(',', $val['XY']);
 					if ($maxDim[0] && $Wcounter + $gifCreator->XY[0] >= $maxDim[0]) {
-						$tempXY[0] == $maxDim[0] - $Wcounter;
+						$tempXY[0] = $maxDim[0] - $Wcounter;
 						$maxFlag = 1;
 					}
 					if ($maxDim[1] && $Hcounter + $gifCreator->XY[1] >= $maxDim[1]) {
@@ -196,7 +204,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					}
 					if ($maxFlag) {
 						$val['XY'] = implode(',', $tempXY);
-						$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+						$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 						$gifCreator->init();
 						$gifCreator->start($val, $this->menuArr[$key]);
 					}
@@ -222,9 +230,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 			// Finding alternative GIF names if any (by altImgResource)
 			$gifFileName = '';
 			if ($conf[$key]['altImgResource'] || is_array($conf[$key]['altImgResource.'])) {
-				if (!is_object($cObj)) {
-					$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-				}
+				$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 				$cObj->start($this->menuArr[$key], 'pages');
 				$altImgInfo = $cObj->getImgResource($conf[$key]['altImgResource'], $conf[$key]['altImgResource.']);
 				$gifFileName = $altImgInfo[3];
@@ -269,12 +275,12 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 *
 	 * @param array $conf Same configuration array as passed to makeGifs()
 	 * @param int $items The number of menu items
-	 * @param array $Hobjs Array with "applyTotalH" numbers
-	 * @param array $Wobjs Array with "applyTotalW" numbers
+	 * @param array $Hobjs Array with "applyTotalH" numbers (unused)
+	 * @param array $Wobjs Array with "applyTotalW" numbers (unused)
 	 * @param array $minDim Array with "min" x/y
 	 * @param array $maxDim Array with "max" x/y
 	 * @return array Array with keys "H" and "W" which are in themselves arrays with the heights and widths of menu items inside. This can be used to find the max/min size of the menu items.
-	 * @access private
+	 * @internal
 	 * @see makeGifs()
 	 */
 	public function findLargestDims($conf, $items, $Hobjs, $Wobjs, $minDim, $maxDim) {
@@ -315,13 +321,13 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				}
 			}
 			$c++;
-			$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+			$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 			$gifCreator->init();
 			$gifCreator->start($val, $this->menuArr[$key]);
 			if ($maxDim) {
 				$tempXY = explode(',', $val['XY']);
 				if ($maxDim[0] && $Wcounter + $gifCreator->XY[0] >= $maxDim[0]) {
-					$tempXY[0] == $maxDim[0] - $Wcounter;
+					$tempXY[0] = $maxDim[0] - $Wcounter;
 					$maxFlag = 1;
 				}
 				if ($maxDim[1] && $Hcounter + $gifCreator->XY[1] >= $maxDim[1]) {
@@ -330,7 +336,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				}
 				if ($maxFlag) {
 					$val['XY'] = implode(',', $tempXY);
-					$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+					$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 					$gifCreator->init();
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
@@ -360,15 +366,14 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 */
 	public function writeMenu() {
 		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
-			// Create new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer for our use
-			$this->WMcObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 			$this->WMresult = '';
 			$this->INPfixMD5 = substr(md5(microtime() . $this->GMENU_fixKey), 0, 4);
 			$this->WMmenuItems = count($this->result['NO']);
 			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
 			$this->extProc_init();
-			if (!isset($GLOBALS['TSFE']->additionalJavaScript['JSImgCode'])) {
-				$GLOBALS['TSFE']->additionalJavaScript['JSImgCode'] = '';
+			$tsfe = $this->getTypoScriptFrontendController();
+			if (!isset($tsfe->additionalJavaScript['JSImgCode'])) {
+				$tsfe->additionalJavaScript['JSImgCode'] = '';
 			}
 			for ($key = 0; $key < $this->WMmenuItems; $key++) {
 				if ($this->result['NO'][$key]['output_file']) {
@@ -412,10 +417,10 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 						$this->I['name'] = ' ' . $this->nameAttribute . '="' . $this->I['theName'] . '"';
 						$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(\'' . $this->I['theName'] . '\');';
 						$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(\'' . $this->I['theName'] . '\');';
-						$GLOBALS['TSFE']->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '"; ';
-						$GLOBALS['TSFE']->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
-						$GLOBALS['TSFE']->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
-						$GLOBALS['TSFE']->setJS('mouseOver');
+						$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '"; ';
+						$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $tsfe->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
+						$tsfe->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
+						$tsfe->setJS('mouseOver');
 						$this->extProc_RO($key);
 					}
 					// Set altText
@@ -429,7 +434,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 						$this->I['A1'] = '';
 						$this->I['A2'] = '';
 					}
-					$this->I['IMG'] = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . $this->parent_cObj->getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
+					$this->I['IMG'] = '<img src="' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . $this->parent_cObj->getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
 					// Make before, middle and after parts
 					$this->I['parts'] = array();
 					$this->I['parts']['ATag_begin'] = $this->I['A1'];
@@ -455,12 +460,13 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					if (is_array($this->I['val']['allStdWrap.'])) {
 						$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
 					}
-					$GLOBALS['TSFE']->imagesOnPage[] = $this->I['val']['output_file'];
+					$tsfe->imagesOnPage[] = $this->I['val']['output_file'];
 					$this->extProc_afterLinking($key);
 				}
 			}
 			return $this->extProc_finish();
 		}
+		return '';
 	}
 
 	/**
@@ -468,7 +474,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 * Can be used for various initialization
 	 *
 	 * @return void
-	 * @access private
+	 * @internal
 	 * @see writeMenu()
 	 */
 	public function extProc_init() {
@@ -478,9 +484,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	/**
 	 * Called after all processing for RollOver of an element has been done.
 	 *
-	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found OR $this->result['RO'][$key] where the configuration for that elements RO version is found!
 	 * @return void
-	 * @access private
+	 * @internal
 	 * @see writeMenu()
 	 */
 	public function extProc_RO($key) {
@@ -490,9 +496,9 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	/**
 	 * Called right before the creation of the link for the menu item
 	 *
-	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
-	 * @access private
+	 * @internal
 	 * @see writeMenu()
 	 */
 	public function extProc_beforeLinking($key) {
@@ -500,13 +506,14 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	}
 
 	/**
-	 * Called right after the creation of links for the menu item. This is also the last function call before the for-loop traversing menu items goes to the next item.
+	 * Called right after the creation of links for the menu item. This is also the last function call before the
+	 * for-loop traversing menu items goes to the next item.
 	 * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
 	 * Further this calls the subMenu function in the parent class to create any submenu there might be.
 	 *
-	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
-	 * @access private
+	 * @internal
 	 * @see writeMenu(), AbstractMenuContentObject::subMenu()
 	 */
 	public function extProc_afterLinking($key) {
@@ -521,10 +528,10 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	/**
 	 * Called before the "wrap" happens on the menu item.
 	 *
-	 * @param string The current content of the menu item, $this->I['theItem'], passed along.
-	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param string $item The current content of the menu item, $this->I['theItem'], passed along.
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found (unused)
 	 * @return string The modified version of $item, going back into $this->I['theItem']
-	 * @access private
+	 * @internal
 	 * @see writeMenu()
 	 */
 	public function extProc_beforeAllWrap($item, $key) {
@@ -535,7 +542,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 * Called before the writeMenu() function returns (only if a menu was generated)
 	 *
 	 * @return string The total menu content should be returned by this function
-	 * @access private
+	 * @internal
 	 * @see writeMenu()
 	 */
 	public function extProc_finish() {
