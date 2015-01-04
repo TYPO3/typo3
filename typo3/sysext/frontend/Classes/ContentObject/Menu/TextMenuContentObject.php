@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 
@@ -31,11 +32,12 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	 * @see AbstractMenuContentObject::procesItemStates()
 	 */
 	public function generate() {
+		$NOconf = array();
 		$splitCount = count($this->menuArr);
 		if ($splitCount) {
 			list($NOconf) = $this->procesItemStates($splitCount);
 		}
-		if ($this->mconf['debugItemConf']) {
+		if (!empty($this->mconf['debugItemConf'])) {
 			echo '<h3>$NOconf:</h3>';
 			debug($NOconf);
 		}
@@ -44,123 +46,125 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 
 	/**
 	 * Traverses the ->result array of menu items configuration (made by ->generate()) and renders each item.
-	 * During the execution of this function many internal methods prefixed "extProc_" from this class is called and many of these are for now dummy functions. But they can be used for processing as they are used by the TMENU_LAYERS
-	 * An instance of ContentObjectRenderer is also made and for each menu item rendered it is loaded with the record for that page so that any stdWrap properties that applies will have the current menu items record available.
+	 * During the execution of this function many internal methods prefixed "extProc_" from this class is called and
+	 * many of these are for now dummy functions. But they can be used for processing as they are used by the TMENU_LAYERS
+	 * An instance of ContentObjectRenderer is also made and for each menu item rendered it is loaded with
+	 * the record for that page so that any stdWrap properties that applies will have the current menu items record available.
 	 *
 	 * @return string The HTML for the menu (returns result through $this->extProc_finish(); )
 	 */
 	public function writeMenu() {
-		if (is_array($this->result) && count($this->result)) {
-			// Create new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer for our use
-			$this->WMcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-			$this->WMresult = '';
-			$this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
-			$this->WMmenuItems = count($this->result);
-			$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
-			$this->extProc_init();
-			foreach ($this->result as $key => $val) {
-				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
-				$GLOBALS['TSFE']->register['count_MENUOBJ']++;
-				// Initialize the cObj with the page record of the menu item
-				$this->WMcObj->start($this->menuArr[$key], 'pages');
-				$this->I = array();
-				$this->I['key'] = $key;
-				$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
-				$this->I['val'] = $val;
-				$this->I['title'] = isset($this->I['val']['stdWrap.']) ? $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']), $this->I['val']['stdWrap.']) : $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
-				$this->I['uid'] = $this->menuArr[$key]['uid'];
-				$this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
-				$this->I['pid'] = $this->menuArr[$key]['pid'];
-				$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
-				// Set access key
-				if ($this->mconf['accessKey']) {
-					$this->I['accessKey'] = $this->accessKey($this->I['title']);
-				} else {
-					$this->I['accessKey'] = array();
-				}
-				// Make link tag
-				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
-				if (isset($this->I['val']['additionalParams.'])) {
-					$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
-				}
-				$this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
-				// Title attribute of links:
-				$titleAttrValue = isset($this->I['val']['ATagTitle.']) ? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt'] : $this->I['val']['ATagTitle'] . $this->I['accessKey']['alt'];
-				if ($titleAttrValue !== '') {
-					$this->I['linkHREF']['title'] = $titleAttrValue;
-				}
-
-				// Calling extra processing function
-				$this->extProc_beforeLinking($key);
-				// stdWrap for doNotLinkIt
-				if (isset($this->I['val']['doNotLinkIt.'])) {
-					$this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrap($this->I['val']['doNotLinkIt'], $this->I['val']['doNotLinkIt.']);
-				}
-				// Compile link tag
-				if (!$this->I['val']['doNotLinkIt']) {
-					$this->I['val']['doNotLinkIt'] = 0;
-				}
-				if (!$this->I['spacer'] && $this->I['val']['doNotLinkIt'] != 1) {
-					$this->setATagParts();
-				} else {
-					$this->I['A1'] = '';
-					$this->I['A2'] = '';
-				}
-				// ATagBeforeWrap processing:
-				if ($this->I['val']['ATagBeforeWrap']) {
-					$wrapPartsBefore = explode('|', $this->I['val']['linkWrap']);
-					$wrapPartsAfter = array('', '');
-				} else {
-					$wrapPartsBefore = array('', '');
-					$wrapPartsAfter = explode('|', $this->I['val']['linkWrap']);
-				}
-				if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.'])) {
-					$stdWrap2 = isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|';
-					$wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ? $this->I['val']['stdWrap2'] : '|', $stdWrap2);
-				} else {
-					$wrapPartsStdWrap = array('', '');
-				}
-				// Make before, middle and after parts
-				$this->I['parts'] = array();
-				$this->I['parts']['before'] = $this->getBeforeAfter('before');
-				$this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
-				// stdWrap for doNotShowLink
-				if (isset($this->I['val']['doNotShowLink.'])) {
-					$this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrap($this->I['val']['doNotShowLink'], $this->I['val']['doNotShowLink.']);
-				}
-				if (!$this->I['val']['doNotShowLink']) {
-					$this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0];
-					$this->I['parts']['ATag_begin'] = $this->I['A1'];
-					$this->I['parts']['ATagBeforeWrap_begin'] = $wrapPartsBefore[0];
-					$this->I['parts']['title'] = $this->I['title'];
-					$this->I['parts']['ATagBeforeWrap_end'] = $wrapPartsBefore[1];
-					$this->I['parts']['ATag_end'] = $this->I['A2'];
-					$this->I['parts']['notATagBeforeWrap_end'] = $wrapPartsAfter[1];
-				}
-				$this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1];
-				$this->I['parts']['after'] = $this->getBeforeAfter('after');
-				// Passing I to a user function
-				if ($this->mconf['IProcFunc']) {
-					$this->I = $this->userProcess('IProcFunc', $this->I);
-				}
-				// Merge parts + beforeAllWrap
-				$this->I['theItem'] = implode('', $this->I['parts']);
-				$this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
-				// allWrap:
-				$allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
-				$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
-				if ($this->I['val']['subst_elementUid']) {
-					$this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
-				}
-				// allStdWrap:
-				if (is_array($this->I['val']['allStdWrap.'])) {
-					$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
-				}
-				// Calling extra processing function
-				$this->extProc_afterLinking($key);
-			}
-			return $this->extProc_finish();
+		if (!is_array($this->result) || empty($this->result)) {
+			return '';
 		}
+
+		$this->WMresult = '';
+		$this->INPfixMD5 = substr(md5(microtime() . 'tmenu'), 0, 4);
+		$this->WMmenuItems = count($this->result);
+		$this->WMsubmenuObjSuffixes = $this->tmpl->splitConfArray(array('sOSuffix' => $this->mconf['submenuObjSuffixes']), $this->WMmenuItems);
+		$this->extProc_init();
+		foreach ($this->result as $key => $val) {
+			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
+			$GLOBALS['TSFE']->register['count_MENUOBJ']++;
+			// Initialize the cObj with the page record of the menu item
+			$this->WMcObj->start($this->menuArr[$key], 'pages');
+			$this->I = array();
+			$this->I['key'] = $key;
+			$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
+			$this->I['val'] = $val;
+			$this->I['title'] = isset($this->I['val']['stdWrap.']) ? $this->WMcObj->stdWrap($this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']), $this->I['val']['stdWrap.']) : $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
+			$this->I['uid'] = $this->menuArr[$key]['uid'];
+			$this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'];
+			$this->I['pid'] = $this->menuArr[$key]['pid'];
+			$this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
+			// Set access key
+			if ($this->mconf['accessKey']) {
+				$this->I['accessKey'] = $this->accessKey($this->I['title']);
+			} else {
+				$this->I['accessKey'] = array();
+			}
+			// Make link tag
+			$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
+			if (isset($this->I['val']['additionalParams.'])) {
+				$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
+			}
+			$this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
+			// Title attribute of links:
+			$titleAttrValue = isset($this->I['val']['ATagTitle.']) ? $this->WMcObj->stdWrap($this->I['val']['ATagTitle'], $this->I['val']['ATagTitle.']) . $this->I['accessKey']['alt'] : $this->I['val']['ATagTitle'] . $this->I['accessKey']['alt'];
+			if ($titleAttrValue !== '') {
+				$this->I['linkHREF']['title'] = $titleAttrValue;
+			}
+
+			// Calling extra processing function
+			$this->extProc_beforeLinking($key);
+			// stdWrap for doNotLinkIt
+			if (isset($this->I['val']['doNotLinkIt.'])) {
+				$this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrap($this->I['val']['doNotLinkIt'], $this->I['val']['doNotLinkIt.']);
+			}
+			// Compile link tag
+			if (!$this->I['val']['doNotLinkIt']) {
+				$this->I['val']['doNotLinkIt'] = 0;
+			}
+			if (!$this->I['spacer'] && $this->I['val']['doNotLinkIt'] != 1) {
+				$this->setATagParts();
+			} else {
+				$this->I['A1'] = '';
+				$this->I['A2'] = '';
+			}
+			// ATagBeforeWrap processing:
+			if ($this->I['val']['ATagBeforeWrap']) {
+				$wrapPartsBefore = explode('|', $this->I['val']['linkWrap']);
+				$wrapPartsAfter = array('', '');
+			} else {
+				$wrapPartsBefore = array('', '');
+				$wrapPartsAfter = explode('|', $this->I['val']['linkWrap']);
+			}
+			if ($this->I['val']['stdWrap2'] || isset($this->I['val']['stdWrap2.'])) {
+				$stdWrap2 = isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|';
+				$wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ? $this->I['val']['stdWrap2'] : '|', $stdWrap2);
+			} else {
+				$wrapPartsStdWrap = array('', '');
+			}
+			// Make before, middle and after parts
+			$this->I['parts'] = array();
+			$this->I['parts']['before'] = $this->getBeforeAfter('before');
+			$this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
+			// stdWrap for doNotShowLink
+			if (isset($this->I['val']['doNotShowLink.'])) {
+				$this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrap($this->I['val']['doNotShowLink'], $this->I['val']['doNotShowLink.']);
+			}
+			if (!$this->I['val']['doNotShowLink']) {
+				$this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0];
+				$this->I['parts']['ATag_begin'] = $this->I['A1'];
+				$this->I['parts']['ATagBeforeWrap_begin'] = $wrapPartsBefore[0];
+				$this->I['parts']['title'] = $this->I['title'];
+				$this->I['parts']['ATagBeforeWrap_end'] = $wrapPartsBefore[1];
+				$this->I['parts']['ATag_end'] = $this->I['A2'];
+				$this->I['parts']['notATagBeforeWrap_end'] = $wrapPartsAfter[1];
+			}
+			$this->I['parts']['stdWrap2_end'] = $wrapPartsStdWrap[1];
+			$this->I['parts']['after'] = $this->getBeforeAfter('after');
+			// Passing I to a user function
+			if ($this->mconf['IProcFunc']) {
+				$this->I = $this->userProcess('IProcFunc', $this->I);
+			}
+			// Merge parts + beforeAllWrap
+			$this->I['theItem'] = implode('', $this->I['parts']);
+			$this->I['theItem'] = $this->extProc_beforeAllWrap($this->I['theItem'], $key);
+			// allWrap:
+			$allWrap = isset($this->I['val']['allWrap.']) ? $this->WMcObj->stdWrap($this->I['val']['allWrap'], $this->I['val']['allWrap.']) : $this->I['val']['allWrap'];
+			$this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
+			if ($this->I['val']['subst_elementUid']) {
+				$this->I['theItem'] = str_replace('{elementUid}', $this->I['uid'], $this->I['theItem']);
+			}
+			// allStdWrap:
+			if (is_array($this->I['val']['allStdWrap.'])) {
+				$this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
+			}
+			// Calling extra processing function
+			$this->extProc_afterLinking($key);
+		}
+		return $this->extProc_finish();
 	}
 
 	/**
@@ -209,7 +213,7 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	/**
 	 * Called right before the creation of the link for the menu item
 	 *
-	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
 	 * @see writeMenu()
@@ -222,7 +226,7 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	 * Called right after the creation of links for the menu item. This is also the last function call before the while-loop traversing menu items goes to the next item.
 	 * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
 	 *
-	 * @param int Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return void
 	 * @access private
 	 * @see writeMenu()

@@ -818,6 +818,15 @@ class TypoScriptFrontendController {
 	protected $contentType = 'text/html';
 
 	/**
+	 * Doctype to use
+	 *
+	 * Currently set via PageGenerator
+	 *
+	 * @var string
+	 */
+	public $xhtmlDoctype = '';
+
+	/**
 	 * Class constructor
 	 * Takes a number of GET/POST input variable as arguments and stores them internally.
 	 * The processing of these variables goes on later in this class.
