@@ -1,15 +1,11 @@
 <f:be.container
-	loadJQuery="TRUE"
-	includeJsFiles="{
-		0:'{f:uri.resource(path:\'JavaScript/jquery-ui-1.10.3.custom.min.js\')}',
-		1:'{f:uri.resource(path:\'JavaScript/ExtDirect.StateProvider.js\', extensionName:\'backend\')}',
-		2:'{f:uri.resource(path:\'JavaScript/common.js\')}'
-	}"
 	includeCssFiles="{
 		0:'{f:uri.resource(path:\'Css/ui-lightness/jquery-ui-1.10.3.custom.min.css\')}',
 		1:'{f:uri.resource(path:\'Css/main.css\')}'
 	}"
->
+	includeRequireJsModules="{
+		0:'TYPO3/CMS/Viewpage/Main'
+	}">
 	<div class="typo3-fullDoc">
 		<div id="typo3-docheader">
 			<div class="typo3-docheader-functions">

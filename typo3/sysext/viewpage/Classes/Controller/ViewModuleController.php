@@ -24,15 +24,14 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
-	public function __construct() {
-		parent::__construct();
-
+	/**
+	 * Gets called before each action
+	 *
+	 * @return void
+	 */
+	public function initializeAction() {
 		$GLOBALS['LANG']->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
-		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$this->pageRenderer->addInlineSettingArray('web_view', array(
-			'States' => $GLOBALS['BE_USER']->uc['moduleData']['web_view']['States'],
-		));
-		$this->pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -41,12 +40,8 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return void
 	 */
 	public function showAction() {
-		$this->view->assignMultiple(
-			array(
-				'widths' => $this->getPreviewFrameWidths(),
-				'url' => $this->getTargetUrl()
-			)
-		);
+		$this->view->assign('widths', $this->getPreviewFrameWidths());
+		$this->view->assign('url', $this->getTargetUrl());
 	}
 
 	/**
@@ -142,12 +137,8 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	protected function getPreviewFrameWidths() {
 		$pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
-		$data = json_encode(array(
-			'width' => '100%',
-			'height' => "100%"
-		));
 		$widths = array(
-			$data => $GLOBALS['LANG']->getLL('autoSize')
+			'100%|100%' => $GLOBALS['LANG']->getLL('autoSize')
 		);
 		if (is_array($modTSconfig['properties']['previewFrameWidths.'])) {
 			foreach ($modTSconfig['properties']['previewFrameWidths.'] as $item => $conf ){
@@ -168,7 +159,8 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				} else {
 					$label .= $GLOBALS['LANG']->sL(trim($conf['label']));
 				}
-				$widths[json_encode($data)] = $label;
+				$value = ($data['width'] ?: '100%') . '|' . ($data['height'] ?: '100%');
+				$widths[$value] = $label;
 			}
 		}
 		return $widths;

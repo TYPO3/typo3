@@ -53,20 +53,18 @@ define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
 		if (this._data === false) {
 			var value;
 			this._loadFromServer().done(function() {
-				value = Storage.Persistent._data[key];
+				value = Storage.Persistent._getRecursiveDataByDeepKey(Storage.Persistent._data, key.split('.'));
 			});
 			return value;
 		} else {
-			return this._data[key];
+			return this._getRecursiveDataByDeepKey(this._data, key.split('.'));
 		}
 	};
 	Storage.Persistent.set = function(key, value) {
-		if (this._data === false) {
-			Storage.Persistent._storeOnServer(key, value);
-		} else {
-			this._data[key] = value;
-			this._storeOnServer(key, value);
+		if (this._data !== false) {
+			this._data = this._setRecursiveDataByDeepKey(this._data, key.split('.'), value);
 		}
+		return this._storeOnServer(key, value);
 	};
 	Storage.Persistent.clear = function() {
 		$.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'clear'}});
@@ -109,7 +107,48 @@ define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
 		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'set', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
-	}
+	};
+
+	/**
+	 * helper function used to set a value which could have been a flat object key data["my.foo.bar"] to
+	 * data[my][foo][bar]
+	 * is called recursively by itself
+	 *
+	 * @param data the data to be uased as base
+	 * @param keyParts the keyParts for the subtree
+	 * @param value the value to be set
+	 * @returns the data object
+	 * @private
+	 */
+	Storage.Persistent._setRecursiveDataByDeepKey = function(data, keyParts, value) {
+		if (keyParts.length === 1) {
+			data = data || {};
+			data[keyParts[0]] = value;
+		} else {
+			var firstKey = keyParts.shift();
+			data[firstKey] = this._setRecursiveDataByDeepKey(data[firstKey] || {}, keyParts, value);
+		}
+		return data;
+	};
+
+	/**
+	 * helper function used to set a value which could have been a flat object key data["my.foo.bar"] to
+	 * data[my][foo][bar]
+	 * is called recursively by itself
+	 *
+	 * @param data the data to be uased as base
+	 * @param keyParts the keyParts for the subtree
+	 * @returns {*}
+	 * @private
+	 */
+	Storage.Persistent._getRecursiveDataByDeepKey = function(data, keyParts) {
+		if (keyParts.length === 1) {
+			return (data || {})[keyParts[0]];
+		} else {
+			var firstKey = keyParts.shift();
+			return this._getRecursiveDataByDeepKey(data[firstKey] || {}, keyParts);
+		}
+	};
 
 	/**
 	 * return the Storage object, and attach it to the global TYPO3 object on the global frame
