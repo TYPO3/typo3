@@ -838,8 +838,8 @@ return array(
 				'email' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
 				'url' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
 			),
+			// @deprecated global soft reference parsers are deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8
 			'softRefParser_GL' => array(),
-			// Global soft reference parsers
 			'cliKeys' => array()
 		),
 	),

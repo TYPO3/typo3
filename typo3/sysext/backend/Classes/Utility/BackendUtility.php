@@ -3660,9 +3660,14 @@ class BackendUtility {
 			// Set the object string to blank by default:
 			$GLOBALS['T3_VAR']['softRefParser'][$spKey] = '';
 			// Now, try to create parser object:
-			$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey]
-				? $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey]
-				: $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
+			$objRef = NULL;
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey])) {
+				$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey];
+			} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey])) {
+				GeneralUtility::deprecationLog('The hook softRefParser_GL (used with parser key "'
+					. $spKey . '") is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8');
+				$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
+			}
 			if ($objRef) {
 				$softRefParserObj = GeneralUtility::getUserObj($objRef, '');
 				if (is_object($softRefParserObj)) {
@@ -3683,6 +3688,7 @@ class BackendUtility {
 	static public function explodeSoftRefParserList($parserList) {
 		// Looking for global parsers:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL']) && !empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) {
+			GeneralUtility::deprecationLog('The hook softRefParser_GL is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8');
 			$parserList = implode(',', array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'])) . ',' . $parserList;
 		}
 		// Return immediately if list is blank:
