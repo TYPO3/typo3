@@ -26,7 +26,7 @@
 				<f:if condition="{distributionActive}">
 					<f:else>
 						<li>
-							<f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="t3-button t3-button-action-installdistribution">
+							<f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="btn btn-default t3-button-action-installdistribution">
 								<f:be.buttons.icon icon="actions-system-extension-import" /><f:translate key="extensionList.installDistribution">Install</f:translate>
 							</f:link.action>
 						</li>
@@ -34,25 +34,25 @@
 					<f:then>
 						<f:if condition="{configurationLink}">
 							<li>
-								<a href="{configurationLink}" class="distribution-openViewModule t3-button" onclick="top.goToModule('web_ViewpageView');">
+								<a href="{configurationLink}" class="btn btn-default distribution-openViewModule " onclick="top.goToModule('web_ViewpageView');">
 									<f:be.buttons.icon icon="actions-system-extension-configure" /><f:translate key="extensionList.configure" />
 								</a>
 							</li>
 						</f:if>
 						<li>
-							<button class="distribution-openViewModule t3-button" onclick="top.goToModule('web_ViewpageView');">
+							<button class="btn btn-default distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');">
 								<f:be.buttons.icon icon="actions-document-view"	/><f:translate key="distribution.welcome.openViewModule" />
 							</button>
 						</li>
 						<li>
-							<button class="distribution-openPageModule t3-button" onclick="top.goToModule('web_page');">
+							<button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_page');">
 								<f:be.buttons.icon icon="actions-document-open"	/><f:translate key="distribution.welcome.openPageModule" />
 							</button>
 						</li>
 					</f:then>
 				</f:if>
 			</ul>
-			<dl class="description-horizontal description-horizontal-wide distribution-detail-summary">
+			<dl class="dl-horizontal dl-horizontal-wide distribution-detail-summary">
 				<dt><f:translate key="extensionList.distribution.title" /></dt>
 				<dd>{extension.title}</dd>
 				<dt><f:translate key="extensionList.distribution.key" /></dt>
@@ -66,7 +66,7 @@
 			</dl>
 			<f:if condition="{extension.dependencies}">
 				<h2><f:translate key="distribution.dependency.headline" /></h2>
-				<table class="t3-table">
+				<table class="table table-striped table-hover">
 					<thead>
 						<tr class="t3-row-header">
 							<td><f:translate key="distribution.dependency.identifier" /></td>

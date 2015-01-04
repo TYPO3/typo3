@@ -139,7 +139,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 
 			// no filelist then create own progress table
 			if (me.$fileList.length === 0) {
-				me.$fileList = $('<table />').attr('id', 'typo3-filelist').addClass('t3-table t3-upload-queue').html('<tbody></tbody>').hide();
+				me.$fileList = $('<table />').attr('id', 'typo3-filelist').addClass('table table-striped table-hover t3-upload-queue').html('<tbody></tbody>').hide();
 				if (me.dropZoneInsertBefore) {
 					me.$fileList.insertAfter(me.$dropzone);
 				} else {

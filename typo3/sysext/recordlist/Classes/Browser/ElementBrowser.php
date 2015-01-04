@@ -967,7 +967,7 @@ class ElementBrowser {
 				&& $this->curUrlArray['href'] && $this->curUrlInfo['act'] == $this->act
 			) {
 				$ltarget .= '
-							<input type="submit" value="' . $GLOBALS['LANG']->getLL('update', TRUE)
+							<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('update', TRUE)
 								. '" onclick="return link_current();" />';
 			}
 			$selectJS = '
@@ -1112,22 +1112,26 @@ class ElementBrowser {
 	 */
 	protected function getEmailSelectorHtml() {
 		$extUrl = '
-
-				<!--
-					Enter mail address:
-				-->
-						<form action="" name="lurlform" id="lurlform">
-							<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
-								<tr>
-									<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':</td>
-									<td><input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="'
-			. htmlspecialchars(($this->curUrlInfo['act'] === 'mail' ? $this->curUrlInfo['info'] : ''))
-			. '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
-			. '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+'
-			. 'document.lurlform.lemail.value); return link_current();" /></td>
-								</tr>
-							</table>
-						</form>';
+			<!--
+				Enter mail address:
+			-->
+			<form action="" name="lurlform" id="lurlform">
+				<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
+					<tr>
+						<td style="width: 96px;">
+							' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':
+						</td>
+						<td>
+							<input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="'
+								. htmlspecialchars(($this->curUrlInfo['act'] === 'mail' ? $this->curUrlInfo['info'] : ''))
+								. '" />
+							<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
+								. '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+'
+								. 'document.lurlform.lemail.value); return link_current();" />
+						</td>
+					</tr>
+				</table>
+			</form>';
 		return $extUrl;
 	}
 
@@ -1148,7 +1152,7 @@ class ElementBrowser {
 									<td style="width: 96px;">URL:</td>
 									<td><input type="text" name="lurl"' . $this->doc->formWidth(30) . ' value="'
 			. htmlspecialchars(($this->curUrlInfo['act'] === 'url' ? $this->curUrlInfo['info'] : 'http://'))
-			. '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
+			. '" /> ' . '<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
 			. '" onclick="browse_links_setValue(document.lurlform.lurl.value); return link_current();" /></td>
 								</tr>
 							</table>
@@ -2477,11 +2481,13 @@ class ElementBrowser {
 		$code .= \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		$code .= '
 			<div id="c-override">
-				<label><input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> '
-					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', TRUE) . '</label>
+				<label>
+					<input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> '
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', TRUE) . '
+				</label>
 			</div>
-			<input type="submit" name="submit" value="'
-					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
+			<input class="btn btn-default" type="submit" name="submit" value="'
+				. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
 		';
 		$code .= '</td>
 					</tr>
@@ -2538,7 +2544,7 @@ class ElementBrowser {
 			. '&bparams=' . rawurlencode($this->bparams);
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />'
 			. \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction')
-			. '<input type="submit" name="submit" value="'
+			. '<input class="btn btn-default" type="submit" name="submit" value="'
 			. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />';
 		$code .= '</td>
 					</tr>

@@ -858,7 +858,7 @@ class InlineElement {
 			} else {
 				$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 			}
-			$item .= ' <a href="#" class="t3-button" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
+			$item .= ' <a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
 			$item = '<div class="t3-form-field-group">' . $item . '</div>';
 		}
 		return $item;
@@ -902,7 +902,7 @@ class InlineElement {
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
 		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\'); return false;';
 
-		$item = '<a href="#" class="t3-button" onclick="' . htmlspecialchars($onClick) . '">';
+		$item = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onClick) . '">';
 		$item .= IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText));
 		$item .= $createNewRelationText . '</a>';
 
@@ -913,7 +913,7 @@ class InlineElement {
 				&& $folder->checkActionPermission('add')
 			) {
 				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-				$item .= ' <a href="#" class="t3-button t3-drag-uploader"
+				$item .= ' <a href="#" class="btn btn-default t3-drag-uploader"
 					style="display:none"
 					data-dropzone-target="#' . htmlspecialchars($this->inlineNames['object']) . '"
 					data-insert-dropzone-before="1"
@@ -965,7 +965,7 @@ class InlineElement {
 				$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.createnew', TRUE);
 				$icon = 'actions-document-new';
 				$className = 'typo3-newRecordLink';
-				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
+				$attributes['class'] = 'btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = 'return inline.createNewRecord(\'' . $objectPrefix . '\')';
 				if (!empty($conf['inline']['inlineNewButtonStyle'])) {
 					$attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
@@ -983,14 +983,14 @@ class InlineElement {
 				$title = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
 				$icon = 'actions-document-localize';
 				$className = 'typo3-localizationLink';
-				$attributes['class'] = 't3-button';
+				$attributes['class'] = 'btn btn-default';
 				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'localize\')';
 				break;
 			case 'synchronize':
 				$title = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:synchronizeWithOriginalLanguage', TRUE);
 				$icon = 'actions-document-synchronize';
 				$className = 'typo3-synchronizationLink';
-				$attributes['class'] = 't3-button inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
+				$attributes['class'] = 'btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = 'return inline.synchronizeLocalizeRecords(\'' . $objectPrefix . '\', \'synchronize\')';
 				break;
 			default:

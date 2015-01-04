@@ -130,7 +130,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 		}
 		$content .= $addFields;
 		$content .= $printFields;
-		$content .= '<input type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xlf:update', TRUE) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
+		$content .= '<input class="btn btn-default" type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xlf:update', TRUE) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
 		$example = $this->ext_displayExample();
 		$content .= $example ? '<hr/>' . $example : '';
 		return $content;

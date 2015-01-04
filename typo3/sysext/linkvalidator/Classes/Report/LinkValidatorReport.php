@@ -173,9 +173,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		);
 
 		if ($this->modTS['showCheckLinkTab'] == 1) {
-			$this->updateListHtml = '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>';
+			$this->updateListHtml = '<input class="btn btn-default" type="submit" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>';
 		}
-		$this->refreshListHtml = '<input type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $this->getLanguageService()->getLL('label_refresh') . '"/>';
+		$this->refreshListHtml = '<input class="btn btn-default" type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $this->getLanguageService()->getLL('label_refresh') . '"/>';
 		$this->linkAnalyzer = GeneralUtility::makeInstance(LinkAnalyzer::class);
 		$this->updateBrokenLinks();
 

@@ -10,7 +10,187 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-/* Not supported yet in CMS */
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background-color: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -385,7 +565,7 @@ dd {
 @media (min-width: 768px) {
   .dl-horizontal dt {
     float: left;
-    width: 160px;
+    width: 70px;
     clear: left;
     text-align: right;
     overflow: hidden;
@@ -393,7 +573,7 @@ dd {
     white-space: nowrap;
   }
   .dl-horizontal dd {
-    margin-left: 180px;
+    margin-left: 90px;
   }
 }
 abbr[title],
@@ -1904,7 +2084,7 @@ select[multiple].form-group-lg .form-control {
 .btn:hover,
 .btn:focus,
 .btn.focus {
-  color: #ffffff;
+  color: #333333;
   text-decoration: none;
 }
 .btn:active,
@@ -1925,9 +2105,9 @@ fieldset[disabled] .btn {
   box-shadow: none;
 }
 .btn-default {
-  color: #ffffff;
-  background-color: #828282;
-  border-color: #757575;
+  color: #333333;
+  background-color: #eeeeee;
+  border-color: #cccccc;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -1935,9 +2115,9 @@ fieldset[disabled] .btn {
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-  color: #ffffff;
-  background-color: #696969;
-  border-color: #575757;
+  color: #333333;
+  background-color: #d5d5d5;
+  border-color: #adadad;
 }
 .btn-default:active,
 .btn-default.active,
@@ -1962,12 +2142,12 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-  background-color: #828282;
-  border-color: #757575;
+  background-color: #eeeeee;
+  border-color: #cccccc;
 }
 .btn-default .badge {
-  color: #828282;
-  background-color: #ffffff;
+  color: #eeeeee;
+  background-color: #333333;
 }
 .btn-primary {
   color: #ffffff;
@@ -3593,7 +3773,11 @@ a.label:focus {
   position: relative;
   top: -1px;
 }
-.label-default {
+.label-default,
+.label-obsolete,
+.label-experimental,
+.label-test,
+.label-excludeFromUpdates {
   background-color: #d7d7d7;
 }
 .label-default[href]:hover,
@@ -3607,7 +3791,8 @@ a.label:focus {
 .label-primary[href]:focus {
   background-color: #005db3;
 }
-.label-success {
+.label-success,
+.label-stable {
   background-color: #1eb941;
 }
 .label-success[href]:hover,
@@ -3621,14 +3806,16 @@ a.label:focus {
 .label-info[href]:focus {
   background-color: #249cc6;
 }
-.label-warning {
+.label-warning,
+.label-beta {
   background-color: #f07814;
 }
 .label-warning[href]:hover,
 .label-warning[href]:focus {
   background-color: #c4600d;
 }
-.label-danger {
+.label-danger,
+.label-alpha {
   background-color: #c83c3c;
 }
 .label-danger[href]:hover,
@@ -6886,18 +7073,6 @@ button.close {
 /*!
  * TYPO3
  */
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 .t3-row-header {
   background-color: #666;
 }
@@ -6909,14 +7084,9 @@ button.close {
   background-color: #585858;
   color: #fff;
 }
-table.t3-table-info {
-  background: #ffffff;
-  border: 1px solid #cccccc;
-}
 .t3-col-header,
 .t3-row-header,
-.tableheader td,
-table.t3-table-info td {
+.tableheader td {
   padding: 6px;
 }
 .t3-row-header span.t3-icon {
@@ -6937,9 +7107,6 @@ table.t3-table-info td {
 .nobr {
   white-space: nowrap;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Background color classes
-- - - - - - - - - - - - - - - - - - - - - */
 .bgColor-20 {
   background-color: #e3dfdb;
 }
@@ -7117,21 +7284,19 @@ Background color classes
 .message-error a {
   color: #aa0225;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 debug panel
-- - - - - - - - - - - - - - - - - - - - - */
+@media (min-width: 768px) {
+  .dl-horizontal dt {
+    text-align: left;
+  }
+}
+@media (min-width: 768px) {
+  .dl-horizontal-wide dt {
+    width: 115px;
+  }
+  .dl-horizontal-wide dd {
+    margin-left: 135px;
+  }
+}
 .typo3-debugPanel-dragDropArrowDown {
   background-image: url('../../../../icons/gfx/arrowdown.png');
   display: block;
@@ -7143,21 +7308,6 @@ TYPO3 debug panel
   top: 0;
   left: 0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Clipboard
-- - - - - - - - - - - - - - - - - - - - - */
 table#typo3-clipboard {
   background-color: #efeff4;
   border: 1px solid #a2aab8;
@@ -7186,21 +7336,6 @@ table#typo3-clipboard tr.bgColor5 td a {
 table#typo3-clipboard tr.bgColor5 td img {
   vertical-align: middle;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Context sensitive help
-- - - - - - - - - - - - - - - - - - - - - */
 .typo3-csh-inline {
   padding: 4px;
 }
@@ -7282,7 +7417,6 @@ div.typo3-view-help .introduction {
 div.typo3-view-help img.c-inlineimg {
   margin-left: 10px;
 }
-/*** new help code ***/
 .t3-help-inline {
   padding: 4px;
 }
@@ -7364,7 +7498,6 @@ div.t3-view-help .introduction {
 div.t3-view-help img.c-inlineimg {
   margin-left: 10px;
 }
-/** ExtJS based CSH tooltips */
 .x-tip.typo3-csh-tooltip .x-tip-tl,
 .x-tip.typo3-csh-tooltip .x-tip-cl {
   padding-left: 8px;
@@ -7373,9 +7506,6 @@ div.t3-view-help img.c-inlineimg {
 .x-tip.typo3-csh-tooltip .x-tip-cr {
   padding-right: 8px;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Help (CSH)
-- - - - - - - - - - - - - - - - - - - - - */
 table.typo3-csh-inline {
   background-color: #ffffc7;
   border: 1px solid #cccccc;
@@ -7396,7 +7526,6 @@ img.typo3-csh-icon {
 a.typo3-csh-link {
   white-space: normal;
 }
-/** new CSH code **/
 table.t3-help-inline {
   background-color: #ffffc7;
   border: 1px solid #cccccc;
@@ -7424,7 +7553,6 @@ img.t3-help-icon {
 a.t3-help-link {
   white-space: normal;
 }
-/*  EXT:cshmanual */
 div.typo3-view-help h1 {
   background: none;
   color: #000;
@@ -7442,34 +7570,12 @@ div.typo3-view-help div.c-toc a,
 div.typo3-view-help p a {
   text-decoration: underline;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
-Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
-- - - - - - - - - - - - - - - - - - - - - */
 .typo3-CSM-wrapperCM {
   background: #fff;
   border: #b6b6b6 1px solid;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
-Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
-- - - - - - - - - - - - - - - - - - - - - */
 table.typo3-CSM tr.typo3-CSM-itemRow td {
   padding: 2px 6px;
-  /* the 1px image between every contextmenu group needs to be set to block, otherwise the border cell is way too high
-			   see https://developer.mozilla.org/en/Images,_Tables,_and_Mysterious_Gaps#Setting_images_to_be_blocks */
 }
 table.typo3-CSM tr.typo3-CSM-itemRow td .t3-icon {
   vertical-align: bottom;
@@ -7486,14 +7592,9 @@ table.typo3-CSM tr.typo3-CSM-itemRow {
 table.typo3-CSM tr.bgColor2 {
   background-color: #b6b6b6;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-special backend elements
-- - - - - - - - - - - - - - - - - - - - - */
-/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
 body#typo3-alt-clickmenu-php {
   margin-top: 10px;
 }
-/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
 #contentMenu0 {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -7505,21 +7606,6 @@ div#contentMenu1 {
   position: absolute;
   z-index: 20;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-DocHeader
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-docheader {
   background-color: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
   background: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
@@ -7533,7 +7619,6 @@ DocHeader
 }
 #typo3-docheader .left {
   float: left;
-  /** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
 }
 #typo3-docheader .left .buttongroup {
   float: left !important;
@@ -7563,7 +7648,6 @@ DocHeader
   line-height: 27px;
   padding: 0 24px;
   overflow: hidden;
-  /* overwrite defaults from normalize.css */
 }
 #typo3-docheader .typo3-docheader-functions a {
   color: #2d2d2d;
@@ -7587,17 +7671,11 @@ DocHeader
 #typo3-docheader .typo3-docheader-buttons a:hover {
   color: #000;
 }
-/**
- * ExtJS Viewport
- */
-/* Collapsed tree frame is not invisible, but 5px wide.
-   If no tree frame is in use, an empty container is shown instead */
 #typo3-navigationContainer-xsplit,
 #typo3-navigationContainer-xcollapsed,
 #typo3-navigationDummy {
   background: #ffffff url(../../Images/docheader-split-background.png) left top repeat-x;
 }
-/** ExtJS theme for PageTree */
 #typo3-pagetree-topPanelItems {
   background-color: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
   background: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
@@ -7625,21 +7703,6 @@ DocHeader
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a:hover {
   color: #000;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-History / Undo
-- - - - - - - - - - - - - - - - - - - - - */
 table#typo3-history tr.c-head td,
 table#typo3-history-item tr.c-head td,
 table#typo3-history tr.c-head td,
@@ -7656,18 +7719,6 @@ table#typo3-history img,
 table#typo3-history-item img {
   margin: 1px 1px 1px 1px;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 #alert-container {
   width: 400px;
   position: absolute;
@@ -7726,22 +7777,10 @@ table#typo3-history-item img {
 .alert-danger a:hover {
   color: #a32e2e;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 .modal.t3-modal-notice .modal-header {
-  background-color: #828282;
-  color: #ffffff;
-  border-bottom-color: #757575;
+  background-color: #eeeeee;
+  color: #333333;
+  border-bottom-color: #cccccc;
 }
 .modal.t3-modal-info .modal-header {
   background-color: #41b4dc;
@@ -7798,21 +7837,6 @@ table#typo3-history-item img {
   border: none;
   overflow: hidden;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Pagetree
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-pagetree {
   height: 100%;
 }
@@ -7887,7 +7911,6 @@ Pagetree
 }
 #typo3-pagetree .x-unselectable,
 #typo3-pagetree .x-unselectable * {
-  /* restore behaviour from x-tree-node-el which gets overwritten by x-unselectable in default-css */
   cursor: pointer;
 }
 #typo3-pagetree .ver-element,
@@ -7908,9 +7931,6 @@ Pagetree
   color: #FFF;
   padding: 0;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Drag and Drop
-- - - - - - - - - - - - - - - - - - - - - */
 .x-tree-lines .typo3-pagetree-node-notExpandable .x-tree-ec-icon {
   visibility: hidden;
 }
@@ -8004,9 +8024,6 @@ Drag and Drop
   background-color: inherit;
   border: none;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Top Panel
-- - - - - - - - - - - - - - - - - - - - - */
 .typo3-pagetree-topPanel-button {
   background: none;
   border: none;
@@ -8099,9 +8116,6 @@ Top Panel
 .typo3-pagetree-topPanel-item .x-form-field-trigger-wrap:hover .x-form-trigger {
   display: block;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Deletion Drop Zone
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-pagetree-deletionDropZone {
   color: #FFF;
   background-color: #585858;
@@ -8149,15 +8163,9 @@ Deletion Drop Zone
 #typo3-pagetree .typo3-pagetree-deletionDropZone-activateProxyOver {
   background-color: #644d2d;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Tree Highlighting
-- - - - - - - - - - - - - - - - - - - - - */
 .x-tree-node-readableRootline {
   font-style: italic;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Indicator Bar
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-pagetree-indicatorBar-temporaryMountPoint {
   background-color: #eaf7ff;
   border-bottom: 1px solid #c5dbe6;
@@ -8199,21 +8207,6 @@ Indicator Bar
   top: 5px;
   position: absolute;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Element Browser / RTE link selection
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-browse-links-php {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
@@ -8316,9 +8309,6 @@ table#typo3-msgBox tr td {
 input.typo3-link-input {
   width: 250px;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Element Browser / RTE link selection
-- - - - - - - - - - - - - - - - - - - - - */
 form#typo3-uplFilesForm,
 form#typo3-crFolderForm {
   border-top: 1px solid #adadad;
@@ -8329,51 +8319,18 @@ table#typo3-EBrecords tr td.c-wCell,
 table#typo3-EBfiles tr td.c-wCell {
   white-space: nowrap;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-RTE select image
-- - - - - - - - - - - - - - - - - - - - - */
 body#ext-rte-app-rte-select-image-php a {
   text-decoration: none;
 }
 body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
   text-decoration: underline;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Animated spinner icon
-- - - - - - - - - - - - - - - - - - - - - */
 span.spinner {
   display: inline-block;
   width: 16px;
   height: 16px;
   background-image: url('../../../../images/spinner/f1f1f1.gif');
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Tab menu
-- - - - - - - - - - - - - - - - - - - - - */
 .nav-tabs {
   background-color: #ededed;
 }
@@ -8402,7 +8359,6 @@ div.typo3-dyntabmenu-divs p.c-descr {
   background: #e7dba8;
   font-style: italic;
 }
-/* Foldout tabs */
 div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
   margin-left: 20px;
 }
@@ -8444,19 +8400,6 @@ div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
   margin: 0;
   padding: 0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/** used in the admin tools => DB check **/
 .t3-overview-list dt {
   padding: 0px 0px 2px 20px;
 }
@@ -8468,76 +8411,38 @@ div.typo3-dyntabmenu-divs-foldout div.disabled:hover {
   margin: 2px 0 15px 20px;
   padding-left: 22px;
 }
-/**
- * Common style for tables
- *
- * <table class="t3-table>
- *   <thead>
- *     <tr>
- *       <th>...</th>
- *       <th>...</th>
- *     </tr>
- *   </thead>
- *   <tbody>
- *     <tr>
- *       <td>
- *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
- *       </td>
- *       <td>...</td>
- *     </tr>
- *   </tbody>
- * </table>
- */
 table {
   background: transparent;
 }
-/**
- * Default table styling
- **/
-.t3-table,
 .table {
   background-color: #fafafa;
-  margin-bottom: 1.5em;
   border: 1px solid #cccccc;
 }
-.t3-table *,
 .table * {
   box-sizing: border-box;
 }
-.t3-table > thead > tr > th,
 .table > thead > tr > th,
-.t3-table > tbody > tr > th,
 .table > tbody > tr > th,
-.t3-table > tfoot > tr > th,
 .table > tfoot > tr > th {
   white-space: nowrap;
   vertical-align: middle;
 }
-.t3-table > thead > tr > td,
 .table > thead > tr > td,
-.t3-table > tbody > tr > td,
 .table > tbody > tr > td,
-.t3-table > tfoot > tr > td,
 .table > tfoot > tr > td {
   vertical-align: middle;
 }
-.t3-table > thead > tr,
 .table > thead > tr {
   background-color: #ededed;
 }
-.t3-table > thead > tr th,
 .table > thead > tr th,
-.t3-table > thead > tr td,
 .table > thead > tr td {
   border-bottom: 1px solid #cccccc;
 }
-.t3-table > thead > tr th i,
 .table > thead > tr th i,
-.t3-table > thead > tr td i,
 .table > thead > tr td i {
   font-weight: normal;
 }
-.t3-table .btn,
 .table .btn {
   padding: 4px 4px;
   font-size: 11px;
@@ -8549,474 +8454,294 @@ table {
   margin-top: -2px;
   margin-bottom: -2px;
 }
-.t3-table .btn:hover,
 .table .btn:hover {
   border-color: #ababab;
   background-color: #c4c4c4;
 }
-.t3-table .btn .t3-icon,
 .table .btn .t3-icon {
   margin: 0;
 }
-.t3-table .btn.btn-danger,
 .table .btn.btn-danger {
   color: #ffffff;
   background-color: #c83c3c;
   border-color: #b73434;
 }
-.t3-table .btn.btn-danger:hover,
 .table .btn.btn-danger:hover,
-.t3-table .btn.btn-danger:focus,
 .table .btn.btn-danger:focus,
-.t3-table .btn.btn-danger.focus,
 .table .btn.btn-danger.focus,
-.t3-table .btn.btn-danger:active,
 .table .btn.btn-danger:active,
-.t3-table .btn.btn-danger.active,
 .table .btn.btn-danger.active,
-.open > .dropdown-toggle.t3-table .btn.btn-danger,
 .open > .dropdown-toggle.table .btn.btn-danger {
   color: #ffffff;
   background-color: #a32e2e;
   border-color: #872626;
 }
-.t3-table .btn.btn-danger:active,
 .table .btn.btn-danger:active,
-.t3-table .btn.btn-danger.active,
 .table .btn.btn-danger.active,
-.open > .dropdown-toggle.t3-table .btn.btn-danger,
 .open > .dropdown-toggle.table .btn.btn-danger {
   background-image: none;
 }
-.t3-table .btn.btn-danger.disabled,
 .table .btn.btn-danger.disabled,
-.t3-table .btn.btn-danger[disabled],
 .table .btn.btn-danger[disabled],
-fieldset[disabled] .t3-table .btn.btn-danger,
 fieldset[disabled] .table .btn.btn-danger,
-.t3-table .btn.btn-danger.disabled:hover,
 .table .btn.btn-danger.disabled:hover,
-.t3-table .btn.btn-danger[disabled]:hover,
 .table .btn.btn-danger[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-danger:hover,
 fieldset[disabled] .table .btn.btn-danger:hover,
-.t3-table .btn.btn-danger.disabled:focus,
 .table .btn.btn-danger.disabled:focus,
-.t3-table .btn.btn-danger[disabled]:focus,
 .table .btn.btn-danger[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-danger:focus,
 fieldset[disabled] .table .btn.btn-danger:focus,
-.t3-table .btn.btn-danger.disabled.focus,
 .table .btn.btn-danger.disabled.focus,
-.t3-table .btn.btn-danger[disabled].focus,
 .table .btn.btn-danger[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-danger.focus,
 fieldset[disabled] .table .btn.btn-danger.focus,
-.t3-table .btn.btn-danger.disabled:active,
 .table .btn.btn-danger.disabled:active,
-.t3-table .btn.btn-danger[disabled]:active,
 .table .btn.btn-danger[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-danger:active,
 fieldset[disabled] .table .btn.btn-danger:active,
-.t3-table .btn.btn-danger.disabled.active,
 .table .btn.btn-danger.disabled.active,
-.t3-table .btn.btn-danger[disabled].active,
 .table .btn.btn-danger[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-danger.active,
 fieldset[disabled] .table .btn.btn-danger.active {
   background-color: #c83c3c;
   border-color: #b73434;
 }
-.t3-table .btn.btn-danger .badge,
 .table .btn.btn-danger .badge {
   color: #c83c3c;
   background-color: #ffffff;
 }
-.t3-table .btn.btn-success,
 .table .btn.btn-success {
   color: #ffffff;
   background-color: #1eb941;
   border-color: #1aa339;
 }
-.t3-table .btn.btn-success:hover,
 .table .btn.btn-success:hover,
-.t3-table .btn.btn-success:focus,
 .table .btn.btn-success:focus,
-.t3-table .btn.btn-success.focus,
 .table .btn.btn-success.focus,
-.t3-table .btn.btn-success:active,
 .table .btn.btn-success:active,
-.t3-table .btn.btn-success.active,
 .table .btn.btn-success.active,
-.open > .dropdown-toggle.t3-table .btn.btn-success,
 .open > .dropdown-toggle.table .btn.btn-success {
   color: #ffffff;
   background-color: #178d32;
   border-color: #126e27;
 }
-.t3-table .btn.btn-success:active,
 .table .btn.btn-success:active,
-.t3-table .btn.btn-success.active,
 .table .btn.btn-success.active,
-.open > .dropdown-toggle.t3-table .btn.btn-success,
 .open > .dropdown-toggle.table .btn.btn-success {
   background-image: none;
 }
-.t3-table .btn.btn-success.disabled,
 .table .btn.btn-success.disabled,
-.t3-table .btn.btn-success[disabled],
 .table .btn.btn-success[disabled],
-fieldset[disabled] .t3-table .btn.btn-success,
 fieldset[disabled] .table .btn.btn-success,
-.t3-table .btn.btn-success.disabled:hover,
 .table .btn.btn-success.disabled:hover,
-.t3-table .btn.btn-success[disabled]:hover,
 .table .btn.btn-success[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-success:hover,
 fieldset[disabled] .table .btn.btn-success:hover,
-.t3-table .btn.btn-success.disabled:focus,
 .table .btn.btn-success.disabled:focus,
-.t3-table .btn.btn-success[disabled]:focus,
 .table .btn.btn-success[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-success:focus,
 fieldset[disabled] .table .btn.btn-success:focus,
-.t3-table .btn.btn-success.disabled.focus,
 .table .btn.btn-success.disabled.focus,
-.t3-table .btn.btn-success[disabled].focus,
 .table .btn.btn-success[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-success.focus,
 fieldset[disabled] .table .btn.btn-success.focus,
-.t3-table .btn.btn-success.disabled:active,
 .table .btn.btn-success.disabled:active,
-.t3-table .btn.btn-success[disabled]:active,
 .table .btn.btn-success[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-success:active,
 fieldset[disabled] .table .btn.btn-success:active,
-.t3-table .btn.btn-success.disabled.active,
 .table .btn.btn-success.disabled.active,
-.t3-table .btn.btn-success[disabled].active,
 .table .btn.btn-success[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-success.active,
 fieldset[disabled] .table .btn.btn-success.active {
   background-color: #1eb941;
   border-color: #1aa339;
 }
-.t3-table .btn.btn-success .badge,
 .table .btn.btn-success .badge {
   color: #1eb941;
   background-color: #ffffff;
 }
-.t3-table .btn.btn-warning,
 .table .btn.btn-warning {
   color: #ffffff;
   background-color: #f07814;
   border-color: #dc6c0e;
 }
-.t3-table .btn.btn-warning:hover,
 .table .btn.btn-warning:hover,
-.t3-table .btn.btn-warning:focus,
 .table .btn.btn-warning:focus,
-.t3-table .btn.btn-warning.focus,
 .table .btn.btn-warning.focus,
-.t3-table .btn.btn-warning:active,
 .table .btn.btn-warning:active,
-.t3-table .btn.btn-warning.active,
 .table .btn.btn-warning.active,
-.open > .dropdown-toggle.t3-table .btn.btn-warning,
 .open > .dropdown-toggle.table .btn.btn-warning {
   color: #ffffff;
   background-color: #c4600d;
   border-color: #a3500a;
 }
-.t3-table .btn.btn-warning:active,
 .table .btn.btn-warning:active,
-.t3-table .btn.btn-warning.active,
 .table .btn.btn-warning.active,
-.open > .dropdown-toggle.t3-table .btn.btn-warning,
 .open > .dropdown-toggle.table .btn.btn-warning {
   background-image: none;
 }
-.t3-table .btn.btn-warning.disabled,
 .table .btn.btn-warning.disabled,
-.t3-table .btn.btn-warning[disabled],
 .table .btn.btn-warning[disabled],
-fieldset[disabled] .t3-table .btn.btn-warning,
 fieldset[disabled] .table .btn.btn-warning,
-.t3-table .btn.btn-warning.disabled:hover,
 .table .btn.btn-warning.disabled:hover,
-.t3-table .btn.btn-warning[disabled]:hover,
 .table .btn.btn-warning[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-warning:hover,
 fieldset[disabled] .table .btn.btn-warning:hover,
-.t3-table .btn.btn-warning.disabled:focus,
 .table .btn.btn-warning.disabled:focus,
-.t3-table .btn.btn-warning[disabled]:focus,
 .table .btn.btn-warning[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-warning:focus,
 fieldset[disabled] .table .btn.btn-warning:focus,
-.t3-table .btn.btn-warning.disabled.focus,
 .table .btn.btn-warning.disabled.focus,
-.t3-table .btn.btn-warning[disabled].focus,
 .table .btn.btn-warning[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-warning.focus,
 fieldset[disabled] .table .btn.btn-warning.focus,
-.t3-table .btn.btn-warning.disabled:active,
 .table .btn.btn-warning.disabled:active,
-.t3-table .btn.btn-warning[disabled]:active,
 .table .btn.btn-warning[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-warning:active,
 fieldset[disabled] .table .btn.btn-warning:active,
-.t3-table .btn.btn-warning.disabled.active,
 .table .btn.btn-warning.disabled.active,
-.t3-table .btn.btn-warning[disabled].active,
 .table .btn.btn-warning[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-warning.active,
 fieldset[disabled] .table .btn.btn-warning.active {
   background-color: #f07814;
   border-color: #dc6c0e;
 }
-.t3-table .btn.btn-warning .badge,
 .table .btn.btn-warning .badge {
   color: #f07814;
   background-color: #ffffff;
 }
-.t3-table .btn.btn-info,
 .table .btn.btn-info {
   color: #ffffff;
   background-color: #41b4dc;
   border-color: #2bacd8;
 }
-.t3-table .btn.btn-info:hover,
 .table .btn.btn-info:hover,
-.t3-table .btn.btn-info:focus,
 .table .btn.btn-info:focus,
-.t3-table .btn.btn-info.focus,
 .table .btn.btn-info.focus,
-.t3-table .btn.btn-info:active,
 .table .btn.btn-info:active,
-.t3-table .btn.btn-info.active,
 .table .btn.btn-info.active,
-.open > .dropdown-toggle.t3-table .btn.btn-info,
 .open > .dropdown-toggle.table .btn.btn-info {
   color: #ffffff;
   background-color: #249cc6;
   border-color: #1f84a7;
 }
-.t3-table .btn.btn-info:active,
 .table .btn.btn-info:active,
-.t3-table .btn.btn-info.active,
 .table .btn.btn-info.active,
-.open > .dropdown-toggle.t3-table .btn.btn-info,
 .open > .dropdown-toggle.table .btn.btn-info {
   background-image: none;
 }
-.t3-table .btn.btn-info.disabled,
 .table .btn.btn-info.disabled,
-.t3-table .btn.btn-info[disabled],
 .table .btn.btn-info[disabled],
-fieldset[disabled] .t3-table .btn.btn-info,
 fieldset[disabled] .table .btn.btn-info,
-.t3-table .btn.btn-info.disabled:hover,
 .table .btn.btn-info.disabled:hover,
-.t3-table .btn.btn-info[disabled]:hover,
 .table .btn.btn-info[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-info:hover,
 fieldset[disabled] .table .btn.btn-info:hover,
-.t3-table .btn.btn-info.disabled:focus,
 .table .btn.btn-info.disabled:focus,
-.t3-table .btn.btn-info[disabled]:focus,
 .table .btn.btn-info[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-info:focus,
 fieldset[disabled] .table .btn.btn-info:focus,
-.t3-table .btn.btn-info.disabled.focus,
 .table .btn.btn-info.disabled.focus,
-.t3-table .btn.btn-info[disabled].focus,
 .table .btn.btn-info[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-info.focus,
 fieldset[disabled] .table .btn.btn-info.focus,
-.t3-table .btn.btn-info.disabled:active,
 .table .btn.btn-info.disabled:active,
-.t3-table .btn.btn-info[disabled]:active,
 .table .btn.btn-info[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-info:active,
 fieldset[disabled] .table .btn.btn-info:active,
-.t3-table .btn.btn-info.disabled.active,
 .table .btn.btn-info.disabled.active,
-.t3-table .btn.btn-info[disabled].active,
 .table .btn.btn-info[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-info.active,
 fieldset[disabled] .table .btn.btn-info.active {
   background-color: #41b4dc;
   border-color: #2bacd8;
 }
-.t3-table .btn.btn-info .badge,
 .table .btn.btn-info .badge {
   color: #41b4dc;
   background-color: #ffffff;
 }
-.t3-table .btn.btn-default,
 .table .btn.btn-default {
-  color: #ffffff;
-  background-color: #828282;
-  border-color: #757575;
+  color: #333333;
+  background-color: #eeeeee;
+  border-color: #cccccc;
 }
-.t3-table .btn.btn-default:hover,
 .table .btn.btn-default:hover,
-.t3-table .btn.btn-default:focus,
 .table .btn.btn-default:focus,
-.t3-table .btn.btn-default.focus,
 .table .btn.btn-default.focus,
-.t3-table .btn.btn-default:active,
 .table .btn.btn-default:active,
-.t3-table .btn.btn-default.active,
 .table .btn.btn-default.active,
-.open > .dropdown-toggle.t3-table .btn.btn-default,
 .open > .dropdown-toggle.table .btn.btn-default {
-  color: #ffffff;
-  background-color: #696969;
-  border-color: #575757;
+  color: #333333;
+  background-color: #d5d5d5;
+  border-color: #adadad;
 }
-.t3-table .btn.btn-default:active,
 .table .btn.btn-default:active,
-.t3-table .btn.btn-default.active,
 .table .btn.btn-default.active,
-.open > .dropdown-toggle.t3-table .btn.btn-default,
 .open > .dropdown-toggle.table .btn.btn-default {
   background-image: none;
 }
-.t3-table .btn.btn-default.disabled,
 .table .btn.btn-default.disabled,
-.t3-table .btn.btn-default[disabled],
 .table .btn.btn-default[disabled],
-fieldset[disabled] .t3-table .btn.btn-default,
 fieldset[disabled] .table .btn.btn-default,
-.t3-table .btn.btn-default.disabled:hover,
 .table .btn.btn-default.disabled:hover,
-.t3-table .btn.btn-default[disabled]:hover,
 .table .btn.btn-default[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-default:hover,
 fieldset[disabled] .table .btn.btn-default:hover,
-.t3-table .btn.btn-default.disabled:focus,
 .table .btn.btn-default.disabled:focus,
-.t3-table .btn.btn-default[disabled]:focus,
 .table .btn.btn-default[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-default:focus,
 fieldset[disabled] .table .btn.btn-default:focus,
-.t3-table .btn.btn-default.disabled.focus,
 .table .btn.btn-default.disabled.focus,
-.t3-table .btn.btn-default[disabled].focus,
 .table .btn.btn-default[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-default.focus,
 fieldset[disabled] .table .btn.btn-default.focus,
-.t3-table .btn.btn-default.disabled:active,
 .table .btn.btn-default.disabled:active,
-.t3-table .btn.btn-default[disabled]:active,
 .table .btn.btn-default[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-default:active,
 fieldset[disabled] .table .btn.btn-default:active,
-.t3-table .btn.btn-default.disabled.active,
 .table .btn.btn-default.disabled.active,
-.t3-table .btn.btn-default[disabled].active,
 .table .btn.btn-default[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-default.active,
 fieldset[disabled] .table .btn.btn-default.active {
-  background-color: #828282;
-  border-color: #757575;
+  background-color: #eeeeee;
+  border-color: #cccccc;
 }
-.t3-table .btn.btn-default .badge,
 .table .btn.btn-default .badge {
-  color: #828282;
-  background-color: #ffffff;
+  color: #eeeeee;
+  background-color: #333333;
 }
-.t3-table .btn.btn-primary,
 .table .btn.btn-primary {
   color: #ffffff;
   background-color: #0078e6;
   border-color: #006bcd;
 }
-.t3-table .btn.btn-primary:hover,
 .table .btn.btn-primary:hover,
-.t3-table .btn.btn-primary:focus,
 .table .btn.btn-primary:focus,
-.t3-table .btn.btn-primary.focus,
 .table .btn.btn-primary.focus,
-.t3-table .btn.btn-primary:active,
 .table .btn.btn-primary:active,
-.t3-table .btn.btn-primary.active,
 .table .btn.btn-primary.active,
-.open > .dropdown-toggle.t3-table .btn.btn-primary,
 .open > .dropdown-toggle.table .btn.btn-primary {
   color: #ffffff;
   background-color: #005db3;
   border-color: #004b8f;
 }
-.t3-table .btn.btn-primary:active,
 .table .btn.btn-primary:active,
-.t3-table .btn.btn-primary.active,
 .table .btn.btn-primary.active,
-.open > .dropdown-toggle.t3-table .btn.btn-primary,
 .open > .dropdown-toggle.table .btn.btn-primary {
   background-image: none;
 }
-.t3-table .btn.btn-primary.disabled,
 .table .btn.btn-primary.disabled,
-.t3-table .btn.btn-primary[disabled],
 .table .btn.btn-primary[disabled],
-fieldset[disabled] .t3-table .btn.btn-primary,
 fieldset[disabled] .table .btn.btn-primary,
-.t3-table .btn.btn-primary.disabled:hover,
 .table .btn.btn-primary.disabled:hover,
-.t3-table .btn.btn-primary[disabled]:hover,
 .table .btn.btn-primary[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-primary:hover,
 fieldset[disabled] .table .btn.btn-primary:hover,
-.t3-table .btn.btn-primary.disabled:focus,
 .table .btn.btn-primary.disabled:focus,
-.t3-table .btn.btn-primary[disabled]:focus,
 .table .btn.btn-primary[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-primary:focus,
 fieldset[disabled] .table .btn.btn-primary:focus,
-.t3-table .btn.btn-primary.disabled.focus,
 .table .btn.btn-primary.disabled.focus,
-.t3-table .btn.btn-primary[disabled].focus,
 .table .btn.btn-primary[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-primary.focus,
 fieldset[disabled] .table .btn.btn-primary.focus,
-.t3-table .btn.btn-primary.disabled:active,
 .table .btn.btn-primary.disabled:active,
-.t3-table .btn.btn-primary[disabled]:active,
 .table .btn.btn-primary[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-primary:active,
 fieldset[disabled] .table .btn.btn-primary:active,
-.t3-table .btn.btn-primary.disabled.active,
 .table .btn.btn-primary.disabled.active,
-.t3-table .btn.btn-primary[disabled].active,
 .table .btn.btn-primary[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-primary.active,
 fieldset[disabled] .table .btn.btn-primary.active {
   background-color: #0078e6;
   border-color: #006bcd;
 }
-.t3-table .btn.btn-primary .badge,
 .table .btn.btn-primary .badge {
   color: #0078e6;
   background-color: #ffffff;
 }
-.t3-table .btn-group,
 .table .btn-group {
   font-size: 0;
 }
-.t3-table .btn-group .btn,
 .table .btn-group .btn {
   font-size: 12px;
   float: none;
 }
-.t3-table .btn-checkbox-holder,
 .table .btn-checkbox-holder {
   position: relative;
   display: inline-block;
 }
-.t3-table .btn-checkbox-holder .btn-checkbox,
 .table .btn-checkbox-holder .btn-checkbox {
   position: absolute;
   top: 0;
@@ -9025,676 +8750,82 @@ fieldset[disabled] .table .btn.btn-primary.active {
   opacity: 0;
   z-index: 10;
 }
-.t3-table .btn-checkbox-holder input[type=checkbox] + .btn .t3-icon:before,
 .table .btn-checkbox-holder input[type=checkbox] + .btn .t3-icon:before {
   content: "\f096";
 }
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn {
   color: #ffffff;
   background-color: #0078e6;
   border-color: #006bcd;
 }
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:hover,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:hover,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:focus,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.focus,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
-.open > .dropdown-toggle.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn,
 .open > .dropdown-toggle.table .btn-checkbox-holder input[type=checkbox]:checked + .btn {
   color: #ffffff;
   background-color: #005db3;
   border-color: #004b8f;
 }
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
-.open > .dropdown-toggle.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn,
 .open > .dropdown-toggle.table .btn-checkbox-holder input[type=checkbox]:checked + .btn {
   background-image: none;
 }
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled],
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled],
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn,
 fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .btn,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:hover,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:hover,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:hover,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:hover,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:hover,
 fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:hover,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:focus,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:focus,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:focus,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:focus,
 fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled.focus,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled.focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled].focus,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled].focus,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.focus,
 fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:active,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
 fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled.active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled.active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled].active,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled].active,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
 fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active {
   background-color: #0078e6;
   border-color: #006bcd;
 }
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn .badge,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn .badge {
   color: #0078e6;
   background-color: #ffffff;
 }
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn .t3-icon:before,
 .table .btn-checkbox-holder input[type=checkbox]:checked + .btn .t3-icon:before {
   content: "\f00c";
 }
-.t3-table .btn-group .btn + .btn-checkbox-holder,
 .table .btn-group .btn + .btn-checkbox-holder {
   margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.t3-table .pagination,
 .table .pagination {
   margin: 0;
 }
-.t3-table .col-icon,
 .table .col-icon {
   text-align: center;
 }
-.t3-table .col-icon .t3-icon,
 .table .col-icon .t3-icon {
   margin: 0;
 }
-.t3-table .col-title,
 .table .col-title {
   width: 95%;
 }
-.t3-table .col-control,
 .table .col-control,
-.t3-table .col-clipboard,
 .table .col-clipboard {
   white-space: nowrap;
   text-align: right;
 }
-/**
- * Copy table stylings from bootstrap
- **/
-.t3-table {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 18px;
-  background-color: #fafafa;
-  margin-bottom: 1.5em;
-  border: 1px solid #cccccc;
+.table .col-border-left {
+  border-left: 1px solid #cccccc;
 }
-.t3-table > thead > tr > th,
-.t3-table > tbody > tr > th,
-.t3-table > tfoot > tr > th,
-.t3-table > thead > tr > td,
-.t3-table > tbody > tr > td,
-.t3-table > tfoot > tr > td {
-  padding: 6px;
-  line-height: 1.5;
-  vertical-align: top;
-  border-top: 1px solid #cccccc;
-}
-.t3-table > thead > tr > th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #cccccc;
-}
-.t3-table > caption + thead > tr:first-child > th,
-.t3-table > colgroup + thead > tr:first-child > th,
-.t3-table > thead:first-child > tr:first-child > th,
-.t3-table > caption + thead > tr:first-child > td,
-.t3-table > colgroup + thead > tr:first-child > td,
-.t3-table > thead:first-child > tr:first-child > td {
-  border-top: 0;
-}
-.t3-table > tbody + tbody {
-  border-top: 2px solid #cccccc;
-}
-.t3-table .table {
-  background-color: #ffffff;
-}
-.t3-table * {
-  box-sizing: border-box;
-}
-.t3-table > thead > tr > th,
-.t3-table > tbody > tr > th,
-.t3-table > tfoot > tr > th {
-  white-space: nowrap;
-  vertical-align: middle;
-}
-.t3-table > thead > tr > td,
-.t3-table > tbody > tr > td,
-.t3-table > tfoot > tr > td {
-  vertical-align: middle;
-}
-.t3-table > thead > tr {
-  background-color: #ededed;
-}
-.t3-table > thead > tr th,
-.t3-table > thead > tr td {
-  border-bottom: 1px solid #cccccc;
-}
-.t3-table > thead > tr th i,
-.t3-table > thead > tr td i {
-  font-weight: normal;
-}
-.t3-table .btn {
-  padding: 4px 4px;
-  font-size: 11px;
-  line-height: 1.5;
-  border-radius: 2px;
-  color: #333;
-  background-color: #dedede;
-  border-color: #c4c4c4;
-  margin-top: -2px;
-  margin-bottom: -2px;
-}
-.t3-table .btn:hover {
-  border-color: #ababab;
-  background-color: #c4c4c4;
-}
-.t3-table .btn .t3-icon {
-  margin: 0;
-}
-.t3-table .btn.btn-danger {
-  color: #ffffff;
-  background-color: #c83c3c;
-  border-color: #b73434;
-}
-.t3-table .btn.btn-danger:hover,
-.t3-table .btn.btn-danger:focus,
-.t3-table .btn.btn-danger.focus,
-.t3-table .btn.btn-danger:active,
-.t3-table .btn.btn-danger.active,
-.open > .dropdown-toggle.t3-table .btn.btn-danger {
-  color: #ffffff;
-  background-color: #a32e2e;
-  border-color: #872626;
-}
-.t3-table .btn.btn-danger:active,
-.t3-table .btn.btn-danger.active,
-.open > .dropdown-toggle.t3-table .btn.btn-danger {
-  background-image: none;
-}
-.t3-table .btn.btn-danger.disabled,
-.t3-table .btn.btn-danger[disabled],
-fieldset[disabled] .t3-table .btn.btn-danger,
-.t3-table .btn.btn-danger.disabled:hover,
-.t3-table .btn.btn-danger[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-danger:hover,
-.t3-table .btn.btn-danger.disabled:focus,
-.t3-table .btn.btn-danger[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-danger:focus,
-.t3-table .btn.btn-danger.disabled.focus,
-.t3-table .btn.btn-danger[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-danger.focus,
-.t3-table .btn.btn-danger.disabled:active,
-.t3-table .btn.btn-danger[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-danger:active,
-.t3-table .btn.btn-danger.disabled.active,
-.t3-table .btn.btn-danger[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-danger.active {
-  background-color: #c83c3c;
-  border-color: #b73434;
-}
-.t3-table .btn.btn-danger .badge {
-  color: #c83c3c;
-  background-color: #ffffff;
-}
-.t3-table .btn.btn-success {
-  color: #ffffff;
-  background-color: #1eb941;
-  border-color: #1aa339;
-}
-.t3-table .btn.btn-success:hover,
-.t3-table .btn.btn-success:focus,
-.t3-table .btn.btn-success.focus,
-.t3-table .btn.btn-success:active,
-.t3-table .btn.btn-success.active,
-.open > .dropdown-toggle.t3-table .btn.btn-success {
-  color: #ffffff;
-  background-color: #178d32;
-  border-color: #126e27;
-}
-.t3-table .btn.btn-success:active,
-.t3-table .btn.btn-success.active,
-.open > .dropdown-toggle.t3-table .btn.btn-success {
-  background-image: none;
-}
-.t3-table .btn.btn-success.disabled,
-.t3-table .btn.btn-success[disabled],
-fieldset[disabled] .t3-table .btn.btn-success,
-.t3-table .btn.btn-success.disabled:hover,
-.t3-table .btn.btn-success[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-success:hover,
-.t3-table .btn.btn-success.disabled:focus,
-.t3-table .btn.btn-success[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-success:focus,
-.t3-table .btn.btn-success.disabled.focus,
-.t3-table .btn.btn-success[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-success.focus,
-.t3-table .btn.btn-success.disabled:active,
-.t3-table .btn.btn-success[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-success:active,
-.t3-table .btn.btn-success.disabled.active,
-.t3-table .btn.btn-success[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-success.active {
-  background-color: #1eb941;
-  border-color: #1aa339;
-}
-.t3-table .btn.btn-success .badge {
-  color: #1eb941;
-  background-color: #ffffff;
-}
-.t3-table .btn.btn-warning {
-  color: #ffffff;
-  background-color: #f07814;
-  border-color: #dc6c0e;
-}
-.t3-table .btn.btn-warning:hover,
-.t3-table .btn.btn-warning:focus,
-.t3-table .btn.btn-warning.focus,
-.t3-table .btn.btn-warning:active,
-.t3-table .btn.btn-warning.active,
-.open > .dropdown-toggle.t3-table .btn.btn-warning {
-  color: #ffffff;
-  background-color: #c4600d;
-  border-color: #a3500a;
-}
-.t3-table .btn.btn-warning:active,
-.t3-table .btn.btn-warning.active,
-.open > .dropdown-toggle.t3-table .btn.btn-warning {
-  background-image: none;
-}
-.t3-table .btn.btn-warning.disabled,
-.t3-table .btn.btn-warning[disabled],
-fieldset[disabled] .t3-table .btn.btn-warning,
-.t3-table .btn.btn-warning.disabled:hover,
-.t3-table .btn.btn-warning[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-warning:hover,
-.t3-table .btn.btn-warning.disabled:focus,
-.t3-table .btn.btn-warning[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-warning:focus,
-.t3-table .btn.btn-warning.disabled.focus,
-.t3-table .btn.btn-warning[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-warning.focus,
-.t3-table .btn.btn-warning.disabled:active,
-.t3-table .btn.btn-warning[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-warning:active,
-.t3-table .btn.btn-warning.disabled.active,
-.t3-table .btn.btn-warning[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-warning.active {
-  background-color: #f07814;
-  border-color: #dc6c0e;
-}
-.t3-table .btn.btn-warning .badge {
-  color: #f07814;
-  background-color: #ffffff;
-}
-.t3-table .btn.btn-info {
-  color: #ffffff;
-  background-color: #41b4dc;
-  border-color: #2bacd8;
-}
-.t3-table .btn.btn-info:hover,
-.t3-table .btn.btn-info:focus,
-.t3-table .btn.btn-info.focus,
-.t3-table .btn.btn-info:active,
-.t3-table .btn.btn-info.active,
-.open > .dropdown-toggle.t3-table .btn.btn-info {
-  color: #ffffff;
-  background-color: #249cc6;
-  border-color: #1f84a7;
-}
-.t3-table .btn.btn-info:active,
-.t3-table .btn.btn-info.active,
-.open > .dropdown-toggle.t3-table .btn.btn-info {
-  background-image: none;
-}
-.t3-table .btn.btn-info.disabled,
-.t3-table .btn.btn-info[disabled],
-fieldset[disabled] .t3-table .btn.btn-info,
-.t3-table .btn.btn-info.disabled:hover,
-.t3-table .btn.btn-info[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-info:hover,
-.t3-table .btn.btn-info.disabled:focus,
-.t3-table .btn.btn-info[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-info:focus,
-.t3-table .btn.btn-info.disabled.focus,
-.t3-table .btn.btn-info[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-info.focus,
-.t3-table .btn.btn-info.disabled:active,
-.t3-table .btn.btn-info[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-info:active,
-.t3-table .btn.btn-info.disabled.active,
-.t3-table .btn.btn-info[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-info.active {
-  background-color: #41b4dc;
-  border-color: #2bacd8;
-}
-.t3-table .btn.btn-info .badge {
-  color: #41b4dc;
-  background-color: #ffffff;
-}
-.t3-table .btn.btn-default {
-  color: #ffffff;
-  background-color: #828282;
-  border-color: #757575;
-}
-.t3-table .btn.btn-default:hover,
-.t3-table .btn.btn-default:focus,
-.t3-table .btn.btn-default.focus,
-.t3-table .btn.btn-default:active,
-.t3-table .btn.btn-default.active,
-.open > .dropdown-toggle.t3-table .btn.btn-default {
-  color: #ffffff;
-  background-color: #696969;
-  border-color: #575757;
-}
-.t3-table .btn.btn-default:active,
-.t3-table .btn.btn-default.active,
-.open > .dropdown-toggle.t3-table .btn.btn-default {
-  background-image: none;
-}
-.t3-table .btn.btn-default.disabled,
-.t3-table .btn.btn-default[disabled],
-fieldset[disabled] .t3-table .btn.btn-default,
-.t3-table .btn.btn-default.disabled:hover,
-.t3-table .btn.btn-default[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-default:hover,
-.t3-table .btn.btn-default.disabled:focus,
-.t3-table .btn.btn-default[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-default:focus,
-.t3-table .btn.btn-default.disabled.focus,
-.t3-table .btn.btn-default[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-default.focus,
-.t3-table .btn.btn-default.disabled:active,
-.t3-table .btn.btn-default[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-default:active,
-.t3-table .btn.btn-default.disabled.active,
-.t3-table .btn.btn-default[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-default.active {
-  background-color: #828282;
-  border-color: #757575;
-}
-.t3-table .btn.btn-default .badge {
-  color: #828282;
-  background-color: #ffffff;
-}
-.t3-table .btn.btn-primary {
-  color: #ffffff;
-  background-color: #0078e6;
-  border-color: #006bcd;
-}
-.t3-table .btn.btn-primary:hover,
-.t3-table .btn.btn-primary:focus,
-.t3-table .btn.btn-primary.focus,
-.t3-table .btn.btn-primary:active,
-.t3-table .btn.btn-primary.active,
-.open > .dropdown-toggle.t3-table .btn.btn-primary {
-  color: #ffffff;
-  background-color: #005db3;
-  border-color: #004b8f;
-}
-.t3-table .btn.btn-primary:active,
-.t3-table .btn.btn-primary.active,
-.open > .dropdown-toggle.t3-table .btn.btn-primary {
-  background-image: none;
-}
-.t3-table .btn.btn-primary.disabled,
-.t3-table .btn.btn-primary[disabled],
-fieldset[disabled] .t3-table .btn.btn-primary,
-.t3-table .btn.btn-primary.disabled:hover,
-.t3-table .btn.btn-primary[disabled]:hover,
-fieldset[disabled] .t3-table .btn.btn-primary:hover,
-.t3-table .btn.btn-primary.disabled:focus,
-.t3-table .btn.btn-primary[disabled]:focus,
-fieldset[disabled] .t3-table .btn.btn-primary:focus,
-.t3-table .btn.btn-primary.disabled.focus,
-.t3-table .btn.btn-primary[disabled].focus,
-fieldset[disabled] .t3-table .btn.btn-primary.focus,
-.t3-table .btn.btn-primary.disabled:active,
-.t3-table .btn.btn-primary[disabled]:active,
-fieldset[disabled] .t3-table .btn.btn-primary:active,
-.t3-table .btn.btn-primary.disabled.active,
-.t3-table .btn.btn-primary[disabled].active,
-fieldset[disabled] .t3-table .btn.btn-primary.active {
-  background-color: #0078e6;
-  border-color: #006bcd;
-}
-.t3-table .btn.btn-primary .badge {
-  color: #0078e6;
-  background-color: #ffffff;
-}
-.t3-table .btn-group {
-  font-size: 0;
-}
-.t3-table .btn-group .btn {
-  font-size: 12px;
-  float: none;
-}
-.t3-table .btn-checkbox-holder {
-  position: relative;
-  display: inline-block;
-}
-.t3-table .btn-checkbox-holder .btn-checkbox {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  z-index: 10;
-}
-.t3-table .btn-checkbox-holder input[type=checkbox] + .btn .t3-icon:before {
-  content: "\f096";
-}
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn {
-  color: #ffffff;
-  background-color: #0078e6;
-  border-color: #006bcd;
-}
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:hover,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
-.open > .dropdown-toggle.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn {
-  color: #ffffff;
-  background-color: #005db3;
-  border-color: #004b8f;
-}
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active,
-.open > .dropdown-toggle.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn {
-  background-image: none;
-}
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled],
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:hover,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:hover,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:hover,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:focus,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled.focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled].focus,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.focus,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled]:active,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn:active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.disabled.active,
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn[disabled].active,
-fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn.active {
-  background-color: #0078e6;
-  border-color: #006bcd;
-}
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn .badge {
-  color: #0078e6;
-  background-color: #ffffff;
-}
-.t3-table .btn-checkbox-holder input[type=checkbox]:checked + .btn .t3-icon:before {
-  content: "\f00c";
-}
-.t3-table .btn-group .btn + .btn-checkbox-holder {
-  margin-left: -1px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.t3-table .pagination {
-  margin: 0;
-}
-.t3-table .col-icon {
-  text-align: center;
-}
-.t3-table .col-icon .t3-icon {
-  margin: 0;
-}
-.t3-table .col-title {
-  width: 95%;
-}
-.t3-table .col-control,
-.t3-table .col-clipboard {
-  white-space: nowrap;
-  text-align: right;
-}
-.t3-table > tbody > tr:nth-child(odd) {
-  background-color: #f7f7f7;
-}
-.t3-table > tbody > tr:hover {
-  background-color: #ededed;
-}
-.t3-table > thead > tr > td.active,
-.t3-table > tbody > tr > td.active,
-.t3-table > tfoot > tr > td.active,
-.t3-table > thead > tr > th.active,
-.t3-table > tbody > tr > th.active,
-.t3-table > tfoot > tr > th.active,
-.t3-table > thead > tr.active > td,
-.t3-table > tbody > tr.active > td,
-.t3-table > tfoot > tr.active > td,
-.t3-table > thead > tr.active > th,
-.t3-table > tbody > tr.active > th,
-.t3-table > tfoot > tr.active > th {
-  background-color: #ededed;
-}
-.t3-table > tbody > tr > td.active:hover,
-.t3-table > tbody > tr > th.active:hover,
-.t3-table > tbody > tr.active:hover > td,
-.t3-table > tbody > tr:hover > .active,
-.t3-table > tbody > tr.active:hover > th {
-  background-color: #e0e0e0;
-}
-.t3-table > thead > tr > td.success,
-.t3-table > tbody > tr > td.success,
-.t3-table > tfoot > tr > td.success,
-.t3-table > thead > tr > th.success,
-.t3-table > tbody > tr > th.success,
-.t3-table > tfoot > tr > th.success,
-.t3-table > thead > tr.success > td,
-.t3-table > tbody > tr.success > td,
-.t3-table > tfoot > tr.success > td,
-.t3-table > thead > tr.success > th,
-.t3-table > tbody > tr.success > th,
-.t3-table > tfoot > tr.success > th {
-  background-color: #c7f6d1;
-}
-.t3-table > tbody > tr > td.success:hover,
-.t3-table > tbody > tr > th.success:hover,
-.t3-table > tbody > tr.success:hover > td,
-.t3-table > tbody > tr:hover > .success,
-.t3-table > tbody > tr.success:hover > th {
-  background-color: #b1f2c0;
-}
-.t3-table > thead > tr > td.info,
-.t3-table > tbody > tr > td.info,
-.t3-table > tfoot > tr > td.info,
-.t3-table > thead > tr > th.info,
-.t3-table > tbody > tr > th.info,
-.t3-table > tfoot > tr > th.info,
-.t3-table > thead > tr.info > td,
-.t3-table > tbody > tr.info > td,
-.t3-table > tfoot > tr.info > td,
-.t3-table > thead > tr.info > th,
-.t3-table > tbody > tr.info > th,
-.t3-table > tfoot > tr.info > th {
-  background-color: #d8f0f8;
-}
-.t3-table > tbody > tr > td.info:hover,
-.t3-table > tbody > tr > th.info:hover,
-.t3-table > tbody > tr.info:hover > td,
-.t3-table > tbody > tr:hover > .info,
-.t3-table > tbody > tr.info:hover > th {
-  background-color: #c2e7f4;
-}
-.t3-table > thead > tr > td.warning,
-.t3-table > tbody > tr > td.warning,
-.t3-table > tfoot > tr > td.warning,
-.t3-table > thead > tr > th.warning,
-.t3-table > tbody > tr > th.warning,
-.t3-table > tfoot > tr > th.warning,
-.t3-table > thead > tr.warning > td,
-.t3-table > tbody > tr.warning > td,
-.t3-table > tfoot > tr.warning > td,
-.t3-table > thead > tr.warning > th,
-.t3-table > tbody > tr.warning > th,
-.t3-table > tfoot > tr.warning > th {
-  background-color: #fbd8bc;
-}
-.t3-table > tbody > tr > td.warning:hover,
-.t3-table > tbody > tr > th.warning:hover,
-.t3-table > tbody > tr.warning:hover > td,
-.t3-table > tbody > tr:hover > .warning,
-.t3-table > tbody > tr.warning:hover > th {
-  background-color: #f9cba4;
-}
-.t3-table > thead > tr > td.danger,
-.t3-table > tbody > tr > td.danger,
-.t3-table > tfoot > tr > td.danger,
-.t3-table > thead > tr > th.danger,
-.t3-table > tbody > tr > th.danger,
-.t3-table > tfoot > tr > th.danger,
-.t3-table > thead > tr.danger > td,
-.t3-table > tbody > tr.danger > td,
-.t3-table > tfoot > tr.danger > td,
-.t3-table > thead > tr.danger > th,
-.t3-table > tbody > tr.danger > th,
-.t3-table > tfoot > tr.danger > th {
-  background-color: #efc7c7;
-}
-.t3-table > tbody > tr > td.danger:hover,
-.t3-table > tbody > tr > th.danger:hover,
-.t3-table > tbody > tr.danger:hover > td,
-.t3-table > tbody > tr:hover > .danger,
-.t3-table > tbody > tr.danger:hover > th {
-  background-color: #eab3b3;
-}
-/**
- * Fits the table in the viewport and makes overflow possible
- **/
 .table-fit {
   width: 100%;
   margin-bottom: 1.5em;
@@ -9704,32 +8835,16 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
   -ms-overflow-style: -ms-autohiding-scrollbar;
   border: 1px solid #ddd;
 }
-.table-fit > .table,
-.table-fit > .t3-table {
+.table-fit > .table {
   margin-top: 0;
   margin-bottom: 0;
   border: 0;
 }
 .table-fit > .table > thead > tr > td,
-.table-fit > .t3-table > thead > tr > td,
 .table-fit > .table > tbody > tr > td,
-.table-fit > .t3-table > tbody > tr > td,
-.table-fit > .table > tfoot > tr > td,
-.table-fit > .t3-table > tfoot > tr > td {
+.table-fit > .table > tfoot > tr > td {
   white-space: nowrap;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 .panel {
   margin: 3em 0;
 }
@@ -9741,21 +8856,6 @@ fieldset[disabled] .t3-table .btn-checkbox-holder input[type=checkbox]:checked +
   border: 0;
   margin: 0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms
-- - - - - - - - - - - - - - - - - - - - - */
 .typo3-TCEforms .typo3-dyntabmenu-divs {
   border-top: 1px solid #cccccc;
 }
@@ -9829,7 +8929,6 @@ img.t3-TCEforms-contentchangedImg {
   margin-right: 2px;
   width: 16px;
 }
-/* renamed to .t3-form-palette-icon-required, lines below kept for backwards-compatibility */
 img.t3-TCEforms-reqPaletteImg {
   display: block;
   position: absolute;
@@ -9848,7 +8947,6 @@ img.t3-TCEforms-reqPaletteImg {
   z-index: 4000;
   width: 7px;
 }
-/* renamed to .t3-form-palette-icon-contentchanged, lines below kept for backwards-compatibility */
 img.t3-TCEforms-contentchangedPaletteImg {
   display: block;
   position: absolute;
@@ -10018,9 +9116,6 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
   margin: 0 0.5em 0.5em 0;
   position: relative;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms suggest
-- - - - - - - - - - - - - - - - - - - - - */
 div.typo3-TCEforms-suggest-position-right {
   margin-left: 10px;
 }
@@ -10068,9 +9163,6 @@ input.typo3-TCEforms-suggest-search {
   padding-left: 20px;
   vertical-align: middle;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Flexforms
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-label-flex {
   border-top: 1px solid #c0c0c0;
   padding: 5px;
@@ -10078,9 +9170,6 @@ TCEforms Flexforms
 .t3-form-field-flex {
   padding: 0 5px 5px;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Inline-Relational-Record-Editing
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-container-wrap {
   margin: 6px 0px;
 }
@@ -10199,9 +9288,6 @@ TCEforms Inline-Relational-Record-Editing
 .sortableHandle {
   cursor: move;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Sections
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-flex-section-header .t3-record-title {
   font-weight: bold;
 }
@@ -10252,7 +9338,6 @@ TCEforms Sections
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-/* preview image in sys_file records */
 img.t3-tceforms-sysfile-imagepreview {
   float: left;
   margin-right: 10px;
@@ -10264,9 +9349,6 @@ img.t3-tceforms-sysfile-imagepreview {
 .typo3-TCEforms img[src*="clear.gif"] {
   z-index: 0;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms
-- - - - - - - - - - - - - - - - - - - - - */
 table#typo3-altdoc-header input,
 .c-inputButton {
   background: none;
@@ -10348,9 +9430,6 @@ select option.c-divider {
   font-style: italic;
   text-transform: uppercase;
 }
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-show text of default language under the translated input field
- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 .t3-form-original-language {
   background-color: #dadada;
   border: 1px solid #c0c0c0;
@@ -10374,7 +9453,6 @@ a.t3-form-original-language-diffheader:hover {
 .t3-form-original-language-diffcontent {
   padding: 2px;
 }
-/* Default. Always used on main-palettes in the bottom of the forms */
 .typo3-TCEforms .typo3-TCEforms-checkboxArray td {
   padding-right: 5px;
 }
@@ -10401,13 +9479,9 @@ div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
 div.typo3-TCEforms-suggest-choises a {
   cursor: pointer;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Flexforms
-- - - - - - - - - - - - - - - - - - - - - */
 div.t3-form-field-container:first-child .t3-form-field-label-flex {
   border-top: 0;
 }
-/** no separate background for dyntabs in flexforms **/
 .typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs,
 .typo3-TCEforms .wrapperTable1 div.typo3-dyntabmenu-tabs,
 .typo3-TCEforms .wrapperTable2 div.typo3-dyntabmenu-tabs,
@@ -10416,7 +9490,6 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
   background: transparent;
 }
-/** tabs inside the table => flexforms */
 .typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
 .typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
 .typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
@@ -10425,9 +9498,6 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
   border: 1px solid #c0c0c0;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Inline-Relational-Record-Editing
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-header-inline:hover {
   background-color: #cccccc;
 }
@@ -10455,9 +9525,6 @@ TCEforms Inline-Relational-Record-Editing
 .t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
   font-weight: bold;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Sections
-- - - - - - - - - - - - - - - - - - - - - */
 .typo3-TCEforms-flexForm .bgColor4,
 .typo3-TCEforms-flexForm .bgColor5 {
   background: none;
@@ -10513,33 +9580,14 @@ TCEforms Sections
 .t3-form-palette-field-label {
   text-indent: 2px;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Tree
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-item .x-tree input.x-tree-node-cb {
   height: auto;
   margin: 0 0 0 1px;
   vertical-align: middle;
 }
-/* state: the form field was modified */
 .t3-form-field-label.t3-form-field-state-changed {
   color: #004fb0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Trees
-- - - - - - - - - - - - - - - - - - - - - */
 table#typo3-tree {
   margin: 10px 0 20px 10px;
   width: 95%;
@@ -10572,9 +9620,6 @@ body#typo3-alt-db-navframe-php div.c-notice {
   padding: 5px 5px 5px 5px;
   width: 95%;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Configuration trees, used in Admin Tools => Configuration
-- - - - - - - - - - - - - - - - - - - - - */
 table.t3-tree-config {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
@@ -10584,9 +9629,6 @@ table.t3-tree-config {
 table.t3-tree-config .t3-tree-config-header {
   text-align: left;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-AJAX Page Tree
-- - - - - - - - - - - - - - - - - - - - - */
 body#typo3-pagetree,
 body#typo3-alt-file-navframe-php {
   margin: 0;
@@ -10655,8 +9697,6 @@ ul.tree ul li.active ul span a {
 ul #pages0_0 > ul {
   padding-left: 0;
 }
-/* active tree items, we have to work against the border: 1px here,
-   otherwise tree elements would take too much space */
 ul.tree li.active div.treeLinkItem {
   margin: -1px 0 -1px -1px;
 }
@@ -10711,7 +9751,6 @@ ul.tree div.treeLinkItem span.dragIcon {
 #typo3-alt-file-navframe-php #typo3-docheader img {
   margin: 2px;
 }
-/* Sprite icons for tree lines. Single lines need 6px padding. Can also be used directly inside .t3-table */
 .t3-icon-treeline {
   display: block;
   float: left;
@@ -10722,9 +9761,6 @@ ul.tree div.treeLinkItem span.dragIcon {
   white-space: nowrap;
   overflow: hidden;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Tree
-- - - - - - - - - - - - - - - - - - - - - */
 body#typo3-pagetree,
 body#typo3-alt-file-navframe-php {
   background: #ebebeb;
@@ -10749,9 +9785,6 @@ body#typo3-alt-file-navframe-php {
 table#typo3-tree tr:hover {
   background-color: #d7dbe2;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-AJAX Page Tree
-- - - - - - - - - - - - - - - - - - - - - */
 #dragIcon {
   filter: alpha(opacity=50);
   opacity: 0.5;
@@ -10769,18 +9802,6 @@ AJAX Page Tree
 #tree-toolbar-filter-item.active {
   background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png");
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 .pagination .t3-icon {
   margin: 0;
   text-align: center;
@@ -10789,19 +9810,6 @@ AJAX Page Tree
   display: inline-block;
   margin: -2px 0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* Include Share webfont */
 @font-face {
   font-family: 'Share';
   src: url('../../Fonts/share-bold-webfont.eot');
@@ -10830,24 +9838,6 @@ AJAX Page Tree
   font-weight: bold;
   font-style: italic;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* Login Screen
- * Warning:
- * DO NOT prevent the copyright notice from being shown!
- * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
- * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
- */
 #typo3-index-php {
   background: #ebebeb;
   min-width: 400px;
@@ -10966,29 +9956,6 @@ AJAX Page Tree
 #typo3-index-php #t3-login-copyright a:hover {
   color: #000;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-body tags
-- - - - - - - - - - - - - - - - - - - - - */
-/* - - - - - - - - - - - - - - - - - - - - -
-specific wrappers
-
-The "template" class is usually instantiated as either
-noDoc or fullDoc. Both will result in the whole page
-content between the bodytags being
-wrapped in a DIV-section with a class.
-- - - - - - - - - - - - - - - - - - - - - */
 div.typo3-noDoc {
   margin-left: 10px;
   margin-top: 5px;
@@ -11014,15 +9981,9 @@ div#typo3-inner-docbody {
   margin-top: 0;
   transition: border 0.2s ease;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Information popup, show_item.php
-- - - - - - - - - - - - - - - - - - - - - */
 body#typo3-show-item-php {
   padding: 12px 24px;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Decorations (shadows etc.)
-- - - - - - - - - - - - - - - - - - - - - */
 .shadow-box-bottom-424 {
   height: 3px;
   background-image: url('../../../../images/shadows/box-bottom-424.png');
@@ -11035,21 +9996,6 @@ Decorations (shadows etc.)
   background-position: bottom center;
   background-repeat: no-repeat;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 styles for basic elements
-- - - - - - - - - - - - - - - - - - - - - */
 h1 {
   font-family: Share, Verdana, Arial, Helvetica, sans-serif;
   font-variant: normal;
@@ -11068,20 +10014,16 @@ ol,
 blockquote {
   margin-bottom: 9px;
 }
-/* Lists */
 ul,
 ol {
   padding-left: 3em;
 }
-/* Preformatted text - not used so much in TYPO3 */
 pre {
   margin: 0px;
 }
-/* horizontal ruler */
 div.hr {
   height: 1px;
 }
-/** .uppercase is kept for backwards-compatibility, use .divider */
 .divider {
   padding-bottom: 12px;
 }
@@ -11094,9 +10036,6 @@ a span {
 video {
   background-color: #000;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Various classes
-- - - - - - - - - - - - - - - - - - - - - */
 div.diff-r {
   padding: 3px 3px 3px 3px;
 }
@@ -11120,9 +10059,6 @@ img.absmiddle {
 .nowrap {
   white-space: nowrap;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 styles for basic elements
-- - - - - - - - - - - - - - - - - - - - - */
 tr:hover .t3-page-ce a,
 tr:hover .x-tree a {
   text-decoration: none;
@@ -11130,7 +10066,6 @@ tr:hover .x-tree a {
 a.t3-link {
   text-decoration: underline;
 }
-/* horizontal ruler */
 hr,
 div.hr {
   background: none;
@@ -11140,9 +10075,6 @@ div.hr {
 em {
   font-style: italic;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Various classes
-- - - - - - - - - - - - - - - - - - - - - */
 .typo3-app-icon {
   position: relative;
   display: inline-block;
@@ -11199,13 +10131,9 @@ div.diff-g {
   background-color: green;
   color: black;
 }
-/** used in the admin tools => DB check **/
 .t3-overview-list dt {
   font-weight: bold;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Dimmed span tag color (disabled)
-- - - - - - - - - - - - - - - - - - - - - */
 .c-na {
   color: #666;
   font-style: italic;
@@ -11213,9 +10141,6 @@ Dimmed span tag color (disabled)
 .not-found a {
   color: #cccccc;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Red span tag color (warning, notice)
-- - - - - - - - - - - - - - - - - - - - - */
 table.warningbox {
   border: solid 2px black;
   background-color: yellow;
@@ -11238,55 +10163,20 @@ div.warningbox {
 span.warningboxheader {
   margin-left: 5px;
 }
-/* all buttons have the "click" mouse cursor */
 .t3-btn {
   cursor: pointer;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Form
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-docbody form {
   margin-bottom: 1.25em;
 }
-textarea,
-button {
+textarea {
   display: inline-block;
   margin: 0 0.5em 0.5em 0;
   padding: 3px 6px;
   vertical-align: middle;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Form
-- - - - - - - - - - - - - - - - - - - - - */
-/* Limit form width globally */
 .form-group {
   max-width: 440px;
-}
-input,
-textarea,
-button {
-  background-color: #fefefe;
-  border: 1px solid #7c7c7c;
-  border-radius: 2px;
-}
-input:focus,
-textarea:focus,
-button:focus {
-  border-color: #32a0ff;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 6px rgba(50, 160, 255, 0.6);
-  outline: 0;
 }
 textarea.fixed-font {
   font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
@@ -11298,287 +10188,9 @@ input[type="checkbox"] {
   border: none;
   cursor: pointer;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Buttons
-- - - - - - - - - - - - - - - - - - - - - */
-/* Deprecated HTML5 definitions */
-.t3-button,
-button,
-input[type=submit],
-input[type=button],
-input[type=reset] {
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 6px 6px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 2px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: #ffffff;
-  background-color: #828282;
-  border-color: #757575;
-}
-.t3-button:focus,
-button:focus,
-input[type=submit]:focus,
-input[type=button]:focus,
-input[type=reset]:focus,
-.t3-button:active:focus,
-button:active:focus,
-input[type=submit]:active:focus,
-input[type=button]:active:focus,
-input[type=reset]:active:focus,
-.t3-button.active:focus,
-button.active:focus,
-input[type=submit].active:focus,
-input[type=button].active:focus,
-input[type=reset].active:focus,
-.t3-button.focus,
-button.focus,
-input[type=submit].focus,
-input[type=button].focus,
-input[type=reset].focus,
-.t3-button:active.focus,
-button:active.focus,
-input[type=submit]:active.focus,
-input[type=button]:active.focus,
-input[type=reset]:active.focus,
-.t3-button.active.focus,
-button.active.focus,
-input[type=submit].active.focus,
-input[type=button].active.focus,
-input[type=reset].active.focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-.t3-button:hover,
-button:hover,
-input[type=submit]:hover,
-input[type=button]:hover,
-input[type=reset]:hover,
-.t3-button:focus,
-button:focus,
-input[type=submit]:focus,
-input[type=button]:focus,
-input[type=reset]:focus,
-.t3-button.focus,
-button.focus,
-input[type=submit].focus,
-input[type=button].focus,
-input[type=reset].focus {
-  color: #ffffff;
-  text-decoration: none;
-}
-.t3-button:active,
-button:active,
-input[type=submit]:active,
-input[type=button]:active,
-input[type=reset]:active,
-.t3-button.active,
-button.active,
-input[type=submit].active,
-input[type=button].active,
-input[type=reset].active {
-  outline: 0;
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-.t3-button.disabled,
-button.disabled,
-input[type=submit].disabled,
-input[type=button].disabled,
-input[type=reset].disabled,
-.t3-button[disabled],
-button[disabled],
-input[type=submit][disabled],
-input[type=button][disabled],
-input[type=reset][disabled],
-fieldset[disabled] .t3-button,
-fieldset[disabled] button,
-fieldset[disabled] input[type=submit],
-fieldset[disabled] input[type=button],
-fieldset[disabled] input[type=reset] {
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.t3-button:hover,
-button:hover,
-input[type=submit]:hover,
-input[type=button]:hover,
-input[type=reset]:hover,
-.t3-button:focus,
-button:focus,
-input[type=submit]:focus,
-input[type=button]:focus,
-input[type=reset]:focus,
-.t3-button.focus,
-button.focus,
-input[type=submit].focus,
-input[type=button].focus,
-input[type=reset].focus,
-.t3-button:active,
-button:active,
-input[type=submit]:active,
-input[type=button]:active,
-input[type=reset]:active,
-.t3-button.active,
-button.active,
-input[type=submit].active,
-input[type=button].active,
-input[type=reset].active,
-.open > .dropdown-toggle.t3-button,
-.open > .dropdown-togglebutton,
-.open > .dropdown-toggleinput[type=submit],
-.open > .dropdown-toggleinput[type=button],
-.open > .dropdown-toggleinput[type=reset] {
-  color: #ffffff;
-  background-color: #696969;
-  border-color: #575757;
-}
-.t3-button:active,
-button:active,
-input[type=submit]:active,
-input[type=button]:active,
-input[type=reset]:active,
-.t3-button.active,
-button.active,
-input[type=submit].active,
-input[type=button].active,
-input[type=reset].active,
-.open > .dropdown-toggle.t3-button,
-.open > .dropdown-togglebutton,
-.open > .dropdown-toggleinput[type=submit],
-.open > .dropdown-toggleinput[type=button],
-.open > .dropdown-toggleinput[type=reset] {
-  background-image: none;
-}
-.t3-button.disabled,
-button.disabled,
-input[type=submit].disabled,
-input[type=button].disabled,
-input[type=reset].disabled,
-.t3-button[disabled],
-button[disabled],
-input[type=submit][disabled],
-input[type=button][disabled],
-input[type=reset][disabled],
-fieldset[disabled] .t3-button,
-fieldset[disabled] button,
-fieldset[disabled] input[type=submit],
-fieldset[disabled] input[type=button],
-fieldset[disabled] input[type=reset],
-.t3-button.disabled:hover,
-button.disabled:hover,
-input[type=submit].disabled:hover,
-input[type=button].disabled:hover,
-input[type=reset].disabled:hover,
-.t3-button[disabled]:hover,
-button[disabled]:hover,
-input[type=submit][disabled]:hover,
-input[type=button][disabled]:hover,
-input[type=reset][disabled]:hover,
-fieldset[disabled] .t3-button:hover,
-fieldset[disabled] button:hover,
-fieldset[disabled] input[type=submit]:hover,
-fieldset[disabled] input[type=button]:hover,
-fieldset[disabled] input[type=reset]:hover,
-.t3-button.disabled:focus,
-button.disabled:focus,
-input[type=submit].disabled:focus,
-input[type=button].disabled:focus,
-input[type=reset].disabled:focus,
-.t3-button[disabled]:focus,
-button[disabled]:focus,
-input[type=submit][disabled]:focus,
-input[type=button][disabled]:focus,
-input[type=reset][disabled]:focus,
-fieldset[disabled] .t3-button:focus,
-fieldset[disabled] button:focus,
-fieldset[disabled] input[type=submit]:focus,
-fieldset[disabled] input[type=button]:focus,
-fieldset[disabled] input[type=reset]:focus,
-.t3-button.disabled.focus,
-button.disabled.focus,
-input[type=submit].disabled.focus,
-input[type=button].disabled.focus,
-input[type=reset].disabled.focus,
-.t3-button[disabled].focus,
-button[disabled].focus,
-input[type=submit][disabled].focus,
-input[type=button][disabled].focus,
-input[type=reset][disabled].focus,
-fieldset[disabled] .t3-button.focus,
-fieldset[disabled] button.focus,
-fieldset[disabled] input[type=submit].focus,
-fieldset[disabled] input[type=button].focus,
-fieldset[disabled] input[type=reset].focus,
-.t3-button.disabled:active,
-button.disabled:active,
-input[type=submit].disabled:active,
-input[type=button].disabled:active,
-input[type=reset].disabled:active,
-.t3-button[disabled]:active,
-button[disabled]:active,
-input[type=submit][disabled]:active,
-input[type=button][disabled]:active,
-input[type=reset][disabled]:active,
-fieldset[disabled] .t3-button:active,
-fieldset[disabled] button:active,
-fieldset[disabled] input[type=submit]:active,
-fieldset[disabled] input[type=button]:active,
-fieldset[disabled] input[type=reset]:active,
-.t3-button.disabled.active,
-button.disabled.active,
-input[type=submit].disabled.active,
-input[type=button].disabled.active,
-input[type=reset].disabled.active,
-.t3-button[disabled].active,
-button[disabled].active,
-input[type=submit][disabled].active,
-input[type=button][disabled].active,
-input[type=reset][disabled].active,
-fieldset[disabled] .t3-button.active,
-fieldset[disabled] button.active,
-fieldset[disabled] input[type=submit].active,
-fieldset[disabled] input[type=button].active,
-fieldset[disabled] input[type=reset].active {
-  background-color: #828282;
-  border-color: #757575;
-}
-.t3-button .badge,
-button .badge,
-input[type=submit] .badge,
-input[type=button] .badge,
-input[type=reset] .badge {
-  color: #828282;
-  background-color: #ffffff;
-}
-/* - - - - - - - - - - - - - - - - - - - - -
-Groups
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-group {
   margin-bottom: 1.5em;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-Go back A-tags
-- - - - - - - - - - - - - - - - - - - - - */
 a.typo3-goBack img {
   margin-right: 5px;
   vertical-align: middle;
@@ -11590,9 +10202,6 @@ span.typo3-moduleHeader img {
 a.typo3-goBack {
   font-weight: bold;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-   Styles for the "clearable" jquery plugin.
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-clearable-wrapper {
   position: relative;
   display: inline-block;
@@ -11609,21 +10218,6 @@ a.typo3-goBack {
 .t3-tceforms-input-wrapper-datetime .t3-clearable-wrapper .t3-input-clearer {
   top: 10px;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TYPO3 backend scaffolding
-- - - - - - - - - - - - - - - - - - - - - */
 body#typo3-backend-php {
   margin: 0;
   padding: 0;
@@ -11642,21 +10236,6 @@ iframe {
   height: 100%;
   overflow: auto;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Module menu
-- - - - - - - - - - - - - - - - - - - - - */
 [id="typo3-module-menu"] {
   background: #222222;
   color: #dddddd;
@@ -11812,18 +10391,6 @@ Module menu
 .typo3-module-menu-snapped .typo3-module-menu-item-title {
   display: none;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 [id="typo3-topbar"],
 [id="typo3-topbar"] .x-panel-body {
   min-width: 1000px;
@@ -11886,194 +10453,6 @@ Module menu
   color: #dddddd;
   background-color: #222222;
   float: right;
-}
-.typo3-topbar-navigation .btn {
-  display: inline-block;
-  margin-bottom: 0;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 6px 6px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 2px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.typo3-topbar-navigation .btn:focus,
-.typo3-topbar-navigation .btn:active:focus,
-.typo3-topbar-navigation .btn.active:focus,
-.typo3-topbar-navigation .btn.focus,
-.typo3-topbar-navigation .btn:active.focus,
-.typo3-topbar-navigation .btn.active.focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-.typo3-topbar-navigation .btn:hover,
-.typo3-topbar-navigation .btn:focus,
-.typo3-topbar-navigation .btn.focus {
-  color: #ffffff;
-  text-decoration: none;
-}
-.typo3-topbar-navigation .btn:active,
-.typo3-topbar-navigation .btn.active {
-  outline: 0;
-  background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-.typo3-topbar-navigation .btn.disabled,
-.typo3-topbar-navigation .btn[disabled],
-fieldset[disabled] .typo3-topbar-navigation .btn {
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.typo3-topbar-navigation .btn.btn-default {
-  color: #ffffff;
-  background-color: #828282;
-  border-color: #757575;
-}
-.typo3-topbar-navigation .btn.btn-default:hover,
-.typo3-topbar-navigation .btn.btn-default:focus,
-.typo3-topbar-navigation .btn.btn-default.focus,
-.typo3-topbar-navigation .btn.btn-default:active,
-.typo3-topbar-navigation .btn.btn-default.active,
-.open > .dropdown-toggle.typo3-topbar-navigation .btn.btn-default {
-  color: #ffffff;
-  background-color: #696969;
-  border-color: #575757;
-}
-.typo3-topbar-navigation .btn.btn-default:active,
-.typo3-topbar-navigation .btn.btn-default.active,
-.open > .dropdown-toggle.typo3-topbar-navigation .btn.btn-default {
-  background-image: none;
-}
-.typo3-topbar-navigation .btn.btn-default.disabled,
-.typo3-topbar-navigation .btn.btn-default[disabled],
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-default,
-.typo3-topbar-navigation .btn.btn-default.disabled:hover,
-.typo3-topbar-navigation .btn.btn-default[disabled]:hover,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-default:hover,
-.typo3-topbar-navigation .btn.btn-default.disabled:focus,
-.typo3-topbar-navigation .btn.btn-default[disabled]:focus,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-default:focus,
-.typo3-topbar-navigation .btn.btn-default.disabled.focus,
-.typo3-topbar-navigation .btn.btn-default[disabled].focus,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-default.focus,
-.typo3-topbar-navigation .btn.btn-default.disabled:active,
-.typo3-topbar-navigation .btn.btn-default[disabled]:active,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-default:active,
-.typo3-topbar-navigation .btn.btn-default.disabled.active,
-.typo3-topbar-navigation .btn.btn-default[disabled].active,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-default.active {
-  background-color: #828282;
-  border-color: #757575;
-}
-.typo3-topbar-navigation .btn.btn-default .badge {
-  color: #828282;
-  background-color: #ffffff;
-}
-.typo3-topbar-navigation .btn.btn-success {
-  color: #ffffff;
-  background-color: #1eb941;
-  border-color: #1aa339;
-}
-.typo3-topbar-navigation .btn.btn-success:hover,
-.typo3-topbar-navigation .btn.btn-success:focus,
-.typo3-topbar-navigation .btn.btn-success.focus,
-.typo3-topbar-navigation .btn.btn-success:active,
-.typo3-topbar-navigation .btn.btn-success.active,
-.open > .dropdown-toggle.typo3-topbar-navigation .btn.btn-success {
-  color: #ffffff;
-  background-color: #178d32;
-  border-color: #126e27;
-}
-.typo3-topbar-navigation .btn.btn-success:active,
-.typo3-topbar-navigation .btn.btn-success.active,
-.open > .dropdown-toggle.typo3-topbar-navigation .btn.btn-success {
-  background-image: none;
-}
-.typo3-topbar-navigation .btn.btn-success.disabled,
-.typo3-topbar-navigation .btn.btn-success[disabled],
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-success,
-.typo3-topbar-navigation .btn.btn-success.disabled:hover,
-.typo3-topbar-navigation .btn.btn-success[disabled]:hover,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-success:hover,
-.typo3-topbar-navigation .btn.btn-success.disabled:focus,
-.typo3-topbar-navigation .btn.btn-success[disabled]:focus,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-success:focus,
-.typo3-topbar-navigation .btn.btn-success.disabled.focus,
-.typo3-topbar-navigation .btn.btn-success[disabled].focus,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-success.focus,
-.typo3-topbar-navigation .btn.btn-success.disabled:active,
-.typo3-topbar-navigation .btn.btn-success[disabled]:active,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-success:active,
-.typo3-topbar-navigation .btn.btn-success.disabled.active,
-.typo3-topbar-navigation .btn.btn-success[disabled].active,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-success.active {
-  background-color: #1eb941;
-  border-color: #1aa339;
-}
-.typo3-topbar-navigation .btn.btn-success .badge {
-  color: #1eb941;
-  background-color: #ffffff;
-}
-.typo3-topbar-navigation .btn.btn-danger {
-  color: #ffffff;
-  background-color: #c83c3c;
-  border-color: #b73434;
-}
-.typo3-topbar-navigation .btn.btn-danger:hover,
-.typo3-topbar-navigation .btn.btn-danger:focus,
-.typo3-topbar-navigation .btn.btn-danger.focus,
-.typo3-topbar-navigation .btn.btn-danger:active,
-.typo3-topbar-navigation .btn.btn-danger.active,
-.open > .dropdown-toggle.typo3-topbar-navigation .btn.btn-danger {
-  color: #ffffff;
-  background-color: #a32e2e;
-  border-color: #872626;
-}
-.typo3-topbar-navigation .btn.btn-danger:active,
-.typo3-topbar-navigation .btn.btn-danger.active,
-.open > .dropdown-toggle.typo3-topbar-navigation .btn.btn-danger {
-  background-image: none;
-}
-.typo3-topbar-navigation .btn.btn-danger.disabled,
-.typo3-topbar-navigation .btn.btn-danger[disabled],
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger,
-.typo3-topbar-navigation .btn.btn-danger.disabled:hover,
-.typo3-topbar-navigation .btn.btn-danger[disabled]:hover,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger:hover,
-.typo3-topbar-navigation .btn.btn-danger.disabled:focus,
-.typo3-topbar-navigation .btn.btn-danger[disabled]:focus,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger:focus,
-.typo3-topbar-navigation .btn.btn-danger.disabled.focus,
-.typo3-topbar-navigation .btn.btn-danger[disabled].focus,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.focus,
-.typo3-topbar-navigation .btn.btn-danger.disabled:active,
-.typo3-topbar-navigation .btn.btn-danger[disabled]:active,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger:active,
-.typo3-topbar-navigation .btn.btn-danger.disabled.active,
-.typo3-topbar-navigation .btn.btn-danger[disabled].active,
-fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.active {
-  background-color: #c83c3c;
-  border-color: #b73434;
-}
-.typo3-topbar-navigation .btn.btn-danger .badge {
-  color: #c83c3c;
-  background-color: #ffffff;
 }
 .typo3-topbar-navigation .shortcut {
   min-width: 180px;
@@ -12445,9 +10824,9 @@ fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.active {
   font-size: 11px;
   line-height: 1.5;
   border-radius: 2px;
-  color: #ffffff;
-  background-color: #828282;
-  border-color: #757575;
+  color: #333333;
+  background-color: #eeeeee;
+  border-color: #cccccc;
   height: auto!important;
 }
 .live-search-list .x-btn button:focus,
@@ -12463,7 +10842,7 @@ fieldset[disabled] .typo3-topbar-navigation .btn.btn-danger.active {
 .live-search-list .x-btn button:hover,
 .live-search-list .x-btn button:focus,
 .live-search-list .x-btn button.focus {
-  color: #ffffff;
+  color: #333333;
   text-decoration: none;
 }
 .live-search-list .x-btn button:active,
@@ -12489,9 +10868,9 @@ fieldset[disabled] .live-search-list .x-btn button {
 .live-search-list .x-btn button:active,
 .live-search-list .x-btn button.active,
 .open > .dropdown-toggle.live-search-list .x-btn button {
-  color: #ffffff;
-  background-color: #696969;
-  border-color: #575757;
+  color: #333333;
+  background-color: #d5d5d5;
+  border-color: #adadad;
 }
 .live-search-list .x-btn button:active,
 .live-search-list .x-btn button.active,
@@ -12516,12 +10895,12 @@ fieldset[disabled] .live-search-list .x-btn button:active,
 .live-search-list .x-btn button.disabled.active,
 .live-search-list .x-btn button[disabled].active,
 fieldset[disabled] .live-search-list .x-btn button.active {
-  background-color: #828282;
-  border-color: #757575;
+  background-color: #eeeeee;
+  border-color: #cccccc;
 }
 .live-search-list .x-btn button .badge {
-  color: #828282;
-  background-color: #ffffff;
+  color: #eeeeee;
+  background-color: #333333;
 }
 .live-search-list .search-item-type {
   padding: 5px 20px 5px 0px;
@@ -12546,22 +10925,6 @@ fieldset[disabled] .live-search-list .x-btn button.active {
   margin-top: 0.5em;
   margin-bottom: 0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Sys notes
-- - - - - - - - - - - - - - - - - - - - - */
-/* Should be added by sys_note only when necessary */
 #typo3-dblist-sysnotes {
   margin-top: 15px;
 }
@@ -12627,22 +10990,6 @@ Sys notes
 #typo3-dblist-sysnotes .single-note:hover .header span {
   color: #d7d7d7;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
--New Record Wizard
-- - - -- - - - - - - - - - - - - - - - - */
-/* Should be added by NewContentElementController only when necessary */
 .contentelement-wizard li {
   margin-bottom: 10px;
 }
@@ -12657,21 +11004,454 @@ Sys notes
 .contentelement-wizard a {
   display: inline-block;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Move Element
-- - - - - - - - - - - - - - - - - - - - - */
+#typo3-extension-main-menu .tabs ul,
+#typo3-extension-configuration-forms .tabs ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: -1px;
+}
+#typo3-extension-main-menu .tabs ul:before,
+#typo3-extension-configuration-forms .tabs ul:before,
+#typo3-extension-main-menu .tabs ul:after,
+#typo3-extension-configuration-forms .tabs ul:after {
+  content: " ";
+  display: table;
+}
+#typo3-extension-main-menu .tabs ul:after,
+#typo3-extension-configuration-forms .tabs ul:after {
+  clear: both;
+}
+#typo3-extension-main-menu .tabs ul:before,
+#typo3-extension-configuration-forms .tabs ul:before,
+#typo3-extension-main-menu .tabs ul:after,
+#typo3-extension-configuration-forms .tabs ul:after {
+  content: " ";
+  display: table;
+}
+#typo3-extension-main-menu .tabs ul:after,
+#typo3-extension-configuration-forms .tabs ul:after {
+  clear: both;
+}
+#typo3-extension-main-menu .tabs ul > li,
+#typo3-extension-configuration-forms .tabs ul > li {
+  cursor: pointer;
+}
+#typo3-extension-main-menu .tabs ul > li.ui-tabs-active a,
+#typo3-extension-configuration-forms .tabs ul > li.ui-tabs-active a,
+#typo3-extension-main-menu .tabs ul > li a.current,
+#typo3-extension-configuration-forms .tabs ul > li a.current {
+  background: white;
+  color: black;
+  border-bottom: 0;
+  padding-top: 4px;
+  cursor: default;
+}
+#typo3-extension-main-menu .tabs ul > li a,
+#typo3-extension-configuration-forms .tabs ul > li a {
+  border-radius: 4px 4px 0 0;
+  float: left;
+  height: 22px;
+  background: #dadada;
+  padding: 4px 15px;
+  margin-top: -1px;
+  margin-right: 2px;
+  border: 1px solid #adadad;
+  color: #606060;
+  outline: none;
+}
+#typo3-extension-main-menu .tabs ul > li a:hover,
+#typo3-extension-configuration-forms .tabs ul > li a:hover {
+  background-color: #eee;
+  border-color: #adadad;
+  color: #606060;
+}
+.typo3-extension-list .ext-icon {
+  max-height: 16px;
+  width: auto;
+}
+.typo3-extensionmanager-headerRowLeft {
+  float: left;
+}
+.typo3-extensionmanager-headerRowRight {
+  float: right;
+}
+.ui-toolbar {
+  margin-bottom: 5px;
+}
+.ui-toolbar .dataTables_filter {
+  float: left;
+}
+.dataTables_info {
+  display: none;
+}
+.dataTables_paginate {
+  float: left;
+  margin: 10px 0 0;
+}
+.uploadForm {
+  background-color: #ededed;
+  border-top: 1px solid #cdcdcd;
+  border-bottom: 1px solid #cdcdcd;
+  padding: 12px;
+  margin-bottom: 24px;
+}
+.uploadForm form .control-group {
+  clear: both;
+  margin-bottom: 5px;
+}
+.uploadForm form label {
+  float: left;
+  height: 20px;
+  padding: 4px 0;
+  line-height: 20px;
+  width: 90px;
+}
+.uploadForm form .control {
+  min-height: 20px;
+  padding: 4px 0;
+  margin-left: 110px;
+}
+.distribution {
+  border: 1px solid #cfcfcf;
+  background-color: #f5f5f5;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 300px;
+  float: left;
+}
+.distribution:hover {
+  background-color: #ededed;
+}
+.distribution:hover .distribution-hover {
+  top: 0px;
+  opacity: 1;
+}
+.distribution:hover .distribution-more {
+  text-decoration: underline;
+}
+.distribution-holder {
+  top: 0px;
+  bottom: 0px;
+  margin-left: -20px;
+}
+.distribution-holder:before,
+.distribution-holder:after {
+  content: " ";
+  display: table;
+}
+.distribution-holder:after {
+  clear: both;
+}
+.distribution-holder:before,
+.distribution-holder:after {
+  content: " ";
+  display: table;
+}
+.distribution-holder:after {
+  clear: both;
+}
+.distribution-image {
+  position: relative;
+  width: 300px;
+  height: 225px;
+  overflow: hidden;
+}
+.distribution-image img {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.distribution-hover {
+  background-color: #f5f5f5;
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  width: 300px;
+  height: 225px;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.distribution-hover-inner {
+  padding: 15px;
+}
+.distribution-meta {
+  border-top: 1px solid #dcdcdc;
+  padding: 15px;
+}
+.distribution-meta .distribution-title {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+.distribution-meta .distribution-install {
+  margin-top: 0.5em;
+}
+.distribution-meta .distribution-official {
+  border: 1px solid #0078e6;
+  background-color: #0078e6;
+  border-radius: 2px;
+  display: inline-block;
+  padding: 3px 8px;
+  vertical-align: middle;
+  color: #FFFFFF;
+}
+.distribution-detail-flashmessage {
+  margin-bottom: 2.5em;
+}
+.distribution-detail-flashmessage p {
+  padding-bottom: 0;
+}
+.distribution-detail {
+  min-width: 750px;
+}
+.distribution-detail:before,
+.distribution-detail:after {
+  content: " ";
+  display: table;
+}
+.distribution-detail:after {
+  clear: both;
+}
+.distribution-detail:before,
+.distribution-detail:after {
+  content: " ";
+  display: table;
+}
+.distribution-detail:after {
+  clear: both;
+}
+.distribution-detail-previewpane {
+  float: left;
+  margin-right: 30px;
+}
+.distribution-detail-preview {
+  display: block;
+  border: 1px solid #cfcfcf;
+}
+.distribution-detail-body {
+  overflow: hidden;
+  zoom: 1;
+}
+.distribution-detail-header {
+  margin-bottom: 2.5em;
+}
+.distribution-detail-header h1 {
+  margin-bottom: 0.5em;
+}
+.distribution-detail-header p {
+  padding: 0px;
+  max-width: 500px;
+  margin-bottom: 1.25em;
+}
+.distribution-detail-summary {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+.distribution-installed hr {
+  margin: 2.5em 0;
+  border: 0;
+  border-top: 1px solid #cfcfcf;
+}
+.ui-widget-header {
+  background: none;
+  border: none;
+  font-weight: normal;
+}
+.dataTables_info {
+  font-size: 10px;
+  color: #444;
+  float: left;
+}
+.paging_two_button .ui-button {
+  float: left;
+  cursor: pointer;
+}
+.paging_full_numbers .ui-button {
+  padding: 2px 6px;
+  margin: 0;
+  cursor: pointer;
+  color: #333 !important;
+}
+.dataTables_paginate .ui-button {
+  margin-right: -0.1em !important;
+}
+.paging_full_numbers {
+  float: right;
+}
+.dataTables_paginate {
+  width: auto;
+}
+#typo3-extension-configuration-forms {
+  min-width: 400px;
+  max-width: 900px;
+}
+#typo3-extension-configuration-forms .category {
+  background-repeat: repeat-x;
+  background-color: #fff;
+  border: 1px solid #adadad;
+  padding: 15px;
+}
+#typo3-extension-configuration-forms .group {
+  margin-bottom: 30px;
+}
+#typo3-extension-configuration-forms .group label {
+  display: block;
+  padding-bottom: 10px;
+}
+#typo3-extension-configuration-forms .group input[type=text] {
+  width: 300px;
+}
+#typo3-extension-configuration-forms #typo3-docheader-row2 .back {
+  float: right;
+}
+#typo3-extension-configuration-forms input.submit {
+  margin-top: 10px;
+}
+#typo3-extension-configuration-forms .error,
+#typo3-extension-configuration-forms .invalid {
+  border-radius: 0 4px 4px 0;
+  -webkit-box-shadow: 0 0 6px #dddddd;
+  box-shadow: 0 0 6px #dddddd;
+  height: 15px;
+  background-color: #ff2262;
+  border: 1px solid #e1e16d;
+  font-size: 11px;
+  color: #000;
+  padding: 3px 10px;
+  margin-left: -2px;
+}
+#typo3-extension-configuration-forms .info {
+  color: #666;
+  font-weight: normal;
+}
+.typo3-extension-list tr.installed td {
+  background-color: #c8ffaa;
+}
+.typo3-extension-list tr.available td {
+  background-color: #E1E1aa;
+}
+.typo3-extension-manager .insecure {
+  color: #ff2262;
+}
+.typo3-extension-manager .outdated {
+  color: #0c08ff;
+}
+.typo3-extension-manager form#extensionUploadForm {
+  margin-bottom: 0;
+}
+.typo3-extension-manager form#extensionUploadForm div.control-group:last-child {
+  margin-bottom: 0;
+}
+.typo3-extension-list .inactive {
+  color: #aaaaaa;
+}
+.headerTooltip,
+.tooltip {
+  -webkit-box-shadow: 2px 2px 11px #666666;
+  box-shadow: 2px 2px 11px #666666;
+  display: none;
+  width: 400px;
+  background-color: #ffa;
+  border: 1px solid #cc9;
+  padding: 3px;
+  font-size: 13px;
+  z-index: 1000;
+}
+.headerTooltip {
+  width: 150px;
+}
+#terTableWrapper {
+  position: relative;
+}
+#terTableWrapper .splash-receivedata {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  margin: 0 0 0 -150px;
+}
+#terTableWrapper .splash-receivedata a {
+  display: inline-block;
+  width: 200px;
+  vertical-align: top;
+  padding: 3px 20px;
+}
+#terTableWrapper .splash-receivedata.is-shown {
+  display: block;
+}
+#terTableWrapper .spinner {
+  display: inline-block;
+}
+#terTableWrapper .ui-icon {
+  width: 16px;
+  height: 16px;
+  background-image: url('../Images/ui-icons_222222_256x240.png');
+  background-position: -64px -16px;
+}
+.time-since-last-update {
+  font-weight: bold;
+  padding-right: 0.4em;
+  cursor: help;
+}
+.is-loading {
+  opacity: 0;
+}
+.is-hidden {
+  display: none;
+}
+.typo3-extension-list .t3-icon,
+.typo3-extension-list .t3-icon:hover {
+  border: none;
+  background-color: transparent;
+}
+.typo3-extension-list .author {
+  display: none;
+}
+.versions-all {
+  display: inline-block;
+  width: 20px;
+  text-indent: -200px;
+  overflow: hidden;
+}
+.currentVersionInfo {
+  padding: 0 0 20px 0;
+}
+.currentVersionInfo td {
+  padding: 4px 0;
+}
+.currentVersionInfo th {
+  font-weight: normal;
+  color: #8c8c8c;
+  padding: 4px 20px 4px 0;
+}
+span.ter-ext-state {
+  padding: 0 0 0 5px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+#typo3-docbody form.download {
+  margin-bottom: 0;
+}
+.typo3-extensionmanager-headerRowLeft {
+  display: inline-block;
+}
+.typo3-extensionmanager-headerRowLeft .typo3-extensionmanager-searchTerFieldWrapper {
+  display: inline-block;
+  position: relative;
+}
+.typo3-extensionmanager-headerRowLeft .typo3-extensionmanager-searchTerFieldWrapper input {
+  height: 15px;
+}
+.typo3-extensionmanager-headerRowLeft .typo3-extensionmanager-searchTerFieldWrapper .t3-icon-input-clear {
+  position: absolute;
+  right: 3px;
+  top: 4px;
+}
 table#typo3-ttContentList {
   border: 1px solid #a2aab8;
   background-color: #fff;
@@ -12686,21 +11466,6 @@ body#typo3-move-el-php img#c-recIcon {
 body#typo3-move-el-php label.t3-label-valign-top {
   vertical-align: top;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Workspace
-- - - - - - - - - - - - - - - - - - - - - */
 div.workspace-info {
   padding: 7px;
 }
@@ -12737,21 +11502,6 @@ table.ver-verElement {
   margin-right: 5px;
   float: left;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Wizards
-- - - - - - - - - - - - - - - - - - - - - */
 body#typo3-wizard-tsconfig-php {
   margin-left: 5px;
 }
@@ -12789,21 +11539,6 @@ body#typo3-wizard-rte-php table#typo3-rtewizard tr td#c-formContent {
 body#typo3-wizard-colorpicker-php p.c-head {
   margin-top: 4px;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-File > List
-- - - - - - - - - - - - - - - - - - - - - */
 table#typo3-filelist tr td div.typo3-clipCtrl {
   float: left;
 }
@@ -12811,9 +11546,6 @@ table#typo3-filelist tr td div.typo3-editCtrl {
   float: left;
   padding-right: 10px;
 }
-/* - - - - - - - - - - - - - - - - - - - - -
-File scripts
-- - - - - - - - - - - - - - - - - - - - - */
 body#typo3-file-upload-php div#c-submit,
 body#typo3-file-upload-php div#c-upload,
 body#typo3-file-upload-php div#c-override,
@@ -12835,39 +11567,9 @@ body#typo3-file-edit-php div#c-submit,
 body#typo3-file-edit-php div#c-edit {
   margin-top: 10px;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/**
- * Styling for the module User => Workspace
- */
 #typo3-mod-user-ws-index-php .typo3-dyntabmenu-divs {
   padding: 10px;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > List
-- - - - - - - - - - - - - - - - - - - - - */
 table.typo3-dblist tr.c-table-row-spacer td {
   display: none;
 }
@@ -12994,21 +11696,6 @@ div#typo3-listOptions {
   vertical-align: text-bottom !important;
   margin-right: 10px !important;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > Page
-- - - - - - - - - - - - - - - - - - - - - */
 table.t3-gridTable,
 table.t3-page-langMode {
   margin-bottom: 1.5em;
@@ -13116,21 +11803,6 @@ td.t3-page-column.t3-gridCell .t3-page-colHeader {
 tr:first-child td.t3-page-column.t3-gridCell .t3-page-colHeader {
   padding-top: 0;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-extJS icons
-- - - - - - - - - - - - - - - - - - - - - */
 .t3icon-ext-upload {
   background: url('../../../../icons/gfx/upload.gif') 3px 4px no-repeat !important;
 }
@@ -13140,21 +11812,6 @@ extJS icons
 .t3iconstyle-center {
   background-position: center center;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-TypoScript Highlighting
-- - - - - - - - - - - - - - - - - - - - - */
 pre.ts-hl {
   font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace;
 }
@@ -13199,21 +11856,6 @@ pre.ts-hl .ts-linenum {
   background-color: #eee;
   color: #212424;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Workspace
-- - - - - - - - - - - - - - - - - - - - - */
 #typo3-pagetree .workspace-info {
   background-color: #ffec97;
   font-weight: bold;
@@ -13300,21 +11942,6 @@ table.ver-subtree tr.typo3-ver-noComp td {
 .ver-wl-current-user {
   font-weight: bold;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-File > List
-- - - - - - - - - - - - - - - - - - - - - */
 table#typo3-filelist tr td div.typo3-clipCtrl,
 table#typo3-filelist tr td div.typo3-editCtrl {
   text-align: center;
@@ -13419,21 +12046,6 @@ div.t3-upload-queue-progress {
 .error .t3-upload-queue-progress-bar {
   background-color: #BF383F;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-File Upload Window
-- - - - - - - - - - - - - - - - - - - - - */
 .t3icon-ext-upload {
   background: url('../../../../icons/gfx/upload.gif') 1px 1px no-repeat !important;
 }
@@ -13444,86 +12056,6 @@ File Upload Window
   text-align: left;
   text-indent: 6px;
 }
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > Info
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-page-sysnote tr td {
-  background-color: #d9d5c9;
-}
-table.typo3-page-sysnote tr td.c-headLine {
-  background-color: #c5c1b5;
-}
-table#langTable td.c-blocked {
-  background-color: #f6d3cf;
-}
-table#langTable td.c-ok {
-  background-color: #cdeaca;
-}
-table#langTable td.c-leftLine {
-  border-left: 1px solid #a2aab8;
-}
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > List
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {
-  font-weight: bold;
-  line-height: 16px;
-  text-align: center;
-}
-table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-multipleVersions {
-  background-color: #ffff00;
-}
-table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-oneVersion {
-  background-color: #9999cc;
-}
-#db_list-searchbox-toolbar {
-  padding: 5px;
-}
-#db_list-searchbox-toolbar .container {
-  width: 100%;
-}
-#db_list-searchbox-toolbar input.btn-block {
-  margin-top: 23px;
-}
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-/* - - - - - - - - - - - - - - - - - - - - -
-Web > Page
-- - - - - - - - - - - - - - - - - - - - - */
 .t3-page-langMode {
   width: 100%;
 }

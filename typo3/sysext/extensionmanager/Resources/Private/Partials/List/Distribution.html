@@ -9,7 +9,7 @@
 			/>
 		<div class="distribution-hover">
 			<div class="distribution-hover-inner">
-				<dl class="description-horizontal">
+				<dl class="dl-horizontal">
 					 <dt><f:translate key="extensionList.distribution.title" /></dt>
 					<dd>{distribution.title}</dd>
 					<dt><f:translate key="extensionList.distribution.key" /></dt>
@@ -30,7 +30,7 @@
 			</f:link.action>
 		</h2>
 		<div class="distribution-install">
-			<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="t3-button t3-button-action-installdistribution">
+			<f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="btn btn-default t3-button-action-installdistribution">
 				<span class="fa fa-cloud-download">&nbsp;</span><f:translate key="extensionList.installDistribution">Install</f:translate>
 			</f:link.action>
 			<f:if condition="{official}">

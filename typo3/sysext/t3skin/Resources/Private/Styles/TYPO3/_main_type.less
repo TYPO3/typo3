@@ -1,0 +1,22 @@
+//
+// Horizontal description lists
+//
+
+.dl-horizontal {
+	@media (min-width: @grid-float-breakpoint) {
+		dt {
+			text-align: left;
+		}
+	}
+}
+
+.dl-horizontal-wide {
+	@media (min-width: @grid-float-breakpoint) {
+		dt {
+			width: (@dl-horizontal-offset * 1.5 - 20);
+		}
+		dd {
+			margin-left: @dl-horizontal-offset * 1.5;
+		}
+	}
+}

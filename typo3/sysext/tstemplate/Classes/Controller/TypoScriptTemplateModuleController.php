@@ -201,7 +201,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-			$table = '<div class="table-fit"><table class="t3-table" id="ts-overview">' .
+			$table = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-overview">' .
 					'<thead>' .
 					'<tr>' .
 					'<th>' . $GLOBALS['LANG']->getLL('pageName') . '</th>' .
@@ -366,20 +366,27 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				$staticsText = '';
 			}
 			// Extension?
-			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br /><br />' . $selector . '<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '" />', 0, 1);
+			$theOutput .= $this->doc->section(
+				$GLOBALS['LANG']->getLL('newWebsite') . $staticsText,
+				'<p>' . $GLOBALS['LANG']->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '" />',
+				0, 1);
 		}
 		// Extension?
-		$theOutput .= $this->doc->spacer(10);
-		$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('extTemplate'), $GLOBALS['LANG']->getLL('extTemplateDescription') . '<br /><br />' . '<input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '" />', 0, 1);
+		$theOutput .= $this->doc->section(
+			$GLOBALS['LANG']->getLL('extTemplate'),
+			'<p>' . $GLOBALS['LANG']->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '" />',
+			0, 1);
 		// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
 		if ($first) {
-			$theOutput .= $this->doc->spacer(10);
 			$urlParameters = array(
 				'id' => $first['uid']
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('goToClosest'), sprintf($GLOBALS['LANG']->getLL('goToClosestDescription') . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction') . '</strong>%s', htmlspecialchars($first['title']), $first['uid'], '<a href="' . htmlspecialchars($aHref) . '">', '</a>'), 0, 1);
+			$theOutput .= $this->doc->section(
+				$GLOBALS['LANG']->getLL('goToClosest'),
+				sprintf('<p>' .$GLOBALS['LANG']->getLL('goToClosestDescription') . '</p>%s' . $GLOBALS['LANG']->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>'),
+				0, 1);
 		}
 		return $theOutput;
 	}

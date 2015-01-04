@@ -82,7 +82,7 @@ class DatabaseIntegrityView {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/dbint.html');
 		$this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
-		$this->doc->table_TABLE = '<table class="t3-table">
+		$this->doc->table_TABLE = '<table class="table table-striped table-hover">
 			<colgroup><col width="24"><col><col width="150"></colgroup>';
 		$this->doc->tableLayout = array(
 			'0' => array(
@@ -298,7 +298,7 @@ class DatabaseIntegrityView {
 
 		// Output content:
 		$content = '<p class="lead">' . $GLOBALS['LANG']->getLL('referenceIndex_description') . '</p>';
-		$content .= '<input type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonCheck') . '" /> <input type="submit" name="_update" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonUpdate') . '" /><br /><br />';
+		$content .= '<input class="btn btn-default" type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonCheck') . '" /> <input class="btn btn-default" type="submit" name="_update" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonUpdate') . '" /><br /><br />';
 		$this->content .= $this->doc->section('', $content, FALSE, TRUE);
 
 		// Command Line Interface

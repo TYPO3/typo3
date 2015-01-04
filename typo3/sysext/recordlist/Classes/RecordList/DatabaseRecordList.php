@@ -632,7 +632,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					' . $tableHeader . '
 					</div>
 					<div class="table-fit">
-						<table data-table="' . htmlspecialchars($table) . '" class="table table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
+						<table data-table="' . htmlspecialchars($table) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
 							' . $out . '
 						</table>
 					</div>
@@ -1585,17 +1585,20 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				';
 		// Table with the field selector::
 		$content = $formElements[0] . '
-
-				<!--
-					Field selector for extended table view:
-				-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-dblist-fieldSelect">
-					<tr>
-						<td>' . $lMenu . '</td>
-						<td><input type="submit" name="search" value="'
-			. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.setFields', TRUE) . '" /></td>
-					</tr>
-				</table>
+			<!--
+				Field selector for extended table view:
+			-->
+			<table border="0" cellpadding="0" cellspacing="0" id="typo3-dblist-fieldSelect">
+				<tr>
+					<td>
+						' . $lMenu . '
+					</td>
+					<td>
+						<input class="btn btn-default" type="submit" name="search" value="'
+						. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.setFields', TRUE) . '" />
+					</td>
+				</tr>
+			</table>
 			' . $formElements[1];
 		return '<div class="db_list-fieldSelect">' . $content . '</div>';
 	}

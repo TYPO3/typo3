@@ -2473,7 +2473,7 @@ class BackendUtility {
 			}
 		}
 		$out = implode('', $lines);
-		$out .= '<input type="submit" name="submit" value="Update configuration" />';
+		$out .= '<input class="btn btn-default" type="submit" name="submit" value="Update configuration" />';
 		return $out;
 	}
 

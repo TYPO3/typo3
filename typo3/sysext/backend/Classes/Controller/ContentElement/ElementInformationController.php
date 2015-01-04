@@ -288,7 +288,7 @@ class ElementInformationController {
 
 			// Download
 			if ($url) {
-				$downloadLink .= '<a href="' . htmlspecialchars($url) . '" target="_blank" class="t3-button">' .
+				$downloadLink .= '<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">' .
 						IconUtility::getSpriteIcon('actions-edit-download') . ' ' .
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
 						'</a>';
@@ -370,7 +370,7 @@ class ElementInformationController {
 				</tr>';
 		}
 
-		return '<table class="t3-table">' . implode('', $tableRows) . '</table>';
+		return '<table class="table table-striped table-hover">' . implode('', $tableRows) . '</table>';
 	}
 
 	/**
@@ -441,7 +441,7 @@ class ElementInformationController {
 			return '';
 		}
 
-		return '<table id="typo3-showitem" class="t3-table-info">' .
+		return '<table id="typo3-showitem" class="table table-striped table-hover">' .
 				implode('', $tableRows) .
 				'</table>';
 	}
@@ -558,7 +558,7 @@ class ElementInformationController {
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
-			$referenceLine = '<table class="t3-table">' .
+			$referenceLine = '<table class="table table-striped table-hover">' .
 					'<thead>' . $infoDataHeader . '</thead>' .
 					'<tbody>' .
 					implode('', $infoData) .
@@ -613,7 +613,7 @@ class ElementInformationController {
 			return;
 		}
 
-		return '<table class="t3-table">' .
+		return '<table class="table table-striped table-hover">' .
 				'<thead>' . $infoDataHeader . '</thead>' .
 				'<tbody>' .
 				implode('', $infoData) .

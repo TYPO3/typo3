@@ -169,7 +169,7 @@ class Status implements ReportInterface {
 				));
 			}
 			$header = '<h2>' . $provider . '</h2>';
-			$table = '<table class="t3-table">';
+			$table = '<table class="table table-striped table-hover">';
 			$table .= '<tbody>' . $messages . '</tbody>';
 			$table .= '</table>';
 

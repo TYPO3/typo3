@@ -179,7 +179,12 @@ function updateQryForm(s) {
 	    <tr id="tx-dbal-qrygroup"><th>GROUP BY</th><td><input name="tx_dbal[GROUP]" value="' . $input['GROUP'] . '" type="text" size="30" maxsize="100" /></td></tr>
 	    <tr id="tx-dbal-qryorder"><th>ORDER BY</th><td><input name="tx_dbal[ORDER]" value="' . $input['ORDER'] . '" type="text" size="30" maxsize="100" /></td></tr>
 	    <tr id="tx-dbal-qrylimit"><th>LIMIT</th><td><input name="tx_dbal[LIMIT]" value="' . $input['LIMIT'] . '" type="text" size="30" maxsize="100" /></td></tr>
-			<tr><td></td><td style="text-align:right;"><input type="submit" value="CHECK" /></td></tr>
+		<tr>
+			<td></td>
+			<td style="text-align:right;">
+				<input class="btn btn-default" type="submit" value="CHECK" />
+			</td>
+		</tr>
 			<script type="text/javascript">
 /*<![CDATA[*/
 updateQryForm(\'' . $input['QUERY'] . '\');
@@ -203,8 +208,16 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		}
 		$out .= '<pre>' . htmlspecialchars($qry) . '</pre></td></tr>';
 		$out .= '
-			<tr class="tableheader bgColor5"><th colspan="2">RAW SQL check</th></tr>
-			<tr><td colspan="2" style="text-align:right;"><textarea name="tx_dbal[RAWSQL]" cols="60" rows="5">' . $input['RAWSQL'] . '</textarea><br /><input type="submit" value="CHECK" /></td></tr>';
+			<tr class="tableheader bgColor5">
+				<th colspan="2">RAW SQL check</th>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:right;">
+					<textarea name="tx_dbal[RAWSQL]" cols="60" rows="5">' . $input['RAWSQL'] . '</textarea>
+					<br />
+					<input class="btn btn-default" type="submit" value="CHECK" />
+				</td>
+			</tr>';
 		if (!empty($input['RAWSQL'])) {
 			$out .= '<tr class="bgColor4">';
 			$parseResult = $GLOBALS['TYPO3_DB']->SQLparser->parseSQL($input['RAWSQL']);

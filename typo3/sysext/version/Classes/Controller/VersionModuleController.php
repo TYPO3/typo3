@@ -341,7 +341,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_count') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_count') . '</td>
 					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_pid') . '">' . $GLOBALS['LANG']->getLL('tblHeader_pid') . '</td>
 					<td title="' . $GLOBALS['LANG']->getLL('tblHeaderDesc_t3ver_label') . '">' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_label') . '</td>
-					<td colspan="2"><input type="submit" name="do_diff" value="' . $GLOBALS['LANG']->getLL('diff') . '" /></td>
+					<td colspan="2"><input class="btn btn-default" type="submit" name="do_diff" value="' . $GLOBALS['LANG']->getLL('diff') . '" /></td>
 				</tr>';
 		$versions = BackendUtility::selectVersionsOfRecord($this->table, $this->uid, '*', $GLOBALS['BE_USER']->workspace);
 		foreach ($versions as $row) {
@@ -389,7 +389,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			<br /><input type="hidden" name="cmd[' . $this->table . '][' . $this->uid . '][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />
 			<input type="hidden" name="redirect" value="' . htmlspecialchars($this->REQUEST_URI) . '" />
-			<input type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('createNewVersion') . '" />
+			<input class="btn btn-default" type="submit" name="_" value="' . $GLOBALS['LANG']->getLL('createNewVersion') . '" />
 			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 			</form>
 

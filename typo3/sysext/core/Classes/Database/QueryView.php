@@ -71,7 +71,8 @@ class QueryView {
 	public function form() {
 		$out = '
 		Search Word:<BR>
-		<input type="search" name="SET[sword]" value="' . htmlspecialchars($GLOBALS['SOBE']->MOD_SETTINGS['sword']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '><input type="submit" name="submit" value="Search All Records">
+		<input type="search" name="SET[sword]" value="' . htmlspecialchars($GLOBALS['SOBE']->MOD_SETTINGS['sword']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '>
+		<input class="btn btn-default" type="submit" name="submit" value="Search All Records">
 		';
 		return $out;
 	}
@@ -103,8 +104,19 @@ class QueryView {
 		$TDparams = ' nowrap="nowrap" class="bgColor4"';
 		$tmpCode = '
 		<table border="0" cellpadding="3" cellspacing="1">
-		<tr' . $TDparams . '><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">' . implode(LF, $opt) . '</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>
-		<tr' . $TDparams . '><td nowrap><input name="storeControl[title]" value="" type="text" max="80"' . $GLOBALS['SOBE']->doc->formWidth() . '><input type="submit" name="storeControl[SAVE]" value="Save" onClick="if (document.forms[0][\'storeControl[STORE]\'].options[document.forms[0][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing query in this action?\');"><input type="submit" name="storeControl[REMOVE]" value="Remove"></td></tr>
+			<tr' . $TDparams . '>
+				<td>
+					<select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">' . implode(LF, $opt) . '</select>
+					<input class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load">
+				</td>
+			</tr>
+			<tr' . $TDparams . '>
+				<td nowrap>
+					<input name="storeControl[title]" value="" type="text" max="80"' . $GLOBALS['SOBE']->doc->formWidth() . '>
+					<input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save" onClick="if (document.forms[0][\'storeControl[STORE]\'].options[document.forms[0][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing query in this action?\');">
+					<input class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove">
+				</td>
+			</tr>
 		</table>
 		';
 		return $tmpCode;
@@ -406,7 +418,7 @@ class QueryView {
 				if (count($rowArr)) {
 					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="fixed-font">' . GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
 					if (!$this->noDownloadB) {
-						$out .= '<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
+						$out .= '<br><input class="btn btn-default" type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
 					}
 					// Downloads file:
 					if (GeneralUtility::_GP('download_file')) {

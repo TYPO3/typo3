@@ -379,12 +379,12 @@ class ModuleSettings {
 			// Load button
 			if (in_array('load', $showElements)) {
 				$code .= '
-					<input type="submit" name="storeControl[LOAD]" value="Load" /> ';
+					<input class="btn btn-default" type="submit" name="storeControl[LOAD]" value="Load" /> ';
 			}
 			// Remove button
 			if (in_array('remove', $showElements)) {
 				$code .= '
-					<input type="submit" name="storeControl[REMOVE]" value="Remove" /> ';
+					<input class="btn btn-default" type="submit" name="storeControl[REMOVE]" value="Remove" /> ';
 			}
 			$codeTD[] = '<td width="1%">Preset:</td>';
 			$codeTD[] = '<td nowrap="nowrap">' . $code . '&nbsp;&nbsp;</td>';
@@ -393,7 +393,7 @@ class ModuleSettings {
 		if (in_array('save', $showElements)) {
 			$onClick = !$storedEntries ? '' : 'if (document.forms[\'' . $this->formName . '\'][\'storeControl[STORE]\'].options[document.forms[\'' . $this->formName . '\'][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing entry?\');';
 			$code = '<input name="storeControl[title]" value="" type="text" max="80" width="25"> ';
-			$code .= '<input type="submit" name="storeControl[SAVE]" value="Save" onClick="' . htmlspecialchars($onClick) . '" />';
+			$code .= '<input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save" onClick="' . htmlspecialchars($onClick) . '" />';
 			$codeTD[] = '<td nowrap="nowrap">' . $code . '</td>';
 		}
 		$codeTD = implode('

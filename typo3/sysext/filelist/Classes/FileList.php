@@ -380,7 +380,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			File list table:
 		-->
 			<div class="table-fit">
-				<table class="table table-hover" id="typo3-filelist">
+				<table class="table table-striped table-hover" id="typo3-filelist">
 					' . $out . '
 				</table>
 			</div>';

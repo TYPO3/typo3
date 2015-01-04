@@ -94,7 +94,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 			)
 		);
 		LoginRefresh.$timeoutModal.find('.modal-footer').append(
-			$('<button />', {class: 't3-button', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
+			$('<button />', {class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
 					method: 'GET',
@@ -103,7 +103,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 					}
 				});
 			}),
-			$('<button />', {class: 't3-button', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
+			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
 				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + 'logout.php';
 			})
 		);
@@ -193,8 +193,8 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 			)
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
-			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 't3-button', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button),
-			$('<button />', {class: 't3-button', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
+			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button),
+			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
 				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + 'logout.php';
 			})
 		);

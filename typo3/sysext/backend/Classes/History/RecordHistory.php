@@ -449,7 +449,7 @@ class RecordHistory {
 			<!--
 				History (list):
 			-->
-			<table class="t3-table" id="typo3-history">
+			<table class="table table-striped table-hover" id="typo3-history">
 				' . implode('', $lines) . '
 			</table>';
 		if ($this->lastSyslogId) {

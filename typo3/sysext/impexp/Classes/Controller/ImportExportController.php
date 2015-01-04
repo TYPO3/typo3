@@ -669,7 +669,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				<tr class="bgColor4">
 					<td>&nbsp;</td>
 					<td>
-						<input type="submit" value="' . $this->lang->getLL('makeadvanc_update', TRUE) . '" />
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makeadvanc_update', TRUE) . '" />
 						<input type="hidden" name="tx_impexp[download_export_name]" value="' . substr($nameSuggestion, 0, 30) . '" />
 					</td>
 				</tr>';
@@ -727,7 +727,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				<tr class="bgColor4">
 					<td>&nbsp;</td>
 					<td>
-						<input type="submit" value="' . $this->lang->getLL('makesavefo_update', TRUE) . '" />
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_update', TRUE) . '" />
 						<input type="hidden" name="tx_impexp[download_export_name]" value="" />
 					</td>
 				</tr>';
@@ -765,10 +765,10 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						' . $this->lang->getLL('makesavefo_selectPreset', TRUE) . '<br/>
 						' . $this->renderSelectBox('preset[select]', '', $opt) . '
 						<br/>
-						<input type="submit" value="' . $this->lang->getLL('makesavefo_load', TRUE) . '" name="preset[load]" />
-						<input type="submit" value="' . $this->lang->getLL('makesavefo_save', TRUE) . '" name="preset[save]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
-						<input type="submit" value="' . $this->lang->getLL('makesavefo_delete', TRUE) . '" name="preset[delete]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
-						<input type="submit" value="' . $this->lang->getLL('makesavefo_merge', TRUE) . '" name="preset[merge]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_load', TRUE) . '" name="preset[load]" />
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_save', TRUE) . '" name="preset[save]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_delete', TRUE) . '" name="preset[delete]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_merge', TRUE) . '" name="preset[merge]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
 						<br/>
 						' . $this->lang->getLL('makesavefo_titleOfNewPreset', TRUE) . '
 						<input type="text" name="tx_impexp[preset][title]" value="'
@@ -833,24 +833,28 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				. htmlspecialchars($inData['filename']) . '"' . $this->doc->formWidth(30) . ' /><br/>';
 		}
 		$row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makesavefo_fileFormat', TRUE) . '</strong>'
-						. BackendUtility::cshItem('xMOD_tx_impexp', 'fileFormat') . '</td>
-					<td>' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
+				<tr>
+					<td>
+						<strong>' . $this->lang->getLL('makesavefo_fileFormat', TRUE) . '</strong>'
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'fileFormat') . '
+					</td>
+					<td>
+						' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
 						' . $this->lang->getLL('makesavefo_maxSizeOfFiles', TRUE) . '<br/>
-						<input type="text" name="tx_impexp[maxFileSize]" value="'
-				. htmlspecialchars($inData['maxFileSize']) . '"' . $this->doc->formWidth(10) . ' /><br/>
+						<input type="text" name="tx_impexp[maxFileSize]" value="' . htmlspecialchars($inData['maxFileSize']) . '"' . $this->doc->formWidth(10) . ' />
+						<br/>
 						' . $fileName . '
 					</td>
 				</tr>';
 		// Add buttons:
 		$row[] = '
-				<tr class="bgColor4">
+				<tr>
 					<td>&nbsp;</td>
-					<td><input type="submit" value="' . $this->lang->getLL('makesavefo_update', TRUE)
-						. '" /> - <input type="submit" value="' . $this->lang->getLL('makesavefo_downloadExport', TRUE)
-						. '" name="tx_impexp[download_export]" />' . ($saveFolder ? ' - <input type="submit" value="'
-						. $this->lang->getLL('importdata_saveToFilename', TRUE) . '" name="tx_impexp[save_export]" />' : '') . '</td>
+					<td>
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_update', TRUE) . '" /> -
+						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_downloadExport', TRUE) . '" name="tx_impexp[download_export]" />
+						' . ($saveFolder ? ' - <input class="btn btn-default" type="submit" value="' . $this->lang->getLL('importdata_saveToFilename', TRUE) . '" name="tx_impexp[save_export]" />' : '') . '
+					</td>
 				</tr>';
 	}
 
@@ -900,35 +904,49 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			foreach ($exportFiles as $file) {
 				$selectOptions[$file->getCombinedIdentifier()] = $file->getPublicUrl();
 			}
-			$row[] = '<tr class="bgColor5">
-					<td colspan="2"><strong>' . $this->lang->getLL('importdata_selectFileToImport', TRUE) . '</strong></td>
+			$row[] = '
+				<tr>
+					<th colspan="2">' . $this->lang->getLL('importdata_selectFileToImport', TRUE) . '</th>
 				</tr>';
 			$noCompressorAvailable = !$import->compress
 				? '<br /><span class="typo3-red">' . $this->lang->getLL('importdata_noteNoDecompressorAvailable', TRUE) . '</span>'
 				: '';
-			$row[] = '<tr class="bgColor4">
-				<td><strong>' . $this->lang->getLL('importdata_file', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'importFile') . '</td>
-				<td>' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $selectOptions) . '<br />'
-					. sprintf($this->lang->getLL('importdata_fromPathS', TRUE), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', TRUE)) .
-				$noCompressorAvailable . '</td>
+			$row[] = '
+				<tr>
+					<td valign="top">
+						' . $this->lang->getLL('importdata_file', TRUE) . ''
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'importFile') . '
+					</td>
+					<td>
+						' . $this->renderSelectBox('tx_impexp[file]', $inData['file'], $selectOptions) . '<br />'
+						. sprintf($this->lang->getLL('importdata_fromPathS', TRUE), $path ? $path->getCombinedIdentifier() : $this->lang->getLL('importdata_no_accessible_file_mount', TRUE)) .
+						$noCompressorAvailable . '
+					</td>
 				</tr>';
-			$row[] = '<tr class="bgColor5">
-					<td colspan="2"><strong>' . $this->lang->getLL('importdata_importOptions', TRUE) . '</strong></td>
+			$row[] = '
+				<tr>
+					<th colspan="2">
+						' . $this->lang->getLL('importdata_importOptions', TRUE) . '
+					</th>
 				</tr>';
-			$row[] = '<tr class="bgColor4">
-				<td><strong>' . $this->lang->getLL('importdata_update', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'update') . '</td>
-				<td>
-					<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1"'
-						. ($inData['do_update'] ? ' checked="checked"' : '') . ' />
-					<label for="checkDo_update">' . $this->lang->getLL('importdata_updateRecords', TRUE) . '</label><br/>
-				<em>(' . $this->lang->getLL('importdata_thisOptionRequiresThat', TRUE) . ')</em>' . ($inData['do_update'] ? '	<hr/>
-					<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1"'
-						. ($inData['global_ignore_pid'] ? ' checked="checked"' : '') . ' />
-					<label for="checkGlobal_ignore_pid">' . $this->lang->getLL('importdata_ignorePidDifferencesGlobally', TRUE) . '</label><br/>
-					<em>(' . $this->lang->getLL('importdata_ifYouSetThis', TRUE) . ')</em>
-					' : '') . '</td>
+			$row[] = '
+				<tr>
+					<td valign="top">
+						' . $this->lang->getLL('importdata_update', TRUE)
+						. BackendUtility::cshItem('xMOD_tx_impexp', 'update') . '
+					</td>
+					<td>
+						<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1"'
+							. ($inData['do_update'] ? ' checked="checked"' : '') . ' />
+						<label for="checkDo_update">' . $this->lang->getLL('importdata_updateRecords', TRUE) . '</label>
+						<br/>
+						<em>(' . $this->lang->getLL('importdata_thisOptionRequiresThat', TRUE) . ')</em>' . ($inData['do_update'] ? '	<hr/>
+						<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1"'
+							. ($inData['global_ignore_pid'] ? ' checked="checked"' : '') . ' />
+						<label for="checkGlobal_ignore_pid">' . $this->lang->getLL('importdata_ignorePidDifferencesGlobally', TRUE) . '</label><br/>
+						<em>(' . $this->lang->getLL('importdata_ifYouSetThis', TRUE) . ')</em>
+						' : '') . '
+					</td>
 				</tr>';
 			$allowPhpScripts = $beUser->isAdmin()
 				? '
@@ -945,36 +963,42 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						. $this->lang->getLL('importdata_force_all_UIDS', TRUE) . '</span></label><br/>
 					<em>(' . $this->lang->getLL('importdata_force_all_UIDS_descr', TRUE) . ')</em>'
 				: '';
-			$row[] = '<tr class="bgColor4">
-				<td><strong>' . $this->lang->getLL('importdata_options', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'options') . '</td>
-				<td>
-					<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"'
-						. ($inData['notShowDiff'] ? ' checked="checked"' : '') . ' />
-					<label for="checkNotShowDiff">' . $this->lang->getLL('importdata_doNotShowDifferences', TRUE) . '</label><br/>
-					<em>(' . $this->lang->getLL('importdata_greenValuesAreFrom', TRUE) . ')</em>
-					<br/><br/>
+			$row[] = '<tr>
+					<td valign="top">
+						' . $this->lang->getLL('importdata_options', TRUE) . BackendUtility::cshItem('xMOD_tx_impexp', 'options') . '
+					</td>
+					<td>
+						<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"'
+							. ($inData['notShowDiff'] ? ' checked="checked"' : '') . ' />
+						<label for="checkNotShowDiff">' . $this->lang->getLL('importdata_doNotShowDifferences', TRUE) . '</label><br/>
+						<em>(' . $this->lang->getLL('importdata_greenValuesAreFrom', TRUE) . ')</em>
+						<br/><br/>
 
-					' . $allowPhpScripts . $doUpdate . '
-				</td>
+						' . $allowPhpScripts . $doUpdate . '
+					</td>
 				</tr>';
 			$newImport = !$inData['import_file']
-				? '<input type="submit" value="' . $this->lang->getLL('importdata_preview', TRUE) . '" />' . ($inData['file']
-					? ' - <input type="submit" value="' . ($inData['do_update']
+				? '<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('importdata_preview', TRUE) . '" />' . ($inData['file']
+					? ' - <input class="btn btn-default" type="submit" value="' . ($inData['do_update']
 						? $this->lang->getLL('importdata_update_299e', TRUE)
 						: $this->lang->getLL('importdata_import', TRUE)) . '" name="tx_impexp[import_file]" onclick="return confirm(\''
 							. $this->lang->getLL('importdata_areYouSure', TRUE) . '\');" />'
 					: '')
-				: '<input type="submit" name="tx_impexp[new_import]" value="' . $this->lang->getLL('importdata_newImport', TRUE) . '" />';
-			$row[] = '<tr class="bgColor4">
-				<td><strong>' . $this->lang->getLL('importdata_action', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'action') . '</td>
-				<td>' . $newImport . '
-					<input type="hidden" name="tx_impexp[action]" value="import" /></td>
+				: '<input class="btn btn-default" type="submit" name="tx_impexp[new_import]" value="' . $this->lang->getLL('importdata_newImport', TRUE) . '" />';
+			$row[] = '<tr>
+					<td valign="top">
+						' . $this->lang->getLL('importdata_action', TRUE) . BackendUtility::cshItem('xMOD_tx_impexp', 'action') . '
+					</td>
+					<td>
+						' . $newImport . '
+						<input type="hidden" name="tx_impexp[action]" value="import" />
+					</td>
 				</tr>';
-			$row[] = '<tr class="bgColor4">
-				<td><strong>' . $this->lang->getLL('importdata_enableLogging', TRUE) . '</strong>'
-					. BackendUtility::cshItem('xMOD_tx_impexp', 'enableLogging') . '</td>
+			$row[] = '<tr>
+				<td valign="top">
+					' . $this->lang->getLL('importdata_enableLogging', TRUE)
+					. BackendUtility::cshItem('xMOD_tx_impexp', 'enableLogging') . '
+				</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1"'
 						. ($inData['enableLogging'] ? ' checked="checked"' : '') . ' />
@@ -995,21 +1019,23 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$tempFolder = $this->getDefaultImportExportFolder();
 			if ($tempFolder) {
 				$row = array();
-				$row[] = '<tr class="bgColor5">
-						<td colspan="2"><strong>' . $this->lang->getLL('importdata_uploadFileFromLocal', TRUE) . '</strong></td>
+				$row[] = '
+					<tr>
+						<th colspan="2">' . $this->lang->getLL('importdata_uploadFileFromLocal', TRUE) . '</th>
 					</tr>';
-				$row[] = '<tr class="bgColor4">
-						<td>' . $this->lang->getLL('importdata_browse', TRUE)
-							. BackendUtility::cshItem('xMOD_tx_impexp', 'upload') . '</td>
+				$row[] = '
+					<tr>
+						<td valign="top">
+							' . $this->lang->getLL('importdata_browse', TRUE) . BackendUtility::cshItem('xMOD_tx_impexp', 'upload') . '
+						</td>
 						<td>
-
-								<input type="file" name="upload_1"' . $this->doc->formWidth(35) . ' size="40" />
-								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder->getCombinedIdentifier()) . '" />
-								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
-
-								<input type="submit" name="_upload" value="' . $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
-								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">'
-									. $this->lang->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', TRUE) . '</label>
+							<input type="file" name="upload_1"' . $this->doc->formWidth(35) . ' size="40" />
+							<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder->getCombinedIdentifier()) . '" />
+							<input type="hidden" name="file[upload][1][data]" value="1" />
+							<br />
+							<input class="btn btn-default" type="submit" name="_upload" value="' . $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
+							<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" />
+							<label for="checkOverwriteExistingFiles">' . $this->lang->sL('LLL:EXT:lang/locallang_misc.xlf:overwriteExistingFiles', TRUE) . '</label>
 						</td>
 					</tr>';
 				if (GeneralUtility::_POST('_upload')) {

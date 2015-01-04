@@ -130,12 +130,12 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				for ($a = 0; $a < 9; $a++) {
 					$tableData[] = $this->getFormLine($a);
 				}
-				$lines[] = '<table id="formFieldContainer" class="t3-table table-fit"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table>';
-				$theCode .= '<h4>' . $this->getLanguageService()->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<input type="button" id="createNewFormFields" value="' . $this->getLanguageService()->getLL('wiz_newPages_addMoreLines') . '" />';
+				$lines[] = '<div class="table-fit"><table id="formFieldContainer" class="table table-striped table-hover"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table></div>';
+				$theCode .= '<h4>' . $this->getLanguageService()->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<input class="btn btn-default" type="button" id="createNewFormFields" value="' . $this->getLanguageService()->getLL('wiz_newPages_addMoreLines') . '" />';
 				$theCode .= '<div class="checkbox"><label for="createInListEnd"><input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />' . $this->getLanguageService()->getLL('wiz_newPages_listEnd') . '</label></div>';
 				$theCode .= '<div class="checkbox"><label for="hidePages"><input type="checkbox" name="hidePages" id="hidePages" value="1" />' . $this->getLanguageService()->getLL('wiz_newPages_hidePages') . '</label></div>';
 				$theCode .= '<div class="checkbox"><label for="hidePagesInMenus"><input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />' . $this->getLanguageService()->getLL('wiz_newPages_hidePagesInMenus') . '</label></div>';
-				$theCode .= '<input type="submit" name="create" value="' . $this->getLanguageService()->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $this->getLanguageService()->getLL('wiz_newPages_lReset') . '" />';
+				$theCode .= '<input class="btn btn-default" type="submit" name="create" value="' . $this->getLanguageService()->getLL('wiz_newPages_lCreate') . '" /> <input class="btn btn-default" type="reset" value="' . $this->getLanguageService()->getLL('wiz_newPages_lReset') . '" />';
 
 				/** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
@@ -144,12 +144,6 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				// Add inline code
 				$inlineJavaScriptCode = 'var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;';
 				$pageRenderer->addJsInlineCode('wizard_crpages', $inlineJavaScriptCode);
-
-				$pageRenderer->addCssInlineBlock(__CLASS__, '
-				#formFieldContainer {float: left; margin: 0 0 10px 0;}
-				#formFieldContainer label {width: 70px; display: inline-block;}
-				#formFieldContainer span {padding: 0 3px;}
-				');
 			}
 		} else {
 			$theCode .= GeneralUtility::makeInstance(FlashMessage::class, '', $this->getLanguageService()->getLL('wiz_newPages_errorMsg1'), FlashMessage::ERROR)->render();

@@ -305,22 +305,22 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				// Value
 				$out = '';
 				$out .= htmlspecialchars($this->pObj->sObj) . ' =<br />';
-				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
-				$out .= '<input type="Submit" name="update_value" value="' . $GLOBALS['LANG']->getLL('updateButton') . '" />';
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
+				$out .= '<input class="btn btn-default" type="submit" name="update_value" value="' . $GLOBALS['LANG']->getLL('updateButton') . '" />';
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editProperty'), $out, 0, 0);
 				// Property
 				$out = '';
 				$out = '<nobr>' . htmlspecialchars($this->pObj->sObj) . '.';
-				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /> = </nobr><br />';
-				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
-				$out .= '<input type="Submit" name="add_property" value="' . $GLOBALS['LANG']->getLL('addButton') . '" />';
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /> = </nobr><br />';
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
+				$out .= '<input class="btn btn-default" type="submit" name="add_property" value="' . $GLOBALS['LANG']->getLL('addButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('addProperty'), $out, 0, 0);
 				// clear
 				$out = '';
 				$out = htmlspecialchars($this->pObj->sObj) . ' <strong>' . $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('clear'), 'toUpper') . '</strong> &nbsp;&nbsp;';
-				$out .= '<input type="Checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
-				$out .= '<input type="Submit" name="clear_object" value="' . $GLOBALS['LANG']->getLL('clearButton') . '" />';
+				$out .= '<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
+				$out .= '<input class="btn btn-default" type="submit" name="clear_object" value="' . $GLOBALS['LANG']->getLL('clearButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('clearObject'), $out, 0, 0);
 				$theOutput .= $this->pObj->doc->spacer(10);
@@ -360,17 +360,36 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				// If any POST-vars are send, update the condition array
 				$tmpl->tsbrowser_depthKeys = $tmpl->ext_getSearchKeys($theSetup, '', GeneralUtility::_POST('search_field'), array());
 			}
-			$menu = '<div class="tsob-menu"><label>' . $GLOBALS['LANG']->getLL('browse') . '</label>';
-			$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
-			$menu .= '<label for="ts_browser_toplevel_' . $bType . '">' . $GLOBALS['LANG']->getLL('objectList') . '</label>';
-			$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
-			//search
-			$menu .= '<label for="search_field">' . $GLOBALS['LANG']->getLL('search') . '</label>';
-			$menu .= '<input type="search" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '/>';
-			$menu .= '<input type="submit" name="search" class="tsob-search-submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />';
-			$menu .= '<div class="checkbox"><label for="checkTs_browser_regexsearch">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"') . $GLOBALS['LANG']->getLL('regExp') . '</label></div>';
-			$menu .= '</div>';
-			$theOutput .= $this->pObj->doc->section('', '<nobr>' . $menu . '</nobr>');
+			$theOutput .= '
+				<div class="tsob-menu">
+					<div class="form-inline">';
+			if(is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1){
+				$theOutput .= '
+						<div class="form-group">
+							<label class="control-label">' . $GLOBALS['LANG']->getLL('browse') . '</label>'
+							. BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']). '
+						</div>';
+			}
+			if(is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1){
+				$theOutput .= '
+						<div class="form-group">
+							<label class="control-label" for="ts_browser_toplevel_' . $bType . '">' . $GLOBALS['LANG']->getLL('objectList') . '</label> '
+							. BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) . '
+						</div>';
+			}
+			$theOutput .= '
+						<div class="form-group">
+							<label class="control-label" for="search_field">' . $GLOBALS['LANG']->getLL('search') . '</label>
+							<input class="form-control" type="search" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '/>
+						</div>
+						<input class="btn btn-default tsob-search-submit" type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />
+					</div>
+					<div class="checkbox">
+						<label for="checkTs_browser_regexsearch">
+							' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"') . $GLOBALS['LANG']->getLL('regExp') . '
+						</label>
+					</div>
+				</div>';
 			$theKey = $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType];
 			if (!$theKey || !str_replace('-', '', $theKey)) {
 				$theKey = '';
@@ -438,7 +457,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					$out .= '<input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />' . $tmpl->substituteCMarkers(htmlspecialchars($val));
 					$out .= '</label></div>';
 				}
-				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input type="submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" />';
+				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" />';
 			}
 			// Ending section:
 			$theOutput .= $this->pObj->doc->sectionEnd();

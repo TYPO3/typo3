@@ -1,17 +1,11 @@
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+//
+// Tables
+//
 
-/** used in the admin tools => DB check **/
+//
+// used in the admin tools => DB check
+//
+
 .t3-overview-list dt {
 	padding: 0px 0px 2px 20px;
 
@@ -26,39 +20,37 @@
 	padding-left: 22px;
 }
 
-/**
- * Common style for tables
- *
- * <table class="t3-table>
- *   <thead>
- *     <tr>
- *       <th>...</th>
- *       <th>...</th>
- *     </tr>
- *   </thead>
- *   <tbody>
- *     <tr>
- *       <td>
- *         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
- *       </td>
- *       <td>...</td>
- *     </tr>
- *   </tbody>
- * </table>
- */
+//
+// Common style for tables
+//
+// <table class="table table-striped table-hover>
+//   <thead>
+//     <tr>
+//       <th>...</th>
+//       <th>...</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     <tr>
+//       <td>
+//         <span class="t3-icon t3-icon-treeline t3-icon-treeline-join t3-icon-join">&nbsp;</span>
+//       </td>
+//       <td>...</td>
+//     </tr>
+//   </tbody>
+// </table>
+//
 
 // Revert Bootstrap @table-bg in order to allow ExtJS and dataTable <table>
 table {
 	background: transparent;
 }
 
-/**
- * Default table styling
- **/
-.t3-table,
+//
+// Default table styling
+//
 .table {
 	background-color: @table-bg;
-	margin-bottom: 1.5em;
 	border: 1px solid @table-border-color;
 
 	* {
@@ -81,7 +73,6 @@ table {
 
 	> thead > tr {
 		background-color: darken(@table-bg, 5%);
-
 		th,
 		td {
 			border-bottom: 1px solid @table-border-color;
@@ -188,126 +179,17 @@ table {
 		white-space: nowrap;
 		text-align: right;
 	}
+
+	.col-border-left {
+		border-left: 1px solid @table-border-color;
+	}
+
 }
 
-/**
- * Copy table stylings from bootstrap
- **/
-.t3-table {
-	.table();
-	.table-striped();
-	.table-hover();
+//
+// Fits the table in the viewport and makes overflow possible
+//
 
-	// .active
-	> thead > tr,
-	> tbody > tr,
-	> tfoot > tr {
-		> td.active,
-		> th.active,
-		&.active > td,
-		&.active > th {
-			background-color: @table-bg-active;
-		}
-	}
-	> tbody > tr {
-	> td.active:hover,
-	> th.active:hover,
-		&.active:hover > td,
-		&:hover > .active,
-		&.active:hover > th {
-			background-color: darken(@table-bg-active, 5%);
-		}
-	}
-
-	// .success
-	> thead > tr,
-	> tbody > tr,
-	> tfoot > tr {
-		> td.success,
-		> th.success,
-		&.success > td,
-		&.success > th {
-			background-color: @state-success-bg;
-		}
-	}
-	> tbody > tr {
-		> td.success:hover,
-		> th.success:hover,
-		&.success:hover > td,
-		&:hover > .success,
-		&.success:hover > th {
-			background-color: darken(@state-success-bg, 5%);
-		}
-	}
-
-	// .info
-	> thead > tr,
-	> tbody > tr,
-	> tfoot > tr {
-		> td.info,
-		> th.info,
-		&.info > td,
-		&.info > th {
-			background-color: @state-info-bg;
-		}
-	}
-	> tbody > tr {
-		> td.info:hover,
-		> th.info:hover,
-		&.info:hover > td,
-		&:hover > .info,
-		&.info:hover > th {
-			background-color: darken(@state-info-bg, 5%);
-		}
-	}
-
-	// .warning
-	> thead > tr,
-	> tbody > tr,
-	> tfoot > tr {
-		> td.warning,
-		> th.warning,
-		&.warning > td,
-		&.warning > th {
-			background-color: @state-warning-bg;
-		}
-	}
-	> tbody > tr {
-		> td.warning:hover,
-		> th.warning:hover,
-		&.warning:hover > td,
-		&:hover > .warning,
-		&.warning:hover > th {
-			background-color: darken(@state-warning-bg, 5%);
-		}
-	}
-
-	// .danger
-	> thead > tr,
-	> tbody > tr,
-	> tfoot > tr {
-		> td.danger,
-		> th.danger,
-		&.danger > td,
-		&.danger > th {
-			background-color: @state-danger-bg;
-		}
-	}
-
-	> tbody > tr {
-		> td.danger:hover,
-		> th.danger:hover,
-		&.danger:hover > td,
-		&:hover > .danger,
-		&.danger:hover > th {
-			background-color: darken(@state-danger-bg, 5%);
-		}
-	}
-}
-
-/**
- * Fits the table in the viewport and makes overflow possible
- **/
 .table-fit {
 	width: 100%;
 	margin-bottom: 1.5em;
@@ -317,8 +199,7 @@ table {
 	-ms-overflow-style: -ms-autohiding-scrollbar;
 	border: 1px solid #ddd;
 
-	> .table,
-	> .t3-table {
+	> .table {
 		margin-top: 0;
 		margin-bottom: 0;
 		border: 0;

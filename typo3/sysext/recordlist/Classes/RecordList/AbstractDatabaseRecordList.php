@@ -511,7 +511,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 						</div>
 						<div class="col-xs-3 col-md-3 col-lg-3">
 							<div class="input-group">
-								<input type="submit" class="btn-block" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
+								<input type="submit" class="btn btn-default btn-block" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
 							</div>
 						</div>
 					</div>

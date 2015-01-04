@@ -22,7 +22,7 @@
 @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/mixins.less";
 
 // Reset and dependencies
-// @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/normalize.less";
+@import "@{composer-package-directory-prefix}/twbs/bootstrap/less/normalize.less";
 // @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/print.less";
 // @import "@{composer-package-directory-prefix}/twbs/bootstrap/less/glyphicons.less";
 
@@ -102,6 +102,8 @@
 
 @import "TYPO3/_deprecated.less";
 
+@import "TYPO3/_main_type.less";
+
 @import "TYPO3/_debug_panel.less";
 @import "TYPO3/_element_clipboard.less";
 @import "TYPO3/_element_csh.less";
@@ -119,6 +121,7 @@
 @import "TYPO3/_element_tceforms.less";
 @import "TYPO3/_element_tree.less";
 @import "TYPO3/_element_pagination.less";
+@import "TYPO3/_element_label.less";
 @import "TYPO3/_fonts.less";
 @import "TYPO3/_login_screen.less";
 @import "TYPO3/_main_body.less";
@@ -130,6 +133,7 @@
 
 @import "TYPO3/_module_web_list_sysnote.less";
 @import "TYPO3/_module_web_new_element.less";
+@import "TYPO3/_module_extensionmanager.less";
 
 @import "TYPO3/structure/_element_move_element.less";
 @import "TYPO3/structure/_element_version.less";
@@ -144,6 +148,4 @@
 @import "TYPO3/visual/_element_version.less";
 @import "TYPO3/visual/_module_file_list.less";
 @import "TYPO3/visual/_module_file_upload.less";
-@import "TYPO3/visual/_module_web_info.less";
-@import "TYPO3/visual/_module_web_list.less";
 @import "TYPO3/visual/_module_web_page.less";

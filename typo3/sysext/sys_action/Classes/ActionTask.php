@@ -315,7 +315,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 							<div class="row">
 								<input type="hidden" name="data[key]" value="' . $key . '" />
 								<input type="hidden" name="data[sent]" value="1" />
-								<input type="submit" value="' . ($key === 'NEW' ? $GLOBALS['LANG']->getLL('action_Create') : $GLOBALS['LANG']->getLL('action_Update')) . '" />
+								<input class="btn btn-default" type="submit" value="' . ($key === 'NEW' ? $GLOBALS['LANG']->getLL('action_Create') : $GLOBALS['LANG']->getLL('action_Update')) . '" />
 							</div>
 						</fieldset>
 					</form>';

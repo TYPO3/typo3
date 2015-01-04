@@ -382,7 +382,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					sz+=\'<tr><td><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
 				}') . (in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties) ? '' : '
 				sz+=\'<tr><td><label for="iClickEnlarge">' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.xlf:image_zoom', TRUE) . ' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';') . '
-				sz+=\'<tr><td></td><td><input type="submit" value="' . $GLOBALS['LANG']->getLL('update') . '" onClick="return setImageProperties();"></td></tr>\';
+				sz+=\'<tr><td></td><td><input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('update') . '" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</table></form>\';
 				return sz;
 			}

@@ -1,0 +1,426 @@
+//
+// Extensionmanager
+//
+
+// Tabs
+#typo3-extension-main-menu .tabs ul,
+#typo3-extension-configuration-forms .tabs ul {
+	list-style: none;
+	padding: 0;
+	margin-bottom: -1px;
+	.clearfix();
+	> li {
+		cursor: pointer;
+		&.ui-tabs-active a,
+		a.current {
+			background: white;
+			color: black;
+			border-bottom: 0;
+			padding-top: 4px;
+			cursor: default;
+		}
+		a {
+			border-radius: 4px 4px 0 0;
+			float: left;
+			height: 22px;
+			background: #dadada;
+			padding: 4px 15px;
+			margin-top: -1px;
+			margin-right: 2px;
+			border: 1px solid #adadad;
+			color: #606060;
+			outline: none;
+			&:hover {
+				background-color: #eee;
+				border-color: #adadad;
+				color: #606060;
+			}
+		}
+	}
+}
+
+// Extension list
+.typo3-extension-list {
+	.ext-icon {
+		max-height: 16px;
+		width: auto;
+	}
+}
+.typo3-extensionmanager-headerRowLeft {
+	float: left;
+}
+.typo3-extensionmanager-headerRowRight {
+	float: right;
+}
+.ui-toolbar {
+	margin-bottom: 5px;
+	.dataTables_filter {
+		float: left;
+	}
+}
+
+// Paginator
+.dataTables_info {
+	display: none;
+}
+.dataTables_paginate {
+	float: left;
+	margin: 10px 0 0;
+}
+
+// Upload form
+.uploadForm {
+	background-color: #ededed;
+	border-top: 1px solid #cdcdcd;
+	border-bottom: 1px solid #cdcdcd;
+	padding: 12px;
+	margin-bottom: 24px;
+	form {
+		.control-group {
+			clear: both;
+			margin-bottom: 5px;
+		}
+		label {
+			float: left;
+			height: 20px;
+			padding: 4px 0;
+			line-height: 20px;
+			width: 90px;
+		}
+		.control {
+			min-height: 20px;
+			padding: 4px 0;
+			margin-left: 110px;
+		}
+	}
+}
+
+// Distributions list
+.distribution {
+	border: 1px solid darken(@gray-lighter,15%);
+	background-color: @gray-lighter;
+	margin-bottom: 20px;
+	margin-left: 20px;
+	width: 300px;
+	float: left;
+	&:hover {
+		background-color: darken(@gray-lighter,3%);
+		.distribution-hover {
+			top: 0px;
+			opacity: 1;
+		}
+		.distribution-more {
+			text-decoration: underline;
+		}
+	}
+}
+.distribution-holder {
+	.clearfix();
+	top: 0px;
+	bottom: 0px;
+	margin-left: -20px;
+}
+.distribution-image {
+	position: relative;
+	width: 300px;
+	height: 225px;
+	overflow: hidden;
+	img {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+}
+.distribution-hover {
+	background-color: @gray-lighter;
+	position: absolute;
+	top: 100%;
+	left: 0px;
+	width: 300px;
+	height: 225px;
+	overflow: hidden;
+	opacity: 0;
+	.transition(all 0.2s ease-in-out);
+}
+.distribution-hover-inner {
+	padding: 15px;
+}
+.distribution-meta {
+	border-top: 1px solid darken(@gray-lighter,10%);
+	padding: 15px;
+	.distribution-title {
+		margin: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		font-size: 14px;
+	}
+	.distribution-install {
+		margin-top: 0.5em;
+	}
+	.distribution-official {
+		border: 1px solid @brand-primary;
+		background-color: @brand-primary;
+		border-radius: 2px;
+		display: inline-block;
+		padding: 3px 8px;
+		vertical-align: middle;
+		color: #FFFFFF;
+	}
+}
+
+// Distributions detail
+.distribution-detail-flashmessage {
+	margin-bottom: 2.5em;
+	p {
+		padding-bottom: 0;
+	}
+}
+.distribution-detail {
+	.clearfix();
+	min-width: 750px;
+}
+.distribution-detail-previewpane {
+	float: left;
+	margin-right: 30px;
+}
+.distribution-detail-preview {
+	display: block;
+	border: 1px solid darken(@gray-lighter,15%);
+}
+.distribution-detail-body {
+	overflow: hidden;
+	zoom: 1;
+}
+.distribution-detail-header {
+	h1 {
+		margin-bottom: 0.5em;
+	}
+	p {
+		padding: 0px;
+		max-width: 500px;
+		margin-bottom: 1.25em;
+	}
+	margin-bottom: 2.5em;
+}
+.distribution-detail-summary {
+	margin-top: 2.5em;
+	margin-bottom: 2.5em;
+}
+.distribution-installed {
+	hr {
+		margin: 2.5em 0;
+		border: 0;
+		border-top: 1px solid darken(@gray-lighter,15%);
+	}
+}
+
+// Misc
+.ui-widget-header {
+	background: none;
+	border: none;
+	font-weight: normal;
+}
+.dataTables_info {
+	font-size: 10px;
+	color: #444;
+	float: left;
+}
+.paging_two_button .ui-button {
+	float: left;
+	cursor: pointer;
+}
+.paging_full_numbers .ui-button {
+	padding: 2px 6px;
+	margin: 0;
+	cursor: pointer;
+	color: #333 !important;
+}
+.dataTables_paginate .ui-button {
+	margin-right: -0.1em !important;
+}
+.paging_full_numbers {
+	float: right;
+}
+.dataTables_paginate {
+	width: auto;
+}
+#typo3-extension-configuration-forms  {
+	min-width: 400px;
+	max-width: 900px;
+	.category {
+		background-repeat: repeat-x;
+		background-color: #fff;
+		border: 1px solid #adadad;
+		padding: 15px;
+	}
+	.group {
+		margin-bottom: 30px;
+		label {
+			display: block;
+			padding-bottom: 10px;
+		}
+		input[type=text] {
+			width: 300px;
+		}
+	}
+}
+#typo3-extension-configuration-forms #typo3-docheader-row2 .back {
+	float: right;
+}
+#typo3-extension-configuration-forms input.submit {
+	margin-top: 10px;
+}
+#typo3-extension-configuration-forms .error,
+#typo3-extension-configuration-forms .invalid {
+	border-radius: 0 4px 4px 0;
+	.box-shadow(0 0 6px #ddd);
+	height: 15px;
+	background-color: #ff2262;
+	border: 1px solid #e1e16d;
+	font-size: 11px;
+	color: #000;
+	padding: 3px 10px;
+	margin-left: -2px;
+}
+#typo3-extension-configuration-forms .info {
+	color: #666;
+	font-weight: normal;
+}
+.typo3-extension-list tr.installed td {
+	background-color: #c8ffaa;
+}
+.typo3-extension-list tr.available td {
+	background-color: #E1E1aa;
+}
+.typo3-extension-manager .insecure {
+	color: #ff2262;
+}
+.typo3-extension-manager .outdated {
+	color: #0c08ff;
+}
+.typo3-extension-manager form#extensionUploadForm {
+	margin-bottom: 0;
+	div.control-group:last-child {
+		margin-bottom: 0;
+	}
+}
+.typo3-extension-list .inactive {
+	color: rgb(170, 170, 170);
+}
+.headerTooltip,
+.tooltip {
+	.box-shadow(2px 2px 11px #666);
+	display: none;
+	width: 400px;
+	background-color: #ffa;
+	border: 1px solid #cc9;
+	padding: 3px;
+	font-size: 13px;
+	z-index: 1000;
+}
+.headerTooltip {
+	width: 150px;
+}
+
+// Loader
+#terTableWrapper {
+	position: relative;
+	.splash-receivedata {
+		display: none;
+		position: absolute;
+		top: 50px;
+		left: 50%;
+		margin: 0 0 0 -150px;
+		a {
+			display: inline-block;
+			width: 200px;
+			vertical-align: top;
+			padding: 3px 20px;
+		}
+		&.is-shown {
+			display: block;
+		}
+	}
+	.spinner {
+		display: inline-block;
+	}
+	.ui-icon {
+		width: 16px;
+		height: 16px;
+		background-image: url('../Images/ui-icons_222222_256x240.png');
+		background-position: -64px -16px;
+	}
+}
+.time-since-last-update {
+	font-weight: bold;
+	padding-right: 0.4em;
+	cursor: help;
+}
+.is-loading {
+	opacity: 0;
+}
+
+// If something is hidden
+.is-hidden {
+	display: none;
+}
+
+.typo3-extension-list {
+	// Import extension
+	.t3-icon,
+	.t3-icon:hover {
+		border: none;
+		background-color: transparent;
+	}
+	// Hide author for now
+	.author {
+		display: none;
+	}
+}
+
+// Show all versions
+.versions-all {
+	display: inline-block;
+	width: 20px;
+	text-indent: -200px;
+	overflow: hidden;
+}
+.currentVersionInfo {
+	padding: 0 0 20px 0;
+
+	td { padding: 4px 0; }
+	th { font-weight: normal; color: #8c8c8c; padding: 4px 20px 4px 0; }
+}
+span.ter-ext-state {
+	padding: 0 0 0 5px;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+#typo3-docbody form.download {
+	margin-bottom: 0;
+}
+.typo3-extensionmanager-headerRowLeft {
+	display: inline-block;
+	.typo3-extensionmanager-searchTerFieldWrapper {
+		display: inline-block;
+		position: relative;
+		input {
+			height: 15px;
+		}
+		.t3-icon-input-clear {
+			position: absolute;
+			right: 3px;
+			top: 4px;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

@@ -1061,7 +1061,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 			$this->getDatabaseConnection()->sql_free_result($res);
 
-			$this->view->assign('table', '<table class="t3-table">' . implode(LF, $table) . '</table>');
+			$this->view->assign('table', '<table class="table table-striped table-hover">' . implode(LF, $table) . '</table>');
 
 			// Server date time
 			$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';

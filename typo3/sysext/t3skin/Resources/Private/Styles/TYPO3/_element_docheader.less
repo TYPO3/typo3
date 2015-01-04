@@ -1,19 +1,6 @@
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-
-/* - - - - - - - - - - - - - - - - - - - - -
-DocHeader
-- - - - - - - - - - - - - - - - - - - - - */
+//
+// DocHeader
+//
 
 @docheader-text: rgb(45, 45, 45);
 @docheader-bg: linear-gradient(to bottom, rgb(235, 235, 235) 0%, rgb(205, 205, 205) 100%);
@@ -35,7 +22,9 @@ DocHeader
 	.left {
 		float: left;
 
-		/** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
+		//
+		// Extra margin 6px added to it-icon margin, doubled spacing = 12px
+		//
 		.buttongroup {
 			.pull-left;
 			margin-right: 6px;
@@ -78,7 +67,9 @@ DocHeader
 			}
 		}
 
-		/* overwrite defaults from normalize.css */
+		//
+		// overwrite defaults from normalize.css
+		//
 		select {
 			color: @docheader-text;
 		}
@@ -101,12 +92,14 @@ DocHeader
 	}
 }
 
-/**
- * ExtJS Viewport
- */
+//
+// ExtJS Viewport
+//
 
-/* Collapsed tree frame is not invisible, but 5px wide.
-   If no tree frame is in use, an empty container is shown instead */
+//
+// Collapsed tree frame is not invisible, but 5px wide.
+// If no tree frame is in use, an empty container is shown instead
+//
 
 #typo3-navigationContainer-xsplit,
 #typo3-navigationContainer-xcollapsed,
@@ -114,7 +107,9 @@ DocHeader
 	background: @body-bg url(../../Images/docheader-split-background.png) left top repeat-x;
 }
 
-/** ExtJS theme for PageTree */
+//
+// ExtJS theme for PageTree
+//
 #typo3-pagetree-topPanelItems {
 	background-color: @docheader-bg;
 	background: @docheader-bg;
@@ -124,29 +119,23 @@ DocHeader
 		.x-panel-tbar {
 			color: @docheader-text;
 			border-bottom: 1px solid @docheader-border;
-
 			a {
 				color: @docheader-text;
-
 				&:hover {
 					color: #000;
 				}
 			}
-
 		}
 
 		// Buttons
 		.x-panel-body {
 			color: @docheader-text;
 			border-bottom: 1px solid @docheader-border;
-
 			.typo3-pagetree-topPanel-button {
 				margin-top: 0;
 			}
-
 			a {
 				color: @docheader-text;
-
 				&:hover {
 					color: #000;
 				}

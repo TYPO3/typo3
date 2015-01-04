@@ -373,7 +373,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// CSH:
 			$out = BackendUtility::cshItem($this->descrTable, ('func_' . $pKey)) . '
 				<div class="table-fit">
-					<table class="t3-table typo3-page-pages">' .
+					<table class="table table-striped table-hover typo3-page-pages">' .
 						'<thead>' .
 							$this->addelement(1, '', $theData) .
 						'</thead>' .

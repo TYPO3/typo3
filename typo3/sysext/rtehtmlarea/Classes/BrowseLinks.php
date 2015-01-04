@@ -538,17 +538,23 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function getEmailSelectorHtml() {
 		$extUrl = '
-						<!--
-							Enter mail address:
-						-->
-										<tr>
-											<td><label>' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':</label></td>
-									<td><input type="text" name="lemail"' . $this->doc->formWidth(20)
-			. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" /> '
-			. '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
-			. '" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.ltargetform.lemail.value);'
-			. 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" /></td>
-								</tr>';
+			<!--
+				Enter mail address:
+			-->
+			<tr>
+				<td>
+					<label>
+						' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':
+					</label>
+				</td>
+				<td>
+					<input type="text" name="lemail"' . $this->doc->formWidth(20)
+						. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" />
+					<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
+						. '" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.ltargetform.lemail.value);'
+						. 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" />
+				</td>
+			</tr>';
 		return $extUrl;
 	}
 
@@ -559,19 +565,26 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function getExternalUrlSelectorHtml() {
 		$extUrl = '
-				<!--
-					Enter External URL:
-				-->
-								<tr>
-									<td><label>URL:</label></td>
-									<td colspan="3"><input type="text" name="lurl"' . $this->doc->formWidth(20)
-			. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://'))
-			. '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
-			. '" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.ltargetform.lurl.value)) { '
-			. ' browse_links_setHref(document.ltargetform.lurl.value); } else { browse_links_setHref(\'http://\''
-			. '+document.ltargetform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\');'
-			. 'return link_current();" /></td>
-								</tr>';
+			<!--
+				Enter External URL:
+			-->
+			<tr>
+				<td>
+					<label>
+						URL:
+					</label>
+				</td>
+				<td colspan="3">
+					<input type="text" name="lurl"' . $this->doc->formWidth(20)
+						. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://'))
+						. '" />
+					<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
+						. '" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.ltargetform.lurl.value)) { '
+						. ' browse_links_setHref(document.ltargetform.lurl.value); } else { browse_links_setHref(\'http://\''
+						. '+document.ltargetform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\');'
+						. 'return link_current();" />
+				</td>
+			</tr>';
 		return $extUrl;
 	}
 
@@ -708,23 +721,23 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			<!--
 				Selecting target for link:
 			-->
-				<form action="" name="ltargetform" id="ltargetform">
-					<table id="typo3-linkTarget" class="htmlarea-window-table">' . $string;
+			<form action="" name="ltargetform" id="ltargetform">
+				<table id="typo3-linkTarget" class="htmlarea-window-table">' . $string;
 		if ($this->act == $this->curUrlInfo['act'] && $this->act != 'mail' && $this->curUrlArray['href']) {
 			$form .= '
-						<tr>
-							<td>
-							</td>
-							<td colspan="3">
-								<input type="submit" value="' . $GLOBALS['LANG']->getLL('update', TRUE) . '" onclick="'
-				. ($this->act == 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
-				. 'return link_current();" />
-							</td>
-						</tr>';
+					<tr>
+						<td>
+						</td>
+						<td colspan="3">
+							<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('update', TRUE) . '" onclick="'
+								. ($this->act == 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
+								. 'return link_current();" />
+						</td>
+					</tr>';
 		}
 		$form .= '
-					</table>
-				</form>';
+				</table>
+			</form>';
 		return $form;
 	}
 
@@ -738,13 +751,17 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			&& $this->buttonConfig['pageIdSelector.']['enabled']
 		) {
 			return '
-									<tr>
-										<td><label>' . $GLOBALS['LANG']->getLL('page_id', TRUE) . ':</label></td>
-							<td colspan="3">
-								<input type="text" size="6" name="luid" />&nbsp;<input type="submit" value="'
-			. $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
-							</td>
-						</tr>';
+				<tr>
+					<td>
+						<label>
+							' . $GLOBALS['LANG']->getLL('page_id', TRUE) . ':
+						</label>
+					</td>
+					<td colspan="3">
+						<input type="text" size="6" name="luid" /> <input class="btn btn-default" type="submit" value="'
+							. $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
+					</td>
+				</tr>';
 		}
 		return '';
 	}

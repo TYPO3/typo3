@@ -1,30 +1,17 @@
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
-Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
-- - - - - - - - - - - - - - - - - - - - - */
+//
+// Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
+// Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
+//
 
 .typo3-CSM-wrapperCM {
 	background: #fff;
 	border: #b6b6b6 1px solid;
 }
 
-/* - - - - - - - - - - - - - - - - - - - - -
-Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
-Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
-- - - - - - - - - - - - - - - - - - - - - */
+//
+// Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
+// Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
+//
 
 table.typo3-CSM {
 	tr.typo3-CSM-itemRow {
@@ -35,8 +22,10 @@ table.typo3-CSM {
 				vertical-align: bottom;
 			}
 
-			/* the 1px image between every contextmenu group needs to be set to block, otherwise the border cell is way too high
-			   see https://developer.mozilla.org/en/Images,_Tables,_and_Mysterious_Gaps#Setting_images_to_be_blocks */
+			//
+			// the 1px image between every contextmenu group needs to be set to block, otherwise the border cell is way too high
+			// see https://developer.mozilla.org/en/Images,_Tables,_and_Mysterious_Gaps#Setting_images_to_be_blocks
+			//
 			img {
 				display: block;
 			}
@@ -56,16 +45,22 @@ table.typo3-CSM {
 	}
 }
 
-/* - - - - - - - - - - - - - - - - - - - - -
-special backend elements
-- - - - - - - - - - - - - - - - - - - - - */
+//
+// special backend elements
+//
 
-/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
+//
+// Context Sensitive Menu / Top frame (alt_clickmenu.php):
+//
+
 body#typo3-alt-clickmenu-php {
 	margin-top: 10px;
 }
 
-/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
+//
+// Context Sensitive Menu / Top frame (alt_clickmenu.php):
+//
+
 #contentMenu0 {
 	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -79,4 +74,3 @@ div#contentMenu1 {
 	position: absolute;
 	z-index: 20;
 }
-

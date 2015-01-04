@@ -213,9 +213,15 @@ class ColorpickerController extends AbstractWizardController {
 					<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_colorValue', TRUE) . '</p>
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
-							<td><input type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" /></td>
-							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">&nbsp;<span style="color: black;">' . $this->getLanguageService()->getLL('colorpicker_black', TRUE) . '</span>&nbsp;<span style="color: white;">' . $this->getLanguageService()->getLL('colorpicker_white', TRUE) . '</span>&nbsp;</td>
-							<td><input type="submit" name="save_close" value="' . $this->getLanguageService()->getLL('colorpicker_setClose', TRUE) . '" /></td>
+							<td>
+								<input type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" />
+							</td>
+							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">
+								<span style="color: black;">' . $this->getLanguageService()->getLL('colorpicker_black', TRUE) . '</span>&nbsp;<span style="color: white;">' . $this->getLanguageService()->getLL('colorpicker_white', TRUE) . '</span>
+							</td>
+							<td>
+								<input class="btn btn-default" type="submit" name="save_close" value="' . $this->getLanguageService()->getLL('colorpicker_setClose', TRUE) . '" />
+							</td>
 						</tr>
 					</table>
 

@@ -389,6 +389,10 @@ function jumpToUrl(URL) {
 	public function __construct() {
 		// Initializes the page rendering object:
 		$this->getPageRenderer();
+
+		// load Legacy CSS Support
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyCssClasses');
+
 		// Setting default scriptID:
 		if (($temp_M = (string)GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
 			$this->scriptID = preg_replace('/^.*\\/(sysext|ext)\\//', 'ext/', $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M] . 'index.php');
@@ -441,7 +445,6 @@ function jumpToUrl(URL) {
 		if (!isset($this->pageRenderer)) {
 			$this->pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
-			$this->pageRenderer->addCssLibrary($GLOBALS['BACK_PATH'] . 'contrib/normalize/normalize.css', 'stylesheet', 'all', '', TRUE, TRUE);
 			$this->pageRenderer->enableConcatenateFiles();
 			$this->pageRenderer->enableCompressCss();
 			$this->pageRenderer->enableCompressJavascript();
@@ -1288,7 +1291,7 @@ function jumpToUrl(URL) {
 	 * @return string A <input> tag of the type "submit
 	 */
 	public function t3Button($onClick, $label) {
-		$button = '<input type="submit" onclick="' . htmlspecialchars($onClick) . '; return false;" value="' . htmlspecialchars($label) . '" />';
+		$button = '<input class="btn btn-default" type="submit" onclick="' . htmlspecialchars($onClick) . '; return false;" value="' . htmlspecialchars($label) . '" />';
 		return $button;
 	}
 
