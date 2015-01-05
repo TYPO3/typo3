@@ -1104,8 +1104,8 @@ class PageGenerator {
 
 	/**
 	 * Generate title for page.
-	 * Takes the settings ['config']['noPageTitle'], ['config']['pageTitleFirst'], ['config']['titleTagFunction']
-	 * and ['config']['noPageTitle'] into account.
+	 * Takes the settings [config][noPageTitle], [config][pageTitleFirst], [config][titleTagFunction]
+	 * and [config][pageTitle] as stdWrap into account.
 	 * Furthermore $GLOBALS['TSFE']->altPageTitle is observed.
 	 *
 	 * @return void
@@ -1122,6 +1122,10 @@ class PageGenerator {
 				array(),
 				$titleTagContent
 			);
+		}
+		// stdWrap around the title tag
+		if (isset($GLOBALS['TSFE']->config['config']['pageTitle.']) && is_array($GLOBALS['TSFE']->config['config']['pageTitle.'])) {
+			$titleTagContent = $GLOBALS['TSFE']->cObj->stdWrap($titleTagContent, $GLOBALS['TSFE']->config['config']['pageTitle.']);
 		}
 		if ($titleTagContent !== '' && (int)$GLOBALS['TSFE']->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
 			$GLOBALS['TSFE']->getPageRenderer()->setTitle($titleTagContent);
