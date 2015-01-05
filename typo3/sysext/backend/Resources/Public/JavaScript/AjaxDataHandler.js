@@ -17,6 +17,19 @@
 define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashMessages', 'TYPO3/CMS/Backend/Modal'], function ($) {
 	var AjaxDataHandler = {};
 
+	/**
+	 * generic function to call from the outside the script and validate directly showing errors
+	 * @param parameters
+	 * @return a jQuery deferred object (promise)
+	 */
+	AjaxDataHandler.process = function(parameters) {
+		return AjaxDataHandler._call(parameters).done(function(result) {
+			if (result.hasErrors) {
+				AjaxDataHandler.handleErrors(result);
+			}
+		});
+	};
+
 	AjaxDataHandler.initialize = function() {
 
 		// HIDE/UNHIDE: click events for all action icons to hide/unhide

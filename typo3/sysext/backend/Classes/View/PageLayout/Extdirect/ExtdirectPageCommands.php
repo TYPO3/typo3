@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Commands for the Page module
  *
  * @author Jigal van Hemert <jigal.van.hemert@typo3.org>
+ * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, as Drag&Drop does this
+ * logic now directly and calls DataHandler via AJAX directly.
  */
 class ExtdirectPageCommands {
 
@@ -33,8 +35,10 @@ class ExtdirectPageCommands {
 	 * @param string $destinationColumn Column to move the content element to
 	 * @param int $destinationElement Id attribute of the element it was dropped on
 	 * @return array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function moveContentElement($sourceElement, $destinationColumn, $destinationElement) {
+		GeneralUtility::logDeprecatedFunction();
 		$moveElementUid = 0;
 		$afterElementUid = -1;
 		$targetColumn = 0;

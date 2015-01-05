@@ -402,8 +402,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), TRUE));
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getPageLayoutController()->doc->getPageRenderer();
-		$pageRenderer->loadExtJs();
-		$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . 'sysext/cms/layout/js/typo3pageModule.js');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
 		// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels = array();
 		foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
@@ -459,7 +458,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$content[$key] .= '">';
 					// Add new content at the top most position
 					$content[$key] .= '
-					<div class="t3-page-ce" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
+					<div class="t3-page-ce" data-page="' . (int)$id . '" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
 						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
 							<div class="t3-page-ce-wrapper-new-ce">
 								<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
@@ -509,7 +508,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$singleElementHTML .= '</div>';
 							$statusHidden = $this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '';
 							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '" id="element-tt_content-'
-								. $row['uid'] . '">' . $singleElementHTML . '</div>';
+								. $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '">' . $singleElementHTML . '</div>';
 							if ($this->tt_contentConfig['languageMode']) {
 								$singleElementHTML .= '<div class="t3-page-ce">';
 							}
@@ -611,7 +610,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$grid .= '<td valign="top"' .
 								($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
 								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
-								' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+								' data-colpos="' . (int)$columnConfig['colPos'] . '" class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
 								((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-gridCell-unassigned' : '') .
 								((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) || !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos']) ? ' t3-gridCell-restricted' : '') .
 								($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
