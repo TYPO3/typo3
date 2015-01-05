@@ -14,25 +14,35 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * TypoScript template analyzer
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
+class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule {
+
+	/**
+	 * @var TypoScriptTemplateModuleController
+	 */
+	public $pObj;
 
 	/**
 	 * Init
 	 *
-	 * @param object $pObj
+	 * @param TypoScriptTemplateModuleController $pObj
 	 * @param array $conf
 	 * @return void
 	 */
 	public function init(&$pObj, $conf) {
 		parent::init($pObj, $conf);
-		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf');
 		$this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
 	}
 
@@ -57,25 +67,27 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 	 *
 	 * @param int $pageId
 	 * @param int $template_uid
-	 * @return int
+	 * @return bool
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
 		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		$GLOBALS['tmpl'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+		$templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+		$GLOBALS['tmpl'] = $templateService;
+
 		// Do not log time-performance information
-		$GLOBALS['tmpl']->tt_track = 0;
-		$GLOBALS['tmpl']->init();
+		$templateService->tt_track = FALSE;
+		$templateService->init();
+
 		// Gets the rootLine
-		$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$sys_page = GeneralUtility::makeInstance(PageRepository::class);
 		$GLOBALS['rootLine'] = $sys_page->getRootLine($pageId);
+
 		// This generates the constants/config + hierarchy info for the template.
-		$GLOBALS['tmpl']->runThroughTemplates($GLOBALS['rootLine'], $template_uid);
+		$templateService->runThroughTemplates($GLOBALS['rootLine'], $template_uid);
+
 		// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		$GLOBALS['tplRow'] = $GLOBALS['tmpl']->ext_getFirstTemplate($pageId, $template_uid);
-		if (is_array($GLOBALS['tplRow'])) {
-			// IF there was a template...
-			return 1;
-		}
+		$GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);
+		return is_array($GLOBALS['tplRow']);
 	}
 
 	/**
@@ -94,68 +106,73 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 
-		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 
 		// initialize
+		$lang = $this->getLanguageService();
 		if ($existTemplate) {
+			$siteTitle = trim($GLOBALS['tplRow']['sitetitle']);
 			$theOutput .= $this->pObj->doc->section(
-				$GLOBALS['LANG']->getLL('currentTemplate', TRUE),
-				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>' . htmlspecialchars((trim($GLOBALS['tplRow']['sitetitle']) ? ' (' . $GLOBALS['tplRow']['sitetitle'] . ')' : ''))
+				$lang->getLL('currentTemplate', TRUE),
+				IconUtility::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow'])
+					. '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>'
+					. htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '')
 			);
 		}
 		if ($manyTemplatesMenu) {
 			$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
 		}
-		$GLOBALS['tmpl']->clearList_const_temp = array_flip($GLOBALS['tmpl']->clearList_const);
-		$GLOBALS['tmpl']->clearList_setup_temp = array_flip($GLOBALS['tmpl']->clearList_setup);
-		$pointer = count($GLOBALS['tmpl']->hierarchyInfo);
-		$hierarchyInfo = $GLOBALS['tmpl']->ext_process_hierarchyInfo(array(), $pointer);
+		$templateService = $this->getExtendedTemplateService();
+		$templateService->clearList_const_temp = array_flip($templateService->clearList_const);
+		$templateService->clearList_setup_temp = array_flip($templateService->clearList_setup);
+		$pointer = count($templateService->hierarchyInfo);
+		$hierarchyInfo = $templateService->ext_process_hierarchyInfo(array(), $pointer);
 		$head = '<thead><tr>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('title', TRUE) . '</th>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('rootlevel', TRUE) . '</th>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('clearSetup', TRUE) . '</th>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('clearConstants', TRUE) . '</th>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('pid', TRUE) . '</th>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('rootline', TRUE) . '</th>';
-		$head .= '<th>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('title', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('rootlevel', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('clearSetup', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('clearConstants', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('pid', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('rootline', TRUE) . '</th>';
+		$head .= '<th>' . $lang->getLL('nextLevel', TRUE) . '</th>';
 		$head .= '</tr></thead>';
-		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
+		$hierar = implode(array_reverse($templateService->ext_getTemplateHierarchyArr($hierarchyInfo, '', array(), 1)), '');
 		$hierar = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-analyzer">' . $head . $hierar . '</table></div>';
 		$theOutput .= $this->pObj->doc->spacer(5);
-		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
+		$theOutput .= $this->pObj->doc->section($lang->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
 		$urlParameters = array(
 			'id' => $GLOBALS['SOBE']->id,
 			'template' => 'all'
 		);
 		$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-		$completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
+
+		$completeLink = '<p><a href="' . htmlspecialchars($aHref) . '" class="btn btn-default">' . $lang->getLL('viewCompleteTS', TRUE) . '</a></p>';
 		$theOutput .= $this->pObj->doc->spacer(5);
-		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('completeTS', TRUE), $completeLink, 0, 1);
+		$theOutput .= $this->pObj->doc->section($lang->getLL('completeTS', TRUE), $completeLink, 0, 1);
 		$theOutput .= $this->pObj->doc->spacer(15);
 		// Output options
-		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', FALSE, TRUE);
+		$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions', TRUE), '', FALSE, TRUE);
 
-		$template = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template');
+		$template = GeneralUtility::_GET('template');
 		$addParams = $template ? '&template=' . $template : '';
 		$theOutput .= '<div class="tst-analyzer-options">' .
 			'<div class="checkbox"><label for="checkTs_analyzer_checkLinenum">' .
 				BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
-				$GLOBALS['LANG']->getLL('lineNumbers', TRUE) .
+				$lang->getLL('lineNumbers', TRUE) .
 			'</label></div>' .
 			'<div class="checkbox"><label for="checkTs_analyzer_checkSyntax">' .
 				BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
-				$GLOBALS['LANG']->getLL('syntaxHighlight', TRUE) . '</label> ' .
+				$lang->getLL('syntaxHighlight', TRUE) . '</label> ' .
 			'</label></div>';
 		if (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax']) {
 			$theOutput .=
 				'<div class="checkbox"><label for="checkTs_analyzer_checkComments">' .
 					BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
-					$GLOBALS['LANG']->getLL('comments', TRUE) .
+					$lang->getLL('comments', TRUE) .
 				'</label></div>' .
 				'<div class="checkbox"><label for="checkTs_analyzer_checkCrop">' .
 					BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
-					$GLOBALS['LANG']->getLL('cropLines', TRUE) .
+					$lang->getLL('cropLines', TRUE) .
 				'</label></div>';
 		}
 		$theOutput .=  '</div>';
@@ -163,50 +180,57 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 
 		if ($template) {
 			// Output Constants
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', TRUE), '', 0, 1);
+			$theOutput .= $this->pObj->doc->section($lang->getLL('constants', TRUE), '', 0, 1);
 			$theOutput .= $this->pObj->doc->sectionEnd();
 
-			$GLOBALS['tmpl']->ext_lineNumberOffset = 0;
-			$GLOBALS['tmpl']->ext_lineNumberOffset_mode = 'const';
-			foreach ($GLOBALS['tmpl']->constants as $key => $val) {
-				$currentTemplateId = $GLOBALS['tmpl']->hierarchyInfo[$key]['templateID'];
+			$templateService->ext_lineNumberOffset = 0;
+			$templateService->ext_lineNumberOffset_mode = 'const';
+			foreach ($templateService->constants as $key => $val) {
+				$currentTemplateId = $templateService->hierarchyInfo[$key]['templateID'];
 				if ($currentTemplateId == $template || $template === 'all') {
 					$theOutput .= '
-						<h3>' . htmlspecialchars($GLOBALS['tmpl']->hierarchyInfo[$key]['title']) . '</h3>
+						<h3>' . htmlspecialchars($templateService->hierarchyInfo[$key]['title']) . '</h3>
 						<div class="nowrap">' .
-							$GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
+							$templateService->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
 						'</div>
 					';
 					if ($template !== 'all') {
 						break;
 					}
 				}
-				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
+				$templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
 			}
 
 			// Output Setup
 			$theOutput .= $this->pObj->doc->spacer(15);
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', TRUE), '', 0, 1);
+			$theOutput .= $this->pObj->doc->section($lang->getLL('setup', TRUE), '', 0, 1);
 			$theOutput .= $this->pObj->doc->sectionEnd();
-			$GLOBALS['tmpl']->ext_lineNumberOffset = 0;
-			$GLOBALS['tmpl']->ext_lineNumberOffset_mode = 'setup';
-			foreach ($GLOBALS['tmpl']->config as $key => $val) {
-				$currentTemplateId = $GLOBALS['tmpl']->hierarchyInfo[$key]['templateID'];
+			$templateService->ext_lineNumberOffset = 0;
+			$templateService->ext_lineNumberOffset_mode = 'setup';
+			foreach ($templateService->config as $key => $val) {
+				$currentTemplateId = $templateService->hierarchyInfo[$key]['templateID'];
 				if ($currentTemplateId == $template || $template == 'all') {
 					$theOutput .= '
-						<h3>' . htmlspecialchars($GLOBALS['tmpl']->hierarchyInfo[$key]['title']) . '</h3>
+						<h3>' . htmlspecialchars($templateService->hierarchyInfo[$key]['title']) . '</h3>
 						<div class="nowrap">' .
-							$GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
+							$templateService->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) .
 						'</div>
 					';
 					if ($template !== 'all') {
 						break;
 					}
 				}
-				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
+				$templateService->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
 			}
 		}
 		return $theOutput;
+	}
+
+	/**
+	 * @return ExtendedTemplateService
+	 */
+	protected function getExtendedTemplateService() {
+		return $GLOBALS['tmpl'];
 	}
 
 }

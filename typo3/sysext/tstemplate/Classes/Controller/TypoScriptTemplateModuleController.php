@@ -14,9 +14,15 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Module: TypoScript Tools
@@ -25,7 +31,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class TypoScriptTemplateModuleController extends BaseScriptClass {
 
 	/**
 	 * @var string
@@ -88,7 +94,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:tstemplate/ts/locallang.xlf');
 
 		$this->MCONF = array(
 			'name' => $this->moduleName
@@ -106,7 +112,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		$this->e = GeneralUtility::_GP('e');
 		$this->sObj = GeneralUtility::_GP('sObj');
 		$this->edit = GeneralUtility::_GP('edit');
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 	}
 
 	/**
@@ -116,9 +122,9 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function clearCache() {
 		if (GeneralUtility::_GP('clear_all_cache')) {
-			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce->stripslashes_values = 0;
+			/** @var DataHandler $tce */
+			$tce = GeneralUtility::makeInstance(DataHandler::class);
+			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd('all');
 		}
@@ -142,11 +148,13 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$this->access = is_array($this->pageinfo);
 
-		/** @var \TYPO3\CMS\Backend\Template\DocumentTemplate doc */
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		/** @var DocumentTemplate doc */
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
 		$this->doc->addStyleSheet('module', 'sysext/tstemplate/Resources/Public/Styles/styles.css');
+
+		$lang = $this->getLanguageService();
 
 		if ($this->id && $this->access) {
 			$urlParameters = array(
@@ -185,7 +193,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
 			// Build the modulle content
-			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
+			$this->content = $this->doc->header($lang->getLL('moduleTitle'));
 			$this->extObjContent();
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
@@ -193,28 +201,28 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			$markers['CONTENT'] = $this->content;
 		} else {
 			// Template pages:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val', 'pages,sys_template', 'pages.uid=sys_template.pid' . BackendUtility::deleteClause('pages') . BackendUtility::versioningPlaceholderClause('pages') . BackendUtility::deleteClause('sys_template') . BackendUtility::versioningPlaceholderClause('sys_template'), 'pages.uid');
-			$templateArray = array();
+			$db = $this->getDatabaseConnection();
+			$res = $db->exec_SELECTquery('pages.uid, count(*) AS count, max(sys_template.root) AS root_max_val, min(sys_template.root) AS root_min_val', 'pages,sys_template', 'pages.uid=sys_template.pid' . BackendUtility::deleteClause('pages') . BackendUtility::versioningPlaceholderClause('pages') . BackendUtility::deleteClause('sys_template') . BackendUtility::versioningPlaceholderClause('sys_template'), 'pages.uid');
 			$pArray = array();
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($row = $db->sql_fetch_assoc($res)) {
 				$this->setInPageArray($pArray, BackendUtility::BEgetRootLine($row['uid'], 'AND 1=1'), $row);
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$db->sql_free_result($res);
 
 			$table = '<div class="table-fit"><table class="table table-striped table-hover" id="ts-overview">' .
 					'<thead>' .
 					'<tr>' .
-					'<th>' . $GLOBALS['LANG']->getLL('pageName') . '</th>' .
-					'<th>' . $GLOBALS['LANG']->getLL('templates') . '</th>' .
-					'<th>' . $GLOBALS['LANG']->getLL('isRoot') . '</th>' .
-					'<th>' . $GLOBALS['LANG']->getLL('isExt') . '</th>' .
+					'<th>' . $lang->getLL('pageName') . '</th>' .
+					'<th>' . $lang->getLL('templates') . '</th>' .
+					'<th>' . $lang->getLL('isRoot') . '</th>' .
+					'<th>' . $lang->getLL('isExt') . '</th>' .
 					'</tr>' .
 					'</thead>' .
 					'<tbody>' . implode('', $this->renderList($pArray)) . '</tbody>' .
 					'</table></div>';
 
-			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
-			$this->content .= $this->doc->section('', '<p class="lead">' . $GLOBALS['LANG']->getLL('overview') . '</p>' . $table);
+			$this->content = $this->doc->header($lang->getLL('moduleTitle'));
+			$this->content .= $this->doc->section('', '<p class="lead">' . $lang->getLL('overview') . '</p>' . $table);
 
 			// RENDER LIST of pages with templates, END
 			// Setting up the buttons and markers for docheader
@@ -253,52 +261,54 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			'shortcut' => ''
 		);
 
+		$lang = $this->getLanguageService();
+
 		if ($this->id && $this->access) {
 			// View page
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
-			if ($this->extClassConf['name'] == \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class) {
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			if ($this->extClassConf['name'] == TypoScriptTemplateInformationModuleFunctionController::class) {
 				// NEW button
 				$urlParameters = array(
 					'id' => $this->id,
 					'template' => 'all',
 					'createExtension' => 'new'
 				);
-				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 				if (!empty($this->e) && !GeneralUtility::_POST('saveclose')) {
 					// no NEW-button while edit
 					$buttons['new'] = '';
 					// SAVE button
 					$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array(
-						'html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'
+						'html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'
 					));
 					// SAVE AND CLOSE button
 					$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array(
-						'html' => '<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . '/>'
+						'html' => '<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . '/>'
 					));
 					// CLOSE button
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
-					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
+					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
 				}
-			} elseif ($this->extClassConf['name'] === \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController::class && count($this->MOD_MENU['constant_editor_cat'])) {
+			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && count($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
-				$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'));
-			} elseif ($this->extClassConf['name'] === \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
+				$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'));
+			} elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
 				if (!empty($this->sObj)) {
 					// BACK
 					$urlParameters = array(
 						'id' => $this->id
 					);
 					$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 				}
 			}
 			// Shortcut
-			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			if ($this->getBackendUser()->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 			}
 		} else {
 			// Shortcut
-			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			if ($this->getBackendUser()->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id', '', $this->MCONF['name']);
 			}
 		}
@@ -334,19 +344,24 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function noTemplate($newStandardTemplate = 0) {
 		// Defined global here!
-		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-		/** @var $tmpl \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
+		/** @var ExtendedTemplateService $tmpl */
+		$tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+		$GLOBALS['tmpl'] = $tmpl;
+
 		// Do not log time-performance information
 		$tmpl->tt_track = FALSE;
 		$tmpl->init();
-		$theOutput = '';
-		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'), $GLOBALS['LANG']->getLL('noTemplate'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-		$theOutput .= $flashMessage->render();
+
+		$lang = $this->getLanguageService();
+
+		$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noTemplateDescription') . '<br />' . $lang->getLL('createTemplateToEditConfiguration'), $lang->getLL('noTemplate'), FlashMessage::INFO);
+		$theOutput = $flashMessage->render();
+
 		// New standard?
 		if ($newStandardTemplate) {
 			// Hook to change output, implemented for statictemplates
 			if (isset(
-				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateView']
+				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateView']
 			)) {
 				$selector = '';
 				$staticsText = '';
@@ -355,7 +370,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 					'staticsText' => &$staticsText
 				);
 				GeneralUtility::callUserFunction(
-					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateView'],
+					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateView'],
 					$reference,
 					$this
 				);
@@ -367,14 +382,14 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			}
 			// Extension?
 			$theOutput .= $this->doc->section(
-				$GLOBALS['LANG']->getLL('newWebsite') . $staticsText,
-				'<p>' . $GLOBALS['LANG']->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '" />',
+				$lang->getLL('newWebsite') . $staticsText,
+				'<p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" name="newWebsite" value="' . $lang->getLL('newWebsiteAction') . '" />',
 				0, 1);
 		}
 		// Extension?
 		$theOutput .= $this->doc->section(
-			$GLOBALS['LANG']->getLL('extTemplate'),
-			'<p>' . $GLOBALS['LANG']->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '" />',
+			$lang->getLL('extTemplate'),
+			'<p>' . $lang->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" name="createExtension" value="' . $lang->getLL('extTemplateAction') . '" />',
 			0, 1);
 		// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
@@ -384,22 +399,28 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			$theOutput .= $this->doc->section(
-				$GLOBALS['LANG']->getLL('goToClosest'),
-				sprintf('<p>' .$GLOBALS['LANG']->getLL('goToClosestDescription') . '</p>%s' . $GLOBALS['LANG']->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>'),
+				$lang->getLL('goToClosest'),
+				sprintf('<p>' . $lang->getLL('goToClosestDescription') . '</p>%s' . $lang->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>'),
 				0, 1);
 		}
 		return $theOutput;
 	}
 
+	/**
+	 * Render template menu
+	 *
+	 * @return string
+	 */
 	public function templateMenu() {
-		// Defined global here!
-		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
-		/** @var $tmpl \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
+		/** @var ExtendedTemplateService $tmpl */
+		$tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+		$GLOBALS['tmpl'] = $tmpl;
+
 		// Do not log time-performance information
 		$tmpl->tt_track = FALSE;
 		$tmpl->init();
+
 		$all = $tmpl->ext_getAllTemplates($this->id, $this->perms_clause);
-		$menu = '';
 		if (count($all) > 1) {
 			$this->MOD_MENU['templatesOnPage'] = array();
 			foreach ($all as $d) {
@@ -407,8 +428,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			}
 		}
 		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
-		$menu = BackendUtility::getFuncMenu($this->id, 'SET[templatesOnPage]', $this->MOD_SETTINGS['templatesOnPage'], $this->MOD_MENU['templatesOnPage']);
-		return $menu;
+		return BackendUtility::getFuncMenu($this->id, 'SET[templatesOnPage]', $this->MOD_SETTINGS['templatesOnPage'], $this->MOD_MENU['templatesOnPage']);
 	}
 
 	/**
@@ -420,9 +440,9 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 */
 	public function createTemplate($id, $actTemplateId = 0) {
 		$recData = array();
-		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-		$tce->stripslashes_values = 0;
+		/** @var DataHandler $tce */
+		$tce = GeneralUtility::makeInstance(DataHandler::class);
+		$tce->stripslashes_values = FALSE;
 
 		if (GeneralUtility::_GP('createExtension') || GeneralUtility::_GP('createExtension_x')) {
 			$recData['sys_template']['NEW'] = array(
@@ -434,14 +454,14 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 		} elseif (GeneralUtility::_GP('newWebsite')) {
 			// Hook to handle row data, implemented for statictemplates
 			if (isset(
-				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateHandler']
+				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateHandler']
 			)) {
 				$reference = array(
 					'recData' => &$recData,
 					'id' => $id,
 				);
 				GeneralUtility::callUserFunction(
-					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class]['newStandardTemplateHandler'],
+					$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][TypoScriptTemplateModuleController::class]['newStandardTemplateHandler'],
 					$reference,
 					$this
 				);
@@ -449,7 +469,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 			} else {
 				$recData['sys_template']['NEW'] = array(
 					'pid' => $id,
-					'title' => $GLOBALS['LANG']->getLL('titleNewSite'),
+					'title' => $this->getLanguageService()->getLL('titleNewSite'),
 					'sorting' => 0,
 					'root' => 1,
 					'clear' => 3,
@@ -505,28 +525,30 @@ page.10.value = HELLO WORLD!
 	 * @return array
 	 */
 	public function renderList($pArray, $lines = array(), $c = 0) {
-		if (is_array($pArray)) {
-			reset($pArray);
-			static $i;
-			foreach ($pArray as $k => $v) {
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
-					if (isset($pArray[$k . '_'])) {
-						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align="top">' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '">' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), array('title' => ('ID: ' . $k))) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
-							<td>' . $pArray[($k . '_')]['count'] . '</td>
-							<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
-							<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
-							</tr>';
-					} else {
-						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
-							<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align=top>' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k)) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							</tr>';
-					}
-					$lines = $this->renderList($pArray[$k . '.'], $lines, $c + 1);
+		static $i;
+
+		if (!is_array($pArray)) {
+			return $lines;
+		}
+
+		foreach ($pArray as $k => $v) {
+			if (MathUtility::canBeInterpretedAsInteger($k)) {
+				if (isset($pArray[$k . '_'])) {
+					$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+						<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align="top">' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '">' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), array('title' => ('ID: ' . $k))) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
+						<td>' . $pArray[($k . '_')]['count'] . '</td>
+						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
+						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
+						</tr>';
+				} else {
+					$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+						<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . $c * 10 . ' align=top>' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k)) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						</tr>';
 				}
+				$lines = $this->renderList($pArray[$k . '.'], $lines, $c + 1);
 			}
 		}
 		return $lines;

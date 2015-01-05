@@ -14,20 +14,33 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
+class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFunctionModule {
+
+	/**
+	 * @var TypoScriptTemplateModuleController
+	 */
+	public $pObj;
 
 	/**
 	 * Init
 	 *
-	 * @param object $pObj
+	 * @param TypoScriptTemplateModuleController $pObj
 	 * @param array $conf
 	 * @return void
 	 */
@@ -43,22 +56,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @return array
 	 */
 	public function modMenu() {
-		$GLOBALS['LANG']->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf');
+		$lang = $this->getLanguageService();
+		$lang->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf');
 		$modMenu = array(
 			'ts_browser_type' => array(
-				'const' => $GLOBALS['LANG']->getLL('constants'),
-				'setup' => $GLOBALS['LANG']->getLL('setup')
+				'const' => $lang->getLL('constants'),
+				'setup' => $lang->getLL('setup')
 			),
 			'ts_browser_toplevel_setup' => array(
-				'0' => $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('all'), 'toUpper')
+				'0' => $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('all'), 'toUpper')
 			),
 			'ts_browser_toplevel_const' => array(
-				'0' => $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('all'), 'toUpper')
+				'0' => $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('all'), 'toUpper')
 			),
 			'ts_browser_const' => array(
-				'0' => $GLOBALS['LANG']->getLL('plainSubstitution'),
-				'subst' => $GLOBALS['LANG']->getLL('substitutedGreen'),
-				'const' => $GLOBALS['LANG']->getLL('unsubstitutedGreen')
+				'0' => $lang->getLL('plainSubstitution'),
+				'subst' => $lang->getLL('substitutedGreen'),
+				'const' => $lang->getLL('unsubstitutedGreen')
 			),
 			'ts_browser_regexsearch' => '1',
 			'ts_browser_fixedLgd' => '1',
@@ -67,7 +81,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		);
 		foreach (array('setup', 'const') as $bType) {
 			$addKey = GeneralUtility::_GET('addKey');
-			// If any plus-signs were clicked, it's registred.
+			// If any plus-signs were clicked, it's registered.
 			if (is_array($addKey)) {
 				reset($addKey);
 				if (current($addKey)) {
@@ -75,7 +89,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				} else {
 					unset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)]);
 				}
-				$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
+				$this->getBackendUserAuthentication()->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
 			}
 			if (count($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
 				$modMenu['ts_browser_toplevel_' . $bType]['-'] = '---';
@@ -88,10 +102,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	/**
 	 * Verify TS objects
 	 *
+	 * @todo UNUSED in Core; deprecate it, https://forge.typo3.org/issues/64134
+	 *
 	 * @param array $propertyArray
 	 * @param string $parentType
 	 * @param string $parentValue
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function verify_TSobjects($propertyArray, $parentType, $parentValue) {
 		$TSobjTable = array(
@@ -139,7 +155,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$result = array();
 			if (is_array($propertyArray)) {
 				foreach ($propertyArray as $key => $val) {
-					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key)) {
+					if (MathUtility::canBeInterpretedAsInteger($key)) {
 						// If num-arrays
 						$result[$key] = $TSobjTable[$ObjectKind]['prop']['1,2,3'];
 					} else {
@@ -150,34 +166,36 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			}
 			return $result;
 		}
+		return NULL;
 	}
 
 	/**
 	 * Initialize editor
+	 *
+	 * Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 	 *
 	 * @param int $pageId
 	 * @param int $template_uid
 	 * @return int
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
-		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $tmpl, $tplRow, $theConstants;
 		// Defined global here!
-		$tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+		$templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+		$GLOBALS['tmpl'] = $templateService;
+
 		// Do not log time-performance information
-		$tmpl->tt_track = 0;
-		$tmpl->init();
+		$templateService->tt_track = FALSE;
+		$templateService->init();
+
 		// Gets the rootLine
-		$sys_page = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$sys_page = GeneralUtility::makeInstance(PageRepository::class);
 		$rootLine = $sys_page->getRootLine($pageId);
 		// This generates the constants/config + hierarchy info for the template.
-		$tmpl->runThroughTemplates($rootLine, $template_uid);
+		$templateService->runThroughTemplates($rootLine, $template_uid);
+
 		// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
-		// IF there was a template...
-		if (is_array($tplRow)) {
-			return 1;
-		}
+		$GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);
+		return is_array($GLOBALS['tplRow']);
 	}
 
 	/**
@@ -186,20 +204,26 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	 * @return string
 	 */
 	public function main() {
-		global $tmpl, $tplRow, $theConstants;
+		$lang = $this->getLanguageService();
 		$POST = GeneralUtility::_POST();
+		$documentTemplate = $this->getDocumentTemplate();
+
 		// Checking for more than one template an if, set a menu...
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
 			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
-		// BUGBUG: Should we check if the user may at all read and write template-records???
 		$bType = $this->pObj->MOD_SETTINGS['ts_browser_type'];
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
+		$tplRow = $this->getTemplateRow();
 		// initialize
+		$theOutput = '';
 		if ($existTemplate) {
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate'), ' <img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('sys_template', $tplRow)) . ' align="top" /> <strong>' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants')) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : '')));
+			$content = ' <img ' . IconUtility::skinImg($this->getBackPath(), IconUtility::getIcon('sys_template', $tplRow)) . ' align="top" /> <strong>'
+				. $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants')) . '</strong>'
+				. htmlspecialchars(trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : '');
+			$theOutput .= $this->pObj->doc->section($lang->getLL('currentTemplate'), $content);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
 			}
@@ -217,23 +241,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					if ($POST['add_property']) {
 						$property = trim($POST['data'][$name]['name']);
 						if (preg_replace('/[^a-zA-Z0-9_\\.]*/', '', $property) != $property) {
-							$badPropertyMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('noSpaces') . '<br />' . $GLOBALS['LANG']->getLL('nothingUpdated'), $GLOBALS['LANG']->getLL('badProperty'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+							$badPropertyMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noSpaces') . '<br />' . $lang->getLL('nothingUpdated'), $lang->getLL('badProperty'), FlashMessage::ERROR);
 							$this->addFlashMessage($badPropertyMessage);
 						} else {
 							$pline = $name . '.' . $property . ' = ' . trim($POST['data'][$name]['propertyValue']);
-							$propertyAddedMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($pline), $GLOBALS['LANG']->getLL('propertyAdded'));
+							$propertyAddedMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($pline), $lang->getLL('propertyAdded'));
 							$this->addFlashMessage($propertyAddedMessage);
 							$line .= LF . $pline;
 						}
 					} elseif ($POST['update_value']) {
 						$pline = $name . ' = ' . trim($POST['data'][$name]['value']);
-						$updatedMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($pline), $GLOBALS['LANG']->getLL('valueUpdated'));
+						$updatedMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($pline), $lang->getLL('valueUpdated'));
 						$this->addFlashMessage($updatedMessage);
 						$line .= LF . $pline;
 					} elseif ($POST['clear_object']) {
 						if ($POST['data'][$name]['clearValue']) {
 							$pline = $name . ' >';
-							$objectClearedMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($pline), $GLOBALS['LANG']->getLL('objectCleared'));
+							$objectClearedMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($pline), $lang->getLL('objectCleared'));
 							$this->addFlashMessage($objectClearedMessage);
 							$line .= LF . $pline;
 						}
@@ -246,8 +270,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					$field = $bType == 'setup' ? 'config' : 'constants';
 					$recData['sys_template'][$saveId][$field] = $tplRow[$field] . $line;
 					// Create new  tce-object
-					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-					$tce->stripslashes_values = 0;
+					$tce = GeneralUtility::makeInstance(DataHandler::class);
+					$tce->stripslashes_values = FALSE;
 					// Initialize
 					$tce->start($recData, array());
 					// Saved the stuff
@@ -260,10 +284,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			}
 		}
 		$tsbr = GeneralUtility::_GET('tsbr');
+		$templateService = $this->getExtendedTemplateService();
 		$update = 0;
 		if (is_array($tsbr)) {
 			// If any plus-signs were clicked, it's registred.
-			$this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $tmpl->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
+			$this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
 			$update = 1;
 		}
 		if ($POST['Submit']) {
@@ -272,60 +297,58 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			$update = 1;
 		}
 		if ($update) {
-			$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
+			$this->getBackendUserAuthentication()->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
 		}
-		$tmpl->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
-		$tmpl->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
+		$templateService->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
+		$templateService->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
 		// This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
-		$tmpl->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
-		if ($this->pObj->sObj && $tmpl->constantMode) {
-			$tmpl->constantMode = 'untouched';
+		$templateService->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
+		if ($this->pObj->sObj && $templateService->constantMode) {
+			$templateService->constantMode = 'untouched';
 		}
-		$tmpl->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
-		$tmpl->fixedLgd = $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
-		$tmpl->linkObjects = TRUE;
-		$tmpl->ext_regLinenumbers = TRUE;
-		$tmpl->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
-		$tmpl->bType = $bType;
+		$templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
+		$templateService->fixedLgd = $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
+		$templateService->linkObjects = TRUE;
+		$templateService->ext_regLinenumbers = TRUE;
+		$templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
+		$templateService->bType = $bType;
 		if ($this->pObj->MOD_SETTINGS['ts_browser_type'] == 'const') {
-			$tmpl->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
+			$templateService->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
 		} else {
-			$tmpl->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
+			$templateService->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
 		}
-		$tmpl->generateConfig();
+		$templateService->generateConfig();
 		if ($bType == 'setup') {
-			$theSetup = $tmpl->setup;
+			$theSetup = $templateService->setup;
 		} else {
-			$theSetup = $tmpl->setup_constants;
+			$theSetup = $templateService->setup_constants;
 		}
 		// EDIT A VALUE:
 		if ($this->pObj->sObj) {
-			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, $this->pObj->sObj ? $this->pObj->sObj : '');
+			list($theSetup, $theSetupValue) = $templateService->ext_getSetup($theSetup, $this->pObj->sObj ? $this->pObj->sObj : '');
 			if ($existTemplate) {
 				// Value
 				$out = '';
 				$out .= htmlspecialchars($this->pObj->sObj) . ' =<br />';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
-				$out .= '<input class="btn btn-default" type="submit" name="update_value" value="' . $GLOBALS['LANG']->getLL('updateButton') . '" />';
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editProperty'), $out, 0, 0);
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $documentTemplate->formWidth(40) . ' />';
+				$out .= '<input class="btn btn-default" type="submit" name="update_value" value="' . $lang->getLL('updateButton') . '" />';
+				$theOutput .= $this->pObj->doc->section($lang->getLL('editProperty'), $out, 0, 0);
 				// Property
-				$out = '';
 				$out = '<nobr>' . htmlspecialchars($this->pObj->sObj) . '.';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /> = </nobr><br />';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
-				$out .= '<input class="btn btn-default" type="submit" name="add_property" value="' . $GLOBALS['LANG']->getLL('addButton') . '" />';
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $documentTemplate->formWidth(20) . ' /> = </nobr><br />';
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $documentTemplate->formWidth(40) . ' />';
+				$out .= '<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('addProperty'), $out, 0, 0);
+				$theOutput .= $this->pObj->doc->section($lang->getLL('addProperty'), $out, 0, 0);
 				// clear
-				$out = '';
-				$out = htmlspecialchars($this->pObj->sObj) . ' <strong>' . $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('clear'), 'toUpper') . '</strong> &nbsp;&nbsp;';
+				$out = htmlspecialchars($this->pObj->sObj) . ' <strong>' . $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('clear'), 'toUpper') . '</strong> &nbsp;&nbsp;';
 				$out .= '<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
-				$out .= '<input class="btn btn-default" type="submit" name="clear_object" value="' . $GLOBALS['LANG']->getLL('clearButton') . '" />';
+				$out .= '<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('clearObject'), $out, 0, 0);
+				$theOutput .= $this->pObj->doc->section($lang->getLL('clearObject'), $out, 0, 0);
 				$theOutput .= $this->pObj->doc->spacer(10);
 			} else {
-				$noTemplateMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('noCurrentTemplate'), $GLOBALS['LANG']->getLL('edit'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$noTemplateMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noCurrentTemplate'), $lang->getLL('edit'), FlashMessage::ERROR);
 				$this->addFlashMessage($noTemplateMessage);
 				$theOutput .= htmlspecialchars($this->pObj->sObj) . ' = <strong>' . htmlspecialchars($theSetupValue) . '</strong>';
 				$theOutput .= $this->pObj->doc->spacer(10);
@@ -339,26 +362,26 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			if (!$this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)][$this->pObj->sObj]) {
 				if (count($theSetup)) {
 					$out = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj))) . '">';
-					$out .= sprintf($GLOBALS['LANG']->getLL('addKey'), htmlspecialchars($this->pObj->sObj));
+					$out .= sprintf($lang->getLL('addKey'), htmlspecialchars($this->pObj->sObj));
 				}
 			} else {
 				$out = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0')) . '">';
-				$out .= sprintf($GLOBALS['LANG']->getLL('removeKey'), htmlspecialchars($this->pObj->sObj));
+				$out .= sprintf($lang->getLL('removeKey'), htmlspecialchars($this->pObj->sObj));
 			}
 			if ($out) {
 				$theOutput .= $this->pObj->doc->divider(5);
 				$theOutput .= $this->pObj->doc->section('', $out);
 			}
 			// back
-			$out = $GLOBALS['LANG']->getLL('back');
+			$out = $lang->getLL('back');
 			$out = '<a href="' . htmlspecialchars($aHref) . '"><strong>' . $out . '</strong></a>';
 			$theOutput .= $this->pObj->doc->divider(5);
 			$theOutput .= $this->pObj->doc->section('', $out);
 		} else {
-			$tmpl->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
+			$templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
 			if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
 				// If any POST-vars are send, update the condition array
-				$tmpl->tsbrowser_depthKeys = $tmpl->ext_getSearchKeys($theSetup, '', GeneralUtility::_POST('search_field'), array());
+				$templateService->tsbrowser_depthKeys = $templateService->ext_getSearchKeys($theSetup, '', GeneralUtility::_POST('search_field'), array());
 			}
 			$theOutput .= '
 				<div class="tsob-menu">
@@ -366,27 +389,27 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			if(is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1){
 				$theOutput .= '
 						<div class="form-group">
-							<label class="control-label">' . $GLOBALS['LANG']->getLL('browse') . '</label>'
+							<label class="control-label">' . $lang->getLL('browse') . '</label>'
 							. BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']). '
 						</div>';
 			}
 			if(is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1){
 				$theOutput .= '
 						<div class="form-group">
-							<label class="control-label" for="ts_browser_toplevel_' . $bType . '">' . $GLOBALS['LANG']->getLL('objectList') . '</label> '
+							<label class="control-label" for="ts_browser_toplevel_' . $bType . '">' . $lang->getLL('objectList') . '</label> '
 							. BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) . '
 						</div>';
 			}
 			$theOutput .= '
 						<div class="form-group">
-							<label class="control-label" for="search_field">' . $GLOBALS['LANG']->getLL('search') . '</label>
-							<input class="form-control" type="search" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . '/>
+							<label class="control-label" for="search_field">' . $lang->getLL('search') . '</label>
+							<input class="form-control" type="search" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $documentTemplate->formWidth(20) . '/>
 						</div>
-						<input class="btn btn-default tsob-search-submit" type="submit" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />
+						<input class="btn btn-default tsob-search-submit" type="submit" name="search" value="' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />
 					</div>
 					<div class="checkbox">
 						<label for="checkTs_browser_regexsearch">
-							' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"') . $GLOBALS['LANG']->getLL('regExp') . '
+							' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'], '', '', 'id="checkTs_browser_regexsearch"') . $lang->getLL('regExp') . '
 						</label>
 					</div>
 				</div>';
@@ -394,37 +417,33 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			if (!$theKey || !str_replace('-', '', $theKey)) {
 				$theKey = '';
 			}
-			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ? $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] : '');
-			$tree = $tmpl->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
-			$tree = $tmpl->substituteCMarkers($tree);
+			list($theSetup, $theSetupValue) = $templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ? $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] : '');
+			$tree = $templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
+			$tree = $templateService->substituteCMarkers($tree);
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			// Parser Errors:
 			$pEkey = $bType == 'setup' ? 'config' : 'constants';
-			if (count($tmpl->parserErrors[$pEkey])) {
+			if (count($templateService->parserErrors[$pEkey])) {
 				$errMsg = array();
-				$templateAnalyzerInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tstemplate');
-				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
-					$errorLink = '';
-					if ($templateAnalyzerInstalled) {
-						$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $GLOBALS['LANG']->getLL('errorShowDetails') . '</a>';
-					}
+				foreach ($templateService->parserErrors[$pEkey] as $inf) {
+					$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $lang->getLL('errorShowDetails') . '</a>';
 					$errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
 				}
 				$theOutput .= $this->pObj->doc->spacer(10);
-				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, implode($errMsg, '<br />'), $GLOBALS['LANG']->getLL('errorsWarnings'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, implode($errMsg, '<br />'), $lang->getLL('errorsWarnings'), FlashMessage::ERROR);
 				$theOutput .= $flashMessage->render();
 			}
 
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
-				$remove = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0')) . '">' . $GLOBALS['LANG']->getLL('removeKey') . '</a>';
+				$remove = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0')) . '">' . $lang->getLL('removeKey') . '</a>';
 			} else {
 				$remove = '';
 			}
 
-			$label = $theKey ? $theKey : ($bType == 'setup' ? $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('setupRoot'), 'toUpper') : $GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('constantRoot'), 'toUpper'));
+			$label = $theKey ? $theKey : ($bType == 'setup' ? $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('setupRoot'), 'toUpper') : $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('constantRoot'), 'toUpper'));
 			$theOutput .= $this->pObj->doc->sectionEnd();
 
 			$theOutput .= '<div class="panel panel-default">';
@@ -437,27 +456,27 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 			// second row options
 			$menu = '<div class="tsob-menu-row2">';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_showComments">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
-			$menu .= $GLOBALS['LANG']->getLL('displayComments') . '</label></div>';
+			$menu .= $lang->getLL('displayComments') . '</label></div>';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
-			$menu .= $GLOBALS['LANG']->getLL('sortAlphabetically') . '</label></div>';
+			$menu .= $lang->getLL('sortAlphabetically') . '</label></div>';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_fixedLgd">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
-			$menu .= $GLOBALS['LANG']->getLL('cropLines') . '</label></div>';
+			$menu .= $lang->getLL('cropLines') . '</label></div>';
 			if ($bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
-				$menu .= '<br /><br /><label>' . $GLOBALS['LANG']->getLL('displayConstants') . '</label>';
+				$menu .= '<br /><br /><label>' . $lang->getLL('displayConstants') . '</label>';
 				$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
 			}
 			$menu .= '</div>';
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions'), '<nobr>' . $menu . '</nobr>', 0, 1);
+			$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), '<nobr>' . $menu . '</nobr>', 0, 1);
 			// Conditions:
-			if (is_array($tmpl->sections) && !empty($tmpl->sections)) {
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('conditions'), '', 0, 1);
+			if (is_array($templateService->sections) && !empty($templateService->sections)) {
+				$theOutput .= $this->pObj->doc->section($lang->getLL('conditions'), '', 0, 1);
 				$out = '';
-				foreach ($tmpl->sections as $key => $val) {
+				foreach ($templateService->sections as $key => $val) {
 					$out .= '<div class="checkbox"><label for="check' . $key . '">';
-					$out .= '<input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />' . $tmpl->substituteCMarkers(htmlspecialchars($val));
+					$out .= '<input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />' . $templateService->substituteCMarkers(htmlspecialchars($val));
 					$out .= '</label></div>';
 				}
-				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" />';
+				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $lang->getLL('setConditions') . '" />';
 			}
 			// Ending section:
 			$theOutput .= $this->pObj->doc->sectionEnd();
@@ -468,15 +487,29 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 	/**
 	 * Add flash message to queue
 	 *
-	 * @param \TYPO3\CMS\Core\Messaging\FlashMessage $flasgMessage
+	 * @param FlashMessage $flashMessage
 	 * @return void
 	 */
-	protected function addFlashMessage(\TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage) {
-		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+	protected function addFlashMessage(FlashMessage $flashMessage) {
+		/** @var $flashMessageService FlashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 		$defaultFlashMessageQueue->enqueue($flashMessage);
+	}
+
+	/**
+	 * @return ExtendedTemplateService
+	 */
+	protected function getExtendedTemplateService() {
+		return $GLOBALS['tmpl'];
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getTemplateRow() {
+		return $GLOBALS['tplRow'];
 	}
 
 }

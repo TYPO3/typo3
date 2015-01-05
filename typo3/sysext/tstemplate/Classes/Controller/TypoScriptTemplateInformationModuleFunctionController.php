@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,7 +56,6 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	public function tableRow($label, $data, $field, $id) {
 		$lang = $this->getLanguageService();
 		$ret = '<tr><td>';
-		$startAnchor = '';
 		if ($field === 'config' || $field === 'constants') {
 			$urlParameters = array(
 				'id' => $this->pObj->id
@@ -81,17 +81,21 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 * $GLOBALS['tmpl'] and looks for the first (visible) template
 	 * record. If $template_uid was given and greater than zero, this record will be checked.
 	 *
+	 * Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
+	 *
 	 * @param int $pageId The uid of the current page
 	 * @param int $template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
 	 * @return bool Returns TRUE if a template record was found, otherwise FALSE
 	 */
 	public function initialize_editor($pageId, $template_uid = 0) {
-		// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		/** @var ExtendedTemplateService $tmpl */
-		$GLOBALS['tmpl'] = $tmpl = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService::class);
+		$tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+		$GLOBALS['tmpl'] = $tmpl;
+
 		// Do not log time-performance information
-		$tmpl->tt_track = 0;
+		$tmpl->tt_track = FALSE;
 		$tmpl->init();
+
 		// Get the row of the first VISIBLE template of the page. where clause like the frontend.
 		$GLOBALS['tplRow'] = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
 		if (is_array($GLOBALS['tplRow'])) {
@@ -198,8 +202,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 				if (count($recData)) {
 					$recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 					// Create new  tce-object
-					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-					$tce->stripslashes_values = 0;
+					$tce = GeneralUtility::makeInstance(DataHandler::class);
+					$tce->stripslashes_values = FALSE;
 					$tce->alternativeFileName = $alternativeFileName;
 					// Initialize
 					$tce->start($recData, array());
