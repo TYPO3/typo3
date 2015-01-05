@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Backend\Module;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Parent class for 'Extension Objects' in backend modules.
@@ -113,6 +115,11 @@ abstract class AbstractFunctionModule {
 	public $pObj;
 
 	/**
+	 * @var object
+	 */
+	public $extObj = NULL;
+
+	/**
 	 * Set to the directory name of this class file.
 	 *
 	 * @see init()
@@ -149,11 +156,9 @@ abstract class AbstractFunctionModule {
 	/**
 	 * Initialize the object
 	 *
-	 * @param object $pObj A reference to the parent (calling) object (which is probably an instance of an
-	 * extension class to \TYPO3\CMS\Backend\Module\BaseScriptClass
-	 *
+	 * @param BaseScriptClass $pObj A reference to the parent (calling) object
 	 * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
-	 * @return void
+	 * @throws \RuntimeException
 	 * @see \TYPO3\CMS\Backend\Module\BaseScriptClass::checkExtObj()
 	 */
 	public function init(&$pObj, $conf) {
@@ -171,7 +176,8 @@ abstract class AbstractFunctionModule {
 	}
 
 	/**
-	 * If $this->function_key is set (which means there are two levels of object connectivity) then $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
+	 * If $this->function_key is set (which means there are two levels of object connectivity) then
+	 * $this->extClassConf is loaded with the TBE_MODULES_EXT configuration for that sub-sub-module
 	 *
 	 * @return void
 	 * @see $function_key, \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController::init()
@@ -185,16 +191,24 @@ abstract class AbstractFunctionModule {
 	}
 
 	/**
-	 * Including any locallang file configured and merging its content over the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
+	 * Including any locallang file configured and merging its content over
+	 * the current global LOCAL_LANG array (which is EXPECTED to exist!!!)
 	 *
 	 * @return void
 	 */
 	public function incLocalLang() {
-		if ($this->localLangFile && (@is_file(($this->thisPath . '/' . $this->localLangFile)) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml')) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.php')))) {
-			$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile($this->thisPath . '/' . $this->localLangFile, FALSE);
+		if (
+			$this->localLangFile
+			&& (
+				@is_file(($this->thisPath . '/' . $this->localLangFile))
+				|| @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml'))
+				|| @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.php'))
+			)
+		) {
+			$LOCAL_LANG = $this->getLanguageService()->includeLLFile($this->thisPath . '/' . $this->localLangFile, FALSE);
 			if (is_array($LOCAL_LANG)) {
 				$GLOBALS['LOCAL_LANG'] = (array)$GLOBALS['LOCAL_LANG'];
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
+				ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
 			}
 		}
 	}
@@ -227,14 +241,19 @@ abstract class AbstractFunctionModule {
 
 	/**
 	 * Dummy function - but is used to set up additional menu items for this submodule.
-	 * For an example see the extension 'cms' where the 'web_info' submodule is defined
-	 * in cms/web_info/class.tx_cms_webinfo.php, \TYPO3\CMS\\Frontend\Controller\PageInformationController::modMenu()
 	 *
 	 * @return array A MOD_MENU array which will be merged together with the one from the parent object
 	 * @see init(), \TYPO3\CMS\Frontend\Controller\PageInformationController::modMenu()
 	 */
 	public function modMenu() {
 		return array();
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

@@ -14,48 +14,46 @@ namespace TYPO3\CMS\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Manage storing and restoring of $GLOBALS['SOBE']->MOD_SETTINGS settings.
+ * Manage storing and restoring of $this->getModule()->MOD_SETTINGS settings.
  * Provides a presets box for BE modules.
  *
- * usage inside of scbase class
+ * usage inside of BaseScriptClass class
  *
  * ....
  *
  * $this->MOD_MENU = array(
- * 'function' => array(
- * 'xxx ...
- * ),
- * 'tx_dam_select_storedSettings' => '',
+ * 'function' => array('xxx'),
+ * 'tx_someext_storedSettings' => '',
  *
  * ....
  *
  * function main() {
- * reStore settings
+ * // reStore settings
  * $store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ModuleSettings::class);
- * $store->init('tx_dam_select');
- * $store->setStoreList('tx_dam_select');
+ * $store->init('tx_someext');
+ * $store->setStoreList('tx_someext');
  * $store->processStoreControl();
  *
- * show control panel
- * $this->content.= $this->doc->section('Settings',$store->getStoreControl(),0,1);
+ * // show control panel
+ * $this->content .= $this->doc->section('Settings', $store->getStoreControl(), 0, 1);
  *
  * Format of saved settings
  *
- * $GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix.'_storedSettings'] = serialize(
+ * $this->getModule()->MOD_SETTINGS[$this->prefix . '_storedSettings'] = serialize(
  * array (
- * 'any id' => array (
- * 'title' => 'title for saved settings',
- * 'desc' => 'description text, not mandatory',
- * 'data' => array(),	// data from MOD_SETTINGS
- * 'user' => NULL, // can be used for extra data used by the application to identify this entry
- * 'tstamp' => 12345, // $GLOBALS['EXEC_TIME']
- * ),
- * 'another id' => ...
- *
- * ) );
+ *   'any id' => array(
+ *     'title' => 'title for saved settings',
+ *     'desc' => 'description text, not mandatory',
+ *     'data' => array(),	// data from MOD_SETTINGS
+ *     'user' => NULL, // can be used for extra data used by the application to identify this entry
+ *     'tstamp' => 12345, // $GLOBALS['EXEC_TIME']
+ *   ),
+ *   'another id' => ...
+ * )
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */
@@ -107,9 +105,9 @@ class ModuleSettings {
 	/**
 	 * Write messages into the devlog?
 	 *
-	 * @var int
+	 * @var bool
 	 */
-	public $writeDevLog = 0;
+	public $writeDevLog = FALSE;
 
 	/********************************
 	 *
@@ -120,7 +118,7 @@ class ModuleSettings {
 	 * Initializes the object
 	 *
 	 * @param string $prefix Prefix of MOD_SETTING array keys that should be stored
-	 * @param array $storeList Additional names of keys of the MOD_SETTING array which should be stored (array or comma list)
+	 * @param array|string $storeList Additional names of keys of the MOD_SETTING array which should be stored (array or comma list)
 	 * @return void
 	 */
 	public function init($prefix = '', $storeList = '') {
@@ -128,7 +126,7 @@ class ModuleSettings {
 		$this->setStoreList($storeList);
 		$this->type = 'perm';
 		// Enable dev logging if set
-		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_modSettings.php']['writeDevLog']) {
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_modSettings.php']['writeDevLog'])) {
 			$this->writeDevLog = TRUE;
 		}
 		if (TYPO3_DLOG) {
@@ -154,27 +152,25 @@ class ModuleSettings {
 	/**
 	 * Set MOD_SETTINGS keys which should be stored
 	 *
-	 * @param mixed $storeList Array or string (,) - set additional names of keys of the MOD_SETTING array which should be stored
+	 * @param array|string $storeList Add names of keys of the MOD_SETTING array which should be stored
 	 * @return void
 	 */
 	public function setStoreList($storeList) {
-		$this->storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
-		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
-		}
+		$this->storeList = array();
+		$this->addToStoreList($storeList);
 	}
 
 	/**
 	 * Add MOD_SETTINGS keys to the current list
 	 *
-	 * @param mixed Array or string (,) - add names of keys of the MOD_SETTING array which should be stored
+	 * @param array|string $storeList Add names of keys of the MOD_SETTING array which should be stored
 	 * @return void
 	 */
 	public function addToStoreList($storeList) {
 		$storeList = is_array($storeList) ? $storeList : GeneralUtility::trimExplode(',', $storeList, TRUE);
 		$this->storeList = array_merge($this->storeList, $storeList);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
+			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), __CLASS__, 0);
 		}
 	}
 
@@ -185,16 +181,16 @@ class ModuleSettings {
 	 * @return void
 	 */
 	public function addToStoreListFromPrefix($prefix = '') {
-		$prefix = $prefix ? $prefix : $this->prefix;
+		$prefix = $prefix ?: $this->prefix;
 		$prefix = preg_quote($prefix, '/');
-		foreach ($GLOBALS['SOBE']->MOD_SETTINGS as $key => $value) {
+		foreach ($this->getModule()->MOD_SETTINGS as $key => $value) {
 			if (preg_match('/^' . $prefix . '/', $key)) {
 				$this->storeList[$key] = $key;
 			}
 		}
 		unset($this->storeList[$this->prefix . '_storedSettings']);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
+			GeneralUtility::devLog('Store list:' . implode(',', $this->storeList), __CLASS__, 0);
 		}
 	}
 
@@ -209,7 +205,7 @@ class ModuleSettings {
 	 * @return void
 	 */
 	public function initStorage() {
-		$storedSettings = unserialize($GLOBALS['SOBE']->MOD_SETTINGS[$this->prefix . '_storedSettings']);
+		$storedSettings = unserialize($this->getModule()->MOD_SETTINGS[$this->prefix . '_storedSettings']);
 		$this->storedSettings = $this->cleanupStorageArray($storedSettings);
 	}
 
@@ -225,11 +221,9 @@ class ModuleSettings {
 		foreach ($storedSettings as $id => $sdArr) {
 			if (!is_array($sdArr)) {
 				unset($storedSettings[$id]);
-			}
-			if (!is_array($sdArr['data'])) {
+			} elseif (!is_array($sdArr['data'])) {
 				unset($storedSettings[$id]);
-			}
-			if (!trim($sdArr['title'])) {
+			} elseif (!trim($sdArr['title'])) {
 				$storedSettings[$id]['title'] = '[no title]';
 			}
 		}
@@ -246,7 +240,7 @@ class ModuleSettings {
 	public function compileEntry($data) {
 		$storageData = array();
 		foreach ($this->storeList as $MS_key) {
-			$storageData[$MS_key] = $GLOBALS['SOBE']->MOD_SETTINGS[$MS_key];
+			$storageData[$MS_key] = $this->getModule()->MOD_SETTINGS[$MS_key];
 		}
 		$storageArr = array(
 			'title' => $data['title'],
@@ -278,7 +272,7 @@ class ModuleSettings {
 	/**
 	 * Processing of the storage command LOAD, SAVE, REMOVE
 	 *
-	 * @param string $mconfName Name of the module to store the settings for. Default: $GLOBALS['SOBE']->MCONF['name'] (current module)
+	 * @param string $mconfName Name of the module to store the settings for. Default: $this->getModule()->MCONF['name'] (current module)
 	 * @return string Storage message. Also set in $this->msg
 	 */
 	public function processStoreControl($mconfName = '') {
@@ -290,10 +284,10 @@ class ModuleSettings {
 		$writeArray = array();
 		if (is_array($storeControl)) {
 			if ($this->writeDevLog) {
-				GeneralUtility::devLog('Store command: ' . GeneralUtility::arrayToLogString($storeControl), \TYPO3\CMS\Backend\ModuleSettings::class, 0);
+				GeneralUtility::devLog('Store command: ' . GeneralUtility::arrayToLogString($storeControl), __CLASS__, 0);
 			}
 			// Processing LOAD
-			if ($storeControl['LOAD'] and $storeIndex) {
+			if ($storeControl['LOAD'] && $storeIndex) {
 				$writeArray = $this->getStoredData($storeIndex, $writeArray);
 				$saveSettings = TRUE;
 				$msg = '\'' . $this->storedSettings[$storeIndex]['title'] . '\' preset loaded!';
@@ -330,7 +324,7 @@ class ModuleSettings {
 	 * Write the current storage array and update MOD_SETTINGS
 	 *
 	 * @param array $writeArray Array of settings which should be overwrite current MOD_SETTINGS
-	 * @param string $mconfName Name of the module to store the settings for. Default: $GLOBALS['SOBE']->MCONF['name'] (current module)
+	 * @param string $mconfName Name of the module to store the settings for. Default: $this->getModule()->MCONF['name'] (current module)
 	 * @return void
 	 */
 	public function writeStoredSetting($writeArray = array(), $mconfName = '') {
@@ -338,9 +332,14 @@ class ModuleSettings {
 		unset($this->storedSettings[0]);
 		$this->storedSettings = $this->cleanupStorageArray($this->storedSettings);
 		$writeArray[$this->prefix . '_storedSettings'] = serialize($this->storedSettings);
-		$GLOBALS['SOBE']->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, $writeArray, $mconfName ? $mconfName : $GLOBALS['SOBE']->MCONF['name'], $this->type);
+		$this->getModule()->MOD_SETTINGS = Utility\BackendUtility::getModuleData(
+			$this->getModule()->MOD_MENU,
+			$writeArray,
+			$mconfName ?: $this->getModule()->MCONF['name'],
+			$this->type
+		);
 		if ($this->writeDevLog) {
-			GeneralUtility::devLog('Settings stored:' . $this->msg, \TYPO3\CMS\Backend\ModuleSettings::class, 0);
+			GeneralUtility::devLog('Settings stored:' . $this->msg, __CLASS__, 0);
 		}
 	}
 
@@ -367,8 +366,9 @@ class ModuleSettings {
 		}
 		$storedEntries = count($opt) > 1;
 		$codeTD = array();
+		$code = '';
 		// LOAD, REMOVE, but also show selector so you can overwrite an entry with SAVE
-		if ($storedEntries and count($showElements)) {
+		if ($storedEntries && count($showElements)) {
 			// Selector box
 			$onChange = 'document.forms[\'' . $this->formName . '\'][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';';
 			$code = '
@@ -414,8 +414,7 @@ class ModuleSettings {
 			$code .= '
 			<div><strong>' . htmlspecialchars($this->msg) . '</strong></div>';
 		}
-		// @todo need to add parameters
-		if ($useOwnForm and trim($code)) {
+		if ($useOwnForm && trim($code)) {
 			$code = '
 		<form action="' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">' . $code . '</form>';
 		}
@@ -431,11 +430,17 @@ class ModuleSettings {
 	 * Processing entry for the stored settings array
 	 * Can be overwritten by extended class
 	 *
-	 * @param array $storageData Entry for the stored settings array
+	 * @param array $storageArr Entry for the stored settings array
 	 * @return array Entry for the stored settings array
 	 */
 	public function processEntry($storageArr) {
 		return $storageArr;
 	}
 
+	/**
+	 * @return BaseScriptClass
+	 */
+	protected function getModule() {
+		return $GLOBALS['SOBE'];
+	}
 }

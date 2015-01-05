@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Backend\Module;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This document provides a class that loads the modules for the TYPO3 interface.
@@ -86,16 +90,13 @@ class ModuleLoader {
 	 * Further the global var $LANG will have labels and images for the modules loaded in an internal array.
 	 *
 	 * @param array $modulesArray Should be the global var $TBE_MODULES, $BE_USER can optionally be set to an alternative Backend user object than the global var $BE_USER (which is the currently logged in user)
-	 * @param object $BE_USER Optional backend user object to use. If not set, the global BE_USER object is used.
+	 * @param BackendUserAuthentication $beUser Optional backend user object to use. If not set, the global BE_USER object is used.
 	 * @return void
 	 */
-	public function load($modulesArray, $BE_USER = '') {
+	public function load($modulesArray, BackendUserAuthentication $beUser = NULL) {
 		// Setting the backend user for use internally
-		if (is_object($BE_USER)) {
-			$this->BE_USER = $BE_USER;
-		} else {
-			$this->BE_USER = $GLOBALS['BE_USER'];
-		}
+		$this->BE_USER = $beUser ?: $GLOBALS['BE_USER'];
+
 		/*$modulesArray might look like this when entering this function.
 		Notice the two modules added by extensions - they have a path attachedArray
 		(
@@ -198,142 +199,147 @@ class ModuleLoader {
 	}
 
 	/**
-	 * If the module name ($name) is a module from an extension (has path in $this->absPathArray) then that path is returned relative to PATH_site
+	 * If the module name ($name) is a module from an extension (has path in $this->absPathArray)
+	 * then that path is returned relative to PATH_site
 	 *
 	 * @param string $name Module name
 	 * @return string If found, the relative path from PATH_site
 	 */
 	public function checkExtensionModule($name) {
 		if (isset($this->absPathArray[$name])) {
-			return rtrim(\TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($this->absPathArray[$name]), '/');
+			return rtrim(PathUtility::stripPathSitePrefix($this->absPathArray[$name]), '/');
 		}
+		return '';
 	}
 
 	/**
 	 * Here we check for the module.
+	 *
 	 * Return values:
 	 * 'notFound':	If the module was not found in the path (no "conf.php" file)
 	 * FALSE:		If no access to the module (access check failed)
-	 * array():	Configuration array, in case a valid module where access IS granted exists.
+	 * array():	    Configuration array, in case a valid module where access IS granted exists.
 	 *
 	 * @param string $name Module name
-	 * @param string $fullpath Absolute path to module
-	 * @return mixed See description of function
+	 * @param string $fullPath Absolute path to module
+	 * @return string|bool|array See description of function
 	 */
-	public function checkMod($name, $fullpath) {
-		if ($name == 'user_ws' && !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
+	public function checkMod($name, $fullPath) {
+		if ($name === 'user_ws' && !ExtensionManagementUtility::isLoaded('version')) {
 			return FALSE;
 		}
 		// Check for own way of configuring module
 		if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
 			$obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
 			if (is_callable($obj)) {
-				$MCONF = call_user_func($obj, $name, $fullpath);
+				$MCONF = call_user_func($obj, $name, $fullPath);
 				if ($this->checkModAccess($name, $MCONF) !== TRUE) {
 					return FALSE;
 				}
 				return $MCONF;
 			}
 		}
+
+		// merges $MCONF and $MLANG from conf.php and the additional configuration of the module
+		$setupInformation = $this->getModuleSetupInformation($name, $fullPath);
+
+		// Because 'path/../path' does not work
+		// clean up the configuration part
+		if (empty($setupInformation['configuration'])) {
+			return 'notFound';
+		}
+		if (
+			$setupInformation['configuration']['shy']
+			|| !$this->checkModAccess($name, $setupInformation['configuration'])
+			|| !$this->checkModWorkspace($name, $setupInformation['configuration'])
+		) {
+			return FALSE;
+		}
+		$finalModuleConfiguration = $setupInformation['configuration'];
+		$finalModuleConfiguration['name'] = $name;
+		// Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
+		$lang = $this->getLanguageService();
+		if (is_object($lang)) {
+			// $setupInformation['labels']['default']['tabs_images']['tab'] is for modules the reference
+			// to the module icon.
+			$defaultLabels = $setupInformation['labels']['default'];
+
+			// Here the path is transformed to an absolute reference.
+			if ($defaultLabels['tabs_images']['tab']) {
+				// Initializing search for alternative icon:
+				// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
+				$altIconKey = 'MOD:' . $name . '/' . $defaultLabels['tabs_images']['tab'];
+				$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
+				// Setting icon, either default or alternative:
+				if ($altIconAbsPath && @is_file($altIconAbsPath)) {
+					$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $altIconAbsPath);
+				} else {
+					// Setting default icon:
+					$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $fullPath . '/' . $defaultLabels['tabs_images']['tab']);
+				}
+
+				// Finally, setting the icon with correct path:
+				if (substr($defaultLabels['tabs_images']['tab'], 0, 3) === '../') {
+					$defaultLabels['tabs_images']['tab'] = PATH_site . substr($defaultLabels['tabs_images']['tab'], 3);
+				} else {
+					$defaultLabels['tabs_images']['tab'] = PATH_typo3 . $defaultLabels['tabs_images']['tab'];
+				}
+			}
+
+			// If LOCAL_LANG references are used for labels of the module:
+			if ($defaultLabels['ll_ref']) {
+				// Now the 'default' key is loaded with the CURRENT language - not the english translation...
+				$defaultLabels['labels']['tablabel'] = $lang->sL($defaultLabels['ll_ref'] . ':mlang_labels_tablabel');
+				$defaultLabels['labels']['tabdescr'] = $lang->sL($defaultLabels['ll_ref'] . ':mlang_labels_tabdescr');
+				$defaultLabels['tabs']['tab'] = $lang->sL($defaultLabels['ll_ref'] . ':mlang_tabs_tab');
+				$lang->addModuleLabels($defaultLabels, $name . '_');
+			} else {
+				// ... otherwise use the old way:
+				$lang->addModuleLabels($defaultLabels, $name . '_');
+				$lang->addModuleLabels($setupInformation['labels'][$lang->lang], $name . '_');
+			}
+		}
+
+		// Default script setup
+		if ($setupInformation['configuration']['script'] === '_DISPATCH') {
+			if ($setupInformation['configuration']['extbase']) {
+				$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('Tx_' . $name);
+			} else {
+				$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
+			}
+		} elseif ($setupInformation['configuration']['script'] && file_exists($setupInformation['path'] . '/' . $setupInformation['configuration']['script'])) {
+			$finalModuleConfiguration['script'] = $this->getRelativePath(PATH_typo3, $fullPath . '/' . $setupInformation['configuration']['script']);
+		} else {
+			$finalModuleConfiguration['script'] = 'dummy.php';
+		}
+
+		// Navigation Frame Script (GET params could be added)
+		if ($setupInformation['configuration']['navFrameScript']) {
+			$navFrameScript = explode('?', $setupInformation['configuration']['navFrameScript']);
+			$navFrameScript = $navFrameScript[0];
+			if (file_exists($setupInformation['path'] . '/' . $navFrameScript)) {
+				$finalModuleConfiguration['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullPath . '/' . $setupInformation['configuration']['navFrameScript']);
+			}
+		}
+
+		// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
+		if ($setupInformation['configuration']['navFrameScriptParam']) {
+			$finalModuleConfiguration['navFrameScriptParam'] = $setupInformation['configuration']['navFrameScriptParam'];
+		}
+
 		// Check if this is a submodule
+		$mainModule = '';
 		if (strpos($name, '_') !== FALSE) {
 			list($mainModule, ) = explode('_', $name, 2);
 		}
 
-		$finalModuleConfiguration = array();
-
-		// merges $MCONF and $MLANG from conf.php and the additional configuration of the module
-		$setupInformation = $this->getModuleSetupInformation($name, $fullpath);
-
-		// Because 'path/../path' does not work
-		// clean up the configuration part
-		if (count($setupInformation['configuration']) > 0) {
-			if (!$setupInformation['configuration']['shy'] && $this->checkModAccess($name, $setupInformation['configuration']) && $this->checkModWorkspace($name, $setupInformation['configuration'])) {
-				$finalModuleConfiguration = $setupInformation['configuration'];
-				$finalModuleConfiguration['name'] = $name;
-				// Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
-				if (is_object($GLOBALS['LANG'])) {
-					// $setupInformation['labels']['default']['tabs_images']['tab'] is for modules the reference
-					// to the module icon.
-					$defaultLabels = $setupInformation['labels']['default'];
-
-					// Here the path is transformed to an absolute reference.
-					if ($defaultLabels['tabs_images']['tab']) {
-						// Initializing search for alternative icon:
-						// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
-						$altIconKey = 'MOD:' . $name . '/' . $defaultLabels['tabs_images']['tab'];
-						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
-						// Setting icon, either default or alternative:
-						if ($altIconAbsPath && @is_file($altIconAbsPath)) {
-							$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $altIconAbsPath);
-						} else {
-							// Setting default icon:
-							$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $defaultLabels['tabs_images']['tab']);
-						}
-
-						// Finally, setting the icon with correct path:
-						if (substr($defaultLabels['tabs_images']['tab'], 0, 3) == '../') {
-							$defaultLabels['tabs_images']['tab'] = PATH_site . substr($defaultLabels['tabs_images']['tab'], 3);
-						} else {
-							$defaultLabels['tabs_images']['tab'] = PATH_typo3 . $defaultLabels['tabs_images']['tab'];
-						}
-					}
-
-					// If LOCAL_LANG references are used for labels of the module:
-					if ($defaultLabels['ll_ref']) {
-						// Now the 'default' key is loaded with the CURRENT language - not the english translation...
-						$defaultLabels['labels']['tablabel'] = $GLOBALS['LANG']->sL($defaultLabels['ll_ref'] . ':mlang_labels_tablabel');
-						$defaultLabels['labels']['tabdescr'] = $GLOBALS['LANG']->sL($defaultLabels['ll_ref'] . ':mlang_labels_tabdescr');
-						$defaultLabels['tabs']['tab'] = $GLOBALS['LANG']->sL($defaultLabels['ll_ref'] . ':mlang_tabs_tab');
-						$GLOBALS['LANG']->addModuleLabels($defaultLabels, $name . '_');
-					} else {
-						// ... otherwise use the old way:
-						$GLOBALS['LANG']->addModuleLabels($defaultLabels, $name . '_');
-						$GLOBALS['LANG']->addModuleLabels($setupInformation['labels'][$GLOBALS['LANG']->lang], $name . '_');
-					}
-				}
-
-				// Default script setup
-				if ($setupInformation['configuration']['script'] === '_DISPATCH') {
-					if ($setupInformation['configuration']['extbase']) {
-						$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('Tx_' . $name);
-					} else {
-						$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
-					}
-				} elseif ($setupInformation['configuration']['script'] && file_exists($setupInformation['path'] . '/' . $setupInformation['configuration']['script'])) {
-					$finalModuleConfiguration['script'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $setupInformation['configuration']['script']);
-				} else {
-					$finalModuleConfiguration['script'] = 'dummy.php';
-				}
-
-				// Navigation Frame Script (GET params could be added)
-				if ($setupInformation['configuration']['navFrameScript']) {
-					$navFrameScript = explode('?', $setupInformation['configuration']['navFrameScript']);
-					$navFrameScript = $navFrameScript[0];
-					if (file_exists($setupInformation['path'] . '/' . $navFrameScript)) {
-						$finalModuleConfiguration['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $setupInformation['configuration']['navFrameScript']);
-					}
-				}
-
-				// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
-				if ($setupInformation['configuration']['navFrameScriptParam']) {
-					$finalModuleConfiguration['navFrameScriptParam'] = $setupInformation['configuration']['navFrameScriptParam'];
-				}
-
-				// check if there is a navigation component (like the pagetree)
-				if (is_array($this->navigationComponents[$name])) {
-					$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
-				// navigation component can be overriden by the main module component
-				} elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== FALSE) {
-					$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
-				}
-			} else {
-				return FALSE;
-			}
-		} else {
-			$finalModuleConfiguration = 'notFound';
+		// check if there is a navigation component (like the pagetree)
+		if (is_array($this->navigationComponents[$name])) {
+			$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
+		// navigation component can be overriden by the main module component
+		} elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== FALSE) {
+			$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
 		}
-
 		return $finalModuleConfiguration;
 	}
 
@@ -372,7 +378,9 @@ class ModuleLoader {
 			$moduleSetupInformation['labels'] = $MLANG;
 		}
 
-		$moduleConfiguration = !empty($GLOBALS['TBE_MODULES']['_configuration'][$moduleName]) ? $GLOBALS['TBE_MODULES']['_configuration'][$moduleName] : NULL;
+		$moduleConfiguration = !empty($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])
+			? $GLOBALS['TBE_MODULES']['_configuration'][$moduleName]
+			: NULL;
 		if ($moduleConfiguration !== NULL) {
 			// Overlay setup with additional labels
 			if (!empty($moduleConfiguration['labels']) && is_array($moduleConfiguration['labels'])) {
@@ -405,54 +413,50 @@ class ModuleLoader {
 	 * @return bool TRUE if access is granted for $this->BE_USER
 	 */
 	public function checkModAccess($name, $MCONF) {
-		if ($MCONF['access']) {
-			$access = strtolower($MCONF['access']);
-			// Checking if admin-access is required
-			// If admin-permissions is required then return TRUE if user is admin
-			if (strstr($access, 'admin')) {
-				if ($this->BE_USER->isAdmin()) {
-					return TRUE;
-				}
-			}
-			// This will add modules to the select-lists of user and groups
-			if (strstr($access, 'user')) {
-				$this->modListUser[] = $name;
-			}
-			if (strstr($access, 'group')) {
-				$this->modListGroup[] = $name;
-			}
-			// This checks if a user is permitted to access the module
-			if ($this->BE_USER->isAdmin() || $this->BE_USER->check('modules', $name)) {
-				return TRUE;
-			}
-		} else {
+		if (empty($MCONF['access'])) {
 			return TRUE;
 		}
+		$access = strtolower($MCONF['access']);
+		// Checking if admin-access is required
+		// If admin-permissions is required then return TRUE if user is admin
+		if (strpos($access, 'admin') !== FALSE && $this->BE_USER->isAdmin()) {
+			return TRUE;
+		}
+		// This will add modules to the select-lists of user and groups
+		if (strpos($access, 'user') !== FALSE) {
+			$this->modListUser[] = $name;
+		}
+		if (strpos($access, 'group') !== FALSE) {
+			$this->modListGroup[] = $name;
+		}
+		// This checks if a user is permitted to access the module
+		if ($this->BE_USER->isAdmin() || $this->BE_USER->check('modules', $name)) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	/**
 	 * Check if a module is allowed inside the current workspace for be user
 	 * Processing happens only if $this->observeWorkspaces is TRUE
 	 *
-	 * @param string $name Module name
+	 * @param string $name Module name (unused)
 	 * @param array $MCONF MCONF array (module configuration array) from the modules conf.php file (contains settings about workspace restrictions)
 	 * @return bool TRUE if access is granted for $this->BE_USER
 	 */
 	public function checkModWorkspace($name, $MCONF) {
-		if ($this->observeWorkspaces) {
-			$status = TRUE;
-			if ($MCONF['workspaces']) {
-				$status = FALSE;
-				if ($this->BE_USER->workspace === 0 && GeneralUtility::inList($MCONF['workspaces'], 'online') || $this->BE_USER->workspace === -1 && GeneralUtility::inList($MCONF['workspaces'], 'offline') || $this->BE_USER->workspace > 0 && GeneralUtility::inList($MCONF['workspaces'], 'custom')) {
-					$status = TRUE;
-				}
-			} elseif ($this->BE_USER->workspace === -99) {
-				$status = FALSE;
-			}
-			return $status;
-		} else {
+		if (!$this->observeWorkspaces) {
 			return TRUE;
 		}
+		$status = TRUE;
+		if (!empty($MCONF['workspaces'])) {
+			$status = $this->BE_USER->workspace === 0 && GeneralUtility::inList($MCONF['workspaces'], 'online')
+				|| $this->BE_USER->workspace === -1 && GeneralUtility::inList($MCONF['workspaces'], 'offline')
+				|| $this->BE_USER->workspace > 0 && GeneralUtility::inList($MCONF['workspaces'], 'custom');
+		} elseif ($this->BE_USER->workspace === -99) {
+			$status = FALSE;
+		}
+		return $status;
 	}
 
 	/**
@@ -487,7 +491,8 @@ class ModuleLoader {
 	}
 
 	/**
-	 * The $str is cleaned so that it contains alphanumerical characters only. Modules must only consist of these characters
+	 * The $str is cleaned so that it contains alphanumerical characters only.
+	 * Module names must only consist of these characters
 	 *
 	 * @param string $str String to clean up
 	 * @return string
@@ -504,29 +509,35 @@ class ModuleLoader {
 	 * @return string The relative path of destination compared to base.
 	 */
 	public function getRelativePath($baseDir, $destDir) {
-		// A special case , the dirs are equals
-		if ($baseDir == $destDir) {
+		// A special case, the dirs are equal
+		if ($baseDir === $destDir) {
 			return './';
 		}
 		// Remove beginning
 		$baseDir = ltrim($baseDir, '/');
 		$destDir = ltrim($destDir, '/');
 		$found = TRUE;
-		$slash_pos = 0;
 		do {
 			$slash_pos = strpos($destDir, '/');
-			if (substr($destDir, 0, $slash_pos) == substr($baseDir, 0, $slash_pos)) {
+			if ($slash_pos !== FALSE && substr($destDir, 0, $slash_pos) == substr($baseDir, 0, $slash_pos)) {
 				$baseDir = substr($baseDir, $slash_pos + 1);
 				$destDir = substr($destDir, $slash_pos + 1);
 			} else {
 				$found = FALSE;
 			}
-		} while ($found == TRUE);
+		} while ($found);
 		$slashes = strlen($baseDir) - strlen(str_replace('/', '', $baseDir));
 		for ($i = 0; $i < $slashes; $i++) {
 			$destDir = '../' . $destDir;
 		}
 		return GeneralUtility::resolveBackPath($destDir);
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
