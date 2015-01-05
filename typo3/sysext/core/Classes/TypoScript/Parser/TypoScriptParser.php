@@ -14,9 +14,11 @@ namespace TYPO3\CMS\Core\TypoScript\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 
 /**
  * The TypoScript parser
@@ -30,7 +32,7 @@ class TypoScriptParser {
 	 *
 	 * @var bool
 	 */
-	public $strict = 1;
+	public $strict = TRUE;
 
 	/**
 	 * TypoScript hierarchy being build during parsing.
@@ -65,14 +67,14 @@ class TypoScriptParser {
 	 *
 	 * @var bool
 	 */
-	public $commentSet = 0;
+	public $commentSet = FALSE;
 
 	/**
 	 * Internally set, when multiline value is accumulated
 	 *
 	 * @var bool
 	 */
-	public $multiLineEnabled = 0;
+	public $multiLineEnabled = FALSE;
 
 	/**
 	 * Internally set, when multiline value is accumulated
@@ -101,7 +103,7 @@ class TypoScriptParser {
 	 *
 	 * @var bool
 	 */
-	public $lastConditionTrue = 1;
+	public $lastConditionTrue = TRUE;
 
 	/**
 	 * Tracking all conditions found
@@ -122,7 +124,7 @@ class TypoScriptParser {
 	 *
 	 * @var bool
 	 */
-	public $syntaxHighLight = 0;
+	public $syntaxHighLight = FALSE;
 
 	/**
 	 * Syntax highlight data is accumulated in this array. Used by syntaxHighlight_print() to construct the output.
@@ -143,14 +145,14 @@ class TypoScriptParser {
 	 *
 	 * @var bool
 	 */
-	public $regComments = 0;
+	public $regComments = FALSE;
 
 	/**
 	 * DO NOT register the linenumbers. This is default for the ordinary sitetemplate!
 	 *
 	 * @var bool
 	 */
-	public $regLinenumbers = 0;
+	public $regLinenumbers = FALSE;
 
 	/**
 	 * Error accumulation array.
@@ -291,6 +293,7 @@ class TypoScriptParser {
 				return $line;
 			}
 		}
+		return '';
 	}
 
 	/**
@@ -507,6 +510,7 @@ class TypoScriptParser {
 				}
 			}
 		}
+		return NULL;
 	}
 
 	/**
@@ -754,8 +758,9 @@ class TypoScriptParser {
 	 * @return void
 	 */
 	public function error($err, $num = 2) {
-		if (is_object($GLOBALS['TT'])) {
-			$GLOBALS['TT']->setTSlogMessage($err, $num);
+		$tt = $this->getTimeTracker();
+		if ($tt !== NULL) {
+			$tt->setTSlogMessage($err, $num);
 		}
 		$this->errors[] = array($err, $num, $this->rawP - 1, $this->lineNumberOffset);
 	}
@@ -1173,7 +1178,7 @@ class TypoScriptParser {
 	public function doSyntaxHighlight($string, $lineNum = '', $highlightBlockMode = FALSE) {
 		$this->syntaxHighLight = 1;
 		$this->highLightData = array();
-		$this->error = array();
+		$this->errors = array();
 		// This is done in order to prevent empty <span>..</span> sections around CR content. Should not do anything but help lessen the amount of HTML code.
 		$string = str_replace(CR, '', $string);
 		$this->parse($string);
@@ -1248,7 +1253,7 @@ class TypoScriptParser {
 			}
 			if (is_array($lineNumDat)) {
 				$lineNum = $rawP + $lineNumDat[0];
-				if ($this->parentObject instanceof \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService) {
+				if ($this->parentObject instanceof ExtendedTemplateService) {
 					$lineNum = $this->parentObject->ext_lnBreakPointWrap($lineNum, $lineNum);
 				}
 				$lineC = $this->highLightStyles['linenum'][0] . str_pad($lineNum, 4, ' ', STR_PAD_LEFT) . ':' . $this->highLightStyles['linenum'][1] . ' ' . $lineC;
@@ -1256,6 +1261,13 @@ class TypoScriptParser {
 			$lines[] = $lineC;
 		}
 		return '<pre class="ts-hl">' . implode(LF, $lines) . '</pre>';
+	}
+
+	/**
+	 * @return TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return isset($GLOBALS['TT']) ? $GLOBALS['TT'] : NULL;
 	}
 
 }

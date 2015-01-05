@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Core\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService {
+class ConfigurationForm extends ExtendedTemplateService {
 
 	/**
 	 * @var array
@@ -39,12 +43,22 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	/**
 	 * @var bool
 	 */
-	public $ext_printAll = 1;
+	public $ext_printAll = TRUE;
 
 	/**
 	 * @var array
 	 */
 	public $ext_incomingValues = array();
+
+	/**
+	 * @var array
+	 */
+	protected $ext_realValues = array();
+
+	/**
+	 * @var string
+	 */
+	protected $ext_backPath = '';
 
 	/**
 	 * @param string $configTemplate
@@ -76,7 +90,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 		$temp = $this->flatSetup;
 		$this->flatSetup = array();
 		$this->flattenSetup($valueArray, '', '');
-		$this->objReg = ($this->ext_realValues = $this->flatSetup);
+		$this->objReg = $this->ext_realValues = $this->flatSetup;
 		$this->flatSetup = $temp;
 		foreach ($theConstants as $k => $p) {
 			if (isset($this->objReg[$k])) {
@@ -102,7 +116,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @return void
 	 */
 	public function ext_makeHelpInformationForCategory($cat) {
-		return $this->ext_getTSCE_config($cat);
+		$this->ext_getTSCE_config($cat);
 	}
 
 	/**
@@ -113,24 +127,24 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @param string $script
 	 * @param string $addFields
 	 * @param string $extKey
-	 * @param bool Adds opening <form> tag to the output, if TRUE
+	 * @param bool $addFormTag Adds opening <form> tag to the output, if TRUE
 	 * @return string The form
 	 */
 	public function ext_getForm($cat, $theConstants, $script = '', $addFields = '', $extKey = '', $addFormTag = TRUE) {
 		$this->ext_makeHelpInformationForCategory($cat);
 		$printFields = trim($this->ext_printFields($theConstants, $cat));
 		$content = '';
-		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('
+		$content .= GeneralUtility::wrapJS('
 			function uFormUrl(aname) {
-				document.' . $this->ext_CEformName . '.action = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '#') . '+aname;
+				document.' . $this->ext_CEformName . '.action = ' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript() . '#') . '+aname;
 			}
 		');
 		if ($addFormTag) {
-			$content .= '<form action="' . htmlspecialchars(($script ?: \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+			$content .= '<form action="' . htmlspecialchars(($script ?: GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		}
 		$content .= $addFields;
 		$content .= $printFields;
-		$content .= '<input class="btn btn-default" type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xlf:update', TRUE) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
+		$content .= '<input class="btn btn-default" type="submit" name="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tsfe.xlf:update', TRUE) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
 		$example = $this->ext_displayExample();
 		$content .= $example ? '<hr/>' . $example : '';
 		return $content;
@@ -142,8 +156,11 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @return string
 	 */
 	public function ext_displayExample() {
+		$out = '';
 		if ($this->helpConfig['imagetag'] || $this->helpConfig['description'] || $this->helpConfig['header']) {
-			$out = '<div align="center">' . $this->helpConfig['imagetag'] . '</div><BR>' . ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<BR>') . '<BR>' : '') . ($this->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $this->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>');
+			$out = '<div align="center">' . $this->helpConfig['imagetag'] . '</div><br />'
+				. ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<br />') . '<br />' : '')
+				. ($this->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $this->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>');
 		}
 		return $out;
 	}
@@ -155,10 +172,10 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @return array
 	 */
 	public function ext_mergeIncomingWithExisting($arr) {
-		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+		$parseObj = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
 		$parseObj->parse(implode(LF, $this->ext_incomingValues));
 		$arr2 = $parseObj->setup;
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arr, $arr2);
+		ArrayUtility::mergeRecursiveWithOverrule($arr, $arr2);
 		return $arr;
 	}
 
@@ -168,7 +185,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function ext_getKeyImage($key) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		return '<span class="label label-danger">' . $key . '</span>';
 	}
 

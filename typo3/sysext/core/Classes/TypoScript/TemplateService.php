@@ -14,8 +14,19 @@ namespace TYPO3\CMS\Core\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Template object that is responsible for generating the TypoScript template based on template records.
@@ -355,10 +366,10 @@ class TemplateService {
 		// $this->whereClause is used only to select templates from sys_template.
 		// $GLOBALS['SIM_ACCESS_TIME'] is used so that we're able to simulate a later time as a test...
 		$this->whereClause = 'AND deleted=0 ';
-		if (!$GLOBALS['TSFE']->showHiddenRecords) {
+		if (!$this->getTypoScriptFrontendController()->showHiddenRecords) {
 			$this->whereClause .= 'AND hidden=0 ';
 		}
-		if ($GLOBALS['TSFE']->showHiddenRecords || $GLOBALS['SIM_ACCESS_TIME'] != $GLOBALS['ACCESS_TIME']) {
+		if ($this->getTypoScriptFrontendController()->showHiddenRecords || $GLOBALS['SIM_ACCESS_TIME'] != $GLOBALS['ACCESS_TIME']) {
 			// Set the simulation flag, if simulation is detected!
 			$this->simulationHiddenOrTime = 1;
 		}
@@ -400,7 +411,7 @@ class TemplateService {
 	 * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
 	 */
 	public function getCurrentPageData() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pagesection')->get((int)$GLOBALS['TSFE']->id . '_' . GeneralUtility::md5int($GLOBALS['TSFE']->MP));
+		return GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection')->get((int)$this->getTypoScriptFrontendController()->id . '_' . GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP));
 	}
 
 	/**
@@ -411,9 +422,10 @@ class TemplateService {
 	 */
 	public function matching($cc) {
 		if (is_array($cc['all'])) {
-			/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
-			$matchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
+			/** @var $matchObj ConditionMatcher */
+			$matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
 			$matchObj->setRootline((array)$cc['rootLine']);
+			$sectionsMatch = array();
 			foreach ($cc['all'] as $key => $pre) {
 				if ($matchObj->match($pre)) {
 					$sectionsMatch[$key] = $pre;
@@ -443,8 +455,8 @@ class TemplateService {
 			// needs to be updated...
 			$isCached = FALSE;
 			$this->runThroughTemplates($theRootLine);
-			if ($GLOBALS['TSFE']->all) {
-				$cc = $GLOBALS['TSFE']->all;
+			if ($this->getTypoScriptFrontendController()->all) {
+				$cc = $this->getTypoScriptFrontendController()->all;
 				// The two rowSums must NOT be different from each other - which they will be if start/endtime or hidden has changed!
 				if (serialize($this->rowSum) !== serialize($cc['rowSum'])) {
 					unset($cc);
@@ -459,7 +471,7 @@ class TemplateService {
 			}
 			// This is about getting the hash string which is used to fetch the cached TypoScript template.
 			// If there was some cached currentPageData ($cc) then that's good (it gives us the hash).
-			if (is_array($cc)) {
+			if (isset($cc) && is_array($cc)) {
 				// If currentPageData was actually there, we match the result (if this wasn't done already in $TSFE->getFromCache()...)
 				if (!$cc['match']) {
 					// @todo check if this can ever be the case - otherwise remove
@@ -470,7 +482,7 @@ class TemplateService {
 			} else {
 				// If currentPageData was not there, we first find $rowSum (freshly generated). After that we try to see, if it is stored with a list of all conditions. If so we match the result.
 				$rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
-				$result = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($rowSumHash);
+				$result = PageRepository::getHash($rowSumHash);
 				if (is_array($result)) {
 					$cc = array();
 					$cc['all'] = $result;
@@ -482,17 +494,17 @@ class TemplateService {
 			}
 			if ($hash) {
 				// Get TypoScript setup array
-				$setupData = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($hash);
+				$setupData = PageRepository::getHash($hash);
 			}
 			if (is_array($setupData) && !$this->forceTemplateParsing) {
 				// If TypoScript setup structure was cached we unserialize it here:
 				$this->setup = $setupData;
 				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSLogMessage('Using cached TS template data');
+					$this->getTimeTracker()->setTSLogMessage('Using cached TS template data');
 				}
 			} else {
 				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSLogMessage('Not using any cached TS data');
+					$this->getTimeTracker()->setTSLogMessage('Not using any cached TS data');
 				}
 
 				// Make configuration
@@ -507,27 +519,27 @@ class TemplateService {
 				ksort($cc);
 				$hash = md5(serialize($cc));
 				// This stores the data.
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($hash, $this->setup, 'TS_TEMPLATE');
+				PageRepository::storeHash($hash, $this->setup, 'TS_TEMPLATE');
 				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
+					$this->getTimeTracker()->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
 				}
 				$rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
-				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($rowSumHash, $cc['all'], 'TMPL_CONDITIONS_ALL');
+				PageRepository::storeHash($rowSumHash, $cc['all'], 'TMPL_CONDITIONS_ALL');
 			}
 			// Add rootLine
 			$cc['rootLine'] = $this->rootLine;
 			ksort($cc);
 			// Make global and save
-			$GLOBALS['TSFE']->all = $cc;
+			$this->getTypoScriptFrontendController()->all = $cc;
 			// Matching must be executed for every request, so this must never be part of the pagesection cache!
 			unset($cc['match']);
-			if (!$isCached && !$this->simulationHiddenOrTime && !$GLOBALS['TSFE']->no_cache) {
+			if (!$isCached && !$this->simulationHiddenOrTime && !$this->getTypoScriptFrontendController()->no_cache) {
 				// Only save the data if we're not simulating by hidden/starttime/endtime
-				$mpvarHash = GeneralUtility::md5int($GLOBALS['TSFE']->MP);
+				$mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
 				/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
-				$pageSectionCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_pagesection');
-				$pageSectionCache->set((int)$GLOBALS['TSFE']->id . '_' . $mpvarHash, $cc, array(
-					'pageId_' . (int)$GLOBALS['TSFE']->id,
+				$pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_pagesection');
+				$pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, array(
+					'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
 					'mpvarHash_' . $mpvarHash
 				));
 			}
@@ -546,7 +558,7 @@ class TemplateService {
 	/**
 	 * Traverses the rootLine from the root and out. For each page it checks if there is a template record. If there is a template record, $this->processTemplate() is called.
 	 * Resets and affects internal variables like $this->constants, $this->config and $this->rowSum
-	 * Also creates $this->rootLine which is a root line stopping at the root template (contrary to $GLOBALS['TSFE']->rootLine which goes all the way to the root of the tree
+	 * Also creates $this->rootLine which is a root line stopping at the root template (contrary to $this->getTypoScriptFrontendController()->rootLine which goes all the way to the root of the tree
 	 *
 	 * @param array $theRootLine The rootline of the current page (going ALL the way to tree root)
 	 * @param int $start_template_uid Set specific template record UID to select; this is only for debugging/development/analysis use in backend modules like "Web > Template". For parsing TypoScript templates in the frontend it should be 0 (zero)
@@ -559,38 +571,38 @@ class TemplateService {
 		$this->rowSum = array();
 		$this->hierarchyInfoToRoot = array();
 		$this->absoluteRootLine = $theRootLine;
-		$this->isDefaultTyposcriptAdded = FALSE;
+		$this->isDefaultTypoScriptAdded = FALSE;
 
 		reset($this->absoluteRootLine);
 		$c = count($this->absoluteRootLine);
 		for ($a = 0; $a < $c; $a++) {
 			// If some template loaded before has set a template-id for the next level, then load this template first!
 			if ($this->nextLevel) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . (int)$this->nextLevel . ' ' . $this->whereClause);
+				$res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', 'uid=' . (int)$this->nextLevel . ' ' . $this->whereClause);
 				$this->nextLevel = 0;
-				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				if ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 					$this->versionOL($row);
 					if (is_array($row)) {
 						$this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
 						$this->outermostRootlineIndexWithTemplate = $a;
 					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$this->getDatabaseConnection()->sql_free_result($res);
 			}
 			$addC = '';
 			// If first loop AND there is set an alternative template uid, use that
 			if ($a == $c - 1 && $start_template_uid) {
 				$addC = ' AND uid=' . (int)$start_template_uid;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$this->absoluteRootLine[$a]['uid'] . $addC . ' ' . $this->whereClause, '', 'root DESC, sorting', 1);
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$this->absoluteRootLine[$a]['uid'] . $addC . ' ' . $this->whereClause, '', 'root DESC, sorting', 1);
+			if ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 				$this->versionOL($row);
 				if (is_array($row)) {
 					$this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
 					$this->outermostRootlineIndexWithTemplate = $a;
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$this->getDatabaseConnection()->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
 
@@ -611,7 +623,7 @@ class TemplateService {
 	 *
 	 * @param array $row A full TypoScript template record (sys_template/static_template/forged "dummy" record made from static template file)
 	 * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
-	 * @param array $pid The PID of the input template record
+	 * @param int $pid The PID of the input template record
 	 * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
 	 * @param string $templateParent Parent template id (during recursive call); Same syntax as $idList ids, eg. "sys_123
 	 * @param string $includePath Specifies the path from which the template was included (used with static_includes)
@@ -622,6 +634,8 @@ class TemplateService {
 		// Adding basic template record information to rowSum array
 		$this->rowSum[] = array($row['uid'], $row['title'], $row['tstamp']);
 		// Processing "Clear"-flags
+		$clConst = 0;
+		$clConf = 0;
 		if ($row['clear']) {
 			$clConst = $row['clear'] & 1;
 			$clConf = $row['clear'] & 2;
@@ -652,7 +666,7 @@ class TemplateService {
 					unset($basedOnIds[$key]);
 				}
 			}
-			$subTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
+			$subTemplates = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
 			// Traversing list again to ensure the sorting of the templates
 			foreach ($basedOnIds as $id) {
 				if (is_array($subTemplates[$id])) {
@@ -738,7 +752,7 @@ class TemplateService {
 	 *
 	 * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
 	 * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
-	 * @param array $pid The PID of the input template record
+	 * @param int $pid The PID of the input template record
 	 * @param array $row A full TypoScript template record
 	 * @return void
 	 * @see processTemplate()
@@ -768,9 +782,9 @@ class TemplateService {
 			foreach ($include_static_fileArr as $ISF_file) {
 				if (substr($ISF_file, 0, 4) == 'EXT:') {
 					list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
-					if ((string)$ISF_extKey !== '' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
+					if ((string)$ISF_extKey !== '' && ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
 						$ISF_localPath = rtrim($ISF_localPath, '/') . '/';
-						$ISF_filePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
+						$ISF_filePath = ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;
 						if (@is_dir($ISF_filePath)) {
 							$mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
 							$subrow = array(
@@ -812,7 +826,7 @@ class TemplateService {
 	 *
 	 * @param string $idList A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
 	 * @param string $templateID The id of the current template. Same syntax as $idList ids, eg. "sys_123
-	 * @param array $pid The PID of the input template record
+	 * @param int $pid The PID of the input template record
 	 * @param array $row A full TypoScript template record
 	 * @return void
 	 * @access private
@@ -873,12 +887,12 @@ class TemplateService {
 		// To do the fronted call a full frontend is required, just checking for
 		// TYPO3_MODE === 'FE' is not enough. This could otherwise lead to fatals in
 		// eId scripts that run in frontend scope, but do not have a full blown frontend.
-		if (is_object($GLOBALS['TSFE']) === TRUE && property_exists($GLOBALS['TSFE'], 'sys_page') === TRUE && method_exists($GLOBALS['TSFE']->sys_page, 'versionOL') === TRUE) {
+		if (is_object($this->getTypoScriptFrontendController()) && property_exists($this->getTypoScriptFrontendController(), 'sys_page') && method_exists($this->getTypoScriptFrontendController()->sys_page, 'versionOL')) {
 			// Frontend
-			$GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);
+			$this->getTypoScriptFrontendController()->sys_page->versionOL('sys_template', $row);
 		} else {
 			// Backend
-			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_template', $row);
+			BackendUtility::workspaceOL('sys_template', $row);
 		}
 	}
 
@@ -906,12 +920,12 @@ class TemplateService {
 		// Parse TypoScript Constants
 		// ****************************
 		// Initialize parser and match-condition classes:
-		/** @var $constants \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-		$constants = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+		/** @var $constants Parser\TypoScriptParser */
+		$constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
 		$constants->breakPointLN = (int)$this->ext_constants_BRP;
 		$constants->setup = $this->mergeConstantsFromPageTSconfig(array());
-		/** @var $matchObj \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher */
-		$matchObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
+		/** @var $matchObj ConditionMatcher */
+		$matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
 		$matchObj->setSimulateMatchConditions($this->matchAlternative);
 		$matchObj->setSimulateMatchResult((bool)$this->matchAll);
 		// Traverse constants text fields and parse them
@@ -927,8 +941,8 @@ class TemplateService {
 		// Parse TypoScript Setup (here called "config")
 		// ***********************************************
 		// Initialize parser and match-condition classes:
-		/** @var $config \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-		$config = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+		/** @var $config Parser\TypoScriptParser */
+		$config = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
 		$config->breakPointLN = (int)$this->ext_config_BRP;
 		$config->regLinenumbers = $this->ext_regLinenumbers;
 		$config->regComments = $this->ext_regComments;
@@ -945,11 +959,11 @@ class TemplateService {
 		}
 		// Substitute constants in the Setup code:
 		if ($this->tt_track) {
-			$GLOBALS['TT']->push('Substitute Constants (' . count($this->flatSetup) . ')');
+			$this->getTimeTracker()->push('Substitute Constants (' . count($this->flatSetup) . ')');
 		}
 		$all = $this->substituteConstants($all);
 		if ($this->tt_track) {
-			$GLOBALS['TT']->pull();
+			$this->getTimeTracker()->pull();
 		}
 
 		// Searching for possible unsubstituted constants left (only for information)
@@ -959,11 +973,11 @@ class TemplateService {
 				$findConst = explode('{$', $all);
 				array_shift($findConst);
 				foreach ($findConst as $constVal) {
-					$constLen = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
+					$constLen = MathUtility::forceIntegerInRange(strcspn($constVal, '}'), 0, 50);
 					$theConstList[] = '{$' . substr($constVal, 0, ($constLen + 1));
 				}
 				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage(implode(', ', $theConstList) . ': Constants may remain un-substituted!!', 2);
+					$this->getTimeTracker()->setTSlogMessage(implode(', ', $theConstList) . ': Constants may remain un-substituted!!', 2);
 				}
 			}
 
@@ -971,7 +985,7 @@ class TemplateService {
 
 		// Logging the textual size of the TypoScript Setup field text with all constants substituted:
 		if ($this->tt_track) {
-			$GLOBALS['TT']->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes');
+			$this->getTimeTracker()->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes');
 		}
 		// Finally parse the Setup field TypoScript code (where constants are now substituted)
 		$config->parse($all, $matchObj);
@@ -1030,14 +1044,14 @@ class TemplateService {
 		$paths = $this->templateIncludePaths;
 		$files = array();
 		foreach ($this->constants as &$value) {
-			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE, array_shift($paths));
+			$includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE, array_shift($paths));
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
 		unset($value);
 		$paths = $this->templateIncludePaths;
 		foreach ($this->config as &$value) {
-			$includeData = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE, array_shift($paths));
+			$includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, TRUE, array_shift($paths));
 			$files = array_merge($files, $includeData['files']);
 			$value = $includeData['typoscript'];
 		}
@@ -1068,13 +1082,13 @@ class TemplateService {
 			$TSdataArray[] = $this->absoluteRootLine[$a]['TSconfig'];
 		}
 		// Parsing the user TS (or getting from cache)
-		$TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
+		$TSdataArray = Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
 		$userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-		/** @var $parseObj \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
-		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+		/** @var $parseObj Parser\TypoScriptParser */
+		$parseObj = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
 		$parseObj->parse($userTS);
 		if (is_array($parseObj->setup['TSFE.']['constants.'])) {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($constArray, $parseObj->setup['TSFE.']['constants.']);
+			ArrayUtility::mergeRecursiveWithOverrule($constArray, $parseObj->setup['TSFE.']['constants.']);
 		}
 		return $constArray;
 	}
@@ -1090,7 +1104,7 @@ class TemplateService {
 	public function flattenSetup($setupArray, $prefix) {
 		if (is_array($setupArray)) {
 			foreach ($setupArray as $key => $val) {
-				if ($prefix || substr($key, 0, 16) != 'TSConstantEditor') {
+				if ($prefix || !StringUtility::beginsWith($key, 'TSConstantEditor')) {
 					// We don't want 'TSConstantEditor' in the flattend setup on the first level (190201)
 					if (is_array($val)) {
 						$this->flattenSetup($val, $prefix . $key);
@@ -1111,7 +1125,7 @@ class TemplateService {
 	 */
 	public function substituteConstants($all) {
 		if ($this->tt_track) {
-			$GLOBALS['TT']->setTSlogMessage('Constants to substitute: ' . count($this->flatSetup));
+			$this->getTimeTracker()->setTSlogMessage('Constants to substitute: ' . count($this->flatSetup));
 		}
 		$noChange = FALSE;
 		// Recursive substitution of constants (up to 10 nested levels)
@@ -1165,8 +1179,8 @@ class TemplateService {
 			foreach ($conf as $cKey => $val) {
 				if (is_array($val)) {
 					$tempConf = $this->splitConfArray($val, $splitCount);
-					foreach ($tempConf as $aKey => $val) {
-						$conf2[$aKey][$cKey] = $val;
+					foreach ($tempConf as $aKey => $val2) {
+						$conf2[$aKey][$cKey] = $val2;
 					}
 				} else {
 					// Splitting of all values on this level of the TypoScript object tree:
@@ -1176,7 +1190,6 @@ class TemplateService {
 						}
 					} else {
 						$main = explode('|*|', $val);
-						$mainCount = count($main);
 						$lastC = 0;
 						$middleC = 0;
 						$firstC = 0;
@@ -1184,10 +1197,13 @@ class TemplateService {
 							$first = explode('||', $main[0]);
 							$firstC = count($first);
 						}
+						$middle = array();
 						if ($main[1]) {
 							$middle = explode('||', $main[1]);
 							$middleC = count($middle);
 						}
+						$last = array();
+						$value = '';
 						if ($main[2]) {
 							$last = explode('||', $main[2]);
 							$lastC = count($last);
@@ -1215,17 +1231,17 @@ class TemplateService {
 	 * Returns the reference used for the frontend inclusion, checks against allowed paths for inclusion.
 	 *
 	 * @param string $fileFromSetup TypoScript "resource" data type value.
-	 * @return string Resulting filename, is either a full absolute URL or a relative path
+	 * @return string|NULL Resulting filename, is either a full absolute URL or a relative path. Returns NULL if invalid filename or a directory is given
 	 */
 	public function getFileName($fileFromSetup) {
 		$file = trim($fileFromSetup);
 		if (!$file) {
-			return;
+			return NULL;
 		} elseif (strpos($file, '../') !== FALSE) {
 			if ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
+				$this->getTimeTracker()->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
 			}
-			return;
+			return NULL;
 		}
 		// Cache
 		$hash = md5($file);
@@ -1243,12 +1259,12 @@ class TemplateService {
 		$file = GeneralUtility::getFileAbsFileName($file);
 		if (!$file) {
 			if ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage('File "' . $fileFromSetup . '" was not found!', 3);
+				$this->getTimeTracker()->setTSlogMessage('File "' . $fileFromSetup . '" was not found!', 3);
 			}
-			return;
+			return NULL;
 		}
 
-		$file = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($file);
+		$file = PathUtility::stripPathSitePrefix($file);
 
 		// Check if the found file is in the allowed paths
 		foreach ($this->allowedPaths as $val) {
@@ -1259,8 +1275,9 @@ class TemplateService {
 		}
 
 		if ($this->tt_track) {
-			$GLOBALS['TT']->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
+			$this->getTimeTracker()->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
 		}
+		return NULL;
 	}
 
 	/**
@@ -1354,7 +1371,7 @@ class TemplateService {
 		$keyArr = array();
 		$setupArrKeys = array_keys($setupArr);
 		foreach ($setupArrKeys as $key) {
-			if ($acceptOnlyProperties || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($key)) {
+			if ($acceptOnlyProperties || MathUtility::canBeInterpretedAsInteger($key)) {
 				$keyArr[] = (int)$key;
 			}
 		}
@@ -1394,10 +1411,10 @@ class TemplateService {
 	 * @param array $page The page record of the page to which we are creating a link. Needed due to fields like uid, alias, target, no_cache, title and sectionIndex_uid.
 	 * @param string $oTarget Default target string to use IF not $page['target'] is set.
 	 * @param bool $no_cache If set, then the "&no_cache=1" parameter is included in the URL.
-	 * @param string $script Alternative script name if you don't want to use $GLOBALS['TSFE']->config['mainScript'] (normally set to "index.php")
+	 * @param string $script Alternative script name if you don't want to use $this->getTypoScriptFrontendController()->config['mainScript'] (normally set to "index.php")
 	 * @param array $overrideArray Array with overriding values for the $page array.
 	 * @param string $addParams Additional URL parameters to set in the URL. Syntax is "&foo=bar&foo2=bar2" etc. Also used internally to add parameters if needed.
-	 * @param string $typeOverride If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $GLOBALS['TSFE']->config['config']['forceTypeValue'] if found.
+	 * @param string $typeOverride If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $this->getTypoScriptFrontendController()->config['config']['forceTypeValue'] if found.
 	 * @param string $targetDomain The target Doamin, if any was detected in typolink
 	 * @return array Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type", "target" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL
 	 * @see \TYPO3\CMS\Frontend\Page\FramesetRenderer::frameParams(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SEARCHRESULT(), \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::link()
@@ -1414,9 +1431,9 @@ class TemplateService {
 		// Adding Mount Points, "&MP=", parameter for the current page if any is set:
 		if (!strstr($addParams, '&MP=')) {
 			// Looking for hardcoded defaults:
-			if (trim($GLOBALS['TSFE']->MP_defaults[$page['uid']])) {
-				$addParams .= '&MP=' . rawurlencode(trim($GLOBALS['TSFE']->MP_defaults[$page['uid']]));
-			} elseif ($GLOBALS['TSFE']->config['config']['MP_mapRootPoints']) {
+			if (trim($this->getTypoScriptFrontendController()->MP_defaults[$page['uid']])) {
+				$addParams .= '&MP=' . rawurlencode(trim($this->getTypoScriptFrontendController()->MP_defaults[$page['uid']]));
+			} elseif ($this->getTypoScriptFrontendController()->config['config']['MP_mapRootPoints']) {
 				// Else look in automatically created map:
 				$m = $this->getFromMPmap($page['uid']);
 				if ($m) {
@@ -1426,7 +1443,7 @@ class TemplateService {
 		}
 		// Setting ID/alias:
 		if (!$script) {
-			$script = $GLOBALS['TSFE']->config['mainScript'];
+			$script = $this->getTypoScriptFrontendController()->config['mainScript'];
 		}
 		if ($page['alias']) {
 			$LD['url'] = $script . '?id=' . rawurlencode($page['alias']);
@@ -1437,8 +1454,8 @@ class TemplateService {
 		$LD['target'] = trim($page['target']) ?: $oTarget;
 		// typeNum
 		$typeNum = $this->setup[$LD['target'] . '.']['typeNum'];
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$GLOBALS['TSFE']->config['config']['forceTypeValue']) {
-			$typeOverride = (int)$GLOBALS['TSFE']->config['config']['forceTypeValue'];
+		if (!MathUtility::canBeInterpretedAsInteger($typeOverride) && (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue']) {
+			$typeOverride = (int)$this->getTypoScriptFrontendController()->config['config']['forceTypeValue'];
 		}
 		if ((string)$typeOverride !== '') {
 			$typeNum = $typeOverride;
@@ -1455,16 +1472,16 @@ class TemplateService {
 		$LD['no_cache'] = trim($page['no_cache']) || $no_cache ? '&no_cache=1' : '';
 		// linkVars
 		if ($addParams) {
-			$LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($GLOBALS['TSFE']->linkVars . $addParams), '', FALSE, TRUE);
+			$LD['linkVars'] = GeneralUtility::implodeArrayForUrl('', GeneralUtility::explodeUrl2Array($this->getTypoScriptFrontendController()->linkVars . $addParams), '', FALSE, TRUE);
 		} else {
-			$LD['linkVars'] = $GLOBALS['TSFE']->linkVars;
+			$LD['linkVars'] = $this->getTypoScriptFrontendController()->linkVars;
 		}
 		// Add absRefPrefix if exists.
-		$LD['url'] = $GLOBALS['TSFE']->absRefPrefix . $LD['url'];
+		$LD['url'] = $this->getTypoScriptFrontendController()->absRefPrefix . $LD['url'];
 		// If the special key 'sectionIndex_uid' (added 'manually' in tslib/menu.php to the page-record) is set, then the link jumps directly to a section on the page.
 		$LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#c' . $page['sectionIndex_uid'] : '';
 		// Compile the normal total url
-		$LD['totalURL'] = $this->removeQueryString(($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $GLOBALS['TSFE']->getMethodUrlIdToken)) . $LD['sectionIndex'];
+		$LD['totalURL'] = $this->removeQueryString(($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $this->getTypoScriptFrontendController()->getMethodUrlIdToken)) . $LD['sectionIndex'];
 		// Call post processing function for link rendering:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
 			$_params = array(
@@ -1493,12 +1510,12 @@ class TemplateService {
 		// Create map if not found already:
 		if (!is_array($this->MPmap)) {
 			$this->MPmap = array();
-			$rootPoints = GeneralUtility::trimExplode(',', strtolower($GLOBALS['TSFE']->config['config']['MP_mapRootPoints']), TRUE);
+			$rootPoints = GeneralUtility::trimExplode(',', strtolower($this->getTypoScriptFrontendController()->config['config']['MP_mapRootPoints']), TRUE);
 			// Traverse rootpoints:
 			foreach ($rootPoints as $p) {
+				$initMParray = array();
 				if ($p == 'root') {
 					$p = $this->rootLine[0]['uid'];
-					$initMParray = array();
 					if ($this->rootLine[0]['_MOUNT_OL'] && $this->rootLine[0]['_MP_PARAM']) {
 						$initMParray[] = $this->rootLine[0]['_MP_PARAM'];
 					}
@@ -1512,6 +1529,7 @@ class TemplateService {
 				return implode(',', $this->MPmap[$pageId]);
 			}
 		}
+		return '';
 	}
 
 	/**
@@ -1531,7 +1549,7 @@ class TemplateService {
 		// First level, check id
 		if (!$level) {
 			// Find mount point if any:
-			$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($id);
+			$mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($id);
 			// Overlay mode:
 			if (is_array($mount_info) && $mount_info['overlay']) {
 				$MP_array[] = $mount_info['MPvar'];
@@ -1548,12 +1566,12 @@ class TemplateService {
 		if ($id && $level < 20) {
 			$nextLevelAcc = array();
 			// Select and traverse current level pages:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . (int)$id . ' AND deleted=0 AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$res = $this->getDatabaseConnection()->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . (int)$id . ' AND deleted=0 AND doktype<>' . PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . PageRepository::DOKTYPE_BE_USER_SECTION);
+			while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 				// Find mount point if any:
 				$next_id = $row['uid'];
 				$next_MP_array = $MP_array;
-				$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($next_id, $row);
+				$mount_info = $this->getTypoScriptFrontendController()->sys_page->getMountPointInfo($next_id, $row);
 				// Overlay mode:
 				if (is_array($mount_info) && $mount_info['overlay']) {
 					$next_MP_array[] = $mount_info['MPvar'];
@@ -1572,7 +1590,7 @@ class TemplateService {
 					$nextLevelAcc[] = array($next_id, $next_MP_array);
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$this->getDatabaseConnection()->sql_free_result($res);
 			// Call recursively, if any:
 			foreach ($nextLevelAcc as $pSet) {
 				$this->initMPmap_create($pSet[0], $pSet[1], $level + 1);
@@ -1617,6 +1635,27 @@ class TemplateService {
 			array_unshift($this->hierarchyInfo, $defaultTemplateInfo);
 			$this->isDefaultTypoScriptAdded = TRUE;
 		}
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * @return TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
 	}
 
 }
