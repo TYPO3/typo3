@@ -1803,7 +1803,7 @@ tt_content.menu {
 						select {
 							pidInList = this
 							orderBy = sorting
-							andWhere {
+							where {
 								dataWrap = sorting>{field:sorting}
 							}
 							languageField = sys_language_uid

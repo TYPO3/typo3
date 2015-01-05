@@ -7912,6 +7912,7 @@ class ContentObjectRenderer {
 		}
 		$andWhere = isset($conf['andWhere.']) ? trim($this->stdWrap($conf['andWhere'], $conf['andWhere.'])) : trim($conf['andWhere']);
 		if ($andWhere) {
+			GeneralUtility::deprecationLog('Usage of TypoScript property "andWhere" is deprecated since 7.1 in favor of "where". It has been used to query the table "' . $table . '".');
 			$query .= ' AND ' . $andWhere;
 		}
 		// Enablefields
