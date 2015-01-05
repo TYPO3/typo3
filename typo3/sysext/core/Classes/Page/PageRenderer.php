@@ -2241,7 +2241,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if (count($this->inlineLanguageLabelFiles)) {
 			foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
-				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['$errorMode']);
+				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['errorMode']);
 			}
 		}
 		$this->inlineLanguageLabelFiles = array();
