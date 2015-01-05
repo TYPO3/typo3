@@ -463,14 +463,14 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 
 		// Construct link to edit the content element
 		$requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
-			'?id=' . $this->pObj->id .
+			'&id=' . $this->pObj->id .
 			'&search_levels=' . $this->searchLevel;
 		$actionLink = '<a href="#" onclick="';
-		$actionLink .= BackendUtility::editOnClick(
+		$actionLink .= htmlspecialchars(BackendUtility::editOnClick(
 			'&edit[' . $table . '][' . $row['record_uid'] . ']=edit',
 			$GLOBALS['BACK_PATH'],
 			$requestUri
-		);
+		));
 		$actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
 		$actionLink .= IconUtility::getSpriteIcon('actions-document-open');
 		$actionLink .= '</a>';
