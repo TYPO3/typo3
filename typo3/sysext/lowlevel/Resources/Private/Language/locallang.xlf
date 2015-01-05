@@ -63,6 +63,252 @@
 			<trans-unit id="writeMessageFailed" xml:space="preserve">
 				<source>Write to configuration file failed (%s)!</source>
 			</trans-unit>
+			<trans-unit id="menuTitle" xml:space="preserve">
+				<source>Overview</source>
+			</trans-unit>
+			<trans-unit id="recordStatistics" xml:space="preserve">
+				<source>Record Statistics</source>
+			</trans-unit>
+			<trans-unit id="totalPageTree" xml:space="preserve">
+				<source>Total Page Tree</source>
+			</trans-unit>
+			<trans-unit id="databaseRelations" xml:space="preserve">
+				<source>Database Relations</source>
+			</trans-unit>
+			<trans-unit id="fullSearch" xml:space="preserve">
+				<source>Full search</source>
+			</trans-unit>
+			<trans-unit id="findFilename" xml:space="preserve">
+				<source>Find filename</source>
+			</trans-unit>
+			<trans-unit id="manageRefIndex" xml:space="preserve">
+				<source>Manage Reference Index</source>
+			</trans-unit>
+			<trans-unit id="rawSearch" xml:space="preserve">
+				<source>Raw search in all fields</source>
+			</trans-unit>
+			<trans-unit id="advancedQuery" xml:space="preserve">
+				<source>Advanced query</source>
+			</trans-unit>
+			<trans-unit id="selectRecords" xml:space="preserve">
+				<source>Select records</source>
+			</trans-unit>
+			<trans-unit id="countResults" xml:space="preserve">
+				<source>Count results</source>
+			</trans-unit>
+			<trans-unit id="explainQuery" xml:space="preserve">
+				<source>Explain query</source>
+			</trans-unit>
+			<trans-unit id="csvExport" xml:space="preserve">
+				<source>CSV Export</source>
+			</trans-unit>
+			<trans-unit id="xmlExport" xml:space="preserve">
+				<source>XML Export</source>
+			</trans-unit>
+			<trans-unit id="clickToUpdateRefIndex" xml:space="preserve">
+				<source>Click here to update reference index</source>
+			</trans-unit>
+			<trans-unit id="updateNow" xml:space="preserve">
+				<source>Update now!</source>
+			</trans-unit>
+			<trans-unit id="clickToTestRefIndex" xml:space="preserve">
+				<source>Click here to test reference index</source>
+			</trans-unit>
+			<trans-unit id="referenceIndex_description" xml:space="preserve">
+				<source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
+			</trans-unit>
+			<trans-unit id="referenceIndex_buttonUpdate" xml:space="preserve">
+				<source>Update reference index</source>
+			</trans-unit>
+			<trans-unit id="referenceIndex_buttonCheck" xml:space="preserve">
+				<source>Check reference index</source>
+			</trans-unit>
+			<trans-unit id="checkNow" xml:space="preserve">
+				<source>Check now!</source>
+			</trans-unit>
+			<trans-unit id="checkScript_headline" xml:space="preserve">
+				<source>Using the command line interface</source>
+			</trans-unit>
+			<trans-unit id="checkScript" xml:space="preserve">
+				<source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
+			</trans-unit>
+			<trans-unit id="checkScript_check_description" xml:space="preserve">
+				<source>To check the reference index use</source>
+			</trans-unit>
+			<trans-unit id="checkScript_check_example" xml:space="preserve">
+				<source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -c</source>
+			</trans-unit>
+			<trans-unit id="checkScript_update_description" xml:space="preserve">
+				<source>To update the reference index use</source>
+			</trans-unit>
+			<trans-unit id="checkScript_update_example" xml:space="preserve">
+				<source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -e</source>
+			</trans-unit>
+			<trans-unit id="checkScript_more" xml:space="preserve">
+				<source>Make sure that a BE user with the name _cli_lowlevel exists. For more details see: /path/to/your/typo3/sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</source>
+			</trans-unit>
+			<trans-unit id="checkScript_information" xml:space="preserve">
+				<source>If you run these commands from the command line, make sure that a BE user with the name _cli_lowlevel exists.</source>
+			</trans-unit>
+			<trans-unit id="checkScript_moreDetails" xml:space="preserve">
+				<source>For more details see</source>
+			</trans-unit>
+			<trans-unit id="updateRefIndex" xml:space="preserve">
+				<source>Update reference index</source>
+			</trans-unit>
+			<trans-unit id="showSQL" xml:space="preserve">
+				<source>Show SQL parts</source>
+			</trans-unit>
+			<trans-unit id="useFormattedStrings" xml:space="preserve">
+				<source>Use formatted strings, labels and dates instead of original values for results</source>
+			</trans-unit>
+			<trans-unit id="dontUseOrigValues" xml:space="preserve">
+				<source>Don't use original values in brackets as prefix for labelled results</source>
+			</trans-unit>
+			<trans-unit id="sortOptions" xml:space="preserve">
+				<source>Sort selectbox-options for relations by label and not by value</source>
+			</trans-unit>
+			<trans-unit id="showDeleted" xml:space="preserve">
+				<source>Show even deleted entries (with undelete buttons)</source>
+			</trans-unit>
+			<trans-unit id="searchOptions" xml:space="preserve">
+				<source>Search options</source>
+			</trans-unit>
+			<trans-unit id="result" xml:space="preserve">
+				<source>Result</source>
+			</trans-unit>
+			<trans-unit id="tables" xml:space="preserve">
+				<source>Tables</source>
+			</trans-unit>
+			<trans-unit id="references" xml:space="preserve">
+				<source>references</source>
+			</trans-unit>
+			<trans-unit id="isMissing" xml:space="preserve">
+				<source>is missing!</source>
+			</trans-unit>
+			<trans-unit id="referencedFrom" xml:space="preserve">
+				<source>Referenced from</source>
+			</trans-unit>
+			<trans-unit id="enterRegexPattern" xml:space="preserve">
+				<source>Enter regex pattern</source>
+			</trans-unit>
+			<trans-unit id="searchButton" xml:space="preserve">
+				<source>Search</source>
+			</trans-unit>
+			<trans-unit id="pattern" xml:space="preserve">
+				<source>Pattern</source>
+			</trans-unit>
+			<trans-unit id="beingChecked" xml:space="preserve">
+				<source>being checked...</source>
+			</trans-unit>
+			<trans-unit id="directories" xml:space="preserve">
+				<source>Dirs</source>
+			</trans-unit>
+			<trans-unit id="directoriesTooDeep" xml:space="preserve">
+				<source>ERROR: Directories deeper than the following number of levels</source>
+			</trans-unit>
+			<trans-unit id="files" xml:space="preserve">
+				<source>Files</source>
+			</trans-unit>
+			<trans-unit id="matchingFiles" xml:space="preserve">
+				<source>Matching files</source>
+			</trans-unit>
+			<trans-unit id="notChecked" xml:space="preserve">
+				<source>not checked.</source>
+			</trans-unit>
+			<trans-unit id="searchingForFilenames" xml:space="preserve">
+				<source>Searching for filenames</source>
+			</trans-unit>
+			<trans-unit id="fixLostRecord" xml:space="preserve">
+				<source>Click to move this lost record to rootlevel (pid=0)</source>
+			</trans-unit>
+			<trans-unit id="doktype" xml:space="preserve">
+				<source>Document types</source>
+			</trans-unit>
+			<trans-unit id="doktype_value" xml:space="preserve">
+				<source>Document types (value)</source>
+			</trans-unit>
+			<trans-unit id="pages" xml:space="preserve">
+				<source>Pages</source>
+			</trans-unit>
+			<trans-unit id="total_pages" xml:space="preserve">
+				<source>Total number of pages</source>
+			</trans-unit>
+			<trans-unit id="deleted_pages" xml:space="preserve">
+				<source>Marked-deleted pages</source>
+			</trans-unit>
+			<trans-unit id="hidden_pages" xml:space="preserve">
+				<source>Hidden pages</source>
+			</trans-unit>
+			<trans-unit id="count" xml:space="preserve">
+				<source>Count</source>
+			</trans-unit>
+			<trans-unit id="label" xml:space="preserve">
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="tablename" xml:space="preserve">
+				<source>Table name</source>
+			</trans-unit>
+			<trans-unit id="total_lost" xml:space="preserve">
+				<source>Records total / lost</source>
+			</trans-unit>
+			<trans-unit id="relations" xml:space="preserve">
+				<source>Relations</source>
+			</trans-unit>
+			<trans-unit id="relations_description" xml:space="preserve">
+				<source>This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</source>
+			</trans-unit>
+			<trans-unit id="files_many_ref" xml:space="preserve">
+				<source>Files referenced from more than one record</source>
+			</trans-unit>
+			<trans-unit id="no_files_found" xml:space="preserve">
+				<source>No files found.</source>
+			</trans-unit>
+			<trans-unit id="files_no_ref" xml:space="preserve">
+				<source>Files with no references at all (delete them!)</source>
+			</trans-unit>
+			<trans-unit id="files_no_file" xml:space="preserve">
+				<source>Missing files</source>
+			</trans-unit>
+			<trans-unit id="select_db" xml:space="preserve">
+				<source>Select fields</source>
+			</trans-unit>
+			<trans-unit id="group_db" xml:space="preserve">
+				<source>Group fields</source>
+			</trans-unit>
+			<trans-unit id="tree" xml:space="preserve">
+				<source>The Page Tree</source>
+			</trans-unit>
+			<trans-unit id="tree_description" xml:space="preserve">
+				<source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
+			</trans-unit>
+			<trans-unit id="records" xml:space="preserve">
+				<source>Records Statistics</source>
+			</trans-unit>
+			<trans-unit id="records_description" xml:space="preserve">
+				<source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
+			</trans-unit>
+			<trans-unit id="search" xml:space="preserve">
+				<source>Search whole Database</source>
+			</trans-unit>
+			<trans-unit id="search_description" xml:space="preserve">
+				<source>This searches through all database tables and records for a text string.</source>
+			</trans-unit>
+			<trans-unit id="filesearch" xml:space="preserve">
+				<source>Search all filenames for pattern</source>
+			</trans-unit>
+			<trans-unit id="filesearch_description" xml:space="preserve">
+				<source>Will search recursively for filenames in the PATH_site (subdirs to the website path) matching a certain regex pattern.</source>
+			</trans-unit>
+			<trans-unit id="refindex" xml:space="preserve">
+				<source>Check and update global reference index</source>
+			</trans-unit>
+			<trans-unit id="refindex_description" xml:space="preserve">
+				<source>Allows you to maintain the reference index kept by TYPO3.</source>
+			</trans-unit>
+			<trans-unit id="title" xml:space="preserve">
+				<source>Database integrity check</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

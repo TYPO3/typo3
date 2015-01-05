@@ -1,0 +1,27 @@
+<h1>{f:translate(key:'manageRefIndex')}</h1>
+<p class="lead">{f:translate(key:'referenceIndex_description')}</p>
+
+<f:format.raw>{content}</f:format.raw>
+
+<div>
+	<input class="btn btn-default" type="submit" name="_check" value="{f:translate(key:'referenceIndex_buttonCheck')}" />
+	<input class="btn btn-default" type="submit" name="_update" value="{f:translate(key:'referenceIndex_buttonUpdate')}" />
+</div><br /><br />
+
+<h2>{f:translate(key:'checkScript_headline')}</h2>
+<p>{f:translate(key:'checkScript')}</p>
+
+<h3>{f:translate(key:'checkScript_check_description')}</h3><p>
+	<code>php {PATH_typo3} cli_dispatch.phpsh lowlevel_refindex -c</code></p>
+
+<h3>{f:translate(key:'checkScript_update_description')}</h3><p>
+	<code>php {PATH_typo3} cli_dispatch.phpsh lowlevel_refindex -e</code></p>
+<div class="alert alert-info">
+	<div class="message-body">
+		{f:translate(key:'checkScript_information')}
+	</div>
+</div>
+
+<p>{f:translate(key:'checkScript_moreDetails')} <br>
+	<a href="sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">{PATH_typo3}sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a>
+</p>

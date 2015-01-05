@@ -1,0 +1,79 @@
+<h1>{f:translate(key:'records')}</h1>
+
+<h2>{f:translate(key:'pages')}</h2>
+<table class="table table-striped table-hover">
+	<colgroup>
+		<col width="24">
+		<col>
+		<col width="150">
+	</colgroup>
+	<thead>
+	<tr>
+		<th colspan="2"></th>
+		<th>{f:translate(key:'count')}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<f:for each="{pages}" as="item" key="name">
+		<tr>
+			<td><f:format.raw>{item.icon}</f:format.raw></td>
+			<td>{f:translate(key:'{name}')}</td>
+			<td>{item.count}</td>
+		</tr>
+	</f:for>
+	</tbody>
+</table>
+
+<h2>{f:translate(key:'doktype')}</h2>
+<table class="table table-striped table-hover">
+	<colgroup>
+		<col width="24">
+		<col>
+		<col width="150">
+	</colgroup>
+	<thead>
+	<tr>
+		<th></th>
+		<th>{f:translate(key:'doktype_value')}</th>
+		<th>{f:translate(key:'count')}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<f:for each="{doktypes}" as="item">
+		<tr>
+			<td><f:format.raw>{item.icon}</f:format.raw></td>
+			<td>{item.title}</td>
+			<td>{item.count}</td>
+		</tr>
+	</f:for>
+	</tbody>
+</table>
+
+<h2>{f:translate(key:'tables')}</h2>
+<table class="table table-striped table-hover">
+	<colgroup>
+		<col width="24">
+		<col>
+		<col width="150">
+	</colgroup>
+	<thead>
+	<tr>
+		<th></th>
+		<th>{f:translate(key:'label')}</th>
+		<th>{f:translate(key:'tablename')}</th>
+		<th>{f:translate(key:'total_lost')}</th>
+		<th></th>
+	</tr>
+	</thead>
+	<tbody>
+	<f:for each="{tables}" key="name" as="item">
+		<tr>
+			<td><f:format.raw>{item.icon}</f:format.raw></td>
+			<td>{item.title}</td>
+			<td>{name}</td>
+			<td>{item.count}</td>
+			<td><f:format.raw>{item.lostRecords}</f:format.raw></td>
+		</tr>
+	</f:for>
+	</tbody>
+</table>

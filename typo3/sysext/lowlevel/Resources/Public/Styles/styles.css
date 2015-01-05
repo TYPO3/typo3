@@ -1,3 +1,19 @@
 #lowlevel-config {
 	margin-bottom: 20px;
 }
+.record {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.record img {
+	border: none;
+	padding: 0 3px;
+	vertical-align: top;
+}
+
+.record-noicon {
+	padding-left: 16px;
+	color: grey;
+	white-space: nowrap;
+}

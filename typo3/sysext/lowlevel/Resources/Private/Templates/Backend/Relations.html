@@ -1,0 +1,49 @@
+<h1>{f:translate(key:'relations')}</h1>
+
+<h2>{f:translate(key:'files_no_ref')}</h2>
+<f:if condition="{files.noReferences}">
+	<f:then>
+		<f:for each="{files.noReferences}" as="item">
+			<nobr>{item.0}/<strong>{item.1}</strong></nobr>
+			<br>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p>{f:translate(key:'no_files_found')}</p>
+	</f:else>
+</f:if>
+
+<h2>{f:translate(key:'files_many_ref')}</h2>
+<f:if condition="{files.moreReferences}">
+	<f:then>
+		<f:for each="{files.moreReferences}" as="item">
+			<nobr>{item.0}/<strong>{item.1}</strong>: {item.2} {f:translate(key:'references')}
+			</nobr>
+			<br>{item.3}<br><br>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p>{f:translate(key:'no_files_found')}</p>
+	</f:else>
+</f:if>
+
+<h2>{f:translate(key:'files_no_file')}</h2>
+<f:if condition="{files.noFile}">
+	<f:then>
+		<f:for each="{files.noFile}" as="item">
+			<nobr>{item.0}/<strong>{item.1}</strong> {f:translate(key:'isMissing')}
+			</nobr>
+			<br>{f:translate(key:'referencedFrom')} {item.2}<br><br>
+		</f:for>
+	</f:then>
+	<f:else>
+		<p>{f:translate(key:'no_files_found')}</p>
+	</f:else>
+</f:if>
+
+
+<h2>{f:translate(key:'select_db')}</h2>
+<f:format.raw>{select_db}</f:format.raw>
+
+<h2>{f:translate(key:'group_db')}</h2>
+<f:format.raw>{group_db}</f:format.raw>
