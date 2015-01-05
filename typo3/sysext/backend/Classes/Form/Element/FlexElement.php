@@ -344,7 +344,7 @@ class FlexElement extends AbstractFormElement {
 									. 'eval(unescape("' . rawurlencode(implode(';', $this->formEngine->additionalJS_post)) . '").' . $replace . ');'
 									. 'TBE_EDITOR.addActionChecks("submit", unescape("'
 									. rawurlencode(implode(';', $this->formEngine->additionalJS_submit)) . '").' . $replace . ');'
-									. 'TYPO3.TCEFORMS.update();'
+									. 'TYPO3.FormEngine.reinitialize();'
 									. 'return false;';
 								// Kasper's comment (kept for history):
 								// Maybe there is a better way to do this than store the HTML for the new element

@@ -4046,18 +4046,13 @@ class FormEngine {
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
-			// Make textareas resizable and flexible
 			$beUserAuth = $this->getBackendUserAuthentication();
-			if (!($beUserAuth->uc['resizeTextareas'] == '0' && $beUserAuth->uc['resizeTextareas_Flexible'] == '0')) {
-				$pageRenderer->addCssFile($this->backPath . 'js/extjs/ux/resize.css');
-				$this->loadJavascriptLib('js/extjs/ux/ext.resizable.js');
-			}
-			$resizableSettings = array(
-				'textareaMaxHeight' => $beUserAuth->uc['resizeTextareas_MaxHeight'] > 0 ? $beUserAuth->uc['resizeTextareas_MaxHeight'] : '600',
-				'textareaFlexible' => !$beUserAuth->uc['resizeTextareas_Flexible'] == '0',
-				'textareaResize' => !$beUserAuth->uc['resizeTextareas'] == '0'
+			// Make textareas resizable and flexible ("autogrow" in height)
+			$textareaSettings = array(
+				'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible']
 			);
-			$pageRenderer->addInlineSettingArray('', $resizableSettings);
+			$pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
+
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
 

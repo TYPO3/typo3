@@ -336,6 +336,11 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 	margin: 0 0.5em 0.5em 0;
 	position: relative;
 }
+// no manual resizing for textareas (works on non-IE browser only anyways)
+// as it is handled by JS: "autosize"
+.tceforms-textarea {
+	resize: none;
+}
 
 //
 // TCEforms suggest

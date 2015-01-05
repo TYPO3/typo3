@@ -123,11 +123,6 @@ if (TYPO3_MODE === 'BE') {
 					'LLL:EXT:setup/mod/locallang.xlf:clearSessionVarsQuestion'
 				)
 			),
-			'resizeTextareas' => array(
-				'type' => 'check',
-				'label' => 'LLL:EXT:setup/mod/locallang.xlf:resizeTextareas',
-				'csh' => 'resizeTextareas'
-			),
 			'resizeTextareas_Flexible' => array(
 				'type' => 'check',
 				'label' => 'LLL:EXT:setup/mod/locallang.xlf:resizeTextareas_Flexible',
@@ -146,7 +141,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xlf:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:opening,startModule,thumbnailsByDefault,titleLen,
-				--div--;LLL:EXT:setup/mod/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
+				--div--;LLL:EXT:setup/mod/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
 				--div--;LLL:EXT:setup/mod/locallang.xlf:adminFunctions,debugInWindow'
 	);
 }

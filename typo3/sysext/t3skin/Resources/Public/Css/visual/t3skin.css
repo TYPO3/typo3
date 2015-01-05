@@ -9116,6 +9116,9 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
   margin: 0 0.5em 0.5em 0;
   position: relative;
 }
+.tceforms-textarea {
+  resize: none;
+}
 div.typo3-TCEforms-suggest-position-right {
   margin-left: 10px;
 }

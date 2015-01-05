@@ -11,43 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-Ext.ns('TYPO3');
-
-	// class to manipulate TCEFORMS
-TYPO3.TCEFORMS = {
-
-	init: function() {
-		Ext.QuickTips.init();
-
-		this.update();
-	},
-
-	update: function() {
-		this.convertTextareasResizable();
-	},
-
-	convertTextareasResizable: function() {
-		var textAreas = Ext.select("textarea[id^=tceforms-textarea-]");
-		textAreas.each(function(element) {
-			if (TYPO3.settings.textareaFlexible) {
-				var elasticTextarea = new Ext.ux.elasticTextArea().applyTo(element.dom.id, {
-					minHeight: 50,
-					maxHeight: TYPO3.settings.textareaMaxHeight
-				});
-			}
-			if (TYPO3.settings.textareaResize) {
-				element.addClass('resizable');
-				var dwrapped = new Ext.Resizable(element.dom.id, {
-					minWidth:  300,
-					minHeight: 50,
-					dynamic:   true
-				});
-			}
-		});
-	}
-
-}
-Ext.onReady(TYPO3.TCEFORMS.init, TYPO3.TCEFORMS);
+Ext.onReady(function() {
+	Ext.QuickTips.init();
+});
 
 	// Fix for slider TCA control in IE9
 Ext.override(Ext.dd.DragTracker, {

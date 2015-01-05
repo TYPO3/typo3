@@ -160,6 +160,12 @@ class TextElement extends AbstractFormElement {
 					$classes[] = 'enable-tab';
 				}
 				$formWidthText = $this->formWidthText($cols, $wrap);
+				// add the max-height from the users' preference to it
+				$maximumHeight = (int)$this->getBackendUserAuthentication()->uc['resizeTextareas_MaxHeight'];
+				if ($maximumHeight > 0) {
+					$formWidthText = str_replace('style="', 'style="max-height: ' . $maximumHeight . 'px; ', $formWidthText);
+				}
+
 				// Extract class attributes from $formWidthText (otherwise it would be added twice to the output)
 				$res = array();
 				if (preg_match('/ class="(.+?)"/', $formWidthText, $res)) {

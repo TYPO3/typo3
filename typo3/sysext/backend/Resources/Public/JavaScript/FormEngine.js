@@ -628,6 +628,18 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	};
 
 	/**
+	 * convert all textareas so they grow when it is typed in.
+	 */
+	FormEngine.convertTextareasResizable = function() {
+		var $elements = $('.tceforms-textarea');
+		if (TYPO3.settings.Textarea.autosize && $elements.length) {
+			require(['jquery/jquery.autosize.min'], function() {
+				$elements.autosize();
+			});
+		}
+	};
+
+	/**
 	 * this is the main function that is called on page load, but also after elements are asynchroniously
 	 * called e.g. after IRRE elements are loaded again, or a new flexform section is added.
 	 * use this function in your extension like this "TYPO3.FormEngine.initialize()"
@@ -643,6 +655,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		}
 		// apply DatePicker to all date time fields
 		require(['TYPO3/CMS/Backend/DateTimePicker']);
+		FormEngine.convertTextareasResizable();
 	};
 
 	/**
