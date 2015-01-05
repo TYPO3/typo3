@@ -398,23 +398,19 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 	 * @todo Define visibility
 	 */
 	public function createTemplate($id, $actTemplateId = 0) {
+		$recData = array();
+		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+		$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+		$tce->stripslashes_values = FALSE;
+
 		if (GeneralUtility::_GP('createExtension') || GeneralUtility::_GP('createExtension_x')) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce->stripslashes_values = 0;
-			$recData = array();
 			$recData['sys_template']['NEW'] = array(
 				'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
 				'title' => '+ext'
 			);
 			$tce->start($recData, array());
 			$tce->process_datamap();
-			return $tce->substNEWwithIDs['NEW'];
 		} elseif (GeneralUtility::_GP('newWebsite')) {
-			$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-			$tce->stripslashes_values = 0;
-			$recData = array();
 			// Hook to handle row data, implemented for statictemplates
 			if (isset(
 				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateModuleController']['newStandardTemplateHandler']
@@ -448,6 +444,7 @@ page.10.value = HELLO WORLD!
 			$tce->process_datamap();
 			$tce->clear_cacheCmd('all');
 		}
+		return $tce->substNEWwithIDs['NEW'];
 	}
 
 	// RENDER LIST of pages with templates, BEGIN
