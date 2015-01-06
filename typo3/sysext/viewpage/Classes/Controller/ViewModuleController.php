@@ -95,7 +95,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$pageinfo = BackendUtility::readPageAccess($pageId, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		$addCommand = '';
 		if (is_array($pageinfo)) {
-			$addCommand = '&ADMCMD_view=1&ADMCMD_editIcons=1' . BackendUtility::ADMCMD_previewCmds($pageinfo);
+			$addCommand = '&ADMCMD_editIcons=1' . BackendUtility::ADMCMD_previewCmds($pageinfo);
 		}
 		return $addCommand;
 	}
