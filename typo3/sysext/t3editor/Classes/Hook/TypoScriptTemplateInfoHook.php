@@ -119,13 +119,12 @@ class TypoScriptTemplateInfoHook {
 						foreach ($POST['data'] as $field => $val) {
 							switch ($field) {
 								case 'constants':
-
 								case 'config':
-
+									// Replace Windows- and Mac linebreaks
+									$val = str_replace(array(CRLF, CR), LF, $val);
+									// intended fallthrough
 								case 'title':
-
 								case 'sitetitle':
-
 								case 'description':
 									$recData['sys_template'][$saveId][$field] = $val;
 									break;
