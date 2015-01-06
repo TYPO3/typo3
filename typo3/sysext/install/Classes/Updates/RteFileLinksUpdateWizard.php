@@ -236,8 +236,18 @@ class RteFileLinksUpdateWizard extends AbstractUpdate {
 				$this->errors[] = $path . ' not found (referenced in element ' . $reference['recuid'] . ' of table ' . $reference['tablename'] . ' in field ' . $reference['field'] . ')';
 			}
 		} else {
-			// Nothing to be done if file not found
-			$this->errors[] = $path . ' not found (referenced in element ' . $reference['recuid'] . ' of table ' . $reference['tablename'] . ' in field ' . $reference['field'] . ')';
+			// Nothing to be done if file not found, but output errors with (page) pid in csv format for easier manual treatment
+			$recpid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'pid',
+				$reference['tablename'],
+				'uid = ' . (int)$reference['recuid']
+			);
+			$this->errors[] = 'File not found (page / uid / path / table / field):,'
+				. $recpid[0]['pid'] . ','
+				. $reference['recuid'] . ','
+				. $path . ','
+				. $reference['tablename'] . ','
+				. $reference['field'];
 		}
 		return $fileObject;
 	}
