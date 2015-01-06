@@ -120,6 +120,8 @@ class TypoScriptTemplateInfoHook {
 							switch ($field) {
 								case 'constants':
 								case 'config':
+									// Replace Windows- and Mac linebreaks
+									$val = str_replace([CRLF, CR], LF, $val);
 									$recData['sys_template'][$saveId][$field] = $val;
 									break;
 							}
