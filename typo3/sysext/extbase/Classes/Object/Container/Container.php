@@ -133,6 +133,10 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return object the built object
 	 */
 	protected function getInstanceInternal($className, $givenConstructorArguments = array()) {
+		// Never instantiate with a beginning backslash, otherwise things like singletons won't work.
+		if ($className[0] === '\\') {
+			$className = substr($className, 1);
+		}
 		$className = $this->getImplementationClassName($className);
 		if ($className === 'TYPO3\\CMS\\Extbase\\Object\\Container\\Container') {
 			return $this;

@@ -4392,6 +4392,10 @@ Connection: close
 		if (!is_string($className) || empty($className)) {
 			throw new \InvalidArgumentException('$className must be a non empty string.', 1288965219);
 		}
+		// Never instantiate with a beginning backslash, otherwise things like singletons won't work.
+		if ($className[0] === '\\') {
+			$className = substr($className, 1);
+		}
 		if (isset(static::$finalClassNameCache[$className])) {
 			$finalClassName = static::$finalClassNameCache[$className];
 		} else {
