@@ -8433,7 +8433,7 @@ table {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  vertical-align: middle;
+  vertical-align: middle!important;
 }
 .table > thead > tr {
   background-color: #ededed;
@@ -8818,8 +8818,18 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 .table .col-icon .t3-icon {
   margin: 0;
 }
+.table .col-icon img {
+  margin: 0;
+  display: block;
+  height: 16px;
+  width: 16px;
+}
+.table .col-icon,
+.table .col-checkbox {
+  padding-right: 0;
+}
 .table .col-title {
-  width: 95%;
+  width: 99%;
 }
 .table .col-control,
 .table .col-clipboard {
@@ -8828,6 +8838,9 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 }
 .table .col-border-left {
   border-left: 1px solid #cccccc;
+}
+.table-transparent {
+  background-color: transparent;
 }
 .table-fit {
   width: 100%;
@@ -8862,9 +8875,6 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 .table-fit > .table tr:last-child td {
   border-bottom: 0;
 }
-.panel {
-  margin: 3em 0;
-}
 .panel .panel-heading {
   font-weight: bold;
 }
@@ -8872,6 +8882,9 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 .panel .table-fit {
   border: 0;
   margin: 0;
+}
+.panel-space {
+  margin: 3em 0;
 }
 .typo3-TCEforms .typo3-dyntabmenu-divs {
   border-top: 1px solid #cccccc;
@@ -9832,6 +9845,14 @@ table#typo3-tree tr:hover {
   margin: -6px 0;
 }
 .pagination-block {
+  display: block;
+}
+.label-inline,
+.label-block {
+  margin: 0;
+  font-weight: normal;
+}
+.label-block {
   display: block;
 }
 @font-face {

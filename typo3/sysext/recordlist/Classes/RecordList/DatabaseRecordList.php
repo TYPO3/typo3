@@ -627,7 +627,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			<!--
 				DB listing of elements:	"' . htmlspecialchars($table) . '"
 			-->
-				<div class="panel panel-default">
+				<div class="panel panel-space panel-default">
 					<div class="panel-heading">
 					' . $tableHeader . '
 					</div>

@@ -446,7 +446,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$label = $theKey ? $theKey : ($bType == 'setup' ? $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('setupRoot'), 'toUpper') : $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('constantRoot'), 'toUpper'));
 			$theOutput .= $this->pObj->doc->sectionEnd();
 
-			$theOutput .= '<div class="panel panel-default">';
+			$theOutput .= '<div class="panel panel-space panel-default">';
 			$theOutput .= '<div class="panel-heading">';
 			$theOutput .= '<strong>' . $label . ' ' . $remove . '</strong>';
 			$theOutput .= '</div>';

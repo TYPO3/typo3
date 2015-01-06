@@ -554,17 +554,17 @@ class SelectElement extends AbstractFormElement {
 		}
 		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
 		$itemArray = array_flip($this->formEngine->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
-		$item = '';
-		$disabled = '';
+		$output = '';
+
+		// Disabled
+		$disabled = 0;
 		if ($this->isRenderReadonly() || $config['readOnly']) {
-			$disabled = ' disabled="disabled"';
+			$disabled = 1;
 		}
 		// Traverse the Array of selector box items:
-		$tRows = array();
+		$groups = array();
+		$currentGroup = 0;
 		$c = 0;
-		$setAll = array();
-		$unSetAll = array();
-		$restoreCmd = array();
 		$sOnChange = '';
 		if (!$disabled) {
 			$sOnChange = implode('', $PA['fieldChangeFunc']);
@@ -576,32 +576,13 @@ class SelectElement extends AbstractFormElement {
 					if (isset($p[2]) && $p[2] != 'empty-emtpy') {
 						$selIcon = $this->formEngine->getIconHtml($p[2]);
 					}
-					$tRows[] = '
-						<tr class="c-header">
-							<td colspan="3">' . $selIcon . htmlspecialchars($p[0]) . '</td>
-						</tr>';
+					$currentGroup++;
+					$groups[$currentGroup]['header'] = array(
+						'icon' => $selIcon,
+						'title' => htmlspecialchars($p[0])
+					);
 				} else {
-					// Selected or not by default:
-					$sM = '';
-					if (isset($itemArray[$p[1]])) {
-						$sM = ' checked="checked"';
-						unset($itemArray[$p[1]]);
-					}
-					// Icon:
-					if (!empty($p[2])) {
-						$selIcon = $this->formEngine->getIconHtml($p[2]);
-					} else {
-						$selIcon = IconUtility::getSpriteIcon('empty-empty');
-					}
-					// Compile row:
-					$rowId = str_replace('.', '', uniqid('select_checkbox_row_', TRUE));
-					$onClickCell = $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=!' . $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked;';
-					$onClick = 'this.attributes.getNamedItem("class").nodeValue = ' . $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked ? "c-selectedItem" : "c-unselectedItem";';
-					$setAll[] = $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=1;';
-					$setAll[] = '$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');$(\'' . $rowId . '\').addClassName(\'c-selectedItem\');';
-					$unSetAll[] = $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=0;';
-					$unSetAll[] = '$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').addClassName(\'c-unselectedItem\');';
-					$restoreCmd[] = $this->formEngine->elName(($PA['itemFormElName'] . '[' . $c . ']')) . '.checked=' . ($sM ? 1 : 0) . ';' . '$(\'' . $rowId . '\').removeClassName(\'c-selectedItem\');$(\'' . $rowId . '\').removeClassName(\'c-unselectedItem\');' . '$(\'' . $rowId . '\').addClassName(\'c-' . ($sM ? '' : 'un') . 'selectedItem\');';
+
 					// Check if some help text is available
 					// Since TYPO3 4.5 help text is expected to be an associative array
 					// with two key, "title" and "description"
@@ -619,64 +600,143 @@ class SelectElement extends AbstractFormElement {
 							$helpArray['description'] = $p[3];
 						}
 					}
-					$label = htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE);
 					if ($hasHelp) {
 						$help = BackendUtility::wrapInHelp('', '', '', $helpArray);
 					}
-					$tRows[] = '
-						<tr id="' . $rowId . '" class="' . ($sM ? 'c-selectedItem' : 'c-unselectedItem')
-						. '" onclick="' . htmlspecialchars($onClick) . '" style="cursor: pointer;">
-							<td class="c-checkbox"><input type="checkbox" class="' . $this->cssClassTypeElementPrefix . 'check"'
-						. ' name="' . htmlspecialchars(($PA['itemFormElName'] . '[' . $c . ']'))
-						. '" value="' . htmlspecialchars($p[1]) . '"' . $sM . ' onclick="' . htmlspecialchars($sOnChange)
-						. '"' . $PA['onFocus'] . ' /></td>
-							<td class="c-labelCell" onclick="' . htmlspecialchars($onClickCell) . '">' . $selIcon . $label . '</td>
-								<td class="c-descr" onclick="' . htmlspecialchars($onClickCell) . '">' . (empty($help) ? '' : $help) . '</td>
-						</tr>';
+
+					// Selected or not by default:
+					$checked = 0;
+					if (isset($itemArray[$p[1]])) {
+						$checked = 1;
+						unset($itemArray[$p[1]]);
+					}
+
+					// Build item array
+					$groups[$currentGroup]['items'][] = array(
+						'id' => str_replace('.', '', uniqid('select_checkbox_row_', TRUE)),
+						'name' => $PA['itemFormElName'] . '[' . $c . ']',
+						'value' => $p[1],
+						'checked' => $checked,
+						'disabled' => $disabled,
+						'class' => '',
+						'icon' => (!empty($p[2]) ? $this->formEngine->getIconHtml($p[2]) : IconUtility::getSpriteIcon('empty-empty')),
+						'title' => htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE),
+						'help' => $help
+					);
 					$c++;
 				}
 			}
 		}
 		// Remaining values (invalid):
 		if (count($itemArray) && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
+			$currentGroup++;
 			foreach ($itemArray as $theNoMatchValue => $temp) {
-				// Compile <checkboxes> tag:
-				array_unshift($tRows, '
-						<tr class="c-invalidItem">
-							<td class="c-checkbox"><input type="checkbox" class="' . $this->cssClassTypeElementPrefix . 'check"'
-					. ' name="' . htmlspecialchars(($PA['itemFormElName'] . '[' . $c . ']'))
-					. '" value="' . htmlspecialchars($theNoMatchValue) . '" checked="checked" onclick="' . htmlspecialchars($sOnChange) . '"'
-					. $PA['onFocus'] . $disabled . ' /></td>
-							<td class="c-labelCell">' . htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue), ENT_COMPAT, 'UTF-8', FALSE) . '</td><td>&nbsp;</td>
-						</tr>');
+				// Build item array
+				$groups[$currentGroup]['items'][] = array(
+					'id' => str_replace('.', '', uniqid('select_checkbox_row_', TRUE)),
+					'name' => $PA['itemFormElName'] . '[' . $c . ']',
+					'value' => $theNoMatchValue,
+					'checked' => 1,
+					'disabled' => $disabled,
+					'class' => 'danger',
+					'icon' => '',
+					'title' => htmlspecialchars(@sprintf($nMV_label, $theNoMatchValue), ENT_COMPAT, 'UTF-8', FALSE),
+					'help' => ''
+				);
 				$c++;
 			}
 		}
 		// Add an empty hidden field which will send a blank value if all items are unselected.
-		$item .= '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($PA['itemFormElName']) . '" value="" />';
-		// Remaining checkboxes will get their set-all link:
-		$tableHead = '';
-		if (count($setAll)) {
-			$tableHead = '<thead>
-					<tr class="c-header-checkbox-controls t3-row-header">
-						<td class="c-checkbox">
-						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $setAll) . '} else {' . implode('', $unSetAll)) . '}">
-						</td>
-						<td colspan="2">
-						</td>
-					</tr></thead>';
+		$output .= '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($PA['itemFormElName']) . '" value="" />';
+
+		// Building the checkboxes
+		foreach($groups as $groupKey => $group){
+			$groupId = htmlspecialchars($PA['itemFormElID']) . '-group-' . $groupKey;
+			$output .= '<div class="panel panel-default">';
+			if(is_array($group['header'])){
+				$output .= '
+					<div class="panel-heading">
+						<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="true" aria-controls="' . $groupId . '">
+							' . $group['header']['icon'] . '
+							' . $group['header']['title'] . '
+						</a>
+					</div>
+					';
+			}
+			if(is_array($group['items']) && count($group['items']) >= 1){
+				$tableRows = '';
+				$checkGroup = array();
+				$uncheckGroup = array();
+				$resetGroup = array();
+
+				// Render rows
+				foreach($group['items'] as $item){
+					$tableRows .= '
+						<tr class="' . $item['class'] . '">
+							<td class="col-checkbox">
+								<input type="checkbox"
+									id="' . $item['id'] . '"
+									name="' . htmlspecialchars($item['name']) . '"
+									value="' . htmlspecialchars($item['value']) . '"
+									onclick="' . htmlspecialchars($sOnChange) . '"
+									' . ($item['checked'] ? ' checked=checked' : '') . '
+									' . ($item['disabled'] ? ' disabled=disabled' : '') . '
+									' . $PA['onFocus'] . ' />
+							</td>
+							<td class="col-icon">
+								<label class="label-block" for="' . $item['id'] . '">' . $item['icon'] . '</label>
+							</td>
+							<td class="col-title">
+								<label class="label-block" for="' . $item['id'] . '">' . $item['title'] . '</label>
+							</td>
+							<td>' . $item['help'] . '</td>
+						</tr>
+						';
+					$checkGroup[] = $this->formEngine->elName($item['name']) . '.checked=1;';
+					$uncheckGroup[] = $this->formEngine->elName($item['name']) . '.checked=0;';
+					$resetGroup[] = $this->formEngine->elName($item['name']) . '.checked='.$item['checked'] . ';';
+				}
+
+				// Build toggle group checkbox
+				$toggleGroupCheckbox = '';
+				if(count($resetGroup)){
+					$toggleGroupCheckbox = '
+						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $checkGroup) . '} else {' . implode('', $uncheckGroup)) . '}">
+						';
+				}
+
+				// Build reset group button
+				$resetGroupBtn = '';
+				if(count($resetGroup)){
+					$resetGroupBtn = '
+						<a href="#" class="btn btn-default" onclick="' . implode('', $resetGroup) . ' return false;' . '">
+							' . IconUtility::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')))) . '
+							' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '
+						</a>
+						';
+				}
+
+				$output .= '
+					<div id="' . $groupId . '" class="panel-collapse collapse in" role="tabpanel">
+						<div class="table-fit">
+							<table class="table table-transparent table-hover">
+								<thead>
+									<tr>
+										<th class="col-checkbox">' . $toggleGroupCheckbox . '</th>
+										<th class="col-icon"></th>
+										<th class="text-right" colspan="2">' . $resetGroupBtn . '</th>
+									</tr>
+								</thead>
+								<tbody>' . $tableRows . '</tbody>
+							</table>
+						</div>
+					</div>
+					';
+			}
+			$output .= '</div>';
 		}
-		// Implode rows in table:
-		$item .= '
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-select-checkbox">' . $tableHead . '<tbody>' . implode('', $tRows) . '</tbody>
-			</table>
-			';
-		// Add revert icon
-		if (!empty($restoreCmd)) {
-			$item .= '<a href="#" onclick="' . implode('', $restoreCmd) . ' return false;' . '">'
-				. IconUtility::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')))) . '</a>';
-		}
-		return $item;
+
+		return $output;
 	}
 
 	/**
