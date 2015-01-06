@@ -9,8 +9,8 @@
 </f:if>
 
 <f:section name="paginator">
-	<nav id="typo3-dblist-pagination">
-		<ul class="pagination">
+	<nav class="pagination-wrap">
+		<ul class="pagination pagination-block">
 			<f:if condition="{pagination.hasLessPages}">
 				<f:then>
 					<li>
@@ -63,24 +63,24 @@
 			<li>
 				<span>
 					<f:translate key="widget.pagination.page" />
-					<span>
-						<form id="paginator-form-{position}" onsubmit="goToPage{position}(this); return false;" style="display:inline;">
-						<script type="text/javascript">
-							function goToPage{position}(formObject) {
-								var url = '{f:widget.uri(arguments:{currentPage: 987654321})}';
-								var page = formObject.elements['paginator-target-page'].value;
-								if (page > {pagination.numberOfPages}) {
-									page = {pagination.numberOfPages};
-								} else if (page < 1) {
-									page = 1;
-								}
-								url = url.replace('987654321', page);
-								self.location.href= url;
+
+					<form id="paginator-form-{position}" onsubmit="goToPage{position}(this); return false;" style="display:inline;">
+					<script type="text/javascript">
+						function goToPage{position}(formObject) {
+							var url = '{f:widget.uri(arguments:{currentPage: 987654321})}';
+							var page = formObject.elements['paginator-target-page'].value;
+							if (page > {pagination.numberOfPages}) {
+								page = {pagination.numberOfPages};
+							} else if (page < 1) {
+								page = 1;
 							}
-						</script>
-						<f:form.textfield id="paginator-{position}" name="paginator-target-page" class="paginator-input" size="5" value="{pagination.current}" />
-						</form>
-					</span>
+							url = url.replace('987654321', page);
+							self.location.href= url;
+						}
+					</script>
+					<f:form.textfield id="paginator-{position}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" />
+					</form>
+
 					/ {pagination.numberOfPages}
 				</span>
 			</li>

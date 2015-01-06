@@ -426,7 +426,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 	ExtensionManager.Update = {
 		identifier: {
 			terUpdateAction: '.update-from-ter',
-			pagination: '#typo3-dblist-pagination',
+			pagination: '.pagination-wrap',
 			splashscreen: '.splash-receivedata',
 			terTableWrapper: '#terTableWrapper',
 			terTableDataTableWrapper: '#terTableWrapper .dataTables_wrapper'

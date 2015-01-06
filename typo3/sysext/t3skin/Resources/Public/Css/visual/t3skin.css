@@ -4814,7 +4814,9 @@ button.close {
 .panel-body:before,
 .panel-body:after,
 .modal-footer:before,
-.modal-footer:after {
+.modal-footer:after,
+.pagination-block:before,
+.pagination-block:after {
   content: " ";
   display: table;
 }
@@ -4831,7 +4833,8 @@ button.close {
 .navbar-header:after,
 .navbar-collapse:after,
 .panel-body:after,
-.modal-footer:after {
+.modal-footer:after,
+.pagination-block:after {
   clear: both;
 }
 .center-block {
@@ -9811,7 +9814,11 @@ table#typo3-tree tr:hover {
 }
 .pagination .paginator-input {
   display: inline-block;
-  margin: -2px 0;
+  width: auto;
+  margin: -6px 0;
+}
+.pagination-block {
+  display: block;
 }
 @font-face {
   font-family: 'Share';

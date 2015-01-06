@@ -1082,7 +1082,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($renderPart === 'top') {
 			// Add js to traverse a page select input to a pointer value
 			$content = '
-<script type="text/JavaScript">
+<script type="text/javascript">
 /*<![CDATA[*/
 	function calculatePointer(page) {
 		if (page > ' . $totalPages . ') {
@@ -1097,11 +1097,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 </script>
 ';
 		}
-		$pageNumberInput = '<span class="paginator-input">
-			<input type="text" value="' . $currentPage . '" size="3" id="jumpPage-' . $renderPart . '" name="jumpPage-'
-			. $renderPart . '" onkeyup="if (event.keyCode == Event.KEY_RETURN) { document.dblistForm.action=\'' . $listURL
+		$pageNumberInput = '
+			<input type="text" value="' . $currentPage . '" size="3" class="form-control input-sm paginator-input" id="jumpPage-' . $renderPart . '" name="jumpPage-'
+			. $renderPart . '" onkeyup="if (event.keyCode == 13) { document.dblistForm.action=\'' . $listURL
 			. '&pointer=\'+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
-			</span>';
+			';
 		$pageIndicatorText = sprintf(
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:pageIndicator'),
 			$pageNumberInput,
@@ -1117,16 +1117,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 
 		$titleColumn = $this->fieldArray[0];
 		$data = array(
-			$titleColumn => '
-				<nav>
-					<ul class="pagination">
+			$titleColumn => $content . '
+				<nav class="pagination-wrap">
+					<ul class="pagination pagination-block">
 						' . $first . '
 						' . $previous . '
 						' . $rangeIndicator . '
 						' . $pageIndicator . '
 						' . $next . '
 						' . $last . '
-						' .	$reload . '
+						' . $reload . '
 					</ul>
 				</nav>
 			'
