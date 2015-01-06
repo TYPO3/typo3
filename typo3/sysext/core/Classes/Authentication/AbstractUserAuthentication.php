@@ -923,9 +923,10 @@ abstract class AbstractUserAuthentication {
 				$timeout = (int)$user[$this->auth_timeout_field];
 			}
 			// If timeout > 0 (TRUE) and current time has not exceeded the latest sessions-time plus the timeout in seconds then accept user
-			// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
+			// Use a gracetime-value to avoid updating a session-record too often
 			if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $user['ses_tstamp'] + $timeout) {
-				if (!$skipSessionUpdate) {
+				$sessionUpdateGracePeriod = 61;
+				if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($user['ses_tstamp'] + $sessionUpdateGracePeriod)) {
 					$this->db->exec_UPDATEquery($this->session_table, 'ses_id=' . $this->db->fullQuoteStr($this->id, $this->session_table)
 						. ' AND ses_name=' . $this->db->fullQuoteStr($this->name, $this->session_table), array('ses_tstamp' => $GLOBALS['EXEC_TIME']));
 					// Make sure that the timestamp is also updated in the array
