@@ -75,6 +75,9 @@
 			<trans-unit id="status_newVersion" xml:space="preserve">
 				<source>There is a new version of TYPO3 available. You can update to version %s</source>
 			</trans-unit>
+			<trans-unit id="status_versionOutdated" xml:space="preserve">
+				<source>The TYPO3 version you're using is not supported anymore. You should update to a supported version.</source>
+			</trans-unit>
 			<trans-unit id="status_installToolPassword" xml:space="preserve">
 				<source>Install Tool Password</source>
 			</trans-unit>

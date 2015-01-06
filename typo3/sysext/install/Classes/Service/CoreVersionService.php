@@ -119,6 +119,17 @@ class CoreVersionService {
 	}
 
 	/**
+	 * Checks if TYPO3 version (e.g. 6.2) is an actively maintained version
+	 *
+	 * @return bool TRUE if version is actively maintained
+	 */
+	public function isVersionActivelyMaintained() {
+		$minorVersion = $this->getInstalledMinorVersion();
+		$versionMatrix = $this->getVersionMatrix();
+		return (bool)$versionMatrix[$minorVersion]['active'];
+	}
+
+	/**
 	 * Returns TRUE if a younger patch level release exists in version matrix.
 	 *
 	 * @return bool TRUE if younger patch release is exists

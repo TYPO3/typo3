@@ -172,22 +172,27 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 
 		try {
 			$isUpdateAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
+			$isMaintainedVersion = $coreVersionService->isVersionActivelyMaintained();
 		} catch (Exception\CoreVersionServiceException $coreVersionServiceException) {
 			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_patchLevelNotFoundInReleaseMatrix'), Status::WARNING);
 		}
 
-		if (!$isUpdateAvailable) {
+		if (!$isUpdateAvailable && $isMaintainedVersion) {
 			// Everything is fine, working with the latest version
 			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, '', Status::OK);
+		} elseif ($isUpdateAvailable) {
+			// There is an update available
+			$newVersion = $coreVersionService->getYoungestPatchRelease();
+			if ($coreVersionService->isUpdateSecurityRelevant()) {
+				return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersionSecurityRelevant'), $newVersion), Status::ERROR);
+			} else {
+				return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersion'), $newVersion), Status::WARNING);
+			}
+		} else {
+			// Version is not maintained
+			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_versionOutdated'), Status::ERROR);
 		}
 
-		// There is an update available
-		$newVersion = $coreVersionService->getYoungestPatchRelease();
-		if ($coreVersionService->isUpdateSecurityRelevant()) {
-			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersionSecurityRelevant'), $newVersion), Status::ERROR);
-		} else {
-			return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_newVersion'), $newVersion), Status::WARNING);
-		}
 	}
 
 }
