@@ -318,10 +318,6 @@ class PermissionController extends ActionController {
 			$this->view->assign('pageInfo', $this->pageInfo);
 			$this->view->assign('returnId', $this->returnId);
 			$this->view->assign('recursiveSelectOptions', $this->getRecursiveSelectOptions());
-			// Adding help text:
-			if ($this->getBackendUser()->uc['helpText']) {
-				$this->view->assign('showHelp', TRUE);
-			}
 		}
 	}
 
