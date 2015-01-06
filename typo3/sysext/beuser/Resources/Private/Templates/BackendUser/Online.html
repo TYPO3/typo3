@@ -10,19 +10,22 @@
 </f:section>
 
 <f:section name="content">
-	<table class="table table-striped table-hover">
-		<thead>
-			<tr>
-				<th><f:translate key="userName" /> / <f:translate key="realName" /></th>
-				<th><f:translate key="lastAccess" /></th>
-				<th><f:translate key="ipAddress" /></th>
-				<th>&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody>
-			<f:for each="{onlineUsersAndSessions}" as="onlineUser">
-				<f:render partial="BackendUser/OnlineListRow" arguments="{onlineUser: onlineUser, dateFormat: dateFormat, timeFormat: timeFormat, currentSessionId: currentSessionId}" />
-			</f:for>
-		</tbody>
-	</table>
+	<div class="table-fit">
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th class="col-icon"></th>
+					<th class="col-title"><f:translate key="userName" /> / <f:translate key="realName" /></th>
+					<th><f:translate key="lastAccess" /></th>
+					<th><f:translate key="ipAddress" /></th>
+					<th class="col-control"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<f:for each="{onlineUsersAndSessions}" as="onlineUser">
+					<f:render partial="BackendUser/OnlineListRow" arguments="{onlineUser: onlineUser, dateFormat: dateFormat, timeFormat: timeFormat, currentSessionId: currentSessionId}" />
+				</f:for>
+			</tbody>
+		</table>
+	</div>
 </f:section>

@@ -11,46 +11,50 @@
 </f:section>
 
 <f:section name="content">
+
 	<f:comment>
 		Listing of users on compare list
 	</f:comment>
-
 	<f:if condition="{compareUserList}">
-		<bu:section title="{f:translate(key: 'section.compare', default: 'Compare')}" collapsible="TRUE">
-			<ul id="compareUsers">
-				<f:for each="{compareUserList}" as="compareUser">
-					<li>
-						<f:link.action action="removeFromCompareList"	arguments="{uid: compareUser.uid}">
-							<bu:SpriteManagerIcon iconName="actions-selection-delete" />
-						</f:link.action>
-
-						<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
-							<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
-						</a>
-
- 						{compareUser.userName}
-					</li>
-				</f:for>
-			</ul>
-
-			<f:form action="compare">
-				<f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" />
-			</f:form>
-
-		</bu:section>
+		<h3>{f:translate(key: 'section.compare', default: 'Compare')}</h3>
+		<div class="table-fit">
+			<table class="table table-hover">
+				<tbody>
+					<f:for each="{compareUserList}" as="compareUser">
+						<tr>
+							<td class="col-icon">
+								<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
+									<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
+								</a>
+							</td>
+							<td class="col-title">
+								{compareUser.userName}
+							</td>
+							<td>
+								<f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right">
+									<bu:SpriteManagerIcon iconName="actions-selection-delete" />
+								</f:link.action>
+							</td>
+						</tr>
+					</f:for>
+				</tbody>
+			</table>
+		</div>
+		<f:form action="compare">
+			<f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default" />
+		</f:form>
+		<hr>
 	</f:if>
 
 	<f:comment>
 		Filter section
 	</f:comment>
-
 	<f:render partial="Filters/BackendUser/Index" arguments="{demand: demand, backendUserGroups: backendUserGroups}" />
 
 	<f:comment>
 		Listing of all users
 	</f:comment>
-
-	<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertAbove: 1, insertBelow: 1}">
+	<f:be.widget.paginate objects="{backendUsers}" as="paginatedBackendUsers" configuration="{itemsPerPage: 50, insertBelow: 1}">
 		<div class="table-fit">
 			<table class="table table-striped table-hover">
 				<thead>
@@ -77,4 +81,5 @@
 			</table>
 		</div>
 	</f:be.widget.paginate>
+
 </f:section>

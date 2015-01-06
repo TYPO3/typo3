@@ -4,13 +4,19 @@
 	<tr>
 		<f:if condition="{it.isFirst}">
 			<f:then>
-				<td>
+				<td class="col-icon">
+					<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{onlineUser.backendUser.uid}" data-listframe="1" title="id={onlineUser.backendUser.uid}">
+						<bu:spriteIconForRecord table="be_users" object="{onlineUser.backendUser}" />
+					</a>
+				</td>
+				<td class="col-title">
 					<b>{onlineUser.backendUser.userName}</b><br />
 					{onlineUser.backendUser.realName}
 				</td>
 			</f:then>
 			<f:else>
-				<td></td>
+				<td class="col-icon"></td>
+				<td class="col-title"></td>
 			</f:else>
 		</f:if>
 		<td>

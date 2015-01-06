@@ -11,186 +11,188 @@
 </f:section>
 
 <f:section name="content">
-	<table border="0" cellpadding="0" cellspacing="0" id="tx_beuser_compare" class="table table-striped table-hover">
-		<thead>
-			<tr class="t3-row-header">
-				<th>&nbsp;</th>
-				<f:for each="{compareUserList}" as="compareUser">
-					<th>
-						<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
-							<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
-						</a>
-						{compareUser.userName}
-					</th>
-				</f:for>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><h5><f:translate key="realName" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>{compareUser.realName}</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="email" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.email}">
-							<f:then>
-								<f:link.email email="{compareUser.email}" />
-							</f:then>
-							<f:else>
-								-
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="admin" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.isAdministrator}">
-							<f:then><f:translate key="yes" /></f:then>
-							<f:else><f:translate key="no" /></f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="disable" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.isDisabled} == 1">
-							<f:then>
-								<a href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
-									<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
-								</a>
-							</f:then>
-							<f:else>
-								<a href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
-									<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
-								</a>
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="startDateAndTime" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.startDateAndTime}">
-							<f:then>
-								<f:format.date format="{dateFormat} {timeFormat}">{compareUser.startDateAndTime}</f:format.date>
-							</f:then>
-							<f:else>
-								-
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="endDateAndTime" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.endDateAndTime}">
-							<f:then>
-								<f:format.date format="{dateFormat} {timeFormat}">{compareUser.endDateAndTime}</f:format.date>
-							</f:then>
-							<f:else>
-								-
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="lastLogin" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.lastLoginDateAndTime}">
-							<f:then>
-								<f:format.date format="{dateFormat} {timeFormat}">{compareUser.lastLoginDateAndTime}</f:format.date>
-							</f:then>
-							<f:else>
-								<f:translate key="never" />
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="backendUserGroups" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:for each="{compareUser.BackendUserGroups}" as="backendUserGroup">
-							<a href="#" class="t3-js-clickmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" data-listframe="1" title="id={backendUserGroup.uid}">
-								<bu:spriteIconForRecord table="be_users" object="{backendUserGroup}" />
+	<div class="table-fit">
+		<table border="0" cellpadding="0" cellspacing="0" id="tx_beuser_compare" class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<th>
+							<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
+								<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
 							</a>
-							{backendUserGroup.title}<br />
-						</f:for>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="allowedLanguages" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.allowedLanguages}">
-							<f:then>
-								<bu:display.sysLanguage uids="{compareUser.allowedLanguages}" />
-							</f:then>
-							<f:else>
-								-
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="dbMountPoints" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.dbMountPoints}">
-							<f:then>
-								<bu:display.pages uids="{compareUser.dbMountPoints}" />
-							</f:then>
-							<f:else>
-								-
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="fileMounts" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.fileMountPoints}">
-							<f:then>
-								<bu:display.sysFileMounts uids="{compareUser.fileMountPoints}" />
-							</f:then>
-							<f:else>
-								-
-							</f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-			<tr>
-				<td><h5><f:translate key="disableIpLock" /></h5></td>
-				<f:for each="{compareUserList}" as="compareUser">
-					<td>
-						<f:if condition="{compareUser.ipLockIsDisabled} == 1">
-							<f:then><f:translate key="yes" /></f:then>
-							<f:else><f:translate key="no" /></f:else>
-						</f:if>
-					</td>
-				</f:for>
-			</tr>
-		</tbody>
-	</table>
+							{compareUser.userName}
+						</th>
+					</f:for>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th><f:translate key="realName" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>{compareUser.realName}</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="email" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.email}">
+								<f:then>
+									<f:link.email email="{compareUser.email}" />
+								</f:then>
+								<f:else>
+									-
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="admin" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.isAdministrator}">
+								<f:then><f:translate key="yes" /></f:then>
+								<f:else><f:translate key="no" /></f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="disable" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.isDisabled} == 1">
+								<f:then>
+									<a class="btn" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
+										<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
+									</a>
+								</f:then>
+								<f:else>
+									<a class="btn" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
+										<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
+									</a>
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="startDateAndTime" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.startDateAndTime}">
+								<f:then>
+									<f:format.date format="{dateFormat} {timeFormat}">{compareUser.startDateAndTime}</f:format.date>
+								</f:then>
+								<f:else>
+									-
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="endDateAndTime" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.endDateAndTime}">
+								<f:then>
+									<f:format.date format="{dateFormat} {timeFormat}">{compareUser.endDateAndTime}</f:format.date>
+								</f:then>
+								<f:else>
+									-
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="lastLogin" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.lastLoginDateAndTime}">
+								<f:then>
+									<f:format.date format="{dateFormat} {timeFormat}">{compareUser.lastLoginDateAndTime}</f:format.date>
+								</f:then>
+								<f:else>
+									<f:translate key="never" />
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="backendUserGroups" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:for each="{compareUser.BackendUserGroups}" as="backendUserGroup">
+								<a href="#" class="t3-js-clickmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" data-listframe="1" title="id={backendUserGroup.uid}">
+									<bu:spriteIconForRecord table="be_users" object="{backendUserGroup}" />
+								</a>
+								{backendUserGroup.title}<br />
+							</f:for>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="allowedLanguages" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.allowedLanguages}">
+								<f:then>
+									<bu:display.sysLanguage uids="{compareUser.allowedLanguages}" />
+								</f:then>
+								<f:else>
+									-
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="dbMountPoints" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.dbMountPoints}">
+								<f:then>
+									<bu:display.pages uids="{compareUser.dbMountPoints}" />
+								</f:then>
+								<f:else>
+									-
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="fileMounts" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.fileMountPoints}">
+								<f:then>
+									<bu:display.sysFileMounts uids="{compareUser.fileMountPoints}" />
+								</f:then>
+								<f:else>
+									-
+								</f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+				<tr>
+					<th><f:translate key="disableIpLock" /></th>
+					<f:for each="{compareUserList}" as="compareUser">
+						<td>
+							<f:if condition="{compareUser.ipLockIsDisabled} == 1">
+								<f:then><f:translate key="yes" /></f:then>
+								<f:else><f:translate key="no" /></f:else>
+							</f:if>
+						</td>
+					</f:for>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </f:section>
