@@ -985,8 +985,8 @@ class ExtendedTemplateService extends TemplateService {
 							$constRefs = explode(',', $val);
 							foreach ($constRefs as $const) {
 								$const = trim($const);
-								if ($const && $const <= 20) {
-									$out['constants'][$const] .= $this->ext_getKeyImage($key);
+								if ($const) {
+									$out['constants'][$const] .= '<span class="label label-danger">' . $key . '</span>';
 								}
 							}
 						}
@@ -999,9 +999,11 @@ class ExtendedTemplateService extends TemplateService {
 	/**
 	 * @param string $key
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function ext_getKeyImage($key) {
-		return '<img src="' . $this->ext_localWebGfxPrefix . 'gfx/' . $key . '.gif" align="top" hspace=2>';
+		GeneralUtility::logDeprecatedFunction();
+		return '<span class="label label-danger">' . $key . '</span>';
 	}
 
 	/**

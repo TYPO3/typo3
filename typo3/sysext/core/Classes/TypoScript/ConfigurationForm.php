@@ -163,10 +163,13 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	}
 
 	/**
+	 * @param string $key
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function ext_getKeyImage($key) {
-		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->ext_backPath, ('gfx/rednumbers/' . $key . '.gif'), '') . ' hspace="2" align="top" alt="" />';
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return '<span class="label label-danger">' . $key . '</span>';
 	}
 
 	/**
