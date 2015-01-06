@@ -40,7 +40,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * Configuration properties:
 	 * - file string+stdWrap The FLUID template file
 	 * - layoutRootPaths array of filepath+stdWrap Root paths to layouts (fallback)
-	 * - partialRootPaths filepath+stdWrap Root paths to partials (fallback)
+	 * - partialRootPaths array of filepath+stdWrap Root paths to partials (fallback)
 	 * - variable array of cObjects, the keys are the variable names in fluid
 	 * - extbase.pluginName
 	 * - extbase.controllerExtensionName
