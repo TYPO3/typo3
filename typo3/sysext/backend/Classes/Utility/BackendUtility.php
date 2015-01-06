@@ -608,12 +608,11 @@ class BackendUtility {
 	/**
 	 * Returns an array with system languages:
 	 *
-	 * Since TYPO3 4.5 the flagIcon is not returned as a filename in "gfx/flags/*" anymore,
-	 * but as a string <flags-xx>. The calling party should call
+	 * The property flagIcon returns a string <flags-xx>. The calling party should call
 	 * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML
 	 * which will represent the flag of this language.
 	 *
-	 * @return array Array with languages (title, uid, flagIcon)
+	 * @return array Array with languages (title, uid, flagIcon - used with IconUtility::getSpriteIcon)
 	 */
 	static public function getSystemLanguages() {
 		/** @var TranslationConfigurationProvider $translationConfigurationProvider */
