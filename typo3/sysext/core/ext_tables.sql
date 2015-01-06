@@ -241,7 +241,7 @@ CREATE TABLE sys_filemounts (
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(30) DEFAULT '' NOT NULL,
   path varchar(120) DEFAULT '' NOT NULL,
-  base tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  base int(11) unsigned DEFAULT '0' NOT NULL,
   hidden tinyint(3) unsigned DEFAULT '0' NOT NULL,
   deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
