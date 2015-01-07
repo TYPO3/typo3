@@ -1832,7 +1832,7 @@ class ElementBrowser {
 		$titleLen = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		$folderIcon = IconUtility::getSpriteIconForResource($folder);
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
-		$picon = '<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
+		$picon = '<a href="#" title="' . htmlspecialchars($folder->getIdentifier()) . '" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
 			. $folderIcon . '</a>';
 		if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
 			$out .= '<img'
@@ -1887,7 +1887,7 @@ class ElementBrowser {
 						('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'),
 						'width="18" height="16"'
 					) . ' alt="" />' . $arrCol .
-				'<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' .
+				'<a href="#" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">' .
 					$icon .
 					htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
 				'</a><br />';
@@ -1980,7 +1980,7 @@ class ElementBrowser {
 				'fileIcon' => $icon
 			);
 			if ($this->fileIsSelectableInFileList($fileObject, $imgInfo)) {
-				$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
+				$ATag = '<a href="#" title="' . htmlspecialchars($fileObject->getName()) . '" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
 				$ATag_alt = substr($ATag, 0, -4) . ',1);">';
 				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /> ';
 				$ATag_e = '</a>';
