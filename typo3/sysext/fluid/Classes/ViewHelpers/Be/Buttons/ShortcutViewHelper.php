@@ -56,9 +56,9 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
 	 */
 	public function render(array $getVars = array(), array $setVars = array()) {
-		$enableBookmarks = $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
+		$mayMakeShortcut = $GLOBALS['BE_USER']->mayMakeShortcut();
 
-		if ($enableBookmarks) {
+		if ($mayMakeShortcut) {
 			$doc = $this->getDocInstance();
 			$currentRequest = $this->controllerContext->getRequest();
 			$extensionName = $currentRequest->getControllerExtensionName();
