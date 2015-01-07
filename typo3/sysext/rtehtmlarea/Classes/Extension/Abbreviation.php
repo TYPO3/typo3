@@ -189,10 +189,13 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
 			// Temporarily setting alternative web browsing mounts
-			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-			if ($altMountPoints) {
-				$savedGroupDataWebmounts = $GLOBALS['BE_USER']->groupData['webmounts'];
-				$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
+			$existingWebMounts = '';
+			$alternativeWebmountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+			$appendAlternativeWebmountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append'));
+			if (!empty($alternativeWebmountPoints)) {
+				$alternativeWebmountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $alternativeWebmountPoints);
+				$existingWebMounts = $GLOBALS['BE_USER']->returnWebmounts();
+				$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
 			}
 			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -208,8 +211,8 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$pids = $webMounts;
 			}
 			// Restoring webmounts
-			if ($altMountPoints) {
-				$GLOBALS['BE_USER']->groupData['webmounts'] = $savedGroupDataWebmounts;
+			if (!empty($alternativeWebmountPoints)) {
+				$GLOBALS['BE_USER']->setWebmounts($existingWebMounts);
 			}
 			$queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
 			$pageTree = '';

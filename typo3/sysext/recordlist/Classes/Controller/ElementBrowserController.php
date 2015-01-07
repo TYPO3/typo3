@@ -93,25 +93,25 @@ class ElementBrowserController {
 			$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
 		}
 		// Set temporary DB mounts
-		$tempDBmount = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
-		if ($tempDBmount) {
-			$altMountPoints = $tempDBmount;
-		}
-		if ($altMountPoints) {
-			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
+		$alternativeWebmountPoint = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
+		if ($alternativeWebmountPoint) {
+			$alternativeWebmountPoint = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $alternativeWebmountPoint);
+			$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoint);
+		} else {
+			switch ((string)$this->mode) {
+				case 'rte':
+				case 'db':
+				case 'wizard':
+					// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+					$alternativeWebmountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+					$appendAlternativeWebmountPoints = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
+					if ($alternativeWebmountPoints) {
+						$alternativeWebmountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $alternativeWebmountPoints);
+						$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
+					}
+			}
 		}
 		$this->content = '';
-		// Look for alternative mountpoints
-		switch ((string)$this->mode) {
-			case 'rte':
-			case 'db':
-			case 'wizard':
-				// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-				if ($altMountPoints) {
-					$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
-				}
-		}
 		// Render type by user func
 		$browserRendered = FALSE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {

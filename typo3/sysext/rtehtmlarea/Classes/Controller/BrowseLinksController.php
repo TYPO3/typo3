@@ -42,6 +42,7 @@ class BrowseLinksController {
 	public function main() {
 		// Setting alternative web browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+		$appendAltMountPoints = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
 		// Clear temporary DB mounts
 		$tmpMount = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('setTempDBmount');
 		if (isset($tmpMount)) {
@@ -51,9 +52,11 @@ class BrowseLinksController {
 		$tempDBmount = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
 		if ($tempDBmount) {
 			$altMountPoints = $tempDBmount;
+			$appendAltMountPoints = FALSE;
 		}
 		if ($altMountPoints) {
-			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints)));
+			$alternativeMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $altMountPoints);
+			$GLOBALS['BE_USER']->setWebmounts($alternativeMountPoints, $appendAltMountPoints);
 		}
 		// Setting alternative file browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));

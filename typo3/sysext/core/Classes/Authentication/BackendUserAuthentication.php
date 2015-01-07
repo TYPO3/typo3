@@ -1210,6 +1210,24 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
+	 * Initializes the given mount points for the current Backend user.
+	 *
+	 * @param array $mountPointUids Page UIDs that should be used as web mountpoints
+	 * @param bool $append If TRUE the given mount point will be appended. Otherwise the current mount points will be replaced.
+	 * @return void
+	 */
+	public function setWebmounts(array $mountPointUids, $append = FALSE) {
+		if (empty($mountPointUids)) {
+			return;
+		}
+		if ($append) {
+			$currentWebMounts = GeneralUtility::intExplode(',', $this->groupData['webmounts']);
+			$mountPointUids = array_merge($currentWebMounts, $mountPointUids);
+		}
+		$this->groupData['webmounts'] = implode(',', array_unique($mountPointUids));
+	}
+
+	/**
 	 * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
 	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
 	 *
