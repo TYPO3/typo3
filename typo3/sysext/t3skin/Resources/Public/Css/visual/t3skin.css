@@ -8860,6 +8860,7 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 .table-fit > .table tbody:first-child tr:first-child td {
   border-top: 0;
 }
+.table-fit > .table tr > th,
 .table-fit > .table tr > td {
   white-space: nowrap;
 }
@@ -8874,6 +8875,10 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 .table-fit > .table tr:last-child th,
 .table-fit > .table tr:last-child td {
   border-bottom: 0;
+}
+.table-fit-wrap > .table tr > th,
+.table-fit-wrap > .table tr > td {
+  white-space: normal;
 }
 .panel .panel-heading {
   font-weight: bold;

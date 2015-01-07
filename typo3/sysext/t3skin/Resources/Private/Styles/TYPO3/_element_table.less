@@ -231,6 +231,7 @@ table {
 			}
 		}
 		tr {
+			> th,
 			> td {
 				white-space: nowrap;
 			}
@@ -247,6 +248,16 @@ table {
 				td {
 					border-bottom: 0;
 				}
+			}
+		}
+	}
+}
+.table-fit-wrap {
+	> .table {
+		tr {
+			> th,
+			> td {
+				white-space: normal;
 			}
 		}
 	}

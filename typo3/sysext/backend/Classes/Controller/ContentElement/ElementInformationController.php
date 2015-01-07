@@ -280,7 +280,7 @@ class ElementInformationController {
 
 				// Create thumbnail image?
 				if ($thumbUrl) {
-					$previewTag .= '<img src="' . $thumbUrl . '" ' .
+					$previewTag .= '<img class="img-responsive img-thumbnail" src="' . $thumbUrl . '" ' .
 						'alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" ' .
 						'title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" />';
 				}
@@ -288,10 +288,11 @@ class ElementInformationController {
 
 			// Download
 			if ($url) {
-				$downloadLink .= '<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">' .
-						IconUtility::getSpriteIcon('actions-edit-download') . ' ' .
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) .
-						'</a>';
+				$downloadLink .= '
+					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
+						' . IconUtility::getSpriteIcon('actions-edit-download') . '
+						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) . '
+					</a>';
 			}
 		}
 
@@ -341,7 +342,7 @@ class ElementInformationController {
 			}
 			$tableRows[] = '
 				<tr>
-					<td><strong>' . rtrim($value, ':') . '</strong></td>
+					<th>' . rtrim($value, ':') . '</th>
 					<td>' . htmlspecialchars($rowValue) . '</td>
 				</tr>';
 		}
@@ -365,12 +366,17 @@ class ElementInformationController {
 			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
-					<td><strong>' . $itemLabel . '</strong></td>
+					<th>' . $itemLabel . '</th>
 					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
 		}
 
-		return '<table class="table table-striped table-hover">' . implode('', $tableRows) . '</table>';
+		return '
+			<div class="table-fit table-fit-wrap">
+				<table class="table table-striped table-hover">
+					' . implode('', $tableRows) . '
+				</table>
+			</div>';
 	}
 
 	/**
@@ -432,7 +438,7 @@ class ElementInformationController {
 			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
-					<td><strong>' . $itemLabel . '</strong></td>
+					<th>' . $itemLabel . '</th>
 					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
 		}
@@ -441,9 +447,12 @@ class ElementInformationController {
 			return '';
 		}
 
-		return '<table id="typo3-showitem" class="table table-striped table-hover">' .
-				implode('', $tableRows) .
-				'</table>';
+		return '
+			<div class="table-fit table-fit-wrap">
+				<table class="table table-striped table-hover">
+					' . implode('', $tableRows) . '
+				</table>
+			</div>';
 	}
 
 	/**
@@ -488,9 +497,14 @@ class ElementInformationController {
 			return '';
 		}
 
+		// Edit button
 		$editOnClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit', $GLOBALS['BACK_PATH']);
-		$icon = IconUtility::getSpriteIcon('actions-document-open');
-		$pageActionIcons = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '">' . $icon . '</a>';
+		$pageActionIcons = '
+			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($editOnClick) . '">
+				' . IconUtility::getSpriteIcon('actions-document-open') . '
+			</a>';
+
+		// History button
 		$historyOnClick = 'window.location.href=' .
 			GeneralUtility::quoteJSvalue(
 				BackendUtility::getModuleUrl(
@@ -501,13 +515,31 @@ class ElementInformationController {
 					)
 				)
 			) . '; return false;';
+		$pageActionIcons .= '
+			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($historyOnClick) . '">
+				' . IconUtility::getSpriteIcon('actions-document-history-open') . '
+			</a>';
 
-		$icon = IconUtility::getSpriteIcon('actions-document-history-open');
-		$pageActionIcons .= '<a href="#" onclick="' . htmlspecialchars($historyOnClick) . '">' . $icon . '</a>';
 		if ($table === 'pages') {
-			$pageActionIcons .= $this->doc->viewPageIcon($uid, '');
+			// Recordlist button
+			$url = BackendUtility::getModuleUrl('web_list', array('id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')));
+			$pageActionIcons .= '
+				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
+					' . IconUtility::getSpriteIcon('actions-system-list-open') . '
+				</a>';
+
+			// View page button
+			$viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
+			$pageActionIcons .= '
+				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">
+					' . IconUtility::getSpriteIcon('actions-document-view') . '
+				</a>';
 		}
-		return $pageActionIcons;
+
+		return '
+			<div class="btn-group" role="group">
+				' . $pageActionIcons . '
+			</div>';
 	}
 
 	/**
@@ -535,7 +567,18 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoDataHeader = '<tr>' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' . '</tr>';
+			$infoDataHeader = '
+				<tr>
+					<th class="col-icon"></th>
+					<th class="col-title">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
+					<th class="col-control"></th>
+				</tr>';
 		}
 		foreach ($rows as $row) {
 			if ($row['tablename'] === 'sys_file_reference') {
@@ -543,26 +586,44 @@ class ElementInformationController {
 			}
 			$record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
+			$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
 			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-			$infoData[] = '<tr>' .
-					'<td style="white-space:nowrap;">' . $actions . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
-					'<td>' . BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
-					'<td><span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' .
-							htmlspecialchars(BackendUtility::getRecordTitle('pages', $parentRecord)) . ' (uid=' . $record['pid'] . ')">' .
-							$record['uid'] . '</span></td>' .
-					'<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>' .
-					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' . '<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
-					'<td>' . htmlspecialchars($row['sorting']) . '</td>' .
-					'</tr>';
+			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit', $GLOBALS['BACK_PATH']);
+			$infoData[] = '
+				<tr>
+					<td class="col-icon">
+						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '">
+							' . $icon . '
+						</a>
+					</td>
+					<td class="col-title">
+						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '" >
+							' . BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '
+						</a>
+					</td>
+					<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>
+					<td>
+						<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' .
+							htmlspecialchars(BackendUtility::getRecordTitle('pages', $parentRecord)) . ' (uid=' . $record['pid'] . ')">
+							' . $record['uid'] . '
+						</span>
+					</td>
+					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
+					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
+					<td>' . htmlspecialchars($row['softref_key']) . '</td>
+					<td>' . htmlspecialchars($row['sorting']) . '</td>
+					<td class="col-control">' . $actions . '</td>
+				</tr>';
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
-			$referenceLine = '<table class="table table-striped table-hover">' .
-					'<thead>' . $infoDataHeader . '</thead>' .
-					'<tbody>' .
-					implode('', $infoData) .
-					'</tbody></table>';
+			$referenceLine = '
+				<div class="table-fit">
+					<table class="table table-striped table-hover">
+						<thead>' . $infoDataHeader . '</thead>
+						<tbody>' . implode('', $infoData) .	'</tbody>
+					</table>
+				</div>';
 		}
 		return $referenceLine;
 	}
@@ -584,40 +645,60 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoDataHeader = '<tr class="t3-row-header">' .
-					'<td>&nbsp;</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refTable') . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refUid') . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refString') . '</td>' .
-					'</tr>';
+			$infoDataHeader = '
+				<tr>
+					<th class="col-icon"></th>
+					<th class="col-title">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
+					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refString') . '</th>
+					<th class="col-control"></th>
+				</tr>';
 		}
 		foreach ($rows as $row) {
+			$record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
+			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
+			$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-			$infoData[] = '<tr>' .
-					'<td style="white-space:nowrap;">' . $actions . '</td>' .
-					'<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>' .
-					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
-					'<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
-					'<td>' . htmlspecialchars($row['sorting']) . '</td>' .
-					'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>' .
-					'<td>' . htmlspecialchars($row['ref_uid']) . '</td>' .
-					'<td>' . htmlspecialchars($row['ref_string']) . '</td>' .
-					'</tr>';
+			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit', $GLOBALS['BACK_PATH']);
+			$infoData[] = '
+				<tr>
+					<td class="col-icon">
+						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '">
+							' . $icon . '
+						</a>
+					</td>
+					<td class="col-title">
+						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '" >
+							' . BackendUtility::getRecordTitle($row['ref_table'], $record, TRUE) . '
+						</a>
+					</td>
+					<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>
+					<td>' . htmlspecialchars($row['ref_uid']) . '</td>
+					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
+					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
+					<td>' . htmlspecialchars($row['softref_key']) . '</td>
+					<td>' . htmlspecialchars($row['sorting']) . '</td>
+					<td>' . htmlspecialchars($row['ref_string']) . '</td>
+					<td class="col-control">' . $actions . '</td>
+				</tr>';
 		}
 
 		if (empty($infoData)) {
 			return;
 		}
 
-		return '<table class="table table-striped table-hover">' .
-				'<thead>' . $infoDataHeader . '</thead>' .
-				'<tbody>' .
-				implode('', $infoData) .
-				'</tbody></table>';
+		return '
+			<div class="table-fit">
+				<table class="table table-striped table-hover">
+					<thead>' . $infoDataHeader . '</thead>
+					<tbody>' . implode('', $infoData) . '</tbody>
+				</table>
+			</div>';
 	}
 
 	/**
