@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -649,7 +650,7 @@ class DataHandler {
 	 *
 	 * @param array $data Data to be modified or inserted in the database
 	 * @param array $cmd Commands to copy, move, delete, localize, versionize records.
-	 * @param object $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
+	 * @param BackendUserAuthentication|string $altUserObject An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
 	 * @return void
 	 */
 	public function start($data, $cmd, $altUserObject = '') {
@@ -795,7 +796,7 @@ class DataHandler {
 	 * Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
 	 * but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
 	 *
-	 * @param object $hookObjectsArr (reference) Array with hook objects
+	 * @param array $hookObjectsArr (reference) hook objects
 	 * @param string $status (reference) Status of the current operation, 'new' or 'update
 	 * @param string $table (reference) The table currently processing data for
 	 * @param string $id (reference) The record uid currently processing data for, [integer] or [string] (like 'NEW...')

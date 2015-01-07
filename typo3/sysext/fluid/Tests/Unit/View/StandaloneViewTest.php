@@ -23,6 +23,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
+use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3\CMS\Fluid\Core\Parser\TemplateParser;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -51,12 +58,12 @@ class StandaloneViewTest extends UnitTestCase {
 	protected $mockViewHelperVariableContainer;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext|\PHPUnit_Framework_MockObject_MockObject
+	 * @var ControllerContext|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockControllerContext;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Parser\TemplateParser|\PHPUnit_Framework_MockObject_MockObject
+	 * @var TemplateParser|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockTemplateParser;
 
@@ -66,12 +73,12 @@ class StandaloneViewTest extends UnitTestCase {
 	protected $mockObjectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request|\PHPUnit_Framework_MockObject_MockObject
+	 * @var Request|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockRequest;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder|\PHPUnit_Framework_MockObject_MockObject
+	 * @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockUriBuilder;
 
@@ -81,7 +88,7 @@ class StandaloneViewTest extends UnitTestCase {
 	protected $mockParsedTemplate;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+	 * @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockConfigurationManager;
 
@@ -91,7 +98,7 @@ class StandaloneViewTest extends UnitTestCase {
 	protected $mockContentObject;
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler|\PHPUnit_Framework_MockObject_MockObject
+	 * @var TemplateCompiler|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $mockTemplateCompiler;
 
@@ -103,25 +110,25 @@ class StandaloneViewTest extends UnitTestCase {
 	public function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->view = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, array('testFileExistence', 'buildParserConfiguration'), array(), '', FALSE);
-		$this->mockTemplateParser = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class);
+		$this->mockTemplateParser = $this->getMock(TemplateParser::class);
 		$this->mockParsedTemplate = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\ParsedTemplateInterface::class);
 		$this->mockTemplateParser->expects($this->any())->method('parse')->will($this->returnValue($this->mockParsedTemplate));
-		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+		$this->mockConfigurationManager = $this->getMock(ConfigurationManagerInterface::class);
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->mockObjectManager->expects($this->any())->method('get')->will($this->returnCallback(array($this, 'objectManagerCallback')));
-		$this->mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
-		$this->mockUriBuilder = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
+		$this->mockRequest = $this->getMock(Request::class);
+		$this->mockUriBuilder = $this->getMock(UriBuilder::class);
 		$this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-		$this->mockControllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
+		$this->mockControllerContext = $this->getMock(ControllerContext::class);
 		$this->mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->mockRequest));
 		$this->mockViewHelperVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer::class);
-		$this->mockRenderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class);
+		$this->mockRenderingContext = $this->getMock(RenderingContext::class);
 		$this->mockRenderingContext->expects($this->any())->method('getControllerContext')->will($this->returnValue($this->mockControllerContext));
 		$this->mockRenderingContext->expects($this->any())->method('getViewHelperVariableContainer')->will($this->returnValue($this->mockViewHelperVariableContainer));
 		$this->view->_set('templateParser', $this->mockTemplateParser);
 		$this->view->_set('objectManager', $this->mockObjectManager);
 		$this->view->setRenderingContext($this->mockRenderingContext);
-		$this->mockTemplateCompiler = $this->getMock(\TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler::class);
+		$this->mockTemplateCompiler = $this->getMock(TemplateCompiler::class);
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
 		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $this->mockObjectManager);
 		GeneralUtility::addInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, $this->mockContentObject);
@@ -143,23 +150,23 @@ class StandaloneViewTest extends UnitTestCase {
 
 	/**
 	 * @param string $className
-	 * @return object
+	 * @return ConfigurationManagerInterface|TemplateParser|RenderingContext|Request|UriBuilder|ControllerContext|TemplateCompiler
 	 */
 	public function objectManagerCallback($className) {
 		switch ($className) {
-			case \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class:
+			case ConfigurationManagerInterface::class:
 				return $this->mockConfigurationManager;
-			case \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class:
+			case TemplateParser::class:
 				return $this->mockTemplateParser;
-			case \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class:
+			case RenderingContext::class:
 				return $this->mockRenderingContext;
-			case \TYPO3\CMS\Extbase\Mvc\Web\Request::class:
+			case Request::class:
 				return $this->mockRequest;
-			case \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class:
+			case UriBuilder::class:
 				return $this->mockUriBuilder;
-			case \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class:
+			case ControllerContext::class:
 				return $this->mockControllerContext;
-			case \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler::class:
+			case TemplateCompiler::class:
 				return $this->mockTemplateCompiler;
 		}
 		throw new \InvalidArgumentException('objectManagerCallback cannot handle class "' . $className . '". Looks like incomplete mocking in the tests.', 1417105493);

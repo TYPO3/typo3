@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Compatibility6\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
+
 /**
  * The Wizard function in the Web>Info module
  * Creates a framework for adding wizard sub-sub-modules under the Wizard function in Web>Info
@@ -31,7 +33,7 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 * Initialize.
 	 * Calls parent init function and then the handleExternalFunctionValue() function from the parent class
 	 *
-	 * @param object $pObj A reference to the parent (calling) object (which is probably an instance of an extension class to \TYPO3\CMS\Backend\Module\BaseScriptClass)
+	 * @param BaseScriptClass $pObj A reference to the parent (calling) object (which is probably an instance of an extension class to \TYPO3\CMS\Backend\Module\BaseScriptClass)
 	 * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
 	 * @return void
 	 */

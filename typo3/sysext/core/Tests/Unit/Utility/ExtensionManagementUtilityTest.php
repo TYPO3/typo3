@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -112,7 +113,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @param string $packageKey
 	 * @param array $packageMethods
-	 * @return object
+	 * @return PackageManager|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function createMockPackageManagerWithMockPackage($packageKey, $packageMethods = array('getPackagePath', 'getPackageKey')) {
 		$packagePath = PATH_site . 'typo3temp/' . $packageKey . '/';

@@ -20,18 +20,17 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Additional;
  * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView {
-
 	/**
 	 * The model for the current object
 	 *
-	 * @var object
+	 * @var AdditionalElementView
 	 */
 	protected $model;
 
 	/**
 	 * Constructor
 	 *
-	 * @param object $model The parent model
+	 * @param AdditionalElementView $model The parent model
 	 */
 	public function __construct($model) {
 		$this->model = $model;

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
 use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
@@ -53,7 +54,7 @@ abstract class AbstractElementView {
 	/**
 	 * Constructor
 	 *
-	 * @param object $model Current elements model
+	 * @param AbstractElement $model Current elements model
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -280,7 +281,7 @@ abstract class AbstractElementView {
 	 * Load and instantiate an additional object
 	 *
 	 * @param string $class Type of additional
-	 * @return object
+	 * @return AbstractElementView
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string)$class);

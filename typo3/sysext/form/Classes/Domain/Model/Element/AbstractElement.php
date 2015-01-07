@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Filter\FilterInterface;
 
 /**
  * Abstract for the form elements
@@ -484,7 +485,7 @@ abstract class AbstractElement {
 	 *
 	 * @param string $class Name of the filter
 	 * @param array $arguments Arguments for the filter
-	 * @return object Filter object
+	 * @return FilterInterface Filter object
 	 */
 	public function makeFilter($class, $arguments = array()) {
 		$filter = $this->filter->makeFilter($class, $arguments);

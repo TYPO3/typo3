@@ -59,7 +59,7 @@ class Form extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 	 *
 	 * @param string $attribute Name of the attribute
 	 * @param mixed $value Value of the attribute
-	 * @return object
+	 * @return Form fluent interface
 	 */
 	public function setAttribute($attribute, $value) {
 		if (array_key_exists($attribute, $this->allowedAttributes)) {

@@ -39,7 +39,7 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets a typo script string like 'TMENU' and returns an object of this type
 	 *
 	 * @param string $type
-	 * @return object Menu object
+	 * @return AbstractMenuContentObject Menu object
 	 * @throws Exception\NoSuchMenuTypeException
 	 */
 	public function getMenuObjectByType($type = '') {

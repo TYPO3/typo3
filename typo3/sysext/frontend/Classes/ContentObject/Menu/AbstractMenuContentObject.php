@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -224,8 +225,8 @@ class AbstractMenuContentObject {
 	/**
 	 * The initialization of the object. This just sets some internal variables.
 	 *
-	 * @param object $tmpl The $GLOBALS['TSFE']->tmpl object
-	 * @param object $sys_page The $GLOBALS['TSFE']->sys_page object
+	 * @param TemplateService $tmpl The $GLOBALS['TSFE']->tmpl object
+	 * @param PageRepository $sys_page The $GLOBALS['TSFE']->sys_page object
 	 * @param int $id A starting point page id. This should probably be blank since the 'entryLevel' value will be used then.
 	 * @param array $conf The TypoScript configuration for the HMENU cObject
 	 * @param int $menuNumber Menu number; 1,2,3. Should probably be '1'

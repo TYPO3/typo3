@@ -11,12 +11,13 @@ namespace TYPO3\CMS\Fluid\Service;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperInterface;
+
 /**
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  */
 class DocbookGenerator extends \TYPO3\CMS\Fluid\Service\AbstractGenerator {
-
 	/**
 	 * Generate the XML Schema definition for a given namespace.
 	 *
@@ -101,7 +102,7 @@ class DocbookGenerator extends \TYPO3\CMS\Fluid\Service\AbstractGenerator {
 	 * Instantiate a view helper.
 	 *
 	 * @param string $className
-	 * @return object
+	 * @return ViewHelperInterface
 	 */
 	protected function instanciateViewHelper($className) {
 		return $this->objectManager->get($className);

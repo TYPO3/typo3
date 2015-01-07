@@ -7611,7 +7611,7 @@ class ContentObjectRenderer {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return pointer		SQL result pointer
+	 * @return bool|\mysqli_result SQL result pointer
 	 * @see mm_query_uidList()
 	 */
 	public function exec_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
@@ -7630,7 +7630,7 @@ class ContentObjectRenderer {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return pointer		SQL result pointer
+	 * @return bool|\mysqli_result SQL result pointer
 	 * @see mm_query()
 	 */
 	public function exec_mm_query_uidList($select, $local_table_uidlist, $mm_table, $foreign_table = '', $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {

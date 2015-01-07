@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Lowlevel;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
+
 /**
  * Looking for RTE images integrity
  *
@@ -25,6 +27,11 @@ class RteImagesCommand extends CleanerCommand {
 	 * @var bool
 	 */
 	public $checkRefIndex = TRUE;
+
+	/**
+	 * @var ExtendedFileUtility
+	 */
+	protected $fileProcObj = NULL;
 
 	/**
 	 * Constructor
@@ -230,11 +237,11 @@ Reports problems with RTE images';
 	/**
 	 * Returns file processing object, initialized only once.
 	 *
-	 * @return object File processor object
+	 * @return ExtendedFileUtility File processor object
 	 */
 	public function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {
-			$this->fileProcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
+			$this->fileProcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ExtendedFileUtility::class);
 			$this->fileProcObj->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 			$this->fileProcObj->setActionPermissions();
 		}

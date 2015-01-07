@@ -92,7 +92,7 @@ class FlexFormTools {
 	 * @param string $table The table name of the record
 	 * @param string $field The field name of the flexform field to work on
 	 * @param array $row The record data array
-	 * @param object $callBackObj Object (passed by reference) in which the call back function is located
+	 * @param object $callBackObj Object in which the call back function is located
 	 * @param string $callBackMethod_value Method name of call back function in object for values
 	 * @return bool|string If TRUE, error happened (error string returned)
 	 */
@@ -307,7 +307,7 @@ class FlexFormTools {
 	 * @param mixed $data Current value
 	 * @param array $PA Additional configuration used in calling function
 	 * @param string $path Path of value in DS structure
-	 * @param object $pObj Object reference to caller
+	 * @param FlexFormTools $pObj caller
 	 * @return void
 	 */
 	public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {

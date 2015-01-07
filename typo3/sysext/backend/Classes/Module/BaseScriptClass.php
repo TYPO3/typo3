@@ -185,7 +185,7 @@ class BaseScriptClass {
 	 * May contain an instance of a 'Function menu module' which connects to this backend module.
 	 *
 	 * @see checkExtObj()
-	 * @var object
+	 * @var AbstractFunctionModule
 	 */
 	public $extObj;
 

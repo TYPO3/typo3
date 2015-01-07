@@ -66,7 +66,7 @@ interface BackendInterface {
 	 * backend. Otherwise NULL is returned.
 	 *
 	 * @param object $object
-	 * @return string The identifier for the object if it is known, or NULL
+	 * @return string|NULL The identifier for the object if it is known, or NULL
 	 */
 	public function getIdentifierByObject($object);
 
@@ -76,7 +76,7 @@ interface BackendInterface {
 	 *
 	 * @param string $identifier
 	 * @param string $className
-	 * @return object The object for the identifier if it is known, or NULL
+	 * @return object|NULL The object for the identifier if it is known, or NULL
 	 */
 	public function getObjectByIdentifier($identifier, $className);
 

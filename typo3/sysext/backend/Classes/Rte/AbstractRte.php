@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Rte;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Element\TextElement;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -60,7 +62,7 @@ class AbstractRte {
 	 * Draws the RTE as a form field or whatever is needed (inserts JavaApplet, creates iframe, renders ....)
 	 * Default is to output the transformed content in a plain textarea field. This mode is great for debugging transformations!
 	 *
-	 * @param object $pObj Reference to parent object, which is an instance of the TCEforms.
+	 * @param object $pObj parent object
 	 * @param string $table The table name
 	 * @param string $field The field name
 	 * @param array $row The current row from which field is being rendered

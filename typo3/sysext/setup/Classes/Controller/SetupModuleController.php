@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Setup\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -587,7 +588,7 @@ class SetupModuleController {
 	 * Returns the backend user object, either the global OR the $this->OLD_BE_USER which is set during simulate-user operation.
 	 * Anyway: The REAL user is returned - the one logged in.
 	 *
-	 * @return object The REAL user is returned - the one logged in.
+	 * @return BackendUserAuthentication The REAL user is returned - the one logged in.
 	 */
 	protected function getRealScriptUserObj() {
 		return is_object($this->OLD_BE_USER) ? $this->OLD_BE_USER : $GLOBALS['BE_USER'];

@@ -111,10 +111,10 @@ class ExtDirectRouter {
 	 * array "$GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect']" is taken to find the class/method
 	 * information.
 	 *
-	 * @param object $singleRequest request object from extJS
+	 * @param \stdClass $singleRequest request object from extJS
 	 * @param string $namespace namespace like TYPO3.Backend
 	 * @return mixed return value of the called method
-	 * @throws UnexpectedValueException if the remote method couldn't be found
+	 * @throws \UnexpectedValueException if the remote method couldn't be found
 	 */
 	protected function processRpc($singleRequest, $namespace) {
 		$endpointName = $namespace . '.' . $singleRequest->action;

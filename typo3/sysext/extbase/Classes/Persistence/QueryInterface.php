@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
+
 /**
  * A persistence query interface
  *
@@ -173,7 +178,7 @@ interface QueryInterface {
 	 * The constraint used to limit the result set. Returns $this to allow
 	 * for chaining (fluid interface).
 	 *
-	 * @param object $constraint Some constraint, depending on the backend
+	 * @param ConstraintInterface $constraint Some constraint, depending on the backend
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
@@ -185,7 +190,7 @@ interface QueryInterface {
 	 * It also accepts a single array of constraints to be concatenated.
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
-	 * @return object
+	 * @return AndInterface
 	 * @api
 	 */
 	public function logicalAnd($constraint1);
@@ -196,7 +201,7 @@ interface QueryInterface {
 	 * It also accepts a single array of constraints to be concatenated.
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
-	 * @return object
+	 * @return OrInterface
 	 * @api
 	 */
 	public function logicalOr($constraint1);
@@ -204,11 +209,11 @@ interface QueryInterface {
 	/**
 	 * Performs a logical negation of the given constraint
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint Constraint to negate
+	 * @param ConstraintInterface $constraint Constraint to negate
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\NotInterface
 	 * @api
 	 */
-	public function logicalNot(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint);
+	public function logicalNot(ConstraintInterface $constraint);
 
 	/**
 	 * Returns an equals criterion used for matching objects against a query.
@@ -233,7 +238,7 @@ interface QueryInterface {
 	 * @param string $propertyName The name of the property to compare against
 	 * @param string $operand The value to compare with
 	 * @param bool $caseSensitive Whether the matching should be done case-sensitive
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a non-string property
 	 * @api
 	 */
@@ -247,7 +252,7 @@ interface QueryInterface {
 	 *
 	 * @param string $propertyName The name of the multivalued property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
 	 * @api
 	 */
@@ -259,7 +264,7 @@ interface QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with, multivalued
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property
 	 * @api
 	 */
@@ -270,7 +275,7 @@ interface QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
@@ -281,7 +286,7 @@ interface QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
@@ -292,7 +297,7 @@ interface QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
@@ -303,7 +308,7 @@ interface QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with
-	 * @return object
+	 * @return ComparisonInterface
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a multi-valued property or with a non-literal/non-DateTime operand
 	 * @api
 	 */
@@ -376,7 +381,7 @@ interface QueryInterface {
 	/**
 	 * Gets the constraint for this query.
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|NULL the constraint, or null if none
+	 * @return ConstraintInterface|NULL the constraint, or null if none
 	 * @api
 	 */
 	public function getConstraint();

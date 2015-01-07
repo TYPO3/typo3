@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -50,7 +51,7 @@ class CrawlerHook {
 	 * This function is asked for each instance of the crawler and we must check if something is timed to happen and if so put entry(s) in the crawlers log to start processing.
 	 * In reality we select indexing configurations and evaluate if any of them needs to run.
 	 *
-	 * @param object Parent object (tx_crawler lib)
+	 * @param object $pObj Parent object (tx_crawler lib)
 	 * @return void
 	 */
 	public function crawler_init(&$pObj) {
@@ -156,8 +157,8 @@ class CrawlerHook {
 	/**
 	 * Call back function for execution of a log element
 	 *
-	 * @param array Params from log element. Must contain $params['indexConfigUid']
-	 * @param object Parent object (tx_crawler lib)
+	 * @param array $params Params from log element. Must contain $params['indexConfigUid']
+	 * @param object $pObj Parent object (tx_crawler lib)
 	 * @return array Result array
 	 */
 	public function crawler_execute($params, &$pObj) {
@@ -213,10 +214,10 @@ class CrawlerHook {
 	/**
 	 * Indexing records from a table
 	 *
-	 * @param array Indexing Configuration Record
-	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param array Parameters from the log queue.
-	 * @param object Parent object (from "crawler" extension!)
+	 * @param array $cfgRec Indexing Configuration Record
+	 * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array $params Parameters from the log queue.
+	 * @param object $pObj Parent object (from "crawler" extension!)
 	 * @return void
 	 */
 	public function crawler_execute_type1($cfgRec, &$session_data, $params, &$pObj) {
@@ -257,10 +258,10 @@ class CrawlerHook {
 	/**
 	 * Indexing files from fileadmin
 	 *
-	 * @param array Indexing Configuration Record
-	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param array Parameters from the log queue.
-	 * @param object Parent object (from "crawler" extension!)
+	 * @param array $cfgRec Indexing Configuration Record
+	 * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array $params Parameters from the log queue.
+	 * @param object $pObj Parent object (from "crawler" extension!)
 	 * @return void
 	 */
 	public function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj) {
@@ -318,10 +319,10 @@ class CrawlerHook {
 	/**
 	 * Indexing External URLs
 	 *
-	 * @param array Indexing Configuration Record
-	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param array Parameters from the log queue.
-	 * @param object Parent object (from "crawler" extension!)
+	 * @param array $cfgRec Indexing Configuration Record
+	 * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array $params Parameters from the log queue.
+	 * @param object $pObj Parent object (from "crawler" extension!)
 	 * @return void
 	 */
 	public function crawler_execute_type3($cfgRec, &$session_data, $params, &$pObj) {
@@ -358,10 +359,10 @@ class CrawlerHook {
 	/**
 	 * Page tree indexing type
 	 *
-	 * @param array Indexing Configuration Record
-	 * @param array Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
-	 * @param array Parameters from the log queue.
-	 * @param object Parent object (from "crawler" extension!)
+	 * @param array $cfgRec Indexing Configuration Record
+	 * @param array $session_data Session data for the indexing session spread over multiple instances of the script. Passed by reference so changes hereto will be saved for the next call!
+	 * @param array $params Parameters from the log queue.
+	 * @param object $pObj Parent object (from "crawler" extension!)
 	 * @return void
 	 */
 	public function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj) {
@@ -657,11 +658,11 @@ class CrawlerHook {
 	/**
 	 * TCEmain hook function for on-the-fly indexing of database records
 	 *
-	 * @param string TCEmain command
-	 * @param string Table name
-	 * @param string Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
-	 * @param mixed Target value (ignored)
-	 * @param object Reference to tcemain calling object
+	 * @param string $command TCEmain command
+	 * @param string $table Table name
+	 * @param string $id Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
+	 * @param mixed $value Target value (ignored)
+	 * @param FormEngine $pObj tcemain calling object
 	 * @return void
 	 */
 	public function processCmdmap_preProcess($command, $table, $id, $value, $pObj) {
@@ -674,11 +675,11 @@ class CrawlerHook {
 	/**
 	 * TCEmain hook function for on-the-fly indexing of database records
 	 *
-	 * @param string Status "new" or "update
-	 * @param string Table name
-	 * @param string Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
-	 * @param array Field array of updated fields in the operation
-	 * @param object Reference to tcemain calling object
+	 * @param string $status Status "new" or "update
+	 * @param string $table Table name
+	 * @param string $id Record ID. If new record its a string pointing to index inside \TYPO3\CMS\Core\DataHandling\DataHandler::substNEWwithIDs
+	 * @param array $fieldArray Field array of updated fields in the operation
+	 * @param FormEngine $pObj tcemain calling object
 	 * @return void
 	 */
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj) {

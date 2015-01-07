@@ -507,7 +507,7 @@ class IconUtility {
 	/**
 	 * Write the icon in $im pointer to $path
 	 *
-	 * @param pointer $im Pointer to GDlib image resource
+	 * @param resource $im Pointer to GDlib image resource
 	 * @param string $path Absolute path to the filename in which to write the icon.
 	 * @return void
 	 * @access private

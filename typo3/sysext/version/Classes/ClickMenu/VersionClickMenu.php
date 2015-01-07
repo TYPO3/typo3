@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Version\ClickMenu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
+
 /**
  * "Versioning" item added to click menu of elements.
  *
@@ -24,7 +26,7 @@ class VersionClickMenu {
 	/**
 	 * Main function, adding the item to input menuItems array
 	 *
-	 * @param object $backRef References to parent clickmenu objects.
+	 * @param ClickMenu $backRef References to parent clickmenu objects.
 	 * @param array $menuItems Array of existing menu items accumulated. New element added to this.
 	 * @param string $table Table name of the element
 	 * @param int $uid Record UID of the element

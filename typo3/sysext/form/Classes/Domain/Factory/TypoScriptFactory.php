@@ -158,7 +158,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param AbstractElement $parentElement Parent model object
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
-	 * @return object
+	 * @return void
 	 */
 	public function addElement(AbstractElement $parentElement, $class, array $arguments = array()) {
 		$element = $this->createElement($class, $arguments);

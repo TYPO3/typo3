@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
@@ -29,7 +31,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * The object this property is contained in.
 	 *
-	 * @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
+	 * @var DomainObjectInterface
 	 */
 	private $parentObject;
 
@@ -50,7 +52,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Constructs this proxy instance.
 	 *
-	 * @param object $parentObject The object instance this proxy is part of
+	 * @param DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 */
@@ -68,7 +70,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	public function _loadRealInstance() {
 		// this check safeguards against a proxy being activated multiple times
 		// usually that does not happen, but if the proxy is held from outside
-		// it's parent... the result would be weird.
+		// its parent ... the result would be weird.
 		if ($this->parentObject->_getProperty($this->propertyName) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
 			$objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE, FALSE);
 			$propertyValue = $this->dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);

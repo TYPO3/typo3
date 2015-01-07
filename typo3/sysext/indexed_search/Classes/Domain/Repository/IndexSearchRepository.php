@@ -340,9 +340,9 @@ class IndexSearchRepository {
 	/**
 	 * Returns a query which selects the search-word from the word/rel tables.
 	 *
-	 * @param string WHERE clause selecting the word from phash
-	 * @param string Additional AND clause in the end of the query.
-	 * @return pointer SQL result pointer
+	 * @param string $wordSel WHERE clause selecting the word from phash
+	 * @param string $additionalWhereClause Additional AND clause in the end of the query.
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function execPHashListQuery($wordSel, $additionalWhereClause = '') {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery('IR.phash', 'index_words IW,
@@ -357,9 +357,9 @@ class IndexSearchRepository {
 	/**
 	 * Search for a word
 	 *
-	 * @param 	string the search word
-	 * @param	int constant from this class to see if the wildcard should be left and/or right of the search string
-	 * @return pointer SQL result pointer
+	 * @param string $sWord the search word
+	 * @param int $mode constant from this class to see if the wildcard should be left and/or right of the search string
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function searchWord($sWord, $mode) {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
@@ -372,8 +372,8 @@ class IndexSearchRepository {
 	/**
 	 * Search for one distinct word
 	 *
-	 * @param 	string the search word
-	 * @return pointer SQL result pointer
+	 * @param string $sWord the search word
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . $this->md5inthash($sWord);
@@ -384,8 +384,8 @@ class IndexSearchRepository {
 	/**
 	 * Search for a sentence
 	 *
-	 * @param 	string the search word
-	 * @return pointer SQL result pointer
+	 * @param string $sWord the search word
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function searchSentence($sWord) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_fulltext') . '%\' AND
@@ -397,8 +397,8 @@ class IndexSearchRepository {
 	/**
 	 * Search for a metaphone word
 	 *
-	 * @param 	string the search word
-	 * @return pointer SQL result pointer
+	 * @param string $sWord the search word
+	 * @return void
 	 */
 	protected function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
@@ -536,9 +536,9 @@ class IndexSearchRepository {
 	/**
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
-	 * @param string List of phash integers which match the search.
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return pointer Query result pointer
+	 * @param string $list List of phash integers which match the search.
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @return bool|\mysqli_result Query result pointer
 	 */
 	protected function execFinalQuery($list, $freeIndexUid = -1) {
 		// Setting up methods of filtering results
@@ -755,7 +755,7 @@ class IndexSearchRepository {
 	 * Returns an object reference to the hook object if any
 	 *
 	 * @param string $functionName Name of the function you want to call / hook key
-	 * @return object Hook object, if any. Otherwise NULL.
+	 * @return object|NULL Hook object, if any. Otherwise NULL.
 	 */
 	public function hookRequest($functionName) {
 		// Hook: menuConfig_preProcessModMenu

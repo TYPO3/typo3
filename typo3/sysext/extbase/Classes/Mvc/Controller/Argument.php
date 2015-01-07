@@ -66,7 +66,7 @@ class Argument {
 	/**
 	 * Actual value of this argument
 	 *
-	 * @var object
+	 * @var mixed
 	 */
 	protected $value = NULL;
 
@@ -251,7 +251,7 @@ class Argument {
 	/**
 	 * Returns the value of this argument
 	 *
-	 * @return object The value of this argument - if none was set, NULL is returned
+	 * @return mixed The value of this argument - if none was set, NULL is returned
 	 * @api
 	 */
 	public function getValue() {

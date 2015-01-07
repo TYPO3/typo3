@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Scheduler\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
+
 /**
  * Additional fields provider class for usage with the Scheduler's sleep task
  *
@@ -26,7 +28,7 @@ class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Additiona
 	 * In this case, it adds an sleep time field
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-	 * @param object $task When editing, reference to the current task object. Null when adding.
+	 * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */

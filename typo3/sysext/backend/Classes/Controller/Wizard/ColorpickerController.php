@@ -392,7 +392,7 @@ class ColorpickerController extends AbstractWizardController {
 	 * Gets the HTML (Hex) Color Code for the selected pixel of an image
 	 * This method handles the correct imageResource no matter what format
 	 *
-	 * @param pointer $im Valid ImageResource returned by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile
+	 * @param resource $im Valid ImageResource returned by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile
 	 * @param int $x X-Coordinate of the pixel that should be checked
 	 * @param int $y Y-Coordinate of the pixel that should be checked
 	 * @return string HEX RGB value for color

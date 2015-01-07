@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
+
 /**
  * Abstract class for the form element containers (FORM and FIELDSET) view
  *
@@ -68,7 +70,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Abs
 	/**
 	 * Create child object from the classname of the model
 	 *
-	 * @param object $modelChild The childs model
+	 * @param AbstractElement $modelChild The childs model
 	 * @return \TYPO3\CMS\Form\View\Confirmation\Element\AbstractElementView
 	 */
 	public function createChildElementFromModel($modelChild) {

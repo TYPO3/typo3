@@ -34,7 +34,7 @@ class MassActionHandler extends AbstractHandler {
 	/**
 	 * Get list of available mass workspace actions.
 	 *
-	 * @param object $parameter
+	 * @param \stdClass $parameter
 	 * @return array $data
 	 */
 	public function getMassStageActions($parameter) {

@@ -57,7 +57,7 @@ class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Abstrac
 	 * TemplateVariableContainer.
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return object The evaluated object, can be any object type.
+	 * @return mixed The evaluated object, can be any object type.
 	 */
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		return self::getPropertyPath($renderingContext->getTemplateVariableContainer(), $this->objectPath, $renderingContext);

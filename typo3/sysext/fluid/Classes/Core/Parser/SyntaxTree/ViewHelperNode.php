@@ -98,7 +98,7 @@ class ViewHelperNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNod
 	 * Afterwards, checks that the view helper did not leave a variable lying around.
 	 *
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-	 * @return object evaluated node after the view helper has been called.
+	 * @return string evaluated node after the view helper has been called.
 	 */
 	public function evaluate(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext) {
 		if ($this->viewHelpersByContext->contains($renderingContext)) {

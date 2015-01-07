@@ -240,7 +240,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param object $target The instance which needs the dependency
 	 * @param string $name Name of the property to be injected
-	 * @param object $dependency The dependency to inject – usually an object but can also be any other type
+	 * @param mixed $dependency The dependency to inject – usually an object but can also be any other type
 	 * @return void
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException

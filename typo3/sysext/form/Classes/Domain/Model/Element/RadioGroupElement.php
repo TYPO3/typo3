@@ -25,7 +25,7 @@ class RadioGroupElement extends \TYPO3\CMS\Form\Domain\Model\Element\FieldsetEle
 	 * Add child object to this element
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\RadioElement $element The child object
-	 * @return object
+	 * @return RadioGroupElement fluent interface
 	 */
 	public function addElement(\TYPO3\CMS\Form\Domain\Model\Element\RadioElement $element) {
 		if ($element->acceptsParentName()) {

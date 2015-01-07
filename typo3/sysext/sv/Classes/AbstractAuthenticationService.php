@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Sv;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+
 /**
  * Authentication services class
  *
@@ -83,7 +85,7 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param string $mode Subtype of the service which is used to call the service.
 	 * @param array $loginData Submitted login form data
 	 * @param array $authInfo Information array. Holds submitted form data etc.
-	 * @param object $pObj Parent object
+	 * @param AbstractUserAuthentication $pObj Parent object
 	 * @return void
 	 */
 	public function initAuth($mode, $loginData, $authInfo, $pObj) {

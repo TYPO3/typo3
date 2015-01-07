@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Form\View\Mail\Html\Additional\AdditionalElementView;
 
 /**
  * Abstract class for the form element containers (FORM and FIELDSET) view
@@ -68,7 +69,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\Abstra
 	/**
 	 * Create child object from the classname of the model
 	 *
-	 * @param object $modelChild The childs model
+	 * @param AdditionalElementView $modelChild The childs model
 	 * @return \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView
 	 */
 	public function createChildElementFromModel($modelChild) {

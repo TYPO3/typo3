@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 class Arguments implements \ArrayAccess {
 
 	/**
-	 * Array storing the arguments themselves
+	 * @var array the arguments themselves
 	 */
 	protected $arguments = array();
 

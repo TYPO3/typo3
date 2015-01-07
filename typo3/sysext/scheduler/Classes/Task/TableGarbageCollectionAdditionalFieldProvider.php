@@ -30,7 +30,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 * Add additional fields
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-	 * @param object $task When editing, reference to the current task object. Null when adding.
+	 * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */
@@ -61,7 +61,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 * Add a select field of available tables.
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-	 * @param object $task When editing, reference to the current task object. Null when adding.
+	 * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */
@@ -87,7 +87,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 * Add a select field of available tables.
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-	 * @param object $task When editing, reference to the current task object. Null when adding.
+	 * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */
@@ -133,7 +133,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	 * Add a input field to get the number of days.
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
-	 * @param object $task When editing, reference to the current task object. Null when adding.
+	 * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.
 	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 */

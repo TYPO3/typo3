@@ -112,13 +112,13 @@ abstract class AbstractFunctionModule {
 	 * Contains a reference to the parent (calling) object (which is probably an instance of
 	 * an extension class to \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 *
-	 * @var \TYPO3\CMS\Backend\Module\BaseScriptClass
+	 * @var BaseScriptClass
 	 * @see init()
 	 */
 	public $pObj;
 
 	/**
-	 * @var object
+	 * @var BaseScriptClass
 	 */
 	public $extObj = NULL;
 

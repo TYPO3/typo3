@@ -4618,7 +4618,7 @@ Connection: close
 	 * @param string $serviceType Type of service (service key).
 	 * @param string $serviceSubType Sub type like file extensions or similar. Defined by the service.
 	 * @param mixed $excludeServiceKeys List of service keys which should be excluded in the search for a service. Array or comma list.
-	 * @return object The service object or an array with error info's.
+	 * @return object|string[] The service object or an array with error infos.
 	 */
 	static public function makeInstanceService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		$error = FALSE;

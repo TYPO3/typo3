@@ -75,7 +75,7 @@ abstract class RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param object Reference to parent object, which is an instance of the htmlArea RTE
+	 * @param RteHtmlAreaBase $parentObject parent object
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
 	public function main($parentObject) {

@@ -112,7 +112,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
 	/**
 	 * Checks the given object can be validated by the validator implementation
 	 *
-	 * @param object $object The object to be checked
+	 * @param mixed $object The object to be checked
 	 * @return bool TRUE if the given value is an object
 	 * @api
 	 */

@@ -805,9 +805,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns a query which selects the search-word from the word/rel tables.
 	 *
-	 * @param string WHERE clause selecting the word from phash
-	 * @param string Additional AND clause in the end of the query.
-	 * @return pointer SQL result pointer
+	 * @param string $wordSel WHERE clause selecting the word from phash
+	 * @param string $plusQ Additional AND clause in the end of the query.
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	public function execPHashListQuery($wordSel, $plusQ = '') {
 		return $GLOBALS['TYPO3_DB']->exec_SELECTquery('IR.phash', 'index_words IW,
@@ -824,7 +824,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param string $sWord Word to search for
 	 * @param int $mode Bit-field which can contain WILDCARD_LEFT and/or WILDCARD_RIGHT
-	 * @return pointer SQL result pointer
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	public function searchWord($sWord, $mode) {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
@@ -839,7 +839,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Search for one distinct word
 	 *
 	 * @param string $sWord Word to search for
-	 * @return pointer SQL result pointer
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	public function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($sWord);
@@ -852,7 +852,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Search for a sentence
 	 *
 	 * @param string $sSentence Sentence to search for
-	 * @return pointer SQL result pointer
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	public function searchSentence($sSentence) {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($sSentence, 'index_fulltext') . '%\' AND
@@ -1000,9 +1000,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Execute final query, based on phash integer list. The main point is sorting the result in the right order.
 	 *
-	 * @param string List of phash integers which match the search.
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return pointer Query result pointer
+	 * @param string $list List of phash integers which match the search.
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @return bool|\mysqli_result Query result pointer
 	 */
 	public function execFinalQuery($list, $freeIndexUid = -1) {
 		// Setting up methods of filtering results based on page types, access, etc.
@@ -2166,8 +2166,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns an object reference to the hook object if any
 	 *
-	 * @param string Name of the function you want to call / hook key
-	 * @return object Hook object, if any. Otherwise NULL.
+	 * @param string $functionName Name of the function you want to call / hook key
+	 * @return object|NULL Hook object, if any. Otherwise NULL.
 	 */
 	public function hookRequest($functionName) {
 		// Hook: menuConfig_preProcessModMenu

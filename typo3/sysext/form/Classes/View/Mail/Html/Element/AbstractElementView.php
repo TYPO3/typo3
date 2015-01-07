@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
+use TYPO3\CMS\Form\View\Mail\Html\Additional\AdditionalElementView;
 
 /**
  * Abstract class for the form elements view
@@ -52,7 +54,7 @@ abstract class AbstractElementView {
 	/**
 	 * Constructor
 	 *
-	 * @param object $model Current elements model
+	 * @param AbstractElement $model Current elements model
 	 */
 	public function __construct($model) {
 		$this->model = $model;
@@ -277,7 +279,7 @@ abstract class AbstractElementView {
 	 * Load and instantiate an additional object
 	 *
 	 * @param string $class Type of additional
-	 * @return object
+	 * @return AdditionalElementView
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string)$class);

@@ -50,7 +50,7 @@ abstract class AbstractView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface
 	 * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
 	 *
 	 * @param string $key Key of variable
-	 * @param object $value Value of object
+	 * @param mixed $value Value of object
 	 * @return \TYPO3\CMS\Extbase\Mvc\View\AbstractView an instance of $this, to enable chaining
 	 * @api
 	 */

@@ -166,7 +166,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Saves the selected columns to be shown to the preferences of the current backend user.
 	 *
-	 * @param object $model
+	 * @param \stdClass $model
 	 * @return void
 	 */
 	public function saveColumnModel($model) {

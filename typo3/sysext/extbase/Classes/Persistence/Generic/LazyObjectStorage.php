@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
  * first access (call, get, set, isset, unset).
@@ -74,7 +76,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	/**
 	 * Constructs this proxy instance.
 	 *
-	 * @param object $parentObject The object instance this proxy is part of
+	 * @param DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 */

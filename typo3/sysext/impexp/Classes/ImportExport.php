@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Impexp;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -2157,7 +2159,7 @@ class ImportExport {
 	/**
 	 * Returns a new $TCE object
 	 *
-	 * @return object $TCE object
+	 * @return DataHandler $TCE object
 	 */
 	public function getNewTCE() {
 		$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
@@ -4115,7 +4117,7 @@ class ImportExport {
 	/**
 	 * Returns file processing object, initialized only once.
 	 *
-	 * @return object File processor object
+	 * @return ExtendedFileUtility File processor object
 	 */
 	public function getFileProcObj() {
 		if ($this->fileProcObj === NULL) {

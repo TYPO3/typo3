@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class is a search indexer for TYPO3
@@ -138,7 +139,7 @@ class Indexer {
 	/**
 	 * Parent Object (TSFE) Initialization
 	 *
-	 * @param object Parent Object (frontend TSFE object), passed by reference
+	 * @param TypoScriptFrontendController $pObj Parent Object, passed by reference
 	 * @return void
 	 */
 	public function hook_indexContent(&$pObj) {
