@@ -1377,8 +1377,10 @@ function jumpToUrl(URL) {
 	 * @param array $layout If set, then this provides an alternative layout array instead of $this->tableLayout
 	 * @return string The HTML table.
 	 * @internal
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function table($data, $layout = NULL) {
+		GeneralUtility::logDeprecatedFunction();
 		$result = '';
 		if (is_array($data)) {
 			$tableLayout = is_array($layout) ? $layout : $this->tableLayout;
