@@ -102,14 +102,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 	/**
 	 * Verify TS objects
 	 *
-	 * @todo UNUSED in Core; deprecate it, https://forge.typo3.org/issues/64134
-	 *
 	 * @param array $propertyArray
 	 * @param string $parentType
 	 * @param string $parentValue
 	 * @return array|NULL
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function verify_TSobjects($propertyArray, $parentType, $parentValue) {
+		GeneralUtility::logDeprecatedFunction();
 		$TSobjTable = array(
 			'PAGE' => array(
 				'prop' => array(
