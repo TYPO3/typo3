@@ -73,26 +73,27 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			$me.attr('href', '#');
 			$me.addClass('transformed');
 			$me.click(function() {
-				var $extManager = $(ExtensionManager.identifier.extensionManager);
-				TYPO3.Dialog.QuestionDialog({
-					title: TYPO3.l10n.localize('extensionList.removalConfirmation.title'),
-					msg: TYPO3.l10n.localize('extensionList.removalConfirmation.question'),
-					url: $me.data('href'),
-					fn: function(button, dummy, dialog) {
-						if (button == 'yes') {
-							$extManager.mask();
-							$.ajax({
-								url: dialog.url,
-								success: function() {
-									location.reload();
-								},
-								error: function() {
-									$extManager.unmask();
-								}
-							});
+				top.TYPO3.Modal.confirm(
+					TYPO3.lang['extensionList.removalConfirmation.title'],
+					TYPO3.lang['extensionList.removalConfirmation.question'],
+					top.TYPO3.Severity.error,
+					[
+						{
+							text: TYPO3.lang['button.cancel'],
+							active: true,
+							trigger: function() {
+								top.TYPO3.Modal.dismiss();
+							}
+						}, {
+							text: TYPO3.lang['button.remove'],
+							btnClass: 'btn-danger',
+							trigger: function() {
+								ExtensionManager.removeExtensionFromDisk($me);
+								top.TYPO3.Modal.dismiss();
+							}
 						}
-					}
-				});
+					]
+				);
 			});
 		});
 
@@ -102,13 +103,29 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			$me.attr('href', '#');
 			$me.addClass('transformed');
 			$me.click(function() {
-				$(ExtensionManager.identifier.extensionManager).mask();
 				$.ajax({
 					url: $(this).data('href'),
 					dataType: 'json',
+					beforeSend: function() {
+						$(ExtensionManager.identifier.extensionManager).mask();
+					},
 					success: ExtensionManager.updateExtension
 				});
 			});
+		});
+	};
+
+	ExtensionManager.removeExtensionFromDisk = function($extension) {
+		var $extManager = $(Repository.identifier.extensionManager);
+		$extManager.mask();
+		$.ajax({
+			url: $extension.data('href'),
+			success: function() {
+				location.reload();
+			},
+			error: function() {
+				$extManager.unmask();
+			}
 		});
 	};
 
@@ -168,60 +185,74 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 	};
 
 	ExtensionManager.updateExtension = function(data) {
-		var message = '<h1>' + TYPO3.l10n.localize('extensionList.updateConfirmation.title') + '</h1>';
-		message += '<h2>' + TYPO3.l10n.localize('extensionList.updateConfirmation.message') + '</h2>';
+		var message = '<h1>' + TYPO3.lang['extensionList.updateConfirmation.title'] + '</h1>';
+		message += '<h2>' + TYPO3.lang['extensionList.updateConfirmation.message'] + '</h2>';
 		$.each(data.updateComments, function(version, comment) {
 			message += '<h3>' + version + '</h3>';
 			message += '<div>' + comment + '</div>';
 		});
 
-		TYPO3.Dialog.QuestionDialog({
-			title: TYPO3.l10n.localize('extensionList.updateConfirmation.questionVersionComments'),
-			msg: message,
-			width: 600,
-			url: data.url,
-			fn: function(button, dummy, dialog) {
-				var $extManager = $(ExtensionManager.identifier.extensionManager);
-				if (button == 'yes') {
-					$.ajax({
-						url: dialog.url,
-						dataType: 'json',
-						success: function(data) {
-							if (data.hasErrors) {
+		var $extManager = $(ExtensionManager.identifier.extensionManager);
+		$extManager.unmask();
+
+		top.TYPO3.Modal.confirm(
+			TYPO3.lang['extensionList.updateConfirmation.questionVersionComments'],
+			message,
+			top.TYPO3.Severity.warning,
+			[
+				{
+					text: TYPO3.lang['button.cancel'],
+					active: true,
+					trigger: function() {
+						top.TYPO3.Modal.dismiss();
+					}
+				}, {
+					text: TYPO3.lang['button.updateExtension'],
+					btnClass: 'btn-warning',
+					trigger: function() {
+						$.ajax({
+							url: data.url,
+							dataType: 'json',
+							beforeSend: function() {
+								$extManager.mask();
+							},
+							success: function(data) {
+								if (data.hasErrors) {
+									top.TYPO3.Flashmessage.display(
+										top.TYPO3.Severity.error,
+										TYPO3.lang['downloadExtension.updateExtension.error'],
+										data.errorMessage,
+										15
+									);
+									$extManager.unmask();
+								} else {
+									top.TYPO3.Flashmessage.display(
+										top.TYPO3.Severity.info,
+										TYPO3.lang['extensionList.updateFlashMessage.title'],
+										TYPO3.lang['extensionList.updateFlashMessage.message'].replace(/\{0\}/g, data.extension),
+										15
+									);
+									location.reload();
+								}
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								// Create an error message with diagnosis info.
+								var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
+
 								top.TYPO3.Flashmessage.display(
 									top.TYPO3.Severity.error,
-									TYPO3.l10n.localize('downloadExtension.updateExtension.error'),
-									data.errorMessage,
+									TYPO3.lang['downloadExtension.updateExtension.error'],
+									errorMessage,
 									15
 								);
-							} else {
-								top.TYPO3.Flashmessage.display(
-									top.TYPO3.Severity.info,
-									TYPO3.l10n.localize('extensionList.updateFlashMessage.title'),
-									TYPO3.l10n.localize('extensionList.updateFlashMessage.message').replace(/\{0\}/g, data.extension),
-									15
-								);
+								$extManager.unmask();
 							}
-							$extManager.unmask();
-						},
-						error: function(jqXHR, textStatus, errorThrown) {
-							// Create an error message with diagnosis info.
-							var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
-
-							top.TYPO3.Flashmessage.display(
-								top.TYPO3.Severity.error,
-								TYPO3.l10n.localize('downloadExtension.updateExtension.error'),
-								errorMessage,
-								15
-							);
-							$extManager.unmask();
-						}
-					});
-				} else {
-					$extManager.unmask();
+						});
+						top.TYPO3.Modal.dismiss();
+					}
 				}
-			}
-		});
+			]
+		);
 	};
 
 	/**
@@ -330,78 +361,90 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 		installButtons.off('click');
 		installButtons.on('click', function(event) {
 			event.preventDefault();
-			$(Repository.identifier.extensionManager).mask();
 			var url = $(event.currentTarget.form).attr('data-href');
 			Repository.downloadPath = $(event.currentTarget.form).find('input.downloadPath:checked').val();
 			$.ajax({
 				url: url,
 				dataType: 'json',
+				beforeSend: function() {
+					$(Repository.identifier.extensionManager).mask();
+				},
 				success: Repository.getDependencies
 			});
 		});
 	};
 
 	Repository.getDependencies = function(data) {
+		var $extManager = $(Repository.identifier.extensionManager);
+		$extManager.unmask();
 		if (data.hasDependencies) {
-			TYPO3.Dialog.QuestionDialog({
-				title: data.title,
-				msg: data.message,
-				url: data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath,
-				fn: Repository.getResolveDependenciesAndInstallResult
-			});
+			top.TYPO3.Modal.confirm(data.title, data.message, top.TYPO3.Severity.info, [
+				{
+					text: TYPO3.lang['button.cancel'],
+					active: true,
+					trigger: function() {
+						top.TYPO3.Modal.dismiss();
+					}
+				}, {
+					text: TYPO3.lang['button.resolveDependencies'],
+					btnClass: 'btn-info',
+					trigger: function() {
+						Repository.getResolveDependenciesAndInstallResult(data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath);
+						top.TYPO3.Modal.dismiss();
+					}
+				}
+			]);
 		} else {
 			if(data.hasErrors) {
-				$(Repository.identifier.extensionManager).unmask();
 				top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, data.title, data.message, 15);
 			} else {
-				var button = 'yes';
-				var dialog = [];
-				var dummy = '';
-				dialog['url'] = data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath;
-				Repository.getResolveDependenciesAndInstallResult(button, dummy, dialog);
+				Repository.getResolveDependenciesAndInstallResult(data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath);
 			}
 		}
 		return false;
 	};
 
-	Repository.getResolveDependenciesAndInstallResult = function(button, dummy, dialog) {
-		var $emViewport = $(Repository.identifier.extensionManager);
-		if (button === 'yes') {
-			var newUrl = dialog.url;
-			$.ajax({
-				url: newUrl,
-				dataType: 'json',
-				success: function (data) {
-					$emViewport.unmask();
-					if (data.errorCount > 0) {
-						TYPO3.Dialog.QuestionDialog({
-							title: data.errorTitle,
-							msg: data.errorMessage,
-							url: data.skipDependencyUri,
-							fn: function (button, dummy, dialog) {
-								if (button == 'yes') {
-									$emViewport.mask();
-									Repository.getResolveDependenciesAndInstallResult('yes', dummy, dialog);
-								}
+	Repository.getResolveDependenciesAndInstallResult = function(url) {
+		var $extManager = $(Repository.identifier.extensionManager);
+		$.ajax({
+			url: url,
+			dataType: 'json',
+			beforeSend: function() {
+				$extManager.mask();
+			},
+			success: function (data) {
+				$extManager.unmask();
+				if (data.errorCount > 0) {
+					top.TYPO3.Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.warning, [
+						{
+							text: TYPO3.lang['button.cancel'],
+							active: true,
+							trigger: function() {
+								top.TYPO3.Modal.dismiss();
 							}
+						}, {
+							text: TYPO3.lang['button.resolveDependenciesIgnore'],
+							btnClass: 'btn-warning',
+							trigger: function() {
+								Repository.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
+								top.TYPO3.Modal.dismiss();
+							}
+						}
+					]);
+				} else {
+					var successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message'].replace(/\{0\}/g, data.extension) + ' <br />';
+					successMessage += '<br /><h3>' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ':</h3>';
+					$.each(data.result, function(index, value) {
+						successMessage += TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.item'] + ' ' + index + ':<br /><ul>';
+						$.each(value, function(extkey, extdata) {
+							successMessage += '<li>' + extkey + '</li>';
 						});
-					} else {
-						var successMessage = TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.message').replace(/\{0\}/g, data.extension) + ' <br />';
-						successMessage += '<br /><h3>' + TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.header') + ':</h3>';
-						$.each(data.result, function(index, value) {
-							successMessage += TYPO3.l10n.localize('extensionList.dependenciesResolveDownloadSuccess.item') + ' ' + index + ':<br /><ul>';
-							$.each(value, function(extkey, extdata) {
-								successMessage += '<li>' + extkey + '</li>';
-							});
-							successMessage += '</ul>';
-						});
-						top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.l10n.localize('extensionList.dependenciesResolveFlashMessage.title').replace(/\{0\}/g, data.extension), successMessage, 15);
-					}
+						successMessage += '</ul>';
+					});
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title'].replace(/\{0\}/g, data.extension), successMessage, 15);
 				}
-			});
-		} else {
-			$emViewport.unmask();
-		}
+			}
+		});
 	};
 
 	Repository.bindSearchFieldResetter = function() {
@@ -473,7 +516,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			success: function(data) {
 				// Something went wrong, show message
 				if (data.errorMessage.length) {
-					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.warning, TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'), data.errorMessage, 10);
+					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.warning, TYPO3.lang['extensionList.updateFromTerFlashMessage.title'], data.errorMessage, 10);
 				}
 
 				// Message with latest updates
@@ -481,7 +524,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 				$lastUpdate.text(data.timeSinceLastUpdate);
 				$lastUpdate.attr(
 					'title',
-					TYPO3.l10n.localize('extensionList.updateFromTer.lastUpdate.timeOfLastUpdate') + data.lastUpdateTime
+					TYPO3.lang['extensionList.updateFromTer.lastUpdate.timeOfLastUpdate'] + data.lastUpdateTime
 				);
 
 				if (data.updated) {
@@ -501,7 +544,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 
 				top.TYPO3.Flashmessage.display(
 					top.TYPO3.Severity.warning,
-					TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'),
+					TYPO3.lang['extensionList.updateFromTerFlashMessage.title'],
 					errorMessage,
 					10
 				);

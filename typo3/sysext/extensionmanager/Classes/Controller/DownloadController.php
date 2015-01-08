@@ -68,7 +68,7 @@ class DownloadController extends AbstractController {
 			$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
 			if (count($dependencyTypes) > 0) {
 				$hasDependencies = TRUE;
-				$message = $this->translate('downloadExtension.dependencies.headline');
+				$message = '<p>' . $this->translate('downloadExtension.dependencies.headline') . '</p>';
 				foreach ($dependencyTypes as $dependencyType => $dependencies) {
 					$extensions = '';
 					foreach ($dependencies as $extensionKey => $dependency) {

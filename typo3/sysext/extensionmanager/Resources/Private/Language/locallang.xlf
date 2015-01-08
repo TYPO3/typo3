@@ -69,6 +69,21 @@
 			<trans-unit id="updateScript.none" xml:space="preserve">
 				<source>No update necessary.</source>
 			</trans-unit>
+			<trans-unit id="button.cancel" xml:space="preserve">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="button.remove" xml:space="preserve">
+				<source>Remove extension</source>
+			</trans-unit>
+			<trans-unit id="button.updateExtension" xml:space="preserve">
+				<source>Update extension</source>
+			</trans-unit>
+			<trans-unit id="button.resolveDependencies" xml:space="preserve">
+				<source>Resolve dependencies</source>
+			</trans-unit>
+			<trans-unit id="button.resolveDependenciesIgnore" xml:space="preserve">
+				<source>Continue anyway</source>
+			</trans-unit>
 			<trans-unit id="extensionList.clickToConfigure" xml:space="preserve">
 				<source>(Click to configure)</source>
 			</trans-unit>

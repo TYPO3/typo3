@@ -1,6 +1,6 @@
 <f:render partial="List/UnresolvedDependencies.html" arguments="{_all}" />
 
-<h3><span class="t3-icon t3-icon-actions t3-icon-dialog-error">&nbsp;</span> <f:translate key="dependencyCheck.unresolvedDependencies.title" /></h3>
+<h3><span class="fa fa-exclamation-triangle"></span> <f:translate key="dependencyCheck.unresolvedDependencies.title" /></h3>
 <f:render partial="List/UnresolvedDependenciesMessage.html" />
 <br /><br />
 <strong><f:translate key="dependencyCheck.unresolvedDependencies.question" /></strong>
