@@ -11196,15 +11196,6 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 .distribution-meta .distribution-install {
   margin-top: 0.5em;
 }
-.distribution-meta .distribution-official {
-  border: 1px solid #0078e6;
-  background-color: #0078e6;
-  border-radius: 2px;
-  display: inline-block;
-  padding: 3px 8px;
-  vertical-align: middle;
-  color: #FFFFFF;
-}
 .distribution-detail-flashmessage {
   margin-bottom: 2.5em;
 }
