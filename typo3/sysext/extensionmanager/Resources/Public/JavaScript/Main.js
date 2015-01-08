@@ -30,7 +30,6 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 		var $searchField = $(this.identifier.searchField),
 			dataTable = $(this.identifier.extensionlist).DataTable({
 				paging: false,
-				jQueryUI: true,
 				dom: 'lrtip',
 				lengthChange: false,
 				pageLength: 15,
@@ -279,7 +278,6 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 
 	Repository.initDom = function() {
 		$('#terTable').DataTable({
-			jQueryUI: true,
 			lengthChange: false,
 			pageLength: 15,
 			stateSave: false,
@@ -291,7 +289,6 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 		});
 
 		$('#terVersionTable').DataTable({
-			jQueryUI: true,
 			lengthChange: false,
 			pageLength: 15,
 			stateSave: false,
@@ -314,7 +311,6 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 
 		$('#terSearchTable').DataTable({
 			paging: false,
-			jQueryUI: true,
 			lengthChange: false,
 			stateSave: false,
 			searching: false,
