@@ -3867,7 +3867,7 @@ class FormEngine {
 		for ($i = 0; $i <= $row; $i++) {
 			if (isset($iRow[$i])) {
 				$out .= implode('', $iRow[$i]);
-				$out .= $i < $row ? '<br />' : '';
+				$out .= $i < $row ? '<div class="clearfix"></div>' : '';
 			}
 		}
 		$out .= '</fieldset>';
