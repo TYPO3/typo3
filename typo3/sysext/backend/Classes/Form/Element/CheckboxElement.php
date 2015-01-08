@@ -56,8 +56,34 @@ class CheckboxElement extends AbstractFormElement {
 		$formElementValue = (int)$additionalInformation['itemFormElValue'];
 		$cols = (int)$config['cols'];
 		if ($cols > 1) {
-			$colWidth = floor(12 / $cols);
-			$colLeftover = 12 - $colWidth * $cols;
+			$colWidth = (int)floor(12 / $cols);
+			$colClass = "col-md-12";
+			$colClear = array();
+			if ($colWidth == 6){
+				$colClass = "col-sm-6";
+				$colClear = array(
+					2 => 'visible-sm-block visible-md-block visible-lg-block',
+				);
+			} elseif ($colWidth === 4) {
+				$colClass = "col-sm-4";
+				$colClear = array(
+					3 => 'visible-sm-block visible-md-block visible-lg-block',
+				);
+			} elseif ($colWidth === 3) {
+				$colClass = "col-sm-6 col-md-3";
+				$colClear = array(
+					2 => 'visible-sm-block',
+					4 => 'visible-md-block visible-lg-block',
+				);
+			} elseif ($colWidth <= 2) {
+				$colClass = "checkbox-column col-sm-6 col-md-3 col-lg-2";
+				$colClear = array(
+					2 => 'visible-sm-block',
+					4 => 'visible-md-block',
+					6 => 'visible-lg-block'
+				);
+			}
+			$item .= '<div class="checkbox-row row">';
 			for ($counter = 0; $counter < $numberOfItems; $counter++) {
 				// use "default" for typical single checkboxes
 				$tsConfigKey = ($numberOfItems === 1 ? 'default' : $items[$counter][1]);
@@ -70,25 +96,19 @@ class CheckboxElement extends AbstractFormElement {
 				} else {
 					$label = $items[$counter][0];
 				}
-				if (!($counter % $cols)) {
-					$item .= '<div class="row">';
-				}
-				$item .= '<div class="col-md-' . $colWidth . '">'
-					. $this->renderSingleCheckboxElement($label, $counter,  $formElementValue, $numberOfItems, $additionalInformation, $disabled)
-					. '</div>';
-				if ($counter % $cols + 1 == $cols) {
-					$item .= ($colLeftover > 0 ? '<div class="col-md-' . $colLeftover . '"></div>' : '') . '</div>';
-				}
-			}
-			if ($counter % $cols) {
-				$rest = $cols - $counter % $cols;
-				for ($counter = 0; $counter < $rest; $counter++) {
-					$item .= '<div class="col-md-' . $colWidth . '></div>';
-				}
-				if ($counter > 0) {
-					$item .= ($colLeftover > 0 ? '<div class="col-md-' . $colLeftover . '"></div>' : '') . '</div>';
+				$item .=
+					'<div class="checkbox-column ' . $colClass . '">'
+						. $this->renderSingleCheckboxElement($label, $counter,  $formElementValue, $numberOfItems, $additionalInformation, $disabled) .
+					'</div>';
+				if ($counter + 1 < $numberOfItems && !empty($colClear)) {
+					foreach ($colClear as $rowBreakAfter => $clearClass) {
+						if (($counter + 1) % $rowBreakAfter === 0) {
+							$item .= '<div class="clearfix '. $clearClass . '"></div>';
+						}
+					}
 				}
 			}
+			$item .= '</div>';
 		} else {
 			for ($counter = 0; $counter < $numberOfItems; $counter++) {
 				// use "default" for typical single checkboxes
@@ -123,6 +143,8 @@ class CheckboxElement extends AbstractFormElement {
 	 * @return string Single element HTML
 	 */
 	protected function renderSingleCheckboxElement($label, $itemCounter, $formElementValue, $numberOfItems, $additionalInformation, $disabled) {
+		$config = $additionalInformation['fieldConf']['config'];
+		$inline = !empty($config['cols']) && $config['cols'] === "inline";
 		$checkboxParameters = $this->checkBoxParams(
 			$additionalInformation['itemFormElName'],
 			$formElementValue,
@@ -132,21 +154,20 @@ class CheckboxElement extends AbstractFormElement {
 		);
 		$checkboxName = $additionalInformation['itemFormElName'] . '_' . $itemCounter;
 		$checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter;
-		return '<div class="checkbox' . (!$disabled ?: ' disabled') . '">'
-			. '<label for="' . $checkboxId . '">'
-			. '<input '
-			. 'type="checkbox" '
-			. 'value="1" '
-			. 'class="' . $this->cssClassTypeElementPrefix . 'check" '
-			. 'name="' . $checkboxName . '" '
-			. $checkboxParameters . ' '
-			. $additionalInformation['onFocus'] . ' '
-			. (!$disabled ?: ' disabled="disabled"')
-			. ' id="' . $checkboxId . '" '
-			. ' />'
-			.  htmlspecialchars($label)
-			. '</label>'
-		. '</div>';
+		return '
+			<div class="checkbox' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
+				<label>
+					<input type="checkbox"
+						value="1"
+						class="' . $this->cssClassTypeElementPrefix . 'check"
+						name="' . $checkboxName . '"
+						' . $checkboxParameters . '
+						' . $additionalInformation['onFocus'] . '
+						' . (!$disabled ?: ' disabled="disabled"') . '
+						id="' . $checkboxId . '" />
+					' . ($label ? htmlspecialchars($label) : '&nbsp;') . '
+				</label>
+			</div>';
 	}
 
 	/**

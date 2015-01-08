@@ -23,14 +23,6 @@ textarea.fixed-font {
 	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
 }
 
-.checkbox,
-.checkbox:hover,
-input[type="checkbox"] {
-	background: none;
-	border: none;
-	cursor: pointer;
-}
-
 //
 // Groups
 //
@@ -90,6 +82,47 @@ a.typo3-goBack {
 		margin-bottom: 0;
 		label {
 			margin-right: 0.5em;
+		}
+	}
+}
+
+//
+// Radio & Checkbox
+//
+.radio-row,
+.checkbox-row {
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+.radio-column,
+.checkbox-column {
+	margin-bottom: 5px;
+	> .radio,
+	> .checkbox {
+		margin: 0;
+	}
+}
+.radio-inline,
+.checkbox-inline {
+	&.radio,
+	&.checkbox {
+		display: block;
+		margin-left: 0;
+		margin-right: 10px;
+		margin-bottom: 10px;
+		padding: 0;
+		@media (max-width: @screen-xs-max) {
+			& + .radio,
+			& + .checkbox {
+				margin-top: -5px;
+			}
+		}
+		@media (min-width: @screen-sm-min) {
+			display: inline-block;
+			margin-top: 10px;
+			label {
+				white-space: nowrap;
+			}
 		}
 	}
 }
