@@ -42,6 +42,9 @@
 			<trans-unit id="disable" xml:space="preserve">
 				<source>Disable</source>
 			</trans-unit>
+			<trans-unit id="disable_compare" xml:space="preserve">
+				<source>Is active?</source>
+			</trans-unit>
 			<trans-unit id="startDateAndTime" xml:space="preserve">
 				<source>Start</source>
 			</trans-unit>
