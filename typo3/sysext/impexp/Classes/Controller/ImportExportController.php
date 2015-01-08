@@ -666,12 +666,14 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 $rUid = $rParts[1];
                 $nameSuggestion .= $tName . '_' . $rUid;
                 $rec = BackendUtility::getRecordWSOL($tName, $rUid);
-                $row[] = '
-				<tr class="bgColor4">
-					<td><strong>' . $this->lang->getLL('makeconfig_record', true) . '</strong></td>
-					<td>' . $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle($tName, $rec, true)
-                        . '<input type="hidden" name="tx_impexp[record][]" value="' . htmlspecialchars(($tName . ':' . $rUid)) . '" /></td>
-				</tr>';
+                if (!empty($rec)) {
+                    $row[] = '
+					<tr class="bgColor4">
+						<td><strong>' . $this->lang->getLL('makeconfig_record', true) . '</strong></td>
+						<td>' . $this->iconFactory->getIconForRecord($tName, $rec, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle($tName, $rec, true)
+                            . '<input type="hidden" name="tx_impexp[record][]" value="' . htmlspecialchars(($tName . ':' . $rUid)) . '" /></td>
+					</tr>';
+                }
             }
         }
         // Single tables/pids:
