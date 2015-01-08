@@ -559,7 +559,116 @@ return array(
 			),
 		),
 		'checkbox_7' => array(
-			'label' => '7 Seven checkboxes with labels, 4 cols',
+			'label' => '7 showIfRTE (?)',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+				),
+				'showIfRTE' => 1,
+			),
+		),
+		/**
+		 * @TODO Add a itemsProcFunc
+		'checkbox_8' => array(
+			'label' => '8 itemsProcFunc',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+					array('bar', ''),
+				),
+				'itemsProcFunc' => '',
+			),
+		),
+		 */
+		'checkbox_9' => array(
+			'label' => '9 eval maximumRecordsChecked = 1 - table wide',
+			'config' => array(
+				'type' => 'check',
+				'eval' => 'maximumRecordsChecked',
+				'validation' => array(
+					'maximumRecordsChecked' => 1,
+				),
+			),
+		),
+		'checkbox_10' => array(
+			'label' => '10 eval maximumRecordsCheckedInPid = 1 - for this PID',
+			'config' => array(
+				'type' => 'check',
+				'eval' => 'maximumRecordsCheckedInPid',
+				'validation' => array(
+					'maximumRecordsCheckedInPid' => 1,
+				),
+			),
+		),
+		'checkbox_11' => array(
+			'label' => '11 some checkboxes, readonly',
+			'config' => array(
+				'type' => 'check',
+				'readOnly' => 1,
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+				),
+			),
+		),
+		'checkbox_12' => array(
+			'label' => '12 1 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+				),
+				'cols' => '1',
+			),
+		),
+		'checkbox_13' => array(
+			'label' => '13 2 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+				),
+				'cols' => '2',
+			),
+		),
+		'checkbox_14' => array(
+			'label' => '14 3 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+					array('foo4', ''),
+				),
+				'cols' => '3',
+			),
+		),
+		'checkbox_15' => array(
+			'label' => '15 4 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3 and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how', ''),
+					array('foo4', ''),
+					array('foo5', ''),
+					array('foo6', ''),
+					array('foo7', ''),
+					array('foo8', ''),
+				),
+				'cols' => '4',
+			),
+		),
+		'checkbox_16' => array(
+			'label' => '16 5 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -571,62 +680,41 @@ return array(
 					array('foo6', ''),
 					array('foo7', ''),
 				),
-				'cols' => '4',
+				'cols' => '5',
 			),
 		),
-		'checkbox_8' => array(
-			'label' => '8 showIfRTE (?)',
+		'checkbox_17' => array(
+			'label' => '17 6 cols',
 			'config' => array(
 				'type' => 'check',
-				'items' => array(
-					array('foo', ''),
-				),
-				'showIfRTE' => 1,
-			),
-		),
-		/**
-		 * @TODO Add a itemsProcFunc
-		'checkbox_9' => array(
-			'label' => '9 itemsProcFunc',
-			'config' => array(
-				'type' => 'check',
-				'items' => array(
-					array('foo', ''),
-					array('bar', ''),
-				),
-				'itemsProcFunc' => '',
-			),
-		),
-		 */
-		'checkbox_10' => array(
-			'label' => '10 eval maximumRecordsChecked = 1 - table wide',
-			'config' => array(
-				'type' => 'check',
-				'eval' => 'maximumRecordsChecked',
-				'validation' => array(
-					'maximumRecordsChecked' => 1,
-				),
-			),
-		),
-		'checkbox_11' => array(
-			'label' => '11 eval maximumRecordsCheckedInPid = 1 - for this PID',
-			'config' => array(
-				'type' => 'check',
-				'eval' => 'maximumRecordsCheckedInPid',
-				'validation' => array(
-					'maximumRecordsCheckedInPid' => 1,
-				),
-			),
-		),
-		'checkbox_12' => array(
-			'label' => '12 some checkboxes, readonly',
-			'config' => array(
-				'type' => 'check',
-				'readOnly' => 1,
 				'items' => array(
 					array('foo1', ''),
 					array('foo2', ''),
+					array('foo3', ''),
+					array('foo4', ''),
+					array('foo5', ''),
+					array('foo6', ''),
+					array('foo7', ''),
 				),
+				'cols' => '6',
+			),
+		),
+		'checkbox_18' => array(
+			'label' => '18 inline',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'items' => array(
+						array('Mo', ''),
+						array('Tu', ''),
+						array('We', ''),
+						array('Th', ''),
+						array('Fr', ''),
+						array('Sa', ''),
+						array('Su', ''),
+					),
+				),
+				'cols' => 'inline',
 			),
 		),
 
@@ -1542,7 +1630,7 @@ return array(
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
-			checkbox_11, checkbox_12,
+			checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
@@ -1569,8 +1657,8 @@ return array(
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
 				--div--;Check,
-					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
-					checkbox_10, checkbox_11, checkbox_12,
+					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
+					checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
