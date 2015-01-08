@@ -6279,7 +6279,7 @@ class ContentObjectRenderer {
 							}
 						}
 						// If link is to a access restricted page which should be redirected, then find new URL:
-						if ($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
+						if (empty($conf['linkAccessRestrictedPages']) && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 							$thePage = $GLOBALS['TSFE']->sys_page->getPage($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']);
 							$addParams = str_replace(
 								array(
