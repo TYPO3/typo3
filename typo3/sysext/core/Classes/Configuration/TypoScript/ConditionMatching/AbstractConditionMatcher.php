@@ -484,7 +484,7 @@ abstract class AbstractConditionMatcher {
 				}
 				// If array:
 				if (count($splitAgain) > 1) {
-					if (is_array($value) && trim($splitAgain[1])) {
+					if (is_array($value) && trim($splitAgain[1]) !== '') {
 						$value = $this->getGlobal($splitAgain[1], $value);
 					} else {
 						$value = '';

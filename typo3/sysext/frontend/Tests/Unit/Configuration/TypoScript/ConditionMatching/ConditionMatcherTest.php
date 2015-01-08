@@ -442,6 +442,19 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Tests whether an array with zero as key matches its value
+	 *
+	 * @test
+	 */
+	public function globalVarConditionMatchesOnArrayExpressionWithZeroAsKey() {
+		$testKey = uniqid('test');
+		$testValue = '1';
+		$_GET = array();
+		$_POST = array($testKey => array('0' => $testValue));
+		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '|0=' . $testValue . ']'));
+	}
+
+	/**
 	 * Tests whether string comparison matches.
 	 *
 	 * @test
