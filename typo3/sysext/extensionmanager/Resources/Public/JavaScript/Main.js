@@ -579,8 +579,6 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 		$(document).ready(function() {
 			var dataTable = ExtensionManager.manageExtensionListing();
 
-			$('#typo3-extension-configuration-forms .tabs').tabs();
-
 			$(document).on('click', '.onClickMaskExtensionManager', function() {
 				$(ExtensionManager.identifier.extensionManager).mask();
 			});

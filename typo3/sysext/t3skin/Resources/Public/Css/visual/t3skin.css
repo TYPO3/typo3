@@ -8350,6 +8350,12 @@ span.spinner {
 .nav-tabs > li.active > a:hover {
   background: #ededed;
 }
+.tab-content {
+  background: #fafafa;
+  border: 1px solid #cccccc;
+  border-top-color: transparent;
+  padding: 0 18px 24px;
+}
 div.typo3-dyntabmenu-divs {
   padding: 27px 18px;
   margin-bottom: 1em;
@@ -11063,67 +11069,6 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 }
 .contentelement-wizard a {
   display: inline-block;
-}
-#typo3-extension-main-menu .tabs ul,
-#typo3-extension-configuration-forms .tabs ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: -1px;
-}
-#typo3-extension-main-menu .tabs ul:before,
-#typo3-extension-configuration-forms .tabs ul:before,
-#typo3-extension-main-menu .tabs ul:after,
-#typo3-extension-configuration-forms .tabs ul:after {
-  content: " ";
-  display: table;
-}
-#typo3-extension-main-menu .tabs ul:after,
-#typo3-extension-configuration-forms .tabs ul:after {
-  clear: both;
-}
-#typo3-extension-main-menu .tabs ul:before,
-#typo3-extension-configuration-forms .tabs ul:before,
-#typo3-extension-main-menu .tabs ul:after,
-#typo3-extension-configuration-forms .tabs ul:after {
-  content: " ";
-  display: table;
-}
-#typo3-extension-main-menu .tabs ul:after,
-#typo3-extension-configuration-forms .tabs ul:after {
-  clear: both;
-}
-#typo3-extension-main-menu .tabs ul > li,
-#typo3-extension-configuration-forms .tabs ul > li {
-  cursor: pointer;
-}
-#typo3-extension-main-menu .tabs ul > li.ui-tabs-active a,
-#typo3-extension-configuration-forms .tabs ul > li.ui-tabs-active a,
-#typo3-extension-main-menu .tabs ul > li a.current,
-#typo3-extension-configuration-forms .tabs ul > li a.current {
-  background: white;
-  color: black;
-  border-bottom: 0;
-  padding-top: 4px;
-  cursor: default;
-}
-#typo3-extension-main-menu .tabs ul > li a,
-#typo3-extension-configuration-forms .tabs ul > li a {
-  border-radius: 4px 4px 0 0;
-  float: left;
-  height: 22px;
-  background: #dadada;
-  padding: 4px 15px;
-  margin-top: -1px;
-  margin-right: 2px;
-  border: 1px solid #adadad;
-  color: #606060;
-  outline: none;
-}
-#typo3-extension-main-menu .tabs ul > li a:hover,
-#typo3-extension-configuration-forms .tabs ul > li a:hover {
-  background-color: #eee;
-  border-color: #adadad;
-  color: #606060;
 }
 .typo3-extension-list .ext-icon {
   max-height: 16px;

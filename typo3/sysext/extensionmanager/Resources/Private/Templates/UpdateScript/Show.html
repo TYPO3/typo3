@@ -11,16 +11,14 @@
 </f:section>
 
 <f:section name="Content">
-	<div id="typo3-extension-configuration-forms">
-		<div class="update-script">
-			<f:if condition="{updateScriptResult}">
-				<f:then>
-					<f:format.raw>{updateScriptResult}</f:format.raw>
-				</f:then>
-				<f:else>
-					<f:translate key="updateScript.none" />
-				</f:else>
-			</f:if>
-		</div>
+	<div class="update-script">
+		<f:if condition="{updateScriptResult}">
+			<f:then>
+				<f:format.raw>{updateScriptResult}</f:format.raw>
+			</f:then>
+			<f:else>
+				<f:translate key="updateScript.none" />
+			</f:else>
+		</f:if>
 	</div>
 </f:section>
