@@ -704,15 +704,13 @@ return array(
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
-					'items' => array(
-						array('Mo', ''),
-						array('Tu', ''),
-						array('We', ''),
-						array('Th', ''),
-						array('Fr', ''),
-						array('Sa', ''),
-						array('Su', ''),
-					),
+					array('Mo', ''),
+					array('Tu', ''),
+					array('We', ''),
+					array('Th', ''),
+					array('Fr', ''),
+					array('Sa', ''),
+					array('Su', ''),
 				),
 				'cols' => 'inline',
 			),
