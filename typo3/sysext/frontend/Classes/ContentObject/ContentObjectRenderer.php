@@ -892,7 +892,8 @@ class ContentObjectRenderer {
 	 ********************************************/
 
 	/**
-	 * Renders a content object by taking exception handling into consideration
+	 * Renders a content object by taking exception and cache handling
+	 * into consideration
 	 *
 	 * @param AbstractContentObject $contentObject Content object instance
 	 * @param array $configuration Array of TypoScript properties
@@ -903,6 +904,18 @@ class ContentObjectRenderer {
 	 */
 	public function render(AbstractContentObject $contentObject, $configuration = array()) {
 		$content = '';
+
+		// Evaluate possible cache and return
+		$cacheConfiguration = isset($configuration['cache.']) ? $configuration['cache.'] : NULL;
+		if ($cacheConfiguration !== NULL) {
+			unset($configuration['cache.']);
+			$cache = $this->getFromCache($cacheConfiguration);
+			if ($cache !== FALSE) {
+				return $cache;
+			}
+		}
+
+		// Render content
 		try {
 			$content .= $contentObject->render($configuration);
 		} catch (ContentRenderingException $exception) {
@@ -917,6 +930,19 @@ class ContentObjectRenderer {
 				$content = $exceptionHandler->handle($exception, $contentObject, $configuration);
 			}
 		}
+
+		// Store cache
+		if ($cacheConfiguration !== NULL) {
+			$key = $this->calculateCacheKey($cacheConfiguration);
+			if (!empty($key)) {
+				/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
+				$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+				$tags = $this->calculateCacheTags($cacheConfiguration);
+				$lifetime = $this->calculateCacheLifetime($cacheConfiguration);
+				$cacheFrontend->set($key, $content, $tags, $lifetime);
+			}
+		}
+
 		return $content;
 	}
 
@@ -2357,15 +2383,11 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_cacheRead($content = '', $conf = array()) {
-		if (!empty($conf['cache.']['key'])) {
-			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
-			$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
-			if ($cacheFrontend && $cacheFrontend->has($conf['cache.']['key'])) {
-				$content = $cacheFrontend->get($conf['cache.']['key']);
-				$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
-			}
+		if (!isset($conf['cache.'])) {
+			return $content;
 		}
-		return $content;
+		$result = $this->getFromCache($conf['cache.']);
+		return $result === FALSE ? $content : $result;
 	}
 
 	/**
@@ -3624,38 +3646,29 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_cacheStore($content = '', $conf = array()) {
-		if (!empty($conf['cache.']['key'])) {
-			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
-			$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
-			if ($cacheFrontend) {
-				$tags = !empty($conf['cache.']['tags']) ? GeneralUtility::trimExplode(',', $conf['cache.']['tags']) : array();
-				if (strtolower($conf['cache.']['lifetime']) == 'unlimited') {
-					// unlimited
-					$lifetime = 0;
-				} elseif (strtolower($conf['cache.']['lifetime']) == 'default') {
-					// default lifetime
-					$lifetime = NULL;
-				} elseif ((int)$conf['cache.']['lifetime'] > 0) {
-					// lifetime in seconds
-					$lifetime = (int)$conf['cache.']['lifetime'];
-				} else {
-					// default lifetime
-					$lifetime = NULL;
-				}
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'])) {
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] as $_funcRef) {
-						$params = array(
-							'key' => $conf['cache.']['key'],
-							'content' => $content,
-							'lifetime' => $lifetime,
-							'tags' => $tags
-						);
-						GeneralUtility::callUserFunction($_funcRef, $params, $this);
-					}
-				}
-				$cacheFrontend->set($conf['cache.']['key'], $content, $tags, $lifetime);
+		if (!isset($conf['cache.'])) {
+			return $content;
+		}
+		$key = $this->calculateCacheKey($conf['cache.']);
+		if (empty($key)) {
+			return $content;
+		}
+		/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
+		$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
+		$tags = $this->calculateCacheTags($conf['cache.']);
+		$lifetime = $this->calculateCacheLifetime($conf['cache.']);
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore'] as $_funcRef) {
+				$params = array(
+					'key' => $key,
+					'content' => $content,
+					'lifetime' => $lifetime,
+					'tags' => $tags
+				);
+				GeneralUtility::callUserFunction($_funcRef, $params, $this);
 			}
 		}
+		$cacheFrontend->set($key, $content, $tags, $lifetime);
 		return $content;
 	}
 
@@ -8338,6 +8351,76 @@ class ContentObjectRenderer {
 	 */
 	protected function getEnvironmentVariable($key) {
 		return GeneralUtility::getIndpEnv($key);
+	}
+
+	/**
+	 * Fetches content from cache
+	 *
+	 * @param array $configuration Array
+	 * @return string|bool FALSE on cache miss
+	 * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+	 */
+	protected function getFromCache(array $configuration) {
+		$content = FALSE;
+
+		$cacheKey = $this->calculateCacheKey($configuration);
+		if (!empty($cacheKey)) {
+			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
+			$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)
+				->getCache('cache_hash');
+			$content = $cacheFrontend->get($cacheKey);
+		}
+		return $content;
+	}
+
+	/**
+	 * Calculates the lifetime of a cache entry based on the given configuration
+	 *
+	 * @param array $configuration
+	 * @return int|null
+	 */
+	protected function calculateCacheLifetime(array $configuration) {
+		$lifetimeConfiguration = isset($configuration['lifetime'])
+			? $configuration['lifetime']
+			: '';
+		$lifetimeConfiguration = isset($configuration['lifetime.'])
+			? $this->stdWrap($lifetimeConfiguration, $configuration['lifetime.'])
+			: $lifetimeConfiguration;
+
+		$lifetime = NULL; // default lifetime
+		if (strtolower($lifetimeConfiguration) === 'unlimited') {
+			$lifetime = 0; // unlimited
+		} elseif ($lifetimeConfiguration > 0) {
+			$lifetime = (int)$lifetimeConfiguration; // lifetime in seconds
+		}
+		return $lifetime;
+	}
+
+	/**
+	 * Calculates the tags for a cache entry bases on the given configuration
+	 *
+	 * @param array $configuration
+	 * @return array
+	 */
+	protected function calculateCacheTags(array $configuration) {
+		$tags = isset($configuration['tags']) ? $configuration['tags'] : '';
+		$tags = isset($configuration['tags.'])
+			? $this->stdWrap($tags, $configuration['tags.'])
+			: $tags;
+		return empty($tags) ? [] : GeneralUtility::trimExplode(',', $tags);
+	}
+
+	/**
+	 * Applies stdWrap to the cache key
+	 *
+	 * @param array $configuration
+	 * @return string
+	 */
+	protected function calculateCacheKey(array $configuration) {
+		$key = isset($configuration['key']) ? $configuration['key'] : '';
+		return isset($configuration['key.'])
+			? $this->stdWrap($key, $configuration['key.'])
+			: $key;
 	}
 
 }
