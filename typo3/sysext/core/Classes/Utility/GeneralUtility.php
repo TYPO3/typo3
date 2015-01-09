@@ -4418,7 +4418,6 @@ Connection: close
 				$class = new \ReflectionClass($className);
 				array_shift($arguments);
 				$instance = $class->newInstanceArgs($arguments);
-				return $instance;
 		}
 		return $instance;
 	}
