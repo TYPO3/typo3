@@ -126,10 +126,9 @@ return array(
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.fileoper_perms_unzip', 'unzipFile', 'mimetypes-other-other'),
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other')
 				),
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'renderMode' => 'checkbox',
 				'size' => 17,
 				'maxitems' => 17,
-				'itemListStyle' => 'width:500px',
 				'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,moveFile,files_copy,deleteFile'
 			)
 		),
@@ -151,7 +150,7 @@ return array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 20,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'renderMode' => 'checkbox',
 				'iconsInOptionTags' => 1
 			)
 		),
@@ -163,7 +162,7 @@ return array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'renderMode' => 'checkbox',
 				'iconsInOptionTags' => 1
 			)
 		),
@@ -175,7 +174,7 @@ return array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'renderMode' => 'checkbox',
 				'iconsInOptionTags' => 1
 			)
 		),
@@ -187,8 +186,7 @@ return array(
 				'size' => '25',
 				'maxitems' => 1000,
 				'autoSizeMax' => 50,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'itemListStyle' => 'width:500px'
+				'renderMode' => 'checkbox'
 			)
 		),
 		'explicit_allowdeny' => array(
@@ -243,7 +241,7 @@ return array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'renderMode' => 'checkbox',
 				'iconsInOptionTags' => 1
 			)
 		),

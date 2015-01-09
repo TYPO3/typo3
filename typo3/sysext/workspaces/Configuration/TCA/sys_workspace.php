@@ -93,7 +93,7 @@ return array(
 				'size' => '3',
 				'maxitems' => 25,
 				'autoSizeMax' => 10,
-				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
+				'renderMode' => 'checkbox',
 				'iconsInOptionTags' => 1
 			)
 		),
