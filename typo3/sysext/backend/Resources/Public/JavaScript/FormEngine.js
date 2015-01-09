@@ -631,7 +631,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 * convert all textareas so they grow when it is typed in.
 	 */
 	FormEngine.convertTextareasResizable = function() {
-		var $elements = $('.tceforms-textarea');
+		var $elements = $('.t3js-formengine-textarea');
 		if (TYPO3.settings.Textarea.autosize && $elements.length) {
 			require(['jquery/jquery.autosize.min'], function() {
 				$elements.autosize();

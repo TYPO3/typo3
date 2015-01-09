@@ -174,9 +174,9 @@ class TextElement extends AbstractFormElement {
 				}
 
 				if (!empty($classes)) {
-					$class = ' class="tceforms-textarea ' . implode(' ', $classes) . '"';
+					$class = ' class="tceforms-textarea t3js-formengine-textarea ' . implode(' ', $classes) . '"';
 				} else {
-					$class = ' class="tceforms-textarea"';
+					$class = ' class="tceforms-textarea t3js-formengine-textarea"';
 				}
 
 				foreach ($evalList as $func) {
