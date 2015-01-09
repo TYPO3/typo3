@@ -1174,8 +1174,13 @@ class PageGenerator {
 			}
 			if ($value !== '') {
 				$attribute = 'name';
-				if ( (is_array($properties) && !empty($properties['httpEquivalent'])) || strtolower($key) === 'refresh') {
-					$attribute = 'http-equiv';
+				if (is_array($properties)) {
+					if (!empty($properties['httpEquivalent']) || strtolower($key) === 'refresh') {
+						$attribute = 'http-equiv';
+					}
+					elseif (!empty($properties['property'])) {
+						$attribute = 'property';
+					}
 				}
 				$metaTags[] = '<meta ' . $attribute . '="' . $key . '" content="' . htmlspecialchars($value) . '"' . $endingSlash . '>';
 			}
