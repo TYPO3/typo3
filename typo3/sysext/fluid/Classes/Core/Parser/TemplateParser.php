@@ -506,9 +506,7 @@ class TemplateParser {
 
 		// PostParse Facet
 		if ($viewHelper instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\PostParseInterface) {
-			// Don't just use $viewHelper::postParseEvent(...),
-			// as this will break with PHP < 5.3.
-			call_user_func(array($viewHelper, 'postParseEvent'), $currentViewHelperNode, $argumentsObjectTree, $state->getVariableContainer());
+			$viewHelper::postParseEvent($currentViewHelperNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
 
 		$this->callInterceptor($currentViewHelperNode, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER, $state);

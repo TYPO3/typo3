@@ -2140,7 +2140,6 @@ class GeneralUtility {
 			} else {
 				// Just a value:
 				// Look for binary chars:
-				// Check for length, because PHP 5.2.0 may crash when first argument of strcspn is empty
 				$vLen = strlen($v);
 				// Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
 				if ($vLen && strcspn($v, $binaryChars) != $vLen) {

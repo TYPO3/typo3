@@ -105,20 +105,6 @@ class OpcodeCacheUtility {
 	}
 
 	/**
-	 * Gets the state of canInvalidate for given cache system.
-	 *
-	 * @param string $system The cache system to test (APC, ...)
-	 *
-	 * @return bool The calculated value from array or FALSE if cache system not exists.
-	 * @internal Do not rely on this function. Will be removed if PHP5.4 is minimum requirement.
-	 */
-	static public function getCanInvalidate($system) {
-		return isset(static::$supportedCaches[$system])
-			? static::$supportedCaches[$system]['canInvalidate']
-			: FALSE;
-	}
-
-	/**
 	 * Clears a file from an opcache, if one exists.
 	 *
 	 * @param string|NULL $fileAbsPath The file as absolute path to be cleared or NULL to clear completely.

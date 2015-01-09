@@ -221,24 +221,4 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 		}
 	}
 
-	/**
-	 * This is a replacement for the functionality provided by is_a() with 3 parameters which is only available from
-	 * PHP 5.3.9. It can be removed if the TYPO3 CMS PHP version requirement is raised to 5.3.9 or above.
-	 *
-	 * @param string $targetType
-	 * @param string $originalTargetType
-	 * @return string
-	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException
-	 */
-	protected function checkInheritanceChainWithoutIsA($targetType, $originalTargetType) {
-		$targetTypeToCompare = $targetType;
-		do {
-			if ($targetTypeToCompare === $originalTargetType) {
-				return $targetType;
-			}
-		} while ($targetTypeToCompare = get_parent_class($targetTypeToCompare));
-
-		throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidDataTypeException('The given type "' . $targetType . '" is not a subtype of "' . $originalTargetType . '".', 1360928582);
-	}
-
 }
