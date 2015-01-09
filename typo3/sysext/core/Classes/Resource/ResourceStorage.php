@@ -572,10 +572,16 @@ class ResourceStorage implements ResourceStorageInterface {
 			$isMissing = $file->isMissing();
 		}
 
+		if ($this->driver->fileExists($file->getIdentifier()) === FALSE) {
+			$file->setMissing(TRUE);
+			$isMissing = TRUE;
+		}
+
 		// Check 4: Check the capabilities of the storage (and the driver)
 		if ($isWriteCheck && ($isMissing || !$this->isWritable())) {
 			return FALSE;
 		}
+
 		// Check 5: "File permissions" of the driver (only when file isn't marked as missing)
 		if (!$isMissing) {
 			$filePermissions = $this->driver->getPermissions($file->getIdentifier());
@@ -2173,6 +2179,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	public function getFolder($identifier, $returnInaccessibleFolderObject = FALSE) {
+
 		$data = $this->driver->getFolderInfoByIdentifier($identifier);
 		$folder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
 
