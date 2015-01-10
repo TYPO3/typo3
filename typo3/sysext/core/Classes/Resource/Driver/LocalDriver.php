@@ -228,13 +228,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		if ($recursive == FALSE) {
 			$newFolderName = $this->sanitizeFileName($newFolderName);
 			$newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
-			GeneralUtility::mkdir($this->getAbsoluteBasePath() . $newIdentifier);
+			GeneralUtility::mkdir($this->getAbsolutePath($newIdentifier));
 		} else {
 			$parts = GeneralUtility::trimExplode('/', $newFolderName);
 			$parts = array_map(array($this, 'sanitizeFileName'), $parts);
 			$newFolderName = implode('/', $parts);
 			$newIdentifier = $parentFolderIdentifier . $newFolderName . '/';
-			GeneralUtility::mkdir_deep($this->getAbsoluteBasePath() . $parentFolderIdentifier, $newFolderName);
+			GeneralUtility::mkdir_deep($this->getAbsolutePath($parentFolderIdentifier) . '/', $newFolderName);
 		}
 		return $newIdentifier;
 	}
