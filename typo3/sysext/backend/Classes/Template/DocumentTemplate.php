@@ -2006,9 +2006,9 @@ function jumpToUrl(URL) {
 		if (is_array($pageRecord) && $pageRecord['uid']) {
 			$title = substr($pageRecord['_thePathFull'], 0, -1);
 			// Remove current page title
-			$pos = strrpos($title, '/');
+			$pos = strrpos($title, $pageRecord['title']);
 			if ($pos !== FALSE) {
-				$title = substr($title, 0, $pos) . '/';
+				$title = substr($title, 0, $pos);
 			}
 		} else {
 			$title = '';
