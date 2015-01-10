@@ -121,6 +121,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move sortableHandle' => 'fa-reorder sortableHandle',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move' => 'fa-reorder',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-paste-into' => 'fa-clipboard',
+		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-options-view' => 'fa-list-alt'
 	);
 
 	/**

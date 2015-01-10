@@ -1643,7 +1643,7 @@ function jumpToUrl(URL) {
 				}
 				// Create DIV layer for content:
 				$divs[] = '
-						<div style="display: none;" id="' . $id . '-' . $index . '-DIV" class="c-tablayer">' . ($def['description'] ? '<p class="c-descr">' . nl2br(htmlspecialchars($def['description'])) . '</p>' : '') . $def['content'] . '</div>';
+						<div id="' . $id . '-' . $index . '-DIV" class="tab-pane">' . ($def['description'] ? '<p class="c-descr">' . nl2br(htmlspecialchars($def['description'])) . '</p>' : '') . $def['content'] . '</div>';
 				// Create initialization string:
 				$JSinit[] = '
 						DTM_array["' . $id . '"][' . $c . '] = "' . $id . '-' . $index . '";
@@ -1669,12 +1669,12 @@ function jumpToUrl(URL) {
 						' . implode('', $options[$a]) . '
 					</ul>';
 					}
-					$content .= '<div class="typo3-dyntabmenu-tabs">' . $tabContent . '</div>';
+					$content .= $tabContent;
 				}
 				// Div layers are added:
 				$content .= '
 				<!-- Div layers for tab menu: -->
-				<div class="typo3-dyntabmenu-divs' . ($foldout ? '-foldout' : '') . '">
+				<div class="tab-content' . ($foldout ? ' tab-content-foldout' : '') . '">
 				' . implode('', $divs) . '</div>';
 				// Java Script section added:
 				$content .= '

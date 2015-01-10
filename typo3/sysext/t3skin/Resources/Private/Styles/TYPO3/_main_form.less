@@ -1,75 +1,117 @@
 //
 // Form
 //
-
 #typo3-docbody form {
 	margin-bottom: 1.25em;
-}
-
-textarea {
-	display: inline-block;
-	margin: 0 0.5em 0.5em 0;
-	padding: 3px 6px;
-	vertical-align: middle;
-}
-
-// Limit form width globally
-
-.form-group {
-	max-width: 440px;
-}
-
-textarea.fixed-font {
-	font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitstream Vera Sans Mono", monospace;
-}
-
-//
-// Groups
-//
-
-.t3-form-field-group {
-	margin-bottom:	1.5em;
 }
 
 //
 // Go back A-tags
 //
-
 a.typo3-goBack img {
 	margin-right: 5px;
 	vertical-align: middle;
 }
-
 span.typo3-moduleHeader img {
 	margin-right: 4px;
 	vertical-align: middle;
 }
-
 a.typo3-goBack {
 	font-weight: bold;
 }
 
 //
+// Form control state additions
+//
+.has-change {
+	.form-control-validation(@state-info-text; @state-info-text; @state-info-bg);
+}
+
+//
+// Input group additions
+//
+.input-group-icon {
+	width: 32px;
+	vertical-align: middle;
+	img {
+		width: auto;
+		max-height: 18px;
+	}
+}
+
+//
+// Form control additions
+//
+.form-control {
+	min-width: 120px;
+}
+.form-control-adapt {
+	width: auto;
+	max-width: 100%;
+}
+.form-control-wrap {
+	margin: 9px 0;
+}
+
+//
+// Select
+//
+select {
+	&.form-control {
+		&[multiple],
+		&[size]{
+			min-height: 156px;
+			width: 100%!important;
+		}
+		&[size="1"] {
+			height: @input-height-base;
+			min-height: 0;
+		}
+		> optgroup {
+			margin-top: 9px;
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+		option {
+			padding-top: 2px;
+			padding-bottom: 2px;
+		}
+	}
+	&.icon-select {
+		option {
+			padding-left: 22px;
+		}
+	}
+}
+
+//
 // Styles for the "clearable" jquery plugin.
 //
-
-.t3-clearable-wrapper {
+.form-control-clearable {
 	position: relative;
-	display: inline-block;
+	.form-control {
+		padding-right: 2.3em;
+	}
+	.close {
+		position: absolute;
+		z-index: 3;
+		font-size: 1.2em;
+		top: 50%;
+		right: 0.5em;
+		margin-top: -0.55em;
+		&:before {
+			line-height: 1.5em;
+		}
+	}
 }
-
-.t3-clearable {
-	padding-right: 15px;
-}
-
-.t3-clearable-wrapper .t3-input-clearer {
-	position: absolute;
-	right: 5px;
-	top: 5px;
-	z-index: 100;
-}
-.t3-tceforms-input-wrapper-datetime .t3-clearable-wrapper .t3-input-clearer {
-	top: 10px;
+.input-group {
+	.form-control-clearable {
+		display: table-cell;
+		.form-control {
+			display: block;
+		}
+	}
 }
 
 //
@@ -83,6 +125,129 @@ a.typo3-goBack {
 		label {
 			margin-right: 0.5em;
 		}
+	}
+}
+
+//
+// Form Sections
+//
+.form-section {
+	border: 1px solid #cccccc;
+	background-color: #fafafa;
+	padding: 15px 12px 3px;
+	& + .form-section {
+		margin-top: -1px;
+	}
+}
+.tab-pane {
+	> .form-section:first-child {
+		border-top: none;
+	}
+}
+.form-section-headline {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+//
+// Form Wizards
+//
+.form-wizards-wrap {
+	&.form-wizards-top {
+		> .form-wizards-items {
+			margin-bottom: 9px;
+		}
+	}
+	&.form-wizards-bottom {
+		> .form-wizards-element {
+			margin-bottom: 9px;
+		}
+	}
+	&.form-wizards-aside {
+		display: table;
+		width: 100%;
+		> .form-wizards-element {
+			width: 100%;
+		}
+		> .form-wizards-element,
+		> .form-wizards-items {
+			display: table-cell;
+			vertical-align: top;
+		}
+		> .form-wizards-items {
+			white-space: nowrap;
+			padding-left: 5px;
+		}
+	}
+}
+.form-wizards-element {
+	> .table-fit {
+		margin-bottom: 9px;
+	}
+}
+
+//
+// Form Irre
+//
+.form-irre-header {
+	display: table;
+	margin: -5px;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.form-irre-header-cell {
+	display: table-cell;
+	vertical-align: middle;
+	white-space: nowrap;
+	padding: 5px;
+}
+.form-irre-header-body {
+	width: 100%;
+	font-weight: normal;
+	dl {
+		.dl-horizontal();
+		margin-bottom: 0;
+	}
+}
+.form-irre-header-icon {
+	padding-right: 0px;
+}
+.form-irre-header-control {
+	cursor: auto;
+	.btn-group > .btn {
+		float: none;
+		+ .btn {
+			margin-left: -5px;
+		}
+	}
+}
+
+//
+// Form Multi Group
+//
+.form-multigroup-wrap {
+	width: 100%;
+	display: table;
+	.form-multigroup-item {
+		display: table-cell;
+		width: 50%;
+		vertical-align: top;
+		+ .form-multigroup-item {
+			padding-left: 5px;
+		}
+	}
+	.form-multigroup-item-wizard {
+		margin-bottom: 5px;
+		+ select.form-control[multiple],
+		+ select.form-control[size] {
+			min-height: 125px;
+		}
+	}
+	.form-wizards-wrap {
+		width: 100%;
 	}
 }
 
@@ -124,5 +289,17 @@ a.typo3-goBack {
 				white-space: nowrap;
 			}
 		}
+	}
+}
+
+//
+// Autoresize for Textareas
+//
+// no manual resizing for textareas (works on non-IE browser only anyways)
+// as it is handled by JS: "autosize"
+//
+textarea {
+	&.t3js-formengine-textarea {
+		resize: none;
 	}
 }

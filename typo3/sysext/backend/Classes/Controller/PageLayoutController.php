@@ -497,26 +497,26 @@ class PageLayoutController {
 					if (DTM_array[idBase]) {
 						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++) {
 							if (DTM_array[idBase][cnt] != idBase+"-"+index) {
-								document.getElementById(DTM_array[idBase][cnt]+"-DIV").style.display = "none";
-								document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+								document.getElementById(DTM_array[idBase][cnt]+"-DIV").className = "tab-pane";
+								document.getElementById(DTM_array[idBase][cnt]+"-MENU").attributes.getNamedItem("class").value = "tab";
 							}
 						}
 					}
 
 						// Showing one:
 					if (document.getElementById(idBase+"-"+index+"-DIV")) {
-						if (doToogle && document.getElementById(idBase+"-"+index+"-DIV").style.display == "block") {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
+						if (doToogle && document.getElementById(idBase+"-"+index+"-DIV").className === "tab-pane active") {
+							document.getElementById(idBase+"-"+index+"-DIV").className = "tab-pane";
 							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").value = "tab";
 							} else {
 								DTM_origClass = "tab";
 							}
 							top.DTM_currentTabs[idBase] = -1;
 						} else {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
+							document.getElementById(idBase+"-"+index+"-DIV").className = "tab-pane active";
 							if(DTM_origClass=="") {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "active";
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").value = "active";
 							} else {
 								DTM_origClass = "active";
 							}
@@ -528,33 +528,23 @@ class PageLayoutController {
 						// Showing one:
 					if (document.getElementById(idBase+"-"+index+"-DIV")) {
 						if (document.getElementById(idBase+"-"+index+"-DIV").style.display == "block") {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "none";
+							document.getElementById(idBase+"-"+index+"-DIV").className = "tab-pane";
 							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "tab";
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").value = "tab";
 							} else {
 								DTM_origClass = "tab";
 							}
 							top.DTM_currentTabs[idBase+"-"+index] = 0;
 						} else {
-							document.getElementById(idBase+"-"+index+"-DIV").style.display = "block";
+							document.getElementById(idBase+"-"+index+"-DIV").className = "tab-pane active";
 							if(isInit) {
-								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").nodeValue = "active";
+								document.getElementById(idBase+"-"+index+"-MENU").attributes.getNamedItem("class").value = "active";
 							} else {
 								DTM_origClass = "active";
 							}
 							top.DTM_currentTabs[idBase+"-"+index] = 1;
 						}
 					}
-				}
-
-				function DTM_mouseOver(obj) {	//
-						DTM_origClass = obj.attributes.getNamedItem(\'class\').nodeValue;
-						obj.attributes.getNamedItem(\'class\').nodeValue += "_over";
-				}
-
-				function DTM_mouseOut(obj) {	//
-						obj.attributes.getNamedItem(\'class\').nodeValue = DTM_origClass;
-						DTM_origClass = "";
 				}
 			');
 			// Setting doc-header

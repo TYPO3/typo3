@@ -76,11 +76,14 @@ class SuggestElement {
 		}
 		$selector = '
 		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
-			<input type="search" id="' . $fieldname . 'Suggest" value="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '" class="' . $this->cssClass . '-search" />
-			<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . $fieldname . 'SuggestIndicator">
-				<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:alttext.suggestSearching') . '" />
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-search"></i></span>
+				<input type="search" id="' . $fieldname . 'Suggest" value="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '" class="form-control ' . $this->cssClass . '-search" />
+				<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . $fieldname . 'SuggestIndicator">
+					<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:alttext.suggestSearching') . '" />
+				</div>
+				<div class="' . $this->cssClass . '-choices" style="display: none;" id="' . $fieldname . 'SuggestChoices"></div>
 			</div>
-			<div class="' . $this->cssClass . '-choices" style="display: none;" id="' . $fieldname . 'SuggestChoices"></div>
 
 		</div>';
 		// Get minimumCharacters from TCA

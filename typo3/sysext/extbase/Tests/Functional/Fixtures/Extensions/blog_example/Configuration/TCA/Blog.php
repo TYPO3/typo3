@@ -114,7 +114,6 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
 					array('--none--', 0),
 					),
 				'wizards' => Array(
-					 '_PADDING' => 1,
 					 '_VERTICAL' => 1,
 					 'edit' => Array(
 						 'type' => 'popup',

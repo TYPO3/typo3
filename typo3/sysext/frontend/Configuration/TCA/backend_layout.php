@@ -46,7 +46,6 @@ return array(
 				'rows' => '5',
 				'cols' => '25',
 				'wizards' => array(
-					'_PADDING' => 4,
 					0 => array(
 						'title' => 'LLL:EXT:cms/locallang_tca.xlf:backend_layout.wizard',
 						'type' => 'popup',

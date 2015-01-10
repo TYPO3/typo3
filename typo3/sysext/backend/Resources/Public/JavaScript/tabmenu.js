@@ -27,10 +27,10 @@ function DTM_activate(idBase,index,doToogle) {
 	if (DTM_array[idBase]) {
 		for(var cnt = 0; cnt < DTM_array[idBase].length; cnt++) {
 			if (DTM_array[idBase][cnt] !== idBase + '-' + index) {
-				document.getElementById(DTM_array[idBase][cnt]+'-DIV').style.display = 'none';
+				document.getElementById(DTM_array[idBase][cnt]+'-DIV').className = "tab-pane";
 				// Only Overriding when Tab not disabled
-				if (document.getElementById(DTM_array[idBase][cnt]+'-MENU').attributes.getNamedItem('class').nodeValue !== 'disabled') {
-					document.getElementById(DTM_array[idBase][cnt]+'-MENU').attributes.getNamedItem('class').nodeValue = 'tab';
+				if (document.getElementById(DTM_array[idBase][cnt]+'-MENU').attributes.getNamedItem('class').value !== 'disabled') {
+					document.getElementById(DTM_array[idBase][cnt]+'-MENU').attributes.getNamedItem('class').value = 'tab';
 				}
 			}
 		}
@@ -38,31 +38,31 @@ function DTM_activate(idBase,index,doToogle) {
 
 		// Showing one:
 	if (document.getElementById(idBase+'-'+index+'-DIV')) {
-		if (doToogle && document.getElementById(idBase+'-'+index+'-DIV').style.display === 'block') {
-			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'none';
-			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tab';
+		if (doToogle && document.getElementById(idBase+'-'+index+'-DIV').className === 'tab-pane active') {
+			document.getElementById(idBase+'-'+index+'-DIV').className = "tab-pane";
+			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').value = 'tab';
 			top.DTM_currentTabs[idBase] = -1;
 		} else {
-			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'block';
-			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'active';
+			document.getElementById(idBase+'-'+index+'-DIV').className = "tab-pane active";
+			document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').value = 'active';
 			top.DTM_currentTabs[idBase] = index;
 		}
 	}
-	document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'active';
+	document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').value = 'active';
 }
 function DTM_toggle(idBase,index,isInit) {
 		// Showing one:
 	if (document.getElementById(idBase+'-'+index+'-DIV')) {
-		if (document.getElementById(idBase+'-'+index+'-DIV').style.display === 'block') {
-			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'none';
+		if (document.getElementById(idBase+'-'+index+'-DIV').className === 'tab-pane active') {
+			document.getElementById(idBase+'-'+index+'-DIV').className = "tab-pane";
 			if (isInit) {
-				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'tab';
+				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').value = 'tab';
 			}
 			top.DTM_currentTabs[idBase+'-'+index] = 0;
 		} else {
-			document.getElementById(idBase+'-'+index+'-DIV').style.display = 'block';
+			document.getElementById(idBase+'-'+index+'-DIV').className = "tab-pane active";
 			if (isInit) {
-				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').nodeValue = 'active';
+				document.getElementById(idBase+'-'+index+'-MENU').attributes.getNamedItem('class').value = 'active';
 			}
 			top.DTM_currentTabs[idBase+'-'+index] = 1;
 		}

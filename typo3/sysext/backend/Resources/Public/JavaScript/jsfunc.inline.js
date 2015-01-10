@@ -18,8 +18,8 @@
  */
 
 var inline = {
-	classVisible: 't3-form-field-container-inline-visible',
-	classCollapsed: 't3-form-field-container-inline-collapsed',
+	classVisible: 'panel-visible',
+	classCollapsed: 'panel-collapsed',
 	structureSeparator: '-',
 	flexFormSeparator: '---',
 	flexFormSubstitute: ':',
@@ -46,7 +46,7 @@ var inline = {
 	},
 	toggleEvent: function (event) {
 		var $triggerElement = TYPO3.jQuery(event.target);
-		if ($triggerElement.parents('.t3-form-field-header-inline-ctrl').length == 1) {
+		if ($triggerElement.parents('.t3js-formengine-irre-control').length == 1) {
 			return;
 		}
 
@@ -694,7 +694,6 @@ var inline = {
 				return;
 			}
 
-			$sortingContainer.addClass('t3-form-field-container-wrap');
 			$sortingContainer.sortable(
 				{
 					containment: 'parent',
@@ -1332,6 +1331,6 @@ Object.extend(Array.prototype, {
 /*]]>*/
 (function ($) {
 	$(function () {
-		$(document).delegate('div.t3-form-field-header-inline', 'click', inline.toggleEvent);
+		$(document).delegate('[data-toggle="formengine-inline"]', 'click', inline.toggleEvent);
 	});
 })(TYPO3.jQuery);

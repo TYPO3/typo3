@@ -21,4 +21,4 @@ Instances which use custom form elements, which make use of ``FormEngine::insert
 Migration
 =========
 
-All form fields should extend the ``AbstractFormElement`` class and make use of the new property ``AbstractFormElement::$cssClassTypeElementPrefix``
+The property is unused and can be removed.

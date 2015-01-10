@@ -41,11 +41,6 @@ use TYPO3\CMS\Lang\LanguageService;
 class FormEngine {
 
 	/**
-	 * @var string A CSS class name prefix for all element types, single elements add their type to this string
-	 */
-	protected $cssClassTypeElementPrefix = 't3-formengine-field-';
-
-	/**
 	 * @var array
 	 */
 	public $palFieldArr = array();
@@ -237,12 +232,12 @@ class FormEngine {
 	protected $renderReadonly = FALSE;
 
 	/**
-	 * Form field width compensation: Factor of "size=12" to "style="width: 12*9.58px"
+	 * Form field width compensation: Factor of "size=12" to "style="width: 12*12px"
 	 * for form field widths of style-aware browsers
 	 *
 	 * @var float
 	 */
-	public $form_rowsToStylewidth = 9.58;
+	public $form_rowsToStylewidth = 12;
 
 	/**
 	 * Value that gets added for style="width: ...px" for textareas compared to input fields.
@@ -270,22 +265,40 @@ class FormEngine {
 	 * The maximum abstract value for textareas
 	 *
 	 * @var int
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $maxTextareaWidth = 48;
 
 	/**
-	 * The maximum abstract value for input fields
+	 * The default abstract value for input and textarea elements
 	 *
 	 * @var int
+	 * @internal
 	 */
-	public $maxInputWidth = 48;
+	public $defaultInputWidth = 30;
+
+	/**
+	 * The minimum abstract value for input and textarea elements
+	 *
+	 * @var int
+	 * @internal
+	 */
+	public $minimumInputWidth = 10;
+
+	/**
+	 * The maximum abstract value for input and textarea elements
+	 *
+	 * @var int
+	 * @internal
+	 */
+	public $maxInputWidth = 50;
 
 	/**
 	 * Default style for the selector boxes used for multiple items in "select" and "group" types.
 	 *
 	 * @var string
 	 */
-	public $defaultMultipleSelectorStyle = 'width:310px;';
+	public $defaultMultipleSelectorStyle = '';
 
 	// INTERNAL, static
 	/**
@@ -967,10 +980,6 @@ class FormEngine {
 		$parts = array();
 		foreach ($out_array as $idx => $sheetContent) {
 			$content = implode('', $sheetContent);
-			if ($content) {
-				// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
-				$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $content . '</table>';
-			}
 			$parts[$idx] = array(
 				'label' => $out_array_meta[$idx]['title'],
 				'content' => $content,
@@ -987,14 +996,9 @@ class FormEngine {
 		}
 		// Only one tab, so just implode and wrap the background image (= tab container) around:
 		if ($out_sheet === 0) {
-			$output = '<div class="typo3-dyntabmenu-divs">' . $output . '</div>';
+			$output = '<div class="tab-content">' . $output . '</div>';
 		}
-		$output = '
-			<tr>
-				<td colspan="2">
-				' . $output . '
-				</td>
-			</tr>';
+		$output = $output;
 
 		return $output;
 	}
@@ -1056,31 +1060,29 @@ class FormEngine {
 			foreach ($parts as $part) {
 				if ($part['NAME'] !== '--linebreak--') {
 					$realFields++;
+					break;
 				}
 			}
 			if ($realFields > 0) {
-				if ($header) {
-					$out .= $this->intoTemplate(array('HEADER' => htmlspecialchars($header)), $this->palFieldTemplateHeader);
-				}
+
+				$code = $this->printPalette($parts);
 				$collapsed = $this->isPalettesCollapsed($table, $palette);
-				// Check if the palette is a hidden palette
 				$isHiddenPalette = !empty($GLOBALS['TCA'][$table]['palettes'][$palette]['isHiddenPalette']);
-				$thePalIcon = '';
+
+
 				if ($collapsed && $collapsedHeader !== NULL && !$isHiddenPalette) {
-					list($thePalIcon, ) = $this->wrapOpenPalette(
-						IconUtility::getSpriteIcon(
-							'actions-system-options-view',
-							array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
-						),
-						$table,
-						$row,
-						$palette,
-						1
-					);
-					$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
+					$code = $this->wrapCollapsiblePalette($code, 'FORMENGINE_' . $table . '_' . $palette . '_' . $row['uid'], $collapsed);
+				} else {
+					$code = '<div class="row">' . $code . '</div>';
 				}
-				$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row, $palette, $collapsed);
-				$out .= $this->intoTemplate(array('PALETTE' => $thePalIcon . $paletteHtml), $this->palFieldTemplate);
+
+				$out = '
+					<!-- getPaletteFields -->
+					<fieldset class="form-section">
+						' . ($header ? '<h4 class="form-section-headline">' . htmlspecialchars($header) . '</h4>' : '') . '
+						' . ($collapsedHeader ? '<h4 class="form-section-headline">' . htmlspecialchars($collapsedHeader) . '</h4>' : '') . '
+						' . $code . '
+					</fieldset>';
 			}
 		}
 		return $out;
@@ -1183,24 +1185,6 @@ class FormEngine {
 				} else {
 					$languageService = $this->getLanguageService();
 					// Render as a normal field:
-					// If the field is NOT a palette field, then we might create an icon which links to a palette for the field, if one exists.
-					$palJSfunc = '';
-					$thePalIcon = '';
-					if (!$PA['palette']) {
-						$paletteFields = $this->loadPaletteElements($table, $row, $PA['pal']);
-						if ($PA['pal'] && $this->isPalettesCollapsed($table, $PA['pal']) && count($paletteFields)) {
-							list($thePalIcon, $palJSfunc) = $this->wrapOpenPalette(
-								IconUtility::getSpriteIcon(
-									'actions-system-options-view',
-									array('title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')))
-								),
-								$table,
-								$row,
-								$PA['pal'],
-								1
-							);
-						}
-					}
 					// onFocus attribute to add to the field:
 					$PA['onFocus'] = $palJSfunc && !$this->getBackendUserAuthentication()->uc['dontShowPalettesOnFocusInAB'] ? ' onfocus="' . htmlspecialchars($palJSfunc) . '"' : '';
 					$PA['label'] = $PA['altName'] ?: $PA['fieldConf']['label'];
@@ -1247,19 +1231,18 @@ class FormEngine {
 						$this->additionalJS_post[] = 'typo3form.fieldTogglePlaceholder('
 							. GeneralUtility::quoteJSvalue($PA['itemFormElName']) . ', ' . ($checked ? 'false' : 'true') . ');';
 
-						$item = '<div class="t3-form-field-placeholder-override">'
-						. '<span class="t3-tceforms-placeholder-override-checkbox">' .
-							'<input type="hidden" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="0" />' .
-							'<input type="checkbox" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />' .
-							'<label for="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '">' .
-							sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'),
-							BackendUtility::getRecordTitlePrep($placeholder, 20)) . '</label>' .
-						'</span>'
-						. '<div class="t3-form-placeholder-placeholder">' . $this->getSingleField_typeNone_render(
-							$PA['fieldConf']['config'], GeneralUtility::fixed_lgd_cs($placeholder, 30)
-						) . '</div>'
-						. '<div class="t3-form-placeholder-formfield">' . $item . '</div>'
-						. '</div>';
+						$item = '
+							<input type="hidden" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="0" />
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="' . htmlspecialchars($PA['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $field . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />
+									' . sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20)) . '
+								</label>
+							</div>
+							<div class="t3js-formengine-placeholder-placeholder">
+								' . $this->getSingleField_typeNone_render($PA['fieldConf']['config'], GeneralUtility::fixed_lgd_cs($placeholder, 30)) . '
+							</div>
+							<div class="t3js-formengine-placeholder-formfield">' . $item . '</div>';
 					}
 
 					// Wrap the label with help text
@@ -1278,22 +1261,23 @@ class FormEngine {
 							'ITEM_DISABLED' => ($this->isDisabledNullValueField($table, $field, $row, $PA) ? ' disabled' : ''),
 							'ITEM_NULLVALUE' => $this->renderNullValueWidget($table, $field, $row, $PA),
 						);
-						$out = $this->addUserTemplateMarkers($out, $table, $field, $row, $PA);
 					} else {
-						// String:
-						$out = array(
-							'NAME' => $label,
-							'ITEM' => $item,
-							'TABLE' => $table,
-							'ID' => $row['uid'],
-							'PAL_LINK_ICON' => $thePalIcon,
-							'FIELD' => $field,
-							'ITEM_DISABLED' => ($this->isDisabledNullValueField($table, $field, $row, $PA) ? ' disabled' : ''),
-							'ITEM_NULLVALUE' => $this->renderNullValueWidget($table, $field, $row, $PA),
-						);
-						$out = $this->addUserTemplateMarkers($out, $table, $field, $row, $PA);
-						// String:
-						$out = $this->intoTemplate($out);
+						$out = '
+							<fieldset class="form-section">
+								<!-- getSingleField -->
+								<div class="form-group t3js-formengine-palette-field">
+									<label class="t3js-formengine-label">
+										' . $label . '
+										<img name="req_' . $table . '_' . $row['uid'] . '_' . $field . '" src="clear.gif" class="t3js-formengine-field-required" alt="" />
+									</label>
+									<div class="t3js-formengine-field-item ' . ($this->isDisabledNullValueField($table, $field, $row, $PA) ? ' disabled' : '') . '">
+										<div class="t3-form-field-disable"></div>
+										' . $this->renderNullValueWidget($table, $field, $row, $PA) . '
+										' . $item . '
+									</div>
+								</div>
+							</fieldset>
+						';
 					}
 				}
 			} else {
@@ -1403,10 +1387,13 @@ class FormEngine {
 				'typo3form.fieldSetNull(\'' . $PA['itemFormElName'] . '\', !this.checked)'
 			);
 
-			$widget = '<span class="t3-tceforms-widget-null-wrapper">' .
-				'<input type="hidden" name="' . $PA['itemFormElNameActive'] . '" value="0" />' .
-				'<input type="checkbox" name="' . $PA['itemFormElNameActive'] . '" value="1" onchange="' . $onChange . '"' . $checked . ' />' .
-			'</span>';
+			$widget = '
+				<div class="checkbox">
+					<label>
+						<input type="hidden" name="' . $PA['itemFormElNameActive'] . '" value="0" />
+						<input type="checkbox" name="' . $PA['itemFormElNameActive'] . '" value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;
+					</label>
+				</div>';
 		}
 
 		return $widget;
@@ -1563,20 +1550,25 @@ class FormEngine {
 
 		$rows = (int)$config['rows'];
 		// Render as textarea
-		if ($rows > 1) {
+		if ($rows > 1 || $config['type'] === 'text') {
 			if (!$config['pass_content']) {
 				$itemValue = nl2br($itemValue);
 			}
-			$cols = round($config['cols'] * $this->form_largeComp);
-			$width = ceil($cols * $this->form_rowsToStylewidth);
-			$item = '<textarea class="form-control" style="width:' . $width . 'px;" cols="' . $cols . '" rows="' . $rows . '" disabled>' . $itemValue . '</textarea>';
-		} else {
-			$cols = $config['cols'] ?: ($config['size'] ?: $this->maxInputWidth);
-			$cols = round($cols * $this->form_largeComp);
-			$width = ceil($cols * $this->form_rowsToStylewidth);
+			$cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->defaultInputWidth, 5, $this->maxInputWidth);
+			$width = $this->formMaxWidth($cols);
 			$item = '
-				<input class="form-control" value="'. $itemValue .'" style="width:' . $width . 'px;" type="text" disabled>'
-				. '<span class="nobr">' . ((string)$itemValue !== '' ? $itemValue : '&nbsp;') . '</span>';
+				<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
+					<textarea class="form-control" rows="' . $rows . '" disabled>' . $itemValue . '</textarea>
+				</div>';
+		} else {
+			$cols = $config['cols'] ?: ($config['size'] ?: $this->defaultInputWidth);
+			$size = MathUtility::forceIntegerInRange($cols ?: $this->defaultInputWidth, 5, $this->maxInputWidth);
+			$width = $this->formMaxWidth($size);
+			$item = '
+				<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
+					<input class="form-control" value="'. $itemValue .'" type="text" disabled>
+				</div>
+				' . ((string)$itemValue !== '' ? '<p class="help-block">' . $itemValue . '</p>' : '');
 		}
 		return $item;
 	}
@@ -2373,7 +2365,7 @@ class FormEngine {
 		if (!$selector) {
 			$isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
 			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
-				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="' . $this->cssClassTypeElementPrefix . 'group tceforms-multiselect"')
+				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="form-control tceforms-multiselect"')
 				. ($isMultiple ? ' multiple="multiple"' : '')
 				. ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
 				. '</select>';
@@ -2407,35 +2399,47 @@ class FormEngine {
 				}
 				$aOnClick = 'setFormValueOpenBrowser(\'' . $elementBrowserType . '\',\''
 					. ($fName . '|||' . $elementBrowserAllowed . '|' . $aOnClickInline) . '\'); return false;';
-				$spriteIcon = IconUtility::getSpriteIcon('actions-insert-record', array(
-					'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_' . ($mode == 'db' ? 'db' : 'file')))
-				));
-				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" class="btn btn-default">' . $spriteIcon . '</a>';
+				$icons['R'][] = '
+					<a href="#"
+						onclick="' . htmlspecialchars($aOnClick) . '"
+						class="btn btn-default"
+						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_' . ($mode == 'db' ? 'db' : 'file'))) . '">
+						' . IconUtility::getSpriteIcon('actions-insert-record') . '
+					</a>';
 			}
 			if (!$params['dontShowMoveIcons']) {
 				if ($sSize >= 5) {
-					$icons['L'][] = IconUtility::getSpriteIcon('actions-move-to-top', array(
-						'data-fieldname' => $fName,
-						'class' => 't3-btn t3-btn-moveoption-top',
-						'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_top'))
-					));
+					$icons['L'][] = '
+						<a href="#"
+							class="btn btn-default t3-btn-moveoption-top"
+							data-fieldname="' . $fName . '"
+							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_top')) . '">
+							' . IconUtility::getSpriteIcon('actions-move-to-top') . '
+						</a>';
+
 				}
-				$icons['L'][] = IconUtility::getSpriteIcon('actions-move-up', array(
-					'data-fieldname' => $fName,
-					'class' => 't3-btn t3-btn-moveoption-up',
-					'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_up'))
-				));
-				$icons['L'][] = IconUtility::getSpriteIcon('actions-move-down', array(
-					'data-fieldname' => $fName,
-					'class' => 't3-btn t3-btn-moveoption-down',
-					'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_down'))
-				));
+				$icons['L'][] = '
+					<a href="#"
+						class="btn btn-default t3-btn-moveoption-up"
+						data-fieldname="' . $fName . '"
+						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_up')) . '">
+						' . IconUtility::getSpriteIcon('actions-move-up') . '
+					</a>';
+				$icons['L'][] = '
+					<a href="#"
+						class="btn btn-default t3-btn-moveoption-down"
+						data-fieldname="' . $fName . '"
+						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_down')) . '">
+						' . IconUtility::getSpriteIcon('actions-move-down') . '
+					</a>';
 				if ($sSize >= 5) {
-					$icons['L'][] = IconUtility::getSpriteIcon('actions-move-to-bottom', array(
-						'data-fieldname' => $fName,
-						'class' => 't3-btn t3-btn-moveoption-bottom',
-						'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_bottom'))
-					));
+					$icons['L'][] = '
+						<a href="#"
+							class="btn btn-default t3-btn-moveoption-bottom"
+							data-fieldname="' . $fName . '"
+							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_bottom')) . '">
+							' . IconUtility::getSpriteIcon('actions-move-to-bottom') . '
+						</a>';
 				}
 			}
 			$clipElements = $this->getClipboardElements($allowed, $mode);
@@ -2455,26 +2459,33 @@ class FormEngine {
 						. rawurlencode(str_replace('%20', ' ', $elValue)) . '\'),' . $itemTitle . ',' . $itemTitle . ');';
 				}
 				$aOnClick .= 'return false;';
-				$spriteIcon1 = IconUtility::getSpriteIcon('actions-document-paste-into', array(
-					'title' => htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements)))
-				));
-				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $spriteIcon1 . '</a>';
+				$icons['R'][] = '
+					<a href="#"
+						onclick="' . htmlspecialchars($aOnClick) . '"
+						title="' . htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . '">
+						' . IconUtility::getSpriteIcon('actions-document-paste-into') . '
+					</a>';
 			}
 		}
 		if (!$params['readOnly'] && !$params['noDelete']) {
-			$icons['L'][] = IconUtility::getSpriteIcon('actions-selection-delete', array(
-				'onclick' => $rOnClickInline,
-				'data-fieldname' => $fName,
-				'class' => 't3-btn t3-btn-removeoption',
-				'title' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remove_selected'))
+			$icons['L'][] = '
+				<a href="#"
+					class="btn btn-default t3-btn-removeoption"
+					onClick="' . $rOnClickInline . '"
+					data-fieldname="' . $fName . '"
+					title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remove_selected')) . '">
+					' . IconUtility::getSpriteIcon('actions-selection-delete') . '
+				</a>';
 
-			));
 		}
+
+
+		// Thumbnails
 		$imagesOnly = FALSE;
-		if ($params['thumbnails'] && $params['info']) {
+		if ($params['thumbnails'] && $params['allowed']) {
 			// In case we have thumbnails, check if only images are allowed.
 			// In this case, render them below the field, instead of to the right
-			$allowedExtensionList = GeneralUtility::trimExplode(' ', strtolower($params['info']), TRUE);
+			$allowedExtensionList = $params['allowed'];
 			$imageExtensionList = GeneralUtility::trimExplode(',', strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), TRUE);
 			$imagesOnly = TRUE;
 			foreach ($allowedExtensionList as $allowedExtension) {
@@ -2484,13 +2495,63 @@ class FormEngine {
 				}
 			}
 		}
-		if ($imagesOnly) {
-			$rightbox = '';
-			$thumbnails = '<div class="imagethumbs">' . $params['thumbnails'] . '</div>';
-		} else {
-			$rightbox = $params['thumbnails'];
-			$thumbnails = '';
+		$thumbnails = '';
+		if (is_array($params['thumbnails']) && !empty($params['thumbnails'])) {
+			if ($imagesOnly) {
+				$thumbnails .= '<ul class="list-inline">';
+				foreach ($params['thumbnails'] as $thumbnail) {
+					$thumbnails .= '<li><span class="thumbnail">' . $thumbnail['image'] . '</span></li>';
+				}
+				$thumbnails .= '</ul>';
+			} else {
+				$thumbnails .= '<div class="table-fit"><table class="table table-white"><tbody>';
+				foreach ($params['thumbnails'] as $thumbnail) {
+					$thumbnails .= '
+						<tr>
+							<td class="col-icon">
+								' . ($config['internal_type'] === 'db'
+									? $this->getClickMenu($thumbnail['image'], $thumbnail['table'], $thumbnail['uid'])
+									: $thumbnail['image']) . '
+							</td>
+							<td class="col-title">
+								' . ($config['internal_type'] === 'db'
+									? $this->getClickMenu($thumbnail['name'], $thumbnail['table'], $thumbnail['uid'])
+									: $thumbnail['name']) . '
+								' . ($config['internal_type'] === 'db' ? '' : ' <span class="text-muted">[' . $thumbnail['uid'] . ']</span>') . '
+							</td>
+						</tr>
+						';
+				}
+				$thumbnails .= '</tbody></table></div>';
+			}
 		}
+
+		// Allowed Tables
+		$allowedTables = '';
+		if (is_array($params['allowedTables']) && !empty($params['allowedTables'])) {
+			$allowedTables .= '<div class="help-block">';
+			foreach ($params['allowedTables'] as $item) {
+				$allowedTables .= '<a href="#" onClick="' . htmlspecialchars($item['onClick']) . '" class="btn btn-default">' . $item['icon'] . ' ' . $item['name'] . '</a> ';
+			}
+			$allowedTables .= '</div>';
+		}
+		// Allowed
+		$allowedList = '';
+		if (is_array($params['allowed']) && !empty($params['allowed'])) {
+			foreach ($params['allowed'] as $item) {
+				$allowedList .= '<span class="label label-success">' . strtoupper($item) . '</span> ';
+			}
+		}
+		// Disallowed
+		$disallowedList = '';
+		if (is_array($params['disallowed']) && !empty($params['disallowed'])) {
+			foreach ($params['disallowed'] as $item) {
+				$disallowedList .= '<span class="label label-danger">' . strtoupper($item) . '</span> ';
+			}
+		}
+		// Rightbox
+		$rightbox = ($params['rightbox'] ?: '');
+
 		// Hook: dbFileIcons_postProcess (requested by FAL-team for use with the "fal" extension)
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'] as $classRef) {
@@ -2511,25 +2572,36 @@ class FormEngine {
 				$hookObject->dbFileIcons_postProcess($params, $selector, $thumbnails, $icons, $rightbox, $fName, $uidList, $additionalParams, $this);
 			}
 		}
-		$str = '<table border="0" cellpadding="0" cellspacing="0" width="1" class="t3-form-field-group-file">
-			' . ($params['headers'] ? '
-				<tr>
-					<td>' . $params['headers']['selector'] . '</td>
-					<td></td>
-					<td></td>
-					<td>' . ($params['thumbnails'] ? $params['headers']['items'] : '') . '</td>
-				</tr>' : '') . '
-			<tr>
-				<td>' . $selector . $thumbnails;
-		if (!$params['noList'] && $params['info'] !== '') {
-			$str .= '<span class="filetypes">' . $params['info'] . '</span>';
+
+		// Output
+		$str = '
+			' . ($params['headers']['selector'] ? '<label>' . $params['headers']['selector'] . '</label>' : '') . '
+			<div class="form-wizards-wrap form-wizards-aside">
+				<div class="form-wizards-element">
+					' . $selector . '
+					' . (!$params['noList'] && !empty($allowedTables) ? $allowedTables : '') . '
+					' . (!$params['noList'] && (!empty($allowedList) || !empty($disallowedList))
+						? '<div class="help-block">' . $allowedList . $disallowedList . ' </div>'
+						: '') . '
+				</div>
+				' . (!empty($icons['L']) ? '<div class="form-wizards-items"><div class="btn-group-vertical">' . implode('', $icons['L']) . '</div></div>' : '' ) . '
+				' . (!empty($icons['R']) ? '<div class="form-wizards-items"><div class="btn-group-vertical">' . implode('', $icons['R']) . '</div></div>' : '' ) . '
+			</div>
+			';
+		if ($rightbox) {
+			$str = '
+				<div class="form-multigroup-wrap t3js-formengine-field-group">
+					<div class="form-multigroup-item form-multigroup-element">' . $str . '</div>
+					<div class="form-multigroup-item form-multigroup-element">
+						' . ($params['headers']['items'] ? '<label>' . $params['headers']['items'] . '</label>' : '') . '
+						' . ($params['headers']['selectorbox'] ? '<div class="form-multigroup-item-wizard">' . $params['headers']['selectorbox'] . '</div>' : '') . '
+						' . $rightbox . '
+					</div>
+				</div>
+				';
 		}
-		$str .= '</td>
-					<td class="icons">' . implode('<br />', $icons['L']) . '</td>
-					<td class="icons">' . implode('<br />', $icons['R']) . '</td>
-					<td>' . $rightbox . '</td>
-			</tr>
-		</table>';
+		$str .= $thumbnails;
+
 		// Creating the hidden field which contains the actual value as a comma list.
 		$str .= '<input type="hidden" name="' . $fName . '" value="' . htmlspecialchars(implode(',', $uidList)) . '" />';
 		return $str;
@@ -2620,7 +2692,10 @@ class FormEngine {
 		// Init:
 		$fieldChangeFunc = $PA['fieldChangeFunc'];
 		$item = $itemKinds[0];
-		$outArr = array();
+		$outArr = array(
+			'buttons' => '',
+			'additional' => ''
+		);
 		$colorBoxLinks = array();
 		$fName = '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 		$md5ID = 'ID' . GeneralUtility::shortmd5($itemName);
@@ -2700,7 +2775,7 @@ class FormEngine {
 								// If "script" type, create the links around the icon:
 								if ((string)$wConf['type'] === 'script') {
 									$aUrl = $url . GeneralUtility::implodeArrayForUrl('', array('P' => $params));
-									$outArr[] = '<a href="' . htmlspecialchars($aUrl) . '" onclick="this.blur(); return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
+									$outArr['buttons'][] = ' <a class="btn btn-default" href="' . htmlspecialchars($aUrl) . '" onclick="this.blur(); return !TBE_EDITOR.isFormChanged();">' . $icon . '</a>';
 								} else {
 									// ... else types "popup", "colorbox" and "userFunc" will need additional parameters:
 									$params['formName'] = $this->formName;
@@ -2725,9 +2800,9 @@ class FormEngine {
 												. ',\'popUp' . $md5ID . '\',\'' . $wConf['JSopenParams'] . '\');'
 												. 'vHWin.focus();return false;';
 											// Setting "colorBoxLinks" - user LATER to wrap around the color box as well:
-											$colorBoxLinks = array('<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">', '</a>');
+											$colorBoxLinks = array('<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($aOnClick) . '">', '</a>');
 											if ((string)$wConf['type'] == 'popup') {
-												$outArr[] = $colorBoxLinks[0] . $icon . $colorBoxLinks[1];
+												$outArr['buttons'][] = $colorBoxLinks[0] . $icon . $colorBoxLinks[1];
 											}
 											break;
 										case 'userFunc':
@@ -2737,9 +2812,12 @@ class FormEngine {
 											$params['iTitle'] = $iTitle;
 											$params['wConf'] = $wConf;
 											$params['row'] = $row;
-											$outArr[] = GeneralUtility::callUserFunction($wConf['userFunc'], $params, $this);
+											$outArr['additional'][] = GeneralUtility::callUserFunction($wConf['userFunc'], $params, $this);
 											break;
 										case 'slider':
+											// Prevent vertical alignment
+											$verticalAlignmentIsPossible = FALSE;
+
 											// Reference set!
 											$params['item'] = &$item;
 											$params['icon'] = $icon;
@@ -2747,7 +2825,7 @@ class FormEngine {
 											$params['wConf'] = $wConf;
 											$params['row'] = $row;
 											$wizard = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\ValueSlider::class);
-											$outArr[] = call_user_func_array(array(&$wizard, 'renderWizard'), array(&$params, &$this));
+											$outArr['additional'][] = call_user_func_array(array(&$wizard, 'renderWizard'), array(&$params, &$this));
 											break;
 									}
 								}
@@ -2784,15 +2862,15 @@ class FormEngine {
 								$assignValue = $this->elName($itemName) . '.value=this.options[this.selectedIndex].value';
 							}
 							$sOnChange = $assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc);
-							$outArr[] = '<select id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE))
-								. '" class="tceforms-select tceforms-wizardselect" name="_WIZARD' . $fName . '" onchange="'
+							$outArr['additional'][] = '<select id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE))
+								. '" class="form-control tceforms-select tceforms-wizardselect" name="_WIZARD' . $fName . '" onchange="'
 								. htmlspecialchars($sOnChange) . '">' . implode('', $opt) . '</select>';
 							break;
 						case 'suggest':
 							if (!empty($PA['fieldTSConfig']['suggest.']['default.']['hide'])) {
 								break;
 							}
-							$outArr[] = $this->suggest->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
+							$outArr['additional'][] = $this->suggest->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
 							break;
 					}
 					// Color wizard colorbox:
@@ -2806,7 +2884,7 @@ class FormEngine {
 							$color === '' ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png',
 							'width="' . $dX . '" height="' . $dY . '"' . BackendUtility::titleAltAttrib(trim($iTitle . ' ' . $PA['itemFormElValue'])) . ' border="0"'
 						);
-						$outArr[] = '<table border="0" cellpadding="0" cellspacing="0" id="' . $md5ID . '"' . $color
+						$outArr['additional'][] = '<table border="0" cellpadding="0" cellspacing="0" id="' . $md5ID . '"' . $color
 							. ' style="' . htmlspecialchars($wConf['tableStyle']) . '">
 									<tr>
 										<td>' . $colorBoxLinks[0] . '<img ' . $skinImg . '>' . $colorBoxLinks[1] . '</td>
@@ -2816,34 +2894,39 @@ class FormEngine {
 				}
 			}
 			// For each rendered wizard, put them together around the item.
-			if (count($outArr)) {
+			if (count($outArr['buttons']) || count($outArr['additional'])) {
 				if ($wizConf['_HIDDENFIELD']) {
 					$item = $itemKinds[1];
 				}
-				$vAlign = $wizConf['_VALIGN'] ? ' style="vertical-align:' . $wizConf['_VALIGN'] . '"' : '';
-				if (count($outArr) > 1 || $wizConf['_PADDING']) {
-					$dist = (int)$wizConf['_DISTANCE'];
-					if ($wizConf['_VERTICAL']) {
-						$dist = $dist ? '<tr><td><img src="clear.gif" width="1" height="' . $dist . '" alt="" /></td></tr>' : '';
-						$outStr = '<tr><td>' . implode(('</td></tr>' . $dist . '<tr><td>'), $outArr) . '</td></tr>';
-					} else {
-						$dist = $dist ? '<td><img src="clear.gif" height="1" width="' . $dist . '" alt="" /></td>' : '';
-						$outStr = '<tr><td' . $vAlign . '>' . implode(('</td>' . $dist . '<td' . $vAlign . '>'), $outArr) . '</td></tr>';
-					}
-					$outStr = '<table border="0" cellpadding="' . (int)$wizConf['_PADDING'] . '" cellspacing="' . (int)$wizConf['_PADDING'] . '">' . $outStr . '</table>';
-				} else {
-					$outStr = implode('', $outArr);
+
+				$outStr = '';
+				if (!empty($outArr['buttons'])) {
+					$outStr .= '<div class="btn-group' . ($wizConf['_VERTICAL'] ? ' btn-group-vertical' : '') . '">' . implode('', $outArr['buttons']) . '</div>';
 				}
+				if (!empty($outArr['additional'])) {
+					$outStr .= implode(' ', $outArr['additional']);
+				}
+
+				// Position
+				$class = array();
 				if ($wizConf['_POSITION'] === 'left') {
-					$outStr = '<tr><td' . $vAlign . '>' . $outStr . '</td><td' . $vAlign . '>' . $item . '</td></tr>';
+					$class[] = 'form-wizards-aside';
+					$outStr = '<div class="form-wizards-items">' . $outStr . '</div><div class="form-wizards-element">' . $item . '</div>';
 				} elseif ($wizConf['_POSITION'] === 'top') {
-					$outStr = '<tr><td>' . $outStr . '</td></tr><tr><td>' . $item . '</td></tr>';
+					$class[] = 'form-wizards-top';
+					$outStr = '<div class="form-wizards-items">' . $outStr . '</div><div class="form-wizards-element">' . $item . '</div>';
 				} elseif ($wizConf['_POSITION'] === 'bottom') {
-					$outStr = '<tr><td>' . $item . '</td></tr><tr><td>' . $outStr . '</td></tr>';
+					$class[] = 'form-wizards-bottom';
+					$outStr = '<div class="form-wizards-element">' . $item . '</div><div class="form-wizards-items">' . $outStr . '</div>';
 				} else {
-					$outStr = '<tr><td' . $vAlign . '>' . $item . '</td><td' . $vAlign . '>' . $outStr . '</td></tr>';
+					$class[] = 'form-wizards-aside';
+					$outStr = '<div class="form-wizards-element">' . $item . '</div><div class="form-wizards-items">' . $outStr . '</div>';
 				}
-				$item = '<table border="0" cellpadding="0" cellspacing="0">' . $outStr . '</table>';
+				$item = '
+					<!-- renderWizards -->
+					<div class="form-wizards-wrap ' . (!empty($class) ? implode(' ', $class) : '' ) . '">
+						' . $outStr . '
+					</div>';
 			}
 		}
 		return $item;
@@ -2980,6 +3063,32 @@ class FormEngine {
 	}
 
 	/**
+	 * Add the id and the style property to the field palette
+	 *
+	 * @param string $code Palette Code
+	 * @param string $id Collapsible ID
+	 * @param string $collapsed Collapsed status
+	 * @return bool Is collapsed
+	 */
+	public function wrapCollapsiblePalette($code, $id, $collapsed) {
+		$display = $collapsed ? '' : ' in';
+		$id = str_replace('.', '', $id);
+		$out = '
+			<!-- wrapCollapsiblePalette -->
+			<p>
+				<button class="btn btn-default" type="button" data-toggle="collapse" data-target="#' . $id . '" aria-expanded="false" aria-controls="' . $id . '">
+					' . IconUtility::getSpriteIcon('actions-system-options-view') . '
+					' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions')) . '
+				</button>
+			</p>
+			<div id="' . $id . '" class="form-section-collapse collapse' . $display . '">
+				<div class="row">' . $code . '</div>
+			</div>';
+		return $out;
+	}
+
+
+	/**
 	 * Wraps a string with a link to the palette.
 	 *
 	 * @param string $header The string to wrap in an A-tag
@@ -2988,8 +3097,10 @@ class FormEngine {
 	 * @param int $palette The record array
 	 * @param mixed $retFunc Not used
 	 * @return array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function wrapOpenPalette($header, $table, $row, $palette, $retFunc) {
+		GeneralUtility::logDeprecatedFunction();
 		$id = 'TCEFORMS_' . $table . '_' . $palette . '_' . $row['uid'];
 		$res = '<a href="#" onclick="TBE_EDITOR.toggle_display_states(\'' . $id . '\',\'block\',\'none\'); return false;" >' . $header . '</a>';
 		return array($res, '');
@@ -3004,8 +3115,10 @@ class FormEngine {
 	 * @param string $palette The record array
 	 * @param bool $collapsed TRUE if collapsed
 	 * @return bool Is collapsed
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function wrapPaletteField($code, $table, $row, $palette, $collapsed) {
+		GeneralUtility::logDeprecatedFunction();
 		$display = $collapsed ? 'none' : 'block';
 		$id = 'TCEFORMS_' . $table . '_' . $palette . '_' . $row['uid'];
 		$code = '<div id="' . $id . '" style="display:' . $display . ';" >' . $code . '</div>';
@@ -3052,13 +3165,28 @@ class FormEngine {
 	}
 
 	/**
+	 * Returns the max-width in pixels for a <input>/<textarea>-element
+	 *
+	 * @param int $size The abstract size value (1-48)
+	 * @return int max-width in pixels
+	 * @internal
+	 */
+	public function formMaxWidth($size = 48) {
+		$size = round($size * $this->form_largeComp);
+		$width = ceil($size * $this->form_rowsToStylewidth);
+		return $width;
+	}
+
+	/**
 	 * Returns parameters to set the width for a <input>/<textarea>-element
 	 *
 	 * @param int $size The abstract size value (1-48)
 	 * @param bool $textarea If this is for a text area.
 	 * @return string Either a "style" attribute string or "cols"/"size" attribute string.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function formWidth($size = 48, $textarea = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		$fieldWidthAndStyle = $this->formWidthAsArray($size, $textarea);
 		// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
 		$widthAndStyleAttributes = ' style="' . htmlspecialchars($fieldWidthAndStyle['style']) . '"';
@@ -3074,18 +3202,12 @@ class FormEngine {
 	 * @param int $size The abstract size value (1-48)
 	 * @param bool $textarea If set, calculates sizes for a text area.
 	 * @return array An array containing style, class, and width attributes.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function formWidthAsArray($size = 48, $textarea = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		$fieldWidthAndStyle = array('style' => '', 'class' => '', 'width' => '');
-		$size = round($size * $this->form_largeComp);
-
-		// Setting width by style-attribute. 'cols' MUST be avoided with NN6+
-		$widthInPixels = ceil($size * $this->form_rowsToStylewidth);
-
-		if ($textarea) {
-			$widthInPixels += $this->form_additionalTextareaStyleWidth;
-		}
-
+		$widthInPixels = $this->formMaxWidth($size);
 		$fieldWidthAndStyle['style'] = 'width: ' . $widthInPixels . 'px; ';
 		$fieldWidthAndStyle['class'] = 'formfield-' . ($textarea ? 'text' : 'input');
 		return $fieldWidthAndStyle;
@@ -3181,7 +3303,7 @@ class FormEngine {
 				' . ($singlePad['description'] ? '<p class="c-descr">' . nl2br(htmlspecialchars($singlePad['description'])) . '</p>' : '') . '
 				' . $singlePad['content'];
 			}
-			return '<div class="typo3-dyntabmenu-divs">' . $output . '</div>';
+			return '<div class="tab-content">' . $output . '</div>';
 		}
 	}
 
@@ -3642,8 +3764,10 @@ class FormEngine {
 	 * @param array $PA An array with additional configuration options.
 	 * @return array Marker array for template output
 	 * @see function intoTemplate()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function addUserTemplateMarkers($marker, $table, $field, $row, &$PA) {
+		GeneralUtility::logDeprecatedFunction();
 		return $marker;
 	}
 
@@ -3826,50 +3950,96 @@ class FormEngine {
 	 * @return string HTML output
 	 */
 	public function printPalette($palArr) {
-		$fieldAttributes = ' class="t3-form-palette-field"';
-		$labelAttributes = ' class="t3-form-palette-field-label t3-form-field-label"';
 
+		// GROUP FIELDS
+		$groupedFields = array();
 		$row = 0;
-		$iRow = array();
-		$lastLineWasLinebreak = FALSE;
-		// Traverse palette fields and render them into containers:
-		foreach ($palArr as $content) {
-			if ($content['NAME'] === '--linebreak--') {
+		$lastLineWasLinebreak = TRUE;
+		foreach ($palArr as $field){
+			if ($field['NAME'] === '--linebreak--') {
 				if (!$lastLineWasLinebreak) {
+					$row++;
+					$groupedFields[$row][] = $field;
 					$row++;
 					$lastLineWasLinebreak = TRUE;
 				}
 			} else {
 				$lastLineWasLinebreak = FALSE;
+				$groupedFields[$row][] = $field;
+			}
+		}
 
-				$paletteMarkers = array(
-					'###CONTENT_TABLE###' => $content['TABLE'],
-					'###CONTENT_ID###' => $content['ID'],
-					'###CONTENT_FIELD###' => $content['FIELD'],
-					'###CONTENT_NAME###' => $content['NAME'],
-					'###CONTENT_ITEM###' => $content['ITEM'],
-					'###CONTENT_ITEM_NULLVALUE###' => $content['ITEM_NULLVALUE'],
-					'###CONTENT_ITEM_DISABLED###' => $content['ITEM_DISABLED'],
-					'###ATTRIBUTES_LABEL###' => $labelAttributes,
-					'###ATTRIBUTES_FIELD###' => $fieldAttributes,
+		$out = '';
+		// PROCESS FIELDS
+		foreach ($groupedFields as $fields) {
+
+			$numberOfItems = count($fields);
+			$cols = $numberOfItems;
+			$colWidth = (int)floor(12 / $cols);
+
+			// COLS
+			$colClass = "col-md-12";
+			$colClear = array();
+			if ($colWidth == 6) {
+				$colClass = "col-sm-6";
+				$colClear = array(
+					2 => 'visible-sm-block visible-md-block visible-lg-block',
 				);
-				$iRow[$row][] = HtmlParser::substituteMarkerArray(
-					$this->paletteFieldTemplate,
-					$paletteMarkers,
-					FALSE,
-					TRUE
+			} elseif ($colWidth === 4) {
+				$colClass = "col-sm-4";
+				$colClear = array(
+					3 => 'visible-sm-block visible-md-block visible-lg-block',
+				);
+			} elseif ($colWidth === 3) {
+				$colClass = "col-sm-6 col-md-3";
+				$colClear = array(
+					2 => 'visible-sm-block',
+					4 => 'visible-md-block visible-lg-block',
+				);
+			} elseif ($colWidth <= 2) {
+				$colClass = "checkbox-column col-sm-6 col-md-3 col-lg-2";
+				$colClear = array(
+					2 => 'visible-sm-block',
+					4 => 'visible-md-block',
+					6 => 'visible-lg-block'
 				);
 			}
-		}
-		// Final wrapping into the fieldset:
-		$out = '<fieldset class="t3-form-palette-fieldset">';
-		for ($i = 0; $i <= $row; $i++) {
-			if (isset($iRow[$i])) {
-				$out .= implode('', $iRow[$i]);
-				$out .= $i < $row ? '<div class="clearfix"></div>' : '';
+
+			// RENDER FIELDS
+			for ($counter = 0; $counter < $numberOfItems; $counter++) {
+				$content = $fields[$counter];
+				if ($content['NAME'] === '--linebreak--') {
+					if ($counter + 1 !== $numberOfItems) {
+						$out .= '<div class="clearfix"></div>';
+					}
+				} else {
+
+					// ITEM
+					$out .= '
+						<!-- printPalette -->
+						<div class="form-group t3js-formengine-palette-field ' . $colClass . '">
+							<label class="t3js-formengine-label">
+								' . $content['NAME'] . '
+								<img name="req_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" class="t3js-formengine-field-required" alt="" />
+							</label>
+							' . $content['ITEM_NULLVALUE'] . '
+							<div class="t3js-formengine-field-item ' . $content['ITEM_DISABLED'] . '">
+								<div class="t3-form-field-disable"></div>
+								' . $content['ITEM'] . '
+							</div>
+						</div>';
+
+					// BREAKPOINTS
+					if ($counter + 1 < $numberOfItems && !empty($colClear)) {
+						foreach ($colClear as $rowBreakAfter => $clearClass) {
+							if (($counter + 1) % $rowBreakAfter === 0) {
+								$out .= '<div class="clearfix '. $clearClass . '"></div>';
+							}
+						}
+					}
+				}
 			}
 		}
-		$out .= '</fieldset>';
 		return $out;
 	}
 

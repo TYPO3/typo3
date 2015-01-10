@@ -332,23 +332,12 @@ var TBE_EDITOR = {
 
 		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)
 		var $formField = TYPO3.jQuery('[name="' + el + '"]');
-		var $label = $formField.closest('.t3-form-palette-field-container').find('.t3-form-field-label');
-		// no palette - find the header if it is a flexform
-		if ($label.length === 0) {
-			$label = $formField.closest('.t3-form-field-container').children('.t3-form-field-label');
-		}
-		// no flex either, check for a "normal" field
-		if ($label.length === 0) {
-			$label = $formField.closest('.formField-field').parent().prev().find('.t3-form-field-label');
-		}
-		$label.addClass('t3-form-field-state-changed');
+		var $paletteField = $formField.closest('.t3js-formengine-palette-field');
+		$paletteField.addClass('has-change');
 
-			// Set change image
+		// Set hidden field to value
 		if (document[TBE_EDITOR.formname][theField] && document[TBE_EDITOR.formname][theField].type=="select-one" && document[TBE_EDITOR.formname][theField+"_selIconVal"]) {
-			var imgObjName = "selIcon_"+table+"_"+uid+"_"+field+"_";
-			TBE_EDITOR.setImage(imgObjName+document[TBE_EDITOR.formname][theField+"_selIconVal"].value,TBE_EDITOR.images.clear);
-			document[TBE_EDITOR.formname][theField+"_selIconVal"].value = document[TBE_EDITOR.formname][theField].selectedIndex;
-			TBE_EDITOR.setImage(imgObjName+document[TBE_EDITOR.formname][theField+"_selIconVal"].value,TBE_EDITOR.images.sel);
+			document[TBE_EDITOR.formname][theField+"_selIconVal"].value = document[TBE_EDITOR.formname][theField].value;
 		}
 
 			// Set required flag:
@@ -579,7 +568,7 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 var typo3form = {
 	fieldSetNull: function(fieldName, isNull) {
 		if (document[TBE_EDITOR.formname][fieldName]) {
-			var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3-form-field-item');
+			var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3js-formengine-field-item');
 
 			if (isNull) {
 				formFieldItemWrapper.addClassName('disabled');
@@ -593,9 +582,9 @@ var typo3form = {
 			return;
 		}
 
-		var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3-form-field-item');
-		var placeholder = formFieldItemWrapper.select('.t3-form-placeholder-placeholder')[0];
-		var formField = formFieldItemWrapper.select('.t3-form-placeholder-formfield')[0];
+		var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3js-formengine-field-item');
+		var placeholder = formFieldItemWrapper.select('.t3js-formengine-placeholder-placeholder')[0];
+		var formField = formFieldItemWrapper.select('.t3js-formengine-placeholder-formfield')[0];
 		if (showPlaceholder) {
 			placeholder.show();
 			formField.hide();

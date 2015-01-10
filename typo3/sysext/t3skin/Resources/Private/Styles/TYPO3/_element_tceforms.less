@@ -3,79 +3,6 @@
 //
 
 // Special handling of Tabs within FormEngine
-
-.typo3-TCEforms {
-
-	// Move dyntab inner padding into fieldset for horizontal HR (only when tabs are there)
-
-	.typo3-dyntabmenu-divs {
-		border-top: 1px solid @nav-tabs-border-color;
-	}
-	.typo3-dyntabmenu-tabs + .typo3-dyntabmenu-divs {
-		border-top: none;
-		padding: 0;
-	}
-
-	.c-tablayer {
-		div,
-		td {
-			vertical-align: top;
-		}
-
-		.btn-after {
-			margin-left: 15px;
-			color: #666;
-		}
-
-		> table {
-			margin-bottom: 0;
-
-			> tbody {
-				> tr {
-					> td {
-						padding: 0 @line-height-computed 0 @line-height-computed;
-						background: none;
-
-						&.palette-header {
-							border-top: 1px solid @nav-tabs-border-color;
-							padding: ceil(@line-height-computed * 1.5) @line-height-computed floor(@line-height-computed * 0.25) @line-height-computed;
-
-							h3 {
-								margin-top: 0;
-							}
-						}
-
-						.t3-form-palette-fieldset {
-							.t3-form-palette-field-container {
-								display: inline-block;
-								padding-right: 25px;
-								padding-bottom: @line-height-computed;
-							}
-						}
-
-					}
-
-					&:first-child {
-						> td {
-							padding-top: @line-height-computed;
-
-							&.palette-header {
-								border-top: none;
-							}
-						}
-					}
-
-					&:last-child {
-						> td {
-							padding-bottom: @line-height-computed;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 img.t3-TCEforms-reqImg {
 	display: block;
 	position: absolute;
@@ -94,233 +21,16 @@ img.t3-TCEforms-reqTabImg {
 	width: 16px;
 }
 
-img.t3-TCEforms-contentchangedImg {
-	display: block;
-	position: absolute;
-	left: 4px;
-	top: 32%;
-	z-index: 4000;
-	width: 7px;
-}
-
-.t3-form-palette-icon-required {
-	display: block;
-	position: absolute;
-	left: 4px;
-	top: 26%;
-	z-index: 3000;
-	height: 16px;
-	margin-right: 2px;
-	width: 16px;
-}
-
-// renamed to .t3-form-palette-icon-required, lines below kept for backwards-compatibility
-
-img.t3-TCEforms-reqPaletteImg {
-	display: block;
-	position: absolute;
-	left: 14px;
-	top: 30%;
-	z-index: 3000;
-	height: 16px;
-	margin-right: 2px;
-	width: 16px;
-}
-
-.t3-form-palette-icon-contentchanged {
-	display: block;
-	position: absolute;
-	left: -6px;
-	top: 30%;
-	z-index: 4000;
-	width: 7px;
-}
-
-// renamed to .t3-form-palette-icon-contentchanged, lines below kept for backwards-compatibility
-
-img.t3-TCEforms-contentchangedPaletteImg {
-	display: block;
-	position: absolute;
-	left: 4px;
-	top: 30%;
-	z-index: 4000;
-	width: 7px;
-}
-
 .typo3-TCEforms {
 	width: 100%;
-}
-
-.typo3-TCEforms-recHeaderRow {
-	padding-top: 5px;
-	padding-bottom: 20px;
-}
-
-.typo3-TCEforms .bgColor2,
-.typo3-TCEforms tr.bgColor2 td {
-	padding-bottom: 5px;
-}
-
-.typo3-TCEforms optgroup.c-divider,
-select option.c-divider {
-	margin-top: 10px;
-	padding: 0px;
-}
-
-.typo3-TCEforms optgroup option {
-	background-color: white;
-	border-bottom: none;
-	color: black;
-	font-style: normal;
-	text-indent: 0px;
-	text-transform: none;
-	margin: 0px;
-	padding: 2px;
-}
-
-.typo3-TCEforms select.icon-select option {
-	padding-left: 22px;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
-	margin-bottom: 10px;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tbody {
-	display: block;
-	max-height: 300px;
-	overflow-y: scroll;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td {
-	vertical-align: middle;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td,
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-checkbox,
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	padding: 1px 3px;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	min-width: 300px;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell img {
-	margin-right: 5px;
-	width: 16px;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr {
-	width: 40px;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr img {
-	float: right;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-singlebox {
-	margin-bottom: 10px;
-	margin-top: 4px;
-}
-
-.typo3-TCEforms td.formField-header,
-.typo3-TCEforms td.palette-header,
-.typo3-TCEforms td.formField-field {
-	display: block;
-	position: relative;
-	vertical-align: top;
-}
-
-div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable > tbody > tr > td {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-.t3-form-field-group-file tr:last-child td {
-	vertical-align: top;
-}
-
-.typo3-TCEforms td.icons {
-	padding: 0 2px 2px 2px;
-}
-
-.typo3-TCEforms td.thumbnails {
-	padding-top: 2px;
-}
-
-.typo3-TCEforms div.imagethumbs {
-	padding-top: 2px;
-	white-space: normal;
-	width: 253px;
-}
-
-.typo3-TCEforms div.imagethumbs br {
-	display: none;
-}
-
-.typo3-TCEforms div.imagethumbs .nobr {
-	background-color: #CCC;
-	display: inline-block;
-	width: 60px;
-	height: 60px;
-	overflow: hidden;
-	margin-right: 3px;
-	margin-bottom: 1px;
-	text-align: center;
-}
-
-.typo3-TCEforms div.imagethumbs .nobr a {
-	display: block;
-	width: 60px;
-	height: 60px;
-	line-height: 58px;
-	text-align: center;
-}
-
-.typo3-TCEforms div.imagethumbs .nobr a img {
-	display: inline;
-	margin-right: auto;
-	vertical-align: middle;
-	margin-left: auto;
-}
-
-.typo3-TCEforms div.imagethumbs .nobr span {
-	display: none;
-}
-
-.typo3-TCEforms span.filetypes {
-	font-size: 0.8em;
-	display: block;
-	margin-top: 6px;
-	white-space: normal;
-	width: 250px;
 }
 
 .t3-form-field-container {
 	display: block;
 }
-
-.typo3-TCEforms-palette .typo3-csh-link img {
-	padding-top: 3px;
-	vertical-align: top;
-}
-
-.typo3-TCEforms-palette select.select,
-.t3-form-palette-field-container select.select {
-	margin: 4px 2px 4px 1px;
-}
-
-.t3-form-palette-field-container .t3-form-palette-field-label,
-.t3-form-palette-field-container .t3-form-palette-field {
-	display: block;
-	position: relative;
-}
-
 .typo3-TCEforms .typo3-csh-link {
 	margin-left: 5px;
 }
-
 .t3-tceforms-fieldReadOnly {
 	background-color: #fefefe;
 	border: 1px solid #7c7c7c;
@@ -335,19 +45,10 @@ div.typo3-TCEforms div.c-tablayer table > tbody > tr > td > table.wrapperTable >
 	margin: 0 0.5em 0.5em 0;
 	position: relative;
 }
-// no manual resizing for textareas (works on non-IE browser only anyways)
-// as it is handled by JS: "autosize"
-.tceforms-textarea {
-	resize: none;
-}
 
 //
 // TCEforms suggest
 //
-
-div.typo3-TCEforms-suggest-position-right {
-	margin-left: 10px;
-}
 
 div.typo3-TCEforms-suggest label {
 	margin-right: 5px;
@@ -396,172 +97,12 @@ div.typo3-TCEforms-suggest-choices span.suggest-path {
 	margin-top: 0.3em;
 }
 
-input.typo3-TCEforms-suggest-search {
-	width: 200px;
-	padding-left: 20px;
-	vertical-align: middle;
-}
-
 //
 // TCEforms Flexforms
 //
-
-.t3-form-field-label-flex {
-	border-top: 1px solid #c0c0c0;
-	padding: 5px;
-}
-
-.t3-form-field-flex {
-	padding: 0 5px 5px;
-}
-
-//
-// TCEforms Inline-Relational-Record-Editing
-//
-
-.t3-form-field-container-wrap {
-	margin: 6px 0px;
-}
-
-.t3-form-field-container-inline {
-	border: 1px solid #aaaaaa;
-	background-color: #f9f9f9;
-	margin: 2px 0px;
-}
-
-.t3-form-field-header-inline > span {
-	position: absolute;
-	left: 4px;
-	top: 15px;
-}
-
-.t3-form-field-header-inline-wrap:before,
-.t3-form-field-header-inline-wrap:after {
-	content: " ";
-	display: table;
-}
-
-.t3-form-field-header-inline-wrap:after {
-    clear: both;
-}
-
-.t3-form-field-header-inline-wrap {
-	min-width: 300px;
-}
-
-.t3-form-field-header-inline-icon,
-.t3-form-field-header-inline-thumbnail {
-	float: left;
-	margin-right: 5px;
-}
-
-.t3-form-field-header-inline-icon {
-	width: 18px;
-	height: 16px;
-	padding: 3px 0px;
-}
-
-.t3-form-field-header-inline-thumbnail {
-	float: left;
-	margin-right: 15px;
-}
-
-.t3-form-field-header-inline-thumbnail img {
-	display: block;
-}
-
-.t3-form-field-header-inline-ctrl {
-	float: right;
-}
-
-.t3-form-field-header-inline-ctrl .t3-icon {
-	margin: 0px;
-	margin-left: 3px;
-}
-
-.t3-form-field-header-inline-body,
-.t3-form-field-header-inline-summary {
-	overflow: hidden;
-	zoom: 1;
-}
-
-.t3-form-field-header-inline-thumbnail,
-.t3-form-field-header-inline-summary {
-	cursor: pointer;
-}
-
-.t3-form-field-header-inline-ctrl,
-.t3-form-field-header-inline-summary {
-	padding: 5px 0px;
-}
-
-.t3-form-field-header-inline-summary dl {
-	margin: 0px;
-	overflow: hidden;
-}
-
-.t3-form-field-header-inline-summary dt {
-	font-weight: bold;
-	float: left;
-	clear: left;
-	margin-right: 10px;
-}
-
-.t3-form-field-header-inline-summary dd {
-	float: left;
-}
-
-.t3-form-field-header-inline-ctrl img {
-	vertical-align: middle;
-}
-
-.t3-form-field-header-inline .t3-form-field-header-inline-ctrl > * {
-	opacity: 0;
-}
-
-.t3-form-field-header-inline:hover .t3-form-field-header-inline-ctrl > * {
-	opacity: 1;
-}
-
-.t3-form-field-header-inline .t3-form-field-header-inline-ctrl > span.sortableHandle {
-	margin-left: 16px;
-	opacity: 1;
-	display: inline-block;
-}
-
-.t3-form-field-container-inline-placeHolder div.t3-form-field-record-inline,
-.t3-form-field-container-inline-collapsed div.t3-form-field-record-inline {
-	display:none !important;
-}
-
-.t3-form-field-header-inline {
-	background-color: #E0E0E0;
-	cursor: pointer;
-	padding: 6px 16px;
-	position:relative;
-}
-
 .t3-form-field-container-inline-placeHolder .t3-form-field-header-inline > span {
 	display:none;
 }
-
-.t3-form-field-record-inline {
-	border-top: 1px solid #aaaaaa;
-	padding: 8px 8px;
-	position: relative;
-}
-
-.t3-form-field-record-inline > table {
-    width:100%;
-}
-
-.t3-form-field-record-inline .typo3-dyntabmenu-divs,
-.t3-form-field-record-inline .typo3-dyntabmenu-tabs {
-	margin-left:8px;
-	margin-right:8px !important;
-	margin-bottom:0px !important;
-}
-
 .sortableHandle {
 	cursor: move;
 }
@@ -657,18 +198,6 @@ table#typo3-altdoc-header input,
 	border: 0;
 }
 
-.t3-tceforms-widget-null-wrapper {
-	display: inline-block;
-	float: right;
-	position: relative;
-	width: 20px;
-	max-width: 20px;
-}
-
-.t3-tceforms-widget-null-wrapper input {
-	margin-left: 2px;
-	margin-top: 42%;
-}
 .t3-tceforms-input-wrapper-datetime .t3-icon-edit-pick-date {
 	top: -4px;
 }
@@ -677,16 +206,6 @@ table#typo3-altdoc-header input,
 .c-inputButton:hover {
 	background: none;
 	border: 0;
-}
-
-.typo3-TCEforms .typo3-TCEforms-recHeader {
-	color: #555555;
-	font-weight: bold;
-}
-
-.typo3-TCEforms .typo3-TCEforms-recHeaderRow {
-	background: #fff;
-	text-align: right;
 }
 
 .typo3-TCEforms span.typo3-TCEforms-newToken {
@@ -737,15 +256,6 @@ table.typo3-TCEforms-select-checkbox {
 	white-space: nowrap;
 }
 
-.typo3-TCEforms optgroup.c-divider,
-select option.c-divider {
-	background-color: #eee;
-	border-top: 1px solid #666;
-	color: #666;
-	font-style: italic;
-	text-transform: uppercase;
-}
-
 // show text of default language under the translated input field
 
 .t3-form-original-language {
@@ -778,12 +288,6 @@ select option.c-divider {
 	padding-right: 5px;
 }
 
-input.typo3-TCEforms-suggest-search {
-	background-image: url('../../../../icons/gfx/zoom.gif');
-	background-position: 2px center;
-	background-repeat: no-repeat;
-}
-
 div.typo3-TCEforms-suggest-choices ul {
 	list-style-type: none;
 }
@@ -811,44 +315,13 @@ div.typo3-TCEforms-suggest-choises a {
 //
 // TCEforms Flexforms
 //
-
-.t3-form-field-container-flex {
-}
-
 div.t3-form-field-container:first-child .t3-form-field-label-flex {
 	border-top: 0;
-}
-
-// no separate background for dyntabs in flexforms
-
-.typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs ,
-.typo3-TCEforms .wrapperTable1 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable2 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable3 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable4 div.typo3-dyntabmenu-tabs,
-.typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
-	background: transparent;
-}
-
-// tabs inside the table => flexforms
-
-.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
-.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
-	border: 1px solid #c0c0c0;
 }
 
 //
 // TCEforms Inline-Relational-Record-Editing
 //
-
-.t3-form-field-header-inline:hover {
-	background-color: #cccccc;
-}
-
 .t3-form-field-container-inline-hidden,
 .t3-form-field-container-inline-placeHolder {
 	opacity:0.3;
@@ -858,56 +331,10 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
     vertical-align:top;
 }
 
-.t3-form-field-header-inline-thumbnail-image {
-    border: none;
-}
-
-.t3-form-field-record-inline .typo3-message {
-	margin-bottom: 1.5em;
-}
-
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable1,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable2,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable3,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
-.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
-	border: 0;
-}
-
-.t3-form-field-header-inline td.t3-form-field-header-inline-summary dl dt {
-	font-weight: bold;
-}
 
 //
 // TCEforms Sections
 //
-
-.typo3-TCEforms-flexForm .bgColor4,
-.typo3-TCEforms-flexForm .bgColor5 {
-	background: none;
-	display: inline-block;
-}
-
-.typo3-TCEforms-select-selectedItemWithBackgroundImage {
-	background-color:#fff;
-	background-position: 0% 50%;
-	background-repeat:no-repeat;
-	padding:1px 1px 1px 24px;
-}
-
-.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage {
-	text-indent: 20px;
-	background-position-x: 6px;
-}
-.ext-webkit .typo3-TCEforms-select-selectedItemWithBackgroundImage optgroup option {
-	text-indent: 20px;
-}
-.ext-chrome:not(.ext-mac) .typo3-TCEforms-select-selectedItemWithBackgroundImage {
-	text-indent: 0px;
-	background-position-x: 5px;
-}
-
 .t3-tceforms-fieldReadOnly span.t3-icon {
     position: absolute;
     right: 3px;

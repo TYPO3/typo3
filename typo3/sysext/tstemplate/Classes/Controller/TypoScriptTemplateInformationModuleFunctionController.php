@@ -245,7 +245,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 				unset($e);
 			}
 			if (isset($e['constants'])) {
-				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
+				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="text-monospace enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="text-monospace">' . GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
 				$outCode .= '<input type="hidden" name="e[constants]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
@@ -255,7 +255,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 				$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
 			}
 			if (isset($e['config'])) {
-				$outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="fixed-font">' . GeneralUtility::formatForTextarea($tplRow['config']) . '</textarea>';
+				$outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="text-monospace enable-tab"' . $this->pObj->doc->formWidth(48, TRUE, 'width:98%;height:70%') . ' class="text-monospace">' . GeneralUtility::formatForTextarea($tplRow['config']) . '</textarea>';
 				$outCode .= '<input type="hidden" name="e[config]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= '<div class="checkbox"><label for="checkIncludeTypoScriptFileContent">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');

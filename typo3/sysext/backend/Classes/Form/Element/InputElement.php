@@ -34,14 +34,16 @@ class InputElement extends AbstractFormElement {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function render($table, $field, $row, &$additionalInformation) {
+
 		$isDateField = FALSE;
+
 		$config = $additionalInformation['fieldConf']['config'];
 		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
-		$size = MathUtility::forceIntegerInRange($config['size'] ? $config['size'] : 30, 5, $this->formEngine->maxInputWidth);
+		$size = MathUtility::forceIntegerInRange($config['size'] ?: $this->formEngine->defaultInputWidth, $this->formEngine->minimumInputWidth, $this->formEngine->maxInputWidth);
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
-		$classAndStyleAttributes = $this->formEngine->formWidthAsArray($size);
-		$cssClasses = array($classAndStyleAttributes['class']);
-		$cssStyle = $classAndStyleAttributes['style'];
+		$classes = array();
+		$attributes = array();
+
 		if (!isset($config['checkbox'])) {
 			$config['checkbox'] = '0';
 			$checkboxIsset = FALSE;
@@ -62,61 +64,7 @@ class InputElement extends AbstractFormElement {
 		$dateFormats['datetime'] = $dateFormats['time'] . ' ' . $dateFormats['date'];
 		$dateFormats['datetimesec'] = $dateFormats['timesec'] . ' ' . $dateFormats['date'];
 
-
-		if (in_array('date', $evalList) || in_array('datetime', $evalList)) {
-			if (in_array('datetime', $evalList)) {
-				$class = 'datetime';
-				$dateFormat = $dateFormats['datetime'];
-			} else {
-				$class = 'date';
-				$dateFormat = $dateFormats['date'];
-			}
-			$dateRange = '';
-			$lowerValue = NULL;
-			$upperValue = NULL;
-			if (isset($config['range']['lower'])) {
-				$lowerValue = (int)$config['range']['lower'];
-				$dateRange .= ' lower-' . $lowerValue;
-			}
-			if (isset($config['range']['upper'])) {
-				$upperValue = (int)$config['range']['upper'];
-				$dateRange .= ' upper-' . $upperValue;
-			}
-			$inputId = uniqid('tceforms-' . $class . 'field-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-' . $class . 'field' . $dateRange;
-			$isDateField = TRUE;
-		} elseif (in_array('timesec', $evalList)) {
-			$inputId = uniqid('tceforms-timesecfield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-timesecfield';
-		} elseif (in_array('year', $evalList)) {
-			$inputId = uniqid('tceforms-yearfield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-yearfield';
-		} elseif (in_array('time', $evalList)) {
-			$inputId = uniqid('tceforms-timefield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-timefield';
-			$isDateField = TRUE;
-			$dateFormat = $dateFormats['time'];
-		} elseif (in_array('int', $evalList)) {
-			$inputId = uniqid('tceforms-intfield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-intfield';
-		} elseif (in_array('double2', $evalList)) {
-			$inputId = uniqid('tceforms-double2field-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-double2field';
-		} else {
-			$inputId = uniqid('tceforms-textfield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield';
-			if ($checkboxIsset === FALSE) {
-				$config['checkbox'] = '';
-			}
-		}
-		if (isset($config['wizards']['link'])) {
-			$inputId = uniqid('tceforms-linkfield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-linkfield';
-		} elseif (isset($config['wizards']['color'])) {
-			$inputId = uniqid('tceforms-colorfield-', TRUE);
-			$cssClasses[] = 'tceforms-textfield tceforms-colorfield';
-		}
-		$inputId = str_replace('.', '', $inputId);
+		// readonly
 		if ($this->isRenderReadonly() || $config['readOnly']) {
 			$itemFormElValue = $additionalInformation['itemFormElValue'];
 			if (in_array('date', $evalList)) {
@@ -131,6 +79,43 @@ class InputElement extends AbstractFormElement {
 			}
 			return $this->formEngine->getSingleField_typeNone_render($config, $itemFormElValue);
 		}
+
+
+		if (in_array('datetime', $evalList, TRUE)
+			|| in_array('date', $evalList)
+			|| in_array('time', $evalList)) {
+
+			$classes[] = 't3js-datetimepicker';
+			$isDateField = TRUE;
+			if (in_array('datetime', $evalList)) {
+				$attributes['data-date-type'] = 'datetime';
+				$dateFormat = $dateFormats['datetime'];
+			} elseif (in_array('date', $evalList)) {
+				$attributes['data-date-type'] = 'date';
+				$dateFormat = $dateFormats['date'];
+			} else {
+				$attributes['data-date-type'] = 'time';
+				$dateFormat = $dateFormats['time'];
+			}
+			if ($additionalInformation['itemFormElValue'] > 0) {
+				$additionalInformation['itemFormElValue'] += date('Z', $additionalInformation['itemFormElValue']);
+			}
+			if (isset($config['range']['lower'])) {
+				$attributes['data-date-minDate'] = (int)$config['range']['lower'];
+			}
+			if (isset($config['range']['upper'])) {
+				$attributes['data-date-maxDate'] = (int)$config['range']['upper'];
+			}
+		} elseif (in_array('timesec', $evalList)) {
+			$classes[] = 't3js-datetimepicker';
+			$attributes['data-date-type'] = 'timesec';
+		} else {
+			if ($checkboxIsset === FALSE) {
+				$config['checkbox'] = '';
+			}
+		}
+
+
 		foreach ($evalList as $func) {
 			switch ($func) {
 				case 'required':
@@ -152,30 +137,44 @@ class InputElement extends AbstractFormElement {
 			}
 		}
 		$paramsList = '\'' . $additionalInformation['itemFormElName'] . '\',\'' . implode(',', $evalList) . '\',\'' . trim($config['is_in']) . '\',' . (isset($config['checkbox']) ? 1 : 0) . ',\'' . $config['checkbox'] . '\'';
-
-
-		$textFieldAttributes = array();
-		// additional data for the DatePicker
-		if ($isDateField) {
-			// Add server timezone offset to UTC to our stored date
-			if ($additionalInformation['itemFormElValue'] > 0) {
-				$additionalInformation['itemFormElValue'] += date('Z', $additionalInformation['itemFormElValue']);
-			}
-			if ($lowerValue !== NULL) {
-				$textFieldAttributes[] = 'data-date-minDate="' . strftime($dateFormat, $lowerValue) . '"';
-			}
-			if ($upperValue !== NULL) {
-				$textFieldAttributes[] = 'data-date-maxDate="' . strftime($dateFormat, $upperValue) . '"';
-			}
-			$cssClasses[] = 'form-control';
-		}
 		$additionalInformation['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'), $additionalInformation['fieldChangeFunc']);
 
-		$mLgd = $config['max'] ?: 256;
-		$iOnChange = implode('', $additionalInformation['fieldChangeFunc']);
-		$cssClasses[] = 'hasDefaultValue';
+		// set classes
+		$classes[] = 'form-control';
+		$classes[] = 't3js-clearable';
+		$classes[] = 'hasDefaultValue';
+
+		// calculate attributes
+		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
+		$attributes['name'] = $additionalInformation['itemFormElName'] . '_hr';
+		$attributes['value'] = '';
+		$attributes['maxlength'] = $config['max'] ?: 256;
+		$attributes['onchange'] = htmlspecialchars(implode('', $additionalInformation['fieldChangeFunc']));
+
+		if (!empty($styles)) {
+			$attributes['style'] = implode(' ', $styles);
+		}
+		if (!empty($classes)) {
+			$attributes['class'] = implode(' ', $classes);
+		}
+		if (isset($config['max']) && (int)$config['max'] > 0) {
+			$attributes['maxlength'] = (int)$config['max'];
+		}
+
+		// Build the attribute string
+		$attributeString = '';
+		foreach ($attributes as $attributeName => $attributeValue) {
+			$attributeString .= ' '. $attributeName . '="' . $attributeValue . '"';
+		}
+
 		// This is the EDITABLE form field.
-		$item = '<input type="text" ' . $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row) . 'id="' . $inputId . '" ' . 'class="' . implode(' ', $cssClasses) . '" ' . 'name="' . $additionalInformation['itemFormElName'] . '_hr" ' . 'value=""' . 'style="' . $cssStyle . '" ' . 'maxlength="' . $mLgd . '" ' . 'onchange="' . htmlspecialchars($iOnChange) . '"' . $additionalInformation['onFocus'] . ' ' . implode(' ', $textFieldAttributes)  . ' />';
+		$item = '
+			<input type="text"'
+				. $attributeString
+				. $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
+				. 'style="' . $cssStyle . '" '
+				. $additionalInformation['onFocus'] . ' />';
+
 		// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$item .= '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
 
@@ -194,17 +193,36 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 		// add HTML wrapper
 		if ($isDateField) {
-			$fieldAppendix = '<span class="input-group-addon datepickerbutton">' . IconUtility::getSpriteIcon('actions-edit-pick-date', array('style' => 'cursor:pointer;')) . '</span>';
-			$item = '<span class="t3-tceforms-input-wrapper-datetime date t3js-datetimepicker input-group">' . $item . $fieldAppendix . '</span>';
-		} else {
-			$item = '<span class="t3-tceforms-input-wrapper">' . $item . '</span>';
+			$item = '
+				<div class="input-group">
+					' . $item . '
+					<span class="input-group-btn">
+						<label class="btn btn-default" for="' . $attributes['id'] . '">
+							' . IconUtility::getSpriteIcon('actions-edit-pick-date') . '
+						</label>
+					</span>
+				</div>';
 		}
 
 		// Creating an alternative item without the JavaScript handlers.
-		$altItem = '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '_hr" value="" />';
-		$altItem .= '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
+		$altItem = '
+			<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '_hr" value="" />
+			<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
+
 		// Wrap a wizard around the item?
-		$item = $this->formEngine->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $additionalInformation, $additionalInformation['itemFormElName'] . '_hr', $specConf);
+		$item = $this->formEngine->renderWizards(
+			array($item, $altItem),
+			$config['wizards'],
+			$table,
+			$row,
+			$field,
+			$additionalInformation,
+			$additionalInformation['itemFormElName'] . '_hr', $specConf
+		);
+
+		// Add a wrapper to remain maximum width
+		$width = (int)$this->formEngine->formMaxWidth($size);
+		$item = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>' . $item . '</div>';
 		return $item;
 	}
 

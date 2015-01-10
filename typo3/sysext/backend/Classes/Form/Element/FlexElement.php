@@ -175,8 +175,7 @@ class FlexElement extends AbstractFormElement {
 							$this->formEngine->pushToDynNestedStack('tab', $tabIdentString . '-' . (count($tabParts) + 1));
 						}
 						// Render flexform:
-						$tRows = $this->getSingleField_typeFlex_draw($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $table, $field, $row, $additionalInformation, '[data][' . $sheet . '][' . $lang . ']');
-						$sheetContent = '<div class="typo3-TCEforms-flexForm t3-form-flexform">' . $tRows . '</div>';
+						$sheetContent = $this->getSingleField_typeFlex_draw($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $table, $field, $row, $additionalInformation, '[data][' . $sheet . '][' . $lang . ']');
 						// Pop the sheet level tab from DynNestedStack
 						if (is_array($dataStructArray['sheets'])) {
 							$this->formEngine->popFromDynNestedStack('tab', $tabIdentString . '-' . (count($tabParts) + 1));
@@ -534,12 +533,20 @@ class FlexElement extends AbstractFormElement {
 								// possible linebreaks in the label through xml: \n => <br/>, usage of nl2br()
 								// not possible, so it's done through str_replace
 								$processedTitle = str_replace('\\n', '<br />', $theTitle);
-								$tRows[] = '<div class="t3-form-field-container t3-form-field-container-flex">'
-									. '<div class="t3-form-field-label t3-form-field-label-flex">' . $languageIcon
-									. BackendUtility::wrapInHelp($PA['_cshKey'], $key, $processedTitle) . '</div>
-									<div class="t3-form-field t3-form-field-flex">' . $theFormEl . $defInfo
-									. $this->renderVDEFDiff($editData[$key], $vDEFkey) . '</div>
-								</div>';
+								$tRows[] = '
+									<div class="form-section">
+										<div class="form-group t3js-formengine-palette-field">
+											<label class="t3js-formengine-label">
+												' . $languageIcon . '
+												' . BackendUtility::wrapInHelp($PA['_cshKey'], $key, $processedTitle) . '
+											</label>
+											<div class="t3js-formengine-field-item">
+												' . $theFormEl . '
+												' . $defInfo . '
+												' . $this->renderVDEFDiff($editData[$key], $vDEFkey) . '
+											</div>
+										</div>
+									</div>';
 							}
 						}
 						if (count($tRows)) {

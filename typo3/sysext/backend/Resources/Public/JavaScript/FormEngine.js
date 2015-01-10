@@ -550,7 +550,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		});
 
 		// in multi-select environments with two (e.g. "Access"), on click the item from the right should go to the left
-		$(document).on('click', '.t3-form-select-itemstoselect', function(evt) {
+		$(document).on('click', '.t3js-formengine-select-itemstoselect', function(evt) {
 			var $el = $(this)
 					,fieldName = $el.data('relatedfieldname')
 					,exclusiveValues = $el.data('exclusivevalues');
@@ -571,11 +571,11 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 */
 	FormEngine.SelectBoxFilter = {
 		options: {
-			fieldContainerSelector: '.t3-form-field-group-file',
-			filterContainerSelector: '.t3-form-multiselect-filter-container',
-			filterTextFieldSelector: '.t3-form-multiselect-filter-textfield',
-			filterSelectFieldSelector: '.t3-form-multiselect-filter-dropdown',
-			itemsToSelectElementSelector: '.t3-form-select-itemstoselect'
+			fieldContainerSelector: '.t3js-formengine-field-group',
+			filterContainerSelector: '.t3js-formengine-multiselect-filter-container',
+			filterTextFieldSelector: '.t3js-formengine-multiselect-filter-textfield',
+			filterSelectFieldSelector: '.t3js-formengine-multiselect-filter-dropdown',
+			itemsToSelectElementSelector: '.t3js-formengine-select-itemstoselect'
 		}
 	};
 
@@ -648,9 +648,9 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 */
 	FormEngine.reinitialize = function() {
 		// apply "close" button to all input / datetime fields
-		if ($('.t3-tceforms-input-wrapper, .t3-tceforms-input-wrapper-datetime').length) {
+		if ($('.t3js-clearable').length) {
 			require(['jquery/jquery.clearable'], function() {
-				$('.t3-tceforms-input-wrapper .formfield-input, .t3-tceforms-input-wrapper-datetime .formfield-input').clearable();
+				$('.t3js-clearable').clearable();
 			});
 		}
 		// apply DatePicker to all date time fields

@@ -223,7 +223,6 @@
 								<eval>trim,required</eval>
 								<default></default>
 								<wizards type="array">
-									<_PADDING>2</_PADDING>
 									<link type="array">
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
@@ -274,7 +273,6 @@
 												<eval>trim,required</eval>
 												<default></default>
 												<wizards type="array">
-													<_PADDING>2</_PADDING>
 													<link type="array">
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
@@ -309,7 +307,6 @@
 								<eval>trim</eval>
 								<default></default>
 								<wizards type="array">
-									<_PADDING>2</_PADDING>
 									<link type="array">
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
@@ -349,7 +346,6 @@
 												<eval>trim,required</eval>
 												<default></default>
 												<wizards type="array">
-													<_PADDING>2</_PADDING>
 													<link type="array">
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
@@ -396,7 +392,6 @@
 								<eval>trim</eval>
 								<default></default>
 								<wizards type="array">
-									<_PADDING>2</_PADDING>
 									<link type="array">
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
@@ -436,7 +431,6 @@
 												<eval>trim,required</eval>
 												<default></default>
 												<wizards type="array">
-													<_PADDING>2</_PADDING>
 													<link type="array">
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>

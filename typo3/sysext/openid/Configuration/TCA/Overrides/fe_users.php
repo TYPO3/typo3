@@ -12,7 +12,6 @@ $tempColumns = array(
 			// Requirement: unique (BE users are unique in the whole system)
 			'eval' => 'trim,nospace,uniqueInPid',
 			'wizards' => array(
-				'_PADDING' => 2,
 				'0' => array(
 					'type' => 'popup',
 					'title' => 'Add OpenID',

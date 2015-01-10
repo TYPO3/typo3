@@ -173,7 +173,6 @@ return array(
 				'size' => '20',
 				'max' => 1024,
 				'wizards' => array(
-					'_PADDING' => 2,
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',

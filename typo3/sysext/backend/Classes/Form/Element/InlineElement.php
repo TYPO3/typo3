@@ -308,17 +308,17 @@ class InlineElement {
 		$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . self::Structure_Separator . $foreign_table, $config);
 
 		// Wrap all inline fields of a record with a <div> (like a container)
-		$item .= '<div id="' . $nameObject . '">';
+		$item .= '<div class="form-group" id="' . $nameObject . '">';
 		// Define how to show the "Create new record" link - if there are more than maxitems, hide it
 		if ($relatedRecords['count'] >= $maxitems || $uniqueMax > 0 && $relatedRecords['count'] >= $uniqueMax) {
 			$config['inline']['inlineNewButtonStyle'] = 'display: none;';
 		}
 		// Add the level links before all child records:
 		if (in_array($config['appearance']['levelLinksPosition'], array('both', 'top'))) {
-			$item .= $levelLinks . $localizationLinks;
+			$item .= '<div class="form-group">' . $levelLinks . $localizationLinks . '</div>';
 		}
 		$title = $this->getLanguageService()->sL($PA['fieldConf']['label']);
-		$item .= '<div id="' . $nameObject . '_records" data-title="' . htmlspecialchars($title) . '">';
+		$item .= '<div class="panel-group panel-hover" data-title="' . htmlspecialchars($title) . '" id="' . $nameObject . '_records">';
 		$relationList = array();
 		if (count($relatedRecords['records'])) {
 			foreach ($relatedRecords['records'] as $rec) {
@@ -424,7 +424,6 @@ class InlineElement {
 				$combination = $this->renderCombinationTable($rec, $appendFormFieldNames, $config);
 				$overruleTypesArray = isset($config['foreign_types']) ? $config['foreign_types'] : array();
 				$fields = $this->renderMainFields($foreign_table, $rec, $overruleTypesArray);
-				$fields = $this->wrapFormsSection($fields);
 				// Replace returnUrl in Wizard-Code, if this is an AJAX call
 				$ajaxArguments = GeneralUtility::_GP('ajax');
 				if (isset($ajaxArguments[2]) && trim($ajaxArguments[2]) != '') {
@@ -456,7 +455,7 @@ class InlineElement {
 			}
 			// If this record should be shown collapsed
 			if (!$isExpanded) {
-				$class = 't3-form-field-container-inline-collapsed';
+				$class = 'panel-collapsed';
 			}
 		}
 		if ($config['renderFieldsOnly']) {
@@ -469,13 +468,19 @@ class InlineElement {
 			if (isset($rec['hidden']) && (int)$rec['hidden']) {
 				$class .= ' t3-form-field-container-inline-hidden';
 			}
-			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>';
-			$header = IconUtility::getSpriteIcon('apps-irre-' . ($class != '' ? 'collapsed' : 'expanded'));
-			$header .= $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
-			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
-			// Wrap the header, fields and combination part of a child record with a div container
-			$class .= ' inlineDiv' . ($isNewRecord ? ' inlineIsNewRecord' : '');
-			$out = '<div id="' . $objectId . '_div" class="t3-form-field-container-inline ' . trim($class) . '">' . $out . '</div>';
+			$class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
+			$out = '
+				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . $objectId . '_div">
+					<div class="panel-heading" data-toggle="formengine-inline" id="' . $objectId . '_header">
+						<div class="form-irre-header">
+							<div class="form-irre-header-cell form-irre-header-icon">
+								<span class="caret"></span>
+							</div>
+							' . $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord) . '
+						</div>
+					</div>
+					<div class="panel-collapse" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>
+				</div>';
 		}
 		// Remove the current level also from the dynNestedStack of FormEngine:
 		$this->fObj->popFromDynNestedStack();
@@ -609,27 +614,20 @@ class InlineElement {
 					// Only use a thumbnail if the processing was successful.
 					if (!$processedImage->usesOriginalFile()) {
 						$imageUrl = $processedImage->getPublicUrl(TRUE);
-						$thumbnail = '<img class="t3-form-field-header-inline-thumbnail-image" src="' . $imageUrl . '" alt="' . htmlspecialchars($altText) . '" title="' . htmlspecialchars($altText) . '">';
+						$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($altText) . '" title="' . htmlspecialchars($altText) . '">';
 					}
 				}
 			}
 		}
 
 		if (!empty($config['appearance']['headerThumbnail']['field']) && $thumbnail) {
-			$headerClasses = ' t3-form-field-header-inline-has-thumbnail';
-			$mediaContainer = '<div class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</div>';
+			$mediaContainer = '<div class="form-irre-header-cell form-irre-header-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</div>';
 		} else {
-			$headerClasses = ' t3-form-field-header-inline-has-icon';
-			$mediaContainer = '<div class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</div>';
+			$mediaContainer = '<div class="form-irre-header-cell form-irre-header-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</div>';
 		}
-
-		$header = '<div class="t3-form-field-header-inline-wrap' . $headerClasses . '">'
-				. '<div class="t3-form-field-header-inline-ctrl">' . $ctrl . '</div>'
-				. '<div class="t3-form-field-header-inline-body">'
-				. $mediaContainer
-				. '<div class="t3-form-field-header-inline-summary">' . $label . '</div>'
-				. '</div>'
-				. '</div>';
+		$header = $mediaContainer . '
+				<div class="form-irre-header-cell form-irre-header-body">' . $label . '</div>
+				<div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">' . $ctrl . '</div>';
 
 		return $header;
 	}
@@ -650,6 +648,7 @@ class InlineElement {
 		$languageService = $this->getLanguageService();
 		// Initialize:
 		$cells = array();
+		$additionalCells = array();
 		$isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
 		$isParentExisting = MathUtility::canBeInterpretedAsInteger($parentUid);
 		$tcaTableCtrl = &$GLOBALS['TCA'][$foreign_table]['ctrl'];
@@ -673,8 +672,6 @@ class InlineElement {
 		foreach ($this->hookObjects as $hookObj) {
 			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $enabledControls);
 		}
-		// Icon to visualize that a required field is nested in this inline level:
-		$cells['required'] = '<img name="' . $nameObjectFtId . '_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
 		if (isset($rec['__create'])) {
 			$cells['localize.isLocalizable'] = IconUtility::getSpriteIcon('actions-edit-localize-status-low', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE)));
 		} elseif (isset($rec['__remove'])) {
@@ -689,7 +686,10 @@ class InlineElement {
 				$uid = $rec['uid'];
 				$table = $foreign_table;
 			}
-			$cells['info'] = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '</a>';
+			$cells['info'] = '
+				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $uid . '\'); return false;')) . '">
+					' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '
+				</a>';
 		}
 		// If the table is NOT a read-only table, then show these links:
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord) {
@@ -697,25 +697,31 @@ class InlineElement {
 			if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])) {
 				if (!$isPagesTable && $calcPerms & 16 || $isPagesTable && $calcPerms & 8) {
 					$onClick = 'return inline.createNewRecord(\'' . $nameObjectFt . '\',\'' . $rec['uid'] . '\')';
-					$class = ' class="inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"';
 					if ($config['inline']['inlineNewButtonStyle']) {
 						$style = ' style="' . $config['inline']['inlineNewButtonStyle'] . '"';
 					}
-					$cells['new'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '"' . $class . $style . '>' . IconUtility::getSpriteIcon(('actions-' . ($isPagesTable ? 'page' : 'document') . '-new'), array(
-						'title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE)
-					)) . '</a>';
+					$cells['new'] = '
+						<a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '"' . $class . $style . '>
+							' . IconUtility::getSpriteIcon(('actions-' . ($isPagesTable ? 'page' : 'document') . '-new'), array('title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE))) . '
+						</a>';
 				}
 			}
 			// "Up/Down" links
 			if ($enabledControls['sort'] && $permsEdit && $enableManualSorting) {
-				$onClick = 'return inline.changeSorting(\'' . $nameObjectFtId . '\', \'1\')';
 				// Up
+				$onClick = 'return inline.changeSorting(\'' . $nameObjectFtId . '\', \'1\')';
 				$style = $config['inline']['first'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
-				$cells['sort.up'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingUp" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-up', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveUp', TRUE))) . '</a>';
-				$onClick = 'return inline.changeSorting(\'' . $nameObjectFtId . '\', \'-1\')';
+				$cells['sort.up'] = '
+					<a class="btn btn-default sortingUp" href="#" onclick="' . htmlspecialchars($onClick) . '" ' . $style . '>
+						' . IconUtility::getSpriteIcon('actions-move-up', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveUp', TRUE))) . '
+					</a>';
 				// Down
+				$onClick = 'return inline.changeSorting(\'' . $nameObjectFtId . '\', \'-1\')';
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
-				$cells['sort.down'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingDown" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE))) . '</a>';
+				$cells['sort.down'] = '
+					<a class="btn btn-default sortingDown" href="#" onclick="' . htmlspecialchars($onClick) . '" ' . $style . '>
+						' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE))) . '
+					</a>';
 			}
 			// "Edit" link:
 			if (($rec['table_local'] === 'sys_file') && !$isNewItem) {
@@ -730,15 +736,19 @@ class InlineElement {
 						. 'top.content.list_frame.document.location' . '.pathname+top.content.list_frame.document.location' . '.search)+'
 						. '\'&edit[sys_file_metadata][' . (int)$editUid . ']=edit\';}';
 					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
-					$cells['editmetadata'] = '<a href="#" class="btn" onclick="'
-						. htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">'
-						. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					$cells['editmetadata'] = '
+						<a class="btn btn-default" href="#" class="btn" onclick="' . htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">
+							' . IconUtility::getSpriteIcon('actions-document-open') . '
+						</a>';
 				}
 			}
 			// "Delete" link:
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
 				$onClick = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');';
-				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
+				$cells['delete'] = '
+					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">
+						' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '
+					</a>';
 			}
 
 			// "Hide/Unhide" links:
@@ -746,36 +756,57 @@ class InlineElement {
 			if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $foreign_table . ':' . $hiddenField))) {
 				$onClick = 'return inline.enableDisableRecord(\'' . $nameObjectFtId . '\')';
 				if ($rec[$hiddenField]) {
-					$cells['hide.unhide'] = '<a href="#" class="hiddenHandle" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-edit-unhide', array(
-						'title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE),
-						'id' => ($nameObjectFtId . '_disabled')
-					)) . '</a>';
+					$cells['hide.unhide'] = '
+						<a class="btn btn-default hiddenHandle" href="#" onclick="' . htmlspecialchars($onClick) . '">
+							' . IconUtility::getSpriteIcon('actions-edit-unhide', array('title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE), 'id' => ($nameObjectFtId . '_disabled'))) . '
+						</a>';
 				} else {
-					$cells['hide.hide'] = '<a href="#" class="hiddenHandle" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-edit-hide', array(
-						'title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE),
-						'id' => ($nameObjectFtId . '_disabled')
-					)) . '</a>';
+					$cells['hide.hide'] = '
+						<a class="btn btn-default hiddenHandle" href="#" onclick="' . htmlspecialchars($onClick) . '">
+							' . IconUtility::getSpriteIcon('actions-edit-hide', array('title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE), 'id' => ($nameObjectFtId . '_disabled'))) . '
+						</a>';
 				}
 			}
 			// Drag&Drop Sorting: Sortable handler for script.aculo.us
 			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
-				$cells['dragdrop'] = IconUtility::getSpriteIcon('actions-move-move', array('data-id' => $rec['uid'], 'class' => 'sortableHandle', 'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
+				$additionalCells['dragdrop'] = '
+					<span class="btn btn-default">
+						' . IconUtility::getSpriteIcon('actions-move-move', array('data-id' => $rec['uid'], 'class' => 'sortableHandle', 'title' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE))) . '
+					</span>';
 			}
 		} elseif ($isVirtualRecord && $isParentExisting) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = 'inline.synchronizeLocalizeRecords(\'' . $nameObjectFt . '\', ' . $rec['uid'] . ');';
-				$cells['localize'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . IconUtility::getSpriteIcon('actions-document-localize', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE))) . '</a>';
+				$cells['localize'] = '
+					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '">
+						' . IconUtility::getSpriteIcon('actions-document-localize', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE))) . '
+					</a>';
 			}
 		}
 		// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo = BackendUtility::isRecordLocked($foreign_table, $rec['uid'])) {
-			$cells['locked'] = '<a href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '</a>';
+			$cells['locked'] = '
+				<a class="btn btn-default" href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;">
+					' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '
+				</a>';
 		}
 		// Hook: Post-processing of single controls for specific child records:
 		foreach ($this->hookObjects as $hookObj) {
 			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $cells);
 		}
-		return '<!-- CONTROL PANEL: ' . $foreign_table . ':' . $rec['uid'] . ' -->' . implode('', $cells);
+
+
+
+		$out = '
+			<!-- CONTROL PANEL: ' . $foreign_table . ':' . $rec['uid'] . ' -->
+			<img name="' . $nameObjectFtId . '_req" src="clear.gif" alt="" />';
+		if (!empty($cells)) {
+			$out .= ' <div class="btn-group btn-group-sm" role="group">' . implode('', $cells) . '</div>';
+		}
+		if (!empty($additionalCells)) {
+			$out .= ' <div class="btn-group btn-group-sm" role="group">' . implode('', $additionalCells) . '</div>';
+		}
+		return $out;
 	}
 
 	/**
@@ -805,7 +836,6 @@ class InlineElement {
 			$out = $flashMessage->render();
 			// Get the FormEngine interpretation of the TCA of the child table
 			$out .= $this->renderMainFields($comboConfig['foreign_table'], $comboRecord);
-			$out = $this->wrapFormsSection($out, array(), array());
 			// If this is a new record, add a pid value to store this record and the pointer value for the intermediate table
 			if ($isNewRecord) {
 				$comboFormFieldName = $this->prependFormFieldNames . '[' . $comboConfig['foreign_table'] . '][' . $comboRecord['uid'] . '][pid]';
@@ -879,9 +909,8 @@ class InlineElement {
 			$size = $conf['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
 			$onChange = 'return inline.importNewRecord(\'' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '\')';
 			$item = '
-				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector" class="t3-formengine-field-select"' . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
-					' . implode('
-					', $opt) . '
+				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector" class="form-control"' . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
+					' . implode('', $opt) . '
 				</select>';
 			// Add a "Create new relation" link for adding new relations
 			// This is necessary, if the size of the selector is "1" or if
@@ -892,10 +921,15 @@ class InlineElement {
 			} else {
 				$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 			}
-			$item .= ' <a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" align="abstop">' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '</a>';
+			$item .= '
+				<span class="input-group-btn">
+					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '">
+						' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '
+					</a>
+				</span>';
 			// Wrap the selector and add a spacer to the bottom
 			$nameObject = $this->inlineNames['object'];
-			$item = '<div class="t3-form-field-group ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
+			$item = '<div class="input-group form-group ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
 		}
 		return $item;
 	}
@@ -938,9 +972,11 @@ class InlineElement {
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
 		$onClick = 'setFormValueOpenBrowser(\'' . $mode . '\', \'' . $browserParams . '\'); return false;';
 
-		$item = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onClick) . '">';
-		$item .= IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText));
-		$item .= $createNewRelationText . '</a>';
+		$item = '
+			<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onClick) . '">
+				' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . '
+				' . $createNewRelationText . '
+			</a>';
 
 		if ($showUpload && $this->fObj->edit_docModuleUpload) {
 			$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
@@ -965,8 +1001,17 @@ class InlineElement {
 			}
 		}
 
+		$item = '<div class="form-control-wrap">' . $item . '</div>';
+		$allowedList = '';
+		$allowedArray = GeneralUtility::trimExplode(',', $allowed, TRUE);
 		$allowedLabel = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', TRUE);
-		$item .= '<span class="btn-after">' . $allowedLabel . ' ' . $allowed . '</span>';
+		foreach ($allowedArray as $allowedItem) {
+			$allowedList .= '<span class="label label-success">' . strtoupper($allowedItem) . '</span> ';
+		}
+		if (!empty($allowedList)) {
+			$item .= '<div class="help-block">' . $allowedLabel . '<br>' . $allowedList . '</div>';
+		}
+		$item = '<div class="form-group">' . $item . '</div>';
 		return $item;
 	}
 
@@ -2223,8 +2268,10 @@ class InlineElement {
 	 * @param array $styleAttrs Attributes for the style argument in the table tag
 	 * @param array $tableAttrs Attributes for the table tag (like width, border, etc.)
 	 * @return string The wrapped HTML code
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.
 	 */
 	public function wrapFormsSection($section, $styleAttrs = array(), $tableAttrs = array()) {
+		GeneralUtility::logDeprecatedFunction();
 		$style = '';
 		$table = '';
 		foreach ($styleAttrs as $key => $value) {

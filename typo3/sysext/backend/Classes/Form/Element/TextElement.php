@@ -37,7 +37,7 @@ class TextElement extends AbstractFormElement {
 		$config = $additionalInformation['fieldConf']['config'];
 
 		// Setting columns number
-		$cols = MathUtility::forceIntegerInRange($config['cols'] ?: 30, 5, $this->formEngine->maxTextareaWidth);
+		$cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->formEngine->defaultInputWidth, $this->formEngine->minimumInputWidth, $this->formEngine->maxInputWidth);
 
 		// Setting number of rows
 		$rows = MathUtility::forceIntegerInRange($config['rows'] ?: 5, 1, 20);
@@ -45,7 +45,7 @@ class TextElement extends AbstractFormElement {
 
 		$itemFormElementValueLength = strlen($additionalInformation['itemFormElValue']);
 		if ($itemFormElementValueLength > $this->formEngine->charsPerRow * 2) {
-			$cols = $this->formEngine->maxTextareaWidth;
+			$cols = $this->formEngine->maxInputWidth;
 			$rows = MathUtility::forceIntegerInRange(
 				round($itemFormElementValueLength / $this->formEngine->charsPerRow),
 				count(explode(LF, $additionalInformation['itemFormElValue'])),
@@ -146,38 +146,7 @@ class TextElement extends AbstractFormElement {
 			if ($specialConfiguration['rte_only']) {
 				$item = '<p><em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRTEfound')) . '</em></p>';
 			} else {
-				if ($specialConfiguration['nowrap']) {
-					$wrap = 'off';
-				} else {
-					$wrap = $config['wrap'] ?: 'virtual';
-				}
-				$classes = array();
-				if ($specialConfiguration['fixed-font']) {
-					$classes[] = 'fixed-font';
-				}
-				if ($specialConfiguration['enable-tab']) {
-					$classes[] = 'enable-tab';
-				}
-				$formWidthText = $this->formWidthText($cols, $wrap);
-				// add the max-height from the users' preference to it
-				$maximumHeight = (int)$this->getBackendUserAuthentication()->uc['resizeTextareas_MaxHeight'];
-				if ($maximumHeight > 0) {
-					$formWidthText = str_replace('style="', 'style="max-height: ' . $maximumHeight . 'px; ', $formWidthText);
-				}
-
-				// Extract class attributes from $formWidthText (otherwise it would be added twice to the output)
-				$res = array();
-				if (preg_match('/ class="(.+?)"/', $formWidthText, $res)) {
-					$formWidthText = str_replace(' class="' . $res[1] . '"', '', $formWidthText);
-					$classes = array_merge($classes, explode(' ', $res[1]));
-				}
-
-				if (!empty($classes)) {
-					$class = ' class="tceforms-textarea t3js-formengine-textarea ' . implode(' ', $classes) . '"';
-				} else {
-					$class = ' class="tceforms-textarea t3js-formengine-textarea"';
-				}
-
+				// validation
 				foreach ($evalList as $func) {
 					if ($func === 'required') {
 						$this->formEngine->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $additionalInformation['itemFormElName']);
@@ -193,16 +162,56 @@ class TextElement extends AbstractFormElement {
 						}
 					}
 				}
-				$textOnChange = implode('', $additionalInformation['fieldChangeFunc']);
-				$additionalAttributes = '';
-				if (isset($config['max']) && (int)$config['max'] > 0) {
-					$additionalAttributes = ' maxlength="' . (int)$config['max'] . '"';
+
+				// calculate classes
+				$classes = array();
+				//$classes[] = 'tceforms-textarea';
+				$classes[] = 'form-control';
+				$classes[] = 't3js-formengine-textarea';
+				if ($specialConfiguration['fixed-font']) {
+					$classes[] = 'text-monospace';
 				}
-				$item .= '
-							<textarea ' . 'id="' . str_replace('.', '', uniqid('tceforms-textarea-', TRUE)) . '" ' . 'name="' . $additionalInformation['itemFormElName']
-					. '"' . $formWidthText . $class . ' ' . 'rows="' . $rows . '" ' . 'wrap="' . $wrap . '" ' . 'onchange="'
-					. htmlspecialchars($textOnChange) . '"' . $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
-					. $additionalInformation['onFocus'] . $additionalAttributes . '>' . GeneralUtility::formatForTextarea($additionalInformation['itemFormElValue']) . '</textarea>';
+				if ($specialConfiguration['enable-tab']) {
+					$classes[] = 'enable-tab';
+				}
+
+				// calculate inline styles
+				$styles = array();
+				// add the max-height from the users' preference to it
+				$maximumHeight = (int)$this->getBackendUserAuthentication()->uc['resizeTextareas_MaxHeight'];
+				if ($maximumHeight > 0) {
+					$styles[] = 'max-height: ' . $maximumHeight . 'px';
+				}
+
+				// calculate attributes
+				$attributes = array();
+				$attributes['id'] = str_replace('.', '', uniqid('formengine-textarea-', TRUE));
+				$attributes['name'] = $additionalInformation['itemFormElName'];
+				if (!empty($styles)) {
+					$attributes['style'] = implode(' ', $styles);
+				}
+				if (!empty($classes)) {
+					$attributes['class'] = implode(' ', $classes);
+				}
+				$attributes['rows'] = $rows;
+				$attributes['wrap'] = $specialConfiguration['nowrap'] ? 'off' : ($config['wrap'] ?: 'virtual');
+				$attributes['onChange'] = htmlspecialchars(implode('', $additionalInformation['fieldChangeFunc']));
+				if (isset($config['max']) && (int)$config['max'] > 0) {
+					$attributes['maxlength'] = (int)$config['max'];
+				}
+				$attributeString = '';
+				foreach ($attributes as $attributeName => $attributeValue) {
+					$attributeString .= ' '. $attributeName . '="' . $attributeValue . '"';
+				}
+
+				// Build the textarea
+				$item .= '<textarea'
+							. $attributeString
+							. $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
+							. $additionalInformation['onFocus']
+							. '>' . GeneralUtility::formatForTextarea($additionalInformation['itemFormElValue']) . '</textarea>';
+
+				// Wrap a wizard around the item?
 				$item = $this->formEngine->renderWizards(
 					array($item, $altItem),
 					$config['wizards'],
@@ -214,27 +223,12 @@ class TextElement extends AbstractFormElement {
 					$specialConfiguration,
 					$rteWouldHaveBeenLoaded
 				);
+
+				$maximumWidth = (int)$this->formEngine->formMaxWidth($cols);
+				$item = '<div class="form-control-wrap"' . ($maximumWidth ? ' style="max-width: ' . $maximumWidth . 'px"' : '') . '>' . $item . '</div>';
 			}
 		}
 		return $item;
-	}
-
-	/**
-	 * Returns parameters to set with for a textarea field
-	 *
-	 * @param int $size The abstract width (1-48)
-	 * @param string $wrap Empty or "off" (text wrapping in the field or not)
-	 * @return string The "cols" attribute string (or style from formWidth())
-	 * @see formWidth()
-	 */
-	protected function formWidthText($size = 48, $wrap = '') {
-		$wTags = $this->formEngine->formWidth($size, TRUE);
-		// Netscape 6+ seems to have this ODD problem where there WILL ALWAYS be wrapping
-		// with the cols-attribute set and NEVER without the col-attribute...
-		if (strtolower(trim($wrap)) != 'off' && $GLOBALS['CLIENT']['BROWSER'] == 'net' && $GLOBALS['CLIENT']['VERSION'] >= 5) {
-			$wTags .= ' cols="' . $size . '"';
-		}
-		return $wTags;
 	}
 
 }

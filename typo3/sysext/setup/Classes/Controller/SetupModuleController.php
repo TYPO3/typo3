@@ -556,7 +556,7 @@ class SetupModuleController {
 							}
 							$onClick = vsprintf($onClick, $config['onClickLabels']);
 						}
-						$html = '<br><input type="button"
+						$html = '<br><input class="btn btn-default" type="button"
 							value="' . $this->getLabel($config['buttonlabel'], '', FALSE) . '"
 							onclick="' . $onClick . '" />';
 					}
@@ -566,10 +566,10 @@ class SetupModuleController {
 					$html = '';
 			}
 
-			$code[] = '<div class="form-group">' .
+			$code[] = '<div class="form-section"><div class="form-group">' .
 				$label .
 				$html .
-				'</div>';
+				'</div></div>';
 		}
 
 		$result[] = array(

@@ -1,8 +1,10 @@
 //
 // Panel
 //
-
 .panel {
+	&.ui-sortable-helper {
+		border-style: dashed;
+	}
 	.panel-heading {
 		font-weight: bold;
 	}
@@ -13,6 +15,82 @@
 	}
 }
 
+//
+// Panel heading
+//
+.panel-heading {
+	position: relative;
+	&[data-toggle="formengine-inline"] {
+		cursor: pointer;
+	}
+}
+
+//
+// Panel condensed
+//
+.panel-condensed {
+	.panel-heading {
+		padding: 5px;
+	}
+}
+
+//
+// Panel collapse
+//
+.panel-heading-collapse-indicator {
+	position: absolute;
+	left: 2px;
+	margin-top: -2px;
+	top: 50%;
+
+}
+.panel-collapsed {
+	.panel-heading {
+		.caret {.transition(all 0.25s ease-in-out);
+			.rotate(-90deg);
+		}
+	}
+	.panel-collapse  {
+		display: none;
+		visibility: hidden;
+	}
+}
+.panel,
+.panel-collapse {
+	> .alert {
+		border: none;
+		border-top: 1px solid @panel-default-border;
+		margin: 0;
+		padding: 9px 12px;
+	}
+	> .form-section,
+	> .tab-content > .form-section,
+	> .tab-content > .tab-pane > .form-section {
+		border-left: 0;
+		border-right: 0;
+		border-bottom: 0;
+	}
+	> .nav-tabs {
+		border-top: 1px solid @panel-default-border;
+		padding-top: 8px;
+		> li {
+			margin-left: -1px;
+		}
+	}
+}
+
+//
+// Panel hover
+//
+.panel-hover {
+	.panel-default:hover > .panel-heading  {
+		background-color: lighten(@panel-default-heading-bg, 3%);
+	}
+}
+
+//
+// Panel space
+//
 .panel-space {
 	margin: 3em 0;
 }

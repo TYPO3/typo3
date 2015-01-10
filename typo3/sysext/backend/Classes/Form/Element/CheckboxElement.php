@@ -159,7 +159,6 @@ class CheckboxElement extends AbstractFormElement {
 				<label>
 					<input type="checkbox"
 						value="1"
-						class="' . $this->cssClassTypeElementPrefix . 'check"
 						name="' . $checkboxName . '"
 						' . $checkboxParameters . '
 						' . $additionalInformation['onFocus'] . '

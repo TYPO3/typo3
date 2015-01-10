@@ -92,7 +92,7 @@ class FileEditHook {
 		}
 		$attributes = 'rows="30" ' . 'wrap="off" ' . $pObj->doc->formWidth(48, TRUE, 'width:98%;height:60%');
 		$title = $GLOBALS['LANG']->getLL('file') . ' ' . htmlspecialchars($pObj->target);
-		$outCode = $t3editor->getCodeEditor('file[editfile][0][data]', 'fixed-font enable-tab', '$1', $attributes, $title, array(
+		$outCode = $t3editor->getCodeEditor('file[editfile][0][data]', 'text-monospace enable-tab', '$1', $attributes, $title, array(
 			'target' => (int)$pObj->target
 		));
 		$parameters['pageContent'] = preg_replace('/\\<textarea .*name="file\\[editfile\\]\\[0\\]\\[data\\]".*\\>([^\\<]*)\\<\\/textarea\\>/mi', $outCode, $parameters['pageContent']);

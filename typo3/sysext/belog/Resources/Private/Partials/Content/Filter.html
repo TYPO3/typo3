@@ -135,29 +135,39 @@
 				<tr>
 					<td colspan="8">
 						<div class="form-group col-sm-5">
-							<label for="manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xlf:from" /></label>&nbsp;
-							<div class="input-group date t3js-datetimepicker" data-date-offset="0" id="tceforms-datetimefield-manualDateStart-wrapper">
+							<label for="manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xlf:from" /></label>
+							<div class="input-group">
 								<f:form.textfield
 										name="manualDateStart"
 										value="{f:if(condition: constraint.startTimestamp, then: \"{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.startTimestamp}')}\")}"
 										id="manualDateStart"
-										class="form-control datetime"
+										class="form-control t3js-datetimepicker t3js-clearable"
+										data="{date-type: 'datetime', date-offset: 0}"
 										/>
 								<f:form.hidden property="startTimestamp" value="{constraint.startTimestamp}" />
-								<span class="input-group-addon datepickerbutton"><span class="fa fa-calendar"></span></span>
+								<span class="input-group-btn">
+									<label class="btn btn-default" for="manualDateStart">
+										<span class="fa fa-calendar"></span>
+									</label>
+								</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-5">
-							<label for="manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xlf:to" /></label>&nbsp;
-							<div class="input-group date t3js-datetimepicker" data-date-offset="0" id="tceforms-datetimefield-manualDateStop-wrapper">
+							<label for="manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xlf:to" /></label>
+							<div class="input-group">
 								<f:form.textfield
 										name="manualDateStop"
 										value="{f:format.date(format:'{settings.timeFormat} {settings.dateFormat}', date: '@{constraint.endTimestamp}')}"
 										id="manualDateStop"
-										class="form-control datetime"
+										class="form-control t3js-datetimepicker t3js-clearable"
+										data="{date-type: 'datetime', date-offset: 0}"
 										/>
 								<f:form.hidden property="endTimestamp" />
-								<span class="input-group-addon datepickerbutton"><span class="fa fa-calendar"></span></span>
+								<span class="input-group-btn">
+									<label class="btn btn-default" for="manualDateStop">
+										<span class="fa fa-calendar"></span>
+									</label>
+								</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-2">

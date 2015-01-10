@@ -153,7 +153,6 @@ return array(
 				'minitems' => '0',
 				'default' => '',
 				'wizards' => array(
-					'_PADDING' => 4,
 					'_VERTICAL' => 1,
 					'suggest' => array(
 						'type' => 'suggest'

@@ -42,63 +42,55 @@
 			if (!$input.data('clearable')) {
 				$input.data('clearable', 'loaded');
 
-				var $inputFieldWithValue = $input;
-				// the hidden field that holds the real data, used in FormEngine
-				if ($input.next('input[type=hidden]').length) {
-					$inputFieldWithValue = $input.next('input[type=hidden]');
-				}
-
 				// Wrap it with a div and add a span that is the trigger for
 				// clearing.
-				$input.wrap('<div class="t3-clearable-wrapper"/>');
-				$input.after('<span class="t3-icon t3-icon-actions t3-icon-actions-input t3-icon-input-clear t3-input-clearer"/>');
-				$input.addClass('t3-clearable');
+				$input.wrap('<div class="form-control-clearable" />');
+				$input.after('<button class="close"><span class="fa fa-times" /></button>');
+				$input.addClass('t3js-clearable');
 
-				var $wrapper = $input.parent();
 				var $clearer = $input.next();
-
-				// Add some data to the wrapper indicating if it is currently being
-				// hovered or not.
-				$input.data('isHovering', false);
-				$wrapper.hover(function() {
-					$input.data('isHovering', true);
-				}, function() {
-					$input.data('isHovering', false);
-				});
 
 				// Register a listener the various events triggering the clearer to
 				// be shown or hidden.
 				var handler = function() {
-					var value = $inputFieldWithValue.val();
+					$element = $(this);
+					if ($element.next('input[type=hidden]').length) {
+						$element = $element.next('input[type=hidden]');
+					}
+					var value = $element.val();
 					var hasEmptyValue = (value.length === 0);
-					if (value == "0" && $inputFieldWithValue.closest('.date').length) {
+					if (value === "0" && $element.closest('.t3js-datetimepicker').length) {
 						hasEmptyValue = true;
 					}
+
 					// only show the clearing button if the value is set, or if the value is not "0" on a datetime field
-					if ($input.data('isHovering') && !hasEmptyValue) {
+					if (!hasEmptyValue) {
 						$clearer.show();
 					} else {
 						$clearer.hide();
 					}
 				};
-
-				$wrapper.on('mouseover mouseout', handler);
-				$input.on('keypress', handler);
-
+				$input.on('keyup', handler);
+				$input.on('mouseenter', handler);
+				$input.on('change', handler);
+				$input.on('initialize', handler);
 
 				// The actual clearing action. Focus the input element afterwards,
 				// the user probably wants to type into it after clearing.
-				$clearer.click(function() {
-					$input.val('').change().focus();
-					handler();
+				$clearer.click(function(e) {
+					e.preventDefault();
+					$input.val('').change();
+					if (!$input.hasClass("t3js-datetimepicker")) {
+						$input.focus();
+					}
+					$input.trigger('keyup');
 
 					if ('function' === typeof(settings.onClear)) {
 						settings.onClear.call($input.get());
 					}
 				});
 
-				// Initialize the clearer icon
-				handler();
+				$input.trigger('initialize');
 			}
 		});
 	};

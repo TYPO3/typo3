@@ -35,12 +35,6 @@ span.item-state-deleted {
 	display: inline-block;
 	padding: 4px 4px;
 }
-div.typo3-dyntabmenu-divs {
-	border-top: 0px none;
-	padding: 5px 5px;
-	padding-bottom: 10px;
-	overflow: hidden;
-}
 .x-toolbar {
 	background:none !important;
 }

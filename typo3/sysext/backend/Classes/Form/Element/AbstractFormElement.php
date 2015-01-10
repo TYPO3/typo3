@@ -26,11 +26,6 @@ use TYPO3\CMS\Lang\LanguageService;
 abstract class AbstractFormElement {
 
 	/**
-	 * @var string A CSS class name prefix for all element types, single elements add their type to this string
-	 */
-	protected $cssClassTypeElementPrefix = 't3-formengine-field-';
-
-	/**
 	 * @var FormEngine
 	 */
 	protected $formEngine;

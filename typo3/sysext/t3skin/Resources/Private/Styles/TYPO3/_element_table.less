@@ -204,10 +204,39 @@ table {
 }
 
 //
-// Sets the background back to transparent
+// Sets the background to white
+//
+.table-white {
+	background-color: #fff;
+}
+
+
+//
+// Sets the background to transparent
 //
 .table-transparent {
 	background-color: transparent;
+}
+
+//
+// Centers the text in all cells of the table
+//
+.table-center {
+	th,
+	td {
+		text-align: center
+	}
+}
+
+//
+// Sets a rudimentary table styling
+//
+.table-basic {
+	width: 100%;
+	th,
+	td {
+		vertical-align: middle;
+	}
 }
 
 //
@@ -264,5 +293,14 @@ table {
 				white-space: normal;
 			}
 		}
+	}
+}
+.table-fit-inline-block {
+	max-width: 100%;
+	width: auto;
+	display: inline-block;
+	margin: 0;
+	> .table {
+		width: auto;
 	}
 }

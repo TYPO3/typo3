@@ -40,15 +40,9 @@ define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
 
 				// initialize the datepicker on each selected element
 				$dateTimeFields.each(function() {
-					var $container = $(this);
-					var $currentElement = $container.find('.form-control');
+					var $element = $(this);
 					var format = DateTimePicker.options.format;
-					var isDateTimeField = $currentElement.hasClass('tceforms-datetimefield') || $currentElement.hasClass('datetime');
-					var isDateField = $currentElement.hasClass('tceforms-datefield') || $currentElement.hasClass('date');
-					var isTimeField = $currentElement.hasClass('tceforms-timefield') || $currentElement.hasClass('time');
-					var isTimeSecField = $currentElement.hasClass('tceforms-timesecfield');
-					var isYearField = $currentElement.hasClass('tceforms-timesecfield');
-
+					var type = $element.data('dateType');
 					var options = {
 						pick12HourFormat: false,
 						pickDate: true,
@@ -63,44 +57,47 @@ define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
 						}
 					};
 
-					if (isDateTimeField) {
-						options.format = format[1];
-					}
-					if (isDateField) {
-						options.format = format[0];
-						options.pickTime = false;
-					}
-					if (isTimeSecField) {
-						options.format = 'hh:mm:ss';
-						options.pickDate = false;
-						options.useSeconds = true;
-					}
-					if (isTimeField) {
-						options.pickDate = false;
-						options.format = 'hh:mm';
-					}
-					if (isYearField) {
-						options.format = 'YYYY';
-						options.pickDate = true;
-						options.pickTime = false;
+					// set options based on type
+					switch (type) {
+						case 'datetime':
+							options.format = format[1];
+							break;
+						case 'date':
+							options.format = format[0];
+							options.pickTime = false;
+							break;
+						case 'time':
+							options.pickDate = false;
+							options.format = 'hh:mm';
+							break;
+						case 'timesec':
+							options.format = 'hh:mm:ss';
+							options.pickDate = false;
+							options.useSeconds = true;
+							break;
+						case 'year':
+							options.format = 'YYYY';
+							options.pickDate = true;
+							options.pickTime = false;
+							break;
 					}
 
 					// initialize the date time picker on this element
-					$container.datetimepicker(options);
+					$element.datetimepicker(options);
 				});
 
-				$dateTimeFields.on('blur', '.form-control', function(event) {
-					var $target = $(event.target);
-					var $datePicker = $target.closest(DateTimePicker.options.fieldSelector);
-					var $hiddenField = $datePicker.find('input[type=hidden]');
-					var calculateTimeZoneOffset = $datePicker.data('date-offset');
+				$dateTimeFields.on('blur', function(event) {
 
-					if ($target.val() == '') {
+					var $element = $(this);
+					var $hiddenField = $element.parent().find('input[type=hidden]');
+					var calculateTimeZoneOffset = $element.data('date-offset');
+
+					if ($element.val() === '') {
 						$hiddenField.val('');
 					} else {
-						var format = $datePicker.data('DateTimePicker').format;
-						var date = moment($target.val(), format);
-						if (typeof calculateTimeZoneOffset != 'undefined') {
+						var format = $element.data('DateTimePicker').format;
+						var date = moment($element.val(), format);
+						if (typeof calculateTimeZoneOffset !== 'undefined') {
 							var timeZoneOffset = parseInt(calculateTimeZoneOffset);
 						} else {
 							var timeZoneOffset = date.zone() * 60;
@@ -110,22 +107,22 @@ define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
 							$hiddenField.val(date.unix() - timeZoneOffset);
 						} else {
 							date = moment($hiddenField.val() + timeZoneOffset, 'X');
-							$target.val(date.format(format));
+							$element.val(date.format(format));
 						}
 					}
 				});
 
 				// on datepicker change, write the selected date with the timezone offset to the hidden field
 				$dateTimeFields.on('dp.change', function(event) {
+					var $element = $(this);
 					var date = event.date;
-					var $datePicker = $(event.currentTarget);
-					var calculateTimeZoneOffset = $datePicker.data('date-offset');
-					if (typeof calculateTimeZoneOffset != 'undefined') {
+					var calculateTimeZoneOffset = $element.data('date-offset');
+					if (typeof calculateTimeZoneOffset !== 'undefined') {
 						var timeZoneOffset = parseInt(calculateTimeZoneOffset);
 					} else {
 						var timeZoneOffset = date.zone() * 60;
 					}
-					var $hiddenField = $datePicker.find('input[type=hidden]');
+					var $hiddenField = $element.parent().find('input[type=hidden]');
 					$hiddenField.val(date.unix() - timeZoneOffset);
 				});
 			});

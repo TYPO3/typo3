@@ -42,7 +42,7 @@ class FormWizard {
 		$doc = $GLOBALS['SOBE']->doc;
 		$attributes = 'rows="' . $config['rows'] . '" ' . 'cols="' . $config['cols'] . '" ' . 'wrap="off" ' . 'style="' . $config['wizards']['t3editor']['params']['style'] . '" ' . 'onchange="' . $parameters['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] . '" ';
 		$parameters['item'] = '';
-		$parameters['item'] .= $t3editor->getCodeEditor($parameters['itemName'], 'fixed-font enable-tab', $parameters['row'][$parameters['field']], $attributes, $parameters['table'] . ' > ' . $parameters['field'], array(
+		$parameters['item'] .= $t3editor->getCodeEditor($parameters['itemName'], 'text-monospace enable-tab', $parameters['row'][$parameters['field']], $attributes, $parameters['table'] . ' > ' . $parameters['field'], array(
 			'target' => (int)$pObj->target
 		));
 		$parameters['item'] .= $t3editor->getJavascriptCode($doc);

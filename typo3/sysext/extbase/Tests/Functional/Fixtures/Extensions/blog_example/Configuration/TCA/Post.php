@@ -87,7 +87,6 @@ $TCA['tx_blogexample_domain_model_post'] = array(
 				'type' => 'select',
 				'foreign_table' => 'tx_blogexample_domain_model_person',
 				'wizards' => Array(
-					 '_PADDING' => 1,
 					 '_VERTICAL' => 1,
 					 'edit' => Array(
 						 'type' => 'popup',

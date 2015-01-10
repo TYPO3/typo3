@@ -216,7 +216,7 @@ class SelectElement extends AbstractFormElement {
 			$itemsToSelect = '
 				<select data-relatedfieldname="' . htmlspecialchars($PA['itemFormElName']) . '" data-exclusivevalues="'
 				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . $PA['itemFormElName'] . '_sel" '
-				. ' class="' . $this->cssClassTypeElementPrefix . 'select tceforms-multiselect tceforms-itemstoselect t3-form-select-itemstoselect" '
+				. ' class="form-control t3js-formengine-select-itemstoselect" '
 				. ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"'
 				. $PA['onFocus'] . $selector_itemListStyle . '>
 					' . implode('
@@ -225,7 +225,13 @@ class SelectElement extends AbstractFormElement {
 
 			// enable filter functionality via a text field
 			if ($config['enableMultiSelectFilterTextfield']) {
-				$filterTextfield = '<span class="input-group"><span class="input-group-addon"><span class="fa fa-filter"></span></span><input class="t3-form-multiselect-filter-textfield form-control" value="" /></span>';
+				$filterTextfield = '
+					<span class="input-group input-group-sm">
+						<span class="input-group-addon">
+							<span class="fa fa-filter"></span>
+						</span>
+						<input class="t3js-formengine-multiselect-filter-textfield form-control" value="" />
+					</span>';
 			}
 
 			// enable filter functionality via a select
@@ -237,16 +243,19 @@ class SelectElement extends AbstractFormElement {
 					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($languageService->sL($optionElement[0])) . '">'
 						. htmlspecialchars($optionValue) . '</option>';
 				}
-				$filterSelectbox = '<select class="t3-form-multiselect-filter-dropdown form-control">
+				$filterSelectbox = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">
 						' . implode('
 						', $filterDropDownOptions) . '
 					</select>';
 			}
 		}
 
-		$selectBoxFilterContents = trim($filterSelectbox . $filterTextfield);
-		if (!empty($selectBoxFilterContents)) {
-			$selectBoxFilterContents = '<div class="form-inline"><div class="t3-form-multiselect-filter-container form-group-sm pull-right">' . $selectBoxFilterContents . '</div></div>';
+		if (!empty(trim($filterSelectbox)) && !empty(trim($filterTextfield))) {
+			$filterSelectbox = '<div class="form-multigroup-item form-multigroup-element">' . $filterSelectbox . '</div>';
+			$filterTextfield = '<div class="form-multigroup-item form-multigroup-element">' . $filterTextfield . '</div>';
+			$selectBoxFilterContents = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">' . $filterSelectbox . $filterTextfield . '</div>';
+		} else {
+			$selectBoxFilterContents = trim($filterSelectbox . ' ' . $filterTextfield);
 		}
 
 		// Pass to "dbFileIcons" function:
@@ -260,11 +269,12 @@ class SelectElement extends AbstractFormElement {
 			'maxitems' => $maxitems,
 			'info' => '',
 			'headers' => array(
-				'selector' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.selected') . ':<br />',
-				'items' => '<div class="pull-left">' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.items') . ':</div>' . $selectBoxFilterContents
+				'selector' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.selected'),
+				'items' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.items'),
+				'selectorbox' => $selectBoxFilterContents,
 			),
 			'noBrowser' => 1,
-			'thumbnails' => $itemsToSelect,
+			'rightbox' => $itemsToSelect,
 			'readOnly' => $disabled
 		);
 		$item .= $this->formEngine->dbFileIcons($PA['itemFormElName'], '', '', $itemArray, '', $params, $PA['onFocus']);
@@ -360,12 +370,13 @@ class SelectElement extends AbstractFormElement {
 	 * @param array $row See getSingleField_typeSelect()
 	 * @param array $PA See getSingleField_typeSelect()
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param array $selItems Items available for selection
-	 * @param string $nMV_label Label for no-matching-value
+	 * @param array $selectItems Items available for selection
+	 * @param string $noMatchingLabel Label for no-matching-value
 	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
 	 */
-	public function getSingleField_typeSelect_single($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
+	public function getSingleField_typeSelect_single($table, $field, $row, &$PA, $config, $selectItems, $noMatchingLabel) {
+
 		// check against inline uniqueness
 		$inlineParent = $this->formEngine->inline->getStructureLevel(-1);
 		$uniqueIds = NULL;
@@ -385,20 +396,21 @@ class SelectElement extends AbstractFormElement {
 				$uniqueIds[] = $inlineParent['uid'];
 			}
 		}
+
 		// Initialization:
-		$c = 0;
-		$sI = 0;
+		$selectId = str_replace('.', '', uniqid('tceforms-select-', TRUE));
+		$selectedIndex = 0;
+		$selectedIcon = '';
 		$noMatchingValue = 1;
-		$opt = array();
-		$selicons = array();
 		$onlySelectedIconShown = 0;
 		$size = (int)$config['size'];
+
 		// Style set on <select/>
-		$selectedStyle = '';
-		$item = '';
-		$disabled = '';
+		$out = '';
+		$options = '';
+		$disabled = FALSE;
 		if ($this->isRenderReadonly() || $config['readOnly']) {
-			$disabled = ' disabled="disabled"';
+			$disabled = TRUE;
 			$onlySelectedIconShown = 1;
 		}
 		// Register as required if minitems is greater than zero
@@ -417,121 +429,145 @@ class SelectElement extends AbstractFormElement {
 		} else {
 			$suppressIcons = 0;
 		}
-		// Traverse the Array of selector box items:
-		$optGroupStart = array();
-		$optGroupOpen = FALSE;
-		$classesForSelectTag = array();
-		foreach ($selItems as $p) {
-			$sM = (string)$PA['itemFormElValue'] === (string)$p[1] ? ' selected="selected"' : '';
-			if ($sM) {
-				$sI = $c;
-				$noMatchingValue = 0;
-			}
-			// Getting style attribute value (for icons):
-			$styleAttrValue = '';
-			if ($config['iconsInOptionTags']) {
-				$styleAttrValue = $this->formEngine->optionTagStyle($p[2]);
-				if ($sM) {
-					list($selectIconFile, $selectIconInfo) = $this->formEngine->getIcon($p[2]);
-					if (!empty($selectIconInfo)) {
-						$selectedStyle = ' style="background-image:url(' . $selectIconFile . ');"';
-						$classesForSelectTag[] = 'typo3-TCEforms-select-selectedItemWithBackgroundImage';
-					}
+
+		// Prepare groups
+		$selectItemCounter = 0;
+		$selectItemGroupCount = 0;
+		$selectItemGroups = array();
+		$selectIcons = array();
+		foreach ($selectItems as $item) {
+			if ($item[1] === '--div--') {
+				// IS OPTGROUP
+				if ($selectItemCounter !== 0) {
+					$selectItemGroupCount++;
 				}
-			}
-			// Compiling the <option> tag:
-			if (!($p[1] != $PA['itemFormElValue'] && is_array($uniqueIds) && in_array($p[1], $uniqueIds))) {
-				if ($p[1] === '--div--') {
-					$optGroupStart[0] = $p[0];
-					if ($config['iconsInOptionTags']) {
-						$optGroupStart[1] = $this->formEngine->optgroupTagStyle($p[2]);
-					} else {
-						$optGroupStart[1] = $styleAttrValue;
-					}
-				} else {
-					if (count($optGroupStart)) {
-						// Closing last optgroup before next one starts
-						if ($optGroupOpen) {
-							$opt[] = '</optgroup>' . LF;
-						}
-						$opt[] = '<optgroup label="' . htmlspecialchars($optGroupStart[0], ENT_COMPAT, 'UTF-8', FALSE)
-							. '"' . ($optGroupStart[1] ? ' style="' . htmlspecialchars($optGroupStart[1]) . '"' : '')
-							. ' class="c-divider">' . LF;
-						$optGroupOpen = TRUE;
-						$c--;
-						$optGroupStart = array();
-					}
-					$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . $sM
-						. ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) . '"' : '') . '>'
-						. htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE) . '</option>' . LF;
-				}
-			}
-			// If there is an icon for the selector box (rendered in selicon-table below)...:
-			// if there is an icon ($p[2]), icons should be shown, and, if only selected are visible, is it selected
-			if ($p[2] && !$suppressIcons && (!$onlySelectedIconShown || $sM)) {
-				list($selIconFile, $selIconInfo) = $this->formEngine->getIcon($p[2]);
-				$iOnClick = $this->formEngine->elName($PA['itemFormElName']) . '.selectedIndex=' . $c . '; ' . $this->formEngine->elName($PA['itemFormElName']);
-				$iOnClickOptions = $this->formEngine->elName($PA['itemFormElName']) . '.options[' . $c . ']';
-				if (empty($selIconInfo)) {
-					$iOnClick .= '.className=' . $iOnClickOptions . '.className; ';
-				} else {
-					$iOnClick .= '.style.backgroundImage=' . $iOnClickOptions . '.style.backgroundImage; ';
-				}
-				$iOnClick .= implode('', $PA['fieldChangeFunc']) . 'this.blur(); return false;';
-				$selicons[] = array(
-					(!$onlySelectedIconShown ? '<a href="#" onclick="' . htmlspecialchars($iOnClick) . '">' : '')
-					. $this->formEngine->getIconHtml($p[2], htmlspecialchars($p[0]), htmlspecialchars($p[0]))
-					. (!$onlySelectedIconShown ? '</a>' : ''),
-					$c,
-					$sM
+				$selectItemGroups[$selectItemGroupCount]['header'] = array(
+					'title' => $item[0],
+					'icon' => (!empty($item[2]) ? $this->formEngine->getIconHtml($item[2]) : '')
 				);
+			} else {
+				// IS ITEM
+				$title = htmlspecialchars($item['0'], ENT_COMPAT, 'UTF-8', FALSE);
+				$value = htmlspecialchars($item[1]);
+				$icon = (!empty($item[2]) ? $this->formEngine->getIconHtml($item[2], $title, $title) : '');
+				$selected = ((string)$PA['itemFormElValue'] === (string)$item[1] ? 1 : 0);
+				if ($selected) {
+					$selectedIndex = $selectItemCounter;
+					$selectedValue = $item[1];
+					$selectedIcon = $icon;
+					$noMatchingValue = 0;
+				}
+				$selectItemGroups[$selectItemGroupCount]['items'][] = array(
+					'title' => $title,
+					'value' => $value,
+					'icon' => $icon,
+					'selected' => $selected,
+					'index' => $selectItemCounter
+				);
+				// ICON
+				if ($icon && !$suppressIcons && (!$onlySelectedIconShown || $selected)) {
+					$onClick = $this->formEngine->elName($PA['itemFormElName']) . '.selectedIndex=' . $selectItemCounter . ';';
+					if ($config['iconsInOptionTags']) {
+						$onClick .= 'document.getElementById(\'' . $selectId . '_icon\').innerHTML = '
+							. $this->formEngine->elName($PA['itemFormElName'])
+							. '.options[' . $selectItemCounter . '].getAttribute(\'data-icon\'); ';
+					}
+					$onClick .= implode('', $PA['fieldChangeFunc']);
+					$onClick .= 'this.blur();return false;';
+					$selectIcons[] = array(
+						'title' => $title,
+						'icon' => $icon,
+						'index' => $selectItemCounter,
+						'onClick' => $onClick
+					);
+				}
+				$selectItemCounter++;
 			}
-			$c++;
+
 		}
-		// Closing optgroup if open
-		if ($optGroupOpen) {
-			$opt[] = '</optgroup>';
-		}
+
 		// No-matching-value:
 		if ($PA['itemFormElValue'] && $noMatchingValue && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-			$nMV_label = @sprintf($nMV_label, $PA['itemFormElValue']);
-			$opt[] = '<option value="' . htmlspecialchars($PA['itemFormElValue']) . '" selected="selected">' . htmlspecialchars($nMV_label) . '</option>';
+			$noMatchingLabel = @sprintf($noMatchingLabel, $PA['itemFormElValue']);
+			$options = '<option value="' . htmlspecialchars($PA['itemFormElValue']) . '" selected="selected">' . htmlspecialchars($noMatchingLabel) . '</option>';
+		} elseif (!$selectedIcon && $selectItemGroups[0]['items'][0]['icon']) {
+			$selectedIcon = $selectItemGroups[0]['items'][0]['icon'];
 		}
-		// Create item form fields:
-		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=' . $sI . ';} ' . implode('', $PA['fieldChangeFunc']);
-		if (!$disabled) {
-			// MUST be inserted before the selector - else is the value of the hiddenfield here mysteriously submitted...
-			$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '_selIconVal" value="' . htmlspecialchars($sI) . '" />';
-		}
-		if ($config['iconsInOptionTags']) {
-			$classesForSelectTag[] = 'icon-select';
-		}
-		$item .= '<select' . $selectedStyle . ' id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE)) . '" name="' . $PA['itemFormElName'] . '" class="' . $this->cssClassTypeElementPrefix . 'select ' . implode(' ', $classesForSelectTag) . '"' . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus'] . $disabled . '>';
-		$item .= implode('', $opt);
-		$item .= '</select>';
-		// Create icon table:
-		if (count($selicons) && !$config['noIconsBelowSelect']) {
-			$item .= '<div class="typo3-TCEforms-selectIcons">';
-			$selicon_cols = (int)$config['selicon_cols'];
-			if (!$selicon_cols) {
-				$selicon_cols = count($selicons);
-			}
-			$sR = ceil(count($selicons) / $selicon_cols);
-			$selicons = array_pad($selicons, $sR * $selicon_cols, '');
-			for ($sa = 0; $sa < $sR; $sa++) {
-				$item .= '<div>';
-				for ($sb = 0; $sb < $selicon_cols; $sb++) {
-					$sk = $sa * $selicon_cols + $sb;
-					$imgN = 'selIcon_' . $table . '_' . $row['uid'] . '_' . $field . '_' . $selicons[$sk][1];
-					$imgS = $selicons[$sk][2] ? $this->formEngine->backPath . 'gfx/content_selected.gif' : 'clear.gif';
-					$item .= '<span><img name="' . htmlspecialchars($imgN) . '" src="' . htmlspecialchars($imgS) . '" width="7" height="10" alt="" /></span>';
-					$item .= '<span>' . $selicons[$sk][0] . '</span>';
+
+		// Process groups
+		foreach ($selectItemGroups as $selectItemGroup) {
+			$optionGroup = is_array($selectItemGroup['header']);
+			$options .= ($optionGroup ? '<optgroup label="' . htmlspecialchars($selectItemGroup['header']['title'], ENT_COMPAT, 'UTF-8', FALSE) . '">' : '');
+			if (is_array($selectItemGroup['items'])) {
+				foreach ($selectItemGroup['items'] as $item) {
+					$options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
+						htmlspecialchars($item['icon']) . '"'
+						. ($item['selected'] ? ' selected="selected"' : '') . '>' . $item['title'] . '</option>';
 				}
-				$item .= '</div>';
 			}
-			$item .= '</div>';
+			$options .= ($optionGroup ? '</optgroup>' : '');
 		}
-		return $item;
+
+		// Create item form fields:
+		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=' . $selectedIndex . ';} ';
+		if ($config['iconsInOptionTags']) {
+			$sOnChange .= 'document.getElementById(\'' . $selectId . '_icon\').innerHTML = this.options[this.selectedIndex].getAttribute(\'data-icon\'); ';
+		}
+		$sOnChange .= implode('', $PA['fieldChangeFunc']);
+
+		// Add icons in option tags
+		$prepend = '';
+		$append = '';
+		if ($config['iconsInOptionTags']) {
+			$prepend = '<div class="input-group"><div id="' . $selectId . '_icon" class="input-group-addon input-group-icon t3js-formengine-select-prepend">' . $selectedIcon . '</div>';
+			$append = '</div>';
+		}
+
+		// Build the element
+		$out .= '
+			<div class="form-control-wrap">
+				' . $prepend . '
+				<select'
+					. ' id="' . $selectId . '"'
+					. ' name="' . $PA['itemFormElName'] . '"'
+					. ' class="form-control form-control-adapt"'
+					. ($size ? ' size="' . $size . '"' : '')
+					. ' onchange="' . htmlspecialchars($sOnChange) . '"'
+					. $PA['onFocus']
+					. ($disabled ? ' disabled="disabled"' : '')
+					. '>
+					' . $options . '
+				</select>
+				' . (!$disabled ? '<input type="hidden" name="' . $PA['itemFormElName'] . '_selIconVal" value="' . $selectedValue . '" />' : '') . '
+				' . $append . '
+			</div>';
+
+		// Create icon table:
+		if (count($selectIcons) && !$config['noIconsBelowSelect']) {
+			$selectIconColumns = (int)$config['selicon_cols'];
+			if (!$selectIconColumns) {
+				$selectIconColumns = count($selectIcons);
+			}
+			$selectIconColumns = ($selectIconColumns > 12 ? 12 : $selectIconColumns);
+			$selectIconRows = ceil(count($selectIcons) / $selectIconColumns);
+			$selectIcons = array_pad($selectIcons, $selectIconRows * $selectIconColumns, '');
+			$out .= '<div class="table-fit table-fit-inline-block"><table class="table table-condensed table-white table-center"><tbody><tr>';
+			for ($selectIconCount = 0; $selectIconCount < count($selectIcons); $selectIconCount++) {
+				if ($selectIconCount % $selectIconColumns === 0 && $selectIconCount !== 0) {
+					$out .= '</tr><tr>';
+				}
+				$out .= '<td>';
+				if (is_array($selectIcons[$selectIconCount])) {
+					$out .= (!$onlySelectedIconShown ? '<a href="#" title="' . $selectIcons[$selectIconCount]['title'] . '" onClick="' . htmlspecialchars($selectIcons[$selectIconCount]['onClick']) . '">' : '');
+					$out .= $selectIcons[$selectIconCount]['icon'];
+					$out .= (!$onlySelectedIconShown ? '</a>' : '');
+				}
+				$out . '</td>';
+			}
+			$out .= '</tr></tbody></table></div>';
+		}
+
+		return $out;
 	}
 
 	/**
@@ -778,7 +814,7 @@ class SelectElement extends AbstractFormElement {
 			// Non-selectable element:
 			$nonSel = '';
 			if ((string)$p[1] === '--div--') {
-				$nonSel = ' onclick="this.selected=0;" class="c-divider"';
+				$nonSel = ' onclick="this.selected=0;" class="formcontrol-select-divider"';
 			}
 			// Icon style for option tag:
 			$styleAttrValue = '';
@@ -810,7 +846,7 @@ class SelectElement extends AbstractFormElement {
 			? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
 			: $size;
 		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . $PA['itemFormElName'] . '[]" '
-			. 'class="' . $this->cssClassTypeElementPrefix . 'select ' . $cssPrefix . '"' . ($size ? ' size="' . $size . '" ' : '')
+			. 'class="form-control ' . $cssPrefix . '"' . ($size ? ' size="' . $size . '" ' : '')
 			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $PA['onFocus']
 			. ' ' . $selector_itemListStyle . $disabled . '>
 						' . implode('
@@ -822,21 +858,23 @@ class SelectElement extends AbstractFormElement {
 		}
 		// Put it all into a table:
 		$onClick = htmlspecialchars($this->formEngine->elName(($PA['itemFormElName'] . '[]')) . '.selectedIndex=-1;' . implode('', $restoreCmd) . ' return false;');
+		$width = $this->formEngine->formMaxWidth($this->formEngine->defaultInputWidth);
 		$item .= '
-			<table border="0" cellspacing="0" cellpadding="0" width="1" class="typo3-TCEforms-select-singlebox">
-				<tr>
-					<td>
-					' . $selectBox . '
-					<br/>
-					<em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL')) . '</em>
-					</td>
-					<td valign="top">
-						<a href="#" onclick="' . $onClick . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')) . '">'
-			. IconUtility::getSpriteIcon('actions-edit-undo') . '</a>
-					</td>
-				</tr>
-			</table>
-				';
+			<div class="form-control-wrap" ' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
+				<div class="form-wizards-wrap form-wizards-aside">
+					<div class="form-wizards-element">
+						' . $selectBox . '
+					</div>
+					<div class="form-wizards-items">
+						<a href="#" class="btn btn-default" onclick="' . $onClick . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')) . '">'
+							. IconUtility::getSpriteIcon('actions-edit-undo') . '</a>
+					</div>
+				</div>
+			</div>
+			<p>
+				<em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL')) . '</em>
+			</p>
+			';
 		return $item;
 	}
 

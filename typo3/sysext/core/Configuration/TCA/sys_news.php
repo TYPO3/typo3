@@ -69,8 +69,6 @@ return array(
 				'cols' => '48',
 				'rows' => '5',
 				'wizards' => array(
-					'_PADDING' => 4,
-					'_VALIGN' => 'middle',
 					'RTE' => array(
 						'notNewRecords' => 1,
 						'RTEonly' => 1,

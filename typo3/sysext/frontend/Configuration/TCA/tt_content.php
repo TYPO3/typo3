@@ -379,7 +379,6 @@ return array(
 				'max' => 1024,
 				'eval' => 'trim',
 				'wizards' => array(
-					'_PADDING' => 2,
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:header_link_formlabel',
@@ -453,8 +452,6 @@ return array(
 				'cols' => '80',
 				'rows' => '15',
 				'wizards' => array(
-					'_PADDING' => 4,
-					'_VALIGN' => 'middle',
 					'RTE' => array(
 						'notNewRecords' => 1,
 						'RTEonly' => 1,
@@ -655,7 +652,6 @@ return array(
 				'cols' => '30',
 				'rows' => '3',
 				'wizards' => array(
-					'_PADDING' => 2,
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:image_link_formlabel',
@@ -970,7 +966,6 @@ return array(
 				'cols' => '30',
 				'rows' => '3',
 				'wizards' => array(
-					'_PADDING' => 2,
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:image_link_formlabel',

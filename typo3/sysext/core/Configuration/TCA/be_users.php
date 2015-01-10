@@ -63,7 +63,6 @@ return array(
 				'maxitems' => '20',
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
-					'_PADDING' => 1,
 					'_VERTICAL' => 1,
 					'edit' => array(
 						'type' => 'popup',
@@ -141,7 +140,6 @@ return array(
 				'autoSizeMax' => 10,
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
-					'_PADDING' => 1,
 					'_VERTICAL' => 1,
 					'edit' => array(
 						'type' => 'popup',

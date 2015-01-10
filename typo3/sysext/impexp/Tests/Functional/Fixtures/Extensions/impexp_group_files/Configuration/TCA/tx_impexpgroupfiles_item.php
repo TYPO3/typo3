@@ -148,7 +148,6 @@ return array(
 														<eval>trim</eval>
 														<softref>typolink</softref>
 														<wizards type="array">
-															<_PADDING type="integer">2</_PADDING>
 															<link type="array">
 																<type>popup</type>
 																<title>Link</title>
