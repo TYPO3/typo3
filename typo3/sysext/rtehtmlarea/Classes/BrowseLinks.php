@@ -558,7 +558,11 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						$selectedFolder = $fileOrFolderObject;
 					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 						// It's a file
-						$selectedFolder = $fileOrFolderObject->getParentFolder();
+						try {
+							$selectedFolder = $fileOrFolderObject->getParentFolder();
+						} catch (\Exception $e) {
+							// Accessing the parent folder failed for some reason. e.g. permissions
+						}
 					}
 				}
 				// If no folder is selected, get the user's default upload folder

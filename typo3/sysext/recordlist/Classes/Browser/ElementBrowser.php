@@ -999,7 +999,11 @@ class ElementBrowser {
 						$selectedFolder = $fileOrFolderObject;
 					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 						// it's a file
-						$selectedFolder = $fileOrFolderObject->getParentFolder();
+						try {
+							$selectedFolder = $fileOrFolderObject->getParentFolder();
+						} catch (\Exception $e) {
+							// Accessing the parent folder failed for some reason. e.g. permissions
+						}
 					}
 				}
 				// Or get the user's default upload folder
