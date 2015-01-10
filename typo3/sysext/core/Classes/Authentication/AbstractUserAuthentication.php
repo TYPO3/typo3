@@ -1302,6 +1302,7 @@ abstract class AbstractUserAuthentication {
 		if ($loginData['status'] === 'login') {
 			$loginData = $this->processLoginData($loginData);
 		}
+		$loginData = array_map('trim', $loginData);
 		return $loginData;
 	}
 

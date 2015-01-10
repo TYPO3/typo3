@@ -41,7 +41,7 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
-				'eval' => 'nospace,lower,unique,required'
+				'eval' => 'nospace,trim,lower,unique,required'
 			)
 		),
 		'password' => array(
@@ -50,7 +50,7 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '40',
-				'eval' => 'required,md5,password'
+				'eval' => 'trim,required,md5,password'
 			)
 		),
 		'usergroup' => array(
