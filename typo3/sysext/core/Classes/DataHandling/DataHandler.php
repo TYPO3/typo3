@@ -3991,8 +3991,9 @@ class DataHandler {
 												if (($fCfg['config']['type'] == 'text' || $fCfg['config']['type'] == 'input') && strlen($row[$fN])) {
 													list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
 													$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-													if (isset($TSConfig['translateToMessage']) && strlen($TSConfig['translateToMessage'])) {
-														$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
+													if (isset($TSConfig['translateToMessage']) && !empty($TSConfig['translateToMessage'])) {
+														$translateToMsg = $GLOBALS['LANG'] ? $GLOBALS['LANG']->sL($TSConfig['translateToMessage']) : $TSConfig['translateToMessage'];
+														$translateToMsg = @sprintf($translateToMsg, $langRec['title']);
 													}
 													if (!strlen($translateToMsg)) {
 														$translateToMsg = 'Translate to ' . $langRec['title'] . ':';
