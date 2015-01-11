@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Scheduler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\CommandUtility;
+
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  * Formerly known as "Gabriel TYPO3 arch angel"
@@ -420,14 +422,9 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				$startTime = 'now+1minute';
 			}
 			$cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
-			$currentLocale = setlocale(LC_CTYPE, 0);
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-			}
-			$cmd = 'echo ' . escapeshellarg($cliDispatchPath) . ' scheduler | at ' . escapeshellarg($startTime) . ' 2>&1';
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-				setlocale(LC_CTYPE, $currentLocale);
-			}
+			list($cliDispatchPathEscaped, $startTimeEscaped) =
+				CommandUtility::escapeShellArguments(array($cliDispatchPath, $startTime));
+			$cmd = 'echo ' . $cliDispatchPathEscaped . ' scheduler | at ' . $startTimeEscaped . ' 2>&1';
 			$output = shell_exec($cmd);
 			$outputParts = '';
 			foreach (explode(LF, $output) as $outputLine) {

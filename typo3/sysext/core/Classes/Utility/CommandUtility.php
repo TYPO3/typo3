@@ -111,12 +111,12 @@ class CommandUtility {
 		// Compile the path & command
 		if ($im_version === 'gm') {
 			$switchCompositeParameters = TRUE;
-			$path = escapeshellarg(($path . 'gm' . $isExt)) . ' ' . $command;
+			$path = self::escapeShellArgument($path . 'gm' . $isExt) . ' ' . self::escapeShellArgument($command);
 		} else {
 			if ($im_version === 'im6') {
 				$switchCompositeParameters = TRUE;
 			}
-			$path = escapeshellarg($path . ($command == 'composite' ? 'composite' : $command) . $isExt);
+			$path = self::escapeShellArgument($path . ($command == 'composite' ? 'composite' : $command) . $isExt);
 		}
 		// strip profile information for thumbnails and reduce their size
 		if ($parameters && $command != 'identify' && $gfxConf['im_useStripProfileByDefault'] && $gfxConf['im_stripProfileCommand'] != '') {
@@ -412,7 +412,6 @@ class CommandUtility {
 		return $pathsArr;
 	}
 
-
 	/**
 	 * Set a path to the right format
 	 *
@@ -423,4 +422,39 @@ class CommandUtility {
 		return str_replace('//', '/', $path . '/');
 	}
 
+	/**
+	 * Escape shell arguments (for example filenames) to be used on the local system.
+	 *
+	 * The setting UTF8filesystem will be taken into account.
+	 *
+	 * @param string[] $input Input arguments to be escaped
+	 * @return string[] Escaped shell arguments
+	 */
+	public static function escapeShellArguments(array $input) {
+		$isUTF8Filesystem = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']);
+		if ($isUTF8Filesystem) {
+			$currentLocale = setlocale(LC_CTYPE, 0);
+			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
+		}
+
+		$output = array_map('escapeshellarg', $input);
+
+		if ($isUTF8Filesystem) {
+			setlocale(LC_CTYPE, $currentLocale);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Escape a shell argument (for example a filename) to be used on the local system.
+	 *
+	 * The setting UTF8filesystem will be taken into account.
+	 *
+	 * @param string $input Input-argument to be escaped
+	 * @return string Escaped shell argument
+	 */
+	public static function escapeShellArgument($input) {
+		return self::escapeShellArguments(array($input))[0];
+	}
 }

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -2532,7 +2533,7 @@ class GraphicalFunctions {
 	public function imageMagickIdentify($imagefile) {
 		if (!$this->NO_IMAGE_MAGICK) {
 			$frame = $this->noFramePrepended ? '' : '[0]';
-			$cmd = GeneralUtility::imageMagickCommand('identify', $this->wrapFileName($imagefile) . $frame);
+			$cmd = GeneralUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
 			$returnVal = array();
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $returnVal);
 			$splitstring = array_pop($returnVal);
@@ -2576,7 +2577,7 @@ class GraphicalFunctions {
 			} else {
 				$frame = '';
 			}
-			$cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input . $frame) . ' ' . $this->wrapFileName($output));
+			$cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			// Change the permissions of the file
@@ -2601,7 +2602,7 @@ class GraphicalFunctions {
 			$params = '-colorspace GRAY +matte';
 			$theMask = $this->randomName() . '.' . $this->gifExtension;
 			$this->imageMagickExec($mask, $theMask, $params);
-			$cmd = GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . $this->wrapFileName($input) . ' ' . $this->wrapFileName($overlay) . ' ' . $this->wrapFileName($theMask) . ' ' . $this->wrapFileName($output));
+			$cmd = GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . CommandUtility::escapeShellArgument($input) . ' ' . CommandUtility::escapeShellArgument($overlay) . ' ' . CommandUtility::escapeShellArgument($theMask) . ' ' . CommandUtility::escapeShellArgument($output));
 			// +matte = no alpha layer in output
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
@@ -2612,24 +2613,6 @@ class GraphicalFunctions {
 			}
 			return $ret;
 		}
-	}
-
-	/**
-	 * Escapes a file name so it can safely be used on the command line.
-	 *
-	 * @param string $inputName filename to safeguard, must not be empty
-	 * @return string $inputName escaped as needed
-	 */
-	protected function wrapFileName($inputName) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-			$currentLocale = setlocale(LC_CTYPE, 0);
-			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-		}
-		$escapedInputName = escapeshellarg($inputName);
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-			setlocale(LC_CTYPE, $currentLocale);
-		}
-		return $escapedInputName;
 	}
 
 	/***********************************

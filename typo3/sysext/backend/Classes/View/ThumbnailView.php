@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -209,7 +210,7 @@ class ThumbnailView {
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 				// If thumbnail does not exist, we generate it
 				if (!file_exists($this->output)) {
-					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->image->getForLocalProcessing(FALSE)) . '[0] ' . $this->wrapFileName($this->output);
+					$parameters = '-sample ' . $this->size . ' ' . CommandUtility::escapeShellArgument($this->image->getForLocalProcessing(FALSE)) . '[0] ' . CommandUtility::escapeShellArgument($this->output);
 					$cmd = GeneralUtility::imageMagickCommand('convert', $parameters);
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					if (!file_exists($this->output)) {
@@ -336,24 +337,6 @@ class ThumbnailView {
 		}
 		imagedestroy($im);
 		die;
-	}
-
-	/**
-	 * Escapes a file name so it can safely be used on the command line.
-	 *
-	 * @param string $inputName Filename to safeguard, must not be empty
-	 * @return string $inputName escaped as needed
-	 */
-	protected function wrapFileName($inputName) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-			$currentLocale = setlocale(LC_CTYPE, 0);
-			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-		}
-		$escapedInputName = escapeshellarg($inputName);
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-			setlocale(LC_CTYPE, $currentLocale);
-		}
-		return $escapedInputName;
 	}
 
 }

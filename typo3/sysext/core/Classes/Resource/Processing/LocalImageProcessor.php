@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Processes Local Images files
@@ -31,7 +32,7 @@ class LocalImageProcessor implements ProcessorInterface {
 	 */
 	public function __construct() {
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
-		$logManager = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
+		$logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 		$this->logger = $logManager->getLogger(__CLASS__);
 	}
 
@@ -88,36 +89,16 @@ class LocalImageProcessor implements ProcessorInterface {
 	protected function getHelperByTaskName($taskName) {
 		switch ($taskName) {
 			case 'Preview':
-				$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper::class, $this);
+				$helper = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalPreviewHelper::class, $this);
 			break;
 			case 'CropScaleMask':
-				$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper::class, $this);
+				$helper = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalCropScaleMaskHelper::class, $this);
 			break;
 			default:
 				throw new \InvalidArgumentException('Cannot find helper for task name: "' . $taskName . '"', 1353401352);
 		}
 
 		return $helper;
-	}
-
-	/**
-	 * Escapes a file name so it can safely be used on the command line.
-	 *
-	 * @param string $inputName filename to safeguard, must not be empty
-	 * @return string $inputName escaped as needed
-	 *
-	 * @internal Don't use this method from outside the LocalImageProcessor!
-	 */
-	public function wrapFileName($inputName) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-			$currentLocale = setlocale(LC_CTYPE, 0);
-			setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
-			$escapedInputName = escapeshellarg($inputName);
-			setlocale(LC_CTYPE, $currentLocale);
-		} else {
-			$escapedInputName = escapeshellarg($inputName);
-		}
-		return $escapedInputName;
 	}
 
 	/**
@@ -177,7 +158,7 @@ class LocalImageProcessor implements ProcessorInterface {
 		static $graphicalFunctionsObject = NULL;
 
 		if ($graphicalFunctionsObject === NULL) {
-			$graphicalFunctionsObject = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
+			$graphicalFunctionsObject = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
 		}
 
 		return $graphicalFunctionsObject;

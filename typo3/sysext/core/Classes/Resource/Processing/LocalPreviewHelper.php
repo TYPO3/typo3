@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Helper for creating local image previews using TYPO3s image processing classes.
@@ -49,26 +52,26 @@ class LocalPreviewHelper {
 
 			// Merge custom configuration with default configuration
 		$configuration = array_merge(array('width' => 64, 'height' => 64), $task->getConfiguration());
-		$configuration['width'] = Utility\MathUtility::forceIntegerInRange($configuration['width'], 1);
-		$configuration['height'] = Utility\MathUtility::forceIntegerInRange($configuration['height'], 1);
+		$configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1);
+		$configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1);
 
 		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 
 			// Create a temporaryFile
-		$temporaryFileName = Utility\GeneralUtility::tempnam('preview_', '.' . $task->getTargetFileExtension());
+		$temporaryFileName = GeneralUtility::tempnam('preview_', '.' . $task->getTargetFileExtension());
 			// Check file extension
-		if ($sourceFile->getType() != Resource\File::FILETYPE_IMAGE &&
-			!Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $sourceFile->getExtension())) {
+		if ($sourceFile->getType() != File::FILETYPE_IMAGE &&
+			!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $sourceFile->getExtension())) {
 				// Create a default image
 			$this->processor->getTemporaryImageWithText($temporaryFileName, 'Not imagefile!', 'No ext!', $sourceFile->getName());
 		} else {
 				// Create the temporary file
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 				$parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' '
-					. $this->processor->wrapFileName($originalFileName) . '[0] ' . $this->processor->wrapFileName($temporaryFileName);
+					. CommandUtility::escapeShellArgument($originalFileName) . '[0] ' . CommandUtility::escapeShellArgument($temporaryFileName);
 
-				$cmd = Utility\GeneralUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
-				Utility\CommandUtility::exec($cmd);
+				$cmd = GeneralUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
+				CommandUtility::exec($cmd);
 
 				if (!file_exists($temporaryFileName)) {
 						// Create a error gif
