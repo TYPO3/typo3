@@ -2016,13 +2016,13 @@ class ElementBrowser {
 	public function folderList(Folder $baseFolder) {
 		$content = '';
 		$folders = $baseFolder->getSubfolders();
-		$baseFolderPath = $baseFolder->getPublicUrl();
+		$folderIdentifier = $baseFolder->getCombinedIdentifier();
 		// Create headline (showing number of folders):
 		$content .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('folders') . ' (%s):', count($folders)));
 		$titleLength = (int)$GLOBALS['BE_USER']->uc['titleLen'];
 		// Create the header of current folder:
-		$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($baseFolderPath)
-			. ', \'folder\', ' . GeneralUtility::quoteJSvalue($baseFolderPath) . ', ' . GeneralUtility::quoteJSvalue($baseFolderPath)
+		$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($folderIdentifier)
+			. ', \'folder\', ' . GeneralUtility::quoteJSvalue($folderIdentifier) . ', ' . GeneralUtility::quoteJSvalue($folderIdentifier)
 			. ', \'\', \'\',\'\',1);">';
 		// Add the foder icon
 		$folderIcon = $aTag;
@@ -2035,23 +2035,22 @@ class ElementBrowser {
 		$lines = array();
 		// Traverse the folder list:
 		foreach ($folders as $subFolder) {
-			$folderPath = $subFolder->getPublicUrl();
-			$pathInfo = pathinfo($folderPath);
+			$subFolderIdentifier = $subFolder->getCombinedIdentifier();
 			// Create folder icon:
 			$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'
 				. IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif',
-					'width="16" height="16"') . ' title="' . htmlspecialchars(($pathInfo['basename']))
+					'width="16" height="16"') . ' title="' . htmlspecialchars($subFolder->getName())
 				. '" class="absmiddle" alt="" />';
 			// Create links for adding the folder:
 			if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
-				$aTag = '<a href="#" onclick="return set_folderpath(' . GeneralUtility::quoteJSvalue($folderPath)
+				$aTag = '<a href="#" onclick="return set_folderpath(' . GeneralUtility::quoteJSvalue($subFolderIdentifier)
 					. ');">';
 			} else {
-				$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($folderPath)
-					. ', \'folder\', ' . GeneralUtility::quoteJSvalue($folderPath) . ', '
-					. GeneralUtility::quoteJSvalue($folderPath) . ', \'' . $pathInfo['extension'] . '\', \'\');">';
+				$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($subFolderIdentifier)
+					. ', \'folder\', ' . GeneralUtility::quoteJSvalue($subFolderIdentifier) . ', '
+					. GeneralUtility::quoteJSvalue($subFolderIdentifier) . ', \'\', \'\');">';
 			}
-			if (strstr($folderPath, ',') || strstr($folderPath, '|')) {
+			if (strstr($subFolderIdentifier, ',') || strstr($subFolderIdentifier, '|')) {
 				// In case an invalid character is in the filepath, display error message:
 				$errorMessage = GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
 				$aTag = ($aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">');
