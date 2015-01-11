@@ -36,6 +36,9 @@
 			<trans-unit id="files" xml:space="preserve">
 				<source>Files</source>
 			</trans-unit>
+			<trans-unit id="folders" xml:space="preserve">
+				<source>Folders</source>
+			</trans-unit>
 			<trans-unit id="target" xml:space="preserve">
 				<source>Target</source>
 			</trans-unit>
