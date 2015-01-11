@@ -5,7 +5,11 @@ if (!defined('TYPO3_MODE')) {
 if (TYPO3_MODE === 'BE') {
 	// Register report module additions
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = 'TYPO3\\CMS\\Install\\Report\\InstallStatusReport';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = 'TYPO3\\CMS\\Install\\Report\\EnvironmentStatusReport';
+
+	// Only add the environment status report if not in CLI mode
+	if (!defined('TYPO3_cliMode') || !TYPO3_cliMode) {
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = 'TYPO3\\CMS\\Install\\Report\\EnvironmentStatusReport';
+	}
 
 	// Register backend module
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
