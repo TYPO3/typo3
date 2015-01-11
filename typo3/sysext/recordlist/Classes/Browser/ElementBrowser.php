@@ -1761,8 +1761,12 @@ class ElementBrowser {
 		$out = '';
 		$renderFolders = $this->act === 'folder';
 		if ($folder->checkActionPermission('read')) {
-			// Create header for file listing:
-			$out .= $this->barheader($GLOBALS['LANG']->getLL('files') . ':');
+			// Create header for file/folder listing:
+			if ($renderFolders) {
+				$out = $this->barheader($GLOBALS['LANG']->getLL('folders') . ':');
+			} else {
+				$out = $this->barheader($GLOBALS['LANG']->getLL('files') . ':');
+			}
 			// Prepare current path value for comparison (showing red arrow)
 			$currentIdentifier = '';
 			if ($this->curUrlInfo['value']) {
