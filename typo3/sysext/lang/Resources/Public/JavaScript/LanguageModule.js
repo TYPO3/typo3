@@ -379,7 +379,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 		if (rows) {
 			rows = $(rows).toArray();
 			var $row = $(rows.shift()),
-				locale = row.data('locale');
+				locale = $row.data('locale');
 
 			LanguageModule.loadTranslationsByLocale(locale, function(status, data, response) {
 				callback($row, status, data, response);

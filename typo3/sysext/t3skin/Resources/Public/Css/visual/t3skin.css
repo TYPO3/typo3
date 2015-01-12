@@ -11569,6 +11569,11 @@ div.typo3-module-lang div.menuItems span.loadingItem,
 div.typo3-module-lang div.menuItems span.cancelItem {
   display: none;
 }
+div.typo3-module-lang div.menuItems span.loadingItem .t3-icon,
+div.typo3-module-lang div.menuItems span.cancelItem .t3-icon {
+  height: 14px;
+  width: 14px;
+}
 div.typo3-module-lang div.menuItems span.updateItem,
 div.typo3-module-lang div.menuItems span.cancelItem {
   cursor: pointer;
