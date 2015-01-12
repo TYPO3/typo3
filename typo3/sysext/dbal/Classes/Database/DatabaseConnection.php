@@ -836,6 +836,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
 				}
+				if (!is_object($sqlResult)) {
+					debug(array($this->lastQuery, $this->sql_error()));
+				}
 				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';
 				// Setting handler type in result object (for later recognition!)
 				$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
