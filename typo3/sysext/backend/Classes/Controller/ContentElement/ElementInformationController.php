@@ -541,6 +541,7 @@ class ElementInformationController {
 
 		// Compile information for title tag:
 		$infoData = array();
+		$infoDataHeader = '';
 		if (count($rows)) {
 			$infoDataHeader = '<tr>' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</td>' . '</tr>';
 		}
@@ -552,19 +553,36 @@ class ElementInformationController {
 				}
 			}
 			$record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
-			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
-			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-			$infoData[] = '<tr class="db_list_normal">' .
+			if ($record) {
+				$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
+				$parentRecordTitle = is_array($parentRecord)
+					? BackendUtility::getRecordTitle('pages', $parentRecord)
+					: '';
+				$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
+				$infoData[] = '<tr class="db_list_normal">' .
 					'<td style="white-space:nowrap;">' . $actions . '</td>' .
 					'<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' .
 					'<td>' . BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
 					'<td><span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' .
-							htmlspecialchars(BackendUtility::getRecordTitle('pages', $parentRecord)) . ' (uid=' . $record['pid'] . ')">' .
+							htmlspecialchars($parentRecordTitle) . ' (uid=' . $record['pid'] . ')">' .
 							$record['uid'] . '</span></td>' .
 					'<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>' .
-					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' . '<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
+					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
+					'<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
 					'<td>' . htmlspecialchars($row['sorting']) . '</td>' .
 					'</tr>';
+			} else {
+				$infoData[] = '<tr class="db_list_normal">' .
+					'<td style="white-space:nowrap;"></td>' .
+					'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . $row['recuid'] . ')</td>' .
+					'<td>' . htmlspecialchars($GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>' .
+					'<td></td>' .
+					'<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>' .
+					'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
+					'<td>' . htmlspecialchars($row['softref_key']) . '</td>' .
+					'<td>' . htmlspecialchars($row['sorting']) . '</td>' .
+					'</tr>';
+			}
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
