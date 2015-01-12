@@ -613,6 +613,7 @@ class ElementInformationController {
 
 		// Compile information for title tag:
 		$infoData = array();
+		$infoDataHeader = '';
 		if (count($rows)) {
 			$infoDataHeader = '
 				<tr>
@@ -635,11 +636,15 @@ class ElementInformationController {
 				}
 			}
 			$record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
-			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
-			$icon = (is_array($record)) ? IconUtility::getSpriteIconForRecord($row['tablename'], $record) : '';
-			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit');
-			$infoData[] = '
+			if ($record) {
+				$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
+				$parentRecordTitle = is_array($parentRecord)
+					? BackendUtility::getRecordTitle('pages', $parentRecord)
+					: '';
+				$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
+				$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
+				$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit');
+				$infoData[] = '
 				<tr>
 					<td class="col-icon">
 						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '">
@@ -653,8 +658,8 @@ class ElementInformationController {
 					</td>
 					<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>
 					<td>
-						<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' .
-							htmlspecialchars(BackendUtility::getRecordTitle('pages', $parentRecord)) . ' (uid=' . $record['pid'] . ')">
+						<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': '
+							. htmlspecialchars($parentRecordTitle) . ' (uid=' . $record['pid'] . ')">
 							' . $record['uid'] . '
 						</span>
 					</td>
@@ -664,6 +669,20 @@ class ElementInformationController {
 					<td>' . htmlspecialchars($row['sorting']) . '</td>
 					<td class="col-control">' . $actions . '</td>
 				</tr>';
+			} else {
+				$infoData[] = '
+				<tr>
+					<td class="col-icon"></td>
+					<td class="col-title">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . $row['recuid'] . ')</td>
+					<td>' . htmlspecialchars($GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>
+					<td></td>
+					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
+					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
+					<td>' . htmlspecialchars($row['softref_key']) . '</td>
+					<td>' . htmlspecialchars($row['sorting']) . '</td>
+					<td class="col-control"></td>
+				</tr>';
+			}
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
