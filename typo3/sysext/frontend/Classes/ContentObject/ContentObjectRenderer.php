@@ -3362,8 +3362,8 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_prefixComment($content = '', $conf = array()) {
-		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
-			$content = $this->prefixComment($conf['prefixComment'], $conf['prefixComment.'], $content);
+		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment'] && !empty($conf['prefixComment'])) {
+			$content = $this->prefixComment($conf['prefixComment'], array(), $content);
 		}
 		return $content;
 	}
@@ -3806,8 +3806,17 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function prefixComment($str, $conf, $content) {
+		if (empty($str)) {
+			return $content;
+		}
 		$parts = explode('|', $str);
-		$output = LF . str_pad('', $parts[0], TAB) . '<!-- ' . htmlspecialchars($this->insertData($parts[1])) . ' [begin] -->' . LF . str_pad('', ($parts[0] + 1), TAB) . $content . LF . str_pad('', $parts[0], TAB) . '<!-- ' . htmlspecialchars($this->insertData($parts[1])) . ' [end] -->' . LF . str_pad('', ($parts[0] + 1), TAB);
+		$indent = (int)$parts[0];
+		$comment = htmlspecialchars($this->insertData($parts[1]));
+		$output = LF
+			. str_pad('', $indent, TAB) . '<!-- ' . $comment . ' [begin] -->' . LF
+			. str_pad('', ($indent + 1), TAB) . $content . LF
+			. str_pad('', $indent, TAB) . '<!-- ' . $comment . ' [end] -->' . LF
+			. str_pad('', ($indent + 1), TAB);
 		return $output;
 	}
 
