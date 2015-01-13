@@ -4948,7 +4948,12 @@ class ContentObjectRenderer {
 				// tags
 				$len = strcspn(substr($theValue, $pointer), '>') + 1;
 				$data = substr($theValue, $pointer, $len);
-				$tag = explode(' ', trim(substr($data, 1, -1)), 2);
+				if (substr($data, -2) === '/>') {
+					$tagContent = substr($data, 1, -2);
+				} else {
+					$tagContent = substr($data, 1, -1);
+				}
+				$tag = explode(' ', trim($tagContent), 2);
 				$tag[0] = strtolower($tag[0]);
 				if ($tag[0][0] === '/') {
 					$tag[0] = substr($tag[0], 1);
