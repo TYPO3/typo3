@@ -1521,8 +1521,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 					break;
 				case 'menu':
-					if ($row['pages']) {
-						$out .= $this->linkEditContent($row['pages'], $row) . '<br />';
+					$contentType = $this->CType_labels[$row['CType']];
+					$out .= '<strong>' . htmlspecialchars($contentType) . '</strong><br />';
+					// Add Menu Type
+					$menuTypeLabel = $this->getLanguageService()->sL(
+						BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'menu_type', $row['menu_type'])
+					);
+					$out .= $menuTypeLabel !== '' ? $menuTypeLabel : 'invalid menu type';
+					if ($row['menu_type'] !== '2' && ($row['pages'] || $row['selected_categories'])) {
+						// Show pages if menu type is not "Sitemap"
+						$out .= ':' . $this->linkEditContent($this->generateListForCTypeMenu($row), $row) . '<br />';
 					}
 					break;
 				case 'shortcut':
@@ -1630,6 +1638,33 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		} else {
 			return $out;
 		}
+	}
+
+	/**
+	 * Generates a list of selected pages or categories for the CType menu
+	 *
+	 * @param array $row row from pages
+	 * @return string
+	 */
+	protected function generateListForCTypeMenu(array $row) {
+		$table = 'pages';
+		$field = 'pages';
+		// get categories instead of pages
+		if (strpos($row['menu_type'], 'categorized_') !== FALSE) {
+			$table = 'sys_category';
+			$field = 'selected_categories';
+		}
+		if (trim($row[$field]) === '') {
+			return '';
+		}
+		$content = '';
+		$uidList = explode(',', $row[$field]);
+		foreach ($uidList as $uid) {
+			$uid = (int)$uid;
+			$record = BackendUtility::getRecord($table, $uid, 'title');
+			$content .= '<br>' . $record['title'] . ' (' .$uid. ')';
+		}
+		return $content;
 	}
 
 	/**
