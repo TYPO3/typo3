@@ -185,7 +185,7 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 		$table = 'pages';
 		$where = '';
 		foreach (array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties) as $deprecatedRteProperty => $_) {
-			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY "%RTE.%' . $deprecatedRteProperty . '%" AND TSConfig NOT LIKE BINARY "%RTE.%' . $deprecatedRteProperty . 's%") ';
+			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSConfig NOT LIKE BINARY ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages');
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
 		$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
