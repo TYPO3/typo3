@@ -11,6 +11,8 @@ plugin.tx_indexedsearch {
 		modified =
 	}
 
+	breadcrumbWrap = / || /
+
 	show {
 		rules = 1
 		parsetimes = 0

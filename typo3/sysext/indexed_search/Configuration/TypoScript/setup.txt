@@ -16,6 +16,8 @@ plugin.tx_indexedsearch {
 		# show the number of results
 		displayResultNumber = 0
 
+		breadcrumbWrap = / || /
+
 		# show the parse times
 		displayParsetimes = 0
 		displayLevel1Sections = 1

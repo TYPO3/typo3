@@ -678,7 +678,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$content .= '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', TRUE) . '</p>';
 		}
 		// Print a message telling which words we searched for, and in which sections etc.
-		$what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . $this->pi_getLL('inSection', '', TRUE) . ' "' . substr($this->getPathFromPageId(substr($this->piVars['sections'], 4)), 1) . '"' : '');
+		$what = $this->tellUsWhatIsSeachedFor($sWArr) . (substr($this->piVars['sections'], 0, 2) == 'rl' ? ' ' . $this->pi_getLL('inSection', '', TRUE) . ' "' . $this->getPathFromPageId(substr($this->piVars['sections'], 4)) . '"' : '');
 		$what = '<div' . $this->pi_classParam('whatis') . '>' . $this->cObj->stdWrap($what, $this->conf['whatis_stdWrap.']) . '</div>';
 		$content = $what . $content;
 		// Return content:
@@ -741,9 +741,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 						} elseif ($this->conf['linkSectionTitles']) {
 							$quotedPrefix = GeneralUtility::quoteJSvalue($this->prefixId);
 							$onclick = 'document.forms[' . $quotedPrefix . '][' . GeneralUtility::quoteJSvalue($this->prefixId . '[_sections]') . '].value=' . GeneralUtility::quoteJSvalue($theRLid) . ';document.forms[' . $quotedPrefix . '].submit();return false;';
-							$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
+							$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $sectionName . ':</a>';
 						} else {
-							$sectionTitleLinked = htmlspecialchars($sectionName);
+							$sectionTitleLinked = $sectionName;
 						}
 						$resultRowsCount = count($resultRows);
 						$this->resultSections[$id] = array($sectionName, $resultRowsCount);
@@ -1503,7 +1503,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach ($this->resultSections as $id => $dat) {
 			$markerArray = array();
 			$aBegin = '<a href="' . htmlspecialchars($anchorPrefix . '#anchor_' . md5($id)) . '">';
-			$aContent = htmlspecialchars((trim($dat[0]) ? trim($dat[0]) : $this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', TRUE) . ')';
+			$aContent = (trim($dat[0]) ? trim($dat[0]) : htmlspecialchars($this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', TRUE) . ')';
 			$aEnd = '</a>';
 			$markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;
 			$links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
@@ -2037,7 +2037,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			}
 			$tmplArray['path'] = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($row['data_filename']) . '</a>';
 		} else {
-			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId, $pathMP));
+			$pathStr = $this->getPathFromPageId($pathId, $pathMP);
 			$tmplArray['path'] = $this->linkPage($pathId, $pathStr, array(
 				'cHashParams' => $row['cHashParams'],
 				'data_page_type' => $row['data_page_type'],
@@ -2182,7 +2182,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * @param int $id Page ID
 	 * @param string $pathMP MP variable content
-	 * @return string Path
+	 * @return string Path (HTML-escaped)
 	 */
 	public function getPathFromPageId($id, $pathMP = '') {
 		$identStr = $id . '|' . $pathMP;
@@ -2190,9 +2190,12 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$this->fe_groups_required[$id] = array();
 			$this->domain_records[$id] = array();
 			$rl = $this->getRootLine($id, $pathMP);
-			$hitRoot = 0;
 			$path = '';
+			$pageCount = count($rl);
 			if (is_array($rl) && !empty($rl)) {
+				$index = 0;
+				$breadcrumbWrap = isset($this->conf['breadcrumbWrap']) ? $this->conf['breadcrumbWrap'] : '/';
+				$breadcrumbWraps = $GLOBALS['TSFE']->tmpl->splitConfArray(array('wrap' => $breadcrumbWrap), $pageCount);
 				foreach ($rl as $k => $v) {
 					// Check fe_user
 					if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
@@ -2210,9 +2213,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					}
 					// Stop, if we find that the current id is the current root page.
 					if ($v['uid'] == $this->frontendController->config['rootLine'][0]['uid']) {
+						array_pop($breadcrumbWraps);
 						break;
 					}
-					$path = '/' . $v['title'] . $path;
+					$path = $this->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
 				}
 			}
 			$this->cache_path[$identStr] = $path;

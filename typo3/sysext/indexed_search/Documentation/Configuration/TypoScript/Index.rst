@@ -33,6 +33,25 @@ templateFile
          The template file, see examples in typo3/sysext/indexed\_search/pi/.
 
 
+.. _breadcrumbWrap:
+
+breadcrumbWrap
+""""""""""""""
+
+.. container:: table-row
+
+   Property
+         breadcrumbWrap
+
+   Data type
+         :ref:`wrap <t3tsref:wrap>` + :ref:`optionSplit <t3tsref:objects-optionsplit>`
+
+   Description
+         This configuration is used to wrap a single page title in a search result item breadcrumb.
+
+   Default
+         / || /
+
 
 .. _show-forbiddenrecords:
 

@@ -294,7 +294,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		}
 		// Print a message telling which words in which sections we searched for
 		if (substr($this->searchData['sections'], 0, 2) === 'rl') {
-			$result['searchedInSectionInfo'] = LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
+			$result['searchedInSectionInfo'] = LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . $this->getPathFromPageId(substr($this->searchData['sections'], 4)) . '"';
 		}
 		return $result;
 	}
@@ -359,7 +359,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					$sectionTitleLinked = LocalizationUtility::translate('result.unnamedSection', 'IndexedSearch') . ':';
 				} else {
 					$onclick = 'document.forms[\'tx_indexedsearch\'][\'tx_indexedsearch_pi2[search][_sections]\'].value=' . GeneralUtility::quoteJSvalue($theRLid) . ';document.forms[\'tx_indexedsearch\'].submit();return false;';
-					$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
+					$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $sectionName . ':</a>';
 				}
 				$resultRowsCount = count($resultRows);
 				$this->resultSections[$id] = array($sectionName, $resultRowsCount);
@@ -1264,8 +1264,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * Returns the path to the page $id
 	 *
 	 * @param int $id Page ID
-	 * @param string $pathMP MP variable content
-	 * @return string Path
+	 * @param string $pathMP Content of the MP (mount point) variable
+	 * @return string Path (HTML-escaped)
 	 */
 	protected function getPathFromPageId($id, $pathMP = '') {
 		$identStr = $id . '|' . $pathMP;
@@ -1274,7 +1274,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->domainRecords[$id] = array();
 			$rl = $GLOBALS['TSFE']->sys_page->getRootLine($id, $pathMP);
 			$path = '';
+			$pageCount = count($rl);
 			if (is_array($rl) && !empty($rl)) {
+				$breadcrumbWrap = isset($this->settings['breadcrumbWrap']) ? $this->settings['breadcrumbWrap'] : '/';
+				$breadcrumbWraps = $GLOBALS['TSFE']->tmpl->splitConfArray(array('wrap' => $breadcrumbWrap), $pageCount);
 				foreach ($rl as $k => $v) {
 					// Check fe_user
 					if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {
@@ -1292,9 +1295,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					}
 					// Stop, if we find that the current id is the current root page.
 					if ($v['uid'] == $GLOBALS['TSFE']->config['rootLine'][0]['uid']) {
+						array_pop($breadcrumbWraps);
 						break;
 					}
-					$path = '/' . $v['title'] . $path;
+					$path = $GLOBALS['TSFE']->cObj->wrap(htmlspecialchars($v['title']), array_pop($breadcrumbWraps)['wrap']) . $path;
 				}
 			}
 			$this->pathCache[$identStr] = $path;
