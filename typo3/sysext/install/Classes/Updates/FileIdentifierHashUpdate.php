@@ -75,13 +75,13 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 		$unhashedFileCount = $this->db->exec_SELECTcountRows(
 			'uid',
 			'sys_file',
-			'identifier_hash = "" OR folder_hash = ""'
+			'identifier_hash = ' . $this->db->fullQuoteStr('', 'sys_file') . ' OR folder_hash = ' . $this->db->fullQuoteStr('', 'sys_file')
 		);
 
 		$unmigratedStorageCount = $this->db->exec_SELECTcountRows(
 			'uid',
 			'sys_file_storage',
-			'driver = "Local" AND configuration NOT LIKE "%caseSensitive%"'
+			'driver = ' . $this->db->fullQuoteStr('Local', 'sys_file_storage') . ' AND configuration NOT LIKE ' . $this->db->fullQuoteStr('%caseSensitive%', 'sys_file_storage')
 		);
 
 		return $unhashedFileCount > 0 || $unmigratedStorageCount > 0;
@@ -114,7 +114,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 		$unmigratedStorages = $this->db->exec_SELECTgetRows(
 			'uid, configuration',
 			'sys_file_storage',
-			'driver = "Local" AND configuration NOT LIKE "%caseSensitive%"'
+			'driver = ' . $this->db->fullQuoteStr('Local', 'sys_file_storage') . ' AND configuration NOT LIKE ' . $this->db->fullQuoteStr('%caseSensitive%', 'sys_file_storage')
 		);
 
 		/** @var $flexObj \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
@@ -171,7 +171,7 @@ class FileIdentifierHashUpdate extends AbstractUpdate {
 
 			// folder hashes cannot be done with one call: so do it manually
 			$files = $this->db->exec_SELECTgetRows('uid, storage, identifier', 'sys_file',
-				sprintf('storage=%d AND folder_hash=""', $storage->getUid())
+				sprintf('storage=%d AND folder_hash=%s', $storage->getUid(), $this->db->fullQuoteStr('', 'sys_file'))
 			);
 
 			foreach ($files as $file) {

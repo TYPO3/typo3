@@ -31,6 +31,11 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	protected $title = 'Migrate all RTE magic images from uploads/RTEmagicC_* to fileadmin/_migrated/RTE/';
 
 	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $db;
+
+	/**
 	 * The default storage
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */
@@ -53,6 +58,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	public function __construct() {
 		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
 		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
+		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->logger = $logManager->getLogger(__CLASS__);
 
 		// Set it to uploads/RTEmagicC_*
@@ -162,7 +168,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 			if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
 				// And now update the referencing field
 				$targetFieldName = $refRecord['field'];
-				$targetRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				$targetRecord = $this->db->exec_SELECTgetSingleRow(
 					'uid, ' . $targetFieldName,
 					$refRecord['tablename'],
 					'uid=' . (int)$refRecord['recuid']
@@ -179,17 +185,17 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 						$targetRecord[$targetFieldName]
 					);
 					// Update the record
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					$this->db->exec_UPDATEquery(
 						$refRecord['tablename'],
 						'uid=' . (int)$refRecord['recuid'],
 						array($targetFieldName => $targetRecord[$targetFieldName])
 					);
-					$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+					$queries[] = str_replace(LF, ' ', $this->db->debug_lastBuiltQuery);
 
 					// Finally, update the sys_refindex table as well
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					$this->db->exec_UPDATEquery(
 						'sys_refindex',
-						'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($refRecord['hash'], 'sys_refindex'),
+						'hash=' . $this->db->fullQuoteStr($refRecord['hash'], 'sys_refindex'),
 						array(
 							'ref_table'  => 'sys_file',
 							'softref_key' => 'rtehtmlarea_images',
@@ -197,7 +203,7 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 							'ref_string' => $fileadminDirectory . $targetFileName
 						)
 					);
-					$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+					$queries[] = str_replace(LF, ' ', $this->db->debug_lastBuiltQuery);
 				}
 
 			}
@@ -213,10 +219,10 @@ class RteMagicImagesUpdateWizard extends AbstractUpdate {
 	 * @return array Entries from sys_refindex
 	 */
 	protected function findMagicImagesInOldLocation() {
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$records = $this->db->exec_SELECTgetRows(
 			'hash, tablename, recuid, field, ref_table, ref_uid, ref_string',
 			'sys_refindex',
-			'ref_string LIKE "' . $GLOBALS['TYPO3_DB']->escapeStrForLike($this->oldPrefix, 'sys_refindex') . '%"',
+			'ref_string LIKE ' . $this->db->fullQuoteStr($this->db->escapeStrForLike($this->oldPrefix, 'sys_refindex') . '%', 'sys_refindex'),
 			'',
 			'ref_string ASC'
 		);

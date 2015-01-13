@@ -25,6 +25,18 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	protected $title = 'FlexForm Data from Media Element';
 
 	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $db;
+
+	/**
+	 * Creates this object
+	 */
+	public function __construct() {
+		$this->db = $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
 	 * Checks whether updates need to be performed
 	 *
 	 * @param string &$description The description for the update
@@ -32,7 +44,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	 * @return boolean
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = 0) {
-		$mediaElements = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'], 'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"');
+		$mediaElements = $this->db->exec_SELECTcountRows('*', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'], 'CType = ' . $this->db->fullQuoteStr('media', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) . ' AND pi_flexform LIKE ' . $this->db->fullQuoteStr('%<sheet index="sDEF">%', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']));
 		if ($mediaElements > 0) {
 			$description = 'You have media elements within your installation. As the structure of the flexform changed, your data needs to be migrated.';
 			$showUpdate = 1;
@@ -51,10 +63,10 @@ class MediaFlexformUpdate extends AbstractUpdate {
 	 * @return boolean Whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$rows = $this->db->exec_SELECTgetRows(
 			'uid,pi_flexform',
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'],
-			'CType = "media" AND pi_flexform LIKE "%<sheet index=\\"sDEF\\">%"'
+			'CType = ' . $this->db->fullQuoteStr('media', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) . ' AND pi_flexform LIKE ' . $this->db->fullQuoteStr('%<sheet index="sDEF">%', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'])
 		);
 		/** @var $flexformTools \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
 		$flexformTools = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
@@ -89,7 +101,7 @@ class MediaFlexformUpdate extends AbstractUpdate {
 			}
 			$newXML = $flexformTools->flexArray2Xml($data, TRUE);
 			$newXML = str_replace('encoding=""', 'encoding="utf-8"', $newXML);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			$this->db->exec_UPDATEquery(
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'],
 				'uid = ' . $row['uid'],
 				array('pi_flexform' => $newXML)
