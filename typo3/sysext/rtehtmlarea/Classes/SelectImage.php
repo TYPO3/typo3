@@ -131,10 +131,9 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-
-		$this->doc->JScode .= $this->doc->wrapScriptTags('
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-		');
+		}');
 		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
 	}
@@ -304,11 +303,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		$JScode = '
 			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
-			var HTMLArea = window.parent.HTMLArea;
 
-			HTMLArea.TYPO3Image.insertElement = function (table, uid, type, filename, filePath, fileExt, fileIcon) {
-				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
-			}
 			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
 				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
 			}
