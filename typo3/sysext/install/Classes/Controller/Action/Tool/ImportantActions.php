@@ -196,7 +196,7 @@ class ImportantActions extends Action\AbstractAction {
 	 */
 	protected function createAdministrator() {
 		$values = $this->postValues['values'];
-		$username = preg_replace('/[^\\da-z._]/i', '', trim($values['newUserUsername']));
+		$username = preg_replace('/\\s/i', '', trim($values['newUserUsername']));
 		$password = $values['newUserPassword'];
 		$passwordCheck = $values['newUserPasswordCheck'];
 
@@ -226,7 +226,7 @@ class ImportantActions extends Action\AbstractAction {
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$message->setTitle('Administrator user not created');
-				$message->setMessage('A user with username ' . $username . ' exists already.');
+				$message->setMessage('A user with username "' . $username . '" exists already.');
 			} else {
 				$hashedPassword = $this->getHashedPassword($password);
 				$adminUserFields = array(
@@ -239,7 +239,7 @@ class ImportantActions extends Action\AbstractAction {
 				$database->exec_INSERTquery('be_users', $adminUserFields);
 				/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 				$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
-				$message->setTitle('Administrator created');
+				$message->setTitle('Administrator created with username "' . $username . '".');
 			}
 		}
 
