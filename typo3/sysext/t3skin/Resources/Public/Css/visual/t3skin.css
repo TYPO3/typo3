@@ -10544,7 +10544,6 @@ iframe {
   background-color: #333333;
 }
 .typo3-topbar-site-logo > img {
-  max-width: 50px;
   max-height: 50px;
 }
 .typo3-topbar-site-name {
