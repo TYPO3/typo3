@@ -134,14 +134,14 @@
 	background-color: rgb(115, 115, 115);
 	float: left;
 	height: 18px;
-	margin: 3px 2px 2px 2px;
+	margin: 3px 2px 5px 2px;
 	width: 1px;
 }
 .htmlarea .toolbar .space {
 	background-color: transparent;
 	border-style: none;
 	float: left;
-	height: 22px;
+	height: 26px;
 	margin: 0;
 	padding: 0 1px;
 	width: 2px;
