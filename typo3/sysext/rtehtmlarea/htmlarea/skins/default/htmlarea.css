@@ -52,15 +52,16 @@
 }
 .htmlarea .toolbar .x-form-item {
 	float: left;
-	margin:0;
+	height: 26px;
+	margin: 0 2px;
 }
 .htmlarea .toolbar .x-form-item-label {
 	border-style: none;
 	color: #416aa3;
 	background-color: transparent;
 	margin: 0;
-	padding: 3px 3px 0px 3px;
-	vertical-align: middle;
+	padding: 2px 3px 0px 3px;
+	min-width: 110px;
 }
 /* Fix combo box left loat in IE6 */
 body.ext-ie6 .htmlarea .toolbar .x-form-item {
@@ -74,7 +75,8 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 	border-width: 1px;
 	color: #416aa3;
 	float: left;
-	margin: 0 0 4px 0;
+	height: 23px;
+	margin: 0 0 3px 0;
 	padding: 0;
 }
 /* fixing button border-color in IE6 */
@@ -135,13 +137,12 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .toolbar .indicator {
 	cursor: default;
 	background-color: white;
-	width: 20px;
-	height: 16px;
+	width: 24px;
+	height: 18px;
 	overflow: hidden;
 	text-align: center;
 	border: 1px solid ButtonShadow;
-	margin: 3px 1px 5px 1px;
-	padding: 0 3px;
+	margin: 2px 1px 4px 1px;
 	float: left;
 }
 .htmlarea .toolbar .buttonDisabled {
@@ -150,23 +151,25 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	-moz-opacity: 0.25;
 }
 .htmlarea .toolbar .separator {
-	background-color: #b5b8c8;
+	background-color: rgb(115, 115, 115);
 	float: left;
 	height: 18px;
-	margin: 3px 2px;
+	margin: 3px 2px 5px 2px;
+	padding: 0;
 	width: 1px;
 }
 .htmlarea .toolbar .space {
-	height:22px;
+	height: 26px;
 	border-style:none;
-	margin:0;padding:0 1px;
+	margin: 0;
+	padding: 0 1px;
 	float:left;
 }
 .htmlarea .toolbar .select {
 	color: WindowText;
-	margin: 0 0 4px 0;
+	height: 18px;
 }
-.htmlarea .toolbar .x-form-item label.x-form-item-label{
+.htmlarea .toolbar .x-form-item label.x-form-item-label {
 	padding-right: 0;
 }
 .htmlarea .toolbar .x-form-field-wrap .x-form-trigger {
