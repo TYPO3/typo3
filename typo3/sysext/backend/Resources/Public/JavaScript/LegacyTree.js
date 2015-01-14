@@ -125,9 +125,9 @@ define(['jquery'], function($) {
 			$.ajax({
 				url: TYPO3.settings.ajaxUrls[this.ajaxID],
 				data: {
-					PM: encodeURIComponent(params),
-					scopeData: encodeURIComponent(scopeData),
-					scopeHash: encodeURIComponent(scopeHash)
+					PM: params,
+					scopeData: scopeData,
+					scopeHash: scopeHash
 				}
 			}).done(function(data) {
 				// the parent node needs to be overwritten, not the object

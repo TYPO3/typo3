@@ -1,22 +1,51 @@
 <?php
 namespace TYPO3\CMS\Rtehtmlarea;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Base extension class which generates the folder tree.
- * Used directly by the RTE.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * RTE class which generates the folder tree.
  */
 class FolderTree extends \localFolderTree {
 
 	/**
-	 * Constructor function of the class
+	 * Will create and return the HTML code for a browsable tree of folders.
+	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
+	 *
+	 * @return string HTML code for the browsable tree
 	 */
-	public function __construct() {
-		// The backpath is set here to fix problems with relatives path when used in ajax scope
-		$GLOBALS['BACK_PATH'] = isset($GLOBALS['ajaxID']) ? '../../../' : $GLOBALS['BACK_PATH'];
-		parent::__construct();
+	public function getBrowsableTree() {
+		// TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController does not set custom parameters on an Ajax expand/collapse request
+		if (!$GLOBALS['SOBE']->browser->editorNo) {
+			$scopeData = (string)GeneralUtility::_GP('scopeData');
+			$scopeHash = (string)GeneralUtility::_GP('scopeHash');
+			if (!empty($scopeData) && GeneralUtility::hmac($scopeData) === $scopeHash) {
+				$scopeData = unserialize($scopeData);
+				if ($scopeData['browser']['editorNo']) {
+					$GLOBALS['SOBE']->browser->editorNo = $scopeData['browser']['editorNo'];
+				}
+				if ($scopeData['browser']['sys_language_content']) {
+					$GLOBALS['SOBE']->browser->sys_language_content = $scopeData['browser']['sys_language_content'];
+				}
+				if ($scopeData['browser']['contentTypo3Language']) {
+					$GLOBALS['SOBE']->browser->contentTypo3Language = $scopeData['browser']['contentTypo3Language'];
+				}
+			}
+		}
+		return parent::getBrowsableTree();
 	}
 
 	/**
@@ -28,7 +57,15 @@ class FolderTree extends \localFolderTree {
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			$aOnClick = 'return jumpToUrl(\'' . $this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&contentTypo3Charset=' . $GLOBALS['SOBE']->browser->contentTypo3Charset . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
+			$aOnClick = 'return jumpToUrl(\''
+				. $this->getThisScript()
+				. 'act=' . $GLOBALS['SOBE']->browser->act
+				. '&mode=' . $GLOBALS['SOBE']->browser->mode
+				. '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo
+				. ($GLOBALS['SOBE']->browser->sys_language_content ? '&sys_language_content=' . $GLOBALS['SOBE']->browser->sys_language_content : '')
+				. ($GLOBALS['SOBE']->browser->contentTypo3Language ? '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language : '')
+				. '&expandFolder=' . $this->getJumpToParam($folderObject)
+				. '\');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
 			return '<span class="typo3-dimmed">' . $title . '</span>';
@@ -45,7 +82,6 @@ class FolderTree extends \localFolderTree {
 	 * @access private
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
-
 		if (empty($this->scope)) {
 			$this->scope = array(
 				'class' => get_class($this),
@@ -53,21 +89,20 @@ class FolderTree extends \localFolderTree {
 				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
 				'browser' => array(
 					'mode' => $GLOBALS['SOBE']->browser->mode,
-					'act' => $GLOBALS['SOBE']->browser->act,
-					'editorNo' => $GLOBALS['SOBE']->browser->editorNo
-				),
+					'act' => $GLOBALS['SOBE']->browser->act
+				)
 			);
+			if ($GLOBALS['SOBE']->browser->editorNo) {
+				$this->scope['browser']['editorNo'] = $GLOBALS['SOBE']->browser->editorNo;
+			}
+			if ($GLOBALS['SOBE']->browser->sys_language_content) {
+				$this->scope['browser']['sys_language_content'] = $GLOBALS['SOBE']->browser->sys_language_content;
+			}
+			if ($GLOBALS['SOBE']->browser->contentTypo3Language) {
+				$this->scope['browser']['contentTypo3Language'] = $GLOBALS['SOBE']->browser->contentTypo3Language;
+			}
 		}
-
-		if ($this->thisScript) {
-			// Activates dynamic AJAX based tree
-			$scopeData = serialize($this->scope);
-			$scopeHash = GeneralUtility::hmac($scopeData);
-			$js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
-			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
-		} else {
-			return $icon;
-		}
+		return parent::PMiconATagWrap($icon, $cmd, $isExpand);
 	}
 
 }
