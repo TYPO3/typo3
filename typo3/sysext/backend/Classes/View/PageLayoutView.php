@@ -1494,8 +1494,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					if ($row['CType'] == 'textpic' || $row['CType'] == 'image') {
 						if ($row['image']) {
 							$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
-							if ($row['imagecaption']) {
-								$out .= $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
+							$fileReferences = BackendUtility::resolveFileReferences('tt_content', 'image', $row);
+							if (!empty($fileReferences)) {
+								$linkedContent = '';
+								foreach ($fileReferences as $fileReference) {
+									$linkedContent .= htmlspecialchars($fileReference->getDescription()) . '<br />';
+								}
+								$out .= $this->linkEditContent($linkedContent, $row);
+								unset($linkedContent);
 							}
 						}
 					}
