@@ -155,7 +155,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/CopyPaste',
 							var cleaner = this.getButton('CleanWord');
 							if (cleaner) {
 								window.setTimeout(function () {
-									cleaner.fireEvent('click', cleaner);	
+									Event.trigger(cleaner.el, 'click');
 								}, 250);
 							}
 						}
