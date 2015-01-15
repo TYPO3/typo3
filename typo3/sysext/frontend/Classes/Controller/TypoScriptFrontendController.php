@@ -3752,11 +3752,7 @@ if (version == "n3") {
 		if ($additionalCss !== '') {
 			$this->additionalHeaderData['_CSS'] = '
 <style type="text/css">
-	/*<![CDATA[*/
-<!--
 ' . $additionalCss . '
-// -->
-	/*]]>*/
 </style>';
 		}
 	}
