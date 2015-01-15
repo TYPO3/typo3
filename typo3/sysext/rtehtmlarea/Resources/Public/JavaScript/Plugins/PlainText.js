@@ -538,9 +538,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 			if (mode === 'wysiwyg' && this.editor.isEditable()) {
 				switch (button.itemId) {
 					case 'PasteToggle':
-						button.setTooltip({
-								title: this.localize((button.inactive ? 'enable' : 'disable') + this.currentBehaviour)
-						});
+						button.setTooltip(this.localize((button.inactive ? 'enable' : 'disable') + this.currentBehaviour));
 						break;
 				}
 			}
