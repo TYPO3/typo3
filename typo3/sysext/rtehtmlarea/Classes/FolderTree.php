@@ -11,15 +11,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FolderTree extends \localFolderTree {
 
 	/**
-	 * Constructor function of the class
-	 */
-	public function __construct() {
-		// The backpath is set here to fix problems with relatives path when used in ajax scope
-		$GLOBALS['BACK_PATH'] = isset($GLOBALS['ajaxID']) ? '../../../' : $GLOBALS['BACK_PATH'];
-		parent::__construct();
-	}
-
-	/**
 	 * Wrapping the title in a link, if applicable.
 	 *
 	 * @param string $title Title, ready for output.
