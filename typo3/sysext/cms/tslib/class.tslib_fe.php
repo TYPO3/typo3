@@ -4405,6 +4405,9 @@ if (version == "n3") {
 	 */
 	function prefixLocalAnchorsWithScript()	{
 		if (!$this->beUserLogin) {
+			if (!is_object($this->cObj)) {
+				$this->newCObj();
+			}
 			$scriptPath = $this->cObj->getUrlToCurrentLocation();
 		} else {
 			// To break less existing sites, we allow the REQUEST_URI to be used for the prefix
