@@ -4,8 +4,11 @@ defined('TYPO3_MODE') or die();
 // Add static template for Click-enlarge rendering
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'static/clickenlarge/', 'Clickenlarge Rendering');
 
-// Add contextual help files
+// Add Abbreviation records (as of 7.0 not working in Configuration/TCA/Overrides)
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xlf');
+
+// Add contextual help files
 $htmlAreaRteContextHelpFiles = array(
 	'General' => 'EXT:' . $_EXTKEY . '/locallang_csh.xlf',
 	'Abbreviation' => 'EXT:' . $_EXTKEY . '/extensions/Abbreviation/locallang_csh.xlf',
