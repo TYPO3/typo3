@@ -109,6 +109,9 @@ class ReferenceIndex {
 			if (is_array($relations)) {
 				// Traverse the generated index:
 				foreach ($relations as $k => $datRec) {
+					if (!is_array($relations[$k])){
+						continue;
+					}
 					$relations[$k]['hash'] = md5(implode('///', $relations[$k]) . '///' . $this->hashVersion);
 					// First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
 					if (isset($currentRels[$relations[$k]['hash']])) {
@@ -223,6 +226,14 @@ class ReferenceIndex {
 	 * @return array Array record to insert into table.
 	 */
 	public function createEntryData($table, $uid, $field, $flexpointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '') {
+		if (BackendUtility::isTableWorkspaceEnabled($table)) {
+			$element = BackendUtility::getRecord($table, $uid, 't3ver_wsid');
+			if ($element !== NULL && isset($element['t3ver_wsid']) && (int)$element['t3ver_wsid'] !== $this->getWorkspaceId()) {
+				//The given Element is ws-enabled but doesn't live in the selected workspace
+				// => don't add index as it's not actually there
+				return FALSE;
+			}
+		}
 		return array(
 			'tablename' => $table,
 			'recuid' => $uid,
