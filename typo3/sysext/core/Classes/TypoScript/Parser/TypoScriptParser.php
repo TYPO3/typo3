@@ -162,7 +162,7 @@ class TypoScriptParser {
 	/**
 	 * Used for the error messages line number reporting. Set externally.
 	 *
-	 * @var string
+	 * @var int
 	 */
 	public $lineNumberOffset = 0;
 
