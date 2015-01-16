@@ -726,29 +726,38 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 				var range = self.createRange();
 				var startContainer = range.startContainer;
 				var startOffset = range.startOffset;
-					// If the selection is collapsed...
+				// If the selection is collapsed...
 				if (self.isEmpty()) {
-						// ... and the cursor lies in a direct child of body...
+					// ... and the cursor lies in a direct child of body...
 					if (/^(body)$/i.test(startContainer.nodeName)) {
 						var node = startContainer.childNodes[startOffset-1];
 					} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
 						var node = startContainer;
+					// ... or, in Google, a span tag may have been inserted inside a heading element
+					} else if (UserAgent.isWebKit && /^(#text)$/i.test(startContainer.nodeName)) {
+						var node = startContainer.parentNode;
+						if (/^(h[1-6])$/i.test(node.nodeName)) {
+							self.editor.getDomNode().cleanAppleStyleSpans(node);
+						} else if (node.parentNode && /^(h[1-6])$/i.test(node.parentNode.nodeName)) {
+							self.editor.getDomNode().cleanAppleStyleSpans(node.parentNode);
+						}
+						return false;
 					} else {
 						return false;
 					}
-						// ... which is a br or text node containing no non-whitespace character...
+					// ... which is a br or text node containing no non-whitespace character...
 					node.normalize();
 					if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
-							// Get a meaningful previous sibling in which to reposition de cursor
+						// Get a meaningful previous sibling in which to reposition de cursor
 						var previousSibling = node.previousSibling;
 						while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
 							previousSibling = previousSibling.previousSibling;
 						}
-							// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
+						// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
 						if (previousSibling) {
-								// Remove the node
+							// Remove the node
 							Dom.removeFromParent(node);
-								// Position the cursor
+							// Position the cursor
 							if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
 								self.selectNodeContents(previousSibling.lastChild, false);
 							} else if (/^(table)$/i.test(previousSibling.nodeName)) {
@@ -759,7 +768,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 								self.selectNodeContents(previousSibling, false);
 							}
 						}
-						// ... or the only child of body and having no child (IE) or only a br child (FF)
+					// ... or the only child of body and having no child (IE) or only a br child (FF)
 					} else if (
 							/^(body)$/i.test(node.parentNode.nodeName)
 							&& !/\S/.test(node.parentNode.textContent)

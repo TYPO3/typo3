@@ -245,7 +245,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Node',
 				if (Dom.hasClass(spans[i], 'Apple-style-span')) {
 					this.removeMarkup(spans[i]);
 				}
-				if (/^(li)$/i.test(spans[i].parentNode.nodeName) && (spans[i].style.cssText.indexOf('line-height') !== -1 || spans[i].style.cssText.indexOf('font-family') !== -1 || spans[i].style.cssText.indexOf('font-size') !== -1)) {
+				if (/^(li|h[1-6])$/i.test(spans[i].parentNode.nodeName) && (spans[i].style.cssText.indexOf('line-height') !== -1 || spans[i].style.cssText.indexOf('font-family') !== -1 || spans[i].style.cssText.indexOf('font-size') !== -1)) {
 					this.removeMarkup(spans[i]);
 				}
 			}
