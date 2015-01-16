@@ -529,10 +529,6 @@ class EditDocumentController {
 		if (is_array($this->mirror)) {
 			$tce->setMirror($this->mirror);
 		}
-		// If pages are being edited, we set an instruction about updating the page tree after this operation.
-		if (isset($this->data['pages']) || $GLOBALS['BE_USER']->workspace != 0 && count($this->data)) {
-			BackendUtility::setUpdateSignal('updatePageTree');
-		}
 		// Checking referer / executing
 		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
 		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
@@ -544,6 +540,10 @@ class EditDocumentController {
 			$tce->process_uploads($_FILES);
 			$tce->process_datamap();
 			$tce->process_cmdmap();
+			// If pages are being edited, we set an instruction about updating the page tree after this operation.
+			if ($tce->pagetreeNeedsRefresh && (isset($this->data['pages']) || $GLOBALS['BE_USER']->workspace != 0 && count($this->data))) {
+				BackendUtility::setUpdateSignal('updatePageTree');
+			}
 			// If there was saved any new items, load them:
 			if (count($tce->substNEWwithIDs_table)) {
 				// save the expanded/collapsed states for new inline records, if any

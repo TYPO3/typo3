@@ -311,6 +311,20 @@ class DataHandler {
 	 */
 	public $errorLog = array();
 
+	/**
+	 * Fields from the pages-table for which changes will trigger a pagetree refresh
+	 *
+	 * @var array
+	 */
+	public $pagetreeRefreshFieldsFromPages = array('pid', 'sorting', 'deleted', 'hidden', 'title', 'doktype', 'is_siteroot', 'fe_group', 'nav_hide', 'nav_title', 'module', 'starttime', 'endtime');
+
+	/**
+	 * Indicates whether the pagetree needs a refresh because of important changes
+	 *
+	 * @var bool
+	 */
+	public $pagetreeNeedsRefresh = FALSE;
+
 
 	// *********************
 	// Internal Variables, do not touch.
@@ -1054,6 +1068,9 @@ class DataHandler {
 											$id = $WSversion['uid'];
 											$recordAccess = TRUE;
 										} elseif ($this->BE_USER->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
+											// new version of a record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
+											$this->pagetreeNeedsRefresh = TRUE;
+
 											$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 											/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 											$tce->stripslashes_values = 0;
@@ -1160,8 +1177,16 @@ class DataHandler {
 							// Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already and files could have been uploaded that are now "lost"
 							if (is_array($fieldArray)) {
 								if ($status == 'new') {
+									if ($table === 'pages') {
+										// for new pages always a refresh is needed
+										$this->pagetreeNeedsRefresh = TRUE;
+									}
+
 									// This creates a new version of the record with online placeholder and offline version
 									if ($createNewVersion) {
+										// new record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
+										$this->pagetreeNeedsRefresh = TRUE;
+
 										$newVersion_placeholderFieldArray['t3ver_label'] = 'INITIAL PLACEHOLDER';
 										// Setting placeholder state value for temporary record
 										$newVersion_placeholderFieldArray['t3ver_state'] = (string)new VersionState(VersionState::NEW_PLACEHOLDER);
@@ -1190,6 +1215,14 @@ class DataHandler {
 										$this->insertDB($table, $id, $fieldArray, FALSE, $incomingFieldArray['uid']);
 									}
 								} else {
+									if ($table === 'pages') {
+										// only a certain number of fields needs to be checked for updates
+										// if $this->checkSimilar is TRUE, fields with unchanged values are already removed here
+										$fieldsToCheck = array_intersect($this->pagetreeRefreshFieldsFromPages, array_keys($fieldArray));
+										if (count($fieldsToCheck)) {
+											$this->pagetreeNeedsRefresh = TRUE;
+										}
+									}
 									$this->updateDB($table, $id, $fieldArray);
 									$this->placeholderShadowing($table, $id);
 								}
@@ -2873,6 +2906,11 @@ class DataHandler {
 				foreach ($this->cmdmap[$table] as $id => $incomingCmdArray) {
 					$pasteUpdate = FALSE;
 					if (is_array($incomingCmdArray)) {
+						if ($table === 'pages') {
+							// for commands on pages do a pagetree-refresh
+							$this->pagetreeNeedsRefresh = TRUE;
+						}
+
 						// have found a command.
 						// Get command and value (notice, only one command is observed at a time!):
 						reset($incomingCmdArray);
