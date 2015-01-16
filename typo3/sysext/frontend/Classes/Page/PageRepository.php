@@ -313,33 +313,65 @@ class PageRepository {
 	 * @return array Page row which is overlayed with language_overlay record (or the overlay record alone)
 	 */
 	public function getPageOverlay($pageInput, $lUid = -1) {
+		$rows = $this->getPagesOverlay(array($pageInput), $lUid);
+		// Always an array in return
+		return count($rows) ? $rows[0] : array();
+	}
+
+	/**
+	 * Returns the relevant page overlay record fields
+	 *
+	 * @param array $pagesInput Array of integers or array of arrays. If each value is an integer, it's the pids of the pageOverlay records and thus the page overlay records are returned. If each value is an array, it's page-records and based on this page records the language records are found and OVERLAYED before the page records are returned.
+	 * @param int $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+	 * @throws \UnexpectedValueException
+	 * @return array Page rows which are overlayed with language_overlay record.
+	 *			   If the input was an array of integers, missing records are not
+	 *			   included. If the input were page rows, untranslated pages
+	 *			   are returned.
+	 */
+	public function getPagesOverlay(array $pagesInput, $lUid = -1) {
+		if (count($pagesInput) == 0) {
+			return array();
+		}
 		// Initialize:
 		if ($lUid < 0) {
 			$lUid = $this->sys_language_uid;
 		}
 		$row = NULL;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
-				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
+			foreach ($pagesInput as $origPage) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
+					$hookObject = GeneralUtility::makeInstance($classRef);
+					if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface) {
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
+					}
+					$hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
 				}
-				$hookObject->getPageOverlay_preProcess($pageInput, $lUid, $this);
 			}
 		}
 		// If language UID is different from zero, do overlay:
 		if ($lUid) {
 			$fieldArr = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'], TRUE);
-			if (is_array($pageInput)) {
-				// Was the whole record
-				$page_id = $pageInput['uid'];
-				// Make sure that only fields which exist in the incoming record are overlaid!
-				$fieldArr = array_intersect($fieldArr, array_keys($pageInput));
-			} else {
-				// Was the id
-				$page_id = $pageInput;
+			$page_ids = array();
+
+			$origPage = reset($pagesInput);
+			if (is_array($origPage)) {
+				// Make sure that only fields which exist in the first incoming record are overlaid!
+				$fieldArr = array_intersect($fieldArr, array_keys($origPage));
+			}
+			foreach ($pagesInput as $origPage) {
+				if (is_array($origPage)) {
+					// Was the whole record
+					$page_ids[] = $origPage['uid'];
+				} else {
+					// Was the id
+					$page_ids[] = $origPage;
+				}
 			}
 			if (count($fieldArr)) {
+				if (!in_array('pid', $fieldArr)) {
+					$fieldArr[] = 'pid';
+				}
 				// NOTE to enabledFields('pages_language_overlay'):
 				// Currently the showHiddenRecords of TSFE set will allow
 				// pages_language_overlay records to be selected as they are
@@ -347,38 +379,53 @@ class PageRepository {
 				// However you may argue that the showHiddenField flag should
 				// determine this. But that's not how it's done right now.
 				// Selecting overlay record:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'pages_language_overlay', 'pid=' . (int)$page_id . '
-								AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay'), '', '', '1');
-				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				$this->versionOL('pages_language_overlay', $row);
-				if (is_array($row)) {
-					$row['_PAGES_OVERLAY'] = TRUE;
-					$row['_PAGES_OVERLAY_UID'] = $row['uid'];
-					$row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
-					// Unset vital fields that are NOT allowed to be overlaid:
-					unset($row['uid']);
-					unset($row['pid']);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					implode(',', $fieldArr),
+					'pages_language_overlay',
+					'pid IN(' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($page_ids)) . ')'
+						. ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay'),
+					'',
+					''
+				);
+				$overlays = array();
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$this->versionOL('pages_language_overlay', $row);
+					if (is_array($row)) {
+						$row['_PAGES_OVERLAY'] = TRUE;
+						$row['_PAGES_OVERLAY_UID'] = $row['uid'];
+						$row['_PAGES_OVERLAY_LANGUAGE'] = $lUid;
+						$origUid = $row['pid'];
+						// Unset vital fields that are NOT allowed to be overlaid:
+						unset($row['uid']);
+						unset($row['pid']);
+						$overlays[$origUid] = $row;
+					}
 				}
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
 		// Create output:
-		if (is_array($pageInput)) {
-			if (is_array($row)) {
-				// Overwrite the original field with the overlay
-				foreach ($row as $fieldName => $fieldValue) {
-					if ($fieldName !== 'uid' && $fieldName !== 'pid') {
-						if ($this->shouldFieldBeOverlaid('pages_language_overlay', $fieldName, $fieldValue)) {
-							$pageInput[$fieldName] = $fieldValue;
+		$pagesOutput = array();
+		foreach ($pagesInput as $key => $origPage) {
+			if (is_array($origPage)) {
+				$pagesOutput[$key] = $origPage;
+				if (isset($overlays[$origPage['uid']])) {
+					// Overwrite the original field with the overlay
+					foreach ($overlays[$origPage['uid']] as $fieldName => $fieldValue) {
+						if ($fieldName !== 'uid' && $fieldName !== 'pid') {
+							if ($this->shouldFieldBeOverlaid('pages_language_overlay', $fieldName, $fieldValue)) {
+								$pagesOutput[$key][$fieldName] = $fieldValue;
+							}
 						}
 					}
 				}
+			} else {
+				if (isset($overlays[$origPage])) {
+					$pagesOutput[$key] = $overlays[$origPage];
+				}
 			}
-			return $pageInput;
-		} else {
-			// Always an array in return
-			return is_array($row) ? $row : array();
 		}
+		return $pagesOutput;
 	}
 
 	/**
@@ -544,14 +591,14 @@ class PageRepository {
 					// Neither shortcut target nor mode is set. Remove the page from the menu.
 					unset($row);
 				}
-				// Add to output array after overlaying language:
 				if (is_array($row)) {
-					$output[$origUid] = $this->getPageOverlay($row);
+					$output[$origUid] = $row;
 				}
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return $output;
+        // Finally load language overlays
+		return $this->getPagesOverlay($output);
 	}
 
 	/**
