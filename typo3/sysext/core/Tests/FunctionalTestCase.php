@@ -279,7 +279,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 			$result = $database->exec_INSERTquery($tableName, $insertArray);
 			if ($result === FALSE) {
 				throw new Exception(
-					'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName,
+					'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->sql_error(),
 					1376746262
 				);
 			}
