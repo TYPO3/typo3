@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Version\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -948,6 +949,13 @@ class DataHandlerHook {
 												// For delete + completely delete!
 												$tcemainObj->deleteEl($table, $swapWith, TRUE, TRUE);
 											}
+
+											//Update reference index for live workspace too:
+											/** @var $refIndexObj \TYPO3\CMS\Core\Database\ReferenceIndex */
+											$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
+											$refIndexObj->setWorkspaceId(0);
+											$refIndexObj->updateRefIndexTable($table, $id);
+											$refIndexObj->updateRefIndexTable($table, $swapWith);
 										} else {
 											$tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
 										}
