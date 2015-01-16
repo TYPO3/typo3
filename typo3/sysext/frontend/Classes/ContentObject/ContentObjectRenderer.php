@@ -5489,7 +5489,7 @@ class ContentObjectRenderer {
 						$retVal = $this->getEnvironmentVariable($key);
 						break;
 					case 'field':
-						$retVal = $fieldArray[$key];
+						$retVal = $this->getGlobal($key, $fieldArray);
 						break;
 					case 'file':
 						$retVal = $this->getFileDataKey($key);

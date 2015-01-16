@@ -1794,7 +1794,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Checks if getData() works with type "getindpenv"
+	 * Checks if getData() works with type "field"
 	 *
 	 * @test
 	 */
@@ -1802,6 +1802,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$key = 'someKey';
 		$value = 'someValue';
 		$field = array($key => $value);
+
+		$this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
+	}
+
+	/**
+	 * Checks if getData() works with type "field" of the field content
+	 * is multi-dimensional (e.g. an array)
+	 *
+	 * @test
+	 */
+	public function getDataWithTypeFieldAndFieldIsMultiDimensional() {
+		$key = 'somekey|level1|level2';
+		$value = 'somevalue';
+		$field = array('somekey' => array('level1' => array('level2' => 'somevalue')));
 
 		$this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
 	}
