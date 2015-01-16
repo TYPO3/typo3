@@ -54,6 +54,15 @@
 			<trans-unit id="sort_alphabetic" xml:space="preserve">
 				<source>Sort alphabetically:</source>
 			</trans-unit>
+			<trans-unit id="pagetitle" xml:space="preserve">
+				<source>Pagetitle:</source>
+			</trans-unit>
+			<trans-unit id="included_tsconfig_files" xml:space="preserve">
+				<source>Included Files:</source>
+			</trans-unit>
+			<trans-unit id="written_tsconfig_lines" xml:space="preserve">
+				<source>Lines:</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
