@@ -807,7 +807,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'22' => array(
 						'uid' => '22',
-						'title' => 'b',
+						'title' => 'c',
 						'dummy' => 2
 					),
 					'24' => array(
@@ -817,26 +817,26 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					),
 					'23' => array(
 						'uid' => '23',
-						'title' => 'a',
+						'title' => 'b',
 						'dummy' => 4
 					),
 				),
 				'title',
 				TRUE,
 				array(
-					'23' => array(
-						'uid' => '23',
-						'title' => 'a',
-						'dummy' => 4
-					),
 					'24' => array(
 						'uid' => '24',
 						'title' => 'a',
 						'dummy' => 3
 					),
+					'23' => array(
+						'uid' => '23',
+						'title' => 'b',
+						'dummy' => 4
+					),
 					'22' => array(
 						'uid' => '22',
-						'title' => 'b',
+						'title' => 'c',
 						'dummy' => 2
 					),
 				),
@@ -845,7 +845,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					22 => array(
 						'uid' => '22',
-						'title' => 'b',
+						'title' => 'c',
 						'dummy' => 2
 					),
 					24 => array(
@@ -855,26 +855,26 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					),
 					23 => array(
 						'uid' => '23',
-						'title' => 'a',
+						'title' => 'b',
 						'dummy' => 4
 					),
 				),
 				'title',
 				TRUE,
 				array(
-					23 => array(
-						'uid' => '23',
-						'title' => 'a',
-						'dummy' => 4
-					),
 					24 => array(
 						'uid' => '24',
 						'title' => 'a',
 						'dummy' => 3
 					),
+					23 => array(
+						'uid' => '23',
+						'title' => 'b',
+						'dummy' => 4
+					),
 					22 => array(
 						'uid' => '22',
-						'title' => 'b',
+						'title' => 'c',
 						'dummy' => 2
 					),
 				),
@@ -883,12 +883,12 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					23 => array(
 						'uid' => '23',
-						'title' => 'a',
+						'title' => 'b',
 						'dummy' => 4
 					),
 					22 => array(
 						'uid' => '22',
-						'title' => 'b',
+						'title' => 'c',
 						'dummy' => 2
 					),
 					24 => array(
@@ -902,18 +902,18 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					22 => array(
 						'uid' => '22',
-						'title' => 'b',
+						'title' => 'c',
 						'dummy' => 2
+					),
+					23 => array(
+						'uid' => '23',
+						'title' => 'b',
+						'dummy' => 4
 					),
 					24 => array(
 						'uid' => '24',
 						'title' => 'a',
 						'dummy' => 3
-					),
-					23 => array(
-						'uid' => '23',
-						'title' => 'a',
-						'dummy' => 4
 					),
 				),
 			),
@@ -930,7 +930,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sortArraysByKeyCheckIfSortingIsCorrect(array $array, $key, $ascending, $expectedResult) {
 		$sortedArray = ArrayUtility::sortArraysByKey($array, $key, $ascending);
-		$this->assertSame($sortedArray, $expectedResult);
+		$this->assertSame($expectedResult, $sortedArray);
 	}
 
 	/**
