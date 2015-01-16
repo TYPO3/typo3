@@ -480,7 +480,7 @@ class PageRepository {
 	 * If the $uid being input does in itself require MPvars to define a correct
 	 * rootline these must be handled externally to this function.
 	 *
-	 * @param int $uid The page id for which to fetch subpages (PID)
+	 * @param int|int[] $uid The page id (or array of page ids) for which to fetch subpages (PID)
 	 * @param string $fields List of fields to select. Default is "*" = all
 	 * @param string $sortField The field to sort by. Default is "sorting
 	 * @param string $addWhere Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
@@ -491,8 +491,15 @@ class PageRepository {
 	 */
 	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
 		$output = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', 'pid=' . (int)$uid . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere, '', $sortField);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$fields,
+			'pages',
+			'pid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray((array)$uid)) . ')' . $this->where_hid_del
+				. $this->where_groupAccess . ' ' . $addWhere,
+			'',
+			$sortField
+		);
+		while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 			$this->versionOL('pages', $row, TRUE);
 			if (is_array($row)) {
 				// Keep mount point:
