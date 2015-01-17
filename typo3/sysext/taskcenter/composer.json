@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"taskcenter": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Taskcenter\\": "Classes/"
+		}
 	}
 }

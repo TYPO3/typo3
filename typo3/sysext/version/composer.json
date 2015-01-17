@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"version": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Version\\": "Classes/"
+		}
 	}
 }

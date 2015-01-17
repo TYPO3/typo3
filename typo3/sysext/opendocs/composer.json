@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"opendocs": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Opendocs\\": "Classes/"
+		}
 	}
 }

@@ -18,5 +18,15 @@
 				"partOfFactoryDefault": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Belog\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Belog\\Tests\\": "Tests/"
+		}
 	}
 }

@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"linkvalidator": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Linkvalidator\\": "Classes/"
+		}
 	}
 }

@@ -20,5 +20,18 @@
 				"partOfMinimalUsableSystem": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Core\\": "Classes/"
+		},
+		"psr-0": {
+			"TYPO3\\Flow\\": "Resources/PHP/TYPO3.Flow/Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Core\\Tests\\": "Tests/"
+		}
 	}
 }
