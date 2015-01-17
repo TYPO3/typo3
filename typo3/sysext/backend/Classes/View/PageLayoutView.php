@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\View;
  */
 
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -23,7 +22,6 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Child class for the Web > Page module
@@ -2246,24 +2244,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	}
 
 	/**
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
-	}
-
-	/**
 	 * @return PageLayoutController
 	 */
 	protected function getPageLayoutController() {
 		return $GLOBALS['SOBE'];
-	}
-
-	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

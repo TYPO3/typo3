@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Recordlist\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Script Class, putting the frameset together.
@@ -39,10 +42,11 @@ class ElementBrowserFramesetController {
 	 */
 	public function main() {
 		// Setting GPvars:
-		$mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
-		$bparams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('bparams');
+		$mode = GeneralUtility::_GP('mode');
+		$bparams = GeneralUtility::_GP('bparams');
 		$moduleUrl = BackendUtility::getModuleUrl('wizard_element_browser') . '&mode=';
-		$GLOBALS['TBE_TEMPLATE']->JScode = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$documentTemplate = $this->getDocumentTemplate();
+		$documentTemplate->JScode = $documentTemplate->wrapScriptTags('
 				function closing() {	//
 					close();
 				}
@@ -56,14 +60,14 @@ class ElementBrowserFramesetController {
 		');
 
 		// build the header part
-		$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:TYPO3_Element_Browser'));
+		$documentTemplate->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:TYPO3_Element_Browser'));
 
 		// URL for the inner main frame:
 		$url = $GLOBALS['BACK_PATH'] . $moduleUrl . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);
 
 		// Create the frameset for the window
 		// Formerly there were a ' onunload="closing();"' in the <frameset> tag - but it failed on Safari browser on Mac unless the handler was "onUnload"
-		$this->content = $GLOBALS['TBE_TEMPLATE']->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) .
+		$this->content = $documentTemplate->getPageRenderer()->render(PageRenderer::PART_HEADER) .
 			'<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="' . htmlspecialchars($url) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 				<frame name="menu" src="' . $GLOBALS['BACK_PATH'] . 'dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
@@ -79,6 +83,20 @@ class ElementBrowserFramesetController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

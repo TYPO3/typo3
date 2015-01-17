@@ -14,9 +14,17 @@ namespace TYPO3\CMS\Recordlist;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
@@ -119,14 +127,14 @@ class RecordList {
 	/**
 	 * Current ids page record
 	 *
-	 * @var array
+	 * @var mixed[]|bool
 	 */
 	public $pageinfo;
 
 	/**
 	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @var DocumentTemplate
 	 */
 	public $doc;
 
@@ -141,14 +149,14 @@ class RecordList {
 	/**
 	 * Menu configuration
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $MOD_MENU = array();
 
 	/**
 	 * Module settings (session variable)
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $MOD_SETTINGS = array();
 
@@ -167,10 +175,15 @@ class RecordList {
 	protected $moduleName = 'web_list';
 
 	/**
+	 * @var string
+	 */
+	public $body = '';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
 	}
 
 	/**
@@ -179,9 +192,10 @@ class RecordList {
 	 * @return void
 	 */
 	public function init() {
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$backendUser = $this->getBackendUserAuthentication();
+		$this->perms_clause = $backendUser->getPagePermsClause(1);
 		// Get session data
-		$sessionData = $GLOBALS['BE_USER']->getSessionData(\TYPO3\CMS\Recordlist\RecordList::class);
+		$sessionData = $backendUser->getSessionData(__CLASS__);
 		$this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';
 		// GPvars:
 		$this->id = (int)GeneralUtility::_GP('id');
@@ -205,8 +219,8 @@ class RecordList {
 		// Initialize menu
 		$this->menuConfig();
 		// Store session data
-		$GLOBALS['BE_USER']->setAndSaveSessionData(\TYPO3\CMS\Recordlist\RecordList::class, $sessionData);
-		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
+		$backendUser->setAndSaveSessionData(RecordList::class, $sessionData);
+		$this->getDocumentTemplate()->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
 	}
 
 	/**
@@ -234,7 +248,7 @@ class RecordList {
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
-			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+			$tce = GeneralUtility::makeInstance(DataHandler::class);
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd($this->id);
@@ -247,8 +261,10 @@ class RecordList {
 	 * @return void
 	 */
 	public function main() {
+		$backendUser = $this->getBackendUserAuthentication();
+		$lang = $this->getLanguageService();
 		// Start document template object:
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
@@ -277,12 +293,12 @@ class RecordList {
 		}
 
 		// Initialize the dblist object:
-		/** @var $dblist \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList */
-		$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList::class);
+		/** @var $dblist RecordList\DatabaseRecordList */
+		$dblist = GeneralUtility::makeInstance(RecordList\DatabaseRecordList::class);
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->script = BackendUtility::getModuleUrl('web_list', array(), '');
-		$dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
-		$dblist->thumbs = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
+		$dblist->calcPerms = $backendUser->calcPerms($this->pageinfo);
+		$dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
 		$dblist->returnUrl = $this->returnUrl;
 		$dblist->allFields = $this->MOD_SETTINGS['bigControlPanel'] || $this->table ? 1 : 0;
 		$dblist->localizationView = $this->MOD_SETTINGS['localization'];
@@ -303,7 +319,7 @@ class RecordList {
 		$dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
 		// Clipboard is initialized:
 		// Start clipboard
-		$dblist->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+		$dblist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
 		// Initialize - reads the clipboard content from the user session
 		$dblist->clipObj->initializeClipboard();
 		// Clipboard actions are handled:
@@ -340,7 +356,7 @@ class RecordList {
 						$iKParts = explode('|', $iK);
 						$cmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
 					}
-					$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+					$tce = GeneralUtility::makeInstance(DataHandler::class);
 					$tce->stripslashes_values = 0;
 					$tce->start(array(), $cmd);
 					$tce->process_cmdmap();
@@ -351,11 +367,11 @@ class RecordList {
 				}
 			}
 			// Initialize the listing object, dblist, for rendering the list:
-			$this->pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
+			$this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
 			$dblist->start($this->id, $this->table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
 			$dblist->setDispFields();
 			// Render versioning selector:
-			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version')) {
+			if (ExtensionManagementUtility::isLoaded('version')) {
 				$dblist->HTMLcode .= $this->doc->getVersionSelector($this->id);
 			}
 			// Render the list of tables:
@@ -424,7 +440,7 @@ class RecordList {
 		} else {
 			$output = $flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$GLOBALS['LANG']->getLL('noRecordsOnThisPage'),
+				$lang->getLL('noRecordsOnThisPage'),
 				'',
 				FlashMessage::INFO
 			)->render();
@@ -453,7 +469,7 @@ class RecordList {
 				$this->body .= '<div class="checkbox">' .
 					'<label for="checkLargeControl">' .
 					BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"') .
-					BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE)) .
+					BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $lang->getLL('largeControl', TRUE)) .
 					'</label>' .
 					'</div>';
 			}
@@ -464,7 +480,7 @@ class RecordList {
 					$this->body .= '<div class="checkbox">' .
 						'<label for="checkShowClipBoard">' .
 						BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"') .
-						BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE)) .
+						BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $lang->getLL('showClipBoard', TRUE)) .
 						'</label>' .
 						'</div>';
 				}
@@ -475,7 +491,7 @@ class RecordList {
 				$this->body .= '<div class="checkbox">' .
 					'<label for="checkLocalization">' .
 					BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"') .
-					BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE)) .
+					BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $lang->getLL('localization', TRUE)) .
 					'</label>' .
 					'</div>';
 			}
@@ -504,12 +520,13 @@ class RecordList {
 			'EXTRACONTAINERCLASS' => $this->table ? 'singletable' : '',
 			'BUTTONLIST_ADDITIONAL' => '',
 			'SEARCHBOX' => '',
-			'BUTTONLIST_ADDITIONAL' => ''
 		);
 		// searchbox toolbar
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
 			$markers['SEARCHBOX'] = $dblist->getSearchBox();
-			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
+			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="'
+				. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'
+				. IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
 		}
 		// Build the <body> for the module
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -524,6 +541,27 @@ class RecordList {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

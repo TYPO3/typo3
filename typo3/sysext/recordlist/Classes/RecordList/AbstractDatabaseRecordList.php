@@ -14,8 +14,17 @@ namespace TYPO3\CMS\Recordlist\RecordList;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\RecordList\AbstractRecordList;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Child class for rendering of Web > List (not the final class.
@@ -24,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
  */
-class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
+class AbstractDatabaseRecordList extends AbstractRecordList {
 
 	/**
 	 * Specify a list of tables which are the only ones allowed to be displayed.
@@ -106,7 +115,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Containing which fields to display in extended mode
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $displayFields;
 
@@ -205,7 +214,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Loaded with page record with version overlay if any.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $pageRecord = array();
 
@@ -226,14 +235,14 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * TSconfig which overwrites TCA-Settings
 	 *
-	 * @var array
+	 * @var mixed[][]
 	 */
 	public $tableTSconfigOverTCA = array();
 
 	/**
 	 * Array of collapsed / uncollapsed tables in multi table view
 	 *
-	 * @var array
+	 * @var int[][]
 	 */
 	public $tablesCollapsed = array();
 
@@ -275,39 +284,39 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Cache for record path
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	public $recPath_cache = array();
 
 	/**
 	 * Fields to display for the current table
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $setFields = array();
 
 	/**
 	 * Used for tracking next/prev uids
 	 *
-	 * @var array
+	 * @var int[][]
 	 */
 	public $currentTable = array();
 
 	/**
 	 * Used for tracking duplicate values of fields
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $duplicateStack = array();
 
 	/**
-	 * @var array Module configuration
+	 * @var array[] Module configuration
 	 */
 	public $modTSconfig;
 
 	/**
 	 * Override/add urlparameters in listUrl() method
-	 * @var array
+	 * @var string[]
 	 */
 	protected $overrideUrlParameters = array();
 
@@ -322,7 +331,9 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param int $showLimit Limit of records to be listed.
 	 * @return void
 	 */
-	public function start($id, $table, $pointer, $search = '', $levels = '', $showLimit = 0) {
+	public function start($id, $table, $pointer, $search = '', $levels = 0, $showLimit = 0) {
+		$backendUser = $this->getBackendUserAuthentication();
+		$db = $this->getDatabaseConnection();
 		// Setting internal variables:
 		// sets the parent id
 		$this->id = (int)$id;
@@ -332,8 +343,8 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		}
 		$this->firstElementNumber = $pointer;
 		$this->searchString = trim($search);
-		$this->searchLevels = trim($levels);
-		$this->showLimit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($showLimit, 0, 10000);
+		$this->searchLevels = (int)$levels;
+		$this->showLimit = MathUtility::forceIntegerInRange($showLimit, 0, 10000);
 		// Setting GPvars:
 		$this->csvOutput = GeneralUtility::_GP('csv') ? TRUE : FALSE;
 		$this->sortField = GeneralUtility::_GP('sortField');
@@ -349,22 +360,22 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		$this->HTMLcode = '';
 		// Limits
 		if (isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
-			$this->itemsLimitPerTable = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((int)$this->modTSconfig['properties']['itemsLimitPerTable'], 1, 10000);
+			$this->itemsLimitPerTable = MathUtility::forceIntegerInRange((int)$this->modTSconfig['properties']['itemsLimitPerTable'], 1, 10000);
 		}
 		if (isset($this->modTSconfig['properties']['itemsLimitSingleTable'])) {
-			$this->itemsLimitSingleTable = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((int)$this->modTSconfig['properties']['itemsLimitSingleTable'], 1, 10000);
+			$this->itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)$this->modTSconfig['properties']['itemsLimitSingleTable'], 1, 10000);
 		}
 		// Set search levels:
-		$searchLevels = (int)$this->searchLevels;
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		// This will hide records from display - it has nothing todo with user rights!!
-		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
-			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+		$searchLevels = $this->searchLevels;
+		$this->perms_clause = $backendUser->getPagePermsClause(1);
+		// This will hide records from display - it has nothing to do with user rights!!
+		if ($pidList = $backendUser->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $db->cleanIntList($pidList)) {
 				$this->perms_clause .= ' AND pages.uid NOT IN (' . $pidList . ')';
 			}
 		}
 		// Get configuration of collapsed tables from user uc and merge with sanitized GP vars
-		$this->tablesCollapsed = is_array($GLOBALS['BE_USER']->uc['moduleData']['list']) ? $GLOBALS['BE_USER']->uc['moduleData']['list'] : array();
+		$this->tablesCollapsed = is_array($backendUser->uc['moduleData']['list']) ? $backendUser->uc['moduleData']['list'] : array();
 		$collapseOverride = GeneralUtility::_GP('collapse');
 		if (is_array($collapseOverride)) {
 			foreach ($collapseOverride as $collapseTable => $collapseValue) {
@@ -373,16 +384,16 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				}
 			}
 			// Save modified user uc
-			$GLOBALS['BE_USER']->uc['moduleData']['list'] = $this->tablesCollapsed;
-			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+			$backendUser->uc['moduleData']['list'] = $this->tablesCollapsed;
+			$backendUser->writeUC($backendUser->uc);
 			$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 			if ($returnUrl !== '') {
-				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($returnUrl);
+				HttpUtility::redirect($returnUrl);
 			}
 		}
 		if ($searchLevels > 0) {
 			$allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
-			$pidList = implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($allowedMounts));
+			$pidList = implode(',', $db->cleanIntArray($allowedMounts));
 			$this->pidSelect = 'pid IN (' . $pidList . ')';
 		} elseif ($searchLevels < 0) {
 			// Search everywhere
@@ -406,15 +417,16 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function generateList() {
 		// Set page record in header
 		$this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
+		$hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
 		// Traverse the TCA table array:
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
 			// Checking if the table should be rendered:
 			// Checks that we see only permitted/requested tables:
-			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || GeneralUtility::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
+			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || GeneralUtility::inList($this->tableList, $tableName)) && $this->getBackendUserAuthentication()->check('tables_select', $tableName)) {
 				// Don't show table if hidden by TCA ctrl section
 				$hideTable = $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ? TRUE : FALSE;
 				// Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-				if (in_array($tableName, GeneralUtility::trimExplode(',', $this->hideTables))) {
+				if (in_array($tableName, $hideTablesArray)) {
 					$hideTable = TRUE;
 				}
 				// Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
@@ -429,7 +441,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] : $this->itemsLimitSingleTable;
 				} else {
 					// if there are no records in table continue current foreach
-					$firstRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					$firstRow = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 						'uid',
 						$tableName,
 						$this->pidSelect . BackendUtility::deleteClause($tableName) . BackendUtility::versioningPlaceholderClause($tableName)
@@ -458,7 +470,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					$fields = array();
 				}
 				// Find ID to use (might be different for "versioning_followPages" tables)
-				if ((int)$this->searchLevels === 0) {
+				if ($this->searchLevels === 0) {
 					$this->pidSelect = 'pid=' . (int)$this->id;
 				}
 				// Finally, render the list:
@@ -468,12 +480,25 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	}
 
 	/**
+	 * To be implemented in extending classes.
+	 *
+	 * @param string $tableName
+	 * @param int $id
+	 * @param string $fields List of fields to show in the listing. Pseudo fields will be added including the record header.
+	 * @return string HTML code
+	 */
+	public function getTable($tableName, $id, $fields) {
+		return '';
+	}
+
+	/**
 	 * Creates the search box
 	 *
 	 * @param bool $formFields If TRUE, the search box is wrapped in its own form-tags
 	 * @return string HTML for the search box
 	 */
-	public function getSearchBox($formFields = 1) {
+	public function getSearchBox($formFields = TRUE) {
+		$lang = $this->getLanguageService();
 		// Setting form-elements, if applicable:
 		$formElements = array('', '');
 		if ($formFields) {
@@ -481,11 +506,11 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 		}
 		// Make level selector:
 		$opt = array();
-		$parts = explode('|', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchLevels'));
+		$parts = explode('|', $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchLevels'));
 		foreach ($parts as $kv => $label) {
-			$opt[] = '<option value="' . $kv . '"' . ($kv == (int)$this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
+			$opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 		}
-		$lMenu = '<select class="form-control" name="search_levels" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search_levels', TRUE) . '" id="search_levels">' . implode('', $opt) . '</select>';
+		$lMenu = '<select class="form-control" name="search_levels" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search_levels', TRUE) . '" id="search_levels">' . implode('', $opt) . '</select>';
 		// Table with the search box:
 		$content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
@@ -493,25 +518,25 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					<div class="row">
 						<div class="col-xs-3 col-md-3 col-lg-3">
 							<div class="input-group">
-								<label class="pull-left" for="search_field">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.searchString', TRUE) . ': </label>
-								<input class="form-control" type="search" placeholder="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString', TRUE) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
+								<label class="pull-left" for="search_field">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.searchString', TRUE) . ': </label>
+								<input class="form-control" type="search" placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', TRUE) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString', TRUE) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
 							</div>
 						</div>
 						<div class="col-xs-3 col-md-3 col-lg-3">
 							<div class="input-group">
-								<label class="pull-left" for="search_levels">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels', TRUE) . ': </label>
+								<label class="pull-left" for="search_levels">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels', TRUE) . ': </label>
 								' . $lMenu . '
 							</div>
 						</div>
 						<div class="col-xs-3 col-md-3 col-lg-3">
 							<div class="input-group">
-								<label class="pull-left" for="showLimit">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', TRUE) . ': </label>
-								<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', TRUE) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
+								<label class="pull-left" for="showLimit">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', TRUE) . ': </label>
+								<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', TRUE) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
 							</div>
 						</div>
 						<div class="col-xs-3 col-md-3 col-lg-3">
 							<div class="input-group">
-								<input type="submit" class="btn btn-default btn-block" name="search" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
+								<input type="submit" class="btn btn-default btn-block" name="search" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
 							</div>
 						</div>
 					</div>
@@ -531,14 +556,15 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @return void
 	 */
 	public function setDispFields() {
+		$backendUser = $this->getBackendUserAuthentication();
 		// Getting from session:
-		$dispFields = $GLOBALS['BE_USER']->getModuleData('list/displayFields');
+		$dispFields = $backendUser->getModuleData('list/displayFields');
 		// If fields has been inputted, then set those as the value and push it to session variable:
 		if (is_array($this->displayFields)) {
 			reset($this->displayFields);
 			$tKey = key($this->displayFields);
 			$dispFields[$tKey] = $this->displayFields[$tKey];
-			$GLOBALS['BE_USER']->pushModuleData('list/displayFields', $dispFields);
+			$backendUser->pushModuleData('list/displayFields', $dispFields);
 		}
 		// Setting result:
 		$this->setFields = $dispFields;
@@ -547,7 +573,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Create thumbnail code for record/field
 	 *
-	 * @param array $row Record array
+	 * @param mixed[] $row Record array
 	 * @param string $table Table (record is from)
 	 * @param string $field Field name for which thumbnail are to be rendered.
 	 * @return string HTML for thumbnails, if any.
@@ -563,7 +589,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param int $id Page id (NOT USED! $this->pidSelect is used instead)
 	 * @param string $addWhere Additional part for where clause
 	 * @param string $fieldList Field list to select, * for all (for "SELECT [fieldlist] FROM ...")
-	 * @return array Returns query array
+	 * @return string[] Returns query array
 	 */
 	public function makeQueryArray($table, $id, $addWhere = '', $fieldList = '*') {
 		$hookObjectsArr = array();
@@ -594,7 +620,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			'FROM' => $table,
 			'WHERE' => $this->pidSelect . ' ' . $pC . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table) . ' ' . $addWhere . ' ' . $search,
 			'GROUPBY' => '',
-			'ORDERBY' => $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy),
+			'ORDERBY' => $this->getDatabaseConnection()->stripOrderBy($orderBy),
 			'LIMIT' => $limit
 		);
 		// Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
@@ -620,12 +646,12 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Based on input query array (query for selecting count(*) from a table) it will select the number of records and set the value in $this->totalItems
 	 *
-	 * @param array $queryParts Query array
+	 * @param string[] $queryParts Query array
 	 * @return void
 	 * @see makeQueryArray()
 	 */
 	public function setTotalItems($queryParts) {
-		$this->totalItems = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $queryParts['FROM'], $queryParts['WHERE']);
+		$this->totalItems = $this->getDatabaseConnection()->exec_SELECTcountRows('*', $queryParts['FROM'], $queryParts['WHERE']);
 	}
 
 	/**
@@ -639,13 +665,13 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function makeSearchString($table, $currentPid = -1) {
 		$result = '';
 		$currentPid = (int)$currentPid;
-		$tablePidField = $table == 'pages' ? 'uid' : 'pid';
+		$tablePidField = $table === 'pages' ? 'uid' : 'pid';
 		// Make query, only if table is valid and a search string is actually defined:
 		if ($this->searchString) {
 			$result = ' AND 0=1';
 			$searchableFields = $this->getSearchFields($table);
 			if (count($searchableFields) > 0) {
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->searchString)) {
+				if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
 					$whereParts = array(
 						'uid=' . $this->searchString
 					);
@@ -669,7 +695,8 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					}
 				} else {
 					$whereParts = array();
-					$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($this->searchString, $table), $table) . '%\'';
+					$db = $this->getDatabaseConnection();
+					$like = '\'%' . $db->quoteStr($db->escapeStrForLike($this->searchString, $table), $table) . '%\'';
 					foreach ($searchableFields as $fieldName) {
 						if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
 							$fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
@@ -704,7 +731,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * Fetches a list of fields to use in the Backend search for the given table.
 	 *
 	 * @param string $tableName
-	 * @return array
+	 * @return string[]
 	 */
 	protected function getSearchFields($tableName) {
 		$fieldArray = array();
@@ -738,11 +765,10 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @return string The linked table label
 	 */
 	public function linkWrapTable($table, $code) {
-		if ($this->table != $table) {
+		if ($this->table !== $table) {
 			return '<a href="' . htmlspecialchars($this->listURL('', $table, 'firstElementNumber')) . '">' . $code . '</a>';
-		} else {
-			return '<a href="' . htmlspecialchars($this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')) . '">' . $code . '</a>';
 		}
+		return '<a href="' . htmlspecialchars($this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')) . '">' . $code . '</a>';
 	}
 
 	/**
@@ -751,15 +777,16 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $table Table name
 	 * @param int $uid Item uid
 	 * @param string $code Item title (not htmlspecialchars()'ed yet)
-	 * @param array $row Item row
+	 * @param mixed[] $row Item row
 	 * @return string The item title. Ready for HTML output (is htmlspecialchars()'ed)
 	 */
 	public function linkWrapItems($table, $uid, $code, $row) {
+		$lang = $this->getLanguageService();
 		$origCode = $code;
 		// If the title is blank, make a "no title" label:
 		if ((string)$code === '') {
-			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
-						BackendUtility::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
+			$code = '<i>[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
+						BackendUtility::getRecordTitle($table, $row), $this->getBackendUserAuthentication()->uc['titleLen']));
 		} else {
 			$code = htmlspecialchars(GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', FALSE);
 			if ($code != htmlspecialchars($origCode)) {
@@ -770,7 +797,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			case 'edit':
 				// If the listed table is 'pages' we have to request the permission settings for each page:
 				if ($table == 'pages') {
-					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
+					$localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
 					$permsEdit = $localCalcPerms & 2;
 				} else {
 					$permsEdit = $this->calcPerms & 16;
@@ -779,19 +806,19 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				if ($permsEdit) {
 					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
 					$code = '<a href="#" onclick="' . htmlspecialchars(
-							BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' . $code . '</a>';
+							BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $lang->getLL('edit', TRUE) . '">' . $code . '</a>';
 				}
 				break;
 			case 'show':
 				// "Show" link (only pages and tt_content elements)
 				if ($table == 'pages' || $table == 'tt_content') {
 					$code = '<a href="#" onclick="' . htmlspecialchars(
-							BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $code . '</a>';
+							BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $code . '</a>';
 				}
 				break;
 			case 'info':
 				// "Info": (All records)
-				$code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . $GLOBALS['LANG']->getLL('showInfo', TRUE) . '">' . $code . '</a>';
+				$code = '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;')) . '" title="' . $lang->getLL('showInfo', TRUE) . '">' . $code . '</a>';
 				break;
 			default:
 				// Output the label now:
@@ -831,18 +858,18 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
 	 *
 	 * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
-	 * @param string $table Tablename to display. Enter "-1" for the current table.
-	 * @param string $exclList Commalist of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
+	 * @param string $table Table name to display. Enter "-1" for the current table.
+	 * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
 	 * @return string URL
 	 */
-	public function listURL($altId = '', $table = -1, $exclList = '') {
+	public function listURL($altId = '', $table = '-1', $exclList = '') {
 		$urlParameters = array();
 		if ((string)$altId !== '') {
 			$urlParameters['id'] = $altId;
 		} else {
 			$urlParameters['id'] = $this->id;
 		}
-		if ($table === -1) {
+		if ($table === '-1') {
 			$urlParameters['table'] = $this->table;
 		} else {
 			$urlParameters['table'] = $table;
@@ -892,9 +919,10 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param string $table Table name
 	 * @param bool $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
 	 * @param bool $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
-	 * @return array Array, where values are fieldnames to include in query
+	 * @return string[] Array, where values are fieldnames to include in query
 	 */
-	public function makeFieldList($table, $dontCheckUser = 0, $addDateFields = 0) {
+	public function makeFieldList($table, $dontCheckUser = FALSE, $addDateFields = FALSE) {
+		$backendUser = $this->getBackendUserAuthentication();
 		// Init fieldlist array:
 		$fieldListArr = array();
 		// Check table:
@@ -902,7 +930,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 			if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
 				// Traverse configured columns and add them to field array, if available for user.
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-					if ($dontCheckUser || (!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] != 'passthrough') {
+					if ($dontCheckUser || (!$fieldValue['exclude'] || $backendUser->check('non_exclude_fields', $table . ':' . $fN)) && $fieldValue['config']['type'] != 'passthrough') {
 						$fieldListArr[] = $fN;
 					}
 				}
@@ -911,7 +939,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 				$fieldListArr[] = 'pid';
 
 				// Add date fields
-				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin() || $addDateFields) {
+				if ($dontCheckUser || $backendUser->isAdmin() || $addDateFields) {
 					if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
 						$fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
 					}
@@ -920,14 +948,14 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					}
 				}
 				// Add more special fields:
-				if ($dontCheckUser || $GLOBALS['BE_USER']->isAdmin()) {
+				if ($dontCheckUser || $backendUser->isAdmin()) {
 					if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
 						$fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
 					}
 					if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 						$fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 					}
-					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('version') && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+					if (ExtensionManagementUtility::isLoaded('version') && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 						$fieldListArr[] = 't3ver_id';
 						$fieldListArr[] = 't3ver_state';
 						$fieldListArr[] = 't3ver_wsid';
@@ -946,18 +974,19 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	 * @param int $id Page id
 	 * @param int $depth Depth to go down
 	 * @param string $perms_clause select clause
-	 * @return array
+	 * @return int[]
 	 */
 	protected function getSearchableWebmounts($id, $depth, $perms_clause) {
-		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
-		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
+		$backendUser = $this->getBackendUserAuthentication();
+		/** @var PageTreeView $tree */
+		$tree = GeneralUtility::makeInstance(PageTreeView::class);
 		$tree->init('AND ' . $perms_clause);
 		$tree->makeHTML = 0;
 		$tree->fieldArray = array('uid', 'php_tree_stop');
 		$idList = array();
 
-		$allowedMounts = !$GLOBALS['BE_USER']->isAdmin() && $id === 0
-			? $GLOBALS['BE_USER']->returnWebmounts()
+		$allowedMounts = !$backendUser->isAdmin() && $id === 0
+			? $backendUser->returnWebmounts()
 			: array($id);
 
 		foreach ($allowedMounts as $allowedMount) {
@@ -980,14 +1009,14 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	public function localizationRedirect($justLocalized) {
 		list($table, $orig_uid, $language) = explode(':', $justLocalized);
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
-			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$language . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$orig_uid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
+			$localizedRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$language . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$orig_uid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
 				$url = substr($this->listURL(), strlen($this->backPath));
 				$params = '&edit[' . $table . '][' . $localizedRecord['uid'] . ']=edit';
 				$returnUrl = '&returnUrl=' . rawurlencode($url);
 				$location = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl;
-				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($location);
+				HttpUtility::redirect($location);
 			}
 		}
 	}
@@ -995,11 +1024,24 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 	/**
 	 * Set URL parameters to override or add in the listUrl() method.
 	 *
-	 * @param array $urlParameters
+	 * @param string[] $urlParameters
 	 * @return void
 	 */
 	public function setOverrideUrlParameters(array $urlParameters) {
 		$this->overrideUrlParameters = $urlParameters;
 	}
 
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
 }

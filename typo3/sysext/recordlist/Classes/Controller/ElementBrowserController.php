@@ -14,6 +14,12 @@ namespace TYPO3\CMS\Recordlist\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
+
 /**
  * Script class for the Element Browser window.
  *
@@ -39,24 +45,29 @@ class ElementBrowserController {
 	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE']
 	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
 	 *
-	 * @var \TYPO3\CMS\Recordlist\Browser\ElementBrowser
+	 * @var ElementBrowser
 	 */
 	public $browser;
 
 	/**
 	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @var DocumentTemplate
 	 */
 	public $doc;
+
+	/**
+	 * @var string
+	 */
+	public $content = '';
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_browse_links.xlf');
 		$GLOBALS['BACK_PATH'] = '';
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_browse_links.xlf');
 
 		$this->init();
 	}
@@ -68,14 +79,13 @@ class ElementBrowserController {
 	 */
 	protected function init() {
 		// Find "mode"
-		$this->mode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mode');
+		$this->mode = GeneralUtility::_GP('mode');
 		if (!$this->mode) {
 			$this->mode = 'rte';
 		}
 		// Creating backend template object:
 		// this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		// Apply the same styles as those of the base script
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 
@@ -88,25 +98,26 @@ class ElementBrowserController {
 	 */
 	public function main() {
 		// Clear temporary DB mounts
-		$tmpMount = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('setTempDBmount');
+		$tmpMount = GeneralUtility::_GET('setTempDBmount');
+		$backendUser = $this->getBackendUserAuthentication();
 		if (isset($tmpMount)) {
-			$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
+			$backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
 		}
 		// Set temporary DB mounts
-		$alternativeWebmountPoint = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
+		$alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
 		if ($alternativeWebmountPoint) {
-			$alternativeWebmountPoint = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $alternativeWebmountPoint);
-			$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoint);
+			$alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
+			$backendUser->setWebmounts($alternativeWebmountPoint);
 		} else {
 			switch ((string)$this->mode) {
 				case 'rte':
 				case 'db':
 				case 'wizard':
 					// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-					$alternativeWebmountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-					$appendAlternativeWebmountPoints = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
+					$alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+					$appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
 					if ($alternativeWebmountPoints) {
-						$alternativeWebmountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $alternativeWebmountPoints);
+						$alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
 						$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
 					}
 			}
@@ -116,7 +127,7 @@ class ElementBrowserController {
 		$browserRendered = FALSE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $classRef) {
-				$browserRenderObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$browserRenderObj = GeneralUtility::getUserObj($classRef);
 				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
 						$this->content .= $browserRenderObj->render($this->mode, $this);
@@ -128,11 +139,11 @@ class ElementBrowserController {
 		}
 		// if type was not rendered use default rendering functions
 		if (!$browserRendered) {
-			$this->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Browser\ElementBrowser::class);
+			$this->browser = GeneralUtility::makeInstance(ElementBrowser::class);
 			$this->browser->init();
-			$modData = $GLOBALS['BE_USER']->getModuleData('browse_links.php', 'ses');
-			list($modData, $store) = $this->browser->processSessionData($modData);
-			$GLOBALS['BE_USER']->pushModuleData('browse_links.php', $modData);
+			$modData = $backendUser->getModuleData('browse_links.php', 'ses');
+			list($modData) = $this->browser->processSessionData($modData);
+			$backendUser->pushModuleData('browse_links.php', $modData);
 			// Output the correct content according to $this->mode
 			switch ((string)$this->mode) {
 				case 'rte':
@@ -162,6 +173,20 @@ class ElementBrowserController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
