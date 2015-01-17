@@ -20,5 +20,15 @@
 				"partOfMinimalUsableSystem": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Fluid\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Fluid\\Tests\\": "Tests/"
+		}
 	}
 }

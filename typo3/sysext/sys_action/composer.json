@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"sys_action": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\SysAction\\": "Classes/"
+		}
 	}
 }

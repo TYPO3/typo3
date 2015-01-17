@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"feedit": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Feedit\\": "Classes/"
+		}
 	}
 }

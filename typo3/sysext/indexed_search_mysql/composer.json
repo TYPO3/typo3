@@ -11,5 +11,10 @@
 	},
 	"replace": {
 		"indexed_search_mysql": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\IndexedSearchMysql\\": "Classes/"
+		}
 	}
 }

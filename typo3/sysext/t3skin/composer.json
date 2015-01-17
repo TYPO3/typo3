@@ -19,5 +19,10 @@
 				"partOfMinimalUsableSystem": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\T3skin\\": "Classes/"
+		}
 	}
 }

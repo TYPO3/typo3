@@ -11,5 +11,15 @@
 	},
 	"replace": {
 		"dbal": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Dbal\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Dbal\\Tests\\": "Tests/"
+		}
 	}
 }

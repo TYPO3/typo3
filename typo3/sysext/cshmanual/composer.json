@@ -20,5 +20,10 @@
 				"partOfMinimalUsableSystem": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Cshmanual\\": "Classes/"
+		}
 	}
 }

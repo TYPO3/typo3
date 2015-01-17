@@ -20,5 +20,15 @@
 				"partOfMinimalUsableSystem": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Saltedpasswords\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Saltedpasswords\\Tests\\": "Tests/"
+		}
 	}
 }

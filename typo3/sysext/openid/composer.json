@@ -13,5 +13,10 @@
 	},
 	"replace": {
 		"openid": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Openid\\": "Classes/"
+		}
 	}
 }

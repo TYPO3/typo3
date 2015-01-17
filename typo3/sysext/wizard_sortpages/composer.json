@@ -18,5 +18,10 @@
 				"partOfFactoryDefault": true
 			}
 		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\WizardSortpages\\": "Classes/"
+		}
 	}
 }
