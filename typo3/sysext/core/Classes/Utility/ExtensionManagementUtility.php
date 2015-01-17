@@ -1288,21 +1288,21 @@ class ExtensionManagementUtility {
 	 *
 	 * @param string $key The extension key
 	 * @param string $classFile The PHP-class filename relative to the extension root directory. If set to blank a default value is chosen according to convensions.
-	 * @param string $prefix Is used as a - yes, suffix - of the class name (fx. "_pi1")
+	 * @param string $suffix Is used as a suffix of the class name (e.g. "_pi1")
 	 * @param string $type See description above
 	 * @param int $cached If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
 	 *
 	 * @return void
 	 */
-	static public function addPItoST43($key, $classFile = '', $prefix = '', $type = 'list_type', $cached = 0) {
-		$classFile = $classFile ? $classFile : 'pi/class.tx_' . str_replace('_', '', $key) . $prefix . '.php';
+	static public function addPItoST43($key, $classFile = '', $suffix = '', $type = 'list_type', $cached = 0) {
+		$classFile = $classFile ? $classFile : 'pi/class.tx_' . str_replace('_', '', $key) . $suffix . '.php';
 		$cN = self::getCN($key);
 		// General plugin
 		$pluginContent = trim('
-plugin.' . $cN . $prefix . ' = USER' . ($cached ? '' : '_INT') . '
-plugin.' . $cN . $prefix . ' {
+plugin.' . $cN . $suffix . ' = USER' . ($cached ? '' : '_INT') . '
+plugin.' . $cN . $suffix . ' {
 	includeLibs = ' . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'] . $classFile . '
-	userFunc = ' . $cN . $prefix . '->main
+	userFunc = ' . $cN . $suffix . '->main
 }');
 		self::addTypoScript($key, 'setup', '
 # Setting ' . $key . ' plugin TypoScript
@@ -1310,25 +1310,25 @@ plugin.' . $cN . $prefix . ' {
 		// After ST43
 		switch ($type) {
 			case 'list_type':
-				$addLine = 'tt_content.list.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
+				$addLine = 'tt_content.list.20.' . $key . $suffix . ' = < plugin.' . $cN . $suffix;
 				break;
 			case 'menu_type':
-				$addLine = 'tt_content.menu.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
+				$addLine = 'tt_content.menu.20.' . $key . $suffix . ' = < plugin.' . $cN . $suffix;
 				break;
 			case 'CType':
 				$addLine = trim('
-tt_content.' . $key . $prefix . ' = COA
-tt_content.' . $key . $prefix . ' {
+tt_content.' . $key . $suffix . ' = COA
+tt_content.' . $key . $suffix . ' {
 	10 = < lib.stdheader
-	20 = < plugin.' . $cN . $prefix . '
+	20 = < plugin.' . $cN . $suffix . '
 }
 ');
 				break;
 			case 'header_layout':
-				$addLine = 'lib.stdheader.10.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
+				$addLine = 'lib.stdheader.10.' . $key . $suffix . ' = < plugin.' . $cN . $suffix;
 				break;
 			case 'includeLib':
-				$addLine = 'page.1000 = < plugin.' . $cN . $prefix;
+				$addLine = 'page.1000 = < plugin.' . $cN . $suffix;
 				break;
 			default:
 				$addLine = '';
