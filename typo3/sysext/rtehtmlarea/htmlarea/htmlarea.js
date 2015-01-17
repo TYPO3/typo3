@@ -4275,6 +4275,15 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 						var node = startContainer.childNodes[startOffset-1];
 					} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
 						var node = startContainer;
+					// ... or, in Google, a span tag may have been inserted inside a heading element
+					} else if (Ext.isWebKit && /^(#text)$/i.test(startContainer.nodeName)) {
+						var node = startContainer.parentNode;
+						if (/^(h[1-6])$/i.test(node.nodeName)) {
+							self.editor.cleanAppleStyleSpans(node);
+						} else if (node.parentNode && /^(h[1-6])$/i.test(node.parentNode.nodeName)) {
+							self.editor.cleanAppleStyleSpans(node.parentNode);
+						}
+						return false;
 					} else {
 						return false;
 					}
@@ -5116,7 +5125,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 				if (HTMLArea.DOM.hasClass(spans[i], 'Apple-style-span')) {
 					this.removeMarkup(spans[i]);
 				}
-				if (/^(li)$/i.test(spans[i].parentNode.nodeName) && (spans[i].style.cssText.indexOf('line-height') !== -1 || spans[i].style.cssText.indexOf('font-family') !== -1 || spans[i].style.cssText.indexOf('font-size') !== -1)) {
+				if (/^(li|h[1-6])$/i.test(spans[i].parentNode.nodeName) && (spans[i].style.cssText.indexOf('line-height') !== -1 || spans[i].style.cssText.indexOf('font-family') !== -1 || spans[i].style.cssText.indexOf('font-size') !== -1)) {
 					this.removeMarkup(spans[i]);
 				}
 			}
