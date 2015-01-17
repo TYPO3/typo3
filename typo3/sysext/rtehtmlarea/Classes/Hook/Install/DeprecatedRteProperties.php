@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Rtehtmlarea\Hook\Install;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+
 /**
  * Contains the update class for the replacement of deprecated RTE properties in Page TSconfig. Used by the update wizard in the install tool.
  *
@@ -184,16 +187,18 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 		$fields = 'uid, TSconfig';
 		$table = 'pages';
 		$where = '';
+		/** @var DatabaseConnection $db */
+		$db = $GLOBALS['TYPO3_DB'];
 		foreach (array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties) as $deprecatedRteProperty => $_) {
-			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSConfig NOT LIKE BINARY ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages');
+			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSConfig NOT LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages') . ')' . LF;
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
+		$res = $db->exec_SELECTquery($fields, $table, $where);
 		$dbQueries[] = str_replace(chr(10), ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
-		if ($GLOBALS['TYPO3_DB']->sql_error()) {
-			$customMessages = 'SQL-ERROR: ' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error());
+		if ($db->sql_error()) {
+			$customMessages = 'SQL-ERROR: ' . htmlspecialchars($db->sql_error());
 		}
 		$pages = array();
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $db->sql_fetch_assoc($res)) {
 			$pages[] = $row;
 		}
 		return $pages;
