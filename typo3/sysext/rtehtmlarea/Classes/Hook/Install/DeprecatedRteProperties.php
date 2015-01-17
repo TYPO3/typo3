@@ -206,10 +206,10 @@ class DeprecatedRteProperties extends AbstractUpdate {
 		$fields = 'uid, TSconfig';
 		$table = 'pages';
 		$where = '';
-		foreach (array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties) as $deprecatedRteProperty => $_) {
-			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSConfig NOT LIKE BINARY ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages');
-		}
 		$db = $this->getDatabaseConnection();
+		foreach (array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties) as $deprecatedRteProperty => $_) {
+			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSConfig NOT LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages') . ')' . LF;
+		}
 		$res = $db->exec_SELECTquery($fields, $table, $where);
 		$dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
 		if ($db->sql_error()) {
