@@ -173,8 +173,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 		 * @return integer the normalized key
 		 */
 		getKey: function (event) {
-			return Event.normalizeKey(event.originalEvent.key ? event.originalEvent.key : (event.originalEvent.charCode ? event.originalEvent.charCode : (event.originalEvent.keyCode ? event.originalEvent.keyCode : event.originalEvent.which)));
-			return Event.normalizeKey((event.originalEvent.charCode ? event.originalEvent.charCode : (event.originalEvent.keyCode ? event.originalEvent.keyCode : event.originalEvent.which)));
+			var originalEvent = event.originalEvent;
+			return Event.normalizeKey(
+				(typeof originalEvent.key !== 'undefined' && originalEvent.key && originalEvent.key !== 'Unidentified')
+				? (Event.domLevel3Keys[originalEvent.key] || originalEvent.key)
+				: (originalEvent.charCode ? originalEvent.charCode : (originalEvent.keyCode ? originalEvent.keyCode : originalEvent.which))
+			);
 		},
 
 		/**
@@ -184,7 +188,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
 		 * @return integer the normalized key
 		 */
 		normalizeKey: function(key){
-		    return UserAgent.isSafari ? (Event.safariKeys[key] || key) : (Event.domLevel3Keys[key] || key);
+		    return UserAgent.isSafari ? (Event.safariKeys[key] || key) : key;
 		},
 
 		/**
