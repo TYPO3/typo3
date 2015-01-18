@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Core;
 
 use TYPO3\CMS\Core\Utility;
 
-require_once __DIR__ . '/SystemEnvironmentBuilder.php';
-
 /**
  * This class encapsulates bootstrap related methods.
  * It is required directly as the very first thing in entry scripts and
@@ -152,9 +150,30 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function baseSetup($relativePathPart = '') {
+		$this->initializeComposerClassLoader();
 		SystemEnvironmentBuilder::run($relativePathPart);
 		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
+	}
+
+	/**
+	 * @return \Composer\Autoload\ClassLoader
+	 */
+	protected function initializeComposerClassLoader() {
+		$respectComposerPackagesForClassLoading = getenv('TYPO3_COMPOSER_AUTOLOAD') ?: (getenv('REDIRECT_TYPO3_COMPOSER_AUTOLOAD') ?: NULL);
+		if (!empty($respectComposerPackagesForClassLoading)) {
+			$possiblePaths = array(
+				'distribution is root package' => __DIR__ . '/../../../../../../Packages/Libraries/autoload.php',
+				'typo3/cms is root package' => __DIR__ . '/../../../../../Packages/Libraries/autoload.php',
+			);
+			foreach ($possiblePaths as $possiblePath) {
+				if (file_exists($possiblePath)) {
+					return include $possiblePath;
+				}
+			}
+		}
+		// Committed vendor dir in typo3/contrib
+		return require __DIR__ . '/../../../../contrib/vendor/autoload.php';
 	}
 
 	/**
@@ -262,7 +281,7 @@ class Bootstrap {
 		$classAliasMap->injectClassLoader($classLoader);
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class, $classAliasMap);
 		$classLoader->injectClassAliasMap($classAliasMap);
-		spl_autoload_register(array($classLoader, 'loadClass'), TRUE, TRUE);
+		spl_autoload_register(array($classLoader, 'loadClass'), TRUE, FALSE);
 		return $this;
 	}
 

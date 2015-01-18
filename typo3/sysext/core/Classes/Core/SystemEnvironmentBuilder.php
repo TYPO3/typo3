@@ -62,7 +62,6 @@ class SystemEnvironmentBuilder {
 		self::defineBaseConstants();
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
-		self::requireBaseClasses();
 		self::handleMagicQuotesGpc();
 		self::addCorePearPathToIncludePath();
 		self::initializeGlobalVariables();
@@ -187,31 +186,6 @@ class SystemEnvironmentBuilder {
 				. '* A symlink "typo3" - the backend entry point - pointing to "typo3_src/typo3"' . LF
 				. '* A symlink "index.php" - the frontend entry point - points to "typo3_src/index.php"');
 		}
-	}
-
-	/**
-	 * Load several base classes during bootstrap
-	 *
-	 * @return void
-	 */
-	static protected function requireBaseClasses() {
-		require_once __DIR__ . '/../Utility/GeneralUtility.php';
-		require_once __DIR__ . '/../Utility/ArrayUtility.php';
-		require_once __DIR__ . '/../Utility/PathUtility.php';
-		require_once __DIR__ . '/../SingletonInterface.php';
-		require_once __DIR__ . '/../Configuration/ConfigurationManager.php';
-		require_once __DIR__ . '/../Cache/Frontend/FrontendInterface.php';
-		require_once __DIR__ . '/../Cache/Frontend/AbstractFrontend.php';
-		require_once __DIR__ . '/../Cache/Frontend/StringFrontend.php';
-		require_once __DIR__ . '/../Cache/Frontend/PhpFrontend.php';
-		require_once __DIR__ . '/../Cache/Frontend/VariableFrontend.php';
-		require_once __DIR__ . '/../Cache/Backend/BackendInterface.php';
-		require_once __DIR__ . '/../Cache/Backend/PhpCapableBackendInterface.php';
-		require_once __DIR__ . '/../Cache/Backend/TaggableBackendInterface.php';
-		require_once __DIR__ . '/../Cache/Backend/AbstractBackend.php';
-		require_once __DIR__ . '/../Cache/Backend/TransientMemoryBackend.php';
-		require_once __DIR__ . '/ClassLoader.php';
-		require_once __DIR__ . '/ClassAliasMap.php';
 	}
 
 	/**
