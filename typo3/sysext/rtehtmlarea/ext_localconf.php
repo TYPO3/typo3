@@ -35,8 +35,6 @@ if (strstr($_EXTCONF['defaultConfiguration'], 'Minimal')) {
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Hook/SoftReferences/ext_localconf.php';
 // Add Status Report about Conflicting Extensions
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Hook/StatusReport/ext_localconf.php';
-// Add frontend hook to add meta tag when rtehtmlarea is present and user agent is IE 11+
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/Hook/Frontend/Controller/ext_localconf.php';
 
 // Set warning in the Update Wizard of the Install Tool for deprecated Page TS Config properties
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForDeprecatedRtePageTSConfigProperties'] = \TYPO3\CMS\Rtehtmlarea\Hook\Install\DeprecatedRteProperties::class;
