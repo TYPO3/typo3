@@ -28,7 +28,7 @@ CREATE TABLE cache_md5params (
 CREATE TABLE cache_treelist (
 	md5hash char(32) DEFAULT '' NOT NULL,
 	pid int(11) DEFAULT '0' NOT NULL,
-	treelist text,
+	treelist mediumtext,
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	expires int(11) unsigned  DEFAULT '0' NOT NULL,
 
