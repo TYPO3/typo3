@@ -1345,7 +1345,7 @@ class DatabaseConnection {
 	 */
 	public function admin_get_fields($tableName) {
 		$output = array();
-		$columns_res = $this->query('SHOW COLUMNS FROM `' . $tableName . '`');
+		$columns_res = $this->query('SHOW FULL COLUMNS FROM `' . $tableName . '`');
 		if ($columns_res !== FALSE) {
 			while ($fieldRow = $columns_res->fetch_assoc()) {
 				$output[$fieldRow['Field']] = $fieldRow;

@@ -101,14 +101,14 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'tx_foo' => array(
 					'fields' => array(
-						'foo' => 'INT(11) DEFAULT \'0\' NOT NULL'
+						'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
 					)
 				)
 			),
 			array(
 				'tx_foo' => array(
 					'fields' => array(
-						'foo' => 'int(11) DEFAULT \'0\' NOT NULL'
+						'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
 					)
 				)
 			)
@@ -120,7 +120,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'extra' => array(),
 				'diff' => array(),
-				'diff_currentValues' => NULL
+				'diff_currentValues' => NULL,
 			)
 		);
 	}
@@ -134,14 +134,14 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'tx_foo' => array(
 					'fields' => array(
-						'PRIMARY KEY (md5hash)'
+						'PRIMARY KEY (md5hash)',
 					)
 				)
 			),
 			array(
 				'tx_foo' => array(
 					'fields' => array(
-						'PRIMARY KEY (md5hash)')
+						'PRIMARY KEY (md5hash)'),
 				)
 			)
 		);
@@ -152,8 +152,55 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'extra' => array(),
 				'diff' => array(),
-				'diff_currentValues' => NULL
+				'diff_currentValues' => NULL,
 			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkColumnDefinitionIfCommentIsSupplied() {
+		$subject = new SqlSchemaMigrationService();
+		$fieldDefinition = $subject->assembleFieldDefinition(
+			array(
+				'Field' => 'uid',
+				'Type' => 'int(11)',
+				'Null' => 'NO',
+				'Key' => 'PRI',
+				'Default' => NULL,
+				'Extra' => 'auto_increment',
+				'Comment' => 'I am a comment',
+			)
+		);
+
+
+		$this->assertSame(
+			'int(11) NOT NULL auto_increment COMMENT \'I am a comment\'',
+			$fieldDefinition
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkColumnDefinitionIfNoCommentIsSupplied() {
+		$subject = new SqlSchemaMigrationService();
+		$fieldDefinition = $subject->assembleFieldDefinition(
+			array(
+				'Field' => 'uid',
+				'Type' => 'int(11)',
+				'Null' => 'NO',
+				'Key' => 'PRI',
+				'Default' => NULL,
+				'Extra' => 'auto_increment',
+			)
+		);
+
+
+		$this->assertSame(
+			'int(11) NOT NULL auto_increment',
+			$fieldDefinition
 		);
 	}
 
