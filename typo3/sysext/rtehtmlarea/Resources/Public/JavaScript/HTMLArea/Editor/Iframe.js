@@ -42,16 +42,16 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		render: function (container) {
 			this.config = this.getEditor().config;
 			this.createIframe(container);
-			this.htmlRenderer = new Walker({
-				keepComments: !this.config.htmlRemoveComments,
-				removeTags: this.config.htmlRemoveTags,
-				removeTagsAndContents: this.config.htmlRemoveTagsAndContents,
-				baseUrl: this.config.baseURL
-			});
 			if (!this.config.showStatusBar) {
 				Dom.addClass(this.getEl(), 'noStatusBar');
 			}
-			this.initEventListeners();
+			this.initStyleChangeEventListener();
+			if (UserAgent.isOpera) {
+				var self = this;
+				Event.one(this.getEl(), 'load', function (event) { self.initializeIframe(); return true; })
+			} else {
+				this.initializeIframe();
+			}
 		},
 
 		/**
@@ -59,19 +59,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 */
 		getEl: function () {
 			return this.el;
-		},
-
-		/**
-		 * Initialize event listeners and the document after the iframe has rendered
-		 */
-		initEventListeners: function () {
-			this.initStyleChangeEventListener();
-			if (UserAgent.isOpera) {
-				var self = this;
-				Event.one(iframe, 'load', function (event) { self.initializeIframe(event); return true; })
-			} else {
-				this.initializeIframe();
-			}
 		},
 
 		/**
@@ -408,13 +395,28 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		/**
 		 * Instance of DOM walker
 		 */
-		htmlRenderer: {},
+		htmlRenderer: null,
+
+		/**
+		 * Getter for the instance of DOM walker
+		 */
+		getHtmlRenderer: function () {
+			if (!this.htmlRenderer) {
+				this.htmlRenderer = new Walker({
+					keepComments: !this.config.htmlRemoveComments,
+					removeTags: this.config.htmlRemoveTags,
+					removeTagsAndContents: this.config.htmlRemoveTagsAndContents,
+					baseUrl: this.config.baseURL
+				});
+			}
+			return this.htmlRenderer;
+		},
 
 		/**
 		 * Get the HTML content of the iframe
 		 */
 		getHTML: function () {
-			return this.htmlRenderer.render(this.document.body, false);
+			return this.getHtmlRenderer().render(this.document.body, false);
 		},
 
 		/**
@@ -586,7 +588,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			if (UserAgent.isGecko) {
 				var self = this;
 				window.setTimeout(function () {
-					Dom.makeUrlsAbsolute(self.getEditor().document.body, self.config.baseURL, self.htmlRenderer);	
+					Dom.makeUrlsAbsolute(self.getEditor().document.body, self.config.baseURL, self.getHtmlRenderer());
 				}, 50);
 			}
 			return true;
@@ -606,7 +608,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			// Make src url absolute in Firefox
 			if (UserAgent.isGecko) {
 				window.setTimeout(function () {
-					Dom.makeUrlsAbsolute(event.target, self.config.baseURL, self.htmlRenderer);
+					Dom.makeUrlsAbsolute(event.target, self.config.baseURL, self.getHtmlRenderer());
 				}, 50);
 			}
 			this.getToolbar().updateLater(100);
