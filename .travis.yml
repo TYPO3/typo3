@@ -13,7 +13,7 @@ notifications:
     use_notice: true
   slack:
     rooms:
-      secure: a7c9Nw3KblUQsO4np7Sa685y7tqSJ5nSvzO8hnFjKEeQlgkbnC7Qq2TBvVSr92A1UMouL+6E9ngp3cb7rSYWsNKIaHn51CjhrvlfFElTZ0qd/jLVNDf1B765i0txiIZLLed0e3871/151xBgnggsXC4hcv4mPGc9g//ZPabp++E=
+      secure: nHWVTPyG3CQWIcYA1LASS11dD0/NBcmrAyr3xxQW0XYtH47ZUKRlEtxrVLuL7ptciNwMbfZgsiRQ1QGWDerHUlBkg0iwRxpUZgeylzWaiXsHFVAp2IBfEX54KrWeYm9gewIBDDtnp+sLgpXGgmpIs2bAGkZe5129UsUExoWh0+g=
     on_success: change
     on_failure: always
 
