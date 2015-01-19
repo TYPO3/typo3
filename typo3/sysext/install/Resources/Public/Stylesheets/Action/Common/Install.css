@@ -60,9 +60,8 @@ table {
 }
 
 
-/* Font size 62.8% = 1em = 10px */
 body {
-	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
+	font: 75% Verdana, Arial, Helvetica, sans-serif;
 }
 
 pre {
@@ -175,7 +174,7 @@ fieldset span {
 }
 
 .t3-install-form-label-after label {
-	padding-left: 3em;
+	padding-left: 2em;
 }
 
 .t3-install-form-label-width-7 label {
@@ -184,6 +183,10 @@ fieldset span {
 
 .t3-install-form-label-width-21 label {
 	width: 21em;
+}
+
+.t3-install-form-label-after input[type=checkbox] {
+	margin-top: 0.7em;
 }
 
 fieldset.t3-install-form-submit {
@@ -469,7 +472,7 @@ body.standalone #t3-install-menu-logout a {
 #t3-install-box-body .toggleButton {
 	background-image: url('../../../Images/Icon/arrowright-white.png');
 	background-repeat: no-repeat;
-	background-position: 3px 8px;
+	background-position: 0.5% 56%;
 	padding-left: 20px;
 	cursor: pointer;
 }
@@ -547,7 +550,7 @@ h4.item-header {
 .typo3-message {
 	padding: 0.6em 0.6em 0.6em 2.6em;
 	background-repeat: no-repeat;
-	background-position: 0.5em 0.7em;
+	background-position: 0.5em 0.9em;
 	border: 1px solid;
 	color: #000000;
 	word-wrap: break-word;
