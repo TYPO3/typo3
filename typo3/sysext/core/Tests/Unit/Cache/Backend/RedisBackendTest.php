@@ -387,10 +387,10 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setAppendsSecondIdentifierInTagToIdentifiersEntry() {
 		$this->setUpBackend();
 		$this->setUpRedis();
-		$firstIdentifier = $this->getUniqueId('identifier');
+		$firstIdentifier = $this->getUniqueId('identifier1-');
 		$tag = 'thisTag';
 		$this->backend->set($firstIdentifier, 'data', array($tag));
-		$secondIdentifier = $this->getUniqueId('identifier');
+		$secondIdentifier = $this->getUniqueId('identifier2-');
 		$this->backend->set($secondIdentifier, 'data', array($tag));
 		$savedTagToIdentifiersMemberArray = $this->redis->sMembers('tagIdents:' . $tag);
 		sort($savedTagToIdentifiersMemberArray);
@@ -628,9 +628,9 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function findIdentifiersByTagReturnsAllIdentifiersTagedWithSpecifiedTag() {
 		$this->setUpBackend();
-		$firstIdentifier = $this->getUniqueId('identifier');
-		$secondIdentifier = $this->getUniqueId('identifier');
-		$thirdIdentifier = $this->getUniqueId('identifier');
+		$firstIdentifier = $this->getUniqueId('identifier1-');
+		$secondIdentifier = $this->getUniqueId('identifier2-');
+		$thirdIdentifier = $this->getUniqueId('identifier3-');
 		$tagsForFirstIdentifier = array('thisTag');
 		$tagsForSecondIdentifier = array('thatTag');
 		$tagsForThirdIdentifier = array('thisTag', 'thatTag');
