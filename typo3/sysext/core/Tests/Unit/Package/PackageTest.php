@@ -12,6 +12,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  *                                                                        */
 
 use TYPO3\Flow\Package\Package as FlowPackage;
+use TYPO3\CMS\Core\Package\Package as TYPO3Package;
 use org\bovigo\vfs\vfsStream;
 
 /**
@@ -114,9 +115,11 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getClassesPathReturnsPathToClasses() {
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'TYPO3.CMS.Core', PATH_typo3 . 'sysext/core/', FlowPackage::DIRECTORY_CLASSES);
+		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
+		$package = new TYPO3Package($packageManagerMock, 'core', PATH_typo3 . 'sysext/core/', TYPO3Package::DIRECTORY_CLASSES);
 		$packageClassesPath = $package->getClassesPath();
-		$expected = $package->getPackagePath() . FlowPackage::DIRECTORY_CLASSES;
+		$expected = $package->getPackagePath() . TYPO3Package::DIRECTORY_CLASSES;
 		$this->assertEquals($expected, $packageClassesPath);
 	}
 
