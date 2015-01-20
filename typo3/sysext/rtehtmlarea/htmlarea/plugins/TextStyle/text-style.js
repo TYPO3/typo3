@@ -27,16 +27,12 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
 		var allowedClasses;
 		for (var tagName in this.tags) {
-			if (this.tags.hasOwnProperty(tagName)) {
-				if (this.tags[tagName].allowedClasses) {
-					allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
-					for (var cssClass in allowedClasses) {
-						if (allowedClasses.hasOwnProperty(cssClass)) {
-							allowedClasses[cssClass] = allowedClasses[cssClass].trim().replace(/\*/g, ".*");
-						}
-					}
-					this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
+			if (this.tags[tagName].allowedClasses) {
+				allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
+				for (var i = allowedClasses.length; --i >= 0;) {
+					allowedClasses[i] = allowedClasses[i].trim().replace(/\*/g, ".*");
 				}
+				this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
 			}
 		}
 		this.showTagFreeClasses = this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false;
