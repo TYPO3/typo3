@@ -271,7 +271,7 @@ class PermissionAjaxController {
 			if ($int & $permission) {
 				$str .= IconUtility::getSpriteIcon('status-status-permission-granted', array(
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'class' => 'change-permission',
+					'class' => 'change-permission text-success',
 					'data-page' => $pageId,
 					'data-permissions' => $int,
 					'data-mode' => 'delete',
@@ -282,7 +282,7 @@ class PermissionAjaxController {
 			} else {
 				$str .= IconUtility::getSpriteIcon('status-status-permission-denied', array(
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'class' => 'change-permission',
+					'class' => 'change-permission text-danger',
 					'data-page' => $pageId,
 					'data-permissions' => $int,
 					'data-mode' => 'add',
