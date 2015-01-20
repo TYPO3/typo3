@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
+use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\FilesContentObject
@@ -46,8 +49,12 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 
-		$contentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('dummy'));
-		$this->subject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\FilesContentObject::class, array('dummy'), array($contentObject));
+		$contentObjectRenderer = new ContentObjectRenderer();
+		$contentObjectRenderer->setContentObjectClassMap(array(
+			'FILES' => FilesContentObject::class,
+			'TEXT' => TextContentObject::class,
+		));
+		$this->subject = new FilesContentObject($contentObjectRenderer);
 	}
 
 	/**

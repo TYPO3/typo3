@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\Plugin\AbstractPlugin
@@ -42,7 +44,11 @@ class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE']->cObjectDepthCounter = 100;
 
 		$this->abstractPlugin = new \TYPO3\CMS\Frontend\Plugin\AbstractPlugin();
-		$this->abstractPlugin->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
+		$contentObjectRenderer = new ContentObjectRenderer();
+		$contentObjectRenderer->setContentObjectClassMap(array(
+			'TEXT' => TextContentObject::class,
+		));
+		$this->abstractPlugin->cObj = $contentObjectRenderer;
 		$this->defaultPiVars = $this->abstractPlugin->piVars;
 	}
 

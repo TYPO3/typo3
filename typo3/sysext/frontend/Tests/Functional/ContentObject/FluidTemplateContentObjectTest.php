@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
+use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 
 /**
  * Test case
@@ -50,6 +52,10 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\FunctionalTes
 		$expectedResult = 'ABC';
 
 		$contentObjectRenderer = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+		$contentObjectRenderer->setContentObjectClassMap(array(
+			'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
+			'TEXT' => TextContentObject::class,
+		));
 		$fluidTemplateContentObject = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject(
 			$contentObjectRenderer
 		);

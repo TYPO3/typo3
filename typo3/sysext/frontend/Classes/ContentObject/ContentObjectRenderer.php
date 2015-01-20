@@ -221,46 +221,11 @@ class ContentObjectRenderer {
 	);
 
 	/**
-	 * Class names for accordant content objects
+	 * Class names for accordant content object names
 	 *
 	 * @var array
 	 */
-	protected $contentObjectClassMapping = array(
-		'TEXT' => 'Text',
-		'CASE' => 'Case',
-		'CLEARGIF' => 'ClearGif',
-		'COBJ_ARRAY' => 'ContentObjectArray',
-		'COA' => 'ContentObjectArray',
-		'COA_INT' => 'ContentObjectArrayInternal',
-		'USER' => 'User',
-		'USER_INT' => 'UserInternal',
-		'FILE' => 'File',
-		'FILES' => 'Files',
-		'IMAGE' => 'Image',
-		'IMG_RESOURCE' => 'ImageResource',
-		'IMGTEXT' => 'ImageText',
-		'CONTENT' => 'Content',
-		'RECORDS' => 'Records',
-		'HMENU' => 'HierarchicalMenu',
-		'CTABLE' => 'ContentTable',
-		'OTABLE' => 'OffsetTable',
-		'COLUMNS' => 'Columns',
-		'HRULER' => 'HorizontalRuler',
-		'CASEFUNC' => 'Case',
-		'LOAD_REGISTER' => 'LoadRegister',
-		'RESTORE_REGISTER' => 'RestoreRegister',
-		'FORM' => 'Form',
-		'SEARCHRESULT' => 'SearchResult',
-		'TEMPLATE' => 'Template',
-		'FLUIDTEMPLATE' => 'FluidTemplate',
-		'MULTIMEDIA' => 'Multimedia',
-		'MEDIA' => 'Media',
-		'SWFOBJECT' => 'ShockwaveFlashObject',
-		'FLOWPLAYER' => 'FlowPlayer',
-		'QTOBJECT' => 'QuicktimeObject',
-		'SVG' => 'ScalableVectorGraphics',
-		'EDITPANEL' => 'EditPanel',
-	);
+	protected $contentObjectClassMap = array();
 
 	/**
 	 * Holds ImageMagick parameters and extensions used for compression
@@ -583,6 +548,34 @@ class ContentObjectRenderer {
 	 */
 	public function __construct(TypoScriptFrontendController $typoScriptFrontendController = NULL) {
 		$this->typoScriptFrontendController = $typoScriptFrontendController ?: $GLOBALS['TSFE'];
+		$this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'];
+	}
+
+	/**
+	 * Allow injecting content object class map.
+	 *
+	 * This method is private API, please use configuration
+	 * $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] to add new content objects
+	 *
+	 * @internal
+	 * @param array $contentObjectClassMap
+	 */
+	public function setContentObjectClassMap(array $contentObjectClassMap) {
+		$this->contentObjectClassMap = $contentObjectClassMap;
+	}
+
+	/**
+	 * Register a single content object name to class name
+	 *
+	 * This method is private API, please use configuration
+	 * $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] to add new content objects
+	 *
+	 * @internal
+	 * @param string $className
+	 * @param string $contentObjectName
+	 */
+	public function registerContentObjectClass($className, $contentObjectName) {
+		$this->contentObjectClassMap[$contentObjectName] = $className;
 	}
 
 	/**
@@ -804,16 +797,23 @@ class ContentObjectRenderer {
 
 	/**
 	 * Returns a new content object of type $name.
+	 * This content object needs to be registered as content object
+	 * in $this->contentObjectClassMap
 	 *
 	 * @param string $name
 	 * @return NULL|AbstractContentObject
+	 * @throws ContentRenderingException
 	 */
 	public function getContentObject($name) {
-		if (!isset($this->contentObjectClassMapping[$name])) {
+		if (!isset($this->contentObjectClassMap[$name])) {
 			return NULL;
 		}
-		$fullyQualifiedClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $this->contentObjectClassMapping[$name] . 'ContentObject';
-		return GeneralUtility::makeInstance($fullyQualifiedClassName, $this);
+		$fullyQualifiedClassName = $this->contentObjectClassMap[$name];
+		$contentObject = GeneralUtility::makeInstance($fullyQualifiedClassName, $this);
+		if (!($contentObject instanceof AbstractContentObject)) {
+			throw new ContentRenderingException(sprintf('Registered content object class name "%" must be an instance of AbstractContentObject, but is not!', $fullyQualifiedClassName), 1422564295);
+		}
+		return $contentObject;
 	}
 
 	/********************************************

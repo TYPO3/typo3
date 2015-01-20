@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -45,13 +46,15 @@ class CaseContentObjectTest extends UnitTestCase {
 		$tsfe->sys_page = $this->getMock(PageRepository::class, array('getRawRecord'));
 		$tsfe->csConvObj = new CharsetConverter();
 		$tsfe->renderCharset = 'utf-8';
-
 		$GLOBALS['TSFE'] = $tsfe;
 
-		$contentObject = $this->getMock(ContentObjectRenderer::class, array('dummy'));
-		$this->subject = $this->getMock(CaseContentObject::class, array('dummy'), array($contentObject));
+		$contentObjectRenderer = new ContentObjectRenderer();
+		$contentObjectRenderer->setContentObjectClassMap(array(
+			'CASE' => CaseContentObject::class,
+			'TEXT' => TextContentObject::class,
+		));
+		$this->subject = new CaseContentObject($contentObjectRenderer);
 	}
-
 
 	/**
 	 * @test

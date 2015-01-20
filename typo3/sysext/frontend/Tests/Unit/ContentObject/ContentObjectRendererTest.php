@@ -50,6 +50,48 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $templateServiceMock = NULL;
 
 	/**
+	 * Default content object name -> class name map, shipped with TYPO3 CMS
+	 *
+	 * @var array
+	 */
+	protected $contentObjectMap = array(
+		'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
+		'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
+		'CLEARGIF'         => \TYPO3\CMS\Frontend\ContentObject\ClearGifContentObject::class,
+		'COBJ_ARRAY'       => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
+		'COA'              => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
+		'COA_INT'          => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject::class,
+		'USER'             => \TYPO3\CMS\Frontend\ContentObject\UserContentObject::class,
+		'USER_INT'         => \TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject::class,
+		'FILE'             => \TYPO3\CMS\Frontend\ContentObject\FileContentObject::class,
+		'FILES'            => \TYPO3\CMS\Frontend\ContentObject\FilesContentObject::class,
+		'IMAGE'            => \TYPO3\CMS\Frontend\ContentObject\ImageContentObject::class,
+		'IMG_RESOURCE'     => \TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject::class,
+		'IMGTEXT'          => \TYPO3\CMS\Frontend\ContentObject\ImageTextContentObject::class,
+		'CONTENT'          => \TYPO3\CMS\Frontend\ContentObject\ContentContentObject::class,
+		'RECORDS'          => \TYPO3\CMS\Frontend\ContentObject\RecordsContentObject::class,
+		'HMENU'            => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,
+		'CTABLE'           => \TYPO3\CMS\Frontend\ContentObject\ContentTableContentObject::class,
+		'OTABLE'           => \TYPO3\CMS\Frontend\ContentObject\OffsetTableContentObject::class,
+		'COLUMNS'          => \TYPO3\CMS\Frontend\ContentObject\ColumnsContentObject::class,
+		'HRULER'           => \TYPO3\CMS\Frontend\ContentObject\HorizontalRulerContentObject::class,
+		'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
+		'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
+		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
+		'FORM'             => \TYPO3\CMS\Frontend\ContentObject\FormContentObject::class,
+		'SEARCHRESULT'     => \TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class,
+		'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,
+		'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
+		'MULTIMEDIA'       => \TYPO3\CMS\Frontend\ContentObject\MultimediaContentObject::class,
+		'MEDIA'            => \TYPO3\CMS\Frontend\ContentObject\MediaContentObject::class,
+		'SWFOBJECT'        => \TYPO3\CMS\Frontend\ContentObject\ShockwaveFlashObjectContentObject::class,
+		'FLOWPLAYER'       => \TYPO3\CMS\Frontend\ContentObject\FlowPlayerContentObject::class,
+		'QTOBJECT'         => \TYPO3\CMS\Frontend\ContentObject\QuicktimeObjectContentObject::class,
+		'SVG'              => \TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject::class,
+		'EDITPANEL'        => \TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject::class
+	);
+
+	/**
 	 * Set up
 	 */
 	public function setUp() {
@@ -69,13 +111,14 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TSFE'] = $this->typoScriptFrontendControllerMock;
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
-		$GLOBALS['TYPO3_CONF_VARS']['SYS'][\TYPO3\CMS\Core\Charset\CharsetConverter_utils::class] = 'mbstring';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = 'mbstring';
 
 		$this->subject = $this->getAccessibleMock(
 			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
 			array('getResourceFactory', 'getEnvironmentVariable'),
 			array($this->typoScriptFrontendControllerMock)
 		);
+		$this->subject->setContentObjectClassMap($this->contentObjectMap);
 		$this->subject->start(array(), 'tt_content');
 	}
 
@@ -159,53 +202,22 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/*************************
 	 * Tests concerning getContentObject
 	 ************************/
+
 	public function getContentObjectValidContentObjectsDataProvider() {
-		return array(
-			array('TEXT', 'Text'),
-			array('CASE', 'Case'),
-			array('CLEARGIF', 'ClearGif'),
-			array('COBJ_ARRAY', 'ContentObjectArray'),
-			array('COA', 'ContentObjectArray'),
-			array('COA_INT', 'ContentObjectArrayInternal'),
-			array('USER', 'User'),
-			array('USER_INT', 'UserInternal'),
-			array('FILE', 'File'),
-			array('FILES', 'Files'),
-			array('IMAGE', 'Image'),
-			array('IMG_RESOURCE', 'ImageResource'),
-			array('IMGTEXT', 'ImageText'),
-			array('CONTENT', 'Content'),
-			array('RECORDS', 'Records'),
-			array('HMENU', 'HierarchicalMenu'),
-			array('CTABLE', 'ContentTable'),
-			array('OTABLE', 'OffsetTable'),
-			array('COLUMNS', 'Columns'),
-			array('HRULER', 'HorizontalRuler'),
-			array('CASEFUNC', 'Case'),
-			array('LOAD_REGISTER', 'LoadRegister'),
-			array('RESTORE_REGISTER', 'RestoreRegister'),
-			array('FORM', 'Form'),
-			array('SEARCHRESULT', 'SearchResult'),
-			array('TEMPLATE', 'Template'),
-			array('FLUIDTEMPLATE', 'FluidTemplate'),
-			array('MULTIMEDIA', 'Multimedia'),
-			array('MEDIA', 'Media'),
-			array('SWFOBJECT', 'ShockwaveFlashObject'),
-			array('FLOWPLAYER', 'FlowPlayer'),
-			array('QTOBJECT', 'QuicktimeObject'),
-			array('SVG', 'ScalableVectorGraphics'),
-			array('EDITPANEL', 'EditPanel'),
-		);
+		$dataProvider = array();
+		foreach ($this->contentObjectMap as $name => $className) {
+			$dataProvider[] = array($name, $className);
+		}
+		return $dataProvider;
 	}
 
 	/**
 	 * @test
 	 * @dataProvider getContentObjectValidContentObjectsDataProvider
 	 * @param string $name TypoScript name of content object
-	 * @param string $className Expected class name
+	 * @param string $fullClassName Expected class name
 	 */
-	public function getContentObjectCallsMakeInstanceForNewContentObjectInstance($name, $className) {
-		$fullClassName = 'TYPO3\\CMS\\Frontend\\ContentObject\\' . $className . 'ContentObject';
+	public function getContentObjectCallsMakeInstanceForNewContentObjectInstance($name, $fullClassName) {
 		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
 		$this->assertSame($contentObjectInstance, $this->subject->getContentObject($name));

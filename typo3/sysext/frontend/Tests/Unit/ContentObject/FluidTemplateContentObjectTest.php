@@ -63,7 +63,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		);
 		$this->subject = $this->getAccessibleMock(
 			\TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
-			array('dummy', 'initializeStandaloneViewInstance'),
+			array('initializeStandaloneViewInstance'),
 			array($this->contentObjectRenderer)
 		);
 		/** @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
