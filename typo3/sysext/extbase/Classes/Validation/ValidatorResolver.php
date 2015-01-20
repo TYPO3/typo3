@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Validation;
 
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 
@@ -111,7 +112,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * NULL is returned.
 	 *
 	 * @param string $targetClassName The data type to search a validator for. Usually the fully qualified object name
-	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator The validator conjunction or NULL
+	 * @return ConjunctionValidator The validator conjunction or NULL
 	 */
 	public function getBaseValidatorConjunction($targetClassName) {
 		if (!array_key_exists($targetClassName, $this->baseValidatorConjunctions)) {
@@ -148,7 +149,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 		foreach ($methodParameters as $parameterName => $methodParameter) {
 			/** @var ConjunctionValidator $validatorConjunction */
-			$validatorConjunction = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator::class);
+			$validatorConjunction = $this->createValidator(ConjunctionValidator::class);
 
 			if (!array_key_exists('type', $methodParameter)) {
 				throw new Exception\InvalidTypeHintException('Missing type information, probably no @param annotation for parameter "$' . $parameterName . '" in ' . $className . '->' . $methodName . '()', 1281962564);
@@ -248,10 +249,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function buildBaseValidatorConjunction($indexKey, $targetClassName, array $validationGroups = array()) {
-		$conjunctionValidator = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator();
+		$conjunctionValidator = new ConjunctionValidator();
 		$this->baseValidatorConjunctions[$indexKey] = $conjunctionValidator;
-		if (class_exists($targetClassName)) {
-				// Model based validator
+
+		// note: the simpleType check reduces lookups to the class loader
+		if (!TypeHandlingUtility::isSimpleType($targetClassName) && class_exists($targetClassName)) {
+			// Model based validator
 			/** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
 			$objectValidator = $this->objectManager->get(\TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class, array());
 			foreach ($this->reflectionService->getClassPropertyNames($targetClassName) as $classPropertyName) {
@@ -261,18 +264,21 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 					throw new \InvalidArgumentException(sprintf('There is no @var annotation for property "%s" in class "%s".', $classPropertyName, $targetClassName), 1363778104);
 				}
 				try {
-					$parsedType = \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::parseType(trim(implode('', $classPropertyTagsValues['var']), ' \\'));
+					$parsedType = TypeHandlingUtility::parseType(trim(implode('', $classPropertyTagsValues['var']), ' \\'));
 				} catch (\TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException $exception) {
 					throw new \InvalidArgumentException(sprintf(' @var annotation of ' . $exception->getMessage(), 'class "' . $targetClassName . '", property "' . $classPropertyName . '"'), 1315564744, $exception);
 				}
 				$propertyTargetClassName = $parsedType['type'];
-				if (\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCollectionType($propertyTargetClassName) === TRUE) {
-					$collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
-					$objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
-				} elseif (class_exists($propertyTargetClassName) && !\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
-					$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $validationGroups);
-					if (count($validatorForProperty) > 0) {
-						$objectValidator->addPropertyValidator($classPropertyName, $validatorForProperty);
+				// note: the outer simpleType check reduces lookups to the class loader
+				if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
+					if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
+						$collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
+						$objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
+					} elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
+						$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $validationGroups);
+						if (count($validatorForProperty) > 0) {
+							$objectValidator->addPropertyValidator($classPropertyName, $validatorForProperty);
+						}
 					}
 				}
 
@@ -415,16 +421,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
 		if (strpos($validatorName, ':') !== FALSE || strpbrk($validatorName, '_\\') === FALSE) {
-			/**
-			 * Found shorthand validator, either extbase or foreign extension
-			 * NotEmpty or Acme.MyPck.Ext:MyValidator
-			 */
+			// Found shorthand validator, either extbase or foreign extension
+			// NotEmpty or Acme.MyPck.Ext:MyValidator
 			list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
 
 			if ($validatorName !== $extensionName && $extensionValidatorName !== '') {
-				/**
-				 * Shorthand custom
-				 */
+				 // Shorthand custom
 				if (strpos($extensionName, '.') !== FALSE) {
 					$extensionNameParts = explode('.', $extensionName);
 					$extensionName = array_pop($extensionNameParts);
@@ -434,16 +436,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 					$possibleClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $extensionValidatorName;
 				}
 			} else {
-				/**
-				 * Shorthand built in
-				 */
+				// Shorthand built in
 				$possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->getValidatorType($validatorName);
 			}
 		} else {
-			/**
-			 * Full qualified
-			 * Tx_MyExt_Validation_Validator_MyValidator or \Acme\Ext\Validation\Validator\FooValidator
-			 */
+			 // Full qualified
+			 // Tx_MyExt_Validation_Validator_MyValidator or \Acme\Ext\Validation\Validator\FooValidator
 			$possibleClassName = $validatorName;
 		}
 
