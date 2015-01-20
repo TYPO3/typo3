@@ -52,7 +52,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$backend = new MemcachedBackend('Testing', $backendOptions);
 		$backend->initializeObject();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 	}
 
@@ -71,7 +71,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
 		$this->assertTrue($inCache, 'Memcache failed to set and check entry');
@@ -83,7 +83,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
 		$this->assertEquals($data, $fetchedData, 'Memcache failed to set and retrieve data');
@@ -95,7 +95,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
@@ -108,7 +108,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data);
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
@@ -122,7 +122,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
 		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
@@ -136,7 +136,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
@@ -148,7 +148,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('NonExistingIdentifier');
 		$inCache = $backend->has($identifier);
 		$this->assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
 	}
@@ -158,7 +158,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
-		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('NonExistingIdentifier');
 		$inCache = $backend->remove($identifier);
 		$this->assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
 	}
@@ -237,7 +237,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTagsOnlyOnceToIdentifier() {
 		$backendOptions = array('servers' => array('localhost:11211'));
-		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
+		$identifier = $this->getUniqueId('MyIdentifier');
 		$tags = array('UnitTestTag%test', 'UnitTestTag%boring');
 
 		$backend = $this->setUpBackend($backendOptions, TRUE);

@@ -25,7 +25,7 @@ class CoreUpdateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getMessagesReturnsPreviouslySetMessage() {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreUpdateService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock('TYPO3\\CMS\\Install\\Service\\CoreUpdateService', array('dummy'), array(), '', FALSE);
-		$aMessage = uniqid('message_');
+		$aMessage = $this->getUniqueId('message_');
 		$instance->_set('messages', $aMessage);
 		$this->assertSame($aMessage, $instance->getMessages());
 	}

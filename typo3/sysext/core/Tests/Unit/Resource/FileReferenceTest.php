@@ -132,7 +132,7 @@ class FileReferenceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getPropertyThrowsExceptionForNotAvailableProperty($fileReferenceProperties, $originalFileProperties) {
 		$fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
-		$fixture->getProperty(uniqid('nothingHere'));
+		$fixture->getProperty($this->getUniqueId('nothingHere'));
 	}
 
 	/**

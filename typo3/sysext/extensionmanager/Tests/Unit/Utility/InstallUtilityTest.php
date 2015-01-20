@@ -98,7 +98,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return string The extension key
 	 */
 	protected function createFakeExtension() {
-		$extKey = strtolower(uniqid('testing'));
+		$extKey = strtolower($this->getUniqueId('testing'));
 		$absExtPath = PATH_site . 'typo3temp/' . $extKey;
 		$relPath = 'typo3temp/' . $extKey . '/';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absExtPath);

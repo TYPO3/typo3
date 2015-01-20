@@ -100,7 +100,7 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @test
 	 */
 	public function localizationReturnsUnchangedStringIfNotLocallangLabel() {
-		$string = uniqid();
+		$string = $this->getUniqueId();
 		$this->assertEquals($string, $this->fixture->sL($string));
 	}
 

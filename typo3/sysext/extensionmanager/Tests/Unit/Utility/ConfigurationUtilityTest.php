@@ -33,7 +33,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->expects($this->once())
 			->method('getDefaultConfigurationFromExtConfTemplateAsValuedArray')
 			->will($this->returnValue(array()));
-		$extensionKey = uniqid('some-extension');
+		$extensionKey = $this->getUniqueId('some-extension');
 
 		$currentConfiguration = array(
 			'key1' => 'value1',
@@ -148,7 +148,7 @@ class ConfigurationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
-		$result = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray(uniqid('some_extension'));
+		$result = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($this->getUniqueId('some_extension'));
 		$this->assertEquals($expected, $result);
 	}
 

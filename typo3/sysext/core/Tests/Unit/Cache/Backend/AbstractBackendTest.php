@@ -32,7 +32,7 @@ class AbstractBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$className = 'ConcreteBackend_' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('ConcreteBackend_');
 		eval('
 			class ' . $className . ' extends TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend {
 				public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {}

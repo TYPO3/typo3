@@ -702,7 +702,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function conversionOfTansientObjectsIsInvoked() {
-		$className = uniqid('FixturesObject_');
+		$className = $this->getUniqueId('FixturesObject_');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $name; public $uid; }');
 		$mockValueObject = new $classNameWithNS();
@@ -719,7 +719,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
 	 */
 	public function conversionOfTansientObjectsThrowsExceptionForOtherThanValueObjects() {
-		$className = uniqid('FixturesObject_');
+		$className = $this->getUniqueId('FixturesObject_');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $name; public $uid; }');
 		$mockEntity = new $classNameWithNS();
@@ -732,7 +732,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tansientObjectsAreConvertedToAnArrayOfProperties() {
-		$className = uniqid('FixturesObject_');
+		$className = $this->getUniqueId('FixturesObject_');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $name; public $uid; }');
 		$mockValueObject = new $classNameWithNS();
@@ -747,18 +747,18 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function tansientObjectsAreRecursivelyConverted() {
-		$className = 'FixturesObject_' . md5(uniqid(microtime(), true));
+		$className = $this->getUniqueId('FixturesObject_');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $name; public $uid; }');
 		$mockInnerValueObject2 = new $classNameWithNS();
 		$mockInnerValueObject2->name = 'foo';
 		$mockInnerValueObject2->uid = 99;
-		$className = 'FixturesObject_' . md5(uniqid(microtime(), true));
+		$className = $this->getUniqueId('FixturesObject_');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $object; public $uid; }');
 		$mockInnerValueObject1 = new $classNameWithNS();
 		$mockInnerValueObject1->object = $mockInnerValueObject2;
-		$className = 'FixturesObject_' . md5(uniqid(microtime(), true));
+		$className = $this->getUniqueId('FixturesObject_');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractValueObject { public $object; public $uid; }');
 		$mockValueObject = new $classNameWithNS();

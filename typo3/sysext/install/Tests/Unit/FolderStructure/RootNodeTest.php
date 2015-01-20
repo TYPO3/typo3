@@ -127,7 +127,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->expects($this->any())
 			->method('isWindowsOs')
 			->will($this->returnValue(FALSE));
-		$childName = uniqid('test_');
+		$childName = $this->getUniqueId('test_');
 		$structure = array(
 			'name' => '/foo',
 			'children' => array(
@@ -174,7 +174,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->expects($this->any())
 			->method('isWindowsOs')
 			->will($this->returnValue(FALSE));
-		$name = '/' . uniqid('test_');
+		$name = '/' . $this->getUniqueId('test_');
 		$node->__construct(array('name' => $name), NULL);
 		$this->assertSame($name, $node->getName());
 	}
@@ -191,7 +191,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		touch ($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -217,7 +217,7 @@ class RootNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		touch ($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));

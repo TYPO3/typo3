@@ -42,7 +42,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getNameReturnsSetName() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('dummy'), array(), '', FALSE);
-		$name = uniqid('name_');
+		$name = $this->getUniqueId('name_');
 		$node->_set('name', $name);
 		$this->assertSame($name, $node->getName());
 	}
@@ -89,7 +89,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\RootNodeInterface', array(), array(), '', FALSE);
 		$parentPath = '/foo/bar';
 		$parent->expects($this->once())->method('getAbsolutePath')->will($this->returnValue($parentPath));
-		$name = uniqid('test_');
+		$name = $this->getUniqueId('test_');
 		$node->_set('parent', $parent);
 		$node->_set('name', $name);
 		$this->assertSame($parentPath . '/' . $name, $node->getAbsolutePath());
@@ -125,7 +125,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function existsReturnsTrueIfNodeExists() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -141,8 +141,8 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('link_');
-		$target = PATH_site . 'typo3temp/' . uniqid('notExists_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('link_');
+		$target = PATH_site . 'typo3temp/' . $this->getUniqueId('notExists_');
 		symlink($target, $path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -155,7 +155,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function existsReturnsFalseIfNodeNotExists() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertFalse($node->_call('exists'));
 	}
@@ -198,9 +198,9 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
 		$node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(FALSE));
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		mkdir($path);
-		$subPath = $path . '/' . uniqid('dir_');
+		$subPath = $path . '/' . $this->getUniqueId('dir_');
 		mkdir($subPath);
 		chmod($path, 02000);
 		$this->testNodesToDelete[] = $path;
@@ -230,9 +230,9 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
 		$node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(FALSE));
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		mkdir($path);
-		$subPath = $path . '/' . uniqid('dir_');
+		$subPath = $path . '/' . $this->getUniqueId('dir_');
 		mkdir($subPath);
 		chmod($path, 02000);
 		$this->testNodesToDelete[] = $path;
@@ -259,9 +259,9 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue(''));
 		$node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(FALSE));
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		mkdir($path);
-		$subPath = $path . '/' . uniqid('dir_');
+		$subPath = $path . '/' . $this->getUniqueId('dir_');
 		mkdir($subPath);
 		chmod($path, 02770);
 		$this->testNodesToDelete[] = $path;
@@ -303,7 +303,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
 		chmod($path, 02775);
@@ -321,7 +321,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\AbstractNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\AbstractNode', array('getAbsolutePath'), array(), '', FALSE);
-		$file = PATH_site . 'typo3temp/' . uniqid('file_');
+		$file = PATH_site . 'typo3temp/' . $this->getUniqueId('file_');
 		touch($file);
 		$this->testNodesToDelete[] = $file;
 		chmod($file, 0770);

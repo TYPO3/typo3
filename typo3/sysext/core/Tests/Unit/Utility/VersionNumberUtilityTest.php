@@ -127,7 +127,7 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expectedVersion
 	 */
 	public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion) {
-		$className = uniqid('VersionNumberUtility');
+		$className = $this->getUniqueId('VersionNumberUtility');
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility {' .

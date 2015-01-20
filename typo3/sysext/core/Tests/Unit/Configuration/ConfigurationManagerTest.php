@@ -66,7 +66,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function getDefaultConfigurationExecutesDefinedDefaultConfigurationFile() {
-		$defaultConfigurationFile = PATH_site . 'typo3temp/' . uniqid('defaultConfiguration');
+		$defaultConfigurationFile = PATH_site . 'typo3temp/' . $this->getUniqueId('defaultConfiguration');
 		file_put_contents(
 			$defaultConfigurationFile,
 			'<?php throw new \RuntimeException(\'foo\', 1310203814); ?>'
@@ -85,7 +85,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \RuntimeException
 	 */
 	public function getLocalConfigurationExecutesDefinedConfigurationFile() {
-		$configurationFile = PATH_site . 'typo3temp/' . uniqid('localConfiguration');
+		$configurationFile = PATH_site . 'typo3temp/' . $this->getUniqueId('localConfiguration');
 		file_put_contents(
 			$configurationFile,
 			'<?php throw new \RuntimeException(\'foo\', 1310203815); ?>'
@@ -373,7 +373,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
 
-		$directory = 'typo3temp/' . uniqid('test_');
+		$directory = 'typo3temp/' . $this->getUniqueId('test_');
 		$absoluteDirectory = PATH_site . $directory;
 		mkdir($absoluteDirectory);
 		chmod($absoluteDirectory, 0544);
@@ -401,7 +401,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
 
-		$file = 'typo3temp/' . uniqid('test_');
+		$file = 'typo3temp/' . $this->getUniqueId('test_');
 		$absoluteFile = PATH_site . $file;
 		touch($absoluteFile);
 		$this->testFilesToDelete[] = $absoluteFile;
@@ -424,18 +424,18 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
 
-		$directory = 'typo3temp/' . uniqid('test_');
+		$directory = 'typo3temp/' . $this->getUniqueId('test_');
 		$absoluteDirectory = PATH_site . $directory;
 		mkdir($absoluteDirectory);
 		$fixture->_set('pathTypo3Conf', $absoluteDirectory);
 
-		$file1 = 'typo3temp/' . uniqid('test_');
+		$file1 = 'typo3temp/' . $this->getUniqueId('test_');
 		$absoluteFile1 = PATH_site . $file1;
 		touch($absoluteFile1);
 		$this->testFilesToDelete[] = $absoluteFile1;
 		$fixture->_set('localConfigurationFile', $absoluteFile1);
 
-		$file2 = 'typo3temp/' . uniqid('test_');
+		$file2 = 'typo3temp/' . $this->getUniqueId('test_');
 		$absoluteFile2 = PATH_site . $file2;
 		touch($absoluteFile2);
 		$this->testFilesToDelete[] = $absoluteFile2;
@@ -452,7 +452,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function writeLocalConfigurationWritesSortedContentToConfigurationFile() {
-		$configurationFile = PATH_site . 'typo3temp/' . uniqid('localConfiguration');
+		$configurationFile = PATH_site . 'typo3temp/' . $this->getUniqueId('localConfiguration');
 		if (!is_file($configurationFile)) {
 			if (!$fh = fopen($configurationFile, 'wb')) {
 				$this->markTestSkipped('Can not create file ' . $configurationFile . '. Please check your write permissions.');
@@ -494,7 +494,7 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('dummy'));
 
-		$file = 'typo3temp/' . uniqid('test_');
+		$file = 'typo3temp/' . $this->getUniqueId('test_');
 		$absoluteFile = PATH_site . $file;
 		touch($absoluteFile);
 		$this->testFilesToDelete[] = $absoluteFile;
@@ -509,11 +509,11 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('writeLocalConfiguration'));
-		$fixture->_set('localConfigurationFile', 'typo3temp/' . uniqid('dummy_'));
+		$fixture->_set('localConfigurationFile', 'typo3temp/' . $this->getUniqueId('dummy_'));
 
-		$factoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
+		$factoryConfigurationFile = 'typo3temp/' . $this->getUniqueId('test_') . '.php';
 		$factoryConfigurationAbsoluteFile = PATH_site . $factoryConfigurationFile;
-		$uniqueContentString = uniqid('string_');
+		$uniqueContentString = $this->getUniqueId('string_');
 		$validFactoryConfigurationFileContent =
 			'<?php' . LF .
 				'return array(' . LF .
@@ -541,9 +541,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile() {
 		/** @var $fixture \TYPO3\CMS\Core\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$fixture = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager', array('writeLocalConfiguration'));
-		$fixture->_set('localConfigurationFile', 'typo3temp/' . uniqid('dummy_'));
+		$fixture->_set('localConfigurationFile', 'typo3temp/' . $this->getUniqueId('dummy_'));
 
-		$factoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
+		$factoryConfigurationFile = 'typo3temp/' . $this->getUniqueId('test_') . '.php';
 		$factoryConfigurationAbsoluteFile = PATH_site . $factoryConfigurationFile;
 		$validFactoryConfigurationFileContent =
 			'<?php' . LF .
@@ -556,9 +556,9 @@ class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
 		$fixture->_set('factoryConfigurationFile', $factoryConfigurationFile);
 
-		$additionalFactoryConfigurationFile = 'typo3temp/' . uniqid('test_') . '.php';
+		$additionalFactoryConfigurationFile = 'typo3temp/' . $this->getUniqueId('test_') . '.php';
 		$additionalFactoryConfigurationAbsoluteFile = PATH_site . $additionalFactoryConfigurationFile;
-		$uniqueContentString = uniqid('string_');
+		$uniqueContentString = $this->getUniqueId('string_');
 		$validAdditionalFactoryConfigurationFileContent =
 			'<?php' . LF .
 				'return array(' . LF .

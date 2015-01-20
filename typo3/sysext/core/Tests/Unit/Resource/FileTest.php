@@ -63,8 +63,8 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function propertiesPassedToConstructorAreAvailableViaGenericGetter() {
 		$this->markTestSkipped('TYPO3\\CMS\\Core\\Resource\\File::getAvailableProperties() does not exist');
 		$properties = array(
-			uniqid() => uniqid(),
-			uniqid() => uniqid(),
+			$this->getUniqueId() => $this->getUniqueId(),
+			$this->getUniqueId() => $this->getUniqueId(),
 			'uid' => 1
 		);
 		$fixture = new \TYPO3\CMS\Core\Resource\File($properties, $this->storageMock);
@@ -74,10 +74,10 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->assertTrue($fixture->hasProperty($key));
 			$this->assertEquals($value, $fixture->getProperty($key));
 		}
-		$this->assertFalse($fixture->hasProperty(uniqid()));
+		$this->assertFalse($fixture->hasProperty($this->getUniqueId()));
 		\TYPO3\CMS\Core\Resource\File::setAvailableProperties($availablePropertiesBackup);
 		$this->setExpectedException('InvalidArgumentException', '', 1314226805);
-		$fixture->getProperty(uniqid());
+		$fixture->getProperty($this->getUniqueId());
 	}
 
 	/**
@@ -85,7 +85,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function commonPropertiesAreAvailableWithOwnGetters() {
 		$properties = array(
-			'name' => uniqid(),
+			'name' => $this->getUniqueId(),
 			'storage' => $this->storageMock,
 			'size' => 1024
 		);
@@ -109,7 +109,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function updatePropertiesUpdatesFileProperties() {
-		$identifier = '/' . uniqid();
+		$identifier = '/' . $this->getUniqueId();
 		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'identifier' => '/test'), $this->storageMock);
 		$fixture->updateProperties(array('identifier' => $identifier));
 		$this->assertEquals($identifier, $fixture->getIdentifier());

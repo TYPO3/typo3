@@ -42,7 +42,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function resolveValidatorObjectNameWithShortHandNotationReturnsValidatorNameIfClassExists() {
 		$extensionName = 'tx_foo';
-		$className = uniqid('Foo');
+		$className = $this->getUniqueId('Foo');
 		$realClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $className . 'Validator';
 		$validatorName = $extensionName . ':' . $className;
 		eval('class ' . $realClassName . ' implements TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface {}');
@@ -53,7 +53,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resolveValidatorObjectNameWithShortHandNotationThrowsExceptionIfClassNotExists() {
-		$className = uniqid('Foo');
+		$className = $this->getUniqueId('Foo');
 		$validatorName = 'tx_foo:' . $className;
 		$this->setExpectedException('TYPO3\\CMS\\Extbase\\Validation\\Exception\\NoSuchValidatorException', '', 1365799920);
 		$this->validatorResolver->_call('resolveValidatorObjectName', $validatorName);
@@ -64,7 +64,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function resolveValidatorObjectNameWithShortHandNotationReturnsValidatorNameIfClassExistsButDoesNotImplementValidatorInterface() {
 		$extensionName = 'tx_foo';
-		$className = uniqid('Foo');
+		$className = $this->getUniqueId('Foo');
 		$realClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $className . 'Validator';
 		$validatorName = $extensionName . ':' . $className;
 		eval('class ' . $realClassName . '{}');
@@ -78,7 +78,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resolveValidatorObjectNameReturnsValidatorNameIfClassExists() {
-		$className = uniqid('Foo_');
+		$className = $this->getUniqueId('Foo_');
 		$expectedValidatorName = $className . 'Validator';
 		eval('class ' . $expectedValidatorName . ' implements TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface {}');
 		$this->assertEquals(
@@ -91,7 +91,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resolveValidatorObjectNameThrowsNoSuchValidatorExceptionIfClassNotExists() {
-		$className = uniqid('Foo');
+		$className = $this->getUniqueId('Foo');
 		$this->setExpectedException('TYPO3\\CMS\\Extbase\\Validation\\Exception\\NoSuchValidatorException', '', 1365799920);
 		$this->validatorResolver->_call('resolveValidatorObjectName', $className);
 	}
@@ -100,7 +100,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function resolveValidatorObjectNameThrowsNoSuchValidatorExceptionIfClassExistsButDoesNotImplementValidatorInterface() {
-		$className = uniqid('Foo_');
+		$className = $this->getUniqueId('Foo_');
 		$expectedValidatorName = $className . 'Validator';
 		eval('class ' . $expectedValidatorName . '{}');
 		$this->setExpectedException('TYPO3\\CMS\\Extbase\\Validation\\Exception\\NoSuchValidatorException', '', 1365776838);
@@ -144,7 +144,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions() {
-		$className = uniqid('Test');
+		$className = $this->getUniqueId('Test');
 		$validatorOptions = array('requiredOption' => 'foo', 'demoOption' => 'bar');
 		$mockValidator = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Validation\\Validator\\Fixture\\AbstractValidatorClass', array('dummy'), array($validatorOptions), $className);
 		$this->mockObjectManager->expects($this->any())->method('get')->with($className, $validatorOptions)->will($this->returnValue($mockValidator));
@@ -161,7 +161,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function createValidatorThrowsNoSuchValidatorExceptionIfAValidatorCouldNotBeResolved() {
 		$this->markTestSkipped('');
-		$className = uniqid('Test');
+		$className = $this->getUniqueId('Test');
 		$this->setExpectedException('\\TYPO3\\CMS\\Extbase\\Validation\\Exception\NoSuchValidatorException', '', 1365799920);
 		$this->validatorResolver->createValidator($className);
 	}
@@ -360,7 +360,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function resolveValidatorObjectNameCallsGetValidatorType() {
-		$validatorName = uniqid('FooValidator');
+		$validatorName = $this->getUniqueId('FooValidator');
 		eval('namespace TYPO3\CMS\Extbase\Validation\Validator;' . LF . 'class ' . $validatorName . 'Validator implements \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface {}');
 		$mockValidatorResolver = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver', array('getValidatorType'));
 		$mockValidatorResolver->expects($this->once())->method('getValidatorType')->with($validatorName)->will($this->returnValue($validatorName));

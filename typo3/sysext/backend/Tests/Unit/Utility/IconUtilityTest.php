@@ -57,7 +57,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		// Create a wrapper for IconUtility, so the static property $spriteIconCache is
 		// not polluted. Use this as subject!
-		$className = uniqid('IconUtility');
+		$className = $this->getUniqueId('IconUtility');
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\IconUtility {' .
@@ -109,7 +109,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixtureGifFile = __DIR__ . '/Fixtures/clear.gif';
 		// Create image resource, determine target filename, fake target permission, run method and clean up
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
-		$targetFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		$targetFilename = PATH_site . 'typo3temp/' . $this->getUniqueId('test_') . '.gif';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		$subject = $this->subject;
 		$subject::imagemake($fixtureGifRessource, $targetFilename);
@@ -546,7 +546,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isOverrideIconOverlayHookCalled() {
-		$classReference = uniqid('user_overrideIconOverlayHook');
+		$classReference = $this->getUniqueId('user_overrideIconOverlayHook');
 		$hookMock = $this->getMock($classReference, array('overrideIconOverlay'), array());
 		$hookMock->expects($this->once())->method('overrideIconOverlay');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
@@ -561,7 +561,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isFaultyOverrideIconOverlayHookNotCalled() {
-		$classReference = uniqid('user_overrideIconOverlayHook');
+		$classReference = $this->getUniqueId('user_overrideIconOverlayHook');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
 		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new \stdClass();
 		$subject = $this->subject;
@@ -753,7 +753,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'iconsAvailable' => array()
 			),
 		);
-		$classReference = uniqid('user_overrideResourceIconHook');
+		$classReference = $this->getUniqueId('user_overrideResourceIconHook');
 		$folderObject = $this->getTestSubjectFolderObject('/test');
 		$hookMock = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\IconUtilityOverrideResourceIconHookInterface', array('overrideResourceIcon'), array(), $classReference);
 		$hookMock->expects($this->once())->method('overrideResourceIcon');
@@ -770,7 +770,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \UnexpectedValueException
 	 */
 	public function isFaultyResourceIconHookNotCalled() {
-		$classReference = uniqid('user_overrideResourceIconHook');
+		$classReference = $this->getUniqueId('user_overrideResourceIconHook');
 		$folderObject = $this->getTestSubjectFolderObject('/test');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'][$classReference] = $classReference;
 		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new \stdClass();

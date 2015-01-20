@@ -32,7 +32,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $matchCondition;
 
 	public function setUp() {
-		$this->testGlobalNamespace = uniqid('TEST');
+		$this->testGlobalNamespace = $this->getUniqueId('TEST');
 		$GLOBALS[$this->testGlobalNamespace] = array();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->tmpl = new \stdClass();
@@ -70,7 +70,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function simulateEnabledMatchSpecificConditionsSucceeds() {
-		$testCondition = '[' . uniqid('test') . ' = Any condition to simulate a positive match]';
+		$testCondition = '[' . $this->getUniqueId('test') . ' = Any condition to simulate a positive match]';
 		$this->matchCondition->setSimulateMatchConditions(array($testCondition));
 		$this->assertTrue($this->matchCondition->match($testCondition));
 	}
@@ -423,7 +423,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnEmptyExpressionWithNoValueSet() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
 	}
@@ -434,7 +434,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		$_GET = array();
 		$_POST = array($testKey => 0);
 		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
@@ -447,7 +447,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnArrayExpressionWithZeroAsKey() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		$testValue = '1';
 		$_GET = array();
 		$_POST = array($testKey => array('0' => $testValue));
@@ -470,7 +470,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalStringConditionMatchesOnEmptyExpressionWithValueSetToEmptyString() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		$_GET = array();
 		$_POST = array($testKey => '');
 		$this->assertTrue($this->matchCondition->match('[globalString = GP:' . $testKey . '=]'));
@@ -515,7 +515,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalStringConditionMatchesEmptyRegularExpression() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		$_SERVER[$testKey] = '';
 		$this->assertTrue($this->matchCondition->match('[globalString = _SERVER|' . $testKey . ' = /^$/]'));
 	}
@@ -691,7 +691,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithNamespaceENV() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		putenv($testKey . '=testValue');
 		$this->assertTrue($this->matchCondition->match('[globalString = ENV:' . $testKey . ' = testValue]'));
 	}

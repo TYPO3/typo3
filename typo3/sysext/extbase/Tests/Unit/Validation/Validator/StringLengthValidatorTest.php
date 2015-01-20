@@ -167,7 +167,7 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$options = array('minimum' => 5, 'maximum' => 100);
 		$validator = $this->getMock($this->validatorClassName, array('addError', 'translateErrorMessage'), array($options));
 
-		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('TestClass');
 
 		eval('
 			class ' . $className . ' {
@@ -188,7 +188,7 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$options = array('minimum' => 5, 'maximum' => 100);
 		$validator = $this->getMock($this->validatorClassName, array('translateErrorMessage'), array($options));
 
-		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('TestClass');
 
 		eval('
 			class ' . $className . ' {

@@ -112,7 +112,7 @@ class PersistentObjectConverterTest extends UnitTestCase {
 	 * @dataProvider dataProviderForCanConvert
 	 */
 	public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($isEntity, $isValueObject, $expected) {
-		$className = uniqid('Test_Class');
+		$className = $this->getUniqueId('Test_Class');
 		if ($isEntity) {
 			eval("class {$className} extends Tx_Extbase_DomainObject_AbstractEntity {}");
 		} elseif ($isValueObject) {

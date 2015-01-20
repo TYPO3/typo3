@@ -38,7 +38,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \UnexpectedValueException
 	 */
 	public function invalidIdentifierIsRecognizedOnAdding() {
-		$identifier = uniqid('identifier__');
+		$identifier = $this->getUniqueId('identifier__');
 		$dataProviderMock = $this->getMock('stdClass');
 
 		$this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
@@ -49,7 +49,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \LogicException
 	 */
 	public function invalidInterfaceIsRecognizedOnAdding() {
-		$identifier = uniqid('identifier');
+		$identifier = $this->getUniqueId('identifier');
 		$dataProviderMock = $this->getMock('stdClass');
 
 		$this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
@@ -59,7 +59,7 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function defaultBackendLayoutIsFound() {
-		$backendLayoutIdentifier = uniqid('identifier');
+		$backendLayoutIdentifier = $this->getUniqueId('identifier');
 
 		$dataProviderMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\DefaultDataProvider', array('getBackendLayout'), array(), '', FALSE);
 		$backendLayoutMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\BackendLayout', array('getIdentifier'), array(), '', FALSE);
@@ -77,8 +77,8 @@ class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function providedBackendLayoutIsFound() {
-		$dataProviderIdentifier = uniqid('custom');
-		$backendLayoutIdentifier = uniqid('identifier');
+		$dataProviderIdentifier = $this->getUniqueId('custom');
+		$backendLayoutIdentifier = $this->getUniqueId('identifier');
 
 		$dataProviderMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\DefaultDataProvider', array('getBackendLayout'), array(), '', FALSE);
 		$backendLayoutMock = $this->getMock('TYPO3\\CMS\\Backend\\View\\BackendLayout\\BackendLayout', array('getIdentifier'), array(), '', FALSE);

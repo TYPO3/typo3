@@ -390,7 +390,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function convertFromSupportsDateTimeSubClasses() {
-		$className = 'DateTimeSubClass' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('DateTimeSubClass');
 		eval('
 			class ' . $className . ' extends \\DateTime {
 				public static function createFromFormat($format, $time, $timezone = NULL) {

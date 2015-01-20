@@ -104,7 +104,7 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$output[] = array($object, $configuration, $expected, 'array of objects should be serialized');
 
 		$properties = array('foo' => 'bar', 'prohibited' => 'xxx');
-		$nestedObject = $this->getMock('Test' . md5(uniqid(mt_rand(), TRUE)), array('getName', 'getPath', 'getProperties', 'getOther'));
+		$nestedObject = $this->getMock($this->getUniqueId('Test'), array('getName', 'getPath', 'getProperties', 'getOther'));
 		$nestedObject->expects($this->any())->method('getName')->will($this->returnValue('name'));
 		$nestedObject->expects($this->any())->method('getPath')->will($this->returnValue('path'));
 		$nestedObject->expects($this->any())->method('getProperties')->will($this->returnValue($properties));
@@ -206,7 +206,7 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * A data provider
 	 */
 	public function exposeClassNameSettingsAndResults() {
-		$className = 'DummyClass' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('DummyClass');
 		$namespace = 'TYPO3\CMS\Extbase\Tests\Unit\Mvc\View\\' . $className;
 		return array(
 			array(

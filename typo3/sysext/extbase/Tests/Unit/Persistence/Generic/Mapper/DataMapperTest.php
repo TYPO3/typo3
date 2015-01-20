@@ -51,7 +51,7 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function thawPropertiesSetsPropertyValues() {
-		$className = 'Class' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('Class');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
 		$object = new $classNameWithNS();
@@ -157,14 +157,14 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE);
 		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'), array(), '', FALSE);
 
-		$className = 'Class1' . md5(uniqid(mt_rand(), TRUE));
+		$className = $this->getUniqueId('Class1');
 		$classNameWithNS = __NAMESPACE__ . '\\' . $className;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $relationProperty; }');
 		$object = new $classNameWithNS();
 		$classSchema1 = $this->getAccessibleMock('TYPO3\CMS\Extbase\Reflection\ClassSchema', array('dummy'), array($classNameWithNS));
 		$classSchema1->_set('typeHandlingService', new \TYPO3\CMS\Extbase\Service\TypeHandlingService());
 
-		$className2 = 'Class2' . md5(uniqid(mt_rand(), TRUE));
+		$className2 = $this->getUniqueId('Class2');
 		$className2WithNS = __NAMESPACE__ . '\\' . $className2;
 		eval('namespace ' . __NAMESPACE__ . '; class ' . $className2 . ' extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { }');
 		$child = new $className2WithNS();

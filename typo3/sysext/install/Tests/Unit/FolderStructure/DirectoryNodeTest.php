@@ -121,7 +121,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('dummy'), array(), '', FALSE);
 		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\RootNodeInterface', array(), array(), '', FALSE);
-		$name = uniqid('test_');
+		$name = $this->getUniqueId('test_');
 		$node->__construct(array('name' => $name), $parent);
 		$this->assertSame($name, $node->getName());
 	}
@@ -138,7 +138,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('exists')->will($this->returnValue(TRUE));
 		$node->expects($this->any())->method('isDirectory')->will($this->returnValue(TRUE));
@@ -159,7 +159,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$node->expects($this->any())->method('exists')->will($this->returnValue(FALSE));
 		$node->expects($this->any())->method('isDirectory')->will($this->returnValue(FALSE));
@@ -183,7 +183,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		touch ($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -209,7 +209,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		touch ($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -235,7 +235,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		touch ($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -261,7 +261,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		touch ($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -338,7 +338,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'',
 			FALSE
 		);
-		$uniqueReturn = array(uniqid('foo_'));
+		$uniqueReturn = array($this->getUniqueId('foo_'));
 		$node->expects($this->once())->method('fixSelf')->will($this->returnValue($uniqueReturn));
 		$this->assertSame($uniqueReturn, $node->fix());
 	}
@@ -349,15 +349,15 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function fixCallsFixOnChildrenAndReturnsMergedResult() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('fixSelf'), array(), '', FALSE);
-		$uniqueReturnSelf = uniqid('foo_');
+		$uniqueReturnSelf = $this->getUniqueId('foo_');
 		$node->expects($this->once())->method('fixSelf')->will($this->returnValue(array($uniqueReturnSelf)));
 
 		$childMock1 = $this->getMock('TYPO3\\CMS\\Install\\FolderStructure\\NodeInterface', array(), array(), '', FALSE);
-		$uniqueReturnChild1 = uniqid('foo_');
+		$uniqueReturnChild1 = $this->getUniqueId('foo_');
 		$childMock1->expects($this->once())->method('fix')->will($this->returnValue(array($uniqueReturnChild1)));
 
 		$childMock2 = $this->getMock('TYPO3\\CMS\\Install\\FolderStructure\\NodeInterface', array(), array(), '', FALSE);
-		$uniqueReturnChild2 = uniqid('foo_');
+		$uniqueReturnChild2 = $this->getUniqueId('foo_');
 		$childMock2->expects($this->once())->method('fix')->will($this->returnValue(array($uniqueReturnChild2)));
 
 		$node->_set('children', array($childMock1, $childMock2));
@@ -379,7 +379,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$node->expects($this->once())->method('exists')->will($this->returnValue(FALSE));
 		$node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(TRUE));
-		$uniqueReturn = uniqid();
+		$uniqueReturn = $this->getUniqueId();
 		$node->expects($this->once())->method('createDirectory')->will($this->returnValue($uniqueReturn));
 		$this->assertSame(array($uniqueReturn), $node->_call('fixSelf'));
 	}
@@ -441,7 +441,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createDirectoryCreatesDirectory() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('exists', 'getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->once())->method('exists')->will($this->returnValue(FALSE));
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -455,7 +455,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function createDirectoryReturnsOkStatusIfDirectoryWasCreated() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('exists', 'getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->once())->method('exists')->will($this->returnValue(FALSE));
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -471,10 +471,10 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('exists', 'getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		mkdir($path);
 		chmod($path, 02550);
-		$subPath = $path . '/' . uniqid('dir_');
+		$subPath = $path . '/' . $this->getUniqueId('dir_');
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->once())->method('exists')->will($this->returnValue(FALSE));
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
@@ -538,7 +538,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('dummy'), array(), '', FALSE);
 		$parent = $this->getMock('TYPO3\CMS\Install\FolderStructure\NodeInterface', array(), array(), '', FALSE);
-		$childName = uniqid('test_');
+		$childName = $this->getUniqueId('test_');
 		$structure = array(
 			'name' => 'foo',
 			'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
@@ -563,7 +563,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isWritableReturnsFalseIfNodeDoesNotExist() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
 		$this->assertFalse($node->isWritable());
 	}
@@ -574,7 +574,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isWritableReturnsTrueIfNodeExistsAndFileCanBeCreated() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -593,7 +593,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
 		chmod($path, 02550);
@@ -607,7 +607,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isDirectoryReturnsTrueIfNameIsADirectory() {
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('dir_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('dir_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
@@ -623,11 +623,11 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		/** @var $node \TYPO3\CMS\Install\FolderStructure\DirectoryNode|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$node = $this->getAccessibleMock('TYPO3\\CMS\\Install\\FolderStructure\\DirectoryNode', array('getAbsolutePath'), array(), '', FALSE);
-		$path = PATH_site . 'typo3temp/' . uniqid('root_');
+		$path = PATH_site . 'typo3temp/' . $this->getUniqueId('root_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
 		$this->testNodesToDelete[] = $path;
-		$link = uniqid('link_');
-		$dir = uniqid('dir_');
+		$link = $this->getUniqueId('link_');
+		$dir = $this->getUniqueId('dir_');
 		mkdir($path . '/' . $dir);
 		symlink($path . '/' . $dir, $path . '/' . $link);
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path . '/' . $link));

@@ -33,8 +33,8 @@ abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $vfsContents = array();
 
 	public function setUp() {
-		$this->mountDir = uniqid('mount-');
-		$this->basedir = uniqid('base-');
+		$this->mountDir = $this->getUniqueId('mount-');
+		$this->basedir = $this->getUniqueId('base-');
 		vfsStream::setup($this->basedir);
 		// Add an entry for the mount directory to the VFS contents
 		$this->vfsContents = array($this->mountDir => array());

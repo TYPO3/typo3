@@ -55,7 +55,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return string The extension key
 	 */
 	protected function createFakeExtension($extkeyOnly = FALSE) {
-		$extKey = strtolower(uniqid('testing'));
+		$extKey = strtolower($this->getUniqueId('testing'));
 		$absExtPath = PATH_site . 'typo3conf/ext/' . $extKey . '/';
 		$relPath = 'typo3conf/ext/' . $extKey . '/';
 		$this->fakedExtensions[$extKey] = array(
@@ -174,8 +174,8 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function removeDirectoryRemovesSymlink() {
-		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . uniqid('test_symlink_');
-		$absoluteFilePath = PATH_site . 'typo3temp/' . uniqid('test_file_');
+		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . $this->getUniqueId('test_symlink_');
+		$absoluteFilePath = PATH_site . 'typo3temp/' . $this->getUniqueId('test_file_');
 		touch($absoluteFilePath);
 		$this->resourcesToRemove[] = $absoluteFilePath;
 		symlink($absoluteFilePath, $absoluteSymlinkPath);
@@ -189,9 +189,9 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory() {
-		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . uniqid('test_symlink_');
-		$absoluteDirectoryPath = PATH_site . 'typo3temp/' . uniqid('test_dir_') . '/';
-		$relativeFilePath = uniqid('test_file_');
+		$absoluteSymlinkPath = PATH_site . 'typo3temp/' . $this->getUniqueId('test_symlink_');
+		$absoluteDirectoryPath = PATH_site . 'typo3temp/' . $this->getUniqueId('test_dir_') . '/';
+		$relativeFilePath = $this->getUniqueId('test_file_');
 
 		mkdir($absoluteDirectoryPath);
 		touch($absoluteDirectoryPath . $relativeFilePath);

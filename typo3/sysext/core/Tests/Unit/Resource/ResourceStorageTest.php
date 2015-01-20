@@ -210,9 +210,9 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->prepareFixture(array(), FALSE, $driverMock);
 		$fileMock = $this->getSimpleFileMock($fileIdentifier);
 		$this->fixture->setEvaluatePermissions(TRUE);
-		$this->fixture->addFileMount('/' . uniqid('random') . '/', array('read_only' => FALSE));
+		$this->fixture->addFileMount('/' . $this->getUniqueId('random') . '/', array('read_only' => FALSE));
 		$this->fixture->addFileMount($fileMountFolderIdentifier, array('read_only' => $isFileMountReadOnly));
-		$this->fixture->addFileMount('/' . uniqid('random') . '/', array('read_only' => FALSE));
+		$this->fixture->addFileMount('/' . $this->getUniqueId('random') . '/', array('read_only' => FALSE));
 		$this->assertSame($expectedResult, $this->fixture->isWithinFileMountBoundaries($fileMock, $checkWriteAccess));
 	}
 
@@ -499,7 +499,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$mockedFile->expects($this->any())->method('getUpdatedProperties')->will($this->returnValue(array_keys($newProperties)));
 		// do not update directly; that's up to the indexer
 		$indexFileRepositoryMock->expects($this->never())->method('update');
-		$this->fixture->setFileContents($mockedFile, uniqid());
+		$this->fixture->setFileContents($mockedFile, $this->getUniqueId());
 	}
 
 	/**
@@ -677,7 +677,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		$this->setExpectedException('InvalidArgumentException', '', 1325842622);
 		$this->prepareFixture(array(), TRUE);
 		$mockedFile = $this->getSimpleFileMock('/someFile');
-		$this->fixture->replaceFile($mockedFile, PATH_site . uniqid());
+		$this->fixture->replaceFile($mockedFile, PATH_site . $this->getUniqueId());
 	}
 
 	/**
@@ -686,7 +686,7 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 	 */
 	public function getRoleReturnsDefaultForRegularFolders() {
 		$this->markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-		$folderIdentifier = uniqid();
+		$folderIdentifier = $this->getUniqueId();
 		$this->addToMount(array(
 			$folderIdentifier => array()
 		));

@@ -59,7 +59,8 @@ class ActionService {
 			if (!isset($recordData['pid'])) {
 				$recordData['pid'] = $pageId;
 			}
-			$currentUid = uniqid('NEW', TRUE);
+			// @see \TYPO3\CMS\Core\Tests\BaseTestCase->uniqid()
+			$currentUid = 'NEW' . str_replace('.', '', uniqid(mt_rand(), TRUE));
 			$newTableIds[$tableName][] = $currentUid;
 			$dataMap[$tableName][$currentUid] = $recordData;
 			if ($previousTableName !== NULL && $previousUid !== NULL) {
@@ -131,7 +132,8 @@ class ActionService {
 			$currentUid = $recordData['uid'];
 			if ($recordData['uid'] === '__NEW') {
 				$recordData['pid'] = $pageId;
-				$currentUid = uniqid('NEW', TRUE);
+				// @see \TYPO3\CMS\Core\Tests\BaseTestCase->uniqid()
+				$currentUid = 'NEW' . str_replace('.', '', uniqid(mt_rand(), TRUE));
 			}
 			unset($recordData['uid']);
 			$dataMap[$tableName][$currentUid] = $recordData;

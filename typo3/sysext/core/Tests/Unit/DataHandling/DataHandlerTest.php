@@ -115,7 +115,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable() {
-		$tableName = uniqid('aTable');
+		$tableName = $this->getUniqueId('aTable');
 		$GLOBALS['TCA'] = array(
 			$tableName => array(
 				'ctrl' => array(
@@ -255,7 +255,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \UnexpectedValueException
 	 */
 	public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface() {
-		$hookClass = uniqid('tx_coretest');
+		$hookClass = $this->getUniqueId('tx_coretest');
 		eval('class ' . $hookClass . ' {}');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 		$this->subject->checkModifyAccessList('tt_content');
@@ -267,7 +267,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function doesCheckModifyAccessListHookGetsCalled() {
-		$hookClass = uniqid('tx_coretest');
+		$hookClass = $this->getUniqueId('tx_coretest');
 		$hookMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface', array('checkModifyAccessList'), array(), $hookClass);
 		$hookMock->expects($this->once())->method('checkModifyAccessList');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
@@ -281,7 +281,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function doesCheckModifyAccessListHookModifyAccessAllowed() {
-		$hookClass = uniqid('tx_coretest');
+		$hookClass = $this->getUniqueId('tx_coretest');
 		eval('
 			class ' . $hookClass . ' implements \\TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface {
 				public function checkModifyAccessList(&$accessAllowed, $table, \\TYPO3\\CMS\\Core\\DataHandling\\DataHandler $parent) { $accessAllowed = TRUE; }
@@ -367,7 +367,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function doesCheckFlexFormValueHookGetsCalled() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
-		$hookClass = uniqid('tx_coretest');
+		$hookClass = $this->getUniqueId('tx_coretest');
 		$hookMock = $this->getMock($hookClass, array('checkFlexFormValue_beforeMerge'));
 		$hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
@@ -408,7 +408,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject->BE_USER = $backendUser;
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
-		$logDetailsUnique = uniqid('details');
+		$logDetailsUnique = $this->getUniqueId('details');
 		$this->subject->log('', 23, 0, 42, 1, $logDetailsUnique);
 		$this->assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
 	}
@@ -421,7 +421,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject->BE_USER = $backendUser;
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
-		$logDetails = uniqid('details');
+		$logDetails = $this->getUniqueId('details');
 		$this->subject->log('', 23, 0, 42, 1, '%1s' . $logDetails . '%2s', -1, array('foo', 'bar'));
 		$expected = 'foo' . $logDetails . 'bar';
 		$this->assertStringEndsWith($expected, $this->subject->errorLog[0]);
@@ -685,10 +685,10 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete() {
-		$table = uniqid('foo_');
+		$table = $this->getUniqueId('foo_');
 		$conf = array(
 			'type' => 'inline',
-			'foreign_table' => uniqid('foreign_foo_'),
+			'foreign_table' => $this->getUniqueId('foreign_foo_'),
 			'behaviour' => array(
 				'enableCascadingDelete' => 0,
 			)
@@ -697,7 +697,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
 		$mockRelationHandler = $this->getMock('TYPO3\\CMS\\Core\\Database\\RelationHandler', array(), array(), '', FALSE);
 		$mockRelationHandler->itemArray = array(
-			'1' => array('table' => uniqid('bar_'), 'id' => 67)
+			'1' => array('table' => $this->getUniqueId('bar_'), 'id' => 67)
 		);
 
 		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $mockDataHandler */
