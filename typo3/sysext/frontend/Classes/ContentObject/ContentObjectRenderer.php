@@ -428,28 +428,28 @@ class ContentObjectRenderer {
 	public $currentRecord = '';
 
 	/**
-	 * Set in cObj->RECORDS and cObj->CONTENT to the current number of records selected in a query.
+	 * Set in RecordsContentObject and ContentContentObject to the current number of records selected in a query.
 	 *
 	 * @var int
 	 */
 	public $currentRecordTotal = 0;
 
 	/**
-	 * Incremented in cObj->RECORDS and cObj->CONTENT before each record rendering.
+	 * Incremented in RecordsContentObject and ContentContentObject before each record rendering.
 	 *
 	 * @var int
 	 */
 	public $currentRecordNumber = 0;
 
 	/**
-	 * Incremented in parent cObj->RECORDS and cObj->CONTENT before each record rendering.
+	 * Incremented in RecordsContentObject and ContentContentObject before each record rendering.
 	 *
 	 * @var int
 	 */
 	public $parentRecordNumber = 0;
 
 	/**
-	 * If the ContentObjectRender was started from CONTENT, RECORD or SEARCHRESULT cObject's this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
+	 * If the ContentObjectRender was started from ContentContentObject, RecordsContentObject or SearchResultContentObject this array has two keys, 'data' and 'currentRecord' which indicates the record and data for the parent cObj.
 	 *
 	 * @var array
 	 */
@@ -922,8 +922,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('FLOWPLAYER', $conf) instead
 	 */
 	public function FLOWPLAYER($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('FLOWPLAYER'), $conf);
 	}
 
@@ -932,8 +934,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('TEXT', $conf) instead
 	 */
 	public function TEXT($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('TEXT'), $conf);
 	}
 
@@ -942,8 +946,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('CLEARGIF', $conf) instead
 	 */
 	public function CLEARGIF($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('CLEARGIF'), $conf);
 	}
 
@@ -953,8 +959,10 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param string $ext If "INT" then the cObject is a "COBJ_ARRAY_INT" (non-cached), otherwise just "COBJ_ARRAY" (cached)
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('COA', $conf) or $cObj->cObjGetSingle('COA_INT', $conf) instead
 	 */
 	public function COBJ_ARRAY($conf, $ext = '') {
+		GeneralUtility::logDeprecatedFunction();
 		if ($ext === 'INT') {
 			return $this->render($this->getContentObject('COA_INT'), $conf);
 		} else {
@@ -968,8 +976,10 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param string $ext If "INT" then the cObject is a "USER_INT" (non-cached), otherwise just "USER" (cached)
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('USER', $conf) or $cObj->cObjGetSingle('USER_INT', $conf) instead
 	 */
 	public function USER($conf, $ext = '') {
+		GeneralUtility::logDeprecatedFunction();
 		if ($ext === 'INT') {
 			return $this->render($this->getContentObject('USER_INT'), $conf);
 		} else {
@@ -1017,8 +1027,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('FILE', $conf) instead
 	 */
 	public function FILE($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('FILE'), $conf);
 	}
 
@@ -1027,8 +1039,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('FILES', $conf) instead
 	 */
 	public function FILES($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('FILES'), $conf);
 	}
 
@@ -1038,8 +1052,10 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 * @see cImage()
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('IMAGE', $conf) instead
 	 */
 	public function IMAGE($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('IMAGE'), $conf);
 	}
 
@@ -1049,8 +1065,10 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 * @see getImgResource()
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('IMG_RESOURCE', $conf) instead
 	 */
 	public function IMG_RESOURCE($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('IMG_RESOURCE'), $conf);
 	}
 
@@ -1059,8 +1077,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('IMGTEXT', $conf) instead
 	 */
 	public function IMGTEXT($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('IMGTEXT'), $conf);
 	}
 
@@ -1069,8 +1089,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('CONTENT', $conf) instead
 	 */
 	public function CONTENT($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('CONTENT'), $conf);
 	}
 
@@ -1079,8 +1101,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('RECORDS', $conf) instead
 	 */
 	public function RECORDS($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('RECORDS'), $conf);
 	}
 
@@ -1089,8 +1113,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('HMENU', $conf) instead
 	 */
 	public function HMENU($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('HMENU'), $conf);
 	}
 
@@ -1099,8 +1125,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('CTABLE', $conf) instead
 	 */
 	public function CTABLE($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('CTABLE'), $conf);
 	}
 
@@ -1109,8 +1137,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('OTABLE', $conf) instead
 	 */
 	public function OTABLE($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('OTABLE'), $conf);
 	}
 
@@ -1119,8 +1149,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('COLUMNS', $conf) instead
 	 */
 	public function COLUMNS($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('COLUMNS'), $conf);
 	}
 
@@ -1129,8 +1161,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('HRULER', $conf) instead
 	 */
 	public function HRULER($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('HRULER'), $conf);
 	}
 
@@ -1139,8 +1173,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('CASE', $conf) instead
 	 */
 	public function CASEFUNC($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('CASE'), $conf);
 	}
 
@@ -1149,10 +1185,12 @@ class ContentObjectRenderer {
 	 * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
 	 *
 	 * @param array $conf Array of TypoScript properties
-	 * @param string $name If "RESTORE_REGISTER" then the cObject rendered is "RESTORE_REGISTER", otherwise "LOAD_REGISTER
+	 * @param string $name If "RESTORE_REGISTER" then the cObject rendered is "RESTORE_REGISTER", otherwise "LOAD_REGISTER"
 	 * @return string Empty string (the cObject only sets internal data!)
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('LOAD_REGISTER', $conf) and $cObj->cObjGetSingle('RESTORE_REGISTER', $conf) instead
 	 */
 	public function LOAD_REGISTER($conf, $name) {
+		GeneralUtility::logDeprecatedFunction();
 		if ($name === 'RESTORE_REGISTER') {
 			return $this->render($this->getContentObject('RESTORE_REGISTER'), $conf);
 		} else {
@@ -1166,8 +1204,10 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @param array $formData Alternative formdata overriding whatever comes from TypoScript
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('FORM', $conf) instead
 	 */
 	public function FORM($conf, $formData = '') {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('FORM'), $conf);
 	}
 
@@ -1176,8 +1216,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('SEARCHRESULT', $conf) instead
 	 */
 	public function SEARCHRESULT($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('SEARCHRESULT'), $conf);
 	}
 
@@ -1187,8 +1229,10 @@ class ContentObjectRenderer {
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 * @see substituteMarkerArrayCached()
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('TEMPLATE', $conf) instead
 	 */
 	public function TEMPLATE($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('TEMPLATE'), $conf);
 	}
 
@@ -1199,8 +1243,10 @@ class ContentObjectRenderer {
 	 * @return string the HTML output
 	 * @author Steffen Ritter <info@steffen-ritter.net>
 	 * @author Benjamin Mack <benni@typo3.org>
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('FLUIDTEMPLATE', $conf) instead
 	 */
 	protected function FLUIDTEMPLATE(array $conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('FLUIDTEMPLATE'), $conf);
 	}
 
@@ -1209,8 +1255,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('MULTIMEDIA', $conf) instead
 	 */
 	public function MULTIMEDIA($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('MULTIMEDIA'), $conf);
 	}
 
@@ -1219,8 +1267,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('MEDIA', $conf) instead
 	 */
 	public function MEDIA($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('MEDIA'), $conf);
 	}
 
@@ -1229,8 +1279,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('SWFOBJECT', $conf) instead
 	 */
 	public function SWFOBJECT($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('SWFOBJECT'), $conf);
 	}
 
@@ -1239,8 +1291,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('QTOBJECT', $conf) instead
 	 */
 	public function QTOBJECT($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('QTOBJECT'), $conf);
 	}
 
@@ -1249,8 +1303,10 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('SVG', $conf) instead
 	 */
 	public function SVG($conf) {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->render($this->getContentObject('SVG'), $conf);
 	}
 
@@ -1576,7 +1632,7 @@ class ContentObjectRenderer {
 						'file' => $imageFile,
 						'file.' => $conf
 					);
-					$url = $this->IMG_RESOURCE($imgResourceConf);
+					$url = $this->cObjGetSingle('IMG_RESOURCE', $imgResourceConf);
 					if (!$url) {
 						// If no imagemagick / gm is available
 						$url = $imageFile;
@@ -3622,7 +3678,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf TypoScript properties defining what to compare
 	 * @return bool
-	 * @see HMENU(), CASEFUNC(), IMAGE(), COLUMN(), stdWrap(), _parseFunc()
+	 * @see stdWrap(), _parseFunc()
 	 */
 	public function checkIf($conf) {
 		if (!is_array($conf)) {

@@ -42,7 +42,7 @@ class UserContentObject extends AbstractContentObject {
 		$tempContent = $this->cObj->callUserFunction($conf['userFunc'], $conf, '');
 		if ($this->cObj->doConvertToUserIntObject) {
 			$this->cObj->doConvertToUserIntObject = FALSE;
-			$content = $this->cObj->USER($conf, 'INT');
+			$content = $this->cObj->cObjGetSingle('USER_INT', $conf);
 		} else {
 			$content .= $tempContent;
 		}

@@ -395,7 +395,7 @@ class FormContentObject extends AbstractContentObject {
 						$value = trim($parts[2]);
 						if ($conf['image.']) {
 							$this->cObj->data[$this->cObj->currentValKey] = $value;
-							$image = $this->cObj->IMG_RESOURCE($conf['image.']);
+							$image = $this->cObj->cObjGetSingle('IMG_RESOURCE', $conf['image.']);
 							$params = $conf['image.']['params'] ? ' ' . $conf['image.']['params'] : '';
 							$params .= $this->cObj->getAltParam($conf['image.'], FALSE);
 							$params .= $addParams;

@@ -254,7 +254,7 @@ class ImageTextContentObject extends AbstractContentObject {
 						'file' => $totalImagePath
 					);
 				}
-				$imgsTag[$imgKey] = $this->cObj->IMAGE($imgConf);
+				$imgsTag[$imgKey] = $this->cObj->cObjGetSingle('IMAGE', $imgConf);
 				// Store the original filepath
 				$origImages[$imgKey] = $GLOBALS['TSFE']->lastImageInfo;
 				$imageRowsFinalWidths[floor($a / $colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];

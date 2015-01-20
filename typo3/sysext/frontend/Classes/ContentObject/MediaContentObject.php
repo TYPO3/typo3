@@ -189,21 +189,21 @@ class MediaContentObject extends AbstractContentObject {
 				$conf['attributes.'] = array_merge((array)$conf['attributes.'], $conf['predefined']);
 				$conf['params.'] = array_merge((array)$conf['params.'], $conf['predefined']);
 				$conf['flashvars.'] = array_merge((array)$conf['flashvars.'], $conf['predefined']);
-				$content = $this->cObj->FLOWPLAYER($conf);
+				$content = $this->cObj->cObjGetSingle('FLOWPLAYER', $conf);
 				break;
 			case 'swf':
 				$conf[$conf['type'] . '.'] = array_merge((array)$conf['mimeConf.']['swfobject.'][($conf['type'] . '.')], $typeConf);
 				$conf = array_merge((array)$conf['mimeConf.']['swfobject.'], $conf);
 				unset($conf['mimeConf.']);
 				$conf['flashvars.'] = array_merge((array)$conf['flashvars.'], $conf['predefined']);
-				$content = $this->cObj->SWFOBJECT($conf);
+				$content = $this->cObj->cObjGetSingle('SWFOBJECT', $conf);
 				break;
 			case 'qt':
 				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
 				$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
 				unset($conf['mimeConf.']);
 				$conf['params.'] = array_merge((array)$conf['params.'], $conf['predefined']);
-				$content = $this->cObj->QTOBJECT($conf);
+				$content = $this->cObj->cObjGetSingle('QTOBJECT', $conf);
 				break;
 			case 'embed':
 				$paramsArray = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.'], $conf['predefined']);
@@ -211,7 +211,7 @@ class MediaContentObject extends AbstractContentObject {
 				foreach ($paramsArray as $key => $value) {
 					$conf['params'] .= $key . '=' . $value . LF;
 				}
-				$content = $this->cObj->MULTIMEDIA($conf);
+				$content = $this->cObj->cObjGetSingle('MULTIMEDIA', $conf);
 				break;
 			default:
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {

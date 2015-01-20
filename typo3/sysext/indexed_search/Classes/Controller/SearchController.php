@@ -522,7 +522,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				$icon = '';
 				if ($imageType === '0' || substr($imageType, 0, 2) == '0:') {
 					if (is_array($specRowConf['pageIcon.'])) {
-						$this->iconFileNameCache[$imageType] = $this->cObj->IMAGE($specRowConf['pageIcon.']);
+						$this->iconFileNameCache[$imageType] = $this->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon.']);
 					} else {
 						$icon = 'EXT:indexed_search/pi/res/pages.gif';
 					}

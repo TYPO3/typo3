@@ -34,7 +34,7 @@ class SrcAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttrib
 	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
 	 */
 	public function getValue() {
-		$attribute = $this->localCobj->IMG_RESOURCE($this->value);
+		$attribute = $this->localCobj->cObjGetSingle('IMG_RESOURCE', $this->value);
 		return $attribute;
 	}
 

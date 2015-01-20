@@ -440,7 +440,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	}
 
 	/**
-	 * Rendering the IMGTEXT content element, called from TypoScript (tt_content.textpic.20)
+	 * Rendering the text w/ image content element, called from TypoScript (tt_content.textpic.20)
 	 *
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration. See TSRef "IMGTEXT". This function aims to be compatible.
@@ -456,12 +456,12 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$renderMethod = $this->cObj->stdWrap($conf['renderMethod'], $conf['renderMethod.']);
 		// Render using the default IMGTEXT code (table-based)
 		if (!$renderMethod || $renderMethod == 'table') {
-			return $this->cObj->IMGTEXT($conf);
+			return $this->cObj->cObjGetSingle('IMGTEXT', $conf);
 		}
 		$restoreRegisters = FALSE;
 		if (isset($conf['preRenderRegisters.'])) {
 			$restoreRegisters = TRUE;
-			$this->cObj->LOAD_REGISTER($conf['preRenderRegisters.'], 'LOAD_REGISTER');
+			$this->cObj->cObjGetSingle('LOAD_REGISTER', $conf['preRenderRegisters.']);
 		}
 		// Specific configuration for the chosen rendering method
 		if (is_array($conf['rendering.'][$renderMethod . '.'])) {
@@ -475,7 +475,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		if (!$imgList) {
 			// No images, that's easy
 			if ($restoreRegisters) {
-				$this->cObj->LOAD_REGISTER(array(), 'RESTORE_REGISTER');
+				$this->cObj->cObjGetSingle('RESTORE_REGISTER', array());
 			}
 			return $content;
 		}
@@ -483,7 +483,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		if (count($imgs) === 0) {
 			// The imgList was not empty but did only contain empty values
 			if ($restoreRegisters) {
-				$this->cObj->LOAD_REGISTER(array(), 'RESTORE_REGISTER');
+				$this->cObj->cObjGetSingle('RESTORE_REGISTER', array());
 			}
 			return $content;
 		}
@@ -742,10 +742,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 						$imgConf['emptyTitleHandling'] = 'removeAttr';
 					}
 				}
-				$imgsTag[$imgKey] = $this->cObj->IMAGE($imgConf);
+				$imgsTag[$imgKey] = $this->cObj->cObjGetSingle('IMAGE', $imgConf);
 			} else {
 				// currentValKey !!!
-				$imgsTag[$imgKey] = $this->cObj->IMAGE(array('file' => $totalImagePath));
+				$imgsTag[$imgKey] = $this->cObj->cObjGetSingle('IMAGE', array('file' => $totalImagePath));
 			}
 			// Restore our ATagParams
 			$GLOBALS['TSFE']->ATagParams = $oldATagParms;
@@ -1076,7 +1076,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		);
 
 		if ($restoreRegisters) {
-			$this->cObj->LOAD_REGISTER(array(), 'RESTORE_REGISTER');
+			$this->cObj->cObjGetSingle('RESTORE_REGISTER', array());
 		}
 
 		return $output;

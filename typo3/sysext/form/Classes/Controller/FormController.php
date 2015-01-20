@@ -107,7 +107,7 @@ class FormController {
 				'10' => 'FORM_INT',
 				'10.' => is_array($mergedTypoScript) ? $mergedTypoScript : $typoScript,
 			);
-			$content = $contentObject->COBJ_ARRAY($newTypoScript, 'INT');
+			$content = $contentObject->cObjGetSingle('COA_INT', $newTypoScript);
 			// Only apply stdWrap to TypoScript that was NOT created by the wizard:
 			if (isset($typoScript['stdWrap.'])) {
 				$content = $contentObject->stdWrap($content, $typoScript['stdWrap.']);

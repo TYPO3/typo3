@@ -219,7 +219,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function formWithSecureFormMailEnabledDoesNotContainRecipientField() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = TRUE;
-		$this->assertNotContains('name="recipient', $this->subject->FORM(array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
+		$this->assertNotContains('name="recipient', $this->subject->cObjGetSingle('FORM', array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
 	}
 
 	/**
@@ -227,7 +227,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function formWithSecureFormMailDisabledDoesNotContainRecipientField() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = FALSE;
-		$this->assertContains('name="recipient', $this->subject->FORM(array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
+		$this->assertContains('name="recipient', $this->subject->cObjGetSingle('FORM', array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
 	}
 
 	/////////////////////////////////////////

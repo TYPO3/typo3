@@ -1735,7 +1735,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$icon = '';
 				if ($it === '0' || substr($it, 0, 2) == '0:') {
 					if (is_array($specRowConf['pageIcon.'])) {
-						$this->iconFileNameCache[$it] = $this->cObj->IMAGE($specRowConf['pageIcon.']);
+						$this->iconFileNameCache[$it] = $this->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon.']);
 					} else {
 						$icon = 'EXT:indexed_search/pi/res/pages.gif';
 					}
