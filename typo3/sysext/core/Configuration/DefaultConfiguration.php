@@ -838,7 +838,7 @@ return array(
 		),
 		't3lib/class.t3lib_tsfebeuserauth.php' => array(
 			'frontendEditingController' => array(
-				'default' => 'typo3/sysext/core/Classes/FrontendEditing/FrontendEditingController.php:t3lib_frontendedit'
+				'default' => 'TYPO3\\CMS\\Core\\FrontendEditing\\FrontendEditingController'
 			)
 		)
 	),
