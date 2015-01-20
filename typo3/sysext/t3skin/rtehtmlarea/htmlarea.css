@@ -72,23 +72,20 @@
 	border-width: 1px;
 	border-color: transparent;
 	border-collapse: separate;
-	color: ButtonText;
+	border-radius: 2px;
 	cursor: pointer;
 	float: left;
 	height: 23px;
 	margin: 0 0 3px 0;
-	padding: 0;
+	width: 24px;
 }
 .htmlarea .toolbar .button button {
 	background-color: transparent;
 	border: 0 none;
 	cursor: pointer;
-	margin: 0;
+	display: block;
 	-moz-outline: 0 none;
 	outline: 0 none;
-	overflow: visible;
-	padding-left: 3px;
-	padding-right: 3px;
 }
 .htmlarea .toolbar .btn-text {
 	background-image: url("images/sprites/actions.png");
@@ -96,8 +93,7 @@
 	background-repeat: no-repeat;
 	width: 20px;
 	height: 18px;
-	padding: 0;
-	margin: 1px 0 1px 2px;
+	margin: 2px 0 1px 2px;
 }
 .htmlarea .toolbar .buttonHover {
 	background-color: #DCDCDC;
