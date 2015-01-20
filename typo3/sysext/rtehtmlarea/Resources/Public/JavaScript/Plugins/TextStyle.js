@@ -39,16 +39,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 			this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
 			var allowedClasses;
 			for (var tagName in this.tags) {
-				if (this.tags.hasOwnProperty(tagName)) {
-					if (this.tags[tagName].allowedClasses) {
-						allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
-						for (var cssClass in allowedClasses) {
-							if (allowedClasses.hasOwnProperty(cssClass)) {
-								allowedClasses[cssClass] = allowedClasses[cssClass].trim().replace(/\*/g, ".*");
-							}
-						}
-						this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
+				if (this.tags[tagName].allowedClasses) {
+					allowedClasses = this.tags[tagName].allowedClasses.trim().split(",");
+					for (var i = allowedClasses.length; --i >= 0;) {
+						allowedClasses[i] = allowedClasses[i].trim().replace(/\*/g, ".*");
 					}
+					this.tags[tagName].allowedClasses = new RegExp( "^(" + allowedClasses.join("|") + ")$", "i");
 				}
 			}
 			this.showTagFreeClasses = this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false;
@@ -77,7 +73,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the dropdown list
 			 */
 			var buttonId = 'TextStyle';
@@ -90,9 +87,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				tooltip: this.localize(buttonId + '-Tooltip'),
 				fieldLabel: fieldLabel,
 				options: [[this.localize('No style'), 'none']],
-				action: 'onChange',
-				storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
-				tpl: '<tpl for="."><div title="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+				action: 'onChange'
 			};
 			if (this.pageTSconfiguration) {
 				if (this.pageTSconfiguration.width) {
@@ -108,10 +103,18 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 			this.registerDropDown(dropDownConfiguration);
 			return true;
 		},
+
+		/**
+		 * Determine whether the element is an inline element
+		 *
+		 * @param object el: the element
+		 * @return boolen true if the element is an inline element
+		 */
 		isInlineElement: function (el) {
 			return el && (el.nodeType === Dom.ELEMENT_NODE) && this.REInlineTags.test(el.nodeName.toLowerCase());
 		},
-		/*
+
+		/**
 		 * This function adds an attribute to the array of allowed attributes on inline elements
 		 *
 		 * @param	string	attribute: the name of the attribute to be added to the array
@@ -121,11 +124,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 		addAllowedAttribute: function (attribute) {
 			this.allowedAttributes.push(attribute);
 		},
-		/*
+
+		/**
 		 * This function gets called when some style in the drop-down list applies it to the highlighted textt
 		 */
-		onChange: function (editor, combo, record, index) {
-			var className = combo.getValue();
+		onChange: function (editor, select) {
+			var className = select.getValue();
 			var classNames = null;
 			var fullNodeSelected = false;
 			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
@@ -154,7 +158,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 			}
 			if (!selectionEmpty && !fullNodeSelected || (!selectionEmpty && fullNodeSelected && parent && Dom.isBlockElement(parent))) {
 					// The selection is not empty, nor full element, or the selection is full block element
-				if (className !== "none") {
+				if (className !== 'none') {
 						// Add span element with class attribute
 					var newElement = editor.document.createElement('span');
 					Dom.addClass(newElement, className);
@@ -167,7 +171,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				this.applyClassChange(parent, className);
 			}
 		},
-		/*
+
+		/**
 		 * This function applies the class change to the node
 		 *
 		 * @param	object	node: the node on which to apply the class change
@@ -209,7 +214,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				tags: this.tags,
 				editor: this.editor
 			});
-			// Disable the combo while initialization completes
+			// Disable the dropdown while initialization completes
 			var dropDown = this.getButton('TextStyle');
 			if (dropDown) {
 				dropDown.setDisabled(true);
@@ -303,86 +308,161 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function reinitializes the options of the dropdown
 		 */
 		initializeDropDown: function (dropDown) {
-			var store = dropDown.getStore();
-			store.removeAll(false);
-			store.insert(0, new store.recordType({
-				text: this.localize('No style'),
-				value: 'none'
-			}));
-			dropDown.setValue('none');
+			switch (dropDown.xtype) {
+				case 'htmlareaselect':
+					dropDown.removeAll();
+					dropDown.setFirstOption(this.localize('No style'), 'none', this.localize('No style'));
+					dropDown.setValue('none');
+					break;
+				case 'combo':
+					var store = dropDown.getStore();
+					store.removeAll(false);
+					store.insert(0, new store.recordType({
+						text: this.localize('No style'),
+						value: 'none'
+					}));
+					dropDown.setValue('none');
+			}
 		},
-		/*
+
+		/**
 		 * This function builds the options to be displayed in the dropDown box
 		 */
 		buildDropDownOptions: function (dropDown, nodeName) {
-			var store = dropDown.getStore();
 			this.initializeDropDown(dropDown);
-			if (this.textStyles.isReady()) {
-				var allowedClasses = {};
-				if (this.REInlineTags.test(nodeName)) {
-					if (typeof this.cssArray[nodeName] !== 'undefined') {
-						allowedClasses = this.cssArray[nodeName];
-					} else if (this.showTagFreeClasses && typeof this.cssArray['all'] !== 'undefined') {
-						allowedClasses = this.cssArray['all'];
+			switch (dropDown.xtype) {
+				case 'htmlareaselect':
+					if (this.textStyles.isReady()) {
+						var allowedClasses = {};
+						if (this.REInlineTags.test(nodeName)) {
+							if (typeof this.cssArray[nodeName] !== 'undefined') {
+								allowedClasses = this.cssArray[nodeName];
+							} else if (this.showTagFreeClasses && typeof this.cssArray['all'] !== 'undefined') {
+								allowedClasses = this.cssArray['all'];
+							}
+						}
+						for (var cssClass in allowedClasses) {
+							if (typeof HTMLArea.classesSelectable[cssClass] === 'undefined' || HTMLArea.classesSelectable[cssClass]) {
+								var style = (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null;
+								dropDown.addOption(allowedClasses[cssClass], cssClass, cssClass, style);
+							}
+						}
 					}
-				}
-				for (var cssClass in allowedClasses) {
-					if (typeof HTMLArea.classesSelectable[cssClass] === 'undefined' || HTMLArea.classesSelectable[cssClass]) {
-						store.add(new store.recordType({
-							text: allowedClasses[cssClass],
-							value: cssClass,
-							style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
-						}));
+					break;
+				case 'combo':
+					var store = dropDown.getStore();
+					if (this.textStyles.isReady()) {
+						var allowedClasses = {};
+						if (this.REInlineTags.test(nodeName)) {
+							if (typeof this.cssArray[nodeName] !== 'undefined') {
+								allowedClasses = this.cssArray[nodeName];
+							} else if (this.showTagFreeClasses && typeof this.cssArray['all'] !== 'undefined') {
+								allowedClasses = this.cssArray['all'];
+							}
+						}
+						for (var cssClass in allowedClasses) {
+							if (typeof HTMLArea.classesSelectable[cssClass] === 'undefined' || HTMLArea.classesSelectable[cssClass]) {
+								store.add(new store.recordType({
+									text: allowedClasses[cssClass],
+									value: cssClass,
+									style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+								}));
+							}
+						}
 					}
-				}
 			}
 		},
-		/*
+
+		/**
 		 * This function sets the selected option of the dropDown box
 		 */
 		setSelectedOption: function (dropDown, classNames, noUnknown, defaultClass) {
-			var store = dropDown.getStore();
-			dropDown.setValue('none');
-			if (classNames.length) {
-				var index = store.findExact('value', classNames[classNames.length-1]);
-				if (index !== -1) {
-					dropDown.setValue(classNames[classNames.length-1]);
-					if (!defaultClass) {
-						store.getAt(0).set('text', this.localize('Remove style'));
+			switch (dropDown.xtype) {
+				case 'htmlareaselect':
+					dropDown.setValue('none');
+					if (classNames.length) {
+						var index = dropDown.findValue(classNames[classNames.length-1]);
+						if (index !== -1) {
+							dropDown.setValue(classNames[classNames.length-1]);
+							if (!defaultClass) {
+								var text = this.localize('Remove style');
+								dropDown.setFirstOption(text, 'none', text);
+							}
+						}
+						if (index === -1 && !noUnknown) {
+							var text = this.localize('Unknown style');
+							var value = classNames[classNames.length-1];
+							if (typeof HTMLArea.classesSelectable[value] !== 'undefined' && !HTMLArea.classesSelectable[value] && typeof HTMLArea.classesLabels[value] !== 'undefined') {
+								text = HTMLArea.classesLabels[value];
+							}
+							var style = (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[value] && !HTMLArea.classesNoShow[value]) ? HTMLArea.classesValues[value] : null;
+							dropDown.addOption(text, value, value, style);
+							dropDown.setValue(value);
+							if (!defaultClass) {
+								text = this.localize('Remove style');
+								dropDown.setFirstOption(text, 'none', text);
+							}
+						}
+						// Remove already assigned classes from the dropDown box
+						var selectedValue = dropDown.getValue();
+						for (var i = 0, n = classNames.length; i < n; i++) {
+							index = dropDown.findValue(classNames[i]);
+							if (index !== -1) {
+								options = dropDown.getOptions();
+								if (options[index].value !== selectedValue) {
+									dropDown.removeAt(index);
+								}
+							}
+						}
 					}
-				}
-				if (index === -1 && !noUnknown) {
-					var text = this.localize('Unknown style');
-					var value = classNames[classNames.length-1];
-					if (typeof HTMLArea.classesSelectable[value] !== 'undefined' && !HTMLArea.classesSelectable[value] && typeof HTMLArea.classesLabels[value] !== 'undefined') {
-						text = HTMLArea.classesLabels[value];
+					dropDown.setDisabled(!dropDown.getCount() || (dropDown.getCount() === 1 && dropDown.getValue() === 'none'));
+					break;
+				case 'combo':
+					var store = dropDown.getStore();
+					dropDown.setValue('none');
+					if (classNames.length) {
+						var index = store.findExact('value', classNames[classNames.length-1]);
+						if (index !== -1) {
+							dropDown.setValue(classNames[classNames.length-1]);
+							if (!defaultClass) {
+								store.getAt(0).set('text', this.localize('Remove style'));
+							}
+						}
+						if (index === -1 && !noUnknown) {
+							var text = this.localize('Unknown style');
+							var value = classNames[classNames.length-1];
+							if (typeof HTMLArea.classesSelectable[value] !== 'undefined' && !HTMLArea.classesSelectable[value] && typeof HTMLArea.classesLabels[value] !== 'undefined') {
+								text = HTMLArea.classesLabels[value];
+							}
+							store.add(new store.recordType({
+								text: text,
+								value: value,
+								style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[value] && !HTMLArea.classesNoShow[value]) ? HTMLArea.classesValues[value] : null
+							}));
+							dropDown.setValue(value);
+							if (!defaultClass) {
+								store.getAt(0).set('text', this.localize('Remove style'));
+							}
+						}
+						// Remove already assigned classes from the dropDown box
+						var classNamesString = ',' + classNames.join(',') + ',';
+						var selectedValue = dropDown.getValue(), optionValue;
+						store.each(function (option) {
+							optionValue = option.get('value');
+							if (classNamesString.indexOf(',' + optionValue + ',') !== -1 && optionValue !== selectedValue) {
+								store.removeAt(store.indexOf(option));
+							}
+							return true;
+						});
 					}
-					store.add(new store.recordType({
-						text: text,
-						value: value,
-						style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && HTMLArea.classesValues && HTMLArea.classesValues[value] && !HTMLArea.classesNoShow[value]) ? HTMLArea.classesValues[value] : null
-					}));
-					dropDown.setValue(value);
-					if (!defaultClass) {
-						store.getAt(0).set('text', this.localize('Remove style'));
-					}
-				}
-				// Remove already assigned classes from the dropDown box
-				var classNamesString = ',' + classNames.join(',') + ',';
-				var selectedValue = dropDown.getValue(), optionValue;
-				store.each(function (option) {
-					optionValue = option.get('value');
-					if (classNamesString.indexOf(',' + optionValue + ',') !== -1 && optionValue !== selectedValue) {
-						store.removeAt(store.indexOf(option));
-					}
-					return true;
-				});
+					dropDown.setDisabled(!store.getCount() || (store.getCount() == 1 && dropDown.getValue() == 'none'));
+					break;
 			}
-			dropDown.setDisabled(!store.getCount() || (store.getCount() == 1 && dropDown.getValue() == 'none'));
 		},
 
 		/**
@@ -396,8 +476,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				if (classNames.length && (selectionEmpty || fullNodeSelected)) {
 					this.setSelectedOption(dropDown, classNames);
 				}
-				var store = dropDown.getStore();
-				dropDown.setDisabled(!store.getCount() || (store.getCount() == 1 && dropDown.getValue() == 'none') || disabled);
+				dropDown.setDisabled(!dropDown.getCount() || (dropDown.getCount() === 1 && dropDown.getValue() === 'none') || disabled);
 			}
 		}
 	});

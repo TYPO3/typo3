@@ -227,8 +227,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 				if (typeof dropDownConfiguration.action === 'string' && dropDownConfiguration.action.length > 0 && typeof this[dropDownConfiguration.action] === 'function') {
 					dropDownConfiguration.plugins = this;
 					dropDownConfiguration.hidden = dropDownConfiguration.hide;
-					dropDownConfiguration.xtype = 'htmlareacombo';
-					// Apply additional ExtJS config properties set in Page TSConfig
+					dropDownConfiguration.xtype = 'htmlareaselect';
+					// Apply additional config properties set in Page TSConfig
 					// May not always work for values that must be integers
 					Util.applyIf(dropDownConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]);
 					return this.editorConfiguration.registerButton(dropDownConfiguration);

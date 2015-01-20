@@ -72,6 +72,12 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 				this.wizards.style.display = 'none';
 			}
 		}
+
+		// Create Ajax object
+		this.ajax = new Ajax({
+			editor: this
+		});
+
 		// Plugins register
 		this.plugins = {};
 		// Register the plugins included in the configuration
@@ -80,10 +86,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 				this.registerPlugin(plugin);
 			}
 		}
-		// Create Ajax object
-		this.ajax = new Ajax({
-			editor: this
-		});
 
 		// Initiate loading of the CSS classes configuration
 		this.getClassesConfiguration();

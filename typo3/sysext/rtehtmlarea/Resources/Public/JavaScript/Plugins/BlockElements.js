@@ -32,6 +32,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 		 * This function gets called by the class constructor
 		 */
 		configurePlugin: function (editor) {
+
 			/**
 			 * Setting up some properties from PageTSConfig
 			 */
@@ -40,24 +41,20 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				this.tags = this.editorConfiguration.buttons.blockstyle.tags;
 			}
 			this.useClass = {
-				Indent		: "indent",
-				JustifyLeft	: "align-left",
-				JustifyCenter	: "align-center",
-				JustifyRight	: "align-right",
-				JustifyFull	: "align-justify"
+				Indent		: 'indent',
+				JustifyLeft	: 'align-left',
+				JustifyCenter	: 'align-center',
+				JustifyRight	: 'align-right',
+				JustifyFull	: 'align-justify'
 			};
 			this.useAlignAttribute = false;
 			for (var buttonId in this.useClass) {
-				if (this.useClass.hasOwnProperty(buttonId)) {
-					if (this.editorConfiguration.buttons[this.buttonList[buttonId][2]]) {
-						this.useClass[buttonId] = this.editorConfiguration.buttons[this.buttonList[buttonId][2]].useClass ? this.editorConfiguration.buttons[this.buttonList[buttonId][2]].useClass : this.useClass[buttonId];
-						if (buttonId === "Indent") {
-							this.useBlockquote = this.editorConfiguration.buttons.indent.useBlockquote ? this.editorConfiguration.buttons.indent.useBlockquote : false;
-						} else {
-							if (this.editorConfiguration.buttons[this.buttonList[buttonId][2]].useAlignAttribute) {
-								this.useAlignAttribute = true;
-							}
-						}
+				this.useClass[buttonId] = this.buttonsConfiguration[this.buttonList[buttonId][2]] && this.buttonsConfiguration[this.buttonList[buttonId][2]].useClass ? this.buttonsConfiguration[this.buttonList[buttonId][2]].useClass : this.useClass[buttonId];
+				if (buttonId === 'Indent') {
+					this.useBlockquote = this.buttonsConfiguration.indent && this.buttonsConfiguration.indent.useBlockquote ? this.buttonsConfiguration.indent.useBlockquote : false;
+				} else {
+					if (this.buttonsConfiguration[this.buttonList[buttonId][2]] && this.buttonsConfiguration[this.buttonList[buttonId][2]].useAlignAttribute) {
+						this.useAlignAttribute = true;
 					}
 				}
 			}
@@ -78,7 +75,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 			}
 				// Build lists of mutually exclusive class names
 			for (var tagName in this.formatBlockItems) {
-				if (this.formatBlockItems.hasOwnProperty(tagName) && this.formatBlockItems[tagName].tagName && this.formatBlockItems[tagName].addClass) {
+				if (this.formatBlockItems[tagName].tagName && this.formatBlockItems[tagName].addClass) {
 					if (!this.formatBlockItems[this.formatBlockItems[tagName].tagName]) {
 						this.formatBlockItems[this.formatBlockItems[tagName].tagName] = {};
 					}
@@ -89,11 +86,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				}
 			}
 			for (var tagName in this.formatBlockItems) {
-				if (this.formatBlockItems.hasOwnProperty(tagName) && this.formatBlockItems[tagName].classList) {
-					this.formatBlockItems[tagName].classList = new RegExp( "^(" + this.formatBlockItems[tagName].classList.join("|") + ")$");
+				if (this.formatBlockItems[tagName].classList) {
+					this.formatBlockItems[tagName].classList = new RegExp( '^(' + this.formatBlockItems[tagName].classList.join('|') + ')$');
 				}
 			}
-			/*
+
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -106,19 +104,21 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-	
-			/*
+
+			/**
 			 * Registering the dropdown list
 			 */
-			var buttonId = "FormatBlock";
+			var buttonId = 'FormatBlock';
 			var dropDownConfiguration = {
 				id: buttonId,
-				tooltip: this.localize(buttonId + "-Tooltip"),
+				tooltip: this.localize(buttonId + '-Tooltip'),
 				options: this.buttonsConfiguration.formatblock ? this.buttonsConfiguration.formatblock.options : [],
-				action: "onChange"
+				action: 'onChange'
 			};
 			if (this.buttonsConfiguration.formatblock) {
-				dropDownConfiguration.width = this.buttonsConfiguration.formatblock.width ? parseInt(this.buttonsConfiguration.formatblock.width, 10) : 200;
+				if (this.buttonsConfiguration.formatblock.width) {
+					dropDownConfiguration.width = parseInt(this.buttonsConfiguration.formatblock.width, 10);
+				}
 				if (this.buttonsConfiguration.formatblock.listWidth) {
 					dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.formatblock.listWidth, 10);
 				}
@@ -127,7 +127,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				}
 			}
 			this.registerDropDown(dropDownConfiguration);
-			/*
+
+			/**
 			 * Establishing the list of allowed block elements
 			 */
 			var blockElements = new Array(), option;
@@ -142,18 +143,19 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 			} else {
 				this.allowedBlockElements = this.standardBlockElements;
 			}
-			/*
+
+			/**
 			 * Registering hot keys for the dropdown list items
 			 */
 			var blockElement, configuredHotKey;
 			for (var i = 0, n = blockElements.length; i < n; i++) {
 				blockElement = blockElements[i];
 				configuredHotKey = this.defaultHotKeys[blockElement];
-				if (this.editorConfiguration.buttons.formatblock
-						&& this.editorConfiguration.buttons.formatblock.items
-						&& this.editorConfiguration.buttons.formatblock.items[blockElement]
-						&& this.editorConfiguration.buttons.formatblock.items[blockElement].hotKey) {
-					configuredHotKey = this.editorConfiguration.buttons.formatblock.items[blockElement].hotKey;
+				if (this.buttonsConfiguration.formatblock
+						&& this.buttonsConfiguration.formatblock.items
+						&& this.buttonsConfiguration.formatblock.items[blockElement]
+						&& this.buttonsConfiguration.formatblock.items[blockElement].hotKey) {
+					configuredHotKey = this.buttonsConfiguration.formatblock.items[blockElement].hotKey;
 				}
 				if (configuredHotKey) {
 					var hotKeyConfiguration = {
@@ -164,7 +166,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 					this.registerHotKey(hotKeyConfiguration);
 				}
 			}
-			/*
+
+			/**
 			 * Registering the buttons
 			 */
 			for (var buttonId in this.buttonList) {
@@ -184,7 +187,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: {
@@ -219,22 +223,28 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 		isAllowedBlockElement: function (blockName) {
 			return this.allowedBlockElements.test(blockName);
 		},
-		/*
+
+		/**
 		 * This function adds an attribute to the array of attributes allowed on block elements
 		 *
-		 * @param	string	attribute: the name of the attribute to be added to the array
-		 *
-		 * @return	void
+		 * @param string attribute: the name of the attribute to be added to the array
+		 * @return void
 		 */
 		addAllowedAttribute: function (attribute) {
 			this.allowedAttributes.push(attribute);
 		},
-		/*
+
+		/**
 		 * This function gets called when some block element was selected in the drop-down list
 		 */
-		onChange: function (editor, combo, record, index) {
-			this.applyBlockElement(combo.itemId, combo.getValue());
+		onChange: function (editor, select) {
+			var blockElement = select.getValue();
+			this.applyBlockElement(select.itemId, blockElement);
 		},
+
+		/**
+		 * This function applies to the selection the markup chosen in the drop-down list or corresponding to the button pressed
+		 */
 		applyBlockElement: function (buttonId, blockElement) {
 			var tagName = blockElement;
 			var className = null;
@@ -1027,7 +1037,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
@@ -1162,42 +1173,43 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function updates the drop-down list of block elements
 		 */
 		updateDropDown: function(select, deepestBlockAncestor, startAncestor) {
-			var store = select.getStore();
-			store.removeAt(0);
 			var index = -1;
 			if (deepestBlockAncestor) {
 				var nodeName = deepestBlockAncestor.nodeName.toLowerCase();
-					// Could be a custom item ...
-				index = store.findBy(function(record, id) {
-					var item = this.formatBlockItems[record.get('value')];
-					return item && item.tagName == nodeName && item.addClass && Dom.hasClass(deepestBlockAncestor, item.addClass);
-				}, this);
-				if (index == -1) {
-						// ... or a standard one
-					index = store.findExact('value', nodeName);
+				// Could be a custom item ...
+				var options = select.getOptions();
+				for (var i = 0, n = options.length; i < n; i++) {
+					var item = this.formatBlockItems[options[i].value];
+					if (item && item.tagName === nodeName && item.addClass && Dom.hasClass(deepestBlockAncestor, item.addClass)) {
+						index = i;
+						break;
+					}
+				}
+				if (index === -1) {
+					// ... or a standard one
+					index = select.findValue(nodeName);
 				}
 			}
-			if (index == -1) {
-				store.insert(0, new store.recordType({
-					text: this.localize('No block'),
-					value: 'none'
-				}));
+			if (index === -1) {
+				var text = this.localize('No block');
+				select.setFirstOption(text, 'none', text);
 				select.setValue('none');
 			} else {
-				store.insert(0, new store.recordType({
-					text: this.localize('Remove block'),
-					value: 'none'
-				}));
-				select.setValue(store.getAt(index+1).get('value'));
+				var text = this.localize('Remove block');
+				select.setFirstOption(text, 'none', text);
+				var options = select.getOptions();
+				select.setValue(options[index].value);
 			}
 		},
-		/*
-		* This function handles the hotkey events registered on elements of the dropdown list
-		*/
+
+		/**
+		 * This function handles the hotkey events registered on elements of the dropdown list
+		 */
 		onHotKey: function(editor, key) {
 			var blockElement;
 			var hotKeyConfiguration = this.getHotKeyConfiguration(key);

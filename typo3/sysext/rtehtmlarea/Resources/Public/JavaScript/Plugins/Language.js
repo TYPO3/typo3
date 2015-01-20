@@ -59,7 +59,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 					this.allowedAttributes.push('className');
 				}
 			}
-			/*
+
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -72,7 +73,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the buttons
 			 */
 			var buttonList = this.buttonList, buttonId;
@@ -88,7 +90,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 				};
 				this.registerButton(buttonConfiguration);
 			}
-			/*
+
+			/**
 			 * Registering the dropdown list
 			 */
 			var buttonId = 'Language';
@@ -96,11 +99,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 				var dropDownConfiguration = {
 					id		: buttonId,
 					tooltip		: this.localize(buttonId + '-Tooltip'),
-					storeUrl	: this.buttonsConfiguration[buttonId.toLowerCase()].dataUrl,
 					action		: 'onChange'
 				};
 				if (this.buttonsConfiguration.language) {
-					dropDownConfiguration.width = this.buttonsConfiguration.language.width ? parseInt(this.buttonsConfiguration.language.width, 10) : 200;
+					if (this.buttonsConfiguration.language.width) {
+						dropDownConfiguration.width = parseInt(this.buttonsConfiguration.language.width, 10);
+					}
 					if (this.buttonsConfiguration.language.listWidth) {
 						dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.language.listWidth, 10);
 					}
@@ -112,7 +116,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: [
@@ -120,28 +125,38 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 			['RightToLeft', null, 'text-direction-right-to-left'],
 			['ShowLanguageMarks', null, 'language-marks-show']
 		],
-		/*
+
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
 			var select = this.getButton('Language');
 			if (select) {
-				if (select.getStore().getCount() > 1) {
+				if (select.getCount() > 1) {
 					this.addLanguageMarkingRules();
 				} else {
-						// Monitor the language combo's store being loaded
-					select.mon(select.getStore(), 'load', function () {
-						this.addLanguageMarkingRules();
-						var selection = this.editor.getSelection(),
-							selectionEmpty = selection.isEmpty(),
-							ancestors = selection.getAllAncestors(),
-							endPointsInSameBlock = selection.endPointsInSameBlock();
-						this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
-					}, this);
+					// Monitor the language select options being loaded
+					this.editor.ajax.getJavascriptFile(this.buttonsConfiguration['language'].dataUrl, function (options, success, response) {
+						if (success && response['responseJSON']) {
+							var options = response['responseJSON']['options'];
+							if (options) {
+								for (var i = 1, n = options.length; i < n; i++) {
+									select.addOption(options[i]['text'], options[i]['value'], options[i]['value']);
+								}
+								this.addLanguageMarkingRules();
+								var selection = this.editor.getSelection(),
+									selectionEmpty = selection.isEmpty(),
+									ancestors = selection.getAllAncestors(),
+									endPointsInSameBlock = selection.endPointsInSameBlock();
+								this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
+							}
+						}
+					}, this, 'json');
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function adds rules to the stylesheet for language mark highlighting
 		 * Model: body.htmlarea-show-language-marks *[lang=en]:before { content: "en: "; }
 		 * Works in IE8, but not in earlier versions of IE
@@ -150,10 +165,13 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 			var select = this.getButton('Language');
 			if (select) {
 				var styleSheet = this.editor.document.styleSheets[0];
-				select.getStore().each(function (option) {
-					var selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + option.get('value') + '"]:before';
-					var style = 'content: "' + option.get('value') + ': ";';
-					var rule = selector + ' { ' + style + ' }';
+				var options = select.getOptions();
+				var selector, style, rule;
+				for (var i = 0, n = options.length; i < n; i++) {
+					var option = options[i];
+					selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + option.value + '"]:before';
+					style = 'content: "' + option.value + ': ";';
+					rule = selector + ' { ' + style + ' }';
 					if (!UserAgent.isIEBeforeIE9) {
 						try {
 							styleSheet.insertRule(rule, styleSheet.cssRules.length);
@@ -163,8 +181,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 					} else {
 						styleSheet.addRule(selector, style);
 					}
-					return true;
-				}, this);
+				}
 			}
 		},
 
@@ -231,8 +248,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 		/*
 		 * This function gets called when some language was selected in the drop-down list
 		 */
-		onChange: function (editor, combo, record, index) {
-			this.applyLanguageMark(combo.getValue());
+		onChange: function (editor, select) {
+			this.applyLanguageMark(select.getValue());
 		},
 		/*
 		 * This function applies the langauge mark to the selection
@@ -445,22 +462,16 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 		 * This function updates the language drop-down list
 		 */
 		updateValue: function (select, language, selectionEmpty, fullNodeSelected, endPointsInSameBlock) {
-			var store = select.getStore();
-			store.removeAt(0);
-			if ((store.findExact('value', language) != -1) && (selectionEmpty || fullNodeSelected || !endPointsInSameBlock)) {
+			if (language !== 'none' && (select.findValue(language) !== -1) && (selectionEmpty || fullNodeSelected || !endPointsInSameBlock)) {
+				var text = this.localize('Remove language mark');
+				select.setFirstOption(text, 'none', text);
 				select.setValue(language);
-				store.insert(0, new store.recordType({
-					text: this.localize('Remove language mark'),
-					value: 'none'
-				}));
 			} else {
-				store.insert(0, new store.recordType({
-					text: this.localize('No language mark'),
-					value: 'none'
-				}));
+				var text = this.localize('No language mark');
+				select.setFirstOption(text, 'none', text);
 				select.setValue('none');
 			}
-			select.setDisabled(!(store.getCount()>1) || (selectionEmpty && /^body$/i.test(this.editor.getSelection().getParentElement().nodeName)));
+			select.setDisabled(!(select.getCount()>1) || (selectionEmpty && /^body$/i.test(this.editor.getSelection().getParentElement().nodeName)));
 		}
 	});
 

@@ -31,6 +31,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 		 * This function gets called by the base constructor
 		 */
 		configurePlugin: function (editor) {
+			this.buttonsConfiguration = this.editorConfiguration.buttons;
 			// Setting the array of allowed attributes on inline elements
 			if (this.getPluginInstance('TextStyle')) {
 				this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
@@ -41,8 +42,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 				}
 			}
 			// Getting tags configuration for inline elements
-			if (this.editorConfiguration.buttons.textstyle) {
-				this.tags = this.editorConfiguration.buttons.textstyle.tags;
+			if (this.buttonsConfiguration.textstyle) {
+				this.tags = this.buttonsConfiguration.textstyle.tags;
 			}
 
 			/**
@@ -62,22 +63,27 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 			/**
 			 * Registering the dropdown list
 			 */
-			var buttonId = "FormatText";
+			var buttonId = 'FormatText';
+			// Wrap the options text in the corresponding inline element
+			var options = this.buttonsConfiguration[buttonId.toLowerCase()] ? this.buttonsConfiguration[buttonId.toLowerCase()].options : [];
+			for (var i = 0, n = options.length; i < n; i++) {
+				options[i][0] = '<' + options[i][1] + '>' + options[i][0] + '</' + options[i][1] + '>';
+			}
 			var dropDownConfiguration = {
 				id		: buttonId,
-				tooltip		: this.localize(buttonId + "-Tooltip"),
-				options		: (this.editorConfiguration.buttons[buttonId.toLowerCase()] ? this.editorConfiguration.buttons[buttonId.toLowerCase()].options : []),
-				action		: "onChange"
+				tooltip		: this.localize(buttonId + '-Tooltip'),
+				options		: options,
+				action		: 'onChange'
 			};
-			if (this.editorConfiguration.buttons.formattext) {
-				if (this.editorConfiguration.buttons.formattext.width) {
-					dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons.formattext.width, 10);
+			if (this.buttonsConfiguration.formattext) {
+				if (this.buttonsConfiguration.formattext.width) {
+					dropDownConfiguration.width = parseInt(this.buttonsConfiguration.formattext.width, 10);
 				}
-				if (this.editorConfiguration.buttons.formattext.listWidth) {
-					dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons.formattext.listWidth, 10);
+				if (this.buttonsConfiguration.formattext.listWidth) {
+					dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.formattext.listWidth, 10);
 				}
-				if (this.editorConfiguration.buttons.formattext.maxHeight) {
-					dropDownConfiguration.maxHeight = parseInt(this.editorConfiguration.buttons.formattext.maxHeight, 10);
+				if (this.buttonsConfiguration.formattext.maxHeight) {
+					dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.formattext.maxHeight, 10);
 				}
 			}
 			this.registerDropDown(dropDownConfiguration);
@@ -91,10 +97,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 				buttonId = button[0];
 				var buttonConfiguration = {
 					id		: buttonId,
-					tooltip		: this.localize(buttonId + "-Tooltip"),
+					tooltip		: this.localize(buttonId + '-Tooltip'),
 					contextMenuTitle: this.localize(buttonId + '-contextMenuTitle'),
 					helpText	: this.localize(buttonId + '-helpText'),
-					action		: "onButtonPress",
+					action		: 'onButtonPress',
 					context		: button[1],
 					hide		: false,
 					selection	: false,
@@ -180,7 +186,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 		addAllowedAttribute: function (attribute) {
 			this.allowedAttributes.push(attribute);
 		},
-		/*
+
+		/**
 		 * This function gets called when some inline element button was pressed.
 		 */
 		onButtonPress: function (editor, id) {
@@ -195,14 +202,16 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 				this.appendToLog('onButtonPress', 'No element corresponding to button: ' + buttonId, 'warn');
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when some inline element was selected in the drop-down list
 		 */
-		onChange: function (editor, combo, record, index) {
-			var element = combo.getValue();
+		onChange: function (editor, select) {
+			var element = select.getValue();
 			this.applyInlineElement(editor, element, false);
 		},
-		/*
+
+		/**
 		 * This function applies to the selection the markup chosen in the drop-down list or corresponding to the button pressed
 		 */
 		applyInlineElement: function (editor, element) {
@@ -299,7 +308,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function remaps the given element to the specified tagname
 		 */
 		remapMarkup: function (element, tagName) {
@@ -344,9 +354,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 			}
 			return newElement;
 		},
-		/*
-		* This function gets called when the toolbar is updated
-		*/
+
+		/**
+		 * This function gets called when the toolbar is updated
+		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 			var editor = this.editor;
 			if (mode === 'wysiwyg' && editor.isEditable()) {
@@ -390,22 +401,16 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 		 * This function updates the drop-down list of inline elemenents
 		 */
 		updateValue: function (editor, select, tagName, selectionEmpty, fullNodeSelected, disabled) {
-			var store = select.getStore();
-			store.removeAt(0);
-			if ((store.findExact('value', tagName) != -1) && (selectionEmpty || fullNodeSelected)) {
+			if ((select.findValue(tagName) !== -1) && (selectionEmpty || fullNodeSelected)) {
+				var text = this.localize('Remove markup');
+				select.setFirstOption(text, 'none', text);
 				select.setValue(tagName);
-				store.insert(0, new store.recordType({
-					text: this.localize('Remove markup'),
-					value: 'none'
-				}));
 			} else {
-				store.insert(0, new store.recordType({
-					text: this.localize('No markup'),
-					value: 'none'
-				}));
+				var text = this.localize('No markup');
+				select.setFirstOption(text, 'none', text);
 				select.setValue('none');
 			}
-			select.setDisabled(!(store.getCount()>1) || disabled);
+			select.setDisabled(!(select.getCount() > 1) || disabled);
 		}
 	});
 

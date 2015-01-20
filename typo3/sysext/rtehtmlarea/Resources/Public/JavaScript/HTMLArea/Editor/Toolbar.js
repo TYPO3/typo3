@@ -18,10 +18,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Extjs/ux/Combo',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
-	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText'],
-	function (Util, Dom, Event, Combo, Button, ToolbarText) {
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Select'],
+	function (Util, Dom, Event, Button, ToolbarText, Select) {
 
 	/**
 	 * Editor toolbar constructor
@@ -115,8 +115,8 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 									case 'htmlareabutton':
 										this.add(new Button(itemConfig));
 										break;
-									case 'htmlareacombo':
-										this.add(new Combo(itemConfig));
+									case 'htmlareaselect':
+										this.add(new Select(itemConfig));
 										break;
 									case 'htmlareatoolbartext':
 										this.add(new ToolbarText(itemConfig));
@@ -144,31 +144,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 			if (item.itemId) {
 				this.items[item.itemId] = item;
 			}
-			switch (item.xtype) {
-				case 'htmlareacombo':
-					var wrapDiv = document.createElement('div');
-					Dom.addClass(wrapDiv, 'x-form-item');
-					wrapDiv = this.el.appendChild(wrapDiv);
-					item.render(wrapDiv);
-					if (item.helpTitle) {
-						item.getEl().dom.setAttribute('title', item.helpTitle);
-					}
-					wrapDiv.appendChild(item.getEl().dom);
-					if (item.fieldLabel) {
-						var textDiv = document.createElement('div');
-						Dom.addClass(textDiv, 'x-form-item');
-						Dom.addClass(textDiv, 'toolbar-text');
-						var text = document.createElement('label');
-						text.innerHTML = item.fieldLabel;
-						Dom.addClass(text, 'x-form-item-label');
-						text.setAttribute('for', item.getEl().dom.id);
-						textDiv.appendChild(text);
-						this.el.insertBefore(textDiv, wrapDiv);
-					}
-					break;
-				default:
-					item.render(this.el);
-			}
+			item.render(this.el);
 		},
 
 		/**

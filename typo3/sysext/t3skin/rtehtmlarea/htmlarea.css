@@ -154,8 +154,18 @@
 	overflow: hidden;
 }
 .htmlarea .toolbar .select {
-	color: WindowText;
 	height: 17px;
+}
+.htmlarea .toolbar select {
+	border: 1px solid #c7c7c7;
+	border-radius: 2px;
+	display: inline-block;
+	height: 22px !important;
+	margin: 0 0 4px 0;
+	padding: 2px 1px;
+}
+.htmlarea .toolbar select option {
+	padding: 2px;
 }
 .htmlarea .toolbar .x-form-field-wrap .x-form-trigger {
 	right: 0;

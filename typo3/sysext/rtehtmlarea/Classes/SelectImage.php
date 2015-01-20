@@ -348,9 +348,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $GLOBALS['LANG']->getLL('notSet') . '</option><option value="none">' . $GLOBALS['LANG']->getLL('nonFloating') . '</option><option value="left">' . $GLOBALS['LANG']->getLL('left') . '</option><option value="right">' . $GLOBALS['LANG']->getLL('right') . '</option></select>\';
 				if (plugin.getButton("Language")) {
 					var languageSelector = \'<select id="iLang" name="iLang">\';
-					plugin.getButton("Language").getStore().each(function (record) {
-						languageSelector +=\'<option value="\' + record.get("value") + \'">\' + record.get("text") + \'</option>\';
-					});
+					var options = plugin.getButton("Language").getOptions();
+					for (var i = 0, n = options.length; i < n; i++) {
+						languageSelector +=\'<option value="\' + options[i].value + \'">\' + options[i].innerHTML + \'</option>\';
+					}
 					languageSelector += \'</select>\';
 				}
 				var sz="";

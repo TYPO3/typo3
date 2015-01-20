@@ -53,7 +53,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 					this.allowedAttributes.push('className');
 				}
 			}
-			/*
+
+			/**
 			 * Registering plugin "About" information
 			 */
 			var pluginInformation = {
@@ -66,20 +67,19 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 				license		: 'GPL'
 			};
 			this.registerPluginInformation(pluginInformation);
-			/*
+
+			/**
 			 * Registering the dropdowns
 			 */
 			var dropDown, buttonId;
 			for (var i = this.dropDownList.length; --i >= 0;) {
 				dropDown = this.dropDownList[i];
 				buttonId = dropDown[0];
-				if (this.isButtonInToolbar(buttonId)) {
+				if (this.isButtonInToolbar(buttonId) && this.buttonsConfiguration[dropDown[2]].dataUrl) {
 					var dropDownConfiguration = {
 						id: buttonId,
 						tooltip: this.localize(buttonId.toLowerCase()),
-						storeUrl: this.buttonsConfiguration[dropDown[2]].dataUrl,
-						action: 'onChange',
-						tpl: this.disablePCexamples ? '' : '<tpl for="."><div title="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
+						action: 'onChange'
 					};
 					if (this.buttonsConfiguration[dropDown[2]]) {
 						if (this.editorConfiguration.buttons[dropDown[2]].width) {
@@ -97,52 +97,73 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 			}
 			return true;
 		 },
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		dropDownList: [
 			['FontName', null, 'fontstyle', 'font-family:{value};text-align:left;font-size:11px;'],
 			['FontSize', null, 'fontsize', 'text-align:left;font-size:{value};']
 		],
-		/*
+
+		/**
 		 * Conversion object: button name to corresponding style property name
 		 */
 		styleProperty: {
 			FontName: 'fontFamily',
 			FontSize: 'fontSize'
 		},
-		/*
+
+		/**
 		 * Conversion object: button name to corresponding css property name
 		 */
 		cssProperty: {
 			FontName: 'font-family',
 			FontSize: 'font-size'
 		},
+
 		/**
 		 * This funcion is invoked by the editor when it is being generated
 		 */
 		onGenerate: function () {
 			// Monitor the dropdowns stores being loaded
-			var dropDown;
 			for (var i = this.dropDownList.length; --i >= 0;) {
-				dropDown = this.dropDownList[i];
+				var dropDown = this.dropDownList[i];
 				var select = this.getButton(dropDown[0]);
 				if (select) {
-					select.mon(select.getStore(), 'load', function () {
-						var selection = this.editor.getSelection(),
-							selectionEmpty = selection.isEmpty(),
-							ancestors = selection.getAllAncestors(),
-							endPointsInSameBlock = selection.endPointsInSameBlock();
-						this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
-					}, this);
+					this.editor.ajax.getJavascriptFile(this.buttonsConfiguration[dropDown[2]].dataUrl, function (settings, success, response) {
+						if (success && response['responseJSON']) {
+							for (var j = this.dropDownList.length; --j >= 0;) {
+								var dropDown = this.dropDownList[j];
+								if (settings['url'] === this.buttonsConfiguration[dropDown[2]].dataUrl) {
+									var options = response['responseJSON']['options'];
+									if (options) {
+										var select = this.getButton(dropDown[0]);
+										for (var k = 0, n = options.length; k < n; k++) {
+											var title = options[k]['value'] === 'none' ? options[k]['text'] : options[k]['value'];
+											var style = this.disablePCexamples ? '' : dropDown[3].replace(/\{value\}/g, options[k]['value']);
+											select.addOption(options[k]['text'], options[k]['value'], title, style);
+										}
+										var selection = this.editor.getSelection(),
+											selectionEmpty = selection.isEmpty(),
+											ancestors = selection.getAllAncestors(),
+											endPointsInSameBlock = selection.endPointsInSameBlock();
+										this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
+									}
+									break;
+								}
+							}
+						}
+					}, this, 'json');
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when some font style or font size was selected from the dropdown lists
 		 */
-		onChange: function (editor, combo, record, index) {
-			var param = combo.getValue();
+		onChange: function (editor, select) {
+			var param = select.getValue();
 			var 	element,
 				fullNodeSelected = false;
 			var range = editor.getSelection().createRange();
@@ -158,25 +179,25 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 			}
 			if (selectionEmpty || fullNodeSelected) {
 				element = parent;
-					// Set the style attribute
-				this.setStyle(element, combo.itemId, param);
-					// Remove the span tag if it has no more attribute
+				// Set the style attribute
+				this.setStyle(element, select.itemId, param);
+				// Remove the span tag if it has no more attribute
 				if (/^span$/i.test(element.nodeName) && !Dom.hasAllowedAttributes(element, this.allowedAttributes)) {
 					editor.getDomNode().removeMarkup(element);
 				}
 			} else if (statusBarSelection) {
 				element = statusBarSelection;
-					// Set the style attribute
-				this.setStyle(element, combo.itemId, param);
-					// Remove the span tag if it has no more attribute
+				// Set the style attribute
+				this.setStyle(element, select.itemId, param);
+				// Remove the span tag if it has no more attribute
 				if (/^span$/i.test(element.nodeName) && !Dom.hasAllowedAttributes(element, this.allowedAttributes)) {
 					editor.getDomNode().removeMarkup(element);
 				}
 			} else if (editor.getSelection().endPointsInSameBlock()) {
 				element = editor.document.createElement('span');
-					// Set the style attribute
-				this.setStyle(element, combo.itemId, param);
-					// Wrap the selection with span tag with the style attribute
+				// Set the style attribute
+				this.setStyle(element, select.itemId, param);
+				// Wrap the selection with span tag with the style attribute
 				editor.getDomNode().wrapWithInlineElement(element, range);
 				if (!UserAgent.isIEBeforeIE9) {
 					range.detach();
@@ -184,7 +205,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 			}
 			return false;
 		},
-		/*
+
+		/**
 		 * This function sets the style attribute on the element
 		 *
 		 * @param	object	element: the element on which the style attribute is to be set
@@ -210,7 +232,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 				}
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (select, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
@@ -228,18 +251,19 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 						value = parentElement.currentStyle[this.styleProperty[select.itemId]];
 					}
 				}
-				var store = select.getStore();
 				var index = -1;
+				var options = select.getOptions();
 				if (value) {
-					index = store.findBy(
-						function (record, id) {
-							return record.get('value').replace(/[\"\']/g, '') == value.replace(/, /g, ',').replace(/[\"\']/g, '');
+					for (var i = 0, n = options.length; i < n; i++) {
+						if (options[i].value.replace(/[\"\']/g, '') === value.replace(/, /g, ',').replace(/[\"\']/g, '')) {
+							index = i;
+							break;
 						}
-					);
+					}
 				}
-				if (index != -1) {
-					select.setValue(store.getAt(index).get('value'));
-				} else if (store.getCount()) {
+				if (index !== -1) {
+					select.setValue(options[index].value);
+				} else if (select.getCount()) {
 					select.setValue('none');
 				}
 				select.setDisabled(!endPointsInSameBlock || (selectionEmpty && /^body$/i.test(parentElement.nodeName)));

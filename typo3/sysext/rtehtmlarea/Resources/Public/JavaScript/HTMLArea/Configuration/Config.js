@@ -87,25 +87,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 				// Erratic behaviour of click event in WebKit and IE browsers
 				clickEvent: (UserAgent.isWebKit || UserAgent.isIE) ? 'mousedown' : 'click'
 			},
-			htmlareacombo: {
+			htmlareaselect: {
 				cls: 'select',
-				typeAhead: true,
-				lastQuery: '',
-				triggerAction: 'all',
-				editable: !UserAgent.isIE,
-				selectOnFocus: !UserAgent.isIE,
-				validationEvent: false,
-				validateOnBlur: false,
-				submitValue: false,
-				forceSelection: true,
-				mode: 'local',
-				storeRoot: 'options',
-				storeFields: [ { name: 'text'}, { name: 'value'}],
-				valueField: 'value',
-				displayField: 'text',
 				labelSeparator: '',
-				hideLabel: true,
-				tpl: '<tpl for="."><div title="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+				hideLabel: true
 			}
 		};
 	};
@@ -137,24 +122,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 		Util.applyIf(config, this.configDefaults[config.xtype]);
 		// Set some additional properties
 		switch (config.xtype) {
-			case 'htmlareacombo':
-				if (config.options) {
-						// Create combo array store
-					config.store = new Ext.data.ArrayStore({
-						autoDestroy:  true,
-						fields: config.storeFields,
-						data: config.options
-					});
-				} else if (config.storeUrl) {
-						// Create combo json store
-					config.store = new Ext.data.JsonStore({
-						autoDestroy:  true,
-						autoLoad: true,
-						root: config.storeRoot,
-						fields: config.storeFields,
-						url: config.storeUrl
-					});
-				}
+			case 'htmlareaselect':
 				config.hideLabel = typeof config.fieldLabel !== 'string' || !config.fieldLabel.length || UserAgent.isIE6;
 				config.helpTitle = config.tooltip;
 				break;

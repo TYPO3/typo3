@@ -264,6 +264,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		onFrameworkResize: function () {
 			Dom.setSize(this.iframe.getEl(), { width: this.getInnerWidth(), height: this.getInnerHeight()});
 			Dom.setSize(this.textArea, { width: this.getInnerWidth(), height: this.getInnerHeight()});
+			this.toolbar.update();
 		},
 
 		/**
