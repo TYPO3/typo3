@@ -22,12 +22,11 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class DateTimeValidator extends AbstractValidator {
 
 	/**
-	 * Checks if the given value is a valid DateTime object.
-	 *
-	 * If at least one error occurred, the result is FALSE.
+	 * Checks if the given value is a valid DateTime object. If this is not
+	 * the case, the function adds an error.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return bool TRUE if the value is valid, FALSE if an error occurred
+	 * @return void
 	 */
 	public function isValid($value) {
 		$this->result->clear();

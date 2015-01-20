@@ -33,15 +33,14 @@ class BooleanValidator extends AbstractValidator {
 
 
 	/**
-	 * Returns TRUE if the given property value is a boolean matching the expectation.
-	 *
-	 * If at least one error occurred, the result is FALSE.
+	 * Check if $value matches the expectation given to the validator.
+	 * If it does not match, the function adds an error to the result.
 	 *
 	 * Also testing for '1' (true), '0' and '' (false) because casting varies between
 	 * tests and actual usage. This makes the validator loose but still keeping functionality.
 	 *
 	 * @param mixed $value The value that should be validated
-	 * @return bool TRUE if the value is within the range, otherwise FALSE
+	 * @return void
 	 */
 	public function isValid($value) {
 		// see comment above, check if expectation is NULL, then nothing to do!
