@@ -1334,24 +1334,6 @@ class ContentObjectRenderer {
 	}
 
 	/**
-	 * Returns a default value for a form field in the FORM cObject.
-	 * Page CANNOT be cached because that would include the inserted value for the current user.
-	 *
-	 * @param bool $noValueInsert If noValueInsert OR if the no_cache flag for this page is NOT set, the original default value is returned.
-	 * @param string $fieldName The POST var name to get default value for
-	 * @param string $defaultVal The current default value
-	 * @return string The default value, either from INPUT var or the current default, based on whether caching is enabled or not.
-	 * @access private
-	 */
-	public function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal) {
-		if (!$GLOBALS['TSFE']->no_cache || !isset($_POST[$fieldName]) && !isset($_GET[$fieldName]) || $noValueInsert) {
-			return $defaultVal;
-		} else {
-			return GeneralUtility::_GP($fieldName);
-		}
-	}
-
-	/**
 	 * Returns a <img> tag with the image file defined by $file and processed according to the properties in the TypoScript array.
 	 * Mostly this function is a sub-function to the IMAGE function which renders the IMAGE cObject in TypoScript.
 	 * This function is called by "$this->cImage($conf['file'], $conf);" from IMAGE().

@@ -215,7 +215,7 @@ class FormContentObject extends AbstractContentObject {
 							$wrap = $wrap ? ' wrap="' . $wrap . '"' : ' wrap="virtual"';
 						}
 						$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
-						$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], str_replace('\\n', LF, trim($parts[2])));
+						$default = $this->getFieldDefaultValue($noValueInsert, $confData['fieldname'], str_replace('\\n', LF, trim($parts[2])));
 						$fieldCode = sprintf('<textarea name="%s"%s cols="%s" rows="%s"%s%s>%s</textarea>', $confData['fieldname'], $elementIdAttribute, $cols, $rows, $wrap, $addParams, GeneralUtility::formatForTextarea($default));
 						break;
 					case 'input':
@@ -227,7 +227,7 @@ class FormContentObject extends AbstractContentObject {
 						$compWidth = $compWidth ? $compWidth : 1;
 						$size = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($size * $compWidth, 1, 120);
 						$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
-						$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], trim($parts[2]));
+						$default = $this->getFieldDefaultValue($noValueInsert, $confData['fieldname'], trim($parts[2]));
 						if ($confData['type'] == 'password') {
 							$default = '';
 						}
@@ -242,7 +242,7 @@ class FormContentObject extends AbstractContentObject {
 					case 'check':
 						// alternative default value:
 						$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
-						$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], trim($parts[2]));
+						$default = $this->getFieldDefaultValue($noValueInsert, $confData['fieldname'], trim($parts[2]));
 						$checked = $default ? ' checked="checked"' : '';
 						$fieldCode = sprintf('<input type="checkbox" value="%s" name="%s"%s%s%s />', 1, $confData['fieldname'], $elementIdAttribute, $checked, $addParams);
 						break;
@@ -283,7 +283,7 @@ class FormContentObject extends AbstractContentObject {
 						}
 						// alternative default value:
 						$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
-						$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], $defaults);
+						$default = $this->getFieldDefaultValue($noValueInsert, $confData['fieldname'], $defaults);
 						if (!is_array($default)) {
 							$defaults = array();
 							$defaults[] = $default;
@@ -329,7 +329,7 @@ class FormContentObject extends AbstractContentObject {
 						}
 						// alternative default value:
 						$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
-						$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], $default);
+						$default = $this->getFieldDefaultValue($noValueInsert, $confData['fieldname'], $default);
 						// Create the select-box:
 						$iCount = count($items);
 						for ($a = 0; $a < $iCount; $a++) {
@@ -628,4 +628,21 @@ class FormContentObject extends AbstractContentObject {
 		}
 	}
 
+
+	/**
+	 * Returns a default value for a form field in the FORM cObject.
+	 * Page CANNOT be cached because that would include the inserted value for the current user.
+	 *
+	 * @param bool $noValueInsert If noValueInsert OR if the no_cache flag for this page is NOT set, the original default value is returned.
+	 * @param string $fieldName The POST var name to get default value for
+	 * @param string $defaultVal The current default value
+	 * @return string The default value, either from INPUT var or the current default, based on whether caching is enabled or not.
+	 */
+	protected function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal) {
+		if (!$GLOBALS['TSFE']->no_cache || !isset($_POST[$fieldName]) && !isset($_GET[$fieldName]) || $noValueInsert) {
+			return $defaultVal;
+		} else {
+			return GeneralUtility::_GP($fieldName);
+		}
+	}
 }
