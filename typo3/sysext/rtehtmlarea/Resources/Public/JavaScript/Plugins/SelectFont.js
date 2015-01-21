@@ -252,17 +252,16 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 					}
 				}
 				var index = -1;
-				var options = select.getOptions();
 				if (value) {
-					for (var i = 0, n = options.length; i < n; i++) {
-						if (options[i].value.replace(/[\"\']/g, '') === value.replace(/, /g, ',').replace(/[\"\']/g, '')) {
+					for (var i = 0, n = select.getCount(); i < n; i++) {
+						if (select.getOptionValue(i).replace(/[\"\']/g, '') === value.replace(/, /g, ',').replace(/[\"\']/g, '')) {
 							index = i;
 							break;
 						}
 					}
 				}
 				if (index !== -1) {
-					select.setValue(options[index].value);
+					select.setValueByIndex(index);
 				} else if (select.getCount()) {
 					select.setValue('none');
 				}

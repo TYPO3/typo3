@@ -30,7 +30,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 
 	Button.prototype = {
 
-		render: function () {
+		/**
+		 * Render the button item (called by the toolbar)
+		 *
+		 * @param object container: the container of the button (the toolbar object)
+		 * @return void
+		 */
+		render: function (container) {
 			this.el = document.createElement('div');
 			Dom.addClass(this.el, 'x-form-item');
 			Dom.addClass(this.el, 'button');
@@ -59,7 +65,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 			}
 			this.buttonElement.innerHTML = '&nbsp;';
 			this.el.appendChild(this.buttonElement);
-			this.getToolbar().getEl().appendChild(this.el);
+			container.getEl().appendChild(this.el);
 			this.initEventListeners();
 		},
 
@@ -88,7 +94,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 * Get a reference to the editor
 		 */
 		getEditor: function() {
-			return RTEarea[this.toolbar.editorId].editor;
+			return this.getToolbar().getEditor();
 		},
 
 		/**
@@ -217,14 +223,17 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		},
 
 		/**
+		 * Css class applied when the item is disabled
+		 */
+		disabledClass: 'buttonDisabled',
+
+		/**
 		 * Setting disabled/enabled by boolean.
 		 * @param boolean disabled
 		 * @return void
 		 */
-		disabledClass: 'buttonDisabled',
 		setDisabled: function(disabled){
 			this.disabled = disabled;
-			this.buttonElement.disabled = disabled;
 			if (disabled) {
 				Dom.addClass(this.el, this.disabledClass);
 			} else {

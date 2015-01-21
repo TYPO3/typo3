@@ -388,7 +388,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 					if (classNames.length) {
 						var index = dropDown.findValue(classNames[classNames.length-1]);
 						if (index !== -1) {
-							dropDown.setValue(classNames[classNames.length-1]);
+							dropDown.setValueByIndex(index);
 							if (!defaultClass) {
 								var text = this.localize('Remove style');
 								dropDown.setFirstOption(text, 'none', text);
@@ -413,8 +413,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 						for (var i = 0, n = classNames.length; i < n; i++) {
 							index = dropDown.findValue(classNames[i]);
 							if (index !== -1) {
-								options = dropDown.getOptions();
-								if (options[index].value !== selectedValue) {
+								if (dropDown.getOptionValue(index) !== selectedValue) {
 									dropDown.removeAt(index);
 								}
 							}

@@ -1179,12 +1179,13 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 		 */
 		updateDropDown: function(select, deepestBlockAncestor, startAncestor) {
 			var index = -1;
+			var value, item, text;
 			if (deepestBlockAncestor) {
 				var nodeName = deepestBlockAncestor.nodeName.toLowerCase();
 				// Could be a custom item ...
-				var options = select.getOptions();
-				for (var i = 0, n = options.length; i < n; i++) {
-					var item = this.formatBlockItems[options[i].value];
+				for (var i = 0, n = select.getCount(); i < n; i++) {
+					value = select.getOptionValue(i);
+					item = this.formatBlockItems[value];
 					if (item && item.tagName === nodeName && item.addClass && Dom.hasClass(deepestBlockAncestor, item.addClass)) {
 						index = i;
 						break;
@@ -1196,15 +1197,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 				}
 			}
 			if (index === -1) {
-				var text = this.localize('No block');
-				select.setFirstOption(text, 'none', text);
-				select.setValue('none');
+				text = this.localize('No block');
 			} else {
-				var text = this.localize('Remove block');
-				select.setFirstOption(text, 'none', text);
-				var options = select.getOptions();
-				select.setValue(options[index].value);
+				text = this.localize('Remove block');
 			}
+			select.setFirstOption(text, 'none', text);
+			select.setValueByIndex(index);
 		},
 
 		/**

@@ -31,7 +31,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Select',
 
 	Select.prototype = {
 
-		render: function () {
+		/**
+		 * Render the select item (called by the toolbar)
+		 *
+		 * @param object container: the container of the select (the toolbar object)
+		 * @return void
+		 */
+		render: function (container) {
 			this.el = document.createElement('div');
 			Dom.addClass(this.el, 'x-form-item');
 			this.selectElement = document.createElement('select');
@@ -58,7 +64,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Select',
 				}
 			}
 			this.selectElement = this.el.appendChild(this.selectElement);
-			this.el = this.getToolbar().getEl().appendChild(this.el);
+			this.el = container.getEl().appendChild(this.el);
 			if (this.fieldLabel) {
 				var textDiv = document.createElement('div');
 				Dom.addClass(textDiv, 'x-form-item');
@@ -179,6 +185,18 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Select',
 		},
 
 		/**
+		 * Set the current value based on index
+		 *
+		 * @param int index: the index of the value to be selected
+		 * @return void
+		 */
+		setValueByIndex: function (index) {
+			this.selectElement.selectedIndex = index >= 0 ? index : 0;
+			this.collapsed = true;
+			this.setSelectedOptionText();
+		},
+
+		/**
 		 * Find the index of the value
 		 *
 		 * @param string value: the value to be looked up
@@ -194,6 +212,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Select',
 			  	}
 			}
 			return index;
+		},
+
+		/**
+		 * Get the value of the option specified by the index
+		 *
+		 * @param int index: the index of the option
+		 * @return string the value of the option
+		 */
+		getOptionValue: function (index) {
+			var value = '';
+			var option = this.selectElement.options[index];
+			if (option) {
+				value = option.value;
+			}
+			return value;
 		},
 
 		/**

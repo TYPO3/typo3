@@ -165,12 +165,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 			var select = this.getButton('Language');
 			if (select) {
 				var styleSheet = this.editor.document.styleSheets[0];
-				var options = select.getOptions();
-				var selector, style, rule;
-				for (var i = 0, n = options.length; i < n; i++) {
-					var option = options[i];
-					selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + option.value + '"]:before';
-					style = 'content: "' + option.value + ': ";';
+				var value, selector, style, rule;
+				for (var i = 0, n = select.getCount(); i < n; i++) {
+					value = select.getOptionValue(i);
+					selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + value + '"]:before';
+					style = 'content: "' + value + ': ";';
 					rule = selector + ' { ' + style + ' }';
 					if (!UserAgent.isIEBeforeIE9) {
 						try {
@@ -462,16 +461,17 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 		 * This function updates the language drop-down list
 		 */
 		updateValue: function (select, language, selectionEmpty, fullNodeSelected, endPointsInSameBlock) {
-			if (language !== 'none' && (select.findValue(language) !== -1) && (selectionEmpty || fullNodeSelected || !endPointsInSameBlock)) {
+			var index = select.findValue(language);
+			if (index > 0 && (selectionEmpty || fullNodeSelected || !endPointsInSameBlock)) {
 				var text = this.localize('Remove language mark');
 				select.setFirstOption(text, 'none', text);
 				select.setValue(language);
 			} else {
 				var text = this.localize('No language mark');
 				select.setFirstOption(text, 'none', text);
-				select.setValue('none');
+				select.setValueByIndex(0);
 			}
-			select.setDisabled(!(select.getCount()>1) || (selectionEmpty && /^body$/i.test(this.editor.getSelection().getParentElement().nodeName)));
+			select.setDisabled(!(select.getCount() > 1) || (selectionEmpty && /^body$/i.test(this.editor.getSelection().getParentElement().nodeName)));
 		}
 	});
 

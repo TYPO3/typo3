@@ -31,8 +31,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 
 		/**
 		 * Render the text item (called by the toolbar)
+		 *
+		 * @param object container: the container of the toolbarText (the toolbar object)
+		 * @return void
 		 */
-		render: function () {
+		render: function (container) {
 			this.el = document.createElement('div');
 			Dom.addClass(this.el, 'x-form-item');
 			Dom.addClass(this.el, 'x-form-item-label');
@@ -48,7 +51,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 			if (typeof this.tooltip === 'string') {
 				this.el.setAttribute('title', this.tooltip);
 			}
-			this.getToolbar().getEl().appendChild(this.el);
+			container.getEl().appendChild(this.el);
 			this.initEventListeners();
 		},
 
@@ -69,13 +72,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 		},
 
 		/**
-		 * Get a reference to the editor
-		 */
-		getEditor: function() {
-			return RTEarea[this.toolbar.editorId].editor;
-		},
-
-		/**
 		 * Get a reference to the toolbar
 		 */
 		getToolbar: function() {
@@ -93,12 +89,17 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 		},
 
 		/**
+		 * Css class applied when the item is disabled
+		 */
+		disabledClass: 'buttonDisabled',
+
+		/**
 		 * Setting disabled/enabled by boolean.
 		 * @param boolean disabled
 		 * @return void
 		 */
 		setDisabled: function(disabled){
-			this.el.disabled = disabled;
+			this.disabled = disabled;
 			if (disabled) {
 				Dom.addClass(this.el, this.disabledClass);
 			} else {

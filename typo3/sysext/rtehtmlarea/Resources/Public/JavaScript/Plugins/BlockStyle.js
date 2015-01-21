@@ -239,7 +239,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockStyle',
 				case 'htmlareaselect':
 					dropDown.removeAll();
 					dropDown.setFirstOption(this.localize('No style'), 'none', this.localize('No style'));
-					dropDown.setValue('none');
+					dropDown.setValueByIndex(0);
 					break;
 				case 'combo':
 					var store = dropDown.getStore();
@@ -346,12 +346,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockStyle',
 						}
 						// Remove already assigned classes from the dropDown box
 						var selectedValue = dropDown.getValue();
-						var options;
 						for (var i = 0, n = classNames.length; i < n; i++) {
 							index = dropDown.findValue(classNames[i]);
 							if (index !== -1) {
-								options = dropDown.getOptions();
-								if (options[index].value !== selectedValue) {
+								if (dropDown.getOptionValue(index) !== selectedValue) {
 									dropDown.removeAt(index);
 								}
 							}

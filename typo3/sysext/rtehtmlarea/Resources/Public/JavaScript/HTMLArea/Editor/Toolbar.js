@@ -144,7 +144,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 			if (item.itemId) {
 				this.items[item.itemId] = item;
 			}
-			item.render(this.el);
+			item.render(this);
 		},
 
 		/**

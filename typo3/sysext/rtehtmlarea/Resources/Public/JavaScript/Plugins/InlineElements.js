@@ -408,7 +408,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 			} else {
 				var text = this.localize('No markup');
 				select.setFirstOption(text, 'none', text);
-				select.setValue('none');
+				select.setValueByIndex(0);
 			}
 			select.setDisabled(!(select.getCount() > 1) || disabled);
 		}
