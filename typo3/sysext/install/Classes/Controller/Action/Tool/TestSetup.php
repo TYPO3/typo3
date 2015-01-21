@@ -40,9 +40,9 @@ class TestSetup extends Action\AbstractAction {
 			$actionMessages[] = $this->sendTestMail();
 		}
 
-		if (isset($this->postValues['set']['testTrueTypeFontDpi'])) {
-			$this->view->assign('trueTypeFontDpiTested', TRUE);
-			$actionMessages[] = $this->createTrueTypeFontDpiTestImage();
+		if (isset($this->postValues['set']['testTrueTypeFont'])) {
+			$this->view->assign('trueTypeFontTested', TRUE);
+			$actionMessages[] = $this->createTrueTypeFontTestImage();
 		}
 
 		if (isset($this->postValues['set']['testConvertImageFormatsToJpg'])) {
@@ -170,7 +170,7 @@ class TestSetup extends Action\AbstractAction {
 	 *
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
-	protected function createTrueTypeFontDpiTestImage() {
+	protected function createTrueTypeFontTestImage() {
 		$parseTimeStart = GeneralUtility::milliseconds();
 
 		$image = @imagecreate(200, 50);
@@ -186,14 +186,14 @@ class TestSetup extends Action\AbstractAction {
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
 			'Testing true type'
 		);
-		$outputFile = PATH_site . 'typo3temp/installTool-' . uniqid('createTrueTypeFontDpiTestImage', TRUE) . '.gif';
+		$outputFile = PATH_site . 'typo3temp/installTool-' . uniqid('createTrueTypeFontTestImage', TRUE) . '.gif';
 		imagegif($image, $outputFile);
 
 		/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
 		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
-		$message->setTitle('True type font DPI settings');
+		$message->setTitle('True type font');
 		$message->setMessage(
-			'If the two images below do not look the same, set $TYPO3_CONF_VARS[GFX][TTFdpi] to a value of 72.'
+			'If the two images below do not look the same, please check your FreeType 2 module.'
 		);
 
 		$testResults = array();
@@ -626,7 +626,6 @@ class TestSetup extends Action\AbstractAction {
 		$result['imageMagick5Effects'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
 		$result['gdlibEnabled'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 		$result['gdlibPng'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
-		$result['freeTypeDpi'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'];
 		$result['fileFormats'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
 		return $result;
 	}

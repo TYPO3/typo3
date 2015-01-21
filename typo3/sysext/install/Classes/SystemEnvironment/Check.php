@@ -115,7 +115,7 @@ class Check {
 		$statusArray[] = $this->checkGdLibFreeTypeSupport();
 		$statusArray[] = $this->checkRegisterGlobals();
 		$statusArray[] = $this->checkLibXmlBug();
-		$statusArray[] = $this->isTrueTypeFontDpiStandard();
+		$statusArray[] = $this->isTrueTypeFontWorking();
 		return $statusArray;
 	}
 
@@ -1229,9 +1229,9 @@ class Check {
 	 *
 	 * @return Status\StatusInterface
 	 */
-	protected function isTrueTypeFontDpiStandard() {
+	protected function isTrueTypeFontWorking() {
 		if (function_exists('imageftbbox')) {
-			// 20 Pixels at 96 DPI - the DefaultConfiguration
+			// 20 Pixels at 96 DPI
 			$fontSize = (20 / 96 * 72);
 			$textDimensions = @imageftbbox(
 				$fontSize,
@@ -1252,7 +1252,7 @@ class Check {
 				$status->setTitle('FreeType True Type Font DPI');
 				$status->setMessage('Fonts are rendered by FreeType library. ' .
 					'This server does not render fonts as expected. ' .
-					'Please configure FreeType or TYPO3_CONF_VARS[GFX][TTFdpi]'
+					'Please check your FreeType 2 module.'
 				);
 			}
 		} else {

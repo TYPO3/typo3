@@ -4876,17 +4876,16 @@ Connection: close
 	}
 
 	/**
-	 * Function to compensate for FreeType2 96 dpi
+	 * Function to compensate for DPI resolution.
 	 *
-	 * @param int $font_size Fontsize for freetype function call
-	 * @return int Compensated fontsize based on $GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']
+	 * @param float $fontSize font size for freetype function call
+	 *
+	 * @return float compensated font size based on 96 dpi
 	 */
-	static public function freetypeDpiComp($font_size) {
-		$dpi = (int)$GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'];
-		if ($dpi != 72) {
-			$font_size = $font_size / $dpi * 72;
-		}
-		return $font_size;
+	static public function freetypeDpiComp($fontSize) {
+		// FreeType 2 always has 96 dpi.
+		$dpi = 96.0;
+		return $fontSize / $dpi * 72;
 	}
 
 	/**

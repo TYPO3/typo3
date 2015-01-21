@@ -104,7 +104,7 @@ functionality:
   * apc caching (with at least 100 MB of memory available)
   * curl
   * mbstring
-  * FreeType (usually included within the PHP distribution)
+  * FreeType 2 (usually included within the PHP distribution)
   * bcmath or gmp (needed if you'd like to use the openid system extension)
 
 * PHP access to /dev/urandom or /dev/random on Unix-like platforms for
