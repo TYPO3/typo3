@@ -260,6 +260,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 						// We may have created multiple links in as many blocks
 					this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 				}
+				// Set the selection on the last link created
+				var links = node.getElementsByTagName('a');
+				this.editor.getSelection().selectNodeContents(links[links.length-1]);
 			}
 			this.close();
 		},
@@ -452,6 +455,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+			button.setInactive(true);
 			if (mode === 'wysiwyg' && this.editor.isEditable()) {
 				switch (button.itemId) {
 					case 'CreateLink':
@@ -464,6 +468,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 							}
 							if (node != null && /^a$/i.test(node.nodeName)) {
 								button.setTooltip(this.localize('Modify link'));
+								button.setInactive(false);
 							} else {
 								button.setTooltip(this.localize('Insert link'));
 							}

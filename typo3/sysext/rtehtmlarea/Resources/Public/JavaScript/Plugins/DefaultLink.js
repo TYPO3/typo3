@@ -378,6 +378,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+			button.setInactive(true);
 			if (mode === 'wysiwyg' && this.editor.isEditable()) {
 				switch (button.itemId) {
 					case 'CreateLink':
@@ -390,6 +391,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 							}
 							if (node != null && /^a$/i.test(node.nodeName)) {
 								button.setTooltip(this.localize('Modify link'));
+								button.setInactive(false);
 							} else {
 								button.setTooltip(this.localize('Insert link'));
 							}

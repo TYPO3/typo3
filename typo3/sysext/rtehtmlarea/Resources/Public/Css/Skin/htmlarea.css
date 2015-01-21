@@ -98,7 +98,6 @@
 	background-color: #DCDCDC;
 }
 .htmlarea .toolbar .buttonActive,
-.htmlarea .toolbar .buttonPressed,
 .htmlarea-context-menu .buttonActive {
 	border-style: solid;
 	border-width: 1px;

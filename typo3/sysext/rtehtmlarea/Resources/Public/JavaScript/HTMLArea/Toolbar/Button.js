@@ -176,7 +176,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 * Handler invoked when the mouse goes over the button
 		 */
 		onMouseOver: function (event) {
-			if (!this.buttonElement.disabled && this.inactive) {
+			if (!this.disabled && this.inactive) {
 				Dom.addClass(this.el, 'buttonHover');
 			}
 		},

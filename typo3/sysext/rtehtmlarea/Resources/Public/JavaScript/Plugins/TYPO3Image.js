@@ -133,6 +133,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
 		 * This function gets called when the toolbar is updated
 		 */
 		onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+			button.setInactive(true);
 			if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'InsertImage' && !button.disabled) {
 				var image = this.editor.getSelection().getParentElement();
 				if (image && !/^img$/i.test(image.nodeName)) {
@@ -140,6 +141,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
 				}
 				if (image) {
 					button.setTooltip(this.localize('Modify image'));
+					button.setInactive(false);
 				} else {
 					button.setTooltip(this.localize('Insert image'));
 				}
