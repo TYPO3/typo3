@@ -9,25 +9,23 @@ The extbase reflection service can now return tags/annotations added to a class.
 
 Suppose the given class:
 
-::
+.. code-block:: php
 
-/**
- * @SomeClassAnnotation A value
- */
- class Foo {
- }
+   /**
+    * @SomeClassAnnotation A value
+    */
+    class Foo {
+    }
 
-..
 
 Those annotation can be fetched with the reflection service:
 
-::
+.. code-block:: php
 
-$service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
-$classValues = $service->getClassTagsValues('Foo');
-$classValue = $service->getClassTagValue('Foo', 'SomeClassAnnotation');
+    $service = new \TYPO3\CMS\Extbase\Reflection\ReflectionService();
+    $classValues = $service->getClassTagsValues('Foo');
+    $classValue = $service->getClassTagValue('Foo', 'SomeClassAnnotation');
 
-..
 
 Impact
 ======

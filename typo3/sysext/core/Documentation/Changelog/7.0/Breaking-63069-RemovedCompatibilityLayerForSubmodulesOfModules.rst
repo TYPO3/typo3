@@ -20,4 +20,4 @@ will not work anymore.
 Migration
 =========
 
-Use :php:`BackendUtility::getModuleUrl()` instead to get the correct target for your links.
+Use :code:`BackendUtility::getModuleUrl()` instead to get the correct target for your links.

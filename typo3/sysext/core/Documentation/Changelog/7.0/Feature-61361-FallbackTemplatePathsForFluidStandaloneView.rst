@@ -20,24 +20,25 @@ for Templates there is no lookup requirement.
 
 As a developer or integrator, you can configure your View as follows:
 
-::
-$view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-$view->setFormat('html');
-$view->setTemplatePathAndFileName(ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Templates/Email.html');
-$view->setLayoutRootPaths(array(
-  'default' => ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Layouts',
-  'specific' => ExtensionManagementUtility::extPath('myTemplateExt') . 'Resources/Private/Layouts/MyExt',
-));
-$view->setPartialRootPaths(array(
-  'default' => ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Partials',
-  'specific' => ExtensionManagementUtility::extPath('myTemplateExt') . 'Resources/Private/Layouts/MyExt',
-  'evenMoreSpecific' => 'fileAdmin/templates/myExt/Partials',
-));
-..
+.. code-block:: php
+
+    $view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+    $view->setFormat('html');
+    $view->setTemplatePathAndFileName(ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Templates/Email.html');
+    $view->setLayoutRootPaths(array(
+      'default' => ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Layouts',
+      'specific' => ExtensionManagementUtility::extPath('myTemplateExt') . 'Resources/Private/Layouts/MyExt',
+    ));
+    $view->setPartialRootPaths(array(
+      'default' => ExtensionManagementUtility::extPath('myExt') . 'Resources/Private/Partials',
+      'specific' => ExtensionManagementUtility::extPath('myTemplateExt') . 'Resources/Private/Layouts/MyExt',
+      'evenMoreSpecific' => 'fileAdmin/templates/myExt/Partials',
+    ));
+
 
 With this, the View will first look up the requested layout file in the path with the key
-_specific_, and in case there is no such file, it will fall back to _default_. For the partials the
-sequence would be _evenMoreSpecific_, then _specific_, then fall back to _default_.
+:code:`specific`, and in case there is no such file, it will fall back to :code:`default`. For the partials the
+sequence would be :code:`evenMoreSpecific`, then :code:`specific`, then fall back to :code:`default`.
 
 You are free in the naming
 of the keys. The paths are searched from bottom to top.
@@ -51,19 +52,20 @@ Additionally the TypoScript Content Object FLUIDTEMPLATE, which is based on Stan
 kind of fallback mechanism.
 Two new TypoScript options are added for this purpose:
 
- * partialRootPaths
- * layoutRootPaths
+- partialRootPaths
+- layoutRootPaths
 
 Example usage:
 
-::
-page.10 = FLUIDTEMPLATE
-page.10.file = EXT:sitedesign/Resources/Private/Templates/Main.html
-page.10.partialRootPaths {
-  10 = EXT:sitedesign/Resources/Private/Partials
-  20 = EXT:sitemodification/Resources/Private/Partials
-}
-..
+.. code-block:: typoscript
+
+    page.10 = FLUIDTEMPLATE
+    page.10.file = EXT:sitedesign/Resources/Private/Templates/Main.html
+    page.10.partialRootPaths {
+      10 = EXT:sitedesign/Resources/Private/Partials
+      20 = EXT:sitemodification/Resources/Private/Partials
+    }
+
 
 In case you're using the old options (partialRootPath, layoutRootPath) together with the new options, the content of
 the old options will be placed at the first position (index zero) in the fallback list.

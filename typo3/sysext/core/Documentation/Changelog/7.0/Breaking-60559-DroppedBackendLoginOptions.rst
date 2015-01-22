@@ -5,7 +5,7 @@ Breaking: #60559 - Dropped Backend Login Options
 Description
 ===========
 
-Handling of :php:`$GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']` and :php:`$GLOBALS['TBE_STYLES']['loginBoxImage_author']` was dropped.
+Handling of :code:`$GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']` and :code:`$GLOBALS['TBE_STYLES']['loginBoxImage_author']` was dropped.
 
 
 Impact

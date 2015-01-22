@@ -15,13 +15,12 @@ It takes the field content as a whole and can additionally take some parameters 
 
 The full parameter usage in Fluid might look like this, where {link} is the field content:
 
-::
+.. code-block:: html
 
-<f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="b=u" additionalAttributes="{type:'button'}">
+	<f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="b=u" additionalAttributes="{type:'button'}">
 
-<f:uri.typolink parameter="{link}" additionalParameters="b=u">
+	<f:uri.typolink parameter="{link}" additionalParameters="b=u">
 
-..
 
 Only *parameter* is required, all other parameters are optional.
 While passing additional parameters to the ViewHelper, following rules apply:
@@ -35,15 +34,13 @@ While passing additional parameters to the ViewHelper, following rules apply:
 {link} contains *19 _blank - "testtitle with whitespace" &X=y*.
 In case of the Uri.Typolink Viewhelper, only the first and the fourth parameter of the field content are taken into account,
 the tag related properties are discarded.
-For the given example, the output is:
+For the given examples, the output is:
 
-::
+.. code-block:: html
 
-<a href="index.php?id=19&X=y&b=u" title="some title" target="_blank" class="ico-class" type="button">
+	<a href="index.php?id=19&X=y&b=u" title="some title" target="_blank" class="ico-class" type="button">
 
-index.php?id=19&X=y&b=u
-
-..
+	index.php?id=19&X=y&b=u
 
 Impact
 ======

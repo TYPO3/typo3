@@ -7,7 +7,9 @@ Description
 
 It is now possible to import more than one CSS file for the Rich Text Editor.
 
-New syntax is::
+New syntax is:
+
+.. code-block:: typoscript
 
 	RTE.default.contentCSS {
 		file1 = fileadmin/myStylesheet1.css

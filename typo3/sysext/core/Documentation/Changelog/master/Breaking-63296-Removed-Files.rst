@@ -7,12 +7,12 @@ Description
 
 The following script entry points are removed without substitution:
 
- * typo3/file_edit.php
- * typo3/file_newfolder.php
- * typo3/file_rename.php
- * typo3/file_upload.php
- * typo3/show_rechis.php
- * typo3/listframe_loader.php
+- typo3/file_edit.php
+- typo3/file_newfolder.php
+- typo3/file_rename.php
+- typo3/file_upload.php
+- typo3/show_rechis.php
+- typo3/listframe_loader.php
 
 The corresponding ListFrameLoaderController class is now deprecated.
 

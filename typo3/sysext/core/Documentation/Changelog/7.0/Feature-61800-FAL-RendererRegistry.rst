@@ -28,13 +28,14 @@ A AudioTagRenderer and VideoTagRenderer have already been added.
 It is possible to register your own renderer classes in the ext_localconf.php of an extension.
 
 Example:
-::
 
-$rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
-$rendererRegistry->registerRendererClass(
-	'MyCompany\\MySpecialMediaFile\\Rendering\\MySpecialMediaFileRenderer'
-);
-..
+.. code-block:: php
+
+    $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
+    $rendererRegistry->registerRendererClass(
+        'MyCompany\\MySpecialMediaFile\\Rendering\\MySpecialMediaFileRenderer'
+    );
+
 
 Impact
 ======

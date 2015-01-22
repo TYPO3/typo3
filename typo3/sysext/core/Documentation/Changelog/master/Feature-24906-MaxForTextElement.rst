@@ -9,7 +9,7 @@ The Textelement supports now the option ``max`` to render the attribute maxlengt
 
 The new option can be set like this:
 
-.. code-block::
+.. code-block:: php
 
 	'teaser' => array(
 		'label' => 'Teaser',

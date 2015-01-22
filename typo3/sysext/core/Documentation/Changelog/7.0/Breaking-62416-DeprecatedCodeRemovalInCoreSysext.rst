@@ -8,10 +8,10 @@ Description
 DataHandler
 -----------
 
-:php:`DataHandler::clear_cache()` has been removed. Use :php:`->clear_cacheCmd()` instead. Alternatively you can
-call :php:`->registerPageCacheClearing()` from a hook to not immediately clear the cache but register clearing after DataHandler operation finishes.
+:code:`DataHandler::clear_cache()` has been removed. Use :code:`->clear_cacheCmd()` instead. Alternatively you can
+call :code:`->registerPageCacheClearing()` from a hook to not immediately clear the cache but register clearing after DataHandler operation finishes.
 
-:php:`DataHandler::internal_clearPageCache()` has been removed, please use the cache manager directly.
+:code:`DataHandler::internal_clearPageCache()` has been removed, please use the cache manager directly.
 
 The hook ['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] has been removed, use the caching framework with database backend instead.
 

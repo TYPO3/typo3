@@ -8,7 +8,8 @@ Description
 It is now possible to configure a class as requiring other classes.
 
 The syntax of this new property is
-	::
+
+.. code-block:: typoscript
 
 	RTE.classes.[ *classname* ] {
 		.requires = list of class names; list of classes that are required by the class;

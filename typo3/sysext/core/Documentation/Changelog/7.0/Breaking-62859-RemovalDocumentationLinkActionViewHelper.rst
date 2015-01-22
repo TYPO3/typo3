@@ -5,13 +5,13 @@ Breaking: #62859 - Removal of doc:link.action view helper
 Description
 ===========
 
-The view helper :php:`\TYPO3\CMS\Documentation\ViewHelpers\Link\Action` has been removed.
+The view helper :code:`\TYPO3\CMS\Documentation\ViewHelpers\Link\Action` has been removed.
 
 
 Impact
 ======
 
-Extensions that rely on existence of :php:`\TYPO3\CMS\Documentation\ViewHelpers\Link\Action` won't work.
+Extensions that rely on existence of :code:`\TYPO3\CMS\Documentation\ViewHelpers\Link\Action` won't work.
 
 
 Affected installations

@@ -5,8 +5,8 @@ Deprecation: #64147 - TemplateService->ext_getKeyImage
 Description
 ===========
 
-:php:`ExtendedTemplateService::ext_getKeyImage()` has been marked for deprecation.
-:php:`ConfigurationForm::ext_getKeyImage()` has been marked for deprecation.
+:code:`ExtendedTemplateService::ext_getKeyImage()` has been marked for deprecation.
+:code:`ConfigurationForm::ext_getKeyImage()` has been marked for deprecation.
 
 
 Impact

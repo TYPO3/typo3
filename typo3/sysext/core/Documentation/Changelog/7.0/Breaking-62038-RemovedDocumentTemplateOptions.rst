@@ -7,13 +7,13 @@ Description
 
 The Backend/DocumentTemplate class contains various options that have no effect in the core anymore:
 
-:php:`$doc->JScodeLibArray`
-:php:`$doc->docType` (as rendering is always as HTML5 by default)
-:php:`$doc->inDocStyles` (use inDocStylesArray)
-:php:`$doc->inDocStyles_TBEstyle` (now used as inDocStylesArray[tbeStyle]
-:php:`$doc->charset` (always utf-8)
+:code:`$doc->JScodeLibArray`
+:code:`$doc->docType` (as rendering is always as HTML5 by default)
+:code:`$doc->inDocStyles` (use inDocStylesArray)
+:code:`$doc->inDocStyles_TBEstyle` (now used as inDocStylesArray[tbeStyle]
+:code:`$doc->charset` (always utf-8)
 
-The methods :php:`$doc->formatTime()` and :php:`$doc->menuTable()` have also
+The methods :code:`$doc->formatTime()` and :code:`$doc->menuTable()` have also
 been deprecated as they are not used anymore.
 
 Impact

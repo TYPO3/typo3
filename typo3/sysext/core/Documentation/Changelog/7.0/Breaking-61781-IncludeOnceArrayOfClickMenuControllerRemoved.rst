@@ -6,12 +6,12 @@ Description
 ===========
 
 The include_once array of the ClickMenuController, which is filled with paths from the
-:php:`$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses']['path']` setting, has been removed.
+:code:`$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses']['path']` setting, has been removed.
 
 Impact
 ======
 
-Extension classes relying on the :php:`$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses']['path']`registration for autoloading will not be loaded anymore.
+Extension classes relying on the :code:`$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses']['path']` registration for autoloading will not be loaded anymore.
 
 
 Affected installations

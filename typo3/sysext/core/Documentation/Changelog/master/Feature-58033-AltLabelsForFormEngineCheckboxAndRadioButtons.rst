@@ -9,15 +9,18 @@ Use TSconfig to override labels of radio buttons and checkboxes used in FormEngi
 
 For single checkboxes the key "default" is used:
 
-.. codeblock:: typoscript
+.. code-block:: typoscript
+
 	TCEFORM.pages.hidden.altLabels.default = individual label
 
-.. codeblock:: typoscript
+.. code-block:: typoscript
+
 	TCEFORM.pages.hidden.altLabels.default = LLL:path/to/languagefile.xlf:individualLabel
 
 For fields with multiple checkboxes, the value or the corresponding numeration (0,1,2,3) of the checkbox is used:
 
-.. codeblock:: typoscript
+.. code-block:: typoscript
+
 	TCEFORM.pages.l18n_cfg.altLabels.0 = individual label for the first checkbox
 	TCEFORM.pages.l18n_cfg.altLabels.1 = individual label for the second checkbox
 

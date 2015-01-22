@@ -10,11 +10,13 @@ Fluid provides for those elements the possibility to add
 key-value pairs as array, which will be rendered as
 `data-$key="$value"`.
 
-:code: <f:form.textfield data="{foo: 'bar', baz: 'foos'}" />
+.. code-block:: html
+
+	<f:form.textfield data="{foo: 'bar', baz: 'foos'}" />
 
 Impact
 ======
 
 Generic data attributes do not need to be passed by the
 `additionalAttributes` array anymore making the viewhelper
-more straight forward to use.
+more straightforward to use.

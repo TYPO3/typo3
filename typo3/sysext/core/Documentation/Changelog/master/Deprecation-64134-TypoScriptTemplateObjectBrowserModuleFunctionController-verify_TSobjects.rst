@@ -5,19 +5,19 @@ Deprecation: #64134 - Deprecate TypoScriptTemplateObjectBrowserModuleFunctionCon
 Description
 ===========
 
-:php:`TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()` has been deprecated.
+:code:`TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()` has been deprecated.
 
 
 Impact
 ======
 
-Using :php:`TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()` will trigger a deprecation log message.
+Using :code:`TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()` will trigger a deprecation log message.
 
 
 Affected installations
 ======================
 
-Instances which use of :php:`TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()`.
+Instances which use of :code:`TypoScriptTemplateObjectBrowserModuleFunctionController::verify_TSobjects()`.
 
 
 Migration

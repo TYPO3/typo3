@@ -5,7 +5,7 @@ Deprecation: #62854 - Abstractplugin->pi_list_searchBox()
 Description
 ===========
 
-Method :php:`pi_list_searchBox()` of AbstractPlugin (aka pibase) was used with very old
+Method :code:`pi_list_searchBox()` of AbstractPlugin (aka pibase) was used with very old
 search solutions and is hopelessly outdated. It is now discouraged to be used
 and will be removed with next major version.
 
@@ -13,7 +13,7 @@ and will be removed with next major version.
 Impact
 ======
 
-Extensions still using :php:`pi_list_searchBox()` will throw a deprecation warning.
+Extensions still using :code:`pi_list_searchBox()` will throw a deprecation warning.
 
 Affected installations
 ======================

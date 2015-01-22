@@ -6,13 +6,13 @@ Description
 ===========
 
 The deprecated methods to send email are removed.
-This includes the :php:`MailUtility::mail()` method, the mail delivery substitution API and the :php:`plainMailEncoded()` methods.
+This includes the :code:`MailUtility::mail()` method, the mail delivery substitution API and the :code:`plainMailEncoded()` methods.
 
 Impact
 ======
 
-Any call to :php:`MailUtility::mail()` or :php:`GeneralUtility::plainMailEncoded()` will result in a fatal error.
-The option :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery']`
+Any call to :code:`MailUtility::mail()` or :code:`GeneralUtility::plainMailEncoded()` will result in a fatal error.
+The option :code:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery']`
 does not have any effect.
 
 
@@ -24,4 +24,4 @@ Any installation using an extension still using the deprecated API will fail.
 Migration
 =========
 
-Use the :php:`\TYPO3\CMS\Core\Mail\Mailer` API for sending email.
+Use the :code:`\TYPO3\CMS\Core\Mail\Mailer` API for sending email.

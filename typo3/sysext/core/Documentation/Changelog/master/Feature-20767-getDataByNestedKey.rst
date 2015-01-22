@@ -8,10 +8,11 @@ Description
 Right now the ``getData`` type in TS only allows to access nested arrays in types GPVar and TSFE.
 Now the same is allowed for ``field`` too.
 
-If the field value is :php:`array('somekey' => array('level1' => array('level2' => 'somevalue')));`, you can get the
-``somevalue`` by configuring the following `TypoScript`.
+If the field value is :code:`array('somekey' => array('level1' => array('level2' => 'somevalue')));`, you can get the
+``somevalue`` by configuring the following TypoScript.
 
 .. code-block:: typoscript
+
 	10 = TEXT
 	10.data = field:fieldname|level1|level2
 

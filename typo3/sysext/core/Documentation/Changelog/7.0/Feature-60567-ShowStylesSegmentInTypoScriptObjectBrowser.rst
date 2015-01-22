@@ -5,7 +5,7 @@ Feature: #60567 - Show Styles Segment in TS Object Browser
 Description
 ===========
 
-The TypoScript Object Browser now shows the setup segment :ts:`styles.`
+The TypoScript Object Browser now shows the setup segment :code:`styles.`
 
 
 Impact

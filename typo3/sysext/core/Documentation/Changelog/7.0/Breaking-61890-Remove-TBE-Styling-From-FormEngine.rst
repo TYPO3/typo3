@@ -5,7 +5,7 @@ Breaking: #61890 - TBE Styling removed from FormEngine and TCA
 Description
 ===========
 
-The styling functionality of FormEngine was based on a mixture of loose variables within :php:`$GLOBALS['TBE_STYLES']`
+The styling functionality of FormEngine was based on a mixture of loose variables within :code:`$GLOBALS['TBE_STYLES']`
 overridden by hardcoded values in various Backend PHP classes. This setup, additionally mixed with CSS classes
 that followed a very complicated syntax to render certain fields differently, has been removed in order to allow
 Backend styling for FormEngine completely based on CSS/LESS.

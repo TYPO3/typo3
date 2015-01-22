@@ -8,7 +8,7 @@ Description
 DBAL DatabaseConnection
 -----------------------
 
-All connection parameters (host, username, password, db) for methods :php:`sql_connect()` and :php:`sql_select_db()` are removed.
+All connection parameters (host, username, password, db) for methods :code:`sql_connect()` and :code:`sql_select_db()` are removed.
 
 
 CSS Styled Content
@@ -27,7 +27,7 @@ The check for PHP's magic_quotes_gpc settings is removed, as the feature is disa
 Removed files
 -------------
 
-* lang/lang.php is removed. You don't need to include this file anymore, just use :php:`\TYPO3\CMS\Lang\LanguageService` directly.
+* lang/lang.php is removed. You don't need to include this file anymore, just use :code:`\TYPO3\CMS\Lang\LanguageService` directly.
 * rtehtmlarea/htmlarea/plugins/DynamicCSS/dynamiccss.css is removed. The file was not used.
 
 

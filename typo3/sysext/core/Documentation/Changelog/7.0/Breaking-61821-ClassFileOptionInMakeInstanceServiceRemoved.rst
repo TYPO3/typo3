@@ -5,7 +5,7 @@ Breaking: #61821 - classFile option in makeInstanceService removed
 Description
 ===========
 
-The option "classFile" in :php:`\TYPO3\CMS\Core\Utility\GeneralUtility\makeInstanceService()` is removed.
+The option "classFile" in :code:`\TYPO3\CMS\Core\Utility\GeneralUtility\makeInstanceService()` is removed.
 This should now be done by the respective ext_autoload.php of each extension.
 
 

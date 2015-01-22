@@ -22,7 +22,7 @@ might not work anymore as expected.
 Affected installations
 ======================
 
-All installations which use the :php:`$TSFE->JSeventFuncCalls` option, e.g. like GMENU_LAYERS.
+All installations which use the :code:`$TSFE->JSeventFuncCalls` option, e.g. like GMENU_LAYERS.
 
 Migration
 =========

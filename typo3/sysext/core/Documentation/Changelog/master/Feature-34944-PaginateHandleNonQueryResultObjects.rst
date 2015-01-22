@@ -6,10 +6,11 @@ Description
 ===========
 
 The PaginateViewHelper accepts input collections of following types:
-- :php:`QueryResultInterface`
-- :php:`ObjectStorage`
-- :php:`\ArrayAccess`
-- :php:`array`
+
+- :code:`QueryResultInterface`
+- :code:`ObjectStorage`
+- :code:`\ArrayAccess`
+- :code:`array`
 
 .. code-block:: html
 

@@ -20,10 +20,10 @@ A TYPO3 instance is affected if a 3rd party extension uses index_ts.php directly
 replaced with the TYPO3 Update (used on certain install types). The index.php file must be replaced with the
 current version from the TYPO3 CMS Core.
 
-Besides scripts are affected that access the time tracking (:php:`$TT`) or typoscript frontend controller (:php:`$TSFE`) objects instead of using :php:`$GLOBALS['TT']` respectively :php:`$GLOBALS['TSFE']`.
+Besides scripts are affected that access the time tracking (:code:`$TT`) or typoscript frontend controller (:code:`$TSFE`) objects instead of using :code:`$GLOBALS['TT']` respectively :code:`$GLOBALS['TSFE']`.
 
 
 Migration
 =========
 
-Remove the constant PATH_tslib from the 3rd party extension, use a current version of index.php and use :php:`$GLOBALS['TT']` and :php:`$GLOBALS['TSFE']` where necessary.
+Remove the constant PATH_tslib from the 3rd party extension, use a current version of index.php and use :code:`$GLOBALS['TT']` and :code:`$GLOBALS['TSFE']` where necessary.

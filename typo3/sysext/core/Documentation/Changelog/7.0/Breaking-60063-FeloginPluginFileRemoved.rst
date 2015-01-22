@@ -11,9 +11,9 @@ File EXT:felogin/pi1/class.tx_felogin_pi1.php was removed.
 Impact
 ======
 
- - A require in PHP of this file throws a fatal error.
+- A require in PHP of this file throws a fatal error.
 
- - An :ts:`includeLibs` TypoScript setting to this file raises a warning.
+- An :code:`includeLibs` TypoScript setting to this file raises a warning.
 
 
 Affected installations

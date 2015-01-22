@@ -9,10 +9,10 @@ An array of ``uid`` values can be passed to
 ``PageRepository::getMenu()``, providing the chance to build menues
 from several roots.
 
-Example: Fetch children of pages #2 and #3::
+Example: Fetch children of pages #2 and #3:
 
 .. code-block:: php
 
-  $pageRepository = new \TYPO3\CMS\Frontend\Page\PageRepository();
-  $pageRepository->init(false);
-  $rows = $pageRepository->getMenu(array(2, 3));
+    $pageRepository = new \TYPO3\CMS\Frontend\Page\PageRepository();
+    $pageRepository->init(false);
+    $rows = $pageRepository->getMenu(array(2, 3));

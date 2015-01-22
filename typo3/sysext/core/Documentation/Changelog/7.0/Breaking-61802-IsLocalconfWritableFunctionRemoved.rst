@@ -5,13 +5,13 @@ Breaking: #61802 - deprecated isLocalconfWritable function removed
 Description
 ===========
 
-The function :php:`isLocalconfWritable()` :php:`from \TYPO3\CMS\Core\Utility\ExtensionManagementUtility` has been removed.
+The function :code:`isLocalconfWritable()` :code:`from \TYPO3\CMS\Core\Utility\ExtensionManagementUtility` has been removed.
 The boostrap now just checks for the existence of the file and redirects to the install tool if it doesn't exist.
 
 Impact
 ======
 
-Extensions that still use the function :php:`isLocalconfWritable()` won't work.
+Extensions that still use the function :code:`isLocalconfWritable()` won't work.
 
 
 Affected installations

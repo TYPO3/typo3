@@ -10,6 +10,7 @@ It is possible to avoid those linking, thus having the sections
 displayed as simple text.
 
 .. code-block:: typoscript
+
 	plugin.tx_indexedsearch.linkSectionTitles = 0
 
 Will result in not linked section headlines.

@@ -7,9 +7,9 @@ Description
 
 The following methods of the class \TYPO3\CMS\Core\Utility\GeneralUtility have been marked as deprecated:
 
- * quoted_printable()
- * encodeHeader()
- * substUrlsInPlainText()
+- quoted_printable()
+- encodeHeader()
+- substUrlsInPlainText()
 
 Impact
 ======

@@ -11,7 +11,8 @@ If not, a flash error message will be shown.
 
 Usage:
 
-::
+.. code-block:: php
+
     'email' => array(
         'exclude' => 1,
         'label' => 'LLL:EXT:wd_products/Resources/Private/Language/locallang_db.xlf:tx_wdproducts_domain_model_contactperson.email',
@@ -21,7 +22,7 @@ Usage:
             'eval' => 'email,trim'
         ),
     )
-..
+
 
 Impact
 ======

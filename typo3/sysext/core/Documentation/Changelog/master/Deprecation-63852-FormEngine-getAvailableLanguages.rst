@@ -5,18 +5,18 @@ Deprecation: #63852 - Deprecate FormEngine::getAvailableLanguages()
 Description
 ===========
 
-:php:`FormEngine::getAvailableLanguages()` has been deprecated.
+:code:`FormEngine::getAvailableLanguages()` has been deprecated.
 
 
 Impact
 ======
 
-Using :php:`getAvailableLanguages()` of FormEngine class will trigger a deprecation log message.
+Using :code:`getAvailableLanguages()` of FormEngine class will trigger a deprecation log message.
 
 Affected installations
 ======================
 
-Instances which use custom form elements, which make use of :php:`FormEngine::getAvailableLanguages()`.
+Instances which use custom form elements, which make use of :code:`FormEngine::getAvailableLanguages()`.
 
 Migration
 =========

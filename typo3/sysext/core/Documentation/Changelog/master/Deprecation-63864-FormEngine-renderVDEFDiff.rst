@@ -5,19 +5,19 @@ Deprecation: #63864 - Deprecate FormEngine::renderVDEFDiff
 Description
 ===========
 
-:php:`FormEngine::renderVDEFDiff()` has been deprecated.
+:code:`FormEngine::renderVDEFDiff()` has been deprecated.
 
 
 Impact
 ======
 
-Using :php:`FormEngine::renderVDEFDiff()` of FormEngine class will trigger a deprecation log message.
+Using :code:`FormEngine::renderVDEFDiff()` of FormEngine class will trigger a deprecation log message.
 
 
 Affected installations
 ======================
 
-Instances which use custom form elements, which make use of :php:`FormEngine::renderVDEFDiff()`.
+Instances which use custom form elements, which make use of :code:`FormEngine::renderVDEFDiff()`.
 
 
 Migration

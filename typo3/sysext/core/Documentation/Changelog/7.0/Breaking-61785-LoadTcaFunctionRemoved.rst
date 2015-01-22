@@ -5,18 +5,18 @@ Breaking: #61785 - loadTCA function in GeneralUtility removed
 Description
 ===========
 
-Method :php:`loadTCA()` from :php:`\TYPO3\CMS\Core\Utility\GeneralUtility` is removed.
+Method :code:`loadTCA()` from :code:`\TYPO3\CMS\Core\Utility\GeneralUtility` is removed.
 
 Impact
 ======
 
-Extensions that still use :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA()` will trigger a fatal error.
+Extensions that still use :code:`\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA()` will trigger a fatal error.
 
 
 Affected installations
 ======================
 
-A TYPO3 instance is affected if a 3rd party extension still calls :php:`loadTCA`.
+A TYPO3 instance is affected if a 3rd party extension still calls :code:`loadTCA`.
 
 
 Migration

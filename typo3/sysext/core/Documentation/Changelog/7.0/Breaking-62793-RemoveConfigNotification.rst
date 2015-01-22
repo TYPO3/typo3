@@ -7,9 +7,9 @@ Description
 
 The following TypoScript options were removed:
 
-:ts:`config.notification_email_charset`
-:ts:`config.notification_email_encoding`
-:ts:`config.notification_email_urlmode`
+:code:`config.notification_email_charset`
+:code:`config.notification_email_encoding`
+:code:`config.notification_email_urlmode`
 
 
 Impact

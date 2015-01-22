@@ -2,6 +2,9 @@
 Core Change Log
 ===============
 
+:Rendered:
+      |today|
+
 **Table of contents**
 
 .. contents::
@@ -46,3 +49,12 @@ Old changes
 	:titlesonly:
 
 	Changelog/7.0/Index
+
+How to contribute
+=================
+
+.. toctree::
+	:maxdepth: 1
+	:titlesonly:
+
+	Changelog/Howto

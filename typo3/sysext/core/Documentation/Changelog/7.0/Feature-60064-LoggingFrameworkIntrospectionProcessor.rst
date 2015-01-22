@@ -10,9 +10,9 @@ element of a backtrace.
 
 Two options were added to enable this feature:
 
- - :code:`appendFullBackTrace`, boolean, not mandatory` Add full backtrace to the log
+- :code:`appendFullBackTrace`, boolean, not mandatory` Add full backtrace to the log
 
- - :code:`shiftBackTraceLevel`, integer, default 0, not mandatory` Removes the given number of entries from the top of the backtrace stack.
+- :code:`shiftBackTraceLevel`, integer, default 0, not mandatory` Removes the given number of entries from the top of the backtrace stack.
 
 Impact
 ======

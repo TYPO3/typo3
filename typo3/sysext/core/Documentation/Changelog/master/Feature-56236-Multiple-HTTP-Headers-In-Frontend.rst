@@ -10,7 +10,8 @@ at the same time
 
 Usage:
 
-::
+.. code-block:: typoscript
+
 	config.additionalHeaders {
 		10 {
 			# the header string

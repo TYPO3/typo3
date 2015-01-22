@@ -31,14 +31,12 @@ The affected 3rd party extensions must be modified to use ``top.TYPO3.Flashmessa
 
 Example:
 
-    .. code-block:: javascript
+.. code-block:: javascript
 
     // Old and deprecated:
     TYPO3.Flashmessages.display(TYPO3.Severity.notice)
 
     // New and the only correct way:
     top.TYPO3.Flashmessages.display(top.TYPO3.Severity.notice)
-
-    ..
 
 The ``TYPO3.Severity`` object has been moved to ``top.TYPO3.Severity``. Use ``top.TYPO3.Severity.*`` instead.

@@ -34,10 +34,10 @@ Parameters marked with an asterisk(*) are required
 * ``severity`` (int): Represents the severity of a modal. Please see TYPO3.Severity. Default is ``TYPO3.Severity.info``.
 * ``buttons`` (object[]): Actions rendered into the modal footer. If empty, the footer is not rendered.
 
-   * ``text`` (string) "*": The text rendered into the button.
-   * ``trigger`` (function) "*": Callback that's triggered on button click.
-   * ``active`` (bool: Marks the button as active. If true, the button gets the focus.
-   * ``btnClass`` (string): The css class for the button
+  * ``text`` (string) "*": The text rendered into the button.
+  * ``trigger`` (function) "*": Callback that's triggered on button click.
+  * ``active`` (bool: Marks the button as active. If true, the button gets the focus.
+  * ``btnClass`` (string): The css class for the button
 
 Data-Attributes
 ---------------

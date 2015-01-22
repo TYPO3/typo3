@@ -5,13 +5,13 @@ Breaking: #53658 - option alternateBgColors removed
 Description
 ===========
 
-The PageTSConfig option :ts:`mod.web_list.alternateBgColors` is removed without substitution.
+The PageTSConfig option :code:`mod.web_list.alternateBgColors` is removed without substitution.
 
 
 Impact
 ======
 
-Extensions that extend the DatabaseRecordList and are using the property :ts:`alternateBgColors`
+Extensions that extend the DatabaseRecordList and are using the property :code:`alternateBgColors`
 
 The option in the TableListViewHelper has been deprecated and will be removed in TYPO3 CMS 8.
 

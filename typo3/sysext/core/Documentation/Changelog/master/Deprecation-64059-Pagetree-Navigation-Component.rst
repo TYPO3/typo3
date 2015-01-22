@@ -8,7 +8,9 @@ Description
 The non-ExtJS page tree navigation frame which was used in the core until TYPO3 CMS 4.5, is still available and can be
 included within a module, if the module is registering a navFrameScript in ext_tables.php:
 
-:php:`'navFrameScript' => 'alt_db_navframe.php'`
+.. code-block:: php
+
+	'navFrameScript' => 'alt_db_navframe.php'
 
 
 Impact

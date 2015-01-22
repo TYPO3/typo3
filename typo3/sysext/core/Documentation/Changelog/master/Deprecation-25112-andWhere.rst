@@ -25,6 +25,7 @@ Migration
 Use the properties "where" or "markers" instead.
 
 .. code-block:: typoscript
+
 	page.30 = CONTENT
 	page.30 {
 		table = tt_content
@@ -38,15 +39,15 @@ Use the properties "where" or "markers" instead.
 	}
 	page.60 = CONTENT
 	page.60 {
-	  table = tt_content
-	  select {
-		pidInList = 73
-		where = header != ###whatever###
-		orderBy = ###sortfield###
-		markers {
-		  whatever.data = GP:first
-		  sortfield.value = sor
-		  sortfield.wrap = |ting
+		table = tt_content
+		select {
+			pidInList = 73
+			where = header != ###whatever###
+			orderBy = ###sortfield###
+			markers {
+				whatever.data = GP:first
+				sortfield.value = sor
+				sortfield.wrap = |ting
+			}
 		}
-	  }
 	}

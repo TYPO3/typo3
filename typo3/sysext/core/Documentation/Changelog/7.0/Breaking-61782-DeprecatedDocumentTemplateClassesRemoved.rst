@@ -7,9 +7,9 @@ Description
 
 The following deprecated classes have been removed:
 
-:php:`\TYPO3\CMS\Backend\Template\MediumDocumentTemplate`
-:php:`\TYPO3\CMS\Backend\Template\SmallDocumentTemplate`
-:php:`\TYPO3\CMS\Backend\Template\StandardDocumentTemplate`
+:code:`\TYPO3\CMS\Backend\Template\MediumDocumentTemplate`
+:code:`\TYPO3\CMS\Backend\Template\SmallDocumentTemplate`
+:code:`\TYPO3\CMS\Backend\Template\StandardDocumentTemplate`
 
 
 Impact
@@ -27,4 +27,4 @@ A TYPO3 instance is affected if a 3rd party extension uses one of the removed cl
 Migration
 =========
 
-Use :php:`\TYPO3\CMS\Backend\Template\DocumentTemplate` instead.
+Use :code:`\TYPO3\CMS\Backend\Template\DocumentTemplate` instead.

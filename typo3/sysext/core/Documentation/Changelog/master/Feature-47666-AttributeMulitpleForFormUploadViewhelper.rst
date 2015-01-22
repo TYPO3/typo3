@@ -9,6 +9,7 @@ The Viewhelper allows now an attribute \"multiple\", that will provide
 a possibility to upload several files at once.
 
 .. code-block:: html
+
 	<f:form.upload property="files" multiple="multiple" />
 
 Will result in the according HTML tag providing the field content as array.

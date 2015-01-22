@@ -7,15 +7,15 @@ Description
 
 A typical checkbox with label form element should now be rendered as:
 
-::
+.. code-block:: html
 
-<div class="checkbox">
-	<label for="someId">
-		<input type="checkbox" id="someId" />
-		Label text
-	</label>
-</div>
-..
+	<div class="checkbox">
+		<label for="someId">
+			<input type="checkbox" id="someId" />
+			Label text
+		</label>
+	</div>
+
 
 Impact
 ======

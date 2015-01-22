@@ -5,13 +5,13 @@ Breaking: #61863 - deprecated connectDB from EidUtility removed
 Description
 ===========
 
-Method :php:`connectDB()` from :php:`\TYPO3\CMS\Frontend\Utility\EidUtility` has been removed.
+Method :code:`connectDB()` from :code:`\TYPO3\CMS\Frontend\Utility\EidUtility` has been removed.
 
 
 Impact
 ======
 
-Extensions that still use the function :php:`connectDB()` will trigger a fatal
+Extensions that still use the function :code:`connectDB()` will trigger a fatal
 PHP error when an eID script is called.
 
 

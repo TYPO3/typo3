@@ -22,7 +22,7 @@ Affected installations
 ======================
 
 Extbase extensions that turned off the introduced feature switch with the TypoScript setting
-:ts:`features.rewrittenPropertyMapper = 0` because they relied on internal behavior of the old property mapper
+:code:`features.rewrittenPropertyMapper = 0` because they relied on internal behavior of the old property mapper
 will stop working.
 
 Migration

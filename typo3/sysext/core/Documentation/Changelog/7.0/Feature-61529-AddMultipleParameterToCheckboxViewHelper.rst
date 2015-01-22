@@ -7,16 +7,15 @@ Description
 
 Introduce parameter "multiple" for f:form.checkbox ViewHelper.
 
-::
+.. code-block:: html
 
-<f:form action="create" method="POST" name="pizza" object="{pizza}">
-	<f:form.checkbox property="covering" multiple="1" value="salami" /><br />
-	<f:form.checkbox property="covering" multiple="1" value="ham" /><br />
-	<f:form.checkbox property="covering" multiple="1" value="cheese" /><br />
-	<f:form.submit value="Send" />
-</f:form>
+	<f:form action="create" method="POST" name="pizza" object="{pizza}">
+		<f:form.checkbox property="covering" multiple="1" value="salami" /><br />
+		<f:form.checkbox property="covering" multiple="1" value="ham" /><br />
+		<f:form.checkbox property="covering" multiple="1" value="cheese" /><br />
+		<f:form.submit value="Send" />
+	</f:form>
 
-..
 
 Impact
 ======

@@ -5,9 +5,9 @@ Breaking: #60152 - GeneralUtility::formatSize is now locale aware
 Description
 ===========
 
-The :php:`GeneralUtility::formatSize()` method now adheres to the currently set locale and
+The :code:`GeneralUtility::formatSize()` method now adheres to the currently set locale and
 selects the correct decimal separator symbol.
-This also applies to the TypoScript option :ts:`stdWrap.bytes`, which uses the method internally,
+This also applies to the TypoScript option :code:`stdWrap.bytes`, which uses the method internally,
 as well as the Filelist content element type.
 
 Impact
@@ -19,7 +19,7 @@ the correct symbol. e.g. comma for German.
 Affected installations
 ======================
 
-Any installation that uses the :php:`formatSize()` method in one of the ways mentioned.
+Any installation that uses the :code:`formatSize()` method in one of the ways mentioned.
 
 Migration
 =========
@@ -27,5 +27,5 @@ Migration
 If you think you get the wrong decimal separator, ensure the locale is configured correctly
 and the locale really exists on the server.
 
-TypoScript option: :ts:`config.locale`
+TypoScript option: :code:`config.locale`
 Commandline: ``locale -a``
