@@ -36,9 +36,10 @@ class FinalDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 	 * @return bool TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
+		$contextService = $this->objectManager->get('TYPO3\\CMS\\Install\\Service\\ContextService');
 		$description = 'There are tables or fields in the database which need to be changed.<br /><br />' .
 		'This update wizard can be run only when there are no other update wizards left to make sure they have all needed fields unchanged.<br /><br />' .
-		'If you want to apply changes selectively, <a href="Install.php?install[action]=importantActions&amp;install[context]={context}&amp;install[controller]=tool">go to Database Analyzer</a>.';
+		'If you want to apply changes selectively, <a href="Install.php?install[action]=importantActions&amp;install[context]=' . $contextService->getContextString() . '&amp;install[controller]=tool">go to Database Analyzer</a>.';
 
 		$databaseDifferences = $this->getDatabaseDifferences();
 		$updateSuggestions = $this->schemaMigrationService->getUpdateSuggestions($databaseDifferences);
