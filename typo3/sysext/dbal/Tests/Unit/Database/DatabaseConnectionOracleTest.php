@@ -629,7 +629,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
 		$sqlCommands = $this->subject->SQLparser->_call('compileCREATETABLE', $components);
 		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
-		$this->assertEquals(4, count($sqlCommands));
+		$this->assertEquals(6, count($sqlCommands));
 		$expected = $this->cleanSql('
 			CREATE TABLE "tx_realurl_uniqalias" (
 				"uid" NUMBER(20) NOT NULL,
@@ -669,7 +669,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
 		$sqlCommands = $this->subject->SQLparser->_call('compileCREATETABLE', $components);
 		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
-		$this->assertEquals(2, count($sqlCommands));
+		$this->assertEquals(4, count($sqlCommands));
 		$expected = $this->cleanSql('
 			CREATE TABLE "tx_test" (
 				"uid" NUMBER(20) NOT NULL,
