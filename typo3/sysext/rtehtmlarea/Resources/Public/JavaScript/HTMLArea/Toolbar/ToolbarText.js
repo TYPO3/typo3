@@ -37,8 +37,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 		 */
 		render: function (container) {
 			this.el = document.createElement('div');
-			Dom.addClass(this.el, 'x-form-item');
-			Dom.addClass(this.el, 'x-form-item-label');
+			Dom.addClass(this.el, 'btn');
+			Dom.addClass(this.el, 'btn-sm');
+			Dom.addClass(this.el, 'btn-default');
+			Dom.addClass(this.el, 'toolbar-text');
 			if (this.id) {
 				this.el.setAttribute('id', this.id);
 			}
@@ -50,8 +52,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 			}
 			if (typeof this.tooltip === 'string') {
 				this.el.setAttribute('title', this.tooltip);
+				this.el.setAttribute('aria-label', this.tooltip);
 			}
-			container.getEl().appendChild(this.el);
+			container.appendChild(this.el);
 			this.initEventListeners();
 		},
 
@@ -89,11 +92,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 		},
 
 		/**
-		 * Css class applied when the item is disabled
-		 */
-		disabledClass: 'buttonDisabled',
-
-		/**
 		 * Setting disabled/enabled by boolean.
 		 * @param boolean disabled
 		 * @return void
@@ -101,9 +99,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/ToolbarText',
 		setDisabled: function(disabled){
 			this.disabled = disabled;
 			if (disabled) {
-				Dom.addClass(this.el, this.disabledClass);
+				this.el.setAttribute('disabled', 'disabled');
 			} else {
-				Dom.removeClass(this.el, this.disabledClass);
+				this.el.removeAttribute('disabled');
 			}
 		},
 

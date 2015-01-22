@@ -33,39 +33,35 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		/**
 		 * Render the button item (called by the toolbar)
 		 *
-		 * @param object container: the container of the button (the toolbar object)
+		 * @param object container: the container of the button (the toolbar object or a button group)
 		 * @return void
 		 */
 		render: function (container) {
-			this.el = document.createElement('div');
-			Dom.addClass(this.el, 'x-form-item');
-			Dom.addClass(this.el, 'button');
-			Dom.addClass(this.el, 'unselectable');
-			this.el.setAttribute('unselectable', 'on');
+			this.el = document.createElement('button');
+			this.el.setAttribute('type', 'button');
+			Dom.addClass(this.el, 'btn');
+			Dom.addClass(this.el, 'btn-default');
+			Dom.addClass(this.el, 'btn-sm');
 			if (this.id) {
 				this.el.setAttribute('id', this.id);
 			}
 			if (typeof this.cls === 'string') {
-				Dom.addClass(this.el, this.cls);
-			}
-			if (typeof this.text === 'string') {
-				this.el.innerHTML = this.text;
+				Dom.addClass(span, this.cls);
 			}
 			if (typeof this.tooltip === 'string') {
-				this.el.setAttribute('title', this.tooltip);
+				this.setTooltip(this.tooltip);
 			}
 			if (this.hidden) {
 				Dom.setStyle(this.el, { display: 'none' } );
 			}
-			this.buttonElement = document.createElement('button');
-			this.buttonElement.setAttribute('type', 'button');
-			Dom.addClass(this.buttonElement, 'btn-text');
+			container.appendChild(this.el);
+			var span = document.createElement('span');
+			Dom.addClass(span, 'btn-icon');
 			if (typeof this.iconCls === 'string') {
-				Dom.addClass(this.buttonElement, this.iconCls);
+				Dom.addClass(span, this.iconCls);
 			}
-			this.buttonElement.innerHTML = '&nbsp;';
-			this.el.appendChild(this.buttonElement);
-			container.getEl().appendChild(this.el);
+			span.innerHTML = typeof this.text === 'string' ? this.text : '&nbsp;';
+			this.el.appendChild(span);
 			this.initEventListeners();
 		},
 
@@ -83,9 +79,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 			var self = this;
 			Event.on(this, 'HTMLAreaEventHotkey', function (event, key, keyEvent) { return self.onHotKey(key, keyEvent); });
 			Event.on(this, 'HTMLAreaEventContextMenu', function (event, button) { return self.onButtonClick(button, event); });
-			Event.on(this.el, this.clickEvent, function (event) { return self.onButtonClick(self, event); });
-			Event.on(this.el, 'mouseover', function (event) { return self.onMouseOver(event); });
-			Event.on(this.el, 'mouseout', function (event) { return self.onMouseOut(event); });
+			Event.on(this.el, (UserAgent.isWebKit || UserAgent.isIE) ? 'mousedown' : 'click', function (event) { return self.onButtonClick(self, event); });
 			// Monitor toolbar updates in order to refresh the state of the button
 			Event.on(this.getToolbar(), 'HTMLAreaEventToolbarUpdate', function (event, mode, selectionEmpty, ancestors, endPointsInSameBlock) { Event.stopEvent(event); self.onUpdateToolbar(mode, selectionEmpty, ancestors, endPointsInSameBlock); return false; });
 		},
@@ -115,7 +109,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 * Add properties and function to set button active or not depending on current selection
 		 */
 		inactive: true,
-		activeClass: 'buttonActive',
+		activeClass: 'btn-active',
 		setInactive: function (inactive) {
 			this.inactive = inactive;
 			return inactive ? Dom.removeClass(this.el, this.activeClass) : Dom.addClass(this.el, this.activeClass);
@@ -179,22 +173,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		},
 
 		/**
-		 * Handler invoked when the mouse goes over the button
-		 */
-		onMouseOver: function (event) {
-			if (!this.disabled && this.inactive) {
-				Dom.addClass(this.el, 'buttonHover');
-			}
-		},
-
-		/**
-		 * Handler invoked when the mouse moves out of the button
-		 */
-		onMouseOut: function (event) {
-			Dom.removeClass(this.el, 'buttonHover');
-		},
-
-		/**
 		 * Handler invoked when the hotkey configured for this button is pressed
 		 */
 		onHotKey: function (key, event) {
@@ -219,13 +197,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 */
 		setTooltip: function (text) {
 			this.tooltip = text;
-			this.buttonElement.title = text;
+			this.el.setAttribute('title', this.tooltip);
+			this.el.setAttribute('aria-label', this.tooltip);
 		},
-
-		/**
-		 * Css class applied when the item is disabled
-		 */
-		disabledClass: 'buttonDisabled',
 
 		/**
 		 * Setting disabled/enabled by boolean.
@@ -235,9 +209,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		setDisabled: function(disabled){
 			this.disabled = disabled;
 			if (disabled) {
-				Dom.addClass(this.el, this.disabledClass);
+				this.el.setAttribute('disabled', 'disabled');
 			} else {
-				Dom.removeClass(this.el, this.disabledClass);
+				this.el.removeAttribute('disabled');
 			}
 		},
 

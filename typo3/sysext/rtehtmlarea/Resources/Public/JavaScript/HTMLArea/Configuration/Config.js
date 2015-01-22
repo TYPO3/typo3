@@ -75,22 +75,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 		this.configDefaults = {
 			all: {
 				xtype: 'htmlareabutton',
-				disabledClass: 'buttonDisabled',
 				textMode: false,
 				selection: false,
 				dialog: false,
 				hidden: false
-			},
-			htmlareabutton: {
-				cls: 'button',
-				overCls: 'buttonHover',
-				// Erratic behaviour of click event in WebKit and IE browsers
-				clickEvent: (UserAgent.isWebKit || UserAgent.isIE) ? 'mousedown' : 'click'
-			},
-			htmlareaselect: {
-				cls: 'select',
-				labelSeparator: '',
-				hideLabel: true
 			}
 		};
 	};

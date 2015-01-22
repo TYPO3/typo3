@@ -198,7 +198,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 					// The toolbar
 					id: this.editorId + '-toolbar',
 					itemId: 'toolbar',
-					cls: 'toolbar',
 					editorId: this.editorId
 				}),
 				new Iframe({

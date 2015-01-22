@@ -40,11 +40,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 		 */
 		render: function (container) {
 			this.el = document.createElement('div');
+			Dom.addClass(this.el, 'btn-toolbar');
+			this.el.setAttribute('role', 'toolbar');
 			if (this.id) {
 				this.el.setAttribute('id', this.id);
 			}
 			if (this.cls) {
-				this.el.setAttribute('class', this.cls);
+				Dom.addClass(this.el, this.cls);
 			}
 			this.el = container.appendChild(this.el);
 			this.addItems();
@@ -88,23 +90,19 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 				row = editor.config.toolbar[i];
 				if (!firstOnRow) {
 					// If a visible item was added to the previous line
-					this.addSpacer('space-clear-left');
+					this.addSpacer(this.el, 'space-clear-left');
 				}
 				firstOnRow = true;
 				// Add the groups
 				for (j = 0, m = row.length; j < m; j++) {
 					group = row[j];
-					// To do: this.config.keepButtonGroupTogether ...
-					if (!firstOnRow && !firstInGroup) {
-						// If a visible item was added to the line
-						this.addSeparator();
-					}
+					var groupContainer = this.addGroup();
 					firstInGroup = true;
 					// Add each item
 					for (k = 0, p = group.length; k < p; k++) {
 						item = group[k];
 						if (item == 'space') {
-							this.addSpacer();
+							this.addSpacer(groupContainer);
 						} else {
 							// Get the item's config as registered by some plugin
 							var itemConfig = editor.config.buttonsConfig[item];
@@ -113,16 +111,16 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 								itemConfig.toolbar = this;
 								switch (itemConfig.xtype) {
 									case 'htmlareabutton':
-										this.add(new Button(itemConfig));
+										this.add(new Button(itemConfig), groupContainer);
 										break;
 									case 'htmlareaselect':
-										this.add(new Select(itemConfig));
+										this.add(new Select(itemConfig), groupContainer);
 										break;
 									case 'htmlareatoolbartext':
-										this.add(new ToolbarText(itemConfig));
+										this.add(new ToolbarText(itemConfig), groupContainer);
 										break;
 									default:
-										this.add(itemConfig);
+										this.add(itemConfig, groupContainer);
 								}
 								firstInGroup = firstInGroup && itemConfig.hidden;
 								firstOnRow = firstOnRow && firstInGroup;
@@ -131,51 +129,55 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Toolbar',
 					}
 				}
 			}
-			this.addSpacer('space-clear-left');
 		},
 
 		/**
 		 * Add an item to the toolbar
 		 *
 		 * @param object item: the item to be added (not yet rendered)
+		 * @param object container: the element into which to insert the item
 		 * @return void
 		 */
-		add: function (item) {
+		add: function (item, container) {
 			if (item.itemId) {
 				this.items[item.itemId] = item;
 			}
-			item.render(this);
+			item.render(container);
+		},
+
+		/**
+		 * Add a group to the toolbar
+		 *
+		 * @param string cls: a class to be added on the group other than 'btn-group' (default)
+		 * @return void
+		 */
+		addGroup: function (cls) {
+			var group = document.createElement('div');
+			if (typeof cls === 'string') {
+				Dom.addClass(group, cls);
+			} else {
+				Dom.addClass(group, 'btn-group');
+			}
+			group.setAttribute('role', 'group');
+			group = this.el.appendChild(group);
+			return group;
 		},
 
 		/**
 		 * Add a spacer to the toolbar
 		 *
+		 * @param object container: the element into which to insert the item
 		 * @param string cls: a class to be added on the spacer rather than 'space' (default)
 		 * @return void
 		 */
-		addSpacer: function (cls) {
+		addSpacer: function (container, cls) {
 			var spacer = document.createElement('div');
 			if (typeof cls === 'string') {
 				Dom.addClass(spacer, cls);
 			} else {
 				Dom.addClass(spacer, 'space');
 			}
-			this.el.appendChild(spacer);
-		},
-
-		/**
-		 * Add a separator to the toolbar
-		 *
-		 * @param string cls: a class to be added on the separator
-		 * @return void
-		 */
-		addSeparator: function (cls) {
-			var spacer = document.createElement('div');
-			Dom.addClass(spacer, 'separator');
-			if (typeof cls === 'string') {
-				Dom.addClass(spacer, cls);
-			}
-			this.el.appendChild(spacer);
+			container.appendChild(spacer);
 		},
 
 		/**

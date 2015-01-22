@@ -35,142 +35,105 @@
 	padding-bottom: 10px;
 }
 /* Selectors for the editor toolbar */
-.htmlarea .unselectable,
-.htmlarea .unselectable * {
-	user-select: none;
-	-o-user-select: none;
-	-ms-user-select: none;
-	-moz-user-select: -moz-none;
-	-webkit-user-select: none;
-	cursor: default;
-}
-.htmlarea .toolbar {
-	cursor: default;
-	margin: 0;
+.htmlarea .btn-toolbar {
 	padding: 2px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
-.htmlarea .toolbar .tb-group {
-	clear:none;
-	float:left;
-	margin:1px 2px 0px 0px;
-	padding:0;
+.htmlarea .btn-toolbar .btn-group {
+	margin: 1px 3px;
 }
-.htmlarea .toolbar .x-form-item {
-	float: left;
-	height: 26px;
-	margin: 0 2px;
+.htmlarea .btn-toolbar .btn {
+	display: inline-block;
+	padding: 0;
 }
-.htmlarea .toolbar .toolbar-text .x-form-item-label {
-	display: block;
-	font-weight: normal;
-	width: auto;
-}
-.htmlarea .toolbar .button {
+.htmlarea .btn-toolbar .btn-sm {
 	background-color: transparent;
-	border-style: solid;
-	border-width: 1px;
-	border-color: transparent;
-	border-collapse: separate;
-	border-radius: 2px;
-	cursor: pointer;
-	float: left;
-	height: 23px;
-	margin: 0 0 3px 0;
+	height: 24px;
+	margin: 1px 0;
+	padding: 2px 0 0 2px;
 	width: 24px;
 }
-.htmlarea .toolbar .button button {
-	background-color: transparent;
-	border: 0 none;
-	cursor: pointer;
-	display: block;
-	-moz-outline: 0 none;
-	outline: 0 none;
+.htmlarea .btn-toolbar .btn-sm + .btn-sm {
+	border-left: 0;
 }
-.htmlarea .toolbar .btn-text {
+.htmlarea .btn-toolbar .btn-sm:not(:last-child) {
+	border-right: 0;
+}
+.htmlarea .btn-toolbar .btn-icon {
 	background-image: url("images/sprites/actions.png");
-	background-position: center;
 	background-repeat: no-repeat;
-	width: 20px;
+	display: inline-block;
 	height: 18px;
-	margin: 2px 0 1px 2px;
+	width: 20px;
 }
-.htmlarea .toolbar .buttonHover {
-	background-color: #DCDCDC;
+.htmlarea .btn-toolbar .btn-sm:hover {
+	background-color: #dcdcdc;
 }
-.htmlarea .toolbar .buttonActive,
-.htmlarea-context-menu .buttonActive {
+.htmlarea .btn-toolbar .btn-active,
+.htmlarea-context-menu .btn-active {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #C5C5D5 #C5C5D5 #C5C5D5 #C5C5D5;
-	background-color: ButtonHighlight;
+	background-color: #ffffff;
 	text-decoration: none;
 	opacity: 1.00;
 }
-.htmlarea .toolbar .indicator {
-	background-color: white;
-	border: 1px solid ButtonShadow;
+.htmlarea .btn-toolbar .toolbar-text {
+	width: auto;
+}
+.htmlarea .btn-toolbar .indicator {
 	cursor: default;
-	float: left;
-	height: 18px;
-	overflow: hidden;
-	margin: 3px 1px 5px 1px;
-	padding: 0 2px 4px 0;
+	height: 24px;
 	text-align: center;
 	width: 24px;
 }
-.htmlarea .toolbar .buttonDisabled {
-	cursor: default;
-	filter: gray() alpha(opacity=25);
-	-moz-opacity: 0.25;
-	opacity: 0.25;
-}
-.htmlarea .toolbar .separator {
-	background-color: rgb(115, 115, 115);
-	float: left;
-	height: 18px;
-	margin: 3px 2px 5px 2px;
-	width: 1px;
-}
-.htmlarea .toolbar .space {
+.htmlarea .btn-toolbar .space {
 	background-color: transparent;
 	border-style: none;
+	display: block;
 	float: left;
 	height: 26px;
 	margin: 0;
 	padding: 0 1px;
 	width: 2px;
 }
-.htmlarea .toolbar .space-clear-left {
+.htmlarea .btn-toolbar .space-clear-left {
 	clear: left;
+	display: block;
 	font-size: 0;
 	height: 0;
 	line-height: 0;
 	overflow: hidden;
 }
-.htmlarea .toolbar .select {
-	height: 17px;
-}
-.htmlarea .toolbar select {
-	border: 1px solid #c7c7c7;
-	border-radius: 2px;
+.htmlarea .btn-toolbar .form-group {
 	display: inline-block;
-	height: 22px !important;
-	margin: 0 0 4px 0;
+	height: 26px;
+	margin: 0 2px 0px 2px;
+}
+.htmlarea .btn-toolbar .form-label {
+	display: inline-block;
+	font-weight: normal;
+	height: 24px;
+	margin: 0;
+	padding: 0 2px;
+	width: auto;
+}
+.htmlarea .btn-toolbar .form-control {
+	border-color: #cccccc;
+	display: inline-block;
+	height: 24px;
+	margin: 0;
 	padding: 2px 1px;
 }
-.htmlarea .toolbar select option {
+.htmlarea .btn-toolbar .btn-sm[disabled] .btn-icon,
+.htmlarea .btn-toolbar .form-control[disabled],
+.htmlarea .btn-toolbar .toolbar-text[disabled] {
+	cursor: default;
+	filter: gray() alpha(opacity=40);
+	-moz-opacity: 0.4;
+	opacity: 0.4;
+}
+.htmlarea .btn-toolbar .form-control option {
 	padding: 2px;
-}
-.htmlarea .toolbar .x-form-field-wrap .x-form-trigger {
-	right: 0;
-}
-.htmlarea .toolbar .select, .htmlarea .toolbar .select:hover, .htmlarea .toolbar .select:active {
-	background-color:Window;
-}
-.htmlarea .toolbar .select .buttonDisabled {
-	color:GrayText;
-	background-color:#EFEFF4;
 }
 .htmlarea .editorIframe {
 	clear:both;
