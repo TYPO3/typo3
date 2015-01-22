@@ -206,13 +206,21 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 							$fileInfo = $this->getResource($conf['file'], $conf['file.']);
 							if ($fileInfo) {
 								$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
-								$this->setup[$theKey . '.']['file'] = $fileInfo[3];
+								if ($fileInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+									$this->setup[$theKey . '.']['file'] = $fileInfo['originalFile']->getForLocalProcessing(FALSE);
+								} else {
+									$this->setup[$theKey . '.']['file'] = $fileInfo[3];
+								}
 								$this->setup[$theKey . '.']['BBOX'] = $fileInfo;
 								$this->objBB[$theKey] = $fileInfo;
 								if ($conf['mask']) {
 									$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
 									if ($maskInfo) {
-										$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
+										if ($maskInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+											$this->setup[$theKey . '.']['mask'] = $maskInfo['originalFile']->getForLocalProcessing(FALSE);
+										} else {
+											$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
+										}
 									} else {
 										$this->setup[$theKey . '.']['mask'] = '';
 									}
