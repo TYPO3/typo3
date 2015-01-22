@@ -151,7 +151,7 @@ class PermissionController extends ActionController {
 
 		/** @var PageTreeView */
 		$tree = GeneralUtility::makeInstance(PageTreeView::class);
-		$tree->init('AND ' . $this->permissionsClause);
+		$tree->init();
 		$tree->addField('perms_user', TRUE);
 		$tree->addField('perms_group', TRUE);
 		$tree->addField('perms_everybody', TRUE);
@@ -356,7 +356,7 @@ class PermissionController extends ActionController {
 	protected function getRecursiveSelectOptions() {
 		// Initialize tree object:
 		$tree = GeneralUtility::makeInstance(PageTreeView::class);
-		$tree->init('AND ' . $this->permissionsClause);
+		$tree->init();
 		$tree->addField('perms_userid', TRUE);
 		$tree->makeHTML = 0;
 		$tree->setRecs = 1;
