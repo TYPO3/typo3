@@ -1,0 +1,37 @@
+<span id="o_{pageId}">
+	<a
+		class="ug_selector changeowner"
+		data-page="{pageId}"
+		data-owner="{userId}"
+		data-username="{username}"
+	>
+		<f:if condition="{userId} == 0">
+			<f:then>
+				<f:comment>
+					No owner set -> [not set]
+				</f:comment>
+				<span class="not_set">
+					[<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:notSet" />]
+				</span>
+			</f:then>
+			<f:else>
+				<f:if condition="{username}">
+					<f:then>
+						<f:comment>
+							A user name can be resolved
+						</f:comment>
+						{username -> f:format.crop(maxCharacters:20)}
+					</f:then>
+					<f:else>
+						<f:comment>
+							User was deleted -> [deleted]
+						</f:comment>
+						<span class="not_set" title="{userId}">
+							[<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:deleted" />]
+						</span>
+					</f:else>
+				</f:if>
+			</f:else>
+		</f:if>
+	</a>
+</span>

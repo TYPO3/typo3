@@ -27,6 +27,9 @@
 			<trans-unit id="EditLock_descr" xml:space="preserve">
 				<source>The page and all content is locked for editing by all non-Admin users.</source>
 			</trans-unit>
+			<trans-unit id="EditLock_descr2" xml:space="preserve">
+				<source>Enable the »Admin-only« edit lock for this page</source>
+			</trans-unit>
 			<trans-unit id="Save" xml:space="preserve">
 				<source>Save</source>
 			</trans-unit>

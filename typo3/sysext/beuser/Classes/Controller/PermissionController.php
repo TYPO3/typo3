@@ -14,23 +14,18 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Version\View\VersionView;
 
 /**
  * Backend module page permissions
- *
- * @author Frank Nägler <typo3@naegler.net>
  */
 class PermissionController extends ActionController {
 
@@ -122,7 +117,6 @@ class PermissionController extends ActionController {
 			$this->pageInfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 		}
 
-		$this->view->assign('versionSelector', $this->getVersionSelector($this->id, TRUE));
 		if ($this->getBackendUser()->workspace != 0) {
 			// Adding section with the permission setting matrix:
 			$this->addFlashMessage(
@@ -147,7 +141,9 @@ class PermissionController extends ActionController {
 		$this->view->assign('depthOptions', $depthOptions);
 
 		$beUserArray = BackendUtility::getUserNames();
+		$this->view->assign('beUsers', $beUserArray);
 		$beGroupArray = BackendUtility::getGroupNames();
+		$this->view->assign('beGroups', $beGroupArray);
 
 		/** @var PageTreeView */
 		$tree = GeneralUtility::makeInstance(PageTreeView::class);
@@ -167,78 +163,9 @@ class PermissionController extends ActionController {
 		$html = IconUtility::getSpriteIconForRecord('pages', $this->pageInfo);
 		$tree->tree[] = array('row' => $this->pageInfo, 'HTML' => $html);
 
-		// Create the tree from $this->id:
+		// Create the tree from $this->id
 		$tree->getTree($this->id, $this->depth, '');
-
-		// Traverse tree:
-		$treeData = array();
-		foreach ($tree->tree as $data) {
-			$viewDataRow = array();
-			$pageId = $data['row']['uid'];
-			$viewData['pageId'] = $pageId;
-
-			// User/Group names:
-			if ($beUserArray[$data['row']['perms_userid']]) {
-				$userName = $beUserArray[$data['row']['perms_userid']]['username'];
-			} else {
-				$userName = ($data['row']['perms_userid'] ? $data['row']['perms_userid'] : '');
-			}
-
-			if ($data['row']['perms_userid'] && !$beUserArray[$data['row']['perms_userid']]) {
-				$userName = PermissionAjaxController::renderOwnername(
-					$pageId,
-					$data['row']['perms_userid'],
-					htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20)),
-					FALSE
-				);
-			} else {
-				$userName = PermissionAjaxController::renderOwnername(
-					$pageId,
-					$data['row']['perms_userid'],
-					htmlspecialchars(GeneralUtility::fixed_lgd_cs($userName, 20))
-				);
-			}
-			$viewDataRow['userName'] = $userName;
-
-			if ($beGroupArray[$data['row']['perms_groupid']]) {
-				$groupName = $beGroupArray[$data['row']['perms_groupid']]['title'];
-			} else {
-				$groupName = $data['row']['perms_groupid'] ? $data['row']['perms_groupid'] : '';
-			}
-
-			if ($data['row']['perms_groupid'] && !$beGroupArray[$data['row']['perms_groupid']]) {
-				$groupName = PermissionAjaxController::renderGroupname(
-					$pageId,
-					$data['row']['perms_groupid'],
-					htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20)),
-					FALSE
-				);
-			} else {
-				$groupName = PermissionAjaxController::renderGroupname(
-					$pageId, $data['row']['perms_groupid'],
-					htmlspecialchars(GeneralUtility::fixed_lgd_cs($groupName, 20))
-				);
-			}
-			$viewDataRow['groupName'] = $groupName;
-
-			$viewData['html'] = $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid'])
-				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], 20));
-			$viewData['id'] = $data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId;
-
-			$viewData['userPermissions'] = ($pageId ?
-				PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') .
-				' ' . $userName : '');
-			$viewData['groupPermissions'] = ($pageId ?
-				PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') .
-				' ' . $groupName : '');
-			$viewData['otherPermissions'] = ($pageId ? ' ' .
-				PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '');
-
-			$viewData['editLock'] = ($data['row']['editlock']) ? TRUE : FALSE;
-
-			$treeData[] = $viewData;
-		}
-		$this->view->assign('viewTree', $treeData);
+		$this->view->assign('viewTree', $tree->tree);
 
 		// CSH for permissions setting
 		$this->view->assign('cshItem', BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH']));
@@ -342,13 +269,6 @@ class PermissionController extends ActionController {
 	}
 
 	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getControllerDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
-	}
-
-	/**
 	 * Finding tree and offer setting of values recursively.
 	 *
 	 * @return array
@@ -385,25 +305,6 @@ class PermissionController extends ActionController {
 			}
 		}
 		return $options;
-	}
-
-	/**
-	 * Creates the version selector for the page id inputted.
-	 * Requires the core version management extension, "version" to be loaded.
-	 *
-	 * @param int $id Page id to create selector for.
-	 * @param bool $noAction If set, there will be no button for swapping page.
-	 * @return string
-	 */
-	protected function getVersionSelector($id, $noAction = FALSE) {
-		if (
-			ExtensionManagementUtility::isLoaded('version') &&
-			!ExtensionManagementUtility::isLoaded('workspaces')
-		) {
-			$versionView = GeneralUtility::makeInstance(VersionView::class);
-			return $versionView->getVersionSelector($id, $noAction);
-		}
-		return '';
 	}
 
 }

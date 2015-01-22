@@ -1,0 +1,37 @@
+<span id="g_{pageId}">
+	<a
+		class="ug_selector changegroup"
+		data-page="{pageId}"
+		data-owner="{groupId}"
+		data-username="{groupname}"
+	>
+		<f:if condition="{groupId} == 0">
+			<f:then>
+				<f:comment>
+					No group set -> [not set]
+				</f:comment>
+				<span class="not_set">
+					[<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:notSet" />]
+				</span>
+			</f:then>
+			<f:else>
+				<f:if condition="{groupname}">
+					<f:then>
+						<f:comment>
+							A group name can be resolved
+						</f:comment>
+						{groupname -> f:format.crop(maxCharacters:20)}
+					</f:then>
+					<f:else>
+						<f:comment>
+							Group was deleted -> [deleted]
+						</f:comment>
+						<span class="not_set" title="{groupId}">
+							[<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:deleted" />]
+						</span>
+					</f:else>
+				</f:if>
+			</f:else>
+		</f:if>
+	</a>
+</span>
