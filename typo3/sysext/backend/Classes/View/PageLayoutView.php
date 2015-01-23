@@ -1575,7 +1575,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					if ((string)$hookOut !== '') {
 						$out .= $hookOut;
 					} elseif (!empty($row['list_type'])) {
-						$label = BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']);
+						$label = BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'list_type', $row['list_type']);
 						if (!empty($label)) {
 							$out .=  '<strong>' . $this->getLanguageService()->sL($label, TRUE) . '</strong><br />';
 						} else {
