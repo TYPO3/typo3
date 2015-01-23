@@ -265,7 +265,7 @@
 				<source>Browser support</source>
 			</trans-unit>
 			<trans-unit id="Mozilla_or_IE" xml:space="preserve">
-				<source>For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 6.0+ on Windows.</source>
+				<source>For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 9.0+ on Windows.</source>
 			</trans-unit>
 			<trans-unit id="product_documentation" xml:space="preserve">
 				<source>For more information, please visit:</source>

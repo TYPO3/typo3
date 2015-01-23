@@ -7,10 +7,10 @@
 				<source>htmlArea RTE</source>
 			</trans-unit>
 			<trans-unit id=".description" xml:space="preserve">
-				<source>htmlArea RTE is a free, open-source, ExtJS-based editor for &lt;textarea&gt; fields featuring tight integration with TYPO3.</source>
+				<source>htmlArea RTE is a free, open-source editor for &lt;textarea&gt; fields featuring tight integration with TYPO3.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
-				<source>htmlArea RTE supports the following browsers: Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and Internet Explorer 6.0+ on Windows.</source>
+				<source>htmlArea RTE supports the following browsers: Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and Internet Explorer 9.0+ on Windows.</source>
 			</trans-unit>
 			<trans-unit id=".seeAlso" xml:space="preserve">
 				<source>xEXT_rtehtmlarea_General:beUserSettings,

@@ -22,10 +22,8 @@ The extension offers a Rich Text Editor or RTE with the following
 features:
 
 - Support for Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome
-  1.0+ and Opera 9.62+ on all platforms, and for IE6.0+ on Windows
+  1.0+ and Opera 9.62+ on all platforms, and for IE 9.0+ on Windows
   platforms;
-
-- Based on the ExtJS JavaScript framework;
 
 - Integration of TYPO3 image insertion and link insertion browsers,
   configurable color selector and user element insertion dialog;
