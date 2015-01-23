@@ -68,25 +68,46 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 */
 		initStyleChangeEventListener: function () {
 			if (this.isNested && !UserAgent.isWebKit) {
-				var self = this;
-				var options = {
-					delay: 50
-				};
-				for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
-					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
-					Event.on(
-						nestedElement,
-						'DOMAttrModified',
-						function (event) { return self.onNestedShow(event); },
-						options
-					);
-					Event.on(
-						nestedElement.parentNode,
-						'DOMAttrModified',
-						function (event) { return self.onNestedShow(event); },
-						options
-					);
+				if (typeof MutationObserver === 'function') {
+					var self = this;
+					this.mutationObserver = new MutationObserver( function (mutations) { self.onNestedShowMutation(mutations); });
+					var options = {
+						attributes: true,
+						attributeFilter: ['style']
+					};
+					for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
+						var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
+						this.mutationObserver.observe(nestedElement, options);
+						this.mutationObserver.observe(nestedElement.parentNode, options);
+					}
+				} else {
+					this.initMutationEventsListeners();
 				}
+			}
+		},
+
+		/**
+		 * When Mutation Observer is not available, listen to DOMAttrModified events
+		 */
+		initMutationEventsListeners: function () {
+			var self = this;
+			var options = {
+				delay: 50
+			};
+			for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
+				var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
+				Event.on(
+					nestedElement,
+					'DOMAttrModified',
+					function (event) { return self.onNestedShow(event); },
+					options
+				);
+				Event.on(
+					nestedElement.parentNode,
+					'DOMAttrModified',
+					function (event) { return self.onNestedShow(event); },
+					options
+				);
 			}
 		},
 
@@ -344,6 +365,18 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		},
 
 		/**
+		 * Mutations handler invoked when an hidden TYPO3 hidden nested tab or inline element is shown
+		 */
+		onNestedShowMutation: function (mutations) {
+			for (var i = mutations.length; --i >= 0;) {
+				var targetId = mutations[i].target.id;
+				if (this.nestedParentElements.sorted.indexOf(targetId) !== -1 || this.nestedParentElements.sorted.indexOf(targetId.replace('_div', '_fields')) !== -1) {
+					this.onNestedShowAction();
+				}
+			}
+		},
+
+		/**
 		 * Handler invoked when an hidden TYPO3 hidden nested tab or inline element is shown
 		 */
 		onNestedShow: function (event) {
@@ -354,27 +387,32 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			window.setTimeout(function () {
 				var styleEvent = true;
 				// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
-				if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera || (UserAgent.isIE && !UserAgent.isIEBeforeIE9)) {
+				if ((UserAgent.isGecko && navigator.productSub > 2007112700) || UserAgent.isOpera || UserAgent.isIE) {
 					styleEvent = (event.originalEvent.attrName === 'style') || (event.originalEvent.attrName === 'className') || (event.originalEvent.attrName === 'class');
-				} else if (UserAgent.isIEBeforeIE9) {
-					styleEvent = (event.originalEvent.propertyName === 'style.display');
 				}
 				if (styleEvent && (self.nestedParentElements.sorted.indexOf(target.id) != -1 || self.nestedParentElements.sorted.indexOf(target.id.replace('_div', '_fields')) != -1)) {
-					// Check if all container nested elements are displayed
-					if (Typo3.allElementsAreDisplayed(self.nestedParentElements.sorted)) {
-						if (self.getEditor().getMode() === 'wysiwyg') {
-							if (UserAgent.isGecko) {
-								self.setDesignMode(true);
-							}
-							Event.trigger(self, 'HTMLAreaEventIframeShow');
-						} else {
-							Event.trigger(self.framework.getTextAreaContainer(), 'HTMLAreaEventTextAreaContainerShow');
-						}
-						self.getToolbar().update();
-					}
+					self.onNestedShowAction();
 				}
 			}, delay);
 			return false;
+		},
+
+		/**
+		 * Take action when nested tab or inline element is shown
+		 */
+		onNestedShowAction: function () {
+			// Check if all container nested elements are displayed
+			if (Typo3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+				if (this.getEditor().getMode() === 'wysiwyg') {
+					if (UserAgent.isGecko) {
+						this.setDesignMode(true);
+					}
+					Event.trigger(this, 'HTMLAreaEventIframeShow');
+				} else {
+					Event.trigger(this.framework.getTextAreaContainer(), 'HTMLAreaEventTextAreaContainerShow');
+				}
+				this.getToolbar().update();
+			}
 		},
 
 		/**
@@ -750,11 +788,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 */
 		onBeforeDestroy: function () {
 			// Remove listeners on nested elements
-			if (this.isNested && UserAgent.isGecko) {
-				for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
-					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
-					Event.off(nestedElement);
-					Event.off(nestedElement.parentNode);
+			if (this.isNested) {
+				if (this.mutationObserver) {
+					this.mutationObserver.disconnect();
+				} else {
+					for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
+						var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
+						Event.off(nestedElement);
+						Event.off(nestedElement.parentNode);
+					}
 				}
 			}
 			Event.off(this);
