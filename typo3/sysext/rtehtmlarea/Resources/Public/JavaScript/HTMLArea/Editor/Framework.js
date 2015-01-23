@@ -92,7 +92,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			// Monitor iframe becoming shown or hidden as it may change the height of the status bar
 			Event.on(this.iframe, 'HTMLAreaEventIframeShow', function(event) { Event.stopEvent(event); self.resizable ? self.onIframeShow() : self.onWindowResize(); return false; });
 			// Monitor window resizing
-			Event.on(window, 'resize', function (event) { self.onWindowResize(); });
+			Event.on(window, 'resize', function (event) {
+				// Avoid resizing while the framework is already being resized by jQuery UI Resizable
+				if (self.isResizing) {
+					Event.stopEvent(event);
+				} else {
+					self.onWindowResize();
+				}
+			});
 			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
 			var form = this.textArea.form;
 			if (form) {
@@ -154,6 +161,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		maxHeight: 2000,
 
 		/**
+		 * When true, the framework is being resized by jQuery UI Resizable
+		 */
+		isResizing: false,
+
+		/**
 		 * Initial textArea dimensions
 		 * Should be set in config
 		 */
@@ -198,10 +210,27 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			if (this.resizable) {
 				var self = this;
 				this.resizer = Resizable.makeResizable(this.getEl(), {
+					delay: 150,
 					minHeight: 200,
 					minWidth: 300,
+					alsoResize: '#' + this.editorId + '-iframe',
 					maxHeight: this.maxHeight,
-					stop: function (event, ui) { Event.stopEvent(event); self.onHtmlAreaResize(ui.size); return false; }
+					start: function (event, ui) {
+						Event.stopEvent(event);
+						self.isResizing = true;
+						return false;
+					},
+					resize: function (event, ui) {
+						Event.stopEvent(event);
+						self.doHtmlAreaResize(ui.size);
+						return false;
+					},
+					stop: function (event, ui) {
+						Event.stopEvent(event);
+						self.isResizing = false;
+						self.doHtmlAreaResize(ui.size);
+						return false;
+					}
 				});
 			}
 		},
@@ -209,7 +238,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		/**
 		 * Resize the framework when the resizer handles are used
 		 */
-		onHtmlAreaResize: function (size) {
+		doHtmlAreaResize: function (size) {
 			Dom.setSize(this.getEl(), size);
 			this.onFrameworkResize();
 		},
