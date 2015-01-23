@@ -76,13 +76,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 					var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);
 					Event.on(
 						nestedElement,
-						UserAgent.isIEBeforeIE9 ? 'propertychange' : 'DOMAttrModified',
+						'DOMAttrModified',
 						function (event) { return self.onNestedShow(event); },
 						options
 					);
 					Event.on(
 						nestedElement.parentNode,
-						UserAgent.isIEBeforeIE9 ? 'propertychange' : 'DOMAttrModified',
+						'DOMAttrModified',
 						function (event) { return self.onNestedShow(event); },
 						options
 					);
@@ -181,7 +181,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 			} else {
 				this.document = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
 				this.getEditor().document = this.document;
-				this.initializeCustomTags();
 				this.createHead();
 				// Style the document body
 				Dom.addClass(this.document.body, 'htmlarea-content-body');
@@ -215,20 +214,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 */
 		hide: function () {
 			this.getEl().style.display = 'none';
-		},
-
-		/**
-		 * Create one of each of the configured custom tags so they are properly parsed by the walker when using IE
-		 * See: http://en.wikipedia.org/wiki/HTML5_Shiv
-		 *
-		 * @return	void
-		 */
-		initializeCustomTags: function () {
-			if (UserAgent.isIEBeforeIE9) {
-				for (var i = this.config.customTags.length; --i >= 0;) {
-					this.document.createElement(this.config.customTags[i]);
-				}
-			}
 		},
 
 		/**

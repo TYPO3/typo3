@@ -477,14 +477,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/CharacterMap',
 		 * @return	void
 		 */
 		insertEntity: function (entity) {
-			if (UserAgent.isIEBeforeIE9) {
-				this.editor.getSelection().insertHtml(entity);
-			} else {
-				// Firefox, WebKit and IE convert '&nbsp;' to '&amp;nbsp;'
-				var node = this.editor.document.createTextNode(((UserAgent.isGecko || UserAgent.isWebKit || UserAgent.isIE) && entity == '&nbsp;') ? '\xA0' : entity);
-				this.editor.getSelection().insertNode(node);
-				this.editor.getSelection().selectNode(node, false);
-			}
+			// Firefox, WebKit and IE convert '&nbsp;' to '&amp;nbsp;'
+			var node = this.editor.document.createTextNode(((UserAgent.isGecko || UserAgent.isWebKit || UserAgent.isIE) && entity == '&nbsp;') ? '\xA0' : entity);
+			this.editor.getSelection().insertNode(node);
+			this.editor.getSelection().selectNode(node, false);
 		},
 
 		/**

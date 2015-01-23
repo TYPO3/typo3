@@ -55,9 +55,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 			}
 			if (!this.allowedAttributes) {
 				this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class');
-				if (UserAgent.isIEBeforeIE9) {
-					this.allowedAttributes.push('className');
-				}
 			}
 
 			/**
@@ -171,14 +168,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 					selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + value + '"]:before';
 					style = 'content: "' + value + ': ";';
 					rule = selector + ' { ' + style + ' }';
-					if (!UserAgent.isIEBeforeIE9) {
-						try {
-							styleSheet.insertRule(rule, styleSheet.cssRules.length);
-						} catch (e) {
-							this.appendToLog('onGenerate', 'Error inserting css rule: ' + rule + ' Error text: ' + e, 'warn');
-						}
-					} else {
-						styleSheet.addRule(selector, style);
+					try {
+						styleSheet.insertRule(rule, styleSheet.cssRules.length);
+					} catch (e) {
+						this.appendToLog('onGenerate', 'Error inserting css rule: ' + rule + ' Error text: ' + e, 'warn');
 					}
 				}
 			}
@@ -264,8 +257,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 				if (endPointsInSameBlock) {
 					var ancestors = this.editor.getSelection().getAllAncestors();
 					for (var i = 0; i < ancestors.length; ++i) {
-						fullNodeSelected =  (!UserAgent.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())))
-							|| (UserAgent.isIEBeforeIE9 && statusBarSelection === ancestors[i] && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text)));
+						fullNodeSelected = ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString()));
 						if (fullNodeSelected) {
 							parent = ancestors[i];
 							break;
@@ -291,9 +283,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 					var newElement = this.editor.document.createElement('span');
 					this.setLanguageAttributes(newElement, language);
 					this.editor.getDomNode().wrapWithInlineElement(newElement, range);
-					if (!UserAgent.isIEBeforeIE9) {
-						range.detach();
-					}
+					range.detach();
 				}
 			} else {
 				this.setLanguageAttributeOnBlockElements(language);
@@ -432,8 +422,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/Language',
 						if (!selectionEmpty) {
 							if (endPointsInSameBlock) {
 								for (var i = 0; i < ancestors.length; ++i) {
-									fullNodeSelected =  (!UserAgent.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())))
-										|| (UserAgent.isIEBeforeIE9 && statusBarSelection === ancestors[i] && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text)));
+									fullNodeSelected = (statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString());
 									if (fullNodeSelected) {
 										parent = ancestors[i];
 										break;

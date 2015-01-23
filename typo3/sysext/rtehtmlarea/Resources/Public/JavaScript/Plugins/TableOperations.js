@@ -432,9 +432,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 					tbody.appendChild(tr);
 					for (var j = params.f_cols; --j >= 0;) {
 						var td = doc.createElement('td');
-						if (!UserAgent.isIEBeforeIE9) {
-							td.innerHTML = '<br />';
-						}
+						td.innerHTML = '<br />';
 						tr.appendChild(td);
 					}
 				}
@@ -536,14 +534,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 				}
 			}
 			if (this.dialog.arguments.buttonId === "InsertTable") {
-				if (!UserAgent.isIEBeforeIE9) {
-					this.editor.getSelection().insertNode(table);
-				} else {
-					table.id = "htmlarea_table_insert";
-					this.editor.getSelection().insertNode(table);
-					table = this.editor.document.getElementById(table.id);
-					table.removeAttribute("id");
-				}
+				this.editor.getSelection().insertNode(table);
 				this.editor.getSelection().selectNodeContents(table.rows[0].cells[0], true);
 				if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnTableCreation) {
 					this.toggleBorders(true);
@@ -685,7 +676,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 
-			var mozbr = !UserAgent.isIEBeforeIE9 ? "<br />" : "";
+			var mozbr = '<br />';
 			var tableParts = ["tfoot", "thead", "tbody"];
 			var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
 
@@ -1568,24 +1559,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 					}
 				}
 			}
-				// In IE before IE9, the above fails to update the classname and style attributes.
-			if (UserAgent.isIEBeforeIE9) {
-				if (element.style.cssText) {
-					newCell.style.cssText = element.style.cssText;
-				}
-				if (element.className) {
-					newCell.setAttribute("class", element.className);
-					if (!newCell.className) {
-							// IE before IE8
-						newCell.setAttribute("className", element.className);
-					}
-				} else {
-					newCell.removeAttribute("class");
-						// IE before IE8
-					newCell.removeAttribute("className");
-				}
-			}
-
 			if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 				if (newCell.className && /\S/.test(newCell.className)) {
 					var allowedClasses = this.tags[nodeName].allowedClasses;
@@ -1629,11 +1602,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 		 */
 		processStyle: function (element, params) {
 			var style = element.style;
-			if (UserAgent.isIEBeforeIE9) {
-				style.styleFloat = "";
-			} else {
-				style.cssFloat = "";
-			}
+			style.cssFloat = '';
 			style.textAlign = "";
 			for (var i in params) {
 				if (params.hasOwnProperty(i)) {
@@ -2609,17 +2578,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TableOperations',
 				parentElement = parentElement.parentNode;
 			}
 			if (/^(td|th)$/i.test(parentElement.nodeName)) {
-				if (UserAgent.isIEBeforeIE9) {
-					range.pasteHTML('<br />');
-					range.select();
+				var brNode = this.editor.document.createElement('br');
+				this.editor.getSelection().insertNode(brNode);
+				if (brNode.nextSibling) {
+					this.editor.getSelection().selectNodeContents(brNode.nextSibling, true);
 				} else {
-					var brNode = this.editor.document.createElement('br');
-					this.editor.getSelection().insertNode(brNode);
-					if (brNode.nextSibling) {
-						this.editor.getSelection().selectNodeContents(brNode.nextSibling, true);
-					} else {
-						this.editor.getSelection().selectNodeContents(brNode, false);
-					}
+					this.editor.getSelection().selectNodeContents(brNode, false);
 				}
 				Event.stopEvent(event);
 				return false;

@@ -64,7 +64,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/AboutEditor',
 		browsers: [
 			 'Firefox 1.5+',
 			 'Google Chrome 1.0+',
-			 'Internet Explorer 6.0+',
+			 'Internet Explorer 9.0+',
 			 'Opera 9.62+',
 			 'Safari 3.0.4+',
 			 'SeaMonkey 1.0+'
@@ -154,7 +154,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/AboutEditor',
 						+ '<br />'
 						+ '&copy; 2002-2004 <a href="http://interactivetools.com" target="_blank">interactivetools.com, inc.</a><br />'
 						+ '&copy; 2003-2004 <a href="http://dynarch.com" target="_blank">dynarch.com LLC.</a><br />'
-						+ '&copy; 2004-2014 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
+						+ '&copy; 2004-2015 <a href="http://www.sjbr.ca" target="_blank">Stanislas Rolland</a><br />'
 						+ this.localize('All rights reserved.')
 					+ '</p>'
 			});

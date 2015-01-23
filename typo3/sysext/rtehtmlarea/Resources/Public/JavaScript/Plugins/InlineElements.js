@@ -37,9 +37,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 				this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
 			} else {
 				this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
-				if (UserAgent.isIEBeforeIE9) {
-					this.addAllowedAttribute('className');
-				}
 			}
 			// Getting tags configuration for inline elements
 			if (this.buttonsConfiguration.textstyle) {
@@ -220,10 +217,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 			var ancestors = editor.getSelection().getAllAncestors();
 			var elementIsAncestor = false;
 			var fullNodeSelected = false;
-			if (UserAgent.isIEBeforeIE9) {
-				var bookmark = editor.getBookMark().get(range);
-			}
-				// Check if the chosen element is among the ancestors
+			// Check if the chosen element is among the ancestors
 			for (var i = 0; i < ancestors.length; ++i) {
 				if ((ancestors[i].nodeType === Dom.ELEMENT_NODE) && (ancestors[i].nodeName.toLowerCase() == element)) {
 					elementIsAncestor = true;
@@ -244,41 +238,20 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 					if (element === "bdo") {
 						newElement.setAttribute("dir", "rtl");
 					}
-					if (!UserAgent.isIEBeforeIE9) {
-						if (fullNodeSelected && statusBarSelection) {
-							if (UserAgent.isWebKit) {
-								newElement = parent.parentNode.insertBefore(newElement, statusBarSelection);
-								newElement.appendChild(statusBarSelection);
-								newElement.normalize();
-							} else {
-								range.selectNode(parent);
-								editor.getDomNode().wrapWithInlineElement(newElement, range);
-							}
-							editor.getSelection().selectNodeContents(newElement.lastChild, false);
+					if (fullNodeSelected && statusBarSelection) {
+						if (UserAgent.isWebKit) {
+							newElement = parent.parentNode.insertBefore(newElement, statusBarSelection);
+							newElement.appendChild(statusBarSelection);
+							newElement.normalize();
 						} else {
+							range.selectNode(parent);
 							editor.getDomNode().wrapWithInlineElement(newElement, range);
 						}
-						range.detach();
+						editor.getSelection().selectNodeContents(newElement.lastChild, false);
 					} else {
-						var tagopen = "<" + element + ">";
-						var tagclose = "</" + element + ">";
-						if (fullNodeSelected) {
-							if (!statusBarSelection) {
-								parent.innerHTML = tagopen + parent.innerHTML + tagclose;
-								if (element === "bdo") {
-									parent.firstChild.setAttribute("dir", "rtl");
-								}
-								editor.getSelection().selectNodeContents(parent, false);
-							} else {
-								var content = parent.outerHTML;
-								var newElement = this.remapMarkup(parent, element);
-								newElement.innerHTML = content;
-								editor.getSelection().selectNodeContents(newElement, false);
-							}
-						} else {
-							editor.getDomNode().wrapWithInlineElement(newElement, range);
-						}
+						editor.getDomNode().wrapWithInlineElement(newElement, range);
 					}
+					range.detach();
 				} else {
 						// A complete node is selected: remove the markup
 					if (fullNodeSelected) {
@@ -323,24 +296,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 					newElement.setAttribute(this.allowedAttributes[i], attributeValue);
 				}
 			}
-			// In IE before IE9, the above fails to update the class and style attributes.
-			if (UserAgent.isIEBeforeIE9) {
-				if (element.style.cssText) {
-					newElement.style.cssText = element.style.cssText;
-				}
-				if (element.className) {
-					newElement.setAttribute("class", element.className);
-					if (!newElement.className) {
-						// IE before IE8
-						newElement.setAttribute("className", element.className);
-					}
-				} else {
-					newElement.removeAttribute("class");
-					// IE before IE8
-					newElement.removeAttribute("className");
-				}
-			}
-
 			if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 				if (newElement.className && /\S/.test(newElement.className)) {
 					var allowedClasses = this.tags[tagName].allowedClasses;

@@ -256,8 +256,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 			if (!this.getButton('PasteToggle').inactive) {
 				switch (this.currentBehaviour) {
 					case 'plainText':
-						// Only IE before IE9 and Chrome will allow access to the clipboard content by default, in plain text only however
-						if (UserAgent.isIEBeforeIE9 || UserAgent.isChrome) {
+						// Only Chrome will allow access to the clipboard content by default, in plain text only however
+						if (UserAgent.isChrome) {
 							var clipboardText = this.grabClipboardText(event);
 							if (clipboardText) {
 								this.editor.getSelection().insertHtml(clipboardText);
@@ -279,11 +279,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 									'PasteToggle'
 								)
 							);
-							if (UserAgent.isIEBeforeIE9) {
-								Event.getBrowserEvent(event).returnValue = false;
-							} else {
-								Event.stopEvent(event);
-							}
+							Event.stopEvent(event);
 							return false;
 						} else {
 							// Redirect the paste operation to a hidden section

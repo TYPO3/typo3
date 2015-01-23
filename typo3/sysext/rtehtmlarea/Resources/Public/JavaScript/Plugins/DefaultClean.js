@@ -100,9 +100,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultClean',
 					if (!/\S/.test(node.className)) {
 						if (!UserAgent.isOpera) {
 							node.removeAttribute('class');
-							if (UserAgent.isIEBeforeIE9) {
-								node.removeAttribute('className');
-							}
 						} else {
 							node.className = '';
 						}
@@ -110,7 +107,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultClean',
 				}
 			}
 			function clearStyle(node) {
-				var style = UserAgent.isIEBeforeIE9 ? node.style.cssText : node.getAttribute('style');
+				var style = node.getAttribute('style');
 				if (style) {
 					var declarations = style.split(/\s*;\s*/);
 					for (var i = declarations.length; --i >= 0;) {
@@ -122,13 +119,9 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultClean',
 				}
 			}
 			function stripTag(el) {
-				if (UserAgent.isIEBeforeIE9) {
-					el.outerHTML = Util.htmlEncode(el.innerText);
-				} else {
-					var txt = document.createTextNode(Dom.getInnerText(el));
-					el.parentNode.insertBefore(txt,el);
-					el.parentNode.removeChild(el);
-				}
+				var txt = document.createTextNode(Dom.getInnerText(el));
+				el.parentNode.insertBefore(txt,el);
+				el.parentNode.removeChild(el);
 			}
 			function checkEmpty(el) {
 				if (/^(span|b|strong|i|em|font)$/i.test(el.nodeName) && !el.firstChild) {
@@ -147,7 +140,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultClean',
 					case Dom.TEXT_NODE:
 					case Dom.DOCUMENT_NODE:
 					case Dom.DOCUMENT_FRAGMENT_NODE:
-						if ((UserAgent.isIEBeforeIE9 && root.scopeName != 'HTML') || (!UserAgent.isIEBeforeIE9 && /:/.test(tag)) || /o:p/.test(tag)) {
+						if (/:/.test(tag)) {
 							stripTag(root);
 							return false;
 						} else {

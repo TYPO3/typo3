@@ -166,23 +166,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 				attributeValue = node.getAttribute(attributeName);
 				if (attributeValue) newNode.setAttribute(attributeName, attributeValue);
 			}
-			// In IE, the above fails to update the classname and style attributes.
-			if (UserAgent.isIEBeforeIE9) {
-				if (node.style.cssText) {
-					newNode.style.cssText = node.style.cssText;
-				}
-				if (node.className) {
-					newNode.setAttribute('class', node.className);
-					if (!newNode.className) {
-						// IE before IE8
-						newNode.setAttribute('className', node.className);
-					}
-				} else {
-					newNode.removeAttribute('class');
-					newNode.removeAttribute('className');
-				}
-			}
-
 			if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 				if (newNode.className && /\S/.test(newNode.className)) {
 					var allowedClasses = this.tags[nodeName].allowedClasses;
@@ -238,14 +221,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefinitionList',
 			if (this.editor.getSelection().isEmpty() && /^dd$/i.test(parentElement.nodeName)) {
 				var list = parentElement.appendChild(this.editor.document.createElement('dl'));
 				var term = list.appendChild(this.editor.document.createElement('dt'));
-				if (!UserAgent.isIEBeforeIE9) {
-					if (UserAgent.isWebKit) {
-						term.innerHTML = '<br />';
-					} else {
-						term.appendChild(this.editor.document.createTextNode(''));
-					}
+				if (UserAgent.isWebKit) {
+					term.innerHTML = '<br />';
 				} else {
-					term.innerHTML = '\x20';
+					term.appendChild(this.editor.document.createTextNode(''));
 				}
 				this.editor.getSelection().selectNodeContents(term, false);
 				return true;

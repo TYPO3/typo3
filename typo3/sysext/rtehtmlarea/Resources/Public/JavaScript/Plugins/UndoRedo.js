@@ -161,7 +161,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/UndoRedo',
 			var bookmark = null, bookmarkedText = null;
 				// Insert a bookmark
 			if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
-				if ((!UserAgent.isIEBeforeIE9 && !(UserAgent.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (UserAgent.isIEBeforeIE9 && this.editor.getSelection().getType() !== 'Control')) {
+				if (!(UserAgent.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') !== -1)) {
 						// Catch error in FF when the selection contains no usable range
 					try {
 						var range = this.editor.getSelection().createRange();
@@ -169,11 +169,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/UndoRedo',
 					} catch (e) {
 						bookmark = null;
 					}
-				}
-					// Get the bookmarked html text and remove the bookmark
-				if (UserAgent.isIEBeforeIE9 && bookmark) {
-					bookmarkedText = this.editor.getInnerHTML();
-					this.editor.getBookMark().moveTo(bookmark);
 				}
 			}
 			return {
@@ -213,11 +208,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/UndoRedo',
 		setContent: function (undoPosition) {
 			var bookmark = this.undoQueue[undoPosition].bookmark;
 			if (bookmark) {
-				if (UserAgent.isIEBeforeIE9) {
-					this.editor.setHTML(this.undoQueue[undoPosition].bookmarkedText);
-				} else {
-					this.editor.setHTML(this.undoQueue[undoPosition].text);
-				}
+				this.editor.setHTML(this.undoQueue[undoPosition].text);
 				this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 				this.editor.scrollToCaret();
 			} else {

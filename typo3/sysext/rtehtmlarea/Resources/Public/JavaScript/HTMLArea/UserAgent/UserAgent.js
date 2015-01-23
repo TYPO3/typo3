@@ -55,7 +55,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent', [], function () {
 		 * @return boolean true if the client is supported
 		 */
 		isSupported: function () {
-			return isGecko || isWebKit || isOpera || isIE;
+			return isGecko || isWebKit || isOpera || (isIE && !isIEBeforeIE9);
 		}
 	};
 });

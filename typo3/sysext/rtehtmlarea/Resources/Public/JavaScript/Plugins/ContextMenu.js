@@ -189,9 +189,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 		 */
 		showMenu: function (target) {
 			this.showContextItems(target);
-			if (!UserAgent.isIEBeforeIE9) {
-				this.ranges = this.editor.getSelection().getRanges();
-			}
+			this.ranges = this.editor.getSelection().getRanges();
 			// Show the context menu
 			var targetPosition = Dom.getPosition(target);
 			var iframePosition = Dom.getPosition(this.editor.iframe.getEl());
@@ -251,9 +249,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 		 * Handler invoked when a menu item is clicked on
 		 */
 		onItemClick: function (item, event) {
-			if (!UserAgent.isIEBeforeIE9) {
-				this.editor.getSelection().setRanges(this.ranges);
-			}
+			this.editor.getSelection().setRanges(this.ranges);
 			var button = this.getButton(item.getItemId());
 			if (button) {
 				/**

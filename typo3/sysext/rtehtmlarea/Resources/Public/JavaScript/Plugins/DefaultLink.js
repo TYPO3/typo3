@@ -320,7 +320,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 				this.restoreSelection();
 				this.editor.getSelection().execCommand('CreateLink', false, href);
 				a = this.editor.getSelection().getParentElement();
-				if (!UserAgent.isIEBeforeIE9 && !/^a$/i.test(a.nodeName)) {
+				if (!/^a$/i.test(a.nodeName)) {
 					var range = this.editor.getSelection().createRange();
 					if (range.startContainer.nodeType !== Dom.TEXT_NODE) {
 						a = range.startContainer.childNodes[range.startOffset];

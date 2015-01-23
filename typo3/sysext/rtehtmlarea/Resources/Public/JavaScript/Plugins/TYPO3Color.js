@@ -52,9 +52,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Color',
 			}
 			if (!this.allowedAttributes) {
 				this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
-				if (UserAgent.isIEBeforeIE9) {
-					this.allowedAttributes.push('className');
-				}
 			}
 			/*
 			 * Registering plugin "About" information

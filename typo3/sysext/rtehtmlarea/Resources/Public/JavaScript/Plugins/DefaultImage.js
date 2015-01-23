@@ -127,7 +127,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultImage',
 					paddingRight:	isNaN(parseInt(this.image.style.paddingRight)) ? '' : parseInt(this.image.style.paddingRight),
 					paddingBottom:	isNaN(parseInt(this.image.style.paddingBottom)) ? '' : parseInt(this.image.style.paddingBottom),
 					paddingLeft:	isNaN(parseInt(this.image.style.paddingLeft)) ? '' : parseInt(this.image.style.paddingLeft),
-					cssFloat: 	UserAgent.isIEBeforeIE9 ? this.image.style.styleFloat : this.image.style.cssFloat
+					cssFloat: 	this.image.style.cssFloat
 				};
 			} else {
 				this.parameters = {
@@ -447,19 +447,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultImage',
 				if (UserAgent.isWebKit) {
 					this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
 				}
-				if (UserAgent.isIEBeforeIE9) {
-					image = range.parentElement();
-					if (!/^img$/i.test(image.nodeName)) {
-						image = image.previousSibling;
-					}
-					this.editor.getSelection().selectNode(image);
-				} else {
-					var range = this.editor.getSelection().createRange();
-					image = range.startContainer;
-					image = image.lastChild;
-					while (image && !/^img$/i.test(image.nodeName)) {
-						image = image.previousSibling;
-					}
+				var range = this.editor.getSelection().createRange();
+				image = range.startContainer;
+				image = image.lastChild;
+				while (image && !/^img$/i.test(image.nodeName)) {
+					image = image.previousSibling;
 				}
 			} else {
 				image.src = this.parameters.url;
@@ -495,11 +487,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultImage',
 							}
 							break;
 						case 'cssFloat':
-							if (UserAgent.isIEBeforeIE9) {
-								image.style.styleFloat = value;
-							} else {
-								image.style.cssFloat = value;
-							}
+							image.style.cssFloat = value;
 							break;
 					}
 				}

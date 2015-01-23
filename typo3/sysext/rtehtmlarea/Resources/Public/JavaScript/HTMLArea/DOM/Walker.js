@@ -160,15 +160,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Walker',
 				continue;
 			}
 			if (UserAgent.isIE) {
-					// IE before I9 fails to put style in attributes list.
-				if (attributeName === 'style') {
-					if (UserAgent.isIEBeforeIE9) {
-						attributeValue = node.style.cssText;
-					}
-					// May need to strip the base url
-				} else if (attributeName === 'href' || attributeName === 'src') {
+				// May need to strip the base url
+				if (attributeName === 'href' || attributeName === 'src') {
 					attributeValue = this.stripBaseURL(attributeValue);
-					// Ignore value="0" reported by IE on all li elements
+				// Ignore value="0" reported by IE on all li elements
 				} else if (attributeName === 'value' && /^li$/i.test(node.nodeName) && attributeValue == 0) {
 					continue;
 				}

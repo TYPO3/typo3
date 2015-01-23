@@ -153,25 +153,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
 				this.error = 'Document.readyState not complete';
 			}
 		} else {
-			if (UserAgent.isIEBeforeIE9) {
-				try {
-					var rules = this.editor.document.styleSheets[0].rules;
-					var imports = this.editor.document.styleSheets[0].imports;
-					if (!rules.length && !imports.length) {
-						this.cssLoaded = false;
-						this.error = 'Empty rules and imports arrays';
-					}
-				} catch(e) {
-					this.cssLoaded = false;
-					this.error = e;
-				}
-			} else {
-				try {
-					this.editor.document.styleSheets && this.editor.document.styleSheets[0] && this.editor.document.styleSheets[0].rules;
-				} catch(e) {
-					this.cssLoaded = false;
-					this.error = e;
-				}
+			try {
+				this.editor.document.styleSheets && this.editor.document.styleSheets[0] && this.editor.document.styleSheets[0].rules;
+			} catch(e) {
+				this.cssLoaded = false;
+				this.error = e;
 			}
 		}
 		if (this.cssLoaded) {
@@ -181,23 +167,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
 				for (var index = 0, n = styleSheets.length; index < n; index++) {
 					try {
 						var styleSheet = styleSheets[index];
-						if (UserAgent.isIEBeforeIE9) {
-							var rules = styleSheet.rules;
-							var imports = styleSheet.imports;
-							if (!rules.length && !imports.length) {
-								this.cssLoaded = false;
-								this.error = 'Empty rules and imports arrays of styleSheets[' + index + ']';
-								break;
-							}
-							if (styleSheet.imports) {
-								this.parseIeRules(styleSheet.imports);
-							}
-							if (styleSheet.rules) {
-								this.parseRules(styleSheet.rules);
-							}
-						} else {
-							this.parseRules(styleSheet.cssRules);
-						}
+						this.parseRules(styleSheet.cssRules);
 					} catch (e) {
 						this.error = e;
 						this.cssLoaded = false;

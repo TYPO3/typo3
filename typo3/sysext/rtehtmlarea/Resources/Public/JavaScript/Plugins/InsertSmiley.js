@@ -151,9 +151,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InsertSmiley',
 			imgTag.setAttribute('alt', icon.parentNode.getAttribute('ext:qtitle'));
 			imgTag.setAttribute('title', icon.parentNode.getAttribute('ext:qtip'));
 			this.editor.getSelection().insertNode(imgTag);
-			if (!UserAgent.isIEBeforeIE9) {
-				this.editor.getSelection().selectNode(imgTag, false);
-			}
+			this.editor.getSelection().selectNode(imgTag, false);
 			this.close();
 			return false;
 		},

@@ -56,19 +56,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark',
 	 */
 	BookMark.prototype.get = function (range, nonIntrusive) {
 		var bookMark;
-		if (UserAgent.isIEBeforeIE9) {
-			// Bookmarking will not work on control ranges
-			try {
-				bookMark = range.getBookmark();
-			} catch (e) {
-				bookMark = null;
-			}
+		if (nonIntrusive) {
+			bookMark = this.getNonIntrusiveBookMark(range, true);
 		} else {
-			if (nonIntrusive) {
-				bookMark = this.getNonIntrusiveBookMark(range, true);
-			} else {
-				bookMark = this.getIntrusiveBookMark(range);
-			}
+			bookMark = this.getIntrusiveBookMark(range);
 		}
 		return bookMark;
 	};
@@ -248,16 +239,10 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/BookMark',
 	 */
 	BookMark.prototype.moveTo = function (bookMark) {
 		var range = this.selection.createRange();
-		if (UserAgent.isIEBeforeIE9) {
-			if (bookMark) {
-				range.moveToBookmark(bookMark);
-			}
+		if (bookMark.nonIntrusive) {
+			range = this.moveToNonIntrusiveBookMark(range, bookMark);
 		} else {
-			if (bookMark.nonIntrusive) {
-				range = this.moveToNonIntrusiveBookMark(range, bookMark);
-			} else {
-				range = this.moveToIntrusiveBookMark(range, bookMark);
-			}
+			range = this.moveToIntrusiveBookMark(range, bookMark);
 		}
 		return range;
 	};

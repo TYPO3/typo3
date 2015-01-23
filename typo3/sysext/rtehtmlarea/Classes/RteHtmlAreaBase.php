@@ -34,7 +34,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public $conf_supported_browser = array(
 		'msie' => array(
 			array(
-				'version' => 6.0,
+				'version' => 9.0,
 				'system' => array(
 					'allowed' => array(
 						'winNT',

@@ -225,21 +225,15 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 					// Update link attributes
 				this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 			} else {
-					// Create new link
-					// Cleanup selected range
+				// Create new link
+				// Cleanup selected range
 				range = this.editor.getSelection().createRange();
-					// Clean existing anchors otherwise Mozilla may create nested anchors while IE may update existing link
-				if (UserAgent.isIEBeforeIE9) {
-					this.cleanAllLinks(node, range, true);
-					this.editor.getSelection().execCommand('UnLink', false, null);
-				} else {
-						// Selection may be lost when cleaning links
-						// Note: In IE6-8, the following procedure breaks the selection used by the execCommand
-					var bookMark = this.editor.getBookMark().get(range);
-					this.cleanAllLinks(node, range);
-					range = this.editor.getBookMark().moveTo(bookMark);
-					this.editor.getSelection().selectRange(range);
-				}
+				// Clean existing anchors otherwise Mozilla may create nested anchors
+				// Selection may be lost when cleaning links
+				var bookMark = this.editor.getBookMark().get(range);
+				this.cleanAllLinks(node, range);
+				range = this.editor.getBookMark().moveTo(bookMark);
+				this.editor.getSelection().selectRange(range);
 				if (UserAgent.isGecko) {
 					this.editor.getSelection().execCommand('CreateLink', false, encodeURI(theLink));
 				} else {
@@ -290,12 +284,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 			}
 			if (HTMLArea.classesAnchorSetup) {
 				var range = this.editor.getSelection().createRange();
-				if (!UserAgent.isIEBeforeIE9) {
-					this.cleanAllLinks(node, range, false);
-				} else {
-					this.cleanAllLinks(node, range, true);
-					this.editor.getSelection().execCommand('Unlink', false, '');
-				}
+				this.cleanAllLinks(node, range, false);
 			} else {
 				this.editor.getSelection().execCommand('Unlink', false, '');
 			}
@@ -320,19 +309,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 		setLinkAttributes: function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
 			if (/^a$/i.test(node.nodeName)) {
 				var nodeInRange = false;
-				if (!UserAgent.isIEBeforeIE9) {
-					this.editor.focus();
-					nodeInRange = Dom.rangeIntersectsNode(range, node);
-				} else {
-					if (this.editor.getSelection().getType() === 'Control') {
-							// we assume an image is selected
-						nodeInRange = true;
-					} else {
-						var nodeRange = this.editor.document.body.createTextRange();
-						nodeRange.moveToElementText(node);
-						nodeInRange = nodeRange.inRange(range) || range.inRange(nodeRange) || (range.compareEndPoints('StartToStart', nodeRange) == 0) || (range.compareEndPoints('EndToEnd', nodeRange) == 0);
-					}
-				}
+				this.editor.focus();
+				nodeInRange = Dom.rangeIntersectsNode(range, node);
 				if (nodeInRange) {
 					if (imageNode != null) {
 						if (addIconAfterLink) {
@@ -351,9 +329,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 					} else {
 						if (!UserAgent.isOpera) {
 							node.removeAttribute('class');
-							if (UserAgent.isIEBeforeIE9) {
-								node.removeAttribute('className');
-							}
 						} else {
 							node.className = '';
 						}
@@ -415,19 +390,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 		cleanAllLinks: function(node, range, keepLinks) {
 			if (/^a$/i.test(node.nodeName)) {
 				var intersection = false;
-				if (!UserAgent.isIEBeforeIE9) {
-					this.editor.focus();
-					intersection = Dom.rangeIntersectsNode(range, node);
-				} else {
-					if (this.editor.getSelection().getType() === 'Control') {
-							// we assume an image is selected
-						intersection = true;
-					} else {
-						var nodeRange = this.editor.document.body.createTextRange();
-						nodeRange.moveToElementText(node);
-						intersection = range.inRange(nodeRange) || ((range.compareEndPoints('StartToStart', nodeRange) > 0) && (range.compareEndPoints('StartToEnd', nodeRange) < 0)) || ((range.compareEndPoints('EndToStart', nodeRange) > 0) && (range.compareEndPoints('EndToEnd', nodeRange) < 0));
-					}
-				}
+				this.editor.focus();
+				intersection = Dom.rangeIntersectsNode(range, node);
 				if (intersection) {
 					this.cleanClassesAnchorImages(node);
 					if (!keepLinks) {

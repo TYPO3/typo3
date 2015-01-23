@@ -235,16 +235,12 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/CopyPaste',
 			if (/^(a)$/i.test(parent.nodeName)) {
 				parent.normalize();
 				if (!parent.innerHTML || (parent.childNodes.length == 1 && /^(br)$/i.test(parent.firstChild.nodeName))) {
-					if (!UserAgent.isIEBeforeIE9) {
-						var container = parent.parentNode;
-						this.editor.getDomNode().removeMarkup(parent);
-							// Opera does not render empty list items
-						if (UserAgent.isOpera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
-							container.innerHTML = '<br />';
-							this.editor.getSelection().selectNodeContents(container, true);
-						}
-					} else {
-						Dom.removeFromParent(parent);
+					var container = parent.parentNode;
+					this.editor.getDomNode().removeMarkup(parent);
+						// Opera does not render empty list items
+					if (UserAgent.isOpera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
+						container.innerHTML = '<br />';
+						this.editor.getSelection().selectNodeContents(container, true);
 					}
 				}
 			}

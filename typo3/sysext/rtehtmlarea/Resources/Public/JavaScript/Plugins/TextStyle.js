@@ -56,9 +56,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 
 			// Allowed attributes on inline elements
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
-			if (UserAgent.isIEBeforeIE9) {
-				this.addAllowedAttribute('className');
-			}
 
 			/**
 			 * Registering plugin "About" information
@@ -141,8 +138,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 			if (!selectionEmpty) {
 					// The selection is not empty
 				for (var i = 0; i < ancestors.length; ++i) {
-					fullNodeSelected = (UserAgent.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].innerText === range.text) || (!statusBarSelection && ancestors[i].innerText === range.text)))
-								|| (!UserAgent.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
+					fullNodeSelected = (statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString());
 					if (fullNodeSelected) {
 						if (this.isInlineElement(ancestors[i])) {
 							parent = ancestors[i];
@@ -163,9 +159,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 					var newElement = editor.document.createElement('span');
 					Dom.addClass(newElement, className);
 					editor.getDomNode().wrapWithInlineElement(newElement, range);
-					if (!UserAgent.isIEBeforeIE9) {
-						range.detach();
-					}
+					range.detach();
 				}
 			} else {
 				this.applyClassChange(parent, className);
@@ -274,8 +268,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TextStyle',
 				var selectionEmpty = editor.getSelection().isEmpty();
 				if (!selectionEmpty) {
 					for (var i = 0; i < ancestors.length; ++i) {
-						fullNodeSelected = (statusBarSelection === ancestors[i])
-							&& ((!UserAgent.isIEBeforeIE9 && ancestors[i].textContent === range.toString()) || (UserAgent.isIEBeforeIE9 && ancestors[i].innerText === range.text));
+						fullNodeSelected = (statusBarSelection === ancestors[i]) && ancestors[i].textContent === range.toString();
 						if (fullNodeSelected) {
 							if (!Dom.isBlockElement(ancestors[i])) {
 								tagName = ancestors[i].nodeName.toLowerCase();

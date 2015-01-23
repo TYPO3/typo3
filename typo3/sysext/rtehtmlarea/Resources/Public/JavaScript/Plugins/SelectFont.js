@@ -49,9 +49,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 			}
 			if (!this.allowedAttributes) {
 				this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
-				if (UserAgent.isIEBeforeIE9) {
-					this.allowedAttributes.push('className');
-				}
 			}
 
 			/**
@@ -199,9 +196,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 				this.setStyle(element, select.itemId, param);
 				// Wrap the selection with span tag with the style attribute
 				editor.getDomNode().wrapWithInlineElement(element, range);
-				if (!UserAgent.isIEBeforeIE9) {
-					range.detach();
-				}
+				range.detach();
 			}
 			return false;
 		},
@@ -243,12 +238,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SelectFont',
 				var parentElement = statusBarSelection ? statusBarSelection : editor.getSelection().getParentElement();
 				var value = parentElement.style[this.styleProperty[select.itemId]];
 				if (!value) {
-					if (!UserAgent.isIEBeforeIE9) {
-						if (editor.document.defaultView && editor.document.defaultView.getComputedStyle(parentElement, null)) {
-							value = editor.document.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
-						}
-					} else {
-						value = parentElement.currentStyle[this.styleProperty[select.itemId]];
+					if (editor.document.defaultView && editor.document.defaultView.getComputedStyle(parentElement, null)) {
+						value = editor.document.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
 					}
 				}
 				var index = -1;

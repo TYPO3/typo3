@@ -76,26 +76,21 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 		var type = 'Text';
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (typeof this.selection.getRangeAt === 'function') {
-				// Check if the current selection is a Control
-				if (this.selection && this.selection.rangeCount == 1) {
-					var range = this.selection.getRangeAt(0);
-					if (range.startContainer.nodeType === Dom.ELEMENT_NODE) {
-						if (
-							// Gecko
-							(range.startContainer == range.endContainer && (range.endOffset - range.startOffset) == 1) ||
-							// Opera and WebKit
-							(range.endContainer.nodeType === Dom.TEXT_NODE && range.endOffset == 0 && range.startContainer.childNodes[range.startOffset].nextSibling == range.endContainer)
-						) {
-							if (/^(img|hr|li|table|tr|td|embed|object|ol|ul|dl)$/i.test(range.startContainer.childNodes[range.startOffset].nodeName)) {
-								type = 'Control';
-							}
+			// Check if the current selection is a Control
+			if (this.selection && this.selection.rangeCount == 1) {
+				var range = this.selection.getRangeAt(0);
+				if (range.startContainer.nodeType === Dom.ELEMENT_NODE) {
+					if (
+						// Gecko
+						(range.startContainer == range.endContainer && (range.endOffset - range.startOffset) == 1) ||
+						// Opera and WebKit
+						(range.endContainer.nodeType === Dom.TEXT_NODE && range.endOffset == 0 && range.startContainer.childNodes[range.startOffset].nextSibling == range.endContainer)
+					) {
+						if (/^(img|hr|li|table|tr|td|embed|object|ol|ul|dl)$/i.test(range.startContainer.childNodes[range.startOffset].nodeName)) {
+							type = 'Control';
 						}
 					}
 				}
-			} else {
-				// IE8 or IE7
-				type = this.selection.type;
 			}
 		}
 		return type;
@@ -112,7 +107,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 			if (typeof this.selection.removeAllRanges === 'function') {
 				this.selection.removeAllRanges();
 			} else {
-				// IE8, IE7 or old version of WebKit
+				// Old version of WebKit
 				this.selection.empty();
 			}
 			if (UserAgent.isOpera) {
@@ -131,21 +126,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 		var isEmpty = true;
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (UserAgent.isIEBeforeIE9) {
-				switch (this.selection.type) {
-					case 'None':
-						isEmpty = true;
-						break;
-					case 'Text':
-						isEmpty = !this.createRange().text;
-						break;
-					default:
-						isEmpty = !this.createRange().htmlText;
-						break;
-				}
-			} else {
-				isEmpty = this.selection.isCollapsed;
-			}
+			isEmpty = this.selection.isCollapsed;
 		}
 		return isEmpty;
 	};
@@ -158,32 +139,28 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	Selection.prototype.createRange = function () {
 		var range;
 		this.get();
-		if (UserAgent.isIEBeforeIE9) {
-			range = this.selection.createRange();
+		if (typeof this.selection !== 'object' || this.selection === null) {
+			range = this.document.createRange();
 		} else {
-			if (typeof this.selection !== 'object' || this.selection === null) {
+			// Older versions of WebKit did not support getRangeAt
+			if (UserAgent.isWebKit && typeof this.selection.getRangeAt !== 'function') {
 				range = this.document.createRange();
-			} else {
-				// Older versions of WebKit did not support getRangeAt
-				if (UserAgent.isWebKit && typeof this.selection.getRangeAt !== 'function') {
-					range = this.document.createRange();
-					if (this.selection.baseNode == null) {
-						range.setStart(this.document.body, 0);
-						range.setEnd(this.document.body, 0);
-					} else {
-						range.setStart(this.selection.baseNode, this.selection.baseOffset);
-						range.setEnd(this.selection.extentNode, this.selection.extentOffset);
-						if (range.collapsed != this.selection.isCollapsed) {
-							range.setStart(this.selection.extentNode, this.selection.extentOffset);
-							range.setEnd(this.selection.baseNode, this.selection.baseOffset);
-						}
-					}
+				if (this.selection.baseNode == null) {
+					range.setStart(this.document.body, 0);
+					range.setEnd(this.document.body, 0);
 				} else {
-					try {
-						range = this.selection.getRangeAt(0);
-					} catch (e) {
-						range = this.document.createRange();
+					range.setStart(this.selection.baseNode, this.selection.baseOffset);
+					range.setEnd(this.selection.extentNode, this.selection.extentOffset);
+					if (range.collapsed != this.selection.isCollapsed) {
+						range.setStart(this.selection.extentNode, this.selection.extentOffset);
+						range.setEnd(this.selection.baseNode, this.selection.baseOffset);
 					}
+				}
+			} else {
+				try {
+					range = this.selection.getRangeAt(0);
+				} catch (e) {
+					range = this.document.createRange();
 				}
 			}
 		}
@@ -198,7 +175,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	Selection.prototype.getRanges = function () {
 		this.get();
 		var ranges = [];
-		// Older versions of WebKit, IE7 and IE8 did not support getRangeAt
+		// Older versions of WebKit did not support getRangeAt
 		if (typeof this.selection === 'object' && this.selection !== null && typeof this.selection.getRangeAt === 'function') {
 			for (var i = this.selection.rangeCount; --i >= 0;) {
 				ranges.push(this.selection.getRangeAt(i));
@@ -254,12 +231,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	Selection.prototype.selectRange = function (range) {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (typeof this.selection.getRangeAt === 'function') {
-				this.empty().addRange(range);
-			} else {
-				// IE8 or IE7
-				range.select();
-			}
+			this.empty().addRange(range);
 		}
 		return this;
 	};
@@ -275,10 +247,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	Selection.prototype.selectNode = function (node, endPoint) {
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (UserAgent.isIEBeforeIE9) {
-				// IE8/7/6 cannot set this type of selection
-				this.selectNodeContents(node, endPoint);
-			} else if (UserAgent.isWebKit && /^(img)$/i.test(node.nodeName)) {
+			if (UserAgent.isWebKit && /^(img)$/i.test(node.nodeName)) {
 				this.selection.setBaseAndExtent(node, 0, node, 1);
 			} else {
 				var range = this.document.createRange();
@@ -313,21 +282,16 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 		var range;
 		this.get();
 		if (typeof this.selection === 'object' && this.selection !== null) {
-			if (UserAgent.isIEBeforeIE9) {
-				range = this.document.body.createTextRange();
-				range.moveToElementText(node);
-			} else {
-				range = this.document.createRange();
-				if (UserAgent.isWebKit) {
-					range.setStart(node, 0);
-					if (node.nodeType === Dom.TEXT_NODE || node.nodeType === Dom.COMMENT_NODE || node.nodeType === Dom.CDATA_SECTION_NODE) {
-						range.setEnd(node, node.textContent.length);
-					} else {
-						range.setEnd(node, node.childNodes.length);
-					}
+			range = this.document.createRange();
+			if (UserAgent.isWebKit) {
+				range.setStart(node, 0);
+				if (node.nodeType === Dom.TEXT_NODE || node.nodeType === Dom.COMMENT_NODE || node.nodeType === Dom.CDATA_SECTION_NODE) {
+					range.setEnd(node, node.textContent.length);
 				} else {
-					range.selectNodeContents(node);
+					range.setEnd(node, node.childNodes.length);
 				}
+			} else {
+				range.selectNodeContents(node);
 			}
 			if (typeof endPoint !== 'undefined') {
 				range.collapse(endPoint);
@@ -346,38 +310,17 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 		var parentElement,
 			range;
 		this.get();
-		if (UserAgent.isIEBeforeIE9) {
-			range = this.createRange();
-			switch (this.selection.type) {
-				case 'Text':
-				case 'None':
-					parentElement = range.parentElement();
-					if (/^(form)$/i.test(parentElement.nodeName)) {
-						parentElement = this.document.body;
-					} else if (/^(li)$/i.test(parentElement.nodeName) && range.htmlText.replace(/\s/g, '') == parentElement.parentNode.outerHTML.replace(/\s/g, '')) {
-						parentElement = parentElement.parentNode;
-					}
-					break;
-				case 'Control':
-					parentElement = range.item(0);
-					break;
-				default:
-					parentElement = this.document.body;
-					break;
-			}
+		if (this.getType() === 'Control') {
+			parentElement = this.getElement();
 		} else {
-			if (this.getType() === 'Control') {
-				parentElement = this.getElement();
+			range = this.createRange();
+			parentElement = range.commonAncestorContainer;
+				// Firefox 3 may report the document as commonAncestorContainer
+			if (parentElement.nodeType === Dom.DOCUMENT_NODE) {
+				parentElement = this.document.body;
 			} else {
-				range = this.createRange();
-				parentElement = range.commonAncestorContainer;
-					// Firefox 3 may report the document as commonAncestorContainer
-				if (parentElement.nodeType === Dom.DOCUMENT_NODE) {
-					parentElement = this.document.body;
-				} else {
-					while (parentElement && parentElement.nodeType === Dom.TEXT_NODE) {
-						parentElement = parentElement.parentNode;
-					}
+				while (parentElement && parentElement.nodeType === Dom.TEXT_NODE) {
+					parentElement = parentElement.parentNode;
 				}
 			}
 		}
@@ -481,11 +424,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 			var ancestors = this.getAllAncestors();
 			for (var i = 0, n = ancestors.length; i < n; i++) {
 				var ancestor = ancestors[i];
-				if (UserAgent.isIEBeforeIE9) {
-					isFullySelected = (type !== 'Control' && ancestor.innerText == range.text) || (type === 'Control' && ancestor.innerText == range.item(0).text);
-				} else {
-					isFullySelected = (ancestor.textContent == range.toString());
-				}
+				isFullySelected = (ancestor.textContent == range.toString());
 				if (isFullySelected) {
 					node = ancestor;
 					break;
@@ -512,26 +451,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 		var range = this.createRange(),
 			parentStart,
 			parentEnd;
-		if (UserAgent.isIEBeforeIE9) {
-			if (this.getType() === 'Control') {
-				parentStart = range.item(0);
-				parentEnd = parentStart;
-			} else {
-				var rangeEnd = range.duplicate();
-				range.collapse(true);
-				parentStart = range.parentElement();
-				rangeEnd.collapse(false);
-				parentEnd = rangeEnd.parentElement();
-			}
-		} else {
-			parentStart = range.startContainer;
-			if (/^(body)$/i.test(parentStart.nodeName)) {
-				parentStart = parentStart.firstChild;
-			}
-			parentEnd = range.endContainer;
-			if (/^(body)$/i.test(parentEnd.nodeName)) {
-				parentEnd = parentEnd.lastChild;
-			}
+		parentStart = range.startContainer;
+		if (/^(body)$/i.test(parentStart.nodeName)) {
+			parentStart = parentStart.firstChild;
+		}
+		parentEnd = range.endContainer;
+		if (/^(body)$/i.test(parentEnd.nodeName)) {
+			parentEnd = parentEnd.lastChild;
 		}
 		while (parentStart && !Dom.isBlockElement(parentStart)) {
 			parentStart = parentStart.parentNode;
@@ -569,16 +495,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	Selection.prototype.getHtml = function () {
 		var range = this.createRange(),
 			html = '';
-		if (UserAgent.isIEBeforeIE9) {
-			if (this.getType() === 'Control') {
-					// We have a controlRange collection
-				var bodyRange = this.document.body.createTextRange();
-				bodyRange.moveToElementText(range(0));
-				html = bodyRange.htmlText;
-			} else {
-				html = range.htmlText;
-			}
-		} else if (!range.collapsed) {
+		if (!range.collapsed) {
 			var cloneContents = range.cloneContents();
 			if (!cloneContents) {
 				cloneContents = this.document.createDocumentFragment();
@@ -598,15 +515,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	 * @return	object		this
 	 */
 	Selection.prototype.insertNode = function (toBeInserted) {
-		if (UserAgent.isIEBeforeIE9) {
-			this.insertHtml(toBeInserted.outerHTML);
-		} else {
-			var range = this.createRange();
-			range.deleteContents();
-			toBeSelected = (toBeInserted.nodeType === Dom.DOCUMENT_FRAGMENT_NODE) ? toBeInserted.lastChild : toBeInserted;
-			range.insertNode(toBeInserted);
-			this.selectNodeContents(toBeSelected, false);
-		}
+		var range = this.createRange();
+		range.deleteContents();
+		toBeSelected = (toBeInserted.nodeType === Dom.DOCUMENT_FRAGMENT_NODE) ? toBeInserted.lastChild : toBeInserted;
+		range.insertNode(toBeInserted);
+		this.selectNodeContents(toBeSelected, false);
 		return this;
 	};
 
@@ -619,24 +532,14 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	 * @return	object		this
 	 */
 	Selection.prototype.insertHtml = function (html) {
-		if (UserAgent.isIEBeforeIE9) {
-			this.get();
-			if (this.getType() === 'Control') {
-				this.selection.clear();
-				this.get();
-			}
-			var range = this.createRange();
-			range.pasteHTML(html);
-		} else {
-			this.editor.focus();
-			var fragment = this.document.createDocumentFragment();
-			var div = this.document.createElement('div');
-			div.innerHTML = html;
-			while (div.firstChild) {
-				fragment.appendChild(div.firstChild);
-			}
-			this.insertNode(fragment);
+		this.editor.focus();
+		var fragment = this.document.createDocumentFragment();
+		var div = this.document.createElement('div');
+		div.innerHTML = html;
+		while (div.firstChild) {
+			fragment.appendChild(div.firstChild);
 		}
+		this.insertNode(fragment);
 		return this;
 	};
 
@@ -682,107 +585,68 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/Selection',
 	 */
 	Selection.prototype.handleBackSpace = function () {
 		var range = this.createRange();
-		if (UserAgent.isIEBeforeIE9) {
-			if (this.getType() === 'Control') {
-					// Deleting or backspacing on a control selection : delete the element
-				var element = this.getParentElement();
-				var parent = element.parentNode;
-				parent.removeChild(el);
-				return true;
-			} else if (this.isEmpty()) {
-					// Check if deleting an empty block with a table as next sibling
-				var element = this.getParentElement();
-				if (!element.innerHTML && Dom.isBlockElement(element) && element.nextSibling && /^table$/i.test(element.nextSibling.nodeName)) {
-					var previous = element.previousSibling;
-					if (!previous) {
-						this.selectNodeContents(element.nextSibling.rows[0].cells[0], true);
-					} else if (/^table$/i.test(previous.nodeName)) {
-						this.selectNodeContents(previous.rows[previous.rows.length-1].cells[previous.rows[previous.rows.length-1].cells.length-1], false);
-					} else {
-						range.moveStart('character', -1);
-						range.collapse(true);
-						range.select();
+		var self = this;
+		window.setTimeout(function() {
+			var range = self.createRange();
+			var startContainer = range.startContainer;
+			var startOffset = range.startOffset;
+			// If the selection is collapsed...
+			if (self.isEmpty()) {
+				// ... and the cursor lies in a direct child of body...
+				if (/^(body)$/i.test(startContainer.nodeName)) {
+					var node = startContainer.childNodes[startOffset-1];
+				} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
+					var node = startContainer;
+				// ... or, in Google, a span tag may have been inserted inside a heading element
+				} else if (UserAgent.isWebKit && /^(#text)$/i.test(startContainer.nodeName)) {
+					var node = startContainer.parentNode;
+					if (/^(h[1-6])$/i.test(node.nodeName)) {
+						self.editor.getDomNode().cleanAppleStyleSpans(node);
+					} else if (node.parentNode && /^(h[1-6])$/i.test(node.parentNode.nodeName)) {
+						self.editor.getDomNode().cleanAppleStyleSpans(node.parentNode);
 					}
-					el.parentNode.removeChild(element);
-					return true;
+					return false;
+				} else {
+					return false;
 				}
-			} else {
-					// Backspacing into a link
-				var range2 = range.duplicate();
-				range2.moveStart('character', -1);
-				var a = range2.parentElement();
-				if (a != range.parentElement() && /^a$/i.test(a.nodeName)) {
-					range2.collapse(true);
-					range2.moveEnd('character', 1);
-					range2.pasteHTML('');
-					range2.select();
-					return true;
-				}
-				return false;
-			}
-		} else {
-			var self = this;
-			window.setTimeout(function() {
-				var range = self.createRange();
-				var startContainer = range.startContainer;
-				var startOffset = range.startOffset;
-				// If the selection is collapsed...
-				if (self.isEmpty()) {
-					// ... and the cursor lies in a direct child of body...
-					if (/^(body)$/i.test(startContainer.nodeName)) {
-						var node = startContainer.childNodes[startOffset-1];
-					} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
-						var node = startContainer;
-					// ... or, in Google, a span tag may have been inserted inside a heading element
-					} else if (UserAgent.isWebKit && /^(#text)$/i.test(startContainer.nodeName)) {
-						var node = startContainer.parentNode;
-						if (/^(h[1-6])$/i.test(node.nodeName)) {
-							self.editor.getDomNode().cleanAppleStyleSpans(node);
-						} else if (node.parentNode && /^(h[1-6])$/i.test(node.parentNode.nodeName)) {
-							self.editor.getDomNode().cleanAppleStyleSpans(node.parentNode);
-						}
-						return false;
-					} else {
-						return false;
+				// ... which is a br or text node containing no non-whitespace character...
+				node.normalize();
+				if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
+					// Get a meaningful previous sibling in which to reposition de cursor
+					var previousSibling = node.previousSibling;
+					while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
+						previousSibling = previousSibling.previousSibling;
 					}
-					// ... which is a br or text node containing no non-whitespace character...
-					node.normalize();
-					if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
-						// Get a meaningful previous sibling in which to reposition de cursor
-						var previousSibling = node.previousSibling;
-						while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
-							previousSibling = previousSibling.previousSibling;
-						}
-						// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
-						if (previousSibling) {
-							// Remove the node
-							Dom.removeFromParent(node);
-							// Position the cursor
-							if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
-								self.selectNodeContents(previousSibling.lastChild, false);
-							} else if (/^(table)$/i.test(previousSibling.nodeName)) {
-								self.selectNodeContents(previousSibling.rows[previousSibling.rows.length-1].cells[previousSibling.rows[previousSibling.rows.length-1].cells.length-1], false);
-							} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
-								self.selectNode(previousSibling.firstChild, true);
-							} else {
-								self.selectNodeContents(previousSibling, false);
-							}
-						}
-					// ... or the only child of body and having no child (IE) or only a br child (FF)
-					} else if (
-							/^(body)$/i.test(node.parentNode.nodeName)
-							&& !/\S/.test(node.parentNode.textContent)
-							&& (node.childNodes.length === 0 || (node.childNodes.length === 1 && /^(br)$/i.test(node.firstChild.nodeName)))
-						) {
-						var parentNode = node.parentNode;
+					// If there is no meaningful previous sibling, the cursor is at the start of body or the start of a direct child of body
+					if (previousSibling) {
+						// Remove the node
 						Dom.removeFromParent(node);
-						parentNode.innerHTML = '<br />';
-						self.selectNodeContents(parentNode, true);
+						// Position the cursor
+						if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
+							self.selectNodeContents(previousSibling.lastChild, false);
+						} else if (/^(table)$/i.test(previousSibling.nodeName)) {
+							self.selectNodeContents(previousSibling.rows[previousSibling.rows.length-1].cells[previousSibling.rows[previousSibling.rows.length-1].cells.length-1], false);
+						} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
+							self.selectNode(previousSibling.firstChild, true);
+						} else {
+							self.selectNodeContents(previousSibling, false);
+						}
 					}
+				// ... or the only child of body and having no child (IE) or only a br child (FF)
+				} else if (
+						/^(body)$/i.test(node.parentNode.nodeName)
+						&& !/\S/.test(node.parentNode.textContent)
+						&& (node.childNodes.length === 0 || (node.childNodes.length === 1 && /^(br)$/i.test(node.firstChild.nodeName)))
+					) {
+					var parentNode = node.parentNode;
+					Dom.removeFromParent(node);
+					parentNode.innerHTML = '<br />';
+					self.selectNodeContents(parentNode, true);
 				}
-			}, 10);
-			return false;
-		}
+			}
+		}, 10);
+		return false;
+
 	};
 
 	/**

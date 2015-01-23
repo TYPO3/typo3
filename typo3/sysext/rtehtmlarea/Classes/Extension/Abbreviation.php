@@ -129,21 +129,6 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	}
 
 	/**
-	 * Return tranformed content
-	 *
-	 * @param string $content: The content that is about to be sent to the RTE
-	 * @return string the transformed content
-	 */
-	public function transformContent($content) {
-		// <abbr> was not supported by IE before version 7
-		if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
-			// change <abbr> to <acronym>
-			$content = preg_replace('/<(\\/?)abbr/i', '<$1acronym', $content);
-		}
-		return $content;
-	}
-
-	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
 	 * @param int Relative id of the RTE editing area in the form
@@ -159,10 +144,6 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.abbreviationUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('abbreviation_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAbbreviationArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
-			// <abbr> was not supported by IE before version 7
-			if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
-				$this->abbreviationIndex = 0;
-			}
 			$registerRTEinJavascriptString .= '
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.noAcronym = ' . ($this->acronymIndex ? 'false' : 'true') . ';
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.noAbbr =  ' . ($this->abbreviationIndex ? 'false' : 'true') . ';';
