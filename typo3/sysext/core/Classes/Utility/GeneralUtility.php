@@ -69,13 +69,6 @@ class GeneralUtility {
 	static protected $nonSingletonInstances = array();
 
 	/**
-	 * Cache for makeInstance with given class name and final class names to reduce number of self::getClassName() calls
-	 *
-	 * @var array Given class name => final class name
-	 */
-	static protected $finalClassNameCache = array();
-
-	/**
 	 * The application context
 	 *
 	 * @var \TYPO3\CMS\Core\Core\ApplicationContext
@@ -4348,11 +4341,10 @@ Connection: close
 		if ($className[0] === '\\') {
 			throw new \InvalidArgumentException('$className must not start with a backslash.', 1420281366);
 		}
-		if (isset(static::$finalClassNameCache[$className])) {
-			$finalClassName = static::$finalClassNameCache[$className];
-		} else {
+		$finalClassName = ClassLoader::getFinalClassNameFromCache($className);
+		if ($finalClassName === NULL) {
 			$finalClassName = self::getClassName($className);
-			static::$finalClassNameCache[$className] = $finalClassName;
+			ClassLoader::addFinalClassNameToCache($className, $finalClassName);
 		}
 		// Return singleton instance if it is already registered
 		if (isset(self::$singletonInstances[$finalClassName])) {
