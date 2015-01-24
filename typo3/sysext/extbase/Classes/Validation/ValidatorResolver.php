@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Validation;
 
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 
@@ -248,7 +249,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function buildBaseValidatorConjunction($indexKey, $targetClassName, array $validationGroups = array()) {
 		$conjunctionValidator = new \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator();
 		$this->baseValidatorConjunctions[$indexKey] = $conjunctionValidator;
-		if (class_exists($targetClassName)) {
+
+		// note: the simpleType check reduces lookups to the class loader
+		if (!TypeHandlingUtility::isSimpleType($targetClassName) && class_exists($targetClassName)) {
 				// Model based validator
 			/** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
 			$objectValidator = $this->objectManager->get('TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator', array());
@@ -259,18 +262,21 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 					throw new \InvalidArgumentException(sprintf('There is no @var annotation for property "%s" in class "%s".', $classPropertyName, $targetClassName), 1363778104);
 				}
 				try {
-					$parsedType = \TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::parseType(trim(implode('', $classPropertyTagsValues['var']), ' \\'));
+					$parsedType = TypeHandlingUtility::parseType(trim(implode('', $classPropertyTagsValues['var']), ' \\'));
 				} catch (\TYPO3\CMS\Extbase\Utility\Exception\InvalidTypeException $exception) {
 					throw new \InvalidArgumentException(sprintf(' @var annotation of ' . $exception->getMessage(), 'class "' . $targetClassName . '", property "' . $classPropertyName . '"'), 1315564744, $exception);
 				}
 				$propertyTargetClassName = $parsedType['type'];
-				if (\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCollectionType($propertyTargetClassName) === TRUE) {
-					$collectionValidator = $this->createValidator('TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator', array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
-					$objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
-				} elseif (class_exists($propertyTargetClassName) && !\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
-					$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $validationGroups);
-					if (count($validatorForProperty) > 0) {
-						$objectValidator->addPropertyValidator($classPropertyName, $validatorForProperty);
+				// note: the outer simpleType check reduces lookups to the class loader
+				if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
+					if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
+						$collectionValidator = $this->createValidator('TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator', array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
+						$objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
+					} elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
+						$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $validationGroups);
+						if (count($validatorForProperty) > 0) {
+							$objectValidator->addPropertyValidator($classPropertyName, $validatorForProperty);
+						}
 					}
 				}
 
