@@ -270,6 +270,9 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryArray);
+		if ($res === FALSE) {
+			throw new \UnexpectedValueException('Query could not be executed. Possible defect in tables tx_scheduler_task or tx_scheduler_task_group', 1422044826);
+		}
 		// If there are no available tasks, thrown an exception
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) == 0) {
 			throw new \OutOfBoundsException('No task', 1247827244);
