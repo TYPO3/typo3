@@ -133,6 +133,27 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 				Util.scrollBarWidth = w1 - w2 + 2;
 		    }
 		    return Util.scrollBarWidth;
+		},
+
+		/**
+		 * Test whether a css property is supported by the browser
+		 *
+		 * @param object element: the DOM element on which to test
+		 * @param string property: the CSSS property to test
+		 * @param value value: the value to test
+		 * @return boolean true if the property is supported
+		 */
+		testCssPropertySupport: function (element, property, value) {
+			var style = element.style;
+			var before = style[property];
+			try {
+				style[property] = value;
+			} catch (e) {}
+			var after = style[property];
+			if (typeof before !== 'undefined') {
+				style[property] = before;
+			}
+			return before !== after;
 		}
 	};
 

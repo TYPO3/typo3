@@ -15,12 +15,13 @@
  * Framework is the visual component of the Editor and contains the tool bar, the iframe, the textarea and the status bar
  */
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Resizable',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 	'TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event'],
-	function (Util, Resizable, Dom, Typo3, Event) {
+	function (UserAgent, Util, Resizable, Dom, Typo3, Event) {
 
 	/**
 	 * Framework constructor
@@ -209,34 +210,63 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		makeResizable: function () {
 			if (this.resizable) {
 				var self = this;
-				this.resizer = Resizable.makeResizable(this.getEl(), {
-					delay: 150,
-					minHeight: 200,
-					minWidth: 300,
-					alsoResize: '#' + this.editorId + '-iframe',
-					maxHeight: this.maxHeight,
-					start: function (event, ui) {
-						Event.stopEvent(event);
-						self.isResizing = true;
-						return false;
-					},
-					resize: function (event, ui) {
-						Event.stopEvent(event);
-						self.doHtmlAreaResize(ui.size);
-						return false;
-					},
-					stop: function (event, ui) {
-						Event.stopEvent(event);
-						self.isResizing = false;
-						self.doHtmlAreaResize(ui.size);
-						return false;
+				// Mutation observer will not work in WebKit on manual resize: https://code.google.com/p/chromium/issues/detail?id=293948
+				// The same is true in Opera 26
+				if (Util.testCssPropertySupport(this.getEl(), 'resize', 'both') && typeof MutationObserver === 'function' && !UserAgent.isWebKit && !UserAgent.isOpera) {
+					this.getEl().style['resize'] = 'both';
+					this.getEl().style['maxHeight'] = this.maxHeight;
+					// WebKit adds scollbars
+					this.getEl().style['overflow'] = UserAgent.isWebKit ? 'hidden' : 'auto';
+					// For WebKit, we need to reset the resize property set by default on textareas and iframes
+					if (UserAgent.isWebKit) {
+						this.textArea.style['resize'] = 'none';
+						this.iframe.getEl().style['resize'] = 'none';
 					}
-				});
+					this.mutationObserver = new MutationObserver(function (mutations) { self.onSizeMutation(mutations); });
+					var options = {
+						attributes: true,
+						attributeFilter: ['style']
+					};
+					this.mutationObserver.observe(this.getEl(), options);
+				} else {
+					this.resizer = Resizable.makeResizable(this.getEl(), {
+						delay: 150,
+						minHeight: 200,
+						minWidth: 300,
+						alsoResize: '#' + this.editorId + '-iframe',
+						maxHeight: this.maxHeight,
+						start: function (event, ui) {
+							Event.stopEvent(event);
+							self.isResizing = true;
+							return false;
+						},
+						resize: function (event, ui) {
+							Event.stopEvent(event);
+							self.doHtmlAreaResize(ui.size);
+							return false;
+						},
+						stop: function (event, ui) {
+							Event.stopEvent(event);
+							self.isResizing = false;
+							self.doHtmlAreaResize(ui.size);
+							return false;
+						}
+					});
+				}
 			}
 		},
 
 		/**
-		 * Resize the framework when the resizer handles are used
+		 * Mutations handler invoked when the framework is resized by css
+		 */
+		onSizeMutation: function (mutations) {
+			for (var i = mutations.length; --i >= 0;) {
+				this.onFrameworkResize();
+			}
+		},
+
+		/**
+		 * Resize the framework when the handle is used
 		 */
 		doHtmlAreaResize: function (size) {
 			Dom.setSize(this.getEl(), size);
@@ -380,6 +410,9 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			if (form) {
 				Event.off(form);
 				form.htmlAreaPreviousOnReset = null;
+			}
+			if (this.mutationObserver) {
+				this.mutationObserver.disconnect();
 			}
 			if (this.resizer) {
 				Resizable.destroy(this.resizer);
