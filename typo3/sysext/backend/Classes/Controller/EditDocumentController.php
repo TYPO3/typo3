@@ -969,8 +969,8 @@ class EditDocumentController {
 			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
 			// FINISH TRANSLATION / SAVE / CLOSE
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation']) {
-				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok" src="' . IconUtility::skinImg($this->doc->backPath, 'gfx/translationsavedok.gif', '', 1) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', TRUE) . '" />';
-				$buttons['translation_saveclear'] = '<input type="image" class="c-inputButton" name="_translation_savedokclear" src="' . IconUtility::skinImg($this->doc->backPath, 'gfx/translationsavedok_clear.gif', '', 1) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', TRUE) . '" />';
+				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok" src="' . IconUtility::skinImg($this->doc->backPath, 'sysext/t3skin/images/icons/actions/document-save-translation.png', '', 1) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', TRUE) . '" /> ';
+				$buttons['translation_saveclear'] = '<input type="image" class="c-inputButton" name="_translation_savedokclear" src="' . IconUtility::skinImg($this->doc->backPath, 'sysext/t3skin/images/icons/actions/document-save-cleartranslationcache.png', '', 1) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', TRUE) . '" />';
 			}
 		}
 		// CLOSE button:
