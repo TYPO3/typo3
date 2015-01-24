@@ -234,6 +234,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$this->stopTask();
 						$content .= $this->listTasksAction();
 						break;
+					case 'toggleHidden':
+						$this->toggleDisableAction();
+						$content .= $this->listTasksAction();
+						break;
 					case 'list':
 
 					default:
@@ -503,6 +507,17 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// The task was not found, for some reason
 			$this->addMessage(sprintf($this->getLanguageService()->getLL('msg.taskNotFound'), $this->submittedData['uid']), FlashMessage::ERROR);
 		}
+	}
+
+	/**
+	 * Toggles the disabled state of the submitted task
+	 *
+	 * @return void
+	 */
+	protected function toggleDisableAction() {
+		$task = $this->scheduler->fetchTask($this->submittedData['uid']);
+		$task->setDisabled(!$task->isDisabled());
+		$task->save();
 	}
 
 	/**
@@ -909,6 +924,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
 					$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					if ((int)$schedulerRecord['disable'] === 1) {
+						$translationKey = 'enable';
+						$spriteIcon = 'actions-edit-unhide';
+					} else {
+						$translationKey = 'disable';
+						$spriteIcon = 'actions-edit-hide';
+					}
+					$toggleHiddenAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey, TRUE) . '" class="icon">' .
+						IconUtility::getSpriteIcon($spriteIcon) . '</a>';
 					$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.delete') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 					$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.stop') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
@@ -993,7 +1017,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						// Define checkbox
 						$startExecutionElement = '<input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid'] . '" id="task_' . $schedulerRecord['uid'] . '" class="checkboxes" />';
 
-						$actions = $editAction . $deleteAction;
+						$actions = $editAction . $toggleHiddenAction . $deleteAction;
 
 						// Check the disable status
 						// Row is shown dimmed if task is disabled, unless it is still running
