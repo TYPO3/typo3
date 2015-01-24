@@ -541,7 +541,10 @@ return array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest'
+						'type' => 'suggest',
+						'default' => array(
+							'additionalSearchFields' => 'nav_title, alias, url'
+						)
 					)
 				)
 			)
