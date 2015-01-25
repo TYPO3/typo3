@@ -683,15 +683,8 @@ abstract class AbstractTreeView {
 	 * @return string The title.
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
-		if ($this->ext_showNavTitle && trim($row['nav_title']) !== '') {
-			$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:title', TRUE) . ' ' . htmlspecialchars(trim($row['title'])) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</span>';
-		} else {
-			$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
-			if (trim($row['nav_title']) !== '') {
-				$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_tca.xlf:pages.nav_title', TRUE) . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title . '</span>';
-			}
-			$title = trim($row['title']) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : $title;
-		}
+		$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
+		$title = trim($row['title']) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : $title;
 		return $title;
 	}
 

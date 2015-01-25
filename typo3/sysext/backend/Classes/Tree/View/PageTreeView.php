@@ -29,6 +29,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		'uid',
 		'title',
 		'doktype',
+		'nav_title',
 		'mount_pid',
 		'php_tree_stop',
 		't3ver_id',
@@ -109,4 +110,24 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$this->stored = array();
 	}
 
+	/**
+	 * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
+	 * Do NOT htmlspecialchar the string from this function - has already been done.
+	 *
+	 * @param array $row The input row array (where the key "title" is used for the title)
+	 * @param int $titleLen Title length (30)
+	 * @return string The title.
+	 */
+	public function getTitleStr($row, $titleLen = 30) {
+		if ($this->ext_showNavTitle && trim($row['nav_title']) !== '') {
+			$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:title', TRUE) . ' ' . htmlspecialchars(trim($row['title'])) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)) . '</span>';
+		} else {
+			$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
+			if (trim($row['nav_title']) !== '') {
+				$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_tca.xlf:pages.nav_title', TRUE) . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title . '</span>';
+			}
+			$title = trim($row['title']) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : $title;
+		}
+		return $title;
+	}
 }

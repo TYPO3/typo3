@@ -115,8 +115,6 @@ class PageTreeNavigationController {
 		$this->pagetree->addField('shortcut_mode');
 		$this->pagetree->addField('mount_pid');
 		$this->pagetree->addField('mount_pid_ol');
-		$this->pagetree->addField('nav_hide');
-		$this->pagetree->addField('nav_title');
 		$this->pagetree->addField('url');
 		// Temporary DB mounts:
 		$this->initializeTemporaryDBmount();
