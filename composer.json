@@ -37,7 +37,6 @@
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.4.*@dev",
-		"sebastian/exporter": "1.0.2",
 		"phpunit/phpunit": "~4.4.0",
 		"twbs/bootstrap": "3.3.*",
 		"fortawesome/font-awesome": "4.2.*"
