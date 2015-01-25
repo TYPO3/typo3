@@ -241,7 +241,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$mandatoryAttributes = $element->getMandatoryAttributes();
 			foreach ($attributes as $attribute => $value) {
 				if (isset($arguments[$attribute]) || isset($arguments[$attribute . '.']) || in_array($attribute, $mandatoryAttributes) || !empty($value)) {
-					if ($arguments[$attribute] !== '') {
+					if ((string)$arguments[$attribute] !== '') {
 						$value = $arguments[$attribute];
 					} elseif (!empty($arguments[($attribute . '.')])) {
 						$value = $arguments[$attribute . '.'];
