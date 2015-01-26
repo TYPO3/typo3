@@ -215,6 +215,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 					$this->tce_processed = TRUE;
 					// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
+					$tplRow = $GLOBALS['tplRow'];
 					// reload template menu
 					$manyTemplatesMenu = $this->pObj->templateMenu();
 				}
