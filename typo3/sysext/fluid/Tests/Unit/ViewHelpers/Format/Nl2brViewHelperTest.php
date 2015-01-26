@@ -11,18 +11,31 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
 /**
  * Test case
  */
-class Nl2brViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class Nl2brViewHelperTest extends ViewHelperBaseTestcase {
+
+	/**
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper
+	 */
+	protected $viewHelper;
+
+	public function setUp() {
+		parent::setUp();
+		$this->viewHelper = $this->getMock('TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper', array('renderChildren'));
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initializeArguments();
+	}
 
 	/**
 	 * @test
 	 */
 	public function viewHelperDoesNotModifyTextWithoutLineBreaks() {
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('<p class="bodytext">Some Text without line breaks</p>'));
-		$actualResult = $viewHelper->render();
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('<p class="bodytext">Some Text without line breaks</p>'));
+		$actualResult = $this->viewHelper->render();
 		$this->assertEquals('<p class="bodytext">Some Text without line breaks</p>', $actualResult);
 	}
 
@@ -30,9 +43,8 @@ class Nl2brViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperConvertsLineBreaksToBRTags() {
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Line 1' . chr(10) . 'Line 2'));
-		$actualResult = $viewHelper->render();
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Line 1' . chr(10) . 'Line 2'));
+		$actualResult = $this->viewHelper->render();
 		$this->assertEquals('Line 1<br />' . chr(10) . 'Line 2', $actualResult);
 	}
 
@@ -40,9 +52,8 @@ class Nl2brViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperConvertsWindowsLineBreaksToBRTags() {
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Line 1' . chr(13) . chr(10) . 'Line 2'));
-		$actualResult = $viewHelper->render();
+		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('Line 1' . chr(13) . chr(10) . 'Line 2'));
+		$actualResult = $this->viewHelper->render();
 		$this->assertEquals('Line 1<br />' . chr(13) . chr(10) . 'Line 2', $actualResult);
 	}
 

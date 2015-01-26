@@ -69,6 +69,9 @@ class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abs
 	}
 
 	/**
+	 * This ViewHelper is used a *lot* because it is used by the escape interceptor.
+	 * Therefore we render it to raw PHP code during compilation
+	 *
 	 * @param string $argumentsVariableName
 	 * @param string $renderChildrenClosureVariableName
 	 * @param string $initializationPhpCode

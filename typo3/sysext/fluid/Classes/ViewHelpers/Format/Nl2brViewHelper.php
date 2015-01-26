@@ -11,6 +11,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Wrapper for PHPs nl2br function.
  * @see http://www.php.net/manual/en/function.nl2br.php
@@ -33,17 +37,34 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class Nl2brViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class Nl2brViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Replaces newline characters by HTML line breaks.
 	 *
+	 * @param string $value string to format
 	 * @return string the altered string.
 	 * @api
 	 */
-	public function render() {
-		$content = $this->renderChildren();
-		return nl2br($content);
+	public function render($value = NULL) {
+		return self::renderStatic(array('value' => $value), $this->buildRenderChildrenClosure(), $this->renderingContext);
+	}
+
+	/**
+	 * Applies nl2br() on the specified value.
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
+		if ($value === NULL) {
+			$value = $renderChildrenClosure();
+		}
+
+		return nl2br($value);
 	}
 
 }
