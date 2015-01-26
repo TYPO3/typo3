@@ -11,25 +11,30 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\RawViewHelper;
+
 /**
  * Test case
  */
-class RawViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class RawViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\RawViewHelper
+	 * @var RawViewHelper|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $viewHelper;
+	protected $subject;
 
 	public function setUp() {
-		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\RawViewHelper::class, array('renderChildren'));
+		parent::setUp();
+		$this->subject = $this->getMock(RawViewHelper::class, array('renderChildren'));
+		$this->injectDependenciesIntoViewHelper($this->subject);
 	}
 
 	/**
 	 * @test
 	 */
 	public function viewHelperDeactivatesEscapingInterceptor() {
-		$this->assertFalse($this->viewHelper->isEscapingInterceptorEnabled());
+		$this->assertFalse($this->subject->isEscapingInterceptorEnabled());
 	}
 
 	/**
@@ -37,8 +42,8 @@ class RawViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function renderReturnsUnmodifiedValueIfSpecified() {
 		$value = 'input value " & äöüß@';
-		$this->viewHelper->expects($this->never())->method('renderChildren');
-		$actualResult = $this->viewHelper->render($value);
+		$this->subject->expects($this->never())->method('renderChildren');
+		$actualResult = $this->subject->render($value);
 		$this->assertEquals($value, $actualResult);
 	}
 
@@ -47,8 +52,8 @@ class RawViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function renderReturnsUnmodifiedChildNodesIfNoValueIsSpecified() {
 		$childNodes = 'input value " & äöüß@';
-		$this->viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue($childNodes));
-		$actualResult = $this->viewHelper->render();
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue($childNodes));
+		$actualResult = $this->subject->render();
 		$this->assertEquals($childNodes, $actualResult);
 	}
 

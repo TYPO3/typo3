@@ -11,13 +11,17 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * "THEN" -> only has an effect inside of "IF". See If-ViewHelper for documentation.
  *
  * @see \TYPO3\CMS\Fluid\ViewHelpers\IfViewHelper
  * @api
  */
-class ThenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ThenViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Just render everything.
@@ -26,7 +30,19 @@ class ThenViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @api
 	 */
 	public function render() {
-		return $this->renderChildren();
+		return self::renderStatic(array(), $this->buildRenderChildrenClosure(), $this->renderingContext);
+	}
+
+	/**
+	 * Render children
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return $renderChildrenClosure();
 	}
 
 }

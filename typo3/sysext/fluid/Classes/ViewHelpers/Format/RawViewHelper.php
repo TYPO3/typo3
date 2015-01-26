@@ -11,6 +11,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Outputs an argument/value without any escaping. Is normally used to output
  * an ObjectAccessor which should not be escaped, but output as-is.
@@ -43,7 +47,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class RawViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RawViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -58,8 +62,21 @@ class RawViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 	 * @return string
 	 */
 	public function render($value = NULL) {
+		return self::renderStatic(array('value' => $value), $this->buildRenderChildrenClosure(), $this->renderingContext);
+	}
+
+	/**
+	 * Render children without escaping
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
 		if ($value === NULL) {
-			return $this->renderChildren();
+			return $renderChildrenClosure();
 		} else {
 			return $value;
 		}

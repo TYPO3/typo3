@@ -11,19 +11,30 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper;
+
 /**
- * Testcase for ElseViewHelper
+ * Test case
  */
-class ThenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class ThenViewHelperTest extends ViewHelperBaseTestcase {
+
+	/**
+	 * @var ThenViewHelper|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $subject;
+
+	public function setUp() {
+		parent::setUp();
+		$this->subject = $this->getMock(ThenViewHelper::class, array('renderChildren'));
+		$this->injectDependenciesIntoViewHelper($this->subject);
+	}
 
 	/**
 	 * @test
 	 */
 	public function renderRendersChildren() {
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper::class, array('renderChildren'));
-
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-		$actualResult = $viewHelper->render();
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
+		$actualResult = $this->subject->render();
 		$this->assertEquals('foo', $actualResult);
 	}
 

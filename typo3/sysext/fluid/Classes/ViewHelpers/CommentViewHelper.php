@@ -11,6 +11,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode;
+use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
+
 /**
  * This ViewHelper prevents rendering of any content inside the tag
  * Note: Contents of the comment will still be **parsed** thus throwing an
@@ -42,7 +48,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class CommentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CommentViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var bool
@@ -56,6 +62,32 @@ class CommentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @api
 	 */
 	public function render() {
+	}
+
+	/**
+	 * Does not render children
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return '';
+	}
+
+	/**
+	 * The inner contents of a comment should not be rendered.
+	 *
+	 * @param string $argumentsVariableName
+	 * @param string $renderChildrenClosureVariableName
+	 * @param string $initializationPhpCode
+	 * @param \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $syntaxTreeNode
+	 * @param \TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler $templateCompiler
+	 * @return string
+	 */
+	public function compile($argumentsVariableName, $renderChildrenClosureVariableName, &$initializationPhpCode, AbstractNode $syntaxTreeNode, TemplateCompiler $templateCompiler) {
+		return '\'\'';
 	}
 
 }

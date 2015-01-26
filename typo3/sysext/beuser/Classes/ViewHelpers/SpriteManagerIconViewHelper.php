@@ -14,13 +14,18 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Displays sprite icon identified by iconName key
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class SpriteManagerIconViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Prints sprite icon html for $iconName key
@@ -30,7 +35,21 @@ class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abstra
 	 * @return string
 	 */
 	public function render($iconName, $options = array()) {
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
+		return self::renderStatic(array('iconName' => $iconName, 'options' => $options), $this->buildRenderChildrenClosure(), $this->renderingContext);
+	}
+
+	/**
+	 * Print sprite icon html for $iconName key
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$iconName = $arguments['iconName'];
+		$options = $arguments['options'];
+		return IconUtility::getSpriteIcon($iconName, $options);
 	}
 
 }
