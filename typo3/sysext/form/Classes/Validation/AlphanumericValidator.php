@@ -89,7 +89,7 @@ class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator
 	 * @see \TYPO3\CMS\Form\Validation\AbstractValidator::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel() {
-		$label = self::LOCALISATION_OBJECT_NAME . '.message';
+		$label = static::LOCALISATION_OBJECT_NAME . '.message';
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 		if ($this->allowWhiteSpace) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');
