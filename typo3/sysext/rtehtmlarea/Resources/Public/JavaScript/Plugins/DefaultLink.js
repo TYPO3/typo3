@@ -96,12 +96,13 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
 			if (UserAgent.isIE) {
-				this.editor.iframe.htmlRenderer.stripBaseUrl = this.stripBaseUrl;
+				this.editor.iframe.getHtmlRenderer().stripBaseUrl = this.stripBaseUrl;
 			}
 		},
 		/*
