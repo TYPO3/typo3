@@ -18,6 +18,15 @@
  * delivered pages goes to in the frontend (the website)
  */
 
+/*
+ * This check avoids a parse error "unexpected 'class'" for users installing TYPO3 CMS 7
+ * on PHP 5.4. Without it the redirect to the install tool does not work.
+ * @see https://forge.typo3.org/issues/64504
+ */
+if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+	die('TYPO3 CMS requires PHP 5.5 or above');
+}
+
 define('TYPO3_MODE', 'FE');
 
 require __DIR__ . '/typo3/sysext/core/Classes/Core/Bootstrap.php';

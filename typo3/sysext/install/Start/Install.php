@@ -93,6 +93,11 @@
  *   can exist yet.
  */
 
+/*
+ * This check avoids a parse error "unexpected 'class'" for users installing TYPO3 CMS 7
+ * on PHP 5.4. Without it the redirect to the install tool does not work.
+ * @see https://forge.typo3.org/issues/64504
+ */
 if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 	die('TYPO3 CMS requires PHP 5.5 or above');
 }
@@ -100,24 +105,9 @@ if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
-// Bootstrap bare minimum: class loader, LocalConfiguration, but no extensions and such
-require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->baseSetup('typo3/sysext/install/Start/')
-	->startOutputBuffering()
-	->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
+/*
+ * The following functionality must be required from another file, otherwise a parse error
+ * "unexpected 'class'" will be shown on PHP 5.4 instead of the die() from version_compare above.
+ */
+require __DIR__ . '/../Resources/Private/PHP/Boot.php';
 
-// Execute 'tool' or 'step' controller depending on install[controller] GET/POST parameter
-$getPost = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('install');
-$controllerClassName = \TYPO3\CMS\Install\Controller\StepController::class;
-if (isset($getPost['controller'])) {
-	switch ($getPost['controller']) {
-		case 'tool':
-			$controllerClassName = \TYPO3\CMS\Install\Controller\ToolController::class;
-			break;
-		case 'ajax':
-			$controllerClassName = \TYPO3\CMS\Install\Controller\AjaxController::class;
-			break;
-	}
-}
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($controllerClassName)->execute();
