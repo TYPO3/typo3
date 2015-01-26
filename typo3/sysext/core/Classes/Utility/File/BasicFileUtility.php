@@ -39,41 +39,41 @@ class BasicFileUtility {
 	const UNSAFE_FILENAME_CHARACTER_EXPRESSION = '\\x00-\\x2C\\/\\x3A-\\x3F\\x5B-\\x60\\x7B-\\xBF';
 
 	/**
+	 * Prefix which will be prepended the file when using the getUniqueName-function
+	 *
 	 * @var string
 	 */
 	public $getUniqueNamePrefix = '';
-
-	/**
-	 * Prefix which will be prepended the file when using the getUniqueName-function
-	 *
-	 * @var int
-	 */
-	public $maxNumber = 99;
 
 	/**
 	 * This number decides the highest allowed appended number used on a filename before we use naming with unique strings
 	 *
 	 * @var int
 	 */
-	public $uniquePrecision = 6;
+	public $maxNumber = 99;
 
 	/**
 	 * This number decides how many characters out of a unique MD5-hash that is appended to a filename if getUniqueName is asked to find an available filename.
 	 *
 	 * @var int
 	 */
-	public $maxInputNameLen = 60;
+	public $uniquePrecision = 6;
 
 	/**
 	 * This is the maximum length of names treated by cleanFileName()
+	 *
+	 * @var int
+	 */
+	public $maxInputNameLen = 60;
+
+	/**
+	 * Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
 	 *
 	 * @var string
 	 */
 	public $tempFN = '_temp_';
 
 	/**
-	 * Temp-foldername. A folder in the root of one of the mounts with this name is regarded a TEMP-folder (used for upload from clipboard)
-	 *
 	 * @var array
 	 */
 	public $f_ext = array();
