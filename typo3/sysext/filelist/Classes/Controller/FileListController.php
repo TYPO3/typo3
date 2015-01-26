@@ -14,8 +14,18 @@ namespace TYPO3\CMS\Filelist\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Utility\ListUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Filelist\FileList;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
@@ -52,7 +62,7 @@ class FileListController {
 	/**
 	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @var DocumentTemplate
 	 */
 	public $doc;
 
@@ -69,7 +79,7 @@ class FileListController {
 	protected $folderObject;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Messaging\FlashMessage
+	 * @var FlashMessage
 	 */
 	protected $errorMessage;
 
@@ -107,7 +117,7 @@ class FileListController {
 	/**
 	 * The file list object
 	 *
-	 * @var \TYPO3\CMS\Filelist\FileList
+	 * @var FileList
 	 */
 	public $filelist = NULL;
 
@@ -122,8 +132,8 @@ class FileListController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
 	}
 
 	/**
@@ -144,8 +154,8 @@ class FileListController {
 
 		try {
 			if ($combinedIdentifier) {
-				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
-				$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+				/** @var $fileFactory ResourceFactory */
+				$fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 				$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
 				$identifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
 				if (!$storage->hasFolder($identifier)) {
@@ -161,7 +171,7 @@ class FileListController {
 				}
 			} else {
 				// Take the first object of the first storage
-				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+				$fileStorages = $this->getBackendUser()->getFileStorages();
 				$fileStorage = reset($fileStorages);
 				if ($fileStorage) {
 					// Validating the input "id" (the path, directory!) and
@@ -171,9 +181,9 @@ class FileListController {
 					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
 				}
 			}
-		} catch (\TYPO3\CMS\Core\Resource\Exception $fileException) {
+		} catch (Exception $fileException) {
 			// Take the first object of the first storage
-			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+			$fileStorages = $this->getBackendUser()->getFileStorages();
 			$fileStorage = reset($fileStorages);
 			if ($fileStorage) {
 				// Set folder object to null and throw a message later on
@@ -181,12 +191,12 @@ class FileListController {
 			} else {
 				$this->folderObject = NULL;
 			}
-			$this->errorMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
+			$this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
+				sprintf($this->getLanguageService()->getLL('folderNotFoundMessage', TRUE),
 						htmlspecialchars($this->id)
 				),
-				$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
-				\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+				$this->getLanguageService()->getLL('folderNotFoundTitle', TRUE),
+				FlashMessage::NOTICE
 			);
 		}
 		// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
@@ -225,7 +235,7 @@ class FileListController {
 	 */
 	public function main() {
 		// Initialize the template object
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:filelist/Resources/Private/Templates/file_list.html');
 
@@ -239,30 +249,31 @@ class FileListController {
 		if ($this->folderObject) {
 
 			// Create filelisting object
-			$this->filelist = GeneralUtility::makeInstance(\TYPO3\CMS\Filelist\FileList::class);
+			$this->filelist = GeneralUtility::makeInstance(FileList::class);
 			$this->filelist->backPath = $GLOBALS['BACK_PATH'];
 			// Apply predefined values for hidden checkboxes
 			// Set predefined value for DisplayBigControlPanel:
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'activated') {
+			$backendUser = $this->getBackendUser();
+			if ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'activated') {
 				$this->MOD_SETTINGS['bigControlPanel'] = TRUE;
-			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'deactivated') {
+			} elseif ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'deactivated') {
 				$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
 			}
 			// Set predefined value for DisplayThumbnails:
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'activated') {
+			if ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'activated') {
 				$this->MOD_SETTINGS['displayThumbs'] = TRUE;
-			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'deactivated') {
+			} elseif ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'deactivated') {
 				$this->MOD_SETTINGS['displayThumbs'] = FALSE;
 			}
 			// Set predefined value for Clipboard:
-			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'activated') {
+			if ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'activated') {
 				$this->MOD_SETTINGS['clipBoard'] = TRUE;
-			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'deactivated') {
+			} elseif ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'deactivated') {
 				$this->MOD_SETTINGS['clipBoard'] = FALSE;
 			}
 			// If user never opened the list module, set the value for displayThumbs
 			if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
-				$this->MOD_SETTINGS['displayThumbs'] = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
+				$this->MOD_SETTINGS['displayThumbs'] = $backendUser->uc['thumbnailsByDefault'];
 			}
 			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
 			// Create clipboard object and initialize that
@@ -290,7 +301,7 @@ class FileListController {
 						$FILE['delete'][] = array('data' => $v);
 					}
 					// Init file processing object for deleting and pass the cmd array.
-					$fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
+					$fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
 					$fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 					$fileProcessor->setActionPermissions();
 					$fileProcessor->dontCheckForUnique = $this->overwriteExistingFiles ? 1 : 0;
@@ -305,7 +316,7 @@ class FileListController {
 				$this->MOD_SETTINGS['reverse'] = 0;
 			}
 			// Start up filelisting object, include settings.
-			$this->pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
+			$this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
 			$this->filelist->start($this->folderObject, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 			// Generate the list
 			$this->filelist->generateList();
@@ -325,7 +336,7 @@ class FileListController {
 			) {
 				$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
 				$pageRenderer->addInlineLanguagelabelFile(
-					\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
+					ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 					'file_upload'
 				);
 			}
@@ -349,29 +360,29 @@ class FileListController {
 					<div id="typo3-listOptions">
 				';
 				// Add "display bigControlPanel" checkbox:
-				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
+				if ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
 					$pageContent .= '<div class="checkbox">' .
 						'<label for="bigControlPanel">' .
 							BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') .
-							$GLOBALS['LANG']->getLL('bigControlPanel', TRUE) .
+							$this->getLanguageService()->getLL('bigControlPanel', TRUE) .
 						'</label>' .
 					'</div>';
 				}
 				// Add "display thumbnails" checkbox:
-				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
+				if ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
 					$pageContent .= '<div class="checkbox">' .
 						'<label for="checkDisplayThumbs">' .
 							BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') .
-							$GLOBALS['LANG']->getLL('displayThumbs', TRUE) .
+							$this->getLanguageService()->getLL('displayThumbs', TRUE) .
 						'</label>' .
 					'</div>';
 				}
 				// Add "clipboard" checkbox:
-				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
+				if ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
 					$pageContent .= '<div class="checkbox">' .
 						'<label for="checkClipBoard">' .
 							BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') .
-							$GLOBALS['LANG']->getLL('clipBoard', TRUE) .
+							$this->getLanguageService()->getLL('clipBoard', TRUE) .
 						'</label>' .
 					'</div>';
 				}
@@ -394,15 +405,15 @@ class FileListController {
 			);
 			$this->content = $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
 			// Renders the module page
-			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('files'), $this->content);
+			$this->content = $this->doc->render($this->getLanguageService()->getLL('files'), $this->content);
 		} else {
 			$content = '';
 			if ($this->errorMessage) {
-				$this->errorMessage->setSeverity(\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->errorMessage->setSeverity(FlashMessage::ERROR);
 				$content = $this->doc->moduleBody(array(), array_merge(array('REFRESH' => '', 'PASTE' => '', 'LEVEL_UP' => ''), $this->getButtons()), array('CSH' => '', 'TITLE' => '', 'FOLDER_INFO' => '', 'PAGE_ICON' => '', 'FUNC_MENU' => '', 'CONTENT' => $this->errorMessage->render()));
 			}
 			// Create output - no access (no warning though)
-			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('files'), $content);
+			$this->content = $this->doc->render($this->getLanguageService()->getLL('files'), $content);
 		}
 	}
 
@@ -421,7 +432,7 @@ class FileListController {
 				$name = $this->folderObject->getStorage()->getName();
 			}
 		} else {
-			$name = key(\TYPO3\CMS\Core\Resource\Utility\ListUtility::resolveSpecialFolderNames(
+			$name = key(ListUtility::resolveSpecialFolderNames(
 				array($name => $this->folderObject)
 			));
 		}
@@ -450,7 +461,7 @@ class FileListController {
 			'new' => ''
 		);
 		// Add shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+		if ($this->getBackendUser()->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 		}
 		// FileList Module CSH:
@@ -464,7 +475,7 @@ class FileListController {
 						'target' => $this->folderObject->getCombinedIdentifier(),
 						'returnUrl' => $this->filelist->listURL(),
 					)
-				)) . '" id="button-upload" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload', TRUE)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-upload') . '</a>';
+				)) . '" id="button-upload" title="' . $this->getLanguageService()->makeEntities($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload', TRUE)) . '">' . IconUtility::getSpriteIcon('actions-edit-upload') . '</a>';
 		}
 		// New folder button
 		if ($this->folderObject && $this->folderObject->checkActionPermission('write')
@@ -477,9 +488,27 @@ class FileListController {
 						'target' => $this->folderObject->getCombinedIdentifier(),
 						'returnUrl' => $this->filelist->listURL(),
 					)
-				)) . '" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+				)) . '" title="' . $this->getLanguageService()->makeEntities($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE)) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		}
 		return $buttons;
+	}
+
+	/**
+	 * Returns an instance of LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
