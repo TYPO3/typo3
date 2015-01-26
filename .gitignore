@@ -17,6 +17,7 @@
 *.swp
 .buildpath
 .cache
+.htaccess
 .project
 .sass-cache
 .session
