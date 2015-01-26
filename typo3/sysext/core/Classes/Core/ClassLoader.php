@@ -73,13 +73,6 @@ class ClassLoader {
 	protected $runtimeClassLoadingInformationCache = array();
 
 	/**
-	 * Cache for makeInstance with given class name and final class names to reduce number of self::getClassName() calls
-	 *
-	 * @var array Given class name => final class name
-	 */
-	static protected $finalClassNameCache = array();
-
-	/**
 	 * A list of namespaces this class loader is definitely responsible for
 	 *
 	 * @var array
@@ -712,29 +705,6 @@ class ClassLoader {
 	 */
 	static public function getAliasesForClassName($className) {
 		return static::$staticAliasMap->getAliasesForClassName($className);
-	}
-
-	/**
-	 * Add final class name to cache
-	 *
-	 * @param string $className
-	 * @param string $finalClassName
-	 */
-	static public function addFinalClassNameToCache($className, $finalClassName) {
-		static::$finalClassNameCache[$className] = $finalClassName;
-	}
-
-	/**
-	 * Get final class name from cache
-	 *
-	 * @param string $className
-	 * @return string|NULL
-	 */
-	static public function getFinalClassNameFromCache($className) {
-		if (isset(static::$finalClassNameCache[$className])) {
-			return static::$finalClassNameCache[$className];
-		}
-		return NULL;
 	}
 
 	/**
