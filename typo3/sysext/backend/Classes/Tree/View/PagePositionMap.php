@@ -106,7 +106,7 @@ class PagePositionMap {
 	 *
 	 * @var string
 	 */
-	protected $pageTreeClassName = 'localPageTree';
+	protected $pageTreeClassName = ElementBrowserPageTreeView::class;
 
 	/**
 	 * Constructor allowing to set pageTreeImplementation

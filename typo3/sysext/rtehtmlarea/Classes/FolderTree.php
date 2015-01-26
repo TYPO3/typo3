@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * RTE class which generates the folder tree.
  */
-class FolderTree extends \localFolderTree {
+class FolderTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView {
 
 	/**
 	 * Will create and return the HTML code for a browsable tree of folders.

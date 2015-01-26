@@ -276,7 +276,6 @@ class Bootstrap {
 	public function initializeClassLoader() {
 		$classLoader = new ClassLoader($this->applicationContext);
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class, $classLoader);
-		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array)include __DIR__ . '/../../ext_autoload.php');
 		$classAliasMap = new ClassAliasMap();
 		$classAliasMap->injectClassLoader($classLoader);
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class, $classAliasMap);

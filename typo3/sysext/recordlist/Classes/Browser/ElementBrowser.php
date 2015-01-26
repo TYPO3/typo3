@@ -1166,7 +1166,7 @@ class ElementBrowser {
 	 * @param string $treeClassName
 	 * @return string
 	 */
-	protected function getFileSelectorHtml($treeClassName = 'localFolderTree') {
+	protected function getFileSelectorHtml($treeClassName = \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class) {
 		$folderTree = GeneralUtility::makeInstance($treeClassName);
 		$folderTree->thisScript = $this->thisScript;
 		$tree = $folderTree->getBrowsableTree();
@@ -1329,7 +1329,7 @@ class ElementBrowser {
 	 * @param string $treeClassName name of the class used for page tree rendering
 	 * @return string
 	 */
-	protected function getPageSelectorHtml($treeClassName = 'localPageTree') {
+	protected function getPageSelectorHtml($treeClassName = \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView::class) {
 		$pageTree = GeneralUtility::makeInstance($treeClassName);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
@@ -1369,8 +1369,8 @@ class ElementBrowser {
 		$tables = $pArr[3];
 
 		// Making the browsable pagetree:
-		/** @var \TBE_PageTree $pageTree */
-		$pageTree = GeneralUtility::makeInstance(\TBE_PageTree::class);
+		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView $pageTree */
+		$pageTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView::class);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_pArrPages = $tables === 'pages' ? 1 : 0;
 		$pageTree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
@@ -1506,7 +1506,8 @@ class ElementBrowser {
 		}
 		$noThumbs = $noThumbs ?: !$_MOD_SETTINGS['displayThumbs'];
 		// Create folder tree:
-		$folderTree = GeneralUtility::makeInstance(\TBE_FolderTree::class);
+		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView $folderTree */
+		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1577,7 +1578,8 @@ class ElementBrowser {
 			$createFolder = '';
 		}
 		// Create folder tree:
-		$folderTree = GeneralUtility::makeInstance(\TBE_FolderTree::class);
+		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView $folderTree */
+		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree(FALSE);

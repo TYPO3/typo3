@@ -144,7 +144,7 @@ class MoveElementController {
 				$pageinfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
 				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
 					// Initialize the position map:
-					$posMap = GeneralUtility::makeInstance(\ext_posMap_pages::class);
+					$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap::class);
 					$posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
 					// Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
 					if ($pageinfo['pid']) {
@@ -173,7 +173,7 @@ class MoveElementController {
 				$pageinfo = BackendUtility::readPageAccess($this->page_id, $this->perms_clause);
 				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
 					// Initialize the position map:
-					$posMap = GeneralUtility::makeInstance(\ext_posMap_tt_content::class);
+					$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap::class);
 					$posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
 					$posMap->cur_sys_language = $this->sys_language;
 					// Headerline for the parent page: Icon, record title:

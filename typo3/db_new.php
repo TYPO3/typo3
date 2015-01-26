@@ -22,36 +22,6 @@
  */
 require __DIR__ . '/init.php';
 
-/**
- * Extension for the tree class that generates the tree of pages in the page-wizard mode
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-class newRecordLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
-
-	/**
-	 * Inserting uid-information in title-text for an icon
-	 *
-	 * @param string $icon Icon image
-	 * @param array $row Item row
-	 * @return string Wrapping icon image.
-	 */
-	public function wrapIcon($icon, $row) {
-		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
-	}
-
-	/**
-	 * Determines whether to expand a branch or not.
-	 * Here the branch is expanded if the current id matches the global id for the listing/new
-	 *
-	 * @param int $id The ID (page id) of the element
-	 * @return bool Returns TRUE if the IDs matches
-	 */
-	public function expandNext($id) {
-		return $id == $GLOBALS['SOBE']->id ? 1 : 0;
-	}
-}
-
 $newRecordController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\NewRecordController::class);
 $newRecordController->main();
 $newRecordController->printContent();

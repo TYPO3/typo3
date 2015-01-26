@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class PageTree extends \localPageTree {
+class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
 
 	/**
 	 * Create the page navigation tree in HTML
