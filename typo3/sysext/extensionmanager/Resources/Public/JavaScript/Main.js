@@ -442,6 +442,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 						successMessage += '</ul>';
 					});
 					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title'].replace(/\{0\}/g, data.extension), successMessage, 15);
+					top.TYPO3.ModuleMenu.App.refreshMenu();
 				}
 			}
 		});
