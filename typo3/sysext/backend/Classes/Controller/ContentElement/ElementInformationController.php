@@ -95,6 +95,13 @@ class ElementInformationController {
 	protected $folderObject;
 
 	/**
+	 * The HTML title tag
+	 *
+	 * @var string
+	 */
+	protected $titleTag;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -224,7 +231,8 @@ class ElementInformationController {
 			$table = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
 			$title = $this->doc->getHeader($this->table, $this->row, $this->pageinfo['_thePath'], 1, array(' ', ''), FALSE);
 		}
-
+		// Set HTML title tag
+		$this->titleTag = $table . ': '.strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
 		return '<h1>' .
 				($table ? '<small>' . $table . '</small><br />' : '') .
 				$title .
@@ -461,7 +469,7 @@ class ElementInformationController {
 	 * @return void
 	 */
 	public function printContent() {
-		echo $this->doc->startPage('') .
+		echo $this->doc->startPage($this->titleTag) .
 				$this->doc->insertStylesAndJS($this->content) .
 				$this->doc->endPage();
 	}
