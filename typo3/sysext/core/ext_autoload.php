@@ -1,6 +1,6 @@
 <?php
 // Adapt this file if things need to be available in the bootstrap
-$flowClassesPath = __DIR__ . '/Resources/PHP/TYPO3.Flow/Classes/';
+$flowClassesPath = PATH_typo3 . 'sysext/core/Resources/PHP/TYPO3.Flow/Classes/';
 return array(
 	'ext_posmap_pages' => PATH_typo3 . 'move_el.php',
 	'ext_posmap_tt_content' => PATH_typo3 . 'move_el.php',
