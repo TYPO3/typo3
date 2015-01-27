@@ -232,7 +232,7 @@ class ElementInformationController {
 			$title = $this->doc->getHeader($this->table, $this->row, $this->pageinfo['_thePath'], 1, array(' ', ''), FALSE);
 		}
 		// Set HTML title tag
-		$this->titleTag = $table . ': '.strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
+		$this->titleTag = $table . ': ' . strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
 		return '<h1>' .
 				($table ? '<small>' . $table . '</small><br />' : '') .
 				$title .
