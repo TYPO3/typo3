@@ -54,12 +54,6 @@ class ControllerContext {
 	protected $flashMessageService;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
 	 * @inject
 	 */
