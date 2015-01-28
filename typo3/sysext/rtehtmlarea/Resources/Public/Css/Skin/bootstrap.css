@@ -1,3 +1,28 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 /* Buttons */
 .btn {
   display: inline-block;
@@ -210,4 +235,7 @@ fieldset[disabled] .form-control {
   cursor: not-allowed;
   background-color: #f5f5f5;
   opacity: 1;
+}
+.form-group {
+  margin-bottom: 15px;
 }

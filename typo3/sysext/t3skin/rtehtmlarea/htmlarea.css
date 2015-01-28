@@ -29,6 +29,14 @@
 .htmlarea .btn-toolbar {
 	padding: 2px;
 }
+.htmlarea .btn-toolbar:before,
+.htmlarea .btn-toolbar:after {
+	content: " ";
+	display: table;
+}
+.htmlarea .btn-toolbar:after {
+	clear: both;
+}
 .htmlarea .btn-toolbar .btn-group {
 	margin: 1px 3px;
 }
