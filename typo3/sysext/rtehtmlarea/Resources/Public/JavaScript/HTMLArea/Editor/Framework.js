@@ -357,7 +357,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Calculate the width available for the editing iframe
 		 */
 		getInnerWidth: function () {
-			return Dom.getSize(this.getEl()).width;
+			return Dom.getSize(this.getEl()).width - 2;
 		},
 
 		/**

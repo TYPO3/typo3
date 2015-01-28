@@ -25,15 +25,6 @@
 	padding:0px 1px;
 	margin:0;
 }
-.editorWrap .resizable .statusBar,
-.editorWrap .resizable .noStatusBar {
-	background-image: url("images/status/resizable.gif");
-	background-position: bottom right;
-	background-repeat: no-repeat;
-}
-.editorWrap .resizable .noStatusBar {
-	padding-bottom: 10px;
-}
 /* Selectors for the editor toolbar */
 .htmlarea .btn-toolbar {
 	padding: 2px;
@@ -136,27 +127,25 @@
 	padding: 2px;
 }
 .htmlarea .editorIframe {
-	clear:both;
-	border:1px solid #c7c7c7;
-	border-bottom: none;
-	margin:0;
-	padding:0;
-}
-.editorWrap .resizable .editorIframe {
-	margin-bottom: -3px;
+	border: 1px solid #c7c7c7;
+	/*border-bottom: none;*/
+	border-radius: 2px;
+	clear: both;
+	margin: 0;
+	padding: 0;
 }
 .htmlarea .noStatusBar {
 	border-bottom:1px solid #A2AAB8;
 }
 .htmlarea .statusBar {
 	background-color: #666;
+	border: 1px solid #c7c7c7;
+	border-radius: 2px;
 	color: #FFFFFF;
 	font-size: 10px;
-	border: 1px solid #c7c7c7;
-	margin: 0;
-	padding: 0 3px;
 	line-height: 20px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
+	margin: 0;
+	padding: 1px 3px;
 }
 .htmlarea .statusBar .statusBarTree a {
 	color:#FFFFFF;

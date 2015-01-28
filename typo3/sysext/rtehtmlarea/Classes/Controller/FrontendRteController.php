@@ -196,12 +196,12 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			}
 		}
 		$RTEWidth = strstr($width, '%') ? $width : $width . 'px';
-		$editorWrapWidth = strstr($width, '%') ? $width : ($width + 2) . 'px';
 		$height = 380;
 		$RTEHeightOverride = (int)$this->thisConfig['RTEHeightOverride'];
 		$height = $RTEHeightOverride > 0 ? $RTEHeightOverride : $height;
 		$RTEHeight = $height . 'px';
-		$editorWrapHeight = ($height + 2) . 'px';
+		$editorWrapWidth = '99%';
+		$editorWrapHeight = '100%';
 		$this->RTEWrapStyle = $this->RTEWrapStyle ?: ($this->RTEdivStyle ?: 'height:' . $editorWrapHeight . '; width:' . $editorWrapWidth . ';');
 		$this->RTEdivStyle = $this->RTEdivStyle ?: 'position:relative; left:0px; top:0px; height:' . $RTEHeight . '; width:' . $RTEWidth . '; border: 1px solid black;';
 		/* =======================================

@@ -1,3 +1,4 @@
+@import url("bootstrap.css");
 /* Selectors for the htmlArea RTE editor */
 .htmlarea {
  	margin: 2px;
@@ -24,18 +25,10 @@
 	padding: 0px 1px;
 	margin: 0;
 }
-.editorWrap .resizable .statusBar,
-.editorWrap .resizable .noStatusBar {
-	background-image: url("../../Images/Status/resizable.gif");
-	background-position: right bottom;
-	background-repeat: no-repeat;
-}
-.editorWrap .resizable .noStatusBar {
-	padding-bottom: 10px;
-}
 /* Selectors for the editor toolbar */
 .htmlarea .btn-toolbar {
-	padding: 2px;
+	margin-left: -5px;
+	padding: 2px 2px 2px 0;
 }
 .htmlarea .btn-toolbar .btn-group {
 	margin: 1px 3px;
@@ -45,7 +38,7 @@
 	padding: 0;
 }
 .htmlarea .btn-toolbar .btn-sm {
-	background-color: transparent;
+	/*background-color: transparent;*/
 	height: 24px;
 	margin: 1px 0;
 	padding: 2px 0 0 2px;
@@ -58,7 +51,7 @@
 	border-right: 0;
 }
 .htmlarea .btn-toolbar .btn-icon {
-	background-image: url("images/sprites/actions.png");
+	background-image: url("../../Images/Sprites/actions.png");
 	background-repeat: no-repeat;
 	display: inline-block;
 	height: 18px;
@@ -119,6 +112,7 @@
 .htmlarea .btn-toolbar .form-control {
 	border-color: #cccccc;
 	display: inline-block;
+	font-size: 12px;
 	height: 24px;
 	margin: 0;
 	padding: 2px 1px;
@@ -135,24 +129,25 @@
 	padding: 2px;
 }
 .htmlarea .editorIframe {
-	clear: both;
 	border: 1px solid #c7c7c7;
-	border-bottom: none;
-	margin: 0 7px 0 0;
+	/*border-bottom: none;*/
+	border-radius: 2px;
+	clear: both;
+	margin: 0;
 	padding: 0;
-}
-.editorWrap .resizable .editorIframe {
-	margin-bottom: -3px;
 }
 .htmlarea .noStatusBar {
 	border-bottom: 1px solid #c7c7c7;
 }
 .htmlarea .statusBar {
 	border: 1px solid #c7c7c7;
+	border-radius: 2px;
+	color: #333333;
+	background-color: #eeeeee;
 	font-size: 10px;
 	line-height: 20px;
 	margin: 0;
-	padding: 0 3px;
+	padding: 1px 3px;
 }
 .htmlarea .statusBar .statusBarTree a {
 	font-weight: bold;
