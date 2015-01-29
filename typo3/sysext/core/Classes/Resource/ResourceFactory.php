@@ -453,7 +453,8 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 				if (empty($input)) {
 					return NULL;
 				}
-				$input = PathUtility::getRelativePath(PATH_site, dirname($input)) . basename($input);
+
+				$input = PathUtility::getRelativePath(PATH_site, PathUtility::dirname($input)) . PathUtility::basename($input);
 				return $this->getFileObjectFromCombinedIdentifier($input);
 			} else {
 				return NULL;
