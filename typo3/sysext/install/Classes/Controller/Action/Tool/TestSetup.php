@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -273,7 +274,7 @@ class TestSetup extends Action\AbstractAction {
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
 				clearstatcache();
 				$previousSize = GeneralUtility::formatSize(filesize($imResult[3]));
-				$methodUsed = GeneralUtility::gif_compress($imResult[3], '');
+				$methodUsed = GraphicalFunctions::gifCompress($imResult[3], '');
 				clearstatcache();
 				$compressedSize = GeneralUtility::formatSize(filesize($imResult[3]));
 				/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
@@ -633,11 +634,11 @@ class TestSetup extends Action\AbstractAction {
 	/**
 	 * Initialize image processor
 	 *
-	 * @return \TYPO3\CMS\Core\Imaging\GraphicalFunctions Initialized image processor
+	 * @return GraphicalFunctions Initialized image processor
 	 */
 	protected function initializeImageProcessor() {
-		/** @var \TYPO3\CMS\Core\Imaging\GraphicalFunctions $imageProcessor */
-		$imageProcessor = $this->objectManager->get(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
+		/** @var GraphicalFunctions $imageProcessor */
+		$imageProcessor = $this->objectManager->get(GraphicalFunctions::class);
 		$imageProcessor->init();
 		$imageProcessor->tempPath = PATH_site . 'typo3temp/';
 		$imageProcessor->dontCheckForExistingTempFile = 1;

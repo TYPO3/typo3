@@ -171,7 +171,7 @@ class GraphicalFunctions {
 	public $dontCheckForExistingTempFile = 0;
 
 	/**
-	 * Prevents imageMagickConvert() from compressing the gif-files with \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress()
+	 * Prevents imageMagickConvert() from compressing the gif-files with self::gifCompress()
 	 *
 	 * @var bool
 	 */
@@ -2240,7 +2240,7 @@ class GraphicalFunctions {
 					}
 					if ($info[2] == $this->gifExtension && !$this->dontCompress) {
 						// Compress with IM (lzw) or GD (rle)  (Workaround for the absence of lzw-compression in GD)
-						GeneralUtility::gif_compress($info[3], '');
+						self::gifCompress($info[3], '');
 					}
 					return $info;
 				}
@@ -2551,6 +2551,117 @@ class GraphicalFunctions {
 		}
 	}
 
+	/**
+	 * Compressing a GIF file if not already LZW compressed.
+	 * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimun size (that is RLE or no compression used)
+	 *
+	 * The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
+	 * GIF:
+	 * If $type is not set, the compression is done with ImageMagick (provided that $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] is pointing to the path of a lzw-enabled version of 'convert') else with GD (should be RLE-enabled!)
+	 * If $type is set to either 'IM' or 'GD' the compression is done with ImageMagick and GD respectively
+	 * PNG:
+	 * No changes.
+	 *
+	 * $theFile is expected to be a valid GIF-file!
+	 * The function returns a code for the operation.
+	 *
+	 * @param string $theFile Filepath
+	 * @param string $type See description of function
+	 * @return string Returns "GD" if GD was used, otherwise "IM" if ImageMagick was used. If nothing done at all, it returns empty string.
+	 */
+	static public function gifCompress($theFile, $type) {
+		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
+		if (!$gfxConf['gif_compress'] || strtolower(substr($theFile, -4, 4)) !== '.gif') {
+			return '';
+		}
+
+		if (($type === 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) {
+			// Use temporary file to prevent problems with read and write lock on same file on network file systems
+			$temporaryName = dirname($theFile) . '/' . md5(uniqid('', TRUE)) . '.gif';
+			// Rename could fail, if a simultaneous thread is currently working on the same thing
+			if (@rename($theFile, $temporaryName)) {
+				$cmd = GeneralUtility::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
+				CommandUtility::exec($cmd);
+				unlink($temporaryName);
+			}
+			$returnCode = 'IM';
+			if (@is_file($theFile)) {
+				GeneralUtility::fixPermissions($theFile);
+			}
+		} elseif (($type === 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) {
+			$tempImage = imageCreateFromGif($theFile);
+			imageGif($tempImage, $theFile);
+			imageDestroy($tempImage);
+			$returnCode = 'GD';
+			if (@is_file($theFile)) {
+				GeneralUtility::fixPermissions($theFile);
+			}
+		} else {
+			$returnCode = '';
+		}
+
+		return $returnCode;
+	}
+
+	/**
+	 * Converts a png file to gif.
+	 * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set TRUE.
+	 *
+	 * @param string $theFile The filename with path
+	 * @return string|NULL New filename
+	 */
+	static public function pngToGifByImagemagick($theFile) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif']
+			|| !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']
+			|| !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']
+			|| strtolower(substr($theFile, -4, 4)) !== '.png'
+			|| !@is_file($theFile)
+		) {
+			return NULL;
+		}
+
+		$newFile = substr($theFile, 0, -4) . '.gif';
+		$cmd = GeneralUtility::imageMagickCommand(
+			'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']
+		);
+		CommandUtility::exec($cmd);
+		$theFile = $newFile;
+		if (@is_file($newFile)) {
+			GeneralUtility::fixPermissions($newFile);
+		}
+
+		return $theFile;
+	}
+
+	/**
+	 * Returns filename of the png/gif version of the input file (which can be png or gif).
+	 * If input file type does not match the wanted output type a conversion is made and temp-filename returned.
+	 *
+	 * @param string $theFile Filepath of image file
+	 * @param bool $output_png If TRUE, then input file is converted to PNG, otherwise to GIF
+	 * @return string|NULL If the new image file exists, its filepath is returned
+	 */
+	static public function readPngGif($theFile, $output_png = FALSE) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] || !@is_file($theFile)) {
+			return NULL;
+		}
+
+		$ext = strtolower(substr($theFile, -4, 4));
+		if ((string)$ext == '.png' && $output_png || (string)$ext == '.gif' && !$output_png) {
+			return $theFile;
+		}
+
+		$newFile = PATH_site . 'typo3temp/readPG_' . md5(($theFile . '|' . filemtime($theFile))) . ($output_png ? '.png' : '.gif');
+		$cmd = GeneralUtility::imageMagickCommand(
+			'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']
+		);
+		CommandUtility::exec($cmd);
+		if (@is_file($newFile)) {
+			GeneralUtility::fixPermissions($newFile);
+			return $newFile;
+		}
+	}
+
 	/***********************************
 	 *
 	 * Various IO functions
@@ -2659,7 +2770,7 @@ class GraphicalFunctions {
 						}
 						// Compress with IM! (adds extra compression, LZW from ImageMagick)
 						// (Workaround for the absence of lzw-compression in GD)
-						GeneralUtility::gif_compress($file, 'IM');
+						self::gifCompress($file, 'IM');
 					}
 					break;
 				case 'jpg':

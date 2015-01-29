@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+
 /**
  * ImageMap based menus
  *
@@ -209,7 +211,7 @@ class ImageMenuContentObject extends AbstractMenuContentObject {
 					$this->sys_page->storeHash($imgHash, $imgMap, 'MENUIMAGEMAP');
 				}
 				$imgMap .= $this->mconf['imgMapExtras'];
-				$gifFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($gifFileName);
+				$gifFileName = GraphicalFunctions::pngToGifByImagemagick($gifFileName);
 				$this->result = array('output_file' => $gifFileName, 'output_w' => $w, 'output_h' => $h, 'imgMap' => $imgMap);
 			}
 		}

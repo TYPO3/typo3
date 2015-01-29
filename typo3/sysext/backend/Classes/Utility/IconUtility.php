@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -37,7 +38,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 class IconUtility {
 
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	static public $fileSpriteIconNames = array(
 		'htm' => 'mimetypes-text-html',
@@ -104,7 +105,7 @@ class IconUtility {
 		'potx' => 'mimetypes-powerpoint',
 		'mount' => 'apps-filetree-mount',
 		'folder' => 'apps-filetree-folder-default',
-		'default' => 'mimetypes-other-other'
+		'default' => 'mimetypes-other-other',
 	);
 
 	/**
@@ -446,7 +447,7 @@ class IconUtility {
 					}
 					// Create the image as file, destroy GD image and return:
 					@self::imagemake($im, $path);
-					GeneralUtility::gif_compress($path, 'IM');
+					GraphicalFunctions::gifCompress($path, 'IM');
 					ImageDestroy($im);
 					return $mainpath;
 				} else {
@@ -488,20 +489,20 @@ class IconUtility {
 	}
 
 	/**
-	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif())
+	 * Create new image pointer from input file (either gif/png, in case the wrong format it is converted by \TYPO3\CMS\Core\Imaging\GraphicalFunctions::readPngGif())
 	 *
 	 * @param string $file Absolute filename of the image file from which to start the icon creation.
-	 * @return mixed If success, image pointer, otherwise "-1
+	 * @return resource|int If success, image pointer, otherwise -1
 	 * @access private
-	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif
+	 * @see \TYPO3\CMS\Core\Imaging\GraphicalFunctions::readPngGif
 	 */
 	static public function imagecreatefrom($file) {
-		$file = GeneralUtility::read_png_gif($file, $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']);
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
-			return $file ? imagecreatefrompng($file) : -1;
-		} else {
-			return $file ? imagecreatefromgif($file) : -1;
+		$file = GraphicalFunctions::readPngGif($file, $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']);
+		if (!$file) {
+			return -1;
 		}
+
+		return $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? imagecreatefrompng($file) : imagecreatefromgif($file);
 	}
 
 	/**

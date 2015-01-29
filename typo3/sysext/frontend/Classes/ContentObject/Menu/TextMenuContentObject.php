@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+
 /**
  * Extension class creating text based menus
  *
@@ -170,7 +172,7 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	public function getBeforeAfter($pref) {
 		$res = '';
 		if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref . 'Img'], $this->I['val'][$pref . 'Img.'])) {
-			$imgInfo[3] = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($imgInfo[3]);
+			$imgInfo[3] = GraphicalFunctions::pngToGifByImagemagick($imgInfo[3]);
 			$theName = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'] . $pref;
 			$name = ' ' . $this->nameAttribute . '="' . $theName . '"';
 			$GLOBALS['TSFE']->imagesOnPage[] = $imgInfo[3];

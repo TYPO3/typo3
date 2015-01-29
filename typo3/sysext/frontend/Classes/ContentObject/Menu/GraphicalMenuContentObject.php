@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -250,7 +251,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				$gifCreator->output($this->result[$resKey][$key]['output_file']);
 				$gifCreator->destroy();
 			}
-			$this->result[$resKey][$key]['output_file'] = GeneralUtility::png_to_gif_by_imagemagick($this->result[$resKey][$key]['output_file']);
+			$this->result[$resKey][$key]['output_file'] = GraphicalFunctions::pngToGifByImagemagick($this->result[$resKey][$key]['output_file']);
 			// counter is increased
 			$Hcounter += $this->result[$resKey][$key]['output_h'];
 			// counter is increased

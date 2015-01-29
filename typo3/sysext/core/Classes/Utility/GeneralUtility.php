@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Utility;
 
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoader;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -277,37 +278,11 @@ class GeneralUtility {
 	 * @param string $theFile Filepath
 	 * @param string $type See description of function
 	 * @return string Returns "GD" if GD was used, otherwise "IM" if ImageMagick was used. If nothing done at all, it returns empty string.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress() instead.
 	 */
 	static public function gif_compress($theFile, $type) {
-		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
-		$returnCode = '';
-		// GIF...
-		if ($gfxConf['gif_compress'] && strtolower(substr($theFile, -4, 4)) == '.gif') {
-			// IM
-			if (($type == 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) {
-				// Use temporary file to prevent problems with read and write lock on same file on network file systems
-				$temporaryName = dirname($theFile) . '/' . md5(uniqid('', TRUE)) . '.gif';
-				// Rename could fail, if a simultaneous thread is currently working on the same thing
-				if (@rename($theFile, $temporaryName)) {
-					$cmd = self::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
-					CommandUtility::exec($cmd);
-					unlink($temporaryName);
-				}
-				$returnCode = 'IM';
-				if (@is_file($theFile)) {
-					self::fixPermissions($theFile);
-				}
-			} elseif (($type == 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) {
-				// GD
-				$tempImage = imageCreateFromGif($theFile);
-				imageGif($tempImage, $theFile);
-				imageDestroy($tempImage);
-				$returnCode = 'GD';
-				if (@is_file($theFile)) {
-					self::fixPermissions($theFile);
-				}
-			}
-		}
+		static::logDeprecatedFunction();
+		$returnCode = GraphicalFunctions::gifCompress($theFile, $type);
 		return $returnCode;
 	}
 
@@ -317,19 +292,12 @@ class GeneralUtility {
 	 *
 	 * @param string $theFile The filename with path
 	 * @return string New filename
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::pngToGifByImagemagick() instead.
 	 */
 	static public function png_to_gif_by_imagemagick($theFile) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] && strtolower(substr($theFile, -4, 4)) == '.png' && @is_file($theFile)) {
-			// IM
-			$newFile = substr($theFile, 0, -4) . '.gif';
-			$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
-			CommandUtility::exec($cmd);
-			$theFile = $newFile;
-			if (@is_file($newFile)) {
-				self::fixPermissions($newFile);
-			}
-		}
-		return $theFile;
+		static::logDeprecatedFunction();
+		$newFile = GraphicalFunctions::pngToGifByImagemagick($theFile);
+		return $newFile;
 	}
 
 	/**
@@ -339,22 +307,12 @@ class GeneralUtility {
 	 * @param string $theFile Filepath of image file
 	 * @param bool $output_png If set, then input file is converted to PNG, otherwise to GIF
 	 * @return string If the new image file exists, its filepath is returned
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use \TYPO3\CMS\Core\Imaging\GraphicalFunctions::readPngGif() instead.
 	 */
 	static public function read_png_gif($theFile, $output_png = FALSE) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && @is_file($theFile)) {
-			$ext = strtolower(substr($theFile, -4, 4));
-			if ((string)$ext == '.png' && $output_png || (string)$ext == '.gif' && !$output_png) {
-				return $theFile;
-			} else {
-				$newFile = PATH_site . 'typo3temp/readPG_' . md5(($theFile . '|' . filemtime($theFile))) . ($output_png ? '.png' : '.gif');
-				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']);
-				CommandUtility::exec($cmd);
-				if (@is_file($newFile)) {
-					self::fixPermissions($newFile);
-					return $newFile;
-				}
-			}
-		}
+		static::logDeprecatedFunction();
+		$newFile = GraphicalFunctions::readPngGif($theFile, $output_png);
+		return $newFile;
 	}
 
 	/*************************

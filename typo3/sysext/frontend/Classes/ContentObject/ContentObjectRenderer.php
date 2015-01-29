@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -1408,7 +1409,7 @@ class ContentObjectRenderer {
 			return '';
 		}
 		if (is_file(PATH_site . $info['3'])) {
-			$source = GeneralUtility::rawUrlEncodeFP(GeneralUtility::png_to_gif_by_imagemagick($info[3]));
+			$source = GeneralUtility::rawUrlEncodeFP(GraphicalFunctions::pngToGifByImagemagick($info[3]));
 			$source = $GLOBALS['TSFE']->absRefPrefix . $source;
 		} else {
 			$source = $info[3];
