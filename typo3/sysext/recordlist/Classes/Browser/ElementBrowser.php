@@ -2462,7 +2462,7 @@ class ElementBrowser {
 				Form, for uploading files:
 			-->
 			<form action="' . $GLOBALS['BACK_PATH'] . 'tce_file.php" method="post" name="editform"'
-			. 'id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
+			. ' id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
 					<tr>
 						<td>' . $this->barheader($GLOBALS['LANG']->sL(
