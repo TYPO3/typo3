@@ -2141,7 +2141,13 @@ class BackendUtility {
 							} else {
 								$rParts = array();
 								if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
-									$records = self::getRecordsByField($theColConf['foreign_table'], $theColConf['foreign_field'], $uid);
+									$whereClause = '';
+									// Add additional where clause if foreign_match_fields are defined
+									$foreignMatchFields = is_array($theColConf['foreign_match_fields']) ? $theColConf['foreign_match_fields'] : array();
+									foreach ($foreignMatchFields as $matchField => $matchValue) {
+										$whereClause .= ' AND ' . $matchField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($matchValue, $theColConf['foreign_table']);
+									}
+									$records = self::getRecordsByField($theColConf['foreign_table'], $theColConf['foreign_field'], $uid, $whereClause);
 									if (!empty($records)) {
 										foreach ($records as $record) {
 											$rParts[] = $record['uid'];
