@@ -762,6 +762,12 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="message.description.fileHasBrokenReferences" xml:space="preserve">
 				<source>The file has %s broken reference(s) but it will be deleted regardless.</source>
 			</trans-unit>
+			<trans-unit id="message.header.fileNotFound" xml:space="preserve">
+				<source>File not found</source>
+			</trans-unit>
+			<trans-unit id="message.description.fileNotFound" xml:space="preserve">
+				<source>The file %s is not found, possible already removed.</source>
+			</trans-unit>
 			<trans-unit id="message.header.fileDeleted" xml:space="preserve">
 				<source>File deleted</source>
 			</trans-unit>

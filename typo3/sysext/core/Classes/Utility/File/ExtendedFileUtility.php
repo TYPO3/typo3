@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -331,7 +332,20 @@ class ExtendedFileUtility extends BasicFileUtility {
 		}
 		// Example indentifier for $cmds['data'] => "4:mypath/tomyfolder/myfile.jpg"
 		// for backwards compatibility: the combined file identifier was the path+filename
-		$fileObject = $this->getFileObject($cmds['data']);
+		try {
+			$fileObject = $this->getFileObject($cmds['data']);
+		} catch (ResourceDoesNotExistException $ex) {
+			$flashMessage = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				sprintf( $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotFound'), $cmds['data']),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.fileNotFound'),
+				FlashMessage::ERROR,
+				TRUE
+			);
+			$this->addFlashMessage($flashMessage);
+
+			return FALSE;
+		}
 		// @todo implement the recycler feature which has been removed from the original implementation
 		// checks to delete the file
 		if ($fileObject instanceof File) {
