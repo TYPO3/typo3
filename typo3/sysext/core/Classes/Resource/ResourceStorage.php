@@ -691,7 +691,10 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function assureFolderReadPermission(Folder $folder = NULL) {
 		if (!$this->checkFolderActionPermission('read', $folder)) {
-			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access the given folder', 1375955684);
+			throw new Exception\InsufficientFolderAccessPermissionsException(
+				'You are not allowed to access the given folder: "' . $folder->getName() . '"',
+				1375955684
+			);
 		}
 	}
 
@@ -712,7 +715,10 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 		// Check user action permission
 		if (!$this->checkFolderActionPermission('delete', $folder)) {
-			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to delete the given folder', 1377779039);
+			throw new Exception\InsufficientFolderAccessPermissionsException(
+				'You are not allowed to delete the given folder: "' . $folder->getName() . '"',
+				1377779039
+			);
 		}
 		// Check if the user has write permissions to folders
 		// Would be good if we could check for actual write permissions in the containig folder
@@ -732,10 +738,16 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function assureFileReadPermission(FileInterface $file) {
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new Exception\InsufficientFileAccessPermissionsException('You are not allowed to access that file.', 1375955429);
+			throw new Exception\InsufficientFileAccessPermissionsException(
+				'You are not allowed to access that file: "' . $file->getName() . '"',
+				1375955429
+			);
 		}
 		if (!$this->checkFileExtensionPermission($file->getName())) {
-			throw new Exception\IllegalFileExtensionException('You are not allowed to use that file extension', 1375955430);
+			throw new Exception\IllegalFileExtensionException(
+				'You are not allowed to use that file extension. File: "' . $file->getName() . '"',
+				1375955430
+			);
 		}
 	}
 
@@ -859,7 +871,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, $targetFileName) {
 		// Check if targetFolder is within this storage
 		if ($this->getUid() !== $targetFolder->getStorage()->getUid()) {
-			throw new \RuntimeException();
+			throw new \RuntimeException('The target folder is not in the same storage. Target folder given: "' . $targetFolder . '"', 1422553107);
 		}
 		// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
@@ -889,11 +901,11 @@ class ResourceStorage implements ResourceStorageInterface {
 	protected function assureFileRenamePermissions(FileInterface $file, $targetFileName) {
 		// Check if file extension is allowed
 		if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkFileExtensionPermission($file->getName())) {
-			throw new Exception\IllegalFileExtensionException('You are not allowed to rename a file with to this extension', 1371466663);
+			throw new Exception\IllegalFileExtensionException('You are not allowed to rename a file with this extension. File given: "' . $file->getName() . '"', 1371466663);
 		}
 		// Check if user is allowed to rename
 		if (!$this->checkFileActionPermission('rename', $file)) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files."', 1319219351);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files. File given."' . $file . '"', 1319219351);
 		}
 		// Check if the user is allowed to write to folders
 		// Although it would be good to check, we cannot check here if the folder actually is writable
@@ -959,14 +971,14 @@ class ResourceStorage implements ResourceStorageInterface {
 			throw new Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1377777624);
 		}
 		if (!$folderToCopy instanceof Folder) {
-			throw new \RuntimeException('The folder "' . $folderToCopy->getIdentifier() . '" to copy is not of type Folder.', 1384209020);
+			throw new \RuntimeException('The folder "' . $folderToCopy->getIdentifier() . '" to copy is not of type folder.', 1384209020);
 		}
 		// Check if user is allowed to copy and the folder is readable
 		if (!$folderToCopy->getStorage()->checkFolderActionPermission('copy', $folderToCopy)) {
 			throw new Exception\InsufficientFileReadPermissionsException('You are not allowed to copy the folder "' . $folderToCopy->getIdentifier() . '"', 1377777629);
 		}
 		if (!$targetParentFolder instanceof Folder) {
-			throw new \RuntimeException('The target folder "' . $targetParentFolder->getIdentifier() . '" is not of type Folder.', 1384209021);
+			throw new \RuntimeException('The target folder "' . $targetParentFolder->getIdentifier() . '" is not of type folder.', 1384209021);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetParentFolder)) {

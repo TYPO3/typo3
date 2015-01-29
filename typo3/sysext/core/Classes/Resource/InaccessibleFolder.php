@@ -26,14 +26,14 @@ class InaccessibleFolder extends Folder {
 
 	/**
 	 * Throws an Exception,
-	 * used to prevent duplicate code in al the methods
+	 * used to prevent duplicate code in all the methods
 	 *
 	 * @throws Exception\InsufficientFolderReadPermissionsException
 	 * @return void
 	 */
 	protected function throwInaccessibleException() {
 		throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException(
-			'You are trying to use a method on an Inaccssible Folder',
+			'You are trying to use a method on an inaccessible folder.',
 			1390290029
 		);
 	}

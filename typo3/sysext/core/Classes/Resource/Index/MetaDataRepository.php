@@ -67,7 +67,7 @@ class MetaDataRepository implements SingletonInterface {
 	public function findByFileUid($uid) {
 		$uid = (int)$uid;
 		if ($uid <= 0) {
-			throw new \RuntimeException('Metadata can only be retrieved for indexed files.', 1381590731);
+			throw new \RuntimeException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
 		}
 		$record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, 'file = ' . $uid . $this->getGeneralWhereClause());
 

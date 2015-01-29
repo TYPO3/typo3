@@ -113,7 +113,9 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			return $shortName;
 		}
 		if (!array_key_exists($shortName, $this->drivers)) {
-			throw new \InvalidArgumentException('Desired storage is not in the list of available storages.', 1314085990);
+			throw new \InvalidArgumentException(
+				'Desired storage "' . $shortName . '" is not in the list of available storages.',
+				1314085990);
 		}
 		return $this->drivers[$shortName];
 	}

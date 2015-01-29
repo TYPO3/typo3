@@ -145,7 +145,11 @@ class FrontendContentAdapterService {
 	static public function registerAdditionalTypeForMigration($table, $field, $additionalType) {
 
 		if (!isset(static::$migrateFields[$table][$field]['__typeMatch'])) {
-			throw new \RuntimeException('Additional types can only be added when there is already an existing type match configuration for the given table and field.', 1377600978);
+			throw new \RuntimeException(
+				'Additional types can only be added when there is already an existing type match configuration for the given table and field. '
+				. 'Table: "' . $table . '", Field: "' . $field . '", Additional Type: "' . $additionalType . '"',
+				1377600978
+			);
 		}
 
 		self::$migrateFields[$table][$field]['__typeMatch']['types'][] = $additionalType;
@@ -167,7 +171,8 @@ class FrontendContentAdapterService {
 	static public function registerFieldForMigration($table, $field, $migrationField, $oldFieldName, $typeField = NULL, array $types = array()) {
 
 		if (array_search($migrationField, static::$availableMigrationFields) === FALSE) {
-			throw new \InvalidArgumentException('The value for $migrationField is invalid. Valid values can be found in the $availableMigrationFields array.', 1377600978);
+			throw new \InvalidArgumentException('The value for $migrationField "' . $migrationField . '" is invalid.' .
+				' Valid values can be found in the $availableMigrationFields array.', 1377600978);
 		}
 
 		self::$migrateFields[$table][$field][$migrationField] = $oldFieldName;

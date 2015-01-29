@@ -67,7 +67,7 @@ class FileRepository extends AbstractRepository {
 	public function findByRelation($tableName, $fieldName, $uid) {
 		$itemList = array();
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
-			throw new \InvalidArgumentException('Uid of related record has to be an integer.', 1316789798);
+			throw new \InvalidArgumentException('UID of related record has to be an integer. UID given: "' . $uid  . '"', 1316789798);
 		}
 		$referenceUids = NULL;
 		if ($this->getEnvironmentMode() === 'FE' && !empty($GLOBALS['TSFE']->sys_page)) {
@@ -123,7 +123,7 @@ class FileRepository extends AbstractRepository {
 	 */
 	public function findFileReferenceByUid($uid) {
 		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
-			throw new \InvalidArgumentException('uid of record has to be an integer.', 1316889798);
+			throw new \InvalidArgumentException('The UID of record has to be an integer. UID given: "' . $uid . '"', 1316889798);
 		}
 		try {
 			$fileReferenceObject = $this->factory->getFileReferenceObject($uid);

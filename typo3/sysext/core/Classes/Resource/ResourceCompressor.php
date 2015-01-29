@@ -280,7 +280,7 @@ class ResourceCompressor {
 		// Get file type
 		$type = strtolower(trim($type, '. '));
 		if (empty($type)) {
-			throw new \InvalidArgumentException('Error in TYPO3\\CMS\\Core\\Resource\\ResourceCompressor: No valid file type given for merged file', 1308957498);
+			throw new \InvalidArgumentException('No valid file type given for files to be merged.', 1308957498);
 		}
 		// we add up the filenames, filemtimes and filsizes to later build a checksum over
 		// it and include it in the temporary file name

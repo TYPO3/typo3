@@ -272,7 +272,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 
 		if (!$this->folderExists($folderIdentifier)) {
 			throw new Exception\FolderDoesNotExistException(
-				'File ' . $folderIdentifier . ' does not exist.',
+				'Folder "' . $folderIdentifier . '" does not exist.',
 				1314516810
 			);
 		}
@@ -810,7 +810,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$result = copy($sourcePath, $temporaryPath);
 		touch($temporaryPath, filemtime($sourcePath));
 		if ($result === FALSE) {
-			throw new \RuntimeException('Copying file ' . $fileIdentifier . ' to temporary path failed.', 1320577649);
+			throw new \RuntimeException(
+				'Copying file "' . $fileIdentifier . '" to temporary path "' . $temporaryPath . '" failed.',
+				1320577649
+			);
 		}
 		return $temporaryPath;
 	}
@@ -943,7 +946,10 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
-			throw new Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
+			throw new Exception\ExistingTargetFileNameException(
+				'The target file "' . $newIdentifier . '" already exists.',
+				1320291063
+			);
 		}
 		$sourcePath = $this->getAbsolutePath($fileIdentifier);
 		$targetPath = $this->getAbsolutePath($newIdentifier);

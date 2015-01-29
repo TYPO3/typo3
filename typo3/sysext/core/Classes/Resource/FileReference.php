@@ -91,7 +91,10 @@ class FileReference implements FileInterface {
 		}
 		$this->originalFile = $factory->getFileObject($fileReferenceData['uid_local']);
 		if (!is_object($this->originalFile)) {
-			throw new \RuntimeException('Original File not found for FileReference.', 1300098529);
+			throw new \RuntimeException(
+				'Original file not found for FileReference. UID given: "' . $fileReferenceData['uid_local'] . '"',
+				1300098529
+			);
 		}
 		$this->name = $fileReferenceData['name'] !== '' ? $fileReferenceData['name'] : $this->originalFile->getName();
 	}

@@ -127,7 +127,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function getStorageObject($uid, array $recordData = array(), &$fileIdentifier = NULL) {
 		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid of Storage has to be numeric.', 1314085991);
+			throw new \InvalidArgumentException('The UID of storage has to be numeric. UID given: "' . $uid . '"', 1314085991);
 		}
 		$uid = (int)$uid;
 		if ($uid === 0 && $fileIdentifier !== NULL) {
@@ -264,7 +264,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function getCollectionObject($uid, array $recordData = array()) {
 		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid of collection has to be numeric.', 1314085999);
+			throw new \InvalidArgumentException('The UID of collection has to be numeric. UID given: "' . $uid . '"', 1314085999);
 		}
 		if (!$this->collectionInstances[$uid]) {
 			// Get mount data if not already supplied as argument to this function
@@ -272,7 +272,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
 				$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_collection', 'uid=' . (int)$uid . ' AND deleted=0');
 				if (!is_array($recordData)) {
-					throw new \InvalidArgumentException('No collection found for given UID.', 1314085992);
+					throw new \InvalidArgumentException('No collection found for given UID: "' . $uid . '"', 1314085992);
 				}
 			}
 			$collectionObject = $this->createCollectionObject($recordData);
@@ -346,14 +346,14 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function getFileObject($uid, array $fileData = array()) {
 		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid of file has to be numeric.', 1300096564);
+			throw new \InvalidArgumentException('The UID of file has to be numeric. UID given: "' . $uid . '"', 1300096564);
 		}
 		if (!$this->fileInstances[$uid]) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileData)) {
 				$fileData = $this->getFileIndexRepository()->findOneByUid($uid);
 				if ($fileData === FALSE) {
-					throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID.', 1317178604);
+					throw new \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException('No file found for given UID:' . $uid, 1317178604);
 				}
 			}
 			$this->fileInstances[$uid] = $this->createFileObject($fileData);
@@ -568,14 +568,20 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function getFileReferenceObject($uid, array $fileReferenceData = array(), $raw = FALSE) {
 		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid of file usage (sys_file_reference) has to be numeric.', 1300086584);
+			throw new \InvalidArgumentException(
+				'The reference UID for the file (sys_file_reference) has to be numeric. UID given: "' . $uid . '"',
+				1300086584
+			);
 		}
 		if (!$this->fileReferenceInstances[$uid]) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileReferenceData)) {
 				$fileReferenceData = $this->getFileReferenceData($uid, $raw);
 				if (!is_array($fileReferenceData)) {
-					throw new \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException('No file usage (sys_file_reference) found for given UID.', 1317178794);
+					throw new \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException(
+						'No file reference (sys_file_reference) was found for given UID: "' . $uid . '"',
+						1317178794
+					);
 				}
 			}
 			$this->fileReferenceInstances[$uid] = $this->createFileReferenceObject($fileReferenceData);
