@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the TCEforms.
@@ -698,6 +699,23 @@ class InlineElement {
 				// Down
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
 				$cells['sort.down'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingDown" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE))) . '</a>';
+			}
+			// "Edit" link:
+			if (($rec['table_local'] === 'sys_file') && !$isNewItem) {
+				$location = 'top.content.list_frame';
+				$table = 'sys_file_metadata';
+				$recordInDatabase = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+					'uid',
+					$table,
+					'file = ' . (int)substr($rec['uid_local'], 9) . ' AND sys_language_uid = ' . $rec['sys_language_uid']
+				);
+				$editUid = $recordInDatabase['uid'];
+				$editOnClick = 'if(' . $location . '){' . $location . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode('
+					. $location . '.document.location' . '.pathname+' . $location . '.document.location' . '.search)+\'&edit['
+					. $table . '][' . $editUid . ']=edit\';}';
+				$title = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
+				$cells['editmetadata'] = '<a href="#" class="btn" onclick="' . $editOnClick . '" title="' . $title . '">'
+					. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			}
 			// "Delete" link:
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
@@ -2614,4 +2632,10 @@ class InlineElement {
 		return $GLOBALS['LANG'];
 	}
 
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
 }
