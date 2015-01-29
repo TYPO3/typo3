@@ -369,7 +369,14 @@ class ExtendedFileUtility extends BasicFileUtility {
 
 						if ($shortcutRecord) {
 							$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-							$icon = '<a href="#" class="t3-js-clickmenutrigger" data-table="' . $row['tablename'] . '" data-uid="' . $row['recuid'] . '" data-listframe="1" data-iteminfo="%2Binfo,history,edit">' . $icon . '</a>';
+							$tagParameters = array(
+								'class'           => 't3-js-clickmenutrigger',
+								'data-table'      => $row['tablename'],
+								'data-uid'        => $row['recuid'],
+								'data-listframe'  => 1,
+								'data-iteminfo'   => '%2Binfo,history,edit'
+							);
+							$icon = '<a href="#" ' . GeneralUtility::implodeAttributes($tagParameters, TRUE) . '>' . $icon . '</a>';
 							$shortcutContent[] = $icon . htmlspecialchars((BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 						} else {
 							$brokenReferences[] = $fileReferenceRow['ref_uid'];
