@@ -4420,7 +4420,7 @@ class FormEngine {
 			list($tscPID) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);
 			/** @var $t8Tools \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider */
 			$t8Tools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
-			$this->cachedLanguageFlag[$mainKey] = $t8Tools->getSystemLanguages($tscPID, $this->backPath);
+			$this->cachedLanguageFlag[$mainKey] = $t8Tools->getSystemLanguages($tscPID);
 		}
 		// Convert sys_language_uid to sys_language_uid if input was in fact a string (ISO code expected then)
 		if (!MathUtility::canBeInterpretedAsInteger($sys_language_uid)) {
