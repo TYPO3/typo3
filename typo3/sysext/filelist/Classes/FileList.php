@@ -653,7 +653,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								$theData[$field] = ' <div class="localisationData btn-group" data-fileid="' . $fileObject->getUid() . '"' .
 										(empty($translations) ? ' style="display: none;"' : '') . '>' . $languageCode . '</div>';
 								$theData[$field] .= '<a class="btn filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
-									IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') . '</a>';
+									IconUtility::getSpriteIcon(
+										'mimetypes-x-content-page-language-overlay',
+										array(
+											'title' => $GLOBALS['LANG']->getLL('translateMetadata')
+										)
+									) . '</a>';
 							}
 							break;
 						case '_REF_':

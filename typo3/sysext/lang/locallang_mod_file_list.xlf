@@ -111,6 +111,9 @@
 			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
 				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
 			</trans-unit>
+			<trans-unit id="translateMetadata" xml:space="preserve">
+				<source>Translate metadata</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
