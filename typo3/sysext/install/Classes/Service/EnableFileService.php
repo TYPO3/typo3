@@ -35,10 +35,18 @@ class EnableFileService {
 	const INSTALL_TOOL_ENABLE_FILE_LIFETIME = 3600;
 
 	/**
+	 * Path site property, needed for unit testing
+	 *
+	 * @var string
+	 */
+	static protected $sitePath = PATH_site;
+
+	/**
 	 * @return bool
 	 */
 	static public function isFirstInstallAllowed() {
-		if (!is_dir(PATH_typo3conf) && is_file(self::getFirstInstallFilePath())) {
+		$files = self::getFirstInstallFilePaths();
+		if (!is_dir(PATH_typo3conf) && !empty($files)) {
 			return TRUE;
 		}
 		return FALSE;
@@ -76,7 +84,12 @@ class EnableFileService {
 	 * @return bool
 	 */
 	static public function removeFirstInstallFile() {
-		return unlink(self::getFirstInstallFilePath());
+		$result = TRUE;
+		$files = self::getFirstInstallFilePaths();
+		foreach ($files as $file) {
+			$result = unlink(self::$sitePath . $file) && $result;
+		}
+		return $result;
 	}
 
 	/**
@@ -165,12 +178,14 @@ class EnableFileService {
 	}
 
 	/**
-	 * Returns the path to the FIRST_INSTALL file
+	 * Returns the paths to the FIRST_INSTALL files
 	 *
-	 * @return string
+	 * @return array
 	 */
-	static protected function getFirstInstallFilePath() {
-		return PATH_site . self::FIRST_INSTALL_FILE_PATH;
+	static protected function getFirstInstallFilePaths() {
+		$files = array_filter(scandir(self::$sitePath), function($file) {
+			return (is_file(self::$sitePath . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file));
+		});
+		return $files;
 	}
-
 }
