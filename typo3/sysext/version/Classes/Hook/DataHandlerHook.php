@@ -468,7 +468,7 @@ class DataHandlerHook {
 									// Find all implicated since the last stage-raise from editing to review:
 									foreach ($rows as $dat) {
 										$data = unserialize($dat['log_data']);
-										$emails = GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
+										$emails = $this->getEmailsForStageChangeNotification($dat['userid'], TRUE) + $emails;
 										if ($data['stage'] == 1) {
 											break;
 										}
@@ -484,8 +484,8 @@ class DataHandlerHook {
 						break;
 					case 10:
 						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
-						$emails = GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
-						$emails = GeneralUtility::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
+						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']) + $emails;
+						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['members']) + $emails;
 						break;
 					default:
 						// Do nothing

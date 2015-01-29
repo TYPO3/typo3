@@ -283,7 +283,7 @@ class SuggestElement {
 			if (empty($rows)) {
 				continue;
 			}
-			$resultRows = GeneralUtility::array_merge($resultRows, $rows);
+			$resultRows = $rows + $resultRows;
 			unset($rows);
 		}
 		$listItems = array();

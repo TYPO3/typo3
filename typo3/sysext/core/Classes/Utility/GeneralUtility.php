@@ -1754,8 +1754,10 @@ class GeneralUtility {
 	 * @param array $arr1 First array
 	 * @param array $arr2 Second array
 	 * @return array Merged result.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - native php '+' operator instead
 	 */
 	static public function array_merge(array $arr1, array $arr2) {
+		static::logDeprecatedFunction();
 		return $arr2 + $arr1;
 	}
 

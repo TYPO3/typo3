@@ -291,7 +291,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 			$groupData = $serviceObj->getGroups($this->user, $groupDataArr);
 			if (is_array($groupData) && count($groupData)) {
 				// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
-				$groupDataArr = GeneralUtility::array_merge($groupDataArr, $groupData);
+				$groupDataArr = $groupData + $groupDataArr;
 			}
 			unset($serviceObj);
 		}

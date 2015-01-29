@@ -133,7 +133,6 @@ class AdminPanelView {
 		if (is_array($input)) {
 			// Setting
 			$GLOBALS['BE_USER']->uc['TSFE_adminConfig'] = array_merge(!is_array($GLOBALS['BE_USER']->uc['TSFE_adminConfig']) ? array() : $GLOBALS['BE_USER']->uc['TSFE_adminConfig'], $input);
-			// Candidate for GeneralUtility::array_merge() if integer-keys will some day make trouble...
 			unset($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['action']);
 			// Actions:
 			if ($input['action']['clearCache'] && $this->isAdminModuleEnabled('cache')) {

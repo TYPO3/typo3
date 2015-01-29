@@ -412,7 +412,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				);
 				$newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
 				if (is_array($newMarkers)) {
-					$markerArray = GeneralUtility::array_merge($markerArray, $newMarkers);
+					$markerArray = $newMarkers + $markerArray;
 				}
 				unset($params);
 			}
@@ -484,7 +484,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				);
 				$newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
 				if (is_array($newMarkers)) {
-					$markerArray = GeneralUtility::array_merge($markerArray, $newMarkers);
+					$markerArray = $newMarkers + $markerArray;
 				}
 				unset($params);
 			}

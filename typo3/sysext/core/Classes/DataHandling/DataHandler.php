@@ -2249,7 +2249,7 @@ class DataHandler {
 							}
 							unset($valueArray[$idx]);
 						}
-						$valueArray = GeneralUtility::array_merge($newValueArray, $valueArray);
+						$valueArray = $valueArray + $newValueArray;
 					}
 				} elseif (is_array($actionCMDs[$key]) && isset($valueArray[$key])) {
 					$this->_ACTION_FLEX_FORMdata($valueArray[$key], $actionCMDs[$key]);

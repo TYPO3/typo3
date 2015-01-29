@@ -1337,7 +1337,6 @@ class HtmlParser {
 									$keepTags[$key]['fixAttrib'][$atName] = array();
 								}
 								$keepTags[$key]['fixAttrib'][$atName] = array_merge($keepTags[$key]['fixAttrib'][$atName], $atConfig);
-								// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 								if ((string)$keepTags[$key]['fixAttrib'][$atName]['range'] !== '') {
 									$keepTags[$key]['fixAttrib'][$atName]['range'] = GeneralUtility::trimExplode(',', $keepTags[$key]['fixAttrib'][$atName]['range']);
 								}
@@ -1349,7 +1348,6 @@ class HtmlParser {
 					}
 					unset($tagC['fixAttrib.']);
 					unset($tagC['fixAttrib']);
-					// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 					$keepTags[$key] = array_merge($keepTags[$key], $tagC);
 				}
 			}

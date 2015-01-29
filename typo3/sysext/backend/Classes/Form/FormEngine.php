@@ -1871,7 +1871,6 @@ class FormEngine {
 			}
 		}
 		ksort($newFields);
-		// Candidate for GeneralUtility::array_merge() if integer-keys will some day make trouble...
 		$fields = array_merge($newFields, $fields);
 		return $fields;
 	}
