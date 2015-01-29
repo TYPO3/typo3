@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\ClickMenu;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -819,7 +820,11 @@ class ClickMenu {
 					basename($identifier),
 					$this->clipObj->currentMode()
 				);
-				$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
+				$clickedFileOrFolder = ResourceFactory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
+				$fileOrFolderInClipBoard = ResourceFactory::getInstance()->retrieveFileOrFolderObject($selItem);
+				if (!$fileOrFolderInClipBoard instanceof Folder || !$fileOrFolderInClipBoard->getStorage()->isWithinFolder($fileOrFolderInClipBoard, $clickedFileOrFolder)) {
+					$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
+				}
 			}
 			$menuItems[] = 'spacer';
 			// Delete:
