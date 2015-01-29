@@ -425,6 +425,7 @@ class CoreUpdateService {
 			$message->setTitle('TYPO3 source directory (typo3_src) is not a link');
 			$messages[] = $message;
 		} else {
+			$isCurrentCoreSymlinkAbsolute = PathUtility::isAbsolutePath(readlink($this->symlinkToCoreFiles));
 			$unlinkResult = unlink($this->symlinkToCoreFiles);
 			if (!$unlinkResult) {
 				$success = FALSE;
@@ -433,6 +434,9 @@ class CoreUpdateService {
 				$message->setTitle('Removing old symlink failed');
 				$messages[] = $message;
 			} else {
+				if (!$isCurrentCoreSymlinkAbsolute) {
+					$newCoreLocation = $this->getRelativePath($newCoreLocation);
+				}
 				$symlinkResult = symlink($newCoreLocation, $this->symlinkToCoreFiles);
 				if ($symlinkResult) {
 					OpcodeCacheUtility::clearAllActive();
@@ -458,6 +462,22 @@ class CoreUpdateService {
 	 */
 	protected function getDownloadTarGzTargetPath($version) {
 		return $this->downloadTargetPath . $version . '.tar.gz';
+	}
+
+	/**
+	 * Get relative path to TYPO3 source directory from webroot
+	 *
+	 * @param string $absolutePath to TYPO3 source directory
+	 * @return string relative path to TYPO3 source directory
+	 */
+	protected function getRelativePath($absolutePath) {
+		$sourcePath = explode(DIRECTORY_SEPARATOR, rtrim(PATH_site, DIRECTORY_SEPARATOR));
+		$targetPath = explode(DIRECTORY_SEPARATOR, rtrim($absolutePath, DIRECTORY_SEPARATOR));
+		while (count($sourcePath) && count($targetPath) && $sourcePath[0] === $targetPath[0]) {
+			array_shift($sourcePath);
+			array_shift($targetPath);
+		}
+		return str_pad('', count($sourcePath) * 3, '..' . DIRECTORY_SEPARATOR) . implode(DIRECTORY_SEPARATOR, $targetPath);
 	}
 
 }
