@@ -264,8 +264,9 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function removeDirectory($extDirPath) {
-		$extensionPathWithoutTrailingSlash = rtrim($extDirPath, DIRECTORY_SEPARATOR);
-		if (is_link($extensionPathWithoutTrailingSlash)) {
+		$extDirPath = GeneralUtility::fixWindowsFilePath($extDirPath);
+		$extensionPathWithoutTrailingSlash = rtrim($extDirPath, '/');
+		if (is_link($extensionPathWithoutTrailingSlash) && TYPO3_OS !== 'WIN') {
 			$result = unlink($extensionPathWithoutTrailingSlash);
 		} else {
 			$result = GeneralUtility::rmdir($extDirPath, TRUE);

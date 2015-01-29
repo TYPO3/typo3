@@ -2874,6 +2874,8 @@ Connection: close
 				if ($OK) {
 					$OK = @rmdir($path);
 				}
+			} elseif (is_link($path) && is_dir($path) && TYPO3_OS === 'WIN') {
+				$OK = rmdir($path);
 			} else {
 				// If $path is a file, simply remove it
 				$OK = unlink($path);
