@@ -1440,7 +1440,7 @@ class ElementBrowser {
 		// The key number 3 of the pArr contains the "allowed" string. Disallowed is not passed to
 		// the element browser at all but only filtered out in TCEMain afterwards
 		$allowed = $pArr[3];
-		if ($allowed !== 'sys_file') {
+		if ($allowed !== 'sys_file' && $allowed !== '*' && !empty($allowed)) {
 			$allowedFileExtensions = $allowed;
 		}
 
