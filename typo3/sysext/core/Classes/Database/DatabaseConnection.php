@@ -213,7 +213,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $table Table name
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$insertFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @param bool|array|string $no_quote_fields See fullQuoteArray()
 	 * @return bool|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
@@ -234,7 +234,7 @@ class DatabaseConnection {
 	 * @param string $table Table name
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
-	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @param bool|array|string $no_quote_fields See fullQuoteArray()
 	 * @return bool|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
@@ -256,7 +256,7 @@ class DatabaseConnection {
 	 * @param string $table Database tablename
 	 * @param string $where WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
 	 * @param array $fields_values Field values as key=>value pairs. Values will be escaped internally. Typically you would fill an array like "$updateFields" with 'fieldname'=>'value' and pass it to this function as argument.
-	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @param bool|array|string $no_quote_fields See fullQuoteArray()
 	 * @return bool|\mysqli_result|object MySQLi result object / DBAL object
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
@@ -484,7 +484,7 @@ class DatabaseConnection {
 	 *
 	 * @param string $table See exec_INSERTquery()
 	 * @param array $fields_values See exec_INSERTquery()
-	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @param bool|array|string $no_quote_fields See fullQuoteArray()
 	 * @return string|NULL Full SQL query for INSERT, NULL if $fields_values is empty
 	 */
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
@@ -513,7 +513,7 @@ class DatabaseConnection {
 	 * @param string $table Table name
 	 * @param array $fields Field names
 	 * @param array $rows Table rows. Each row should be an array with field values mapping to $fields
-	 * @param bool $no_quote_fields See fullQuoteArray()
+	 * @param bool|array|string $no_quote_fields See fullQuoteArray()
 	 * @return string|NULL Full SQL query for INSERT, NULL if $rows is empty
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
@@ -549,7 +549,7 @@ class DatabaseConnection {
 	 * @param string $table See exec_UPDATEquery()
 	 * @param string $where See exec_UPDATEquery()
 	 * @param array $fields_values See exec_UPDATEquery()
-	 * @param bool $no_quote_fields
+	 * @param bool|array|string $no_quote_fields See fullQuoteArray()
 	 * @throws \InvalidArgumentException
 	 * @return string Full SQL query for UPDATE
 	 */
