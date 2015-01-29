@@ -4,10 +4,7 @@ Element Browser / RTE link selection
 
 #typo3-browse-links-php {
 	width: 100%;
-}
-
-#typo3-browse-links-php #typo3-tabmenu {
-	margin-top: 10px;
+	padding-top: 5px;
 }
 
 table#typo3-curUrl {
