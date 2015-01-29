@@ -627,11 +627,10 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 								foreach ($systemLanguages as $language) {
 									$languageId = $language['uid'];
 									$flagIcon = $language['flagIcon'];
-
 									if (array_key_exists($languageId, $translations)) {
 										$flagButtonIcon = IconUtility::getSpriteIcon(
 											'actions-document-open',
-											array('title' => $fileName),
+											array('title' => sprintf($GLOBALS['LANG']->getLL('editMetadataForLanguage'), $language['title'])),
 											array($flagIcon . '-overlay' => array()));
 										$data = array(
 											'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
@@ -644,7 +643,11 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 											$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId)) .
 											'&returnUrl=' . rawurlencode($this->listURL()) . BackendUtility::getUrlToken('editRecord')
 										);
-										$flagButtonIcon = IconUtility::getSpriteIcon($flagIcon);
+										$flagButtonIcon = IconUtility::getSpriteIcon(
+											$flagIcon,
+											array('title' => sprintf($GLOBALS['LANG']->getLL('createMetadataForLanguage'), $language['title'])),
+											array($flagIcon . '-overlay' => array())
+										);
 										$languageCode .= '<a href="' . htmlspecialchars($href) . '" class="btn">' . $flagButtonIcon . '</a> ';
 									}
 								}

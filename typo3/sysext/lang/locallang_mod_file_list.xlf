@@ -114,6 +114,12 @@
 			<trans-unit id="translateMetadata" xml:space="preserve">
 				<source>Translate metadata</source>
 			</trans-unit>
+			<trans-unit id="createMetadataForLanguage" xml:space="preserve">
+				<source>Create metadata of this file for %s</source>
+			</trans-unit>
+			<trans-unit id="editMetadataForLanguage" xml:space="preserve">
+				<source>Edit metadata of this file for %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
