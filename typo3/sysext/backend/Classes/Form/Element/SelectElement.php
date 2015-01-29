@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -149,7 +150,7 @@ class SelectElement extends AbstractFormElement {
 		$itemArray = GeneralUtility::trimExplode(',', $PA['itemFormElValue'], TRUE);
 
 		// Possibly filter some items:
-		$itemArray = GeneralUtility::keepItemsInArray(
+		$itemArray = ArrayUtility::keepItemsInArray(
 			$itemArray,
 			$PA['fieldTSConfig']['keepItems'],
 			function ($value) {
@@ -294,7 +295,7 @@ class SelectElement extends AbstractFormElement {
 		);
 
 		// Possibly filter some items:
-		$selectItems = GeneralUtility::keepItemsInArray(
+		$selectItems = ArrayUtility::keepItemsInArray(
 			$selectItems,
 			$PA['fieldTSConfig']['keepItems'],
 			function ($value) {

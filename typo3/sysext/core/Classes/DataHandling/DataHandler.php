@@ -1953,7 +1953,7 @@ class DataHandler {
 						// Traverse the input values and for all input values which match an EXISTING value, remove the existing from $theFileValues array (this will result in an array of all the existing files which should be deleted!)
 						foreach ($valueArray as $key => $theFile) {
 							if ($theFile && !strstr(GeneralUtility::fixWindowsFilePath($theFile), '/')) {
-								$theFileValues = GeneralUtility::removeArrayEntryByValue($theFileValues, $theFile);
+								$theFileValues = ArrayUtility::removeArrayEntryByValue($theFileValues, $theFile);
 							}
 						}
 						// This array contains the filenames in the uploadfolder that should be deleted:
@@ -7393,7 +7393,7 @@ class DataHandler {
 	 * @return array
 	 */
 	protected function unsetElementsToBeDeleted(array $elements) {
-		$elements = GeneralUtility::arrayDiffAssocRecursive($elements, $this->getCommandMapElements('delete'));
+		$elements = ArrayUtility::arrayDiffAssocRecursive($elements, $this->getCommandMapElements('delete'));
 		foreach ($elements as $key => $value) {
 			if (empty($value)) {
 				unset($elements[$key]);

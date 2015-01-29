@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Version\Hook;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -238,7 +239,7 @@ class DataHandlerHook {
 				$tcemainObj->versionizeRecord($table, $id, 'DELETED!', TRUE);
 				// Determine newly created versions:
 				// (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
-				$versionizedElements = GeneralUtility::arrayDiffAssocRecursive($tcemainObj->copyMappingArray, $copyMappingArray);
+				$versionizedElements = ArrayUtility::arrayDiffAssocRecursive($tcemainObj->copyMappingArray, $copyMappingArray);
 				// Delete localization overlays:
 				foreach ($versionizedElements as $versionizedTableName => $versionizedOriginalIds) {
 					foreach ($versionizedOriginalIds as $versionizedOriginalId => $_) {

@@ -1415,7 +1415,7 @@ class BackendUtility {
 			foreach ($groups as $uid => $row) {
 				$groupN = $uid;
 				$set = 0;
-				if (GeneralUtility::inArray($groupArray, $uid)) {
+				if (ArrayUtility::inArray($groupArray, $uid)) {
 					$groupN = $row['title'];
 					$set = 1;
 				}

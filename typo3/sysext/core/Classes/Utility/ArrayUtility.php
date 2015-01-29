@@ -531,4 +531,153 @@ class ArrayUtility {
 		reset($original);
 	}
 
+	/**
+	 * Check if an string item exists in an array.
+	 * Please note that the order of function parameters is reverse compared to the PHP function in_array()!!!
+	 *
+	 * Comparison to PHP in_array():
+	 * -> $array = array(0, 1, 2, 3);
+	 * -> variant_a := \TYPO3\CMS\Core\Utility\ArrayUtility::inArray($array, $needle)
+	 * -> variant_b := in_array($needle, $array)
+	 * -> variant_c := in_array($needle, $array, TRUE)
+	 * +---------+-----------+-----------+-----------+
+	 * | $needle | variant_a | variant_b | variant_c |
+	 * +---------+-----------+-----------+-----------+
+	 * | '1a'    | FALSE     | TRUE      | FALSE     |
+	 * | ''      | FALSE     | TRUE      | FALSE     |
+	 * | '0'     | TRUE      | TRUE      | FALSE     |
+	 * | 0       | TRUE      | TRUE      | TRUE      |
+	 * +---------+-----------+-----------+-----------+
+	 *
+	 * @param array $in_array One-dimensional array of items
+	 * @param string $item Item to check for
+	 * @return bool TRUE if $item is in the one-dimensional array $in_array
+	 */
+	static public function inArray(array $in_array, $item) {
+		foreach ($in_array as $val) {
+			if (!is_array($val) && (string)$val === (string)$item) {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Removes the value $cmpValue from the $array if found there. Returns the modified array
+	 *
+	 * @param array $array Array containing the values
+	 * @param string $cmpValue Value to search for and if found remove array entry where found.
+	 * @return array Output array with entries removed if search string is found
+	 */
+	static public function removeArrayEntryByValue(array $array, $cmpValue) {
+		foreach ($array as $k => $v) {
+			if (is_array($v)) {
+				$array[$k] = self::removeArrayEntryByValue($v, $cmpValue);
+			} elseif ((string)$v === (string)$cmpValue) {
+				unset($array[$k]);
+			}
+		}
+		return $array;
+	}
+
+	/**
+	 * Filters an array to reduce its elements to match the condition.
+	 * The values in $keepItems can be optionally evaluated by a custom callback function.
+	 *
+	 * Example (arguments used to call this function):
+	 * $array = array(
+	 * array('aa' => array('first', 'second'),
+	 * array('bb' => array('third', 'fourth'),
+	 * array('cc' => array('fifth', 'sixth'),
+	 * );
+	 * $keepItems = array('third');
+	 * $getValueFunc = create_function('$value', 'return $value[0];');
+	 *
+	 * Returns:
+	 * array(
+	 * array('bb' => array('third', 'fourth'),
+	 * )
+	 *
+	 * @param array $array The initial array to be filtered/reduced
+	 * @param mixed $keepItems The items which are allowed/kept in the array - accepts array or csv string
+	 * @param string $getValueFunc (optional) Callback function used to get the value to keep
+	 * @return array The filtered/reduced array with the kept items
+	 */
+	static public function keepItemsInArray(array $array, $keepItems, $getValueFunc = NULL) {
+		if ($array) {
+			// Convert strings to arrays:
+			if (is_string($keepItems)) {
+				$keepItems = GeneralUtility::trimExplode(',', $keepItems);
+			}
+			// Check if valueFunc can be executed:
+			if (!is_callable($getValueFunc)) {
+				$getValueFunc = NULL;
+			}
+			// Do the filtering:
+			if (is_array($keepItems) && count($keepItems)) {
+				foreach ($array as $key => $value) {
+					// Get the value to compare by using the callback function:
+					$keepValue = isset($getValueFunc) ? call_user_func($getValueFunc, $value) : $value;
+					if (!in_array($keepValue, $keepItems)) {
+						unset($array[$key]);
+					}
+				}
+			}
+		}
+		return $array;
+	}
+
+	/**
+	 * Rename Array keys with a given mapping table
+	 *
+	 * @param array	$array Array by reference which should be remapped
+	 * @param array	$mappingTable Array with remap information, array/$oldKey => $newKey)
+	 */
+	static public function remapArrayKeys(array &$array, array $mappingTable) {
+		foreach ($mappingTable as $old => $new) {
+			if ($new && isset($array[$old])) {
+				$array[$new] = $array[$old];
+				unset($array[$old]);
+			}
+		}
+	}
+
+	/**
+	 * Filters keys off from first array that also exist in second array. Comparison is done by keys.
+	 * This method is a recursive version of php array_diff_assoc()
+	 *
+	 * @param array $array1 Source array
+	 * @param array $array2 Reduce source array by this array
+	 * @return array Source array reduced by keys also present in second array
+	 */
+	static public function arrayDiffAssocRecursive(array $array1, array $array2) {
+		$differenceArray = array();
+		foreach ($array1 as $key => $value) {
+			if (!array_key_exists($key, $array2)) {
+				$differenceArray[$key] = $value;
+			} elseif (is_array($value)) {
+				if (is_array($array2[$key])) {
+					$differenceArray[$key] = self::arrayDiffAssocRecursive($value, $array2[$key]);
+				}
+			}
+		}
+		return $differenceArray;
+	}
+
+	/**
+	 * Sorts an array by key recursive - uses natural sort order (aAbB-zZ)
+	 *
+	 * @param array $array array to be sorted recursively, passed by reference
+	 * @return bool always TRUE
+	 */
+	static public function naturalKeySortRecursive(array &$array) {
+		uksort($array, 'strnatcasecmp');
+		foreach ($array as $key => &$value) {
+			if (is_array($value)) {
+				self::naturalKeySortRecursive($value);
+			}
+		}
+
+		return TRUE;
+	}
 }

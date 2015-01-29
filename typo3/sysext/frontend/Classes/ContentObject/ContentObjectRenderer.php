@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -5513,7 +5514,7 @@ class ContentObjectRenderer {
 					case 'gp':
 						// Merge GET and POST and get $key out of the merged array
 						$getPostArray = GeneralUtility::_GET();
-						\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($getPostArray, GeneralUtility::_POST());
+						ArrayUtility::mergeRecursiveWithOverrule($getPostArray, GeneralUtility::_POST());
 						$retVal = $this->getGlobal($key, $getPostArray);
 						break;
 					case 'tsfe':
@@ -6691,11 +6692,11 @@ class ContentObjectRenderer {
 				break;
 			case 'GET,POST':
 				$currentQueryArray = GeneralUtility::_GET();
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_POST());
+				ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_POST());
 				break;
 			case 'POST,GET':
 				$currentQueryArray = GeneralUtility::_POST();
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_GET());
+				ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_GET());
 				break;
 			default:
 				$currentQueryArray = GeneralUtility::explodeUrl2Array($this->getEnvironmentVariable('QUERY_STRING'), TRUE);
@@ -6705,14 +6706,14 @@ class ContentObjectRenderer {
 			$exclude = GeneralUtility::explodeUrl2Array($exclude, TRUE);
 			// never repeat id
 			$exclude['id'] = 0;
-			$newQueryArray = GeneralUtility::arrayDiffAssocRecursive($currentQueryArray, $exclude);
+			$newQueryArray = ArrayUtility::arrayDiffAssocRecursive($currentQueryArray, $exclude);
 		} else {
 			$newQueryArray = $currentQueryArray;
 		}
 		if ($forceOverruleArguments) {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments);
+			ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments);
 		} else {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, FALSE);
+			ArrayUtility::mergeRecursiveWithOverrule($newQueryArray, $overruleQueryArguments, FALSE);
 		}
 		return GeneralUtility::implodeArrayForUrl('', $newQueryArray, '', FALSE, TRUE);
 	}

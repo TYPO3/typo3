@@ -1416,7 +1416,7 @@ class GeneralUtility {
 	 *
 	 * Comparison to PHP in_array():
 	 * -> $array = array(0, 1, 2, 3);
-	 * -> variant_a := \TYPO3\CMS\Core\Utility\GeneralUtility::inArray($array, $needle)
+	 * -> variant_a := \TYPO3\CMS\Core\Utility\ArrayUtility::inArray($array, $needle)
 	 * -> variant_b := in_array($needle, $array)
 	 * -> variant_c := in_array($needle, $array, TRUE)
 	 * +---------+-----------+-----------+-----------+
@@ -1431,14 +1431,11 @@ class GeneralUtility {
 	 * @param array $in_array One-dimensional array of items
 	 * @param string $item Item to check for
 	 * @return bool TRUE if $item is in the one-dimensional array $in_array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::inArray() instead
 	 */
 	static public function inArray(array $in_array, $item) {
-		foreach ($in_array as $val) {
-			if (!is_array($val) && (string)$val === (string)$item) {
-				return TRUE;
-			}
-		}
-		return FALSE;
+		static::logDeprecatedFunction();
+		return ArrayUtility::inArray($in_array, $item);
 	}
 
 	/**
@@ -1542,16 +1539,11 @@ class GeneralUtility {
 	 * @param array $array Array containing the values
 	 * @param string $cmpValue Value to search for and if found remove array entry where found.
 	 * @return array Output array with entries removed if search string is found
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::removeArrayEntryByValue() instead
 	 */
 	static public function removeArrayEntryByValue(array $array, $cmpValue) {
-		foreach ($array as $k => $v) {
-			if (is_array($v)) {
-				$array[$k] = self::removeArrayEntryByValue($v, $cmpValue);
-			} elseif ((string)$v === (string)$cmpValue) {
-				unset($array[$k]);
-			}
-		}
-		return $array;
+		static::logDeprecatedFunction();
+		return ArrayUtility::removeArrayEntryByValue($array, $cmpValue);
 	}
 
 	/**
@@ -1576,29 +1568,11 @@ class GeneralUtility {
 	 * @param mixed $keepItems The items which are allowed/kept in the array - accepts array or csv string
 	 * @param string $getValueFunc (optional) Callback function used to get the value to keep
 	 * @return array The filtered/reduced array with the kept items
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::keepItemsInArray() instead
 	 */
 	static public function keepItemsInArray(array $array, $keepItems, $getValueFunc = NULL) {
-		if ($array) {
-			// Convert strings to arrays:
-			if (is_string($keepItems)) {
-				$keepItems = self::trimExplode(',', $keepItems);
-			}
-			// Check if valueFunc can be executed:
-			if (!is_callable($getValueFunc)) {
-				$getValueFunc = NULL;
-			}
-			// Do the filtering:
-			if (is_array($keepItems) && count($keepItems)) {
-				foreach ($array as $key => $value) {
-					// Get the value to compare by using the callback function:
-					$keepValue = isset($getValueFunc) ? call_user_func($getValueFunc, $value) : $value;
-					if (!in_array($keepValue, $keepItems)) {
-						unset($array[$key]);
-					}
-				}
-			}
-		}
-		return $array;
+		static::logDeprecatedFunction();
+		return ArrayUtility::keepItemsInArray($array, $keepItems, $getValueFunc);
 	}
 
 	/**
@@ -1736,16 +1710,11 @@ class GeneralUtility {
 	 *
 	 * @param array	$array Array by reference which should be remapped
 	 * @param array	$mappingTable Array with remap information, array/$oldKey => $newKey)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::remapArrayKeys() instead
 	 */
 	static public function remapArrayKeys(&$array, $mappingTable) {
-		if (is_array($mappingTable)) {
-			foreach ($mappingTable as $old => $new) {
-				if ($new && isset($array[$old])) {
-					$array[$new] = $array[$old];
-					unset($array[$old]);
-				}
-			}
-		}
+		static::logDeprecatedFunction();
+		ArrayUtility::remapArrayKeys($array, $mappingTable);
 	}
 
 	/**
@@ -1768,19 +1737,11 @@ class GeneralUtility {
 	 * @param array $array1 Source array
 	 * @param array $array2 Reduce source array by this array
 	 * @return array Source array reduced by keys also present in second array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::arrayDiffAssocRecursive() instead
 	 */
 	static public function arrayDiffAssocRecursive(array $array1, array $array2) {
-		$differenceArray = array();
-		foreach ($array1 as $key => $value) {
-			if (!array_key_exists($key, $array2)) {
-				$differenceArray[$key] = $value;
-			} elseif (is_array($value)) {
-				if (is_array($array2[$key])) {
-					$differenceArray[$key] = self::arrayDiffAssocRecursive($value, $array2[$key]);
-				}
-			}
-		}
-		return $differenceArray;
+		static::logDeprecatedFunction();
+		return ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
 	}
 
 	/**
@@ -1825,16 +1786,11 @@ class GeneralUtility {
 	 *
 	 * @param array $array array to be sorted recursively, passed by reference
 	 * @return bool TRUE if param is an array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8  - use ArrayUtility::naturalKeySortRecursive() instead
 	 */
 	static public function naturalKeySortRecursive(&$array) {
-		if (!is_array($array)) {
-			return FALSE;
-		}
-		uksort($array, 'strnatcasecmp');
-		foreach ($array as $key => $value) {
-			self::naturalKeySortRecursive($array[$key]);
-		}
-		return TRUE;
+		static::logDeprecatedFunction();
+		return ArrayUtility::naturalKeySortRecursive($array);
 	}
 
 	/*************************

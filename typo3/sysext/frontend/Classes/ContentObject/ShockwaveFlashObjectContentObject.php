@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
  * Contains SWFOBJECT class object.
  *
@@ -85,15 +87,15 @@ class ShockwaveFlashObjectContentObject extends AbstractContentObject {
 			}
 		}
 		if (is_array($conf['flashvars.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
+			ArrayUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
 		}
 		$flashvars = 'var flashvars = ' . (count($conf['flashvars.']) ? json_encode($conf['flashvars.']) : '{}') . ';';
 		if (is_array($conf['params.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
+			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 		}
 		$params = 'var params = ' . (count($conf['params.']) ? json_encode($conf['params.']) : '{}') . ';';
 		if (is_array($conf['attributes.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
+			ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
 		$attributes = 'var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
 		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];

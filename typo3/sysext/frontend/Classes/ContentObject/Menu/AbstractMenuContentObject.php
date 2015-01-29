@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -1169,7 +1170,7 @@ class AbstractMenuContentObject {
 				// Not hidden in navigation
 				if (!$data['nav_hide'] || $this->conf['includeNotInMenu']) {
 					// not in banned uid's
-					if (!GeneralUtility::inArray($banUidArray, $uid)) {
+					if (!ArrayUtility::inArray($banUidArray, $uid)) {
 						// Checks if the default language version can be shown:
 						// Block page is set, if l18n_cfg allows plus: 1) Either default language or 2) another language but NO overlay record set for page!
 						$blockPage = $data['l18n_cfg'] & 1 && (!$GLOBALS['TSFE']->sys_language_uid || $GLOBALS['TSFE']->sys_language_uid && !$data['_PAGES_OVERLAY']);

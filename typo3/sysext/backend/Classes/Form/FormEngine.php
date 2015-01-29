@@ -2478,7 +2478,7 @@ class FormEngine {
 			$imageExtensionList = GeneralUtility::trimExplode(',', strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), TRUE);
 			$imagesOnly = TRUE;
 			foreach ($allowedExtensionList as $allowedExtension) {
-				if (!GeneralUtility::inArray($imageExtensionList, $allowedExtension)) {
+				if (!ArrayUtility::inArray($imageExtensionList, $allowedExtension)) {
 					$imagesOnly = FALSE;
 					break;
 				}

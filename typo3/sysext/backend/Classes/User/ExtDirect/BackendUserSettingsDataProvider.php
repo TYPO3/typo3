@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\User\ExtDirect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -121,7 +122,7 @@ class BackendUserSettingsDataProvider {
 		$list = $this->get($key);
 		if (GeneralUtility::inList($list, $value)) {
 			$list = GeneralUtility::trimExplode(',', $list, TRUE);
-			$list = GeneralUtility::removeArrayEntryByValue($list, $value);
+			$list = ArrayUtility::removeArrayEntryByValue($list, $value);
 			$this->set($key, implode(',', $list));
 		}
 	}

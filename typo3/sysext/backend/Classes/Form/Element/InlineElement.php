@@ -1667,7 +1667,7 @@ class InlineElement {
 			$selItems = $this->fObj->addSelectOptionsToItemArray($this->fObj->initItemArray($PA['fieldConf']), $PA['fieldConf'], $this->fObj->setTSconfig($table, $row), $field);
 
 			// Possibly filter some items:
-			$selItems = GeneralUtility::keepItemsInArray(
+			$selItems = ArrayUtility::keepItemsInArray(
 				$selItems,
 				$PA['fieldTSConfig']['keepItems'],
 				function ($value) {

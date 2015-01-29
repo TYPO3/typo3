@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
  * JavaScript/Selectorbox based menus
  *
@@ -126,7 +128,7 @@ class JavaScriptMenuContentObject extends AbstractMenuContentObject {
 			// If the spacer-function is not enabled, spacers will not enter the $menuArr
 			if ($this->mconf['SPC'] || !$spacer) {
 				// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($banUidArray, $uid)) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !ArrayUtility::inArray($banUidArray, $uid)) {
 					if ($count < $levels) {
 						$addLines = $this->generate_level($levels, $count + 1, $data['uid'], '', $MP_array_sub);
 					} else {

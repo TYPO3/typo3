@@ -1,19 +1,21 @@
 <?php
 namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 
-/*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
- *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * An URI Builder
@@ -522,7 +524,7 @@ class UriBuilder {
 			$pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
 			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		}
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $prefixedControllerArguments);
+		ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $prefixedControllerArguments);
 		return $this->build();
 	}
 
@@ -600,7 +602,7 @@ class UriBuilder {
 			}
 			foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
 				$argumentToBeExcluded = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($argumentToBeExcluded, TRUE);
-				$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
+				$arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
 			}
 		} else {
 			$arguments = array(
@@ -608,7 +610,7 @@ class UriBuilder {
 				'id' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
 			);
 		}
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
+		ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
 		$arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
 		$this->lastArguments = $arguments;
 		$moduleName = $arguments['M'];

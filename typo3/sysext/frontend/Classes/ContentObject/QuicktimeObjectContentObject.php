@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
  * Contains QTOBJECT class object.
  *
@@ -56,7 +58,7 @@ class QuicktimeObjectContentObject extends AbstractContentObject {
 		// Merge with default parameters
 		$conf['params.'] = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.']);
 		if (is_array($conf['params.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
+			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 			foreach ($conf['params.'] as $key => $value) {
 				$params .= $qtObject . '.addParam("' . $key . '", "' . $value . '");' . LF;
 			}

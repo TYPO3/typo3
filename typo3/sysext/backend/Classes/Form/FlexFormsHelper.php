@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -179,7 +180,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			// Manipulate field
 			if (!empty($field['TCEforms']) && is_array($field['TCEforms'])) {
 				$sheet[$fieldName]['TCEforms'] = $field['TCEforms'];
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($sheet[$fieldName]['TCEforms'], $fieldConf);
+				ArrayUtility::mergeRecursiveWithOverrule($sheet[$fieldName]['TCEforms'], $fieldConf);
 			}
 			// Manipulate only select fields, other field types will stop here
 			if (empty($field['TCEforms']['config']['type']) || $field['TCEforms']['config']['type'] != 'select' || $field['TCEforms']['config']['renderMode'] === 'tree') {
@@ -189,7 +190,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($field['TCEforms']), $field['TCEforms'], $this->setTSconfig($table, $tableRow), $tableField);
 
 			// Possibly filter some items
-			$selItems = GeneralUtility::keepItemsInArray(
+			$selItems = ArrayUtility::keepItemsInArray(
 				$selItems,
 				$keepItems,
 				function ($value) {

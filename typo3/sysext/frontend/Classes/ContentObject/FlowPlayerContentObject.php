@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+
 /**
  * Contains FlowPlayer class object.
  *
@@ -318,7 +320,7 @@ class FlowPlayerContentObject extends AbstractContentObject {
 		$flowplayerVideoConfig = array();
 		$flowplayerAudioConfig = array();
 		if (is_array($conf['flashvars.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
+			ArrayUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
 		} else {
 			$conf['flashvars.'] = array();
 		}
@@ -380,7 +382,7 @@ class FlowPlayerContentObject extends AbstractContentObject {
 		$flowplayerAudioJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerAudioConfig));
 		// Assemble param tags (required?)
 		if (is_array($conf['params.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
+			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 		}
 		$videoFlashParams = '';
 		if (is_array($conf['params.'])) {
@@ -397,7 +399,7 @@ class FlowPlayerContentObject extends AbstractContentObject {
 		// Assemble audio/video tag attributes
 		$attributes = '';
 		if (is_array($conf['attributes.'])) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
+			ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
 		foreach ($this->html5TagAttributes as $attribute) {
 			if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strToLower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
