@@ -114,7 +114,7 @@ class TestSetup extends Action\AbstractAction {
 			$mailMessage
 				->addTo($recipient)
 				->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-				->setSubject('Test TYPO3 CMS mail delivery')
+				->setSubject($this->getEmailSubject())
 				->setBody('<html><body>html test content</body></html>', 'text/html')
 				->addPart('TEST CONTENT')
 				->send();
@@ -149,6 +149,20 @@ class TestSetup extends Action\AbstractAction {
 		return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])
 			? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
 			: 'TYPO3 CMS install tool';
+	}
+
+	/**
+	 * Gets email subject from configuration
+	 * ['TYPO3_CONF_VARS']['SYS']['sitename']
+	 * If this setting is empty, it falls back to a default string.
+	 *
+	 * @return string
+	 */
+	protected function getEmailSubject() {
+		$name = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
+			? ' from site "' .  $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"'
+			: '';
+		return 'Test TYPO3 CMS mail delivery' . $name;
 	}
 
 	/**
