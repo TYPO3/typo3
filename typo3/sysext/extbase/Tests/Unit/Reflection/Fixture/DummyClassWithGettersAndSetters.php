@@ -118,7 +118,7 @@ class DummyClassWithGettersAndSetters {
 	/**
 	 * sets the AnotherBooleanProperty
 	 *
-	 * @param boolean $anotherBooleanProperty
+	 * @param bool $anotherBooleanProperty
 	 *
 	 * @return void
 	 */

@@ -24,7 +24,7 @@ class DeleteLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	/**
 	 * Create link to delete a note
 	 *
-	 * @param integer $id uid of the note
+	 * @param int $id uid of the note
 	 * @return string link
 	 */
 	public function render($id) {

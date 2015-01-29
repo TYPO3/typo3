@@ -40,7 +40,7 @@ class LinkHandler extends AbstractLinktype {
 	 * is disabled. Otherwise the error will only be reported if the
 	 * record is deleted or does not exist.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $reportHiddenRecords;
 

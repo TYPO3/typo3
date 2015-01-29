@@ -1162,7 +1162,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param array $classesArray: reference to the array of classes dependencies
 	 * @param string $requiringClass: class requiring at some iteration level from the initial requiring class
 	 * @param string $initialClass: initial class from which a circular relationship is being searched
-	 * @param integer $recursionLevel: depth of recursive call
+	 * @param int $recursionLevel: depth of recursive call
 	 * @return boolean TRUE, if a circular relationship is found
 	 */
 	protected function hasCircularDependency(&$classesArray, $requiringClass, $initialClass, $recursionLevel = 0) {

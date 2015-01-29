@@ -46,9 +46,9 @@ class PermissionsViewHelper extends AbstractViewHelper implements CompilableInte
 	/**
 	 * Return permissions.
 	 *
-	 * @param integer $permission Current permission
+	 * @param int $permission Current permission
 	 * @param string $scope "user" / "group" / "everybody"
-	 * @param integer $pageId
+	 * @param int $pageId
 	 * @return string
 	 */
 	public function render($permission, $scope, $pageId) {

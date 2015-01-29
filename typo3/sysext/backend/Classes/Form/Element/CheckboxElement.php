@@ -135,11 +135,11 @@ class CheckboxElement extends AbstractFormElement {
 	 * This functions builds the HTML output for the checkbox
 	 *
 	 * @param string $label Label of this item
-	 * @param integer $itemCounter Number of this element in the list of all elements
-	 * @param integer $formElementValue Value of this element
-	 * @param integer $numberOfItems Full number of items
+	 * @param int $itemCounter Number of this element in the list of all elements
+	 * @param int $formElementValue Value of this element
+	 * @param int $numberOfItems Full number of items
 	 * @param array $additionalInformation Information with additional configuration options.
-	 * @param boolean $disabled TRUE if form element is disabled
+	 * @param bool $disabled TRUE if form element is disabled
 	 * @return string Single element HTML
 	 */
 	protected function renderSingleCheckboxElement($label, $itemCounter, $formElementValue, $numberOfItems, $additionalInformation, $disabled) {

@@ -936,7 +936,7 @@ class SelectElement extends AbstractFormElement {
 	}
 
 	/**
-	 * @param boolean $forceAlternativeFieldValueUse
+	 * @param bool $forceAlternativeFieldValueUse
 	 */
 	public function setForceAlternativeFieldValueUse($forceAlternativeFieldValueUse) {
 		$this->forceAlternativeFieldValueUse = $forceAlternativeFieldValueUse;
