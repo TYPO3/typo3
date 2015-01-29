@@ -917,7 +917,11 @@ class ClickMenu {
 					basename($identifier),
 					$this->clipObj->currentMode()
 				);
-				$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
+				$clickedFileOrFolder = ResourceFactory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
+				$fileOrFolderInClipBoard = ResourceFactory::getInstance()->retrieveFileOrFolderObject($selItem);
+				if (!$fileOrFolderInClipBoard instanceof Folder || !$fileOrFolderInClipBoard->getStorage()->isWithinFolder($fileOrFolderInClipBoard, $clickedFileOrFolder)) {
+					$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
+				}
 			}
 			$menuItems[] = 'spacer';
 			// Delete:

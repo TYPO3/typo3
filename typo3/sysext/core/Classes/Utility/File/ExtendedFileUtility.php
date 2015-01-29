@@ -564,7 +564,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
 				$this->writelog(2, 1, 121, 'You don\'t have full access to the destination directory "%s"!', array($targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException $e) {
-				$this->writelog(2, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', array($targetFolderObject->getIdentifier(), $sourceFolderObject->getIdentifier()));
+				$this->writelog(2, 1, 122, 'Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!', array($sourceFolderObject->getName(), $targetFolderObject->getName()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException $e) {
 				$this->writelog(2, 1, 123, 'Target "%s" already exists!', array($targetFolderObject->getIdentifier()));
 			} catch (\BadMethodCallException $e) {
@@ -648,7 +648,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
 				$this->writelog(3, 1, 121, 'You don\'t have full access to the destination directory "%s"!', array($targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException $e) {
-				$this->writelog(3, 1, 122, 'Destination cannot be inside the target! D="%s", T="%s"', array($targetFolderObject->getIdentifier(), $sourceFolderObject->getIdentifier()));
+				$this->writelog(3, 1, 122, 'Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!', array($sourceFolderObject->getName(), $targetFolderObject->getName()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException $e) {
 				$this->writelog(3, 1, 123, 'Target "%s" already exists!', array($targetFolderObject->getIdentifier()));
 			} catch (\BadMethodCallException $e) {

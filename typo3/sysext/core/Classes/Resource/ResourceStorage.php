@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
+use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -1721,6 +1722,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 *
 	 * @throws \Exception|\TYPO3\CMS\Core\Exception
 	 * @throws \InvalidArgumentException
+	 * @throws InvalidTargetFolderException
 	 * @return Folder
 	 */
 	public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
@@ -1735,6 +1737,16 @@ class ResourceStorage implements ResourceStorageInterface {
 		// Get all file objects now so we are able to update them after moving the folder
 		$fileObjects = $this->getAllFileObjectsInFolder($folderToMove);
 		if ($sourceStorage === $this) {
+			if ($this->isWithinFolder($folderToMove, $targetParentFolder)) {
+				throw new InvalidTargetFolderException(
+					sprintf(
+						'Cannot move folder "%s" into target folder "%s", because the target folder is already within the folder to be moved!',
+						$folderToMove->getName(),
+						$targetParentFolder->getName()
+					),
+					1422723050
+				);
+			}
 			$fileMappings = $this->driver->moveFolderWithinStorage($folderToMove->getIdentifier(), $targetParentFolder->getIdentifier(), $sanitizedNewFolderName);
 		} else {
 			$fileMappings = $this->moveFolderBetweenStorages($folderToMove, $targetParentFolder, $sanitizedNewFolderName);
@@ -1772,6 +1784,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param string $newFolderName
 	 * @param string $conflictMode  "overrideExistingFolder", "renameNewFolder", "cancel
 	 * @return Folder The new (copied) folder object
+	 * @throws InvalidTargetFolderException
 	 */
 	public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName = NULL, $conflictMode = 'renameNewFolder') {
 		// @todo implement the $conflictMode handling
@@ -1784,15 +1797,21 @@ class ResourceStorage implements ResourceStorageInterface {
 		$sourceStorage = $folderToCopy->getStorage();
 		// call driver method to move the file
 		// that also updates the file object properties
-		try {
-			if ($sourceStorage === $this) {
-				$this->driver->copyFolderWithinStorage($folderToCopy->getIdentifier(), $targetParentFolder->getIdentifier(), $sanitizedNewFolderName);
-				$returnObject = $this->getFolder($targetParentFolder->getSubfolder($sanitizedNewFolderName)->getIdentifier());
-			} else {
-				$this->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $sanitizedNewFolderName);
+		if ($sourceStorage === $this) {
+			if ($this->isWithinFolder($folderToCopy, $targetParentFolder)) {
+				throw new InvalidTargetFolderException(
+					sprintf(
+						'Cannot copy folder "%s" into target folder "%s", because the target folder is already within the folder to be copied!',
+						$folderToCopy->getName(),
+						$targetParentFolder->getName()
+					),
+					1422723059
+				);
 			}
-		} catch (\TYPO3\CMS\Core\Exception $e) {
-			echo $e->getMessage();
+			$this->driver->copyFolderWithinStorage($folderToCopy->getIdentifier(), $targetParentFolder->getIdentifier(), $sanitizedNewFolderName);
+			$returnObject = $this->getFolder($targetParentFolder->getSubfolder($sanitizedNewFolderName)->getIdentifier());
+		} else {
+			$this->copyFolderBetweenStorages($folderToCopy, $targetParentFolder, $sanitizedNewFolderName);
 		}
 		$this->emitPostFolderCopySignal($folderToCopy, $targetParentFolder, $returnObject->getName());
 		return $returnObject;
@@ -2007,6 +2026,23 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	public function isWithinProcessingFolder($identifier) {
 		return $this->driver->isWithin($this->getProcessingFolder()->getIdentifier(), $identifier);
+	}
+
+	/**
+	 * Checks if a resource (file or folder) is within the given folder
+	 *
+	 * @param Folder $folder
+	 * @param ResourceInterface $resource
+	 * @return bool
+	 */
+	public function isWithinFolder(Folder $folder, ResourceInterface $resource) {
+		if ($folder->getStorage() !== $this) {
+			throw new \InvalidArgumentException('Given folder "' . $folder->getIdentifier() . '" is not part of this storage!', 1422709241);
+		}
+		if ($folder->getStorage() !== $resource->getStorage()) {
+			return FALSE;
+		}
+		return $this->driver->isWithin($folder->getIdentifier(), $resource->getIdentifier());
 	}
 
 	/**
