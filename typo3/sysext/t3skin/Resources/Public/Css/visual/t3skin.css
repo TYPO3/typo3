@@ -8274,9 +8274,7 @@ table#typo3-history-item img {
   background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
   background-repeat: repeat-x;
   width: 100%;
-}
-#typo3-browse-links-php #typo3-tabmenu {
-  margin-top: 10px;
+  padding-top: 5px;
 }
 #typo3-browse-links-php a {
   text-decoration: none;
