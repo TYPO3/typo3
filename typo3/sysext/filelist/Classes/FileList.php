@@ -518,7 +518,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	 */
 	public function linkWrapDir($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		$href = $this->backPath . $this->script . '&id=' . rawurlencode($folderObject->getCombinedIdentifier());
-		$onclick = ' onclick="' . htmlspecialchars(('top.content.nav_frame.hilight_row("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
+		$onclick = ' onclick="' . htmlspecialchars(('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
 		// Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
 		if ((string)$title === strip_tags($title)) {
 			return '<a href="' . htmlspecialchars($href) . '"' . $onclick . ' title="' . htmlspecialchars($title) . '">' . GeneralUtility::fixed_lgd_cs($title, $this->fixedL) . '</a>';
