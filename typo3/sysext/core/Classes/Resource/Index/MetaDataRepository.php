@@ -66,7 +66,7 @@ class MetaDataRepository implements SingletonInterface {
 			if ($file->getType() === File::FILETYPE_IMAGE && $file->getStorage()->getDriverType() === 'Local') {
 				$fileNameAndPath = $file->getForLocalProcessing(FALSE);
 
-				$imageInfo = GeneralUtility::makeInstance(FileType\ImageInfo::class, $fileNameAndPath);
+				$imageInfo = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Type\\File\\ImageInfo', $fileNameAndPath);
 
 				$additionalMetaInformation = array(
 					'width' => $imageInfo->getWidth(),
