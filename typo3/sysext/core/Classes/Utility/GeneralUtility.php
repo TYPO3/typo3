@@ -3015,7 +3015,7 @@ Connection: close
 	 */
 	static public function getAllFilesAndFoldersInPath(array $fileArr, $path, $extList = '', $regDirs = FALSE, $recursivityLevels = 99, $excludePattern = '') {
 		if ($regDirs) {
-			$fileArr[] = $path;
+			$fileArr[md5($path)] = $path;
 		}
 		$fileArr = array_merge($fileArr, self::getFilesInDir($path, $extList, 1, 1, $excludePattern));
 		$dirs = self::get_dirs($path);

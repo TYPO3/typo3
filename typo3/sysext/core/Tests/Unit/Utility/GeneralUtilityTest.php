@@ -4597,4 +4597,21 @@ text with a ' . $urlMatch . '$|s'),
 		$this->assertEquals($expected, GeneralUtilityFixture::stripHttpHeaders($httpResponse));
 	}
 
+	/**
+	 * @test
+	 */
+	public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys() {
+		$directory = PATH_site . 'typo3temp/' . $this->getUniqueId('directory_');
+		mkdir($directory);
+		$filesAndDirectories = Utility\GeneralUtility::getAllFilesAndFoldersInPath(array(), $directory, '', TRUE);
+		$check = TRUE;
+		foreach ($filesAndDirectories as $md5 => $path) {
+			if (!preg_match('/^[a-f0-9]{32}$/', $md5)) {
+				$check = FALSE;
+			}
+		}
+		Utility\GeneralUtility::rmdir($directory);
+		$this->assertTrue($check);
+	}
+
 }
