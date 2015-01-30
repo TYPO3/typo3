@@ -95,7 +95,9 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 		// Final mapping array
 		$classNameToAliasMapping = array();
 		foreach ($this->packages as $package) {
-			if (!$package instanceof \TYPO3\CMS\Core\Package\Package) {
+			if (!$package instanceof \TYPO3\CMS\Core\Package\Package || $package->isProtected()) {
+				// Skip non core packages and all protected packages.
+				// The latter will be covered by composer class loader.
 				continue;
 			}
 			foreach ($package->getClassAliases() as $aliasClassName => $className) {
