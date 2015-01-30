@@ -2228,8 +2228,6 @@ class GraphicalFunctions {
 				// Making the temporary filename:
 				$this->createTempSubDir('pics/');
 				$output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
-				// Register temporary filename:
-				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 				if ($this->dontCheckForExistingTempFile || !file_exists($output)) {
 					$this->imageMagickExec($imagefile, $output, $command, $frame);
 				}
@@ -2677,7 +2675,6 @@ class GraphicalFunctions {
 					}
 					break;
 			}
-			$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $file;
 		}
 		return $file;
 	}
