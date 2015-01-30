@@ -324,7 +324,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * @param array $cmds $cmds['data'] is the file/folder to delete
 	 * @return bool Returns TRUE upon success
 	 */
-	public function func_delete($cmds) {
+	public function func_delete(array $cmds) {
 		$result = FALSE;
 		if (!$this->isInit) {
 			return $result;
@@ -333,7 +333,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 		// for backwards compatibility: the combined file identifier was the path+filename
 		try {
 			$fileObject = $this->getFileObject($cmds['data']);
-		} catch (ResourceDoesNotExistException $ex) {
+		} catch (ResourceDoesNotExistException $e) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf( $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.fileNotFound'), $cmds['data']),
@@ -431,34 +431,78 @@ class ExtendedFileUtility extends BasicFileUtility {
 				}
 			}
 		} else {
-			try {
-				/** @var \TYPO3\CMS\Core\Resource\Folder $fileObject */
-				$result = $fileObject->delete(TRUE);
-				if ($result) {
-					// notify the user that the folder was deleted
-					/** @var FlashMessage $flashMessage */
-					$flashMessage = GeneralUtility::makeInstance(
-						FlashMessage::class,
-						sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderDeleted'),
-						FlashMessage::OK,
-						TRUE
-					);
-					$this->addFlashMessage($flashMessage);
-					// Log success
-					$this->writelog(4, 0, 3, 'Directory "%s" deleted', array($fileObject->getIdentifier()));
+			/** @var Folder $fileObject */
+			if (!$this->folderHasFilesInUse($fileObject)) {
+				try {
+					$result = $fileObject->delete(TRUE);
+					if ($result) {
+						// notify the user that the folder was deleted
+						/** @var FlashMessage $flashMessage */
+						$flashMessage = GeneralUtility::makeInstance(
+							FlashMessage::class,
+							sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderDeleted'), $fileObject->getName()),
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderDeleted'),
+							FlashMessage::OK,
+							TRUE
+						);
+						$this->addFlashMessage($flashMessage);
+						// Log success
+						$this->writelog(4, 0, 3, 'Directory "%s" deleted', array($fileObject->getIdentifier()));
+					}
+				} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
+					$this->writelog(4, 1, 120, 'Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).', array($fileObject->getIdentifier()));
+				} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
+					$this->writelog(4, 1, 123, 'You are not allowed to access the directory', array($fileObject->getIdentifier()));
+				} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
+					$this->writelog(4, 1, 121, 'Target was not within your mountpoints! T="%s"', array($fileObject->getIdentifier()));
+				} catch (\TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException $e) {
+					$this->writelog(4, 1, 120, 'Could not delete directory "%s"! Write-permission problem?', array($fileObject->getIdentifier()));
 				}
-			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
-				$this->writelog(4, 1, 120, 'Could not delete directory! Is directory "%s" empty? (You are not allowed to delete directories recursively).', array($fileObject->getIdentifier()));
-			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
-				$this->writelog(4, 1, 123, 'You are not allowed to access the directory', array($fileObject->getIdentifier()));
-			} catch (\TYPO3\CMS\Core\Resource\Exception\NotInMountPointException $e) {
-				$this->writelog(4, 1, 121, 'Target was not within your mountpoints! T="%s"', array($fileObject->getIdentifier()));
-			} catch (\TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException $e) {
-				$this->writelog(4, 1, 120, 'Could not delete directory "%s"! Write-permission problem?', array($fileObject->getIdentifier()));
 			}
 		}
+
 		return $result;
+	}
+
+	/**
+	 * Checks files in given folder recursively for for existing references.
+	 *
+	 * Creates a flash message if there are references.
+	 *
+	 * @param Folder $folder
+	 * @return bool TRUE if folder has files in use, FALSE otherwise
+	 */
+	public function folderHasFilesInUse(Folder $folder) {
+		$files = $folder->getFiles(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, TRUE);
+		if (empty($files)) {
+			return FALSE;
+		}
+
+		/** @var int[] $fileUids */
+		$fileUids = array();
+		foreach ($files as $file) {
+			$fileUids[] = $file->getUid();
+		}
+		$numberOfReferences = $this->getDatabaseConnection()->exec_SELECTcountRows(
+			'*',
+			'sys_refindex',
+			'deleted=0 AND ref_table="sys_file" AND ref_uid IN (' . implode(',', $fileUids) . ') AND tablename<>"sys_file_metadata"'
+		);
+
+		$hasReferences = $numberOfReferences > 0;
+		if ($hasReferences) {
+			/** @var FlashMessage $flashMessage */
+			$flashMessage = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences'),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences'),
+				FlashMessage::WARNING,
+				TRUE
+			);
+			$this->addFlashMessage($flashMessage);
+		}
+
+		return $hasReferences;
 	}
 
 	/**
