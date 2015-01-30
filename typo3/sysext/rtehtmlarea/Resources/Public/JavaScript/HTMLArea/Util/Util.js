@@ -145,14 +145,15 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/Util',
 		 */
 		testCssPropertySupport: function (element, property, value) {
 			var style = element.style;
+			if (!(property in style)) {
+				return false;
+			}
 			var before = style[property];
 			try {
 				style[property] = value;
 			} catch (e) {}
 			var after = style[property];
-			if (typeof before !== 'undefined') {
-				style[property] = before;
-			}
+			style[property] = before;
 			return before !== after;
 		}
 	};
