@@ -8968,6 +8968,10 @@ fieldset[disabled] .table .btn-checkbox-holder input[type=checkbox]:checked + .b
 .typo3-TCEforms .c-tablayer td {
   vertical-align: top;
 }
+.typo3-TCEforms .c-tablayer .btn-after {
+  margin-left: 15px;
+  color: #666;
+}
 .typo3-TCEforms .c-tablayer > table {
   margin-bottom: 0;
 }

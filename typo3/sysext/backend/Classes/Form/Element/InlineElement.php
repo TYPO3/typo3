@@ -950,6 +950,8 @@ class InlineElement {
 			}
 		}
 
+		$allowedLabel = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', TRUE);
+		$item .= '<span class="btn-after">' . $allowedLabel . ' ' . $allowed . '</span>';
 		return $item;
 	}
 
