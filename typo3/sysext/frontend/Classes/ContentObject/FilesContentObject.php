@@ -322,13 +322,14 @@ class FilesContentObject extends AbstractContentObject {
 			}
 		}
 
-		$references = $pageRepository->getFileReferences(
-			$referencesForeignTable,
-			$referencesFieldName,
-			$element
-		);
-
-		$this->addToArray($references, $fileObjects);
+		if (is_array($element)) {
+			$references = $pageRepository->getFileReferences(
+				$referencesForeignTable,
+				$referencesFieldName,
+				$element
+			);
+			$this->addToArray($references, $fileObjects);
+		}
 	}
 
 	/**
