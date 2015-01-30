@@ -34,7 +34,7 @@ class RenderChildrenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpe
 	/**
 
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', FALSE);
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\RenderChildrenViewHelper::class, array('renderChildren'));
 		$this->viewHelper->_set('controllerContext', $this->controllerContext);

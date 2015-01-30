@@ -23,7 +23,7 @@ class Nl2brViewHelperTest extends ViewHelperBaseTestcase {
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getMock('TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper', array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

@@ -36,7 +36,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	 */
 	protected $mockConfigurationManager;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->mockExtensionService = $this->getMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
 		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);

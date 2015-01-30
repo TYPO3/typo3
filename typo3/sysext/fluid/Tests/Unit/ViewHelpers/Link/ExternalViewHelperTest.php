@@ -21,7 +21,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\ExternalViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

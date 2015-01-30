@@ -34,7 +34,7 @@ class WidgetRequestHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->widgetRequestHandler = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler::class, array('dummy'), array(), '', FALSE);
 	}
 

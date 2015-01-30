@@ -26,7 +26,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	protected $backupLocales = array();
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		// Store all locale categories manipulated in tests for reconstruction in tearDown
 		$this->backupLocales = array(
@@ -40,7 +40,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		foreach ($this->backupLocales as $category => $locale) {
 			setlocale(constant($category), $locale);
 		}

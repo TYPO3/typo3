@@ -73,7 +73,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	 */
 	protected $backendUser;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->backendUser = $this->setUpBackendUserFromFixture(self::VALUE_BackendUserId);
@@ -84,7 +84,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		$this->assertErrorLogEntries();
 		unset($this->actionService);
 		unset($this->recordIds);

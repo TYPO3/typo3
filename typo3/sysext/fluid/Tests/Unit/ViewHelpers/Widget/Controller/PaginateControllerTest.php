@@ -53,7 +53,7 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->query = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Query::class, array('dummy'), array('someType'));
 		$this->querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
 		$this->query->_set('querySettings', $this->querySettings);

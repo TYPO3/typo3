@@ -24,7 +24,7 @@ class PdoBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Sets up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		if (!extension_loaded('pdo_sqlite')) {
 			$this->markTestSkipped('pdo_sqlite extension was not available');
 		}

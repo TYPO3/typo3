@@ -89,7 +89,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->createMockedLoggerAndLogManager();
 
@@ -117,7 +117,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject->start(array(), 'tt_content');
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

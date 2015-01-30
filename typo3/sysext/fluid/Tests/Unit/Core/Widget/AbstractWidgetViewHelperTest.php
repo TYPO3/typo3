@@ -64,7 +64,7 @@ class AbstractWidgetViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, array('validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext'));
 		$this->mockExtensionService = $this->getMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class);
 		$this->viewHelper->_set('extensionService', $this->mockExtensionService);

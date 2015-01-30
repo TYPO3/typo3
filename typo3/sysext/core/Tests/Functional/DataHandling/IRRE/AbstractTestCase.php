@@ -46,7 +46,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->setUpBackendUserFromFixture(1);
@@ -65,7 +65,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		$this->assertNoLogEntries();
 
 		$this->expectedLogEntries = 0;

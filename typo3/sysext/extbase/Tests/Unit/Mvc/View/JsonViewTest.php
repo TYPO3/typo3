@@ -41,7 +41,7 @@ class JsonViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this test case
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->view = $this->getMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, array('loadConfigurationFromYamlFile'));
 		$this->controllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', FALSE);
 		$this->response = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Response::class, array());

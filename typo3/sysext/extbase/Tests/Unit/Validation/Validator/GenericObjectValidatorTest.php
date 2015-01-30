@@ -30,7 +30,7 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator::class;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 	}
 

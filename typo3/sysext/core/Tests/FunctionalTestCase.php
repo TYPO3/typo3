@@ -173,7 +173,7 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		if (!defined('ORIGINAL_ROOT')) {
 			$this->markTestSkipped('Functional tests must be called through phpunit on CLI');
 		}

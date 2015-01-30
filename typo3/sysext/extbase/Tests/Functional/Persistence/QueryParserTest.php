@@ -41,7 +41,7 @@ class QueryParserTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	/**
 	 * Sets up this test suite.
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);

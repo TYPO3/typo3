@@ -29,7 +29,7 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->classInfoFactory = new \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory();
 	}
 

@@ -32,7 +32,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	/**
 	 * Sets up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
 		$this->backendConfigurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class, array('getTypoScriptSetup'));
 		$this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);

@@ -29,7 +29,7 @@ class AlphabeticFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphabeticFilter();
 	}
 

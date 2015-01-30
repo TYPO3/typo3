@@ -29,7 +29,7 @@ class PageViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	/**
 	 * setUp function
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

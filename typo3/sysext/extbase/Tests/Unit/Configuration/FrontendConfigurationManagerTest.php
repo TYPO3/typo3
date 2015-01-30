@@ -37,7 +37,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	/**
 	 * Sets up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->tmpl = new \stdClass();
 		$this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array('getTreeList'));

@@ -34,7 +34,7 @@ class WidgetContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->widgetContext = new \TYPO3\CMS\Fluid\Core\Widget\WidgetContext();
 	}
 

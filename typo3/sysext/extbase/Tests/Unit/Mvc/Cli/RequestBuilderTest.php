@@ -66,7 +66,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class, array('dummy'));
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->mockObjectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Cli\Request::class)->will($this->returnValue($this->request));

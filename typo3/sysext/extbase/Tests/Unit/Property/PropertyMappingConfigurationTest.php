@@ -34,7 +34,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	/**
 	 * Initialization
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 	}
 

@@ -31,7 +31,7 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $result;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->result = new \TYPO3\CMS\Extbase\Error\Result();
 	}
 

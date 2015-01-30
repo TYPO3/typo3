@@ -53,7 +53,7 @@ class CollectionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->mockValidatorResolver = $this->getAccessibleMock(
 			\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class,
 			array('createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction')

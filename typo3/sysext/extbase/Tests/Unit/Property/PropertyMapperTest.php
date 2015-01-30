@@ -36,7 +36,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->mockConfigurationBuilder = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder::class);
 		$this->mockConfiguration = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
 	}

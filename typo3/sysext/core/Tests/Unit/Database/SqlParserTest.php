@@ -26,7 +26,7 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fixture;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\SqlParser::class, array('dummy'));
 	}
 

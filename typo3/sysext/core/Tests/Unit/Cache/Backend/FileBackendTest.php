@@ -32,7 +32,7 @@ class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		if (!class_exists('org\\bovigo\\vfs\\vfsStreamWrapper')) {
 			$this->markTestSkipped('File backend tests are not available with this phpunit version.');
 		}

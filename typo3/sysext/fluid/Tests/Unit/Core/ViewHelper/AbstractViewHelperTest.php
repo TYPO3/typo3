@@ -58,7 +58,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		)
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		$this->mockReflectionService = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class, array(), array(), '', FALSE);
 	}
 

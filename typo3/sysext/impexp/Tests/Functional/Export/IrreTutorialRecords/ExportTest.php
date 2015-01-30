@@ -30,7 +30,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 		'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/irre_tutorial.xml');

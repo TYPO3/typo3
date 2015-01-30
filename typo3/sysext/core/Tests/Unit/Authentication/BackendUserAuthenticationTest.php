@@ -44,12 +44,12 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		'recursivedeleteFolder' => FALSE
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		// reset hooks
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = array();
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances();
 		parent::tearDown();
 	}

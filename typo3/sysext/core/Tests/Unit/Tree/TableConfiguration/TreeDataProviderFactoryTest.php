@@ -24,7 +24,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fixture;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = new \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory();
 		$GLOBALS['TCA'] = array();
 		$GLOBALS['TCA']['foo'] = array();

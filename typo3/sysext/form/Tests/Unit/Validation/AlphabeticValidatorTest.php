@@ -32,7 +32,7 @@ class AlphabeticValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
 		$this->subject = $this->getMock(\TYPO3\CMS\Form\Validation\AlphabeticValidator::class, array('dummy'), array(), '', FALSE);
 	}

@@ -21,7 +21,7 @@ class UploadViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 		$this->arguments['name'] = '';

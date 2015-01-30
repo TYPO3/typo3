@@ -29,7 +29,7 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$configuration = array(
 			'handlerCfg' => array(
 				'_DEFAULT' => array(

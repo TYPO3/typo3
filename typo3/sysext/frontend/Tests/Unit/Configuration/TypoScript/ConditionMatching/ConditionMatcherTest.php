@@ -29,7 +29,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $matchCondition;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->testGlobalNamespace = $this->getUniqueId('TEST');
 		$GLOBALS[$this->testGlobalNamespace] = array();
 		$GLOBALS['TSFE'] = new \stdClass();

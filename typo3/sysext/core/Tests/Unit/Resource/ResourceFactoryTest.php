@@ -36,12 +36,12 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $filesCreated = array();
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class, array('dummy'), array(), '', FALSE);
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		foreach ($this->filesCreated as $file) {
 			unlink($file);

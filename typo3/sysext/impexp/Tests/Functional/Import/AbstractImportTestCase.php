@@ -46,7 +46,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->import = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\ImportExport::class);
@@ -56,7 +56,7 @@ abstract class AbstractImportTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	/**
 	 * Tear down for remove of the test files
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
 			if (@is_file($absoluteFileName)) {
 				unlink($absoluteFileName);

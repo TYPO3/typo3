@@ -28,7 +28,7 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$proxy = $this->buildAccessibleProxy(\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::class);
 		$this->fixture = new $proxy();
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);

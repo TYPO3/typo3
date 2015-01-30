@@ -21,7 +21,7 @@ class TemplateVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $variableContainer;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->variableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
 	}
 

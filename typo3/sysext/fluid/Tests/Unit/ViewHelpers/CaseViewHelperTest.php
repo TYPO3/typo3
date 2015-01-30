@@ -21,7 +21,7 @@ class CaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

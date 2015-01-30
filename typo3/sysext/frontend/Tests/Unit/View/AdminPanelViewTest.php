@@ -22,7 +22,7 @@ class AdminPanelViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['LANG'] = $this->getMock(\TYPO3\CMS\Lang\LanguageService::class, array(), array(), '', FALSE);
 	}
 

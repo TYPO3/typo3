@@ -29,7 +29,7 @@ class BooleanNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Setup fixture
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface::class);
 	}
 

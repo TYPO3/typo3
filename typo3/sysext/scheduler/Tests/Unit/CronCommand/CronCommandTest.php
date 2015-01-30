@@ -39,12 +39,12 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * current timezone setting, set it to UTC explicitly and reconstitute it
 	 * again in tearDown()
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->timezoneBackup = date_default_timezone_get();
 		date_default_timezone_set('UTC');
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		date_default_timezone_set($this->timezoneBackup);
 		parent::tearDown();
 	}

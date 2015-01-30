@@ -32,7 +32,7 @@ class FrontendContentAdapterServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCa
 	/**
 	 * Saving the singletons
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->pageRepositoryMock = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$GLOBALS['TSFE'] = new \stdClass;
 		$GLOBALS['TSFE']->sys_page = $this->pageRepositoryMock;

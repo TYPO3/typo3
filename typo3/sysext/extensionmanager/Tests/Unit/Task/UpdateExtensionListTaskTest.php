@@ -33,7 +33,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
 			$this->markTestSkipped('Tests need EXT:scheduler loaded.');
 		}
@@ -44,7 +44,7 @@ class UpdateExtensionListTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tear down
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

@@ -26,11 +26,11 @@ class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $singletonInstances = array();
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

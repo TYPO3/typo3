@@ -42,7 +42,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->extensionKey = 'dummy';
 		$this->extensionData = array(
 			'key' => $this->extensionKey
@@ -84,7 +84,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		foreach ($this->fakedExtensions as $fakeExtkey => $fakeExtension) {
 			$this->testFilesToDelete[] = PATH_site . 'typo3temp/' . $fakeExtkey;
 		}

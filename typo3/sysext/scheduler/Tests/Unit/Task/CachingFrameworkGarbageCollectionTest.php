@@ -31,14 +31,14 @@ class CachingFrameworkGarbageCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTe
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 	}
 
 	/**
 	 * Reset singleton instances
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

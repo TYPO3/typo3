@@ -30,7 +30,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		if (!extension_loaded('memcache')) {
 			$this->markTestSkipped('memcache extension was not available');
 		}

@@ -23,7 +23,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 */
-	public function setUp() {
+	protected function setUp() {
 		vfsStream::setup('Packages');
 	}
 

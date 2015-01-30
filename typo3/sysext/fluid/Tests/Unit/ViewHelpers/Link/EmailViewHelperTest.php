@@ -29,7 +29,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 */
 	protected $cObjBackup;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array(), array(), '', FALSE);

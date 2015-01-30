@@ -29,14 +29,14 @@ class FlexFormServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->backupSingletons = GeneralUtility::getSingletonInstances();
 	}
 
 	/**
 	 * Tear down
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		GeneralUtility::resetSingletonInstances($this->backupSingletons);
 		parent::tearDown();
 	}

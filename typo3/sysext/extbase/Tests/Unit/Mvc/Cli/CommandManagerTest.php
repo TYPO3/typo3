@@ -36,7 +36,7 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $commandManager;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->commandManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\CommandManager::class, array('getAvailableCommands'));
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->commandManager->_set('objectManager', $this->mockObjectManager);

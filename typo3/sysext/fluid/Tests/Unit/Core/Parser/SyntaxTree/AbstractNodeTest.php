@@ -22,7 +22,7 @@ class AbstractNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $childNode;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->renderingContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array(), array(), '', FALSE);
 
 		$this->abstractNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode::class, array('evaluate'));

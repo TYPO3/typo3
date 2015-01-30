@@ -36,7 +36,7 @@ class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Sets up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		// Allow objects until 100 levels deep when executing the stdWrap

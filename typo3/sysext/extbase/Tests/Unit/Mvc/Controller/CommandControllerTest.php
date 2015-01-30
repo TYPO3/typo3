@@ -24,7 +24,7 @@ class CommandControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $commandController;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->commandController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\CommandController::class, array('dummyCommand'));
 	}
 

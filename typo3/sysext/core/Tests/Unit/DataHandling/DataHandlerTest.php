@@ -50,7 +50,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up the tests
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TCA'] = array();
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->backEndUser = $this->getMock(BackendUserAuthentication::class);
@@ -63,7 +63,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tear down the tests
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

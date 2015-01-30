@@ -37,7 +37,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		'workspaces',
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->backendUser->workspace = self::VALUE_WorkspaceId;
 	}

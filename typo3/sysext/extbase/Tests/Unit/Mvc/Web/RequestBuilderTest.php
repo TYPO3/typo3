@@ -54,7 +54,7 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockRequest;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, array('dummy'));
 		$this->configuration = array(
 			'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',

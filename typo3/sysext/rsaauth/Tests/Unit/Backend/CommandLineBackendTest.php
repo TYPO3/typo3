@@ -27,7 +27,7 @@ class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	 */
 	protected $subject = NULL;
 
-	public function setUp() {
+	protected function setUp() {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('This test is not available on Windows.');
 		}

@@ -149,7 +149,7 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Prepare class mocking some dependencies
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
 
 		$this->configurationManager = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class, array('getConfiguration'));
@@ -161,7 +161,7 @@ class LocalizationUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Reset static properties
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		$reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
 
 		$property = $reflectionClass->getProperty('configurationManager');

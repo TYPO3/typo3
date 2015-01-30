@@ -41,7 +41,7 @@ class CropViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockConfigurationManager;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array(), array(), '', FALSE);
 		$this->mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);

@@ -24,7 +24,7 @@ class HistoryEntryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $querySettings = NULL;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->querySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
 		$this->objectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->objectManager->expects($this->any())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->will($this->returnValue($this->querySettings));

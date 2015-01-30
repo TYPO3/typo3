@@ -42,7 +42,7 @@ class ActionControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockMvcPropertyMappingConfigurationService;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->actionController = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\ActionController::class);
 	}
 

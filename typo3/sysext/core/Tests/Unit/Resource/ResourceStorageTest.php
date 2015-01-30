@@ -44,7 +44,7 @@ class ResourceStorageTest extends BaseTestCase {
 	 */
 	protected $subject;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		/** @var FileRepository|\PHPUnit_Framework_MockObject_MockObject $fileRepositoryMock */
@@ -56,7 +56,7 @@ class ResourceStorageTest extends BaseTestCase {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class);
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

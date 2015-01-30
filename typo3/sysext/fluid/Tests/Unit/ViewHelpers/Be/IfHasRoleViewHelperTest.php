@@ -31,7 +31,7 @@ class IfHasRoleViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vi
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$GLOBALS['BE_USER'] = new \stdClass();
 		$GLOBALS['BE_USER']->userGroups = array(

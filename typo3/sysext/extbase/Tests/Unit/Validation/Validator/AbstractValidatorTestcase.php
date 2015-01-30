@@ -33,7 +33,7 @@ abstract class AbstractValidatorTestcase extends \TYPO3\CMS\Core\Tests\UnitTestC
 	 */
 	protected $validator;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->validator = $this->getValidator();
 	}
 

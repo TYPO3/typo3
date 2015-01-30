@@ -32,7 +32,7 @@ class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = new TitleCaseFilter();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->csConvObj = new CharsetConverter();

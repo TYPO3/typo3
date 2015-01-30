@@ -31,7 +31,7 @@ class AbstractBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$className = $this->getUniqueId('ConcreteBackend_');
 		eval('
 			class ' . $className . ' extends TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend {

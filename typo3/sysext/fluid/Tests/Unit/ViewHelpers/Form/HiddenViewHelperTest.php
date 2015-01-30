@@ -21,7 +21,7 @@ class HiddenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\HiddenViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValue', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

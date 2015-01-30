@@ -33,7 +33,7 @@ class PhpassSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->objectInstance = $this->getMock(\TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class, array('dummy'));
 	}
 

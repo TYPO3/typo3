@@ -24,7 +24,7 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $signalSlotDispatcher;
 
-	public function setUp() {
+	protected function setUp() {
 		$accessibleClassName = $this->getAccessibleMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class, array('dummy'));
 		$this->signalSlotDispatcher = new $accessibleClassName();
 	}

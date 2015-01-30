@@ -31,7 +31,7 @@ class PropertyMappingConfigurationBuilderTest extends \TYPO3\CMS\Core\Tests\Unit
 	 */
 	protected $propertyMappingConfigurationBuilder;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->propertyMappingConfigurationBuilder = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder();
 	}
 

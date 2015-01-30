@@ -49,7 +49,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	 */
 	protected $scenarioDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/Regular/DataSet/';
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->importScenarioDataSet('LiveDefaultPages');
 		$this->importScenarioDataSet('LiveDefaultElements');

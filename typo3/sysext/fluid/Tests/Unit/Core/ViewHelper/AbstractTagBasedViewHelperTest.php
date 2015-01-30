@@ -21,7 +21,7 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper::class, array('dummy'), array(), '', FALSE);
 	}
 

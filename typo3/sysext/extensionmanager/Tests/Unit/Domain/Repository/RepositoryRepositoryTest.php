@@ -30,7 +30,7 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fixture;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		/** @var $fixture \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
 		$this->fixture = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findAll'), array($this->mockObjectManager));

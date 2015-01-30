@@ -44,7 +44,7 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->testTableName = 'sys_domain';
 		$this->testHostName = 'hostname.tld';
 		$this->testSitePath = '/';

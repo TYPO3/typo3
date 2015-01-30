@@ -50,7 +50,7 @@ class ViewHelperNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Setup fixture
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class);
 
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);

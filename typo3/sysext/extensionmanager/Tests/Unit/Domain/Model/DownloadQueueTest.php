@@ -33,7 +33,7 @@ class DownloadQueueTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, array('dummy'));
 		$this->extensionMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
 		$this->extensionMock->setExtensionKey('foobar');

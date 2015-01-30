@@ -31,7 +31,7 @@ class FloatConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $converter;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter();
 	}
 

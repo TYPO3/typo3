@@ -30,7 +30,7 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $basedir = 'basedir';
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		vfsStream::setup($this->basedir);
 	}

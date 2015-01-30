@@ -21,7 +21,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $dummyObject;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->dummyObject = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters();
 		$this->dummyObject->setProperty('string1');
 		$this->dummyObject->setAnotherProperty(42);

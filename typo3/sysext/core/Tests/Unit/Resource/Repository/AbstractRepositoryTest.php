@@ -33,7 +33,7 @@ class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_DB'] = $this->mockedDb;
 	}
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\AbstractRepository::class, array(), '', FALSE);
 	}
 

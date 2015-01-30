@@ -29,7 +29,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockObjectManager;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->validatorResolver = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, array('dummy'));
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		$this->validatorResolver->_set('objectManager', $this->mockObjectManager);

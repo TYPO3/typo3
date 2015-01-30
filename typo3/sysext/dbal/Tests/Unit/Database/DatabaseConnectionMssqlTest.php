@@ -29,7 +29,7 @@ class DatabaseConnectionMssqlTest extends AbstractTestCase {
 	 *
 	 * @return \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$configuration = array(
 			'handlerCfg' => array(
 				'_DEFAULT' => array(

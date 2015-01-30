@@ -27,7 +27,7 @@ class Typo3QuerySettingsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * setup test environment
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->typo3QuerySettings = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class, array('dummy'));
 	}
 

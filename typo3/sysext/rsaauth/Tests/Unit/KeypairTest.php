@@ -27,7 +27,7 @@ class KeypairTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	 */
 	protected $subject = NULL;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = new Keypair();
 	}
 

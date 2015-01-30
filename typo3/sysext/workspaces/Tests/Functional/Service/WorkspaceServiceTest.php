@@ -26,7 +26,7 @@ class WorkspacesServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->setUpBackendUserFromFixture(1);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeLanguageObject();

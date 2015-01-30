@@ -31,7 +31,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		// Package manager is mocked in some tests. Backup the original one here to re-inject it to
 		// ExtensionManagementUtility in tearDown() again. makeInstance() is allowed to be used here
 		// since the PackageManager is registered as singleton by bootstrap.
@@ -43,7 +43,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 *
 	 * @return void
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		Utility\ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
 		if (file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt')) {
 			unlink(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt');

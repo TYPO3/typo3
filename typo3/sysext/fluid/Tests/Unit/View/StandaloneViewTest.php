@@ -107,7 +107,7 @@ class StandaloneViewTest extends UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->view = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\StandaloneView::class, array('testFileExistence', 'buildParserConfiguration'), array(), '', FALSE);
 		$this->mockTemplateParser = $this->getMock(TemplateParser::class);
@@ -142,7 +142,7 @@ class StandaloneViewTest extends UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		GeneralUtility::purgeInstances();
 		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();

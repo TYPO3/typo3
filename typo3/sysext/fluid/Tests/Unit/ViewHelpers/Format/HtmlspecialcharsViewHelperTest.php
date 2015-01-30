@@ -21,7 +21,7 @@ class HtmlspecialcharsViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlspecialcharsViewHelper::class, array('renderChildren'));
 	}
 

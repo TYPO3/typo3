@@ -24,7 +24,7 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockResponse;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->mockResponse = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Response::class, array('dummy'));
 	}
 

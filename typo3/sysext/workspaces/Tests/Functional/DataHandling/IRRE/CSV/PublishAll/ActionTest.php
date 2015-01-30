@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
 	 * Parent content records
 	 */
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 	}
 

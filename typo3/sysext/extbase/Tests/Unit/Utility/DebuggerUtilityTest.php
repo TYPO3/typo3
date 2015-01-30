@@ -24,7 +24,7 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $debugger;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->debugger = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Utility\DebuggerUtility::class, array('dummy'));
 	}
 

@@ -31,7 +31,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $confCache = array();
 
-	public function setUp() {
+	protected function setUp() {
 		$this->confCache = array(
 			'encryptionKey' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
 		);

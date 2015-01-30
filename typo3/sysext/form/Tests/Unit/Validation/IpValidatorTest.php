@@ -29,7 +29,7 @@ class IpValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $subject;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->helper = new \TYPO3\CMS\Form\Tests\Unit\Validation\Helper();
 		$this->subject = $this->getMock(\TYPO3\CMS\Form\Validation\IpValidator::class, array('dummy'), array(), '', FALSE);
 	}

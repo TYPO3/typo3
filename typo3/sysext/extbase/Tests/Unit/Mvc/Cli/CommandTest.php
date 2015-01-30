@@ -44,7 +44,7 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->command = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array('getCommandMethodReflection'), array(), '', FALSE);
 		$this->mockMethodReflection = $this->getMock(\TYPO3\CMS\Extbase\Reflection\MethodReflection::class, array(), array(), '', FALSE);
 		$this->command->expects($this->any())->method('getCommandMethodReflection')->will($this->returnValue($this->mockMethodReflection));

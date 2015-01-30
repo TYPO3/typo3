@@ -51,7 +51,7 @@ class WidgetRequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockWidgetContext;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->widgetRequestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder::class, array('setArgumentsFromRawRequestData'));
 		$this->mockWidgetRequest = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);

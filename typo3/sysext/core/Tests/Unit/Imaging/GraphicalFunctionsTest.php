@@ -31,7 +31,7 @@ class GraphicalFunctionsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = new \TYPO3\CMS\Core\Imaging\GraphicalFunctions();
 	}
 

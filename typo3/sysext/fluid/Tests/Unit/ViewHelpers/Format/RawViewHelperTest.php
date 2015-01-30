@@ -24,7 +24,7 @@ class RawViewHelperTest extends ViewHelperBaseTestcase {
 	 */
 	protected $subject;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->subject = $this->getMock(RawViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->subject);

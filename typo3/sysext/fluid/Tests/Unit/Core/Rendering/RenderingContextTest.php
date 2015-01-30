@@ -23,7 +23,7 @@ class RenderingContextTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $renderingContext;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext::class, array('dummy'));
 	}
 

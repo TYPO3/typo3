@@ -48,7 +48,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		if (!extension_loaded('redis')) {
 			$this->markTestSkipped('redis extension was not available');
 		}
@@ -85,7 +85,7 @@ class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tear down this testcase
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		if ($this->backend instanceof \TYPO3\CMS\Core\Cache\Backend\RedisBackend) {
 			$this->backend->flush();
 		}

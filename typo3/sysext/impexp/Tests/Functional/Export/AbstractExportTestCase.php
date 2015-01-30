@@ -38,7 +38,7 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->setUpBackendUserFromFixture(1);

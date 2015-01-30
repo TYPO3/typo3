@@ -49,7 +49,7 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
 		$this->mockPersistenceManager->expects($this->any())->method('getObjectDataByQuery')->will($this->returnValue(array('one', 'two')));
 		$this->mockPersistenceManager->expects($this->any())->method('getObjectCountByQuery')->will($this->returnValue(2));

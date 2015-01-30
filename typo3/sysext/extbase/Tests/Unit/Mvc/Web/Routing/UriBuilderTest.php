@@ -44,7 +44,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $uriBuilder;
 
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
 		$this->mockContentObject = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->mockRequest = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);

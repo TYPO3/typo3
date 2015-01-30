@@ -21,7 +21,7 @@ class SwitchViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

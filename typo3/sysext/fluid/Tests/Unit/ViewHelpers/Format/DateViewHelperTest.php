@@ -27,7 +27,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $timezone;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		// Store all locale categories manipulated in tests for reconstruction in tearDown
 		$this->backupLocales = array(
@@ -40,7 +40,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		foreach ($this->backupLocales as $category => $locale) {
 			setlocale(constant($category), $locale);
 		}

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  */
 class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr', 'exec_SELECTgetRows'));
 
 		$GLOBALS['TSFE'] = new \stdClass();

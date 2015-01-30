@@ -31,7 +31,7 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		/** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue */
 		$mockFlashMessagingQueue = $this->getMock(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class, array('getAllMessagesAndFlush'), array('foo'));
 		$mockFlashMessagingQueue->expects($this->once())->method('getAllMessagesAndFlush')->will($this->returnValue(array()));

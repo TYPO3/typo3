@@ -29,7 +29,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Sets up this testcase
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array());
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')->will($this->onConsecutiveCalls('\'tx_phpunit\'', '\'someKey\'', '\'tx_phpunit\'', '\'someKey\''));
 		$this->registry = new \TYPO3\CMS\Core\Registry();

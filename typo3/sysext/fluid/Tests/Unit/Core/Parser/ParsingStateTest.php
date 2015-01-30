@@ -23,7 +23,7 @@ class ParsingStateTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $parsingState;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->parsingState = new \TYPO3\CMS\Fluid\Core\Parser\ParsingState();
 	}
 

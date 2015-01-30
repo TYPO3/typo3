@@ -26,7 +26,7 @@ class ImportInEmptyDatabaseTest extends \TYPO3\CMS\Impexp\Tests\Functional\Impor
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		// Force the storage record to be caseSensitive "1" and prevent on-the-fly

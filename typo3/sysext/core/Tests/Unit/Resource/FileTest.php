@@ -33,7 +33,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $storageMock;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->storageMock = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', FALSE);
 		$this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
@@ -43,7 +43,7 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::class, $mockedMetaDataRepository);
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

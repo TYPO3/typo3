@@ -27,7 +27,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTest
 	/**
 	 * Initializes a SqlSchemaMigrationService instance.
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->sqlSchemaMigrationService = new \TYPO3\CMS\Install\Service\SqlSchemaMigrationService();
 	}

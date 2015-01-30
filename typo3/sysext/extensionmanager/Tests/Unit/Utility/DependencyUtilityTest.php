@@ -28,7 +28,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->objectManagerMock = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 	}
 

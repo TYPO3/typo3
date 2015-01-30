@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  */
 class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->templateVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer(array());
 		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);

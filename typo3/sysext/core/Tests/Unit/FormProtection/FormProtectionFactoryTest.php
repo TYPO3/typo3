@@ -22,11 +22,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  */
 class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
-	public function setUp() {
+	protected function setUp() {
 
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances();
 		parent::tearDown();
 	}

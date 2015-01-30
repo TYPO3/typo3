@@ -55,7 +55,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * during tearDown if fiddling with the autoloader where
 	 * backupGlobals is not set up again yet
 	 */
-	public function setUp() {
+	protected function setUp() {
 		vfsStream::setup('Test');
 
 		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/', 0770, TRUE);
@@ -79,7 +79,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * The class alias map is kept static in the class loader for legacy reasons
 	 * and has to be reset after mocking.
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		$this->classLoader->injectClassAliasMap($this->orinalClassAliasMap);
 		parent::tearDown();
 	}

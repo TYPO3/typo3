@@ -56,7 +56,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->contentObjectRenderer = $this->getMock(
 			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class
@@ -75,7 +75,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * Tear down
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

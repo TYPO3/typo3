@@ -47,7 +47,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up tests
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->testTableName = 'conditionMatcherTestTable';
 		$this->testGlobalNamespace = $this->getUniqueId('TEST');
 		$GLOBALS['TCA'][$this->testTableName] = array('ctrl' => array());

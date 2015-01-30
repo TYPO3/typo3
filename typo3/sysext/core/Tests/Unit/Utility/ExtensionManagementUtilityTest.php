@@ -36,14 +36,14 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	protected $backUpPackageManager;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->createAccessibleProxyClass();
 		$this->backUpPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		ExtensionManagementUtility::clearExtensionKeyMap();
 		ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager(NULL);

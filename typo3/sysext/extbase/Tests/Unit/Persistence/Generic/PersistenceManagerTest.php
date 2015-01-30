@@ -24,7 +24,7 @@ class PersistenceManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockObjectManager;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 	}
 

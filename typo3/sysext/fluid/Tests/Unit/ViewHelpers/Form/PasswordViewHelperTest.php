@@ -21,7 +21,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\PasswordViewHelper::class, array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 		$this->arguments['name'] = '';

@@ -21,7 +21,7 @@ class RadioViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\F
 	 */
 	protected $viewHelper;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\RadioViewHelper::class, array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);

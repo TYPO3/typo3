@@ -45,7 +45,7 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'string'));
 		$this->objectArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'DateTime'));
 		$this->mockPropertyMapper = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class);

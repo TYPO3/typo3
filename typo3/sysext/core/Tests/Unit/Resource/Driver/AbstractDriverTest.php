@@ -26,7 +26,7 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 	protected $fixture;
 
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->fixture = $this->createDriverFixture();
 	}

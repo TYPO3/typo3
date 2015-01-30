@@ -24,7 +24,7 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $hashService;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->hashService = new \TYPO3\CMS\Extbase\Security\Cryptography\HashService();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'Testing';
 	}

@@ -26,7 +26,7 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fixture = NULL;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = new \TYPO3\CMS\Core\Html\HtmlParser();
 	}
 

@@ -36,7 +36,7 @@ class EscapeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockParsingState;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->escapeInterceptor = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\Interceptor\Escape::class, array('dummy'));
 		$this->mockViewHelper = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper::class);
 		$this->mockNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array(), array(), '', FALSE);

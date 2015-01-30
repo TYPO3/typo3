@@ -33,14 +33,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $singletonInstances = array();
 
-	public function setUp() {
+	protected function setUp() {
 		GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
 		GeneralUtilityFixture::setAllowHostHeaderValue(FALSE);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
 		$this->singletonInstances = Utility\GeneralUtility::getSingletonInstances();
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

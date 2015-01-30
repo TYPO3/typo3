@@ -44,7 +44,7 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Prepares the environment before running a test.
 	 */
-	public function setUp() {
+	protected function setUp() {
 			// Backup locallangXMLOverride and localization format priority
 		$this->locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
@@ -59,7 +59,7 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Cleans up the environment after running a test.
 	 */
-	public function tearDown() {
+	protected function tearDown() {
 		// Restore locallangXMLOverride and localization format priority
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = $this->locallangXMLOverride;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = $this->l10nPriority;

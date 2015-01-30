@@ -24,7 +24,7 @@ class DocumentFormatTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $fixture;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
 	}
 

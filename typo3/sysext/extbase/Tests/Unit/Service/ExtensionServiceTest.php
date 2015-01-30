@@ -29,7 +29,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $extensionService;
 
-	public function setUp() {
+	protected function setUp() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('fullQuoteStr', 'exec_SELECTgetRows'));
 		$GLOBALS['TSFE'] = new \stdClass();
 		$this->extensionService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class, array('dummy'));

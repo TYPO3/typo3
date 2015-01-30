@@ -63,7 +63,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->database = $this->getDatabaseConnection();
 		$this->fixture = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Category\Collection\CategoryCollection::class, $this->tableName);

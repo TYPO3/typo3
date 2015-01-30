@@ -26,7 +26,7 @@ class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 */
 	protected $mockArguments;
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 		$this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper::class, array('getRenderingContext', 'renderChildren', 'hasArgument'));
 		$this->viewHelper->expects($this->any())->method('getRenderingContext')->will($this->returnValue($this->renderingContext));

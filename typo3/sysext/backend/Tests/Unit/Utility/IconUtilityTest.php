@@ -54,7 +54,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		// Create a wrapper for IconUtility, so the static property $spriteIconCache is
 		// not polluted. Use this as subject!
 		$className = $this->getUniqueId('IconUtility');

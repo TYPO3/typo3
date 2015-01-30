@@ -34,7 +34,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 
 		$GLOBALS['BE_USER'] = $this->getMock(
@@ -49,7 +49,7 @@ class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
 	}

@@ -37,7 +37,7 @@ class CaseContentObjectTest extends UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		/** @var TypoScriptFrontendController $tsfe */
 		$tsfe = $this->getMock(TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
 		$tsfe->tmpl = $this->getMock(TemplateService::class, array('dummy'));

@@ -31,7 +31,7 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->testObject = $this->getMock(\TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class, array('dummy'), array(), '', FALSE);
 	}
 

@@ -35,7 +35,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	protected function setUp() {
 		// Mock system under test to make protected methods accessible
 		$this->configurationItemRepository = $this->getAccessibleMock(
 			\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository::class,

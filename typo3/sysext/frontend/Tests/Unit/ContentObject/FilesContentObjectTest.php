@@ -37,7 +37,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Set up
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$templateService = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('getFileName', 'linkData'));
 		$this->tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
 		$this->tsfe->tmpl = $templateService;

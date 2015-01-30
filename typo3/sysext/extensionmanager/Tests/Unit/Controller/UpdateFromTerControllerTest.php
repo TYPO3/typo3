@@ -40,7 +40,7 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $repositoryHelperMock;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$this->repositoryRepositoryMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findByUid'), array($this->mockObjectManager));
 		$this->extensionRepositoryMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository::class, array(), array($this->mockObjectManager));

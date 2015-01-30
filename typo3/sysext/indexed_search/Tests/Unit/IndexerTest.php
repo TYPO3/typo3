@@ -32,7 +32,7 @@ class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Sets up the test
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->fixture = $this->getMock(\TYPO3\CMS\IndexedSearch\Indexer::class, array('dummy'));
 	}
 

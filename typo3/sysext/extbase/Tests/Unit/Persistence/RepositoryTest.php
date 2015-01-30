@@ -69,7 +69,7 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $mockQuerySettings;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->mockIdentityMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap::class);
 		$this->mockQueryFactory = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory::class);
 		$this->mockQuery = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);

@@ -39,7 +39,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 		'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/_processed_' => 'fileadmin/_processed_'
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
