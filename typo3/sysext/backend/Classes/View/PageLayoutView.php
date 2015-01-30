@@ -114,16 +114,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @var array
 	 */
 	public $tt_contentConfig = array(
-		'showInfo' => 1,
 		// Boolean: Display info-marks or not
-		'showCommands' => 1,
+		'showInfo' => 1,
 		// Boolean: Display up/down arrows and edit icons for tt_content records
-		'single' => 1,
-		// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
-		'showAsGrid' => 0,
-		// Boolean: If set, the content of columns is shown in grid
-		'showSingleCol' => 0,
-		// The column(s) to show if single mode (under each other)
+		'showCommands' => 1,
 		'languageCols' => 0,
 		'languageMode' => 0,
 		'languageColsPointer' => 0,

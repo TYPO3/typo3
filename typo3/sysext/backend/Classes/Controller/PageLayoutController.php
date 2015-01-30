@@ -935,13 +935,6 @@ class PageLayoutController {
 				$dblist->tt_contentConfig['showCommands'] = 1;
 				// Boolean: Display info-marks or not
 				$dblist->tt_contentConfig['showInfo'] = 1;
-				// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown
-				// in the total width of the page
-				$dblist->tt_contentConfig['single'] = 0;
-				if ($this->MOD_SETTINGS['function'] == 4) {
-					// Grid view
-					$dblist->tt_contentConfig['showAsGrid'] = 1;
-				}
 				// Setting up the tt_content columns to show:
 				if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
 					$colList = array();
@@ -955,14 +948,6 @@ class PageLayoutController {
 				}
 				if ($this->colPosList !== '') {
 					$colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
-				}
-				// If only one column found, display the single-column view.
-				if (count($colList) === 1 && !$this->MOD_SETTINGS['function'] === 4) {
-					// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol']
-					// is shown in the total width of the page
-					$dblist->tt_contentConfig['single'] = 1;
-					// The column(s) to show if single mode (under each other)
-					$dblist->tt_contentConfig['showSingleCol'] = current($colList);
 				}
 				// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
 				$dblist->tt_contentConfig['cols'] = implode(',', $colList);
