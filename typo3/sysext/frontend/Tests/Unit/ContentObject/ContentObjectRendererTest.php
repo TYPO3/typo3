@@ -57,7 +57,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $contentObjectMap = array(
 		'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
 		'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
-		'CLEARGIF'         => \TYPO3\CMS\Compatibility6\ContentObject\ClearGifContentObject::class,
 		'COBJ_ARRAY'       => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
 		'COA'              => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
 		'COA_INT'          => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject::class,
@@ -71,10 +70,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		'CONTENT'          => \TYPO3\CMS\Frontend\ContentObject\ContentContentObject::class,
 		'RECORDS'          => \TYPO3\CMS\Frontend\ContentObject\RecordsContentObject::class,
 		'HMENU'            => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,
-		'CTABLE'           => \TYPO3\CMS\Compatibility6\ContentObject\ContentTableContentObject::class,
-		'OTABLE'           => \TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject::class,
-		'COLUMNS'          => \TYPO3\CMS\Compatibility6\ContentObject\ColumnsContentObject::class,
-		'HRULER'           => \TYPO3\CMS\Compatibility6\ContentObject\HorizontalRulerContentObject::class,
 		'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
 		'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
 		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
