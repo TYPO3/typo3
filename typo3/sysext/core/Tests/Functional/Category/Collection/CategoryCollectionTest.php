@@ -200,6 +200,25 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertEquals(0, $collection->count());
 	}
 
+	/**
+	 * @test
+	 * @return void
+	 */
+	public function canLoadADummyCollectionFromDatabaseAfterRemoveOneRelation() {
+		// Remove one relation
+		$fakeName = array(
+			'tablenames' => $this->getUniqueId('name')
+		);
+		$this->database->exec_UPDATEquery(
+			'sys_category_record_mm',
+			'uid_foreign = 1',
+			$fakeName
+		);
+		// Check the number of records
+		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, TRUE, $this->tableName);
+		$this->assertEquals($this->numberOfRecords - 1, $collection->count());
+	}
+
 	/********************/
 	/* INTERNAL METHODS */
 	/********************/
