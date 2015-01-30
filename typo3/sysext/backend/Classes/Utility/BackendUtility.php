@@ -1257,13 +1257,15 @@ class BackendUtility {
 	}
 
 	/**
-	 * Implodes a multi dimensional TypoScript array, $p, into a one-dimentional array (return value)
+	 * Implodes a multi dimensional TypoScript array, $p, into a one-dimensional array (return value)
 	 *
 	 * @param array $p TypoScript structure
 	 * @param string $k Prefix string
 	 * @return array Imploded TypoScript objectstring/values
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function implodeTSParams($p, $k = '') {
+		GeneralUtility::logDeprecatedFunction();
 		$implodeParams = array();
 		if (is_array($p)) {
 			foreach ($p as $kb => $val) {
