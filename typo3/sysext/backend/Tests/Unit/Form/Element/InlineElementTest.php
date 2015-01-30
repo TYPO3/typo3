@@ -50,6 +50,11 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedInlineNames, $this->subject->inlineNames);
 	}
 
+	/**
+	 * Provide structure for DataProvider tests
+	 *
+	 * @return array
+	 */
 	public function pushStructureFillsInlineStructureDataProvider() {
 		return array(
 			'regular field' => array(
@@ -322,4 +327,43 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * Checks if the given filetype may be uploaded without *ANY* limit to
+	 * filetypes being given
+	 *
+	 * @test
+	 */
+	public function checkFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue(){
+		$selectorData = array();
+		$fileData['extension'] = 'png';
+		$mockObject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Form\Element\InlineElement::class, array('dummy'));
+		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
+		$this->assertTrue($mayUploadFile);
+	}
+
+	/**
+	 * Checks if the given filetype may be uploaded and the given filetype is *NOT*
+	 * in the list of allowed files
+	 * @test
+	 */
+	public function checkFileTypeAccessForFieldFiletypesSetRecordTypeNotInListReturnsFalse(){
+		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
+		$fileData['extension'] = 'php';
+		$mockObject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Form\Element\InlineElement::class, array('dummy'));
+		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
+		$this->assertFalse($mayUploadFile);
+	}
+
+	/**
+	 * Checks if the given filetype may be uploaded and the given filetype *is*
+	 * in the list of allowed files
+	 * @test
+	 */
+	public function checkFileTypeAccessForFieldFiletypesSetRecordTypeInListReturnsTrue(){
+		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
+		$fileData['extension'] = 'png';
+		$mockObject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Form\Element\InlineElement::class, array('dummy'));
+		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
+		$this->assertTrue($mayUploadFile);
+	}
 }
