@@ -2686,60 +2686,28 @@ class TypoScriptFrontendController {
 
 	/**
 	 * Handle data submission
+	 * This is done at this point, because we need the config values
 	 *
 	 * @return void
 	 */
 	public function handleDataSubmission() {
-		// Check Submission of data.
-		// This is done at this point, because we need the config values
-		switch ($this->checkDataSubmission()) {
-			case 'email':
-				$this->sendFormmail();
-				break;
-		}
-	}
-
-	/**
-	 * Checks if any email-submissions
-	 *
-	 * @return string "email" if a formmail has been sent, "" if none.
-	 */
-	protected function checkDataSubmission() {
-		$ret = '';
-		$formtype_mail = isset($_POST['formtype_mail']) || isset($_POST['formtype_mail_x']);
-		if ($formtype_mail) {
-			$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-			if (GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') == $refInfo['host'] || $this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
-				if ($this->locDataCheck($_POST['locationData'])) {
-					if ($formtype_mail) {
-						$ret = 'email';
-					}
-					$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: ' . $ret, 0);
-					return $ret;
-				}
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": HTTP_HOST and REFERER HOST did not match when processing submitted formdata!', 3);
-			}
-		}
-		// Hook for processing data submission to extensions:
+		// Hook for processing data submission to extensions
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'])) {
 			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $_classRef) {
 				$_procObj = GeneralUtility::getUserObj($_classRef);
 				$_procObj->checkDataSubmission($this);
 			}
 		}
-		return $ret;
 	}
 
 	/**
-	 * Checks if a formmail submission can be sent as email
+	 * Checks if a formmail submission can be sent as email, also used for JumpURLs
+	 * should be removed once JumpURL is handled outside TypoScriptFrontendController
 	 *
 	 * @param string $locationData The input from $_POST['locationData']
-	 * @return void
-	 * @access private
-	 * @see checkDataSubmission()
+	 * @return void|int
 	 */
-	public function locDataCheck($locationData) {
+	protected function locDataCheck($locationData) {
 		$locData = explode(':', $locationData);
 		if (!$locData[1] || $this->sys_page->checkRecord($locData[1], $locData[2], 1)) {
 			// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
@@ -2751,71 +2719,6 @@ class TypoScriptFrontendController {
 		} else {
 			$GLOBALS['TT']->setTSlogMessage('LocationData Error: Location data (' . $locationData . ') record pointed to was not accessible.', 2);
 		}
-	}
-
-	/**
-	 * Sends the emails from the formmail content object.
-	 *
-	 * @return void
-	 * @see checkDataSubmission()
-	 */
-	protected function sendFormmail() {
-		/** @var $formmail \TYPO3\CMS\Frontend\Controller\DataSubmissionController */
-		$formmail = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\DataSubmissionController::class);
-		$EMAIL_VARS = GeneralUtility::_POST();
-		$locationData = $EMAIL_VARS['locationData'];
-		unset($EMAIL_VARS['locationData']);
-		unset($EMAIL_VARS['formtype_mail'], $EMAIL_VARS['formtype_mail_x'], $EMAIL_VARS['formtype_mail_y']);
-		$integrityCheck = $this->TYPO3_CONF_VARS['FE']['strictFormmail'];
-		if (!$this->TYPO3_CONF_VARS['FE']['secureFormmail']) {
-			// Check recipient field:
-			// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
-			$encodedFields = explode(',', 'recipient, recipient_copy');
-			foreach ($encodedFields as $fieldKey) {
-				if ((string)$EMAIL_VARS[$fieldKey] !== '') {
-					// Decode...
-					if ($res = $this->codeString($EMAIL_VARS[$fieldKey], TRUE)) {
-						$EMAIL_VARS[$fieldKey] = $res;
-					} elseif ($integrityCheck) {
-						// Otherwise abort:
-						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field (' . $fieldKey . ') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!', 3);
-						return FALSE;
-					} else {
-						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field (' . $fieldKey . ') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!', 2);
-					}
-				}
-			}
-		} else {
-			$locData = explode(':', $locationData);
-			$record = $this->sys_page->checkRecord($locData[1], $locData[2], 1);
-			$EMAIL_VARS['recipient'] = $record['subheader'];
-			$EMAIL_VARS['recipient_copy'] = $this->extractRecipientCopy($record['bodytext']);
-		}
-		// Hook for preprocessing of the content for formmails:
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'])) {
-			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'] as $_classRef) {
-				$_procObj = GeneralUtility::getUserObj($_classRef);
-				$EMAIL_VARS = $_procObj->sendFormmail_preProcessVariables($EMAIL_VARS, $this);
-			}
-		}
-		$formmail->start($EMAIL_VARS);
-		$formmail->sendtheMail();
-		$GLOBALS['TT']->setTSlogMessage('"Formmail" invoked, sending mail to ' . $EMAIL_VARS['recipient'], 0);
-	}
-
-	/**
-	 * Extracts the value of recipient copy field from a formmail CE bodytext
-	 *
-	 * @param string $bodytext The content of the related bodytext field
-	 * @return string The value of the recipient_copy field, or an empty string
-	 */
-	public function extractRecipientCopy($bodytext) {
-		$recipient_copy = '';
-		$fdef = array();
-		//|recipient_copy=hidden|karsten@localhost.localdomain
-		preg_match('/^[\\s]*\\|[\\s]*recipient_copy[\\s]*=[\\s]*hidden[\\s]*\\|(.*)$/m', $bodytext, $fdef);
-		$recipient_copy = $fdef[1] ?: '';
-		return $recipient_copy;
 	}
 
 	/**
@@ -3946,58 +3849,6 @@ class TypoScriptFrontendController {
 					$out .= $string[$i];
 				}
 			}
-		}
-		return $out;
-	}
-
-	/**
-	 * En/decodes strings with lightweight encryption and a hash containing the server encryptionKey (salt)
-	 * Can be used for authentication of information sent from server generated pages back to the server to establish that the server generated the page. (Like hidden fields with recipient mail addresses)
-	 * Encryption is mainly to avoid spam-bots to pick up information.
-	 *
-	 * @param string $string Input string to en/decode
-	 * @param bool $decode If set, string is decoded, not encoded.
-	 * @return string encoded/decoded version of $string
-	 */
-	public function codeString($string, $decode = FALSE) {
-		if ($decode) {
-			list($md5Hash, $str) = explode(':', $string, 2);
-			$newHash = substr(md5($this->TYPO3_CONF_VARS['SYS']['encryptionKey'] . ':' . $str), 0, 10);
-			if ($md5Hash === $newHash) {
-				$str = base64_decode($str);
-				$str = $this->roundTripCryptString($str);
-				return $str;
-			} else {
-				return FALSE;
-			}
-		} else {
-			$str = $string;
-			$str = $this->roundTripCryptString($str);
-			$str = base64_encode($str);
-			$newHash = substr(md5($this->TYPO3_CONF_VARS['SYS']['encryptionKey'] . ':' . $str), 0, 10);
-			return $newHash . ':' . $str;
-		}
-	}
-
-	/**
-	 * Encrypts a strings by XOR'ing all characters with a key derived from the
-	 * TYPO3 encryption key.
-	 *
-	 * Using XOR means that the string can be decrypted by simply calling the
-	 * function again - just like rot-13 works (but in this case for ANY byte
-	 * value).
-	 *
-	 * @param string $string String to crypt, may be empty
-	 * @return string binary crypt string, will have the same length as $string
-	 */
-	protected function roundTripCryptString($string) {
-		$out = '';
-		$cleartextLength = strlen($string);
-		$key = sha1($this->TYPO3_CONF_VARS['SYS']['encryptionKey']);
-		$keyLength = strlen($key);
-		for ($a = 0; $a < $cleartextLength; $a++) {
-			$xorVal = ord($key[$a % $keyLength]);
-			$out .= chr(ord($string[$a]) ^ $xorVal);
 		}
 		return $out;
 	}

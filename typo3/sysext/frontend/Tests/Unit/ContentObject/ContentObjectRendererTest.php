@@ -72,7 +72,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
 		'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
 		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
-		'FORM'             => \TYPO3\CMS\Frontend\ContentObject\FormContentObject::class,
 		'SEARCHRESULT'     => \TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class,
 		'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,
 		'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
@@ -215,25 +214,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$contentObjectInstance = $this->getMock($fullClassName, array(), array(), '', FALSE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($fullClassName, $contentObjectInstance);
 		$this->assertSame($contentObjectInstance, $this->subject->getContentObject($name));
-	}
-
-	//////////////////////////
-	// Tests concerning FORM
-	//////////////////////////
-	/**
-	 * @test
-	 */
-	public function formWithSecureFormMailEnabledDoesNotContainRecipientField() {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = TRUE;
-		$this->assertNotContains('name="recipient', $this->subject->cObjGetSingle('FORM', array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
-	}
-
-	/**
-	 * @test
-	 */
-	public function formWithSecureFormMailDisabledDoesNotContainRecipientField() {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = FALSE;
-		$this->assertContains('name="recipient', $this->subject->cObjGetSingle('FORM', array('recipient' => 'foo@bar.com', 'recipient.' => array()), array()));
 	}
 
 	/////////////////////////////////////////

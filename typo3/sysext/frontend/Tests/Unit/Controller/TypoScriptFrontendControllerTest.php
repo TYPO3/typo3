@@ -76,24 +76,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		return $tsfe;
 	}
 
-	////////////////////////////////
-	// Tests concerning codeString
-	////////////////////////////////
-	/**
-	 * @test
-	 */
-	public function codeStringForNonEmptyStringReturns10CharacterHashAndCodedString() {
-		$this->assertRegExp('/^[0-9a-f]{10}:[a-zA-Z0-9+=\\/]+$/', $this->fixture->codeString('Hello world!'));
-	}
-
-	/**
-	 * @test
-	 */
-	public function decodingCodedStringReturnsOriginalString() {
-		$clearText = 'Hello world!';
-		$this->assertEquals($clearText, $this->fixture->codeString($this->fixture->codeString($clearText), TRUE));
-	}
-
 	//////////////////////
 	// Tests concerning sL
 	//////////////////////
@@ -103,34 +85,6 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	public function localizationReturnsUnchangedStringIfNotLocallangLabel() {
 		$string = $this->getUniqueId();
 		$this->assertEquals($string, $this->fixture->sL($string));
-	}
-
-	//////////////////////////////////////////
-	// Tests concerning roundTripCryptString
-	//////////////////////////////////////////
-	/**
-	 * @test
-	 */
-	public function roundTripCryptStringCreatesStringWithSameLengthAsInputString() {
-		$clearText = 'Hello world!';
-		$this->assertEquals(strlen($clearText), strlen($this->fixture->_callRef('roundTripCryptString', $clearText)));
-	}
-
-	/**
-	 * @test
-	 */
-	public function roundTripCryptStringCreatesResultDifferentFromInputString() {
-		$clearText = 'Hello world!';
-		$this->assertNotEquals($clearText, $this->fixture->_callRef('roundTripCryptString', $clearText));
-	}
-
-	/**
-	 * @test
-	 */
-	public function roundTripCryptStringAppliedTwoTimesReturnsOriginalString() {
-		$clearText = 'Hello world!';
-		$refValue = $this->fixture->_callRef('roundTripCryptString', $clearText);
-		$this->assertEquals($clearText, $this->fixture->_callRef('roundTripCryptString', $refValue));
 	}
 
 }

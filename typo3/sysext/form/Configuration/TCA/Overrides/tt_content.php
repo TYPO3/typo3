@@ -1,6 +1,22 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+
+// add an CType element if the compatibility6 extension is not taking care of that already
+if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('compatibility6')) {
+	$GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['mailform'] = 'mimetypes-x-content-form';
+	$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['mailform'] = 'tt_content_form.gif';
+
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', array(
+			'LLL:EXT:cms/locallang_ttc.xlf:CType.I.8',
+			'mailform',
+			'i/tt_content_form.gif'
+		),
+		'search',
+		'before'
+	);
+}
+
 $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms'] = array(
 	'notNewRecords' => 1,
 	'enableByTypeConfig' => 1,
@@ -14,6 +30,7 @@ $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms
 		'xmlOutput' => 0
 	)
 );
+
 $GLOBALS['TCA']['tt_content']['types']['mailform']['showitem'] = '
 	--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 	--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,

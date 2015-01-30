@@ -9,4 +9,11 @@ if (TYPO3_MODE === 'BE') {
 		'LLL:EXT:compatibility6/Resources/Private/Language/wizards.xlf:mod_wizards'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:compatibility6/Resources/Private/Language/wizards_csh.xlf');
+
+
+	// Register forms wizard
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'wizard_forms',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('compatibility6', 'Modules/Wizards/FormsWizard/')
+	);
 }

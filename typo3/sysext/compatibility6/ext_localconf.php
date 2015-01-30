@@ -10,4 +10,42 @@ if (TYPO3_MODE === 'FE') {
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['OTABLE']   = \TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject::class;
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['COLUMNS']  = \TYPO3\CMS\Compatibility6\ContentObject\ColumnsContentObject::class;
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['HRULER']   = \TYPO3\CMS\Compatibility6\ContentObject\HorizontalRulerContentObject::class;
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FORM']     = \TYPO3\CMS\Compatibility6\ContentObject\FormContentObject::class;
+
+	// Register a hook for data submission
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']['mailform'] = \TYPO3\CMS\Compatibility6\Controller\FormDataSubmissionController::class;
 }
+
+// Add Default TS for CType "mailform" after default content rendering
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('compatibility6', 'constants', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:compatibility6/Configuration/TypoScript/Form/constants.txt">', 'defaultContentRendering');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('compatibility6', 'setup',     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:compatibility6/Configuration/TypoScript/Form/setup.txt">', 'defaultContentRendering');
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+mod.wizards.newContentElement.wizardItems {
+		forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms
+		forms.elements.mailform {
+			icon = gfx/c_wiz/mailform.gif
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_description
+			tt_content_defValues {
+				CType = mailform
+				bodytext (
+# Example content:
+Name: | *name = input,40 | Enter your name here
+Email: | *email=input,40 |
+Address: | address=textarea,40,5 |
+Contact me: | tv=check | 1
+
+|formtype_mail = submit | Send form!
+|html_enabled=hidden | 1
+|subject=hidden| This is the subject
+				)
+			}
+		}
+		forms.show := addToList(mailform)
+	}
+}
+');
+
+// Add a for previewing tt_content elements of CType="mailform"
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['mailform'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\MailformPreviewRenderer::class;

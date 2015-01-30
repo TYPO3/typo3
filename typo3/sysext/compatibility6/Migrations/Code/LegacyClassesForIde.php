@@ -244,7 +244,7 @@ class SC_wizard_edit extends \TYPO3\CMS\Backend\Controller\Wizard\EditController
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class SC_wizard_forms extends \TYPO3\CMS\Backend\Controller\Wizard\FormsController {}
+class SC_wizard_forms extends \TYPO3\CMS\Compatibility6\Controller\Wizard\FormsController {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4714,7 +4714,7 @@ class t3lib_matchCondition_frontend extends \TYPO3\CMS\Frontend\Configuration\Ty
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_formmail extends \TYPO3\CMS\Frontend\Controller\DataSubmissionController {}
+class t3lib_formmail extends \TYPO3\CMS\Compatibility6\Controller\FormDataSubmissionController {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4824,7 +4824,7 @@ class tslib_content_FluidTemplate extends \TYPO3\CMS\Frontend\ContentObject\Flui
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_Form extends \TYPO3\CMS\Frontend\ContentObject\FormContentObject {}
+class tslib_content_Form extends \TYPO3\CMS\Compatibility6\ContentObject\FormContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0

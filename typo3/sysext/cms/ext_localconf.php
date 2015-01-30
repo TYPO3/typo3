@@ -133,25 +133,6 @@ mod.wizards.newContentElement {
 
 		forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms
 		forms.elements {
-			mailform {
-				icon = gfx/c_wiz/mailform.gif
-				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_title
-				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_description
-				tt_content_defValues {
-					CType = mailform
-					bodytext (
-	# Example content:
-	Name: | *name = input,40 | Enter your name here
-	Email: | *email=input,40 |
-	Address: | address=textarea,40,5 |
-	Contact me: | tv=check | 1
-
-	|formtype_mail = submit | Send form!
-	|html_enabled=hidden | 1
-	|subject=hidden| This is the subject
-					)
-				}
-			}
 			search {
 				icon = gfx/c_wiz/searchform.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_title
@@ -161,7 +142,7 @@ mod.wizards.newContentElement {
 				}
 			}
 		}
-		forms.show = mailform,search
+		forms.show = search
 
 		plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins
 		plugins.elements {

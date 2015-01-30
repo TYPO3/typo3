@@ -47,7 +47,7 @@ return array(
 	'SC_wizard_add' => \TYPO3\CMS\Backend\Controller\Wizard\AddController::class,
 	'SC_wizard_colorpicker' => \TYPO3\CMS\Backend\Controller\Wizard\ColorpickerController::class,
 	'SC_wizard_edit' => \TYPO3\CMS\Backend\Controller\Wizard\EditController::class,
-	'SC_wizard_forms' => \TYPO3\CMS\Backend\Controller\Wizard\FormsController::class,
+	'SC_wizard_forms' => \TYPO3\CMS\Compatibility6\Controller\Wizard\FormsController::class,
 	'SC_wizard_list' => \TYPO3\CMS\Backend\Controller\Wizard\ListController::class,
 	'SC_wizard_rte' => \TYPO3\CMS\Backend\Controller\Wizard\RteController::class,
 	'SC_wizard_table' => \TYPO3\CMS\Backend\Controller\Wizard\TableController::class,
@@ -945,7 +945,7 @@ return array(
 	'tx_form_View_Wizard_Wizard' => \TYPO3\CMS\Form\View\Wizard\WizardView::class,
 	'tslib_feUserAuth' => \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class,
 	't3lib_matchCondition_frontend' => \TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class,
-	't3lib_formmail' => \TYPO3\CMS\Frontend\Controller\DataSubmissionController::class,
+	't3lib_formmail' => \TYPO3\CMS\Compatibility6\Controller\FormDataSubmissionController::class,
 	'tslib_content_Abstract' => \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject::class,
 	'tslib_content_Case' => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
 	'tslib_content_ClearGif' => \TYPO3\CMS\Compatibility6\ContentObject\ClearGifContentObject::class,
@@ -967,7 +967,7 @@ return array(
 	'tslib_content_Files' => \TYPO3\CMS\Frontend\ContentObject\FilesContentObject::class,
 	'tslib_content_FlowPlayer' => \TYPO3\CMS\Frontend\ContentObject\FlowPlayerContentObject::class,
 	'tslib_content_FluidTemplate' => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
-	'tslib_content_Form' => \TYPO3\CMS\Frontend\ContentObject\FormContentObject::class,
+	'tslib_content_Form' => \TYPO3\CMS\Compatibility6\ContentObject\FormContentObject::class,
 	'tslib_content_HierarchicalMenu' => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,
 	'tslib_content_HorizontalRuler' => \TYPO3\CMS\Compatibility6\ContentObject\HorizontalRulerContentObject::class,
 	'tslib_content_Image' => \TYPO3\CMS\Frontend\ContentObject\ImageContentObject::class,
@@ -1279,5 +1279,8 @@ return array(
 	'TYPO3\\CMS\\Frontend\\ContentObject\\ContentTableContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\ContentTableContentObject::class,
 	'TYPO3\\CMS\\Frontend\\ContentObject\\OffsetTableContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject::class,
 	'TYPO3\\CMS\\Frontend\\ContentObject\\ColumnsContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\ColumnsContentObject::class,
-	'TYPO3\\CMS\\Frontend\\ContentObject\\HorizontalRulerContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\HorizontalRulerContentObject::class
+	'TYPO3\\CMS\\Frontend\\ContentObject\\HorizontalRulerContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\HorizontalRulerContentObject::class,
+	'TYPO3\\CMS\\Frontend\\ContentObject\\FormContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\FormContentObject::class,
+	'TYPO3\\CMS\\Frontend\\Controller\\Wizard\\FormsController' => \TYPO3\CMS\Compatibility6\Controller\Wizard\FormsController::class,
+	'TYPO3\\CMS\\Frontend\\Controller\\DataSubmissionController' => \TYPO3\CMS\Compatibility6\Controller\FormDataSubmissionController::class
 );

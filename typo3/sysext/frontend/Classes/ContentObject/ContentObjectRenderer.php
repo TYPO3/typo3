@@ -1776,8 +1776,10 @@ class ContentObjectRenderer {
 	 * @param string $name Input string
 	 * @return string the cleaned string
 	 * @see FORM()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, the method is moved to FormContentObject
 	 */
 	public function cleanFormName($name) {
+		GeneralUtility::logDeprecatedFunction();
 		// Turn data[x][y] into data:x:y:
 		$name = preg_replace('/\\[|\\]\\[?/', ':', trim($name));
 		// Remove illegal chars like _

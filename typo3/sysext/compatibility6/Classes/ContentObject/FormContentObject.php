@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Compatibility6\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class FormContentObject extends AbstractContentObject {
+class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, FORM
@@ -110,13 +110,13 @@ class FormContentObject extends AbstractContentObject {
 		$xhtmlStrict = GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype);
 		// Formname
 		$formName = isset($conf['formName.']) ? $this->cObj->stdWrap($conf['formName'], $conf['formName.']) : $conf['formName'];
-		$formName = $this->cObj->cleanFormName($formName);
+		$formName = $this->cleanFormName($formName);
 		$formName = $GLOBALS['TSFE']->getUniqueId($formName);
 
 		$fieldPrefix = isset($conf['fieldPrefix.']) ? $this->cObj->stdWrap($conf['fieldPrefix'], $conf['fieldPrefix.']) : $conf['fieldPrefix'];
 		if (isset($conf['fieldPrefix']) || isset($conf['fieldPrefix.'])) {
 			if ($fieldPrefix) {
-				$prefix = $this->cObj->cleanFormName($fieldPrefix);
+				$prefix = $this->cleanFormName($fieldPrefix);
 			} else {
 				$prefix = '';
 			}
@@ -147,7 +147,7 @@ class FormContentObject extends AbstractContentObject {
 				$typeParts = explode('=', $fParts[0]);
 				$confData['type'] = trim(strtolower(end($typeParts)));
 				if (count($typeParts) == 1) {
-					$confData['fieldname'] = $this->cObj->cleanFormName($parts[0]);
+					$confData['fieldname'] = $this->cleanFormName($parts[0]);
 					if (strtolower(preg_replace('/[^[:alnum:]]/', '', $confData['fieldname'])) == 'email') {
 						$confData['fieldname'] = 'email';
 					}
@@ -334,7 +334,7 @@ class FormContentObject extends AbstractContentObject {
 						$iCount = count($items);
 						for ($a = 0; $a < $iCount; $a++) {
 							$optionParts = '';
-							$radioId = $prefix . $fName . $this->cObj->cleanFormName($items[$a][0]);
+							$radioId = $prefix . $fName . $this->cleanFormName($items[$a][0]);
 							if ($accessibility) {
 								$radioLabelIdAttribute = ' id="' . $radioId . '"';
 							} else {
@@ -379,7 +379,7 @@ class FormContentObject extends AbstractContentObject {
 								break;
 							}
 							if (GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname'])) {
-								$value = $GLOBALS['TSFE']->codeString($value);
+								$value = \TYPO3\CMS\Compatibility6\Utility\FormUtility::codeString($value);
 							}
 						}
 						$hiddenfields .= sprintf('<input type="hidden" name="%s"%s value="%s" />', $confData['fieldname'], $elementIdAttribute, htmlspecialchars($value));
@@ -566,7 +566,7 @@ class FormContentObject extends AbstractContentObject {
 		// Recipient:
 		$theEmail = isset($conf['recipient.']) ? $this->cObj->stdWrap($conf['recipient'], $conf['recipient.']) : $conf['recipient'];
 		if ($theEmail && !$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
-			$theEmail = $GLOBALS['TSFE']->codeString($theEmail);
+			$theEmail = \TYPO3\CMS\Compatibility6\Utility\FormUtility::codeString($theEmail);
 			$hiddenfields .= '<input type="hidden" name="recipient" value="' . htmlspecialchars($theEmail) . '" />';
 		}
 		// location data:
@@ -593,7 +593,7 @@ class FormContentObject extends AbstractContentObject {
 						if ($GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
 							continue;
 						}
-						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
+						$hF_value = \TYPO3\CMS\Compatibility6\Utility\FormUtility::codeString($hF_value);
 					}
 					$hiddenfields .= '<input type="hidden" name="' . $hF_key . '" value="' . htmlspecialchars($hF_value) . '" />';
 				}
@@ -606,7 +606,7 @@ class FormContentObject extends AbstractContentObject {
 			$badMess = isset($conf['badMess.']) ? $this->cObj->stdWrap($conf['badMess'], $conf['badMess.']) : $conf['badMess'];
 			$emailMess = isset($conf['emailMess.']) ? $this->cObj->stdWrap($conf['emailMess'], $conf['emailMess.']) : $conf['emailMess'];
 			$validateForm = ' onsubmit="return validateForm(' . GeneralUtility::quoteJSvalue($formName) . ',' . GeneralUtility::quoteJSvalue(implode(',', $fieldlist)) . ',' . GeneralUtility::quoteJSvalue($goodMess) . ',' . GeneralUtility::quoteJSvalue($badMess) . ',' . GeneralUtility::quoteJSvalue($emailMess) . ')"';
-			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 'typo3/sysext/frontend/Resources/Public/JavaScript/jsfunc.validateform.js')) . '"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 'typo3/sysext/compatibility6/Resources/Public/JavaScript/jsfunc.validateform.js')) . '"></script>';
 		} else {
 			$validateForm = '';
 		}
@@ -644,5 +644,18 @@ class FormContentObject extends AbstractContentObject {
 		} else {
 			return GeneralUtility::_GP($fieldName);
 		}
+	}
+
+	/**
+	 * Removes forbidden characters and spaces from name/id attributes in the form tag and formfields
+	 *
+	 * @param string $name Input string
+	 * @return string the cleaned string
+	 */
+	protected function cleanFormName($name) {
+		// Turn data[x][y] into data:x:y:
+		$name = preg_replace('/\\[|\\]\\[?/', ':', trim($name));
+		// Remove illegal chars like _
+		return preg_replace('#[^:a-zA-Z0-9]#', '', $name);
 	}
 }

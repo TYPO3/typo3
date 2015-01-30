@@ -1506,10 +1506,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 					break;
 				case 'bullets':
-
 				case 'table':
-
-				case 'mailform':
 					if ($row['bodytext']) {
 						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 					}

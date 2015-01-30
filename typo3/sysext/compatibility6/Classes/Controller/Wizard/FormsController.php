@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Controller\Wizard;
+namespace TYPO3\CMS\Compatibility6\Controller\Wizard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -107,7 +107,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class FormsController extends AbstractWizardController {
+class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController {
 
 	/**
 	 * document template object
@@ -185,7 +185,7 @@ class FormsController extends AbstractWizardController {
 		// Document template object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $this->getBackPath();
-		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_forms.html');
+		$this->doc->setModuleTemplate('EXT:compatibility6/Resources/Private/Templates/Wizard/Forms.html');
 		// Setting form tag:
 		list($rUri) = explode('#', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$this->doc->form = '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">';

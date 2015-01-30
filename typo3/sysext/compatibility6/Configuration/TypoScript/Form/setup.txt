@@ -1,0 +1,56 @@
+# Hide subheader for old style form element (it is used for recipient mail)
+lib.stdheader.20.if {
+	isFalse = 0
+	isFalse.override = 1
+	isFalse.override {
+		if.equals.field = CType
+		if.value = mailform
+	}
+}
+
+# ******************
+# CType: mailform
+# ******************
+tt_content.mailform = COA
+tt_content.mailform.10 = < lib.stdheader
+tt_content.mailform.20 = FORM
+tt_content.mailform.20 {
+	useDefaultContentObject = 1
+	accessibility = 1
+	noWrapAttr = 1
+	formName = mailform
+	dontMd5FieldNames = 1
+	layout = <div class="csc-mailform-field">###LABEL### ###FIELD###</div>
+	labelWrap.wrap = |
+	commentWrap.wrap = |
+	radioWrap.wrap = |<br />
+	radioWrap.accessibilityWrap = <fieldset###RADIO_FIELD_ID###><legend>###RADIO_GROUP_LABEL###</legend>|</fieldset>
+	REQ = 1
+	REQ.labelWrap.wrap = |
+	COMMENT.layout = <div class="csc-mailform-label">###LABEL###</div>
+	RADIO.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-radio">###FIELD###</span></div>
+	LABEL.layout = <div class="csc-mailform-field">###LABEL### <span class="csc-mailform-label">###FIELD###</span></div>
+	target < lib.parseTarget
+	target =
+	target.override = {$styles.content.mailform.target}
+	goodMess = {$styles.content.mailform.goodMess}
+	badMess = {$styles.content.mailform.badMess}
+	redirect.field = pages
+	redirect.listNum = 0
+	recipient.field = subheader
+	data.field = bodytext
+	locationData = 1
+	hiddenFields.stdWrap.wrap = <div style="display:none;">|</div>
+
+	params.radio = class="csc-mailform-radio"
+	params.check = class="csc-mailform-check"
+	params.submit = class="csc-mailform-submit"
+
+	stdWrap.wrap = <fieldset class="csc-mailform"> | </fieldset>
+	stdWrap {
+		editIcons = tt_content: bodytext, pages, subheader
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.form
+
+		prefixComment = 2 | Mail form inserted:
+	}
+}

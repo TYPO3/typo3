@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Controller;
+namespace TYPO3\CMS\Compatibility6\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,10 +18,11 @@ use TYPO3\CMS\Core\Utility;
 
 /**
  * Formmail class
+ * used to submit data, and hooks into TSFE
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class DataSubmissionController {
+class FormDataSubmissionController {
 
 	/**
 	 * @var string
@@ -104,6 +105,116 @@ class DataSubmissionController {
 	 * @var array Files to clean up at the end (attachments)
 	 */
 	protected $temporaryFiles = array();
+
+	/**
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected $frontendController = NULL;
+
+	/**
+	 * hook to be executed by TypoScriptFrontendController
+	 *
+	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $frontendController
+	 */
+	public function checkDataSubmission($frontendController) {
+		$this->frontendController = $frontendController;
+
+		// Checks if any email-submissions
+		$formtype_mail = isset($_POST['formtype_mail']) || isset($_POST['formtype_mail_x']);
+		if ($formtype_mail) {
+			$refInfo = parse_url(Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
+			if (Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') == $refInfo['host'] || $this->frontendController->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
+				if ($this->locDataCheck($_POST['locationData'])) {
+					if ($formtype_mail) {
+						$this->prepareAndSend();
+						$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": Return value: email', 0);
+					}
+				}
+			} else {
+				$GLOBALS['TT']->setTSlogMessage('"Check Data Submission": HTTP_HOST and REFERER HOST did not match when processing submitted formdata!', 3);
+			}
+		}
+	}
+
+	/**
+	 * Checks if a formmail submission can be sent as email
+	 *
+	 * @param string $locationData The input from $_POST['locationData']
+	 * @return void|int
+	 */
+	protected function locDataCheck($locationData) {
+		$locData = explode(':', $locationData);
+		if (!$locData[1] || $this->frontendController->sys_page->checkRecord($locData[1], $locData[2], 1)) {
+			// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
+			if (count($this->frontendController->sys_page->getPage($locData[0]))) {
+				return 1;
+			} else {
+				$GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data (' . $locationData . ') was not accessible.', 2);
+			}
+		} else {
+			$GLOBALS['TT']->setTSlogMessage('LocationData Error: Location data (' . $locationData . ') record pointed to was not accessible.', 2);
+		}
+	}
+
+	/**
+	 * Sends the emails from the formmail content object.
+	 *
+	 * @return void
+	 */
+	protected function prepareAndSend() {
+		$EMAIL_VARS = Utility\GeneralUtility::_POST();
+		$locationData = $EMAIL_VARS['locationData'];
+		unset($EMAIL_VARS['locationData']);
+		unset($EMAIL_VARS['formtype_mail'], $EMAIL_VARS['formtype_mail_x'], $EMAIL_VARS['formtype_mail_y']);
+		$integrityCheck = $this->frontendController->TYPO3_CONF_VARS['FE']['strictFormmail'];
+		if (!$this->frontendController->TYPO3_CONF_VARS['FE']['secureFormmail']) {
+			// Check recipient field:
+			// These two fields are the ones which contain recipient addresses that can be misused to send mail from foreign servers.
+			$encodedFields = explode(',', 'recipient, recipient_copy');
+			foreach ($encodedFields as $fieldKey) {
+				if ((string)$EMAIL_VARS[$fieldKey] !== '') {
+					// Decode...
+					if ($res = \TYPO3\CMS\Compatibility6\Utility\FormUtility::codeString($EMAIL_VARS[$fieldKey], TRUE)) {
+						$EMAIL_VARS[$fieldKey] = $res;
+					} elseif ($integrityCheck) {
+						// Otherwise abort:
+						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field (' . $fieldKey . ') which could not be decoded to a valid string. Sending formmail aborted due to security reasons!', 3);
+						return;
+					} else {
+						$GLOBALS['TT']->setTSlogMessage('"Formmail" discovered a field (' . $fieldKey . ') which could not be decoded to a valid string. The security level accepts this, but you should consider a correct coding though!', 2);
+					}
+				}
+			}
+		} else {
+			$locData = explode(':', $locationData);
+			$record = $this->frontendController->sys_page->checkRecord($locData[1], $locData[2], 1);
+			$EMAIL_VARS['recipient'] = $record['subheader'];
+			$EMAIL_VARS['recipient_copy'] = $this->extractRecipientCopy($record['bodytext']);
+		}
+		// Hook for preprocessing of the content for formmails:
+		if (is_array($this->frontendController->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'])) {
+			foreach ($this->frontendController->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'] as $_classRef) {
+				$_procObj = Utility\GeneralUtility::getUserObj($_classRef);
+				$EMAIL_VARS = $_procObj->sendFormmail_preProcessVariables($EMAIL_VARS, $this);
+			}
+		}
+		$this->start($EMAIL_VARS);
+		$r = $this->sendtheMail();
+		$GLOBALS['TT']->setTSlogMessage('"Formmail" invoked, sending mail to ' . $EMAIL_VARS['recipient'], 0);
+	}
+
+	/**
+	 * Extracts the value of recipient copy field from a formmail CE bodytext
+	 *
+	 * @param string $bodytext The content of the related bodytext field
+	 * @return string The value of the recipient_copy field, or an empty string
+	 */
+	protected function extractRecipientCopy($bodytext) {
+		$fdef = array();
+		//|recipient_copy=hidden|karsten@localhost.localdomain
+		preg_match('/^[\\s]*\\|[\\s]*recipient_copy[\\s]*=[\\s]*hidden[\\s]*\\|(.*)$/m', $bodytext, $fdef);
+		return $fdef[1] ?: '';
+	}
 
 	/**
 	 * Start function
