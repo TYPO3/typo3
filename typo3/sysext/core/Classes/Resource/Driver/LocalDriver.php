@@ -469,7 +469,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 */
 	protected function retrieveFileAndFoldersInPath($path, $recursive = FALSE, $includeFiles = TRUE, $includeDirs = TRUE) {
 		$pathLength = strlen($this->getAbsoluteBasePath());
-		$iteratorMode = \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_FILEINFO;
+		$iteratorMode = \FilesystemIterator::UNIX_PATHS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::FOLLOW_SYMLINKS;
 		if ($recursive) {
 			$iterator = new \RecursiveIteratorIterator(
 				new \RecursiveDirectoryIterator($path, $iteratorMode),
