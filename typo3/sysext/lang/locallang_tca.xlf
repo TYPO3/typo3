@@ -169,7 +169,7 @@
 				<source>Hide in lists:</source>
 			</trans-unit>
 			<trans-unit id="be_groups.subgroup" xml:space="preserve">
-				<source>Sub Groups:</source>
+				<source>Inherit settings from groups:</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.base_rights" xml:space="preserve">
 				<source>Access Lists</source>

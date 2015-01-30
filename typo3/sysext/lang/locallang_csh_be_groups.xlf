@@ -295,7 +295,7 @@ In the pop-up window you will see a tree of possible configuration values. These
 The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</source>
 			</trans-unit>
 			<trans-unit id="subgroup.description" xml:space="preserve">
-				<source>Select backend user groups which are automatically included for members of this group.</source>
+				<source>All settings from the selected groups will be merged with the properties from this group, for example DB mounts, permissions, TSconfig, etc.</source>
 			</trans-unit>
 			<trans-unit id="subgroup.details" xml:space="preserve">
 				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
