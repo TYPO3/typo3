@@ -4340,9 +4340,11 @@ Connection: close
 	 * GeneralUtility::makeInstance() first and call its get() method to get
 	 * the instance of a specific class.
 	 *
-	 * @throws \InvalidArgumentException if classname is an empty string
-	 * @param string $className name of the class to instantiate, must not be empty
+	 * @param string $className name of the class to instantiate, must not be empty and not start with a backslash
+	 *
 	 * @return object the created instance
+	 *
+	 * @throws \InvalidArgumentException if $className is empty or starts with a backslash
 	 */
 	static public function makeInstance($className) {
 		if (!is_string($className) || empty($className)) {
@@ -4350,7 +4352,9 @@ Connection: close
 		}
 		// Never instantiate with a beginning backslash, otherwise things like singletons won't work.
 		if ($className[0] === '\\') {
-			throw new \InvalidArgumentException('$className must not start with a backslash.', 1420281366);
+			throw new \InvalidArgumentException(
+				'$className "' . $className . '" must not start with a backslash.', 1420281366
+			);
 		}
 		if (isset(static::$finalClassNameCache[$className])) {
 			$finalClassName = static::$finalClassNameCache[$className];
