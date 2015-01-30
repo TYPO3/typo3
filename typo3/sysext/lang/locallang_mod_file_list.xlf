@@ -87,6 +87,9 @@
 			<trans-unit id="localDriverFlexform_basePath" xml:space="preserve">
 				<source>Base path:</source>
 			</trans-unit>
+			<trans-unit id="localDriverFlexform_basePath_placeholder" xml:space="preserve">
+				<source>Add storage path here. For example: myPath/folder/</source>
+			</trans-unit>
 			<trans-unit id="localDriverFlexform_pathType" xml:space="preserve">
 				<source>Path type:</source>
 			</trans-unit>
