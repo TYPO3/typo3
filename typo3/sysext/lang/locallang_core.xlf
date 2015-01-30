@@ -729,6 +729,12 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="message.description.fileNotDeletedHasReferences" xml:space="preserve">
 				<source>The file cannot be deleted since it is still used at the following places:</source>
 			</trans-unit>
+			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" xml:space="preserve">
+				<source>Folder not deleted</source>
+			</trans-unit>
+			<trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" xml:space="preserve">
+				<source>The folder cannot be deleted since it still contains files in use.</source>
+			</trans-unit>
 			<trans-unit id="message.header.fileHasBrokenReferences" xml:space="preserve">
 				<source>File has broken references</source>
 			</trans-unit>
