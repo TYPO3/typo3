@@ -2848,7 +2848,8 @@ Connection: close
 		if (!is_string($deepDirectory)) {
 			throw new \InvalidArgumentException('The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.', 1303662956);
 		}
-		$fullPath = $directory . $deepDirectory;
+		// Ensure there is only one slash
+		$fullPath = rtrim($directory, '/') . '/' . ltrim($deepDirectory, '/');
 		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
 			$firstCreatedPath = self::createDirectoryPath($fullPath);
 			if ($firstCreatedPath !== '') {
