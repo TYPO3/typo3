@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Resource\Index;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 
 /**
  * Repository Class as an abstraction layer to sys_file
@@ -222,6 +223,7 @@ class FileIndexRepository implements SingletonInterface {
 		$data['tstamp'] = time();
 		$this->getDatabaseConnection()->exec_INSERTquery($this->table, $data);
 		$data['uid'] = $this->getDatabaseConnection()->sql_insert_id();
+		$this->updateRefIndex($data['uid']);
 		$this->emitRecordCreatedSignal($data);
 		return $data['uid'];
 	}
@@ -250,6 +252,7 @@ class FileIndexRepository implements SingletonInterface {
 		if (count($updateRow) > 0) {
 			$updateRow['tstamp'] = time();
 			$this->getDatabaseConnection()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
+			$this->updateRefIndex($file->getUid());
 			$this->emitRecordUpdatedSignal(array_intersect_key($file->getProperties(), array_flip($this->fields)));
 		}
 	}
@@ -338,8 +341,23 @@ class FileIndexRepository implements SingletonInterface {
 	 */
 	public function remove($fileUid) {
 		$this->getDatabaseConnection()->exec_DELETEquery($this->table, 'uid=' . (int)$fileUid);
+		$this->updateRefIndex($fileUid);
 		$this->emitRecordDeletedSignal($fileUid);
 	}
+
+
+	/**
+	 * Update Reference Index (sys_refindex) for a file
+	 *
+	 * @param int $id Record UID
+	 * @return void
+	 */
+	public function updateRefIndex($id) {
+		/** @var $refIndexObj ReferenceIndex */
+		$refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+		$refIndexObj->updateRefIndexTable($this->table, $id);
+	}
+
 
 	/*
 	 * Get the SignalSlot dispatcher
