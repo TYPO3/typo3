@@ -1,16 +1,4 @@
 #
-# Table structure for table 'cache_typo3temp_log'
-#
-CREATE TABLE cache_typo3temp_log (
-	md5hash varchar(32) DEFAULT '' NOT NULL,
-	tstamp int(11) DEFAULT '0' NOT NULL,
-	filename varchar(255) DEFAULT '' NOT NULL,
-	orig_filename varchar(255) DEFAULT '' NOT NULL,
-
-	PRIMARY KEY (md5hash)
-) ENGINE=InnoDB;
-
-#
 # Table structure for table 'cache_md5params'
 #
 CREATE TABLE cache_md5params (

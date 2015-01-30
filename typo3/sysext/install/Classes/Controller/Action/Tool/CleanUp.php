@@ -71,10 +71,6 @@ class CleanUp extends Action\AbstractAction {
 				'description' => 'Frontend redirects',
 			),
 			array(
-				'name' => 'cache_typo3temp_log',
-				'description' => 'Image rendering lock information',
-			),
-			array(
 				'name' => 'fe_sessions',
 				'description' => 'Frontend user sessions',
 			),

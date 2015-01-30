@@ -71,7 +71,9 @@ class SilentConfigurationUpgradeService {
 		// #64226
 		'BE/accessListRenderMode',
 		// #24900
-		'SYS/compat_version'
+		'SYS/compat_version',
+		// #64643
+		'GFX/enable_typo3temp_db_tracking'
 	);
 
 	/**

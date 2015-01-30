@@ -642,7 +642,6 @@ class TestSetup extends Action\AbstractAction {
 		$imageProcessor->init();
 		$imageProcessor->tempPath = PATH_site . 'typo3temp/';
 		$imageProcessor->dontCheckForExistingTempFile = 1;
-		$imageProcessor->enable_typo3temp_db_tracking = 0;
 		$imageProcessor->filenamePrefix = 'installTool-';
 		$imageProcessor->dontCompress = 1;
 		$imageProcessor->alternativeOutputKey = 'typo3InstallTest';
