@@ -162,7 +162,8 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 */
 	public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache) {
 		parent::setCache($cache);
-		$this->identifierPrefix = 'TYPO3_' . md5(PATH_site) . '_';
+		$identifierHash = substr(md5(PATH_site . $this->context . $this->cacheIdentifier), 0, 12);
+		$this->identifierPrefix = 'TYPO3_' . $identifierHash . '_';
 	}
 
 	/**
