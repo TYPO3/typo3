@@ -10,9 +10,7 @@ return array(
 		'delete' => 'deleted',
 		'rootLevel' => TRUE,
 		'versioningWS_alwaysAllowLiveEdit' => TRUE, // Only have LIVE records of file storages
-		'enablecolumns' => array(
-			'disabled' => 'hidden'
-		),
+		'enablecolumns' => array(),
 		'requestUpdate' => 'driver',
 		'iconfile' => '_icon_ftp.gif',
 		'searchFields' => 'name,description'
