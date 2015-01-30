@@ -272,8 +272,7 @@ CREATE TABLE sys_file_storage (
 	processingfolder tinytext,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid,deleted),
-	KEY deleted (deleted)
+	KEY parent (pid,deleted)
 );
 
 #
