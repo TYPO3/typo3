@@ -702,24 +702,25 @@ class InlineElement {
 			}
 			// "Edit" link:
 			if (($rec['table_local'] === 'sys_file') && !$isNewItem) {
-				$location = 'top.content.list_frame';
-				$table = 'sys_file_metadata';
 				$recordInDatabase = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 					'uid',
-					$table,
+					'sys_file_metadata',
 					'file = ' . (int)substr($rec['uid_local'], 9) . ' AND sys_language_uid = ' . $rec['sys_language_uid']
 				);
 				$editUid = $recordInDatabase['uid'];
-				$editOnClick = 'if(' . $location . '){' . $location . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode('
-					. $location . '.document.location' . '.pathname+' . $location . '.document.location' . '.search)+\'&edit['
-					. $table . '][' . $editUid . ']=edit\';}';
-				$title = htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
-				$cells['editmetadata'] = '<a href="#" class="btn" onclick="' . $editOnClick . '" title="' . $title . '">'
-					. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				if ($GLOBALS['BE_USER']->check('tables_modify', 'sys_file_metadata')) {
+					$editOnClick = 'if(top.content.list_frame){top.content.list_frame.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode('
+						. 'top.content.list_frame.document.location' . '.pathname+top.content.list_frame.document.location' . '.search)+'
+						. '\'&edit[sys_file_metadata][' . (int)$editUid . ']=edit\';}';
+					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
+					$cells['editmetadata'] = '<a href="#" class="btn" onclick="'
+						. htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">'
+						. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				}
 			}
 			// "Delete" link:
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
-				$onClick = 'inline.deleteRecord(\'' . $nameObjectFtId . '\');';
+				$onClick = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');';
 				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
 			}
 

@@ -810,7 +810,7 @@ class FileList extends AbstractRecordList {
 		$fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
 		// Edit metadata of file
 		try {
-			if (is_a($fileOrFolderObject, File::class) && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('write')) {
+			if (is_a($fileOrFolderObject, File::class) && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
 				$metaData = $fileOrFolderObject->_getMetaData();
 				$data = array(
 					'sys_file_metadata' => array($metaData['uid'] => 'edit')

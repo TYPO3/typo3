@@ -867,7 +867,7 @@ class ClickMenu {
 			}
 			// Edit
 			if (!in_array('edit', $this->disabledItems) && $fileObject->checkActionPermission('write')) {
-				if (!$folder && !$isStorageRoot && $fileObject->isIndexed()) {
+				if (!$folder && !$isStorageRoot && $fileObject->isIndexed() && $this->backendUser->check('tables_modify', 'sys_file_metadata')) {
 					$metaData = $fileObject->_getMetaData();
 					$menuItems['edit2'] = $this->DB_edit('sys_file_metadata', $metaData['uid']);
 				}
