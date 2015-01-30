@@ -634,7 +634,7 @@ class FileList extends AbstractRecordList {
 							$theData[$field] = $this->makeClip($fileObject);
 							break;
 						case '_LOCALIZATION_':
-							if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('write')) {
+							if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
 								$metaDataRecord = $fileObject->_getMetaData();
 								$translations = $this->getTranslationsForMetaData($metaDataRecord);
 								$languageCode = '';
