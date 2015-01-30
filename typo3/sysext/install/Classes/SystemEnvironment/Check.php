@@ -90,15 +90,17 @@ class Check {
 		$statusArray[] = $this->checkOpenBaseDir();
 		$statusArray[] = $this->checkXdebugMaxNestingLevel();
 		$statusArray[] = $this->checkOpenSslInstalled();
-		$statusArray[] = $this->checkSuhosinLoaded();
-		$statusArray[] = $this->checkSuhosinRequestMaxVars();
-		$statusArray[] = $this->checkSuhosinRequestMaxVarnameLength();
-		$statusArray[] = $this->checkSuhosinPostMaxNameLength();
-		$statusArray[] = $this->checkSuhosinPostMaxVars();
-		$statusArray[] = $this->checkSuhosinGetMaxNameLength();
-		$statusArray[] = $this->checkSuhosinGetMaxValueLength();
-		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsPhar();
-		$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsVfs();
+		if ($this->isSuhosinLoadedAndActive()) {
+			$statusArray[] = $this->getSuhosinLoadedStatus();
+			$statusArray[] = $this->checkSuhosinRequestMaxVars();
+			$statusArray[] = $this->checkSuhosinRequestMaxVarnameLength();
+			$statusArray[] = $this->checkSuhosinPostMaxNameLength();
+			$statusArray[] = $this->checkSuhosinPostMaxVars();
+			$statusArray[] = $this->checkSuhosinGetMaxNameLength();
+			$statusArray[] = $this->checkSuhosinGetMaxValueLength();
+			$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsPhar();
+			$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsVfs();
+		}
 		$statusArray[] = $this->checkSomePhpOpcodeCacheIsLoaded();
 		$statusArray[] = $this->checkReflectionDocComment();
 		$statusArray[] = $this->checkSystemLocale();
@@ -575,25 +577,20 @@ class Check {
 	}
 
 	/**
-	 * Check enabled suhosin
+	 * Get suhosin loaded status
+	 * Should be called only if suhosin extension is loaded
 	 *
 	 * @return Status\StatusInterface
+	 * @throws \BadMethodCallException
 	 */
-	protected function checkSuhosinLoaded() {
+	protected function getSuhosinLoadedStatus() {
 		if ($this->isSuhosinLoadedAndActive()) {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP suhosin extension loaded and active');
+			return $status;
 		} else {
-			$status = new Status\NoticeStatus();
-			$status->setTitle('PHP suhosin extension not loaded or in simulation mode');
-			$status->setMessage(
-				'suhosin is an extension to harden the PHP environment. In general, it is' .
-				' good to have it from a security point of view. While TYPO3 CMS works' .
-				' fine with suhosin, it has some requirements different from the default settings' .
-				' to be set if enabled.'
-			);
+			throw new \BadMethodCallException('Should be called only if suhosin extension is loaded', 1422634778);
 		}
-		return $status;
 	}
 
 	/**
