@@ -19,6 +19,11 @@
  */
 
 /**
+ * Make sure error messages during the tests get displayed no matter what is set in php.ini.
+ */
+@ini_set('display_errors', 1);
+
+/**
  * Require classes the functional test classes extend from or use for further bootstrap.
  * Only files required for "new TestCaseClass" are required here and a general exception
  * that is thrown by setUp() code.

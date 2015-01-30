@@ -35,6 +35,11 @@ namespace TYPO3\CMS\Core\Build;
  */
 
 /**
+ * Make sure error messages during the tests get displayed no matter what is set in php.ini.
+ */
+@ini_set('display_errors', 1);
+
+/**
  * Be nice and give a hint if someone is executing the tests with cli dispatch
  */
 if (defined('TYPO3_MODE')) {
