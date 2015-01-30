@@ -314,13 +314,14 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			}
 		}
 
-		$references = $pageRepository->getFileReferences(
-			$referencesForeignTable,
-			$referencesFieldName,
-			$element
-		);
-
-		$this->addToArray($references, $fileObjects);
+		if (is_array($element)) {
+			$references = $pageRepository->getFileReferences(
+				$referencesForeignTable,
+				$referencesFieldName,
+				$element
+			);
+			$this->addToArray($references, $fileObjects);
+		}
 	}
 
 	/**
