@@ -252,7 +252,7 @@ class StandaloneViewTest extends UnitTestCase {
 	 * @test
 	 */
 	public function renderLoadsSpecifiedTemplateFileAndPassesSourceToTemplateParser() {
-		$templatePathAndFilename = __DIR__ . '/Fixtures/StandaloneViewFixture.html';
+		$templatePathAndFilename = GeneralUtility::fixWindowsFilePath(__DIR__) . '/Fixtures/StandaloneViewFixture.html';
 		$expectedResult = file_get_contents($templatePathAndFilename);
 		$this->view->setTemplatePathAndFilename($templatePathAndFilename);
 		$this->view->expects($this->once())->method('testFileExistence')->with($templatePathAndFilename)->will($this->returnValue(TRUE));
@@ -373,7 +373,7 @@ class StandaloneViewTest extends UnitTestCase {
 	 * @test
 	 */
 	public function getLayoutSourceReturnsContentOfLayoutFileForTheDefaultFormat() {
-		$layoutRootPath = __DIR__ . '/Fixtures';
+		$layoutRootPath = GeneralUtility::fixWindowsFilePath(__DIR__) . '/Fixtures';
 		$this->view->setLayoutRootPath($layoutRootPath);
 		$this->mockRequest->expects($this->once())->method('getFormat')->will($this->returnValue('html'));
 		$this->view->expects($this->once())->method('testFileExistence')->with($layoutRootPath . '/LayoutFixture.html')->will($this->returnValue(TRUE));
@@ -386,7 +386,7 @@ class StandaloneViewTest extends UnitTestCase {
 	 * @test
 	 */
 	public function getLayoutSourceReturnsContentOfLayoutFileForTheSpecifiedFormat() {
-		$layoutRootPath = __DIR__ . '/Fixtures';
+		$layoutRootPath = GeneralUtility::fixWindowsFilePath(__DIR__) . '/Fixtures';
 		$this->view->setLayoutRootPath($layoutRootPath);
 		$this->mockRequest->expects($this->once())->method('getFormat')->will($this->returnValue('xml'));
 		$this->view->expects($this->once())->method('testFileExistence')->with($layoutRootPath . '/LayoutFixture.xml')->will($this->returnValue(TRUE));
@@ -399,7 +399,7 @@ class StandaloneViewTest extends UnitTestCase {
 	 * @test
 	 */
 	public function getLayoutSourceReturnsContentOfDefaultLayoutFileIfNoLayoutExistsForTheSpecifiedFormat() {
-		$layoutRootPath = __DIR__ . '/Fixtures';
+		$layoutRootPath = GeneralUtility::fixWindowsFilePath(__DIR__) . '/Fixtures';
 		$this->view->setLayoutRootPath($layoutRootPath);
 		$this->mockRequest->expects($this->once())->method('getFormat')->will($this->returnValue('foo'));
 		$this->view->expects($this->at(0))->method('testFileExistence')->with($layoutRootPath . '/LayoutFixture.foo')->will($this->returnValue(FALSE));
