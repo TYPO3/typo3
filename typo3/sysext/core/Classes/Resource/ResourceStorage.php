@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -2425,11 +2426,17 @@ class ResourceStorage implements ResourceStorageInterface {
 			if (!empty($this->storageRecord['processingfolder'])) {
 				$processingFolder = $this->storageRecord['processingfolder'];
 			}
-			if ($this->driver->folderExists($processingFolder) === FALSE) {
-				$this->processingFolder = $this->createFolder($processingFolder);
-			} else {
-				$data = $this->driver->getFolderInfoByIdentifier($processingFolder);
-				$this->processingFolder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+			try {
+				if ($this->driver->folderExists($processingFolder) === FALSE) {
+					$this->processingFolder = $this->createFolder($processingFolder);
+				} else {
+					$data = $this->driver->getFolderInfoByIdentifier($processingFolder);
+					$this->processingFolder = ResourceFactory::getInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+				}
+			} catch(InsufficientFolderWritePermissionsException $e) {
+				$this->processingFolder = GeneralUtility::makeInstance(
+					InaccessibleFolder::class, $this, $processingFolder, $processingFolder
+				);
 			}
 		}
 		return $this->processingFolder;
