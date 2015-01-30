@@ -31,6 +31,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Multiple whitespaces and tabs in field definition
 		$inputString = 'CREATE table atable (' . LF . 'aFieldName   int(11)' . TAB . TAB . TAB . 'unsigned   DEFAULT \'0\'' . LF . ');';
 		$result = $subject->getFieldDefinitions_fileContent($inputString);
+
 		$this->assertEquals(
 			array(
 				'atable' => array(
@@ -68,7 +69,51 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			)
 		);
 
+		$this->assertEquals(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(
+					'tx_foo' => array(
+						'fields' => array(
+							'foo' => 'varchar(999) DEFAULT \'0\' NOT NULL'
+						)
+					)
+				),
+				'diff_currentValues' => array(
+					'tx_foo' => array(
+						'fields' => array(
+							'foo' => 'varchar(255) DEFAULT \'0\' NOT NULL'
+						)
+					)
+				)
+			)
+		);
+	}
 
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraFindsChangedFieldsIgnoreNotNull() {
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'varchar(999) DEFAULT \'0\' NOT NULL'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'varchar(255) DEFAULT \'0\' NOT NULL'
+					)
+				)
+			),
+			'',
+			TRUE
+		);
 
 		$this->assertEquals(
 			$differenceArray,
