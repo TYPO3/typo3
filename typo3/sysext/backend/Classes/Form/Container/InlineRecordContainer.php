@@ -253,13 +253,21 @@ class InlineRecordContainer extends AbstractContainer {
 				$comboRecord = $inlineRelatedRecordResolver->getNewRecord($this->globalOptions['inlineFirstPid'], $comboConfig['foreign_table']);
 				$isNewRecord = TRUE;
 			}
-			$flashMessage = GeneralUtility::makeInstance(
-				FlashMessage::class,
-				$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination'),
-				'',
-				FlashMessage::WARNING
-			);
-			$resultArray['html'] = $flashMessage->render();
+
+			// Display Warning FlashMessage if it is not suppressed
+			if (!isset($config['appearance']['suppressCombinationWarning']) || empty($config['appearance']['suppressCombinationWarning']))
+				$combinationWarningMessage = 'LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination';
+				if (!empty($config['appearance']['overwriteCombinationWarningMessage'])) {
+					$combinationWarningMessage = $config['appearance']['overwriteCombinationWarningMessage'];
+				}
+				$flashMessage = GeneralUtility::makeInstance(
+					FlashMessage::class,
+					$this->getLanguageService()->sL($combinationWarningMessage),
+					'',
+					FlashMessage::WARNING
+				);
+				$resultArray['html'] = $flashMessage->render();
+			}
 
 			// Get the FormEngine interpretation of the TCA of the child table
 			$childArray = $this->renderRecord($comboConfig['foreign_table'], $comboRecord);
