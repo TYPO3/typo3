@@ -111,8 +111,6 @@ lib.parseFunc_RTE {
 		# The blockquote content is passed into parseFunc again...
 		blockquote.stripNL=1
 		blockquote.callRecursive=1
-		blockquote.callRecursive.tagStdWrap.HTMLparser = 1
-		blockquote.callRecursive.tagStdWrap.HTMLparser.tags.blockquote.overrideAttribs = style="margin-bottom:0;margin-top:0;"
 
 		table.stripNL=1
 		table.stdWrap.HTMLparser = 1
