@@ -77,7 +77,12 @@ class DateValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 					array('D', 'l', 'd', 'j', 'z', 'M', 'F', 'M', 'm', 'y', 'Y'),
 					$this->format
 				);
-				return date_create_from_format($dateTimeFormat, $value) !== FALSE;
+				$dateTimeObject = date_create_from_format($dateTimeFormat, $value);
+				if ($dateTimeObject === FALSE) {
+					return FALSE;
+				}
+
+				return $value === $dateTimeObject->format($dateTimeFormat);
 			}
 		}
 		return TRUE;
