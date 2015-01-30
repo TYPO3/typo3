@@ -1532,8 +1532,22 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getIndpEnvTypo3SitePathReturnsStringStartingWithSlash() {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('Test not available on Windows OS.');
+		}
 		$result = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
 		$this->assertEquals('/', $result[0]);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getIndpEnvTypo3SitePathReturnsStringStartingWithDrive() {
+		if (TYPO3_OS !== 'WIN') {
+			$this->markTestSkipped('Test available only on Windows OS.');
+		}
+		$result = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+		$this->assertRegExp('/^[a-z]:\//i', $result);
 	}
 
 	/**
