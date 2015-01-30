@@ -11,7 +11,8 @@
 					<label>LLL:EXT:lang/locallang_mod_file_list.xlf:localDriverFlexform_basePath</label>
 					<config>
 						<type>input</type>
-						<default>fileadmin/</default>
+						<placeholder>LLL:EXT:lang/locallang_mod_file_list.xlf:localDriverFlexform_basePath_placeholder</placeholder>
+						<eval>required</eval>
 						<size>30</size>
 					</config>
 				</TCEforms>
