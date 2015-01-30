@@ -89,6 +89,7 @@ define(['jquery', 'nprogress'], function($, NProgress) {
 
 		// changing "table"
 		Recycler.elements.$tableSelector.on('change', function() {
+			Recycler.paging.currentPage = 1;
 			Recycler.loadDeletedElements();
 		});
 
@@ -480,6 +481,7 @@ define(['jquery', 'nprogress'], function($, NProgress) {
 
 		if (Recycler.paging.totalPages === 1) {
 			// early abort if only one page is available
+			Recycler.elements.$paginator.contents().remove();
 			return;
 		}
 
@@ -515,7 +517,7 @@ define(['jquery', 'nprogress'], function($, NProgress) {
 		}
 
 		$ul.append($controlFirstPage, liElements, $controlLastPage);
-		Recycler.elements.$paginator.contents().replaceWith($ul);
+		Recycler.elements.$paginator.html($ul);
 	};
 
 	/**

@@ -62,8 +62,7 @@ class Tables {
 			$deletedRecordsTotal,
 			$lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
 		));
-		$output = json_encode($jsonArray);
-		return $output;
+		return $jsonArray;
 	}
 
 	/**
