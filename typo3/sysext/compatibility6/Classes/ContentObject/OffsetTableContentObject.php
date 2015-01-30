@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Compatibility6\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * Rendering of tables for offset
  */
-class OffsetTableContentObject extends AbstractContentObject {
+class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * @var string
@@ -40,7 +40,7 @@ class OffsetTableContentObject extends AbstractContentObject {
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
 	 */
-	public function __construct(ContentObjectRenderer $cObj = NULL) {
+	public function __construct(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj = NULL) {
 		if (!is_null($cObj)) {
 			$this->cObj = $cObj;
 			$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();

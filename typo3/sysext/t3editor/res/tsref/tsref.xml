@@ -114,23 +114,6 @@ helloWorld.value = this item will be returned
 ]]></description>
 		</property>
 	</type>
-	<type id="CLEARGIF" name="CLEARGIF">
-		<property name="height" type="stdWrap">
-			<description><![CDATA[<img>-data:height /stdWrap
-]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="width" type="stdWrap">
-			<description><![CDATA[<img>-data:width /stdWrap
-]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="wrap" type="stdWrap">
-			<description><![CDATA[wrap/stdWrap
-]]></description>
-			<default><![CDATA[ | <BR>]]></default>
-		</property>
-	</type>
 	<type id="cObjArray">
 		<property name="1" type="cObj">
 			<description><![CDATA[This is a numerical "array" of content-objects (cObjects).
@@ -176,90 +159,6 @@ helloWorld.value = this item will be returned
 (This property is used only if the object is COA_INT!, See introduction.)
 This is a comma-separated list of resources that are included as PHP-scripts (with include_once() function) if this script is included.
 This is possible to do because any include-files will be known before the scripts are included.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="COLUMNS">
-		<property name="TDparams" type="stdWrap">
-			<description><![CDATA[<TD>-params/stdWrap
-]]></description>
-			<default><![CDATA[valign=top]]></default>
-		</property>
-		<property name="1" type="cObj">
-			<description><![CDATA[This is the content-object for each column!!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="2" type="cObj">
-			<description><![CDATA[This is the content-object for each column!!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="3" type="cObj">
-			<description><![CDATA[This is the content-object for each column!!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="4" type="cObj">
-			<description><![CDATA[This is the content-object for each column!!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="after" type="cObj">
-			<description><![CDATA[This is a cObject placed after the columns-table!!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="gapBgCol" type="stdWrap">
-			<description><![CDATA[HTML-color /stdWrap
-background-color for the gap-tablecells]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="gapLineCol" type="stdWrap">
-			<description><![CDATA[HTML-color /stdWrap
-      Line color]]></description>
-			<default><![CDATA[black]]></default>
-		</property>
-		<property name="gapLineThickness" type="stdWrap">
-			<description><![CDATA[int /stdWrap
-      lineThickness of the dividerline in the gap between cells
-0 = no line]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="gapWidth" type="stdWrap">
-			<description><![CDATA[int /stdWrap
-      Width of the gap between columns.
-0 = no gap]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="if" type="if">
-			<description><![CDATA[if "if" returns false the columns are not rendered!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="rows" type="stdWrap">
-			<description><![CDATA[int (Range: 2-20)/stdWrap
-      The number of rows  in the columns.]]></description>
-			<default><![CDATA[2]]></default>
-		</property>
-		<property name="stdWrap" type="stdWrap">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="tableParams" type="stdWrap">
-			<description><![CDATA[<TABLE>-params/stdWrap
-]]></description>
-			<default><![CDATA[border=0 cellspacing=0 cellpadding=0]]></default>
-		</property>
-		<property name="totalWidth" type="stdWrap">
-			<description><![CDATA[int/stdWrap
-			The total-width of the columns+gaps]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1202,65 +1101,6 @@ NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_
 		<property name="collectReverse" type="stdWrap">
 			<description><![CDATA[boolean/stdWrap
 			Change order of elements in collect mode. If set, elements of the current page will be at the bottom.
-]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
-	<type id="CTABLE">
-		<property name="bm" type="stdWrap">
-			<description><![CDATA[CARRAY + TDParams/stdWrap
-			bottomMenu]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="c" type="stdWrap">
-			<description><![CDATA[CARRAY + TDParams/stdWrap
-			content-cell ]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="cMargins" type="stdWrap">
-			<description><![CDATA[margins/stdWrap
-			Distance around the content-cell "c"]]></description>
-			<default><![CDATA[0,0,0,0]]></default>
-		</property>
-		<property name="cWidth" type="stdWrap">
-			<description><![CDATA[pixels/stdWrap
-			Width of the content-cell "c"]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="lm" type="stdWrap">
-			<description><![CDATA[CARRAY+TDParams/stdWrap
-			leftMenu]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="offset" type="stdWrap">
-			<description><![CDATA[x,y/stdWrap
-			Offset from upper left corner]]></description>
-			<default><![CDATA[0,0 = intet]]></default>
-		</property>
-		<property name="rm" type="stdWrap">
-			<description><![CDATA[CARRAY+TDParams/stdWrap
-			rightMenu]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="tableParams" type="stdWrap">
-			<description><![CDATA[<TABLE>-params/stdWrap
-]]></description>
-			<default><![CDATA[border=0 cellspacing=0 cellpadding=0]]></default>
-		</property>
-		<property name="tm" type="stdWrap">
-			<description><![CDATA[CARRAY+TDParams/stdWrap
-			topMenu]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="stdWrap" type="stdWrap">
-			<description><![CDATA[
 ]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -4720,42 +4560,6 @@ This is useful if you want to insert an identification code in the HTML in order
 			<default><![CDATA[|]]></default>
 		</property>
 	</type>
-	<type id="HRULER">
-		<property name="lineColor" type="string">
-			<description><![CDATA[The color of the ruler.]]></description>
-			<default><![CDATA[black]]></default>
-		</property>
-		<property name="lineThickness" type="stdWrap">
-			<description><![CDATA[integer, range: 1-50]]></description>
-			<default><![CDATA[1]]></default>
-		</property>
-		<property name="spaceLeft" type="int">
-			<description><![CDATA[space before the line (to the left)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="spaceRight" type="int">
-			<description><![CDATA[space after the line (to the right)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="stdWrap" type="stdWrap">
-			<description><![CDATA[ ]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="tableWidth" type="string">
-			<description><![CDATA[Width of the ruler ("width" attribute in a table)]]></description>
-			<default><![CDATA[99%]]></default>
-		</property>
-	</type>
-	<type id="HTML">
-		<property name="value" type="stdWrap">
-			<description><![CDATA[Raw HTML-code.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-	</type>
 	<type id="HTMLparser">
 		<property name="allowTags" type="string">
 			<description><![CDATA[Default allowed tags]]></description>
@@ -5456,42 +5260,6 @@ An empty string will remove the parameter from the embed-tag]]></description>
 ]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>
-	</type>
-	<type id="OTABLE" extends="cObjArray">
-		<property name="1" type="cObj">
-			<description><![CDATA[the object which should be rendered at the specified position. You have to set this to a contenttype (IMAGE, TEXT,...)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="2" type="cObj">
-			<description><![CDATA[the object which should be rendered at the specified position. You have to set this to a contenttype (IMAGE, TEXT,...)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="3" type="cObj">
-			<description><![CDATA[the object which should be rendered at the specified position. You have to set this to a contenttype (IMAGE, TEXT,...)]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="offset" type="intList">
-			<description><![CDATA[Offset from upper left corner
-
-Note:
-Actually the datatype is "x,y,r,b,w,h":
-x,y is offset from upperleft corner
-r,b is offset (margin) to right and bottom
-w is the required width of the content field
-h is the required height of the content field
-
-All measures is in pixels.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="tableParams" type="string">
-			<description><![CDATA[
-]]></description>
-			<default><![CDATA[border=0 cellspacing=0 cellpadding=0]]></default>
 		</property>
 	</type>
 	<type id="RECORDS">
@@ -7262,8 +7030,8 @@ Example (CARRAY used):
   10 = TEXT
   10.current = 1
   10.wrap = <B> | </B>
-  20 = CLEARGIF
-  20.height = 20
+  20 = TEXT
+  20.value = Mytext
 }]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -7709,10 +7477,10 @@ lib.carViews {
 ]]></default>
 		</property>
 		<property name="offsetWrap" type="intList">
-			<description><![CDATA[This wraps the input in a table with columns to the left and top that offsets the content by the values of x,y. Based on the cObject OTABLE.
+			<description><![CDATA[This wraps the input in a table with columns to the left and top that offsets the content by the values of x,y.
 
 .tableParams / .tdParams /stdWrap
-- used to manipulate tableParams/tdParams (default width=99%)  of the offset. Default: See OTABLE.
+- used to manipulate tableParams/tdParams (default width=99%)  of the offset.
 
 .stdWrap
 - stdWrap properties wrapping the offsetWrap'ed output]]></description>

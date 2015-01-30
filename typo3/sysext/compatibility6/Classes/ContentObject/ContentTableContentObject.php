@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Compatibility6\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 /**
- * Contains CTABLE class object.
+ * Contains CTABLE content object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ContentTableContentObject extends AbstractContentObject {
+class ContentTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, CTABLE
@@ -29,7 +29,7 @@ class ContentTableContentObject extends AbstractContentObject {
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		$controlTable = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\TableRenderer::class);
+		$controlTable = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TableRenderer::class);
 		$tableParams = isset($conf['tableParams.']) ? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.']) : $conf['tableParams'];
 		if ($tableParams) {
 			$controlTable->tableParams = $tableParams;

@@ -27,11 +27,10 @@ if (TYPO3_MODE === 'FE') {
 	// Register the core media wizard provider
 	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider(\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider::class);
 
-	// Register all available content elements
+	// Register all available content objects
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'], array(
 		'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
 		'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
-		'CLEARGIF'         => \TYPO3\CMS\Frontend\ContentObject\ClearGifContentObject::class,
 		'COBJ_ARRAY'       => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
 		'COA'              => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
 		'COA_INT'          => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject::class,
@@ -45,10 +44,6 @@ if (TYPO3_MODE === 'FE') {
 		'CONTENT'          => \TYPO3\CMS\Frontend\ContentObject\ContentContentObject::class,
 		'RECORDS'          => \TYPO3\CMS\Frontend\ContentObject\RecordsContentObject::class,
 		'HMENU'            => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,
-		'CTABLE'           => \TYPO3\CMS\Frontend\ContentObject\ContentTableContentObject::class,
-		'OTABLE'           => \TYPO3\CMS\Frontend\ContentObject\OffsetTableContentObject::class,
-		'COLUMNS'          => \TYPO3\CMS\Frontend\ContentObject\ColumnsContentObject::class,
-		'HRULER'           => \TYPO3\CMS\Frontend\ContentObject\HorizontalRulerContentObject::class,
 		'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
 		'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
 		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
