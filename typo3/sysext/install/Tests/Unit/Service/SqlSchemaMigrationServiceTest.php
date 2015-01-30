@@ -29,11 +29,11 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getFieldDefinitionsFileContentHandlesMultipleWhitespacesInFieldDefinitions() {
 		$subject = new SqlSchemaMigrationService();
 		// Multiple whitespaces and tabs in field definition
-		$inputString = 'CREATE table aTable (' . LF . 'aFieldName   int(11)' . TAB . TAB . TAB . 'unsigned   DEFAULT \'0\'' . LF . ');';
+		$inputString = 'CREATE table atable (' . LF . 'aFieldName   int(11)' . TAB . TAB . TAB . 'unsigned   DEFAULT \'0\'' . LF . ');';
 		$result = $subject->getFieldDefinitions_fileContent($inputString);
 		$this->assertEquals(
 			array(
-				'aTable' => array(
+				'atable' => array(
 					'fields' => array(
 						'aFieldName' => 'int(11) unsigned default \'0\'',
 					),
