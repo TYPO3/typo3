@@ -142,7 +142,7 @@ class FileStreamWrapper {
 			return $path;
 		}
 
-		$newPath = substr($path, strlen(self::$rootPath));
+		$newPath = ltrim(substr($path, strlen(self::$rootPath)), '/');
 		foreach (self::$overlayPaths as $overlay => $replace) {
 			if (strpos($newPath, $overlay) === 0) {
 				$newPath = $replace . substr($newPath, strlen($overlay));

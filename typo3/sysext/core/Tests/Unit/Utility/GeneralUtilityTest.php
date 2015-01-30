@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility;
 use \org\bovigo\vfs\vfsStream;
 use \org\bovigo\vfs\vfsStreamDirectory;
 use \org\bovigo\vfs\vfsStreamWrapper;
+use TYPO3\CMS\Core\Tests\FileStreamWrapper;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
@@ -2821,6 +2822,31 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		Utility\GeneralUtility::mkdir_deep(PATH_site, $subDirectory);
 		$this->testFilesToDelete[] = PATH_site . $directory;
 		$this->assertTrue(is_dir(PATH_site . $subDirectory));
+	}
+
+	/**
+	 * Data provider for mkdirDeepCreatesDirectoryWithDoubleSlashes.
+	 * @return array
+	 */
+	public function mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider() {
+		return array(
+			'no double slash if concatenated with PATH_site' => array('fileadmin/testDir1'),
+			'double slash if concatenated with PATH_site' => array('/fileadmin/testDir2'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider mkdirDeepCreatesDirectoryWithAndWithoutDoubleSlashesDataProvider
+	 */
+	public function mkdirDeepCreatesDirectoryWithDoubleSlashes($directoryToCreate) {
+		vfsStream::setup();
+		// Load fixture files and folders from disk
+		FileStreamWrapper::init(PATH_site);
+		FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', TRUE);
+		Utility\GeneralUtility::mkdir_deep(PATH_site, $directoryToCreate);
+		$this->assertTrue(is_dir(PATH_site . $directoryToCreate));
+		FileStreamWrapper::destroy();
 	}
 
 	/**
