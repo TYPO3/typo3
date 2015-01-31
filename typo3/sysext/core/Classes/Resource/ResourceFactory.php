@@ -309,10 +309,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 		}
 		$driverType = $storageRecord['driver'];
 		$driverObject = $this->getDriverObject($driverType, $storageConfiguration);
-		/** @var $storage ResourceStorage */
-		$storage = GeneralUtility::makeInstance($className, $driverObject, $storageRecord);
-		// @todo handle publisher
-		return $storage;
+		return GeneralUtility::makeInstance($className, $driverObject, $storageRecord);
 	}
 
 	/**
@@ -325,12 +322,6 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 */
 	public function createFolderObject(ResourceStorage $storage, $identifier, $name) {
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Folder::class, $storage, $identifier, $name);
-	}
-
-	protected function createPublisherFromConfiguration(array $configuration) {
-		$publishingTarget = $this->getStorageObject($configuration['publisherConfiguration']['publishingTarget']);
-		$publisher = GeneralUtility::makeInstance($configuration['publisher'], $publishingTarget, $configuration['publisherConfiguration']);
-		return $publisher;
 	}
 
 	/**
