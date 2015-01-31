@@ -108,7 +108,7 @@ class LocalImageProcessor implements ProcessorInterface
     {
         // the storage of the processed file, not of the original file!
         $storage = $task->getTargetFile()->getStorage();
-        $processingFolder = $storage->getProcessingFolder();
+        $processingFolder = $storage->getProcessingFolder($task->getSourceFile());
 
         // explicitly check for the raw filename here, as we check for files that existed before we even started
         // processing, i.e. that were processed earlier

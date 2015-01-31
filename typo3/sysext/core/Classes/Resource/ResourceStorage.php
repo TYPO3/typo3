@@ -155,6 +155,11 @@ class ResourceStorage implements ResourceStorageInterface
     protected $fileAndFolderNameFilters = array();
 
     /**
+     * Levels numbers used to generate hashed subfolders in the processing folder
+     */
+    const PROCESSING_FOLDER_LEVELS = 2;
+
+    /**
      * Constructor for a storage object.
      *
      * @param Driver\DriverInterface $driver
@@ -1204,10 +1209,9 @@ class ResourceStorage implements ResourceStorageInterface
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552746);
         }
         if ($processingFolder === null) {
-            $processingFolder = $this->getProcessingFolder();
+            $processingFolder = $this->getProcessingFolder($processedFile->getOriginalFile());
         }
         $fileIdentifier = $this->driver->addFile($localFilePath, $processingFolder->getIdentifier(), $processedFile->getName());
-
         // @todo check if we have to update the processed file other then the identifier
         $processedFile->setIdentifier($fileIdentifier);
         return $processedFile;
@@ -2856,9 +2860,10 @@ class ResourceStorage implements ResourceStorageInterface
      * Getter function to return the folder where the files can
      * be processed. Does not check for access rights here.
      *
+     * @param File $file Specific file you want to have the processing folder for
      * @return Folder
      */
-    public function getProcessingFolder()
+    public function getProcessingFolder(File $file = null)
     {
         if (!isset($this->processingFolder)) {
             $processingFolder = self::DEFAULT_ProcessingFolder;
@@ -2892,7 +2897,62 @@ class ResourceStorage implements ResourceStorageInterface
                 );
             }
         }
-        return $this->processingFolder;
+
+        $processingFolder = $this->processingFolder;
+        if (!empty($file)) {
+            $processingFolder = $this->getNestedProcessingFolder($file, $processingFolder);
+        }
+        return $processingFolder;
+    }
+
+    /**
+     * Getter function to return the the file's corresponding hashed subfolder
+     * of the processed folder
+     *
+     * @param File $file
+     * @param Folder $rootProcessingFolder
+     * @return Folder
+     * @throws Exception\InsufficientFolderWritePermissionsException
+     */
+    protected function getNestedProcessingFolder(File $file, Folder $rootProcessingFolder)
+    {
+        $processingFolder = $rootProcessingFolder;
+        $nestedFolderNames = $this->getNamesForNestedProcessingFolder(
+            $file->getIdentifier(),
+            self::PROCESSING_FOLDER_LEVELS
+        );
+
+        try {
+            foreach ($nestedFolderNames as $folderName) {
+                if ($processingFolder->hasFolder($folderName)) {
+                    $processingFolder = $processingFolder->getSubfolder($folderName);
+                } else {
+                    $processingFolder = $processingFolder->createFolder($folderName);
+                }
+            }
+        } catch (Exception\FolderDoesNotExistException $e) {}
+
+        return $processingFolder;
+    }
+
+    /**
+     * Generates appropriate hashed sub-folder path for a given file identifier
+     *
+     * @param string $fileIdentifier
+     * @param int $levels
+     * @return []
+     */
+    protected function getNamesForNestedProcessingFolder($fileIdentifier, $levels)
+    {
+        $names = [];
+        if ($levels === 0) {
+            return $names;
+        }
+        $hash = md5($fileIdentifier);
+        for ($i = 1; $i <= $levels; $i++) {
+            $names[] = substr($hash, $i, 1);
+        }
+        return $names;
     }
 
     /**

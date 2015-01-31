@@ -752,4 +752,36 @@ class ResourceStorageTest extends BaseTestCase
 
         $this->assertSame(FolderInterface::ROLE_DEFAULT, $role);
     }
+
+    /**
+     * @test
+     */
+    public function getProcessingRootFolderTest()
+    {
+        $this->prepareSubject(array());
+        $processingFolder = $this->subject->getProcessingFolder();
+
+        $this->assertInstanceOf(Folder::class, $processingFolder);
+    }
+
+    /**
+     * @test
+     */
+    public function getNestedProcessingFolderTest()
+    {
+        $mockedDriver = $this->createDriverMock(array('basePath' => $this->getMountRootUrl()), null, null);
+        $this->prepareSubject(array(), true, $mockedDriver);
+        $mockedFile = $this->getSimpleFileMock('/someFile');
+
+        $rootProcessingFolder = $this->subject->getProcessingFolder();
+        $processingFolder = $this->subject->getProcessingFolder($mockedFile);
+
+        $this->assertInstanceOf(Folder::class, $processingFolder);
+        $this->assertNotEquals($rootProcessingFolder, $processingFolder);
+
+        for ($i = ResourceStorage::PROCESSING_FOLDER_LEVELS; $i>0; $i--) {
+            $processingFolder = $processingFolder->getParentFolder();
+        }
+        $this->assertEquals($rootProcessingFolder, $processingFolder);
+    }
 }

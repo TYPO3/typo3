@@ -184,7 +184,7 @@ class ProcessedFile extends AbstractFile
         if ($this->identifier === null) {
             throw new \RuntimeException('Cannot update original file!', 1350582054);
         }
-        $processingFolder = $this->originalFile->getStorage()->getProcessingFolder();
+        $processingFolder = $this->originalFile->getStorage()->getProcessingFolder($this->originalFile);
         $addedFile = $this->storage->updateProcessedFile($filePath, $this, $processingFolder);
 
         // Update some related properties
@@ -256,7 +256,7 @@ class ProcessedFile extends AbstractFile
 
         $this->name = $name;
         // @todo this is a *weird* hack that will fail if the storage is non-hierarchical!
-        $this->identifier = $this->storage->getProcessingFolder()->getIdentifier() . $this->name;
+        $this->identifier = $this->storage->getProcessingFolder($this->originalFile)->getIdentifier() . $this->name;
 
         $this->updated = true;
     }
