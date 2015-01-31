@@ -607,7 +607,7 @@ class TestSetup extends Action\AbstractAction {
 		$message->setMessage(
 			'ImageMagick / GraphicsMagick handling is enabled, but the execute'
 			. ' command returned an error. Please check your settings, especially'
-			. ' [\'GFX\'][\'im_path\'] and [\'GFX\'][\'im_path_lzw\'].'
+			. ' [\'GFX\'][\'im_path\'] and [\'GFX\'][\'im_path_lzw\'] and ensure Ghostscript is installed on your server.'
 		);
 		return $message;
 	}
