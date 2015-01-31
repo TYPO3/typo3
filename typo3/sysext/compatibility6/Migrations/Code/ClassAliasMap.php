@@ -1274,6 +1274,7 @@ return array(
 	'localFolderTree' => \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class,
 	'TBE_FolderTree' => \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView::class,
 	'newRecordLocalPageTree' => \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::class,
+	'TYPO3\\CMS\\Frontend\\ContentObject\\SearchResultContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\SearchResultContentObject::class,
 	'TYPO3\\CMS\\Frontend\\ContentObject\\ImageTextContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\ImageTextContentObject::class,
 	'TYPO3\\CMS\\Frontend\\ContentObject\\ClearGifContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\ClearGifContentObject::class,
 	'TYPO3\\CMS\\Frontend\\ContentObject\\ContentTableContentObject' => \TYPO3\CMS\Compatibility6\ContentObject\ContentTableContentObject::class,

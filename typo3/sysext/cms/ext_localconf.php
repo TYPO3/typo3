@@ -131,18 +131,8 @@ mod.wizards.newContentElement {
 		}
 		special.show = uploads,media,menu,html,div,shortcut
 
+		# dummy placeholder for forms group
 		forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms
-		forms.elements {
-			search {
-				icon = gfx/c_wiz/searchform.gif
-				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_title
-				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_description
-				tt_content_defValues {
-					CType = search
-				}
-			}
-		}
-		forms.show = search
 
 		plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins
 		plugins.elements {

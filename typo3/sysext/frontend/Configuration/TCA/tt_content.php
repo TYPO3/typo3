@@ -39,7 +39,6 @@ return array(
 			'media' => 'mimetypes-x-content-multimedia',
 			'menu' => 'mimetypes-x-content-menu',
 			'list' => 'mimetypes-x-content-plugin',
-			'search' => 'mimetypes-x-content-form-search',
 			'login' => 'mimetypes-x-content-login',
 			'shortcut' => 'mimetypes-x-content-link',
 			'script' => 'mimetypes-x-content-script',
@@ -59,7 +58,6 @@ return array(
 			'media' => 'tt_content_mm.gif',
 			'menu' => 'tt_content_menu.gif',
 			'list' => 'tt_content_list.gif',
-			'search' => 'tt_content_search.gif',
 			'login' => 'tt_content_login.gif',
 			'shortcut' => 'tt_content_shortcut.gif',
 			'script' => 'tt_content_script.gif',
@@ -122,15 +120,6 @@ return array(
 						'LLL:EXT:cms/locallang_ttc.xlf:CType.I.6',
 						'uploads',
 						'i/tt_content_uploads.gif'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:CType.div.forms',
-						'--div--'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:CType.I.9',
-						'search',
-						'i/tt_content_search.gif'
 					),
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:CType.div.special',
@@ -1734,18 +1723,6 @@ return array(
 				'categorized_content' => 'selected_categories;;menu, category_field;;menu',
 			)
 		),
-		'search' => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.behaviour,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.searchform;searchform,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
-		),
 		'shortcut' => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 					header;LLL:EXT:cms/locallang_ttc.xlf:header.ALT.shortcut_formlabel,
@@ -1886,10 +1863,6 @@ return array(
 		),
 		'uploads' => array(
 			'showitem' => 'media;LLL:EXT:cms/locallang_ttc.xlf:media.ALT.uploads_formlabel, --linebreak--, file_collections;LLL:EXT:cms/locallang_ttc.xlf:file_collections.ALT.uploads_formlabel, --linebreak--, filelink_sorting, target',
-			'canNotCollapse' => 1
-		),
-		'searchform' => array(
-			'showitem' => 'pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.searchform',
 			'canNotCollapse' => 1
 		),
 		'menu' => array(

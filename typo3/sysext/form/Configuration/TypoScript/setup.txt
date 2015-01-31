@@ -1,8 +1,7 @@
-# Cancel the check that prevents display of subheader for old mailform
-tt_content.mailform.10.20.if.isFalse.override = 0
-
 # Replace rendering of old mailform
-tt_content.mailform.20 >
+tt_content.mailform >
+tt_content.mailform = COA
+tt_content.mailform.10 = < lib.stdheader
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {
 	stdWrap.wrap = <div class="csc-mailform"> | </div>
@@ -13,52 +12,6 @@ tt_content.mailform.20 {
 		prefixComment = 2 | Mail form inserted:
 	}
 }
-
-#tt_content.login.20 >
-#tt_content.login.20 = FORM
-#tt_content.login.20 {
-#	prefix = login
-#	method = post
-#	10 = FIELDSET
-#	10 {
-#		legend = TEXT
-#		legend {
-#			data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.username
-#		}
-#		10 = TEXTLINE
-#		10 {
-#			name = user
-#			id = mailformuser
-#			size = 20
-#			label = TEXT
-#			label {
-#				data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.username
-#			}
-#		}
-#		20 = PASSWORD
-#		20 {
-#			name = pass
-#			id = mailformpass
-#			size = 20
-#			label = TEXT
-#			label {
-#				data = LLL:EXT:css_styled_content/pi1/locallang.xml:login.password
-#			}
-#		}
-#	}
-#	30 = HIDDEN
-#	30 {
-#		name = logintype
-#		id = mailformlogintype
-#	}
-#	20 = SUBMIT
-#	20 {
-#		name = submit
-#		id = mailformsubmit
-#		value = login
-#	}
-#}
-
 
 plugin.tx_form._CSS_DEFAULT_STYLE (
 	div.csc-mailform ol,

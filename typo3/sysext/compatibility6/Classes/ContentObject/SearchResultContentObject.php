@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Compatibility6\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,14 +14,16 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
 /**
  * Search class used for the content object SEARCHRESULT
  * and searching in database tables, typ. "pages" and "tt_content"
  * Used to generate search queries for TypoScript.
- * The class is included from "TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer"
+ * The class is included from "TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer"
  * based on whether there has been detected content in the GPvar "sword"
  */
-class SearchResultContentObject extends AbstractContentObject {
+class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * @var array

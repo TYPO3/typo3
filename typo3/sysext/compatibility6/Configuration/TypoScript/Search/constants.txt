@@ -1,0 +1,9 @@
+styles.content.searchform {
+    # cat=content/cSearch; type=; label= Message, Searchform: This is the message (if any) that is popped-up when a user performs a search
+  goodMess =
+}
+
+styles.content.searchresult {
+  resultTarget = {$PAGE_TARGET}
+  target = {$PAGE_TARGET}
+}

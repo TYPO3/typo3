@@ -4894,7 +4894,7 @@ class tslib_content_ScalableVectorGraphics extends \TYPO3\CMS\Frontend\ContentOb
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_SearchResult extends \TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject {}
+class tslib_content_SearchResult extends \TYPO3\CMS\Compatibility6\ContentObject\SearchResultContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0

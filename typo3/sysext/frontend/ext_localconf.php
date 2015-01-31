@@ -46,7 +46,6 @@ if (TYPO3_MODE === 'FE') {
 		'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
 		'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
 		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
-		'SEARCHRESULT'     => \TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class,
 		'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,
 		'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
 		'MULTIMEDIA'       => \TYPO3\CMS\Frontend\ContentObject\MultimediaContentObject::class,

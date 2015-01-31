@@ -107,16 +107,6 @@ styles.content.loginform {
   templateFile = EXT:felogin/template.html
 }
 
-styles.content.searchform {
-    # cat=content/cSearch; type=; label= Message, Searchform: This is the message (if any) that is popped-up when a user performs a search
-  goodMess =
-}
-
-styles.content.searchresult {
-  resultTarget = {$PAGE_TARGET}
-  target = {$PAGE_TARGET}
-}
-
 styles.content.media {
     # cat=content/cMedia/j1; type=; label= Video Player: configure the path to the video player
   videoPlayer = typo3/contrib/flashmedia/flvplayer.swf
