@@ -94,6 +94,50 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getDatabaseExtraFindsChangedFieldsIncludingNull() {
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'varchar(999) NULL'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'varchar(255) NULL'
+					)
+				)
+			)
+		);
+
+		$this->assertEquals(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(
+					'tx_foo' => array(
+						'fields' => array(
+							'foo' => 'varchar(999) NULL'
+						)
+					)
+				),
+				'diff_currentValues' => array(
+					'tx_foo' => array(
+						'fields' => array(
+							'foo' => 'varchar(255) NULL'
+						)
+					)
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getDatabaseExtraFindsChangedFieldsIgnoreNotNull() {
 		$subject = new SqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
