@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An URI Builder
@@ -583,31 +584,31 @@ class UriBuilder {
 			if ($this->addQueryStringMethod) {
 				switch ($this->addQueryStringMethod) {
 					case 'GET':
-						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+						$arguments = GeneralUtility::_GET();
 						break;
 					case 'POST':
-						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+						$arguments = GeneralUtility::_POST();
 						break;
 					case 'GET,POST':
-						$arguments = array_replace_recursive(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET(), \TYPO3\CMS\Core\Utility\GeneralUtility::_POST());
+						$arguments = array_replace_recursive(GeneralUtility::_GET(), GeneralUtility::_POST());
 						break;
 					case 'POST,GET':
-						$arguments = array_replace_recursive(\TYPO3\CMS\Core\Utility\GeneralUtility::_POST(), \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
+						$arguments = array_replace_recursive(GeneralUtility::_POST(), GeneralUtility::_GET());
 						break;
 					default:
-						$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
+						$arguments = GeneralUtility::explodeUrl2Array(GeneralUtility::getIndpEnv('QUERY_STRING'), TRUE);
 				}
 			} else {
-				$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+				$arguments = GeneralUtility::_GET();
 			}
 			foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
-				$argumentToBeExcluded = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($argumentToBeExcluded, TRUE);
+				$argumentToBeExcluded = GeneralUtility::explodeUrl2Array($argumentToBeExcluded, TRUE);
 				$arguments = ArrayUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
 			}
 		} else {
 			$arguments = array(
-				'M' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M'),
-				'id' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')
+				'M' => GeneralUtility::_GP('M'),
+				'id' => GeneralUtility::_GP('id')
 			);
 		}
 		ArrayUtility::mergeRecursiveWithOverrule($arguments, $this->arguments);
@@ -661,7 +662,7 @@ class UriBuilder {
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
 			$this->lastArguments = $arguments;
-			$typolinkConfiguration['additionalParams'] = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl(NULL, $arguments);
+			$typolinkConfiguration['additionalParams'] = GeneralUtility::implodeArrayForUrl(NULL, $arguments);
 		}
 		if ($this->addQueryString === TRUE) {
 			$typolinkConfiguration['addQueryString'] = 1;
