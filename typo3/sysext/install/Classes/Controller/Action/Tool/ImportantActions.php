@@ -196,7 +196,7 @@ class ImportantActions extends Action\AbstractAction {
 	 */
 	protected function createAdministrator() {
 		$values = $this->postValues['values'];
-		$username = preg_replace('/\\s/i', '', trim($values['newUserUsername']));
+		$username = preg_replace('/\\s/i', '', $values['newUserUsername']);
 		$password = $values['newUserPassword'];
 		$passwordCheck = $values['newUserPasswordCheck'];
 
