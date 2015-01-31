@@ -16,13 +16,13 @@ namespace TYPO3\CMS\Backend\ClickMenu;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Core\Resource\Folder;
 
 /**
  * Class for generating the click menu
@@ -830,7 +830,7 @@ class ClickMenu {
 			$userMayViewStorage = FALSE;
 			$userMayEditStorage = FALSE;
 			$identifier = $fileObject->getCombinedIdentifier();
-			if ($fileObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+			if ($fileObject instanceof Folder) {
 				$icon = IconUtility::getSpriteIconForResource($fileObject, array(
 					'class' => 'absmiddle',
 					'title' => htmlspecialchars($fileObject->getName())

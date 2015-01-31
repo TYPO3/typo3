@@ -62,7 +62,7 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = $unsortedList;
 		usort(
 			$result,
-			array(\TYPO3\CMS\Core\Utility\ResourceUtility::class, 'recursiveFileListSortingHelper')
+			array(ResourceUtility::class, 'recursiveFileListSortingHelper')
 		);
 
 		$this->assertEquals($expectedList, $result);

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  *                                                                        */
 
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class TypolinkViewHelperTest

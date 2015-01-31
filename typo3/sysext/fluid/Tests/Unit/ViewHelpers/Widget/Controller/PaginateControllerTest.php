@@ -11,7 +11,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Widget\Controller;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * Test case

@@ -26,7 +26,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
-		$this->pagerepo = new \TYPO3\CMS\Frontend\Page\PageRepository();
+		$this->pagerepo = new PageRepository();
 		$this->pagerepo->init(false);
 	}
 

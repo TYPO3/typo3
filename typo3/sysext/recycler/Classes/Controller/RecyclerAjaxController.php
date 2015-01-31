@@ -21,7 +21,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recycler\Domain\Model\Tables;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
-use TYPO3\CMS\Recycler\Controller\DeletedRecordsController;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests

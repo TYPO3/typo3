@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Backend\Rte;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Element\TextElement;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

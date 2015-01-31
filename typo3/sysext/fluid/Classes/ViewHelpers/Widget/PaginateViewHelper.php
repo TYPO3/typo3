@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
-use TYPO3\CMS\Fluid\ViewHelpers\Widget\Controller\PaginateController;
 
 /**
  * This ViewHelper renders a Pagination of objects.
