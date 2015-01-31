@@ -2247,7 +2247,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Emits the file post-replace signal
 	 *
 	 * @param FileInterface $file
-	 * @param $localFilePath
+	 * @param string $localFilePath
 	 * @return void
 	 */
 	protected function emitPostFileReplaceSignal(FileInterface $file, $localFilePath) {
