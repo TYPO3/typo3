@@ -2116,6 +2116,35 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	//////////////////////////////////////
+	// Tests concerning tempnam
+	//////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function tempnamReturnsPathStartingWithGivenPrefix() {
+		$filePath = Utility\GeneralUtility::tempnam('foo');
+		$fileName = basename($filePath);
+		$this->assertStringStartsWith('foo', $fileName);
+	}
+
+	/**
+	 * @test
+	 */
+	public function tempnamReturnsPathWithoutBackslashes() {
+		$filePath = Utility\GeneralUtility::tempnam('foo');
+		$this->assertNotContains('\\', $filePath);
+	}
+
+	/**
+	 * @test
+	 */
+	public function tempnamReturnsAbsolutePathInsideDocumentRoot() {
+		$filePath = Utility\GeneralUtility::tempnam('foo');
+		$this->assertStringStartsWith(PATH_site, $filePath);
+	}
+
+	//////////////////////////////////////
 	// Tests concerning addSlashesOnArray
 	//////////////////////////////////////
 	/**
