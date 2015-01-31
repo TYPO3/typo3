@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Core\Resource;
-use \TYPO3\CMS\Core\Utility;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -14,6 +13,9 @@ use \TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use \TYPO3\CMS\Core\Utility;
+
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
