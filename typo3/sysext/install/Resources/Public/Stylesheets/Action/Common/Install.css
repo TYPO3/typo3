@@ -323,7 +323,7 @@ button span.t3-install-form-button-icon-negative {
 }
 
 #t3-install-menu li {
-	padding: 0.35em 0 0.35em 2.8em;
+	padding: 0.35em 0;
 }
 
 #t3-install-menu li.act {
@@ -333,6 +333,11 @@ button span.t3-install-form-button-icon-negative {
 #t3-install-menu a {
 	color: #606060;
 	text-decoration: none;
+	padding: 0.35em 0px 0.35em 2.8em;
+	display: block;
+	line-height: 120%;
+	background-repeat: no-repeat;
+	background-position: 10px 5px;
 }
 
 #t3-install-menu a:hover {
@@ -349,11 +354,11 @@ button span.t3-install-form-button-icon-negative {
 	background-position: 0.7em center;
 }
 
-#t3-install-menu #t3-install-menu-importantActions {
+#t3-install-menu #t3-install-menu-importantActions a {
 	background-image: url('../../../Images/Menu/ImportantActions.png');
 }
 
-#t3-install-menu #t3-install-menu-systemEnvironment {
+#t3-install-menu #t3-install-menu-systemEnvironment a {
 	background-image: url('../../../Images/Menu/SystemEnvironment.png');
 }
 
@@ -361,31 +366,31 @@ button span.t3-install-form-button-icon-negative {
 	background-color: #585858;
 }
 
-#t3-install-menu #t3-install-menu-configuration {
+#t3-install-menu #t3-install-menu-configuration a {
 	background-image: url('../../../Images/Menu/Configuration.png');
 }
 
-#t3-install-menu #t3-install-menu-folderStructure {
+#t3-install-menu #t3-install-menu-folderStructure a {
 	background-image: url('../../../Images/Menu/FolderStructure.png');
 }
 
-#t3-install-menu #t3-install-menu-upgradeWizard {
+#t3-install-menu #t3-install-menu-upgradeWizard a {
 	background-image: url('../../../Images/Menu/UpgradeWizard.png');
 }
 
-#t3-install-menu #t3-install-menu-testSetup {
+#t3-install-menu #t3-install-menu-testSetup a {
 	background-image: url('../../../Images/Menu/TestSetup.png');
 }
 
-#t3-install-menu #t3-install-menu-allConfiguration {
+#t3-install-menu #t3-install-menu-allConfiguration a {
 	background-image: url('../../../Images/Menu/AllConfiguration.png');
 }
 
-#t3-install-menu #t3-install-menu-cleanUp {
+#t3-install-menu #t3-install-menu-cleanUp a {
 	background-image: url('../../../Images/Menu/CleanUp.png');
 }
 
-#t3-install-menu #t3-install-menu-welcome {
+#t3-install-menu #t3-install-menu-welcome a {
 	background-image: url('../../../Images/Menu/Welcome.png');
 }
 
