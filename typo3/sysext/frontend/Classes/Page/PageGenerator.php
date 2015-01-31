@@ -291,7 +291,6 @@ class PageGenerator {
 		switch ((string)$GLOBALS['TSFE']->config['config']['xmlprologue']) {
 			case 'none':
 				$xmlDocument = FALSE;
-				$GLOBALS['TSFE']->config['config']['xhtml_cleaning'] = 'none';
 				break;
 			case 'xml_10':
 				$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';

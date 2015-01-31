@@ -3235,13 +3235,6 @@ class TypoScriptFrontendController {
 		if ($this->no_cacheBeforePageGen) {
 			$this->set_no_cache('no_cache has been set before the page was generated - safety check', TRUE);
 		}
-		// XHTML-clean the code, if flag set
-		if ($this->doXHTML_cleaning() == 'all') {
-			$GLOBALS['TT']->push('XHTML clean, all', '');
-			$XHTML_clean = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-			$this->content = $XHTML_clean->XHTML_clean($this->content);
-			$GLOBALS['TT']->pull();
-		}
 		// Fix local anchors in links, if flag set
 		if ($this->doLocalAnchorFix() == 'all') {
 			$GLOBALS['TT']->push('Local anchor fix, all', '');
@@ -3257,13 +3250,6 @@ class TypoScriptFrontendController {
 		}
 		// Processing if caching is enabled:
 		if (!$this->no_cache) {
-			// XHTML-clean the code, if flag set
-			if ($this->doXHTML_cleaning() == 'cached') {
-				$GLOBALS['TT']->push('XHTML clean, cached', '');
-				$XHTML_clean = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-				$this->content = $XHTML_clean->XHTML_clean($this->content);
-				$GLOBALS['TT']->pull();
-			}
 			// Fix local anchors in links, if flag set
 			if ($this->doLocalAnchorFix() == 'cached') {
 				$GLOBALS['TT']->push('Local anchor fix, cached', '');
@@ -3476,8 +3462,11 @@ class TypoScriptFrontendController {
 	 * Returns the mode of XHTML cleaning
 	 *
 	 * @return string Keyword: "all", "cached" or "output
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+	 *
 	 */
 	public function doXHTML_cleaning() {
+		GeneralUtility::deprecationLog('The TypoScript option "config.xhtml_cleaning" has been deprecated with TYPO3 CMS 7 and will be removed with CMS 8.');
 		return $this->config['config']['xhtml_cleaning'];
 	}
 
@@ -3558,13 +3547,6 @@ class TypoScriptFrontendController {
 		// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
 		if (!$this->isClientCachable) {
 			$this->contentStrReplace();
-		}
-		// XHTML-clean the code, if flag set
-		if ($this->doXHTML_cleaning() == 'output') {
-			$GLOBALS['TT']->push('XHTML clean, output', '');
-			$XHTML_clean = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-			$this->content = $XHTML_clean->XHTML_clean($this->content);
-			$GLOBALS['TT']->pull();
 		}
 		// Fix local anchors in links, if flag set
 		if ($this->doLocalAnchorFix() == 'output') {

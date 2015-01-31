@@ -1439,8 +1439,10 @@ class HtmlParser {
 	 * @param string $content Content to clean up
 	 * @return string Cleaned up content returned.
 	 * @access private
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function XHTML_clean($content) {
+		GeneralUtility::deprecationLog('The function \TYPO3\CMS\Core\Html\HtmlParser::XHTML_clean has been deprecated with TYPO3 CMS 7 and will be removed with CMS 8.');
 		$content = $this->HTMLcleaner($content, array(), 1, 0, array('xhtml' => 1));
 		return $content;
 	}
@@ -1464,6 +1466,7 @@ class HtmlParser {
 		// OK then, begin processing for XHTML output:
 		// STILL VERY EXPERIMENTAL!!
 		if ($conf['xhtml']) {
+			GeneralUtility::deprecationLog('This section has been deprecated with TYPO3 CMS 7 and will be removed with CMS 8.');
 			// Endtags are just set lowercase right away
 			if ($endTag) {
 				$value = strtolower($value);
