@@ -1442,9 +1442,8 @@ class HtmlParser {
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function XHTML_clean($content) {
-		GeneralUtility::deprecationLog('The function \TYPO3\CMS\Core\Html\HtmlParser::XHTML_clean has been deprecated with TYPO3 CMS 7 and will be removed with CMS 8.');
-		$content = $this->HTMLcleaner($content, array(), 1, 0, array('xhtml' => 1));
-		return $content;
+		GeneralUtility::logDeprecatedFunction('TYPO3\CMS\Core\Html\HtmlParser::XHTML_clean has been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.');
+		return $this->HTMLcleaner($content, array(), 1, 0, array('xhtml' => 1));
 	}
 
 	/**
