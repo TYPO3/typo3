@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Build;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
+
 /**
  * This file is defined in UnitTests.xml and called by phpunit
  * before instantiating the test suites, it must also be included
@@ -33,94 +35,184 @@ namespace TYPO3\CMS\Core\Build;
  *     --bootstrap typo3/sysext/core/Build/UnitTestsBootstrap.php \
  *     typo3/sysext/core/Tests/Uinit/DataHandling/DataHandlerTest.php
  */
-
-/**
- * Make sure error messages during the tests get displayed no matter what is set in php.ini.
- */
-@ini_set('display_errors', 1);
-
-/**
- * Be nice and give a hint if someone is executing the tests with cli dispatch
- */
-if (defined('TYPO3_MODE')) {
-	array_shift($_SERVER['argv']);
-	echo 'Please run the unit tests using the following command:' . chr(10);
-	echo sprintf(
-		'typo3conf/ext/phpunit/Composer/vendor/bin/phpunit %s',
-		implode(' ', $_SERVER['argv'])
-	) . chr(10);
-	echo chr(10);
-	exit(1);
-}
-
-/**
- * Find out web path by environment variable or current working directory
- */
-if (getenv('TYPO3_PATH_WEB')) {
-	$webRoot = getenv('TYPO3_PATH_WEB') . '/';
-} else {
-	$webRoot = getcwd() . '/';
-}
-$webRoot = strtr($webRoot, '\\', '/');
-
-/**
- * Define basic TYPO3 constants
- */
-define('PATH_site', $webRoot);
-define('TYPO3_MODE', 'BE');
-define('TYPO3_cliMode', TRUE);
-
-unset($webRoot);
-
-/**
- * We need to fake the current script to be the cli dispatcher to satisfy some GeneralUtility::getIndpEnv tests
- * @todo properly mock these tests
- */
-define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
-$_SERVER['SCRIPT_NAME'] = PATH_thisScript;
-
-putenv('TYPO3_CONTEXT=Testing');
-
-createDirectory(PATH_site . 'uploads');
-createDirectory(PATH_site . 'typo3temp');
-createDirectory(PATH_site . 'typo3conf/ext');
-
-require PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
-
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->baseSetup()
-	->initializeClassLoader();
-
-$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
-$GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
-
-// Avoid failing tests that rely on HTTP_HOST retrieval
-// @todo Check if we could do better mocking in these tests
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
-
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->disableCoreAndClassesCache()
-	->initializeCachingFramework()
-	->initializeClassLoaderCaches()
-	->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class);
-
-/**
- * Creates directory (recursively if required).
- *
- * @param  string $directory path of the directory to be created
- * @return void
- * @throws \RuntimeException
- */
-function createDirectory($directory) {
-	if (is_dir($directory)) {
-		return;
+class UnitTestsBootstrap {
+	/**
+	 * Bootstraps the system for unit tests.
+	 *
+	 * @return void
+	 */
+	public function bootstrapSystem() {
+		$this->enableDisplayErrors()
+			->checkForCliDispatch()
+			->defineSitePath()
+			->setTypo3Context()
+			->createNecessaryDirectoriesInDocumentRoot()
+			->includeAndStartCoreBootstrap()
+			->initializeConfiguration()
+			->finishCoreBootstrap();
 	}
 
-	if (!mkdir($directory, 0777, TRUE)) {
-		throw new \RuntimeException(
-			'Directory "' . $directory . '" could not be created',
-			1404038665
-		);
+	/**
+	 * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function enableDisplayErrors() {
+		@ini_set('display_errors', 1);
+		return $this;
 	}
 
+	/**
+	 * Checks whether the tests are run using the CLI dispatcher. If so, echos a helpful message and exits with
+	 * an error code 1.
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function checkForCliDispatch() {
+		if (!defined('TYPO3_MODE')) {
+			return $this;
+		}
+
+		array_shift($_SERVER['argv']);
+		$flatArguments = implode(' ', $_SERVER['argv']);
+		echo 'Please run the unit tests using the following command:' . chr(10) .
+			sprintf('typo3conf/ext/phpunit/Composer/vendor/bin/phpunit %s', $flatArguments) . chr(10) .
+			chr(10);
+
+		exit(1);
+	}
+
+	/**
+	 * Defines the PATH_site and PATH_thisScript constant and sets $_SERVER['SCRIPT_NAME'].
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function defineSitePath() {
+		/** @var string */
+		define('PATH_site', $this->getWebRoot());
+		/** @var string */
+		define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
+		$_SERVER['SCRIPT_NAME'] = PATH_thisScript;
+
+		return $this;
+	}
+
+	/**
+	 * Returns the absolute path the TYPO3 document root.
+	 *
+	 * @return string the TYPO3 document root using Unix path separators
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function getWebRoot() {
+		if (getenv('TYPO3_PATH_WEB')) {
+			$webRoot = getenv('TYPO3_PATH_WEB') . '/';
+		} else {
+			$webRoot = getcwd() . '/';
+		}
+
+		return strtr($webRoot, '\\', '/');
+	}
+
+	/**
+	 * Defines TYPO3_MODE, TYPO3_cliMode and sets the environment variable TYPO3_CONTEXT.
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function setTypo3Context() {
+		/** @var string */
+		define('TYPO3_MODE', 'BE');
+		/** @var string */
+		define('TYPO3_cliMode', TRUE);
+		putenv('TYPO3_CONTEXT=Testing');
+
+		return $this;
+	}
+
+	/**
+	 * Creates the following directories in the TYPO3 document root:
+	 * - typo3conf
+	 * - typo3conf/ext
+	 * - typo3temp
+	 * - uploads
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function createNecessaryDirectoriesInDocumentRoot() {
+		$this->createDirectory(PATH_site . 'uploads');
+		$this->createDirectory(PATH_site . 'typo3temp');
+		$this->createDirectory(PATH_site . 'typo3conf/ext');
+
+		return $this;
+	}
+
+	/**
+	 * Creates the directory $directory (recursively if required).
+	 *
+	 * If $directory already exists, this method is a no-op.
+	 *
+	 * @param  string $directory absolute path of the directory to be created
+	 *
+	 * @return void
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function createDirectory($directory) {
+		if (is_dir($directory)) {
+			return;
+		}
+
+		if (!mkdir($directory, 0777, TRUE)) {
+			throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1404038665);
+		}
+	}
+
+	/**
+	 * Includes the Core Bootstrap class and calls its first few functions.
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function includeAndStartCoreBootstrap() {
+		require_once PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+
+		Bootstrap::getInstance()
+			->baseSetup()
+			->initializeClassLoader();
+
+		return $this;
+	}
+
+	/**
+	 * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS'].
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function initializeConfiguration() {
+		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager();
+		$GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
+
+		// avoid failing tests that rely on HTTP_HOST retrieval
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
+
+		return $this;
+	}
+
+	/**
+	 * Finishes the last steps of the Core Bootstrap.
+	 *
+	 * @return UnitTestsBootstrap fluent interface
+	 */
+	protected function finishCoreBootstrap() {
+		Bootstrap::getInstance()
+			->disableCoreAndClassesCache()
+			->initializeCachingFramework()
+			->initializeClassLoaderCaches()
+			->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class);
+
+		return $this;
+	}
 }
+
+$bootstrap = new UnitTestsBootstrap();
+$bootstrap->bootstrapSystem();
+unset($bootstrap);

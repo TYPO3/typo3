@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Build;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,41 +19,79 @@
  * before instantiating the test suites, it must also be included
  * with phpunit parameter --bootstrap if executing single test case classes.
  */
+class FunctionalTestsBootstrap {
+	/**
+	 * Bootstraps the system for unit tests.
+	 *
+	 * @return void
+	 */
+	public function bootstrapSystem() {
+		$this->enableDisplayErrors()
+			->loadClassFiles()
+			->defineOriginalRootPath();
+	}
 
-/**
- * Make sure error messages during the tests get displayed no matter what is set in php.ini.
- */
-@ini_set('display_errors', 1);
+	/**
+	 * Makes sure error messages during the tests get displayed no matter what is set in php.ini.
+	 *
+	 * @return FunctionalTestsBootstrap fluent interface
+	 */
+	protected function enableDisplayErrors() {
+		@ini_set('display_errors', 1);
+		return $this;
+	}
 
-/**
- * Require classes the functional test classes extend from or use for further bootstrap.
- * Only files required for "new TestCaseClass" are required here and a general exception
- * that is thrown by setUp() code.
- */
-require_once(__DIR__ . '/../Tests/BaseTestCase.php');
-require_once(__DIR__ . '/../Tests/FunctionalTestCase.php');
-require_once(__DIR__ . '/../Tests/FunctionalTestCaseBootstrapUtility.php');
-require_once(__DIR__ . '/../Tests/Exception.php');
+	/**
+	 * Requires classes the functional test classes extend from or use for further bootstrap.
+	 * Only files required for "new TestCaseClass" are required here and a general exception
+	 * that is thrown by setUp() code.
+	 *
+	 * @return FunctionalTestsBootstrap fluent interface
+	 */
+	protected function loadClassFiles() {
+		$testsDirectory = __DIR__ . '/../Tests/';
+		require_once($testsDirectory . 'BaseTestCase.php');
+		require_once($testsDirectory . 'FunctionalTestCase.php');
+		require_once($testsDirectory . 'FunctionalTestCaseBootstrapUtility.php');
+		require_once($testsDirectory . 'Exception.php');
 
-/**
- * Define a constant to specify the document root since this calculation would
- * be way more complicated if done within the test class.
- *
- * It is required that phpunit binary is called from the document root of the instance,
- * or TYPO3_PATH_WEB environement variable needs to be set,
- * otherwise path calculation, of the created TYPO3 CMS instance will fail.
- */
-if (getenv('TYPO3_PATH_WEB')) {
-	$webRoot = getenv('TYPO3_PATH_WEB') . '/';
-} elseif (isset($_SERVER['PWD'])) {
-	$webRoot = $_SERVER['PWD'] . '/';
-} else {
-	$webRoot = getcwd() . '/';
+		return $this;
+	}
+
+	/**
+	 * Defines the constant ORIGINAL_ROOT for the path to the original TYPO3 document root.
+	 *
+	 * If ORIGINAL_ROOT already is defined, this method is a no-op.
+	 *
+	 * @return FunctionalTestsBootstrap fluent interface
+	 */
+	protected function defineOriginalRootPath() {
+		if (!defined('ORIGINAL_ROOT')) {
+			/** @var string */
+			define('ORIGINAL_ROOT', $this->getWebRoot());
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Returns the absolute path the TYPO3 document root.
+	 *
+	 * @return string the TYPO3 document root using Unix path separators
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function getWebRoot() {
+		if (getenv('TYPO3_PATH_WEB')) {
+			$webRoot = getenv('TYPO3_PATH_WEB') . '/';
+		} else {
+			$webRoot = getcwd() . '/';
+		}
+
+		return strtr($webRoot, '\\', '/');
+	}
 }
-$webRoot = strtr($webRoot, '\\', '/');
 
-if (!defined('ORIGINAL_ROOT')) {
-	define('ORIGINAL_ROOT', $webRoot);
-}
-
-unset($webRoot);
+$bootstrap = new FunctionalTestsBootstrap();
+$bootstrap->bootstrapSystem();
+unset($bootstrap);
