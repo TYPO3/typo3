@@ -3465,7 +3465,7 @@ class TypoScriptFrontendController {
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function doXHTML_cleaning() {
-		GeneralUtility::deprecationLog('The TypoScript option "config.xhtml_cleaning" has been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.');
+		GeneralUtility::logDeprecatedFunction('The TypoScript option "config.xhtml_cleaning" has been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.');
 		return $this->config['config']['xhtml_cleaning'];
 	}
 
