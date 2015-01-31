@@ -40,7 +40,6 @@ if (TYPO3_MODE === 'FE') {
 		'FILES'            => \TYPO3\CMS\Frontend\ContentObject\FilesContentObject::class,
 		'IMAGE'            => \TYPO3\CMS\Frontend\ContentObject\ImageContentObject::class,
 		'IMG_RESOURCE'     => \TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject::class,
-		'IMGTEXT'          => \TYPO3\CMS\Frontend\ContentObject\ImageTextContentObject::class,
 		'CONTENT'          => \TYPO3\CMS\Frontend\ContentObject\ContentContentObject::class,
 		'RECORDS'          => \TYPO3\CMS\Frontend\ContentObject\RecordsContentObject::class,
 		'HMENU'            => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,

@@ -4849,7 +4849,7 @@ class tslib_content_ImageResource extends \TYPO3\CMS\Frontend\ContentObject\Imag
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_ImageText extends \TYPO3\CMS\Frontend\ContentObject\ImageTextContentObject {}
+class tslib_content_ImageText extends \TYPO3\CMS\Compatibility6\ContentObject\ImageTextContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0

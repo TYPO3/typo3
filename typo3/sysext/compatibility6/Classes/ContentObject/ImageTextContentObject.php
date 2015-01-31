@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Compatibility6\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,15 +15,16 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 /**
- * Contains IMAGE class object.
+ * Contains IMGTEXT content object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ImageTextContentObject extends AbstractContentObject {
+class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
-	 * Rendering the cObject, IMAGE
+	 * Rendering the cObject, IMGTEXT
+	 * which is a text w/ image type that works with the image position through tables (pre-CSS styled content-time)
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
