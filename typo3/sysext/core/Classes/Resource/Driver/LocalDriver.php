@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource\Driver;
 
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -541,19 +542,20 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function getSpecificFileInformation($fileIdentifier, $containerPath, $property) {
 		$identifier = $this->canonicalizeAndCheckFileIdentifier($containerPath . PathUtility::basename($fileIdentifier));
 
+		$fileInfo = GeneralUtility::makeInstance(FileInfo::class, $fileIdentifier);
 		switch ($property) {
 			case 'size':
-				return filesize($fileIdentifier);
+				return $fileInfo->getSize();
 			case 'atime':
-				return fileatime($fileIdentifier);
+				return $fileInfo->getATime();
 			case 'mtime':
-				return filemtime($fileIdentifier);
+				return $fileInfo->getMTime();
 			case 'ctime':
-				return filectime($fileIdentifier);
+				return $fileInfo->getCTime();
 			case 'name':
 				return PathUtility::basename($fileIdentifier);
 			case 'mimetype':
-				return $this->getMimeTypeOfFile($fileIdentifier);
+				return $fileInfo->getMimeType();
 			case 'identifier':
 				return $identifier;
 			case 'storage':
@@ -587,22 +589,6 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$relativeFilePath = ltrim($this->canonicalizeAndCheckFileIdentifier($fileIdentifier), '/');
 		$path = $this->absoluteBasePath . $relativeFilePath;
 		return $path;
-	}
-
-	/**
-	 * Get MIME type of file.
-	 *
-	 * @param string $absoluteFilePath Absolute path to file
-	 * @return string|boolean MIME type. eg, text/html, FALSE on error
-	 */
-	protected function getMimeTypeOfFile($absoluteFilePath) {
-		if (function_exists('finfo_file')) {
-			$fileInfo = new \finfo();
-			return $fileInfo->file($absoluteFilePath, FILEINFO_MIME_TYPE);
-		} elseif (function_exists('mime_content_type')) {
-			return mime_content_type($absoluteFilePath);
-		}
-		return FALSE;
 	}
 
 	/**

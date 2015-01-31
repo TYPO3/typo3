@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -298,14 +299,11 @@ class Request implements \TYPO3\CMS\Core\SingletonInterface {
 						$tempFilename = GeneralUtility::fixWindowsFilePath($tempFilename);
 					}
 					if ($tempFilename !== '') {
-						// Use finfo to get the mime type
-						$finfo = finfo_open(FILEINFO_MIME_TYPE);
-						$mimeType = finfo_file($finfo, $tempFilename);
-						finfo_close($finfo);
+						$fileInfo = GeneralUtility::makeInstance(FileInfo::class, $tempFilename);
 						$formData[$fieldName] = array(
 							'tempFilename' => $tempFilename,
 							'originalFilename' => $_FILES[$this->prefix]['name'][$fieldName],
-							'type' => $mimeType,
+							'type' => $fileInfo->getMimeType(),
 							'size' => (int)$_FILES[$this->prefix]['size'][$fieldName]
 						);
 					}

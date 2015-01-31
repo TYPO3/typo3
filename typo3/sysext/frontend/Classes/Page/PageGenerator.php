@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
@@ -420,13 +421,12 @@ class PageGenerator {
 		}
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
 			$favIcon = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
-			if (is_file(PATH_site . $favIcon)) {
-				if (function_exists('finfo_open')) {
-					if ($finfo = @finfo_open(FILEINFO_MIME)) {
-						$iconMimeType = ' type="' . finfo_file($finfo, (PATH_site . $favIcon)) . '"';
-						finfo_close($finfo);
-						$pageRenderer->setIconMimeType($iconMimeType);
-					}
+			$iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, PATH_site . $favIcon);
+			if ($iconFileInfo->isFile()) {
+				$iconMimeType = $iconFileInfo->getMimeType();
+				if ($iconMimeType) {
+					$iconMimeType = ' type="' . $iconMimeType . '"';
+					$pageRenderer->setIconMimeType($iconMimeType);
 				}
 				$pageRenderer->setFavIcon(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $favIcon);
 			}

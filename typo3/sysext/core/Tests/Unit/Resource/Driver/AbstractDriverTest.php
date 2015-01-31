@@ -23,17 +23,17 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
 	 */
-	protected $fixture;
+	protected $subject;
 
 
 	protected function setUp() {
 		parent::setUp();
-		$this->fixture = $this->createDriverFixture();
+		$this->subject = $this->createDriver();
 	}
 	/**
 	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
 	 */
-	protected function createDriverFixture() {
+	protected function createDriver() {
 		return $this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, array(), '', FALSE);
 	}
 
@@ -41,7 +41,7 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 	 * @test
 	 */
 	public function isCaseSensitiveFileSystemReturnsTrueIfNothingIsConfigured() {
-		$this->assertTrue($this->fixture->isCaseSensitiveFileSystem());
+		$this->assertTrue($this->subject->isCaseSensitiveFileSystem());
 	}
 
 }

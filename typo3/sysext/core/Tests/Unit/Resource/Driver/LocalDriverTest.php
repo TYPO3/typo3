@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\FileStreamWrapper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use \org\bovigo\vfs\vfsStream;
-use \org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS
@@ -82,21 +83,21 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	}
 
 	/**
-	 * Create a "real" directory together with a driverFixture configured
+	 * Create a "real" directory together with a driver configured
 	 * for this directory.
 	 *
-	 * @return array With path to base directory and driver fixture
+	 * @return array With path to base directory and driver
 	 */
 	protected function prepareRealTestEnvironment() {
 		$basedir = $this->createRealTestdir();
-		$fixture = $this->createDriverFixture(array(
+		$subject = $this->createDriver(array(
 			'basePath' => $basedir
 		));
-		return array($basedir, $fixture);
+		return array($basedir, $subject);
 	}
 
 	/**
-	 * Creates a driver fixture object, optionally using a given mount object.
+	 * Creates a mocked driver object as test subject, optionally using a given mount object.
 	 *
 	 * IMPORTANT: Call this only after setting up the virtual file system (with the addTo* methods)!
 	 *
@@ -104,7 +105,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @param array $mockedDriverMethods
 	 * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver
 	 */
-	protected function createDriverFixture($driverConfiguration = array(), $mockedDriverMethods = array()) {
+	protected function createDriver($driverConfiguration = array(), $mockedDriverMethods = array()) {
 			// it's important to do that here, so vfsContents could have been set before
 		if (!isset($driverConfiguration['basePath'])) {
 			$this->initializeVfs();
@@ -129,14 +130,14 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function calculatedBasePathRelativeIsSane() {
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 
 		// This would cause problems if you fill "/fileadmin/" into the base path field of a sys_file_storage record and select "relative" as path type
 		$relativeDriverConfiguration = array(
 			'pathType' => 'relative',
 			'basePath' => '/typo3temp/',
 		);
-		$basePath = $fixture->_call('calculateBasePath', $relativeDriverConfiguration);
+		$basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
 		$this->assertNotContains('//', $basePath);
 	}
@@ -145,13 +146,13 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function calculatedBasePathAbsoluteIsSane() {
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 
 		// This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
 		$relativeDriverConfiguration = array(
 			'basePath' => PATH_site . 'typo3temp/../typo3temp/',
 		);
-		$basePath = $fixture->_call('calculateBasePath', $relativeDriverConfiguration);
+		$basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
 		$this->assertNotContains('/../', $basePath);
 	}
@@ -161,7 +162,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function createFolderRecursiveSanitizesFilename() {
 		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $driver */
-		$driver = $this->createDriverFixture(array(), array('sanitizeFilename'));
+		$driver = $this->createDriver(array(), array('sanitizeFilename'));
 		$driver->expects($this->exactly(2))
 			->method('sanitizeFileName')
 			->will(
@@ -193,8 +194,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function getDefaultFolderReturnsFolderForUserUploadPath() {
-		$fixture = $this->createDriverFixture();
-		$folderIdentifier = $fixture->getDefaultFolder();
+		$subject = $this->createDriver();
+		$folderIdentifier = $subject->getDefaultFolder();
 		$this->assertEquals('/user_upload/', $folderIdentifier);
 	}
 
@@ -202,8 +203,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function defaultLevelFolderFolderIsCreatedIfItDoesntExist() {
-		$fixture = $this->createDriverFixture();
-		$this->assertFileExists($this->getUrlInMount($fixture->getDefaultFolder()));
+		$subject = $this->createDriver();
+		$this->assertFileExists($this->getUrlInMount($subject->getDefaultFolder()));
 	}
 
 	/**
@@ -215,8 +216,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someSubdir' => array()
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$folder = $fixture->getFolderInFolder('someSubdir', '/someDir/');
+		$subject = $this->createDriver();
+		$folder = $subject->getFolderInFolder('someSubdir', '/someDir/');
 		$this->assertEquals('/someDir/someSubdir/', $folder);
 	}
 
@@ -225,8 +226,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function createFolderCreatesFolderOnDisk() {
 		$this->addToMount(array('some' => array('folder' => array())));
-		$fixture = $this->createDriverFixture();
-		$fixture->createFolder('path', '/some/folder/');
+		$subject = $this->createDriver();
+		$subject->createFolder('path', '/some/folder/');
 		$this->assertFileExists($this->getUrlInMount('/some/folder/'));
 		$this->assertFileExists($this->getUrlInMount('/some/folder/path'));
 	}
@@ -236,8 +237,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function createFolderReturnsFolderObject() {
 		$this->addToMount(array('some' => array('folder' => array())));
-		$fixture = $this->createDriverFixture();
-		$createdFolder = $fixture->createFolder('path', '/some/folder/');
+		$subject = $this->createDriver();
+		$createdFolder = $subject->createFolder('path', '/some/folder/');
 		$this->assertEquals('/some/folder/path/', $createdFolder);
 	}
 
@@ -260,8 +261,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function createFolderSanitizesFolderNameBeforeCreation($newFolderName, $expectedFolderName) {
 		$this->addToMount(array('some' => array('folder' => array())));
-		$fixture = $this->createDriverFixture();
-		$fixture->createFolder($newFolderName, '/some/folder/');
+		$subject = $this->createDriver();
+		$subject->createFolder($newFolderName, '/some/folder/');
 		$this->assertFileExists($this->getUrlInMount('/some/folder/' . $expectedFolderName));
 	}
 
@@ -269,16 +270,86 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function basePathIsNormalizedWithTrailingSlash() {
-		$fixture = $this->createDriverFixture();
-		$this->assertEquals('/', substr($fixture->_call('getAbsoluteBasePath'), -1));
+		$subject = $this->createDriver();
+		$this->assertEquals('/', substr($subject->_call('getAbsoluteBasePath'), -1));
 	}
 
 	/**
 	 * @test
 	 */
 	public function noSecondSlashIsAddedIfBasePathAlreadyHasTrailingSlash() {
-		$fixture = $this->createDriverFixture();
-		$this->assertNotEquals('/', substr($fixture->_call('getAbsoluteBasePath'), -2, 1));
+		$subject = $this->createDriver();
+		$this->assertNotEquals('/', substr($subject->_call('getAbsoluteBasePath'), -2, 1));
+	}
+
+	public function getSpecificFileInformationDataProvider() {
+		return array(
+			'size' => array(
+				'expectedValue' => 48,
+				'propertyName' => 'size'
+			),
+			'atime' => array(
+				'expectedValue' => 'WILL_BE_REPLACED_BY_VFS_TIME',
+				'propertyName' => 'atime'
+			),
+			'mtime' => array(
+				'expectedValue' => 'WILL_BE_REPLACED_BY_VFS_TIME',
+				'propertyName' => 'mtime'
+			),
+			'ctime' => array(
+				'expectedValue' => 'WILL_BE_REPLACED_BY_VFS_TIME',
+				'propertyName' => 'ctime'
+			),
+			'name' => array(
+				'expectedValue' => 'Dummy.html',
+				'propertyName' => 'name'
+			),
+			'mimetype' => array(
+				'expectedValue' => 'text/html',
+				'propertyName' => 'mimetype'
+			),
+			'identifier' => array(
+				'expectedValue' => '/Dummy.html',
+				'propertyName' => 'identifier'
+			),
+			'storage' => array(
+				'expectedValue' => 5,
+				'propertyName' => 'storage'
+			),
+			'identifier_hash' => array(
+				'expectedValue' => 'b11efa5d7c0556a65c6aa261343b9807cac993bc',
+				'propertyName' => 'identifier_hash'
+			),
+			'folder_hash' => array(
+				'expectedValue' => '42099b4af021e53fd8fd4e056c2568d7c2e3ffa8',
+				'propertyName' => 'folder_hash'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getSpecificFileInformationDataProvider
+	 */
+	public function getSpecificFileInformationReturnsRequestedFileInformation($expectedValue, $property) {
+		$root = vfsStream::setup();
+		$subFolder = vfsStream::newDirectory('fileadmin');
+		$root->addChild($subFolder);
+		// Load fixture files and folders from disk
+		$directory = vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024*1024);
+		if (in_array($property, array('mtime', 'ctime', 'atime'))) {
+			$expectedValue = $directory->getChild('Dummy.html')->filemtime();
+		}
+		FileStreamWrapper::init(PATH_site);
+		FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', FALSE);
+
+		$subject = $this->createDriver(array('basePath' => PATH_site . 'fileadmin'));
+		$this->assertSame(
+			$expectedValue,
+			$subject->getSpecificFileInformation(PATH_site . 'fileadmin/Dummy.html', '/', $property)
+		);
+
+		FileStreamWrapper::destroy();
 	}
 
 	/**
@@ -290,8 +361,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file1.ext' => 'asdfg'
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$path = $fixture->_call('getAbsolutePath', '/someFolder/file1.ext');
+		$subject = $this->createDriver();
+		$path = $subject->_call('getAbsolutePath', '/someFolder/file1.ext');
 		$this->assertTrue(file_exists($path));
 		$this->assertEquals($this->getUrlInMount('/someFolder/file1.ext'), $path);
 	}
@@ -306,12 +377,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 			array('getMimeTypeOfFile')
 		);
 		$this->assertTrue(file_exists($this->getUrl('sourceFolder/file')));
-		$fixture->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
+		$subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/file')));
 	}
 
@@ -325,12 +396,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 			array('getMimeTypeOfFile')
 		);
 		$this->assertTrue(file_exists($this->getUrl('sourceFolder/file')));
-		$fixture->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'targetFile');
+		$subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'targetFile');
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/targetFile')));
 	}
 
@@ -344,8 +415,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$fixture->addFile($this->getUrlInMount('/targetFolder/file'), '/targetFolder/', 'file');
+		$subject = $this->createDriver();
+		$subject->addFile($this->getUrlInMount('/targetFolder/file'), '/targetFolder/', 'file');
 	}
 
 	/**
@@ -358,12 +429,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 			array('getMimeTypeOfFile')
 		);
 		$this->assertTrue(file_exists($this->getUrl('sourceFolder/file')));
-		$fileIdentifier = $fixture->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
+		$fileIdentifier = $subject->addFile($this->getUrl('sourceFolder/file'), '/targetFolder/', 'file');
 		$this->assertEquals('file', basename($fileIdentifier));
 		$this->assertEquals('/targetFolder/file', $fileIdentifier);
 	}
@@ -376,12 +447,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'file' => 'asdf',
 			'folder' => array()
 		));
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 		// Using slashes at the beginning of paths because they will be stored in the DB this way.
-		$this->assertTrue($fixture->fileExists('/file'));
-		$this->assertTrue($fixture->folderExists('/folder/'));
-		$this->assertFalse($fixture->fileExists('/nonexistingFile'));
-		$this->assertFalse($fixture->folderExists('/nonexistingFolder/'));
+		$this->assertTrue($subject->fileExists('/file'));
+		$this->assertTrue($subject->folderExists('/folder/'));
+		$this->assertFalse($subject->fileExists('/nonexistingFile'));
+		$this->assertFalse($subject->folderExists('/nonexistingFolder/'));
 	}
 
 	/**
@@ -394,11 +465,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'folder' => array()
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$this->assertTrue($fixture->fileExistsInFolder('file', '/subfolder/'));
-		$this->assertTrue($fixture->folderExistsInFolder('folder', '/subfolder/'));
-		$this->assertFalse($fixture->fileExistsInFolder('nonexistingFile', '/subfolder/'));
-		$this->assertFalse($fixture->folderExistsInFolder('nonexistingFolder', '/subfolder/'));
+		$subject = $this->createDriver();
+		$this->assertTrue($subject->fileExistsInFolder('file', '/subfolder/'));
+		$this->assertTrue($subject->folderExistsInFolder('folder', '/subfolder/'));
+		$this->assertFalse($subject->fileExistsInFolder('nonexistingFile', '/subfolder/'));
+		$this->assertFalse($subject->folderExistsInFolder('nonexistingFolder', '/subfolder/'));
 	}
 
 	/**
@@ -412,11 +483,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file2.ext' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(array(
+		$subject = $this->createDriver(array(
 			'baseUri' => $baseUri
 		));
-		$this->assertEquals($baseUri . '/file.ext', $fixture->getPublicUrl('/file.ext'));
-		$this->assertEquals($baseUri . '/subfolder/file2.ext', $fixture->getPublicUrl('/subfolder/file2.ext'));
+		$this->assertEquals($baseUri . '/file.ext', $subject->getPublicUrl('/file.ext'));
+		$this->assertEquals($baseUri . '/subfolder/file2.ext', $subject->getPublicUrl('/subfolder/file2.ext'));
 	}
 
 	/**
@@ -439,10 +510,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function getPublicUrlReturnsValidUrlContainingSpecialCharacters($fileIdentifier) {
 		$baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
-		$fixture = $this->createDriverFixture(array(
+		$subject = $this->createDriver(array(
 			'baseUri' => $baseUri
 		));
-		$publicUrl = $fixture->getPublicUrl($fileIdentifier);
+		$publicUrl = $subject->getPublicUrl($fileIdentifier);
 		$this->assertTrue(GeneralUtility::isValidUrl($publicUrl), 'getPublicUrl did not return a valid URL:' . $publicUrl);
 	}
 
@@ -454,11 +525,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->addToMount(array(
 			'file.ext' => $fileContents
 		));
-		$fixture = $this->createDriverFixture();
-		$this->assertEquals($fileContents, $fixture->getFileContents('/file.ext'), 'File contents could not be read');
+		$subject = $this->createDriver();
+		$this->assertEquals($fileContents, $subject->getFileContents('/file.ext'), 'File contents could not be read');
 		$newFileContents = 'asdfgh';
-		$fixture->setFileContents('/file.ext', $newFileContents);
-		$this->assertEquals($newFileContents, $fixture->getFileContents('/file.ext'), 'New file contents could not be read.');
+		$subject->setFileContents('/file.ext', $newFileContents);
+		$this->assertEquals($newFileContents, $subject->getFileContents('/file.ext'), 'New file contents could not be read.');
 	}
 
 	/**
@@ -469,9 +540,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->addToMount(array(
 			'file.ext' => $fileContents
 		));
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 		$newFileContents = 'asdfgh';
-		$bytesWritten = $fixture->setFileContents('/file.ext', $newFileContents);
+		$bytesWritten = $subject->setFileContents('/file.ext', $newFileContents);
 		$this->assertEquals(strlen($newFileContents), $bytesWritten);
 	}
 
@@ -480,9 +551,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @see http://phpmagazin.de/vfsStream-1.1.0-nutzt-PHP-5.4-M%C3%B6glichkeiten-064406.html
 	 */
 	public function newFilesCanBeCreated() {
-		$fixture = $this->createDriverFixture();
-		$fixture->createFile('testfile.txt', '/');
-		$this->assertTrue($fixture->fileExists('/testfile.txt'));
+		$subject = $this->createDriver();
+		$subject->createFile('testfile.txt', '/');
+		$this->assertTrue($subject->fileExists('/testfile.txt'));
 	}
 
 	/**
@@ -490,10 +561,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @see http://phpmagazin.de/vfsStream-1.1.0-nutzt-PHP-5.4-M%C3%B6glichkeiten-064406.html
 	 */
 	public function createdFilesAreEmpty() {
-		$fixture = $this->createDriverFixture();
-		$fixture->createFile('testfile.txt', '/');
-		$this->assertTrue($fixture->fileExists('/testfile.txt'));
-		$fileData = $fixture->getFileContents('/testfile.txt');
+		$subject = $this->createDriver();
+		$subject->createFile('testfile.txt', '/');
+		$this->assertTrue($subject->fileExists('/testfile.txt'));
+		$fileData = $subject->getFileContents('/testfile.txt');
 		$this->assertEquals(0, strlen($fileData));
 	}
 
@@ -514,10 +585,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someDir' => array()
 			)
 		);
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
-		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
+		/** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		list($basedir, $subject) = $this->prepareRealTestEnvironment();
 		mkdir($basedir . '/someDir');
-		$fixture->createFile('testfile.txt', '/someDir');
+		$subject->createFile('testfile.txt', '/someDir');
 		$this->assertEquals($testpattern, decoct(fileperms($basedir . '/someDir/testfile.txt') & 0777));
 	}
 
@@ -528,20 +599,22 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function getFileReturnsCorrectIdentifier() {
-		$this->addToMount(array(
-			'someDir' => array(
-				'someFile' => 'asdfg'
-			),
-			'someFileAtRootLevel' => 'foobar'
-		));
-		$fixture = $this->createDriverFixture(
-			array(),
-			array('getMimeTypeOfFile')
-		);
-		$subdirFileInfo = $fixture->getFileInfoByIdentifier('/someDir/someFile');
-		$this->assertEquals('/someDir/someFile', $subdirFileInfo['identifier']);
-		$rootFileInfo = $fixture->getFileInfoByIdentifier('/someFileAtRootLevel');
-		$this->assertEquals('/someFileAtRootLevel', $rootFileInfo['identifier']);
+		$root = vfsStream::setup();
+		$subFolder = vfsStream::newDirectory('fileadmin');
+		$root->addChild($subFolder);
+		// Load fixture files and folders from disk
+		$directory = vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024*1024);
+		FileStreamWrapper::init(PATH_site);
+		FileStreamWrapper::registerOverlayPath('fileadmin/', 'vfs://root/fileadmin/', FALSE);
+
+		$subject = $this->createDriver(array('basePath' => PATH_site . 'fileadmin'));
+
+		$subdirFileInfo = $subject->getFileInfoByIdentifier('Dummy.html');
+		$this->assertEquals('/Dummy.html', $subdirFileInfo['identifier']);
+		$rootFileInfo = $subject->getFileInfoByIdentifier('LocalDriverFilenameFilter.php');
+		$this->assertEquals('/LocalDriverFilenameFilter.php', $rootFileInfo['identifier']);
+
+		FileStreamWrapper::destroy();
 	}
 
 	/**
@@ -549,16 +622,16 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function getFileThrowsExceptionIfFileDoesNotExist() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314516809);
-		$fixture = $this->createDriverFixture();
-		$fixture->getFileInfoByIdentifier('/some/file/at/a/random/path');
+		$subject = $this->createDriver();
+		$subject->getFileInfoByIdentifier('/some/file/at/a/random/path');
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFilesInFolderReturnsEmptyArrayForEmptyDirectory() {
-		$fixture = $this->createDriverFixture();
-		$fileList = $fixture->getFilesInFolder('/');
+		$subject = $this->createDriver();
+		$fileList = $subject->getFilesInFolder('/');
 		$this->assertEmpty($fileList);
 	}
 
@@ -572,12 +645,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'file2' => 'fdsa'
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 				// Mocked because finfo() can not deal with vfs streams and throws warnings
 			array('getMimeTypeOfFile')
 		);
-		$fileList = $fixture->getFilesInFolder('/');
+		$fileList = $subject->getFilesInFolder('/');
 		$this->assertEquals(array('/file1', '/file2'), array_keys($fileList));
 	}
 
@@ -596,12 +669,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'file2' => 'fdsa'
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 				// Mocked because finfo() can not deal with vfs streams and throws warnings
 			array('getMimeTypeOfFile')
 		);
-		$fileList = $fixture->getFilesInFolder('/', 0, 0, TRUE);
+		$fileList = $subject->getFilesInFolder('/', 0, 0, TRUE);
 		$this->assertEquals(array('/aDir/subdir/file4', '/aDir/file3', '/file1', '/file2'), array_keys($fileList));
 	}
 
@@ -611,8 +684,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	public function getFileListFailsIfDirectoryDoesNotExist() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314349666);
 		$this->addToMount(array('somefile' => ''));
-		$fixture = $this->createDriverFixture();
-		$fixture->getFilesInFolder('somedir/');
+		$subject = $this->createDriver();
+		$subject->getFilesInFolder('somedir/');
 	}
 
 	/**
@@ -630,10 +703,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			)
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 		// the callback function will throw an exception used to check if it was called with correct $itemName
 		$this->setExpectedException('InvalidArgumentException', '$itemName', 1336159604);
-		$fixture->getFilesInFolder('/', 0, 0, FALSE, $callback);
+		$subject->getFilesInFolder('/', 0, 0, FALSE, $callback);
 	}
 
 	/**
@@ -660,7 +733,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'fileB' => 'fdsa'
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 				// Mocked because finfo() can not deal with vfs streams and throws warnings
 			array('getMimeTypeOfFile')
@@ -671,7 +744,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'filterFilename',
 			),
 		);
-		$fileList = $fixture->getFilesInFolder('/', 0, 0, FALSE, $filterCallbacks);
+		$fileList = $subject->getFilesInFolder('/', 0, 0, FALSE, $filterCallbacks);
 		$this->assertNotContains('/fileA', array_keys($fileList));
 	}
 
@@ -685,8 +758,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'file' => 'asdfg'
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture();
-		$fileList = $fixture->getFoldersInFolder('/');
+		$subject = $this->createDriver();
+		$fileList = $subject->getFoldersInFolder('/');
 		$this->assertEquals(array('/dir1/', '/dir2/'), array_keys($fileList));
 	}
 
@@ -700,9 +773,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'file1' => ''
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 
-		$fileList = $fixture->getFoldersInFolder('/');
+		$fileList = $subject->getFoldersInFolder('/');
 
 		$this->assertEquals(array('/.someHiddenDir/', '/aDir/'), array_keys($fileList));
 	}
@@ -719,8 +792,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'..' => array(),
 			'.' => array()
 		));
-		$fixture = $this->createDriverFixture();
-		$fileList = $fixture->getFoldersInFolder('/');
+		$subject = $this->createDriver();
+		$fileList = $subject->getFoldersInFolder('/');
 		$this->assertEmpty($fileList);
 	}
 
@@ -733,14 +806,14 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'folderB' => array()
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 		$filterCallbacks = array(
 			array(
 				\TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter::class,
 				'filterFilename',
 			),
 		);
-		$folderList = $fixture->getFoldersInFolder('/', 0, 0, $filterCallbacks);
+		$folderList = $subject->getFoldersInFolder('/', 0, 0, $filterCallbacks);
 		$this->assertNotContains('folderA', array_keys($folderList));
 	}
 
@@ -749,9 +822,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function getFolderListFailsIfDirectoryDoesNotExist() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314349666);
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 		vfsStream::create(array($this->basedir => array('somefile' => '')));
-		$fixture->getFoldersInFolder('somedir/');
+		$subject->getFoldersInFolder('somedir/');
 	}
 
 	/**
@@ -762,9 +835,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$expectedMd5Hash = '8c67dbaf0ba22f2e7fbc26413b86051b';
 		$expectedSha1Hash = 'a60cd808ba7a0bcfa37fa7f3fb5998e1b8dbcd9d';
 		$this->addToMount(array('hashFile' => $contents));
-		$fixture = $this->createDriverFixture();
-		$this->assertEquals($expectedSha1Hash, $fixture->hash('/hashFile', 'sha1'));
-		$this->assertEquals($expectedMd5Hash, $fixture->hash('/hashFile', 'md5'));
+		$subject = $this->createDriver();
+		$this->assertEquals($expectedSha1Hash, $subject->hash('/hashFile', 'sha1'));
+		$this->assertEquals($expectedMd5Hash, $subject->hash('/hashFile', 'md5'));
 	}
 
 	/**
@@ -772,8 +845,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function hashingWithUnsupportedAlgorithmFails() {
 		$this->setExpectedException('InvalidArgumentException', '', 1304964032);
-		$fixture = $this->createDriverFixture();
-		$fixture->hash('/hashFile', $this->getUniqueId());
+		$subject = $this->createDriver();
+		$subject->hash('/hashFile', $this->getUniqueId());
 	}
 
 	/**
@@ -787,9 +860,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someFile' => $fileContents
 			)
 		));
-		$fixture = $this->createDriverFixture(array(), array('copyFileToTemporaryPath'));
-		$fixture->expects($this->once())->method('copyFileToTemporaryPath');
-		$fixture->getFileForLocalProcessing('/someDir/someFile');
+		$subject = $this->createDriver(array(), array('copyFileToTemporaryPath'));
+		$subject->expects($this->once())->method('copyFileToTemporaryPath');
+		$subject->getFileForLocalProcessing('/someDir/someFile');
 	}
 
 	/**
@@ -802,8 +875,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someFile' => $fileContents
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$filePath = $fixture->getFileForLocalProcessing('/someDir/someFile', FALSE);
+		$subject = $this->createDriver();
+		$filePath = $subject->getFileForLocalProcessing('/someDir/someFile', FALSE);
 		$this->assertEquals($filePath, $this->getUrlInMount('someDir/someFile'));
 	}
 
@@ -817,8 +890,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someFile' => $fileContents
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$filePath = GeneralUtility::fixWindowsFilePath($fixture->_call('copyFileToTemporaryPath', '/someDir/someFile'));
+		$subject = $this->createDriver();
+		$filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile'));
 		$this->testFilesToDelete[] = $filePath;
 		$this->assertContains('/typo3temp/', $filePath);
 		$this->assertEquals($fileContents, file_get_contents($filePath));
@@ -828,12 +901,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function permissionsAreCorrectlyRetrievedForAllowedFile() {
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
-		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
+		/** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		list($basedir, $subject) = $this->prepareRealTestEnvironment();
 		touch($basedir . '/someFile');
 		chmod($basedir . '/someFile', 448);
 		clearstatcache();
-		$this->assertEquals(array('r' => TRUE, 'w' => TRUE), $fixture->getPermissions('/someFile'));
+		$this->assertEquals(array('r' => TRUE, 'w' => TRUE), $subject->getPermissions('/someFile'));
 	}
 
 	/**
@@ -845,24 +918,24 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		} elseif (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test skipped if run on Windows system');
 		}
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
-		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
+		/** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		list($basedir, $subject) = $this->prepareRealTestEnvironment();
 		touch($basedir . '/someForbiddenFile');
 		chmod($basedir . '/someForbiddenFile', 0);
 		clearstatcache();
-		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $fixture->getPermissions('/someForbiddenFile'));
+		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $subject->getPermissions('/someForbiddenFile'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function permissionsAreCorrectlyRetrievedForAllowedFolder() {
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
-		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
+		/** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		list($basedir, $subject) = $this->prepareRealTestEnvironment();
 		mkdir($basedir . '/someFolder');
 		chmod($basedir . '/someFolder', 448);
 		clearstatcache();
-		$this->assertEquals(array('r' => TRUE, 'w' => TRUE), $fixture->getPermissions('/someFolder'));
+		$this->assertEquals(array('r' => TRUE, 'w' => TRUE), $subject->getPermissions('/someFolder'));
 	}
 
 	/**
@@ -874,12 +947,12 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		} elseif (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test skipped if run on Windows system');
 		}
-		/** @var $fixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
-		list($basedir, $fixture) = $this->prepareRealTestEnvironment();
+		/** @var $subject \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		list($basedir, $subject) = $this->prepareRealTestEnvironment();
 		mkdir($basedir . '/someForbiddenFolder');
 		chmod($basedir . '/someForbiddenFolder', 0);
 		clearstatcache();
-		$result = $fixture->getPermissions('/someForbiddenFolder');
+		$result = $subject->getPermissions('/someForbiddenFolder');
 		// Change permissions back to writable, so the sub-folder can be removed in tearDown
 		chmod($basedir . '/someForbiddenFolder', 0777);
 		$this->assertEquals(array('r' => FALSE, 'w' => FALSE), $result);
@@ -943,33 +1016,33 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->addToMount(array(
 			'testfile' => 'asdfg'
 		));
-		$fixture = $this->createDriverFixture();
+		$subject = $this->createDriver();
 		/** @var $fileObject vfsStreamContent */
 		$fileObject = vfsStreamWrapper::getRoot()->getChild($this->mountDir)->getChild('testfile');
 		// just use an "arbitrary" user here - it is only important that
 		$fileObject->chown(vfsStream::OWNER_USER_1);
 		$fileObject->chgrp($group);
 		$fileObject->chmod($permissions);
-		$this->assertEquals($expectedResult, $fixture->getPermissions('/testfile'));
+		$this->assertEquals($expectedResult, $subject->getPermissions('/testfile'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isWithinRecognizesFilesWithinFolderAndInOtherFolders() {
-		$fixture = $this->createDriverFixture();
-		$this->assertTrue($fixture->isWithin('/someFolder/', '/someFolder/test.jpg'));
-		$this->assertTrue($fixture->isWithin('/someFolder/', '/someFolder/subFolder/test.jpg'));
-		$this->assertFalse($fixture->isWithin('/someFolder/', '/someFolderWithALongName/test.jpg'));
+		$subject = $this->createDriver();
+		$this->assertTrue($subject->isWithin('/someFolder/', '/someFolder/test.jpg'));
+		$this->assertTrue($subject->isWithin('/someFolder/', '/someFolder/subFolder/test.jpg'));
+		$this->assertFalse($subject->isWithin('/someFolder/', '/someFolderWithALongName/test.jpg'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isWithinAcceptsFileAndFolderObjectsAsContent() {
-		$fixture = $this->createDriverFixture();
-		$this->assertTrue($fixture->isWithin('/someFolder/', '/someFolder/test.jpg'));
-		$this->assertTrue($fixture->isWithin('/someFolder/', '/someFolder/subfolder/'));
+		$subject = $this->createDriver();
+		$this->assertTrue($subject->isWithin('/someFolder/', '/someFolder/test.jpg'));
+		$this->assertTrue($subject->isWithin('/someFolder/', '/someFolder/subfolder/'));
 	}
 
 	/**********************************
@@ -985,11 +1058,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'someFile' => $fileContents,
 			'targetFolder' => array()
 		));
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 			array('getMimeTypeOfFile')
 		);
-		$fixture->copyFileWithinStorage('/someFile', '/targetFolder/', 'someFile');
+		$subject->copyFileWithinStorage('/someFile', '/targetFolder/', 'someFile');
 		$this->assertFileEquals($this->getUrlInMount('/someFile'), $this->getUrlInMount('/targetFolder/someFile'));
 	}
 
@@ -1002,8 +1075,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'targetFolder' => array(),
 			'someFile' => $fileContents
 		));
-		$fixture = $this->createDriverFixture();
-		$newIdentifier = $fixture->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
+		$subject = $this->createDriver();
+		$newIdentifier = $subject->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
 		$this->assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/file')));
 		$this->assertFileNotExists($this->getUrlInMount('/someFile'));
 		$this->assertEquals('/targetFolder/file', $newIdentifier);
@@ -1018,13 +1091,13 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'targetFolder' => array(),
 			'someFile' => $fileContents
 		));
-		$fixture = $this->createDriverFixture(
+		$subject = $this->createDriver(
 			array(),
 				// Mocked because finfo() can not deal with vfs streams and throws warnings
 			array('getMimeTypeOfFile')
 		);
-		$newIdentifier = $fixture->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
-		$fileMetadata = $fixture->getFileInfoByIdentifier($newIdentifier);
+		$newIdentifier = $subject->moveFileWithinStorage('/someFile', '/targetFolder/', 'file');
+		$fileMetadata = $subject->getFileInfoByIdentifier($newIdentifier);
 		$this->assertEquals($newIdentifier, $fileMetadata['identifier']);
 	}
 
@@ -1055,10 +1128,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function renamingFilesChangesFilenameOnDisk(array $filesystemStructure, $oldFileIdentifier, $newFileName, $expectedNewIdentifier) {
 		$this->addToMount($filesystemStructure);
-		$fixture = $this->createDriverFixture();
-		$newIdentifier = $fixture->renameFile($oldFileIdentifier, $newFileName);
-		$this->assertFalse($fixture->fileExists($oldFileIdentifier));
-		$this->assertTrue($fixture->fileExists($newIdentifier));
+		$subject = $this->createDriver();
+		$newIdentifier = $subject->renameFile($oldFileIdentifier, $newFileName);
+		$this->assertFalse($subject->fileExists($oldFileIdentifier));
+		$this->assertTrue($subject->fileExists($newIdentifier));
 		$this->assertEquals($expectedNewIdentifier, $newIdentifier);
 	}
 
@@ -1070,8 +1143,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->addToMount(array(
 			'targetFolder' => array('file' => '', 'newFile' => '')
 		));
-		$fixture = $this->createDriverFixture();
-		$fixture->renameFile('/targetFolder/file', 'newFile');
+		$subject = $this->createDriver();
+		$subject->renameFile('/targetFolder/file', 'newFile');
 	}
 
 	/**
@@ -1108,10 +1181,10 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function renamingFoldersChangesFolderNameOnDisk(array $filesystemStructure, $oldFolderIdentifier, $newFolderName, $expectedNewIdentifier) {
 		$this->addToMount($filesystemStructure);
-		$fixture = $this->createDriverFixture();
-		$mapping = $fixture->renameFolder($oldFolderIdentifier, $newFolderName);
-		$this->assertFalse($fixture->folderExists($oldFolderIdentifier));
-		$this->assertTrue($fixture->folderExists($expectedNewIdentifier));
+		$subject = $this->createDriver();
+		$mapping = $subject->renameFolder($oldFolderIdentifier, $newFolderName);
+		$this->assertFalse($subject->folderExists($oldFolderIdentifier));
+		$this->assertTrue($subject->folderExists($expectedNewIdentifier));
 		$this->assertEquals($expectedNewIdentifier, $mapping[$oldFolderIdentifier]);
 	}
 
@@ -1126,8 +1199,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file2' => 'asdfg'
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$mappingInformation = $fixture->renameFolder('/sourceFolder/', 'newFolder');
+		$subject = $this->createDriver();
+		$mappingInformation = $subject->renameFolder('/sourceFolder/', 'newFolder');
 		$this->isTrue(is_array($mappingInformation));
 		$this->assertEquals('/newFolder/', $mappingInformation['/sourceFolder/']);
 		$this->assertEquals('/newFolder/file2', $mappingInformation['/sourceFolder/file2']);
@@ -1145,9 +1218,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file' => 'asdfg'
 			)
 		));
-		$fixture = $this->createDriverFixture(array(), array('createIdentifierMap'));
-		$fixture->expects($this->atLeastOnce())->method('createIdentifierMap')->will($this->throwException(new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException()));
-		$fixture->renameFolder('/sourceFolder/', 'newFolder');
+		$subject = $this->createDriver(array(), array('createIdentifierMap'));
+		$subject->expects($this->atLeastOnce())->method('createIdentifierMap')->will($this->throwException(new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException()));
+		$subject->renameFolder('/sourceFolder/', 'newFolder');
 		$this->assertFileExists($this->getUrlInMount('/sourceFolder/file'));
 	}
 
@@ -1159,9 +1232,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->addToMount(array(
 			'emptyFolder' => array()
 		));
-		$fixture = $this->createDriverFixture();
-		$this->assertTrue($fixture->isFolderEmpty('/emptyFolder/'));
-		return $fixture;
+		$subject = $this->createDriver();
+		$this->assertTrue($subject->isFolderEmpty('/emptyFolder/'));
+		return $subject;
 	}
 
 	/**
@@ -1173,8 +1246,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someFile' => ''
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$this->assertFalse($fixture->isFolderEmpty('/folderWithFile/'));
+		$subject = $this->createDriver();
+		$this->assertFalse($subject->isFolderEmpty('/folderWithFile/'));
 	}
 
 	/**
@@ -1186,8 +1259,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'someFolder' => array()
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$this->assertFalse($fixture->isFolderEmpty('/folderWithSubfolder/'));
+		$subject = $this->createDriver();
+		$this->assertFalse($subject->isFolderEmpty('/folderWithSubfolder/'));
 	}
 
 	/**********************************
@@ -1204,9 +1277,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			),
 			'targetFolder' => array(),
 		));
-		$fixture = $this->createDriverFixture();
-		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver $fixture */
-		$fixture->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
+		$subject = $this->createDriver();
+		/** @var \TYPO3\CMS\Core\Resource\Driver\LocalDriver $subject */
+		$subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/someFolder/')));
 		$this->assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/someFolder/file')));
 		$this->assertFileNotExists($this->getUrlInMount('/sourceFolder'));
@@ -1224,8 +1297,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 				'file' => 'asdfg'
 			)
 		));
-		$fixture = $this->createDriverFixture();
-		$mappingInformation = $fixture->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'sourceFolder');
+		$subject = $this->createDriver();
+		$mappingInformation = $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'sourceFolder');
 		$this->assertEquals('/targetFolder/sourceFolder/file', $mappingInformation['/sourceFolder/file']);
 		$this->assertEquals('/targetFolder/sourceFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);
 		$this->assertEquals('/targetFolder/sourceFolder/subFolder/', $mappingInformation['/sourceFolder/subFolder/']);
@@ -1241,8 +1314,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			),
 			'targetFolder' => array(),
 		));
-		$fixture = $this->createDriverFixture();
-		$fixture->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolder');
+		$subject = $this->createDriver();
+		$subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolder');
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/newFolder/')));
 	}
 
@@ -1256,8 +1329,8 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			),
 			'targetFolder' => array(),
 		));
-		$fixture = $this->createDriverFixture();
-		$fixture->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
+		$subject = $this->createDriver();
+		$subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
 		$this->assertTrue(is_file($this->getUrlInMount('/targetFolder/newFolderName/file')));
 	}
 
@@ -1265,11 +1338,11 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function copyFolderWithinStorageCopiesSingleSubFolderToNewFolderName() {
-		list($basePath, $fixture) = $this->prepareRealTestEnvironment();
+		list($basePath, $subject) = $this->prepareRealTestEnvironment();
 		GeneralUtility::mkdir_deep($basePath, '/sourceFolder/subFolder');
 		GeneralUtility::mkdir_deep($basePath, '/targetFolder');
 
-		$fixture->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
+		$subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
 		$this->isTrue(is_dir($basePath . '/targetFolder/newFolderName/subFolder'));
 	}
 
@@ -1277,13 +1350,13 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function copyFolderWithinStorageCopiesFileInSingleSubFolderToNewFolderName() {
-		list($basePath, $fixture) = $this->prepareRealTestEnvironment();
+		list($basePath, $subject) = $this->prepareRealTestEnvironment();
 		GeneralUtility::mkdir_deep($basePath, '/sourceFolder/subFolder');
 		GeneralUtility::mkdir_deep($basePath, '/targetFolder');
 		file_put_contents($basePath . '/sourceFolder/subFolder/file', $this->getUniqueId());
 		GeneralUtility::fixPermissions($basePath . '/sourceFolder/subFolder/file');
 
-		$fixture->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
+		$subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');
 		$this->assertTrue(is_file($basePath . '/targetFolder/newFolderName/subFolder/file'));
 	}
 
@@ -1368,7 +1441,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
 		$this->assertEquals(
 			$expectedResult,
-			$this->createDriverFixture()->sanitizeFileName($fileName)
+			$this->createDriver()->sanitizeFileName($fileName)
 		);
 	}
 
@@ -1459,7 +1532,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 0;
 		$this->assertEquals(
 			$expectedResult,
-			$this->createDriverFixture()->sanitizeFileName($fileName, $charset)
+			$this->createDriver()->sanitizeFileName($fileName, $charset)
 		);
 	}
 
@@ -1469,7 +1542,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function sanitizeFileNameThrowsExceptionOnInvalidFileName() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 1;
-		$this->createDriverFixture()->sanitizeFileName('');
+		$this->createDriver()->sanitizeFileName('');
 	}
 
 }

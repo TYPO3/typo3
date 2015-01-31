@@ -26,9 +26,33 @@ class FileInfo extends \SplFileInfo implements TypeInterface {
 	 *
 	 * @return string|FALSE
 	 */
-	public function getMimeType(){
+	public function getMimeType() {
+		$mimeType = FALSE;
+		if ($this->isFile()) {
+			if (!function_exists('finfo_file')) {
+				$fileInfo = new \finfo();
+				$mimeType = $fileInfo->file($this->getPathname(), FILEINFO_MIME_TYPE);
+			} elseif (function_exists('mime_content_type')) {
+				$mimeType = mime_content_type($this->getPathname());
+			}
+		}
 
-		// @todo will be implemented in issue #60019
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['mimeTypeGuessers'])
+			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['mimeTypeGuesser'])
+		) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['mimeTypeGuesser'] as $mimeTypeGuesser) {
+				$hookParameters = array(
+					'mimeType' => &$mimeType
+				);
+
+				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction(
+					$mimeTypeGuesser,
+					$hookParameters,
+					$this
+				);
+			}
+		}
+
+		return $mimeType;
 	}
-
 }
