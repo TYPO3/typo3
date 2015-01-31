@@ -565,7 +565,7 @@ class Clipboard {
 	 * @return string
 	 */
 	public function pasteUrl($table, $uid, $setRedirect = TRUE, array $update = NULL) {
-		$rU = $this->backPath . ($table == '_FILE' ? 'tce_file.php' . '?' : BackendUtility::getModuleUrl('tce_db') . '&') .
+		$rU = $this->backPath . ($table == '_FILE' ? BackendUtility::getModuleUrl('tce_file') . '&' : BackendUtility::getModuleUrl('tce_db') . '&') .
 			($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
 			'&vC=' . $GLOBALS['BE_USER']->veriCode() .
 			'&prErr=1&uPT=1' .
@@ -584,7 +584,7 @@ class Clipboard {
 	 * @return string
 	 */
 	public function deleteUrl($setRedirect = 1, $file = 0) {
-		$rU = $this->backPath . ($file ? 'tce_file.php' . '?' : BackendUtility::getModuleUrl('tce_db') . '&') . ($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
+		$rU = $this->backPath . ($file ? BackendUtility::getModuleUrl('tce_file') . '&' : BackendUtility::getModuleUrl('tce_db') . '&') . ($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
 		return $rU;
 	}
 

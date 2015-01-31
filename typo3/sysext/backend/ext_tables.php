@@ -44,6 +44,12 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Database/'
 	);
 
+	// Register tce_file
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'tce_file',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Administration/'
+	);
+
 	// Register edit wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_edit',

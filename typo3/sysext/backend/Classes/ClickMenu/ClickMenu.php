@@ -1018,7 +1018,7 @@ class ClickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_file.php?redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';};';
+		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . BackendUtility::getModuleUrl('tce_file') . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';};';
 		return $this->linkItem($this->label('delete'), IconUtility::getSpriteIcon('actions-edit-delete'), $editOnClick . 'return false;');
 	}
 
@@ -1132,7 +1132,7 @@ class ClickMenu {
 	 */
 	public function dragDrop_copymovefolder($srcPath, $dstPath, $action) {
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_file.php?redirect="+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+"' . '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '";};top.nav.refresh();';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"' . BackendUtility::getModuleUrl('tce_file') . '&redirect="+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+"' . '&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '";};top.nav.refresh();';
 		return $this->linkItem($this->label($action . 'Folder_into'), IconUtility::getSpriteIcon('apps-pagetree-drag-move-into'), $editOnClick . 'return false;', 0);
 	}
 

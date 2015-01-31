@@ -21,11 +21,6 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'File handling entry point was moved an own module. Please use BackendUtility::getModuleUrl(\'tce_file\') to link to tce_file.php. This script will be removed in TYPO3 CMS 8.'
-);
 
 $fileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileController::class);
 
