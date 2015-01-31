@@ -38,6 +38,12 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Upload/'
 	);
 
+	// Register tce_db
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'tce_db',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Database/'
+	);
+
 	// Register edit wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_edit',

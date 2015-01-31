@@ -39,7 +39,7 @@ class RemoveUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 
 		$redirectUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
 		$parameters = 'cmd[be_users][' . $backendUser->getUid() . '][delete]=1';
-		$url = $GLOBALS['BACK_PATH'] . 'tce_db.php?&' . $parameters . '&redirect=' .
+		$url = $GLOBALS['BACK_PATH'] . BackendUtility::getModuleUrl('tce_db') . '&' . $parameters . '&redirect=' .
 			($redirectUrl == '' ? '\' + T3_THIS_LOCATION + \'' : rawurlencode($redirectUrl)) . '&vC=' .
 			rawurlencode($GLOBALS['BE_USER']->veriCode()) . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
 		return '<a class="btn" href="' . $url . '"  onclick="return confirm(' .

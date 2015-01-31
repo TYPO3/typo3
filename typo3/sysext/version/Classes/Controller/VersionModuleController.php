@@ -385,7 +385,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		// Create new:
 		$content = '
 
-			<form action="' . $this->doc->backPath . 'tce_db.php" method="post">
+			<form action="' . $this->doc->backPath . BackendUtility::getModuleUrl('tce_db') . '" method="post">
 			' . $GLOBALS['LANG']->getLL('tblHeader_t3ver_label') . ': <input type="text" name="cmd[' . $this->table . '][' . $this->uid . '][version][label]" /><br />
 			<br /><input type="hidden" name="cmd[' . $this->table . '][' . $this->uid . '][version][action]" value="new" />
 			<input type="hidden" name="prErr" value="1" />

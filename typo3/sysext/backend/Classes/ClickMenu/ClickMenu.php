@@ -727,7 +727,7 @@ class ClickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';};';
+		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . BackendUtility::getModuleUrl('tce_db') . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';};';
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
 		}
@@ -798,7 +798,7 @@ class ClickMenu {
 	public function DB_changeFlag($table, $rec, $flagField, $title) {
 		$uid = $rec['_ORIG_uid'] ?: $rec['uid'];
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'tce_db.php?redirect=\'' . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';};';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . BackendUtility::getModuleUrl('tce_db') . '&redirect=\'' . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . '&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '\';};';
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
 		}
@@ -1117,7 +1117,7 @@ class ClickMenu {
 	public function dragDrop_copymovepage($srcUid, $dstUid, $action, $into) {
 		$negativeSign = $into === 'into' ? '' : '-';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"tce_db.php?redirect="+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+"' . '&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '";};top.nav.refresh();';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+"' . BackendUtility::getModuleUrl('tce_db') . '&redirect="+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+"' . '&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction') . '";};top.nav.refresh();';
 		return $this->linkItem($this->label($action . 'Page_' . $into), IconUtility::getSpriteIcon('actions-document-paste-' . $into), $editOnClick . 'return false;', 0);
 	}
 
