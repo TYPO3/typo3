@@ -1617,6 +1617,33 @@ return array(
 		),
 
 
+		'palette_1_1' => array(
+			'exclude' => 0,
+			'label' => 'checkbox is type check',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			),
+		),
+		'palette_1_2' => array(
+			'exclude' => 0,
+			'label' => 'checkbox type is user',
+			'config' => array(
+				'default' => TRUE,
+				'type' => 'user',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
+			),
+		),
+		'palette_1_3' => array(
+			'exclude' => 0,
+			'label' => 'checkbox is type check',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			),
+		),
+
+
 	),
 
 	'interface' => array(
@@ -1676,6 +1703,8 @@ return array(
 					flex_1, flex_2, flex_3,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
+				--div--;Palette,
+					--palette--;Palette 1;palette_1,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
@@ -1690,6 +1719,10 @@ return array(
 		),
 		'access' => array(
 			'showitem' => 'starttime;Publish Date, endtime;Expiration Date',
+			'canNotCollapse' => 1
+		),
+		'palette_1' => array(
+			'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
 			'canNotCollapse' => 1
 		),
 	),
