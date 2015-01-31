@@ -264,12 +264,12 @@ class FunctionalTestCaseBootstrapUtility {
 	 * @return void
 	 */
 	protected function setUpLocalConfiguration(array $configurationToMerge) {
-		$databaseName = getenv('typo3DatabaseName');
-		$databaseHost = getenv('typo3DatabaseHost');
-		$databaseUsername = getenv('typo3DatabaseUsername');
-		$databasePassword = getenv('typo3DatabasePassword');
-		$databasePort = getenv('typo3DatabasePort');
-		$databaseSocket = getenv('typo3DatabaseSocket');
+		$databaseName = trim(getenv('typo3DatabaseName'));
+		$databaseHost = trim(getenv('typo3DatabaseHost'));
+		$databaseUsername = trim(getenv('typo3DatabaseUsername'));
+		$databasePassword = trim(getenv('typo3DatabasePassword'));
+		$databasePort = trim(getenv('typo3DatabasePort'));
+		$databaseSocket = trim(getenv('typo3DatabaseSocket'));
 		if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
 			// Try to get database credentials from environment variables first
 			$originalConfigurationArray = array(
@@ -468,7 +468,8 @@ class FunctionalTestCaseBootstrapUtility {
 			);
 		}
 		$database->setDatabaseName($this->databaseName);
-		$database->sql_select_db();
+		// On windows, this still works, but throws a warning, which we need to discard.
+		@$database->sql_select_db();
 	}
 
 	/**
