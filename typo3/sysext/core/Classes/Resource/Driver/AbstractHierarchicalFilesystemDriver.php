@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
 /**
  * Class AbstractHierarchicalFilesystemDriver
  *
- * @package TYPO3\CMS\Core\Resource\Driver
  */
 abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver {
 
