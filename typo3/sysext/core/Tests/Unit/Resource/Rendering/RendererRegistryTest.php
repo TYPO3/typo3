@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Rendering;
 class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * Initialize an RendererRegistry and mock createRendererInstance()
+	 * Initialize a RendererRegistry and mock createRendererInstance()
 	 *
 	 * @param array $createsRendererInstances
 	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry

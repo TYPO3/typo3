@@ -14,11 +14,14 @@ namespace TYPO3\CMS\Core\Resource\Index;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Registry for MetaData extraction Services
  *
  */
-class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
+class ExtractorRegistry implements SingletonInterface {
 
 	/**
 	 * Registered ClassNames
@@ -39,20 +42,20 @@ class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return ExtractorRegistry
 	 */
 	public static function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::class);
 	}
 
 	/**
 	 * Allows to register MetaData extraction to the FAL Indexer
 	 *
 	 * @param string $className
-	 * @throws \RuntimeException
+	 * @throws \InvalidArgumentException
 	 */
 	public function registerExtractionService($className) {
 		if (!class_exists($className)) {
-			throw new \RuntimeException('The class "' . $className . '" you are registering is not available');
+			throw new \InvalidArgumentException('The class "' . $className . '" you are registering is not available', 1422705270);
 		} elseif (!in_array(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class, class_implements($className))) {
-			throw new \RuntimeException('The extractor needs to implement the ExtractorInterface');
+			throw new \InvalidArgumentException('The extractor needs to implement the ExtractorInterface', 1422705271);
 		} else {
 			$this->extractors[] = $className;
 		}
@@ -66,12 +69,17 @@ class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getExtractors() {
 		if ($this->instances === NULL) {
 			$this->instances = array();
-			foreach ($this->extractors as $className) {
+
+			$extractors = array_reverse($this->extractors);
+			foreach ($extractors as $className) {
 				/** @var ExtractorInterface $object */
-				$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
-				$this->instances[$object->getExecutionPriority()] = $object;
+				$object = $this->createExtractorInstance($className);
+				$this->instances[] = $object;
 			}
-			krsort($this->instances);
+
+			if (count($this->instances) > 1) {
+				usort($this->instances, array($this, 'compareExtractorPriority'));
+			}
 		}
 		return $this->instances;
 	}
@@ -95,5 +103,30 @@ class ExtractorRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $filteredExtractors;
 	}
+
+	/**
+	 * Compare the priority of two Extractor classes.
+	 * Is used for sorting array of Extractor instances by priority.
+	 * We want the result to be ordered from high to low so a higher
+	 * priority comes before a lower.
+	 *
+	 * @param ExtractorInterface $extractorA
+	 * @param ExtractorInterface $extractorB
+	 * @return int -1 a > b, 0 a == b, 1 a < b
+	 */
+	protected function compareExtractorPriority(ExtractorInterface $extractorA, ExtractorInterface $extractorB) {
+		return $extractorB->getPriority() - $extractorA->getPriority();
+	}
+
+	/**
+	 * Create an instance of a Metadata Extractor
+	 *
+	 * @param string $className
+	 * @return ExtractorInterface
+	 */
+	protected function createExtractorInstance($className) {
+		return GeneralUtility::makeInstance($className);
+	}
+
 
 }
