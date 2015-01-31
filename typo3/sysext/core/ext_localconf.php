@@ -26,6 +26,20 @@ $signalSlotDispatcher->connect(
 	'removeFromRepository'
 );
 
+$signalSlotDispatcher->connect(
+	\TYPO3\CMS\Core\Resource\ResourceStorage::class,
+	\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileAdd,
+	\TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect::class,
+	'cleanupProcessedFilesPostFileAdd'
+);
+
+$signalSlotDispatcher->connect(
+	\TYPO3\CMS\Core\Resource\ResourceStorage::class,
+	\TYPO3\CMS\Core\Resource\ResourceStorageInterface::SIGNAL_PostFileReplace,
+	\TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect::class,
+	'cleanupProcessedFilesPostFileReplace'
+);
+
 unset($signalSlotDispatcher);
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = 'EXT:core/Resources/PHP/FileDumpEID.php';

@@ -92,6 +92,26 @@ class FileDeletionAspect {
 	}
 
 	/**
+	 * Remove all processed files on SIGNAL_PostFileAdd
+	 *
+	 * @param FileInterface $file
+	 * @param string $targetFolder
+	 */
+	public function cleanupProcessedFilesPostFileAdd(FileInterface $file, $targetFolder) {
+		$this->cleanupProcessedFiles($file);
+	}
+
+	/**
+	 * Remove all processed files on SIGNAL_PostFileReplace
+	 *
+	 * @param FileInterface $file
+	 * @param string $localFilePath
+	 */
+	public function cleanupProcessedFilesPostFileReplace(FileInterface $file, $localFilePath) {
+		$this->cleanupProcessedFiles($file);
+	}
+
+	/**
 	 * Remove all category references of the deleted file.
 	 *
 	 * @param File $fileObject
