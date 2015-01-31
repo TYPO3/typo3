@@ -51,7 +51,6 @@ class FileStreamWrapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 		$this->assertEquals($expectedFileSystem, vfsStream::inspect(new vfsStreamStructureVisitor())->getStructure());
-
 		FileStreamWrapper::destroy();
 	}
 
@@ -93,5 +92,6 @@ class FileStreamWrapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		symlink($path . 'file1.txt', $path . 'file2.txt');
 
 		$this->assertTrue(is_link($path . 'file2.txt'));
+		FileStreamWrapper::destroy();
 	}
 }
