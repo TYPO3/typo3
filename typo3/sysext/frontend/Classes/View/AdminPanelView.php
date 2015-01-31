@@ -614,7 +614,7 @@ class AdminPanelView {
 		}
 		if ($perms & 2) {
 			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . 'move_el.php?table=pages&uid=' . $id . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
+			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . BackendUtility::getModuleUrl('move_element') . '&table=pages&uid=' . $id . '&returnUrl=' . $returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & 8) {
 			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));

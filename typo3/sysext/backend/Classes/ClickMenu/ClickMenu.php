@@ -617,7 +617,8 @@ class ClickMenu {
 	 */
 	public function DB_moveWizard($table, $uid, $rec) {
 		// Hardcoded field for tt_content elements.
-		$url = 'move_el.php?table=' . $table . '&uid=' . $uid . ($table === 'tt_content' ? '&sys_language_uid=' . (int)$rec['sys_language_uid'] : '');
+		$url = BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $uid;
+		$url .= ($table === 'tt_content' ? '&sys_language_uid=' . (int)$rec['sys_language_uid'] : '');
 		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_moveWizard' . ($table === 'pages' ? '_page' : ''))), IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-move'), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 

@@ -1131,7 +1131,7 @@ class PageLayoutController {
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
 			if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-				$buttons['move_record'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'move_el.php?table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
+				$buttons['move_record'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . BackendUtility::getModuleUrl('move_element') . '&table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
 			}
 
 			// Edit page properties and page language overlay icons

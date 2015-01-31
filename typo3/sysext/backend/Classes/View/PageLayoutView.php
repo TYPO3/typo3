@@ -873,7 +873,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			if ($this->ext_CALC_PERMS & 4 || $this->ext_CALC_PERMS & 2) {
 				$bArray[1] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=\'' . $this->backPath . 'move_el.php?table=pages&uid=' . $id
+					'window.location.href=\'' . $this->backPath . BackendUtility::getModuleUrl('move_element') . '&table=pages&uid=' . $id
 						. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';',
 					$this->getLanguageService()->getLL('move_page')
 				);

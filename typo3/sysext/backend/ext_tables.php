@@ -97,4 +97,10 @@ if (TYPO3_MODE === 'BE') {
 		'new_content_element',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/NewContentElement/'
 	);
+
+	// Register move element module
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'move_element',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/MoveElement/'
+	);
 }

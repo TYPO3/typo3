@@ -1203,7 +1203,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		}
 		// "Move" wizard link for pages/tt_content elements:
 		if ($table == 'tt_content' && $permsEdit || $table == 'pages') {
-			$onClick = 'return jumpExt(\'' . $this->backPath . 'move_el.php?table=' . $table . '&uid=' . $row['uid'] . '\');';
+			$onClick = 'return jumpExt(\'' . $this->backPath . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
 			$linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), TRUE);
 			$spriteIcon = $table === 'tt_content'
 				? IconUtility::getSpriteIcon('actions-document-move')
