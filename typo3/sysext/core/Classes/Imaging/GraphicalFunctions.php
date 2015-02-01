@@ -2608,7 +2608,7 @@ class GraphicalFunctions {
 	 * This converts a png file to gif IF the FLAG $GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] is set TRUE.
 	 *
 	 * @param string $theFile The filename with path
-	 * @return string|NULL New filename
+	 * @return string New filename or the old file name if no conversion happened
 	 */
 	static public function pngToGifByImagemagick($theFile) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif']
@@ -2617,7 +2617,7 @@ class GraphicalFunctions {
 			|| strtolower(substr($theFile, -4, 4)) !== '.png'
 			|| !@is_file($theFile)
 		) {
-			return NULL;
+			return $theFile;
 		}
 
 		$newFile = substr($theFile, 0, -4) . '.gif';
