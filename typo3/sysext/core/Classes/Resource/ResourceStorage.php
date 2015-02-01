@@ -2684,6 +2684,10 @@ class ResourceStorage implements ResourceStorageInterface {
 				$this->processingFolder = GeneralUtility::makeInstance(
 					InaccessibleFolder::class, $this, $processingFolder, $processingFolder
 				);
+			} catch(Exception\ResourcePermissionsException $e) {
+				$this->processingFolder = GeneralUtility::makeInstance(
+					InaccessibleFolder::class, $this, $processingFolder, $processingFolder
+				);
 			}
 		}
 		return $this->processingFolder;

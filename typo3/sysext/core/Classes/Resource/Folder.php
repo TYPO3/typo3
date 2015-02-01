@@ -373,7 +373,11 @@ class Folder implements FolderInterface {
 	 * @return bool
 	 */
 	public function checkActionPermission($action) {
-		return $this->getStorage()->checkFolderActionPermission($action, $this);
+		try {
+			return $this->getStorage()->checkFolderActionPermission($action, $this);
+		} catch (Exception\ResourcePermissionsException $e) {
+			return FALSE;
+		}
 	}
 
 	/**
