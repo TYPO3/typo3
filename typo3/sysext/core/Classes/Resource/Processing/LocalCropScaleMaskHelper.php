@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Utility;
 
 /**
  * Helper class to locally perform a crop/scale/mask task with the TYPO3 image processing classes.

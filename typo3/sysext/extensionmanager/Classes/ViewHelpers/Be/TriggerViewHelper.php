@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Extensionmanager\Controller\AbstractController;
+use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
 
 /**
  * Special view helper for the BE module of the Extension Manager. Loads JS code for triggering

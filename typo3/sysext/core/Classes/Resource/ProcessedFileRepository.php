@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility;
 
 /**
  * Repository for accessing files

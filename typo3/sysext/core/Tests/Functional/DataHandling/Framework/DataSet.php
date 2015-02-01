@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * DataHandler DataSet

@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
+use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
 
 /**
  * Base test case class for functional tests, all TYPO3 CMS

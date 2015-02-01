@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Backend\Utility\BackendUtility;
-use \TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * View helper which return page info icon as known from TYPO3 backend modules

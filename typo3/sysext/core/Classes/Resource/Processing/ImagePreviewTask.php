@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource;
 
 /**
  * A task for generating an image preview.

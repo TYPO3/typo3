@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extbase\Object;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Extbase\Object\Container\Container;
+use TYPO3\CMS\Extbase\Object\Container\Container;
 
 /**
  * Implementation of the default Extbase Object Manager

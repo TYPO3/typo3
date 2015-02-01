@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Status;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Install\Status\StatusUtility;
+use TYPO3\CMS\Install\Status\StatusUtility;
 
 /**
  * Test case

@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Compatibility6\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Search class used for the content object SEARCHRESULT

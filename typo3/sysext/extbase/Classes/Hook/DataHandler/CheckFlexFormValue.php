@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extbase\Hook\DataHandler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /**
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

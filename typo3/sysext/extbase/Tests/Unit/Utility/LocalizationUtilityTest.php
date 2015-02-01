@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Test case

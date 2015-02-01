@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Backend\Utility\BackendUtility;
-use \TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Utility class to render TCEforms information about a sys_file record

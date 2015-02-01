@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Utility;
 
 /**
  * Abstract base implementation of a task.
@@ -22,7 +23,6 @@ use \TYPO3\CMS\Core\Resource, \TYPO3\CMS\Core\Utility;
  * If you extend this class, make sure that you redefine the member variables $type and $name
  * or set them in the constructor. Otherwise your task won't be recognized by the system and several
  * things will fail.
- *
  */
 abstract class AbstractGraphicalTask extends AbstractTask {
 

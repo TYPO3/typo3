@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use \TYPO3\CMS\Workspaces\Service\WorkspaceService;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
