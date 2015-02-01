@@ -786,6 +786,7 @@ class IconUtility {
 
 				// if locked add overlay
 				if ($resource instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder ||
+					!$resource->getStorage()->isBrowsable() ||
 					!$resource->getStorage()->checkFolderActionPermission('add', $resource)
 				) {
 					$overlays['status-overlay-locked'] = array();

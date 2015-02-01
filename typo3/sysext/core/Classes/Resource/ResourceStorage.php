@@ -2660,6 +2660,10 @@ class ResourceStorage implements ResourceStorageInterface {
 				$this->processingFolder = GeneralUtility::makeInstance(
 					'TYPO3\\CMS\\Core\\Resource\\InaccessibleFolder', $this, $processingFolder, $processingFolder
 				);
+			} catch(Exception\ResourcePermissionsUnavailableException $e) {
+				$this->processingFolder = GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Core\\Resource\\InaccessibleFolder', $this, $processingFolder, $processingFolder
+				);
 			}
 		}
 		return $this->processingFolder;
