@@ -340,9 +340,15 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		}
 		$tsConfig = $parseObj->setup;
 		$modTs = $modTs['properties'];
-		$overrideTs = $tsConfig['mod.']['tx_linkvalidator.'];
+		$overrideTs = $tsConfig['mod.']['linkvalidator.'];
 		if (is_array($overrideTs)) {
 			ArrayUtility::mergeRecursiveWithOverrule($modTs, $overrideTs);
+		} else {
+			$deprecatedOverrideTs = $tsConfig['mod.']['tx_linkvalidator.'];
+			if (is_array($deprecatedOverrideTs)) {
+				GeneralUtility::deprecationLog('Using mod.tx_linkvalidator in the scheduler TSConfig setting is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8. Please use mod.linkvalidator instead.');
+				ArrayUtility::mergeRecursiveWithOverrule($modTs, $deprecatedOverrideTs);
+			}
 		}
 		return $modTs;
 	}
