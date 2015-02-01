@@ -838,7 +838,7 @@ class GraphicalFunctions {
 	public function addToMap($cords, $conf) {
 		$this->map .= '<area' . ' shape="poly"' . ' coords="' . implode(',', $cords) . '"'
 			. ' href="' . htmlspecialchars($conf['url']) . '"'
-			. ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') . $JS
+			. ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '')
 			. ((string)$conf['titleText'] !== '' ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '')
 			. ' alt="' . htmlspecialchars($conf['altText']) . '" />';
 	}
