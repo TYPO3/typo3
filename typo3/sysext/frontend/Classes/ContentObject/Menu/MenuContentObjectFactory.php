@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Factory for menu content objects. Allows overriding the default
  * types like 'GMENU' with an own implementation (only one possible)
@@ -31,10 +29,10 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $menuTypeToClassMapping = array(
-		'GMENU' => GraphicalMenuContentObject::class,
-		'TMENU' => TextMenuContentObject::class,
-		'IMGMENU' => ImageMenuContentObject::class,
-		'JSMENU' => JavaScriptMenuContentObject::class,
+		'GMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::class,
+		'TMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\TextMenuContentObject::class,
+		'IMGMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\ImageMenuContentObject::class,
+		'JSMENU' => \TYPO3\CMS\Frontend\ContentObject\Menu\JavaScriptMenuContentObject::class,
 	);
 
 	/**
@@ -45,9 +43,9 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws Exception\NoSuchMenuTypeException
 	 */
 	public function getMenuObjectByType($type = '') {
-		$uppercasedClassName = strtoupper($type);
-		if (array_key_exists($uppercasedClassName, $this->menuTypeToClassMapping)) {
-			$object = GeneralUtility::makeInstance($this->menuTypeToClassMapping[$uppercasedClassName]);
+		$uppercasedClassname = strtoupper($type);
+		if (array_key_exists($uppercasedClassname, $this->menuTypeToClassMapping)) {
+			$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->menuTypeToClassMapping[$uppercasedClassname]);
 		} else {
 			throw new Exception\NoSuchMenuTypeException(
 				'Menu type ' . (string)$type . ' has no implementing class.',

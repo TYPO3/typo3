@@ -119,11 +119,6 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	public $charRangeMap = array();
 
 	/**
-	 * @var int[]
-	 */
-	public $XY = array();
-
-	/**
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
 	 * Modifies the ->setup, ->objBB internal arrays
 	 * Should be called after the ->init() function which initializes the parent class functions/variables in general.

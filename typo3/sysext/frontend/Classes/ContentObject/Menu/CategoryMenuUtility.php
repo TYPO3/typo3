@@ -14,9 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Collection\AbstractRecordCollection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
 /**
  * Utility class for menus based on category collections of pages.
@@ -56,16 +54,13 @@ class CategoryMenuUtility {
 		// Get the pages for each selected category
 		$selectedCategories = GeneralUtility::intExplode(',', $selectedCategories, TRUE);
 		foreach ($selectedCategories as $aCategory) {
-			$collection = CategoryCollection::load(
+			$collection = \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection::load(
 				$aCategory,
 				TRUE,
 				'pages',
 				$relationField
 			);
-			$categoryUid = 0;
-			if ($collection instanceof AbstractRecordCollection) {
-				$categoryUid = $collection->getUid();
-			}
+			$categoryUid = $collection->getUid();
 			// Loop on the results, overlay each page record found
 			foreach ($collection as $pageItem) {
 				$parentObject->getSysPage()->versionOL('pages', $pageItem, TRUE);
@@ -119,7 +114,7 @@ class CategoryMenuUtility {
 				uasort(
 					$pages,
 					array(
-						CategoryMenuUtility::class,
+						\TYPO3\CMS\Frontend\ContentObject\Menu\CategoryMenuUtility::class,
 						'sortPagesUtility'
 					)
 				);
