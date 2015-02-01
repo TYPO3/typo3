@@ -24,9 +24,4 @@ $GLOBALS['TCA']['tt_content']['columns']['section_frame']['config']['items'][9] 
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/', 'CSS Styled Content');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/v4.5/', 'CSS Styled Content TYPO3 v4.5');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/v4.6/', 'CSS Styled Content TYPO3 v4.6');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/v4.7/', 'CSS Styled Content TYPO3 v4.7');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/v6.0/', 'CSS Styled Content TYPO3 v6.0');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/v6.1/', 'CSS Styled Content TYPO3 v6.1');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('css_styled_content', 'static/v6.2/', 'CSS Styled Content TYPO3 v6.2');
