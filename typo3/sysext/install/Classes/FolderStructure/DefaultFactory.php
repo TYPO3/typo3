@@ -129,6 +129,11 @@ class DefaultFactory {
 							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
 							'targetPermission' => $directoryPermission,
 						),
+						array(
+							'name' => '_processed_',
+							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'targetPermission' => $directoryPermission,
+						),
 					),
 				),
 				array(
