@@ -2034,6 +2034,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param Folder $folder
 	 * @param ResourceInterface $resource
 	 * @return bool
+	 * @throws \InvalidArgumentException
 	 */
 	public function isWithinFolder(Folder $folder, ResourceInterface $resource) {
 		if ($folder->getStorage() !== $this) {
