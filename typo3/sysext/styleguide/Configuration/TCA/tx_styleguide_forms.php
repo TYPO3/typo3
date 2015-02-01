@@ -1680,8 +1680,79 @@ return array(
 				'default' => 1,
 			),
 		),
+		'palette_2_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
 
-
+		'palette_3_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_3_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_3' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_4' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_5_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_5_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_6_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_7_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_7_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
 	),
 
 	'interface' => array(
@@ -1741,8 +1812,12 @@ return array(
 					flex_1, flex_2, flex_3, flex_4,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
-				--div--;Palette,
-					--palette--;Palette 1;palette_1,
+				--div--;Palettes,
+					--palette--;Palettes 1;palettes_1,
+					--palette--;Palettes 2;palettes_2,
+					--palette--;Palettes 3;palettes_3,
+					--palette--;;palettes_4,
+					--palette--;Palettes 5;palettes_5,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
@@ -1751,16 +1826,29 @@ return array(
 	),
 
 	'palettes' => array(
+		'palettes_1' => array(
+			'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
+			'canNotCollapse' => 1
+		),
+		'palettes_2' => array(
+			'showitem' => 'palette_2_1',
+		),
+		'palettes_3' => array(
+			'showitem' => 'palette_3_1, palette_3_2',
+		),
+		'palettes_4' => array(
+			'showitem' => 'palette_4_1, palette_4_2, palette_4_3, --linebreak--, palette_4_4',
+		),
+		'palettes_5' => array(
+			'showitem' => 'palette_5_1, --linebreak--, palette_5_2',
+			'canNotCollapse' => 1
+		),
 		'visibility' => array(
 			'showitem' => 'hidden;Shown in frontend',
 			'canNotCollapse' => 1
 		),
 		'access' => array(
 			'showitem' => 'starttime;Publish Date, endtime;Expiration Date',
-			'canNotCollapse' => 1
-		),
-		'palette_1' => array(
-			'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
 			'canNotCollapse' => 1
 		),
 	),
