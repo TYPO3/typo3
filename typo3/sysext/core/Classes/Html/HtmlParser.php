@@ -880,7 +880,12 @@ class HtmlParser {
 												}
 											}
 											if ($params['userFunc']) {
-												$tagAttrib[0][$attr] = GeneralUtility::callUserFunction($params['userFunc'], $tagAttrib[0][$attr], $this);
+												if (is_array($params['userFunc.'])) {
+													$params['userFunc.']['attributeValue'] = $tagAttrib[0][$attr];
+												} else {
+													$params['userFunc.'] = $tagAttrib[0][$attr];
+												}
+												$tagAttrib[0][$attr] = GeneralUtility::callUserFunction($params['userFunc'], $params['userFunc.'], $this);
 											}
 										}
 									}
