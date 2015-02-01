@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
  *     typo3/sysext/core/Tests/Uinit/DataHandling/DataHandlerTest.php
  */
 class UnitTestsBootstrap {
+
 	/**
 	 * Bootstraps the system for unit tests.
 	 *
@@ -101,7 +102,6 @@ class UnitTestsBootstrap {
 	 * Returns the absolute path the TYPO3 document root.
 	 *
 	 * @return string the TYPO3 document root using Unix path separators
-	 *
 	 * @throws \RuntimeException
 	 */
 	protected function getWebRoot() {
@@ -151,10 +151,8 @@ class UnitTestsBootstrap {
 	 *
 	 * If $directory already exists, this method is a no-op.
 	 *
-	 * @param  string $directory absolute path of the directory to be created
-	 *
+	 * @param string $directory absolute path of the directory to be created
 	 * @return void
-	 *
 	 * @throws \RuntimeException
 	 */
 	protected function createDirectory($directory) {
