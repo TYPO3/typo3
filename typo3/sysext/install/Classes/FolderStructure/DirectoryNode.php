@@ -35,7 +35,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	 */
 	public function __construct(array $structure, NodeInterface $parent = NULL) {
 		if (is_null($parent)) {
-			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+			throw new Exception\InvalidArgumentException(
 				'Node must have parent',
 				1366222203
 			);
@@ -44,7 +44,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 
 		// Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
 		if (strstr($structure['name'], '/') !== FALSE) {
-			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+			throw new Exception\InvalidArgumentException(
 				'Directory name must not contain forward slash',
 				1366226639
 			);
@@ -124,13 +124,13 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 		if (!$this->exists()) {
 			$resultCreateDirectory = $this->createDirectory();
 			$result[] = $resultCreateDirectory;
-			if ($resultCreateDirectory instanceof \TYPO3\CMS\Install\Status\OkStatus &&
+			if ($resultCreateDirectory instanceof Status\OkStatus &&
 				!$this->isPermissionCorrect()
 			) {
 				$result[] = $this->fixPermission();
 			}
 		} elseif (!$this->isWritable()) {
-			// If directory is not writeable, we might have permissions to fix that
+			// If directory is not writable, we might have permissions to fix that
 			// Try it:
 			$result[] = $this->fixPermission();
 		} elseif (!$this->isDirectory()) {
@@ -264,19 +264,19 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	/**
 	 * Create children nodes - done in directory and root node
 	 *
-	 * @param array $structure Array of childs
+	 * @param array $structure Array of children
 	 * @throws Exception\InvalidArgumentException
 	 */
 	protected function createChildren(array $structure) {
 		foreach ($structure as $child) {
 			if (!array_key_exists('type', $child)) {
-				throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+				throw new Exception\InvalidArgumentException(
 					'Child must have type',
 					1366222204
 				);
 			}
 			if (!array_key_exists('name', $child)) {
-				throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+				throw new Exception\InvalidArgumentException(
 					'Child must have name',
 					1366222205
 				);
@@ -285,7 +285,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 			foreach ($this->children as $existingChild) {
 				/** @var $existingChild NodeInterface */
 				if ($existingChild->getName() === $name) {
-					throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+					throw new Exception\InvalidArgumentException(
 						'Child name must be unique',
 						1366222206
 					);

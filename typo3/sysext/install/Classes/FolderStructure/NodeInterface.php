@@ -63,4 +63,5 @@ interface NodeInterface {
 	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
 	 */
 	public function fix();
+
 }

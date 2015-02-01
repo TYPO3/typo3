@@ -205,7 +205,7 @@ abstract class AbstractNode {
 		}
 		$pathSiteWithoutTrailingSlash = substr(PATH_site, 0, -1);
 		if (strpos($path, $pathSiteWithoutTrailingSlash, 0) !== 0) {
-			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+			throw new Exception\InvalidArgumentException(
 				'PATH_site is not first part of given path',
 				1366398198
 			);

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Install\Status;
+
 /**
  * Service class to check the default folder permissions
  *
@@ -70,29 +72,29 @@ class DefaultPermissionsCheck {
 		$extraMessage = '';
 		$groupPermissions = FALSE;
 		if (!$perms['uw'] || !$perms['ur']) {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\ErrorStatus();
+			$permissionStatus = new Status\ErrorStatus();
 			$extraMessage = ' (not read or writable by the user)';
 		} elseif ($perms['ow']) {
 			if (TYPO3_OS === 'WIN') {
-				$permissionStatus = new \TYPO3\CMS\Install\Status\InfoStatus();
+				$permissionStatus = new Status\InfoStatus();
 				$extraMessage = ' (writable by anyone on the server). This is the default behavior on a Windows system';
 			} else {
-				$permissionStatus = new \TYPO3\CMS\Install\Status\ErrorStatus();
+				$permissionStatus = new Status\ErrorStatus();
 				$extraMessage = ' (writable by anyone on the server)';
 			}
 		} elseif ($perms['or']) {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\NoticeStatus();
+			$permissionStatus = new Status\NoticeStatus();
 			$extraMessage = ' (readable by anyone on the server). This is the default set by TYPO3 CMS to be as much compatible as possible but if your system allows, please consider to change rights';
 		} elseif ($perms['gw']) {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\OkStatus();
-			$extraMessage = ' (group writeable)';
+			$permissionStatus = new Status\OkStatus();
+			$extraMessage = ' (group writable)';
 			$groupPermissions = TRUE;
 		} elseif ($perms['gr']) {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\OkStatus();
+			$permissionStatus = new Status\OkStatus();
 			$extraMessage = ' (group readable)';
 			$groupPermissions = TRUE;
 		} else {
-			$permissionStatus = new \TYPO3\CMS\Install\Status\OkStatus();
+			$permissionStatus = new Status\OkStatus();
 		}
 		$permissionStatus->setTitle($this->names[$which] . ' (BE/' . $which . ')');
 		$message = 'Recommended: ' . $this->recommended[$which] . '.';
@@ -104,7 +106,7 @@ class DefaultPermissionsCheck {
 		}
 		$message .= $extraMessage . '.';
 		if ($groupPermissions) {
-			$message .= ' This is fine as long as the webserver\'s group only comprises trusted users.';
+			$message .= ' This is fine as long as the web server\'s group only comprises trusted users.';
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])) {
 				$message .= ' Your site is configured (BE/createGroup) to write as group \'' . $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] . '\'.';
 			}

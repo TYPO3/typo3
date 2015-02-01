@@ -40,7 +40,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 	 */
 	public function __construct(array $structure, NodeInterface $parent = NULL) {
 		if (is_null($parent)) {
-			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+			throw new Exception\InvalidArgumentException(
 				'File node must have parent',
 				1366927513
 			);
@@ -49,7 +49,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 
 		// Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
 		if (strstr($structure['name'], '/') !== FALSE) {
-			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+			throw new Exception\InvalidArgumentException(
 				'File name must not contain forward slash',
 				1366222207
 			);
@@ -61,7 +61,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 		}
 
 		if (isset($structure['targetContent']) && isset($structure['targetContentFile'])) {
-			throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+			throw new Exception\InvalidArgumentException(
 				'Either targetContent or targetContentFile can be set, but not both',
 				1380364361
 			);
@@ -72,7 +72,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 		}
 		if (isset($structure['targetContentFile'])) {
 			if (!is_readable($structure['targetContentFile'])) {
-				throw new \TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException(
+				throw new Exception\InvalidArgumentException(
 					'targetContentFile ' . $structure['targetContentFile'] . ' does not exist or is not readable',
 					1380364362
 				);
@@ -123,7 +123,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 		if (!$this->exists()) {
 			$resultCreateFile = $this->createFile();
 			$result[] = $resultCreateFile;
-			if ($resultCreateFile instanceof \TYPO3\CMS\Install\Status\OkStatus
+			if ($resultCreateFile instanceof Status\OkStatus
 				&& !is_null($this->targetContent)
 			) {
 				$result[] = $this->setContent();
@@ -200,7 +200,7 @@ class FileNode extends AbstractNode implements NodeInterface {
 			$status = new Status\NoticeStatus();
 			$status->setTitle('File ' . $this->getRelativePathBelowSiteRoot() . ' is not writable');
 			$status->setMessage(
-				'File ' . $this->getRelativePathBelowSiteRoot() . ' exists, but is not writeable.'
+				'File ' . $this->getRelativePathBelowSiteRoot() . ' exists, but is not writable.'
 			);
 			$result[] = $status;
 		} elseif (!$this->isPermissionCorrect()) {
