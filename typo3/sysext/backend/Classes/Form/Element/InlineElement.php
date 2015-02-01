@@ -643,7 +643,7 @@ class InlineElement {
 	 * @param string $foreign_table The table (foreign_table) we create control-icons for
 	 * @param array $rec The current record of that foreign_table
 	 * @param array $config (modified) TCA configuration of the field
-	 * @param boolean $isVirtualRecord TRUE if the current record is virtual, FALSE otherwise
+	 * @param bool $isVirtualRecord TRUE if the current record is virtual, FALSE otherwise
 	 * @return string The HTML code with the control-icons
 	 */
 	public function renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config = array(), $isVirtualRecord = FALSE) {
