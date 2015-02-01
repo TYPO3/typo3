@@ -190,19 +190,6 @@ class DefaultFactory {
 								),
 							),
 						),
-						array(
-							'name' => 'tf',
-							'type' => \TYPO3\CMS\Install\FolderStructure\DirectoryNode::class,
-							'targetPermission' => $directoryPermission,
-							'children' => array(
-								array(
-									'name' => 'index.html',
-									'type' => \TYPO3\CMS\Install\FolderStructure\FileNode::class,
-									'targetPermission' => $filePermission,
-									'targetContent' => '',
-								),
-							),
-						),
 					),
 				),
 				array(
