@@ -61,8 +61,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, is done by default in pure TypoScript
 	 */
 	public function render_bullets($content, $conf) {
+		GeneralUtility::logDeprecatedFunction();
 		// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_bullets')) {
 			return $hookObj->render_bullets($content, $conf);
@@ -220,8 +222,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, is done by default in pure TypoScript
 	 */
 	public function render_uploads($content, $conf) {
+		GeneralUtility::logDeprecatedFunction();
 		// Look for hook before running default code for function
 		if ($hookObj = $this->hookRequest('render_uploads')) {
 			return $hookObj->render_uploads($content, $conf);
@@ -1158,8 +1162,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param bool $useSpaces
 	 * @param bool $cutFileExtension
 	 * @return array modified array with new link text
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, is done by default in pure TypoScript
 	 */
 	protected function beautifyFileLink(array $links, $fileName, $useSpaces = FALSE, $cutFileExtension = FALSE) {
+		GeneralUtility::logDeprecatedFunction();
 		$linkText = $fileName;
 		if ($useSpaces) {
 			$linkText = str_replace('_', ' ', $linkText);
