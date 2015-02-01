@@ -1008,6 +1008,7 @@ return array(
 				'type' => 'select',
 				'special' => 'exclude',
 				'size' => 10,
+				'suppress_icons' => '1',
 			),
 		),
 		'select_18' => array(
@@ -1081,6 +1082,9 @@ return array(
 					array('foo 1', 1),
 					array('foo 2', 2),
 					array('foo 3', 4),
+					array('divider', '--div--'),
+					array('foo 4', 4),
+					array('foo 5', 5),
 				),
 				'renderMode' => 'singlebox',
 				'maxitems' => 2,
@@ -1130,7 +1134,7 @@ return array(
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 4),
+					array('foo 3', 3),
 					array('bar', 4),
 				),
 				'size' => 5,
@@ -1140,13 +1144,13 @@ return array(
 			),
 		),
 		'select_28' => array(
-			'label' => '27 enableMultiSelectFilterTextfield, multiSelectFilterItems',
+			'label' => '28 enableMultiSelectFilterTextfield, multiSelectFilterItems',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 4),
+					array('foo 3', 3),
 					array('bar', 4),
 				),
 				'size' => 5,
@@ -1161,7 +1165,7 @@ return array(
 			),
 		),
 		'select_29' => array(
-			'label' => '27 wizards',
+			'label' => '29 wizards',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_styleguide_forms_staticdata',
@@ -1266,6 +1270,7 @@ return array(
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => 'jpg, jpeg, png, gif',
+				'disallowed' => 'ai',
 				'show_thumbs' => TRUE,
 				'size' => 3,
 				'uploadfolder' => 'uploads/pics/',
@@ -1783,10 +1788,10 @@ return array(
 		'0' => array(
 			'showitem' => '
 				--div--;Input,
-					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
-					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
-					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
-					input_32, input_33, input_34,
+					input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
+					input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,	input_19, input_20,
+					input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
+					input_31, input_32, input_33, input_34,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
