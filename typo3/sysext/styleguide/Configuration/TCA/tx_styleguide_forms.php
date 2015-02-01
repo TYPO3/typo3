@@ -1691,7 +1691,6 @@ return array(
 				'type' => 'input',
 			),
 		),
-
 		'palette_3_1' => array(
 			'label' => 'Palette Field',
 			'config' => array(
@@ -1758,6 +1757,107 @@ return array(
 				'type' => 'input',
 			),
 		),
+
+
+		'wizard_1' => array(
+			'label' => '1 wizard vertical, edit, add, list',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_styleguide_forms_staticdata',
+				'rootLevel' => 1,
+				'size' => 5,
+				'autoSizeMax' => 20,
+				'minitems' => 0,
+				'maxitems' => 999,
+				'wizards' => array(
+					'_PADDING' => 1, // @TODO: Has no sane effect
+					'_VERTICAL' => 1,
+					'edit' => array(
+						'type' => 'popup',
+						'title' => 'edit',
+						'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
+							'name' => 'wizard_edit',
+						),
+						'icon' => 'edit2.gif',
+						'popup_onlyOpenIfSelected' => 1,
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+					),
+					'add' => array(
+						'type' => 'script',
+						'title' => 'add',
+						'icon' => 'add.gif',
+						'module' => array(
+							'name' => 'wizard_add',
+						),
+						'params' => array(
+							'table' => 'tx_styleguide_forms_staticdata',
+							'pid' => '0',
+							'setValue' => 'prepend',
+						),
+					),
+					'list' => array(
+						'type' => 'script',
+						'title' => 'list',
+						'icon' => 'list.gif',
+						'module' => array(
+							'name' => 'wizard_list',
+						),
+						'params' => array(
+							'table' => 'tx_styleguide_forms_staticdata',
+							'pid' => '0',
+						),
+					),
+				),
+			),
+		),
+		'wizard_2' => array(
+			'label' => '2 wizard colorbox',
+			'config' => array(
+				'type' => 'input',
+				'wizards' => array(
+					'colorpicker' => array(
+						'type' => 'colorbox',
+						'title' => 'Color picker',
+						'icon' => 'link_popup.gif',
+						'module' => array(
+							'name' => 'wizard_colorpicker',
+						),
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					),
+				),
+			),
+		),
+		'wizard_3' => array(
+			'label' => '3 suggest wizard, position top',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'disable_controls' => 'browser',
+				'wizards' => array(
+					'_POSITION' => 'top',
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
+		),
+		'wizard_4' => array(
+			'label' => '4 suggest wizard, position bottom',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'disable_controls' => 'browser',
+				'wizards' => array(
+					'_POSITION' => 'bottom',
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
+		)
+
 	),
 
 	'interface' => array(
@@ -1781,6 +1881,7 @@ return array(
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
+			wizard_1, wizard_2, wizard_3, wizard_4,
 			',
 	),
 
@@ -1823,6 +1924,8 @@ return array(
 					--palette--;Palettes 3;palettes_3,
 					--palette--;;palettes_4,
 					--palette--;Palettes 5;palettes_5,
+				--div--;Wizards,
+					wizard_1, wizard_2, wizard_3, wizard_4,
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access

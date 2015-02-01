@@ -190,6 +190,11 @@ CREATE TABLE tx_styleguide_forms (
 	palette_5_1 tinytext NOT NULL,
 	palette_5_2 tinytext NOT NULL,
 
+	wizard_1 tinytext NOT NULL,
+	wizard_2 tinytext NOT NULL,
+	wizard_3 tinytext NOT NULL,
+	wizard_4 tinytext NOT NULL,
+
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
