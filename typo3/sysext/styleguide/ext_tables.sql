@@ -171,6 +171,7 @@ CREATE TABLE tx_styleguide_forms (
 	flex_1 text,
 	flex_2 text,
 	flex_3 text,
+	flex_4 text,
 
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 	inline_2 int(11) DEFAULT '0' NOT NULL,

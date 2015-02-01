@@ -1495,6 +1495,44 @@ return array(
 				),
 			),
 		),
+		'flex_4' => array(
+			'label' => '4 multiple items',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<meta>
+								<langDisable>1</langDisable>
+							</meta>
+							<ROOT>
+								<type>array</type>
+								<el>
+									<input_1>
+										<TCEforms>
+											<label>Some input field</label>
+											<config>
+												<type>input</type>
+												<size>23</size>
+											</config>
+										</TCEforms>
+									</input_1>
+									<input_2>
+										<TCEforms>
+											<label>Some input field</label>
+											<config>
+												<type>input</type>
+												<size>23</size>
+											</config>
+										</TCEforms>
+									</input_2>
+								</el>
+							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
 
 
 		'inline_1' => array(
@@ -1700,7 +1738,7 @@ return array(
 				--div--;User,
 					user_1, user_2,
 				--div--;Flex,
-					flex_1, flex_2, flex_3,
+					flex_1, flex_2, flex_3, flex_4,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
 				--div--;Palette,
