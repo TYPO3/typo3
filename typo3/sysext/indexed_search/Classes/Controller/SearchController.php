@@ -729,12 +729,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandOr', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
 					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandNot', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT')
 				);
-				$search = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class);
-				$search->default_operator = $defaultOperator == 1 ? 'OR' : 'AND';
-				$search->operator_translate_table = $operatorTranslateTable;
-				$search->register_and_explode_search_string($searchWords);
-				if (is_array($search->sword_array)) {
-					$sWordArray = $this->procSearchWordsByLexer($search->sword_array);
+				$swordArray = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::getExplodedSearchString($searchWords, $defaultOperator == 1 ? 'OR' : 'AND', $operatorTranslateTable);
+				if (is_array($swordArray)) {
+					$sWordArray = $this->procSearchWordsByLexer($swordArray);
 				}
 			}
 		}

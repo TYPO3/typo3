@@ -117,7 +117,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->initialize();
 		// Do search:
 		// If there were any search words entered...
-		if (is_array($this->sWArr)) {
+		if (is_array($this->sWArr) && !empty($this->sWArr)) {
 			$content = $this->doSearch($this->sWArr);
 		}
 		// Finally compile all the content, form, messages and results:
@@ -354,12 +354,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				// type = Sentence
 				$sWordArray = array(array('sword' => trim($inSW), 'oper' => 'AND'));
 			} else {
-				$search = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject::class);
-				$search->default_operator = $defOp == 1 ? 'OR' : 'AND';
-				$search->operator_translate_table = $this->operator_translate_table;
-				$search->register_and_explode_search_string($inSW);
-				if (is_array($search->sword_array)) {
-					$sWordArray = $this->procSearchWordsByLexer($search->sword_array);
+				$searchWords = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::getExplodedSearchString($inSW, $defOp == 1 ? 'OR' : 'AND', $this->operator_translate_table);
+				if (is_array($searchWords)) {
+					$sWordArray = $this->procSearchWordsByLexer($searchWords);
 				}
 			}
 		}
