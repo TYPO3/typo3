@@ -8,7 +8,7 @@ return array(
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
 		'sortby' => 'sorting',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'ext_icon.gif',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'ext_icon.png',
 		'adminOnly' => 1, // Only admin users can edit
 		'rootLevel' => 1,
 		'enablecolumns' => array(
