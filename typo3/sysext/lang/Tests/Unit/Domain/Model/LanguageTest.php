@@ -24,13 +24,13 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Model\Language
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Language();
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language();
 	}
 
 	/**
@@ -39,7 +39,7 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getLocaleInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getLocale()
+			$this->subject->getLocale()
 		);
 	}
 
@@ -48,11 +48,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getLocaleInitiallyReturnsGivenLocaleFromConstruct() {
 		$locale = 'nl';
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Language($locale);
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language($locale);
 
 		$this->assertSame(
 			$locale,
-			$this->fixture->getLocale()
+			$this->subject->getLocale()
 		);
 	}
 
@@ -61,11 +61,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLocaleSetsLocale() {
 		$locale = 'nl';
-		$this->fixture->setLocale($locale);
+		$this->subject->setLocale($locale);
 
 		$this->assertSame(
 			$locale,
-			$this->fixture->getLocale()
+			$this->subject->getLocale()
 		);
 	}
 
@@ -75,7 +75,7 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getLanguageInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getLabel()
+			$this->subject->getLabel()
 		);
 	}
 
@@ -84,11 +84,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getLanguageInitiallyReturnsGivenLanguageFromConstruct() {
 		$language = 'nl';
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Language('', $language);
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language('', $language);
 
 		$this->assertSame(
 			$language,
-			$this->fixture->getLabel()
+			$this->subject->getLabel()
 		);
 	}
 
@@ -97,11 +97,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLanguageSetsLanguage() {
 		$language = 'nl';
-		$this->fixture->setLabel($language);
+		$this->subject->setLabel($language);
 
 		$this->assertSame(
 			$language,
-			$this->fixture->getLabel()
+			$this->subject->getLabel()
 		);
 	}
 
@@ -111,7 +111,7 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getSelectedInitiallyReturnsFalse() {
 		$this->assertSame(
 			FALSE,
-			$this->fixture->getSelected()
+			$this->subject->getSelected()
 		);
 	}
 
@@ -120,11 +120,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getSelectedInitiallyReturnsGivenSelectedFromConstruct() {
 		$selected = FALSE;
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Language('', '', FALSE);
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Language('', '', FALSE);
 
 		$this->assertSame(
 			$selected,
-			$this->fixture->getSelected()
+			$this->subject->getSelected()
 		);
 	}
 
@@ -133,11 +133,11 @@ class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setSelectedSetsSelected() {
 		$selected = TRUE;
-		$this->fixture->setSelected($selected);
+		$this->subject->setSelected($selected);
 
 		$this->assertSame(
 			$selected,
-			$this->fixture->getSelected()
+			$this->subject->getSelected()
 		);
 	}
 

@@ -22,17 +22,17 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
+		$this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUser();
 	}
 
 	/**
 	 * @test
 	 */
 	public function getUsernameInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getUsername());
+		$this->assertSame('', $this->subject->getUsername());
 	}
 
 	/**
@@ -40,15 +40,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUsernameSetsUsername() {
 		$username = 'don.juan';
-		$this->fixture->setUsername($username);
-		$this->assertSame($username, $this->fixture->getUsername());
+		$this->subject->setUsername($username);
+		$this->assertSame($username, $this->subject->getUsername());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPasswordInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getPassword());
+		$this->assertSame('', $this->subject->getPassword());
 	}
 
 	/**
@@ -56,8 +56,8 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setPasswordSetsPassword() {
 		$password = 'f00Bar';
-		$this->fixture->setPassword($password);
-		$this->assertSame($password, $this->fixture->getPassword());
+		$this->subject->setPassword($password);
+		$this->assertSame($password, $this->subject->getPassword());
 	}
 
 	/**
@@ -66,8 +66,8 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUsergroupSetsUsergroup() {
 		$usergroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$usergroup->attach(new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo'));
-		$this->fixture->setUsergroup($usergroup);
-		$this->assertSame($usergroup, $this->fixture->getUsergroup());
+		$this->subject->setUsergroup($usergroup);
+		$this->assertSame($usergroup, $this->subject->getUsergroup());
 	}
 
 	/**
@@ -75,9 +75,9 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addUsergroupAddsUserGroup() {
 		$usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
-		$this->assertEquals(count($this->fixture->getUsergroup()), 0);
-		$this->fixture->addUsergroup($usergroup);
-		$this->assertEquals(count($this->fixture->getUsergroup()), 1);
+		$this->assertEquals(count($this->subject->getUsergroup()), 0);
+		$this->subject->addUsergroup($usergroup);
+		$this->assertEquals(count($this->subject->getUsergroup()), 1);
 	}
 
 	/**
@@ -85,17 +85,17 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function removeUsergroupRemovesUsergroup() {
 		$usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
-		$this->fixture->addUsergroup($usergroup);
-		$this->assertEquals(count($this->fixture->getUsergroup()), 1);
-		$this->fixture->removeUsergroup($usergroup);
-		$this->assertEquals(count($this->fixture->getUsergroup()), 0);
+		$this->subject->addUsergroup($usergroup);
+		$this->assertEquals(count($this->subject->getUsergroup()), 1);
+		$this->subject->removeUsergroup($usergroup);
+		$this->assertEquals(count($this->subject->getUsergroup()), 0);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getNameInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getName());
+		$this->assertSame('', $this->subject->getName());
 	}
 
 	/**
@@ -103,15 +103,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setNameSetsName() {
 		$name = 'don juan';
-		$this->fixture->setName($name);
-		$this->assertSame($name, $this->fixture->getName());
+		$this->subject->setName($name);
+		$this->assertSame($name, $this->subject->getName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFirstNameInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getFirstName());
+		$this->assertSame('', $this->subject->getFirstName());
 	}
 
 	/**
@@ -119,15 +119,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setFirstNameSetsFirstName() {
 		$firstName = 'don';
-		$this->fixture->setFirstName($firstName);
-		$this->assertSame($firstName, $this->fixture->getFirstName());
+		$this->subject->setFirstName($firstName);
+		$this->assertSame($firstName, $this->subject->getFirstName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getMiddleNameInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getMiddleName());
+		$this->assertSame('', $this->subject->getMiddleName());
 	}
 
 	/**
@@ -135,15 +135,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setMiddleNameSetsMiddleName() {
 		$middleName = 'miguel';
-		$this->fixture->setMiddleName($middleName);
-		$this->assertSame($middleName, $this->fixture->getMiddleName());
+		$this->subject->setMiddleName($middleName);
+		$this->assertSame($middleName, $this->subject->getMiddleName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLastNameInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getLastName());
+		$this->assertSame('', $this->subject->getLastName());
 	}
 
 	/**
@@ -151,15 +151,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLastNameSetsLastName() {
 		$lastName = 'juan';
-		$this->fixture->setLastName($lastName);
-		$this->assertSame($lastName, $this->fixture->getLastName());
+		$this->subject->setLastName($lastName);
+		$this->assertSame($lastName, $this->subject->getLastName());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAddressInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getAddress());
+		$this->assertSame('', $this->subject->getAddress());
 	}
 
 	/**
@@ -167,15 +167,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setAddressSetsAddress() {
 		$address = 'foobar 42, foo';
-		$this->fixture->setAddress($address);
-		$this->assertSame($address, $this->fixture->getAddress());
+		$this->subject->setAddress($address);
+		$this->assertSame($address, $this->subject->getAddress());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTelephoneInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTelephone());
+		$this->assertSame('', $this->subject->getTelephone());
 	}
 
 	/**
@@ -183,15 +183,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTelephoneSetsTelephone() {
 		$telephone = '42';
-		$this->fixture->setTelephone($telephone);
-		$this->assertSame($telephone, $this->fixture->getTelephone());
+		$this->subject->setTelephone($telephone);
+		$this->assertSame($telephone, $this->subject->getTelephone());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFaxInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getFax());
+		$this->assertSame('', $this->subject->getFax());
 	}
 
 	/**
@@ -199,15 +199,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setFaxSetsFax() {
 		$fax = '42';
-		$this->fixture->setFax($fax);
-		$this->assertSame($fax, $this->fixture->getFax());
+		$this->subject->setFax($fax);
+		$this->assertSame($fax, $this->subject->getFax());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getEmailInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getEmail());
+		$this->assertSame('', $this->subject->getEmail());
 	}
 
 	/**
@@ -215,15 +215,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setEmailSetsEmail() {
 		$email = 'don.juan@example.com';
-		$this->fixture->setEmail($email);
-		$this->assertSame($email, $this->fixture->getEmail());
+		$this->subject->setEmail($email);
+		$this->assertSame($email, $this->subject->getEmail());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLockToDomainInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getLockToDomain());
+		$this->assertSame('', $this->subject->getLockToDomain());
 	}
 
 	/**
@@ -231,15 +231,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLockToDomainSetsLockToDomain() {
 		$lockToDomain = 'foo.bar';
-		$this->fixture->setLockToDomain($lockToDomain);
-		$this->assertSame($lockToDomain, $this->fixture->getLockToDomain());
+		$this->subject->setLockToDomain($lockToDomain);
+		$this->assertSame($lockToDomain, $this->subject->getLockToDomain());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTitle());
+		$this->assertSame('', $this->subject->getTitle());
 	}
 
 	/**
@@ -247,15 +247,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTitleSetsTitle() {
 		$title = 'foobar';
-		$this->fixture->setTitle($title);
-		$this->assertSame($title, $this->fixture->getTitle());
+		$this->subject->setTitle($title);
+		$this->assertSame($title, $this->subject->getTitle());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getZipInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getZip());
+		$this->assertSame('', $this->subject->getZip());
 	}
 
 	/**
@@ -263,15 +263,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setZipSetsZip() {
 		$zip = '42';
-		$this->fixture->setZip($zip);
-		$this->assertSame($zip, $this->fixture->getZip());
+		$this->subject->setZip($zip);
+		$this->assertSame($zip, $this->subject->getZip());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCityInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getCity());
+		$this->assertSame('', $this->subject->getCity());
 	}
 
 	/**
@@ -279,15 +279,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setCitySetsCity() {
 		$city = 'foo';
-		$this->fixture->setCity($city);
-		$this->assertSame($city, $this->fixture->getCity());
+		$this->subject->setCity($city);
+		$this->assertSame($city, $this->subject->getCity());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCountryInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getCountry());
+		$this->assertSame('', $this->subject->getCountry());
 	}
 
 	/**
@@ -295,15 +295,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setCountrySetsCountry() {
 		$country = 'foo';
-		$this->fixture->setCountry($country);
-		$this->assertSame($country, $this->fixture->getCountry());
+		$this->subject->setCountry($country);
+		$this->assertSame($country, $this->subject->getCountry());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getWwwInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getWww());
+		$this->assertSame('', $this->subject->getWww());
 	}
 
 	/**
@@ -311,15 +311,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setWwwSetsWww() {
 		$www = 'foo.bar';
-		$this->fixture->setWww($www);
-		$this->assertSame($www, $this->fixture->getWww());
+		$this->subject->setWww($www);
+		$this->assertSame($www, $this->subject->getWww());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getCompanyInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getCompany());
+		$this->assertSame('', $this->subject->getCompany());
 	}
 
 	/**
@@ -327,15 +327,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setCompanySetsCompany() {
 		$company = 'foo bar';
-		$this->fixture->setCompany($company);
-		$this->assertSame($company, $this->fixture->getCompany());
+		$this->subject->setCompany($company);
+		$this->assertSame($company, $this->subject->getCompany());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getImageInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getImage());
+		$this->assertSame('', $this->subject->getImage());
 	}
 
 	/**
@@ -343,15 +343,15 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setImageSetsImage() {
 		$image = 'foobar.gif';
-		$this->fixture->setImage($image);
-		$this->assertSame($image, $this->fixture->getImage());
+		$this->subject->setImage($image);
+		$this->assertSame($image, $this->subject->getImage());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLastloginInitiallyReturnsNull() {
-		$this->assertNull($this->fixture->getLastlogin());
+		$this->assertNull($this->subject->getLastlogin());
 	}
 
 	/**
@@ -359,8 +359,8 @@ class FrontendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLastloginSetsLastlogin() {
 		$date = new \DateTime();
-		$this->fixture->setLastlogin($date);
-		$this->assertSame($date, $this->fixture->getLastlogin());
+		$this->subject->setLastlogin($date);
+		$this->assertSame($date, $this->subject->getLastlogin());
 	}
 
 }

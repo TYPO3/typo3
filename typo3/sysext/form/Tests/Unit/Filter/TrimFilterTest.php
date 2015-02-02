@@ -24,13 +24,13 @@ class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\TrimFilter
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\TrimFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\TrimFilter();
 	}
 
 	public function stringProvider() {
@@ -59,7 +59,7 @@ some text ', 'some text', '
 	public function filterForStringWithWhitespaceInFrontAndEndReturnsStringWithoutThisWhitespace($input, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 
@@ -68,11 +68,11 @@ some text ', 'some text', '
 	 * @dataProvider stringProviderForCharacterList
 	 */
 	public function filterForStringWithCharactersInCharacterListReturnsStringWithoutTheseCharacters($input, $expected, $characterList) {
-		$this->fixture->setCharacterList($characterList);
+		$this->subject->setCharacterList($characterList);
 
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

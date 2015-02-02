@@ -22,20 +22,20 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Database\RelationHandler
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * @return void
 	 */
 	protected function setUp() {
-		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Database\RelationHandler::class, array('purgeVersionedIds', 'purgeLiveVersionedIds'));
+		$this->subject = $this->getMock(\TYPO3\CMS\Core\Database\RelationHandler::class, array('purgeVersionedIds', 'purgeLiveVersionedIds'));
 	}
 
 	/**
 	 * @return void
 	 */
 	protected function tearDown() {
-		unset($this->fixture);
+		unset($this->subject);
 	}
 
 	/**
@@ -44,11 +44,11 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function purgeItemArrayReturnsFalseIfVersioningForTableIsDisabled() {
 		$GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = FALSE;
 
-		$this->fixture->tableArray = array(
+		$this->subject->tableArray = array(
 			'sys_category' => array(1, 2, 3),
 		);
 
-		$this->assertFalse($this->fixture->purgeItemArray(0));
+		$this->assertFalse($this->subject->purgeItemArray(0));
 	}
 
 	/**
@@ -57,16 +57,16 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function purgeItemArrayReturnsTrueIfItemsHaveBeenPurged() {
 		$GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = 2;
 
-		$this->fixture->tableArray = array(
+		$this->subject->tableArray = array(
 			'sys_category' => array(1, 2, 3),
 		);
 
-		$this->fixture->expects($this->once())
+		$this->subject->expects($this->once())
 			->method('purgeVersionedIds')
 			->with('sys_category', array(1, 2, 3))
 			->will($this->returnValue(array(2)));
 
-		$this->assertTrue($this->fixture->purgeItemArray(0));
+		$this->assertTrue($this->subject->purgeItemArray(0));
 	}
 
 }

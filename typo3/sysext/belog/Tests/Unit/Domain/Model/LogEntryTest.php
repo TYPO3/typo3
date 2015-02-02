@@ -23,33 +23,33 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Model\LogEntry
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Belog\Domain\Model\LogEntry();
+		$this->subject = new \TYPO3\CMS\Belog\Domain\Model\LogEntry();
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLogDataInitiallyReturnsEmptyArray() {
-		$this->assertSame(array(), $this->fixture->getLogData());
+		$this->assertSame(array(), $this->subject->getLogData());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLogDataForEmptyStringLogDataReturnsEmptyArray() {
-		$this->fixture->setLogData('');
-		$this->assertSame(array(), $this->fixture->getLogData());
+		$this->subject->setLogData('');
+		$this->assertSame(array(), $this->subject->getLogData());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLogDataForGarbageStringLogDataReturnsEmptyArray() {
-		$this->fixture->setLogData('foo bar');
-		$this->assertSame(array(), $this->fixture->getLogData());
+		$this->subject->setLogData('foo bar');
+		$this->assertSame(array(), $this->subject->getLogData());
 	}
 
 	/**
@@ -57,16 +57,16 @@ class LogEntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getLogDataForSerializedArrayReturnsThatArray() {
 		$logData = array('foo', 'bar');
-		$this->fixture->setLogData(serialize($logData));
-		$this->assertSame($logData, $this->fixture->getLogData());
+		$this->subject->setLogData(serialize($logData));
+		$this->assertSame($logData, $this->subject->getLogData());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLogDataForSerializedObjectReturnsEmptyArray() {
-		$this->fixture->setLogData(new \stdClass());
-		$this->assertSame(array(), $this->fixture->getLogData());
+		$this->subject->setLogData(new \stdClass());
+		$this->assertSame(array(), $this->subject->getLogData());
 	}
 
 }

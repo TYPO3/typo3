@@ -22,10 +22,10 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory();
+		$this->subject = new \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory();
 		$GLOBALS['TCA'] = array();
 		$GLOBALS['TCA']['foo'] = array();
 		$GLOBALS['TCA']['foo']['ctrl'] = array();
@@ -75,7 +75,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration) {
-		$this->fixture->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+		$this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
 	}
 
 	/**
@@ -89,7 +89,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}');
 
 		$tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
-		$dataProvider = $this->fixture->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+		$dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
 
 		$this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
 	}
@@ -107,7 +107,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			}
 		}';
 		eval($classCode);
-		$dataProvider = $this->fixture->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+		$dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
 
 		$this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
 	}

@@ -24,7 +24,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up testcase
@@ -32,7 +32,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function setUp() {
-		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, array('dummy'));
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, array('dummy'));
 	}
 
 	/**
@@ -68,7 +68,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getPathThisScriptCliReadsLocalPartFromArgv() {
 		$fakedLocalPart = $this->getUniqueId('Test');
 		$GLOBALS['_SERVER']['argv'][0] = $fakedLocalPart;
-		$this->assertStringEndsWith($fakedLocalPart, $this->fixture->_call('getPathThisScriptCli'));
+		$this->assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
 	}
 
 	/**
@@ -78,7 +78,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fakedLocalPart = $this->getUniqueId('Test');
 		unset($GLOBALS['_SERVER']['argv']);
 		$GLOBALS['_ENV']['_'] = $fakedLocalPart;
-		$this->assertStringEndsWith($fakedLocalPart, $this->fixture->_call('getPathThisScriptCli'));
+		$this->assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
 	}
 
 	/**
@@ -89,7 +89,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		unset($GLOBALS['_SERVER']['argv']);
 		unset($GLOBALS['_ENV']['_']);
 		$GLOBALS['_SERVER']['_'] = $fakedLocalPart;
-		$this->assertStringEndsWith($fakedLocalPart, $this->fixture->_call('getPathThisScriptCli'));
+		$this->assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
 	}
 
 	/**
@@ -102,7 +102,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['_SERVER']['argv'][0] = 'foo';
 		$fakedAbsolutePart = '/' . $this->getUniqueId('Absolute') . '/';
 		$_SERVER['PWD'] = $fakedAbsolutePart;
-		$this->assertStringStartsWith($fakedAbsolutePart, $this->fixture->_call('getPathThisScriptCli'));
+		$this->assertStringStartsWith($fakedAbsolutePart, $this->subject->_call('getPathThisScriptCli'));
 	}
 
 	/**
@@ -114,7 +114,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$input = '/foo/bar/test.php';
 		$expected = '/foo/bar/';
-		$actual = $this->fixture->_call('getUnifiedDirectoryNameWithTrailingSlash', $input);
+		$actual = $this->subject->_call('getUnifiedDirectoryNameWithTrailingSlash', $input);
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -123,7 +123,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function addCorePearPathToIncludePathAddsTypo3ContribPearToPathAsFirstEntry() {
 		$backupPath = get_include_path();
-		$this->fixture->_call('addCorePearPathToIncludePath');
+		$this->subject->_call('addCorePearPathToIncludePath');
 		$actualValue = get_include_path();
 		set_include_path($backupPath);
 		$this->assertStringStartsWith(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR, $actualValue);
@@ -134,7 +134,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalVariablesUnsetsGlobalErrorArray() {
 		$GLOBALS['error'] = 'foo';
-		$this->fixture->_call('initializeGlobalVariables');
+		$this->subject->_call('initializeGlobalVariables');
 		$this->assertFalse(isset($GLOBALS['error']));
 	}
 
@@ -143,7 +143,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalClientArray() {
 		unset($GLOBALS['CLIENT']);
-		$this->fixture->_call('initializeGlobalVariables');
+		$this->subject->_call('initializeGlobalVariables');
 		$this->assertArrayHasKey('CLIENT', $GLOBALS);
 	}
 
@@ -152,7 +152,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalTypo3MiscArray() {
 		unset($GLOBALS['TYPO3_MISC']);
-		$this->fixture->_call('initializeGlobalVariables');
+		$this->subject->_call('initializeGlobalVariables');
 		$this->assertInternalType('array', $GLOBALS['TYPO3_MISC']);
 	}
 
@@ -161,7 +161,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalT3VarArray() {
 		unset($GLOBALS['T3_VAR']);
-		$this->fixture->_call('initializeGlobalVariables');
+		$this->subject->_call('initializeGlobalVariables');
 		$this->assertInternalType('array', $GLOBALS['T3_VAR']);
 	}
 
@@ -170,7 +170,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalT3ServicesArray() {
 		unset($GLOBALS['T3_SERVICES']);
-		$this->fixture->_call('initializeGlobalVariables');
+		$this->subject->_call('initializeGlobalVariables');
 		$this->assertInternalType('array', $GLOBALS['T3_SERVICES']);
 	}
 
@@ -196,7 +196,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalTimeTrackingVariablesSetsGlobalVariables($variable) {
 		unset($GLOBALS[$variable]);
-		$this->fixture->_call('initializeGlobalTimeTrackingVariables');
+		$this->subject->_call('initializeGlobalTimeTrackingVariables');
 		$this->assertTrue(isset($GLOBALS[$variable]));
 	}
 
@@ -205,7 +205,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeGlobalTimeTrackingVariablesSetsGlobalTypo3MiscMicrotimeStart() {
 		unset($GLOBALS['TYPO3_MISC']['microtime_start']);
-		$this->fixture->_call('initializeGlobalTimeTrackingVariables');
+		$this->subject->_call('initializeGlobalTimeTrackingVariables');
 		$this->assertTrue(isset($GLOBALS['TYPO3_MISC']['microtime_start']));
 	}
 
@@ -213,7 +213,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds() {
-		$this->fixture->_call('initializeGlobalTimeTrackingVariables');
+		$this->subject->_call('initializeGlobalTimeTrackingVariables');
 		$this->assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
 	}
 
@@ -221,7 +221,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds() {
-		$this->fixture->_call('initializeGlobalTimeTrackingVariables');
+		$this->subject->_call('initializeGlobalTimeTrackingVariables');
 		$this->assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);
 	}
 
@@ -230,7 +230,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeBasicErrorReportingExcludesStrict() {
 		$backupReporting = error_reporting();
-		$this->fixture->_call('initializeBasicErrorReporting');
+		$this->subject->_call('initializeBasicErrorReporting');
 		$actualReporting = error_reporting();
 		error_reporting($backupReporting);
 		$this->assertEquals(0, $actualReporting & E_STRICT);
@@ -241,7 +241,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeBasicErrorReportingExcludesNotice() {
 		$backupReporting = error_reporting();
-		$this->fixture->_call('initializeBasicErrorReporting');
+		$this->subject->_call('initializeBasicErrorReporting');
 		$actualReporting = error_reporting();
 		error_reporting($backupReporting);
 		$this->assertEquals(0, $actualReporting & E_NOTICE);
@@ -252,7 +252,7 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function initializeBasicErrorReportingExcludesDeprecated() {
 		$backupReporting = error_reporting();
-		$this->fixture->_call('initializeBasicErrorReporting');
+		$this->subject->_call('initializeBasicErrorReporting');
 		$actualReporting = error_reporting();
 		error_reporting($backupReporting);
 		$this->assertEquals(0, $actualReporting & E_DEPRECATED);

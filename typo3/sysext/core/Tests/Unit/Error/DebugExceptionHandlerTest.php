@@ -24,14 +24,14 @@ class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Error\DebugExceptionHandler::class, array('sendStatusHeaders', 'writeLogEntries'), array(), '', FALSE);
-		$this->fixture->expects($this->any())->method('discloseExceptionInformation')->will($this->returnValue(TRUE));
+		$this->subject = $this->getMock(\TYPO3\CMS\Core\Error\DebugExceptionHandler::class, array('sendStatusHeaders', 'writeLogEntries'), array(), '', FALSE);
+		$this->subject->expects($this->any())->method('discloseExceptionInformation')->will($this->returnValue(TRUE));
 	}
 
 	/**
@@ -41,7 +41,7 @@ class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$message = '<b>b</b><script>alert(1);</script>';
 		$exception = new \Exception($message);
 		ob_start();
-		$this->fixture->echoExceptionWeb($exception);
+		$this->subject->echoExceptionWeb($exception);
 		$output = ob_get_contents();
 		ob_end_clean();
 		$this->assertContains(htmlspecialchars($message), $output);

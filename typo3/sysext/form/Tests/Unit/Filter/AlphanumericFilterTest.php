@@ -24,13 +24,13 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
 	}
 
 	/**
@@ -39,8 +39,8 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForStringWithUnicodeCharactersAndSpacesReturnsInputString() {
 		$input = 'My name contains äøüößØœ';
 		// This is default, but let's be explicit:
-		$this->fixture->setAllowWhiteSpace(TRUE);
-		$this->assertSame($input, $this->fixture->filter($input));
+		$this->subject->setAllowWhiteSpace(TRUE);
+		$this->assertSame($input, $this->subject->filter($input));
 	}
 
 	/**
@@ -49,15 +49,15 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
 		$input = 'My name contains äøüößØœ';
 		$expected = 'MynamecontainsäøüößØœ';
-		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($expected, $this->fixture->filter($input));
+		$this->subject->setAllowWhiteSpace(FALSE);
+		$this->assertSame($expected, $this->subject->filter($input));
 	}
 
 	/**
 	 * @test
 	 */
 	public function filterAllowsNumericCharacters() {
-		$this->assertSame('foo23bar', $this->fixture->filter('foo23bar'));
+		$this->assertSame('foo23bar', $this->subject->filter('foo23bar'));
 	}
 
 }

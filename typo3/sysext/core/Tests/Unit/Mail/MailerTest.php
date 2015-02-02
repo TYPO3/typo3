@@ -24,10 +24,10 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Mail\Mailer
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Mail\Mailer::class, array('emitPostInitializeMailerSignal'), array(), '', FALSE);
+		$this->subject = $this->getMock(\TYPO3\CMS\Core\Mail\Mailer::class, array('emitPostInitializeMailerSignal'), array(), '', FALSE);
 	}
 
 	//////////////////////////
@@ -39,9 +39,9 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function injectedSettingsAreNotReplacedByGlobalSettings() {
 		$settings = array('transport' => 'mbox', 'transport_mbox_file' => '/path/to/file');
 		$GLOBALS['TYPO3_CONF_VARS']['MAIL'] = array('transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail');
-		$this->fixture->injectMailSettings($settings);
-		$this->fixture->__construct();
-		$this->assertAttributeSame($settings, 'mailSettings', $this->fixture);
+		$this->subject->injectMailSettings($settings);
+		$this->subject->__construct();
+		$this->assertAttributeSame($settings, 'mailSettings', $this->subject);
 	}
 
 	/**
@@ -49,8 +49,8 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function globalSettingsAreUsedIfNoSettingsAreInjected() {
 		$settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = array('transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail'));
-		$this->fixture->__construct();
-		$this->assertAttributeSame($settings, 'mailSettings', $this->fixture);
+		$this->subject->__construct();
+		$this->assertAttributeSame($settings, 'mailSettings', $this->subject);
 	}
 
 	/**
@@ -74,8 +74,8 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Core\Exception
 	 */
 	public function wrongConfigigurationThrowsException($settings) {
-		$this->fixture->injectMailSettings($settings);
-		$this->fixture->__construct();
+		$this->subject->injectMailSettings($settings);
+		$this->subject->__construct();
 	}
 
 	/**
@@ -88,17 +88,17 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				public function __construct($settings) {}
 			}');
 		}
-		$this->fixture->injectMailSettings(array('transport' => 't3lib_mail_SwiftMailerFakeTransport'));
-		$this->fixture->__construct();
+		$this->subject->injectMailSettings(array('transport' => 't3lib_mail_SwiftMailerFakeTransport'));
+		$this->subject->__construct();
 	}
 
 	/**
 	 * @test
 	 */
 	public function noPortSettingSetsPortTo25() {
-		$this->fixture->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost'));
-		$this->fixture->__construct();
-		$port = $this->fixture->getTransport()->getPort();
+		$this->subject->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost'));
+		$this->subject->__construct();
+		$port = $this->subject->getTransport()->getPort();
 		$this->assertEquals(25, $port);
 	}
 
@@ -106,9 +106,9 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function emptyPortSettingSetsPortTo25() {
-		$this->fixture->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:'));
-		$this->fixture->__construct();
-		$port = $this->fixture->getTransport()->getPort();
+		$this->subject->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:'));
+		$this->subject->__construct();
+		$port = $this->subject->getTransport()->getPort();
 		$this->assertEquals(25, $port);
 	}
 
@@ -116,9 +116,9 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function givenPortSettingIsRespected() {
-		$this->fixture->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345'));
-		$this->fixture->__construct();
-		$port = $this->fixture->getTransport()->getPort();
+		$this->subject->injectMailSettings(array('transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345'));
+		$this->subject->__construct();
+		$port = $this->subject->getTransport()->getPort();
 		$this->assertEquals(12345, $port);
 	}
 

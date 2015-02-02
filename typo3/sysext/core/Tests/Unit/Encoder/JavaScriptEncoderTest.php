@@ -24,10 +24,10 @@ class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Encoder\JavaScriptEncoder();
+		$this->subject = new \TYPO3\CMS\Core\Encoder\JavaScriptEncoder();
 	}
 
 	/**
@@ -83,7 +83,7 @@ class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider encodeEncodesCorrectlyDataProvider
 	 */
 	public function encodeEncodesCorrectly($input, $expected) {
-		$this->assertSame($expected, $this->fixture->encode($input));
+		$this->assertSame($expected, $this->subject->encode($input));
 	}
 
 }

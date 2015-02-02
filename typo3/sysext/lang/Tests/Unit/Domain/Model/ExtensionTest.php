@@ -24,13 +24,13 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Model\Extension
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Extension();
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Extension();
 	}
 
 	/**
@@ -39,7 +39,7 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getKeyInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getKey()
+			$this->subject->getKey()
 		);
 	}
 
@@ -48,11 +48,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getKeyInitiallyReturnsGivenKeyFromConstruct() {
 		$key = 'foo bar';
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Extension($key);
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Extension($key);
 
 		$this->assertSame(
 			$key,
-			$this->fixture->getKey()
+			$this->subject->getKey()
 		);
 	}
 
@@ -61,11 +61,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setKeySetsKey() {
 		$key = 'foo bar';
-		$this->fixture->setKey($key);
+		$this->subject->setKey($key);
 
 		$this->assertSame(
 			$key,
-			$this->fixture->getKey()
+			$this->subject->getKey()
 		);
 	}
 
@@ -75,7 +75,7 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getTitleInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getTitle()
+			$this->subject->getTitle()
 		);
 	}
 
@@ -84,11 +84,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getTitleInitiallyReturnsGivenTitleFromConstruct() {
 		$title = 'foo bar';
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Extension('', $title);
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Extension('', $title);
 
 		$this->assertSame(
 			$title,
-			$this->fixture->getTitle()
+			$this->subject->getTitle()
 		);
 	}
 
@@ -97,11 +97,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTitleSetsTitle() {
 		$title = 'foo bar';
-		$this->fixture->setTitle($title);
+		$this->subject->setTitle($title);
 
 		$this->assertSame(
 			$title,
-			$this->fixture->getTitle()
+			$this->subject->getTitle()
 		);
 	}
 
@@ -111,7 +111,7 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getIconInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getIcon()
+			$this->subject->getIcon()
 		);
 	}
 
@@ -120,11 +120,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getIconInitiallyReturnsGivenIconFromConstruct() {
 		$icon = 'foo bar';
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Extension('', '', $icon);
+		$this->subject = new \TYPO3\CMS\Lang\Domain\Model\Extension('', '', $icon);
 
 		$this->assertSame(
 			$icon,
-			$this->fixture->getIcon()
+			$this->subject->getIcon()
 		);
 	}
 
@@ -133,11 +133,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setIconSetsIcon() {
 		$icon = 'foo bar';
-		$this->fixture->setIcon($icon);
+		$this->subject->setIcon($icon);
 
 		$this->assertSame(
 			$icon,
-			$this->fixture->getIcon()
+			$this->subject->getIcon()
 		);
 	}
 
@@ -147,7 +147,7 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getVersionInitiallyReturnsEmptyString() {
 		$this->assertSame(
 			'',
-			$this->fixture->getVersion()
+			$this->subject->getVersion()
 		);
 	}
 
@@ -156,11 +156,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setVersionSetsVersion() {
 		$version = 10;
-		$this->fixture->setVersion($version);
+		$this->subject->setVersion($version);
 
 		$this->assertSame(
 			$version,
-			$this->fixture->getVersion()
+			$this->subject->getVersion()
 		);
 	}
 
@@ -169,11 +169,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setVersionSetsVersionFromString() {
 		$version = 4012003;
-		$this->fixture->setVersionFromString('4.12.3');
+		$this->subject->setVersionFromString('4.12.3');
 
 		$this->assertSame(
 			$version,
-			$this->fixture->getVersion()
+			$this->subject->getVersion()
 		);
 	}
 
@@ -183,7 +183,7 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getUpdateResultInitiallyReturnsEmptyArray() {
 		$this->assertSame(
 			array(),
-			$this->fixture->getUpdateResult()
+			$this->subject->getUpdateResult()
 		);
 	}
 
@@ -198,11 +198,11 @@ class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$this->fixture->setUpdateResult($updateResult);
+		$this->subject->setUpdateResult($updateResult);
 
 		$this->assertSame(
 			$updateResult,
-			$this->fixture->getUpdateResult()
+			$this->subject->getUpdateResult()
 		);
 	}
 

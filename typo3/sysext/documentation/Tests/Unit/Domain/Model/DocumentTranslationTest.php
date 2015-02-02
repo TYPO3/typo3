@@ -22,21 +22,21 @@ class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation();
+		$this->subject = new \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation();
 	}
 
 	/**
 	 * @test
 	 */
 	public function setLanguageForStringSetsLocale() {
-		$this->fixture->setLanguage('Conceived at T3DD13');
+		$this->subject->setLanguage('Conceived at T3DD13');
 
 		$this->assertSame(
 			'Conceived at T3DD13',
-			$this->fixture->getLanguage()
+			$this->subject->getLanguage()
 		);
 	}
 
@@ -44,11 +44,11 @@ class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setTitleForStringSetsTitle() {
-		$this->fixture->setTitle('Conceived at T3DD13');
+		$this->subject->setTitle('Conceived at T3DD13');
 
 		$this->assertSame(
 			'Conceived at T3DD13',
-			$this->fixture->getTitle()
+			$this->subject->getTitle()
 		);
 	}
 
@@ -59,7 +59,7 @@ class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->assertEquals(
 			$newObjectStorage,
-			$this->fixture->getFormats()
+			$this->subject->getFormats()
 		);
 	}
 
@@ -70,11 +70,11 @@ class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$format = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
 		$objectStorageHoldingExactlyOneFormats = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorageHoldingExactlyOneFormats->attach($format);
-		$this->fixture->setFormats($objectStorageHoldingExactlyOneFormats);
+		$this->subject->setFormats($objectStorageHoldingExactlyOneFormats);
 
 		$this->assertSame(
 			$objectStorageHoldingExactlyOneFormats,
-			$this->fixture->getFormats()
+			$this->subject->getFormats()
 		);
 	}
 
@@ -85,11 +85,11 @@ class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$format = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
 		$objectStorageHoldingExactlyOneFormat = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorageHoldingExactlyOneFormat->attach($format);
-		$this->fixture->addFormat($format);
+		$this->subject->addFormat($format);
 
 		$this->assertEquals(
 			$objectStorageHoldingExactlyOneFormat,
-			$this->fixture->getFormats()
+			$this->subject->getFormats()
 		);
 	}
 
@@ -101,12 +101,12 @@ class DocumentTranslationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$localObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$localObjectStorage->attach($format);
 		$localObjectStorage->detach($format);
-		$this->fixture->addFormat($format);
-		$this->fixture->removeFormat($format);
+		$this->subject->addFormat($format);
+		$this->subject->removeFormat($format);
 
 		$this->assertEquals(
 			$localObjectStorage,
-			$this->fixture->getFormats()
+			$this->subject->getFormats()
 		);
 	}
 

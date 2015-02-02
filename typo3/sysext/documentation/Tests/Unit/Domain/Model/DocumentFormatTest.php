@@ -22,21 +22,21 @@ class DocumentFormatTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
+		$this->subject = new \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat();
 	}
 
 	/**
 	 * @test
 	 */
 	public function setFormatForStringSetsFormat() {
-		$this->fixture->setFormat('Conceived at T3DD13');
+		$this->subject->setFormat('Conceived at T3DD13');
 
 		$this->assertSame(
 			'Conceived at T3DD13',
-			$this->fixture->getFormat()
+			$this->subject->getFormat()
 		);
 	}
 
@@ -44,11 +44,11 @@ class DocumentFormatTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setPathForStringSetsPath() {
-		$this->fixture->setPath('Conceived at T3DD13');
+		$this->subject->setPath('Conceived at T3DD13');
 
 		$this->assertSame(
 			'Conceived at T3DD13',
-			$this->fixture->getPath()
+			$this->subject->getPath()
 		);
 	}
 

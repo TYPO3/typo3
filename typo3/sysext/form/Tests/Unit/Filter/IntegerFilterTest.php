@@ -24,10 +24,10 @@ class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\IntegerFilter
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\IntegerFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\IntegerFilter();
 	}
 
 	public function dataProvider() {
@@ -49,7 +49,7 @@ class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForVariousInputReturnsInputCastedToInteger($input, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

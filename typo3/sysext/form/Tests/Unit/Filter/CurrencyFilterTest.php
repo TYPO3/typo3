@@ -24,10 +24,10 @@ class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\CurrencyFilter
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\CurrencyFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\CurrencyFilter();
 	}
 
 	public function validDataProvider() {
@@ -64,9 +64,9 @@ class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider validDataProvider
 	 */
 	public function filterForVariousIntegerInputsReturnsFormattedCurrencyNotation($input, $thousandSeparator, $decimalPoint, $expected) {
-		$this->fixture->setThousandSeparator($thousandSeparator);
-		$this->fixture->setDecimalsPoint($decimalPoint);
-		$this->assertSame($expected, $this->fixture->filter($input));
+		$this->subject->setThousandSeparator($thousandSeparator);
+		$this->subject->setDecimalsPoint($decimalPoint);
+		$this->assertSame($expected, $this->subject->filter($input));
 	}
 
 }

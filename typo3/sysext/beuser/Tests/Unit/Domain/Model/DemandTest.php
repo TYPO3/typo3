@@ -22,10 +22,10 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Beuser\Domain\Model\Demand();
+		$this->subject = new \TYPO3\CMS\Beuser\Domain\Model\Demand();
 	}
 
 	/**
@@ -33,8 +33,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUserTypeAllExpectedValueForInt() {
 		$userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
-		$this->fixture->setUserType($userType);
-		$this->assertSame($this->fixture->getUserType(), $userType);
+		$this->subject->setUserType($userType);
+		$this->assertSame($this->subject->getUserType(), $userType);
 	}
 
 	/**
@@ -42,8 +42,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUserTypeAdminOnlyExpectedValueForInt() {
 		$userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_ADMINONLY;
-		$this->fixture->setUserType($userType);
-		$this->assertSame($this->fixture->getUserType(), $userType);
+		$this->subject->setUserType($userType);
+		$this->assertSame($this->subject->getUserType(), $userType);
 	}
 
 	/**
@@ -51,8 +51,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUserTypeUserOnlyExpectedValueForInt() {
 		$userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_USERONLY;
-		$this->fixture->setUserType($userType);
-		$this->assertSame($this->fixture->getUserType(), $userType);
+		$this->subject->setUserType($userType);
+		$this->assertSame($this->subject->getUserType(), $userType);
 	}
 
 	/**
@@ -60,8 +60,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setStatusAllExpectedValueForInt() {
 		$status = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
-		$this->fixture->setStatus($status);
-		$this->assertSame($this->fixture->getStatus(), $status);
+		$this->subject->setStatus($status);
+		$this->assertSame($this->subject->getStatus(), $status);
 	}
 
 	/**
@@ -69,8 +69,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setStatusActiveExpectedValueForInt() {
 		$status = \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_ACTIVE;
-		$this->fixture->setStatus($status);
-		$this->assertSame($this->fixture->getStatus(), $status);
+		$this->subject->setStatus($status);
+		$this->assertSame($this->subject->getStatus(), $status);
 	}
 
 	/**
@@ -78,8 +78,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setStatusInactiveExpectedValueForInt() {
 		$status = \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_INACTIVE;
-		$this->fixture->setStatus($status);
-		$this->assertSame($this->fixture->getStatus(), $status);
+		$this->subject->setStatus($status);
+		$this->assertSame($this->subject->getStatus(), $status);
 	}
 
 	/**
@@ -87,8 +87,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLoginAllExpectedValueForInt() {
 		$login = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
-		$this->fixture->setLogins($login);
-		$this->assertSame($this->fixture->getLogins(), $login);
+		$this->subject->setLogins($login);
+		$this->assertSame($this->subject->getLogins(), $login);
 	}
 
 	/**
@@ -96,8 +96,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLoginNoneExpectedValueForInt() {
 		$login = \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_NONE;
-		$this->fixture->setLogins($login);
-		$this->assertSame($this->fixture->getLogins(), $login);
+		$this->subject->setLogins($login);
+		$this->assertSame($this->subject->getLogins(), $login);
 	}
 
 	/**
@@ -105,15 +105,15 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLoginxSameExpectedValueForInt() {
 		$login = \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_SOME;
-		$this->fixture->setLogins($login);
-		$this->assertSame($this->fixture->getLogins(), $login);
+		$this->subject->setLogins($login);
+		$this->assertSame($this->subject->getLogins(), $login);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getUserNameInitialValueForString() {
-		$this->assertSame($this->fixture->getUserName(), '', 'UserName must be empty string.');
+		$this->assertSame($this->subject->getUserName(), '', 'UserName must be empty string.');
 	}
 
 	/**
@@ -121,8 +121,8 @@ class DemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUserNameReturnExpectedValueForString() {
 		$newUserName = 'User#ää*%^name';
-		$this->fixture->setUserName($newUserName);
-		$this->assertSame($this->fixture->getUserName(), $newUserName, 'UserName is not as set before.');
+		$this->subject->setUserName($newUserName);
+		$this->assertSame($this->subject->getUserName(), $newUserName, 'UserName is not as set before.');
 	}
 
 }

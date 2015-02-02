@@ -24,10 +24,10 @@ class RemoveXssFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\RemoveXssFilter
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\RemoveXssFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\RemoveXssFilter();
 	}
 
 	public function maliciousStringProvider() {
@@ -47,7 +47,7 @@ class RemoveXssFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForMaliciousStringReturnsInputFilteredOfXssCode($input) {
 		$this->assertNotSame(
 			$input,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

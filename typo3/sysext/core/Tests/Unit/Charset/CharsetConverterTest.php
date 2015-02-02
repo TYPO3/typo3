@@ -24,10 +24,10 @@ class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Charset\CharsetConverter();
+		$this->subject = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 	}
 
 	////////////////////////////
@@ -38,7 +38,7 @@ class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @see http://forge.typo3.org/issues/22334
 	 */
 	public function substrForEmptyStringAndNonZeroLengthReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->substr('utf-8', '', 0, 42));
+		$this->assertSame('', $this->subject->substr('utf-8', '', 0, 42));
 	}
 
 	/////////////////////////////////
@@ -48,7 +48,7 @@ class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function utf8_strlenForNonEmptyAsciiOnlyStringReturnsNumberOfCharacters() {
-		$this->assertEquals(10, $this->fixture->utf8_strlen('good omens'));
+		$this->assertEquals(10, $this->subject->utf8_strlen('good omens'));
 	}
 
 }

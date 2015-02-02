@@ -24,7 +24,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * @var array
@@ -36,8 +36,8 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'encryptionKey' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-		$this->fixture = $this->getMock(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, array('foo'));
-		$this->fixture->setConfiguration(array(
+		$this->subject = $this->getMock(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, array('foo'));
+		$this->subject->setConfiguration(array(
 			'excludedParameters' => array('exclude1', 'exclude2'),
 			'cachedParametersWhiteList' => array(),
 			'requireCacheHashPresenceParameters' => array('req1', 'req2'),
@@ -51,7 +51,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function cacheHashCalculationWorks($params, $expected) {
-		$this->assertEquals($expected, $this->fixture->calculateCacheHash($params));
+		$this->assertEquals($expected, $this->subject->calculateCacheHash($params));
 	}
 
 	/**
@@ -86,7 +86,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getRelevantParametersWorks($params, $expected) {
-		$actual = $this->fixture->getRelevantParameters($params);
+		$actual = $this->subject->getRelevantParameters($params);
 		$this->assertEquals($expected, array_keys($actual));
 	}
 
@@ -120,7 +120,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateForParameters($params, $expected) {
-		$this->assertEquals($expected, $this->fixture->generateForParameters($params));
+		$this->assertEquals($expected, $this->subject->generateForParameters($params));
 	}
 
 	/**
@@ -147,7 +147,7 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function parametersRequireCacheHashWorks($params, $expected) {
-		$this->assertEquals($expected, $this->fixture->doParametersRequireCacheHash($params));
+		$this->assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
 	}
 
 	/**
@@ -173,8 +173,8 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canWhitelistParameters($params, $expected) {
 		$method = new \ReflectionMethod(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class, 'setCachedParametersWhiteList');
 		$method->setAccessible(TRUE);
-		$method->invoke($this->fixture, array('whitep1', 'whitep2'));
-		$this->assertEquals($expected, $this->fixture->generateForParameters($params));
+		$method->invoke($this->subject, array('whitep1', 'whitep2'));
+		$this->assertEquals($expected, $this->subject->generateForParameters($params));
 	}
 
 	/**
@@ -197,8 +197,8 @@ class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canSkipParametersWithEmptyValues($params, $settings, $expected) {
-		$this->fixture->setConfiguration($settings);
-		$actual = $this->fixture->getRelevantParameters($params);
+		$this->subject->setConfiguration($settings);
+		$actual = $this->subject->getRelevantParameters($params);
 		$this->assertEquals($expected, array_keys($actual));
 	}
 

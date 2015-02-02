@@ -24,10 +24,10 @@ class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\DigitFilter
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\DigitFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\DigitFilter();
 	}
 
 	public function validDataProvider() {
@@ -47,7 +47,7 @@ class DigitFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForStringsReturnsStringsFilteredToOnlyContainDigits($input, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

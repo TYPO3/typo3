@@ -24,13 +24,13 @@ class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\UpperCaseFilter
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\UpperCaseFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\UpperCaseFilter();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
@@ -50,7 +50,7 @@ class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForStringReturnsUppercasedString($input, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

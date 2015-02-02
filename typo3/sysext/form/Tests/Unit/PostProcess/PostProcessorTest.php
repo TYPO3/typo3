@@ -22,14 +22,14 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Form\PostProcess\PostProcessor
 	 */
-	public $fixture;
+	public $subject;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
 		$form = $this->getMock(\TYPO3\CMS\Form\Domain\Model\Form::class, array(), array(), '', FALSE);
-		$this->fixture = $this->getMock(
+		$this->subject = $this->getMock(
 			\TYPO3\CMS\Form\PostProcess\PostProcessor::class,
 			array('sortTypoScriptKeyList'),
 			array($form, array())
@@ -55,9 +55,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			10 => $this->getUniqueId('postprocess'),
 			20 => $classNameWithoutPrefix
 		);
-		$this->fixture->typoScript = $typoScript;
-		$this->fixture->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->fixture->process();
+		$this->subject->typoScript = $typoScript;
+		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
+		$returnValue = $this->subject->process();
 		$this->assertEquals('processedWithoutPrefix', $returnValue);
 	}
 
@@ -80,9 +80,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			10 => $this->getUniqueId('postprocess'),
 			20 => $classNameWithPrefix
 		);
-		$this->fixture->typoScript = $typoScript;
-		$this->fixture->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->fixture->process();
+		$this->subject->typoScript = $typoScript;
+		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
+		$returnValue = $this->subject->process();
 		$this->assertEquals('processedWithPrefix', $returnValue);
 	}
 
@@ -105,9 +105,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			10 => $this->getUniqueId('postprocess'),
 			20 => $classNameWithoutInterface
 		);
-		$this->fixture->typoScript = $typoScript;
-		$this->fixture->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->fixture->process();
+		$this->subject->typoScript = $typoScript;
+		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
+		$returnValue = $this->subject->process();
 		$this->assertEquals('', $returnValue);
 	}
 

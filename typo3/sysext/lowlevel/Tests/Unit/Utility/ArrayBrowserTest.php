@@ -24,10 +24,10 @@ class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
+		$this->subject = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
 	}
 
 	///////////////////////////////
@@ -37,14 +37,14 @@ class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function depthKeysWithEmptyFirstParameterAddsNothing() {
-		$this->assertEquals(array(), $this->fixture->depthKeys(array(), array()));
+		$this->assertEquals(array(), $this->subject->depthKeys(array(), array()));
 	}
 
 	/**
 	 * @test
 	 */
 	public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray() {
-		$this->assertEquals(array(0 => 1), $this->fixture->depthKeys(array('foo'), array()));
+		$this->assertEquals(array(0 => 1), $this->subject->depthKeys(array('foo'), array()));
 	}
 
 }

@@ -24,10 +24,10 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Database\SqlParser|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\SqlParser::class, array('dummy'));
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Database\SqlParser::class, array('dummy'));
 	}
 
 	/**
@@ -102,7 +102,7 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'comparator' => ''
 			)
 		);
-		$output = $this->fixture->compileWhereClause($clauses);
+		$output = $this->subject->compileWhereClause($clauses);
 		$parts = explode(' OR ', $output);
 		$this->assertSame(count($clauses), count($parts));
 		$this->assertContains('IFNULL', $output);
@@ -135,7 +135,7 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected The expected trimmed SQL with single space at the end
 	 */
 	public function trimSqlReallyTrimsAllWhitespace($sql, $expected) {
-		$result = $this->fixture->_call('trimSQL', $sql);
+		$result = $this->subject->_call('trimSQL', $sql);
 		$this->assertSame($expected, $result);
 	}
 

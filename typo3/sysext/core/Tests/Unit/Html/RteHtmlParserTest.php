@@ -24,11 +24,11 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Html\RteHtmlParser
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Html\RteHtmlParser();
-		$this->fixture->procOptions = array(
+		$this->subject = new \TYPO3\CMS\Core\Html\RteHtmlParser();
+		$this->subject->procOptions = array(
 			'dontConvBRtoParagraph' => '1',
 			'preserveDIVSections' => '1',
 			'allowTagsOutside' => 'hr, address',
@@ -106,8 +106,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider hrTagCorrectlyTransformedOnWayToDataBaseDataProvider
 	 */
 	public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult) {
-		$thisConfig = array('proc.' => $this->fixture->procOptions);
-		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($content, array(), 'db', $thisConfig));
+		$thisConfig = array('proc.' => $this->subject->procOptions);
+		$this->assertEquals($expectedResult, $this->subject->RTE_transform($content, array(), 'db', $thisConfig));
 	}
 
 	/**
@@ -179,8 +179,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
 	 */
 	public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult) {
-		$thisConfig = array('proc.' => $this->fixture->procOptions);
-		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($this->fixture->RTE_transform($content, array(), 'db', $thisConfig), array(), 'rte', $thisConfig));
+		$thisConfig = array('proc.' => $this->subject->procOptions);
+		$this->assertEquals($expectedResult, $this->subject->RTE_transform($this->subject->RTE_transform($content, array(), 'db', $thisConfig), array(), 'rte', $thisConfig));
 	}
 
 	/**
@@ -204,8 +204,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider linkWithAtSignCorrectlyTransformedOnWayToRTEProvider
 	 */
 	public function linkWithAtSignCorrectlyTransformedOnWayToRTE($content, $expectedResult) {
-		$thisConfig = array('proc.' => $this->fixture->procOptions);
-		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($content, array(), 'rte', $thisConfig));
+		$thisConfig = array('proc.' => $this->subject->procOptions);
+		$this->assertEquals($expectedResult, $this->subject->RTE_transform($content, array(), 'rte', $thisConfig));
 	}
 
 	/**
@@ -389,8 +389,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider paragraphCorrectlyTransformedOnWayToDatabaseProvider
 	 */
 	public function paragraphCorrectlyTransformedOnWayToDatabase($content, $expectedResult) {
-		$thisConfig = array('proc.' => $this->fixture->procOptions);
-		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($content, array(), 'db', $thisConfig));
+		$thisConfig = array('proc.' => $this->subject->procOptions);
+		$this->assertEquals($expectedResult, $this->subject->RTE_transform($content, array(), 'db', $thisConfig));
 	}
 
 	/**
@@ -486,8 +486,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider lineBreakCorrectlyTransformedOnWayToRTEProvider
 	 */
 	public function lineBreakCorrectlyTransformedOnWayToRTE($content, $expectedResult) {
-		$thisConfig = array('proc.' => $this->fixture->procOptions);
-		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($content, array(), 'rte', $thisConfig));
+		$thisConfig = array('proc.' => $this->subject->procOptions);
+		$this->assertEquals($expectedResult, $this->subject->RTE_transform($content, array(), 'rte', $thisConfig));
 	}
 
 	/**
@@ -635,8 +635,8 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
 	 */
 	public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult) {
-		$thisConfig = array('proc.' => $this->fixture->procOptions);
-		$this->assertEquals($expectedResult, $this->fixture->RTE_transform($this->fixture->RTE_transform($content, array(), 'db', $thisConfig), array(), 'rte', $thisConfig));
+		$thisConfig = array('proc.' => $this->subject->procOptions);
+		$this->assertEquals($expectedResult, $this->subject->RTE_transform($this->subject->RTE_transform($content, array(), 'db', $thisConfig), array(), 'rte', $thisConfig));
 	}
 
 }

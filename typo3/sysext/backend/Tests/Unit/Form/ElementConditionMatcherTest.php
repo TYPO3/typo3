@@ -22,13 +22,13 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Backend\Form\ElementConditionMatcher
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Backend\Form\ElementConditionMatcher();
+		$this->subject = new \TYPO3\CMS\Backend\Form\ElementConditionMatcher();
 	}
 
 	/**
@@ -331,7 +331,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function matchConditionStrings($condition, array $record, $flexformValueKey, $expectedResult) {
-		$this->assertEquals($expectedResult, $this->fixture->match($condition, $record, $flexformValueKey));
+		$this->assertEquals($expectedResult, $this->subject->match($condition, $record, $flexformValueKey));
 	}
 
 	/**
@@ -345,7 +345,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('isAdmin')
 			->will($this->returnValue(TRUE));
 		$GLOBALS['BE_USER'] = $backendUserMock;
-		$this->assertTrue($this->fixture->match('HIDE_FOR_NON_ADMINS'));
+		$this->assertTrue($this->subject->match('HIDE_FOR_NON_ADMINS'));
 	}
 
 	/**
@@ -359,7 +359,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 		$GLOBALS['BE_USER'] = $backendUserMock;
-		$this->assertFalse($this->fixture->match('HIDE_FOR_NON_ADMINS'));
+		$this->assertFalse($this->subject->match('HIDE_FOR_NON_ADMINS'));
 	}
 
 	/**
@@ -373,7 +373,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('isAdmin')
 			->will($this->returnValue(TRUE));
 		$GLOBALS['BE_USER'] = $backendUserMock;
-		$this->assertTrue($this->fixture->match('HIDE_L10N_SIBLINGS:except_admin'), array(), 'vEN');
+		$this->assertTrue($this->subject->match('HIDE_L10N_SIBLINGS:except_admin'), array(), 'vEN');
 	}
 
 	/**
@@ -387,7 +387,7 @@ class ElementConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('isAdmin')
 			->will($this->returnValue(FALSE));
 		$GLOBALS['BE_USER'] = $backendUserMock;
-		$this->assertFalse($this->fixture->match('HIDE_L10N_SIBLINGS:except_admin'), array(), 'vEN');
+		$this->assertFalse($this->subject->match('HIDE_L10N_SIBLINGS:except_admin'), array(), 'vEN');
 	}
 
 }

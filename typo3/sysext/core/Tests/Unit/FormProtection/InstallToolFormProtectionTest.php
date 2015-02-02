@@ -24,13 +24,13 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = $this->getAccessibleMock(
+		$this->subject = $this->getAccessibleMock(
 			\TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class,
 			array('dummy')
 		);
@@ -53,10 +53,10 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$_SESSION['installToolFormToken'] = $sessionToken;
 
-		$this->fixture->_call('retrieveSessionToken');
+		$this->subject->_call('retrieveSessionToken');
 
 		$this->assertTrue(
-			$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName)
+			$this->subject->validateToken($tokenId, $formName, $action, $formInstanceName)
 		);
 	}
 
@@ -66,9 +66,9 @@ class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function persistSessionTokenWritesTokensToSession() {
 		$_SESSION['installToolFormToken'] = 'foo';
 
-		$this->fixture->_set('sessionToken', '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd');
+		$this->subject->_set('sessionToken', '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd');
 
-		$this->fixture->persistSessionToken();
+		$this->subject->persistSessionToken();
 
 		$this->assertEquals(
 			'881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd',

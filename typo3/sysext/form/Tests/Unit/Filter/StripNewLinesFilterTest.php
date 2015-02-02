@@ -24,13 +24,13 @@ class StripNewLinesFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\StripNewLinesFilter
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\StripNewLinesFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\StripNewLinesFilter();
 	}
 
 	public function dataProviderWithNewlines() {
@@ -67,7 +67,7 @@ text', 'some text'),
 	public function filterForStringWithNewlineReturnsStringWithoutNewline($input, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

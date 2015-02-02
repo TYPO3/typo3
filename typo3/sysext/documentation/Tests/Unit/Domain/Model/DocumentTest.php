@@ -22,21 +22,21 @@ class DocumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Documentation\Domain\Model\Document
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Documentation\Domain\Model\Document();
+		$this->subject = new \TYPO3\CMS\Documentation\Domain\Model\Document();
 	}
 
 	/**
 	 * @test
 	 */
 	public function setPackageKeyForStringSetsPackageKey() {
-		$this->fixture->setPackageKey('Conceived at T3DD13');
+		$this->subject->setPackageKey('Conceived at T3DD13');
 
 		$this->assertSame(
 			'Conceived at T3DD13',
-			$this->fixture->getPackageKey()
+			$this->subject->getPackageKey()
 		);
 	}
 
@@ -44,11 +44,11 @@ class DocumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function setIconForStringSetsTitle() {
-		$this->fixture->setIcon('Conceived at T3DD13');
+		$this->subject->setIcon('Conceived at T3DD13');
 
 		$this->assertSame(
 			'Conceived at T3DD13',
-			$this->fixture->getIcon()
+			$this->subject->getIcon()
 		);
 	}
 
@@ -59,7 +59,7 @@ class DocumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->assertEquals(
 			$newObjectStorage,
-			$this->fixture->getTranslations()
+			$this->subject->getTranslations()
 		);
 	}
 
@@ -70,11 +70,11 @@ class DocumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$translation = new \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation();
 		$objectStorageHoldingExactlyOneTranslations = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorageHoldingExactlyOneTranslations->attach($translation);
-		$this->fixture->setTranslations($objectStorageHoldingExactlyOneTranslations);
+		$this->subject->setTranslations($objectStorageHoldingExactlyOneTranslations);
 
 		$this->assertSame(
 			$objectStorageHoldingExactlyOneTranslations,
-			$this->fixture->getTranslations()
+			$this->subject->getTranslations()
 		);
 	}
 
@@ -85,11 +85,11 @@ class DocumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$translation = new \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation();
 		$objectStorageHoldingExactlyOneTranslation = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$objectStorageHoldingExactlyOneTranslation->attach($translation);
-		$this->fixture->addTranslation($translation);
+		$this->subject->addTranslation($translation);
 
 		$this->assertEquals(
 			$objectStorageHoldingExactlyOneTranslation,
-			$this->fixture->getTranslations()
+			$this->subject->getTranslations()
 		);
 	}
 
@@ -101,12 +101,12 @@ class DocumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$localObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$localObjectStorage->attach($translation);
 		$localObjectStorage->detach($translation);
-		$this->fixture->addTranslation($translation);
-		$this->fixture->removeTranslation($translation);
+		$this->subject->addTranslation($translation);
+		$this->subject->removeTranslation($translation);
 
 		$this->assertEquals(
 			$localObjectStorage,
-			$this->fixture->getTranslations()
+			$this->subject->getTranslations()
 		);
 	}
 

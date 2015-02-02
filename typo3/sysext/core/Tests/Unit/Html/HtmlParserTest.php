@@ -24,10 +24,10 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\Html\HtmlParser
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Html\HtmlParser();
+		$this->subject = new \TYPO3\CMS\Core\Html\HtmlParser();
 	}
 
 	/**
@@ -229,7 +229,7 @@ Value 2.2
 	 * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected) {
-		$this->assertSame($expected, $this->fixture->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
+		$this->assertSame($expected, $this->subject->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
 	}
 
 	/**
@@ -263,7 +263,7 @@ Value 2.2
 	 * @dataProvider cDataWillRemainUnmodifiedDataProvider
 	 */
 	public function xHtmlCleaningDoesNotModifyCDATA($source, $expected) {
-		$result = $this->fixture->XHTML_clean($source);
+		$result = $this->subject->XHTML_clean($source);
 		$this->assertSame($expected, $result);
 	}
 

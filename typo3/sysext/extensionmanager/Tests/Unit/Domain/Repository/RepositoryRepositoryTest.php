@@ -28,12 +28,12 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
 		$this->mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-		/** @var $fixture \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
-		$this->fixture = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findAll'), array($this->mockObjectManager));
+		/** @var $subject \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
+		$this->subject = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class, array('findAll'), array($this->mockObjectManager));
 	}
 
 	/**
@@ -41,12 +41,12 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function findOneTypo3OrgRepositoryReturnsNullIfNoRepositoryWithThisTitleExists() {
 
-		$this->fixture
+		$this->subject
 			->expects($this->once())
 			->method('findAll')
 			->will($this->returnValue(array()));
 
-		$this->assertNull($this->fixture->findOneTypo3OrgRepository());
+		$this->assertNull($this->subject->findOneTypo3OrgRepository());
 	}
 
 	/**
@@ -64,12 +64,12 @@ class RepositoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->method('getTitle')
 			->will($this->returnValue('TYPO3.org Main Repository'));
 
-		$this->fixture
+		$this->subject
 			->expects($this->once())
 			->method('findAll')
 			->will($this->returnValue(array($mockModelOne, $mockModelTwo)));
 
-		$this->assertSame($mockModelTwo, $this->fixture->findOneTypo3OrgRepository());
+		$this->assertSame($mockModelTwo, $this->subject->findOneTypo3OrgRepository());
 	}
 
 }

@@ -24,7 +24,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Collection\RecordCollectionRepository
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Database\DatabaseConnection
@@ -54,8 +54,8 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			\TYPO3\CMS\Core\Database\DatabaseConnection::class,
 			array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows', 'fullQuoteStr')
 		);
-		$this->fixture = $this->getMock(\TYPO3\CMS\Core\Collection\RecordCollectionRepository::class, array('getDatabaseConnection'));
-		$this->fixture->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($this->databaseMock));
+		$this->subject = $this->getMock(\TYPO3\CMS\Core\Collection\RecordCollectionRepository::class, array('getDatabaseConnection'));
+		$this->subject->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($this->databaseMock));
 		$this->testTableName = $this->getUniqueId('tx_testtable');
 	}
 
@@ -66,7 +66,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$testUid = rand(1, 1000);
 		$this->databaseMock->expects($this->once())->method('exec_SELECTgetSingleRow')->will($this->returnCallback(array($this, 'getSingleRowCallback')));
 		$this->getSingleRowCallbackReturnValue = NULL;
-		$object = $this->fixture->findByUid($testUid);
+		$object = $this->subject->findByUid($testUid);
 		$this->assertNull($object);
 	}
 
@@ -81,7 +81,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'type' => \TYPO3\CMS\Core\Collection\RecordCollectionRepository::TYPE_Static,
 			'table_name' => $this->testTableName
 		);
-		$object = $this->fixture->findByUid($testUid);
+		$object = $this->subject->findByUid($testUid);
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $object);
 	}
 
@@ -96,7 +96,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'uid' => $testUid,
 			'type' => $this->getUniqueId('unknown')
 		);
-		$object = $this->fixture->findByUid($testUid);
+		$object = $this->subject->findByUid($testUid);
 	}
 
 	/**
@@ -106,7 +106,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$type = \TYPO3\CMS\Core\Collection\RecordCollectionRepository::TYPE_Static;
 		$this->databaseMock->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnCallback(array($this, 'getRowsCallback')));
 		$this->getRowsCallbackReturnValue = NULL;
-		$objects = $this->fixture->findByType($type);
+		$objects = $this->subject->findByType($type);
 		$this->assertNull($objects);
 	}
 
@@ -121,7 +121,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
 			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName)
 		);
-		$objects = $this->fixture->findByType($type);
+		$objects = $this->subject->findByType($type);
 		$this->assertEquals(2, count($objects));
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $objects[0]);
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $objects[1]);
@@ -134,7 +134,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$testTable = $this->getUniqueId('sys_collection_');
 		$this->databaseMock->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnCallback(array($this, 'getRowsCallback')));
 		$this->getRowsCallbackReturnValue = NULL;
-		$objects = $this->fixture->findByTableName($testTable);
+		$objects = $this->subject->findByTableName($testTable);
 		$this->assertNull($objects);
 	}
 
@@ -150,7 +150,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
 			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName)
 		);
-		$objects = $this->fixture->findByTableName($testTable);
+		$objects = $this->subject->findByTableName($testTable);
 		$this->assertEquals(2, count($objects));
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $objects[0]);
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $objects[1]);
@@ -164,7 +164,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$type = \TYPO3\CMS\Core\Collection\RecordCollectionRepository::TYPE_Static;
 		$this->databaseMock->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnCallback(array($this, 'getRowsCallback')));
 		$this->getRowsCallbackReturnValue = NULL;
-		$objects = $this->fixture->findByTypeAndTableName($type, $testTable);
+		$objects = $this->subject->findByTypeAndTableName($type, $testTable);
 		$this->assertNull($objects);
 	}
 
@@ -180,7 +180,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName),
 			array('uid' => $testUid, 'type' => $type, 'table_name' => $this->testTableName)
 		);
-		$objects = $this->fixture->findByTypeAndTableName($type, $testTable);
+		$objects = $this->subject->findByTypeAndTableName($type, $testTable);
 		$this->assertEquals(2, count($objects));
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $objects[0]);
 		$this->assertInstanceOf(\TYPO3\CMS\Core\Collection\StaticRecordCollection::class, $objects[1]);

@@ -24,10 +24,10 @@ class RegExpFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\RegExpFilter
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\RegExpFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\RegExpFilter();
 	}
 
 	public function dataProvider() {
@@ -55,10 +55,10 @@ class RegExpFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider dataProvider
 	 */
 	public function filterForStringReturnsInputWithoutCharactersMatchedByRegularExpression($input, $regularExpression, $expected) {
-		$this->fixture->setRegularExpression($regularExpression);
+		$this->subject->setRegularExpression($regularExpression);
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

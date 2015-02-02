@@ -24,10 +24,10 @@ class LowerCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\LowerCaseFilter
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Form\Filter\LowerCaseFilter();
+		$this->subject = new \TYPO3\CMS\Form\Filter\LowerCaseFilter();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
@@ -50,7 +50,7 @@ class LowerCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function filterForVariousInputReturnsLowercasedInput($input, $expected) {
 		$this->assertSame(
 			$expected,
-			$this->fixture->filter($input)
+			$this->subject->filter($input)
 		);
 	}
 

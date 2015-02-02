@@ -24,13 +24,13 @@ class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider
 	 */
-	protected $fixture;
+	protected $subject;
 
 	/**
 	 * Setup
 	 */
 	protected function setUp() {
-		$this->fixture = $this->getAccessibleMock(\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider::class, array('dummy'), array(), '', FALSE);
+		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider::class, array('dummy'), array(), '', FALSE);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function process_youtube($url, $expected) {
-		$result = $this->fixture->_call('process_youtube', $url);
+		$result = $this->subject->_call('process_youtube', $url);
 		$this->assertEquals($expected, $result);
 	}
 

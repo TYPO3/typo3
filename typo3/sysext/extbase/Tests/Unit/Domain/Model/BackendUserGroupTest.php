@@ -22,17 +22,17 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
+		$this->subject = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTitle());
+		$this->assertSame('', $this->subject->getTitle());
 	}
 
 	/**
@@ -40,15 +40,15 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTitleSetsTitle() {
 		$title = 'foo bar';
-		$this->fixture->setTitle($title);
-		$this->assertSame($title, $this->fixture->getTitle());
+		$this->subject->setTitle($title);
+		$this->assertSame($title, $this->subject->getTitle());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getDescriptionInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getDescription());
+		$this->assertSame('', $this->subject->getDescription());
 	}
 
 	/**
@@ -56,8 +56,8 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setDescriptionSetsDescription() {
 		$description = 'foo bar';
-		$this->fixture->setDescription($description);
-		$this->assertSame($description, $this->fixture->getDescription());
+		$this->subject->setDescription($description);
+		$this->assertSame($description, $this->subject->getDescription());
 	}
 
 	/**
@@ -65,8 +65,8 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setSubGroupsSetsSubgroups() {
 		$subGroups = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->fixture->setSubGroups($subGroups);
-		$this->assertSame($subGroups, $this->fixture->getSubGroups());
+		$this->subject->setSubGroups($subGroups);
+		$this->assertSame($subGroups, $this->subject->getSubGroups());
 	}
 
 	/**
@@ -77,13 +77,13 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$group1->setTitle('foo');
 		$group2 = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 		$group2->setTitle('bar');
-		$this->fixture->addSubGroup($group1);
-		$this->fixture->addSubGroup($group2);
-		$this->assertEquals(count($this->fixture->getSubGroups()), 2);
-		$this->fixture->removeSubGroup($group1);
-		$this->assertEquals(count($this->fixture->getSubGroups()), 1);
-		$this->fixture->removeSubGroup($group2);
-		$this->assertEquals(count($this->fixture->getSubGroups()), 0);
+		$this->subject->addSubGroup($group1);
+		$this->subject->addSubGroup($group2);
+		$this->assertEquals(count($this->subject->getSubGroups()), 2);
+		$this->subject->removeSubGroup($group1);
+		$this->assertEquals(count($this->subject->getSubGroups()), 1);
+		$this->subject->removeSubGroup($group2);
+		$this->assertEquals(count($this->subject->getSubGroups()), 0);
 	}
 
 	/**
@@ -94,17 +94,17 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$group1->setTitle('foo');
 		$group2 = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 		$group2->setTitle('bar');
-		$this->fixture->addSubGroup($group1);
-		$this->fixture->addSubGroup($group2);
-		$this->fixture->removeAllSubGroups();
-		$this->assertEquals(count($this->fixture->getSubGroups()), 0);
+		$this->subject->addSubGroup($group1);
+		$this->subject->addSubGroup($group2);
+		$this->subject->removeAllSubGroups();
+		$this->assertEquals(count($this->subject->getSubGroups()), 0);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getModulesInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getModules());
+		$this->assertSame('', $this->subject->getModules());
 	}
 
 	/**
@@ -112,15 +112,15 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setModulesSetsModules() {
 		$modules = 'foo,bar';
-		$this->fixture->setModules($modules);
-		$this->assertSame($modules, $this->fixture->getModules());
+		$this->subject->setModules($modules);
+		$this->assertSame($modules, $this->subject->getModules());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTablesListeningInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTablesListening());
+		$this->assertSame('', $this->subject->getTablesListening());
 	}
 
 	/**
@@ -128,22 +128,22 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTablesListeningSetsTablesListening() {
 		$tablesListening = 'foo,bar';
-		$this->fixture->setTablesListening($tablesListening);
-		$this->assertSame($tablesListening, $this->fixture->getTablesListening());
+		$this->subject->setTablesListening($tablesListening);
+		$this->assertSame($tablesListening, $this->subject->getTablesListening());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTablesModifyInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTablesModify());
+		$this->assertSame('', $this->subject->getTablesModify());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPageTypesInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getPageTypes());
+		$this->assertSame('', $this->subject->getPageTypes());
 	}
 
 	/**
@@ -151,8 +151,8 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setPageTypesSetsPageTypes() {
 		$pageTypes = 'foo,bar';
-		$this->fixture->setPageTypes($pageTypes);
-		$this->assertSame($pageTypes, $this->fixture->getPageTypes());
+		$this->subject->setPageTypes($pageTypes);
+		$this->assertSame($pageTypes, $this->subject->getPageTypes());
 	}
 
 	/**
@@ -160,15 +160,15 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTablesModifySetsTablesModify() {
 		$tablesModify = 'foo,bar';
-		$this->fixture->setTablesModify($tablesModify);
-		$this->assertSame($tablesModify, $this->fixture->getTablesModify());
+		$this->subject->setTablesModify($tablesModify);
+		$this->assertSame($tablesModify, $this->subject->getTablesModify());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAllowedExcludeFieldsInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getAllowedExcludeFields());
+		$this->assertSame('', $this->subject->getAllowedExcludeFields());
 	}
 
 	/**
@@ -176,15 +176,15 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setAllowedExcludeFieldsSetsAllowedExcludeFields() {
 		$allowedExcludeFields = 'foo,bar';
-		$this->fixture->setAllowedExcludeFields($allowedExcludeFields);
-		$this->assertSame($allowedExcludeFields, $this->fixture->getAllowedExcludeFields());
+		$this->subject->setAllowedExcludeFields($allowedExcludeFields);
+		$this->assertSame($allowedExcludeFields, $this->subject->getAllowedExcludeFields());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getExplicitlyAllowAndDenyInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getExplicitlyAllowAndDeny());
+		$this->assertSame('', $this->subject->getExplicitlyAllowAndDeny());
 	}
 
 	/**
@@ -192,15 +192,15 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setExplicitlyAllowAndDenySetsExplicitlyAllowAndDeny() {
 		$explicitlyAllowAndDeny = 'foo,bar';
-		$this->fixture->setExplicitlyAllowAndDeny($explicitlyAllowAndDeny);
-		$this->assertSame($explicitlyAllowAndDeny, $this->fixture->getExplicitlyAllowAndDeny());
+		$this->subject->setExplicitlyAllowAndDeny($explicitlyAllowAndDeny);
+		$this->assertSame($explicitlyAllowAndDeny, $this->subject->getExplicitlyAllowAndDeny());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAllowedLanguagesInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getAllowedLanguages());
+		$this->assertSame('', $this->subject->getAllowedLanguages());
 	}
 
 	/**
@@ -208,30 +208,30 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setAllowedLanguagesSetsAllowedLanguages() {
 		$allowedLanguages = '1,0';
-		$this->fixture->setAllowedLanguages($allowedLanguages);
-		$this->assertSame($allowedLanguages, $this->fixture->getAllowedLanguages());
+		$this->subject->setAllowedLanguages($allowedLanguages);
+		$this->assertSame($allowedLanguages, $this->subject->getAllowedLanguages());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getWorkspacePermissionInitiallyReturnsFalse() {
-		$this->assertFalse($this->fixture->getWorkspacePermission());
+		$this->assertFalse($this->subject->getWorkspacePermission());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setWorkspacePermissionSetsWorkspacePermission() {
-		$this->fixture->setWorkspacePermissions(TRUE);
-		$this->assertTrue($this->fixture->getWorkspacePermission());
+		$this->subject->setWorkspacePermissions(TRUE);
+		$this->assertTrue($this->subject->getWorkspacePermission());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getDatabaseMountsInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getDatabaseMounts());
+		$this->assertSame('', $this->subject->getDatabaseMounts());
 	}
 
 	/**
@@ -239,15 +239,15 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setDatabaseMountsSetsDatabaseMounts() {
 		$mounts = '1,42';
-		$this->fixture->setDatabaseMounts($mounts);
-		$this->assertSame($mounts, $this->fixture->getDatabaseMounts());
+		$this->subject->setDatabaseMounts($mounts);
+		$this->assertSame($mounts, $this->subject->getDatabaseMounts());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getFileOperationPermissionsInitiallyReturnsZero() {
-		$this->assertSame(0, $this->fixture->getFileOperationPermissions());
+		$this->assertSame(0, $this->subject->getFileOperationPermissions());
 	}
 
 	/**
@@ -255,170 +255,170 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setFileOperationPermissionsSetsFileOperationPermissions() {
 		$permission = 7;
-		$this->fixture->setFileOperationPermissions($permission);
-		$this->assertSame($permission, $this->fixture->getFileOperationPermissions());
+		$this->subject->setFileOperationPermissions($permission);
+		$this->assertSame($permission, $this->subject->getFileOperationPermissions());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsFileOperationAllowedReturnsFalse() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse($this->fixture->isFileOperationAllowed());
-		$this->fixture->setFileOperationPermissions(2);
-		$this->assertFalse($this->fixture->isFileOperationAllowed());
-		$this->fixture->setFileOperationPermissions(6);
-		$this->assertFalse($this->fixture->isFileOperationAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->assertFalse($this->subject->isFileOperationAllowed());
+		$this->subject->setFileOperationPermissions(2);
+		$this->assertFalse($this->subject->isFileOperationAllowed());
+		$this->subject->setFileOperationPermissions(6);
+		$this->assertFalse($this->subject->isFileOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsFileOperationAllowedReturnsTrue() {
-		$this->fixture->setFileOperationPermissions(1);
-		$this->assertTrue($this->fixture->isFileOperationAllowed());
-		$this->fixture->setFileOperationPermissions(3);
-		$this->assertTrue($this->fixture->isFileOperationAllowed());
+		$this->subject->setFileOperationPermissions(1);
+		$this->assertTrue($this->subject->isFileOperationAllowed());
+		$this->subject->setFileOperationPermissions(3);
+		$this->assertTrue($this->subject->isFileOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setFileOperationAllowedSetsFileOperationAllowed() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->fixture->setFileOperationAllowed(TRUE);
-		$this->assertTrue($this->fixture->isFileOperationAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->subject->setFileOperationAllowed(TRUE);
+		$this->assertTrue($this->subject->isFileOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsFileUnzipAllowedReturnsFalse() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse($this->fixture->isFileUnzipAllowed());
-		$this->fixture->setFileOperationPermissions(1);
-		$this->assertFalse($this->fixture->isFileUnzipAllowed());
-		$this->fixture->setFileOperationPermissions(5);
-		$this->assertFalse($this->fixture->isFileUnzipAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->assertFalse($this->subject->isFileUnzipAllowed());
+		$this->subject->setFileOperationPermissions(1);
+		$this->assertFalse($this->subject->isFileUnzipAllowed());
+		$this->subject->setFileOperationPermissions(5);
+		$this->assertFalse($this->subject->isFileUnzipAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsFileUnzipAllowedReturnsTrue() {
-		$this->fixture->setFileOperationPermissions(2);
-		$this->assertTrue($this->fixture->isFileUnzipAllowed());
-		$this->fixture->setFileOperationPermissions(3);
-		$this->assertTrue($this->fixture->isFileUnzipAllowed());
+		$this->subject->setFileOperationPermissions(2);
+		$this->assertTrue($this->subject->isFileUnzipAllowed());
+		$this->subject->setFileOperationPermissions(3);
+		$this->assertTrue($this->subject->isFileUnzipAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setFileUnzipAllowedSetsFileUnzipAllowed() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->fixture->setFileUnzipAllowed(TRUE);
-		$this->assertTrue($this->fixture->isFileUnzipAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->subject->setFileUnzipAllowed(TRUE);
+		$this->assertTrue($this->subject->isFileUnzipAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsDirectoryRemoveRecursivelyAllowedReturnsFalse() {
-		$this->fixture->setFileOperationPermissions(1);
-		$this->assertFalse($this->fixture->isDirectoryRemoveRecursivelyAllowed());
-		$this->fixture->setFileOperationPermissions(15);
-		$this->assertFalse($this->fixture->isDirectoryRemoveRecursivelyAllowed());
-		$this->fixture->setFileOperationPermissions(7);
-		$this->assertFalse($this->fixture->isDirectoryRemoveRecursivelyAllowed());
+		$this->subject->setFileOperationPermissions(1);
+		$this->assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
+		$this->subject->setFileOperationPermissions(15);
+		$this->assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
+		$this->subject->setFileOperationPermissions(7);
+		$this->assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsDirectoryRemoveRecursivelyAllowedReturnsTrue() {
-		$this->fixture->setFileOperationPermissions(16);
-		$this->assertTrue($this->fixture->isDirectoryRemoveRecursivelyAllowed());
-		$this->fixture->setFileOperationPermissions(31);
-		$this->assertTrue($this->fixture->isDirectoryRemoveRecursivelyAllowed());
+		$this->subject->setFileOperationPermissions(16);
+		$this->assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
+		$this->subject->setFileOperationPermissions(31);
+		$this->assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setDirectoryRemoveRecursivelyAllowedSetsDirectoryRemoveRecursivelyAllowed() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->fixture->setDirectoryRemoveRecursivelyAllowed(TRUE);
-		$this->assertTrue($this->fixture->isDirectoryRemoveRecursivelyAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->subject->setDirectoryRemoveRecursivelyAllowed(TRUE);
+		$this->assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsDirectoryCopyAllowedReturnsFalse() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse($this->fixture->isDirectoryCopyAllowed());
-		$this->fixture->setFileOperationPermissions(7);
-		$this->assertFalse($this->fixture->isDirectoryCopyAllowed());
-		$this->fixture->setFileOperationPermissions(23);
-		$this->assertFalse($this->fixture->isDirectoryCopyAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->assertFalse($this->subject->isDirectoryCopyAllowed());
+		$this->subject->setFileOperationPermissions(7);
+		$this->assertFalse($this->subject->isDirectoryCopyAllowed());
+		$this->subject->setFileOperationPermissions(23);
+		$this->assertFalse($this->subject->isDirectoryCopyAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsDirectoryCopyAllowedReturnsTrue() {
-		$this->fixture->setFileOperationPermissions(8);
-		$this->assertTrue($this->fixture->isDirectoryCopyAllowed());
-		$this->fixture->setFileOperationPermissions(15);
-		$this->assertTrue($this->fixture->isDirectoryCopyAllowed());
+		$this->subject->setFileOperationPermissions(8);
+		$this->assertTrue($this->subject->isDirectoryCopyAllowed());
+		$this->subject->setFileOperationPermissions(15);
+		$this->assertTrue($this->subject->isDirectoryCopyAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setDirectoryCopyAllowedSetsDirectoryCopyAllowed() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->fixture->setDirectoryCopyAllowed(TRUE);
-		$this->assertTrue($this->fixture->isDirectoryCopyAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->subject->setDirectoryCopyAllowed(TRUE);
+		$this->assertTrue($this->subject->isDirectoryCopyAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsDirectoryOperationAllowedReturnsFalse() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->assertFalse($this->fixture->isDirectoryOperationAllowed());
-		$this->fixture->setFileOperationPermissions(3);
-		$this->assertFalse($this->fixture->isDirectoryOperationAllowed());
-		$this->fixture->setFileOperationPermissions(11);
-		$this->assertFalse($this->fixture->isDirectoryOperationAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->assertFalse($this->subject->isDirectoryOperationAllowed());
+		$this->subject->setFileOperationPermissions(3);
+		$this->assertFalse($this->subject->isDirectoryOperationAllowed());
+		$this->subject->setFileOperationPermissions(11);
+		$this->assertFalse($this->subject->isDirectoryOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsDirectoryOperationAllowedReturnsTrue() {
-		$this->fixture->setFileOperationPermissions(4);
-		$this->assertTrue($this->fixture->isDirectoryOperationAllowed());
-		$this->fixture->setFileOperationPermissions(7);
-		$this->assertTrue($this->fixture->isDirectoryOperationAllowed());
+		$this->subject->setFileOperationPermissions(4);
+		$this->assertTrue($this->subject->isDirectoryOperationAllowed());
+		$this->subject->setFileOperationPermissions(7);
+		$this->assertTrue($this->subject->isDirectoryOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setDirectoryOperationAllowedSetsDirectoryOperationAllowed() {
-		$this->fixture->setFileOperationPermissions(0);
-		$this->fixture->setDirectoryoperationAllowed(TRUE);
-		$this->assertTrue($this->fixture->isDirectoryOperationAllowed());
+		$this->subject->setFileOperationPermissions(0);
+		$this->subject->setDirectoryoperationAllowed(TRUE);
+		$this->assertTrue($this->subject->isDirectoryOperationAllowed());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getLockToDomainInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getLockToDomain());
+		$this->assertSame('', $this->subject->getLockToDomain());
 	}
 
 	/**
@@ -426,30 +426,30 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setLockToDomainSetsLockToDomain() {
 		$lockToDomain = 'foo.bar';
-		$this->fixture->setLockToDomain($lockToDomain);
-		$this->assertSame($lockToDomain, $this->fixture->getLockToDomain());
+		$this->subject->setLockToDomain($lockToDomain);
+		$this->assertSame($lockToDomain, $this->subject->getLockToDomain());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getHideInListInitiallyReturnsFalse() {
-		$this->assertFalse($this->fixture->getHideInList());
+		$this->assertFalse($this->subject->getHideInList());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setHideInListSetsHideInList() {
-		$this->fixture->setHideInList(TRUE);
-		$this->assertTrue($this->fixture->getHideInList());
+		$this->subject->setHideInList(TRUE);
+		$this->assertTrue($this->subject->getHideInList());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTsConfigInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTsConfig());
+		$this->assertSame('', $this->subject->getTsConfig());
 	}
 
 	/**
@@ -457,8 +457,8 @@ class BackendUserGroupTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTsConfigSetsTsConfig() {
 		$tsConfig = 'foo bar';
-		$this->fixture->setTsConfig($tsConfig);
-		$this->assertSame($tsConfig, $this->fixture->getTsConfig());
+		$this->subject->setTsConfig($tsConfig);
+		$this->assertSame($tsConfig, $this->subject->getTsConfig());
 	}
 
 }

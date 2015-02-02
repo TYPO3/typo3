@@ -22,24 +22,24 @@ class BackendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Model\BackendUser
 	 */
-	protected $fixture;
+	protected $subject;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Beuser\Domain\Model\BackendUser();
+		$this->subject = new \TYPO3\CMS\Beuser\Domain\Model\BackendUser();
 	}
 
 	/**
 	 * @test
 	 */
 	public function getUidReturnsInitialValueForInt() {
-		$this->assertTrue($this->fixture->getUid() === NULL, 'Not uid set after initialization.');
+		$this->assertTrue($this->subject->getUid() === NULL, 'Not uid set after initialization.');
 	}
 
 	/**
 	 * @test
 	 */
 	public function getUserNameReturnsInitialValueForString() {
-		$this->assertTrue($this->fixture->getUserName() === '', 'Username not empty');
+		$this->assertTrue($this->subject->getUserName() === '', 'Username not empty');
 	}
 
 	/**
@@ -47,15 +47,15 @@ class BackendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setUserNameForStringSetsUserName() {
 		$newUserName = 'DonJuan';
-		$this->fixture->setUserName($newUserName);
-		$this->assertSame($this->fixture->getUserName(), $newUserName);
+		$this->subject->setUserName($newUserName);
+		$this->assertSame($this->subject->getUserName(), $newUserName);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getRealNameReturnInitialValueForString() {
-		$this->assertTrue($this->fixture->getRealName() === '', 'Real name not empty');
+		$this->assertTrue($this->subject->getRealName() === '', 'Real name not empty');
 	}
 
 	/**
@@ -63,31 +63,31 @@ class BackendUserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setRealNameForStringSetsName() {
 		$realName = 'Conceived at T3CON2018';
-		$this->fixture->setRealName($realName);
-		$this->assertSame($this->fixture->getRealName(), $realName);
+		$this->subject->setRealName($realName);
+		$this->assertSame($this->subject->getRealName(), $realName);
 	}
 
 	/**
 	 * @test
 	 */
 	public function getAdminReturnInitialValueForBoolean() {
-		$this->assertTrue($this->fixture->getIsAdministrator() === FALSE, 'Admin status is correct.');
+		$this->assertTrue($this->subject->getIsAdministrator() === FALSE, 'Admin status is correct.');
 	}
 
 	/**
 	 * @test
 	 */
 	public function setAdminToTrueSetsAdmin() {
-		$this->fixture->setIsAdministrator(TRUE);
-		$this->assertTrue($this->fixture->getIsAdministrator(), 'Admin status is not true, after setting to true.');
+		$this->subject->setIsAdministrator(TRUE);
+		$this->assertTrue($this->subject->getIsAdministrator(), 'Admin status is not true, after setting to true.');
 	}
 
 	/**
 	 * @test
 	 */
 	public function setAdminToFalseSetsAdmin() {
-		$this->fixture->setIsAdministrator(FALSE);
-		$this->assertFalse($this->fixture->getIsAdministrator(), 'Admin status is not false, after setting to false.');
+		$this->subject->setIsAdministrator(FALSE);
+		$this->assertFalse($this->subject->getIsAdministrator(), 'Admin status is not false, after setting to false.');
 	}
 
 }

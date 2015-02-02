@@ -23,14 +23,14 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	/**
 	 * Set up this testcase
 	 */
 	protected function setUp() {
 		$proxy = $this->buildAccessibleProxy(\TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::class);
-		$this->fixture = new $proxy();
+		$this->subject = new $proxy();
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$GLOBALS['TSFE'] = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array($GLOBALS['TYPO3_CONF_VARS'], 1, 1));
 		$GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
@@ -46,8 +46,8 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function prepareSectionIndexTest() {
-		$this->fixture->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
-		$this->fixture->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$this->subject->sys_page = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$this->subject->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 	}
 
 	/**
@@ -55,8 +55,8 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sectionIndexReturnsEmptyArrayIfTheRequestedPageCouldNotBeFetched() {
 		$this->prepareSectionIndexTest();
-		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(NULL));
-		$result = $this->fixture->_call('sectionIndex', 'field');
+		$this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(NULL));
+		$result = $this->subject->_call('sectionIndex', 'field');
 		$this->assertEquals($result, array());
 	}
 
@@ -65,9 +65,9 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sectionIndexUsesTheInternalIdIfNoPageIdWasGiven() {
 		$this->prepareSectionIndexTest();
-		$this->fixture->id = 10;
-		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(NULL))->with(10);
-		$result = $this->fixture->_call('sectionIndex', 'field');
+		$this->subject->id = 10;
+		$this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(NULL))->with(10);
+		$result = $this->subject->_call('sectionIndex', 'field');
 		$this->assertEquals($result, array());
 	}
 
@@ -77,9 +77,9 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sectionIndexThrowsAnExceptionIfTheInternalQueryFails() {
 		$this->prepareSectionIndexTest();
-		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
-		$this->fixture->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(0));
-		$this->fixture->_call('sectionIndex', 'field');
+		$this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
+		$this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(0));
+		$this->subject->_call('sectionIndex', 'field');
 	}
 
 	/**
@@ -87,13 +87,13 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage() {
 		$this->prepareSectionIndexTest();
-		$this->fixture->mconf['sectionIndex.']['type'] = 'all';
+		$this->subject->mconf['sectionIndex.']['type'] = 'all';
 		$GLOBALS['TSFE']->sys_language_contentOL = 1;
-		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array('_PAGES_OVERLAY_LANGUAGE' => 1)));
-		$this->fixture->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
+		$this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array('_PAGES_OVERLAY_LANGUAGE' => 1)));
+		$this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
 		$GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue(array('uid' => 0, 'header' => 'NOT_OVERLAID')), $this->returnValue(FALSE)));
-		$this->fixture->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(array('uid' => 0, 'header' => 'OVERLAID')));
-		$result = $this->fixture->_call('sectionIndex', 'field');
+		$this->subject->sys_page->expects($this->once())->method('getRecordOverlay')->will($this->returnValue(array('uid' => 0, 'header' => 'OVERLAID')));
+		$result = $this->subject->_call('sectionIndex', 'field');
 		$this->assertEquals($result[0]['title'], 'OVERLAID');
 	}
 
@@ -145,11 +145,11 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sectionIndexFilters($expectedAmount, array $dataRow) {
 		$this->prepareSectionIndexTest();
-		$this->fixture->mconf['sectionIndex.']['type'] = 'header';
-		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
-		$this->fixture->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
+		$this->subject->mconf['sectionIndex.']['type'] = 'header';
+		$this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
+		$this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->will($this->returnValue(1));
 		$GLOBALS['TYPO3_DB']->expects($this->exactly(2))->method('sql_fetch_assoc')->will($this->onConsecutiveCalls($this->returnValue($dataRow), $this->returnValue(FALSE)));
-		$result = $this->fixture->_call('sectionIndex', 'field');
+		$result = $this->subject->_call('sectionIndex', 'field');
 		$this->assertCount($expectedAmount, $result);
 	}
 
@@ -189,16 +189,16 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function sectionIndexQueriesWithDifferentColPos($configuration, $whereClausePrefix) {
 		$this->prepareSectionIndexTest();
-		$this->fixture->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
-		$this->fixture->mconf['sectionIndex.'] = $configuration;
+		$this->subject->sys_page->expects($this->once())->method('getPage')->will($this->returnValue(array()));
+		$this->subject->mconf['sectionIndex.'] = $configuration;
 		$queryConfiguration = array(
 			'pidInList' => 12,
 			'orderBy' => 'field',
 			'languageField' => 'sys_language_uid',
 			'where' => $whereClausePrefix
 		);
-		$this->fixture->parent_cObj->expects($this->once())->method('exec_getQuery')->with('tt_content', $queryConfiguration)->will($this->returnValue(1));
-		$this->fixture->_call('sectionIndex', 'field', 12);
+		$this->subject->parent_cObj->expects($this->once())->method('exec_getQuery')->with('tt_content', $queryConfiguration)->will($this->returnValue(1));
+		$this->subject->_call('sectionIndex', 'field', 12);
 	}
 
 	////////////////////////////////////
@@ -252,15 +252,15 @@ class AbstractMenuContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 
 		$this->prepareSectionIndexTest();
-		$this->fixture->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array());
+		$this->subject->parent_cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array());
 
-		$this->fixture->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
-		$this->fixture->menuArr = array(
+		$this->subject->sys_page->expects($this->once())->method('getMenu')->will($this->returnValue($menu));
+		$this->subject->menuArr = array(
 			0 => array('uid' => 1)
 		);
-		$this->fixture->conf['excludeUidList'] = $excludeUidList;
+		$this->subject->conf['excludeUidList'] = $excludeUidList;
 
-		$this->assertEquals($expectedResult, $this->fixture->isItemState('IFSUB', 0));
+		$this->assertEquals($expectedResult, $this->subject->isItemState('IFSUB', 0));
 	}
 
 }

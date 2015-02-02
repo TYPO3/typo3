@@ -22,17 +22,17 @@ class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Model\FileMount
 	 */
-	protected $fixture = NULL;
+	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+		$this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
 	}
 
 	/**
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getTitle());
+		$this->assertSame('', $this->subject->getTitle());
 	}
 
 	/**
@@ -40,15 +40,15 @@ class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setTitleSetsTitle() {
 		$title = 'foobar mount';
-		$this->fixture->setTitle($title);
-		$this->assertSame($title, $this->fixture->getTitle());
+		$this->subject->setTitle($title);
+		$this->assertSame($title, $this->subject->getTitle());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPathInitiallyReturnsEmptyString() {
-		$this->assertSame('', $this->fixture->getPath());
+		$this->assertSame('', $this->subject->getPath());
 	}
 
 	/**
@@ -56,23 +56,23 @@ class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function setPathSetsPath() {
 		$path = 'foo/bar/';
-		$this->fixture->setPath($path);
-		$this->assertSame($path, $this->fixture->getPath());
+		$this->subject->setPath($path);
+		$this->assertSame($path, $this->subject->getPath());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getIsAbsolutePathInitiallyReturnsFalse() {
-		$this->assertFalse($this->fixture->getIsAbsolutePath());
+		$this->assertFalse($this->subject->getIsAbsolutePath());
 	}
 
 	/**
 	 * @test
 	 */
 	public function setIsAbsolutePathCanSetBaseIsAbsolutePathToTrue() {
-		$this->fixture->setIsAbsolutePath(TRUE);
-		$this->assertTrue($this->fixture->getIsAbsolutePath());
+		$this->subject->setIsAbsolutePath(TRUE);
+		$this->assertTrue($this->subject->getIsAbsolutePath());
 	}
 
 }
