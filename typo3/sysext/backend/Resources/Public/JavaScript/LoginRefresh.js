@@ -33,7 +33,8 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 		isTimingOut: false,
 		$timeoutModal: '',
 		$backendLockedModal: '',
-		$loginForm: ''
+		$loginForm: '',
+		loginFramesetUrl: ''
 	};
 
 	/**
@@ -226,10 +227,17 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 	};
 
 	/**
+	 * Set login frameset url
+	 */
+	LoginRefresh.setLoginFramesetUrl = function(loginFramesetUrl) {
+		LoginRefresh.loginFramesetUrl = loginFramesetUrl;
+	};
+
+	/**
 	 * Opens the login form in a new window.
 	 */
 	LoginRefresh.showLoginPopup = function() {
-		var vHWin = window.open('login_frameset.php', 'relogin_' + TYPO3.configuration.uniqueID, 'height=450,width=700,status=0,menubar=0,location=1');
+		var vHWin = window.open(LoginRefresh.loginFramesetUrl, 'relogin_' + TYPO3.configuration.uniqueID, 'height=450,width=700,status=0,menubar=0,location=1');
 		vHWin.focus();
 	};
 

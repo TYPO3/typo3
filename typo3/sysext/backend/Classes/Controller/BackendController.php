@@ -128,7 +128,9 @@ class BackendController {
 			'util' => 'sysext/backend/Resources/Public/JavaScript/util.js'
 		);
 		if (!$this->debug) {
-			$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh');
+			$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
+				LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');
+			}');
 		}
 
 		// load FlashMessages functionality

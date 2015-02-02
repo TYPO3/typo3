@@ -8,6 +8,12 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/RecordHistory/'
 	);
 
+	// Register login frameset
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'login_frameset',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/LoginFrameset/'
+	);
+
 	// Register file_edit
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_edit',
