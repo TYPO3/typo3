@@ -20,15 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
 class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository
-	 */
-	protected $fixture = NULL;
-
-	protected function setUp() {
-		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository($this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class));
-	}
-
-	/**
 	 * @test
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
