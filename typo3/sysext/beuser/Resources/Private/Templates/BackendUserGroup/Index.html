@@ -1,0 +1,47 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl=' + T3_THIS_LOCATION + '&amp;edit[be_groups][0]=new'; return false;"><be:spriteManagerIcon iconName="actions-document-new" /></a>
+</f:section>
+
+<f:section name="headline">
+	<h1><f:translate key="backendUserGroupListing" /></h1>
+</f:section>
+
+<f:section name="content">
+
+	<f:comment>
+		Listing of all user groups
+	</f:comment>
+	<f:be.widget.paginate objects="{backendUserGroups}" as="paginatedBackendUserGroups" configuration="{itemsPerPage: 50, insertBelow: 1}">
+		<div class="table-fit">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th class="col-icon"></th>
+						<th class="col-title"><f:translate key="backendUserGroup" /></th>
+						<th><f:translate key="subGroups" /></th>
+						<th class="col-control"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{paginatedBackendUserGroups}" as="backendUserGroup">
+						<f:render partial="BackendUserGroup/IndexListRow" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
+					</f:for>
+					<f:comment>
+						Footer row: no officially defined style yet
+					</f:comment>
+					<tr>
+						<td colspan="4">
+							<f:count subject="{backendUserGroups}" /> <f:translate key="LLL:EXT:lang/locallang_tca.xlf:be_groups" />s
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</f:be.widget.paginate>
+
+</f:section>

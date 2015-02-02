@@ -42,6 +42,9 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 		if (method_exists($object, 'getIsDisabled')) {
 			$row['disable'] = $object->getIsDisabled();
 		}
+		if (method_exists($object, 'getHidden')) {
+			$row['hidden'] = $object->getHidden();
+		}
 		if ($table === 'be_users' && $object instanceof \TYPO3\CMS\Beuser\Domain\Model\BackendUser) {
 			$row['admin'] = $object->getIsAdministrator();
 		}

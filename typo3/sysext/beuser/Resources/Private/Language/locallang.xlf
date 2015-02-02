@@ -21,6 +21,9 @@
 			<trans-unit id="backendUserListing" xml:space="preserve">
 				<source>Backend User Listing</source>
 			</trans-unit>
+			<trans-unit id="subGroups" xml:space="preserve">
+				<source>Sub Groups</source>
+			</trans-unit>
 			<trans-unit id="email" xml:space="preserve">
 				<source>Email</source>
 			</trans-unit>
@@ -111,6 +114,9 @@
 			<trans-unit id="backendUsers" xml:space="preserve">
 				<source>Backend users</source>
 			</trans-unit>
+			<trans-unit id="backendUserGroupsMenu" xml:space="preserve">
+				<source>Backend user groups</source>
+			</trans-unit>
 			<trans-unit id="onlineUsers" xml:space="preserve">
 				<source>Online users</source>
 			</trans-unit>
@@ -140,6 +146,9 @@
 			</trans-unit>
 			<trans-unit id="terminateSessionSuccess" xml:space="preserve">
 				<source>Session successfully terminated.</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroupListing" xml:space="preserve">
+				<source>Backend User Group Listing</source>
 			</trans-unit>
 		</body>
 	</file>

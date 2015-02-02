@@ -27,6 +27,11 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $title;
 
 	/**
+	 * @var bool
+	 */
+	protected $hidden;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup>
 	 * @lazy
 	 */
@@ -44,6 +49,20 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getTitle() {
 		return $this->title;
+	}
+
+	/**
+	 * @param bool $hidden
+	 */
+	public function setHidden($hidden) {
+		$this->hidden = $hidden;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getHidden() {
+		return $this->hidden;
 	}
 
 	/**

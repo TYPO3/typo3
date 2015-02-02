@@ -27,4 +27,15 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Reposito
 	protected $defaultOrderings = array(
 		'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
 	);
+
+	/**
+	 * Overwrite createQuery to don't respect enable fields
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+	 */
+	public function createQuery() {
+		$query = parent::createQuery();
+		$query->getQuerySettings()->setIgnoreEnableFields(TRUE);
+		return $query;
+	}
 }

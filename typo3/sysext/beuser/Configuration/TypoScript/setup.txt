@@ -27,10 +27,10 @@ module.tx_beuser {
 	}
 
 	settings {
-			// This is a dummy entry. It is used in  Tx_Beuser_Controller_BackendUserController
-			// to test that some TypoScript configuration is set.
-			// This entry can be removed if extbase setup is made frontend TS independent
-			// or if there are other settings set.
+		// This is a dummy entry. It is used in \TYPO3\CMS\Beuser\Controller\BackendUserController
+		// to test that some TypoScript configuration is set.
+		// This entry can be removed if extbase setup is made frontend TS independent
+		// or if there are other settings set.
 		dummy = foo
 	}
 }

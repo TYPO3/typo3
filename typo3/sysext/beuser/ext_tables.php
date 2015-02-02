@@ -9,7 +9,8 @@ if (TYPO3_MODE === 'BE') {
 		'tx_Beuser',
 		'top',
 		array(
-			'BackendUser' => 'index, addToCompareList, removeFromCompareList, compare, online, terminateBackendUserSession'
+			'BackendUser' => 'index, addToCompareList, removeFromCompareList, compare, online, terminateBackendUserSession',
+			'BackendUserGroup' => 'index'
 		),
 		array(
 			'access' => 'admin',

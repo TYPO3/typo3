@@ -636,7 +636,7 @@ class ElementInformationController {
 			}
 			$record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
-			$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
+			$icon = (is_array($record)) ? IconUtility::getSpriteIconForRecord($row['tablename'], $record) : '';
 			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
 			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit', $GLOBALS['BACK_PATH']);
 			$infoData[] = '

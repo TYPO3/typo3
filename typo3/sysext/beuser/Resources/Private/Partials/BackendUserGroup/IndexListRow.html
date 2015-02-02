@@ -1,0 +1,38 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<tr>
+	<td class="col-icon">
+		<a href="#" class="t3-js-clickmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" data-listframe="1" title="id={backendUserGroup.uid}">
+			<bu:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
+		</a>
+	</td>
+	<td class="col-title">
+		<a href="#" onclick="document.location.href='alt_doc.php?edit[be_groups][{backendUserGroup.uid}]=edit&amp;returnUrl='+T3_THIS_LOCATION">
+			<b>{backendUserGroup.title}</b><br />
+			{backendUser.realName}
+		</a>
+	</td>
+	<td>
+		<f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
+			<a href="alt_doc.php?edit[be_groups][{subgroup.uid}]=edit&amp;returnUrl={returnUrl}">
+				{subgroup.title}
+			</a>
+			<f:if condition="{subGroupIterator.isLast}"><f:else>, </f:else></f:if>
+		</f:for>
+	</td>
+	<td class="col-control">
+		<div class="btn-group" role="group">
+			<a class="btn btn-default" href="#" onclick="top.launchView('be_groups', '{backendUserGroup.uid}'); return false;"><be:spriteManagerIcon iconName="actions-document-info" /></a>
+			<a class="btn btn-default" href="#" onclick="document.location.href='alt_doc.php?edit[be_groups][{backendUserGroup.uid}]=edit&amp;returnUrl='+T3_THIS_LOCATION"><be:spriteManagerIcon iconName="actions-document-open" /></a>
+			<f:if condition="{backendUserGroup.hidden}">
+				<f:then>
+					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}"><be:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" /></a>
+				</f:then>
+				<f:else>
+					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}"><be:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" /></a>
+				</f:else>
+			</f:if>
+		</div>
+	</td>
+</tr>
