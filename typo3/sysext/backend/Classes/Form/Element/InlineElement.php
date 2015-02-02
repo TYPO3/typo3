@@ -912,21 +912,28 @@ class InlineElement {
 				<select id="' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '_selector" class="form-control"' . ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($onChange) . '"' . $PA['onFocus'] . $selector_itemListStyle . ($conf['foreign_unique'] ? ' isunique="isunique"' : '') . '>
 					' . implode('', $opt) . '
 				</select>';
-			// Add a "Create new relation" link for adding new relations
-			// This is necessary, if the size of the selector is "1" or if
-			// there is only one record item in the select-box, that is selected by default
-			// The selector-box creates a new relation on using a onChange event (see some line above)
-			if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
-				$createNewRelationText = $this->getLanguageService()->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
-			} else {
-				$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
-			}
-			$item .= '
+
+			if ($size <= 1) {
+				// Add a "Create new relation" link for adding new relations
+				// This is necessary, if the size of the selector is "1" or if
+				// there is only one record item in the select-box, that is selected by default
+				// The selector-box creates a new relation on using a onChange event (see some line above)
+				if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
+					$createNewRelationText = $this->getLanguageService()->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
+				} else {
+					$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
+				}
+				$item .= '
 				<span class="input-group-btn">
 					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '">
 						' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '
 					</a>
 				</span>';
+			} else {
+				$item .= '
+				<span class="input-group-btn btn"></span>';
+			}
+
 			// Wrap the selector and add a spacer to the bottom
 			$nameObject = $this->inlineNames['object'];
 			$item = '<div class="input-group form-group ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
