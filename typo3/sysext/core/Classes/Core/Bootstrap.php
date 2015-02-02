@@ -356,8 +356,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadTypo3LoadedExtAndExtLocalconf($allowCaching = TRUE) {
-		$this->getInstance()
-			->loadAdditionalConfigurationFromExtensions($allowCaching);
+		$this->loadAdditionalConfigurationFromExtensions($allowCaching);
 		return $this;
 	}
 
@@ -368,8 +367,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function applyAdditionalConfigurationSettings() {
-		$this->getInstance()
-			->initializeExceptionHandling()
+		$this->initializeExceptionHandling()
 			->setFinalCachingFrameworkCacheConfiguration()
 			->defineLoggingAndExceptionConstants()
 			->unsetReservedGlobalVariables();
