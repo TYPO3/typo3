@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Lowlevel\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * Class for displaying an array as a tree
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
@@ -28,52 +33,64 @@ class ArrayBrowser {
 	 */
 	public $expAll = FALSE;
 
-	// If set, will expand all (depthKeys is obsolete then) (and no links are applied)
 	/**
+	 * If set, will expand all (depthKeys is obsolete then) (and no links are applied)
+	 *
 	 * @var bool
 	 */
 	public $dontLinkVar = FALSE;
 
-	// If set, the variable keys are not linked.
 	/**
+	 * If set, the variable keys are not linked.
+	 *
 	 * @var array
 	 */
 	public $depthKeys = array();
 
-	// Array defining which keys to expand. Typically set from outside from some session variable - otherwise the array will collapse.
 	/**
+	 * Array defining which keys to expand. Typically set from outside from some session
+	 * variable - otherwise the array will collapse.
+	 *
 	 * @var array
 	 */
 	public $searchKeys = array();
 
-	// After calling the getSearchKeys function this array is populated with the key-positions in the array which contains values matching the search.
 	/**
+	 * After calling the getSearchKeys function this array is populated with the
+	 * key-positions in the array which contains values matching the search.
+	 *
 	 * @var int
 	 */
 	public $fixedLgd = 1;
 
-	// If set, the values are truncated with "..." appended if longer than a certain length.
 	/**
+	 * If set, the values are truncated with "..." appended if longer than a certain
+	 * length.
+	 *
 	 * @var int
 	 */
 	public $regexMode = 0;
 
-	// If set, search for string with regex, otherwise stristr()
 	/**
+	 * If set, search for string with regex, otherwise stristr()
+	 *
 	 * @var bool
 	 */
 	public $searchKeysToo = FALSE;
 
-	// If set, array keys are subject to the search too.
 	/**
+	 * If set, array keys are subject to the search too.
+	 *
 	 * @var string
 	 */
 	public $varName = '';
 
-	// Set var name here if you want links to the variable name.
 	/**
-	 * Make browsable tree
-	 * Before calling this function you may want to set some of the internal vars like depthKeys, regexMode and fixedLgd.
+	 * Set var name here if you want links to the variable name.
+	 *
+	 * Make browseable tree
+	 * Before calling this function you may want to set some of the internal vars like
+	 * depthKeys, regexMode and fixedLgd.
 	 * For examples see \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser::main()
 	 *
 	 * @param array $arr The array to display
@@ -102,25 +119,29 @@ class ArrayBrowser {
 			$BTM = $a == $c ? 'bottom' : '';
 			$PM = $isArray ? ($deeper ? 'minus' : 'plus') : 'join';
 			$HTML .= $depthData;
-			$theIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" border="0" alt="" />';
+			$theIcon = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" border="0" alt="" />';
 			if ($PM == 'join') {
 				$HTML .= $theIcon;
 			} else {
-				$HTML .= ($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&node[' . $depth . ']=' . ($deeper ? 0 : 1) . '#' . $goto)) . '">') . $theIcon . ($this->expAll ? '' : '</a>');
+				$HTML .= ($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('M')) . '&node[' . $depth . ']=' . ($deeper ? 0 : 1) . '#' . $goto)) . '">') . $theIcon . ($this->expAll ? '' : '</a>');
 			}
 			$label = $key;
 			$HTML .= $this->wrapArrayKey($label, $depth, !$isArray ? $value : '');
 			if (!$isArray) {
 				$theValue = $value;
 				if ($this->searchKeys[$depth]) {
-					$HTML .= ' = <span style="color:red;">' . $this->wrapValue($theValue, $depth) . '</span>';
+					$HTML .= ' = <span style="color:red;">' . $this->wrapValue($theValue) . '</span>';
 				} else {
-					$HTML .= ' = ' . $this->wrapValue($theValue, $depth);
+					$HTML .= ' = ' . $this->wrapValue($theValue);
 				}
 			}
 			$HTML .= '<br />';
 			if ($deeper) {
-				$HTML .= $this->tree($value, $depth, $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />');
+				$HTML .= $this->tree(
+					$value,
+					$depth,
+					$depthData . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />'
+				);
 			}
 		}
 		return $HTML;
@@ -130,10 +151,9 @@ class ArrayBrowser {
 	 * Wrapping the value in bold tags etc.
 	 *
 	 * @param string $theValue The title string
-	 * @param string $depth Depth path
 	 * @return string Title string, htmlspecialchars()'ed
 	 */
-	public function wrapValue($theValue, $depth) {
+	public function wrapValue($theValue) {
 		$wrappedValue = '';
 		if ((string)$theValue !== '') {
 			$wrappedValue = '<strong>' . htmlspecialchars($theValue) . '</strong>';
@@ -155,8 +175,14 @@ class ArrayBrowser {
 
 		// If varname is set:
 		if ($this->varName && !$this->dontLinkVar) {
-			$variableName = $this->varName . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = ' . (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
-			$label = '<a href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&varname=' . urlencode($variableName))) . '#varname">' . $label . '</a>';
+			$variableName = $this->varName
+				. '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = '
+				. (!MathUtility::canBeInterpretedAsInteger($theValue) ? '\''
+				. addslashes($theValue) . '\'' : $theValue) . '; ';
+			$label = '<a href="'
+				. htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('M'))
+				. '&varname=' . urlencode($variableName)))
+				. '#varname">' . $label . '</a>';
 		}
 
 		return $label;
@@ -166,13 +192,13 @@ class ArrayBrowser {
 	 * Creates an array with "depthKeys" which will expand the array to show the search results
 	 *
 	 * @param array $keyArr The array to search for the value
-	 * @param string $depth_in Depth string - blank for first call (will build up during recursive calling creating an id of the position: [key1].[key2].[key3]
+	 * @param string $depth_in Depth string - blank for first call (will build up during recursive calling creating
+	 *                         an id of the position: [key1].[key2].[key3]
 	 * @param string $searchString The string to search for
 	 * @param array $keyArray Key array, for first call pass empty array
 	 * @return array
 	 */
 	public function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray) {
-		$c = count($keyArr);
 		if ($depth_in) {
 			$depth_in = $depth_in . '.';
 		}
@@ -180,11 +206,17 @@ class ArrayBrowser {
 			$depth = $depth_in . $key;
 			$deeper = is_array($keyArr[$key]);
 			if ($this->regexMode) {
-				if (preg_match('/' . $searchString . '/', $keyArr[$key]) || $this->searchKeysToo && preg_match('/' . $searchString . '/', $key)) {
+				if (
+					preg_match('/' . $searchString . '/', $keyArr[$key])
+					|| $this->searchKeysToo && preg_match('/' . $searchString . '/', $key)
+				) {
 					$this->searchKeys[$depth] = 1;
 				}
 			} else {
-				if (!$deeper && stristr($keyArr[$key], $searchString) || $this->searchKeysToo && stristr($key, $searchString)) {
+				if (
+					!$deeper && stristr($keyArr[$key], $searchString)
+					|| $this->searchKeysToo && stristr($key, $searchString)
+				) {
 					$this->searchKeys[$depth] = 1;
 				}
 			}
