@@ -28,7 +28,8 @@ class FunctionalTestsBootstrap {
 	public function bootstrapSystem() {
 		$this->enableDisplayErrors()
 			->loadClassFiles()
-			->defineOriginalRootPath();
+			->defineOriginalRootPath()
+			->createNecessaryDirectoriesInDocumentRoot();
 	}
 
 	/**
@@ -72,6 +73,37 @@ class FunctionalTestsBootstrap {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Creates the following directories in the TYPO3 core:
+	 * - typo3temp
+	 *
+	 * @return FunctionalTestsBootstrap fluent interface
+	 */
+	protected function createNecessaryDirectoriesInDocumentRoot() {
+		$this->createDirectory(ORIGINAL_ROOT . 'typo3temp');
+
+		return $this;
+	}
+
+	/**
+	 * Creates the directory $directory (recursively if required).
+	 *
+	 * If $directory already exists, this method is a no-op.
+	 *
+	 * @param string $directory absolute path of the directory to be created
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	protected function createDirectory($directory) {
+		if (is_dir($directory)) {
+			return;
+		}
+
+		if (!mkdir($directory, 0777, TRUE)) {
+			throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1404038665);
+		}
 	}
 
 	/**
