@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Mediace\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *
  * @author Stanislas Rolland
  */
-class FlowPlayerContentObject extends AbstractContentObject {
+class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * File extension to mime type
@@ -209,7 +209,7 @@ class FlowPlayerContentObject extends AbstractContentObject {
 	public function render($conf = array()) {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$prefix = '';
+		$params = ($prefix = '');
 		if ($GLOBALS['TSFE']->baseUrl) {
 			$prefix = $GLOBALS['TSFE']->baseUrl;
 		}
@@ -224,26 +224,26 @@ class FlowPlayerContentObject extends AbstractContentObject {
 		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
 		$typeConf = $conf[$type . '.'];
 		// Add Flowplayer js-file
-		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/flowplayer/flowplayer-3.2.12.min.js');
+		$pageRenderer->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.12.min.js'));
 		// Add Flowpayer css for exprss install
-		$pageRenderer->addCssFile(TYPO3_mainDir . 'contrib/flowplayer/express-install/express-install.css');
+		$pageRenderer->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
 		// Add videoJS js-file
-		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
-		// Add videoJS js-file
-		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/video.js');
+		$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/video.js'));
 		// Add videoJS css-file
-		$pageRenderer->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/video-js.css');
+		$pageRenderer->addCssFile($this->getPathToLibrary('videojs/video-js/video-js.css'));
 		// Add extended videoJS control bar
-		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.js');
-		$pageRenderer->addCssFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/control-bar.css');
+		$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.js'));
+		$pageRenderer->addCssFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.css'));
 		// Build Flash configuration
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		if (!$player) {
-			$player = $prefix . TYPO3_mainDir . 'contrib/flowplayer/flowplayer-3.2.16.swf';
+			$player = $prefix . $this->getPathToLibrary('flowplayer/flowplayer-3.2.16.swf');
+		} elseif (strpos($player, 'EXT:') === 0) {
+			$player = $GLOBALS['TSFE']->tmpl->getFileName($player);
 		}
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
-			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flowplayer/expressinstall.swf';
+			$installUrl = $prefix . $this->getPathToLibrary('flowplayer/expressinstall.swf');
 		}
 		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
 		if (!$flashVersion) {
@@ -350,7 +350,7 @@ class FlowPlayerContentObject extends AbstractContentObject {
 			// Assemble captions track tag
 			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '"></track>' . LF;
 			// Add videoJS extension for captions
-			$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/captions.js');
+			$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/captions.js'));
 			// Flowplayer captions
 			$conf['videoflashvars']['captionUrl'] = $conf['caption'];
 			// Flowplayer captions plugin configuration
@@ -364,7 +364,7 @@ class FlowPlayerContentObject extends AbstractContentObject {
 		if ($conf['type'] == 'video') {
 			if (is_array($conf['audioSources']) && count($conf['audioSources'])) {
 				// Add videoJS audio description toggle
-				$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/videojs/video-js/controls/audio-description.js');
+				$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/audio-description.js'));
 			}
 			if (isset($conf['audioFallback'])) {
 				// Audio description flowplayer config (remove controls)
@@ -718,4 +718,13 @@ class FlowPlayerContentObject extends AbstractContentObject {
 		return $content;
 	}
 
+	/**
+	 * resolves the path to the main contrib directory
+	 *
+	 * @param string $fileAndFolderName the file to be located
+	 * @return string
+	 */
+	protected function getPathToLibrary($fileAndFolderName) {
+		return TYPO3_mainDir . 'contrib/' . $fileAndFolderName;
+	}
 }

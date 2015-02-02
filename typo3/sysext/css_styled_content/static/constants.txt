@@ -107,23 +107,6 @@ styles.content.loginform {
   templateFile = EXT:felogin/template.html
 }
 
-styles.content.media {
-    # cat=content/cMedia/j1; type=; label= Video Player: configure the path to the video player
-  videoPlayer = typo3/contrib/flashmedia/flvplayer.swf
-    # cat=content/cMedia/j2; type=int+; label= Media Video Width: define the default width for the media video
-  defaultVideoWidth = 600
-  	# cat=content/cMedia/j3; type=int+; label= Media Video Height: define the default height for the media video
-  defaultVideoHeight = 400
-    # cat=content/cMedia/j4; type=; label= Audio Player: configure the path to the video player
-  audioPlayer = typo3/contrib/flashmedia/player.swf
-   	# cat=content/cMedia/j5; type=int+; label= Media Audio Width: define the default width for the media audio
-  defaultAudioWidth = 300
-    # cat=content/cMedia/j6; type=int+; label= Media Audio Height: define the default height for the media audio
-  defaultAudioHeight = 30
-   	# cat=content/cMedia/j7; type=; label= Flow Player: configure the path to the flow-player
-  flowPlayer = typo3/contrib/flowplayer/flowplayer-3.2.16.swf
-}
-
 styles.content.table {
     # cat=content/cTable/k2; type=color; label= Table background color, Color 1: Background color for table when "Backgr. Color" has been set to "Color 1"
   backgroundColor.1 = #EDEBF1

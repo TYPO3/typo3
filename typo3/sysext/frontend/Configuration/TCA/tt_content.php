@@ -35,8 +35,6 @@ return array(
 			'bullets' => 'mimetypes-x-content-list-bullets',
 			'table' => 'mimetypes-x-content-table',
 			'uploads' => 'mimetypes-x-content-list-files',
-			'multimedia' => 'mimetypes-x-content-multimedia',
-			'media' => 'mimetypes-x-content-multimedia',
 			'menu' => 'mimetypes-x-content-menu',
 			'list' => 'mimetypes-x-content-plugin',
 			'login' => 'mimetypes-x-content-login',
@@ -54,8 +52,6 @@ return array(
 			'bullets' => 'tt_content_bullets.gif',
 			'table' => 'tt_content_table.gif',
 			'uploads' => 'tt_content_uploads.gif',
-			'multimedia' => 'tt_content_mm.gif',
-			'media' => 'tt_content_mm.gif',
 			'menu' => 'tt_content_menu.gif',
 			'list' => 'tt_content_list.gif',
 			'login' => 'tt_content_login.gif',
@@ -70,7 +66,7 @@ return array(
 	),
 	'interface' => array(
 		'always_description' => 0,
-		'showRecordFieldList' => 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group'
+		'showRecordFieldList' => 'CType,header,header_link,bodytext,image,media,imagewidth,imageorient,records,colPos,starttime,endtime,fe_group'
 	),
 	'columns' => array(
 		'CType' => array(
@@ -124,16 +120,6 @@ return array(
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:CType.div.special',
 						'--div--'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:CType.I.7',
-						'multimedia',
-						'i/tt_content_mm.gif'
-					),
-					array(
-						'LLL:EXT:cms/locallang_ttc.xlf:CType.I.18',
-						'media',
-						'i/tt_content_mm.gif'
 					),
 					array(
 						'LLL:EXT:cms/locallang_ttc.xlf:CType.I.12',
@@ -1262,14 +1248,6 @@ return array(
 				'default' => 0
 			)
 		),
-		'media' => array(
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:media',
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', array(
-				'appearance' => array(
-					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference'
-				)
-			))
-		),
 		'file_collections' => array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:file_collections',
 			'config' => array(
@@ -1283,18 +1261,13 @@ return array(
 				'size' => 5,
 			)
 		),
-		'multimedia' => array(
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:multimedia',
-			'config' => array(
-				'type' => 'group',
-				'internal_type' => 'file',
-				'allowed' => 'txt,html,htm,class,swf,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v',
-				'max_size' => $GLOBALS['TYPO3_CONF_VARS']['BE']['maxFileSize'],
-				'uploadfolder' => 'uploads/media',
-				'size' => '2',
-				'maxitems' => '1',
-				'minitems' => '0'
-			)
+		'media' => array(
+			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:media',
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('media', array(
+				'appearance' => array(
+					'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:media.addFileReference'
+				)
+			))
 		),
 		'filelink_size' => array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:filelink_size',
@@ -1492,8 +1465,7 @@ return array(
 						    </el>
 						  </ROOT>
 						</T3DataStructure>
-					',
-					',media' => file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cms') . 'flexform_media.xml')
+					'
 				),
 				'search' => array(
 					'andWhere' => 'CType=\'list\''
@@ -1670,32 +1642,6 @@ return array(
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
 		),
-		'multimedia' => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.media,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.multimediafiles;multimediafiles,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
-		),
-		'media' => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.media,
-					pi_flexform; ;,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.behaviour,
-					bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.media_formlabel;;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
-		),
 		'menu' => array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
@@ -1834,10 +1780,6 @@ return array(
 		),
 		'headers' => array(
 			'showitem' => 'header;LLL:EXT:cms/locallang_ttc.xlf:header_formlabel, --linebreak--, header_layout;LLL:EXT:cms/locallang_ttc.xlf:header_layout_formlabel, header_position;LLL:EXT:cms/locallang_ttc.xlf:header_position_formlabel, date;LLL:EXT:cms/locallang_ttc.xlf:date_formlabel, --linebreak--, header_link;LLL:EXT:cms/locallang_ttc.xlf:header_link_formlabel, --linebreak--, subheader;LLL:EXT:cms/locallang_ttc.xlf:subheader_formlabel',
-			'canNotCollapse' => 1
-		),
-		'multimediafiles' => array(
-			'showitem' => 'multimedia;LLL:EXT:cms/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel;;nowrap',
 			'canNotCollapse' => 1
 		),
 		'imagelinks' => array(

@@ -78,22 +78,6 @@ mod.wizards.newContentElement {
 					CType = uploads
 				}
 			}
-			multimedia {
-				icon = gfx/c_wiz/multimedia.gif
-				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_multimedia_title
-				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_multimedia_description
-				tt_content_defValues {
-					CType = multimedia
-				}
-			}
-			media {
-				icon = gfx/c_wiz/multimedia.gif
-				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_media_title
-				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_media_description
-				tt_content_defValues {
-					CType = media
-				}
-			}
 			menu {
 				icon = gfx/c_wiz/sitemap2.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_menus_title
@@ -129,7 +113,7 @@ mod.wizards.newContentElement {
 			}
 
 		}
-		special.show = uploads,media,menu,html,div,shortcut
+		special.show = uploads,menu,html,div,shortcut
 
 		# dummy placeholder for forms group
 		forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms

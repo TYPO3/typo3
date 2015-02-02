@@ -1,0 +1,192 @@
+# ******************
+# CType: multimedia
+# ******************
+tt_content.multimedia = COA
+tt_content.multimedia {
+	10 = < lib.stdheader
+
+	20 = MULTIMEDIA
+	20.file.field = multimedia
+	20.file.wrap = uploads/media/
+	20.file.listNum = 0
+	20.params.field = bodytext
+
+	20.stdWrap {
+		editIcons = tt_content: multimedia, bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+
+		prefixComment = 2 | Multimedia element:
+	}
+}
+
+# *****************
+# CType: swfobject
+# *****************
+tt_content.swfobject = COA
+tt_content.swfobject {
+	10 = < lib.stdheader
+
+	20 = SWFOBJECT
+	20 {
+		file =
+		width =
+		height =
+
+		flexParams.field = pi_flexform
+
+		alternativeContent.field = bodytext
+
+		layout = ###SWFOBJECT###
+
+		video {
+			player = {$styles.content.media.videoPlayer}
+
+			defaultWidth  = {$styles.content.media.defaultVideoWidth}
+			defaultHeight  = {$styles.content.media.defaultVideoHeight}
+
+			default {
+				params.quality = high
+				params.menu = false
+				params.allowScriptAccess = sameDomain
+				params.allowFullScreen = true
+			}
+			mapping {
+
+			}
+		}
+
+		audio {
+			player = {$styles.content.media.audioPlayer}
+
+			defaultWidth = {$styles.content.media.defaultAudioWidth}
+			defaultHeight = {$styles.content.media.defaultAudioHeight}
+
+			default {
+				params.quality = high
+				params.allowScriptAccess = sameDomain
+				params.menu = false
+			}
+			mapping {
+				flashvars.file = soundFile
+			}
+		}
+
+	}
+	20.stdWrap {
+		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+
+		prefixComment = 2 | SWFobject element:
+	}
+}
+
+# *****************
+# CType: qtobject
+# *****************
+tt_content.qtobject = COA
+tt_content.qtobject {
+	10 = < lib.stdheader
+
+	20 = QTOBJECT
+	20 {
+		file =
+		width =
+		height =
+
+		flexParams.field = pi_flexform
+
+		alternativeContent.field = bodytext
+
+		layout = ###QTOBJECT###
+
+		video {
+			player = {$styles.content.media.videoPlayer}
+
+			defaultWidth  = {$styles.content.media.defaultVideoWidth}
+			defaultHeight  = {$styles.content.media.defaultVideoHeight}
+
+			default {
+				params.quality = high
+				params.menu = false
+				params.allowScriptAccess = sameDomain
+				params.allowFullScreen = true
+			}
+			mapping {
+
+			}
+		}
+
+		audio {
+			player = {$styles.content.media.audioPlayer}
+
+			defaultWidth = {$styles.content.media.defaultAudioWidth}
+			defaultHeight = {$styles.content.media.defaultAudioHeight}
+
+			default {
+				params.quality = high
+				params.allowScriptAccess = sameDomain
+				params.menu = false
+			}
+			mapping {
+				flashvars.file = soundFile
+			}
+		}
+	}
+	20.stdWrap {
+		editIcons = tt_content: multimedia, imagewidth, imageheight, pi_flexform, bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+
+		prefixComment = 2 | QTobject element:
+	}
+}
+
+# *****************
+# CType: media
+# *****************
+tt_content.media = COA
+tt_content.media {
+	10 = < lib.stdheader
+
+	20 = MEDIA
+	20 {
+
+		flexParams.field = pi_flexform
+		alternativeContent < tt_content.text.20
+		alternativeContent.field = bodytext
+
+		type = video
+		renderType = auto
+		allowEmptyUrl = 0
+		forcePlayer = 1
+
+		fileExtHandler {
+			default = MEDIA
+			avi = MEDIA
+			asf = MEDIA
+			class = MEDIA
+			wmv = MEDIA
+			mp3 = SWF
+			mp4 = SWF
+			m4v = SWF
+			swa = SWF
+			flv = SWF
+			swf = SWF
+			mov = QT
+			m4v = QT
+			m4a = QT
+		}
+
+		mimeConf.swfobject < tt_content.swfobject.20
+		mimeConf.qtobject < tt_content.qtobject.20
+		mimeConf.flowplayer < tt_content.swfobject.20
+		mimeConf.flowplayer.audio.player = {$styles.content.media.flowPlayer}
+		mimeConf.flowplayer.video.player = {$styles.content.media.flowPlayer}
+
+	}
+	20.stdWrap {
+		editIcons = tt_content: pi_flexform, bodytext
+		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.multimedia
+
+		prefixComment = 2 | Media element:
+	}
+}

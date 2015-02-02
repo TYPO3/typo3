@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Mediace\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
- * Contains SWFOBJECT class object.
+ * Contains SWFOBJECT content object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ShockwaveFlashObjectContentObject extends AbstractContentObject {
+class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, SWFOBJECT
@@ -44,11 +44,11 @@ class ShockwaveFlashObjectContentObject extends AbstractContentObject {
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 
 		// Add SWFobject js-file
-		$pageRenderer->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/swfobject/swfobject.js');
+		$pageRenderer->addJsFile($this->getPathToLibrary('flashmedia/swfobject/swfobject.js'));
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
-			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flashmedia/swfobject/expressInstall.swf';
+			$installUrl = $prefix . $this->getPathToLibrary('flashmedia/swfobject/expressInstall.swf');
 		}
 		// If file is audio and an explicit path has not been set,
 		// take path from audio fallback property
@@ -126,4 +126,14 @@ class ShockwaveFlashObjectContentObject extends AbstractContentObject {
 		return $content;
 	}
 
+
+	/**
+	 * resolves the path to the main contrib directory
+	 *
+	 * @param string $fileAndFolderName the file to be located
+	 * @return string
+	 */
+	protected function getPathToLibrary($fileAndFolderName) {
+		return TYPO3_mainDir . 'contrib/' . $fileAndFolderName;
+	}
 }

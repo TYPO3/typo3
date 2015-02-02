@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\ContentObject;
+namespace TYPO3\CMS\Mediace\ContentObject;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
- * Contains QTOBJECT class object.
+ * Contains QTOBJECT content object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class QuicktimeObjectContentObject extends AbstractContentObject {
+class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, QTOBJECT
@@ -51,7 +51,7 @@ class QuicktimeObjectContentObject extends AbstractContentObject {
 
 		$typeConf = $conf[$type . '.'];
 		// Add QTobject js-file
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/qtobject/qtobject.js');
+		$GLOBALS['TSFE']->getPageRenderer()->addJsFile($this->getPathToLibrary('flashmedia/qtobject/qtobject.js'));
 		$replaceElementIdString = str_replace('.', '', uniqid('mmqt', TRUE));
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;
@@ -101,4 +101,13 @@ class QuicktimeObjectContentObject extends AbstractContentObject {
 		return $content;
 	}
 
+	/**
+	 * resolves the path to the main contrib directory
+	 *
+	 * @param string $fileAndFolderName the file to be located
+	 * @return string
+	 */
+	protected function getPathToLibrary($fileAndFolderName) {
+		return TYPO3_mainDir . 'contrib/' . $fileAndFolderName;
+	}
 }
