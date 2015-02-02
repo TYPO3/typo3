@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Resource;
+use \TYPO3\CMS\Core\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
