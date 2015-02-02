@@ -96,7 +96,9 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 		// Final mapping array
 		$classNameToAliasMapping = array();
 		foreach ($this->packages as $package) {
-			if (!$package instanceof \TYPO3\CMS\Core\Package\Package) {
+			if (!$package instanceof \TYPO3\CMS\Core\Package\Package || $package->isProtected()) {
+				// Skip non core packages and all protected packages.
+				// The latter will be covered by composer class loader.
 				continue;
 			}
 			foreach ($package->getClassAliases() as $aliasClassName => $className) {
@@ -130,6 +132,49 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Build static mapping file
+	 *
+	 * This is needed as long as we don't have full composer support to generate a map
+	 * which is later bound to composer class loading
+	 *
+	 * @return void
+	 * @throws \Exception
+	 * @internal
+	 */
+	public function buildStaticMappingFile() {
+		$aliasToClassNameMapping = array();
+		$classNameToAliasMapping = array();
+		foreach ($this->packages as $package) {
+			if (!$package instanceof \TYPO3\CMS\Core\Package\Package || $package->isProtected()) {
+				// Skip non core packages and all protected packages.
+				// The latter will be covered by composer class loader.
+				continue;
+			}
+			$possibleClassAliasFile = $package->getPackagePath() . 'Migrations/Code/ClassAliasMap.php';
+			if (file_exists($possibleClassAliasFile)) {
+				$packageAliasMap = require $possibleClassAliasFile;
+				if (!is_array($packageAliasMap)) {
+					throw new \Exception('"class alias maps" must return an array', 1422625075);
+				}
+				foreach ($packageAliasMap as $aliasClassName => $className) {
+					$lowerCasedAliasClassName = strtolower($aliasClassName);
+					$aliasToClassNameMapping[$lowerCasedAliasClassName] = $className;
+					$classNameToAliasMapping[$className][$lowerCasedAliasClassName] = $lowerCasedAliasClassName;
+				}
+			}
+		}
+		$exportArray = array(
+			'aliasToClassNameMapping' => $aliasToClassNameMapping,
+			'classNameToAliasMapping' => $classNameToAliasMapping
+		);
+		$fileContent = '<?php' . chr(10) . 'return ';
+		$fileContent .= var_export($exportArray, TRUE);
+		$fileContent .= ';';
+
+		file_put_contents(PATH_site . 'typo3conf/autoload_classaliasmap.php', $fileContent);
 	}
 
 	/**

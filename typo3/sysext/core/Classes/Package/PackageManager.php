@@ -611,6 +611,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 
 		$package = $this->getPackage($packageKey);
 		parent::deactivatePackage($package->getPackageKey());
+		$this->classLoader->setPackages($this->activePackages);
 	}
 
 	/**

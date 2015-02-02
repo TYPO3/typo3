@@ -166,7 +166,17 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function unloadExtension($extensionKey) {
 		$this->packageManager->deactivatePackage($extensionKey);
+		$this->emitAfterExtensionUninstallSignal($extensionKey);
 		$this->cacheManager->flushCachesInGroup('system');
+	}
+
+	/**
+	 * Emits a signal after an extension has been uninstalled
+	 *
+	 * @param string $extensionKey
+	 */
+	protected function emitAfterExtensionUninstallSignal($extensionKey) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionUninstall', array($extensionKey, $this));
 	}
 
 	/**

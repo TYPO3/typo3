@@ -1,0 +1,23 @@
+{
+    "name": "helhum/class-alias-loader",
+    "license": "MIT",
+    "description": "Amends the composer class loader to support class aliases to provide backwards compatibility for packages",
+    "keywords": [
+        "composer", "autoloader", "classloader", "alias"
+    ],
+    "homepage": "http://github.com/helhum/class-alias-loader",
+    "authors": [
+        {
+            "name": "Helmut Hummel",
+            "email": "info@helhum.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Helhum\\ClassAliasLoader\\": "Classes/"}
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

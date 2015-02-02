@@ -71,6 +71,11 @@ class Bootstrap {
 	protected $activeErrorHandlerClassName;
 
 	/**
+	 * @var bool
+	 */
+	static protected $usesComposerClassLoading = FALSE;
+
+	/**
 	 * Disable direct creation of this object.
 	 * Set unique requestId and the application context
 	 *
@@ -79,6 +84,13 @@ class Bootstrap {
 	protected function __construct($applicationContext) {
 		$this->requestId = substr(md5(uniqid('', TRUE)), 0, 13);
 		$this->applicationContext = new ApplicationContext($applicationContext);
+	}
+
+	/**
+	 * @return bool
+	 */
+	static public function usesComposerClassLoading() {
+		return self::$usesComposerClassLoading;
 	}
 
 	/**
@@ -96,12 +108,12 @@ class Bootstrap {
 	 */
 	static public function getInstance() {
 		if (is_null(static::$instance)) {
-			require_once(__DIR__ . '/../Exception.php');
-			require_once(__DIR__ . '/ApplicationContext.php');
+			$composerClassLoader = self::initializeComposerClassLoader();
 			$applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
 			self::$instance = new static($applicationContext);
 			// Establish an alias for Flow/Package interoperability
 			class_alias(get_class(static::$instance), \TYPO3\Flow\Core\Bootstrap::class);
+			self::$instance->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $composerClassLoader);
 		}
 		return static::$instance;
 	}
@@ -150,30 +162,48 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function baseSetup($relativePathPart = '') {
-		$this->initializeComposerClassLoader();
 		SystemEnvironmentBuilder::run($relativePathPart);
+		$this->addDynamicClassAliasMapsToComposerClassLoader();
 		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
 	}
 
 	/**
-	 * @return \Composer\Autoload\ClassLoader
+	 * @return \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\Composer\ClassAliasLoader
 	 */
-	protected function initializeComposerClassLoader() {
-		$respectComposerPackagesForClassLoading = getenv('TYPO3_COMPOSER_AUTOLOAD') ?: (getenv('REDIRECT_TYPO3_COMPOSER_AUTOLOAD') ?: NULL);
-		if (!empty($respectComposerPackagesForClassLoading)) {
-			$possiblePaths = array(
-				'distribution is root package' => __DIR__ . '/../../../../../../Packages/Libraries/autoload.php',
-				'typo3/cms is root package' => __DIR__ . '/../../../../../Packages/Libraries/autoload.php',
-			);
-			foreach ($possiblePaths as $possiblePath) {
-				if (file_exists($possiblePath)) {
-					return include $possiblePath;
-				}
+	static protected function initializeComposerClassLoader() {
+		$possiblePaths = array(
+			'distribution is root package' => __DIR__ . '/../../../../../../Packages/Libraries/autoload.php',
+			'typo3/cms is root package' => __DIR__ . '/../../../../../Packages/Libraries/autoload.php',
+		);
+		foreach ($possiblePaths as $possiblePath) {
+			if (file_exists($possiblePath)) {
+				self::$usesComposerClassLoading = TRUE;
+				return include $possiblePath;
 			}
 		}
 		// Committed vendor dir in typo3/contrib
 		return require __DIR__ . '/../../../../contrib/vendor/autoload.php';
+	}
+
+	/**
+	 * Includes an alias mapping file if present.
+	 * The file is generated during extension install.
+	 *
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	protected function addDynamicClassAliasMapsToComposerClassLoader() {
+		if (self::$usesComposerClassLoading) {
+			return;
+		}
+		$dynamicClassAliasMapFile = PATH_site . 'typo3conf/autoload_classaliasmap.php';
+		if (file_exists($dynamicClassAliasMapFile)) {
+			$composerClassLoader = $this->getEarlyInstance(\Composer\Autoload\ClassLoader::class);
+			$classAliasMap = require $dynamicClassAliasMapFile;
+			if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
+				$composerClassLoader->addAliasMap($classAliasMap);
+			}
+		}
 	}
 
 	/**
