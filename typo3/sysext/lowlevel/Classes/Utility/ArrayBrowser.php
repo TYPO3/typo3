@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * See the extension 'lowlevel' /config (Backend module 'Tools > Configuration')
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @see \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser::main()
  */
 class ArrayBrowser {
 
@@ -91,13 +90,11 @@ class ArrayBrowser {
 	 * Make browseable tree
 	 * Before calling this function you may want to set some of the internal vars like
 	 * depthKeys, regexMode and fixedLgd.
-	 * For examples see \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser::main()
 	 *
 	 * @param array $arr The array to display
 	 * @param string $depth_in Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
 	 * @param string $depthData Depth-data - basically a prefix for the icons. For calling this function from outside, let it stay blank.
 	 * @return string HTML for the tree
-	 * @see \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser::main()
 	 */
 	public function tree($arr, $depth_in, $depthData) {
 		$HTML = '';
@@ -237,7 +234,6 @@ class ArrayBrowser {
 	 * @param array $arr Array with instructions to open/close nodes.
 	 * @param array $settings Input depth_key array
 	 * @return array Output depth_key array with entries added/removed based on $arr
-	 * @see \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser::main()
 	 */
 	public function depthKeys($arr, $settings) {
 		$tsbrArray = array();
