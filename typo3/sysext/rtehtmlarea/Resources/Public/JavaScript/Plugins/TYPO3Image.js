@@ -116,7 +116,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Image',
 		 */
 		onDrop: function (event) {
 			if (UserAgent.isWebKit) {
-				this.editor.iframe.onDrop();
+				this.editor.iframe.onDrop(event);
 			}
 			this.close();
 			return true;

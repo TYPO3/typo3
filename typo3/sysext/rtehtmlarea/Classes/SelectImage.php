@@ -308,9 +308,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
 			}
 			function initEventListeners() {
-				if (Ext.isWebKit) {
-					Ext.EventManager.addListener(window.document.body, "dragend", plugin.onDrop, plugin, { single: true });
-				}
+				require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent", "TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event"], function (UserAgent, Event) {
+					if (UserAgent.isWebKit) {
+						Event.one(window.document.body, "dragend", function (event) { plugin.onDrop(event); });
+					}
+				});
 			}
 			function jumpToUrl(URL,anchor) {
 				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $act . '" : "";
