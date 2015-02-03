@@ -219,7 +219,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 							$content .= $this->editTaskAction();
 							$sectionTitle = $this->getLanguageService()->getLL('action.' . $this->CMD);
 						} catch (\Exception $e) {
-							// An exception may happen when the task to
+							if ($e->getCode() === 1305100019) {
+								// Invalid controller class name exception
+								$this->addMessage($e->getMessage(), FlashMessage::ERROR);
+							}
+							// An exception may also happen when the task to
 							// edit could not be found. In this case revert
 							// to displaying the list of tasks
 							// It can also happen when attempting to edit a running task
