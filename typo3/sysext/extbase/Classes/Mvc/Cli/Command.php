@@ -79,7 +79,10 @@ class Command {
 			$classNameParts = array_values($classNameParts);
 		}
 		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
-			throw new \InvalidArgumentException('Invalid controller class name "' . $controllerClassName . '"', 1305100019);
+			throw new \InvalidArgumentException(
+				'Invalid controller class name "' . $controllerClassName . '". Class name must end with "CommandController".',
+				1305100019
+			);
 		}
 		$this->extensionName = $classNameParts[1];
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->extensionName);
