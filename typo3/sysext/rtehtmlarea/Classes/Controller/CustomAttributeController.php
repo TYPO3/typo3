@@ -55,8 +55,8 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 	/**
 	 * Rendering the "data-htmlarea-clickenlarge" custom attribute, called from TypoScript
 	 *
-	 * @param string Content input. Not used, ignore.
-	 * @param array TypoScript configuration
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
 	 * @access private
 	 */
@@ -96,7 +96,7 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 		unset($this->cObj->parameters['allParams']);
 		$content = '<img ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($this->cObj->parameters, TRUE, TRUE) . ' />';
 		if ($clickenlarge && is_array($conf['imageLinkWrap.'])) {
-			$theImage = $file ? $GLOBALS['TSFE']->tmpl->getFileName($file) : '';
+			$theImage = $file ? $this->frontendController->tmpl->getFileName($file) : '';
 			if ($theImage) {
 				$this->cObj->parameters['origFile'] = $theImage;
 				if ($this->cObj->parameters['title']) {

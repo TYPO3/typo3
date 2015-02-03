@@ -99,6 +99,20 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	protected $logintype;
 
 	/**
+	 * A list of page UIDs, either an integer or a comma-separated list of integers
+	 *
+	 * @var string
+	 */
+	public $spid;
+
+	/**
+	 * Referrer
+	 *
+	 * @var string
+	 */
+	public $referer;
+
+	/**
 	 * The main method of the plugin
 	 *
 	 * @param string $content The PlugIn content
@@ -124,7 +138,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$this->spid = $this->conf['storagePid'];
 			}
 		} else {
-			$pids = $GLOBALS['TSFE']->getStorageSiterootPids();
+			$pids = $this->frontendController->getStorageSiterootPids();
 			$this->spid = $pids['_STORAGE_PID'];
 		}
 		// GPvars:
@@ -143,7 +157,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/template.html';
 		$this->template = $this->cObj->fileResource($templateFile);
 		// Is user logged in?
-		$this->userIsLoggedIn = $GLOBALS['TSFE']->loginUser;
+		$this->userIsLoggedIn = $this->frontendController->loginUser;
 		// Redirect
 		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect) {
 			$redirectUrl = $this->processRedirect();
@@ -168,7 +182,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		// Process the redirect
 		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
-			if (!$GLOBALS['TSFE']->fe_user->isCookieSet() && $this->userIsLoggedIn) {
+			if (!$this->frontendController->fe_user->isCookieSet() && $this->userIsLoggedIn) {
 				$content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning', '', TRUE), $this->conf['cookieWarning_stdWrap.']);
 			} else {
 				// Add hook for extra processing before redirect
@@ -216,18 +230,18 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		if ($postData['forgot_email']) {
 			// Get hashes for compare
 			$postedHash = $postData['forgot_hash'];
-			$hashData = $GLOBALS['TSFE']->fe_user->getKey('ses', 'forgot_hash');
+			$hashData = $this->frontendController->fe_user->getKey('ses', 'forgot_hash');
 			if ($postedHash === $hashData['forgot_hash']) {
 				$row = FALSE;
 				// Look for user record
-				$data = $GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['forgot_email'], 'fe_users');
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$data = $this->databaseConnection->fullQuoteStr($this->piVars['forgot_email'], 'fe_users');
+				$res = $this->databaseConnection->exec_SELECTquery(
 					'uid, username, password, email',
 					'fe_users',
-					'(email=' . $data . ' OR username=' . $data . ') AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($this->spid) . ') ' . $this->cObj->enableFields('fe_users')
+					'(email=' . $data . ' OR username=' . $data . ') AND pid IN (' . $this->databaseConnection->cleanIntList($this->spid) . ') ' . $this->cObj->enableFields('fe_users')
 				);
-				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				if ($this->databaseConnection->sql_num_rows($res)) {
+					$row = $this->databaseConnection->sql_fetch_assoc($res);
 				}
 				$error = NULL;
 				if ($row) {
@@ -269,7 +283,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$hash = md5($this->generatePassword(3));
 		$markerArray['###FORGOTHASH###'] = $hash;
 		// Set hash in feuser session
-		$GLOBALS['TSFE']->fe_user->setKey('ses', 'forgot_hash', array('forgot_hash' => $hash));
+		$this->frontendController->fe_user->setKey('ses', 'forgot_hash', array('forgot_hash' => $hash));
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
 	}
 
@@ -341,7 +355,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 							$newPass = $_params['newPassword'];
 						}
 						// Save new password and clear DB-hash
-						$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+						$res = $this->databaseConnection->exec_UPDATEquery(
 							'fe_users',
 							'uid=' . $user['uid'],
 							array('password' => $newPass, 'felogin_forgotHash' => '', 'tstamp' => $GLOBALS['EXEC_TIME'])
@@ -360,7 +374,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				}
 				if (!$done) {
 					// Change password form
-					$markerArray['###ACTION_URI###'] = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+					$markerArray['###ACTION_URI###'] = $this->pi_getPageLink($this->frontendController->id, '', array(
 						$this->prefixId . '[user]' => $user['uid'],
 						$this->prefixId . '[forgothash]' => $piHash
 					));
@@ -392,13 +406,13 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$randHash = $validEnd . '|' . $hash;
 		$randHashDB = $validEnd . '|' . md5($hash);
 		// Write hash to DB
-		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('felogin_forgotHash' => $randHashDB));
+		$res = $this->databaseConnection->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('felogin_forgotHash' => $randHashDB));
 		// Send hashlink to user
 		$this->conf['linkPrefix'] = -1;
-		$isAbsRelPrefix = !empty($GLOBALS['TSFE']->absRefPrefix);
-		$isBaseURL = !empty($GLOBALS['TSFE']->baseUrl);
+		$isAbsRelPrefix = !empty($this->frontendController->absRefPrefix);
+		$isBaseURL = !empty($this->frontendController->baseUrl);
 		$isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
-		$link = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+		$link = $this->pi_getPageLink($this->frontendController->id, '', array(
 			rawurlencode($this->prefixId . '[user]') => $user['uid'],
 			rawurlencode($this->prefixId . '[forgothash]') => $randHash
 		));
@@ -406,8 +420,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		if ($isFeloginBaseURL) {
 			// First priority, use specific base URL
 			// "absRefPrefix" must be removed first, otherwise URL will be prepended twice
-			if (!empty($GLOBALS['TSFE']->absRefPrefix)) {
-				$link = substr($link, strlen($GLOBALS['TSFE']->absRefPrefix));
+			if (!empty($this->frontendController->absRefPrefix)) {
+				$link = substr($link, strlen($this->frontendController->absRefPrefix));
 			}
 			$link = $this->conf['feloginBaseURL'] . $link;
 		} elseif ($isAbsRelPrefix) {
@@ -417,7 +431,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		} elseif ($isBaseURL) {
 			// Third priority
 			// Add the global base URL to the link
-			$link = $GLOBALS['TSFE']->baseUrlWrap($link);
+			$link = $this->frontendController->baseUrlWrap($link);
 		} else {
 			// No prefix is set, return the error
 			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
@@ -459,9 +473,9 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$markerArray['###LEGEND###'] = $this->pi_getLL('logout', '', TRUE);
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array(), TRUE);
 		$markerArray['###LOGOUT_LABEL###'] = $this->pi_getLL('logout', '', TRUE);
-		$markerArray['###NAME###'] = htmlspecialchars($GLOBALS['TSFE']->fe_user->user['name']);
+		$markerArray['###NAME###'] = htmlspecialchars($this->frontendController->fe_user->user['name']);
 		$markerArray['###STORAGE_PID###'] = $this->spid;
-		$markerArray['###USERNAME###'] = htmlspecialchars($GLOBALS['TSFE']->fe_user->user['username']);
+		$markerArray['###USERNAME###'] = htmlspecialchars($this->frontendController->fe_user->user['username']);
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', TRUE);
 		$markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
 		$markerArray['###PREFIXID###'] = $this->prefixId;
@@ -620,29 +634,29 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		if ($this->conf['redirectMode']) {
 			$redirectMethods = GeneralUtility::trimExplode(',', $this->conf['redirectMode'], TRUE);
 			foreach ($redirectMethods as $redirMethod) {
-				if ($GLOBALS['TSFE']->loginUser && $this->logintype === 'login') {
+				if ($this->frontendController->loginUser && $this->logintype === 'login') {
 					// Logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
 					switch ($redirMethod) {
 						case 'groupLogin':
 							// taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
-							$groupData = $GLOBALS['TSFE']->fe_user->groupData;
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							$groupData = $this->frontendController->fe_user->groupData;
+							$res = $this->databaseConnection->exec_SELECTquery(
 								'felogin_redirectPid',
-								$GLOBALS['TSFE']->fe_user->usergroup_table,
+								$this->frontendController->fe_user->usergroup_table,
 								'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
 							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+							if ($row = $this->databaseConnection->sql_fetch_row($res)) {
 								// take the first group with a redirect page
 								$redirect_url[] = $this->pi_getPageLink($row[0]);
 							}
 							break;
 						case 'userLogin':
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							$res = $this->databaseConnection->exec_SELECTquery(
 								'felogin_redirectPid',
-								$GLOBALS['TSFE']->fe_user->user_table,
-								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\''
+								$this->frontendController->fe_user->user_table,
+								$this->frontendController->fe_user->userid_column . '=' . $this->frontendController->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\''
 							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+							if ($row = $this->databaseConnection->sql_fetch_row($res)) {
 								$redirect_url[] = $this->pi_getPageLink($row[0]);
 							}
 							break;
@@ -707,7 +721,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						'linkAccessRestrictedPages' => TRUE
 					));
 					$redirect_url[] = $this->cObj->lastTypoLinkUrl;
-				} elseif ($this->logintype == '' && $redirMethod == 'logout' && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) {
+				} elseif ($this->logintype == '' && $redirMethod == 'logout' && $this->conf['redirectPageLogout'] && $this->frontendController->loginUser) {
 					// If logout and page not accessible
 					$redirect_url[] = $this->pi_getPageLink((int)$this->conf['redirectPageLogout']);
 				} elseif ($this->logintype === 'logout') {
@@ -828,7 +842,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		if ($this->conf['preserveGETvars']) {
 			$additionalParams .= $this->getPreserveGetVars();
 		}
-		$this->conf['linkConfig.']['parameter'] = $GLOBALS['TSFE']->id;
+		$this->conf['linkConfig.']['parameter'] = $this->frontendController->id;
 		if ($additionalParams) {
 			$this->conf['linkConfig.']['additionalParams'] = $additionalParams;
 		}
@@ -909,9 +923,9 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	protected function getUserFieldMarkers() {
 		$marker = array();
 		// replace markers with fe_user data
-		if ($GLOBALS['TSFE']->fe_user->user) {
+		if ($this->frontendController->fe_user->user) {
 			// All fields of fe_user will be replaced, scheme is ###FEUSER_FIELDNAME###
-			foreach ($GLOBALS['TSFE']->fe_user->user as $field => $value) {
+			foreach ($this->frontendController->fe_user->user as $field => $value) {
 				$marker['###FEUSER_' . GeneralUtility::strtoupper($field) . '###'] = $this->cObj->stdWrap($value, $this->conf['userfields.'][$field . '.']);
 			}
 			// Add ###USER### for compatibility
@@ -975,7 +989,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$host = $parsedUrl['host'];
 				// Removes the last path segment and slash sequences like /// (if given):
 				$path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path']);
-				$localDomains = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName', 'sys_domain', '1=1' . $this->cObj->enableFields('sys_domain'));
+				$localDomains = $this->databaseConnection->exec_SELECTgetRows('domainName', 'sys_domain', '1=1' . $this->cObj->enableFields('sys_domain'));
 				if (is_array($localDomains)) {
 					foreach ($localDomains as $localDomain) {
 						// strip trailing slashes (if given)

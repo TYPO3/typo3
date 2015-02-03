@@ -316,14 +316,14 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 						}
 						$conf['linkProc.']['altText'] = ($conf['linkProc.']['iconCObject.']['altText'] = $altText);
 						$this->cObj->setCurrentVal($currentPath);
-						$GLOBALS['TSFE']->register['ICON_REL_PATH'] = $currentPath . $fileName;
-						$GLOBALS['TSFE']->register['filename'] = $filesData[$key]['filename'];
-						$GLOBALS['TSFE']->register['path'] = $filesData[$key]['path'];
-						$GLOBALS['TSFE']->register['fileSize'] = $filesData[$key]['filesize'];
-						$GLOBALS['TSFE']->register['fileExtension'] = $filesData[$key]['fileextension'];
-						$GLOBALS['TSFE']->register['description'] = $filesData[$key]['description'];
-						$GLOBALS['TSFE']->register['titleText'] = $filesData[$key]['titletext'];
-						$GLOBALS['TSFE']->register['altText'] = $filesData[$key]['alttext'];
+						$this->frontendController->register['ICON_REL_PATH'] = $currentPath . $fileName;
+						$this->frontendController->register['filename'] = $filesData[$key]['filename'];
+						$this->frontendController->register['path'] = $filesData[$key]['path'];
+						$this->frontendController->register['fileSize'] = $filesData[$key]['filesize'];
+						$this->frontendController->register['fileExtension'] = $filesData[$key]['fileextension'];
+						$this->frontendController->register['description'] = $filesData[$key]['description'];
+						$this->frontendController->register['titleText'] = $filesData[$key]['titletext'];
+						$this->frontendController->register['altText'] = $filesData[$key]['alttext'];
 
 						$filesData[$key]['linkedFilenameParts'] = $this->beautifyFileLink(
 							explode('//**//', $this->cObj->filelink($fileName, $conf['linkProc.'])),
@@ -334,19 +334,19 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					}
 				}
 				// optionSplit applied to conf to allow differnt settings per file
-				$splitConf = $GLOBALS['TSFE']->tmpl->splitConfArray($conf, count($filesData));
+				$splitConf = $this->frontendController->tmpl->splitConfArray($conf, count($filesData));
 				// Now, lets render the list!
 				$outputEntries = array();
 				foreach ($filesData as $key => $fileData) {
-					$GLOBALS['TSFE']->register['linkedIcon'] = $fileData['linkedFilenameParts'][0];
-					$GLOBALS['TSFE']->register['linkedLabel'] = $fileData['linkedFilenameParts'][1];
-					$GLOBALS['TSFE']->register['filename'] = $fileData['filename'];
-					$GLOBALS['TSFE']->register['path'] = $fileData['path'];
-					$GLOBALS['TSFE']->register['description'] = $fileData['description'];
-					$GLOBALS['TSFE']->register['fileSize'] = $fileData['filesize'];
-					$GLOBALS['TSFE']->register['fileExtension'] = $fileData['fileextension'];
-					$GLOBALS['TSFE']->register['titleText'] = $fileData['titletext'];
-					$GLOBALS['TSFE']->register['altText'] = $fileData['alttext'];
+					$this->frontendController->register['linkedIcon'] = $fileData['linkedFilenameParts'][0];
+					$this->frontendController->register['linkedLabel'] = $fileData['linkedFilenameParts'][1];
+					$this->frontendController->register['filename'] = $fileData['filename'];
+					$this->frontendController->register['path'] = $fileData['path'];
+					$this->frontendController->register['description'] = $fileData['description'];
+					$this->frontendController->register['fileSize'] = $fileData['filesize'];
+					$this->frontendController->register['fileExtension'] = $fileData['fileextension'];
+					$this->frontendController->register['titleText'] = $fileData['titletext'];
+					$this->frontendController->register['altText'] = $fileData['alttext'];
 					$outputEntries[] = $this->cObj->cObjGetSingle($splitConf[$key]['itemRendering'], $splitConf[$key]['itemRendering.']);
 				}
 				if (isset($conf['outerWrap'])) {
@@ -508,8 +508,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			? $this->cObj->stdWrap($conf['imgListContainsReferenceUids'], $conf['imgListContainsReferenceUids.'])
 			: $conf['imgListContainsReferenceUids']);
 		// Use the calculated information (amount of images, if global caption is wanted) to choose a different rendering method for the images-block
-		$GLOBALS['TSFE']->register['imageCount'] = $imgCount;
-		$GLOBALS['TSFE']->register['renderGlobalCaption'] = $renderGlobalCaption;
+		$this->frontendController->register['imageCount'] = $imgCount;
+		$this->frontendController->register['renderGlobalCaption'] = $renderGlobalCaption;
 		$fallbackRenderMethod = '';
 		if ($conf['fallbackRendering']) {
 			$fallbackRenderMethod = $this->cObj->cObjGetSingle($conf['fallbackRendering'], $conf['fallbackRendering.']);
@@ -612,7 +612,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		// Fetches pictures
 		$splitArr = array();
 		$splitArr['imgObjNum'] = $conf['imgObjNum'];
-		$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $imgCount);
+		$splitArr = $this->frontendController->tmpl->splitConfArray($splitArr, $imgCount);
 		// Contains the width of every image row
 		$imageRowsFinalWidths = array();
 		// Array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
@@ -629,9 +629,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$totalImagePath = $imgPath . $imgs[$imgKey];
 			}
 			// register IMG_NUM is kept for backwards compatibility
-			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
-			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
-			$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $totalImagePath;
+			$this->frontendController->register['IMAGE_NUM'] = $imgKey;
+			$this->frontendController->register['IMAGE_NUM_CURRENT'] = $imgKey;
+			$this->frontendController->register['ORIG_FILENAME'] = $totalImagePath;
 			$this->cObj->data[$this->cObj->currentValKey] = $totalImagePath;
 			$imgObjNum = (int)$splitArr[$a]['imgObjNum'];
 			$imgConf = $conf[$imgObjNum . '.'];
@@ -680,13 +680,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			$titleInLink = $this->cObj->stdWrap($imgConf['titleInLink'], $imgConf['titleInLink.']);
 			$titleInLinkAndImg = $this->cObj->stdWrap($imgConf['titleInLinkAndImg'], $imgConf['titleInLinkAndImg.']);
-			$oldATagParms = $GLOBALS['TSFE']->ATagParams;
+			$oldATagParms = $this->frontendController->ATagParams;
 			if ($titleInLink) {
 				// Title in A-tag instead of IMG-tag
 				$titleText = trim($this->cObj->stdWrap($imgConf['titleText'], $imgConf['titleText.']));
 				if ($titleText) {
 					// This will be used by the IMAGE call later:
-					$GLOBALS['TSFE']->ATagParams .= ' title="' . htmlspecialchars($titleText) . '"';
+					$this->frontendController->ATagParams .= ' title="' . htmlspecialchars($titleText) . '"';
 				}
 			}
 
@@ -752,19 +752,19 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$imgsTag[$imgKey] = $this->cObj->cObjGetSingle('IMAGE', array('file' => $totalImagePath));
 			}
 			// Restore our ATagParams
-			$GLOBALS['TSFE']->ATagParams = $oldATagParms;
+			$this->frontendController->ATagParams = $oldATagParms;
 			// Store the original filepath
-			$origImages[$imgKey] = $GLOBALS['TSFE']->lastImageInfo;
-			if ($GLOBALS['TSFE']->lastImageInfo[0] == 0) {
+			$origImages[$imgKey] = $this->frontendController->lastImageInfo;
+			if ($this->frontendController->lastImageInfo[0] == 0) {
 				$imageRowsFinalWidths[(int)floor($a / $colCount)] += $this->cObj->data['imagewidth'];
 			} else {
-				$imageRowsFinalWidths[(int)floor($a / $colCount)] += $GLOBALS['TSFE']->lastImageInfo[0];
+				$imageRowsFinalWidths[(int)floor($a / $colCount)] += $this->frontendController->lastImageInfo[0];
 			}
 		}
 		// How much space will the image-block occupy?
 		$imageBlockWidth = max($imageRowsFinalWidths) + $colspacing * ($colCount - 1) + $colCount * $border * ($borderSpace + $borderThickness) * 2;
-		$GLOBALS['TSFE']->register['rowwidth'] = $imageBlockWidth;
-		$GLOBALS['TSFE']->register['rowWidthPlusTextMargin'] = $imageBlockWidth + $textMargin;
+		$this->frontendController->register['rowwidth'] = $imageBlockWidth;
+		$this->frontendController->register['rowWidthPlusTextMargin'] = $imageBlockWidth + $textMargin;
 		// noRows is in fact just one ROW, with the amount of columns specified, where the images are placed in.
 		// noCols is just one COLUMN, each images placed side by side on each row
 		$noRows = $this->cObj->stdWrap($conf['noRows'], $conf['noRows.']);
@@ -781,7 +781,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		if (!is_array($conf['editIcons.'])) {
 			$conf['editIcons.'] = array();
 		}
-		$editIconsHTML = $conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin ? $this->cObj->editIcons('', $conf['editIcons'], $conf['editIcons.']) : '';
+		$editIconsHTML = $conf['editIcons'] && $this->frontendController->beUserLogin ? $this->cObj->editIcons('', $conf['editIcons'], $conf['editIcons.']) : '';
 		// If noRows, we need multiple imagecolumn wraps
 		$imageWrapCols = 1;
 		if ($noRows) {
@@ -802,13 +802,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			if (isset($conf['addClassesCol.'])) {
 				$addClassesCol = $this->cObj->stdWrap($addClassesCol, $conf['addClassesCol.']);
 			}
-			$addClassesColConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesCol' => $addClassesCol), $colCount);
+			$addClassesColConf = $this->frontendController->tmpl->splitConfArray(array('addClassesCol' => $addClassesCol), $colCount);
 			// Apply optionSplit to the list of classes that we want to add to each image
 			$addClassesImage = $conf['addClassesImage'];
 			if (isset($conf['addClassesImage.'])) {
 				$addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
 			}
-			$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $imagesInColumns);
+			$addClassesImageConf = $this->frontendController->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $imagesInColumns);
 			$rows = array();
 			$currentImage = 0;
 			// Set the class for the caption (split or global)
@@ -833,7 +833,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 						// Set the key of the current image
 						$imageKey = $currentImage + $imgStart;
 						// Register IMAGE_NUM_CURRENT for the caption
-						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imageKey;
+						$this->frontendController->register['IMAGE_NUM_CURRENT'] = $imageKey;
 						$this->cObj->data[$this->cObj->currentValKey] = $origImages[$imageKey]['origFile'];
 						if (MathUtility::canBeInterpretedAsInteger($imgs[$imageKey])) {
 							$this->initializeCurrentFileInContentObjectRenderer((int)$imgs[$imageKey], $imgListContainsReferenceUids);
@@ -936,7 +936,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			if (isset($conf['addClassesImage.'])) {
 				$addClassesImage = $this->cObj->stdWrap($addClassesImage, $conf['addClassesImage.']);
 			}
-			$addClassesImageConf = $GLOBALS['TSFE']->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $colCount);
+			$addClassesImageConf = $this->frontendController->tmpl->splitConfArray(array('addClassesImage' => $addClassesImage), $colCount);
 			// Render the images
 			$images = '';
 			for ($c = 0; $c < $imageWrapCols; $c++) {
@@ -961,12 +961,12 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					} else {
 						$imageSpace = $origImages[$imgKey][0] + $border * ($borderSpace + $borderThickness) * 2;
 					}
-					$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
-					$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
-					$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];
-					$GLOBALS['TSFE']->register['imagewidth'] = $origImages[$imgKey][0];
-					$GLOBALS['TSFE']->register['imagespace'] = $imageSpace;
-					$GLOBALS['TSFE']->register['imageheight'] = $origImages[$imgKey][1];
+					$this->frontendController->register['IMAGE_NUM'] = $imgKey;
+					$this->frontendController->register['IMAGE_NUM_CURRENT'] = $imgKey;
+					$this->frontendController->register['ORIG_FILENAME'] = $origImages[$imgKey]['origFile'];
+					$this->frontendController->register['imagewidth'] = $origImages[$imgKey][0];
+					$this->frontendController->register['imagespace'] = $imageSpace;
+					$this->frontendController->register['imageheight'] = $origImages[$imgKey][1];
 					if (MathUtility::canBeInterpretedAsInteger($imgs[$imgKey])) {
 						$this->initializeCurrentFileInContentObjectRenderer(intval($imgs[$imgKey]), $imgListContainsReferenceUids);
 					}
@@ -992,7 +992,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					} else {
 						$allRows .= $thisImage;
 					}
-					$GLOBALS['TSFE']->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
+					$this->frontendController->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
 					// Close this row at the end (colCount), or the last row at the final end
 					if ($separateRows && $i + 1 == count($imgsTag)) {
 						// Close the very last row with either normal configuration or lastRow stdWrap
@@ -1057,7 +1057,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$imgWrapWidth = $imageBlockWidth;
 			}
 			// Wrap around the whole image block
-			$GLOBALS['TSFE']->register['totalwidth'] = $imgWrapWidth;
+			$this->frontendController->register['totalwidth'] = $imgWrapWidth;
 			if ($imgWrapWidth) {
 				$images = $this->cObj->stdWrap($images, $conf['imageStdWrap.']);
 			} else {
@@ -1195,7 +1195,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		// Create table attributes and classes array:
 		$tableTagParams = ($classes = array());
 		// Table attributes for all doctypes except HTML5
-		if ($GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
+		if ($this->frontendController->config['config']['doctype'] !== 'html5') {
 			$tableTagParams['border'] = $border;
 			$tableTagParams['cellspacing'] = $cellSpacing;
 			$tableTagParams['cellpadding'] = $cellPadding;
@@ -1251,11 +1251,11 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @return void
 	 */
 	protected function addPageStyle($selector, $declaration) {
-		if (!isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'])) {
-			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'] = array();
+		if (!isset($this->frontendController->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'])) {
+			$this->frontendController->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'] = array();
 		}
-		if (!isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector])) {
-			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector] = TAB . $selector . ' { ' . $declaration . ' }';
+		if (!isset($this->frontendController->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector])) {
+			$this->frontendController->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector] = TAB . $selector . ' { ' . $declaration . ' }';
 		}
 	}
 

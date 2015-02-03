@@ -51,8 +51,8 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
 	/**
 	 * Remove accessibility icon when no link was rendered, called from TypoScript
 	 *
-	 * @param string Content input. Not used, ignore.
-	 * @param	array		TypoScript configuration
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
 	 * @access private
 	 */
@@ -65,7 +65,7 @@ class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlu
 				$attributes = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($matches[0]);
 				if ($attributes['src']) {
 					// Get RTE Configconfiguration
-					$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
+					$pageTSConfig = $this->frontendController->getPagesTSconfig();
 					if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.'])) {
 						$classesAnchorConfiguration = $pageTSConfig['RTE.']['classesAnchor.'];
 						if (is_array($classesAnchorConfiguration)) {

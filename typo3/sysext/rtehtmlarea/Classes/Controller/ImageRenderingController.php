@@ -122,7 +122,7 @@ class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 		$magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
 
 		// Get RTE configuration
-		$pageTSConfig = $this->getFrontendObject()->getPagesTSconfig();
+		$pageTSConfig = $this->frontendController->getPagesTSconfig();
 		if (is_array($pageTSConfig) && is_array($pageTSConfig['RTE.']['default.'])) {
 			$magicImageService->setMagicImageMaximumDimensions($pageTSConfig['RTE.']['default.']);
 		}
@@ -149,15 +149,6 @@ class ImageRenderingController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 		$logManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 
 		return $logManager->getLogger(get_class($this));
-	}
-
-	/**
-	 * Returns an instance of the Frontend object.
-	 *
-	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-	 */
-	protected function getFrontendObject() {
-		return $GLOBALS['TSFE'];
 	}
 
 }
