@@ -4009,7 +4009,7 @@ class FormEngine {
 			for ($counter = 0; $counter < $numberOfItems; $counter++) {
 				$content = $fields[$counter];
 				if ($content['NAME'] === '--linebreak--') {
-					if ($counter + 1 !== $numberOfItems) {
+					if ($counter !== $numberOfItems) {
 						$out .= '<div class="clearfix"></div>';
 					}
 				} else {
