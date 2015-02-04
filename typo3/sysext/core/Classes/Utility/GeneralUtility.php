@@ -1482,8 +1482,7 @@ class GeneralUtility {
 			$result = $temp;
 		}
 		if ($limit > 0 && count($result) > $limit) {
-			$lastElements = array_slice($result, $limit - 1);
-			$result = array_slice($result, 0, $limit - 1);
+			$lastElements = array_splice($result, $limit - 1);
 			$result[] = implode($delim, $lastElements);
 		} elseif ($limit < 0) {
 			$result = array_slice($result, 0, $limit);
