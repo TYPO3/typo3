@@ -62,6 +62,7 @@ class RecyclerAjaxController {
 	 */
 	public function dispatch($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
 		$extPath = ExtensionManagementUtility::extPath('recycler');
+		/* @var $view StandaloneView */
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
 		$view->setPartialRootPaths(array('default' => $extPath . 'Resources/Private/Partials'));
 
@@ -85,11 +86,10 @@ class RecyclerAjaxController {
 				$model->loadData($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['start'] . ',' . $this->conf['limit'], $this->conf['filterTxt']);
 				$deletedRowsArray = $model->getDeletedRows();
 
-				/* @var $model DeletedRecords */
 				$model = GeneralUtility::makeInstance(DeletedRecords::class);
 				$totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filter']);
 
-				/* @var $view DeletedRecordsController */
+				/* @var $controller DeletedRecordsController */
 				$controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
 				$recordsArray = $controller->transform($deletedRowsArray, $totalDeleted);
 

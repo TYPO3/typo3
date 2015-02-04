@@ -52,12 +52,17 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	protected $recordsPageLimit = 50;
 
 	/**
+	 * @var int
+	 */
+	protected $id;
+
+	/**
 	 * Initializes the Module
 	 *
 	 * @return void
 	 */
 	public function initializeAction() {
-		$this->id = GeneralUtility::_GP('id');
+		$this->id = (int)GeneralUtility::_GP('id');
 		$backendUser = $this->getBackendUser();
 		$this->perms_clause = $backendUser->getPagePermsClause(1);
 		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -89,11 +94,10 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	public function indexAction() {
 		// Integrate dynamic JavaScript such as configuration or lables:
 		$jsConfiguration = $this->getJavaScriptConfiguration();
-        $this->getPageRenderer()->addInlineSettingArray('Recycler', $jsConfiguration);
+		$this->getPageRenderer()->addInlineSettingArray('Recycler', $jsConfiguration);
 		$this->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
 
 		$this->view->assign('title', $this->getLanguageService()->getLL('title'));
-		$this->view->assign('content', $this->content);
 		$this->view->assign('allowDelete', $this->allowDelete);
 	}
 
@@ -154,7 +158,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	/**
 	 * Returns an instance of DocumentTemplate
 	 *
-	 * @return TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	protected function getDocumentTemplate() {
 		return $GLOBALS['TBE_TEMPLATE'];
