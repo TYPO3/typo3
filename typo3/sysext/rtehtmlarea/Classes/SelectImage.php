@@ -310,7 +310,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			function initEventListeners() {
 				require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent", "TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event"], function (UserAgent, Event) {
 					if (UserAgent.isWebKit) {
-						Event.one(window.document.body, "dragend", function (event) { plugin.onDrop(event); });
+						Event.one(window.document.body, "dragend.TYPO3Image", function (event) { plugin.onDrop(event); });
 					}
 				});
 			}
