@@ -2901,9 +2901,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Process query based on type:
 		switch ($parsedQuery['type']) {
 			case 'CREATETABLE':
-
 			case 'ALTERTABLE':
-
+				$this->createMappingsIfRequired($parsedQuery);
+				// Fall-through next instruction
 			case 'DROPTABLE':
 				$this->clearCachedFieldInfo();
 				$this->map_genericQueryParsed($parsedQuery);
@@ -3686,6 +3686,51 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$fieldArray[$k] = $this->mapping[$table]['mapFieldNames'][$v];
 				}
 			}
+		}
+	}
+
+	/**
+	 * Create a mapping for each table and field if required.
+	 *
+	 * @param array $parsedQuery The parsed query
+	 * @return void
+	 */
+	protected function createMappingsIfRequired($parsedQuery) {
+		if (
+			!$this->dbmsSpecifics->specificExists(Specifics\AbstractSpecifics::TABLE_MAXLENGTH)
+			&& !$this->dbmsSpecifics->specificExists(Specifics\AbstractSpecifics::FIELD_MAXLENGTH)
+		) {
+			return;
+		}
+
+		$mappingConfiguration = array();
+		$table = $parsedQuery['TABLE'];
+		if (!isset($this->mapping[$table])) {
+			$truncatedTable = $this->dbmsSpecifics->truncateIdentifier($table, Specifics\AbstractSpecifics::TABLE_MAXLENGTH);
+			if ($table !== $truncatedTable) {
+				$mappingConfiguration['mapTableName'] = $truncatedTable;
+			}
+		}
+		foreach ($parsedQuery['FIELDS'] as $field => $_) {
+			if (!isset($this->mapping[$table]['mapFieldNames'][$field])) {
+				$truncatedField = $this->dbmsSpecifics->truncateIdentifier($field, Specifics\AbstractSpecifics::FIELD_MAXLENGTH);
+				if ($field !== $truncatedField) {
+					$mappingConfiguration['mapFieldNames'][$field] = $truncatedField;
+				}
+			}
+		}
+		if (!empty($mappingConfiguration)) {
+			/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+			$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+			/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+			$configurationManager = $objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+			$configurationManager->setLocalConfigurationValueByPath(
+				'EXTCONF/dbal/mapping/' . $table,
+				$mappingConfiguration
+			);
+
+			// renew mapping information
+			$this->mapping = array_merge($this->mapping, array($table => $mappingConfiguration));
 		}
 	}
 

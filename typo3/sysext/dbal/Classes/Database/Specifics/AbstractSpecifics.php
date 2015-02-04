@@ -151,6 +151,28 @@ abstract class AbstractSpecifics {
 	}
 
 	/**
+	 * Truncates the name of the identifier.
+	 * Based on TYPO3.FLOWs' FlowAnnotationDriver::truncateIdentifier()
+	 *
+	 * @param string $identifier
+	 * @param string $specific
+	 * @return string
+	 */
+	public function truncateIdentifier($identifier, $specific) {
+		if (!$this->specificExists($specific)) {
+			return $identifier;
+		}
+
+		$maxLength = $this->getSpecific($specific);
+		if (strlen($identifier) > $maxLength) {
+			$truncateChars = 10;
+			$identifier = substr($identifier, 0, $maxLength - $truncateChars) . '_' . substr(sha1($identifier), 0, $truncateChars - 1);
+		}
+
+		return $identifier;
+	}
+
+	/**
 	 * Adjust query parts for DBMS
 	 *
 	 * @param string $select_fields
