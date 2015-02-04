@@ -167,7 +167,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/CSS/Parser',
 				for (var index = 0, n = styleSheets.length; index < n; index++) {
 					try {
 						var styleSheet = styleSheets[index];
-						this.parseRules(styleSheet.cssRules);
+						if (!UserAgent.isIE || styleSheet.cssRules.length) {
+							this.parseRules(styleSheet.cssRules);
+						} else {
+							this.cssLoaded = false;
+							this.parsedClasses = {};
+							break;
+						}
 					} catch (e) {
 						this.error = e;
 						this.cssLoaded = false;
