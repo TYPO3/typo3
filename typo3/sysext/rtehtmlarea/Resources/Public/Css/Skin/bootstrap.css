@@ -10,21 +10,21 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-* {
+/* Bootstrap selectors required in frontend where Boootstrap classes may not be available */
+.htmlarea * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-*:before,
-*:after {
+.htmlarea *:before,
+.htmlarea *:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 /* Buttons */
-.btn {
+.htmlarea .btn {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -44,32 +44,31 @@
   -ms-user-select: none;
   user-select: none;
 }
-.btn:focus,
-.btn:active:focus,
-.btn.active:focus,
-.btn.focus,
-.btn:active.focus,
-.btn.active.focus {
+.htmlarea .btn:focus,
+.htmlarea .btn:active:focus,
+.htmlarea .btn.active:focus,
+.htmlarea .btn.focus,
+.htmlarea .btn:active.focus,
+.htmlarea .btn.active.focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-.btn:hover,
-.btn:focus,
-.btn.focus {
+.htmlarea .btn:hover,
+.htmlarea .btn:focus,
+.htmlarea .btn.focus {
   color: #333333;
   text-decoration: none;
 }
-.btn:active,
-.btn.active {
+.htmlarea .btn:active,
+.htmlarea .btn.active {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-.btn.disabled,
-.btn[disabled],
-fieldset[disabled] .btn {
+.htmlarea .btn.disabled,
+.htmlarea .btn[disabled] {
   cursor: not-allowed;
   pointer-events: none;
   opacity: 0.65;
@@ -77,49 +76,43 @@ fieldset[disabled] .btn {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.btn-default {
+.htmlarea .btn-default {
   color: #333333;
   background-color: #eeeeee;
   border-color: #cccccc;
 }
-.btn-default:hover,
-.btn-default:focus,
-.btn-default.focus,
-.btn-default:active,
-.btn-default.active {
+.htmlarea .btn-default:hover,
+.htmlarea .btn-default:focus,
+.htmlarea .btn-default.focus,
+.htmlarea .btn-default:active,
+.htmlarea .btn-default.active {
   color: #333333;
   background-color: #d5d5d5;
   border-color: #adadad;
 }
-.btn-default:active,
-.btn-default.active {
+.htmlarea .btn-default:active,
+.htmlarea .btn-default.active {
   background-image: none;
 }
-.btn-default.disabled,
-.btn-default[disabled],
-fieldset[disabled] .btn-default,
-.btn-default.disabled:hover,
-.btn-default[disabled]:hover,
-fieldset[disabled] .btn-default:hover,
-.btn-default.disabled:focus,
-.btn-default[disabled]:focus,
-fieldset[disabled] .btn-default:focus,
-.btn-default.disabled.focus,
-.btn-default[disabled].focus,
-fieldset[disabled] .btn-default.focus,
-.btn-default.disabled:active,
-.btn-default[disabled]:active,
-fieldset[disabled] .btn-default:active,
-.btn-default.disabled.active,
-.btn-default[disabled].active,
-fieldset[disabled] .btn-default.active {
+.htmlarea .btn-default.disabled,
+.htmlarea .btn-default[disabled],
+.htmlarea .btn-default.disabled:hover,
+.htmlarea .btn-default[disabled]:hover,
+.htmlarea .btn-default.disabled:focus,
+.htmlarea .btn-default[disabled]:focus,
+.htmlarea .btn-default.disabled.focus,
+.htmlarea .btn-default[disabled].focus,
+.htmlarea .btn-default.disabled:active,
+.htmlarea .btn-default[disabled]:active,
+.htmlarea .btn-default.disabled.active,
+.htmlarea .btn-default[disabled].active {
   background-color: #eeeeee;
   border-color: #cccccc;
 }
 
 /* Small buttons */
-.btn-sm,
-.btn-group-sm > .btn {
+.htmlarea .btn-sm,
+.htmlarea .btn-group-sm > .btn {
   padding: 4px 4px;
   font-size: 11px;
   line-height: 1.5;
@@ -127,75 +120,69 @@ fieldset[disabled] .btn-default.active {
 }
 
 /* Button groups */
-.btn-group,
-.btn-group-vertical {
+.htmlarea .btn-group {
   position: relative;
   display: inline-block;
   vertical-align: middle;
 }
-.btn-group > .btn,
-.btn-group-vertical > .btn {
+.htmlarea .btn-group > .btn {
   position: relative;
   float: left;
 }
-.btn-group > .btn:hover,
-.btn-group-vertical > .btn:hover,
-.btn-group > .btn:focus,
-.btn-group-vertical > .btn:focus,
-.btn-group > .btn:active,
-.btn-group-vertical > .btn:active,
-.btn-group > .btn.active,
-.btn-group-vertical > .btn.active {
+.htmlarea .btn-group > .btn:hover,
+.htmlarea .btn-group > .btn:focus,
+.htmlarea .btn-group > .btn:active,
+.htmlarea .btn-group > .btn.active {
   z-index: 2;
 }
-.btn-group .btn + .btn,
-.btn-group .btn + .btn-group,
-.btn-group .btn-group + .btn,
-.btn-group .btn-group + .btn-group {
+.htmlarea .btn-group .btn + .btn,
+.htmlarea .btn-group .btn + .btn-group,
+.htmlarea .btn-group .btn-group + .btn,
+.htmlarea .btn-group .btn-group + .btn-group {
   margin-left: -1px;
 }
 .btn-toolbar {
   margin-left: -5px;
 }
-.btn-toolbar .btn-group {
+.htmlarea .btn-toolbar .btn-group {
   float: left;
 }
-.btn-toolbar > .btn,
-.btn-toolbar > .btn-group {
+.htmlarea .btn-toolbar > .btn,
+.htmlarea .btn-toolbar > .btn-group {
   margin-left: 5px;
 }
-.btn-group > .btn:not(:first-child):not(:last-child) {
+.htmlarea .btn-group > .btn:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
-.btn-group > .btn:first-child {
+.htmlarea .btn-group > .btn:first-child {
   margin-left: 0;
 }
-.btn-group > .btn:first-child:not(:last-child) {
+.htmlarea .btn-group > .btn:first-child:not(:last-child) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
-.btn-group > .btn:last-child:not(:first-child) {
+.htmlarea .btn-group > .btn:last-child:not(:first-child) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
-.btn-group > .btn-group {
+.htmlarea .btn-group > .btn-group {
   float: left;
 }
-.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
+.htmlarea .btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
   border-radius: 0;
 }
-.btn-group > .btn-group:first-child > .btn:last-child,
-.btn-group > .btn-group:first-child > .dropdown-toggle {
+.htmlarea .btn-group > .btn-group:first-child > .btn:last-child,
+.htmlarea .btn-group > .btn-group:first-child > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
-.btn-group > .btn-group:last-child > .btn:first-child {
+.htmlarea .btn-group > .btn-group:last-child > .btn:first-child {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
 
 /* Form controls */
-.form-control {
+.htmlarea .form-control {
   display: block;
   width: 100%;
   height: 32px;
@@ -213,29 +200,28 @@ fieldset[disabled] .btn-default.active {
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
-.form-control:focus {
+.htmlarea .form-control:focus {
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
-.form-control::-moz-placeholder {
+.htmlarea .form-control::-moz-placeholder {
   color: #d7d7d7;
   opacity: 1;
 }
-.form-control:-ms-input-placeholder {
+.htmlarea .form-control:-ms-input-placeholder {
   color: #d7d7d7;
 }
-.form-control::-webkit-input-placeholder {
+.htmlarea .form-control::-webkit-input-placeholder {
   color: #d7d7d7;
 }
-.form-control[disabled],
-.form-control[readonly],
-fieldset[disabled] .form-control {
+.htmlarea .form-control[disabled],
+.htmlarea .form-control[readonly] {
   cursor: not-allowed;
   background-color: #f5f5f5;
   opacity: 1;
 }
-.form-group {
+.htmlarea .form-group {
   margin-bottom: 15px;
 }

@@ -27,7 +27,7 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .btn-toolbar {
-	margin-left: -5px;
+	margin-left: -3px;
 	padding: 2px 2px 2px 0;
 }
 .htmlarea .btn-toolbar:before,
