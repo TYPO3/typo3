@@ -2530,8 +2530,12 @@ class FormEngine {
 		$allowedTables = '';
 		if (is_array($params['allowedTables']) && !empty($params['allowedTables'])) {
 			$allowedTables .= '<div class="help-block">';
-			foreach ($params['allowedTables'] as $item) {
-				$allowedTables .= '<a href="#" onClick="' . htmlspecialchars($item['onClick']) . '" class="btn btn-default">' . $item['icon'] . ' ' . $item['name'] . '</a> ';
+			foreach ($params['allowedTables'] as $key => $item) {
+				if (is_array($item)) {
+					$allowedTables .= '<a href="#" onClick="' . htmlspecialchars($item['onClick']) . '" class="btn btn-default">' . $item['icon'] . ' ' . htmlspecialchars($item['name']) . '</a> ';
+				} elseif($key === 'name') {
+					$allowedTables .= '<span>' . htmlspecialchars($item) . '</span> ';
+				}
 			}
 			$allowedTables .= '</div>';
 		}
