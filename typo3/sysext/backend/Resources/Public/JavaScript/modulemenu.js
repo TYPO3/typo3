@@ -43,6 +43,9 @@ TYPO3.ModuleMenu.App = {
 		require(['TYPO3/CMS/Backend/Storage'], function() {
 			var collapsedMainMenuItems = me.getCollapsedMainMenuItems();
 			TYPO3.jQuery.each(collapsedMainMenuItems, function(key, itm) {
+				if (itm !== true) {
+					return;
+				}
 				var $group = TYPO3.jQuery('#' + key);
 				if ($group.length > 0) {
 					var $groupContainer = $group.find('.typo3-module-menu-group-container');
@@ -246,7 +249,7 @@ TYPO3.ModuleMenu.App = {
 	 */
 	removeCollapseMainMenuItem: function(item) {
 		var existingItems = this.getCollapsedMainMenuItems();
-		existingItems[item] = null;
+		delete existingItems[item];
 		TYPO3.Storage.Persistent.set('modulemenu', JSON.stringify(existingItems));
 	}
 
