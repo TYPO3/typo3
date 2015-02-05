@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
  *
