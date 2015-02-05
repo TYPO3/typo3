@@ -184,7 +184,7 @@ class EnableFileService {
 	 */
 	static protected function getFirstInstallFilePaths() {
 		$files = array_filter(scandir(self::$sitePath), function($file) {
-			return (is_file(self::$sitePath . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file));
+			return (@is_file(self::$sitePath . $file) && preg_match('~^' . self::FIRST_INSTALL_FILE_PATH . '.*~i', $file));
 		});
 		return $files;
 	}
