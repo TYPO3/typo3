@@ -5,9 +5,15 @@ Feature: #24906 - Configuration for maximum chars in TextElement
 Description
 ===========
 
-The Textelement supports now the option ``max`` to render the attribute maxlength for textelements,
+TCA type ``text`` now supports the HTML5 attribute ``maxlength`` to restrict
+text to a given maximum length. Line breaks are usually counted as two
+characters.
 
-The new option can be set like this:
+Not every browser supports this, see sites like
+`w3schools.com <http://www.w3schools.com/tags/att_textarea_maxlength.asp>`_
+for details.
+
+The new option can be used like this:
 
 .. code-block:: php
 
