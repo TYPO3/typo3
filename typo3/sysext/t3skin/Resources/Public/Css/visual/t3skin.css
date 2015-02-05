@@ -7352,6 +7352,9 @@ button.close {
 .text-monospace {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+.lead {
+  font-size: 1.25em;
+}
 @media (min-width: 768px) {
   .dl-horizontal dt {
     text-align: left;
