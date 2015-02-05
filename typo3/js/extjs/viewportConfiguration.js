@@ -86,7 +86,7 @@ TYPO3.Viewport.configuration = {
 					var containerWidth = adjWidth,
 						moduleMenuWidth = document.getElementById('typo3-menu').clientWidth,
 						moduleMenuMinWidth = 100,
-						moduleMenuSnappedWidth = 50,
+						moduleMenuSnappedWidth = 46,
 						moduleMenuSnappingClass = 'typo3-module-menu-snapped',
 						forceSnapMode = (containerWidth <= moduleMenuMinWidth);
 					if (forceSnapMode){
