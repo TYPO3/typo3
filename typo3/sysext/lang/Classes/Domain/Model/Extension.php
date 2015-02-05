@@ -63,7 +63,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Setter for the icon
 	 *
-	 * @param string $icon ext_icon path relative to typo3 folder like ../typo3conf/ext/extensionkey/ext_icon.gif
+	 * @param string $icon ext_icon path relative to typo3 folder like ../typo3conf/ext/extensionkey/ext_icon.png
 	 * @return void
 	 */
 	public function setIcon($icon) {

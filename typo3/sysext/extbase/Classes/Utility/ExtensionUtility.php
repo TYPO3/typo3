@@ -202,7 +202,7 @@ tt_content.' . $pluginSignature . ' {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$defaultModuleConfiguration = array(
 			'access' => 'admin',
-			'icon' => 'EXT:extbase/ext_icon.gif',
+			'icon' => 'EXT:extbase/ext_icon.png',
 			'labels' => '',
 			'extRelPath' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'Classes/'
 		);

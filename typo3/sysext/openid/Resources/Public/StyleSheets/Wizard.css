@@ -2,7 +2,7 @@ body {
 	padding: 5px;
 }
 #openid_url {
-	background-image: url('../../../ext_icon.gif');
+	background-image: url('../../../ext_icon.png');
 	background-position: left 50%; /* LTR */
 	background-repeat: no-repeat;
 	padding-left: 20px;
