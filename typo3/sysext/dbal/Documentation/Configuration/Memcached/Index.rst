@@ -22,7 +22,6 @@ configured, it can then cache queries for much longer, thus allowing
 DBAL to be much more efficient. Caching may be configured within
 ``localconf.php``::
 
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = 1;
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal'] = array(
 	    'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\MemcachedBackend',
 	    'options' => array(

@@ -76,6 +76,8 @@ class SilentConfigurationUpgradeService {
 		'GFX/enable_typo3temp_db_tracking',
 		// #48542
 		'GFX/TTFdpi',
+		// #64872
+		'SYS/useCachingFramework',
 	);
 
 	/**
