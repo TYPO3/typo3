@@ -56,6 +56,7 @@ class ImageInfo extends FileInfo {
 			// In case the image size could not be retrieved, log the incident as a warning.
 			if ($this->imageSizes === FALSE) {
 				$this->getLogger()->warning('I could not retrieve the image size for file ' . $this->getPathname());
+				$this->imageSizes = array(0, 0);
 			}
 		}
 		return $this->imageSizes;
@@ -65,11 +66,9 @@ class ImageInfo extends FileInfo {
 	 * @return \TYPO3\CMS\Core\Log\Logger
 	 */
 	protected function getLogger(){
-
 		/** @var $loggerManager \TYPO3\CMS\Core\Log\LogManager */
 		$loggerManager = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
 
-		/** @var $logger \TYPO3\CMS\Core\Log\Logger */
 		return $loggerManager->getLogger(get_class($this));
 	}
 
