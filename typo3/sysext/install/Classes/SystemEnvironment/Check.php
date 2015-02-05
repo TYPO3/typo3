@@ -301,24 +301,15 @@ class Check {
 		$recommendedMaximumExecutionTime = 240;
 		$currentMaximumExecutionTime = ini_get('max_execution_time');
 		if ($currentMaximumExecutionTime == 0) {
-			if (PHP_SAPI === 'cli') {
-				$status = new Status\OkStatus();
-				$status->setTitle('Infinite PHP script execution time');
-				$status->setMessage(
-					'Maximum PHP script execution time is always set to infinite (0) in cli mode.' .
-					' The setting used for web requests cannot be checked from command line.'
-				);
-			} else {
-				$status = new Status\WarningStatus();
-				$status->setTitle('Infinite PHP script execution time');
-				$status->setMessage(
-					'max_execution_time=' . $currentMaximumExecutionTime . LF .
-					'While TYPO3 is fine with this, you risk a denial-of-service for your system if for whatever' .
-					' reason some script hangs in an infinite loop. You are usually on the safe side ' .
-					' if it is reduced to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF .
-					'max_execution_time=' . $recommendedMaximumExecutionTime
-				);
-			}
+			$status = new Status\WarningStatus();
+			$status->setTitle('Infinite PHP script execution time');
+			$status->setMessage(
+				'max_execution_time=0' . LF .
+				'While TYPO3 is fine with this, you risk a denial-of-service for your system if for whatever' .
+				' reason some script hangs in an infinite loop. You are usually on the safe side ' .
+				' if it is reduced to ' . $recommendedMaximumExecutionTime . ' seconds:' . LF .
+				'max_execution_time=' . $recommendedMaximumExecutionTime
+			);
 		} elseif ($currentMaximumExecutionTime < $minimumMaximumExecutionTime) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('Low PHP script execution time');
