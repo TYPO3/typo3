@@ -26,68 +26,144 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
+	/**
+	 * Used as fieldname prefix
+	 *
+	 * @var string
+	 */
 	public $prefixId = 'tx_indexedsearch';
 
-	// Same as class name
-	public $scriptRelPath = 'Classes/Controller/SearchFormController.php';
+	/**
+	 * Path to this script relative to the extension dir.
+	 *
+	 * @var string
+	 * @TODO This is still set to the "old" class location since the locallang.xlf file in the same dir is loaded by pi_loadLL
+	 */
+	public $scriptRelPath = 'pi/class.tx_indexedsearch.php';
 
-	// Path to this script relative to the extension dir.
+	/**
+	 * Extension key.
+	 *
+	 * @var string
+	 */
 	public $extKey = 'indexed_search';
 
-	// The extension key.
+	/**
+	 * See document for info about this flag...
+	 *
+	 * @var int
+	 */
 	public $join_pages = 0;
 
-	// See document for info about this flag...
+
 	public $defaultResultNumber = 10;
 
+	/**
+	 * Internal variable
+	 *
+	 * @var array
+	 */
 	public $operator_translate_table = array(array('+', 'AND'), array('|', 'OR'), array('-', 'AND NOT'));
 
-	// Internal variable
+	/**
+	 * Root-page ids to search in (rl0 field where clause, see initialize() function)
+	 *
+	 * @var int|string id or comma separated list of ids
+	 */
 	public $wholeSiteIdList = 0;
 
-	// Root-page PIDs to search in (rl0 field where clause, see initialize() function)
-	// Internals:
+	/**
+	 * Search Words and operators
+	 *
+	 * @var array
+	 */
 	public $sWArr = array();
 
-	// Search Words and operators
+	/**
+	 * Selector box values for search configuration form
+	 *
+	 * @var array
+	 */
 	public $optValues = array();
 
-	// Selector box values for search configuration form
+	/**
+	 * Will hold the first row in result - used to calculate relative hit-ratings.
+	 *
+	 * @var array
+	 */
 	public $firstRow = array();
 
-	// Will hold the first row in result - used to calculate relative hit-ratings.
+	/**
+	 * Caching of page path
+	 *
+	 * @var array
+	 */
 	public $cache_path = array();
 
-	// Caching of page path
+	/**
+	 * Caching of root line data
+	 *
+	 * @var array
+	 */
 	public $cache_rl = array();
 
-	// Caching of root line data
+	/**
+	 * Required fe_groups memberships for display of a result.
+	 *
+	 * @var array
+	 */
 	public $fe_groups_required = array();
 
-	// Required fe_groups memberships for display of a result.
+	/**
+	 * sys_domain records
+	 *
+	 * @var array
+	 */
 	public $domain_records = array();
 
-	// Select clauses for individual words
+	/**
+	 * Select clauses for individual words
+	 *
+	 * @var array
+	 */
 	public $wSelClauses = array();
 
-	// Domain records (?)
+	/**
+	 * Page tree sections for search result.
+	 *
+	 * @var array
+	 */
 	public $resultSections = array();
 
-	// Page tree sections for search result.
+	/**
+	 * External parser objects
+	 * @var array
+	 */
 	public $external_parsers = array();
 
-	// External parser objects
+	/**
+	 * Storage of icons....
+	 *
+	 * @var array
+	 */
 	public $iconFileNameCache = array();
 
-	// Storage of icons....
-	public $templateCode;
+	/**
+	 * Will hold the content of $conf['templateFile']
+	 *
+	 * @var string
+	 */
+	public $templateCode = '';
 
-	// Will hold the content of $conf['templateFile']
 	public $hiddenFieldList = 'ext, type, defOp, media, order, group, lang, desc, results';
 
+	/**
+	 * Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
+	 *
+	 * @var array
+	 */
 	public $indexerConfig = array();
 
-	// Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
 	public $enableMetaphoneSearch = FALSE;
 
 	public $storeMetaphoneInfoAsWords;
@@ -281,7 +357,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			}
 			$this->optValues['sections']['rl1_' . implode(',', array_keys($firstLevelMenu))] = $this->pi_getLL('opt_RL1ALL');
 		}
-		// Setting the list of root PIDs for the search. Notice, these page IDs MUST have a TypoScript template with root flag on them! Basically this list is used to select on the "rl0" field and page ids are registered as "rl0" only if a TypoScript template record with root flag is there.
+		// Setting the list of root IDs for the search. Notice, these page IDs MUST have a TypoScript template with root flag on them! Basically this list is used to select on the "rl0" field and page ids are registered as "rl0" only if a TypoScript template record with root flag is there.
 		// This happens AFTER the use of $this->wholeSiteIdList above because the above will then fetch the menu for the CURRENT site - regardless of this kind of searching here. Thus a general search will lookup in the WHOLE database while a specific section search will take the current sections...
 		if ($this->conf['search.']['rootPidList']) {
 			$this->wholeSiteIdList = implode(',', GeneralUtility::intExplode(',', $this->conf['search.']['rootPidList']));
