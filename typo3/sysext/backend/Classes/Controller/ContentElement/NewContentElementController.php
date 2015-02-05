@@ -163,7 +163,7 @@ class NewContentElementController {
 			$code = '';
 			$wizardItems = $this->getWizardItems();
 			// Wrapper for wizards
-			$this->elementWrapper['section'] = array('<ul class="contentelement-wizard list-unstyled">', '</ul>');
+			$this->elementWrapper['section'] = array('<div class="panel panel-tab"><div class="panel-body">', '</div></div>');
 			// Copy wrapper for tabs
 			$this->elementWrapperForTabs = $this->elementWrapper;
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
@@ -216,23 +216,21 @@ class NewContentElementController {
 						$aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();" . (!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					}
 
-					$menuItems[$key]['content'] .=
-						'<li>
-							<div class="contentelement-wizard-item">
-								' . $content . '
-								<div class="contentelement-wizard-item-icon">
-									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-										<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" />
-									</a>
-								</div>
-								<div class="contentelement-wizard-item-text">
-									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-										<strong>' . htmlspecialchars($wInfo['title']) . '</strong>
-										<br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) .
-									'</a>
-								</div>
+					$menuItems[$key]['content'] .= '
+						<div class="media">
+							' . $content . '
+							<div class="media-left">
+								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+									<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" />
+								</a>
 							</div>
-						</li>';
+							<div class="media-body">
+								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>
+									<br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) .
+								'</a>
+							</div>
+						</div>';
 					$cc++;
 				}
 			}

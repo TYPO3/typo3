@@ -94,3 +94,20 @@
 .panel-space {
 	margin: 3em 0;
 }
+
+//
+// Panel Tab
+//
+.panel-tab {
+	border-radius: 0;
+	border: 1px solid @nav-tabs-active-link-hover-border-color;
+	background-color: @nav-tabs-active-link-bg;
+}
+.panel-tab + .panel-tab {
+	margin-top: -19px;
+}
+.tab-pane {
+	> .panel-tab:first-child {
+		border-top: none;
+	}
+}
