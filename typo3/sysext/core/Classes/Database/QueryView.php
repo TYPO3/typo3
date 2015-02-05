@@ -545,12 +545,12 @@ class QueryView {
 			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
 			$out .= '<a class="btn btn-default" href="#" onClick="' . BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
-			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . BackendUtility::getModuleUrl('tce_db')), array(
+			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db', arary(), $GLOBALS['BACK_PATH']), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => GeneralUtility::linkThisScript(array())
 				)) . BackendUtility::getUrlToken('tceAction') . '">';
 			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore', array('title' => 'undelete only')) . '</a>';
-			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(($GLOBALS['BACK_PATH'] . BackendUtility::getModuleUrl('tce_db')), array(
+			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db', array(), $GLOBALS['BACK_PATH']), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => GeneralUtility::linkThisUrl('alt_doc.php', array(
 						('edit[' . $table . '][' . $row['uid'] . ']') => 'edit',

@@ -89,7 +89,7 @@ class RteController extends AbstractWizardController {
 		// Need to NOT have the page wrapped in DIV since if we do that we destroy
 		// the feature that the RTE spans the whole height of the page!!!
 		$this->doc->divClass = '';
-		$this->doc->form = '<form action="' . BackendUtility::getModuleUrl('tce_db') . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db')) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 	}
 
 	/**

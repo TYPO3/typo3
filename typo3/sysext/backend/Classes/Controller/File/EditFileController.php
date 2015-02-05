@@ -118,7 +118,7 @@ class EditFileController {
 				top.goToModule("file_list");
 			}
 		');
-		$this->doc->form = '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform">';
+		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
 	}
 
 	/**

@@ -110,7 +110,7 @@ class FileUploadController {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_upload.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->form = '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 	}
 
 	/**

@@ -517,7 +517,7 @@ class PagePositionMap {
 		}
 		$location .= '&redirect=' . rawurlencode($this->R_URI);
 		// returns to prev. page
-		return 'window.location.href=\'' . $location . '\';return false;';
+		return 'window.location.href=' . GeneralUtility::quoteJSvalue($location) . ';return false;';
 	}
 
 	/**

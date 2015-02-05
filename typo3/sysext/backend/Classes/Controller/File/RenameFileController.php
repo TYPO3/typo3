@@ -136,7 +136,7 @@ class RenameFileController {
 		} else {
 			$fileIdentifier = $this->fileOrFolderObject->getUid();
 		}
-		$pageContent .= '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform" role="form">';
+		$pageContent .= '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform" role="form">';
 		// Making the formfields for renaming:
 		$pageContent .= '
 

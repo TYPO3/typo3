@@ -548,7 +548,7 @@ function jumpToUrl(URL) {
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
 		$redirectUrl = $redirectUrl ? $redirectUrl : GeneralUtility::getIndpEnv('REQUEST_URI');
-		$commandUrl = $this->backPath . BackendUtility::getModuleUrl('tce_db') . '&' . $params . '&redirect=' . ($redirectUrl == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
+		$commandUrl = BackendUtility::getModuleUrl('tce_db', array(), $this->backPath) . '&' . $params . '&redirect=' . ($redirectUrl == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
 		return $commandUrl;
 	}
 

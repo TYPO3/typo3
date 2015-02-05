@@ -2490,7 +2490,7 @@ class ElementBrowser {
 			<!--
 				Form, for uploading files:
 			-->
-			<form action="' . $GLOBALS['BACK_PATH'] . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform"'
+			<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file', array(),  $GLOBALS['BACK_PATH'])) . '" method="post" name="editform"'
 			. ' id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
 					<tr>
@@ -2561,7 +2561,7 @@ class ElementBrowser {
 			<!--
 				Form, for creating new folders:
 			-->
-			<form action="' . $GLOBALS['BACK_PATH'] . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform2" id="typo3-crFolderForm">
+			<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file', array(), $GLOBALS['BACK_PATH'])) . '" method="post" name="editform2" id="typo3-crFolderForm">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-crFolder">
 					<tr>
 						<td>' . $this->barheader($lang->sL(

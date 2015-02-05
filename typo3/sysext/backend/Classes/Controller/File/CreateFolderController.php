@@ -146,7 +146,7 @@ class CreateFolderController {
 		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
 
 		if ($this->folderObject->checkActionPermission('add')) {
-			$code = '<form role="form" action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform">';
+			$code = '<form role="form" action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
 			// Making the selector box for the number of concurrent folder-creations
 			$this->number = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->number, 1, 10);
 			$code .= '

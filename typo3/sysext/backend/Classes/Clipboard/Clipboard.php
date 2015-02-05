@@ -565,15 +565,14 @@ class Clipboard {
 	 * @return string
 	 */
 	public function pasteUrl($table, $uid, $setRedirect = TRUE, array $update = NULL) {
-		$rU = $this->backPath . ($table == '_FILE' ? BackendUtility::getModuleUrl('tce_file') . '&' : BackendUtility::getModuleUrl('tce_db') . '&') .
-			($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
+		return ($table == '_FILE' ? BackendUtility::getModuleUrl('tce_file', array(), $this->backPath) : BackendUtility::getModuleUrl('tce_db', array(), $this->backPath)) .
+			($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
 			'&vC=' . $GLOBALS['BE_USER']->veriCode() .
 			'&prErr=1&uPT=1' .
 			'&CB[paste]=' . rawurlencode($table . '|' . $uid) .
 			'&CB[pad]=' . $this->current .
 			(is_array($update) ? GeneralUtility::implodeArrayForUrl('CB[update]', $update) : '') .
 			BackendUtility::getUrlToken('tceAction');
-		return $rU;
 	}
 
 	/**
@@ -584,8 +583,9 @@ class Clipboard {
 	 * @return string
 	 */
 	public function deleteUrl($setRedirect = 1, $file = 0) {
-		$rU = $this->backPath . ($file ? BackendUtility::getModuleUrl('tce_file') . '&' : BackendUtility::getModuleUrl('tce_db') . '&') . ($setRedirect ? 'redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
-		return $rU;
+		return ($file ? BackendUtility::getModuleUrl('tce_file', array(), $this->backPath) : BackendUtility::getModuleUrl('tce_db', array(), $this->backPath))
+			. ($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode()
+			. '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
 	}
 
 	/**
