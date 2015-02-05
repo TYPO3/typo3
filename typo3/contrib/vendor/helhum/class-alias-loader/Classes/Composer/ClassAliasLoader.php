@@ -28,6 +28,11 @@ class ClassAliasLoader {
 	protected $aliasMap = array();
 
 	/**
+	 * @var bool
+	 */
+	protected $caseSensitiveClassLoading = true;
+
+	/**
 	 * @param ComposerClassLoader $composerClassLoader
 	 */
 	public function __construct(ComposerClassLoader $composerClassLoader) {
@@ -42,6 +47,13 @@ class ClassAliasLoader {
 	 */
 	public function setAliasMap(array $aliasMap) {
 		$this->aliasMap = $aliasMap;
+	}
+
+	/**
+	 * @param boolean $caseSensitiveClassLoading
+	 */
+	public function setCaseSensitiveClassLoading($caseSensitiveClassLoading) {
+		$this->caseSensitiveClassLoading = $caseSensitiveClassLoading;
 	}
 
 	/**
@@ -77,6 +89,19 @@ class ClassAliasLoader {
 			$originalClassName = $this->aliasMap['aliasToClassNameMapping'][$lowerCasedClassName];
 			return $this->loadOriginalClassAndSetAliases($originalClassName);
 		}
+		return $this->loadClass($className);
+	}
+
+	/**
+	 * Load class with the option to respect case insensitivity
+	 *
+	 * @param string $className
+	 * @return bool|null
+	 */
+	public function loadClass($className) {
+		if (!$this->caseSensitiveClassLoading) {
+			$className = strtolower($className);
+		}
 		return $this->composerClassLoader->loadClass($className);
 	}
 
@@ -89,7 +114,7 @@ class ClassAliasLoader {
 	 * @return bool
 	 */
 	protected function loadOriginalClassAndSetAliases($originalClassName) {
-		if (class_exists($originalClassName, false) || $this->composerClassLoader->loadClass($originalClassName)) {
+		if (class_exists($originalClassName, false) || $this->loadClass($originalClassName)) {
 			foreach ($this->aliasMap['classNameToAliasMapping'][$originalClassName] as $aliasClassName) {
 				if (!class_exists($aliasClassName, false)) {
 					class_alias($originalClassName, $aliasClassName);

@@ -5,7 +5,7 @@
     "keywords": [
         "composer", "autoloader", "classloader", "alias"
     ],
-    "homepage": "http://github.om/helhum/class-alias-loader",
+    "homepage": "http://github.com/helhum/class-alias-loader",
     "authors": [
         {
             "name": "Helmut Hummel",

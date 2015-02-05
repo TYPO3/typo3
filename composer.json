@@ -54,6 +54,7 @@
 		"branch-alias": {
 			"dev-TYPO3_6-2": "6.2.x-dev"
 		},
+		"autoload-case-sensitivity": false,
 		"class-alias-maps": [
 			"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
 			"typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
