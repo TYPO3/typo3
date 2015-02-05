@@ -1028,7 +1028,6 @@ return array(
 	'tx_impexp' => \TYPO3\CMS\Impexp\ImportExport::class,
 	'tx_impexp_localPageTree' => \TYPO3\CMS\Impexp\LocalPageTree::class,
 	'tx_impexp_task' => \TYPO3\CMS\Impexp\Task\ImportExportTask::class,
-	'Tx_IndexedSearch_Controller_SearchController' => \TYPO3\CMS\IndexedSearch\Controller\SearchController::class,
 	'Tx_IndexedSearch_Domain_Repository_IndexSearchRepository' => \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository::class,
 	'tx_indexedsearch_files' => \TYPO3\CMS\IndexedSearch\Hook\CrawlerFilesHook::class,
 	'tx_indexedsearch_crawler' => \TYPO3\CMS\IndexedSearch\Hook\CrawlerHook::class,
