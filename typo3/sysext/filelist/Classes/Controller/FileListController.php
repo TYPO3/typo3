@@ -268,7 +268,7 @@ class FileListController {
 			$this->filelist->clipObj->initializeClipboard();
 			$CB = GeneralUtility::_GET('CB');
 			if ($this->cmd == 'setCB') {
-				$CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(GeneralUtility::_POST('CBH'), GeneralUtility::_POST('CBC')), '_FILE');
+				$CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(GeneralUtility::_POST('CBH'), (array)GeneralUtility::_POST('CBC')), '_FILE');
 			}
 			if (!$this->MOD_SETTINGS['clipBoard']) {
 				$CB['setP'] = 'normal';
