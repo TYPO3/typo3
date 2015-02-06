@@ -14,7 +14,7 @@
 /**
  * RequireJS module for Recycler
  */
-define(['jquery', 'nprogress'], function($, NProgress) {
+define(['jquery', 'nprogress', 'jquery/jquery.clearable'], function($, NProgress) {
 	var Recycler = {
 		identifiers: {
 			searchForm: '#recycler-form',
@@ -79,7 +79,14 @@ define(['jquery', 'nprogress'], function($, NProgress) {
 				Recycler.elements.$searchSubmitBtn.addClass('disabled');
 				Recycler.loadDeletedElements();
 			}
-		});
+		}).clearable(
+			{
+				onClear: function() {
+					Recycler.elements.$searchSubmitBtn.addClass('disabled');
+					Recycler.loadDeletedElements();
+				}
+			}
+		);
 
 		// changing "depth"
 		Recycler.elements.$depthSelector.on('change', function() {

@@ -87,7 +87,7 @@ class RecyclerAjaxController {
 				$deletedRowsArray = $model->getDeletedRows();
 
 				$model = GeneralUtility::makeInstance(DeletedRecords::class);
-				$totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filter']);
+				$totalDeleted = $model->getTotalCount($this->conf['startUid'], $this->conf['table'], $this->conf['depth'], $this->conf['filterTxt']);
 
 				/* @var $controller DeletedRecordsController */
 				$controller = GeneralUtility::makeInstance(DeletedRecordsController::class);
