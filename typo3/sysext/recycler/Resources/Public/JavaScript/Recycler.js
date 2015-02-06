@@ -269,7 +269,7 @@ define(['jquery', 'nprogress', 'jquery/jquery.clearable'], function($, NProgress
 						tableDescription = value[2];
 
 					if (tableDescription === '') {
-						tableDescription = TYPO3.lang['label_alltables'];
+						tableDescription = TYPO3.lang['label_allrecordtypes'];
 					}
 					var optionText = tableDescription + ' (' + deletedRecords + ')';
 					tables.push($('<option />').val(tableName).text(optionText))

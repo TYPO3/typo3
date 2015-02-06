@@ -60,7 +60,7 @@ class Tables {
 		array_unshift($jsonArray, array(
 			'',
 			$deletedRecordsTotal,
-			$lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_alltables')
+			$lang->sL('LLL:EXT:recycler/mod1/locallang.xlf:label_allrecordtypes')
 		));
 		return $jsonArray;
 	}

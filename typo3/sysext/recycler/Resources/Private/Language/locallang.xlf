@@ -9,8 +9,11 @@
 			<trans-unit id="description" xml:space="preserve">
 				<source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
 			</trans-unit>
-			<trans-unit id="label_alltables" xml:space="preserve">
+			<trans-unit id="label_alltables" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>All tables</source>
+			</trans-unit>
+			<trans-unit id="label_allrecordtypes" xml:space="preserve">
+				<source>All Record Types</source>
 			</trans-unit>
 			<trans-unit id="button.cancel" xml:space="preserve">
 				<source>Cancel</source>
@@ -102,8 +105,8 @@
 			<trans-unit id="table.header.actions" xml:space="preserve">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="table.header.table" xml:space="preserve">
-				<source>Table</source>
+			<trans-unit id="table.header.recordtype" xml:space="preserve">
+				<source>Record Type</source>
 			</trans-unit>
 			<trans-unit id="table.header.tstamp" xml:space="preserve">
 				<source>Last edit</source>
