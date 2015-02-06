@@ -13,8 +13,8 @@
 		<f:form.hidden name="search[languageUid]" value="{searchParams.languageUid}" />
 		<f:form.hidden name="search[desc]" value="{searchParams.desc}" />
 		<f:form.hidden name="search[numberOfResults]" value="{searchParams.numberOfResults}" />
+		<f:form.hidden name="search[extendedSearch]" value="{searchParams.extendedSearch}" />
 	</div>
-
 	<fieldset>
 		<legend><f:translate key="form.legend" /></legend>
 
@@ -27,7 +27,6 @@
 			<f:form.hidden name="search[sword_prev]" value="{previousSearchWord}" />
 			<f:form.checkbox name="search[sword_prev_include]" id="tx_indexedsearch_sword_prev_include" value="1" checked="{searchParams.sword_prev}" /> <label for="tx_indexedsearch_sword_prev_include"><f:translate key="form.addToSearch" />.</label>
 		</f:if>
-
 		<f:if condition="{searchParams.extendedSearch}">
 			<f:if condition="{showTypeSearch}">
 				<div class="tx-indexedsearch-search-for">
@@ -107,10 +106,10 @@
 		<p>
 		<f:if condition="{searchParams.extendedSearch}">
 			<f:then>
-				<f:link.action action="form" arguments="{extendedSearch: 0}"><f:translate key="form.linkToRegularSearch" /></f:link.action>
+				<f:link.action action="form" arguments="{search: {extendedSearch: 0}}"><f:translate key="form.linkToRegularSearch" /></f:link.action>
 			</f:then>
 			<f:else>
-				<f:link.action action="form" arguments="{extendedSearch: 1}"><f:translate key="form.linkToExtendedSearch" /></f:link.action>
+				<f:link.action action="form" arguments="{search: {extendedSearch: 1}}"><f:translate key="form.linkToAdvancedSearch" /></f:link.action>
 			</f:else>
 		</f:if>
 		</p>
