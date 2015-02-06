@@ -778,7 +778,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @dontvalidate $search
 	 */
 	public function formAction($search = array()) {
-		$this->initialize($search);
+		$searchData = $this->initialize($search);
 		// Adding search field value
 		$this->view->assign('sword', $this->sword);
 		// Additonal keyword => "Add to current search words"
@@ -821,6 +821,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->view->assign('allNumberOfResults', $allNumberOfResults);
 			$allGroups = $this->getAllAvailableGroupOptions();
 			$this->view->assign('allGroups', $allGroups);
+			$this->view->assign('searchParams', $searchData);
 		}
 	}
 
@@ -886,6 +887,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$additionalMedia = trim($this->settings['mediaList']);
 			if ($additionalMedia !== '') {
 				$additionalMedia = GeneralUtility::trimExplode(',', $additionalMedia, TRUE);
+			} else {
+				$additionalMedia = array();
 			}
 			foreach ($this->externalParsers as $extension => $obj) {
 				// Skip unwanted extensions
