@@ -216,22 +216,35 @@ class FlexFormTools {
 								}
 							}
 						} else {
-							// Array traversal:
-							$this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
+							// Array traversal
+							if (is_array($editData) && is_array($editData[$key])) {
+								$this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
+							}
 						}
 					} elseif (is_array($value['TCEforms']['config'])) {
 						// Processing a field value:
 						foreach ($PA['vKeys'] as $vKey) {
 							$vKey = 'v' . $vKey;
-							// Call back:
-							if ($PA['callBackMethod_value']) {
-								$this->callBackObj->{$PA['callBackMethod_value']}($value, $editData[$key][$vKey], $PA, $path . '/' . $key . '/' . $vKey, $this);
+							// Call back
+							if ($PA['callBackMethod_value'] && is_array($editData) && is_array($editData[$key])) {
+								$this->executeCallBackMethod($PA['callBackMethod_value'], array($value, $editData[$key][$vKey], $PA, $path . '/' . $key . '/' . $vKey, $this));
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Execute method on callback object
+	 *
+	 * @param string $methodName Method name to call
+	 * @param array $parameterArray Parameters
+	 * @return mixed Result of callback object
+	 */
+	protected function executeCallBackMethod($methodName, array $parameterArray) {
+		return call_user_func_array(array($this->callBackObj, $methodName), $parameterArray);
 	}
 
 	/**
