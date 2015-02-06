@@ -83,7 +83,7 @@ class TranslateViewHelper extends AbstractViewHelper implements CompilableInterf
 	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
 	 * @return string The translated key or tag body if key doesn't exist
 	 */
-	public function render($key = NULL, $id = NULL, $default = NULL, $htmlEscape = NULL, array $arguments = array(), $extensionName = NULL) {
+	public function render($key = NULL, $id = NULL, $default = NULL, $htmlEscape = NULL, array $arguments = NULL, $extensionName = NULL) {
 		return self::renderStatic(
 			array(
 				'key' => $key,
