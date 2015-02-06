@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -551,6 +552,49 @@ class ContentObjectRenderer {
 	public function __construct(TypoScriptFrontendController $typoScriptFrontendController = NULL) {
 		$this->typoScriptFrontendController = $typoScriptFrontendController ?: $GLOBALS['TSFE'];
 		$this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'];
+	}
+
+	/**
+	 * Prevent several objects from being serialized.
+	 * If currentFile is set, it is either a File or a FileReference object. As the object itself can't be serialized,
+	 * we have store a hash and restore the object in __wakeup()
+	 *
+	 * @return array
+	 */
+	public function __sleep() {
+		$vars = get_object_vars($this);
+		unset($vars['typoScriptFrontendController']);
+		if ($this->currentFile instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+			$this->currentFile = 'FileReference:' . $this->currentFile->getUid();
+		} elseif ($this->currentFile instanceof \TYPO3\CMS\Core\Resource\File) {
+			$this->currentFile = 'File:' . $this->currentFile->getIdentifier();
+		} else {
+			unset($vars['currentFile']);
+		}
+		return array_keys($vars);
+	}
+
+	/**
+	 * Restore currentFile from hash.
+	 * If currentFile references a File, the identifier equals file identifier.
+	 * If it references a FileReference the identifier equals the uid of the reference.
+	 */
+	public function __wakeup() {
+		if (isset($GLOBALS['TSFE'])) {
+			$this->typoScriptFrontendController = $GLOBALS['TSFE'];
+		}
+		if ($this->currentFile !== NULL && is_string($this->currentFile)) {
+			list($objectType, $identifier) = explode(':', $this->currentFile, 2);
+			try {
+				if ($objectType === 'File') {
+					$this->currentFile = ResourceFactory::getInstance()->retrieveFileOrFolderObject($identifier);
+				} elseif ($objectType === 'FileReference') {
+					$this->currentFile = ResourceFactory::getInstance()->getFileReferenceObject($identifier);
+				}
+			} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+				$this->currentFile = NULL;
+			}
+		}
 	}
 
 	/**
