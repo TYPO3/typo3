@@ -12,7 +12,7 @@
 			<trans-unit id=".details" xml:space="preserve">
 				<source>Clicking the "Insert abbreviation" icon in the RTE tool bar opens a dialogue that allows to insert an abbreviation or to edit one that already exists in the content.
 Any existing abbreviation is underlined with a broken line and the cursor changes to a question mark when the mouse goes over it.
-The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or may be entered directly in the dialogue.</source>
+The dialogue allows to associate an abbreviation to a term. The abbreviation may be selected among abbreviations that have been pre-defined in the database or the term being abbreviated may be entered directly in the dialogue.</source>
 			</trans-unit>
 			<trans-unit id=".image" xml:space="preserve">
 				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/Abbreviation/abbreviation.gif</source>
@@ -78,13 +78,13 @@ If a pre-defined abbreviation (or acronym) is selected, the language for which i
 				<source>Term to abbreviate</source>
 			</trans-unit>
 			<trans-unit id="termToAbridge.description" xml:space="preserve">
-				<source>This section lets you enter a term for which the current selection will be the short form.</source>
+				<source>This section lets you enter the unabbreviated term for which the currently selected text will be the short form.</source>
 			</trans-unit>
 			<trans-unit id="useThisTerm.alttitle" xml:space="preserve">
 				<source>Use this term</source>
 			</trans-unit>
 			<trans-unit id="useThisTerm.description" xml:space="preserve">
-				<source>Enter the term that you want to associate as the unabbreviated form of the current selection.</source>
+				<source>Enter the term that you want to associate as the unabbreviated form of the currently selected text.</source>
 			</trans-unit>
 			<trans-unit id="useThisTerm.details" xml:space="preserve">
 				<source>The entered term will be set as the title attribute of the abbreviation (or acronym) element.</source>

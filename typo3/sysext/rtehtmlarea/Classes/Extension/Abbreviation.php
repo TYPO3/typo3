@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abbreviation extension for htmlArea RTE
@@ -103,15 +104,27 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			unset($this->thisConfig['buttons.']['acronym.']);
 		}
-		// Convert any other reference to acronym two levels down in Page TSconfig, except in processing options
+		// Convert any other reference to acronym two levels down in Page TSconfig, except in processing options and removeFieldsets property
 		foreach ($parentObject->thisConfig as $key => $config) {
 			if ($key !== 'proc.') {
 				if (is_array($config)) {
 					foreach ($config as $subKey => $subConfig) {
-						$parentObject->thisConfig[$key][$subKey] = str_replace('acronym', 'abbreviation', $subConfig);
+						if (is_array($subConfig)) {
+							foreach ($subConfig as $subSubKey => $subSubConfig) {
+								if ($subSubKey !== 'removeFieldsets') {
+									$parentObject->thisConfig[$key][$subKey][$subSubKey] = str_replace('acronym', 'abbreviation', $subSubConfig);
+								}
+							}
+						} else {
+							if ($subKey !== 'removeFieldsets') {
+								$parentObject->thisConfig[$key][$subKey] = str_replace('acronym', 'abbreviation', $subConfig);
+							}
+						}
 					}
 				} else {
-					$parentObject->thisConfig[$key] = str_replace('acronym', 'abbreviation', $config);
+					if ($key !== 'removeFieldsets') {
+						$parentObject->thisConfig[$key] = str_replace('acronym', 'abbreviation', $config);
+					}
 				}
 			}
 		}
@@ -125,7 +138,9 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		if (is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'])) {
 			$GLOBALS['BE_USER']->userTS['options.']['RTEkeyList'] = str_replace('acronym', 'abbreviation', $GLOBALS['BE_USER']->userTS['options.']['RTEkeyList']);
 		}
-		return parent::main($parentObject) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
+		// Remove button if all fieldsets are removed
+		$removedFieldsets = GeneralUtility::trimExplode(',', $this->thisConfig['buttons.']['abbreviation.']['removeFieldsets'], TRUE);
+		return parent::main($parentObject) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && count($removedFieldsets) < 4;
 	}
 
 	/**
@@ -144,6 +159,10 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			$registerRTEinJavascriptString .= '
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.abbreviationUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('abbreviation_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAbbreviationArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
+			// <abbr> was not supported by IE before version 7
+			if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
+				$this->abbreviationIndex = 0;
+			}
 			$registerRTEinJavascriptString .= '
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.noAcronym = ' . ($this->acronymIndex ? 'false' : 'true') . ';
 			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.noAbbr =  ' . ($this->abbreviationIndex ? 'false' : 'true') . ';';
@@ -170,19 +189,16 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
 			// Temporarily setting alternative web browsing mounts
-			$existingWebMounts = '';
-			$alternativeWebmountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-			$appendAlternativeWebmountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append'));
-			if (!empty($alternativeWebmountPoints)) {
-				$alternativeWebmountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $alternativeWebmountPoints);
-				$existingWebMounts = $GLOBALS['BE_USER']->returnWebmounts();
-				$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
+			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+			if ($altMountPoints) {
+				$savedGroupDataWebmounts = $GLOBALS['BE_USER']->groupData['webmounts'];
+				$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(GeneralUtility::intExplode(',', $altMountPoints)));
 			}
 			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 			$recursive = isset($this->thisConfig['buttons.'][$button . '.']['recursive']) ? (int)$this->thisConfig['buttons.'][$button . '.']['recursive'] : 0;
 			if (trim($this->thisConfig['buttons.'][$button . '.']['pages'])) {
-				$pids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->thisConfig['buttons.'][$button . '.']['pages'], TRUE);
+				$pids = GeneralUtility::trimExplode(',', $this->thisConfig['buttons.'][$button . '.']['pages'], TRUE);
 				foreach ($pids as $key => $val) {
 					if (!$GLOBALS['BE_USER']->isInWebMount($val, $perms_clause)) {
 						unset($pids[$key]);
@@ -192,10 +208,10 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$pids = $webMounts;
 			}
 			// Restoring webmounts
-			if (!empty($alternativeWebmountPoints)) {
-				$GLOBALS['BE_USER']->setWebmounts($existingWebMounts);
+			if ($altMountPoints) {
+				$GLOBALS['BE_USER']->groupData['webmounts'] = $savedGroupDataWebmounts;
 			}
-			$queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+			$queryGenerator = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
 			$pageTree = '';
 			$pageTreePrefix = '';
 			foreach ($pids as $key => $val) {
@@ -221,7 +237,7 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			}
 			// Restrict to abbreviations in certain languages
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
-				$languageList = implode('\',\'', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $tableB)));
+				$languageList = implode('\',\'', GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $tableB)));
 				$whereClause .= ' AND ' . $tableB . '.lg_iso_2 IN (' . $languageList . ') ';
 			}
 			$whereClause .= BackendUtility::BEenableFields($tableA);
