@@ -19,7 +19,7 @@
 
 	<p>Tables are used all over the TYPO3 CMS backend. Use tables to show tabular data. The action icons should always be in the last table row cell. Please consider that zebra table row styling os done by nth-child CSS3 selector and might not work on legacy browsers (Internet Explorer 8).</p>
 
-	<table class="t3-table">
+	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>Tree & Table Header</th>
@@ -65,25 +65,6 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td class="nowrap">
-					<sg:SpriteManagerIcon iconName="treeline-line" />
-
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
-
-					<b>First level entry record</b>
-				</td>
-				<td class="active"><a href="#">Donec id elit</a></td>
-				<td align="right">540,99</td>
-				<td class="col-control">
-					<div class="btn-group" role="group">
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
-					</div>
-				</td>
-			</tr>
 			<tr class="success">
 				<td class="nowrap">
 					<sg:SpriteManagerIcon iconName="treeline-line" />
@@ -108,30 +89,6 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td class="nowrap">
-					<sg:SpriteManagerIcon iconName="treeline-line" />
-
-					<a href="javascript:alert('Fold'); return false;">
-						<sg:SpriteManagerIcon iconName="treeline-minus" />
-					</a>
-
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
-
-					<b>Second level</b>
-					<small>not second class</small>
-				</td>
-				<td class="success"><a href="#">Donec id elit</a></td>
-				<td align="right">9.300,20</td>
-				<td class="col-control">
-					<div class="btn-group" role="group">
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
-					</div>
-				</td>
-			</tr>
 			<tr class="info">
 				<td class="nowrap">
 					<sg:SpriteManagerIcon iconName="treeline-line" />
@@ -143,27 +100,6 @@
 					<b>Magic third level</b>
 				</td>
 				<td><a href="#">Donec id elit</a></td>
-				<td align="right">9.300,20</td>
-				<td class="col-control">
-					<div class="btn-group" role="group">
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="nowrap">
-					<sg:SpriteManagerIcon iconName="treeline-line" />
-					<sg:SpriteManagerIcon iconName="treeline-line" />
-					<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
-
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
-
-					<b>Magic third level</b>
-				</td>
-				<td class="info"><a href="#">Donec id elit</a></td>
 				<td align="right">9.300,20</td>
 				<td class="col-control">
 					<div class="btn-group" role="group">
@@ -194,26 +130,6 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td class="nowrap">
-					<sg:SpriteManagerIcon iconName="treeline-line" />
-					<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
-
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
-
-					<b>Record title always bold</b>
-				</td>
-				<td class="warning"><a href="#">Donec id elit</a></td>
-				<td align="right">0,00</td>
-				<td class="col-control">
-					<div class="btn-group" role="group">
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
-					</div>
-				</td>
-			</tr>
 			<tr class="danger">
 				<td>
 					<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
@@ -226,29 +142,10 @@
 				<td align="right">0,00</td>
 				<td class="col-control">
 					<div class="btn-group" role="group">
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
-						<a href="#" onClick="alert('Ok'); return false;" class="btn"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<sg:SpriteManagerIcon iconName="treeline-joinbottom" />
-
-					<a href="#" onClick="Clickmenu.show('', '', '1', '', '', ''); return false;"><sg:spriteManagerIcon iconName="mimetypes-other-other" /></a>
-
-					<b>Record title always bold</b>
-				</td>
-				<td class="danger"><a href="#">Donec id elit</a></td>
-				<td align="right">0,00</td>
-				<td class="col-control">
-					<div class="btn-group" role="group">
-						<a href="#" class="btn" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
-						<a href="#" class="btn" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
-						<a href="#" class="btn" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
-						<a href="#" class="btn" onClick="alert('Ok'); return false;"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
+						<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default"><sg:spriteManagerIcon iconName="actions-document-open" /></a>
+						<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default"><sg:spriteManagerIcon iconName="actions-document-info" /></a>
+						<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default"><sg:spriteManagerIcon iconName="actions-edit-hide" /></a>
+						<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default"><sg:spriteManagerIcon iconName="actions-edit-delete" /></a>
 					</div>
 				</td>
 			</tr>
@@ -263,7 +160,7 @@
 	</table>
 
 	<div class="example code">
-		<span class="tag-border">&lt;</span><span class="tag-name">table</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"t3-table"</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;</span><span class="tag-name">table</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"table table-striped table-hover"</span><span class="tag-border">&gt;</span><br />
 		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">thead</span><span class="tag-border">&gt;</span><br />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">th</span><span class="tag-border">&gt;</span>Head<span class="tag-border">&lt;/</span><span class="tag-name">th</span><span class="tag-border">&gt;</span><br />
 		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;/</span><span class="tag-name">thead</span><span class="tag-border">&gt;</span><br />
@@ -276,50 +173,9 @@
 		<span class="tag-border">&lt;/</span><span class="tag-name">table</span><span class="tag-border">&gt;</span><br />
 	</div>
 
-	<h2>Bootstrap Table</h2>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Head 1</th>
-				<th>Head 2</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>Body 1</td>
-				<td>Body 2</td>
-			</tr>
-			<tr class="success">
-				<td>Body 1</td>
-				<td>Body 2</td>
-			</tr>
-			<tr class="info">
-				<td>Body 1</td>
-				<td>Body 2</td>
-			</tr>
-			<tr class="danger">
-				<td>Body 1</td>
-				<td>Body 2</td>
-			</tr>
-			<tr class="danger">
-				<td>Body 1</td>
-				<td>Body 2</td>
-			</tr>
-			<tr class="notice">
-				<td>Body 1</td>
-				<td>Body 2</td>
-			</tr>
-		</tbody>
-		<tfoot>
-			<tr>
-				<td>Foot 1</td>
-				<td>Foot 2</td>
-			</tr>
-		</tfoot>
-	</table>
-
 	<h2>Table fit</h2>
+
+	<p>Wide tables should be wrapped in table-fit DIV container wrap.</p>
 
 	<div class="table-fit">
 		<table class="t3-table">
@@ -340,6 +196,16 @@
 					<th>Head 13</th>
 					<th>Head 14</th>
 					<th>Head 15</th>
+					<th>Head 16</th>
+					<th>Head 17</th>
+					<th>Head 18</th>
+					<th>Head 19</th>
+					<th>Head 20</th>
+					<th>Head 21</th>
+					<th>Head 22</th>
+					<th>Head 23</th>
+					<th>Head 24</th>
+					<th>Head 25</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -359,8 +225,25 @@
 					<td>Body 13</td>
 					<td>Body 14</td>
 					<td>Body 15</td>
+					<td>Body 16</td>
+					<td>Body 17</td>
+					<td>Body 18</td>
+					<td>Body 19</td>
+					<td>Body 20</td>
+					<td>Body 21</td>
+					<td>Body 22</td>
+					<td>Body 23</td>
+					<td>Body 24</td>
+					<td>Body 25</td>
 				</tr>
 			</tbody>
 		</table>
+	</div>
+
+	<div class="example code">
+		<span class="tag-border">&lt;</span><span class="tag-name">div</span> <span class="tag-attribute">class</span>=<span class="tag-attribute-value">"table-fit"</span><span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;</span><span class="tag-name">table</span><span class="tag-border">&gt;</span><br />
+		&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag-border">&lt;/</span><span class="tag-name">table</span><span class="tag-border">&gt;</span><br />
+		<span class="tag-border">&lt;/</span><span class="tag-name">div</span><span class="tag-border">&gt;</span><br />
 	</div>
 </f:section>
