@@ -268,7 +268,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @var string
 	 */
-	protected $xUaCompatibilityVersion = 'IE=edge,chrome=1';
+	protected $xUaCompatibilityVersion = 'IE=edge';
 
 	// Skinning
 	/**
@@ -796,7 +796,8 @@ function jumpToUrl(URL) {
 		// Disable rendering of XHTML tags
 		$this->pageRenderer->setRenderXhtml(FALSE);
 
-		$this->pageRenderer->setHtmlTag('<html>');
+		$languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
+		$this->pageRenderer->setHtmlTag('<html lang="' . $languageCode . '">');
 		// This loads the tabulator-in-textarea feature. It automatically modifies
 		// every textarea which is found.
 		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea']) {
@@ -816,7 +817,9 @@ function jumpToUrl(URL) {
 		header('Content-Type:text/html;charset=utf-8');
 		$this->pageRenderer->setCharSet('utf-8');
 		$this->pageRenderer->addMetaTag($this->generator());
-		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
+		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow">');
+		$this->pageRenderer->addMetaTag('<meta charset="utf-8">');
+		$this->pageRenderer->addMetaTag('<meta name="viewport" content="width=device-width, initial-scale=1">');
 		$this->pageRenderer->setFavIcon($this->getBackendFavicon());
 		if ($this->useCompatibilityTag) {
 			$this->pageRenderer->addMetaTag($this->xUaCompatible($this->xUaCompatibilityVersion));
