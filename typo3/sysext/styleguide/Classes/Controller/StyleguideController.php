@@ -59,12 +59,6 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
-	 * Bootstrap
-	 */
-	public function bootstrapAction() {
-	}
-
-	/**
 	 * TCA
 	 */
 	public function tcaAction() {
