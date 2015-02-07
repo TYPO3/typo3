@@ -551,6 +551,20 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 		},
 
 		/**
+		 * Handler for Ext.TabPanel afterrender and tabchange events
+		 * Set height of the tabpanel (miscalculated when the brower zoom is in use)
+		 * Working around ExtJS 3.1 bug
+		 */
+		setTabPanelHeight: function (tabpanel, tab) {
+			var components = tab.findByType('fieldset');
+			var height = 0;
+			for (var i = components.length; --i >= 0;) {
+				height += components[i].getEl().dom.offsetHeight;
+			}
+			tabpanel.setHeight(tabpanel.getFrameHeight() + height + tabpanel.findParentByType('window').footer.getHeight());
+		},
+
+		/**
 		 * Handler for Ext.TabPanel tabchange event
 		 * Force window ghost height synchronization
 		 * Working around ExtJS 3.1 bug
