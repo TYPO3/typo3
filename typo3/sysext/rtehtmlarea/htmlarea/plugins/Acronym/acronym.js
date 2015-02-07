@@ -40,7 +40,6 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			id		: buttonId,
 			tooltip		: this.localize('Insert/Modify Acronym'),
 			action		: 'onButtonPress',
-			hide		: (this.pageTSConfiguration.noAcronym && this.pageTSConfiguration.noAbbr),
 			dialog		: true,
 			iconCls		: 'htmlarea-action-abbreviation-edit',
 			contextMenuTitle: this.localize(buttonId + '-contextMenuTitle')
@@ -73,14 +72,7 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		var abbr = editor.getSelection().getParentElement();
-			// Working around Safari issue
-		if (!abbr && this.editor.statusBar && this.editor.statusBar.getSelection()) {
-			abbr = this.editor.statusBar.getSelection();
-		}
-		if (!abbr || !/^(acronym|abbr)$/i.test(abbr.nodeName)) {
-			abbr = editor.getSelection().getFirstAncestorOfType(['acronym', 'abbr']);
-		}
+		var abbr = this.getCurrentAbbrElement();
 		var type = !Ext.isEmpty(abbr) ? abbr.nodeName.toLowerCase() : '';
 		this.params = {
 			abbr: abbr,
@@ -94,10 +86,28 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			this.getWindowDimensions({ width: 580}, buttonId),
 			this.buildTabItemsConfig(abbr),
 			this.buildButtonsConfig(abbr, this.okHandler, this.deleteHandler),
-			(type == 'acronym') ? 1 : 0
+			(type === 'acronym') ? 'acronym' : 0
 		);
 		return false;
 	},
+
+	/**
+	 * Get the current abbr or aconym element, if any is selected
+	 *
+	 * @return object the element or null
+	 */
+	getCurrentAbbrElement: function() {
+		var abbr = this.editor.getSelection().getParentElement();
+		// Working around Safari issue
+		if (!abbr && this.editor.statusBar && this.editor.statusBar.getSelection()) {
+			abbr = this.editor.statusBar.getSelection();
+		}
+		if (!abbr || !/^(acronym|abbr)$/i.test(abbr.nodeName)) {
+			abbr = this.editor.getSelection().getFirstAncestorOfType(['abbr', 'acronym']);
+		}
+		return abbr;
+	},
+
 	/*
 	 * Open the dialogue window
 	 *
@@ -160,12 +170,16 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		var type = !Ext.isEmpty(element) ? element.nodeName.toLowerCase() : '';
 		var tabItems = [];
 		var abbrTabItems = [];
-			// abbr tab not shown if the current selection is an acronym
+		// abbr tab not shown if the current selection is an acronym
 		if (type !== 'acronym') {
+			// definedAbbreviation fieldset not shown if no pre-defined abbreviation exists
 			if (!this.pageTSConfiguration.noAbbr) {
-				this.addConfigElement(this.buildDefinedTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), abbrTabItems);
+				this.addConfigElement(this.buildDefinedTermFieldsetConfig((type === 'abbr') ? element : null, 'abbr'), abbrTabItems);
 			}
-			this.addConfigElement(this.buildUseTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), abbrTabItems);
+			// abbreviation fieldset not shown if the selection is empty or not inside an abbr element
+			if ((!this.editor.getSelection().isEmpty() || type === 'abbr')) {
+				this.addConfigElement(this.buildUseTermFieldsetConfig((type === 'abbr') ? element : null, 'abbr'), abbrTabItems);
+			}
 		}
 		if (!Ext.isEmpty(abbrTabItems)) {
 			tabItems.push({
@@ -175,12 +189,16 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			});
 		}
 		var acronymTabItems = [];
-			// acronym tab not shown if the current selection is an abbr
+		// acronym tab not shown if the current selection is an abbr
 		if (type !== 'abbr') {
+			// definedAcronym fieldset not shown if no pre-defined acronym exists
 			if (!this.pageTSConfiguration.noAcronym) {
-				this.addConfigElement(this.buildDefinedTermFieldsetConfig((type == 'acronym') ? element : null, 'acronym'), acronymTabItems);
+				this.addConfigElement(this.buildDefinedTermFieldsetConfig((type === 'acronym') ? element : null, 'acronym'), acronymTabItems);
 			}
-			this.addConfigElement(this.buildUseTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), acronymTabItems);
+			// acronym fieldset not shown if the selection is empty or not inside an acronym element
+			if ((!this.editor.getSelection().isEmpty() || type === 'acronym') && !this.pageTSConfiguration.noAcronym) {
+				this.addConfigElement(this.buildUseTermFieldsetConfig((type === 'acronym') ? element : null, 'acronym'), acronymTabItems);
+			}
 		}
 		if (!Ext.isEmpty(acronymTabItems)) {
 			tabItems.push({
@@ -226,7 +244,6 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			tpl: '<tpl for="."><div ext:qtip="{abbr}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{term}</div></tpl>',
 			store: new Ext.data.JsonStore({
 				autoDestroy:  true,
-				autoLoad: true,
 				root: type,
 				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
 				url: this.pageTSConfiguration.acronymUrl
@@ -258,7 +275,6 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			itemId: 'abbrSelector',
 			store: new Ext.data.JsonStore({
 				autoDestroy:  true,
-				autoLoad: true,
 				root: type,
 				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
 				url: this.pageTSConfiguration.acronymUrl
@@ -361,7 +377,10 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			if (index !== -1) {
 				term = abbrStore.getAt(index).get('term');
 				termSelector.setValue(term);
-				fieldset.ownerCt.find('itemId', 'useTerm')[0].setValue(term);
+				var useTermField = fieldset.ownerCt.find('itemId', 'useTerm');
+				if (useTermField.length) {
+					useTermField[0].setValue(term);
+				}
 			}
 		}
 	},
@@ -425,8 +444,11 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 				languageSelector[0].setValue('none');
 			}
 		}
-			// Update the term to use
-		tab.find('itemId', 'useTerm')[0].setValue(term);
+		// Update the term to use
+		var useTermField = tab.find('itemId', 'useTerm');
+		if (useTermField.length) {
+			useTermField[0].setValue(term);
+		}
 	},
 	/*
 	 * Handler when an abbreviation or acronym is selected
@@ -448,8 +470,11 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 				languageSelector[0].setValue('none');
 			}
 		}
-			// Update the term to use
-		tab.find('itemId', 'useTerm')[0].setValue(term);
+		// Update the term to use
+		var useTermField = tab.find('itemId', 'useTerm');
+		if (useTermField.length) {
+			useTermField[0].setValue(term);
+		}
 	},
 	/*
 	 * This function builds the configuration object for the Abbreviation or Acronym to use fieldset
@@ -486,9 +511,14 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		var termSelector = tab.find('itemId', 'termSelector');
 		var term = termSelector && termSelector.length > 0 ? termSelector[0].getValue() : '';
 		var abbrSelector = tab.find('itemId', 'abbrSelector');
+		var useTermField = tab.find('itemId', 'useTerm');
 		if (!this.params.abbr) {
 			var abbr = this.editor.document.createElement(type);
-			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
+			if (useTermField.length) {
+				abbr.title = useTermField[0].getValue();
+			} else {
+				abbr.title = term;
+			}
 			if (term == abbr.title && abbrSelector && abbrSelector.length > 0) {
 				abbr.innerHTML = abbrSelector[0].getValue();
 			} else {
@@ -507,7 +537,11 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 			}
 		} else {
 			var abbr = this.params.abbr;
-			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
+			if (useTermField.length) {
+				abbr.title = useTermField[0].getValue();
+			} else {
+				abbr.title = term;
+			}
 			if (language) {
 				this.getPluginInstance('Language').setLanguageAttributes(abbr, language);
 			}
@@ -535,11 +569,18 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 		if ((mode === 'wysiwyg') && this.editor.isEditable()) {
-			var el = this.editor.getSelection().getParentElement();
-			if (el) {
-				button.setDisabled(((el.nodeName.toLowerCase() == 'acronym' && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == 'abbr' && this.pageTSConfiguration.noAbbr)));
-				button.setInactive(!(el.nodeName.toLowerCase() == 'acronym' && !this.pageTSConfiguration.noAcronym) && !(el.nodeName.toLowerCase() == 'abbr' && !this.pageTSConfiguration.noAbbr));
-			}
+			var el = this.getCurrentAbbrElement();
+			var nodeName = typeof el === 'object' && el !== null ? el.nodeName.toLowerCase() : '';
+			// Disable the button if the selection is empty and not inside a abbr or acronym element
+			button.setDisabled(
+				(this.editor.getSelection().isEmpty() && nodeName !== 'abbr' && nodeName !== 'acronym')
+				&& (this.pageTSConfiguration.noAbbr)
+				&& (this.pageTSConfiguration.noAcronym)
+			);
+			button.setInactive(
+				!(nodeName === 'abbr' && !this.pageTSConfiguration.noAbbr)
+				&& !(nodeName === 'acronym' && !this.pageTSConfiguration.noAcronym)
+			);
 			button.setTooltip({
 				title: this.localize((button.disabled || button.inactive) ? 'Insert abbreviation' : 'Edit abbreviation')
 			});
