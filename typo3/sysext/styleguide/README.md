@@ -3,11 +3,11 @@
 TYPO3 CMS Backend Styleguide
 ============================
 
-![Scrutinizer-CI Code quality](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/badges/quality-score.png?s=3f407ffbd6096bcb26e8aede911ba446067e5323)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/?branch=master)
 
-![Scrutinizer-CI Code coverage](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/badges/coverage.png?s=3c445a0b04f0d6cf0cb44fc2361426e3a7ff0050)
+[![Code Coverage](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/7elix/TYPO3.CMS.Styleguide/?branch=master)
 
-![Travis-CI Build Status](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide.png)
+[![Build Status](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide.svg)](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide)
 
 Presents all supported styles for TYPO3 backend modules.
 
