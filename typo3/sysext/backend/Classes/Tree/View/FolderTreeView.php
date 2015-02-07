@@ -478,7 +478,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 				$ajaxOutput .= $itemHTML;
 				$invertedDepthOfAjaxRequestedItem = $treeItem['invertedDepth'];
 			} elseif ($invertedDepthOfAjaxRequestedItem) {
-				if ($treeItem['invertedDepth'] < $invertedDepthOfAjaxRequestedItem) {
+				if ($treeItem['invertedDepth'] && ($treeItem['invertedDepth'] < $invertedDepthOfAjaxRequestedItem)) {
 					$ajaxOutput .= $itemHTML;
 				} else {
 					$this->ajaxStatus = TRUE;
