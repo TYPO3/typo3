@@ -2090,10 +2090,11 @@ class ResourceStorage implements ResourceStorageInterface {
 	 *
 	 * @param string $folderName The new folder name
 	 * @param Folder $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
-	 *
+	 * @return Folder
+	 * @throws Exception\ExistingTargetFolderException
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 * @throws Exception\InsufficientFolderWritePermissionsException
-	 * @throws \InvalidArgumentException
-	 * @return Folder The new folder object
+	 * @throws \Exception
 	 */
 	public function createFolder($folderName, Folder $parentFolder = NULL) {
 		if ($parentFolder === NULL) {
@@ -2103,6 +2104,9 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
 			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
+		}
+		if ($this->driver->folderExists($folderName)) {
+			throw new Exception\ExistingTargetFolderException('Folder "' . $folderName . '" already exists.', 1423347324);
 		}
 
 		$this->emitPreFolderAddSignal($parentFolder, $folderName);
