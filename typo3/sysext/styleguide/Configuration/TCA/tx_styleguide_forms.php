@@ -1811,7 +1811,7 @@ return array(
 			),
 		),
 		'wizard_2' => array(
-			'label' => '2 wizard colorbox',
+			'label' => '2 wizard colorbox, with image',
 			'config' => array(
 				'type' => 'input',
 				'wizards' => array(
@@ -1823,6 +1823,7 @@ return array(
 							'name' => 'wizard_colorpicker',
 						),
 						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+						'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
 					),
 				),
 			),
