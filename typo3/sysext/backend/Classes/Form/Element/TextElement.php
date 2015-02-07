@@ -24,6 +24,14 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class TextElement extends AbstractFormElement {
 
 	/**
+	 * The number of chars expected per row when the height of a text area field is
+	 * automatically calculated based on the number of characters found in the field content.
+	 *
+	 * @var int
+	 */
+	protected $charactersPerRow = 40;
+
+	/**
 	 * This will render a <textarea> OR RTE area form field,
 	 * possibly with various control/validation features
 	 *
@@ -34,20 +42,22 @@ class TextElement extends AbstractFormElement {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function render($table, $field, $row, &$additionalInformation) {
+		$backendUser = $this->getBackendUserAuthentication();
+
 		$config = $additionalInformation['fieldConf']['config'];
 
 		// Setting columns number
-		$cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->formEngine->defaultInputWidth, $this->formEngine->minimumInputWidth, $this->formEngine->maxInputWidth);
+		$cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
 
 		// Setting number of rows
 		$rows = MathUtility::forceIntegerInRange($config['rows'] ?: 5, 1, 20);
 		$originalRows = $rows;
 
 		$itemFormElementValueLength = strlen($additionalInformation['itemFormElValue']);
-		if ($itemFormElementValueLength > $this->formEngine->charsPerRow * 2) {
-			$cols = $this->formEngine->maxInputWidth;
+		if ($itemFormElementValueLength > $this->charactersPerRow * 2) {
+			$cols = $this->maxInputWidth;
 			$rows = MathUtility::forceIntegerInRange(
-				round($itemFormElementValueLength / $this->formEngine->charsPerRow),
+				round($itemFormElementValueLength / $this->charactersPerRow),
 				count(explode(LF, $additionalInformation['itemFormElValue'])),
 				20
 			);
@@ -58,10 +68,17 @@ class TextElement extends AbstractFormElement {
 
 		// must be called after the cols and rows calculation, so the parameters are applied
 		// to read-only fields as well.
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$config['cols'] = $cols;
 			$config['rows'] = $rows;
-			return $this->formEngine->getSingleField_typeNone_render($config, $additionalInformation['itemFormElValue']);
+			$noneElement = GeneralUtility::makeInstance(NoneElement::class, $this->formEngine);
+			$elementConfiguration = array(
+				'fieldConf' => array(
+					'config' => $config,
+				),
+				'itemFormElValue' => $additionalInformation['itemFormElValue'],
+			);
+			return $noneElement->render('', '', '', $elementConfiguration);
 		}
 
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
@@ -79,7 +96,7 @@ class TextElement extends AbstractFormElement {
 		$altItem = '<input type="hidden" name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
 		$item = '';
 		// If RTE is generally enabled (TYPO3_CONF_VARS and user settings)
-		if ($this->formEngine->RTEenabled) {
+		if ($backendUser->isRTE()) {
 			$parameters = BackendUtility::getSpecConfParametersFromArray($specialConfiguration['rte_transform']['parameters']);
 			// If the field is configured for RTE and if any flag-field is not set to disable it.
 			if (isset($specialConfiguration['richtext']) && (!$parameters['flag'] || !$row[$parameters['flag']])) {
@@ -87,56 +104,40 @@ class TextElement extends AbstractFormElement {
 				list($recordPid, $tsConfigPid) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);
 				// If the pid-value is not negative (that is, a pid could NOT be fetched)
 				if ($tsConfigPid >= 0) {
-					$rteSetup = $this->getBackendUserAuthentication()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($recordPid));
+					$rteSetup = $backendUser->getTSConfig('RTE', BackendUtility::getPagesTSconfig($recordPid));
 					$rteTcaTypeValue = BackendUtility::getTCAtypeValue($table, $row);
 					$rteSetupConfiguration = BackendUtility::RTEsetup($rteSetup['properties'], $table, $field, $rteTcaTypeValue);
 					if (!$rteSetupConfiguration['disabled']) {
-						if (!$this->formEngine->disableRTE) {
-							$this->formEngine->RTEcounter++;
-							// Get RTE object, draw form and set flag:
-							$rteObject = BackendUtility::RTEgetObj();
-							$item = $rteObject->drawRTE(
-								$this->formEngine,
-								$table,
-								$field,
-								$row,
-								$additionalInformation,
-								$specialConfiguration,
-								$rteSetupConfiguration,
-								$rteTcaTypeValue,
-								'',
-								$tsConfigPid
-							);
+						$this->formEngine->RTEcounter++;
+						// Get RTE object, draw form and set flag:
+						$rteObject = BackendUtility::RTEgetObj();
+						$item = $rteObject->drawRTE(
+							$this->formEngine,
+							$table,
+							$field,
+							$row,
+							$additionalInformation,
+							$specialConfiguration,
+							$rteSetupConfiguration,
+							$rteTcaTypeValue,
+							'',
+							$tsConfigPid
+						);
 
-							// Wizard
-							$item = $this->formEngine->renderWizards(
-								array($item, $altItem),
-								$config['wizards'],
-								$table,
-								$row,
-								$field,
-								$additionalInformation,
-								$additionalInformation['itemFormElName'],
-								$specialConfiguration,
-								TRUE
-							);
-							$rteWasLoaded = TRUE;
-						} else {
-							$rteWouldHaveBeenLoaded = TRUE;
-							$this->formEngine->commentMessages[] = $additionalInformation['itemFormElName'] . ': RTE is disabled by the on-page RTE-flag (probably you can enable it by the check-box in the bottom of this page!)';
-						}
-					} else {
-						$this->formEngine->commentMessages[] = $additionalInformation['itemFormElName'] . ': RTE is disabled by the Page TSconfig, "RTE"-key (eg. by RTE.default.disabled=0 or such)';
+						// Wizard
+						$item = $this->renderWizards(
+							array($item, $altItem),
+							$config['wizards'],
+							$table,
+							$row,
+							$field,
+							$additionalInformation,
+							$additionalInformation['itemFormElName'],
+							$specialConfiguration,
+							TRUE
+						);
+						$rteWasLoaded = TRUE;
 					}
-				} else {
-					$this->formEngine->commentMessages[] = $additionalInformation['itemFormElName'] . ': PID value could NOT be fetched. Rare error, normally with new records.';
-				}
-			} else {
-				if (!isset($specialConfiguration['richtext'])) {
-					$this->formEngine->commentMessages[] = $additionalInformation['itemFormElName'] . ': RTE was not configured for this field in TCA-types';
-				}
-				if (!(!$parameters['flag'] || !$row[$parameters['flag']])) {
-					$this->formEngine->commentMessages[] = $additionalInformation['itemFormElName'] . ': Field-flag (' . $additionalInformation['flag'] . ') has been set to disable RTE!';
 				}
 			}
 		}
@@ -178,7 +179,7 @@ class TextElement extends AbstractFormElement {
 				// calculate inline styles
 				$styles = array();
 				// add the max-height from the users' preference to it
-				$maximumHeight = (int)$this->getBackendUserAuthentication()->uc['resizeTextareas_MaxHeight'];
+				$maximumHeight = (int)$backendUser->uc['resizeTextareas_MaxHeight'];
 				if ($maximumHeight > 0) {
 					$styles[] = 'max-height: ' . $maximumHeight . 'px';
 				}
@@ -212,7 +213,7 @@ class TextElement extends AbstractFormElement {
 							. '>' . GeneralUtility::formatForTextarea($additionalInformation['itemFormElValue']) . '</textarea>';
 
 				// Wrap a wizard around the item?
-				$item = $this->formEngine->renderWizards(
+				$item = $this->renderWizards(
 					array($item, $altItem),
 					$config['wizards'],
 					$table,
@@ -224,7 +225,7 @@ class TextElement extends AbstractFormElement {
 					$rteWouldHaveBeenLoaded
 				);
 
-				$maximumWidth = (int)$this->formEngine->formMaxWidth($cols);
+				$maximumWidth = (int)$this->formMaxWidth($cols);
 				$item = '<div class="form-control-wrap"' . ($maximumWidth ? ' style="max-width: ' . $maximumWidth . 'px"' : '') . '>' . $item . '</div>';
 			}
 		}

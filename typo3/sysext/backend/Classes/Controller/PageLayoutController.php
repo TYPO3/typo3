@@ -302,7 +302,6 @@ class PageLayoutController {
 			'tt_content_showHidden' => '',
 			'showPalettes' => '',
 			'showDescriptions' => '',
-			'disableRTE' => '',
 			'function' => array(
 				0 => $GLOBALS['LANG']->getLL('m_function_0'),
 				1 => $GLOBALS['LANG']->getLL('m_function_1'),
@@ -774,7 +773,6 @@ class PageLayoutController {
 				'colPos' => (int)$ex_colPos,
 				'sys_language_uid' => (int)$this->current_sys_language
 			);
-			$trData->disableRTE = $this->MOD_SETTINGS['disableRTE'];
 			$trData->lockRecords = 1;
 			// 'new'
 			$trData->fetchRecord($this->eRParts[0], $uidVal == 'new' ? $this->id : $uidVal, $uidVal);
@@ -798,18 +796,9 @@ class PageLayoutController {
 				// If the record is an array (which it will always be... :-)
 				// Create instance of TCEforms, setting defaults:
 				$tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-				$tceforms->backPath = $GLOBALS['BACK_PATH'];
 				$tceforms->initDefaultBEMode();
 				$tceforms->fieldOrder = $this->modTSconfig['properties']['tt_content.']['fieldOrder'];
 				$tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
-				$tceforms->disableRTE = $this->MOD_SETTINGS['disableRTE'];
-				$tceforms->enableClickMenu = TRUE;
-				$tceforms->enableTabMenu = TRUE;
-				// Clipboard is initialized:
-				// Start clipboard
-				$tceforms->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
-				// Initialize - reads the clipboard content from the user session
-				$tceforms->clipObj->initializeClipboard();
 				// Render form, wrap it:
 				$panel = '';
 				$panel .= $tceforms->getMainFields($this->eRParts[0], $rec);
@@ -821,7 +810,6 @@ class PageLayoutController {
 				}
 				$theCode .= '
 					<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
-					<input type="hidden" name="_disableRTE" value="' . $tceforms->disableRTE . '" />
 					<input type="hidden" name="edit_record" value="' . $edit_record . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? BackendUtility::getModuleUrl(
 						'web_layout',
@@ -875,14 +863,6 @@ class PageLayoutController {
 				'</label>' .
 				'</div>';
 		}
-		if ($GLOBALS['BE_USER']->isRTE()) {
-			$h_func_b .= '<div class="checkbox">' .
-				'<label for="checkDisableRTE">' .
-				BackendUtility::getFuncCheck($this->id, 'SET[disableRTE]', $this->MOD_SETTINGS['disableRTE'], '', '', 'id="checkDisableRTE"') .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.disableRTE', TRUE) .
-				'</label>' .
-				'</div>';
-		}
 		// Add the function menus to bottom:
 		$content .= $this->doc->section('', $h_func_b, 0, 0);
 		$content .= $this->doc->spacer(10);
@@ -898,14 +878,6 @@ class PageLayoutController {
 			$content .= $this->doc->spacer(20);
 			$content .= $this->doc->section($GLOBALS['LANG']->getLL('CEonThisPage'), $HTMLcode, 0, 1);
 			$content .= $this->doc->spacer(20);
-		}
-		// Finally, if comments were generated in TCEforms object, print these as a HTML comment:
-		if (count($tceforms->commentMessages)) {
-			$content .= '
-	<!-- TCEFORM messages
-	' . htmlspecialchars(implode(LF, $tceforms->commentMessages)) . '
-	-->
-	';
 		}
 		return $content;
 	}

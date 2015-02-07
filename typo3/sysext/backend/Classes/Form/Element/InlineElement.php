@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -24,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the FormEngine.
@@ -47,14 +50,15 @@ class InlineElement {
 	 *
 	 * @var \TYPO3\CMS\Backend\Form\FormEngine
 	 */
-	public $fObj;
+	protected $formEngine;
 
 	/**
-	 * Reference to $fObj->backPath
+	 * Reference to $formEngine->backPath
 	 *
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
-	public $backPath;
+	public $backPath = '';
 
 	/**
 	 * Indicates if a field is rendered upon an AJAX call
@@ -145,10 +149,9 @@ class InlineElement {
 	 * @return void
 	 */
 	public function init(&$formEngine) {
-		$this->fObj = $formEngine;
-		$this->backPath = &$formEngine->backPath;
-		$this->prependFormFieldNames = &$this->fObj->prependFormFieldNames;
-		$this->prependCmdFieldNames = &$this->fObj->prependCmdFieldNames;
+		$this->formEngine = $formEngine;
+		$this->prependFormFieldNames = &$this->formEngine->prependFormFieldNames;
+		$this->prependCmdFieldNames = &$this->formEngine->prependCmdFieldNames;
 		$this->inlineStyles['margin-right'] = '5';
 		$this->initHookObjects();
 	}
@@ -209,7 +212,7 @@ class InlineElement {
 			$maxitems = 100000;
 		}
 		// Register the required number of elements:
-		$this->fObj->requiredElements[$PA['itemFormElName']] = array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field);
+		$this->formEngine->requiredElements[$PA['itemFormElName']] = array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field);
 		// Remember the page id (pid of record) where inline editing started first
 		// We need that pid for ajax calls, so that they would know where the action takes place on the page structure
 		if (!isset($this->inlineFirstPid)) {
@@ -262,7 +265,7 @@ class InlineElement {
 			),
 		);
 		// Set a hint for nested IRRE and tab elements:
-		$this->inlineData['nested'][$nameObject] = $this->fObj->getDynNestedStack(FALSE, $this->isAjaxCall);
+		$this->inlineData['nested'][$nameObject] = $this->formEngine->getDynNestedStack(FALSE, $this->isAjaxCall);
 		// If relations are required to be unique, get the uids that have already been used on the foreign side of the relation
 		if ($config['foreign_unique']) {
 			// If uniqueness *and* selector are set, they should point to the same field - so, get the configuration of one:
@@ -385,7 +388,7 @@ class InlineElement {
 		// Register default localization content:
 		$parent = $this->getStructureLevel(-1);
 		if (isset($parent['localizationMode']) && $parent['localizationMode'] != FALSE) {
-			$this->fObj->registerDefaultLanguageData($foreign_table, $rec);
+			$this->formEngine->registerDefaultLanguageData($foreign_table, $rec);
 		}
 		// Send a mapping information to the browser via JSON:
 		// e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
@@ -406,7 +409,7 @@ class InlineElement {
 		$appendFormFieldNames = '[' . $foreign_table . '][' . $rec['uid'] . ']';
 		$objectId = $nameObject . self::Structure_Separator . $foreign_table . self::Structure_Separator . $rec['uid'];
 		// Put the current level also to the dynNestedStack of FormEngine:
-		$this->fObj->pushToDynNestedStack('inline', $objectId);
+		$this->formEngine->pushToDynNestedStack('inline', $objectId);
 		$class = '';
 		if (!$isVirtualRecord) {
 			// Get configuration:
@@ -483,7 +486,7 @@ class InlineElement {
 				</div>';
 		}
 		// Remove the current level also from the dynNestedStack of FormEngine:
-		$this->fObj->popFromDynNestedStack();
+		$this->formEngine->popFromDynNestedStack();
 		return $out;
 	}
 
@@ -497,16 +500,16 @@ class InlineElement {
 	 */
 	protected function renderMainFields($table, array $row, array $overruleTypesArray = array()) {
 		// The current render depth of \TYPO3\CMS\Backend\Form\FormEngine
-		$depth = $this->fObj->renderDepth;
+		$depth = $this->formEngine->renderDepth;
 		// If there is some information about already rendered palettes of our parent, store this info:
-		if (isset($this->fObj->palettesRendered[$depth][$table])) {
-			$palettesRendered = $this->fObj->palettesRendered[$depth][$table];
+		if (isset($this->formEngine->palettesRendered[$depth][$table])) {
+			$palettesRendered = $this->formEngine->palettesRendered[$depth][$table];
 		}
 		// Render the form:
-		$content = $this->fObj->getMainFields($table, $row, $depth, $overruleTypesArray);
+		$content = $this->formEngine->getMainFields($table, $row, $depth, $overruleTypesArray);
 		// If there was some info about rendered palettes stored, write it back for our parent:
 		if (isset($palettesRendered)) {
-			$this->fObj->palettesRendered[$depth][$table] = $palettesRendered;
+			$this->formEngine->palettesRendered[$depth][$table] = $palettesRendered;
 		}
 		return $content;
 	}
@@ -887,7 +890,7 @@ class InlineElement {
 		$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector];
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 		// Using "form_type" locally in this script
-		$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $foreign_selector);
+		$PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($foreign_table, array(), $foreign_selector);
 		$config = $PA['fieldConf']['config'];
 		// @todo $disabled is not present - should be read from config?
 		$disabled = FALSE;
@@ -897,14 +900,14 @@ class InlineElement {
 			$styleAttrValue = '';
 			foreach ($selItems as $p) {
 				if ($config['iconsInOptionTags']) {
-					$styleAttrValue = $this->fObj->optionTagStyle($p[2]);
+					$styleAttrValue = FormEngineUtility::optionTagStyle($p[2]);
 				}
 				if (!in_array($p[1], $uniqueIds)) {
 					$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . ' style="' . (in_array($p[1], $uniqueIds) ? '' : '') . ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) : '') . '">' . htmlspecialchars($p[0]) . '</option>';
 				}
 			}
 			// Put together the selector box:
-			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : ' style="' . $this->fObj->defaultMultipleSelectorStyle . '"';
+			$selector_itemListStyle = isset($config['itemListStyle']) ? ' style="' . htmlspecialchars($config['itemListStyle']) . '"' : '';
 			$size = (int)$conf['size'];
 			$size = $conf['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $conf['autoSizeMax']) : $size;
 			$onChange = 'return inline.importNewRecord(\'' . $this->inlineNames['object'] . self::Structure_Separator . $conf['foreign_table'] . '\')';
@@ -985,7 +988,8 @@ class InlineElement {
 				' . $createNewRelationText . '
 			</a>';
 
-		if ($showUpload && $this->fObj->edit_docModuleUpload) {
+		$isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
+		if ($showUpload && $isDirectFileUploadEnabled) {
 			$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
 			if (
 				$folder instanceof \TYPO3\CMS\Core\Resource\Folder
@@ -1101,7 +1105,7 @@ class InlineElement {
 	 * @return void
 	 */
 	public function addJavaScriptSortable($objectId) {
-		$this->fObj->additionalJS_post[] = '
+		$this->formEngine->additionalJS_post[] = '
 			inline.createDragAndDropSorting("' . $objectId . '");
 		';
 	}
@@ -1194,7 +1198,6 @@ class InlineElement {
 		$GLOBALS['SOBE']->MOD_MENU = array(
 			'showPalettes' => '',
 			'showDescriptions' => '',
-			'disableRTE' => ''
 		);
 		// Setting virtual document name
 		$GLOBALS['SOBE']->MCONF['name'] = 'xMOD_alt_doc.php';
@@ -1209,14 +1212,6 @@ class InlineElement {
 		$GLOBALS['SOBE']->tceforms->RTEcounter = (int)array_shift($ajaxArguments);
 		$GLOBALS['SOBE']->tceforms->initDefaultBEMode();
 		$GLOBALS['SOBE']->tceforms->palettesCollapsed = !$GLOBALS['SOBE']->MOD_SETTINGS['showPalettes'];
-		$GLOBALS['SOBE']->tceforms->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
-		$GLOBALS['SOBE']->tceforms->enableClickMenu = TRUE;
-		$GLOBALS['SOBE']->tceforms->enableTabMenu = TRUE;
-		// Clipboard is initialized:
-		// Start clipboard
-		$GLOBALS['SOBE']->tceforms->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
-		// Initialize - reads the clipboard content from the user session
-		$GLOBALS['SOBE']->tceforms->clipObj->initializeClipboard();
 	}
 
 	/**
@@ -1232,14 +1227,14 @@ class InlineElement {
 			$jsonArray['headData'] = $headTags;
 		}
 		// Add the JavaScript data that would have been added at the bottom of a regular FormEngine call:
-		$jsonArray['scriptCall'][] = $this->fObj->JSbottom($this->fObj->formName, TRUE);
+		$jsonArray['scriptCall'][] = $this->formEngine->JSbottom('editform', TRUE);
 		// If script.aculo.us Sortable is used, update the Observer to know the record:
 		if ($config['appearance']['useSortable']) {
 			$jsonArray['scriptCall'][] = 'inline.createDragAndDropSorting(\'' . $this->inlineNames['object'] . '_records\');';
 		}
 		// if FormEngine has some JavaScript code to be executed, just do it
-		if ($this->fObj->extJSCODE) {
-			$jsonArray['scriptCall'][] = $this->fObj->extJSCODE;
+		if ($this->formEngine->extJSCODE) {
+			$jsonArray['scriptCall'][] = $this->formEngine->extJSCODE;
 		}
 		// activate "enable tabs" for textareas
 		$jsonArray['scriptCall'][] = 'changeTextareaElements();';
@@ -1282,7 +1277,7 @@ class InlineElement {
 		$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
 		$expandSingle = isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle'];
 		// Put the current level also to the dynNestedStack of FormEngine:
-		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
+		$this->formEngine->pushToDynNestedStack('inline', $this->inlineNames['object']);
 		// Dynamically create a new record using \TYPO3\CMS\Backend\Form\DataPreprocessor
 		if (!$foreignUid || !MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
 			$record = $this->getNewRecord($this->inlineFirstPid, $current['table']);
@@ -1371,7 +1366,7 @@ class InlineElement {
 		// Fade out and fade in the new record in the browser view to catch the user's eye
 		$jsonArray['scriptCall'][] = 'inline.fadeOutFadeIn(\'' . $objectId . '_div\');';
 		// Remove the current level also from the dynNestedStack of FormEngine:
-		$this->fObj->popFromDynNestedStack();
+		$this->formEngine->popFromDynNestedStack();
 		// Return the JSON array:
 		return $jsonArray;
 	}
@@ -1448,7 +1443,7 @@ class InlineElement {
 		$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
 		$expandSingle = isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle'];
 		// Put the current level also to the dynNestedStack of FormEngine:
-		$this->fObj->pushToDynNestedStack('inline', $this->inlineNames['object']);
+		$this->formEngine->pushToDynNestedStack('inline', $this->inlineNames['object']);
 		$record = $this->getRecord($this->inlineFirstPid, $current['table'], $current['uid']);
 		// The HTML-object-id's prefix of the dynamically created record
 		$objectPrefix = $this->inlineNames['object'] . self::Structure_Separator . $current['table'];
@@ -1472,7 +1467,7 @@ class InlineElement {
 			$jsonArray['scriptCall'][] = 'inline.collapseAllRecords(\'' . $objectId . '\',\'' . $objectPrefix . '\',\'' . $record['uid'] . '\');';
 		}
 		// Remove the current level also from the dynNestedStack of FormEngine:
-		$this->fObj->popFromDynNestedStack();
+		$this->formEngine->popFromDynNestedStack();
 		// Return the JSON array:
 		return $jsonArray;
 	}
@@ -1755,7 +1750,12 @@ class InlineElement {
 		$config = $PA['fieldConf']['config'];
 		if ($foreignConfig['type'] == 'select') {
 			// Getting the selector box items from the system
-			$selItems = $this->fObj->addSelectOptionsToItemArray($this->fObj->initItemArray($PA['fieldConf']), $PA['fieldConf'], $this->fObj->setTSconfig($table, $row), $field);
+			$selItems = FormEngineUtility::addSelectOptionsToItemArray(
+				FormEngineUtility::initItemArray($PA['fieldConf']),
+				$PA['fieldConf'],
+				FormEngineUtility::getTSconfigForTableRow($table, $row),
+				$field
+			);
 
 			// Possibly filter some items:
 			$selItems = ArrayUtility::keepItemsInArray(
@@ -1767,9 +1767,10 @@ class InlineElement {
 			);
 
 			// Possibly add some items:
-			$selItems = $this->fObj->addItems($selItems, $PA['fieldTSConfig']['addItems.']);
+			$selItems = FormEngineUtility::addItems($selItems, $PA['fieldTSConfig']['addItems.']);
 			if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
-				$selItems = $this->fObj->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
+				$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+				$selItems = $dataPreprocessor->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
 			}
 			// Possibly remove some items:
 			$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
@@ -1877,7 +1878,6 @@ class InlineElement {
 		$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
 		$trData->addRawData = TRUE;
 		$trData->lockRecords = 1;
-		$trData->disableRTE = $GLOBALS['SOBE']->MOD_SETTINGS['disableRTE'];
 		// If a new record should be created
 		$trData->fetchRecord($table, $uid, $cmd === 'new' ? 'new' : '');
 		$rec = reset($trData->regTableItems_data);
@@ -2098,10 +2098,10 @@ class InlineElement {
 					if ($loadConfig) {
 						$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
 						// Fetch TSconfig:
-						$TSconfig = $this->fObj->setTSconfig($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $this->inlineFirstPid), $unstable['field']);
+						$TSconfig = FormEngineUtility::getTSconfigForTableRow($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $this->inlineFirstPid), $unstable['field']);
 						// Override TCA field config by TSconfig:
 						if (!$TSconfig['disabled']) {
-							$unstable['config'] = $this->fObj->overrideFieldConf($unstable['config'], $TSconfig);
+							$unstable['config'] = FormEngineUtility::overrideFieldConf($unstable['config'], $TSconfig);
 						}
 						$unstable['localizationMode'] = BackendUtility::getInlineLocalizationMode($unstable['table'], $unstable['config']);
 					}
@@ -2288,8 +2288,8 @@ class InlineElement {
 		if ($style) {
 			$style = ' style="' . $style . '"';
 		}
-		if (!$tableAttrs['background'] && $this->fObj->borderStyle[2]) {
-			$tableAttrs['background'] = $this->backPath . $this->borderStyle[2];
+		if (!$tableAttrs['background'] && $this->formEngine->borderStyle[2]) {
+			$tableAttrs['background'] = $this->borderStyle[2];
 		}
 		if (!$tableAttrs['class'] && $this->borderStyle[3]) {
 			$tableAttrs['class'] = $this->borderStyle[3];
@@ -2479,7 +2479,7 @@ class InlineElement {
 			}
 			$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ?: $PA['fieldConf']['config']['type'];
 			// Using "form_type" locally in this script
-			$PA['fieldTSConfig'] = $this->fObj->setTSconfig($foreign_table, array(), $field);
+			$PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($foreign_table, array(), $field);
 			$config = $PA['fieldConf']['config'];
 			// Determine type of Selector:
 			$type = $this->getPossibleRecordsSelectorType($config);
@@ -2639,7 +2639,7 @@ class InlineElement {
 	 */
 	protected function getHeadTags() {
 		$headTags = array();
-		$headDataRaw = $this->fObj->JStop() . $this->getJavaScriptAndStyleSheetsOfPageRenderer();
+		$headDataRaw = $this->formEngine->JStop() . $this->getJavaScriptAndStyleSheetsOfPageRenderer();
 		if ($headDataRaw) {
 			// Create instance of the HTML parser:
 			$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
@@ -2707,7 +2707,7 @@ class InlineElement {
 		$flexFormParts = NULL;
 
 		$matches = array();
-		$prefix = preg_quote($this->fObj->prependFormFieldNames, '#');
+		$prefix = preg_quote($this->formEngine->prependFormFieldNames, '#');
 
 		if (preg_match('#^' . $prefix . '(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
 			$flexFormParts = GeneralUtility::trimExplode(
@@ -2731,6 +2731,13 @@ class InlineElement {
 	 */
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

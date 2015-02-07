@@ -15,23 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form;
  */
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Backend\Form\Element\NoneElement;
 
 /**
  * Test case
  */
-class FormEngineTest extends UnitTestCase {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $subject;
-
-	/**
-	 * Sets up this test case.
-	 */
-	protected function setUp() {
-		$this->subject = $this->getMock(\TYPO3\CMS\Backend\Form\FormEngine::class, array('dummy'), array(), '', FALSE);
-	}
+class NoneElementTest extends UnitTestCase {
 
 	/**
 	 * @return array
@@ -250,9 +239,11 @@ class FormEngineTest extends UnitTestCase {
 	 * @test
 	 */
 	public function formatValueWithGivenConfiguration($config, $itemValue, $expectedResult) {
+		/** @var NoneElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$subject = $this->getAccessibleMock(NoneElement::class, array('dummy'), array(), '', FALSE);
 		$timezoneBackup = date_default_timezone_get();
 		date_default_timezone_set('UTC');
-		$result = $this->subject->formatValue($config, $itemValue);
+		$result = $subject->_call('formatValue', $config, $itemValue);
 		date_default_timezone_set($timezoneBackup);
 
 		$this->assertEquals($expectedResult, $result);

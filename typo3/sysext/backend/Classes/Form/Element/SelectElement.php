@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Generation of TCEform elements of the type "select"
@@ -69,7 +71,7 @@ class SelectElement extends AbstractFormElement {
 		// Field configuration from TCA:
 		$config = $additionalInformation['fieldConf']['config'];
 		$disabled = '';
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
@@ -105,7 +107,7 @@ class SelectElement extends AbstractFormElement {
 		// Wizards:
 		if (!$disabled) {
 			$altItem = '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
-			$item = $this->formEngine->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $additionalInformation, $additionalInformation['itemFormElName'], $specConf);
+			$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $additionalInformation, $additionalInformation['itemFormElName'], $specConf);
 		}
 		return $item;
 	}
@@ -128,7 +130,7 @@ class SelectElement extends AbstractFormElement {
 		$languageService = $this->getLanguageService();
 		$item = '';
 		$disabled = '';
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// Setting this hidden field (as a flag that JavaScript can read out)
@@ -196,7 +198,7 @@ class SelectElement extends AbstractFormElement {
 			$styleAttrValue = '';
 			foreach ($selItems as $p) {
 				if ($config['iconsInOptionTags']) {
-					$styleAttrValue = $this->formEngine->optionTagStyle($p[2]);
+					$styleAttrValue = FormEngineUtility::optionTagStyle($p[2]);
 				}
 				$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"'
 					. ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) . '"' : '')
@@ -205,7 +207,7 @@ class SelectElement extends AbstractFormElement {
 			// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle'])
 				? ' style="' . htmlspecialchars($config['itemListStyle']) . '"'
-				: ' style="' . $this->formEngine->defaultMultipleSelectorStyle . '"';
+				: '';
 			$size = (int)$config['size'];
 			$size = $config['autoSizeMax']
 				? MathUtility::forceIntegerInRange(count($itemArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
@@ -264,7 +266,7 @@ class SelectElement extends AbstractFormElement {
 			'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
 			'style' => isset($config['selectedListStyle'])
 				? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-				: ' style="' . $this->formEngine->defaultMultipleSelectorStyle . '"',
+				: '',
 			'dontShowMoveIcons' => $maxitems <= 1,
 			'maxitems' => $maxitems,
 			'info' => '',
@@ -277,7 +279,7 @@ class SelectElement extends AbstractFormElement {
 			'rightbox' => $itemsToSelect,
 			'readOnly' => $disabled
 		);
-		$item .= $this->formEngine->dbFileIcons($PA['itemFormElName'], '', '', $itemArray, '', $params, $PA['onFocus']);
+		$item .= $this->dbFileIcons($PA['itemFormElName'], '', '', $itemArray, '', $params, $PA['onFocus']);
 		return $item;
 	}
 
@@ -296,10 +298,10 @@ class SelectElement extends AbstractFormElement {
 		$config = $PA['fieldConf']['config'];
 
 		// Getting the selector box items from the system
-		$selectItems = $this->formEngine->addSelectOptionsToItemArray(
-			$this->formEngine->initItemArray($PA['fieldConf']),
+		$selectItems = FormEngineUtility::addSelectOptionsToItemArray(
+			FormEngineUtility::initItemArray($PA['fieldConf']),
 			$PA['fieldConf'],
-			$this->formEngine->setTSconfig($table, $row),
+			FormEngineUtility::getTSconfigForTableRow($table, $row),
 			$fieldName
 		);
 
@@ -313,11 +315,12 @@ class SelectElement extends AbstractFormElement {
 		);
 
 		// Possibly add some items:
-		$selectItems = $this->formEngine->addItems($selectItems, $PA['fieldTSConfig']['addItems.']);
+		$selectItems = FormEngineUtility::addItems($selectItems, $PA['fieldTSConfig']['addItems.']);
 
 		// Process items by a user function:
 		if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
-			$selectItems = $this->formEngine->procItems($selectItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $fieldName);
+			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+			$selectItems = $dataPreprocessor->procItems($selectItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $fieldName);
 		}
 
 		// Possibly remove some items:
@@ -409,7 +412,7 @@ class SelectElement extends AbstractFormElement {
 		$out = '';
 		$options = '';
 		$disabled = FALSE;
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = TRUE;
 			$onlySelectedIconShown = 1;
 		}
@@ -444,12 +447,12 @@ class SelectElement extends AbstractFormElement {
 				}
 				$selectItemGroups[$selectItemGroupCount]['header'] = array(
 					'title' => $item[0],
-					'icon' => (!empty($item[2]) ? $this->formEngine->getIconHtml($item[2]) : '')
+					'icon' => (!empty($item[2]) ? FormEngineUtility::getIconHtml($item[2]) : ''),
 				);
 			} else {
 				// IS ITEM
 				$title = htmlspecialchars($item['0'], ENT_COMPAT, 'UTF-8', FALSE);
-				$icon = (!empty($item[2]) ? $this->formEngine->getIconHtml($item[2], $title, $title) : '');
+				$icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $title, $title) : '';
 				$selected = ((string)$PA['itemFormElValue'] === (string)$item[1] ? 1 : 0);
 				if ($selected) {
 					$selectedIndex = $selectItemCounter;
@@ -466,10 +469,10 @@ class SelectElement extends AbstractFormElement {
 				);
 				// ICON
 				if ($icon && !$suppressIcons && (!$onlySelectedIconShown || $selected)) {
-					$onClick = $this->formEngine->elName($PA['itemFormElName']) . '.selectedIndex=' . $selectItemCounter . ';';
+					$onClick = 'document.editform[' . GeneralUtility::quoteJSvalue($PA['itemFormElName']) . '].selectedIndex=' . $selectItemCounter . ';';
 					if ($config['iconsInOptionTags']) {
 						$onClick .= 'document.getElementById(\'' . $selectId . '_icon\').innerHTML = '
-							. $this->formEngine->elName($PA['itemFormElName'])
+							. 'document.editform[' . GeneralUtility::quoteJSvalue($PA['itemFormElName']) . ']'
 							. '.options[' . $selectItemCounter . '].getAttribute(\'data-icon\'); ';
 					}
 					$onClick .= implode('', $PA['fieldChangeFunc']);
@@ -588,12 +591,12 @@ class SelectElement extends AbstractFormElement {
 			return '';
 		}
 		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
-		$itemArray = array_flip($this->formEngine->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
+		$itemArray = array_flip(FormEngineUtility::extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 		$output = '';
 
 		// Disabled
 		$disabled = 0;
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = 1;
 		}
 		// Traverse the Array of selector box items:
@@ -609,7 +612,7 @@ class SelectElement extends AbstractFormElement {
 				if ($p[1] === '--div--') {
 					$selIcon = '';
 					if (isset($p[2]) && $p[2] != 'empty-emtpy') {
-						$selIcon = $this->formEngine->getIconHtml($p[2]);
+						$selIcon = FormEngineUtility::getIconHtml($p[2]);
 					}
 					$currentGroup++;
 					$groups[$currentGroup]['header'] = array(
@@ -654,7 +657,7 @@ class SelectElement extends AbstractFormElement {
 						'checked' => $checked,
 						'disabled' => $disabled,
 						'class' => '',
-						'icon' => (!empty($p[2]) ? $this->formEngine->getIconHtml($p[2]) : IconUtility::getSpriteIcon('empty-empty')),
+						'icon' => (!empty($p[2]) ? FormEngineUtility::getIconHtml($p[2]) : IconUtility::getSpriteIcon('empty-empty')),
 						'title' => htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE),
 						'help' => $help
 					);
@@ -727,9 +730,9 @@ class SelectElement extends AbstractFormElement {
 							<td>' . $item['help'] . '</td>
 						</tr>
 						';
-					$checkGroup[] = $this->formEngine->elName($item['name']) . '.checked=1;';
-					$uncheckGroup[] = $this->formEngine->elName($item['name']) . '.checked=0;';
-					$resetGroup[] = $this->formEngine->elName($item['name']) . '.checked='.$item['checked'] . ';';
+					$checkGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=1;';
+					$uncheckGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=0;';
+					$resetGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked='.$item['checked'] . ';';
 				}
 
 				// Build toggle group checkbox
@@ -791,10 +794,10 @@ class SelectElement extends AbstractFormElement {
 	public function getSingleField_typeSelect_singlebox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
 		$languageService = $this->getLanguageService();
 		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
-		$itemArray = array_flip($this->formEngine->extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
+		$itemArray = array_flip(FormEngineUtility::extractValuesOnlyFromValueLabelList($PA['itemFormElValue']));
 		$item = '';
 		$disabled = '';
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// Traverse the Array of selector box items:
@@ -807,7 +810,7 @@ class SelectElement extends AbstractFormElement {
 			$sM = '';
 			if (isset($itemArray[$p[1]])) {
 				$sM = ' selected="selected"';
-				$restoreCmd[] = $this->formEngine->elName(($PA['itemFormElName'] . '[]')) . '.options[' . $c . '].selected=1;';
+				$restoreCmd[] = 'document.editform[' . GeneralUtility::quoteJSvalue($PA['itemFormElName'] . '[]') . '].options[' . $c . '].selected=1;';
 				unset($itemArray[$p[1]]);
 			}
 			// Non-selectable element:
@@ -818,7 +821,7 @@ class SelectElement extends AbstractFormElement {
 			// Icon style for option tag:
 			$styleAttrValue = '';
 			if ($config['iconsInOptionTags']) {
-				$styleAttrValue = $this->formEngine->optionTagStyle($p[2]);
+				$styleAttrValue = FormEngineUtility::optionTagStyle($p[2]);
 			}
 			// Compile <option> tag:
 			$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . $sM . $nonSel
@@ -838,7 +841,7 @@ class SelectElement extends AbstractFormElement {
 		$sOnChange = implode('', $PA['fieldChangeFunc']);
 		$selector_itemListStyle = isset($config['itemListStyle'])
 			? ' style="' . htmlspecialchars($config['itemListStyle']) . '"'
-			: ' style="' . $this->formEngine->defaultMultipleSelectorStyle . '"';
+			: '';
 		$size = (int)$config['size'];
 		$cssPrefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
 		$size = $config['autoSizeMax']
@@ -856,8 +859,8 @@ class SelectElement extends AbstractFormElement {
 			$item .= '<input type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" value="" />';
 		}
 		// Put it all into a table:
-		$onClick = htmlspecialchars($this->formEngine->elName(($PA['itemFormElName'] . '[]')) . '.selectedIndex=-1;' . implode('', $restoreCmd) . ' return false;');
-		$width = $this->formEngine->formMaxWidth($this->formEngine->defaultInputWidth);
+		$onClick = htmlspecialchars('document.editform[' . GeneralUtility::quoteJSvalue($PA['itemFormElName'] . '[]') . '].selectedIndex=-1;' . implode('', $restoreCmd) . ' return false;');
+		$width = $this->formMaxWidth($this->defaultInputWidth);
 		$item .= '
 			<div class="form-control-wrap" ' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
 				<div class="form-wizards-wrap form-wizards-aside">
@@ -902,8 +905,8 @@ class SelectElement extends AbstractFormElement {
 		$PA = array();
 		$PA['fieldConf']['config'] = $fieldConfig;
 		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
-		$PA['fieldTSConfig'] = $this->formEngine->setTSconfig($this->currentTable, $this->currentRow, $fieldName);
-		$PA['fieldConf']['config'] = $this->formEngine->overrideFieldConf($PA['fieldConf']['config'], $PA['fieldTSConfig']);
+		$PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($this->currentTable, $this->currentRow, $fieldName);
+		$PA['fieldConf']['config'] = FormEngineUtility::overrideFieldConf($PA['fieldConf']['config'], $PA['fieldTSConfig']);
 		$selectItemArray = $this->getSelectItems($this->currentTable, $fieldName, $this->currentRow, $PA);
 
 		if ($isTraversable && count($selectItemArray)) {

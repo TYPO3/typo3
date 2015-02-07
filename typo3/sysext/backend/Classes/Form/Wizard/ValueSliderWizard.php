@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Element;
+namespace TYPO3\CMS\Backend\Form\Wizard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,21 +17,19 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * TCEforms wizard for rendering an AJAX selector for records
+ * Wizard for rendering an AJAX selector for records
  *
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class ValueSlider {
+class ValueSliderWizard {
 
 	/**
 	 * Renders the slider value wizard
 	 *
 	 * @param array $params
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $pObj
 	 * @return string
 	 */
-	public function renderWizard(&$params, &$pObj) {
-		$pObj->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/ValueSlider.js');
+	public function renderWizard($params) {
 		$field = $params['field'];
 		$value = $params['row'][$field];
 		// If Slider is used in a flexform

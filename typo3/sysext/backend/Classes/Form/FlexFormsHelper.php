@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Contains FlexForm manipulation methods as part of the TCEforms
@@ -79,7 +80,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			return $dataStructure;
 		}
 		// Get field configuration from page TSConfig
-		$TSconfig = $this->setTSconfig($table, $tableRow);
+		$TSconfig = FormEngineUtility::getTSconfigForTableRow($table, $tableRow);
 		if (!empty($TSconfig[$tableField][($flexformIdentifier . '.')])) {
 			$sheetConf = GeneralUtility::removeDotsFromTS($TSconfig[$tableField][$flexformIdentifier . '.']);
 		}
@@ -187,7 +188,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 				continue;
 			}
 			// Getting the selector box items from system
-			$selItems = $this->addSelectOptionsToItemArray($this->initItemArray($field['TCEforms']), $field['TCEforms'], $this->setTSconfig($table, $tableRow), $tableField);
+			$selItems = FormEngineUtility::addSelectOptionsToItemArray(FormEngineUtility::initItemArray($field['TCEforms']), $field['TCEforms'], FormEngineUtility::getTSconfigForTableRow($table, $tableRow), $tableField);
 
 			// Possibly filter some items
 			$selItems = ArrayUtility::keepItemsInArray(
@@ -199,10 +200,11 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 			);
 
 			// Possibly add some items
-			$selItems = $this->addItems($selItems, $addItems);
+			$selItems = FormEngineUtility::addItems($selItems, $addItems);
 			// Process items by a user function
 			if (!empty($field['TCEforms']['config']['itemsProcFunc'])) {
-				$selItems = $this->procItems($selItems, $fieldConf['config'], $field['TCEforms']['config'], $table, $tableRow, $tableField);
+				$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+				$selItems = $dataPreprocessor->procItems($selItems, $fieldConf['config'], $field['TCEforms']['config'], $table, $tableRow, $tableField);
 			}
 			// Remove special configuration options after creating items to prevent double parsing
 			foreach ($this->removeSelectConfig as $option) {

@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+
 /**
  * Generation of TCEform elements of the type "check"
  */
@@ -32,13 +36,14 @@ class CheckboxElement extends AbstractFormElement {
 		$config = $additionalInformation['fieldConf']['config'];
 		$item = '';
 		$disabled = FALSE;
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = TRUE;
 		}
 		// Traversing the array of items
-		$items = $this->formEngine->initItemArray($additionalInformation['fieldConf']);
+		$items = FormEngineUtility::initItemArray($additionalInformation['fieldConf']);
 		if ($config['itemsProcFunc']) {
-			$items = $this->formEngine->procItems(
+			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+			$items = $dataPreprocessor->procItems(
 				$items,
 				$additionalInformation['fieldTSConfig']['itemsProcFunc.'],
 				$config,
@@ -180,7 +185,7 @@ class CheckboxElement extends AbstractFormElement {
 	 * @return string The onclick attribute + possibly the checked-option set.
 	 */
 	protected function checkBoxParams($itemName, $formElementValue, $checkbox, $checkboxesCount, $additionalJavaScript = '') {
-		$elementName = $this->formEngine->elName($itemName);
+		$elementName = 'document.editform[' . Generalutility::quoteJSvalue($itemName) . ']';
 		$checkboxPow = pow(2, $checkbox);
 		$onClick = $elementName . '.value=this.checked?(' . $elementName . '.value|' . $checkboxPow . '):('
 			. $elementName . '.value&' . (pow(2, $checkboxesCount) - 1 - $checkboxPow) . ');' . $additionalJavaScript;

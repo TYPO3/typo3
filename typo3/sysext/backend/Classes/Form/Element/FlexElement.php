@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -112,7 +113,7 @@ class FlexElement extends AbstractFormElement {
 
 			foreach ($rotateLang as $lKey) {
 				if (!$langChildren && !$langDisabled) {
-					$item .= '<strong>' . $this->formEngine->getLanguageIcon($table, $row, ('v' . $lKey)) . $lKey . ':</strong>';
+					$item .= '<strong>' . FormEngineUtility::getLanguageIcon($table, $row, ('v' . $lKey)) . $lKey . ':</strong>';
 				}
 				// Default language, other options are "lUK" or whatever country code (independent of system!!!)
 				$lang = 'l' . $lKey;
@@ -510,7 +511,7 @@ class FlexElement extends AbstractFormElement {
 								$theTitle = htmlspecialchars($fakePA['fieldConf']['label']);
 								if (!in_array('DEF', $rotateLang)) {
 									$defInfo = '<div class="t3-form-original-language">'
-										. $this->formEngine->getLanguageIcon($table, $row, 0)
+										. FormEngineUtility::getLanguageIcon($table, $row, 0)
 										. $this->formEngine->previewFieldValue($editData[$key]['vDEF'], $fakePA['fieldConf'], $field)
 										. '&nbsp;</div>';
 								} else {
@@ -520,14 +521,14 @@ class FlexElement extends AbstractFormElement {
 									$prLang = $this->formEngine->getAdditionalPreviewLanguages();
 									foreach ($prLang as $prL) {
 										$defInfo .= '<div class="t3-form-original-language">'
-											. $this->formEngine->getLanguageIcon($table, $row, ('v' . $prL['ISOcode']))
+											. FormEngineUtility::getLanguageIcon($table, $row, ('v' . $prL['ISOcode']))
 											. $this->formEngine->previewFieldValue($editData[$key][('v' . $prL['ISOcode'])], $fakePA['fieldConf'], $field)
 											. '&nbsp;</div>';
 									}
 								}
 								$languageIcon = '';
 								if ($vDEFkey != 'vDEF') {
-									$languageIcon = $this->formEngine->getLanguageIcon($table, $row, $vDEFkey);
+									$languageIcon = FormEngineUtility::getLanguageIcon($table, $row, $vDEFkey);
 								}
 								// Put row together
 								// possible linebreaks in the label through xml: \n => <br/>, usage of nl2br()

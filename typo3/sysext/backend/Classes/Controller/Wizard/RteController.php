@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -148,7 +149,7 @@ class RteController extends AbstractWizardController {
 			$rec['uid'] = $this->P['uid'];
 			$rec['pid'] = $rawRec['pid'];
 			// TSconfig, setting width:
-			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'], $rec, $this->P['field']);
+			$fieldTSConfig = FormEngineUtility::getTSconfigForTableRow($this->P['table'], $rec, $this->P['field']);
 			if ((string)$fieldTSConfig['RTEfullScreenWidth'] !== '') {
 				$width = $fieldTSConfig['RTEfullScreenWidth'];
 			} else {

@@ -334,7 +334,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Traverse fields (as set above) in order to create header values:
 			foreach ($this->fieldArray as $field) {
 				if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field != 'uid' && !$this->pages_noEditColumns) {
-					$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=' . $field . '&disHelp=1';
+					$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=' . $field;
 					$iTitle = sprintf(
 						$this->getLanguageService()->getLL('editThisColumn'),
 						rtrim(trim($this->getLanguageService()->sL(BackendUtility::getItemLabel('pages', $field))), ':')

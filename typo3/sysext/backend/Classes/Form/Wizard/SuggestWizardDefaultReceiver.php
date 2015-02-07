@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Element;
+namespace TYPO3\CMS\Backend\Form\Wizard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -28,7 +28,7 @@ use TYPO3\CMS\Lang\LanguageService;
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Benjamin Mack <benni@typo3.org>
  */
-class SuggestDefaultReceiver {
+class SuggestWizardDefaultReceiver {
 
 	/**
 	 * The name of the table to query

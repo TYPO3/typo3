@@ -2504,8 +2504,7 @@ class BackendUtility {
 	 *******************************************/
 	/**
 	 * Returns help-text icon if configured for.
-	 * TCA_DESCR must be loaded prior to this function and static::getBackendUserAuthentication() must
-	 * have 'edit_showFieldHelp' set to 'icon', otherwise nothing is returned
+	 * TCA_DESCR must be loaded prior to this function
 	 *
 	 * Please note: since TYPO3 4.5 the UX team decided to not use CSH in its former way,
 	 * but to wrap the given text (where before the help icon was, and you could hover over it)
@@ -2521,10 +2520,7 @@ class BackendUtility {
 	 */
 	static public function helpTextIcon($table, $field, $BACK_PATH = '', $force = FALSE) {
 		GeneralUtility::logDeprecatedFunction();
-		if (
-			is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])
-			&& (isset(static::getBackendUserAuthentication()->uc['edit_showFieldHelp']) || $force)
-		) {
+		if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
 			return self::wrapInHelp($table, $field);
 		}
 		return '';

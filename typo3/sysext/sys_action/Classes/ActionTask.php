@@ -31,11 +31,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected $taskObject;
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	public $t3lib_TCEforms;
-
-	/**
 	 * All hook objects get registered here for later use
 	 *
 	 * @var array
@@ -272,9 +267,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				$vars = $rawRecord;
 			}
 		}
-		$this->JScode();
-		$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
-		$loadDB->start($vars['db_mountpoints'], 'pages');
 		$content .= '<form action="" method="post" enctype="multipart/form-data">
 						<fieldset class="fields">
 							<legend>' . $this->getLanguageService()->getLL('action_t1_legend_generalFields') . '</legend>
@@ -307,10 +299,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 								<select id="field_usergroup" name="data[usergroup][]" multiple="multiple">
 									' . $this->getUsergroups($record, $vars) . '
 								</select>
-							</div>
-							<div class="row">
-								<label for="field_db_mountpoints">' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_tca.xlf:be_users.options_db_mounts') . '</label>
-								' . $this->t3lib_TCEforms->dbFileIcons('data[db_mountpoints]', 'db', 'pages', $loadDB->itemArray, '', array('size' => 3)) . '
 							</div>
 							<div class="row">
 								<input type="hidden" name="data[key]" value="' . $key . '" />
@@ -560,17 +548,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			}
 		}
 		return $access;
-	}
-
-	/**
-	 * Add additional JavaScript to use the tceform select box
-	 *
-	 * @return void
-	 */
-	protected function JScode() {
-		$this->t3lib_TCEforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-		$this->t3lib_TCEforms->backPath = $GLOBALS['BACK_PATH'];
-		$this->t3lib_TCEforms->printNeededJSFunctions();
 	}
 
 	/**

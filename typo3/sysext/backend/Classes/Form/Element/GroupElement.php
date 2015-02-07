@@ -41,7 +41,7 @@ class GroupElement extends AbstractFormElement {
 
 		$config = $additionalInformation['fieldConf']['config'];
 		$show_thumbs = $config['show_thumbs'];
-		$size = isset($config['size']) ? (int)$config['size'] : $this->formEngine->minimumInputWidth;
+		$size = isset($config['size']) ? (int)$config['size'] : $this->minimumInputWidth;
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
 			$maxitems = 100000;
@@ -50,7 +50,7 @@ class GroupElement extends AbstractFormElement {
 		$thumbnails = array();
 		$allowed = GeneralUtility::trimExplode(',', $config['allowed'], TRUE);
 		$disallowed = GeneralUtility::trimExplode(',', $config['disallowed'], TRUE);
-		$disabled = ($this->isRenderReadonly() || $config['readOnly']);
+		$disabled = ($this->isGlobalReadonly() || $config['readOnly']);
 		$info = array();
 		$additionalInformation['itemFormElID_file'] = $additionalInformation['itemFormElID'] . '_files';
 
@@ -144,7 +144,7 @@ class GroupElement extends AbstractFormElement {
 										$rowCopy,
 										$table,
 										$field,
-										$this->formEngine->backPath,
+										'',
 										'thumbs.php',
 										$config['uploadfolder'],
 										0,
@@ -178,14 +178,14 @@ class GroupElement extends AbstractFormElement {
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle'])
 						? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-						: ' style="' . $this->formEngine->defaultMultipleSelectorStyle . '"',
+						: '',
 					'thumbnails' => $thumbnails,
 					'readOnly' => $disabled,
 					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
 					'noList' => $noList,
 					'noDelete' => $noDelete
 				);
-				$item .= $this->formEngine->dbFileIcons(
+				$item .= $this->dbFileIcons(
 					$additionalInformation['itemFormElName'],
 					'file',
 					implode(',', $allowed),
@@ -199,7 +199,8 @@ class GroupElement extends AbstractFormElement {
 					$config);
 				if (!$disabled && !(isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'upload'))) {
 					// Adding the upload field:
-					if ($this->formEngine->edit_docModuleUpload && $config['uploadfolder']) {
+					$isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
+					if ($isDirectFileUploadEnabled && $config['uploadfolder']) {
 						// Insert the multiple attribute to enable HTML5 multiple file upload
 						$multipleAttribute = '';
 						$multipleFilenameSuffix = '';
@@ -229,12 +230,12 @@ class GroupElement extends AbstractFormElement {
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle'])
 						? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-						: ' style="' . $this->formEngine->defaultMultipleSelectorStyle . '"',
+						: '',
 					'readOnly' => $disabled,
 					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
 					'noList' => $noList
 				);
-				$item .= $this->formEngine->dbFileIcons(
+				$item .= $this->dbFileIcons(
 					$additionalInformation['itemFormElName'],
 					'folder',
 					'',
@@ -298,7 +299,7 @@ class GroupElement extends AbstractFormElement {
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle'])
 						? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-						: ' style="' . $this->formEngine->defaultMultipleSelectorStyle . '"',
+						: '',
 					'info' => $info,
 					'allowedTables' => $allowedTables,
 					'thumbnails' => $thumbnails,
@@ -306,7 +307,7 @@ class GroupElement extends AbstractFormElement {
 					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
 					'noList' => $noList
 				);
-				$item .= $this->formEngine->dbFileIcons(
+				$item .= $this->dbFileIcons(
 					$additionalInformation['itemFormElName'],
 					'db',
 					implode(',', $allowed),
@@ -324,7 +325,7 @@ class GroupElement extends AbstractFormElement {
 		// Wizards:
 		$altItem = '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
 		if (!$disabled) {
-			$item = $this->formEngine->renderWizards(
+			$item = $this->renderWizards(
 				array(
 					$item,
 					$altItem

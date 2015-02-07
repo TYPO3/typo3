@@ -136,7 +136,6 @@ class SimpleDataHandlerController {
 		$this->cacheCmd = GeneralUtility::_GP('cacheCmd');
 		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$this->prErr = GeneralUtility::_GP('prErr');
-		$this->_disableRTE = GeneralUtility::_GP('_disableRTE');
 		$this->CB = GeneralUtility::_GP('CB');
 		$this->vC = GeneralUtility::_GP('vC');
 		$this->uPT = GeneralUtility::_GP('uPT');

@@ -30,7 +30,6 @@ class UnknownElement extends AbstractFormElement {
 	 */
 	public function render($table, $field, $row, &$additionalInformation) {
 		return 'Unknown type: ' . $additionalInformation['fieldConf']['config']['form_type'] . '<br />';
-
 	}
 
 }

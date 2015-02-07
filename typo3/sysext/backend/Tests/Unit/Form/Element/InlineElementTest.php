@@ -14,12 +14,17 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Backend\Form\Element\InlineElement;
+use TYPO3\CMS\Backend\Form\FormEngine;
+
 /**
- * Tests for Inline Relational Record Editing form rendering.
+ * Test case
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class InlineElementTest extends UnitTestCase {
+
 	/**
 	 * @var \TYPO3\CMS\Backend\Form\Element\InlineElement
 	 */
@@ -29,9 +34,9 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		// @todo Use $this->buildAccessibleProxy() if properties are protected
-		$this->subject = new \TYPO3\CMS\Backend\Form\Element\InlineElement();
-		$this->subject->fObj = $this->getMock(\TYPO3\CMS\Backend\Form\FormEngine::class, array(), array(), '', FALSE);
+		/** @var InlineElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface subject */
+		$this->subject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
+		$this->subject->_set('formEngine', $this->getMock(FormEngine::class, array(), array(), '', FALSE));
 	}
 
 	/**
@@ -336,7 +341,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function checkFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue(){
 		$selectorData = array();
 		$fileData['extension'] = 'png';
-		$mockObject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Form\Element\InlineElement::class, array('dummy'));
+		$mockObject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
 		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
 		$this->assertTrue($mayUploadFile);
 	}
@@ -349,7 +354,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function checkFileTypeAccessForFieldFiletypesSetRecordTypeNotInListReturnsFalse(){
 		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
 		$fileData['extension'] = 'php';
-		$mockObject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Form\Element\InlineElement::class, array('dummy'));
+		$mockObject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
 		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
 		$this->assertFalse($mayUploadFile);
 	}
@@ -362,7 +367,7 @@ class InlineElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function checkFileTypeAccessForFieldFiletypesSetRecordTypeInListReturnsTrue(){
 		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
 		$fileData['extension'] = 'png';
-		$mockObject = $this->getAccessibleMock(\TYPO3\CMS\Backend\Form\Element\InlineElement::class, array('dummy'));
+		$mockObject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
 		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
 		$this->assertTrue($mayUploadFile);
 	}

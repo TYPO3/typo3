@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Element;
+namespace TYPO3\CMS\Backend\Form\Wizard;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,39 +18,20 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\Form\Wizard\SuggestWizardDefaultReceiver;
 
 /**
- * TCEforms wizard for rendering an AJAX selector for records
+ * Wizard for rendering an AJAX selector for records
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Benjamin Mack <benni@typo3.org>
  */
-class SuggestElement {
-
-	/**
-	 * @var int Count the number of ajax selectors used
-	 */
-	public $suggestCount = 0;
+class SuggestWizard {
 
 	/**
 	 * @var string
 	 */
-	public $cssClass = 'typo3-TCEforms-suggest';
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	public $TCEformsObj;
-
-	/**
-	 * Initialize an instance of SuggestElement
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceForms Reference to an TCEforms instance
-	 * @return void
-	 */
-	public function init($tceForms) {
-		$this->TCEformsObj = $tceForms;
-	}
+	protected $cssClass = 'typo3-TCEforms-suggest';
 
 	/**
 	 * Renders an ajax-enabled text field. Also adds required JS
@@ -64,7 +45,6 @@ class SuggestElement {
 	 */
 	public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config) {
 		$languageService = $this->getLanguageService();
-		$this->suggestCount++;
 		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
 		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
 		$isFlexFormField = $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex';
@@ -113,9 +93,12 @@ class SuggestElement {
 
 		// Replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace(array('-', '.'), ' ', GeneralUtility::strtolower($suggestId))));
-		$this->TCEformsObj->additionalJS_post[] = '
-			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ', "' . $type . '", ' . GeneralUtility::quoteJSvalue($jsRow) . ');' . LF
-				. $jsObj . '.defaultValue = "' . GeneralUtility::slashJS($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF;
+		$selector .=
+			'<script type="text/javascript">' . LF .
+				'var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ', "' . $type . '", ' . GeneralUtility::quoteJSvalue($jsRow) . ');' . LF .
+				$jsObj . '.defaultValue = "' . GeneralUtility::slashJS($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF .
+			'</script>' . LF;
+
 		return $selector;
 	}
 
@@ -278,7 +261,7 @@ class SuggestElement {
 			// instantiate the class that should fetch the records for this $queryTable
 			$receiverClassName = $config['receiverClass'];
 			if (!class_exists($receiverClassName)) {
-				$receiverClassName = \TYPO3\CMS\Backend\Form\Element\SuggestDefaultReceiver::class;
+				$receiverClassName = SuggestWizardDefaultReceiver::class;
 			}
 			$receiverObj = GeneralUtility::makeInstance($receiverClassName, $queryTable, $config);
 			$params = array('value' => $search);

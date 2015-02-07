@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\View;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Backend layout for CMS
@@ -259,10 +260,8 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getColPosListItemsParsed($id) {
 		$tsConfig = BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
-		/** @var $tceForms \TYPO3\CMS\Backend\Form\FormEngine */
-		$tceForms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
 		$tcaItems = $tcaConfig['items'];
-		$tcaItems = $tceForms->addItems($tcaItems, $tsConfig['properties']['addItems.']);
+		$tcaItems = FormEngineUtility::addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
 			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
 		}

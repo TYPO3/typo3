@@ -892,7 +892,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						// The "edit marked" link:
 						$editIdList = implode(',', $currentIdList);
 						$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
-						$params = '&edit[' . $table . '][' . $editIdList . ']=edit&disHelp=1';
+						$params = '&edit[' . $table . '][' . $editIdList . ']=edit';
 						$onClick = htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1));
 						$cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . $onClick . '" title="'
 							. $lang->getLL('clip_editMarked', TRUE) . '">'
@@ -970,7 +970,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							if ($this->clipNumPane()) {
 								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
 							}
-							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray) . '&disHelp=1';
+							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray);
 							$icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1))
 								. '" title="' . $lang->getLL('editShownColumns', TRUE) . '">'
 								. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
@@ -1010,7 +1010,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							if ($this->clipNumPane()) {
 								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
 							}
-							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol . '&disHelp=1';
+							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol;
 							$iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
 							$theData[$fCol] .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1))
 								. '" title="' . htmlspecialchars($iTitle) . '">'

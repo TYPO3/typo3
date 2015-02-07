@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+
 /**
  * Generation of TCEform elements of the type "radio"
  */
@@ -32,14 +36,15 @@ class RadioElement extends AbstractFormElement {
 		$config = $additionalInformation['fieldConf']['config'];
 		$item = '';
 		$disabled = '';
-		if ($this->isRenderReadonly() || $config['readOnly']) {
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = ' disabled';
 		}
 
 		// Get items for the array
-		$selectedItems = $this->formEngine->initItemArray($additionalInformation['fieldConf']);
+		$selectedItems = FormEngineUtility::initItemArray($additionalInformation['fieldConf']);
 		if ($config['itemsProcFunc']) {
-			$selectedItems = $this->formEngine->procItems(
+			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+			$selectedItems = $dataPreprocessor->procItems(
 				$selectedItems,
 				$additionalInformation['fieldTSConfig']['itemsProcFunc.'],
 				$config,

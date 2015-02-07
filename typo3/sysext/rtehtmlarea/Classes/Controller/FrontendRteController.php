@@ -212,7 +212,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		// Register RTE in JS
 		$this->TCEform->additionalJS_post[] = $this->wrapCDATA($this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '', $textAreaId));
 		// Set the save option for the RTE:
-		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
+		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, 'editform', $textAreaId);
 		$this->pageRenderer->loadRequireJs();
 		// Loading ExtJs JavaScript files and inline code, if not configured in TS setup
 		if (!is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {

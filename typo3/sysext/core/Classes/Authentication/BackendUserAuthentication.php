@@ -308,7 +308,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		'startModule' => 'help_AboutmodulesAboutmodules',
 		'hideSubmoduleIcons' => 0,
 		'titleLen' => 50,
-		'edit_showFieldHelp' => 'icon',
 		'edit_RTE' => '1',
 		'edit_docModuleUpload' => '1',
 		'navFrameWidth' => '',

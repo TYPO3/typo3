@@ -294,12 +294,12 @@ interface t3lib_TCEforms_dbFileIconsHook extends \TYPO3\CMS\Backend\Form\Databas
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_TCEforms_Suggest extends \TYPO3\CMS\Backend\Form\Element\SuggestElement {}
+class t3lib_TCEforms_Suggest extends \TYPO3\CMS\Backend\Form\Wizard\SuggestWizard {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_TCEforms_Suggest_DefaultReceiver extends \TYPO3\CMS\Backend\Form\Element\SuggestDefaultReceiver {}
+class t3lib_TCEforms_Suggest_DefaultReceiver extends \TYPO3\CMS\Backend\Form\Wizard\SuggestWizardDefaultReceiver {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -309,7 +309,7 @@ class t3lib_TCEforms_Tree extends \TYPO3\CMS\Backend\Form\Element\TreeElement {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_TCEforms_ValueSlider extends \TYPO3\CMS\Backend\Form\Element\ValueSlider {}
+class t3lib_TCEforms_ValueSlider extends \TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
