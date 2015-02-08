@@ -14,6 +14,7 @@ namespace TYPO3\CMS\WizardCrpages\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -125,17 +126,42 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			} else {
 				// Display create form
 				$this->typeSelectHtml = $this->getTypeSelectHtml();
-				$lines = array();
 				$tableData = array();
-				for ($a = 0; $a < 9; $a++) {
+				for ($a = 0; $a < 5; $a++) {
 					$tableData[] = $this->getFormLine($a);
 				}
-				$lines[] = '<div class="table-fit"><table id="formFieldContainer" class="table table-striped table-hover"><tbody id="formFieldContainerBody">' . implode(LF, $tableData) . '</tbody></table></div>';
-				$theCode .= '<h4>' . $this->getLanguageService()->getLL('wiz_newPages') . ':</h4>' . implode('', $lines) . '<input class="btn btn-default" type="button" id="createNewFormFields" value="' . $this->getLanguageService()->getLL('wiz_newPages_addMoreLines') . '" />';
-				$theCode .= '<div class="checkbox"><label for="createInListEnd"><input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />' . $this->getLanguageService()->getLL('wiz_newPages_listEnd') . '</label></div>';
-				$theCode .= '<div class="checkbox"><label for="hidePages"><input type="checkbox" name="hidePages" id="hidePages" value="1" />' . $this->getLanguageService()->getLL('wiz_newPages_hidePages') . '</label></div>';
-				$theCode .= '<div class="checkbox"><label for="hidePagesInMenus"><input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />' . $this->getLanguageService()->getLL('wiz_newPages_hidePagesInMenus') . '</label></div>';
-				$theCode .= '<input class="btn btn-default" type="submit" name="create" value="' . $this->getLanguageService()->getLL('wiz_newPages_lCreate') . '" /> <input class="btn btn-default" type="reset" value="' . $this->getLanguageService()->getLL('wiz_newPages_lReset') . '" />';
+				$theCode .= '
+					<h4>' . $this->getLanguageService()->getLL('wiz_newPages') . ':</h4>
+					<div class="form-group t3js-wizardcrpages-container">
+						' . implode(LF, $tableData) . '
+					</div>
+					<div class="form-group">
+						<input class="btn btn-default t3js-wizardcrpages-createnewfields" type="button" value="' . $this->getLanguageService()->getLL('wiz_newPages_addMoreLines') . '" />
+					</div>
+					<div class="form-group">
+						<div class="checkbox">
+							<label for="createInListEnd">
+								<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" />
+								' . $this->getLanguageService()->getLL('wiz_newPages_listEnd') . '
+							</label>
+						</div>
+						<div class="checkbox">
+							<label for="hidePages">
+								<input type="checkbox" name="hidePages" id="hidePages" value="1" />
+								' . $this->getLanguageService()->getLL('wiz_newPages_hidePages') . '
+							</label>
+						</div>
+						<div class="checkbox">
+							<label for="hidePagesInMenus">
+								<input type="checkbox" name="hidePagesInMenus" id="hidePagesInMenus" value="1" />
+								' . $this->getLanguageService()->getLL('wiz_newPages_hidePagesInMenus') . '
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<input class="btn btn-default" type="submit" name="create" value="' . $this->getLanguageService()->getLL('wiz_newPages_lCreate') . '" />
+						<input class="btn btn-default" type="reset" value="' . $this->getLanguageService()->getLL('wiz_newPages_lReset') . '" />
+					</div>';
 
 				/** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
@@ -169,16 +195,35 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			$index = '{0}';
 			$label = '{1}';
 		}
-		$content = '<label for="page_new_' . $index . '"> ' . $this->getLanguageService()->getLL('wiz_newPages_page') . ' ' . $label;
-		$content .= ':&nbsp;</label>';
-		// Title
-		$content .= '<input type="text" id="page_new_' . $index . '" name="data[pages][NEW' . $index . '][title]"' . $this->pObj->doc->formWidth(35) . ' />&nbsp';
-		// type selector
-		$content .= '<span>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.type') . '</span>';
-		$content .= '<select class="select icon-select" name="data[pages][NEW' . $index . '][doktype]" style="background: url(&quot;' . $this->backPath . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); padding: 1px 1px 1px 24px;">';
-		$content .= $this->typeSelectHtml;
-		$content .= '</select>';
-		return '<tr id="form-line-' . $index . '"><td>' . $content . '</td></tr>';
+		$content = '' .
+			'<div class="form-section" id="form-line-' . $index . '">' .
+				'<div class="row">' .
+					'<div class="form-group col-sm-6">' .
+						'<label for="page_new_' . $index . '">' .
+							$this->getLanguageService()->getLL('wiz_newPages_page') . ' ' . $label . ':' .
+						'</label>' .
+						'<div class="form-control-wrap">' .
+							'<input class="form-control" type="text" id="page_new_' . $index . '" name="data[pages][NEW' . $index . '][title]" />' .
+						'</div>' .
+					'</div>' .
+					'<div class="form-group col-sm-6">' .
+						'<label>' .
+							$this->getLanguageService()->sL('LLL:EXT:lang/locallang_general.xlf:LGL.type') .
+						'</label>' .
+						'<div class="form-control-wrap">' .
+							'<div class="input-group">' .
+								'<div id="page_new_icon_' . $index . '" class="input-group-addon input-group-icon">' .
+									'<img src="' . IconUtility::skinImg($this->backPath, 'gfx/i/pages.gif', '', 1) . '" />' .
+								'</div>' .
+								'<select class="form-control form-control-adapt t3js-wizardcrpages-select-doktype" name="data[pages][NEW' . $index . '][doktype]" data-target="#page_new_icon_' . $index . '">' .
+									$this->typeSelectHtml .
+								'</select>' .
+							'</div>' .
+						'</div>' .
+					'</div>' .
+				'</div>' .
+			'</div>';
+		return $content;
 	}
 
 	/**
@@ -222,25 +267,14 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			foreach ($items as $item) {
 				$label = $this->getLanguageService()->sL($item[0], TRUE);
 				$value = $item[1];
-				$icon = ($item[2] ? $this->getStyleAttributeWithIcon($item[2]) : '');
-				$groupContent .= '<option ' . $icon . ' value="' . htmlspecialchars($value) . '">' . $label . '</option>';
+				$icon = (!empty($item[2]) ? '<img src="' . IconUtility::skinImg($this->backPath, 'gfx/' . $item[2], '', 1) . '" />' : '');
+				$groupContent .= '<option value="' . htmlspecialchars($value) . '" data-icon="' . htmlspecialchars($icon) . '">' . $label . '</option>';
 			}
 			$groupLabel = $this->getLanguageService()->sL($groupLabel, TRUE);
-			$content .= '<optgroup class="c-divider" label="' . $groupLabel . '">' . $groupContent . '</optgroup>';
+			$content .= '<optgroup label="' . $groupLabel . '">' . $groupContent . '</optgroup>';
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Returns the style attribute for a select element with the icon in it
-	 *
-	 * @param string $src
-	 * @return string
-	 */
-	protected function getStyleAttributeWithIcon($src) {
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/' . $src, '', 1);
-		return 'style="background: #fff url(&quot;' . $icon. '&quot;) 0% 50% no-repeat; height: 16px; padding-top: 2px; padding-left: 22px;"';
 	}
 
 	/**

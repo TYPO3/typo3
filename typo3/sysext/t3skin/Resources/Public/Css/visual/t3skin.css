@@ -9712,6 +9712,9 @@ a.typo3-goBack {
 .form-control-wrap {
   margin: 9px 0;
 }
+.row > .form-group > .form-control-wrap {
+  margin-bottom: 0;
+}
 select.form-control[multiple],
 select.form-control[size] {
   min-height: 156px;

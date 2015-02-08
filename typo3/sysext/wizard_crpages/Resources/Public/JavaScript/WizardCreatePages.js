@@ -17,9 +17,10 @@
 define('TYPO3/CMS/WizardCrpages/WizardCreatePages', ['jquery'], function($) {
 
 	var WizardCreatePages = {
-		lineCounter: 9,
-		containerSelector: '#formFieldContainerBody',
-		addMoreFieldsButtonSelector: '#createNewFormFields'
+		lineCounter: 5,
+		containerSelector: '.t3js-wizardcrpages-container',
+		addMoreFieldsButtonSelector: '.t3js-wizardcrpages-createnewfields',
+		doktypeSelector: '.t3js-wizardcrpages-select-doktype'
 	};
 
 	WizardCreatePages.createNewFormFields = function() {
@@ -33,7 +34,8 @@ define('TYPO3/CMS/WizardCrpages/WizardCreatePages', ['jquery'], function($) {
 
 	WizardCreatePages.actOnTypeSelectChange = function($selectElement) {
 		var $optionElement = $selectElement.find(':selected');
-		$selectElement.css('background-image', $optionElement.css('background-image'));
+		var $target = $($selectElement.data('target'));
+		$target.html($optionElement.data('icon'));
 	};
 
 	/**
@@ -44,7 +46,7 @@ define('TYPO3/CMS/WizardCrpages/WizardCreatePages', ['jquery'], function($) {
 			WizardCreatePages.createNewFormFields();
 		});
 
-		$(document).on('change', '.icon-select', function() {
+		$(document).on('change', this.doktypeSelector, function() {
 			WizardCreatePages.actOnTypeSelectChange($(this));
 		});
 	};
