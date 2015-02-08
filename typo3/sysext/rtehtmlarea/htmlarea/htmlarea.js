@@ -5135,6 +5135,18 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 					this.removeMarkup(fonts[i]);
 				}
 			}
+			var uls = node.getElementsByTagName('ul');
+			for (i = uls.length; --i >= 0;) {
+				if (uls[i].style.cssText.indexOf('line-height') !== -1) {
+					uls[i].style.lineHeight = '';
+				}
+			}
+			var ols = node.getElementsByTagName('ol');
+			for (i = ols.length; --i >= 0;) {
+				if (ols[i].style.cssText.indexOf('line-height') !== -1) {
+					ols[i].style.lineHeight = '';
+				}
+			}
 		}
 	}
 });
