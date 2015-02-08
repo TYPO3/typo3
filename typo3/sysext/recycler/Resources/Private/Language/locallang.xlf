@@ -40,7 +40,7 @@
 				<source>Recover records</source>
 			</trans-unit>
 			<trans-unit id="modal.undo.recursive">
-				<source>Recover recursively</source>
+				<source>Recover content and subpages recursively</source>
 			</trans-unit>
 			<trans-unit id="modal.deletecontent.text">
 				<source>Do you really want to delete the record "{0}" {1} permanently? You cannot revert this action!</source>
@@ -56,6 +56,9 @@
 			</trans-unit>
 			<trans-unit id="modal.undopage.text">
 				<source>Do you really want to recover the page "{0}" {1}, its contents and optionally all of its subpages?</source>
+			</trans-unit>
+			<trans-unit id="modal.undo.parentpages">
+				<source>All parent pages have been restored to ensure a valid rootline!</source>
 			</trans-unit>
 			<trans-unit id="modal.massundo.text">
 				<source>Do you really want to recover all selected records and optionally potential subpages?</source>

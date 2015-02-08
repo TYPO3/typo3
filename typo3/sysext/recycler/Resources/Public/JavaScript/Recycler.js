@@ -400,6 +400,10 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/jqu
 			recoverPages = table === 'pages';
 			messageText = recoverPages ? TYPO3.lang['modal.undopage.text'] : TYPO3.lang['modal.undocontent.text'];
 			messageText = Recycler.createMessage(messageText, [recordTitle, '[' + records + ']']);
+
+			if (recoverPages && $tr.data('parentDeleted')) {
+				messageText += TYPO3.lang['modal.undo.parentpages'];
+			}
 		}
 
 		var $message = null;

@@ -84,7 +84,7 @@ class RecyclerModuleController extends ActionController
         $backendUser = $this->getBackendUser();
         $this->perms_clause = $backendUser->getPagePermsClause(1);
         $this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
-        $this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->isCurrentUserAdmin();
+        $this->isAccessibleForCurrentUser = $this->id && is_array($this->pageRecord) || !$this->id && $this->getBackendUser()->isAdmin();
 
         // don't access in workspace
         if ($backendUser->workspace !== 0) {
@@ -93,7 +93,7 @@ class RecyclerModuleController extends ActionController
 
         // read configuration
         $modTS = $backendUser->getTSConfig('mod.recycler');
-        if ($this->isCurrentUserAdmin()) {
+        if ($this->getBackendUser()->isAdmin()) {
             $this->allowDelete = true;
         } else {
             $this->allowDelete = (bool)$modTS['properties']['allowDelete'];
@@ -170,17 +170,7 @@ class RecyclerModuleController extends ActionController
     }
 
     /**
-     * Determines whether the current user is admin.
-     *
-     * @return bool Whether the current user is admin
-     */
-    protected function isCurrentUserAdmin()
-    {
-        return (bool)$this->getBackendUser()->user['admin'];
-    }
-
-    /**
-     * Gets the JavaScript configuration for the Ext JS interface.
+     * Gets the JavaScript configuration.
      *
      * @return array The JavaScript configuration
      */

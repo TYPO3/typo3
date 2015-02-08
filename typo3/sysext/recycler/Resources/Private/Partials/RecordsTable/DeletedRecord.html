@@ -1,5 +1,5 @@
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
-<tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}">
+<tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}" data-parent-deleted="{record.isParentDeleted}">
 	<td nowrap="nowrap">{record.tableTitle}</td>
 	<td nowrap="nowrap"><f:format.raw>{record.icon}</f:format.raw> {record.title}</td>
 	<td nowrap="nowrap">{record.tstamp}</td>

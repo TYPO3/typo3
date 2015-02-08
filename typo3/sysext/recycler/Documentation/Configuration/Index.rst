@@ -25,15 +25,15 @@ recordsPageLimit
 
    Property
          recordsPageLimit
-   
+
    Data type
          integer
-   
+
    Description
          How many records displaying in grid per page. Default is 50.
-         
+
          Example:
-         
+
          mod.recycler.recordsPageLimit = 100
 
 
@@ -47,16 +47,14 @@ allowDelete
 
    Property
          allowDelete
-   
+
    Data type
          boolean
-   
+
    Description
          Editors are not allowed to delete any record by default. Setting this
          property allows editor deleting records.
-         
+
          Example:
-         
+
          mod.recycler.allowDelete = 1
-
-

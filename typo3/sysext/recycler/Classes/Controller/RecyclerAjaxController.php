@@ -43,13 +43,17 @@ class RecyclerAjaxController
         // Configuration, variable assignment
         $this->conf['action'] = GeneralUtility::_GP('action');
         $this->conf['table'] = GeneralUtility::_GP('table') ? GeneralUtility::_GP('table') : '';
-        $this->conf['limit'] = GeneralUtility::_GP('limit') ? (int)GeneralUtility::_GP('limit') : 25;
+        if (isset($modTS['properties']['recordsPageLimit']) && (int)$modTS['properties']['recordsPageLimit'] > 0) {
+            $this->conf['limit'] = (int)$modTS['properties']['recordsPageLimit'];
+        } else {
+            $this->conf['limit'] = 25;
+        }
         $this->conf['start'] = GeneralUtility::_GP('start') ? (int)GeneralUtility::_GP('start') : 0;
         $this->conf['filterTxt'] = GeneralUtility::_GP('filterTxt') ? GeneralUtility::_GP('filterTxt') : '';
         $this->conf['startUid'] = GeneralUtility::_GP('startUid') ? (int)GeneralUtility::_GP('startUid') : 0;
         $this->conf['depth'] = GeneralUtility::_GP('depth') ? (int)GeneralUtility::_GP('depth') : 0;
         $this->conf['records'] = GeneralUtility::_GP('records') ? GeneralUtility::_GP('records') : null;
-        $this->conf['recursive'] = GeneralUtility::_GP('recursive') ? (bool)(int)GeneralUtility::_GP('recursive') : false;
+        $this->conf['recursive'] = GeneralUtility::_GP('recursive') ? (bool)GeneralUtility::_GP('recursive') : false;
     }
 
     /**
@@ -94,7 +98,7 @@ class RecyclerAjaxController
                 $recordsArray = $controller->transform($deletedRowsArray, $totalDeleted);
 
                 $modTS = $this->getBackendUser()->getTSConfig('mod.recycler');
-                $allowDelete = (bool)$this->getBackendUser()->user['admin'] ? true : (bool)$modTS['properties']['allowDelete'];
+                $allowDelete = $this->getBackendUser()->isAdmin() ? true : (bool)$modTS['properties']['allowDelete'];
 
                 $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/Ajax/RecordsTable.html');
                 $view->assign('records', $recordsArray['rows']);
@@ -116,9 +120,8 @@ class RecyclerAjaxController
 
                 /* @var $model DeletedRecords */
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
-                $success = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
-                $affectedRecords = count($this->conf['records']);
-                $messageKey = 'flashmessage.undo.' . ($success ? 'success' : 'failure') . '.' . ($affectedRecords === 1 ? 'singular' : 'plural');
+                $affectedRecords = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
+                $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
                 $content = array(
                     'success' => true,
                     'message' => sprintf(LocalizationUtility::translate($messageKey, 'recycler'), $affectedRecords)

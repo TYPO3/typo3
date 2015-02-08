@@ -77,7 +77,8 @@ class DeletedRecordsController
                         'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
                         'tableTitle' => $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
                         'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
-                        'path' => RecyclerUtility::getRecordPath($row['pid'])
+                        'path' => RecyclerUtility::getRecordPath($row['pid']),
+                        'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false
                     );
                 }
             }
