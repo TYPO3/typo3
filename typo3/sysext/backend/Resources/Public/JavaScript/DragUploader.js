@@ -38,7 +38,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		me.$dropzoneMask = $('<div />').addClass('t3-dropzone-mask').appendTo(me.$dropzone);
 		me.$fileInput = $('<input type="file" multiple name="files[]" />').addClass('t3-upload-file-picker').appendTo(me.$body);
 		me.$fileList = $(me.$element.data('progress-container'));
-		me.fileListColumnCount = $('thead tr:first td', me.$fileList).length;
+		me.fileListColumnCount = $('thead tr:first th', me.$fileList).length;
 		me.filesExtensionsAllowed = me.$element.data('file-allowed');
 		me.fileDenyPattern = me.$element.data('file-deny-pattern') ? new RegExp(me.$element.data('file-deny-pattern'), 'i') : false;
 		me.maxFileSize = parseInt(me.$element.data('max-file-size'));
