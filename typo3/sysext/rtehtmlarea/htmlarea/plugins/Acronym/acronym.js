@@ -136,7 +136,10 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 				},
 				listeners: {
 					tabchange: {
-						fn: this.syncHeight,
+						fn: function (tabpanel, tab) {
+							this.setTabPanelHeight(tabpanel, tab);
+							this.syncHeight(tabpanel, tab);
+						},
 						scope: this
 					}
 				},
