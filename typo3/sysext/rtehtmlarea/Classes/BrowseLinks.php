@@ -251,11 +251,17 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			}
 		}
 		// Initializing the target value
-		// Unset the target if it is set to a value different than default and if no class is selected and the target field is not displayed
+		// Unset the target if it is set to a value different than default and the target field is not displayed
 		// In other words, do not forward the target if we changed tab and the target field is not displayed
-		$this->defaultLinkTarget = isset($this->buttonConfig['properties.']['target.']['default']) ? $this->buttonConfig['properties.']['target.']['default'] : '';
+		$this->defaultLinkTarget = $classSelected[$this->act] && $this->classesAnchorDefault[$this->act] && $this->classesAnchorDefaultTarget[$this->act]
+			? $this->classesAnchorDefaultTarget[$this->act]
+			: (isset($this->buttonConfig[$this->act . '.']['properties.']['target.']['default'])
+				? $this->buttonConfig[$this->act . '.']['properties.']['target.']['default']
+				: (isset($this->buttonConfig['properties.']['target.']['default'])
+					? $this->buttonConfig['properties.']['target.']['default']
+					: ''));
 		$this->setTarget = '';
-		if (isset($this->curUrlArray['target']) && !($this->curUrlArray['target'] != $this->defaultLinkTarget && !$classSelected[$this->act] && is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] && is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled'])) {
+		if (isset($this->curUrlArray['target']) && !($this->curUrlArray['target'] != $this->defaultLinkTarget && is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] && is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled'])) {
 			$this->setTarget = $this->curUrlArray['target'];
 		}
 		if ($this->defaultLinkTarget && !isset($this->curUrlArray['target'])) {
@@ -828,11 +834,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if (is_array($this->buttonConfig['popupSelector.'])) {
 			$popupSelectorConfig = $this->buttonConfig['popupSelector.'];
 		}
-		$target = $this->setTarget
-			? $this->setTarget
-			: ($this->setClass || !$this->classesAnchorDefault[$this->act]
-				? ''
-				: $this->classesAnchorDefaultTarget[$this->act]);
+		$target = $this->setTarget;
 		$ltarget = '
 				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
 					<td><label>' . $GLOBALS['LANG']->getLL('target', TRUE) . ':</label></td>

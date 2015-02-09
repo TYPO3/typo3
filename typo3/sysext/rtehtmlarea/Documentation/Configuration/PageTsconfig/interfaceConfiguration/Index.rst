@@ -1899,6 +1899,28 @@ buttons.link.properties.target.default
 
 
 
+.. _buttons-link-type-properties-target-default:
+
+buttons.link.[ *type* ].properties.target.default
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: table-row
+
+   Property
+         buttons.link.[ *type* ].properties.target.default
+   
+   Data type
+         string
+   
+   Description
+         Specifies a default target for links of the given type.
+         Possible types are: page, file, url, mail, spec. More types may be
+         provided by extensions.
+         
+         Note: See also the classesAnchor configuration.
+
+
+
 .. _buttons-abbreviation-pages:
 
 buttons.abbreviation.pages
@@ -1916,11 +1938,6 @@ buttons.abbreviation.pages
          List of page id's from which to obtain the abbreviation records.
          
          Note: If not set, the list of current webmounts is used.
-         
-         Note: If no abbreviation records are found in the specified page id's, the
-         abbreviation button will not be present in the toolbar. If no abbreviation
-         records of type acronym or abreviation are found, the corresponding tab of the
-         abbreviation dialogue will not be enabled.
          
          Note: In IE, before IE7, the abreviation tab of the abbreviation dialogue
          is never shown.
@@ -1972,6 +1989,27 @@ buttons.abbreviation.lockBeUserToDBmounts
          Default: The default value of this property is the value of the
          property with same name in the backend section of theTYPO3
          configuration as set by the Install Tool.
+
+
+
+.. _buttons-abbreviation-removefieldsets:
+
+buttons.abbreviation.removeFieldsets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. container:: table-row
+
+   Property
+         buttons.abbreviation.removeFieldsets
+
+   Data type
+         list of strings
+
+   Description
+         List of fieldsets to remove from the abbreviation dialogue.
+         
+         Possible string values are: acronym, definedAcronym, abbreviation,
+         definedAbbreviation
 
 
 
