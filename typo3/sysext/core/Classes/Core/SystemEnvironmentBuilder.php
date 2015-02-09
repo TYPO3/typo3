@@ -280,7 +280,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function getTypo3Os() {
 		$typoOs = '';
-		if (!stristr(PHP_OS, 'darwin') && stristr(PHP_OS, 'win')) {
+		if (!stristr(PHP_OS, 'darwin') && !stristr(PHP_OS, 'cygwin') && stristr(PHP_OS, 'win')) {
 			$typoOs = 'WIN';
 		}
 		return $typoOs;
