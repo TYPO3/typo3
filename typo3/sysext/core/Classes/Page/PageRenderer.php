@@ -226,8 +226,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var string
 	 */
-	protected $shortcutTag = '<link rel="shortcut icon" href="%1$s"%2$s />
-<link rel="icon" href="%1$s"%2$s />';
+	protected $shortcutTag = '<link rel="shortcut icon" href="%1$s"%2$s />';
 
 	// Static inline code blocks
 	/**
