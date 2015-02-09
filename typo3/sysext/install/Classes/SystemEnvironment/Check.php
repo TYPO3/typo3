@@ -59,7 +59,6 @@ class Check {
 		'json',
 		'mysqli',
 		'openssl',
-		'pcre',
 		'session',
 		'soap',
 		'SPL',
@@ -108,6 +107,7 @@ class Check {
 		foreach ($this->requiredPhpExtensions as $extension) {
 			$statusArray[] = $this->checkRequiredPhpExtension($extension);
 		}
+		$statusArray[] = $this->checkPcreVersion();
 		$statusArray[] = $this->checkGdLibTrueColorSupport();
 		$statusArray[] = $this->checkGdLibGifSupport();
 		$statusArray[] = $this->checkGdLibJpgSupport();
@@ -287,6 +287,40 @@ class Check {
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('PHP version is fine');
+		}
+		return $status;
+	}
+
+	/**
+	 * Check PRCE module is loaded and minimum version
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkPcreVersion() {
+		$minimumPcreVersion = '8.30';
+		if (!extension_loaded('pcre')) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP extension pcre not loaded');
+			$status->setMessage(
+				'TYPO3 CMS uses PHP extension pcre but it is not loaded' .
+				' in your environment. Change your environment to provide this extension' .
+				' in with minimum version ' . $minimumPcreVersion . '.'
+			);
+		} else {
+			$installedPcreVersionString = trim(PCRE_VERSION); // '8.31 2012-07-06'
+			$mainPcreVersionString = explode(' ', $installedPcreVersionString);
+			$mainPcreVersionString = $mainPcreVersionString[0]; // '8.31'
+			if (version_compare($mainPcreVersionString, $minimumPcreVersion) < 0) {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('PCRE version too low');
+				$status->setMessage(
+					'Your PCRE version ' . PCRE_VERSION . ' is too old. TYPO3 CMS may trigger PHP segmentantion' .
+					' faults with this version. Update to at least PCRE ' . $minimumPcreVersion
+				);
+			} else {
+				$status = new Status\OkStatus();
+				$status->setTitle('PHP extension PCRE is loaded and version is fine');
+			}
 		}
 		return $status;
 	}

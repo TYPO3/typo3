@@ -64,7 +64,7 @@ check if these are available.
   * filter
   * hash
   * openssl
-  * pcre
+  * pcre >= 8.30
   * session
   * soap
   * SPL
