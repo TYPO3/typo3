@@ -789,7 +789,7 @@ class FileList extends AbstractRecordList {
 			$sortArrow = '';
 		}
 		$href = GeneralUtility::resolveBackPath(($GLOBALS['BACK_PATH'] . $this->script)) . '&id=' . rawurlencode($folderIdentifier) . $params;
-		return '<a href="' . htmlspecialchars($href) . '">' . $code . $sortArrow . '</a>';
+		return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
 	}
 
 	/**
