@@ -22,6 +22,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
+use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -313,7 +315,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// If the user does not exist, try creating it
 		if ($checkUser == -1) {
 			// Prepare necessary data for _cli_scheduler user creation
-			$password = md5(uniqid('scheduler', TRUE));
+			$password = uniqid('scheduler', TRUE);
+			if (SaltedPasswordsUtility::isUsageEnabled()) {
+				$objInstanceSaltedPW = SaltFactory::getSaltingInstance();
+				$password = $objInstanceSaltedPW->getHashedPassword($password);
+			}
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
 			/** @var $tcemain \TYPO3\CMS\Core\DataHandling\DataHandler */
 			$tcemain = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
