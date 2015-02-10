@@ -38,6 +38,11 @@ class NewRecordController {
 	public $pidInfo;
 
 	/**
+	 * @var array
+	 */
+	protected $newRecordSortList;
+
+	/**
 	 * @var int
 	 */
 	public $newPagesInto;
@@ -336,13 +341,6 @@ class NewRecordController {
 		$doNotShowFullDescr = FALSE;
 		// Initialize array for accumulating table rows:
 		$this->tRows = array();
-		// tree images
-		$halfLine = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />';
-		$firstLevel = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
-		$secondLevel = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' .
-						'<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
-		$secondLevelLast = '<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' .
-						'<img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/joinbottom.gif', 'width="18" height="16"') . ' alt="" />';
 		// Get TSconfig for current page
 		$pageTS = BackendUtility::getPagesTSconfig($this->id);
 		// Finish initializing new pages options with TSconfig
@@ -353,7 +351,7 @@ class NewRecordController {
 		$displayNewPagesIntoLink = $this->newPagesInto && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0;
 		$displayNewPagesAfterLink = $this->newPagesAfter && !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0;
 		// Slight spacer from header:
-		$this->code .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
+		$this->code .= '';
 		// New Page
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
@@ -378,29 +376,17 @@ class NewRecordController {
 		// Assemble all new page links
 		$numPageLinks = count($newPageLinks);
 		for ($i = 0; $i < $numPageLinks; $i++) {
-			// For the last link, use the "branch bottom" icon
-			if ($i == $numPageLinks - 1) {
-				$treeComponent = $secondLevelLast;
-			} else {
-				$treeComponent = $secondLevel;
-			}
-			$rowContent .= '<div class="typo3-newRecord-treeline">' . $treeComponent . $newPageLinks[$i] . '</div>';
+			$rowContent .= '<li>' . $newPageLinks[$i] . '</li>';
 		}
 		// Add row header and half-line if not empty
 		if (!empty($rowContent)) {
-			$rowContent .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
-			$rowContent = '<div class="typo3-newRecord-treeline">' . $firstLevel . $newPageIcon . '&nbsp;<strong>' .
-				$GLOBALS['LANG']->getLL('createNewPage') . '</strong></div>' . $rowContent;
+			$rowContent = '<ul class="list-tree"><li>' .$newPageIcon . '<strong>' .
+				$GLOBALS['LANG']->getLL('createNewPage') . '</strong><ul>' . $rowContent . '</ul></li>';
 		}
 		// Compile table row to show the icon for "new page (select position)"
 		$startRows = array();
 		if ($this->showNewRecLink('pages') && !empty($rowContent)) {
-			$startRows[] = '
-				<tr>
-					<td nowrap="nowrap">' . $rowContent . '</td>
-					<td>' . BackendUtility::wrapInHelp($table, '') . '</td>
-				</tr>
-			';
+			$startRows[] = $rowContent;
 		}
 		// New tables (but not pages) INSIDE this pages
 		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
@@ -409,7 +395,6 @@ class NewRecordController {
 			if (is_array($GLOBALS['TCA'])) {
 				$groupName = '';
 				foreach ($GLOBALS['TCA'] as $table => $v) {
-					$count = count($GLOBALS['TCA'][$table]);
 					$counter = 1;
 					if ($table != 'pages'
 						&& $this->showNewRecLink($table)
@@ -425,14 +410,12 @@ class NewRecordController {
 						// If the table is 'tt_content' (from "cms" extension), create link to wizard
 						if ($table == 'tt_content') {
 							$groupName = $GLOBALS['LANG']->getLL('createNewContent');
-							$rowContent = '<div class="typo3-newRecord-treeline">' . $firstLevel . $newContentIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong></div>';
+							$rowContent = $newContentIcon . '<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong><ul>';
 							// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = ExtensionManagementUtility::isLoaded($overrideExt) ? ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
 							$href = $pathToWizard . 'id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-							$rowContent .= '<div class="typo3-newRecord-treeline">' . $secondLevel . $newLink . '</div><div class="typo3-newRecord-treeline">' . $secondLevelLast . '<a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a></div>';
-							// Half-line added:
-							$rowContent .= '<div class="typo3-newRecord-treeline">' . $halfLine . '</div>';
+							$rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a></li></ul>';
 						} else {
 							// Get the title
 							if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
@@ -478,15 +461,10 @@ class NewRecordController {
 								$groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];
 							}
 							$rowContent .= $newLink;
-							$counter++;
 						}
 						// Compile table row:
 						if ($table == 'tt_content') {
-							$startRows[] = '
-								<tr>
-									<td nowrap="nowrap">' . $rowContent . '</td>
-									<td>' . BackendUtility::wrapInHelp($table, '') . '</td>
-								</tr>';
+							$startRows[] = '<li>' . $rowContent . '</li>';
 						} else {
 							$this->tRows[$groupName]['title'] = $thisTitle;
 							$this->tRows[$groupName]['html'][] = $rowContent;
@@ -505,33 +483,15 @@ class NewRecordController {
 		$finalRows = array();
 		$finalRows[] = implode('', $startRows);
 		foreach ($this->tRows as $key => $value) {
-			$row = '<tr>
-						<td nowrap="nowrap"><div class="typo3-newRecord-treeline">' . $halfLine . '</div><div class="typo3-newRecord-treeline">' . $firstLevel .
-				$iconFile[$key] . '&nbsp;<strong>' . $value['title'] . '</strong></div></td><td>&nbsp;<br />' . BackendUtility::wrapInHelp($key, '') . '</td>
-						</tr>';
-			$count = count($value['html']) - 1;
+			$row = '<li>' . $iconFile[$key] . ' <strong>' . $value['title'] . '</strong><ul>';
 			foreach ($value['html'] as $recordKey => $record) {
-				$row .= '
-					<tr>
-						<td nowrap="nowrap"><div class="typo3-newRecord-treeline">' . ($recordKey < $count ? $secondLevel : $secondLevelLast) . $record . '</div></td>
-						<td>' . BackendUtility::wrapInHelp($value['table'][$recordKey], '') . '</td>
-					</tr>';
+				$row .= '<li>' . $record . ' ' . BackendUtility::wrapInHelp($value['table'][$recordKey], '') . '</li>';
 			}
+			$row .= '</ul></li>';
 			$finalRows[] = $row;
 		}
-		// end of tree
-		$finalRows[] = '
-			<tr>
-				<td><img' . IconUtility::skinImg($this->doc->backPath, 'gfx/ol/stopper.gif', 'width="18" height="16"') . ' alt="" /></td>
-				<td></td>
-			</tr>
-		';
 		// Make table:
-		$this->code .= '
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-newRecord">
-			' . implode('', $finalRows) . '
-			</table>
-		';
+		$this->code .= implode('', $finalRows);
 	}
 
 	/**
@@ -621,6 +581,8 @@ class NewRecordController {
 		if (strstr($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $checkTable)) {
 			return TRUE;
 		}
+
+		return FALSE;
 	}
 
 	/**

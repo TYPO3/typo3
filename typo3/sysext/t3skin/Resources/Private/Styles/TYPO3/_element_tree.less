@@ -5,6 +5,61 @@
 @navigation-text: #000;
 @navigation-bg: rgb(245, 245, 245);
 @navigation-border: rgb(195, 195, 195);
+@indentation: 0.5em;
+
+.list-tree,
+.list-tree ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.list-tree {
+	> li {
+		margin-top: @indentation * 2;
+	}
+
+	ul {
+		margin-left: @indentation;
+		position: relative;
+
+		&:before {
+			content: "";
+			display: block;
+			width: 0;
+			position: absolute;
+			top: 0;
+			bottom: 1em;
+			left: 0;
+			margin-bottom: -2px;
+			border-left: 1px dotted @navigation-border;
+		}
+
+		ul {
+			margin-left: @indentation / 2;
+		}
+
+		li {
+			&:before {
+				content: "";
+				display: block;
+				width: 0.75em;
+				height: 0;
+				border-top: 1px dotted;
+				margin-top: -2px;
+				position: absolute;
+				top: 1em;
+				left: 2px;
+			}
+
+			margin: 0;
+			padding-left: @indentation * 2.5;
+			line-height: 1.75em;
+			color: @navigation-border;
+			position: relative;
+		}
+	}
+}
 
 table#typo3-tree {
 	margin: 10px 0 20px 10px;

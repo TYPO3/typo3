@@ -9036,6 +9036,51 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .t3-form-field-label.t3-form-field-state-changed {
   color: #004fb0;
 }
+.list-tree,
+.list-tree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list-tree > li {
+  margin-top: 1em;
+}
+.list-tree ul {
+  margin-left: 0.5em;
+  position: relative;
+}
+.list-tree ul:before {
+  content: "";
+  display: block;
+  width: 0;
+  position: absolute;
+  top: 0;
+  bottom: 1em;
+  left: 0;
+  margin-bottom: -2px;
+  border-left: 1px dotted #c3c3c3;
+}
+.list-tree ul ul {
+  margin-left: 0.25em;
+}
+.list-tree ul li {
+  margin: 0;
+  padding-left: 1.25em;
+  line-height: 1.75em;
+  color: #c3c3c3;
+  position: relative;
+}
+.list-tree ul li:before {
+  content: "";
+  display: block;
+  width: 0.75em;
+  height: 0;
+  border-top: 1px dotted;
+  margin-top: -2px;
+  position: absolute;
+  top: 1em;
+  left: 2px;
+}
 table#typo3-tree {
   margin: 10px 0 20px 10px;
   width: 95%;
