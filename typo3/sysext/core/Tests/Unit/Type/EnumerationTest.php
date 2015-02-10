@@ -211,17 +211,22 @@ class EnumerationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getConstantsReturnsArrayOfPossibleValuesWithoutDefault() {
-		$enumeration = new Enumeration\CompleteEnumeration();
-
-		$this->assertEquals(array('INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo'), $enumeration->getConstants());
+		$this->assertEquals(array('INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo'), Enumeration\CompleteEnumeration::getConstants());
 	}
 
 	/**
 	 * @test
 	 */
 	public function getConstantsReturnsArrayOfPossibleValuesWithDefaultIfRequested() {
+		$this->assertEquals(array('INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo', '__default' => 1), Enumeration\CompleteEnumeration::getConstants(TRUE));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getConstantsCanBeCalledOnInstances() {
 		$enumeration = new Enumeration\CompleteEnumeration();
-		$this->assertEquals(array('INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo', '__default' => 1), $enumeration->getConstants(TRUE));
+		$this->assertEquals(array('INTEGER_VALUE' => 1, 'STRING_VALUE' => 'foo'), $enumeration->getConstants());
 	}
 
 	/**

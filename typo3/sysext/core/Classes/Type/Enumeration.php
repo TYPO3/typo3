@@ -49,7 +49,7 @@ abstract class Enumeration implements TypeInterface {
 		if ($value === NULL) {
 			$value = static::__default;
 		}
-		$this->loadValues();
+		static::loadValues();
 		if (!$this->isValid($value)) {
 			throw new Exception\InvalidEnumerationValueException(
 				sprintf('Invalid value %s for %s', $value, get_class($this)),
@@ -64,8 +64,8 @@ abstract class Enumeration implements TypeInterface {
 	 * @throws Exception\InvalidEnumerationDefinitionException
 	 * @internal param string $class
 	 */
-	protected function loadValues() {
-		$class = get_class($this);
+	static protected function loadValues() {
+		$class = get_called_class();
 
 		if (isset(static::$enumConstants[$class])) {
 			return;
@@ -160,6 +160,7 @@ abstract class Enumeration implements TypeInterface {
 	 * @return array
 	 */
 	static public function getConstants($include_default = FALSE) {
+		static::loadValues();
 		$enumConstants = static::$enumConstants[get_called_class()];
 		if (!$include_default) {
 			unset($enumConstants['__default']);
