@@ -527,6 +527,9 @@ class ElementInformationController {
 		foreach ($rows as $row) {
 			if ($row['tablename'] === 'sys_file_reference') {
 				$row = $this->transformFileReferenceToRecordReference($row);
+				if ($row['tablename'] === NULL || $row['recuid'] === NULL) {
+					return '';
+				}
 			}
 			$record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
