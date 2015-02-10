@@ -7657,7 +7657,7 @@ Output will be "Ich bin..." instead of "I am..."]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="listNum" type="string">
+		<property name="listNum" type="listNum">
 			<description><![CDATA[Explodes the content with "," (comma) and the content is set to the item[value].
 
 Special keyword: "last" is set to the last element of the array!
@@ -7816,7 +7816,7 @@ Supplied by Jens Ellerbrock]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="preIfEmptyListNum" type="string">
+		<property name="preIfEmptyListNum" type="listNum">
 			<description><![CDATA[(as "listNum" below)]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -8403,6 +8403,18 @@ The userfunction must return an <A>-tag.]]></description>
 			<description><![CDATA[Wraps the links.]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+	</type>
+	<type id="listNum">
+		<property name="splitChar" type="string">
+			<description><![CDATA[Defines the string used to explode the value. If splitChar is an integer, the character with that number is used (e.g. "10" to split lines...).
+
+				Default: "," (comma)]]></description>
+			<default><![CDATA[,]]></default>
+		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[stdwrap properties of the listNum...
+]]></description>
 		</property>
 	</type>
 </tsRef>
