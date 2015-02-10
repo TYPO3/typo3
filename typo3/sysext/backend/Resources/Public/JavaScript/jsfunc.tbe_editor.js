@@ -335,12 +335,7 @@ var TBE_EDITOR = {
 		var $paletteField = $formField.closest('.t3js-formengine-palette-field');
 		$paletteField.addClass('has-change');
 
-		// Set hidden field to value
-		if (document[TBE_EDITOR.formname][theField] && document[TBE_EDITOR.formname][theField].type=="select-one" && document[TBE_EDITOR.formname][theField+"_selIconVal"]) {
-			document[TBE_EDITOR.formname][theField+"_selIconVal"].value = document[TBE_EDITOR.formname][theField].value;
-		}
-
-			// Set required flag:
+		// Set required flag:
 		var imgReqObjName = "req_"+table+"_"+uid+"_"+field;
 		if (TBE_EDITOR.getElement(theRecord,field,'required') && document[TBE_EDITOR.formname][theField]) {
 			if (TBE_EDITOR.checkElements('required', false, theRecord, field)) {

@@ -435,6 +435,7 @@ class SelectElement extends AbstractFormElement {
 		$selectItemGroupCount = 0;
 		$selectItemGroups = array();
 		$selectIcons = array();
+		$selectedValue = '';
 		foreach ($selectItems as $item) {
 			if ($item[1] === '--div--') {
 				// IS OPTGROUP
@@ -448,7 +449,6 @@ class SelectElement extends AbstractFormElement {
 			} else {
 				// IS ITEM
 				$title = htmlspecialchars($item['0'], ENT_COMPAT, 'UTF-8', FALSE);
-				$value = htmlspecialchars($item[1]);
 				$icon = (!empty($item[2]) ? $this->formEngine->getIconHtml($item[2], $title, $title) : '');
 				$selected = ((string)$PA['itemFormElValue'] === (string)$item[1] ? 1 : 0);
 				if ($selected) {
@@ -459,7 +459,7 @@ class SelectElement extends AbstractFormElement {
 				}
 				$selectItemGroups[$selectItemGroupCount]['items'][] = array(
 					'title' => $title,
-					'value' => $value,
+					'value' => $item[1],
 					'icon' => $icon,
 					'selected' => $selected,
 					'index' => $selectItemCounter
@@ -538,7 +538,6 @@ class SelectElement extends AbstractFormElement {
 					. '>
 					' . $options . '
 				</select>
-				' . (!$disabled ? '<input type="hidden" name="' . $PA['itemFormElName'] . '_selIconVal" value="' . $selectedValue . '" />' : '') . '
 				' . $append . '
 			</div>';
 
