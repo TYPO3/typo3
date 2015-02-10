@@ -3452,11 +3452,6 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="wrapItemAndSub" type="stdWrap">Wrap/stdWrap
-			<description><![CDATA[Wraps the whole item and any submenu concatenated to it.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 	</type>
 	<type id="GMENU_itemState" extends="GIFBUILDER">
 		<property name="ATagParams" type="string">
