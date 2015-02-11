@@ -364,5 +364,22 @@ resultlist\_stdWrap
          Parse the result list through the stdWrap function
 
 
+.. _linkSectionTitles-stdWrap:
+
+linkSectionTitles
+"""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linkSectionTitles
+
+   Data type
+         boolean
+
+   Description
+         Toggles whether section titles are linked or not
+
+
 [tsref:plugin.tx\_indexedsearch]
 
