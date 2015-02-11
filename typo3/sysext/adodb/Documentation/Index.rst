@@ -23,6 +23,7 @@ updated to upstream.
 - ADOdb: mssqlnative driver is not properly initialized (66830_)
 - ADOdb: mssqlnative driver does not properly define the port (63070_)
 - ADOdb: Allow setting NOT NULL/DEFAULT on blob and text columns (67442_) (Upstream pull request: [3]_)
+- ADOdb: Table names in sequences broken (64990_)
 
 .. [2] https://github.com/ADOdb/ADOdb/commit/85f05a98974ea85ecae943faf230a27afdbaa746
 .. [3] https://github.com/ADOdb/ADOdb/pull/118
@@ -34,6 +35,7 @@ updated to upstream.
 .. _66830: https://forge.typo3.org/issues/66830
 .. _63070: https://forge.typo3.org/issues/63070
 .. _67442: https://forge.typo3.org/issues/67442
+.. _64990: https://forge.typo3.org/issues/64990
 
 
 Diff

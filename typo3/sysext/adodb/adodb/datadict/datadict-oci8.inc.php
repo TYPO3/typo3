@@ -196,23 +196,27 @@ end;
 	{
 		if (!$this->seqField) return array();
 
+		$sequenceTriggerTableName = trim($tabname, $this->connection->nameQuote);
 		if ($this->schema) {
-			$t = strpos($tabname,'.');
-			if ($t !== false) $tab = substr($tabname,$t+1);
-			else $tab = $tabname;
-			$seqname = $this->schema.'.'.$this->seqPrefix.$tab;
-			$trigname = $this->schema.'.'.$this->trigPrefix.$this->seqPrefix.$tab;
+			$t = strpos($tabname, '.');
+			if ($t !== FALSE) {
+				$tab = substr($sequenceTriggerTableName, $t + 1);
+			} else {
+				$tab = $sequenceTriggerTableName;
+			}
+			$seqname = $this->schema . '.' . $this->seqPrefix . $tab;
+			$trigname = $this->schema . '.' . $this->trigPrefix . $tab;
 		} else {
-			$seqname = $this->seqPrefix.$tabname;
-			$trigname = $this->trigPrefix.$seqname;
+			$seqname = $this->seqPrefix . $sequenceTriggerTableName;
+			$trigname = $this->trigPrefix . $sequenceTriggerTableName;
 		}
 
 		if (strlen($seqname) > 30) {
-			$seqname = $this->seqPrefix.uniqid('');
-		} // end if
+			$seqname = $this->seqPrefix . uniqid('');
+		}
 		if (strlen($trigname) > 30) {
-			$trigname = $this->trigPrefix.uniqid('');
-		} // end if
+			$trigname = $this->trigPrefix . uniqid('');
+		}
 
 		if (isset($tableoptions['REPLACE'])) $sql[] = "DROP SEQUENCE $seqname";
 		$seqCache = '';
