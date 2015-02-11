@@ -150,7 +150,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	public function main() {
 		// Access check!
 		// The page will show only if user has admin rights
-		if ($this->getBackendUserAuthentication()->isAdmin()) {
+		if ($this->getBackendUser()->isAdmin()) {
 			// Set the form
 			$this->doc->form = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
 			$this->pageRenderer->addInlineSetting('scheduler', 'runningIcon', ExtensionManagementUtility::extRelPath('scheduler') . 'Resources/Public/Images/status_running.png');
@@ -469,7 +469,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$this->addMessage($this->getLanguageService()->getLL('msg.maynotDeleteRunningTask'), FlashMessage::ERROR);
 			} else {
 				if ($this->scheduler->removeTask($task)) {
-					$this->getBackendUserAuthentication()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
+					$this->getBackendUser()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was deleted', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 					$this->addMessage($this->getLanguageService()->getLL('msg.deleteSuccess'));
 				} else {
 					$this->addMessage($this->getLanguageService()->getLL('msg.deleteError'), FlashMessage::ERROR);
@@ -1156,7 +1156,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// Save to database
 			$result = $this->scheduler->saveTask($task);
 			if ($result) {
-				$this->getBackendUserAuthentication()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
+				$this->getBackendUser()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was updated', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($this->getLanguageService()->getLL('msg.updateSuccess'));
 			} else {
 				$this->addMessage($this->getLanguageService()->getLL('msg.updateError'), FlashMessage::ERROR);
@@ -1190,7 +1190,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// Add to database
 			$result = $this->scheduler->addTask($task);
 			if ($result) {
-				$this->getBackendUserAuthentication()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
+				$this->getBackendUser()->writeLog(4, 0, 0, 0, 'Scheduler task "%s" (UID: %s, Class: "%s") was added', array($task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()));
 				$this->addMessage($this->getLanguageService()->getLL('msg.addSuccess'));
 
 				// set the uid of the just created task so that we
@@ -1480,7 +1480,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 */
 	protected function getShortcutButton() {
 		$result = '';
-		if ($this->getBackendUserAuthentication()->mayMakeShortcut()) {
+		if ($this->getBackendUser()->mayMakeShortcut()) {
 			$result = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
 		}
 		return $result;
@@ -1491,7 +1491,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 *
 	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
 	 */
-	protected function getBackendUserAuthentication() {
+	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
 
