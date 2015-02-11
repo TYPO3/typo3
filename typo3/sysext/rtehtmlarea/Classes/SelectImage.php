@@ -877,6 +877,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		foreach ($this->hookObjects as $hookObject) {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
 		}
+		// Remove tab "image" if there is no current image
+		if ($this->act !== 'image' && !$this->addModifyTab) {
+			$allowedItems = array_diff($allowedItems, array('image'));
+		}
 		// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], TRUE));
