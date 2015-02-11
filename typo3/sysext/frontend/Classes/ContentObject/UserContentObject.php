@@ -30,7 +30,7 @@ class UserContentObject extends AbstractContentObject {
 	 */
 	public function render($conf = array()) {
 		if (!is_array($conf) || empty($conf)) {
-			$GLOBALS['TT']->setTSlogMessage('USER_INT without configuration.', 2);
+			$GLOBALS['TT']->setTSlogMessage('USER without configuration.', 2);
 			return '';
 		}
 		$content = '';
