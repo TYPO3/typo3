@@ -157,7 +157,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		// Note: parseCurUrl will invoke the hooks
 		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
-		if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlInfo['act'] != 'mail') {
+		if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlArray['data-htmlarea-external'] === '1' && $this->curUrlInfo['act'] != 'mail') {
 			$this->curUrlInfo['act'] = 'url';
 			$this->curUrlInfo['info'] = $this->curUrlArray['href'];
 		}
@@ -193,12 +193,11 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return void
 	 */
 	protected function initLinkAttributes() {
-		// Initializing the title value
-		$this->setTitle = $this->curUrlArray['title'];
+		// Initializing the class value
+		$this->setClass = isset($this->curUrlArray['class']) ? $this->curUrlArray['class'] : '';
 		// Processing the classes configuration
 		$classSelected = array();
 		if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
-			$this->setClass = $this->curUrlArray['class'];
 			$classesAnchorArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
 			// Collecting allowed classes and configured default values
 			$classesAnchor = array();
@@ -216,7 +215,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 								if ($conf['titleText']) {
 									$this->classesAnchorDefaultTitle[$conf['type']] = $this->getLLContent(trim($conf['titleText']));
 								}
-								if ($conf['target']) {
+								if (isset($conf['target'])) {
 									$this->classesAnchorDefaultTarget[$conf['type']] = trim($conf['target']);
 								}
 							}
@@ -229,10 +228,11 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			}
 			// Constructing the class selector options
 			foreach ($this->anchorTypes as $anchorType) {
+				$currentClass = $this->curUrlInfo['act'] === $anchorType ? $this->curUrlArray['class'] : '';
 				foreach ($classesAnchorArray as $class) {
 					if (!in_array($class, $classesAnchor['all']) || in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$anchorType]) && in_array($class, $classesAnchor[$anchorType])) {
 						$selected = '';
-						if ($this->setClass == $class || !$this->setClass && $this->classesAnchorDefault[$anchorType] == $class) {
+						if ($currentClass == $class || !$currentClass && $this->classesAnchorDefault[$anchorType] == $class) {
 							$selected = 'selected="selected"';
 							$classSelected[$anchorType] = TRUE;
 						}
@@ -250,23 +250,18 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 			}
 		}
+		// Initializing the title value
+		$this->setTitle = isset($this->curUrlArray['title']) ? $this->curUrlArray['title'] : '';
 		// Initializing the target value
-		// Unset the target if it is set to a value different than default and the target field is not displayed
-		// In other words, do not forward the target if we changed tab and the target field is not displayed
-		$this->defaultLinkTarget = $classSelected[$this->act] && $this->classesAnchorDefault[$this->act] && $this->classesAnchorDefaultTarget[$this->act]
+		$this->setTarget = isset($this->curUrlArray['target']) ? $this->curUrlArray['target'] : '';
+		// Default target
+		$this->defaultLinkTarget = $this->classesAnchorDefault[$this->act] && $this->classesAnchorDefaultTarget[$this->act]
 			? $this->classesAnchorDefaultTarget[$this->act]
 			: (isset($this->buttonConfig[$this->act . '.']['properties.']['target.']['default'])
 				? $this->buttonConfig[$this->act . '.']['properties.']['target.']['default']
 				: (isset($this->buttonConfig['properties.']['target.']['default'])
 					? $this->buttonConfig['properties.']['target.']['default']
 					: ''));
-		$this->setTarget = '';
-		if (isset($this->curUrlArray['target']) && !($this->curUrlArray['target'] != $this->defaultLinkTarget && is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] && is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled'])) {
-			$this->setTarget = $this->curUrlArray['target'];
-		}
-		if ($this->defaultLinkTarget && !isset($this->curUrlArray['target'])) {
-			$this->setTarget = $this->defaultLinkTarget;
-		}
 		// Initializing additional attributes
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
 			$addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], TRUE);
@@ -781,6 +776,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return string
 	 */
 	public function addRelField() {
+		// Unset rel attribute if we changed tab
+		$currentRel = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['rel']) ? $this->curUrlArray['rel'] : '';
 		if (($this->act == 'page' || $this->act == 'url' || $this->act == 'file')
 			&& isset($this->buttonConfig['relAttribute.']['enabled']) && $this->buttonConfig['relAttribute.']['enabled']
 		) {
@@ -788,7 +785,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						<tr>
 							<td><label>' . $GLOBALS['LANG']->getLL('linkRelationship', TRUE) . ':</label></td>
 							<td colspan="3">
-								<input type="text" name="lrel" value="' . $this->additionalAttributes['rel'] . '"  '
+								<input type="text" name="lrel" value="' . $currentRel . '"  '
 				. $this->doc->formWidth(30) . ' />
 							</td>
 						</tr>';
@@ -834,7 +831,9 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if (is_array($this->buttonConfig['popupSelector.'])) {
 			$popupSelectorConfig = $this->buttonConfig['popupSelector.'];
 		}
-		$target = $this->setTarget;
+		// Reset the target to default if we changed tab
+		$currentTarget = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['target']) ? $this->curUrlArray['target'] : '';
+		$target = $currentTarget ?: $this->defaultLinkTarget;
 		$ltarget = '
 				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
 					<td><label>' . $GLOBALS['LANG']->getLL('target', TRUE) . ':</label></td>
@@ -927,7 +926,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 										document.getElementById(\'rtehtmlarea-browse-links-title-readonly\').innerHTML = anchorClass[\'titleText\'];
 										browse_links_setTitle(anchorClass[\'titleText\']);
 									}
-									if (anchorClass[\'target\']) {
+									if (typeof anchorClass[\'target\'] !== \'undefined\') {
 										if (document.ltargetform.ltarget) {
 											document.ltargetform.ltarget.value = anchorClass[\'target\'];
 										}
@@ -952,11 +951,21 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return string
 	 */
 	public function addTitleSelector() {
-		$title = $this->setTitle ?: ($this->setClass || !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
-		$readOnly = $this->buttonConfig['properties.']['title.']['readOnly'] || $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly'];
+		// Reset the title to default if we changed tab
+		$currentTitle = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['title']) ? $this->curUrlArray['title'] : '';
+		$title = $currentTitle ?: (!$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
+		$readOnly = isset($this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly'])
+			? $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly']
+			: (isset($this->buttonConfig['properties.']['title.']['readOnly'])
+				? $this->buttonConfig['properties.']['title.']['readOnly']
+				: false);
 		if ($readOnly) {
-			$title = $this->setClass
-				? $this->classesAnchorClassTitle[$this->setClass]
+			$currentClass = $this->curUrlInfo['act'] === $this->act ? $this->curUrlArray['class'] : '';
+			if (!$currentClass) {
+				$currentClass = !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefault[$this->act];
+			}
+			$title = $currentClass
+				? $this->classesAnchorClassTitle[$currentClass]
 				: $this->classesAnchorDefaultTitle[$this->act];
 		}
 		return '
