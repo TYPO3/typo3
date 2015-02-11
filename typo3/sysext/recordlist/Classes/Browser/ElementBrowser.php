@@ -2333,9 +2333,7 @@ class ElementBrowser {
 	 */
 	public function printCurrentUrl($str) {
 		// Output the folder or file identifier, when working with files
-		if (isset($str) && MathUtility::canBeInterpretedAsInteger($str)
-			&& ($this->act === 'file' || $this->act === 'folder')
-		) {
+		if (isset($str) && MathUtility::canBeInterpretedAsInteger($str)) {
 			try {
 				$fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($str);
 			} catch (Exception\FileDoesNotExistException $e) {
