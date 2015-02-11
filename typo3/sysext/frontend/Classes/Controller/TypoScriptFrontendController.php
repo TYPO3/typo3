@@ -827,6 +827,13 @@ class TypoScriptFrontendController {
 	public $xhtmlDoctype = '';
 
 	/**
+	 * Originally requested id from the initial $_GET variable
+	 *
+	 * @var int
+	 */
+	protected $requestedId;
+
+	/**
 	 * Class constructor
 	 * Takes a number of GET/POST input variable as arguments and stores them internally.
 	 * The processing of these variables goes on later in this class.
@@ -1400,7 +1407,7 @@ class TypoScriptFrontendController {
 		$GLOBALS['TT']->pull();
 		$GLOBALS['TT']->push('fetch_the_id rootLine/', '');
 		// We store the originally requested id
-		$requestedId = $this->id;
+		$this->requestedId = $this->id;
 		$this->getPageAndRootlineWithDomain($this->domainStartPage);
 		$GLOBALS['TT']->pull();
 		if ($this->pageNotFound && $this->TYPO3_CONF_VARS['FE']['pageNotFound_handling']) {
@@ -4631,4 +4638,13 @@ class TypoScriptFrontendController {
 		return $domainData ? $domainData['domainName'] : NULL;
 	}
 
+	/**
+	 * Fetches the originally requested id, fallsback to $this->id
+	 *
+	 * @return integer the originally requested page uid
+	 * @see fetch_the_id()
+	 */
+	public function getRequestedId() {
+		return $this->requestedId ?: $this->id;
+	}
 }
