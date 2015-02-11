@@ -212,6 +212,7 @@ class ElementInformationController {
 			$this->content .= $this->renderPreview();
 			$this->content .= $this->renderPropertiesAsTable();
 			$this->content .= $this->renderReferences();
+			$this->content .= $this->renderBackButton();
 		}
 	}
 
@@ -433,6 +434,24 @@ class ElementInformationController {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Render a back button, if a returnUrl was provided
+	 *
+	 * @return string
+	 */
+	protected function renderBackButton() {
+		$backLink = '';
+		$returnUrl = GeneralUtility::_GET('returnUrl');
+		if ($returnUrl) {
+			$backLink .= '
+				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '>
+					' . IconUtility::getSpriteIcon('actions-view-go-back') . '
+					' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:back', TRUE) . '
+				</a>';
+		}
+		return $backLink;
 	}
 
 	/**
