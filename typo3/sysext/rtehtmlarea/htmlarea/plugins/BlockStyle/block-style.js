@@ -276,10 +276,12 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
-				// Remove already assigned classes from the dropDown box
+			// Remove already assigned classes from the dropDown box
 			var classNamesString = ',' + classNames.join(',') + ',';
+			var selectedValue = dropDown.getValue(), optionValue;
 			store.each(function (option) {
-				if (classNamesString.indexOf(',' + option.get('value') + ',') != -1) {
+				optionValue = option.get('value');
+				if (classNamesString.indexOf(',' + optionValue + ',') !== -1 && optionValue !== selectedValue) {
 					store.removeAt(store.indexOf(option));
 				}
 				return true;
