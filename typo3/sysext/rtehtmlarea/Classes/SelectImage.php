@@ -101,6 +101,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if (!$this->act) {
 			$this->act = FALSE;
 		}
+		$this->addModifyTab = GeneralUtility::_GP('addModifyTab');
 		// Process bparams
 		$pArr = explode('|', $this->bparams);
 		$pRteArr = explode(':', $pArr[1]);
@@ -322,8 +323,9 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
 				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
+				var addModifyTab = plugin.image ? "&addModifyTab=1" : "";
 
-				var theLocation = URL+add_act+add_editorNo+add_sys_language_content+RTEtsConfigParams+cur_width+cur_height+(typeof(anchor)=="string"?anchor:"");
+				var theLocation = URL+add_act+add_editorNo+add_sys_language_content+RTEtsConfigParams+addModifyTab+cur_width+cur_height+(typeof(anchor)=="string"?anchor:"");
 				window.location.href = theLocation;
 				return false;
 			}
@@ -788,7 +790,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function buildMenuArray($wiz, $allowedItems) {
 		$menuDef = array();
-		if (in_array('image', $this->allowedItems) && ($this->act === 'image' || GeneralUtility::_GP('cWidth'))) {
+		if (in_array('image', $this->allowedItems) && ($this->act === 'image' || $this->addModifyTab)) {
 			$menuDef['image']['isActive'] = FALSE;
 			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', TRUE);
 			$menuDef['image']['url'] = '#';
@@ -874,10 +876,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
-		}
-		// Remove tab "image" if there is no current image
-		if ($this->act !== 'image') {
-			$allowedItems = array_diff($allowedItems, array('image'));
 		}
 		// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
