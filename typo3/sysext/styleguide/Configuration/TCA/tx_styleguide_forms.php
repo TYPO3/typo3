@@ -410,6 +410,28 @@ return array(
 				),
 			),
 		),
+		'input_35' => array(
+			'label' => 'INPUT: 35 Slider wizard, hideParent',
+			'config' => array(
+				'type' => 'input',
+				'eval' => 'trim,int',
+				'range' => array(
+					'lower' => -90,
+					'upper' => 90,
+				),
+				'wizards' => array(
+					'angle' => array(
+						'type' => 'slider',
+						'step' => 10,
+						'width' => 200,
+						'hideParent' => array(
+							// @TODO This shows a <p class="help-box" with the value again, issue of NoneElement in general
+							'format' => 'int',
+						),
+					),
+				),
+			),
+		),
 
 
 		'text_1' => array(
@@ -618,7 +640,125 @@ return array(
 		),
 		'checkbox_7' => array(
 			'exclude' => 1,
-			'label' => 'CHECKBOX: 7 Seven checkboxes with labels, 4 cols',
+			'label' => 'CHECKBOX: 7 showIfRTE (?)',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+				),
+				'showIfRTE' => 1,
+			),
+		),
+		/**
+		 * @TODO Add a itemsProcFunc
+		 *
+		'checkbox_8' => array(
+		'label' => '8 itemsProcFunc',
+		'config' => array(
+		'type' => 'check',
+		'items' => array(
+		array('foo', ''),
+		array('bar', ''),
+		),
+		'itemsProcFunc' => '',
+		),
+		),
+		 */
+		'checkbox_9' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 9 eval maximumRecordsChecked = 1 - table wide',
+			'config' => array(
+				'type' => 'check',
+				'eval' => 'maximumRecordsChecked',
+				'validation' => array(
+					'maximumRecordsChecked' => 1,
+				),
+			),
+		),
+		'checkbox_10' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 10 eval maximumRecordsCheckedInPid = 1 - for this PID',
+			'config' => array(
+				'type' => 'check',
+				'eval' => 'maximumRecordsCheckedInPid',
+				'validation' => array(
+					'maximumRecordsCheckedInPid' => 1,
+				),
+			),
+		),
+		'checkbox_11' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 11 some checkboxes, readonly',
+			'config' => array(
+				'type' => 'check',
+				'readOnly' => 1,
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+				),
+			),
+		),
+		'checkbox_12' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 12 1 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+				),
+				'cols' => '1',
+			),
+		),
+		'checkbox_13' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 13 2 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+				),
+				'cols' => '2',
+			),
+		),
+		'checkbox_14' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 14 3 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3', ''),
+					array('foo4', ''),
+				),
+				'cols' => '3',
+			),
+		),
+		'checkbox_15' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 15 4 cols',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo1', ''),
+					array('foo2', ''),
+					array('foo3 and this here is very long text that maybe does not really fit into the form in one line. Ok let us add even more text to see how', ''),
+					array('foo4', ''),
+					array('foo5', ''),
+					array('foo6', ''),
+					array('foo7', ''),
+					array('foo8', ''),
+				),
+				'cols' => '4',
+			),
+		),
+		'checkbox_16' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 16 5 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -630,69 +770,44 @@ return array(
 					array('foo6', ''),
 					array('foo7', ''),
 				),
-				'cols' => '4',
+				'cols' => '5',
 			),
 		),
-		'checkbox_8' => array(
+		'checkbox_17' => array(
 			'exclude' => 1,
-			'label' => 'CHECKBOX: 8 showIfRTE (?)',
+			'label' => 'CHECKBOX: 17 6 cols',
 			'config' => array(
 				'type' => 'check',
-				'items' => array(
-					array('foo', ''),
-				),
-				'showIfRTE' => 1,
-			),
-		),
-		/**
-		 * @TODO Add a itemsProcFunc
-		'checkbox_9' => array(
-			'exclude' => 1,
-			'label' => '9 itemsProcFunc',
-			'config' => array(
-				'type' => 'check',
-				'items' => array(
-					array('foo', ''),
-					array('bar', ''),
-				),
-				'itemsProcFunc' => '',
-			),
-		),
-		 */
-		'checkbox_10' => array(
-			'exclude' => 1,
-			'label' => 'CHECKBOX: 10 eval maximumRecordsChecked = 1 - table wide',
-			'config' => array(
-				'type' => 'check',
-				'eval' => 'maximumRecordsChecked',
-				'validation' => array(
-					'maximumRecordsChecked' => 1,
-				),
-			),
-		),
-		'checkbox_11' => array(
-			'exclude' => 1,
-			'label' => 'CHECKBOX: 11 eval maximumRecordsCheckedInPid = 1 - for this PID',
-			'config' => array(
-				'type' => 'check',
-				'eval' => 'maximumRecordsCheckedInPid',
-				'validation' => array(
-					'maximumRecordsCheckedInPid' => 1,
-				),
-			),
-		),
-		'checkbox_12' => array(
-			'exclude' => 1,
-			'label' => 'CHECKBOX: 12 some checkboxes, readonly',
-			'config' => array(
-				'type' => 'check',
-				'readOnly' => 1,
 				'items' => array(
 					array('foo1', ''),
 					array('foo2', ''),
+					array('foo3', ''),
+					array('foo4', ''),
+					array('foo5', ''),
+					array('foo6', ''),
+					array('foo7', ''),
 				),
+				'cols' => '6',
 			),
 		),
+		'checkbox_18' => array(
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 18 inline',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('Mo', ''),
+					array('Tu', ''),
+					array('We', ''),
+					array('Th', ''),
+					array('Fr', ''),
+					array('Sa', ''),
+					array('Su', ''),
+				),
+				'cols' => 'inline',
+			),
+		),
+
 
 
 		'radio_1' => array(
@@ -1089,6 +1204,10 @@ return array(
 					array('foo 1', 1),
 					array('foo 2', 2),
 					array('foo 3', 4),
+					array('divider', '--div--'),
+					array('foo 4', 4),
+					array('foo 5', 5),
+
 				),
 				'renderMode' => 'singlebox',
 				'maxitems' => 2,
@@ -1141,7 +1260,7 @@ return array(
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 4),
+					array('foo 3', 3),
 					array('bar', 4),
 				),
 				'size' => 5,
@@ -1158,7 +1277,7 @@ return array(
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 4),
+					array('foo 3', 3),
 					array('bar', 4),
 				),
 				'size' => 5,
@@ -1284,6 +1403,7 @@ return array(
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => 'jpg, jpeg, png, gif',
+				'disallowed' => 'ai',
 				'show_thumbs' => TRUE,
 				'size' => 3,
 				'uploadfolder' => 'uploads/pics/',
@@ -1531,6 +1651,46 @@ return array(
 				),
 			),
 		),
+		'flex_4' => array(
+			'exclude' => 1,
+			'label' => 'FLEX: 4 multiple items',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<meta>
+								<langDisable>1</langDisable>
+							</meta>
+							<ROOT>
+								<type>array</type>
+								<el>
+									<input_1>
+										<TCEforms>
+											<label>Some input field</label>
+											<config>
+												<type>input</type>
+												<size>23</size>
+											</config>
+										</TCEforms>
+									</input_1>
+									<input_2>
+										<TCEforms>
+											<label>Some input field</label>
+											<config>
+												<type>input</type>
+												<size>23</size>
+											</config>
+										</TCEforms>
+									</input_2>
+								</el>
+							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
+
 
 
 		'inline_1' => array(
@@ -1653,20 +1813,219 @@ return array(
 				),
 			),
 		),
-
-
 	),
+
+	'palette_1_1' => array(
+		'exclude' => 0,
+		'label' => 'checkbox is type check',
+		'config' => array(
+			'type' => 'check',
+			'default' => 1,
+		),
+	),
+	'palette_1_2' => array(
+		'exclude' => 0,
+		'label' => 'checkbox type is user',
+		'config' => array(
+			'default' => TRUE,
+			'type' => 'user',
+			'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
+		),
+	),
+	'palette_1_3' => array(
+		'exclude' => 0,
+		'label' => 'checkbox is type check',
+		'config' => array(
+			'type' => 'check',
+			'default' => 1,
+		),
+	),
+	'palette_2_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_3_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_3_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_3' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_4' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_5_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_5_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_6_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_7_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_7_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+
+
+	'wizard_1' => array(
+		'label' => '1 wizard vertical, edit, add, list',
+		'config' => array(
+			'type' => 'select',
+			'foreign_table' => 'tx_styleguide_forms_staticdata',
+			'rootLevel' => 1,
+			'size' => 5,
+			'autoSizeMax' => 20,
+			'minitems' => 0,
+			'maxitems' => 999,
+			'wizards' => array(
+				'_PADDING' => 1, // @TODO: Has no sane effect
+				'_VERTICAL' => 1,
+				'edit' => array(
+					'type' => 'popup',
+					'title' => 'edit',
+					'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
+						'name' => 'wizard_edit',
+					),
+					'icon' => 'edit2.gif',
+					'popup_onlyOpenIfSelected' => 1,
+					'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+				),
+				'add' => array(
+					'type' => 'script',
+					'title' => 'add',
+					'icon' => 'add.gif',
+					'module' => array(
+						'name' => 'wizard_add',
+					),
+					'params' => array(
+						'table' => 'tx_styleguide_forms_staticdata',
+						'pid' => '0',
+						'setValue' => 'prepend',
+					),
+				),
+				'list' => array(
+					'type' => 'script',
+					'title' => 'list',
+					'icon' => 'list.gif',
+					'module' => array(
+						'name' => 'wizard_list',
+					),
+					'params' => array(
+						'table' => 'tx_styleguide_forms_staticdata',
+						'pid' => '0',
+					),
+				),
+			),
+		),
+	),
+	'wizard_2' => array(
+		'label' => '2 wizard colorbox, with image',
+		'config' => array(
+			'type' => 'input',
+			'wizards' => array(
+				'colorpicker' => array(
+					'type' => 'colorbox',
+					'title' => 'Color picker',
+					'icon' => 'link_popup.gif',
+					'module' => array(
+						'name' => 'wizard_colorpicker',
+					),
+					'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
+				),
+			),
+		),
+	),
+	'wizard_3' => array(
+		'label' => '3 suggest wizard, position top',
+		'config' => array (
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'tx_styleguide_forms_staticdata',
+			'disable_controls' => 'browser',
+			'wizards' => array(
+				'_POSITION' => 'top',
+				'suggest' => array(
+					'type' => 'suggest',
+				),
+			),
+		),
+	),
+	'wizard_4' => array(
+		'label' => '4 suggest wizard, position bottom',
+		'config' => array (
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'tx_styleguide_forms_staticdata',
+			'disable_controls' => 'browser',
+			'wizards' => array(
+				'_POSITION' => 'bottom',
+				'suggest' => array(
+					'type' => 'suggest',
+				),
+			),
+		),
+	),
+
+
 
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,endtime,
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
 			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-			input_31, input_32, input_33, input_34,
+			input_31, input_32, input_33, input_34, input_35,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
-			checkbox_11, checkbox_12,
+			checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
@@ -1678,6 +2037,7 @@ return array(
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
+			wizard_1, wizard_2, wizard_3, wizard_4,
 			',
 	),
 
@@ -1688,13 +2048,14 @@ return array(
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
-					input_32, input_33, input_34,
+					input_31, input_32, input_33, input_34, input_35,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
 				--div--;Check,
 					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
-					checkbox_10, checkbox_11, checkbox_12,
+					checkbox_10, checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
+
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
@@ -1711,9 +2072,18 @@ return array(
 				--div--;User,
 					user_1, user_2,
 				--div--;Flex,
-					flex_1, flex_2, flex_3,
+					flex_1, flex_2, flex_3, flex_4,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
+				--div--;Palettes,
+					--palette--;Palettes 1;palettes_1,
+					--palette--;Palettes 2;palettes_2,
+					--palette--;Palettes 3;palettes_3,
+					--palette--;;palettes_4,
+					--palette--;Palettes 5;palettes_5,
+				--div--;Wizards,
+					wizard_1, wizard_2, wizard_3, wizard_4,
+
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
@@ -1722,6 +2092,23 @@ return array(
 	),
 
 	'palettes' => array(
+		'palettes_1' => array(
+			'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
+			'canNotCollapse' => 1
+		),
+		'palettes_2' => array(
+			'showitem' => 'palette_2_1',
+		),
+		'palettes_3' => array(
+			'showitem' => 'palette_3_1, palette_3_2',
+		),
+		'palettes_4' => array(
+			'showitem' => 'palette_4_1, palette_4_2, palette_4_3, --linebreak--, palette_4_4',
+		),
+		'palettes_5' => array(
+			'showitem' => 'palette_5_1, --linebreak--, palette_5_2',
+			'canNotCollapse' => 1
+		),
 		'visibility' => array(
 			'showitem' => 'hidden;Shown in frontend',
 			'canNotCollapse' => 1
