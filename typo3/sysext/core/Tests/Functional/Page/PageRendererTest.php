@@ -41,7 +41,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$favouriteIcon = 'http://google.com/favicon.ico';
 		$subject->setFavIcon($favouriteIcon);
 		$expectedFavouriteIconPartOne = '<link rel="shortcut icon" href="' . $favouriteIcon . '" />';
-		$expectedFavouriteIconPartTwo = '<link rel="icon" href="' . $favouriteIcon . '" />';
 
 		$baseUrl = 'http://google.com/';
 		$subject->setBaseUrl($baseUrl);
@@ -104,7 +103,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertContains($expectedTitleString, $renderedString);
 		$this->assertContains($expectedCharsetString, $renderedString);
 		$this->assertContains($expectedFavouriteIconPartOne, $renderedString);
-		$this->assertContains($expectedFavouriteIconPartTwo, $renderedString);
 		$this->assertContains($expectedBaseUrlString, $renderedString);
 		$this->assertContains($expectedMetaTagString, $renderedString);
 		$this->assertContains($expectedInlineCommentString, $renderedString);
