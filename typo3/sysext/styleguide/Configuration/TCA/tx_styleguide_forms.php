@@ -28,6 +28,7 @@ return array(
 
 	'columns' => array(
 		'hidden' => array (
+			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -38,6 +39,7 @@ return array(
 			),
 		),
 		'starttime' => array(
+			'exclude' => 1,
 			'label' => 'Publish Date',
 			'config' => array(
 				'type' => 'input',
@@ -50,6 +52,7 @@ return array(
 			'l10n_display' => 'defaultAsReadonly'
 		),
 		'endtime' => array(
+			'exclude' => 1,
 			'label' => 'Expiration Date',
 			'config' => array(
 				'type' => 'input',
@@ -66,70 +69,80 @@ return array(
 		),
 
 		'input_1' => array(
-			'label' => '1 Size is set to 10',
+			'exclude' => 1,
+			'label' => 'INPUT: 1 Size is set to 10',
 			'config' => array(
 				'type' => 'input',
 				'size' => 10,
 			),
 		),
 		'input_2' => array(
-			'label' => '2 Max is set to 4',
+			'exclude' => 1,
+			'label' => 'INPUT: 2 Max is set to 4',
 			'config' => array(
 				'type' => 'input',
 				'max' => 4,
 			),
 		),
 		'input_3' => array(
-			'label' => '3 Default value',
+			'exclude' => 1,
+			'label' => 'INPUT: 3 Default value',
 			'config' => array(
 				'type' => 'input',
 				'default' => 'Default value',
 			),
 		),
 		'input_4' => array(
-			'label' => '4 eval alpha',
+			'exclude' => 1,
+			'label' => 'INPUT: 4 eval alpha',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'alpha',
 			),
 		),
 		'input_5' => array(
-			'label' => '5 eval alphanum',
+			'exclude' => 1,
+			'label' => 'INPUT: 5 eval alphanum',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'alphanum',
 			),
 		),
 		'input_6' => array(
-			'label' => '6 eval date',
+			'exclude' => 1,
+			'label' => 'INPUT: 6 eval date',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'date',
 			),
 		),
 		'input_7' => array(
-			'label' => '7 eval datetime',
+			'exclude' => 1,
+			'label' => 'INPUT: 7 eval datetime',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'datetime',
 			),
 		),
 		'input_8' => array(
-			'label' => '8 eval double2',
+			'exclude' => 1,
+			'label' => 'INPUT: 8 eval double2',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'double2',
 			),
 		),
 		'input_9' => array(
-			'label' => '9 eval int',
+			'exclude' => 1,
+			'label' => 'INPUT: 9 eval int',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'int',
 			),
 		),
 		'input_10' => array(
-			'label' => '10 eval is_in abc123',
+			'exclude' => 1,
+			'label' => 'INPUT: 10 eval is_in abc123',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'is_in',
@@ -137,112 +150,128 @@ return array(
 			),
 		),
 		'input_11' => array(
-			'label' => '11 eval lower',
+			'exclude' => 1,
+			'label' => 'INPUT: 11 eval lower',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'lower',
 			),
 		),
 		'input_12' => array(
-			'label' => '12 eval md5',
+			'exclude' => 1,
+			'label' => 'INPUT: 12 eval md5',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'md5',
 			),
 		),
 		'input_13' => array(
-			'label' => '13 eval nospace',
+			'exclude' => 1,
+			'label' => 'INPUT: 13 eval nospace',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'nospace',
 			),
 		),
 		'input_14' => array(
-			'label' => '14 eval null',
+			'exclude' => 1,
+			'label' => 'INPUT: 14 eval null',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'null',
 			),
 		),
 		'input_15' => array(
-			'label' => '15 eval num',
+			'exclude' => 1,
+			'label' => 'INPUT: 15 eval num',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'num',
 			),
 		),
 		'input_16' => array(
-			'label' => '16 eval password',
+			'exclude' => 1,
+			'label' => 'INPUT: 16 eval password',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'password',
 			),
 		),
 		'input_17' => array(
-			'label' => '17 eval required',
+			'exclude' => 1,
+			'label' => 'INPUT: 17 eval required',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'required',
 			),
 		),
 		'input_18' => array(
-			'label' => '18 eval time',
+			'exclude' => 1,
+			'label' => 'INPUT: 18 eval time',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'time',
 			),
 		),
 		'input_19' => array(
-			'label' => '19 eval timesec',
+			'exclude' => 1,
+			'label' => 'INPUT: 19 eval timesec',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'timesec',
 			),
 		),
 		'input_20' => array(
-			'label' => '20 eval trim',
+			'exclude' => 1,
+			'label' => 'INPUT: 20 eval trim',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
 			),
 		),
 		'input_21' => array(
-			'label' => '21 eval with user function',
+			'exclude' => 1,
+			'label' => 'INPUT: 21 eval with user function',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeInput21Eval',
 			),
 		),
 		'input_22' => array(
-			'label' => '22 eval unique',
+			'exclude' => 1,
+			'label' => 'INPUT: 22 eval unique',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'unique',
 			),
 		),
 		'input_23' => array(
-			'label' => '23 eval uniqueInPid',
+			'exclude' => 1,
+			'label' => 'INPUT: 23 eval uniqueInPid',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'uniqueInPid',
 			),
 		),
 		'input_24' => array(
-			'label' => '24 eval upper',
+			'exclude' => 1,
+			'label' => 'INPUT: 24 eval upper',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'upper',
 			),
 		),
 		'input_25' => array(
-			'label' => '25 eval year',
+			'exclude' => 1,
+			'label' => 'INPUT: 25 eval year',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'year',
 			),
 		),
 		'input_26' => array(
-			'label' => '26 Readonly datetime size 12',
+			'exclude' => 1,
+			'label' => 'INPUT: 26 Readonly datetime size 12',
 			'config' => array(
 				'type' => 'input',
 				'readOnly' => 1,
@@ -252,7 +281,8 @@ return array(
 			),
 		),
 		'input_27' => array(
-			'label' => '27 eval int range 2 to 7',
+			'exclude' => 1,
+			'label' => 'INPUT: 27 eval int range 2 to 7',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'int',
@@ -263,14 +293,16 @@ return array(
 			),
 		),
 		'input_28' => array(
-			'label' => '28 Placeholder value from input_1',
+			'exclude' => 1,
+			'label' => 'INPUT: 28 Placeholder value from input_1',
 			'config' => array(
 				'type' => 'input',
 				'placeholder' => '__row|input_1',
 			),
 		),
 		'input_29' => array(
-			'label' => '29 Placeholder value from input_1 with mode useOrOverridePlaceholder',
+			'exclude' => 1,
+			'label' => 'INPUT: 29 Placeholder value from input_1 with mode useOrOverridePlaceholder',
 			'config' => array(
 				'type' => 'input',
 				'placeholder' => '__row|input_1',
@@ -279,7 +311,8 @@ return array(
 			),
 		),
 		'input_30' => array(
-			'label' => '30 Link wizard, no _PADDING',
+			'exclude' => 1,
+			'label' => 'INPUT: 30 Link wizard, no _PADDING',
 			'config' => array(
 				'type' => 'input',
 				'wizards' => array(
@@ -299,7 +332,8 @@ return array(
 			),
 		),
 		'input_31' => array(
-			'label' => '31 Color picker wizard, _PADDING 6',
+			'exclude' => 1,
+			'label' => 'INPUT: 31 Color picker wizard, _PADDING 6',
 			'config' => array(
 				'type' => 'input',
 				'wizards' => array(
@@ -317,7 +351,8 @@ return array(
 			),
 		),
 		'input_32' => array(
-			'label' => '32 Slider wizard, step=10, width=200, eval=trim,int',
+			'exclude' => 1,
+			'label' => 'INPUT: 32 Slider wizard, step=10, width=200, eval=trim,int',
 			'config' => array(
 				'type' => 'input',
 				'size' => 5,
@@ -337,7 +372,8 @@ return array(
 			),
 		),
 		'input_33' => array(
-			'label' => '33 userFunc wizard',
+			'exclude' => 1,
+			'label' => 'INPUT: 33 userFunc wizard',
 			'config' => array(
 				'type' => 'input',
 				'size' => 10,
@@ -354,7 +390,8 @@ return array(
 			),
 		),
 		'input_34' => array(
-			'label' => '34 select wizard',
+			'exclude' => 1,
+			'label' => 'INPUT: 34 select wizard',
 			'config' => array(
 				'type' => 'input',
 				'size' => 20,
@@ -374,7 +411,7 @@ return array(
 			),
 		),
 		'input_35' => array(
-			'label' => '35 Slider wizard, hideParent',
+			'label' => 'INPUT: 35 Slider wizard, hideParent',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim,int',
@@ -398,27 +435,31 @@ return array(
 
 
 		'text_1' => array(
-			'label' => '1 no cols, no rows',
+			'exclude' => 1,
+			'label' => 'TEXT: 1 no cols, no rows',
 			'config' => array(
 				'type' => 'text',
 			),
 		),
 		'text_2' => array(
-			'label' => '2 cols=20',
+			'exclude' => 1,
+			'label' => 'TEXT: 2 cols=20',
 			'config' => array(
 				'type' => 'text',
 				'cols' => 20,
 			),
 		),
 		'text_3' => array(
-			'label' => '3 rows=2',
+			'exclude' => 1,
+			'label' => 'TEXT: 3 rows=2',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 2,
 			),
 		),
 		'text_4' => array(
-			'label' => '4 cols=20, rows=2',
+			'exclude' => 1,
+			'label' => 'TEXT: 4 cols=20, rows=2',
 			'config' => array(
 				'type' => 'text',
 				'cols' => 20,
@@ -426,7 +467,8 @@ return array(
 			),
 		),
 		'text_5' => array(
-			'label' => '5 wrap=off with default',
+			'exclude' => 1,
+			'label' => 'TEXT: 5 wrap=off with default',
 			'config' => array(
 				'type' => 'text',
 				'wrap' => 'off',
@@ -434,7 +476,8 @@ return array(
 			),
 		),
 		'text_6' => array(
-			'label' => '6 wrap=virtual with default',
+			'exclude' => 1,
+			'label' => 'TEXT: 6 wrap=virtual with default',
 			'config' => array(
 				'type' => 'text',
 				'wrap' => 'virtual',
@@ -442,14 +485,16 @@ return array(
 			),
 		),
 		'text_7' => array(
-			'label' => '7 eval required',
+			'exclude' => 1,
+			'label' => 'TEXT: 7 eval required',
 			'config' => array(
 				'type' => 'text',
 				'eval' => 'required',
 			),
 		),
 		'text_8' => array(
-			'label' => '8 eval trim',
+			'exclude' => 1,
+			'label' => 'TEXT: 8 eval trim',
 			'config' => array(
 				'type' => 'text',
 				'eval' => 'trim',
@@ -458,6 +503,7 @@ return array(
 		/**
 		 * @TODO: Add evaluation with a userfunc
 		'text_9' => array(
+			'exclude' => 1,
 			'label' => '9 eval userfunc',
 			'config' => array(
 				'type' => 'text',
@@ -467,7 +513,8 @@ return array(
 		),
 		 */
 		'text_10' => array(
-			'label' => '10 readOnly',
+			'exclude' => 1,
+			'label' => 'TEXT: 10 readOnly',
 			'config' => array(
 				'type' => 'text',
 				'readOnly' => 1,
@@ -476,6 +523,7 @@ return array(
 		/**
 		 * @TODO: This throws a warning
 		'text_11' => array(
+			'exclude' => 1,
 			'label' => '10 readOnly with format datetime',
 			'config' => array(
 				'type' => 'text',
@@ -485,14 +533,16 @@ return array(
 		),
 		 */
 		'text_12' => array(
-			'label' => '12 placeholder value from input_1',
+			'exclude' => 1,
+			'label' => 'TEXT: 12 placeholder value from input_1',
 			'config' => array(
 				'type' => 'text',
 				'placeholder' => '__row|input_1',
 			),
 		),
 		'text_13' => array(
-			'label' => '13 placeholder value from input_1 with mode useOrOverridePlaceholder',
+			'exclude' => 1,
+			'label' => 'TEXT: 13 placeholder value from input_1 with mode useOrOverridePlaceholder',
 			'config' => array(
 				'type' => 'text',
 				'placeholder' => '__row|input_1',
@@ -501,14 +551,16 @@ return array(
 			),
 		),
 		'text_14' => array(
-			'label' => '14 fixed font & tabs enabled',
+			'exclude' => 1,
+			'label' => 'TEXT: 14 fixed font & tabs enabled',
 			'config' => array(
 				'type' => 'text',
 			),
 			'defaultExtras' => 'fixed-font : enable-tab'
 		),
 		'text_15' => array(
-			'label' => '15 max=30',
+			'exclude' => 1,
+			'label' => 'TEXT: 15 max=30',
 			'config' => array(
 				'type' => 'text',
 				'cols' => 30,
@@ -522,20 +574,23 @@ return array(
 
 
 		'checkbox_1' => array(
-			'label' => '1 Single',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 1 Single',
 			'config' => array(
 				'type' => 'check',
 			)
 		),
 		'checkbox_2' => array(
-			'label' => '2 Single default=1',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 2 Single default=1',
 			'config' => array(
 				'type' => 'check',
 				'default' => 1,
 			)
 		),
 		'checkbox_3' => array(
-			'label' => '3 One checkbox with label',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 3 One checkbox with label',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -544,7 +599,8 @@ return array(
 			)
 		),
 		'checkbox_4' => array(
-			'label' => '4 One checkbox with label, pre-selected',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 4 One checkbox with label, pre-selected',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -554,7 +610,8 @@ return array(
 			)
 		),
 		'checkbox_5' => array(
-			'label' => '5 Three checkboxes, two with labels, one without',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 5 Three checkboxes, two with labels, one without',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -565,7 +622,8 @@ return array(
 			),
 		),
 		'checkbox_6' => array(
-			'label' => '6 Four checkboxes with labels, 1 and 3 pre-selected',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 6 Four checkboxes with labels, 1 and 3 pre-selected',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -581,7 +639,8 @@ return array(
 			),
 		),
 		'checkbox_7' => array(
-			'label' => '7 showIfRTE (?)',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 7 showIfRTE (?)',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -592,20 +651,22 @@ return array(
 		),
 		/**
 		 * @TODO Add a itemsProcFunc
+		 *
 		'checkbox_8' => array(
-			'label' => '8 itemsProcFunc',
-			'config' => array(
-				'type' => 'check',
-				'items' => array(
-					array('foo', ''),
-					array('bar', ''),
-				),
-				'itemsProcFunc' => '',
-			),
+		'label' => '8 itemsProcFunc',
+		'config' => array(
+		'type' => 'check',
+		'items' => array(
+		array('foo', ''),
+		array('bar', ''),
+		),
+		'itemsProcFunc' => '',
+		),
 		),
 		 */
 		'checkbox_9' => array(
-			'label' => '9 eval maximumRecordsChecked = 1 - table wide',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 9 eval maximumRecordsChecked = 1 - table wide',
 			'config' => array(
 				'type' => 'check',
 				'eval' => 'maximumRecordsChecked',
@@ -615,7 +676,8 @@ return array(
 			),
 		),
 		'checkbox_10' => array(
-			'label' => '10 eval maximumRecordsCheckedInPid = 1 - for this PID',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 10 eval maximumRecordsCheckedInPid = 1 - for this PID',
 			'config' => array(
 				'type' => 'check',
 				'eval' => 'maximumRecordsCheckedInPid',
@@ -625,7 +687,8 @@ return array(
 			),
 		),
 		'checkbox_11' => array(
-			'label' => '11 some checkboxes, readonly',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 11 some checkboxes, readonly',
 			'config' => array(
 				'type' => 'check',
 				'readOnly' => 1,
@@ -636,7 +699,8 @@ return array(
 			),
 		),
 		'checkbox_12' => array(
-			'label' => '12 1 cols',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 12 1 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -648,7 +712,8 @@ return array(
 			),
 		),
 		'checkbox_13' => array(
-			'label' => '13 2 cols',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 13 2 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -660,7 +725,8 @@ return array(
 			),
 		),
 		'checkbox_14' => array(
-			'label' => '14 3 cols',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 14 3 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -673,7 +739,8 @@ return array(
 			),
 		),
 		'checkbox_15' => array(
-			'label' => '15 4 cols',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 15 4 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -690,7 +757,8 @@ return array(
 			),
 		),
 		'checkbox_16' => array(
-			'label' => '16 5 cols',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 16 5 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -706,7 +774,8 @@ return array(
 			),
 		),
 		'checkbox_17' => array(
-			'label' => '17 6 cols',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 17 6 cols',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -722,7 +791,8 @@ return array(
 			),
 		),
 		'checkbox_18' => array(
-			'label' => '18 inline',
+			'exclude' => 1,
+			'label' => 'CHECKBOX: 18 inline',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
@@ -739,8 +809,10 @@ return array(
 		),
 
 
+
 		'radio_1' => array(
-			'label' => '1 Three options, one without label',
+			'exclude' => 1,
+			'label' => 'RADIO: 1 Three options, one without label',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
@@ -751,7 +823,8 @@ return array(
 			),
 		),
 		'radio_2' => array(
-			'label' => '2 Three options, second pre-selected',
+			'exclude' => 1,
+			'label' => 'RADIO: 2 Three options, second pre-selected',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
@@ -766,7 +839,8 @@ return array(
 			),
 		),
 		'radio_3' => array(
-			'label' => '3 Lots of options',
+			'exclude' => 1,
+			'label' => 'RADIO: 3 Lots of options',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
@@ -790,7 +864,8 @@ return array(
 			),
 		),
 		'radio_4' => array(
-			'label' => '4 String values',
+			'exclude' => 1,
+			'label' => 'RADIO: 4 String values',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
@@ -802,6 +877,7 @@ return array(
 		/**
 		 * @TODO Add a itemsProcFunc
 		'radio_5' => array(
+			'exclude' => 1,
 			'label' => '5 itemsProcFunc',
 			'config' => array(
 				'type' => 'radio',
@@ -814,7 +890,8 @@ return array(
 		),
 		 */
 		'radio_6' => array(
-			'label' => '6 readonly',
+			'exclude' => 1,
+			'label' => 'RADIO: 6 readonly',
 			'config' => array(
 				'type' => 'radio',
 				'readOnly' => 1,
@@ -827,7 +904,8 @@ return array(
 
 
 		'select_1' => array(
-			'label' => '1 Two items, one with really long text',
+			'exclude' => 1,
+			'label' => 'SELECT: 1 Two items, one with really long text',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -837,7 +915,8 @@ return array(
 			),
 		),
 		'select_2' => array(
-			'label' => '2 itemsProcFunc',
+			'exclude' => 1,
+			'label' => 'SELECT: 2 itemsProcFunc',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -848,7 +927,8 @@ return array(
 			),
 		),
 		'select_3' => array(
-			'label' => '3 Three items, second pre-selected, size=2',
+			'exclude' => 1,
+			'label' => 'SELECT: 3 Three items, second pre-selected, size=2',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -860,7 +940,8 @@ return array(
 			),
 		),
 		'select_4' => array(
-			'label' => '4 Static values, dividers, merged with entries from staticdata table containing word "foo"',
+			'exclude' => 1,
+			'label' => 'SELECT: 4 Static values, dividers, merged with entries from staticdata table containing word "foo"',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -876,7 +957,8 @@ return array(
 			),
 		),
 		'select_5' => array(
-			'label' => '5 Items with icons',
+			'exclude' => 1,
+			'label' => 'SELECT: 5 Items with icons',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -886,7 +968,8 @@ return array(
 			),
 		),
 		'select_6' => array(
-			'label' => '6 Items with icons, iconsInOptionTags',
+			'exclude' => 1,
+			'label' => 'SELECT: 6 Items with icons, iconsInOptionTags',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -897,7 +980,8 @@ return array(
 			),
 		),
 		'select_7' => array(
-			'label' => '7 Items with icons, iconsInOptionTags, noIconsBelowSelect',
+			'exclude' => 1,
+			'label' => 'SELECT: 7 Items with icons, iconsInOptionTags, noIconsBelowSelect',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -909,7 +993,8 @@ return array(
 			),
 		),
 		'select_8' => array(
-			'label' => '8 Items with icons, selicon_cols set to 3',
+			'exclude' => 1,
+			'label' => 'SELECT: 8 Items with icons, selicon_cols set to 3',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -923,7 +1008,8 @@ return array(
 			),
 		),
 		'select_9' => array(
-			'label' => '9 fileFolder Icons from EXT:styleguide/Resources/Public/Icons and a dummy first entry, iconsInOptionTags, two columns',
+			'exclude' => 1,
+			'label' => 'SELECT: 9 fileFolder Icons from EXT:styleguide/Resources/Public/Icons and a dummy first entry, iconsInOptionTags, two columns',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -937,7 +1023,8 @@ return array(
 			),
 		),
 		'select_10' => array(
-			'label' => '10 three options, size=6',
+			'exclude' => 1,
+			'label' => 'SELECT: 10 three options, size=6',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -950,7 +1037,8 @@ return array(
 			),
 		),
 		'select_11' => array(
-			'label' => '11 two options, size=2',
+			'exclude' => 1,
+			'label' => 'SELECT: 11 two options, size=2',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -961,7 +1049,8 @@ return array(
 			),
 		),
 		'select_12' => array(
-			'label' => '12 multiple, maxitems=5, minitems=2, autoSizeMax=4, size=3',
+			'exclude' => 1,
+			'label' => 'SELECT: 12 multiple, maxitems=5, minitems=2, autoSizeMax=4, size=3',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -981,7 +1070,8 @@ return array(
 			),
 		),
 		'select_13' => array(
-			'label' => '13 multiple, exclusiveKeys for 1 and 2',
+			'exclude' => 1,
+			'label' => 'SELECT: 13 multiple, exclusiveKeys for 1 and 2',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1001,7 +1091,8 @@ return array(
 			),
 		),
 		'select_14' => array(
-			'label' => '14 special tables, 12 icons in a row',
+			'exclude' => 1,
+			'label' => 'SELECT: 14 special tables, 12 icons in a row',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'tables',
@@ -1010,7 +1101,8 @@ return array(
 			),
 		),
 		'select_15' => array(
-			'label' => '15 special=tables, suppress_icons=1',
+			'exclude' => 1,
+			'label' => 'SELECT: 15 special=tables, suppress_icons=1',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'tables',
@@ -1018,37 +1110,41 @@ return array(
 			),
 		),
 		'select_16' => array(
-			'label' => '16 special=pagetypes',
+			'exclude' => 1,
+			'label' => 'SELECT: 16 special=pagetypes',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'pagetypes',
 			),
 		),
 		'select_17' => array(
-			'label' => '17 special=exclude',
+			'exclude' => 1,
+			'label' => 'SELECT: 17 special=exclude',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'exclude',
 				'size' => 10,
-				'suppress_icons' => '1',
 			),
 		),
 		'select_18' => array(
-			'label' => '18 special=modListGroup',
+			'exclude' => 1,
+			'label' => 'SELECT: 18 special=modListGroup',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'modListGroup',
 			),
 		),
 		'select_19' => array(
-			'label' => '19 special=modListUser',
+			'exclude' => 1,
+			'label' => 'SELECT: 19 special=modListUser',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'modListUser',
 			),
 		),
 		'select_20' => array(
-			'label' => '20 special=languages',
+			'exclude' => 1,
+			'label' => 'SELECT: 20 special=languages',
 			'config' => array(
 				'type' => 'select',
 				'special' => 'languages',
@@ -1056,7 +1152,8 @@ return array(
 			),
 		),
 		'select_21' => array(
-			'label' => '21 itemListStyle: green, 250 width and selectedListStyle: red, width 350',
+			'exclude' => 1,
+			'label' => 'SELECT: 21 itemListStyle: green, 250 width and selectedListStyle: red, width 350',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1071,7 +1168,8 @@ return array(
 			),
 		),
 		'select_22' => array(
-			'label' => '22 renderMode=checkbox',
+			'exclude' => 1,
+			'label' => 'SELECT: 22 renderMode=checkbox',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1084,7 +1182,8 @@ return array(
 			),
 		),
 		'select_23' => array(
-			'label' => '23 renderMode=checkbox with icons and description',
+			'exclude' => 1,
+			'label' => 'SELECT: 23 renderMode=checkbox with icons and description',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1097,7 +1196,8 @@ return array(
 			),
 		),
 		'select_24' => array(
-			'label' => '24 renderMode=singlebox',
+			'exclude' => 1,
+			'label' => 'SELECT: 24 renderMode=singlebox',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1107,13 +1207,15 @@ return array(
 					array('divider', '--div--'),
 					array('foo 4', 4),
 					array('foo 5', 5),
+
 				),
 				'renderMode' => 'singlebox',
 				'maxitems' => 2,
 			),
 		),
 		'select_25' => array(
-			'label' => '25 renderMode=tree of pages',
+			'exclude' => 1,
+			'label' => 'SELECT: 25 renderMode=tree of pages',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'pages',
@@ -1130,7 +1232,8 @@ return array(
 			),
 		),
 		'select_26' => array(
-			'label' => '26 renderMode=tree of pages showHeader=FALSE, nonSelectableLevels=0,1, allowRecursiveMode=TRUE, width=400',
+			'exclude' => 1,
+			'label' => 'SELECT: 26 renderMode=tree of pages showHeader=FALSE, nonSelectableLevels=0,1, allowRecursiveMode=TRUE, width=400',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'pages',
@@ -1150,7 +1253,8 @@ return array(
 			),
 		),
 		'select_27' => array(
-			'label' => '27 enableMultiSelectFilterTextfield',
+			'exclude' => 1,
+			'label' => 'SELECT: 27 enableMultiSelectFilterTextfield',
 			'config' => array(
 			'type' => 'select',
 				'items' => array(
@@ -1166,7 +1270,8 @@ return array(
 			),
 		),
 		'select_28' => array(
-			'label' => '28 enableMultiSelectFilterTextfield, multiSelectFilterItems',
+			'exclude' => 1,
+			'label' => 'SELECT: 28 enableMultiSelectFilterTextfield, multiSelectFilterItems',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1187,7 +1292,8 @@ return array(
 			),
 		),
 		'select_29' => array(
-			'label' => '29 wizards',
+			'exclude' => 1,
+			'label' => 'SELECT: 29 wizards',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_styleguide_forms_staticdata',
@@ -1240,7 +1346,8 @@ return array(
 
 
 		'group_1' => array(
-			'label' => '1 internal_type=db, two tables allowed',
+			'exclude' => 1,
+			'label' => 'GROUP: 1 internal_type=db, two tables allowed',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1248,7 +1355,8 @@ return array(
 			),
 		),
 		'group_2' => array(
-			'label' => '2 internal_type=db, two tables allowed, show thumbs',
+			'exclude' => 1,
+			'label' => 'GROUP: 2 internal_type=db, two tables allowed, show thumbs',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1257,7 +1365,8 @@ return array(
 			),
 		),
 		'group_3' => array(
-			'label' => '3 internal_type=db, suggest wizard, disable_controls=browser',
+			'exclude' => 1,
+			'label' => 'GROUP: 3 internal_type=db, suggest wizard, disable_controls=browser',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1271,7 +1380,8 @@ return array(
 			),
 		),
 		'group_4' => array(
-			'label' => '4 internal_type=db, show_thumbs, maxitems=1, size=1, suggest wizard',
+			'exclude' => 1,
+			'label' => 'GROUP: 4 internal_type=db, show_thumbs, maxitems=1, size=1, suggest wizard',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1287,7 +1397,8 @@ return array(
 			),
 		),
 		'group_5' => array(
-			'label' => '5 internal_type=file, lots of file types allowed, show thumbs',
+			'exclude' => 1,
+			'label' => 'GROUP: 5 internal_type=file, lots of file types allowed, show thumbs',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -1301,7 +1412,8 @@ return array(
 			),
 		),
 		'group_6' => array(
-			'label' => '6 internal_type=file, delete control disabled, no thumbs',
+			'exclude' => 1,
+			'label' => 'GROUP: 6 internal_type=file, delete control disabled, no thumbs',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -1312,7 +1424,8 @@ return array(
 			),
 		),
 		'group_7' => array(
-			'label' => '7 internal_type=file, size=1',
+			'exclude' => 1,
+			'label' => 'GROUP: 7 internal_type=file, size=1',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -1322,7 +1435,8 @@ return array(
 			),
 		),
 		'group_8' => array(
-			'label' => '8 internal_type=file, selectedListStyles set',
+			'exclude' => 1,
+			'label' => 'GROUP: 8 internal_type=file, selectedListStyles set',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -1332,7 +1446,8 @@ return array(
 			),
 		),
 		'group_9' => array(
-			'label' => '9 internal_type=file, maxitems=2',
+			'exclude' => 1,
+			'label' => 'GROUP: 9 internal_type=file, maxitems=2',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -1342,7 +1457,8 @@ return array(
 			),
 		),
 		'group_10' => array(
-			'label' => '10 internal_type=file, maxitems=2',
+			'exclude' => 1,
+			'label' => 'GROUP: 10 internal_type=file, maxitems=2',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -1352,7 +1468,8 @@ return array(
 			),
 		),
 		'group_11' => array(
-			'label' => '11 group FAL field',
+			'exclude' => 1,
+			'label' => 'GROUP: 11 group FAL field',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1380,35 +1497,40 @@ return array(
 
 
 		'none_1' => array(
-			'label' => '1 pass_content=1',
+			'exclude' => 1,
+			'label' => 'NONE: 1 pass_content=1',
 			'config' => array(
 				'type' => 'none',
 				'pass_content' => 1,
 			),
 		),
 		'none_2' => array(
-			'label' => '2 pass_content=0',
+			'exclude' => 1,
+			'label' => 'NONE: 2 pass_content=0',
 			'config' => array(
 				'type' => 'none',
 				'pass_content' => 0,
 			),
 		),
 		'none_3' => array(
-			'label' => '3 rows=2',
+			'exclude' => 1,
+			'label' => 'NONE: 3 rows=2',
 			'config' => array(
 				'type' => 'none',
 				'rows' => 2,
 			),
 		),
 		'none_4' => array(
-			'label' => '4 cols=2',
+			'exclude' => 1,
+			'label' => 'NONE: 4 cols=2',
 			'config' => array(
 				'type' => 'none',
 				'cols' => 2,
 			),
 		),
 		'none_5' => array(
-			'label' => '5 rows=2, fixedRows=2',
+			'exclude' => 1,
+			'label' => 'NONE: 5 rows=2, fixedRows=2',
 			'config' => array(
 				'type' => 'none',
 				'rows' => 2,
@@ -1416,7 +1538,8 @@ return array(
 			),
 		),
 		'none_6' => array(
-			'label' => '6 size=6',
+			'exclude' => 1,
+			'label' => 'NONE: 6 size=6',
 			'config' => array(
 				'type' => 'none',
 				'size' => 6,
@@ -1428,7 +1551,8 @@ return array(
 
 
 		'passthrough_1' => array(
-			'label' => '1 this should NOT be shown',
+			'exclude' => 1,
+			'label' => 'PASSTHROUGH: 1 this should NOT be shown',
 			'config' => array(
 				'type' => 'passthrough',
 			),
@@ -1436,7 +1560,8 @@ return array(
 
 
 		'user_1' => array(
-			'label' => '1 parameter color used as border color',
+			'exclude' => 1,
+			'label' => 'USER: 1 parameter color used as border color',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser1->render',
@@ -1446,7 +1571,8 @@ return array(
 			),
 		),
 		'user_2' => array(
-			'label' => '2 noTableWrapping',
+			'exclude' => 1,
+			'label' => 'USER: 2 noTableWrapping',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser2->render',
@@ -1459,7 +1585,8 @@ return array(
 
 
 		'flex_1' => array(
-			'label' => '1 simple flex form',
+			'exclude' => 1,
+			'label' => 'FLEX: 1 simple flex form',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -1485,7 +1612,8 @@ return array(
 			),
 		),
 		'flex_2' => array(
-			'label' => '2 simple flex form with langDisable=1',
+			'exclude' => 1,
+			'label' => 'FLEX: 2 simple flex form with langDisable=1',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -1514,7 +1642,8 @@ return array(
 			),
 		),
 		'flex_3' => array(
-			'label' => '3 complex flexform in an external file',
+			'exclude' => 1,
+			'label' => 'FLEX: 3 complex flexform in an external file',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -1523,7 +1652,8 @@ return array(
 			),
 		),
 		'flex_4' => array(
-			'label' => '4 multiple items',
+			'exclude' => 1,
+			'label' => 'FLEX: 4 multiple items',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -1562,8 +1692,10 @@ return array(
 		),
 
 
+
 		'inline_1' => array(
-			'label' => '1 typical FAL field',
+			'exclude' => 1,
+			'label' => 'IRRE: 1 typical FAL field',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'sys_file_reference',
@@ -1639,7 +1771,8 @@ return array(
 			),
 		),
 		'inline_2' => array( /** Taken from irre_tutorial 1nff */
-			'label' => '2 1:n foreign field to table with sheets with a custom text',
+			'exclude' => 1,
+			'label' => 'IRRE: 2 1:n foreign field to table with sheets with a custom text',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
@@ -1661,7 +1794,7 @@ return array(
 		),
 		'inline_3' => array(
 			'exclude' => 1,
-			'label' => '3 m:m async, useCombination, newRecordLinkAddTitle',
+			'label' => 'IRRE: 3 m:m async, useCombination, newRecordLinkAddTitle',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_styleguide_forms_inline_3_mm',
@@ -1680,208 +1813,208 @@ return array(
 				),
 			),
 		),
-
-
-		'palette_1_1' => array(
-			'exclude' => 0,
-			'label' => 'checkbox is type check',
-			'config' => array(
-				'type' => 'check',
-				'default' => 1,
-			),
-		),
-		'palette_1_2' => array(
-			'exclude' => 0,
-			'label' => 'checkbox type is user',
-			'config' => array(
-				'default' => TRUE,
-				'type' => 'user',
-				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
-			),
-		),
-		'palette_1_3' => array(
-			'exclude' => 0,
-			'label' => 'checkbox is type check',
-			'config' => array(
-				'type' => 'check',
-				'default' => 1,
-			),
-		),
-		'palette_2_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_3_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_3_2' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_4_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_4_2' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_4_3' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_4_4' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_5_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_5_2' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_6_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_7_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_7_2' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-
-
-		'wizard_1' => array(
-			'label' => '1 wizard vertical, edit, add, list',
-			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'tx_styleguide_forms_staticdata',
-				'rootLevel' => 1,
-				'size' => 5,
-				'autoSizeMax' => 20,
-				'minitems' => 0,
-				'maxitems' => 999,
-				'wizards' => array(
-					'_PADDING' => 1, // @TODO: Has no sane effect
-					'_VERTICAL' => 1,
-					'edit' => array(
-						'type' => 'popup',
-						'title' => 'edit',
-						'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
-							'name' => 'wizard_edit',
-						),
-						'icon' => 'edit2.gif',
-						'popup_onlyOpenIfSelected' => 1,
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-					),
-					'add' => array(
-						'type' => 'script',
-						'title' => 'add',
-						'icon' => 'add.gif',
-						'module' => array(
-							'name' => 'wizard_add',
-						),
-						'params' => array(
-							'table' => 'tx_styleguide_forms_staticdata',
-							'pid' => '0',
-							'setValue' => 'prepend',
-						),
-					),
-					'list' => array(
-						'type' => 'script',
-						'title' => 'list',
-						'icon' => 'list.gif',
-						'module' => array(
-							'name' => 'wizard_list',
-						),
-						'params' => array(
-							'table' => 'tx_styleguide_forms_staticdata',
-							'pid' => '0',
-						),
-					),
-				),
-			),
-		),
-		'wizard_2' => array(
-			'label' => '2 wizard colorbox, with image',
-			'config' => array(
-				'type' => 'input',
-				'wizards' => array(
-					'colorpicker' => array(
-						'type' => 'colorbox',
-						'title' => 'Color picker',
-						'icon' => 'link_popup.gif',
-						'module' => array(
-							'name' => 'wizard_colorpicker',
-						),
-						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-						'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
-					),
-				),
-			),
-		),
-		'wizard_3' => array(
-			'label' => '3 suggest wizard, position top',
-			'config' => array (
-				'type' => 'group',
-				'internal_type' => 'db',
-				'allowed' => 'tx_styleguide_forms_staticdata',
-				'disable_controls' => 'browser',
-				'wizards' => array(
-					'_POSITION' => 'top',
-					'suggest' => array(
-						'type' => 'suggest',
-					),
-				),
-			),
-		),
-		'wizard_4' => array(
-			'label' => '4 suggest wizard, position bottom',
-			'config' => array (
-				'type' => 'group',
-				'internal_type' => 'db',
-				'allowed' => 'tx_styleguide_forms_staticdata',
-				'disable_controls' => 'browser',
-				'wizards' => array(
-					'_POSITION' => 'bottom',
-					'suggest' => array(
-						'type' => 'suggest',
-					),
-				),
-			),
-		)
-
 	),
+
+	'palette_1_1' => array(
+		'exclude' => 0,
+		'label' => 'checkbox is type check',
+		'config' => array(
+			'type' => 'check',
+			'default' => 1,
+		),
+	),
+	'palette_1_2' => array(
+		'exclude' => 0,
+		'label' => 'checkbox type is user',
+		'config' => array(
+			'default' => TRUE,
+			'type' => 'user',
+			'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
+		),
+	),
+	'palette_1_3' => array(
+		'exclude' => 0,
+		'label' => 'checkbox is type check',
+		'config' => array(
+			'type' => 'check',
+			'default' => 1,
+		),
+	),
+	'palette_2_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_3_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_3_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_3' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_4_4' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_5_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_5_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_6_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_7_1' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+	'palette_7_2' => array(
+		'label' => 'Palette Field',
+		'config' => array(
+			'type' => 'input',
+		),
+	),
+
+
+	'wizard_1' => array(
+		'label' => '1 wizard vertical, edit, add, list',
+		'config' => array(
+			'type' => 'select',
+			'foreign_table' => 'tx_styleguide_forms_staticdata',
+			'rootLevel' => 1,
+			'size' => 5,
+			'autoSizeMax' => 20,
+			'minitems' => 0,
+			'maxitems' => 999,
+			'wizards' => array(
+				'_PADDING' => 1, // @TODO: Has no sane effect
+				'_VERTICAL' => 1,
+				'edit' => array(
+					'type' => 'popup',
+					'title' => 'edit',
+					'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
+						'name' => 'wizard_edit',
+					),
+					'icon' => 'edit2.gif',
+					'popup_onlyOpenIfSelected' => 1,
+					'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+				),
+				'add' => array(
+					'type' => 'script',
+					'title' => 'add',
+					'icon' => 'add.gif',
+					'module' => array(
+						'name' => 'wizard_add',
+					),
+					'params' => array(
+						'table' => 'tx_styleguide_forms_staticdata',
+						'pid' => '0',
+						'setValue' => 'prepend',
+					),
+				),
+				'list' => array(
+					'type' => 'script',
+					'title' => 'list',
+					'icon' => 'list.gif',
+					'module' => array(
+						'name' => 'wizard_list',
+					),
+					'params' => array(
+						'table' => 'tx_styleguide_forms_staticdata',
+						'pid' => '0',
+					),
+				),
+			),
+		),
+	),
+	'wizard_2' => array(
+		'label' => '2 wizard colorbox, with image',
+		'config' => array(
+			'type' => 'input',
+			'wizards' => array(
+				'colorpicker' => array(
+					'type' => 'colorbox',
+					'title' => 'Color picker',
+					'icon' => 'link_popup.gif',
+					'module' => array(
+						'name' => 'wizard_colorpicker',
+					),
+					'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
+				),
+			),
+		),
+	),
+	'wizard_3' => array(
+		'label' => '3 suggest wizard, position top',
+		'config' => array (
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'tx_styleguide_forms_staticdata',
+			'disable_controls' => 'browser',
+			'wizards' => array(
+				'_POSITION' => 'top',
+				'suggest' => array(
+					'type' => 'suggest',
+				),
+			),
+		),
+	),
+	'wizard_4' => array(
+		'label' => '4 suggest wizard, position bottom',
+		'config' => array (
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'tx_styleguide_forms_staticdata',
+			'disable_controls' => 'browser',
+			'wizards' => array(
+				'_POSITION' => 'bottom',
+				'suggest' => array(
+					'type' => 'suggest',
+				),
+			),
+		),
+	),
+
+
 
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,endtime,
@@ -1912,16 +2045,17 @@ return array(
 		'0' => array(
 			'showitem' => '
 				--div--;Input,
-					input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
-					input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,	input_19, input_20,
-					input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
+					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
+					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
+					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
 					input_31, input_32, input_33, input_34, input_35,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
 				--div--;Check,
-					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
-					checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
+					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
+					checkbox_10, checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
+
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
@@ -1949,6 +2083,7 @@ return array(
 					--palette--;Palettes 5;palettes_5,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4,
+
 				--div--;Access,
 					--palette--;Visibility;visibility,
 					--palette--;Access;access
