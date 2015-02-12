@@ -401,7 +401,12 @@ class ProcessedFile extends AbstractFile {
 		if (!$force && $this->isUnchanged()) {
 			return FALSE;
 		}
-		return parent::delete();
+		// Only delete file when original isn't used
+		if (!$this->usesOriginalFile()) {
+			return parent::delete();
+		} else {
+			return TRUE;
+		}
 	}
 
 	/**
