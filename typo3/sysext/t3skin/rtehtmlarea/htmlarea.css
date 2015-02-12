@@ -215,9 +215,6 @@
 	clear: left;
 }
 /* Selector htmlarea-window-table is used in the element browsers */
-#typo3-curUrl {
-	margin-left: 10px;
-}
 .htmlarea-window-table td {
 	padding: 0 2px;
 }
