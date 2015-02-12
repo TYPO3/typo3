@@ -640,7 +640,7 @@ return array(
 		),
 		'checkbox_7' => array(
 			'exclude' => 1,
-			'label' => 'CHECKBOX: 7 showIfRTE (?)',
+			'label' => 'CHECKBOX: 7 showIfRTE - only shown if RTE is enabled for user',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
