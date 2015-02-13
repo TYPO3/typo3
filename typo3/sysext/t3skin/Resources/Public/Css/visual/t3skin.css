@@ -9650,6 +9650,9 @@ span.warningboxheader {
 .t3-btn {
   cursor: pointer;
 }
+*::-ms-clear {
+  display: none;
+}
 #typo3-docbody form {
   margin-bottom: 1.25em;
 }

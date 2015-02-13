@@ -1,4 +1,14 @@
 //
+// Disable ms-clear pseudo-element globally to avoid confusion with the
+// existing clearable integration in TYPO3
+//
+// https://msdn.microsoft.com/en-us/library/windows/apps/hh465740.aspx
+//
+*::-ms-clear {
+	display: none;
+}
+
+//
 // Form
 //
 #typo3-docbody form {
