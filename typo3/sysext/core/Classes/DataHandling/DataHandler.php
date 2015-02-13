@@ -329,7 +329,7 @@ class DataHandler {
 	 *
 	 * @var array
 	 */
-	public $pagetreeRefreshFieldsFromPages = array('pid', 'sorting', 'deleted', 'hidden', 'title', 'doktype', 'is_siteroot', 'fe_group', 'nav_hide', 'nav_title', 'module', 'starttime', 'endtime');
+	public $pagetreeRefreshFieldsFromPages = array('pid', 'sorting', 'deleted', 'hidden', 'title', 'doktype', 'is_siteroot', 'fe_group', 'nav_hide', 'nav_title', 'module', 'starttime', 'endtime', 'content_from_pid');
 
 	/**
 	 * Indicates whether the pagetree needs a refresh because of important changes

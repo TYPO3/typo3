@@ -262,8 +262,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-document-paste-after',
 	'actions-document-paste-into',
 	'actions-document-save',
+	'actions-document-save-cleartranslationcache',
 	'actions-document-save-close',
 	'actions-document-save-new',
+	'actions-document-save-translation',
 	'actions-document-save-view',
 	'actions-document-select',
 	'actions-document-synchronize',
@@ -398,6 +400,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-pagetree-page-backend-users',
 	'apps-pagetree-page-backend-users-hideinmenu',
 	'apps-pagetree-page-backend-users-root',
+	'apps-pagetree-page-content-from-page',
+	'apps-pagetree-page-content-from-page-hideinmenu',
 	'apps-pagetree-page-default',
 	'apps-pagetree-page-domain',
 	'apps-pagetree-page-frontend-user',
@@ -573,8 +577,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'treeline-plus',
 	'treeline-plusbottom',
 	'treeline-plusonly',
-	'treeline-stopper',
-	'empty-icon'
+	'treeline-stopper'
 );
 
 
