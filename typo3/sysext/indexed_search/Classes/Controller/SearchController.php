@@ -14,6 +14,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -582,8 +583,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return string Processed content
 	 */
 	protected function markupSWpartsOfString($str) {
+		$htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
 		// Init:
-		$str = str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Html\HtmlParser::bidir_htmlspecialchars($str, -1));
+		$str = str_replace('&nbsp;', ' ', $htmlParser->bidir_htmlspecialchars($str, -1));
 		$str = preg_replace('/\\s\\s+/', ' ', $str);
 		$swForReg = array();
 		// Prepare search words for regex:
