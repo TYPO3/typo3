@@ -10717,6 +10717,9 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 #typo3-dblist-sysnotes .single-note:hover .header span {
   color: #d7d7d7;
 }
+.contentelement-wizard a {
+  display: inline-block;
+}
 .typo3-extension-list .ext-icon {
   max-height: 16px;
   width: auto;

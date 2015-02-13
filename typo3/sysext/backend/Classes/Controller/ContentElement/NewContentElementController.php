@@ -163,7 +163,7 @@ class NewContentElementController {
 			$code = '';
 			$wizardItems = $this->getWizardItems();
 			// Wrapper for wizards
-			$this->elementWrapper['section'] = array('<div class="panel panel-tab"><div class="panel-body">', '</div></div>');
+			$this->elementWrapper['section'] = array('<div class="contentelement-wizard panel panel-tab"><div class="panel-body">', '</div></div>');
 			// Copy wrapper for tabs
 			$this->elementWrapperForTabs = $this->elementWrapper;
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
