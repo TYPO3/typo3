@@ -82,6 +82,14 @@ define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
 							break;
 					}
 
+					// datepicker expects the min and max dates to be formatted with options.format but unix timestamp given
+					if ($element.data('dateMindate')) {
+						$element.data('dateMindate', moment.unix($element.data('dateMindate')).format(options.format));
+					}
+					if ($element.data('dateMaxdate')) {
+						$element.data('dateMaxdate', moment.unix($element.data('dateMaxdate')).format(options.format));
+					}
+
 					// initialize the date time picker on this element
 					$element.datetimepicker(options);
 				});
