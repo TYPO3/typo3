@@ -1942,8 +1942,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function markupSWpartsOfString($str) {
+		$htmlParser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		// Init:
-		$str = str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Html\HtmlParser::bidir_htmlspecialchars($str, -1));
+		$str = str_replace('&nbsp;', ' ', $htmlParser->bidir_htmlspecialchars($str, -1));
 		$str = preg_replace('/\\s\\s+/', ' ', $str);
 		$swForReg = array();
 		// Prepare search words for regex:
