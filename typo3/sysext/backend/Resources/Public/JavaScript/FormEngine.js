@@ -632,7 +632,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 */
 	FormEngine.convertTextareasResizable = function() {
 		var $elements = $('.t3js-formengine-textarea');
-		if (TYPO3.settings.Textarea.autosize && $elements.length) {
+		if (TYPO3.settings.Textarea && TYPO3.settings.Textarea.autosize && $elements.length) {
 			require(['jquery/jquery.autosize.min'], function() {
 				$elements.autosize();
 			});

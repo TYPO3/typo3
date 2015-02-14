@@ -67,13 +67,13 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Iframe',
 		 * In all browsers, it breaks the evaluation of the framework dimensions
 		 */
 		initStyleChangeEventListener: function () {
-			if (this.isNested && !UserAgent.isWebKit) {
+			if (this.isNested) {
 				if (typeof MutationObserver === 'function') {
 					var self = this;
 					this.mutationObserver = new MutationObserver( function (mutations) { self.onNestedShowMutation(mutations); });
 					var options = {
 						attributes: true,
-						attributeFilter: ['style']
+						attributeFilter: ['class', 'style']
 					};
 					for (var i = this.nestedParentElements.sorted.length; --i >= 0;) {
 						var nestedElement = document.getElementById(this.nestedParentElements.sorted[i]);

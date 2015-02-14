@@ -14,8 +14,9 @@
  * HTMLArea.util.TYPO3: Utility functions for dealing with tabs and inline elements in TYPO3 forms
  ***************************************************/
 define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
-	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'],
-	function (UserAgent) {
+	['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent',
+	'TYPO3/CMS/Rtehtmlarea/HTMLArea/DOM/DOM'],
+	function (UserAgent, Dom) {
 
 	return {
 
@@ -30,7 +31,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 			var i, type, level, elementId, max, simplifiedNested=[],
 				elementIdSuffix = {
 					tab: '-DIV',
-					inline: '_fields',
+					inline: '_div',
 					flex: '-content'
 				};
 			if (nested && nested.length) {
@@ -62,20 +63,27 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 		accessParentElements: function (parentElements, callbackFunc, args) {
 			var result = {};
 			if (parentElements.length) {
-				var currentElement = parentElements.pop();
-				currentElement = document.getElementById(currentElement);
-				var actionRequired = (currentElement.style.display === 'none');
+				var currentElementId = parentElements.pop();
+				var currentElement = document.getElementById(currentElementId);
+				var actionRequired = (currentElementId.indexOf('-DIV') !== -1 && !Dom.hasClass(currentElement, 'active'))
+					|| (currentElementId.indexOf('_div') !== -1 && !Dom.hasClass(currentElement, 'panel-visible'))
+					|| (currentElement.style.display === 'none');
 				if (actionRequired) {
 					var visibility = currentElement.style.visibility;
 					var position = currentElement.style.position;
 					var top = currentElement.style.top;
 					var display = currentElement.style.display;
-					var className = currentElement.parentNode.className;
+					var className = currentElement.className;
 					currentElement.style.visibility = 'hidden';
 					currentElement.style.position = 'absolute';
 					currentElement.style.top = '-10000px';
 					currentElement.style.display = '';
-					currentElement.parentNode.className = '';
+					if (currentElementId.indexOf('-DIV') !== -1) {
+						Dom.addClass(currentElement, 'active');
+					} else if (currentElementId.indexOf('_div') !== -1) {
+						Dom.addClass(currentElement, 'panel-visible');
+					}
+					currentElement.className = '';
 				}
 				result = this.accessParentElements(parentElements, callbackFunc, args);
 				if (actionRequired) {
@@ -83,7 +91,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 					currentElement.style.position = position;
 					currentElement.style.top = top;
 					currentElement.style.display = display;
-					currentElement.parentNode.className = className;
+					currentElement.className = className;
 				}
 			} else {
 				result = eval(callbackFunc);
@@ -100,7 +108,17 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Util/TYPO3',
 		allElementsAreDisplayed: function(elements) {
 			var allDisplayed = true;
 			for (var i = elements.length; --i >= 0;) {
-				allDisplayed = document.getElementById(elements[i]).style.display !== 'none';
+				var element = document.getElementById(elements[i]);
+				if (element) {
+					if (element.style.display) {
+						allDisplayed = element.style.display !== 'none';
+					}
+					if (elements[i].indexOf('-DIV') !== -1) {
+						allDisplayed = allDisplayed && Dom.hasClass(element, 'active');
+					} else if (elements[i].indexOf('_div') !== -1) {
+						allDisplayed = allDisplayed && Dom.hasClass(element, 'panel-visible');
+					}
+				}
 				if (!allDisplayed) {
 					break;
 				}
