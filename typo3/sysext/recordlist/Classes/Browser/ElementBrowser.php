@@ -2460,7 +2460,8 @@ class ElementBrowser {
 		// Make footer of upload form, including the submit button:
 		$redirectValue = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
 			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
-			. '&bparams=' . rawurlencode($this->bparams);
+			. '&bparams=' . rawurlencode($this->bparams)
+			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
 		$code .= \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		$code .= '
