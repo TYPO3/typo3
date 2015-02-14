@@ -84,6 +84,113 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	/**
 	 * @test
 	 */
+	public function selectCreatesExpectedOptionsWithArraysAndOptionValueFieldAndOptionLabelFieldSet() {
+		$this->tagBuilder->expects($this->once())->method('setContent')->with(
+			'<option value="2"></option>' . chr(10) .
+			'<option value="-1">Bar</option>' . chr(10) .
+			'<option value="">Baz</option>' . chr(10) .
+			'<option value="1">Foo</option>' . chr(10)
+		);
+
+		$this->arguments['optionValueField'] = 'uid';
+		$this->arguments['optionLabelField'] = 'title';
+		$this->arguments['sortByOptionLabel'] = TRUE;
+		$this->arguments['options'] = array(
+			array(
+				'uid' => 1,
+				'title' => 'Foo'
+			),
+			array(
+				'uid' => -1,
+				'title' => 'Bar'
+			),
+			array(
+				'title' => 'Baz'
+			),
+			array(
+				'uid' => '2'
+			),
+		);
+
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function selectCreatesExpectedOptionsWithStdClassesAndOptionValueFieldAndOptionLabelFieldSet() {
+		$this->tagBuilder->expects($this->once())->method('setContent')->with(
+			'<option value="2"></option>' . chr(10) .
+			'<option value="-1">Bar</option>' . chr(10) .
+			'<option value="">Baz</option>' . chr(10) .
+			'<option value="1">Foo</option>' . chr(10)
+		);
+
+		$obj1 = new \StdClass();
+		$obj1->uid = 1;
+		$obj1->title = 'Foo';
+
+		$obj2 = new \StdClass();
+		$obj2->uid = -1;
+		$obj2->title = 'Bar';
+
+		$obj3 = new \StdClass();
+		$obj3->title = 'Baz';
+
+		$obj4 = new \StdClass();
+		$obj4->uid = 2;
+
+		$this->arguments['optionValueField'] = 'uid';
+		$this->arguments['optionLabelField'] = 'title';
+		$this->arguments['sortByOptionLabel'] = TRUE;
+		$this->arguments['options'] = array($obj1, $obj2, $obj3, $obj4);
+
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function selectCreatesExpectedOptionsWithArrayObjectsAndOptionValueFieldAndOptionLabelFieldSet() {
+		$this->tagBuilder->expects($this->once())->method('setContent')->with(
+			'<option value="2"></option>' . chr(10) .
+			'<option value="-1">Bar</option>' . chr(10) .
+			'<option value="">Baz</option>' . chr(10) .
+			'<option value="1">Foo</option>' . chr(10)
+		);
+
+		$this->arguments['optionValueField'] = 'uid';
+		$this->arguments['optionLabelField'] = 'title';
+		$this->arguments['sortByOptionLabel'] = TRUE;
+		$this->arguments['options'] = new \ArrayObject(array(
+			array(
+				'uid' => 1,
+				'title' => 'Foo'
+			),
+			array(
+				'uid' => -1,
+				'title' => 'Bar'
+			),
+			array(
+				'title' => 'Baz'
+			),
+			array(
+				'uid' => '2'
+			),
+		));
+
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
 	public function anEmptyOptionTagIsRenderedIfOptionsArrayIsEmptyToAssureXhtmlCompatibility() {
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
