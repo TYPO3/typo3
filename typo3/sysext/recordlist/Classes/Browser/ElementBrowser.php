@@ -854,6 +854,8 @@ class ElementBrowser {
 	public function main_rte($wiz = FALSE) {
 		// Starting content:
 		$content = $this->doc->startPage('RTE link');
+		// Add the FlashMessages if any
+		$content .= $this->doc->getFlashMessages();
 
 		$allowedItems = $this->getAllowedItems('page,file,folder,url,mail,spec');
 
@@ -1459,6 +1461,8 @@ class ElementBrowser {
 		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
 		// Starting content:
 		$content = $this->doc->startPage('TBE file selector');
+		// Add the FlashMessages if any
+		$content .= $this->doc->getFlashMessages();
 		// Init variable:
 		$pArr = explode('|', $this->bparams);
 		// The key number 3 of the pArr contains the "allowed" string. Disallowed is not passed to
@@ -1545,8 +1549,6 @@ class ElementBrowser {
 		} else {
 			$files = '';
 		}
-		// Add the FlashMessages if any
-		$content .= $this->doc->getFlashMessages();
 
 		// Putting the parts together, side by side:
 		$content .= '
@@ -1591,6 +1593,8 @@ class ElementBrowser {
 		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";');
 		// Starting content:
 		$content = $this->doc->startPage('TBE folder selector');
+		// Add the FlashMessages if any
+		$content .= $this->doc->getFlashMessages();
 		// Init variable:
 		$parameters = explode('|', $this->bparams);
 		if ($this->expandFolder) {
