@@ -156,9 +156,6 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 			// @todo: remove check for old underscore model name syntax once it's possible
 			if (strpbrk($methodParameter['type'], '_\\') === FALSE) {
 				$typeValidator = $this->createValidator($methodParameter['type']);
-			} elseif (preg_match('/[\\_]Model[\\_]/', $methodParameter['type']) !== FALSE) {
-				$possibleValidatorClassName = str_replace(array('\\Model\\', '_Model_'), array('\\Validator\\', '_Validator_'), $methodParameter['type']) . 'Validator';
-				$typeValidator = $this->createValidator($possibleValidatorClassName);
 			} else {
 				$typeValidator = NULL;
 			}
