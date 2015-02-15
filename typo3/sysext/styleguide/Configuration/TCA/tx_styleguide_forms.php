@@ -653,15 +653,15 @@ return array(
 		 * @TODO Add a itemsProcFunc
 		 *
 		'checkbox_8' => array(
-		'label' => '8 itemsProcFunc',
-		'config' => array(
-		'type' => 'check',
-		'items' => array(
-		array('foo', ''),
-		array('bar', ''),
-		),
-		'itemsProcFunc' => '',
-		),
+			'label' => '8 itemsProcFunc',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('foo', ''),
+					array('bar', ''),
+				),
+				'itemsProcFunc' => '',
+			),
 		),
 		 */
 		'checkbox_9' => array(
@@ -1491,9 +1491,6 @@ return array(
 				'autoSizeMax' => 40,
 			),
 		),
-		/**
-		 * @TODO: Add some more wizards for group and select, especially play with _ parameters like _POSITION and _VERTICAL
-		 */
 
 
 		'none_1' => array(
@@ -1813,207 +1810,209 @@ return array(
 				),
 			),
 		),
-	),
-
-	'palette_1_1' => array(
-		'exclude' => 0,
-		'label' => 'checkbox is type check',
-		'config' => array(
-			'type' => 'check',
-			'default' => 1,
-		),
-	),
-	'palette_1_2' => array(
-		'exclude' => 0,
-		'label' => 'checkbox type is user',
-		'config' => array(
-			'default' => TRUE,
-			'type' => 'user',
-			'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
-		),
-	),
-	'palette_1_3' => array(
-		'exclude' => 0,
-		'label' => 'checkbox is type check',
-		'config' => array(
-			'type' => 'check',
-			'default' => 1,
-		),
-	),
-	'palette_2_1' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_3_1' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_3_2' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_4_1' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_4_2' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_4_3' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_4_4' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_5_1' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_5_2' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_6_1' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_7_1' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
-	'palette_7_2' => array(
-		'label' => 'Palette Field',
-		'config' => array(
-			'type' => 'input',
-		),
-	),
 
 
-	'wizard_1' => array(
-		'label' => '1 wizard vertical, edit, add, list',
-		'config' => array(
-			'type' => 'select',
-			'foreign_table' => 'tx_styleguide_forms_staticdata',
-			'rootLevel' => 1,
-			'size' => 5,
-			'autoSizeMax' => 20,
-			'minitems' => 0,
-			'maxitems' => 999,
-			'wizards' => array(
-				'_PADDING' => 1, // @TODO: Has no sane effect
-				'_VERTICAL' => 1,
-				'edit' => array(
-					'type' => 'popup',
-					'title' => 'edit',
-					'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
-						'name' => 'wizard_edit',
+
+
+		'palette_1_1' => array(
+			'exclude' => 0,
+			'label' => 'checkbox is type check',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			),
+		),
+		'palette_1_2' => array(
+			'exclude' => 0,
+			'label' => 'checkbox type is user',
+			'config' => array(
+				'default' => TRUE,
+				'type' => 'user',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
+			),
+		),
+		'palette_1_3' => array(
+			'exclude' => 0,
+			'label' => 'checkbox is type check',
+			'config' => array(
+				'type' => 'check',
+				'default' => 1,
+			),
+		),
+		'palette_2_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_3_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_3_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_3' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_4_4' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_5_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_5_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_6_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_7_1' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_7_2' => array(
+			'label' => 'Palette Field',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+
+
+		'wizard_1' => array(
+			'label' => '1 wizard vertical, edit, add, list',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_styleguide_forms_staticdata',
+				'rootLevel' => 1,
+				'size' => 5,
+				'autoSizeMax' => 20,
+				'minitems' => 0,
+				'maxitems' => 999,
+				'wizards' => array(
+					'_PADDING' => 1, // @TODO: Has no sane effect
+					'_VERTICAL' => 1,
+					'edit' => array(
+						'type' => 'popup',
+						'title' => 'edit',
+						'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
+							'name' => 'wizard_edit',
+						),
+						'icon' => 'edit2.gif',
+						'popup_onlyOpenIfSelected' => 1,
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
-					'icon' => 'edit2.gif',
-					'popup_onlyOpenIfSelected' => 1,
-					'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+					'add' => array(
+						'type' => 'script',
+						'title' => 'add',
+						'icon' => 'add.gif',
+						'module' => array(
+							'name' => 'wizard_add',
+						),
+						'params' => array(
+							'table' => 'tx_styleguide_forms_staticdata',
+							'pid' => '0',
+							'setValue' => 'prepend',
+						),
+					),
+					'list' => array(
+						'type' => 'script',
+						'title' => 'list',
+						'icon' => 'list.gif',
+						'module' => array(
+							'name' => 'wizard_list',
+						),
+						'params' => array(
+							'table' => 'tx_styleguide_forms_staticdata',
+							'pid' => '0',
+						),
+					),
 				),
-				'add' => array(
-					'type' => 'script',
-					'title' => 'add',
-					'icon' => 'add.gif',
-					'module' => array(
-						'name' => 'wizard_add',
-					),
-					'params' => array(
-						'table' => 'tx_styleguide_forms_staticdata',
-						'pid' => '0',
-						'setValue' => 'prepend',
+			),
+		),
+		'wizard_2' => array(
+			'label' => '2 wizard colorbox, with image',
+			'config' => array(
+				'type' => 'input',
+				'wizards' => array(
+					'colorpicker' => array(
+						'type' => 'colorbox',
+						'title' => 'Color picker',
+						'icon' => 'link_popup.gif',
+						'module' => array(
+							'name' => 'wizard_colorpicker',
+						),
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+						'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
 					),
 				),
-				'list' => array(
-					'type' => 'script',
-					'title' => 'list',
-					'icon' => 'list.gif',
-					'module' => array(
-						'name' => 'wizard_list',
+			),
+		),
+		'wizard_3' => array(
+			'label' => '3 suggest wizard, position top',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'disable_controls' => 'browser',
+				'wizards' => array(
+					'_POSITION' => 'top',
+					'suggest' => array(
+						'type' => 'suggest',
 					),
-					'params' => array(
-						'table' => 'tx_styleguide_forms_staticdata',
-						'pid' => '0',
+				),
+			),
+		),
+		'wizard_4' => array(
+			'label' => '4 suggest wizard, position bottom',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'disable_controls' => 'browser',
+				'wizards' => array(
+					'_POSITION' => 'bottom',
+					'suggest' => array(
+						'type' => 'suggest',
 					),
 				),
 			),
 		),
 	),
-	'wizard_2' => array(
-		'label' => '2 wizard colorbox, with image',
-		'config' => array(
-			'type' => 'input',
-			'wizards' => array(
-				'colorpicker' => array(
-					'type' => 'colorbox',
-					'title' => 'Color picker',
-					'icon' => 'link_popup.gif',
-					'module' => array(
-						'name' => 'wizard_colorpicker',
-					),
-					'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-					'exampleImg' => 'EXT:styleguide/Resources/Public/Images/colorpicker.jpg',
-				),
-			),
-		),
-	),
-	'wizard_3' => array(
-		'label' => '3 suggest wizard, position top',
-		'config' => array (
-			'type' => 'group',
-			'internal_type' => 'db',
-			'allowed' => 'tx_styleguide_forms_staticdata',
-			'disable_controls' => 'browser',
-			'wizards' => array(
-				'_POSITION' => 'top',
-				'suggest' => array(
-					'type' => 'suggest',
-				),
-			),
-		),
-	),
-	'wizard_4' => array(
-		'label' => '4 suggest wizard, position bottom',
-		'config' => array (
-			'type' => 'group',
-			'internal_type' => 'db',
-			'allowed' => 'tx_styleguide_forms_staticdata',
-			'disable_controls' => 'browser',
-			'wizards' => array(
-				'_POSITION' => 'bottom',
-				'suggest' => array(
-					'type' => 'suggest',
-				),
-			),
-		),
-	),
-
 
 
 	'interface' => array(
@@ -2048,7 +2047,7 @@ return array(
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
-					input_31, input_32, input_33, input_34, input_35,
+					input_32, input_33, input_34, input_35,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
@@ -2094,7 +2093,7 @@ return array(
 	'palettes' => array(
 		'palettes_1' => array(
 			'showitem' => 'palette_1_1, palette_1_2, palette_1_3',
-			'canNotCollapse' => 1
+			'canNotCollapse' => 1,
 		),
 		'palettes_2' => array(
 			'showitem' => 'palette_2_1',
@@ -2107,15 +2106,15 @@ return array(
 		),
 		'palettes_5' => array(
 			'showitem' => 'palette_5_1, --linebreak--, palette_5_2',
-			'canNotCollapse' => 1
+			'canNotCollapse' => 1,
 		),
 		'visibility' => array(
 			'showitem' => 'hidden;Shown in frontend',
-			'canNotCollapse' => 1
+			'canNotCollapse' => 1,
 		),
 		'access' => array(
 			'showitem' => 'starttime;Publish Date, endtime;Expiration Date',
-			'canNotCollapse' => 1
+			'canNotCollapse' => 1,
 		),
 	),
 
