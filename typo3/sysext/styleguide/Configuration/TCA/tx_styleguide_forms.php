@@ -2081,7 +2081,7 @@ return array(
 					--palette--;;palettes_4,
 					--palette--;Palettes 5;palettes_5,
 				--div--;Wizards,
-					wizard_1, wizard_2, wizard_3, wizard_4,
+					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 
 				--div--;Access,
 					--palette--;Visibility;visibility,
