@@ -30,7 +30,9 @@ Changes in the Frontend
 -----------------------
 
 The TypoScript configuration changed. If indexed_search is installed, it is automatically activated:
-.. code-block::
+
+.. code-block:: typoscript
+
 	config.index_enable = 1
 	config.index_externals = 1
 

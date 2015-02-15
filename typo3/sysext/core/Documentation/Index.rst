@@ -49,6 +49,7 @@ Old changes
 	:titlesonly:
 
 	Changelog/7.0/Index
+	Changelog/7.1/Index
 
 How to contribute
 =================
