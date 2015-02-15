@@ -331,25 +331,6 @@ return array(
 				),
 			),
 		),
-		'input_31' => array(
-			'exclude' => 1,
-			'label' => 'INPUT: 31 Color picker wizard, _PADDING 6',
-			'config' => array(
-				'type' => 'input',
-				'wizards' => array(
-					'_PADDING' => 6,
-					'colorpicker' => array(
-						'type' => 'colorbox',
-						'title' => 'Color picker',
-						'icon' => 'link_popup.gif',
-						'module' => array(
-							'name' => 'wizard_colorpicker',
-						),
-						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-					),
-				),
-			),
-		),
 		'input_32' => array(
 			'exclude' => 1,
 			'label' => 'INPUT: 32 Slider wizard, step=10, width=200, eval=trim,int',
@@ -1914,7 +1895,7 @@ return array(
 
 
 		'wizard_1' => array(
-			'label' => '1 wizard vertical, edit, add, list',
+			'label' => 'WIZARD: 1 vertical, edit, add, list',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_styleguide_forms_staticdata',
@@ -1965,7 +1946,26 @@ return array(
 			),
 		),
 		'wizard_2' => array(
-			'label' => '2 wizard colorbox, with image',
+			'exclude' => 1,
+			'label' => 'WIZARD: 2 colorbox',
+			'config' => array(
+				'type' => 'input',
+				'wizards' => array(
+					'_PADDING' => 6,
+					'colorpicker' => array(
+						'type' => 'colorbox',
+						'title' => 'Color picker',
+						'icon' => 'link_popup.gif',
+						'module' => array(
+							'name' => 'wizard_colorpicker',
+						),
+						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+					),
+				),
+			),
+		),
+		'wizard_3' => array(
+			'label' => 'WIZARD: 3 colorbox, with image',
 			'config' => array(
 				'type' => 'input',
 				'wizards' => array(
@@ -1982,8 +1982,8 @@ return array(
 				),
 			),
 		),
-		'wizard_3' => array(
-			'label' => '3 suggest wizard, position top',
+		'wizard_4' => array(
+			'label' => 'WIZARD: 4 suggest wizard, position top',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1997,8 +1997,8 @@ return array(
 				),
 			),
 		),
-		'wizard_4' => array(
-			'label' => '4 suggest wizard, position bottom',
+		'wizard_5' => array(
+			'label' => 'WIZARD: 5 suggest wizard, position bottom',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -2020,7 +2020,7 @@ return array(
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
 			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-			input_31, input_32, input_33, input_34, input_35,
+			input_32, input_33, input_34, input_35,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
@@ -2036,7 +2036,7 @@ return array(
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
-			wizard_1, wizard_2, wizard_3, wizard_4,
+			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 			',
 	),
 
@@ -2046,7 +2046,7 @@ return array(
 				--div--;Input,
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
-					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30, input_31,
+					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30,
 					input_32, input_33, input_34, input_35,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
