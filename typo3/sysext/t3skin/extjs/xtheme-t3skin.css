@@ -1743,6 +1743,10 @@ a.x-menu-item {
 	border-bottom-color:#bcbcbc;
 }
 
+.x-combo-list-inner {
+	background-color: #EFEFEF;
+}
+
 .x-panel {
 	border-color: #A2AAB8;
 }
