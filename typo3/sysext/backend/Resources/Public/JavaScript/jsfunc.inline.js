@@ -1200,6 +1200,10 @@ var inline = {
 	},
 
 	readdSelectOption: function ($selectObj, value, unique) {
+		if (!$selectObj.length) {
+			return;
+		}
+
 		var index = null;
 		var optionsHash = this.getOptionsHash($selectObj);
 		var possibleValues = this.getKeysFromHashMap(unique.possible);
