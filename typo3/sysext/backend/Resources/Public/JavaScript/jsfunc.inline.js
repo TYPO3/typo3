@@ -273,7 +273,7 @@ var inline = {
 						head.appendChild(element);
 						processedCount++;
 					}
-					json.headData.shift();
+					delete(json.headData[index]);
 				}
 			});
 		}
@@ -352,7 +352,7 @@ var inline = {
 	},
 
 	importElementMultiple: function (objectId, table, uidArray, type) {
-		uidArray.each(function (uid) {
+		TYPO3.jQuery.each(uidArray, function (index, uid) {
 			inline.delayedImportElement(objectId, table, uid, type);
 		});
 	},
@@ -587,14 +587,16 @@ var inline = {
 		var result = false;
 		TYPO3.jQuery.each(haystack, function (index, element) {
 			if (element.nodeName.toUpperCase() == needle.name) {
-				var attributesCount = $H(needle.attributes).keys().length;
+				var attributesCount = Object.keys(needle.attributes).length;
 				var attributesFound = 0;
-				$H(needle.attributes).each(function (attribute) {
-					if (element.getAttribute && element.getAttribute(attribute.key) == attribute.value) {
-						attributesFound++;
+				if (element.getAttribute) {
+					for (var attribute in needle.attributes) {
+						if (needle.attributes.hasOwnProperty(attribute) && element.getAttribute(attribute.key) === attribute.value) {
+							attributesFound++;
+						}
 					}
-				});
-				if (attributesFound == attributesCount) {
+				}
+				if (attributesFound === attributesCount) {
 					result = true;
 					return true;
 				}

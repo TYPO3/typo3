@@ -44,14 +44,13 @@ define('TYPO3/CMS/Backend/BrowseLinks', ['jquery'], function ($) {
 		},
 		insertElementMultiple: function(list) {
 			var uidList = [];
-			list.each(function(index) {
-				if (typeof BrowseLinks.elements[index] !== undefined) {
-					var element = BrowseLinks.elements[index];
+			for (var i = 0, n = list.length; i < n; i++) {
+				if (typeof BrowseLinks.elements[list[i]] !== undefined) {
+					var element = BrowseLinks.elements[list[i]];
 					uidList.push(element.uid);
 				}
-			});
+			}
 			insertMultiple('sys_file', uidList);
-			return true;
 		}
 	};
 
