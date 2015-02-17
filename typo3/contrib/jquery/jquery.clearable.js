@@ -45,7 +45,7 @@
 				// Wrap it with a div and add a span that is the trigger for
 				// clearing.
 				$input.wrap('<div class="form-control-clearable" />');
-				$input.after('<button class="close"><span class="fa fa-times" /></button>');
+				$input.after('<button type="button" class="close"><span class="fa fa-times" /></button>');
 				$input.addClass('t3js-clearable');
 
 				var $clearer = $input.next();
@@ -53,7 +53,7 @@
 				// Register a listener the various events triggering the clearer to
 				// be shown or hidden.
 				var handler = function() {
-					$element = $(this);
+					var $element = $(this);
 					if ($element.next('input[type=hidden]').length) {
 						$element = $element.next('input[type=hidden]');
 					}
