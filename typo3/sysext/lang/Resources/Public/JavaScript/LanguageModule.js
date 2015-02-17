@@ -262,7 +262,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 			columns = [
 				{
 					render: function(data, type, row) {
-						return LanguageModule.buildImage(data.icon, data.title);
+						return LanguageModule.buildImage(data.icon, data.title, data.title, data.width, data.height);
 					},
 					width: '20px',
 					orderable: false,
@@ -519,12 +519,17 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 	/**
 	 * Build image
 	 */
-	LanguageModule.buildImage = function(uri, alt, tilte) {
+	LanguageModule.buildImage = function(uri, alt, title, width, heigth) {
 		var $image = $('<img>');
 		$image.attr('src', uri);
 		$image.attr('alt', alt ? alt : '');
-		$image.attr('tilte', tilte ? tilte : '');
-		return $image.wrap('<span>').parent().html();
+		$image.attr('title', title ? title : '');
+		$image.attr('style', 'width: ' + width + 'px; height: ' + heigth + 'px;');
+		var $span = $('<span>');
+		$span.addClass('typo3-app-icon');
+		$span.attr('style', 'background: none; text-align: center;');
+		$span.html($image);
+		return $span.wrap('<span>').parent().html();
 	};
 
 	/**

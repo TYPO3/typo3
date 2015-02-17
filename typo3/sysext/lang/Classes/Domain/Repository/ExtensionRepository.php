@@ -57,6 +57,9 @@ class ExtensionRepository {
 					$this->getExtensionIconWithPath($entry)
 				);
 				$extension->setVersionFromString($entry['version']);
+				$extension->setIconWidth($entry['ext_icon_width']);
+				$extension->setIconHeight($entry['ext_icon_height']);
+
 				$this->extensions[$entry['key']] = $extension;
 			}
 			ksort($this->extensions);

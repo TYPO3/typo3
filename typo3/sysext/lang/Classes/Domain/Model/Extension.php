@@ -40,6 +40,16 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var int
 	 */
+	protected $iconWidth = 0;
+
+	/**
+	 * @var int
+	 */
+	protected $iconHeight = 0;
+
+	/**
+	 * @var int
+	 */
 	protected $version = '';
 
 	/**
@@ -77,6 +87,34 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getIcon() {
 		return $this->icon;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getIconWidth() {
+		return $this->iconWidth;
+	}
+
+	/**
+	 * @param int $iconWidth
+	 */
+	public function setIconWidth($iconWidth) {
+		$this->iconWidth = $iconWidth;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getIconHeight() {
+		return $this->iconHeight;
+	}
+
+	/**
+	 * @param int $iconHeight
+	 */
+	public function setIconHeight($iconHeight) {
+		$this->iconHeight = $iconHeight;
 	}
 
 	/**
@@ -177,6 +215,8 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'title'   => $this->getTitle(),
 			'icon'    => $this->getIcon(),
 			'version' => $this->getVersion(),
+			'width'   => $this->getIconWidth(),
+			'height'  => $this->getIconHeight()
 		);
 	}
 

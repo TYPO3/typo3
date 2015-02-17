@@ -147,6 +147,27 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Adds information about icon size to the extension information
+	 *
+	 * @param array $extensions
+	 * @return array
+	 */
+	public function enrichExtensionsWithIconInformation(array $extensions) {
+		foreach ($extensions as &$properties) {
+			$iInfo = @getimagesize(PATH_site . $properties['siteRelPath'] . $properties['ext_icon']);
+			if ($iInfo !== FALSE) {
+				$properties['ext_icon_width'] = $iInfo[0];
+				$properties['ext_icon_height'] = $iInfo[1];
+			} else {
+				$properties['ext_icon_width'] = 0;
+				$properties['ext_icon_height'] = 0;
+			}
+		}
+		unset($properties);
+		return $extensions;
+	}
+
+	/**
 	 * Gets all available and installed extension with additional information
 	 * from em_conf and TER (if available)
 	 *
@@ -155,6 +176,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getAvailableAndInstalledExtensionsWithAdditionalInformation() {
 		$availableExtensions = $this->getAvailableExtensions();
 		$availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
+		$availableAndInstalledExtensions = $this->enrichExtensionsWithIconInformation($availableAndInstalledExtensions);
 		return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
 	}
 
