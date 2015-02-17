@@ -686,19 +686,21 @@ class GeneralUtility {
 	/**
 	 * Removes an item from a comma-separated list of items.
 	 *
+	 * If $element contains a comma, the behaviour of this method is undefined.
+	 * Empty
+	 *
 	 * @param string $element Element to remove
 	 * @param string $list Comma-separated list of items (string)
 	 * @return string New comma-separated list of items
 	 */
 	static public function rmFromList($element, $list) {
-		return trim(
-			str_replace(
-				',' . $element . ',',
-				',',
-				',' . $list . ','
-			),
-			','
-		);
+		$items = explode(',', $list);
+		foreach ($items as $k => $v) {
+			if ($v == $element) {
+				unset($items[$k]);
+			}
+		}
+		return implode(',', $items);
 	}
 
 	/**

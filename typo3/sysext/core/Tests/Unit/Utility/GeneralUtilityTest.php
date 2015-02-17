@@ -578,9 +578,16 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Element at end of list' => array('one,two,removeme', 'one,two'),
 			'One item list' => array('removeme', ''),
 			'Element not contained in list' => array('one,two,three', 'one,two,three'),
+			'Empty element survives' => array('one,,three,,removeme', 'one,,three,'),
+			'Empty element survives at start' => array(',removeme,three,removeme', ',three'),
+			'Empty element survives at end' => array('removeme,three,removeme,', 'three,'),
 			'Empty list' => array('', ''),
-			'List with leading comma is trimmed afterwards' => array(',one,two,removeme', 'one,two'),
-			'List with trailing comma is trimmed afterwards' => array('one,two,removeme,', 'one,two'),
+			'List contains removeme multiple times' => array('removeme,notme,removeme,removeme', 'notme'),
+			'List contains removeme multiple times nothing else' => array('removeme,removeme,removeme', ''),
+			'List contains removeme multiple times nothing else 2x' => array('removeme,removeme', ''),
+			'List contains removeme multiple times nothing else 3x' => array('removeme,removeme,removeme', ''),
+			'List contains removeme multiple times nothing else 4x' => array('removeme,removeme,removeme,removeme', ''),
+			'List contains removeme multiple times nothing else 5x' => array('removeme,removeme,removeme,removeme,removeme', ''),
 		);
 	}
 
