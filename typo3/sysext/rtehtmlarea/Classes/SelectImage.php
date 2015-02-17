@@ -82,10 +82,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->initVariables();
 		$this->initConfiguration();
 		$this->initHookObjects('ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php');
-
 		$this->allowedItems = $this->getAllowedItems('magic,plain,image');
+		// Insert the image and exit
 		$this->insertImage();
-
+		// or render dialogue
 		$this->initDocumentTemplate();
 	}
 
@@ -135,6 +135,13 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		}');
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
+			SelectImage.editorNo = "' . $this->editorNo . '";
+			SelectImage.act = "' . ($this->act ?: 'plain') . '";
+			SelectImage.sys_language_content = "' . $this->sys_language_content . '";
+			SelectImage.RTEtsConfigParams = "' . rawurlencode($this->RTEtsConfigParams) . '";
+			SelectImage.bparams = "' . $this->bparams . '";
+		}');
 		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
 	}
@@ -145,7 +152,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return string the body tag additions
 	 */
 	public function getBodyTagAdditions() {
-		return 'onload="initEventListeners();"';
+		return 'onload="SelectImage.initEventListeners();"';
 	}
 
 	/**
@@ -154,31 +161,34 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return void
 	 */
 	protected function insertImage() {
-		$table = htmlspecialchars(GeneralUtility::_GP('table'));
-		$uid = (int)GeneralUtility::_GP('uid');
-		if (GeneralUtility::_GP('insertImage') && $uid) {
-			/** @var $fileObject Resource\File */
-			$fileObject = Resource\ResourceFactory::getInstance()->getFileObject($uid);
-			// Get default values for alt and title attributes from file properties
-			$altText = $fileObject->getProperty('alternative');
-			$titleText = $fileObject->getProperty('title');
-			switch ($this->act) {
-				case 'magic':
-					$this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '"');
-					die;
-					break;
-				case 'plain':
-					$this->insertPlainImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '"');
-					die;
-					break;
-				default:
-					// Call hook
-					foreach ($this->hookObjects as $hookObject) {
-						if (method_exists($hookObject, 'insertElement')) {
-							$hookObject->insertElement($this->act);
+		$uidList = (string)GeneralUtility::_GP('uidList');
+		if (GeneralUtility::_GP('insertImage') && $uidList) {
+			$uids = explode('|', $uidList);
+			$insertJsStatements = array();
+			foreach ($uids as $uid) {
+				/** @var $fileObject Resource\File */
+				$fileObject = Resource\ResourceFactory::getInstance()->getFileObject((int)$uid);
+				// Get default values for alt and title attributes from file properties
+				$altText = $fileObject->getProperty('alternative');
+				$titleText = $fileObject->getProperty('title');
+				switch ($this->act) {
+					case 'magic':
+						$insertJsStatements[] = $this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '"');
+						break;
+					case 'plain':
+						$insertJsStatements[] = $this->insertPlainImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '"');
+						break;
+					default:
+						// Call hook
+						foreach ($this->hookObjects as $hookObject) {
+							if (method_exists($hookObject, 'insertElement')) {
+								$hookObject->insertElement($this->act);
+							}
 						}
-					}
+				}
 			}
+			$this->insertImages($insertJsStatements);
+			die;
 		}
 	}
 
@@ -189,7 +199,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @param string $altText: text for the alt attribute of the image
 	 * @param string $titleText: text for the title attribute of the image
 	 * @param string $additionalParams: text representing more HTML attributes to be added on the img tag
-	 * @return void
+	 * @return string the magic image JS insertion statement
 	 */
 	public function insertMagicImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		// Create the magic image service
@@ -208,7 +218,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$imageUrl = $this->siteURL . $imageUrl;
 		}
 		// Insert the magic image
-		$this->imageInsertJS($imageUrl, $magicImage->getProperty('width'), $magicImage->getProperty('height'), $altText, $titleText, $additionalParams);
+		return $this->imageInsertJsStatement($imageUrl, $magicImage->getProperty('width'), $magicImage->getProperty('height'), $altText, $titleText, $additionalParams);
 	}
 
 	/**
@@ -218,7 +228,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @param string $altText: text for the alt attribute of the image
 	 * @param string $titleText: text for the title attribute of the image
 	 * @param string $additionalParams: text representing more HTML attributes to be added on the img tag
-	 * @return void
+	 * @return string the plain image JS insertion statement
 	 */
 	public function insertPlainImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		$width = $fileObject->getProperty('width');
@@ -234,11 +244,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if (substr($imageUrl, 0, 4) !== 'http') {
 			$imageUrl = $this->siteURL . $imageUrl;
 		}
-		$this->imageInsertJS($imageUrl, $width, $height, $altText, $titleText, $additionalParams);
+		return $this->imageInsertJsStatement($imageUrl, $width, $height, $altText, $titleText, $additionalParams);
 	}
 
 	/**
-	 * Echo the HTML page and JS that will insert the image
+	 * Assemble the image insertion JS statement
 	 *
 	 * @param string $url: the url of the image
 	 * @param int $width: the width of the image
@@ -246,9 +256,19 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @param string $altText: text for the alt attribute of the image
 	 * @param string $titleText: text for the title attribute of the image
 	 * @param string $additionalParams: text representing more html attributes to be added on the img tag
+	 * @return string the image insertion JS statement
+	 */
+	protected function imageInsertJsStatement($url, $width, $height, $altText = '', $titleText = '', $additionalParams = '') {
+		return 'insertImage(' . GeneralUtility::quoteJSvalue($url, 1) . ',' . $width . ',' . $height . ',' . GeneralUtility::quoteJSvalue($altText, 1) . ',' . GeneralUtility::quoteJSvalue($titleText, 1) . ',' . GeneralUtility::quoteJSvalue($additionalParams, 1) . ');';
+	}
+
+	/**
+	 * Echo the HTML page and JS that will insert the images
+	 *
+	 * @param array $insertJsStatements: array of image insertion JS statements
 	 * @return void
 	 */
-	protected function imageInsertJS($url, $width, $height, $altText = '', $titleText = '', $additionalParams = '') {
+	protected function insertImages($insertJsStatements) {
 		echo '
 <!DOCTYPE html>
 <html>
@@ -257,17 +277,16 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
+		var imageTags = [];
 		function insertImage(file,width,height,alt,title,additionalParams) {
-			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\'' . ($this->defaultClass ? '+\' class="' . $this->defaultClass . '"\'' : '') . '+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
+			imageTags.push(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\'' . ($this->defaultClass ? '+\' class="' . $this->defaultClass . '"\'' : '') . '+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
 		}
 	/*]]>*/
 	</script>
 </head>
 <body>
 <script type="text/javascript">
-/*<![CDATA[*/
-	insertImage(' . GeneralUtility::quoteJSvalue($url, 1) . ',' . $width . ',' . $height . ',' . GeneralUtility::quoteJSvalue($altText, 1) . ',' . GeneralUtility::quoteJSvalue($titleText, 1) . ',' . GeneralUtility::quoteJSvalue($additionalParams, 1) . ');
-/*]]>*/
+/*<![CDATA[*/' . implode (LF, $insertJsStatements) . 'plugin.insertImage(imageTags.join(\' \'));/*]]>*/
 </script>
 </body>
 </html>';
@@ -282,315 +301,17 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return string the generated JS code
 	 */
 	public function getJSCode($act, $editorNo, $sys_language_content) {
-		$removedProperties = array();
-		if (is_array($this->buttonConfig['properties.'])) {
-			if ($this->buttonConfig['properties.']['removeItems']) {
-				$removedProperties = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], TRUE);
-			}
-		}
-		if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
-			$classesImageArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
-			$classesImageJSOptions = '<option value=""></option>';
-			foreach ($classesImageArray as $class) {
-				$classesImageJSOptions .= '<option value="' . $class . '">' . $class . '</option>';
-			}
-		}
-		$lockPlainWidth = 'false';
-		$lockPlainHeight = 'false';
-		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
-			$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
-			$lockPlainWidth = $plainImageMode == 'lockDimensions' ? 'true' : 'false';
-			$lockPlainHeight = $lockPlainWidth || $plainImageMode == 'lockRatio' || $plainImageMode == 'lockRatioWhenSmaller' ? 'true' : 'false';
-		}
 		$JScode = '
-			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
-
 			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
-				return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'editorNo=') . ' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
+				return SelectImage.jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + "insertImage=1&uidList=" + uid);
 			}
-			function initEventListeners() {
-				require(["TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent", "TYPO3/CMS/Rtehtmlarea/HTMLArea/Event/Event"], function (UserAgent, Event) {
-					if (UserAgent.isWebKit) {
-						Event.one(window.document.body, "dragend.TYPO3Image", function (event) { plugin.onDrop(event); });
-					}
-				});
+			function insertMultiple(table, uidList) {
+				var uids = uidList.join("|");
+				return SelectImage.jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + "insertImage=1&uidList=" + uids);
 			}
 			function jumpToUrl(URL,anchor) {
-				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $act . '" : "";
-				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=' . $editorNo . '" : "";
-				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=' . $sys_language_content . '" : "";
-				var RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams) . '";
-
-				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
-				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
-				var addModifyTab = plugin.image ? "&addModifyTab=1" : "";
-
-				var theLocation = URL+add_act+add_editorNo+add_sys_language_content+RTEtsConfigParams+addModifyTab+cur_width+cur_height+(typeof(anchor)=="string"?anchor:"");
-				window.location.href = theLocation;
-				return false;
-			}
-			function insertImage(file,width,height) {
-				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass ? ' class="' . $this->defaultClass . '"' : '') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
-			}
-			function launchView(url) {
-				var thePreviewWindow="";
-				thePreviewWindow = window.open("' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-				if (thePreviewWindow && thePreviewWindow.focus) {
-					thePreviewWindow.focus();
-				}
-			}
-			function getCurrentImageRef() {
-				if (plugin.image) {
-					return plugin.image;
-				} else {
-					return null;
-				}
-			}
-			function printCurrentImageOptions() {
-				var classesImage = ' . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false') . ';
-				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions . '</select>\';
-				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $GLOBALS['LANG']->getLL('notSet') . '</option><option value="none">' . $GLOBALS['LANG']->getLL('nonFloating') . '</option><option value="left">' . $GLOBALS['LANG']->getLL('left') . '</option><option value="right">' . $GLOBALS['LANG']->getLL('right') . '</option></select>\';
-				if (plugin.getButton("Language")) {
-					var languageSelector = \'<select id="iLang" name="iLang">\';
-					var options = plugin.getButton("Language").getOptions();
-					for (var i = 0, n = options.length; i < n; i++) {
-						languageSelector +=\'<option value="\' + options[i].value + \'">\' + options[i].innerHTML + \'</option>\';
-					}
-					languageSelector += \'</select>\';
-				}
-				var sz="";
-				sz+=\'<form action="" name="imageData"><table class="htmlarea-window-table">\';
-				' . (in_array('class', $removedProperties) ? '' : '
-				if(classesImage) {
-					sz+=\'<tr><td><label for="iClass">' . $GLOBALS['LANG']->getLL('class') . ': </label></td><td>\'+styleSelector+\'</td></tr>\';
-				}') . (in_array('width', $removedProperties) ? '' : '
-				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainWidth . ')) {
-					sz+=\'<tr><td><label for="iWidth">' . $GLOBALS['LANG']->getLL('width') . ': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
-				}') . (in_array('height', $removedProperties) ? '' : '
-				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainHeight . ')) {
-					sz+=\'<tr><td><label for="iHeight">' . $GLOBALS['LANG']->getLL('height') . ': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
-				}') . (in_array('border', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iBorder">' . $GLOBALS['LANG']->getLL('border') . ': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';') . (in_array('float', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iFloat">' . $GLOBALS['LANG']->getLL('float') . ': </label></td><td>\'+floatSelector+\'</td></tr>\';') . (in_array('paddingTop', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iPaddingTop">' . $GLOBALS['LANG']->getLL('padding_top') . ': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . '></td></tr>\';') . (in_array('paddingRight', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iPaddingRight">' . $GLOBALS['LANG']->getLL('padding_right') . ': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingBottom', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iPaddingBottom">' . $GLOBALS['LANG']->getLL('padding_bottom') . ': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingLeft', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iPaddingLeft">' . $GLOBALS['LANG']->getLL('padding_left') . ': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('title', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iTitle">' . $GLOBALS['LANG']->getLL('title') . ': </label></td><td><input type="text" id="iTitle" name="iTitle"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('alt', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iAlt">' . $GLOBALS['LANG']->getLL('alt') . ': </label></td><td><input type="text" id="iAlt" name="iAlt"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('lang', $removedProperties) ? '' : '
-				if (plugin.getButton("Language")) {
-					sz+=\'<tr><td><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
-				}') . (in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties) ? '' : '
-				sz+=\'<tr><td><label for="iClickEnlarge">' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.xlf:image_zoom', TRUE) . ' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';') . '
-				sz+=\'<tr><td></td><td><input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('update') . '" onClick="return setImageProperties();"></td></tr>\';
-				sz+=\'</table></form>\';
-				return sz;
-			}
-			function setImageProperties() {
-				var classesImage = ' . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false') . ';
-				if (selectedImageRef) {
-					if (document.imageData.iWidth) {
-						if (document.imageData.iWidth.value && parseInt(document.imageData.iWidth.value)) {
-							selectedImageRef.style.width = "";
-							selectedImageRef.width = parseInt(document.imageData.iWidth.value);
-						}
-					}
-					if (document.imageData.iHeight) {
-						if (document.imageData.iHeight.value && parseInt(document.imageData.iHeight.value)) {
-							selectedImageRef.style.height = "";
-							selectedImageRef.height = parseInt(document.imageData.iHeight.value);
-						}
-					}
-					if (document.imageData.iPaddingTop) {
-						if (document.imageData.iPaddingTop.value != "" && !isNaN(parseInt(document.imageData.iPaddingTop.value))) {
-							selectedImageRef.style.paddingTop = parseInt(document.imageData.iPaddingTop.value) + "px";
-						} else {
-							selectedImageRef.style.paddingTop = "";
-						}
-					}
-					if (document.imageData.iPaddingRight) {
-						if (document.imageData.iPaddingRight.value != "" && !isNaN(parseInt(document.imageData.iPaddingRight.value))) {
-							selectedImageRef.style.paddingRight = parseInt(document.imageData.iPaddingRight.value) + "px";
-						} else {
-							selectedImageRef.style.paddingRight = "";
-						}
-					}
-					if (document.imageData.iPaddingBottom) {
-						if (document.imageData.iPaddingBottom.value != "" && !isNaN(parseInt(document.imageData.iPaddingBottom.value))) {
-							selectedImageRef.style.paddingBottom = parseInt(document.imageData.iPaddingBottom.value) + "px";
-						} else {
-							selectedImageRef.style.paddingBottom = "";
-						}
-					}
-					if (document.imageData.iPaddingLeft) {
-						if (document.imageData.iPaddingLeft.value != "" && !isNaN(parseInt(document.imageData.iPaddingLeft.value))) {
-							selectedImageRef.style.paddingLeft = parseInt(document.imageData.iPaddingLeft.value) + "px";
-						} else {
-							selectedImageRef.style.paddingLeft = "";
-						}
-					}
-					if (document.imageData.iTitle) {
-						selectedImageRef.title=document.imageData.iTitle.value;
-					}
-					if (document.imageData.iAlt) {
-						selectedImageRef.alt=document.imageData.iAlt.value;
-					}
-					if (document.imageData.iBorder) {
-						selectedImageRef.style.borderStyle = "";
-						selectedImageRef.style.borderWidth = "";
-						selectedImageRef.style.border = "";  // this statement ignored by Mozilla 1.3.1
-						selectedImageRef.style.borderTopStyle = "";
-						selectedImageRef.style.borderRightStyle = "";
-						selectedImageRef.style.borderBottomStyle = "";
-						selectedImageRef.style.borderLeftStyle = "";
-						selectedImageRef.style.borderTopWidth = "";
-						selectedImageRef.style.borderRightWidth = "";
-						selectedImageRef.style.borderBottomWidth = "";
-						selectedImageRef.style.borderLeftWidth = "";
-						if(document.imageData.iBorder.checked) {
-							selectedImageRef.style.borderStyle = "solid";
-							selectedImageRef.style.borderWidth = "thin";
-						}
-						selectedImageRef.removeAttribute("border");
-					}
-					if (document.imageData.iFloat) {
-						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
-						if (document.all) {
-							selectedImageRef.style.styleFloat = iFloat ? iFloat : "";
-						} else {
-							selectedImageRef.style.cssFloat = iFloat ? iFloat : "";
-						}
-					}
-					if (classesImage && document.imageData.iClass) {
-						var iClass;
-						if (document.imageData.iClass.options.length > 0) {
-							iClass = document.imageData.iClass.options[document.imageData.iClass.selectedIndex].value;
-						}
-						if (iClass || (selectedImageRef.attributes["class"] && selectedImageRef.attributes["class"].value)) {
-							selectedImageRef.className = iClass;
-						} else {
-							selectedImageRef.className = "";
-						}
-					}
-					if (document.imageData.iLang) {
-						var iLang = document.imageData.iLang.options[document.imageData.iLang.selectedIndex].value;
-						var languageObject = plugin.editor.getPlugin("Language");
-						if (iLang || languageObject.getLanguageAttribute(selectedImageRef)) {
-							languageObject.setLanguageAttributes(selectedImageRef, iLang);
-						} else {
-							languageObject.setLanguageAttributes(selectedImageRef, "none");
-						}
-					}
-					if (document.imageData.iClickEnlarge) {
-						if (document.imageData.iClickEnlarge.checked) {
-							selectedImageRef.setAttribute("data-htmlarea-clickenlarge","1");
-						} else {
-							selectedImageRef.removeAttribute("data-htmlarea-clickenlarge");
-							selectedImageRef.removeAttribute("clickenlarge");
-						}
-					}
-					plugin.close();
-				}
-				return false;
-			}
-			function insertImagePropertiesInForm() {
-				var classesImage = ' . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false') . ';
-				if (selectedImageRef) {
-					var styleWidth, styleHeight, padding;
-					if (document.imageData.iWidth) {
-						styleWidth = selectedImageRef.style.width ? selectedImageRef.style.width : selectedImageRef.width;
-						styleWidth = parseInt(styleWidth);
-						if (!(isNaN(styleWidth) || styleWidth == 0)) {
-							document.imageData.iWidth.value = styleWidth;
-						}
-					}
-					if (document.imageData.iHeight) {
-						styleHeight = selectedImageRef.style.height ? selectedImageRef.style.height : selectedImageRef.height;
-						styleHeight = parseInt(styleHeight);
-						if (!(isNaN(styleHeight) || styleHeight == 0)) {
-							document.imageData.iHeight.value = styleHeight;
-						}
-					}
-					if (document.imageData.iPaddingTop) {
-						var padding = selectedImageRef.style.paddingTop ? selectedImageRef.style.paddingTop : selectedImageRef.vspace;
-						var padding = parseInt(padding);
-						if (isNaN(padding) || padding <= 0) { padding = ""; }
-						document.imageData.iPaddingTop.value = padding;
-					}
-					if (document.imageData.iPaddingRight) {
-						padding = selectedImageRef.style.paddingRight ? selectedImageRef.style.paddingRight : selectedImageRef.hspace;
-						var padding = parseInt(padding);
-						if (isNaN(padding) || padding <= 0) { padding = ""; }
-						document.imageData.iPaddingRight.value = padding;
-					}
-					if (document.imageData.iPaddingBottom) {
-						var padding = selectedImageRef.style.paddingBottom ? selectedImageRef.style.paddingBottom : selectedImageRef.vspace;
-						var padding = parseInt(padding);
-						if (isNaN(padding) || padding <= 0) { padding = ""; }
-						document.imageData.iPaddingBottom.value = padding;
-					}
-					if (document.imageData.iPaddingLeft) {
-						var padding = selectedImageRef.style.paddingLeft ? selectedImageRef.style.paddingLeft : selectedImageRef.hspace;
-						var padding = parseInt(padding);
-						if (isNaN(padding) || padding <= 0) { padding = ""; }
-						document.imageData.iPaddingLeft.value = padding;
-					}
-					if (document.imageData.iTitle) {
-						document.imageData.iTitle.value = selectedImageRef.title;
-					}
-					if (document.imageData.iAlt) {
-						document.imageData.iAlt.value = selectedImageRef.alt;
-					}
-					if (document.imageData.iBorder) {
-						if((selectedImageRef.style.borderStyle && selectedImageRef.style.borderStyle != "none" && selectedImageRef.style.borderStyle != "none none none none") || selectedImageRef.border) {
-							document.imageData.iBorder.checked = 1;
-						}
-					}
-					if (document.imageData.iFloat) {
-						var fObj=document.imageData.iFloat;
-						var value = (selectedImageRef.style.cssFloat ? selectedImageRef.style.cssFloat : selectedImageRef.style.styleFloat);
-						var l=fObj.length;
-						for (var a=0;a<l;a++) {
-							if (fObj.options[a].value == value) {
-								fObj.selectedIndex = a;
-							}
-						}
-					}
-					if (classesImage && document.imageData.iClass) {
-						var fObj=document.imageData.iClass;
-						var value=selectedImageRef.className;
-						var l=fObj.length;
-						for (var a=0;a < l; a++) {
-							if (fObj.options[a].value == value) {
-								fObj.selectedIndex = a;
-							}
-						}
-					}
-					if (document.imageData.iLang) {
-						var fObj=document.imageData.iLang;
-						var value=plugin.editor.getPlugin("Language").getLanguageAttribute(selectedImageRef);
-						for (var i = 0, n = fObj.length; i < n; i++) {
-							if (fObj.options[i].value == value) {
-								fObj.selectedIndex = i;
-								if (i) {
-									fObj.options[0].text = plugin.editor.getPlugin("Language").localize("Remove language mark");
-								}
-							}
-						}
-					}
-					if (document.imageData.iClickEnlarge) {
-						if (selectedImageRef.getAttribute("data-htmlarea-clickenlarge") == "1" || selectedImageRef.getAttribute("clickenlarge") == "1") {
-							document.imageData.iClickEnlarge.checked = 1;
-						} else {
-							document.imageData.iClickEnlarge.checked = 0;
-						}
-					}
-					return false;
-				}
-			}
-
-			var selectedImageRef = getCurrentImageRef();';
-		// Setting this to a reference to the image object.
+				SelectImage.jumpToUrl(URL, anchor);
+			};';
 		return $JScode;
 	}
 
@@ -634,13 +355,47 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $this->allowedItems));
 		switch ($this->act) {
 			case 'image':
+				$classesImage = $this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false';
+				$removedProperties = array();
+				if (is_array($this->buttonConfig['properties.'])) {
+					if ($this->buttonConfig['properties.']['removeItems']) {
+						$removedProperties = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], TRUE);
+					}
+				}
+				if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
+					$classesImageArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
+					$classesImageJSOptions = '<option value=""></option>';
+					foreach ($classesImageArray as $class) {
+						$classesImageJSOptions .= '<option value="' . $class . '">' . $class . '</option>';
+					}
+				}
+				$lockPlainWidth = 'false';
+				$lockPlainHeight = 'false';
+				if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
+					$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
+					$lockPlainWidth = $plainImageMode == 'lockDimensions' ? 'true' : 'false';
+					$lockPlainHeight = $lockPlainWidth || $plainImageMode == 'lockRatio' || $plainImageMode == 'lockRatioWhenSmaller' ? 'true' : 'false';
+				}
+				$labels = array('notSet','nonFloating','right','left','class','width','height','border','float','padding_top','padding_left','padding_bottom','padding_right','title','alt','update');
+				foreach ($labels as $label) {
+					$localizedLabels[$label] = $GLOBALS['LANG']->getLL($label);
+				}
+				$localizedLabels['image_zoom'] = $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.xlf:image_zoom', TRUE);
 				$JScode = '
-					document.write(printCurrentImageOptions());
-					insertImagePropertiesInForm();';
+					require(["TYPO3/CMS/Rtehtmlarea/Modules/SelectImage"], function(SelectImage) {
+						SelectImage.editorNo = "' . $this->editorNo . '";
+						SelectImage.act = "' . $this->act . '";
+						SelectImage.sys_language_content = "' . $this->sys_language_content . '";
+						SelectImage.RTEtsConfigParams = "' . rawurlencode($this->RTEtsConfigParams) . '";
+						SelectImage.bparams = "' . $this->bparams . '";
+						SelectImage.classesImage =  ' . $classesImage . ';
+						SelectImage.labels = ' . json_encode($localizedLabels) . '
+						SelectImage.Form.build("' . $classesImageJSOptions . '", ' . json_encode($removedProperties) . ', ' . $lockPlainWidth . ', ' . $lockPlainHeight . ');
+						SelectImage.Form.insertImageProperties();
+					});';
 				$this->content .= '<br />' . $this->doc->wrapScriptTags($JScode);
 				break;
 			case 'plain':
-
 			case 'magic':
 				// Create folder tree:
 				$foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\FolderTree::class);
@@ -772,10 +527,6 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 		}
 		$this->content .= $this->doc->endPage();
-
-		// unset the default jumpToUrl() function
-		unset($this->doc->JScodeArray['jumpToUrl']);
-
 		$this->doc->JScodeArray['rtehtmlarea'] = $this->getJSCode($this->act, $this->editorNo, $this->sys_language_content);
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		return $this->content;
@@ -794,25 +545,25 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$menuDef['image']['isActive'] = FALSE;
 			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', TRUE);
 			$menuDef['image']['url'] = '#';
-			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=image&bparams=' . $this->bparams) . ');return false;"';
+			$menuDef['image']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=image\');return false;"';
 		}
 		if (in_array('magic', $this->allowedItems)) {
 			$menuDef['magic']['isActive'] = FALSE;
 			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', TRUE);
 			$menuDef['magic']['url'] = '#';
-			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=magic&bparams=' . $this->bparams) . ');return false;"';
+			$menuDef['magic']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=magic\');return false;"';
 		}
 		if (in_array('plain', $this->allowedItems)) {
 			$menuDef['plain']['isActive'] = FALSE;
 			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', TRUE);
 			$menuDef['plain']['url'] = '#';
-			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=plain&bparams=' . $this->bparams) . ');return false;"';
+			$menuDef['plain']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=plain\');return false;"';
 		}
 		if (in_array('dragdrop', $this->allowedItems)) {
 			$menuDef['dragdrop']['isActive'] = FALSE;
 			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', TRUE);
 			$menuDef['dragdrop']['url'] = '#';
-			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=dragdrop&bparams=' . $this->bparams) . ');return false;"';
+			$menuDef['dragdrop']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=dragdrop\');return false;"';
 		}
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
