@@ -445,8 +445,10 @@ class Bootstrap {
 	public function disableCoreAndClassesCache() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
 			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
+		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['options']);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_classes']['backend']
 			= \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class;
+		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_classes']['options']);
 		return $this;
 	}
 
