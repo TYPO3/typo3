@@ -9585,6 +9585,7 @@ em {
 .typo3-app-icon img {
   max-height: 28px;
   max-width: 28px;
+  margin: 0 auto;
 }
 .typo3-app-icon .fa {
   font-size: 21px;
