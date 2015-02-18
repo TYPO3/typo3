@@ -687,7 +687,7 @@ class GeneralUtility {
 	 * Removes an item from a comma-separated list of items.
 	 *
 	 * If $element contains a comma, the behaviour of this method is undefined.
-	 * Empty
+	 * Empty elements in the list are preserved.
 	 *
 	 * @param string $element Element to remove
 	 * @param string $list Comma-separated list of items (string)
