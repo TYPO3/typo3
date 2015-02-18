@@ -948,19 +948,19 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 									: BackendUtility::getModuleUrl('new_content_element', array('id' => $this->id), $this->backPath);
 
 								$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
-								$icon = '<a class="btn btn-success" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+								$icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 									. $lang->getLL('new', TRUE) . '">' . $spriteIcon . '</a>';
 							} elseif ($table == 'pages' && $this->newWizards) {
 								$href = $this->backPath . 'db_new.php?id=' . $this->id
 									. '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-								$icon = '<a class="btn success" href="' . htmlspecialchars($href) . '" title="' . $lang->getLL('new', TRUE) . '">'
+								$icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . $lang->getLL('new', TRUE) . '">'
 									. $spriteIcon . '</a>';
 							} else {
 								$params = '&edit[' . $table . '][' . $this->id . ']=new';
 								if ($table == 'pages_language_overlay') {
 									$params .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRow['doktype'];
 								}
-								$icon = '<a class="btn btn-success" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1))
+								$icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1))
 									. '" title="' . $lang->getLL('new', TRUE) . '">' . $spriteIcon . '</a>';
 							}
 						}
@@ -1680,7 +1680,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($warning) {
 			$onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
 		}
-		return '<a class="btn" href="#" onclick="' . htmlspecialchars(($onClickEvent . 'return false;')) . '">' . $string . '</a>';
+		return '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(($onClickEvent . 'return false;')) . '">' . $string . '</a>';
 	}
 
 	/**
