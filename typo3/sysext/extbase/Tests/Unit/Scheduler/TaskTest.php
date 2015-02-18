@@ -36,9 +36,10 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
+	 * @expectedException Exception
 	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
-	public function executeCallsLogExceptionOnCaughtException() {
+	public function executeCallsLogExceptionOnCaughtExceptionAndRethrowsException() {
 		$this->taskExecutor->expects($this->once())->method('execute')->will($this->throwException(new \Exception()));
 		$this->task->_set('taskExecutor', $this->taskExecutor);
 		$this->task->expects($this->once())->method('logException');

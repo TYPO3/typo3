@@ -85,16 +85,18 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	/**
 	 * Function execute from the Scheduler
 	 *
-	 * @return boolean TRUE on successful execution, FALSE on error
+	 * @return bool TRUE on successful execution
+	 * @throws \Exception If an error occurs
 	 */
 	public function execute() {
 		try {
 			$this->taskExecutor->execute($this);
-			return TRUE;
 		} catch (\Exception $e) {
 			$this->logException($e);
-			return FALSE;
+			// Make sure the Scheduler gets exception details
+			throw $e;
 		}
+		return TRUE;
 	}
 
 	/**
