@@ -9273,6 +9273,9 @@ table#typo3-tree tr:hover {
 .btn .t3-icon {
   margin: 0;
 }
+.btn-group {
+  font-size: 0;
+}
 .btn-group .collapse + .btn.collapsed:last-child {
   border-radius: 2px;
 }
