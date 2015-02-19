@@ -86,7 +86,7 @@ TYPO3.Install.ExtensionChecker = {
 					} else {
 						$('.message-loading', '#checkExtensions').hide();
 						$('.message-error .message-body', '#checkExtensions').html(
-							'Something went wrong. Check failed.'
+							'Something went wrong. Check failed.' + '<p>Message:<br />' + data + '</p>'
 						);
 					}
 				}

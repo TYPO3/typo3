@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility;
  * Uninstall Extensions
  *
  * Used for uninstalling an extension (or multiple) via an ajax request.
- * Warning! No dependency checking is done here, the extension is just removed
- * from the extension list.
  *
  * If you use this class you have to take care of clearing the cache afterwards,
  * it's not done here because for fully clearing the cache you need a reload
@@ -33,9 +31,8 @@ class UninstallExtension extends AbstractAjaxAction {
 	/**
 	 * Uninstall one or multiple extensions
 	 * Extension keys are read from get vars, more than one extension has to be comma separated
-	 * Cache is cleared "hard" after uninstalling
 	 *
-	 * @return string "OK"
+	 * @return string "OK" on success, the error message otherwise
 	 */
 	protected function executeAction() {
 		$getVars = Utility\GeneralUtility::_GET('install');
@@ -43,7 +40,11 @@ class UninstallExtension extends AbstractAjaxAction {
 			$extensionsToUninstall = Utility\GeneralUtility::trimExplode(',', $getVars['uninstallExtension']['extensions']);
 			foreach ($extensionsToUninstall as $extension) {
 				if (Utility\ExtensionManagementUtility::isLoaded($extension)) {
-					Utility\ExtensionManagementUtility::unloadExtension($extension);
+					try {
+						Utility\ExtensionManagementUtility::unloadExtension($extension);
+					} catch (\Exception $e) {
+						return $e->getMessage();
+					}
 				}
 			}
 		}
