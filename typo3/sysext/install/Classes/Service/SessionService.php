@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\Exception;
 
 /**
  * Secure session handling for the install tool.
@@ -353,7 +354,12 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function read($id) {
 		$sessionFile = $this->getSessionFile($id);
-		return (string) (@file_get_contents($sessionFile));
+		$content = (string)(@file_get_contents($sessionFile));
+		// Do a "test write" of the session file after opening it. The real session data is written in
+		// __destruct() and we can not create a sane error message there anymore, so this test should fail
+		// before if final session file can not be written due to permission problems.
+		$this->write($id, $content);
+		return $content;
 	}
 
 	/**
@@ -361,11 +367,19 @@ class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $id The session id
 	 * @param string $sessionData The data to be stored
-	 * @return boolean
+	 * @throws Exception
+	 * @return bool
 	 */
 	public function write($id, $sessionData) {
 		$sessionFile = $this->getSessionFile($id);
-		return GeneralUtility::writeFile($sessionFile, $sessionData);
+		$result = GeneralUtility::writeFile($sessionFile, $sessionData);
+		if (!$result) {
+			throw new Exception(
+				'Session file not writable. Please check permission on typo3temp/InstallToolSessions and its subdirectories.',
+				1424355157
+			);
+		}
+		return $result;
 	}
 
 	/**
