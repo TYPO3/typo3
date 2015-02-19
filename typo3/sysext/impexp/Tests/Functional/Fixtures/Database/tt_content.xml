@@ -5,7 +5,7 @@
 		<pid>1</pid>
 		<CType>text</CType>
 		<header>Test content</header>
-		<header_link>fileadmin/user_upload/typo3_image3.jpg</header_link>
+		<header_link>file:2</header_link>
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
@@ -15,7 +15,7 @@
 		<pid>1</pid>
 		<CType>text</CType>
 		<header>Test content 2</header>
-		<header_link>typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html</header_link>
+		<header_link>file:4</header_link>
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>

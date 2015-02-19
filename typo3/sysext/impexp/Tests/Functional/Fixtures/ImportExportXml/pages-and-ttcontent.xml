@@ -29,7 +29,7 @@
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Test content</title>
-					<size>230</size>
+					<size>197</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:2" type="array">
 							<table>sys_file</table>
@@ -37,13 +37,24 @@
 						</element>
 					</relations>
 					<softrefs type="array">
+						<softref_element index="header_link:typolink:2487ce518ed56d22f20f259928ff43f1:0" type="array">
+							<field>header_link</field>
+							<spKey>typolink</spKey>
+							<matchString>file:2</matchString>
+							<subst type="array">
+								<type>db</type>
+								<recordRef>sys_file:2</recordRef>
+								<tokenID>2487ce518ed56d22f20f259928ff43f1</tokenID>
+								<tokenValue>file:2</tokenValue>
+							</subst>
+						</softref_element>
 					</softrefs>
 				</rec>
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Test content 2</title>
-					<size>264</size>
+					<size>199</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:4" type="array">
 							<table>sys_file</table>
@@ -54,7 +65,13 @@
 						<softref_element index="header_link:typolink:81b8b33df54ef433f1cbc7c3e513e6c4:0" type="array">
 							<field>header_link</field>
 							<spKey>typolink</spKey>
-							<matchString>typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html</matchString>
+							<matchString>file:4</matchString>
+							<subst type="array">
+								<type>db</type>
+								<recordRef>sys_file:4</recordRef>
+								<tokenID>81b8b33df54ef433f1cbc7c3e513e6c4</tokenID>
+								<tokenValue>file:4</tokenValue>
+							</subst>
 						</softref_element>
 					</softrefs>
 				</rec>
@@ -167,7 +184,7 @@
 				<field index="CType">text</field>
 				<field index="header">Test content</field>
 				<field index="deleted">0</field>
-				<field index="header_link">fileadmin/user_upload/typo3_image3.jpg</field>
+				<field index="header_link">file:2</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="header_link" type="array">
@@ -178,6 +195,22 @@
 							<id>2</id>
 						</element>
 					</relations>
+					<softrefs type="array">
+						<keys type="array">
+							<softref_key index="typolink" type="array">
+								<softref_element index="2487ce518ed56d22f20f259928ff43f1:0" type="array">
+									<matchString>file:2</matchString>
+									<subst type="array">
+										<type>db</type>
+										<recordRef>sys_file:2</recordRef>
+										<tokenID>2487ce518ed56d22f20f259928ff43f1</tokenID>
+										<tokenValue>file:2</tokenValue>
+									</subst>
+								</softref_element>
+							</softref_key>
+						</keys>
+						<tokenizedContent>{softref:2487ce518ed56d22f20f259928ff43f1}</tokenizedContent>
+					</softrefs>
 				</field>
 			</related>
 		</tablerow>
@@ -190,7 +223,7 @@
 				<field index="CType">text</field>
 				<field index="header">Test content 2</field>
 				<field index="deleted">0</field>
-				<field index="header_link">typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html</field>
+				<field index="header_link">file:4</field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="header_link" type="array">
@@ -205,10 +238,17 @@
 						<keys type="array">
 							<softref_key index="typolink" type="array">
 								<softref_element index="81b8b33df54ef433f1cbc7c3e513e6c4:0" type="array">
-									<matchString>typo3conf/ext/template_extension/Resources/Public/Templates/Empty.html</matchString>
+									<matchString>file:4</matchString>
+									<subst type="array">
+										<type>db</type>
+										<recordRef>sys_file:4</recordRef>
+										<tokenID>81b8b33df54ef433f1cbc7c3e513e6c4</tokenID>
+										<tokenValue>file:4</tokenValue>
+									</subst>
 								</softref_element>
 							</softref_key>
 						</keys>
+						<tokenizedContent>{softref:81b8b33df54ef433f1cbc7c3e513e6c4}</tokenizedContent>
 					</softrefs>
 				</field>
 			</related>
