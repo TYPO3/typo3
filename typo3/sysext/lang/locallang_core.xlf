@@ -535,6 +535,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_newfolder.php.pagetitle" xml:space="preserve">
 				<source>New file or folder</source>
 			</trans-unit>
+			<trans-unit id="file_newfolder.php.newfolders" xml:space="preserve">
+				<source>Create new folders</source>
+			</trans-unit>
+			<trans-unit id="file_newfolder.php.label_newfolder" xml:space="preserve">
+				<source>Folder</source>
+			</trans-unit>
 			<trans-unit id="file_newfolder.php.submit" xml:space="preserve">
 				<source>Create folders</source>
 			</trans-unit>
@@ -546,6 +552,9 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="file_newfolder.php.newfile" xml:space="preserve">
 				<source>Create new textfile</source>
+			</trans-unit>
+			<trans-unit id="file_newfolder.php.label_newfile" xml:space="preserve">
+				<source>File name:</source>
 			</trans-unit>
 			<trans-unit id="file_newfolder.php.number_of_folders" xml:space="preserve">
 				<source>Number of folders:</source>
