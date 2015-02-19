@@ -119,14 +119,20 @@ class ReferenceIntegrityUpdateWizard extends AbstractUpdate {
 	/**
 	 * Fetches a list of all sys_file_references that have PID=0
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	protected function getFileReferencesOnRootlevel() {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$fileReferences = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid, pid, uid_local AS fileuid, uid_foreign AS targetuid, tablenames AS targettable',
 			'sys_file_reference',
 			'pid=0 AND deleted=0'
 		);
+		if (!is_array($fileReferences)) {
+			// An SQL error occurred, most likely because the sys_file_reference table is not there.
+			// We ignore this here to avoid a warning when initially showing the upgrade wizard (see #65159).
+			return array();
+		}
+		return $fileReferences;
 	}
 
 	/**
