@@ -1,3 +1,13 @@
+2015-02-19  1b8a673                  [RELEASE] Release of TYPO3 4.5.40 (TYPO3 Release Team)
+2015-02-19  3fbd91c  #65113          [SECURITY] Prevent login with semi-empty values (Nicole Cordes)
+2015-01-29  6cf78f6  #64597          [TASK] Update TYPO3 copyright in all branches (Benjamin Mack)
+2015-01-29  38e1cb1  #64573          [BUGFIX] Travis tests for PHP 5.5 (Stephan Großberndt)
+2015-01-19  fc33980                  [TASK] Post travis notification to #typo3-cms-coredev channel (Helmut Hummel)
+2015-01-15  c7615b6  #63896          [BUGFIX] Fix regression in prefixLocalAchors feature (Helmut Hummel)
+2014-12-17  583d1bf  #59186          [BUGFIX] Add case insensitive flag to trustedHostsPattern (Dietrich Heise)
+2014-12-10  b2c673b                  [TASK] Set TYPO3 version to 4.5.40-dev (TYPO3 Release Team)
+
+
 2014-12-10  d72f00c                  [RELEASE] Release of TYPO3 4.5.39 (TYPO3 Release Team)
 2014-12-10  63ae7dd  #62723          [!!!][SECURITY] Fix link spoofing in prefixLocalAnchors (Helmut Hummel)
 2014-12-08  5c267d2  #62967          [BUGFIX] Exclude CDATA from t3lib_parsehtml->XHTML_clean (Nicole Cordes)
