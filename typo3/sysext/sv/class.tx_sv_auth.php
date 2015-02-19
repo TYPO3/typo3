@@ -125,7 +125,7 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	public function authUser(array $user) {
 		$OK = 100;
 
-		if ($this->login['uident'] && $this->login['uname'])	{
+		if ((string)$this->login['uident'] !== '' && $this->login['uname'])	{
 
 				// Checking password match for user:
 			$OK = $this->compareUident($user, $this->login);

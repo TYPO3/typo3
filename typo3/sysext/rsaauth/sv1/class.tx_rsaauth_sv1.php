@@ -104,7 +104,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 					$decryptedPassword = $this->runPasswordEvaluations($decryptedPassword);
 					if ($decryptedPassword != null) {
 						$this->login['uident'] = $decryptedPassword;
-						if (parent::authUser($userRecord)) {
+						if (is_bool($checkResult = parent::authUser($userRecord)) && $checkResult) {
 							$result = 200;
 						}
 					}

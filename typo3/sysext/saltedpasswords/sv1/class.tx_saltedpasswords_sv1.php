@@ -237,7 +237,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 		}
 
 		if ($this->login['uident'] && $this->login['uname']) {
-			if (!empty($this->login['uident_text'])) {
+			if ((string)$this->login['uident_text'] !== '') {
 				$validPasswd = $this->compareUident(
 					$user,
 					$this->login
