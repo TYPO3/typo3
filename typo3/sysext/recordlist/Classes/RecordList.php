@@ -284,6 +284,10 @@ class RecordList {
 			$this->MOD_SETTINGS['clipBoard'] = TRUE;
 		} elseif ($this->modTSconfig['properties']['enableClipBoard'] === 'deactivated') {
 			$this->MOD_SETTINGS['clipBoard'] = FALSE;
+		} else {
+			if ($this->MOD_SETTINGS['clipBoard'] === NULL) {
+				$this->MOD_SETTINGS['clipBoard'] = TRUE;
+			}
 		}
 		// Set predefined value for LocalizationView:
 		if ($this->modTSconfig['properties']['enableLocalizationView'] === 'activated') {
