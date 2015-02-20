@@ -351,7 +351,9 @@ class TceformsUpdateWizard extends AbstractUpdate {
 					'uid_local' => $fileUid,
 					'tablenames' => $table,
 					'crdate' => time(),
-					'tstamp' => time()
+					'tstamp' => time(),
+					'sorting' => ($i + 256),
+					'sorting_foreign' => $i,
 				);
 				if (isset($titleTextField)) {
 					$fields['title'] = trim($titleTextContents[$i]);
