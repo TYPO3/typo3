@@ -30,11 +30,15 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
 		$this->subject->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
 		$this->subject->TYPO3_CONF_VARS['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
+
+		$pageRepository = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$this->subject->sys_page = $pageRepository;
 	}
 
-	////////////////////////////////
-	// Tests concerning rendering content
-	////////////////////////////////
+	/**
+	 * Tests concerning rendering content
+	 */
+
 	/**
 	 * @test
 	 */
@@ -76,15 +80,165 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		return $tsfe;
 	}
 
-	//////////////////////
-	// Tests concerning sL
-	//////////////////////
+	/**
+	 * Tests concerning sL
+	 */
+
 	/**
 	 * @test
 	 */
 	public function localizationReturnsUnchangedStringIfNotLocallangLabel() {
 		$string = $this->getUniqueId();
 		$this->assertEquals($string, $this->subject->sL($string));
+	}
+
+	/**
+	 * Tests concerning getSysDomainCache
+	 */
+
+	/**
+	 * @return array
+	 */
+	public function getSysDomainCacheDataProvider() {
+		return array(
+			'typo3.org' => array(
+				'typo3.org',
+			),
+			'foo.bar' => array(
+				'foo.bar',
+			),
+			'example.com' => array(
+				'example.com',
+			),
+		);
+	}
+
+	/**
+	 * @param string $currentDomain
+	 * @test
+	 * @dataProvider getSysDomainCacheDataProvider
+	 */
+	public function getSysDomainCacheReturnsCurrentDomainRecord($currentDomain) {
+		$_SERVER['HTTP_HOST'] = $currentDomain;
+		$domainRecords = array(
+			'typo3.org' => array(
+				'uid' => '1',
+				'pid' => '1',
+				'domainName' => 'typo3.org',
+				'forced' => 0,
+			),
+			'foo.bar' => array(
+				'uid' => '2',
+				'pid' => '1',
+				'domainName' => 'foo.bar',
+				'forced' => 0,
+			),
+			'example.com' => array(
+				'uid' => '3',
+				'pid' => '1',
+				'domainName' => 'example.com',
+				'forced' => 0,
+			),
+		);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_runtime')->flush();
+		$expectedResult = array(
+			$domainRecords[$currentDomain]['pid'] => $domainRecords[$currentDomain],
+		);
+		$this->assertEquals($expectedResult, $this->subject->_call('getSysDomainCache'));
+	}
+
+	/**
+	 * @param string $currentDomain
+	 * @test
+	 * @dataProvider getSysDomainCacheDataProvider
+	 */
+	public function getSysDomainCacheReturnsForcedDomainRecord($currentDomain) {
+		$_SERVER['HTTP_HOST'] = $currentDomain;
+		$domainRecords = array(
+			'typo3.org' => array(
+				'uid' => '1',
+				'pid' => '1',
+				'domainName' => 'typo3.org',
+				'forced' => 0,
+			),
+			'foo.bar' => array(
+				'uid' => '2',
+				'pid' => '1',
+				'domainName' => 'foo.bar',
+				'forced' => 1,
+			),
+			'example.com' => array(
+				'uid' => '3',
+				'pid' => '1',
+				'domainName' => 'example.com',
+				'forced' => 0,
+			),
+		);
+		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_runtime')->flush();
+		$expectedResult = array(
+			$domainRecords[$currentDomain]['pid'] => $domainRecords['foo.bar'],
+		);
+		$this->assertEquals($expectedResult, $this->subject->_call('getSysDomainCache'));
+	}
+
+	/**
+	 * Tests concerning domainNameMatchesCurrentRequest
+	 */
+
+	/**
+	 * @return array
+	 */
+	public function domainNameMatchesCurrentRequestDataProvider() {
+		return array(
+			'same domains' => array(
+				'typo3.org',
+				'typo3.org',
+				'/index.php',
+				TRUE,
+			),
+			'same domains with subdomain' => array(
+				'www.typo3.org',
+				'www.typo3.org',
+				'/index.php',
+				TRUE,
+			),
+			'different domains' => array(
+				'foo.bar',
+				'typo3.org',
+				'/index.php',
+				FALSE,
+			),
+			'domain record with script name' => array(
+				'typo3.org',
+				'typo3.org/foo/bar',
+				'/foo/bar/index.php',
+				TRUE,
+			),
+			'domain record with wrong script name' => array(
+				'typo3.org',
+				'typo3.org/foo/bar',
+				'/bar/foo/index.php',
+				FALSE,
+			),
+		);
+	}
+
+	/**
+	 * @param string $currentDomain
+	 * @param string $domainRecord
+	 * @param string $scriptName
+	 * @param bool $expectedResult
+	 * @test
+	 * @dataProvider domainNameMatchesCurrentRequestDataProvider
+	 */
+	public function domainNameMatchesCurrentRequest($currentDomain, $domainRecord, $scriptName, $expectedResult) {
+		$_SERVER['HTTP_HOST'] = $currentDomain;
+		$_SERVER['SCRIPT_NAME'] = $scriptName;
+		$this->assertEquals($expectedResult, $this->subject->domainNameMatchesCurrentRequest($domainRecord));
 	}
 
 }

@@ -4531,24 +4531,24 @@ class TypoScriptFrontendController {
 		if ($runtimeCache->has($entryIdentifier)) {
 			$sysDomainData = $runtimeCache->get($entryIdentifier);
 		} else {
-			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$domainRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'uid, pid, domainName, forced',
 				'sys_domain',
-				'redirectTo=\'\' ' . $GLOBALS['TSFE']->sys_page->enableFields('sys_domain', 0),
+				'redirectTo=\'\' ' . $this->sys_page->enableFields('sys_domain', 0),
 				'',
 				'sorting ASC'
 			);
 
-			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))) {
+			foreach ($domainRecords as $row) {
 				// if there is already an entry for this pid, check if we should overwrite it
 				if (isset($sysDomainData[$row['pid']])) {
-					// there is already a "forced" entry, which must not be overwritten
+					// There is already a "forced" entry, which must not be overwritten
 					if ($sysDomainData[$row['pid']]['forced']) {
 						continue;
 					}
 
-					// there is alread a NOT-forced entry and the current one is also NOT-forced, thus keep the old
-					if (!$sysDomainData[$row['pid']]['forced'] && !$row['forced']) {
+					// The current domain record is also NOT-forced, keep the old unless the new one matches the current request
+					if (!$row['forced'] && !$this->domainNameMatchesCurrentRequest($row['domainName'])) {
 						continue;
 					}
 				}
@@ -4562,9 +4562,21 @@ class TypoScriptFrontendController {
 				);
 			}
 			$runtimeCache->set($entryIdentifier, $sysDomainData);
-			$GLOBALS['TYPO3_DB']->sql_free_result($result);
 		}
 		return $sysDomainData;
+	}
+
+	/**
+	 * Whether the given domain name (potentially including a path segment) matches currently requested host or
+	 * the host including the path segment
+	 *
+	 * @param string $domainName
+	 * @return bool
+	 */
+	public function domainNameMatchesCurrentRequest($domainName) {
+		$currentDomain = GeneralUtility::getIndpEnv('HTTP_HOST');
+		$currentPathSegment = trim(preg_replace('|/[^/]*$|', '', GeneralUtility::getIndpEnv('SCRIPT_NAME')));
+		return $currentDomain === $domainName || $currentDomain . $currentPathSegment === $domainName;
 	}
 
 	/**
