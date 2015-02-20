@@ -6051,7 +6051,7 @@ class ContentObjectRenderer {
 
 							$targetDomain = $GLOBALS['TSFE']->getDomainNameForPid($page['uid']);
 							// Do not prepend the domain if it is the current hostname
-							if (!$targetDomain || $targetDomain === $currentDomain) {
+							if (!$targetDomain || $GLOBALS['TSFE']->domainNameMatchesCurrentRequest($targetDomain)) {
 								$targetDomain = '';
 							}
 						}
