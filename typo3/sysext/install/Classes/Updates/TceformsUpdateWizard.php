@@ -85,6 +85,21 @@ class TceformsUpdateWizard extends AbstractUpdate {
 	);
 
 	/**
+	 * @var \TYPO3\CMS\Core\Registry
+	 */
+	protected $registry;
+
+	/**
+	 * @var string
+	 */
+	protected $registryNamespace = 'TceformsUpdateWizard';
+
+	/**
+	 * @var array
+	 */
+	protected $recordOffset = array();
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -102,6 +117,8 @@ class TceformsUpdateWizard extends AbstractUpdate {
 		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		$storages = $storageRepository->findAll();
 		$this->storage = $storages[0];
+		$this->registry = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
+		$this->recordOffset = $this->registry->get($this->registryNamespace, 'recordOffset', array());
 	}
 
 	/**
@@ -177,11 +194,17 @@ class TceformsUpdateWizard extends AbstractUpdate {
 						$fieldsToGet[] = $fieldConfiguration['links'];
 					}
 
+					if (!isset($this->recordOffset[$table])) {
+						$this->recordOffset[$table] = 0;
+					}
+
 					do {
-						$records = $this->getRecordsFromTable($table, $fieldToMigrate, $fieldsToGet, self::RECORDS_PER_QUERY);
+						$limit = $this->recordOffset[$table] . ',' . self::RECORDS_PER_QUERY;
+						$records = $this->getRecordsFromTable($table, $fieldToMigrate, $fieldsToGet, $limit);
 						foreach ($records as $record) {
 							$this->migrateField($table, $record, $fieldToMigrate, $fieldConfiguration, $customMessages);
 						}
+						$this->registry->set($this->registryNamespace, 'recordOffset', $this->recordOffset);
 					} while (count($records) === self::RECORDS_PER_QUERY);
 
 					// add the field to the "finished fields" if things didn't fail above
@@ -191,6 +214,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 				}
 			}
 			$this->markWizardAsDone(implode(',', $finishedFields));
+			$this->registry->remove($this->registryNamespace, 'recordOffset');
 		} catch (\Exception $e) {
 			$customMessages .= PHP_EOL . $e->getMessage();
 		}
@@ -230,7 +254,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 			. ' AND ' . $fieldToMigrate . ' != \'\''
 			. ' AND CAST(CAST(' . $fieldToMigrate . ' AS DECIMAL) AS CHAR) <> CAST(' . $fieldToMigrate . ' AS CHAR)'
 			. $deletedCheck;
-		$result = $this->database->exec_SELECTgetRows($fields, $table, $where, '', '', $limit);
+		$result = $this->database->exec_SELECTgetRows($fields, $table, $where, '', 'uid', $limit);
 		if ($result === NULL) {
 			throw new \RuntimeException('Database query failed. Error was: ' . $this->database->sql_error());
 		}
@@ -378,6 +402,8 @@ class TceformsUpdateWizard extends AbstractUpdate {
 		if ($i === count($fieldItems)) {
 			$this->database->exec_UPDATEquery($table, 'uid=' . $row['uid'], array($fieldname => $i));
 			$queries[] = str_replace(LF, ' ', $this->database->debug_lastBuiltQuery);
+		} else {
+			$this->recordOffset[$table]++;
 		}
 		return $queries;
 	}
