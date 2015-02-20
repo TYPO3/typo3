@@ -108,6 +108,7 @@ define(['jquery', 'nprogress', 'jquery/jquery.clearable'], function($, NProgress
 
 		Recycler.elements.$reloadAction.on('click', function(e) {
 			e.preventDefault();
+			Recycler.loadAvailableTables();
 			Recycler.loadDeletedElements();
 		});
 
