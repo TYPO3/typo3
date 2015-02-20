@@ -2150,6 +2150,9 @@ class BackendUtility {
 								$rParts = array();
 								if ($uid && isset($theColConf['foreign_field']) && $theColConf['foreign_field'] !== '') {
 									$whereClause = '';
+									if (!empty($theColConf['foreign_table_field'])) {
+										$whereClause .= ' AND ' . $theColConf['foreign_table_field'] . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, $theColConf['foreign_table']);
+									}
 									// Add additional where clause if foreign_match_fields are defined
 									$foreignMatchFields = is_array($theColConf['foreign_match_fields']) ? $theColConf['foreign_match_fields'] : array();
 									foreach ($foreignMatchFields as $matchField => $matchValue) {
