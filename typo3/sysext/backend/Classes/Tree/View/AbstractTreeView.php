@@ -146,7 +146,7 @@ abstract class AbstractTreeView {
 	 * @see addField()
 	 * @todo Define visibility
 	 */
-	public $fieldArray = array('uid', 'title');
+	public $fieldArray = array('uid', 'pid', 'title');
 
 	/**
 	 * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
@@ -777,7 +777,8 @@ abstract class AbstractTreeView {
 		$idH = array();
 		// Traverse the records:
 		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, $subCSSclass))) {
-			if (!$GLOBALS['BE_USER']->isInWebMount($row['uid'])) {
+			$pageUid = ($this->table === 'pages') ? $row['uid'] : $row['pid'];
+			if (!$GLOBALS['BE_USER']->isInWebMount($pageUid)) {
 				// Current record is not within web mount => skip it
 				continue;
 			}
