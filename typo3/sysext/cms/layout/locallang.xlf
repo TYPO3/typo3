@@ -36,7 +36,7 @@
 			<trans-unit id="newAfter" xml:space="preserve">
 				<source>New record after this one</source>
 			</trans-unit>
-			<trans-unit id="newRecordHere" xml:space="preserve">
+			<trans-unit id="newRecordHere" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Add a new record at this place</source>
 			</trans-unit>
 			<trans-unit id="move_record" xml:space="preserve">
@@ -71,6 +71,9 @@
 			</trans-unit>
 			<trans-unit id="newPageContent2" xml:space="preserve">
 				<source>New content</source>
+			</trans-unit>
+			<trans-unit id="content" xml:space="preserve">
+				<source>Content</source>
 			</trans-unit>
 			<trans-unit id="newInColumn" xml:space="preserve">
 				<source>Create new record in top of this column</source>

@@ -460,8 +460,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
 							<div class="t3-page-ce-wrapper-new-ce">
 								<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
-									. '" title="' . $this->getLanguageService()->getLL('newRecordHere', TRUE) . '" class="btn btn-default btn-sm">'
-									. IconUtility::getSpriteIcon('actions-document-new') . '</a>
+									. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
+									. IconUtility::getSpriteIcon('actions-document-new')
+									. ' '
+									. $this->getLanguageService()->getLL('content', TRUE) . '</a>
 							</div>
 						</div>
 					</div>
@@ -527,8 +529,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								$singleElementHTML .= '
 									<div class="t3-page-ce-wrapper-new-ce">
 										<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-											. $this->getLanguageService()->getLL('newRecordHere', TRUE) . '" class="btn btn-default btn-sm">'
-											. IconUtility::getSpriteIcon('actions-document-new') . '</a>
+											. $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
+											. IconUtility::getSpriteIcon('actions-document-new')
+											. ' '
+											. $this->getLanguageService()->getLL('content', TRUE) . '</a>
 									</div>
 								';
 							}
