@@ -9937,9 +9937,6 @@ select.icon-select option {
 .form-irre-header-control .btn-group > .btn {
   float: none;
 }
-.form-irre-header-control .btn-group > .btn + .btn {
-  margin-left: -5px;
-}
 .form-multigroup-wrap {
   width: 100%;
   display: table;
