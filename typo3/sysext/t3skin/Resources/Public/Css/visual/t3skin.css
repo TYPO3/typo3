@@ -5385,10 +5385,6 @@ button.close {
  *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
-.t3-icon.fa {
-  background: none;
-  font-size: 14px;
-}
 /* FONT PATH
  * -------------------------- */
 @font-face {
@@ -7154,9 +7150,6 @@ button.close {
 .tableheader td {
   padding: 6px;
 }
-.t3-row-header span.t3-icon {
-  margin-right: 3px;
-}
 .typo3-tstemplate-ceditor-control {
   margin-right: 6px;
   vertical-align: bottom;
@@ -7935,7 +7928,7 @@ table#typo3-history-item img {
   padding: 0;
   margin: 0;
 }
-#typo3-pagetree span.t3-icon {
+#typo3-pagetree .t3-icon {
   margin-bottom: 2px;
 }
 #typo3-pagetree ul {
@@ -9322,7 +9315,6 @@ table#typo3-tree tr:hover {
 }
 .pagination .t3-icon {
   margin: 0;
-  text-align: center;
 }
 .pagination .paginator-input {
   display: inline-block;
@@ -9394,6 +9386,38 @@ table#typo3-tree tr:hover {
   src: url('../../Fonts/share-bolditalic-webfont.eot?#iefix') format('embedded-opentype'), url('../../Fonts/share-bolditalic-webfont.woff') format('woff'), url('../../Fonts/share-bolditalic-webfont.ttf') format('truetype'), url('../../Fonts/share-bolditalic-webfont.svg#Share-BoldItalicRegular') format('svg');
   font-weight: bold;
   font-style: italic;
+}
+.t3-icon {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  background-image: url('../../../../../../gfx/icon_fatalerror.gif');
+  background-repeat: no-repeat;
+  margin-right: 2px;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+}
+.t3-icon.fa {
+  background: none;
+  font-size: 14px;
+}
+.t3-icon .c-inputButton {
+  width: 16px;
+  height: 16px;
+}
+.t3-icon-overlay {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  text-decoration: none;
+  padding: 0;
+}
+.t3-icon-empty {
+  background-image: none;
 }
 #typo3-index-php {
   background: #ebebeb;
@@ -11119,11 +11143,6 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 .is-hidden {
   display: none;
 }
-.typo3-extension-list .t3-icon,
-.typo3-extension-list .t3-icon:hover {
-  border: none;
-  background-color: transparent;
-}
 .typo3-extension-list .author {
   display: none;
 }
@@ -11448,12 +11467,6 @@ table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {
 }
 table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-hidden {
   visibility: hidden;
-}
-table.typo3-dblist tr td div.typo3-clipCtrl span.t3-icon,
-table.typo3-dblist tr td div.typo3-DBctrl span.t3-icon {
-  float: left;
-  margin-left: 1px;
-  margin-right: 1px;
 }
 table.typo3-dblist tr td.col-icon {
   vertical-align: middle;

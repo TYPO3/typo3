@@ -7,26 +7,6 @@ a img {
 	border: none;
 }
 
-span.t3-icon {
-	display: inline-block;
-	position: relative;
-	overflow: hidden;
-}
-
-.t3-icon {
-	background-image:url('../../../../../../gfx/icon_fatalerror.gif');
-	background-repeat:no-repeat;
-	width: 16px;
-	height: 16px;
-	font-size: 1px;
-	line-height:0;
-}
-
-.t3-icon .c-inputButton {
-	width:16px;
-	height:16px;
-}
-
 .typo3-newRecord-treeline {
 	padding-right: 20px;
 }

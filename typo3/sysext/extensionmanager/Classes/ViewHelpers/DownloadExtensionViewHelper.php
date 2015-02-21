@@ -54,11 +54,17 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		), 'Download');
 		$this->tag->addAttribute('data-href', $uri);
 
-		// @TODO Clean-up
-		$iconClasses = 'btn btn-default fa fa-cloud-download';
-		$label = '<div class="btn-group"><button title="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') .
-			'" type="submit" class="' . $iconClasses . '" value="' .
-			LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" /></div>';
+		$label = '
+			<div class="btn-group">
+				<button
+					title="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '"
+					type="submit"
+					class="btn btn-default"
+					value="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '"
+				>
+					<span class="t3-icon fa fa-cloud-download"></span>
+				</button>
+			</div>';
 
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
