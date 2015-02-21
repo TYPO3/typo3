@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Database;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Reference index processing and relation extraction
@@ -309,10 +308,7 @@ class ReferenceIndex {
 							switch ((string)$el['subst']['type']) {
 								case 'db':
 									list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
-									// Prevent double references for files and file relations
-									if ($tableName !== 'sys_file' && $tableName !== 'sys_file_reference') {
-										$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
-									}
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
 									break;
 								case 'file_reference':
 									// not used (see getRelations()), but fallback to file
@@ -601,7 +597,7 @@ class ReferenceIndex {
 				$fileArray[] = array('table' => 'sys_file', 'id' => $fileUid['uid_local']);
 			}
 			return $fileArray;
-		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && StringUtility::beginsWith($value, 'file:')) {
+		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && trim($value)) {
 			try {
 				$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($value);
 			} catch (\Exception $e) {
