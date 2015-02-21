@@ -25,12 +25,14 @@
 				<td>{classInfo.extension}</td>
 				<td>{classInfo.description}</td>
 				<td>
-					<a
-						href="{s:moduleLink(function:'list',cmd:'add',arguments:'{class: class}')}"
-						title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"
-						class="icon">
-							<s:spriteIcon iconName="actions-document-new" />
-					</a>
+					<div class="btn-group" role="group">
+						<a
+							href="{s:moduleLink(function:'list',cmd:'add',arguments:'{class: class}')}"
+							title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"
+							class="btn btn-default">
+								<s:spriteIcon iconName="actions-document-new" />
+						</a>
+					</div>
 				</td>
 			</tr>
 		</f:for>

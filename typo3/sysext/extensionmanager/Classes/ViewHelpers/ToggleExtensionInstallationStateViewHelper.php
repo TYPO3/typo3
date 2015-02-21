@@ -51,7 +51,7 @@ class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHe
 		$label = $extension['installed'] ? 'deactivate' : 'activate';
 		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.' . $label, 'extensionmanager'));
 		$icon = $extension['installed'] ? 'uninstall' : 'install';
-		$this->tag->addAttribute('class', 'onClickMaskExtensionManager');
+		$this->tag->addAttribute('class', 'onClickMaskExtensionManager btn btn-default');
 		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-' . $icon));
 		return $this->tag->render();
 	}

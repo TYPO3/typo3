@@ -32,10 +32,3 @@ Scheduler
   padding-bottom: 5px;
   font-weight: bold;
 }
-/* Definition for BE function "Setup check" */
-.info-block {
-  margin: 25px 0px 0px 0px;
-}
-.info-block p {
-  margin: 8px 5px 8px 5px;
-}

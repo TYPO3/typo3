@@ -30,8 +30,8 @@
 				<th><f:translate key="extensionList.header.extensionName"/></th>
 				<th class="hidden-xs hidden-sm"><f:translate key="extensionList.header.extensionKey"/></th>
 				<th class="hidden-xs"><f:translate key="extensionList.header.extensionVersion"/></th>
-				<th><f:translate key="extensionList.header.extensionActions"/></th>
 				<th><f:translate key="extensionList.header.extensionState"/></th>
+				<th><f:translate key="extensionList.header.extensionActions"/></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -85,6 +85,9 @@
 				<td class="hidden-xs">
 					{extension.version}
 				</td>
+				<td>
+					<span class="label label-{extension.state}">{extension.state}</span>
+				</td>
 				<td class="icons nowrap">
 					<div class="btn-group">
 						<em:processAvailableActions extension="{extension}">
@@ -95,9 +98,6 @@
 							<em:downloadExtensionData class="btn btn-default" extension="{extension}" />
 						</em:processAvailableActions>
 					</div>
-				</td>
-				<td>
-					<span class="label label-{extension.state}">{extension.state}</span>
 				</td>
 				</tr>
 			</f:for>

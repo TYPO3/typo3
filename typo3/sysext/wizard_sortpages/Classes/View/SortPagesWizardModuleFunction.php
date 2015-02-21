@@ -63,10 +63,10 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 			if (!empty($menuItems)) {
 				$lines = array();
 				$lines[] = '<thead><tr>';
-				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_title'), 'title') . '</th>';
-				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</th>';
-				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</th>';
-				$lines[] = '<th>' . $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</th>';
+				$lines[] = '<th>' . $GLOBALS['LANG']->getLL('wiz_changeOrder_title') . '</th>';
+				$lines[] = '<th>' . $GLOBALS['LANG']->getLL('wiz_changeOrder_subtitle') . '</th>';
+				$lines[] = '<th>' . $GLOBALS['LANG']->getLL('wiz_changeOrder_tChange') . '</th>';
+				$lines[] = '<th>' . $GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate') . '</th>';
 				$lines[] = '</tr></thead>';
 
 				foreach ($menuItems as $rec) {
@@ -90,7 +90,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_tCreate'), 'crdate');
 				$lines[] = '';
 				$lines[] = $this->wiz_linkOrder($GLOBALS['LANG']->getLL('wiz_changeOrder_REVERSE'), 'REV');
-				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_changeOrder') . '</h4>' . implode('<br />', $lines);
+				$theCode .= '<h4>' . $GLOBALS['LANG']->getLL('wiz_changeOrder') . '</h4><p>' . implode(' ', $lines) . '</p>';
 			} else {
 				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('no_subpages'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
 				$theCode .= $flashMessage->render();
@@ -112,7 +112,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 * @return string HTML string
 	 */
 	protected function wiz_linkOrder($title, $order) {
-		return '<a class="t3-link" href="' . htmlspecialchars(
+		return '<a class="btn btn-default" href="' . htmlspecialchars(
 			BackendUtility::getModuleUrl('web_func',
 				array(
 					'id' => $GLOBALS['SOBE']->id,
