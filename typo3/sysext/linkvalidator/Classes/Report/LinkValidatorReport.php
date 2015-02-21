@@ -213,7 +213,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			);
 		}
 
-		return $this->doc->getDynTabMenu($menuItems, 'ident');
+		return $this->doc->getDynamicTabMenu($menuItems, 'report-linkvalidator');
 	}
 
 	/**

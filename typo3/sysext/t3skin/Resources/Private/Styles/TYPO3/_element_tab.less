@@ -5,6 +5,12 @@
 	background-color: darken(@nav-tabs-active-link-bg, 5%);
 	> li {
 		> a {
+			// Hotfix to prevent prototype / scriptaculous hiding the links
+			// this can be removed after prototype / scriptaculous removed completely.
+			// at the moment prototype / scriptaculous hide each tab after clicking on it.
+			// at the moment this seems to be the only way to fix the wrong behavior.
+			display: block!important;
+
 			margin-right: 3px;
 			&:hover {
 				background: @nav-tabs-link-hover-bg;

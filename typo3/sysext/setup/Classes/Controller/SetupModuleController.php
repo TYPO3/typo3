@@ -404,7 +404,7 @@ class SetupModuleController {
 
 		// Render the menu items
 		$menuItems = $this->renderUserSetup();
-		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, 1);
+		$this->content .= $this->doc->getDynamicTabMenu($menuItems, 'user-setup', 1, FALSE, FALSE);
 		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
 		$this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
 			<input type="hidden" name="formToken" value="' . $formToken . '" />

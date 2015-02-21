@@ -16,3 +16,15 @@
 		.transition-property(~"width, visibility");
 	}
 }
+
+//
+// Hotfix display collapse always to prevent RTE initialisation problems
+//
+.collapse {
+	display: block;
+	height: 0;
+	overflow: hidden;
+	&.in {
+		height: auto;
+	}
+}

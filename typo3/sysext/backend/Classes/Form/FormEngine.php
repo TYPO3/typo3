@@ -1592,12 +1592,12 @@ class FormEngine {
 	/**
 	 * Create dynamic tab menu
 	 *
-	 * @param array $parts Parts for the tab menu, fed to template::getDynTabMenu()
-	 * @param string $idString ID string for the tab menu
+	 * @param array $menuItems Items for the tab menu, fed to template::getDynTabMenu()
+	 * @param string $identString ID string for the tab menu
 	 * @param int $dividersToTabsBehaviour If set to '1' empty tabs will be removed, If set to '2' empty tabs will be disabled, deprecated, and not in use anymore since TYPO3 CMS 7
 	 * @return string HTML for the menu
 	 */
-	public function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = -1) {
+	public function getDynTabMenu($menuItems, $identString, $dividersToTabsBehaviour = -1) {
 		// if the third (obsolete) parameter is used, throw a deprecation warning
 		if ($dividersToTabsBehaviour !== -1) {
 			GeneralUtility::deprecationLog('The parameter $dividersToTabsBehaviour in FormEngine::getDynTabMenu is deprecated. Please remove this option from your code');
@@ -1605,16 +1605,18 @@ class FormEngine {
 		$docTemplate = $this->getDocumentTemplate();
 		if (is_object($docTemplate)) {
 			$docTemplate->backPath = '';
-			return $docTemplate->getDynTabMenu($parts, $idString, 0, FALSE, 1, FALSE, 1);
+			return $docTemplate->getDynamicTabMenu($menuItems, $identString, 1, FALSE, FALSE);
 		} else {
 			$output = '';
-			foreach ($parts as $singlePad) {
-				$output .= '
-				<h3>' . htmlspecialchars($singlePad['label']) . '</h3>
-				' . ($singlePad['description'] ? '<p class="c-descr">' . nl2br(htmlspecialchars($singlePad['description'])) . '</p>' : '') . '
-				' . $singlePad['content'];
+			foreach ($menuItems as $menuItem) {
+				if (!empty($menuItem['content'])) {
+					$output .= '
+					<h3>' . htmlspecialchars($menuItem['label']) . '</h3>
+					' . ($menuItem['description'] ? '<p>' . nl2br(htmlspecialchars($menuItem['description'])) . '</p>' : '') . '
+					' . $menuItem['content'];
+				}
 			}
-			return '<div class="tab-content">' . $output . '</div>';
+			return $output;
 		}
 	}
 

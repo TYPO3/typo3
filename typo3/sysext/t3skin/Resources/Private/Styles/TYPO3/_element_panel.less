@@ -103,8 +103,9 @@
 	border: 1px solid @nav-tabs-active-link-hover-border-color;
 	background-color: @nav-tabs-active-link-bg;
 }
-.panel-tab + .panel-tab {
-	margin-top: -19px;
+.panel-tab + .panel-tab,
+.panel-tab + .form-section {
+	margin-top: -(@line-height-computed+1);
 }
 .tab-pane {
 	> .panel-tab:first-child {
