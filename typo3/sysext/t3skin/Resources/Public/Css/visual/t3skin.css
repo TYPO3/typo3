@@ -8505,7 +8505,7 @@ table {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  vertical-align: middle!important;
+  vertical-align: middle;
 }
 .table > thead > tr {
   background-color: #ededed;
@@ -8589,9 +8589,13 @@ fieldset[disabled] .table .btn-default.active {
 .table .col-title {
   width: 99%;
 }
+.table .col-nowrap,
 .table .col-control,
 .table .col-clipboard {
   white-space: nowrap;
+}
+.table .col-control,
+.table .col-clipboard {
   text-align: right;
 }
 .table .col-control {
@@ -8599,6 +8603,9 @@ fieldset[disabled] .table .btn-default.active {
 }
 .table .col-border-left {
   border-left: 1px solid #cccccc;
+}
+.table .col-min {
+  min-width: 150px;
 }
 .table-white {
   background-color: #fff;
@@ -8617,6 +8624,22 @@ fieldset[disabled] .table .btn-default.active {
 .table-basic td {
   vertical-align: middle;
 }
+.table-vertical-top > thead > tr > th,
+.table-vertical-top > tbody > tr > th,
+.table-vertical-top > tfoot > tr > th,
+.table-vertical-top > thead > tr > td,
+.table-vertical-top > tbody > tr > td,
+.table-vertical-top > tfoot > tr > td {
+  vertical-align: top;
+}
+.table-vertical-bottom > thead > tr > th,
+.table-vertical-bottom > tbody > tr > th,
+.table-vertical-bottom > tfoot > tr > th,
+.table-vertical-bottom > thead > tr > td,
+.table-vertical-bottom > tbody > tr > td,
+.table-vertical-bottom > tfoot > tr > td {
+  vertical-align: bottom;
+}
 .table-fit {
   width: 100%;
   margin-bottom: 1.5em;
@@ -8631,7 +8654,9 @@ fieldset[disabled] .table .btn-default.active {
   margin-bottom: 0;
   border: 0;
 }
+.table-fit > .table colgroup:first-child + tbody tr:first-child th,
 .table-fit > .table tbody:first-child tr:first-child th,
+.table-fit > .table colgroup:first-child + tbody tr:first-child td,
 .table-fit > .table tbody:first-child tr:first-child td {
   border-top: 0;
 }
@@ -11301,20 +11326,6 @@ div.typo3-module-lang div.progress-bar {
   margin-top: -2px;
   margin-left: 6px;
   display: block;
-}
-table#typo3-ttContentList {
-  border: 1px solid #a2aab8;
-  background-color: #fff;
-}
-body#typo3-move-el-php img {
-  vertical-align: middle;
-}
-body#typo3-move-el-php table#typo3-ttContentList img,
-body#typo3-move-el-php img#c-recIcon {
-  margin-right: 4px;
-}
-body#typo3-move-el-php label.t3-label-valign-top {
-  vertical-align: top;
 }
 div.workspace-info {
   padding: 7px;

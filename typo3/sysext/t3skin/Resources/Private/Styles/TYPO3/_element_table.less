@@ -64,7 +64,7 @@ table {
 				vertical-align: middle;
 			}
 			> td {
-				vertical-align: middle!important; // @todo important needs to be removed as soon as .typo3-TCEforms .c-tablayer td is gone
+				vertical-align: middle;
 			}
 		}
 	}
@@ -109,9 +109,13 @@ table {
 	.col-title {
 		width: 99%;
 	}
+	.col-nowrap,
 	.col-control,
 	.col-clipboard {
 		white-space: nowrap;
+	}
+	.col-control,
+	.col-clipboard {
 		text-align: right;
 	}
 	.col-control {
@@ -119,6 +123,9 @@ table {
 	}
 	.col-border-left {
 		border-left: 1px solid @table-border-color;
+	}
+	.col-min {
+		min-width: 150px;
 	}
 }
 
@@ -159,6 +166,34 @@ table {
 }
 
 //
+// Table cell vertical alignment
+//
+.table-vertical-top {
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				vertical-align: top;
+			}
+		}
+	}
+}
+.table-vertical-bottom {
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				vertical-align: bottom;
+			}
+		}
+	}
+}
+
+//
 // Fits the table in the viewport and makes overflow possible
 //
 .table-fit {
@@ -174,6 +209,7 @@ table {
 		margin-top: 0;
 		margin-bottom: 0;
 		border: 0;
+		colgroup:first-child + tbody,
 		tbody:first-child {
 			tr:first-child {
 				th,

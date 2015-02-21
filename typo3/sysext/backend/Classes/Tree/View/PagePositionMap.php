@@ -390,12 +390,11 @@ class PagePositionMap {
 	 * @return string HTML
 	 */
 	public function printRecordMap($lines, $colPosArray, $pid = 0) {
-		$row1 = '';
-		$row2 = '';
 		$count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
 		$backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $pid, $this);
 		if (isset($backendLayout['__config']['backend_layout.'])) {
-			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
+			$GLOBALS['LANG']->includeLLFile('EXT:cms/layout/locallang.xlf');
+			$table = '<div class="table-fit"><table class="table table-condensed table-bordered table-vertical-top">';
 			$colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
 			$rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];
 			$table .= '<colgroup>';
@@ -403,6 +402,7 @@ class PagePositionMap {
 				$table .= '<col style="width:' . 100 / $colCount . '%"></col>';
 			}
 			$table .= '</colgroup>';
+			$table .= '<tbody>';
 			$tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $pid, $this);
 			// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {
@@ -425,37 +425,61 @@ class PagePositionMap {
 						}
 					}
 					// Render the grid cell
-					$table .= '<td valign="top"' . (isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '') . (isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '') . ' class="t3-gridCell t3-page-column t3-page-column-' . $columnKey . (!isset($columnConfig['colPos']) ? ' t3-gridCell-unassigned' : '') . (isset($columnConfig['colPos']) && !$head ? ' t3-gridCell-restricted' : '') . (isset($columnConfig['colspan']) ? ' t3-gridCell-width' . $columnConfig['colspan'] : '') . (isset($columnConfig['rowspan']) ? ' t3-gridCell-height' . $columnConfig['rowspan'] : '') . '">';
-					$table .= '<div class="t3-page-colHeader t3-row-header">';
+					$table .= '<td'
+						. (isset($columnConfig['colspan']) ? ' colspan="' . $columnConfig['colspan'] . '"' : '')
+						. (isset($columnConfig['rowspan']) ? ' rowspan="' . $columnConfig['rowspan'] . '"' : '')
+						. ' class="col-nowrap col-min'
+						. (!isset($columnConfig['colPos']) ? ' warning' : '')
+						. (isset($columnConfig['colPos']) && !$head ? ' danger' : '') . '">';
+					// Render header
+					$table .= '<p>';
 					if (isset($columnConfig['colPos']) && $head) {
-						$table .= $this->wrapColumnHeader($head, '', '') . '</div>' . implode('<br />', $lines[$columnKey]);
+						$table .= '<strong>' . $this->wrapColumnHeader($head, '', '') . '</strong>';
 					} elseif ($columnConfig['colPos']) {
-						$table .= $this->wrapColumnHeader($GLOBALS['LANG']->getLL('noAccess'), '', '') . '</div>';
-					} elseif ($columnConfig['name']) {
-						$table .= $this->wrapColumnHeader($columnConfig['name'], '', '') . '</div>';
+						$table .= '<em>' . $this->wrapColumnHeader($GLOBALS['LANG']->getLL('noAccess'), '', '') . '</em>';
 					} else {
-						$table .= $this->wrapColumnHeader($GLOBALS['LANG']->getLL('notAssigned'), '', '') . '</div>';
+						$table .= '<em>' . $this->wrapColumnHeader(($columnConfig['name']?: '') . ' (' . $GLOBALS['LANG']->getLL('notAssigned') . ')', '', '') . '</em>';
+					}
+					$table .= '</p>';
+					// Render lines
+					if (isset($columnConfig['colPos']) && $head && !empty($lines[$columnKey])) {
+						$table .= '<ul class="list-unstyled">';
+						foreach ($lines[$columnKey] as $line) {
+							$table .= '<li>' . $line . '</li>';
+						}
+						$table .= '</ul>';
 					}
 					$table .= '</td>';
 				}
 				$table .= '</tr>';
 			}
+			$table .= '</tbody>';
 			$table .= '</table></div>';
 		} else {
 			// Traverse the columns here:
+			$row = '';
 			foreach ($colPosArray as $kk => $vv) {
-				$row1 .= '<td align="center" width="' . round(100 / $count) . '%"><div class="t3-page-colHeader t3-row-header">' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), TRUE), $vv) . '</div></td>';
-				$row2 .= '<td valign="top" nowrap="nowrap">' . implode('<br />', $lines[$vv]) . '</td>';
+				$row .= '<td class="col-nowrap col-min" width="' . round(100 / $count) . '%">';
+				$row .= '<p><strong>' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), TRUE), $vv) . '</strong></p>';
+				if (!empty($lines[$vv])) {
+					$row .= '<ul class="list-unstyled">';
+					foreach ($lines[$vv] as $line) {
+						$row .= '<li>' . $line . '</li>';
+					}
+					$row .= '</ul>';
+				}
+				$row .= '</td>';
 			}
 			$table = '
 
 			<!--
 				Map of records in columns:
 			-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-ttContentList">
-				<tr>' . $row1 . '</tr>
-				<tr>' . $row2 . '</tr>
-			</table>
+			<div class="table-fit">
+				<table class="table table-condensed table-bordered table-vertical-top">
+					<tr>' . $row . '</tr>
+				</table>
+			</div>
 
 			';
 		}

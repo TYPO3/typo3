@@ -155,10 +155,7 @@ class NewContentElementController {
 			// ***************************
 			// Creating content
 			// ***************************
-			// use a wrapper div
-			$this->content .= '<div id="user-setup-wrapper">';
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('newContentElement'));
-			$this->content .= $this->doc->spacer(5);
 			// Wizard
 			$code = '';
 			$wizardItems = $this->getWizardItems();
@@ -240,9 +237,9 @@ class NewContentElementController {
 			}
 			// Add the wizard table to the content, wrapped in tabs:
 			if ($this->config['renderMode'] == 'tabs') {
-				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
+				$code = '<p>' . $GLOBALS['LANG']->getLL('sel1', 1) . '</p>' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
 			} else {
-				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />';
+				$code = '<p>' . $GLOBALS['LANG']->getLL('sel1', 1) . '</p>';
 				foreach ($menuItems as $section) {
 					$code .= '<h3 class="divider">' . $section['label'] . '</h3>' . $section['content'];
 				}
@@ -252,9 +249,8 @@ class NewContentElementController {
 			if (!$this->onClickEvent) {
 				// Add anchor "sel2"
 				$this->content .= $this->doc->section('', '<a name="sel2"></a>');
-				$this->content .= $this->doc->spacer(20);
 				// Select position
-				$code = $GLOBALS['LANG']->getLL('sel2', 1) . '<br /><br />';
+				$code = '<p>' . $GLOBALS['LANG']->getLL('sel2', 1) . '</p>';
 
 				// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$colPosArray = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
@@ -265,8 +261,6 @@ class NewContentElementController {
 				$code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
 				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('2_selectPosition'), $code, 0, 1);
 			}
-			// Close wrapper div
-			$this->content .= '</div>';
 		} else {
 			// In case of no access:
 			$this->content = '';
