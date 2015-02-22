@@ -48,6 +48,9 @@ a.typo3-goBack {
 		max-height: 18px;
 	}
 }
+.input-group-addon {
+	min-width: 2.5em;
+}
 
 //
 // Form control additions
@@ -142,6 +145,16 @@ select {
 		label {
 			margin-right: 0.5em;
 		}
+	}
+}
+
+//
+// Form group additions
+//
+.form-group-dashed {
+	& + .form-group-dashed {
+		padding-top: 15px;
+		border-top: 1px dashed #ccc;
 	}
 }
 

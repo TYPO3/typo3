@@ -259,43 +259,71 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 	 * configuration properties
 	 */
 	ExtensionManager.configurationFieldSupport = function() {
-		$('.offset').each(function() {
+		$('.t3js-emconf-offset').each(function() {
 			var $me = $(this),
-				$parent = $me.parent();
-			$me.hide();
+				$parent = $me.parent(),
+				id = $me.attr('id'),
+				val = $me.attr('value'),
+				valArr = val.split(',');
 
-			var val = $me.attr('value');
-			var valArr = val.split(',');
+			$me.attr('data-offsetfield-x', '#' + id + '_offset_x')
+				.attr('data-offsetfield-y', '#' + id + '_offset_y')
+				.wrap('<div class="hidden"></div>');
 
-			$me.wrap('<div class="offsetSelector"></div>');
-			$parent.append('x: <input value="' + $.trim(valArr[0]) + '" class="tempOffset1 tempOffset">');
-			$parent.append('<span>, </span>');
-			$parent.append('y: <input value="' + $.trim(valArr[1]) + '" class="tempOffset2 tempOffset">');
+			var elementX = '' +
+				'<div class="form-multigroup-item">' +
+					'<div class="input-group">' +
+						'<div class="input-group-addon">x</div>' +
+						'<input id="' + id + '_offset_x" class="form-control t3js-emconf-offsetfield" data-target="#' + id + '" value="' + $.trim(valArr[0]) + '">' +
+					'</div>' +
+				'</div>';
+			var elementY = '' +
+				'<div class="form-multigroup-item">' +
+					'<div class="input-group">' +
+						'<div class="input-group-addon">y</div>' +
+						'<input id="' + id + '_offset_y" class="form-control t3js-emconf-offsetfield" data-target="#' + id + '" value="' + $.trim(valArr[1]) + '">' +
+					'</div>' +
+				'</div>';
 
-			$me.siblings('.tempOffset').keyup(function() {
-				$me.siblings('.offset').attr(
+			var offsetGroup = '<div class="form-multigroup-wrap">' + elementX + elementY + '</div>';
+			$parent.append(offsetGroup);
+			$parent.find('.t3js-emconf-offset').keyup(function() {
+				var $target = $($(this).data('target'));
+				$target.attr(
 					'value',
-					$parent.children('.tempOffset1').attr('value') + ',' + $parent.children('.tempOffset2').attr('value'));
+					$($target.data('offsetfield-x')).val() + ',' + $($target.data('offsetfield-y')).val()
+				);
 			});
 		});
 
-		$('.wrap').each(function() {
+		$('.t3js-emconf-wrap').each(function() {
 			var $me = $(this),
-				$parent = $me.parent();
-			$me.hide();
+				$parent = $me.parent(),
+				id = $me.attr('id'),
+				val = $me.attr('value'),
+				valArr = val.split('|');
 
-			var val = $me.attr('value');
-			var valArr = val.split('|');
+			$me.attr('data-wrapfield-start', '#' + id + '_wrap_start')
+				.attr('data-wrapfield-end', '#' + id + '_wrap_end')
+				.wrap('<div class="hidden"></div>');
 
-			$me.wrap('<div class="wrapSelector"></div>');
-			$parent.append('<input value="' + $.trim(valArr[0]) + '" class="tempWrap1 tempWrap">');
-			$parent.append('<span>|</span>');
-			$parent.append('<input value="' + $.trim(valArr[1]) + '" class="tempWrap2 tempWrap">');
+			var elementStart = '' +
+				'<div class="form-multigroup-item">' +
+					'<input id="' + id + '_wrap_start" class="form-control t3js-emconf-wrapfield" data-target="#' + id + '" value="' + $.trim(valArr[0]) + '">' +
+				'</div>';
+			var elementEnd = '' +
+				'<div class="form-multigroup-item">' +
+					'<input id="' + id + '_wrap_end" class="form-control t3js-emconf-wrapfield" data-target="#' + id + '" value="' + $.trim(valArr[1]) + '">' +
+				'</div>';
 
-			$me.siblings('.tempWrap').keyup(function() {
-				$me.siblings('.wrap').attr(
+			var wrapGroup = '<div class="form-multigroup-wrap">' + elementStart + elementEnd + '</div>';
+			$parent.append(wrapGroup);
+			$parent.find('.t3js-emconf-wrapfield').keyup(function() {
+				var $target = $($(this).data('target'));
+				$target.attr(
 					'value',
-					$parent.children('.tempWrap1').attr('value') + '|' + $parent.children('.tempWrap2').attr('value'));
+					$($target.data('wrapfield-start')).val() + '|' + $($target.data('wrapfield-end')).val()
+				);
 			});
 		});
 	};

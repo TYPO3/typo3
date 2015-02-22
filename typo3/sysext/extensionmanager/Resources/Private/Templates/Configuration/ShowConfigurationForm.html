@@ -19,7 +19,11 @@
 		<ul class="nav nav-tabs" role="tablist">
 			<f:for each="{configuration}" as="category" key="categoryNumber" iteration="iteration">
 				<f:if condition="{category.name}">
-					<li role="presentation" class="{f:if(condition:'{iteration.isFirst}', then:'active')}"><a href="#category-{categoryNumber}" aria-controls="category-{categoryNumber}" role="tab" data-toggle="tab">{category.name}</a></li>
+					<li role="presentation" class="{f:if(condition:'{iteration.isFirst}', then:'active')}">
+						<a class="text-capitalize" href="#category-{categoryNumber}" aria-controls="category-{categoryNumber}" role="tab" data-toggle="tab">
+							{category.name}
+						</a>
+					</li>
 				</f:if>
 			</f:for>
 		</ul>
@@ -31,33 +35,40 @@
 					<f:if condition="{category.name}">
 						<div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="category-{categoryNumber}">
 							<f:for each="{category.subcategories}" as="subcategory">
-								<div class="subcategory">
+								<div class="form-section">
 									<f:if condition="{subcategory.label}">
 										<f:then>
-											<h2>{subcategory.label}</h2>
+											<h2 class="h4 form-section-headline">{subcategory.label}</h2>
 										</f:then>
 										<f:else>
 											<f:if condition="{category.subcategories->f:count()} > 1">
-												<h3><f:translate key="extConfTemplate.other" /></h3>
+												<h3 class="h4 form-section-headline"><f:translate key="extConfTemplate.other" /></h3>
 											</f:if>
 										</f:else>
 									</f:if>
 									<f:for each="{subcategory.items}" as="item">
-										<div class="group">
-											<h3>{item.labelHeadline} <span class="info">[{category.name}.{item.name}]</span></h3>
-											<f:if condition="{item.labelText}">
-												<label for="{item.name}">{item.labelText -> f:format.nl2br()}</label><br>
-											</f:if>
-											<f:if condition="{item.highlight}">
-												<span style="background:red; padding:1px 2px; color:#fff; font-weight:bold;">{item.highlight}</span>
-											</f:if>
-											<em:form.typoScriptConstants configuration="{item}" />
-											<f:if condition="{item.type} != 'user'">
-												<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
-													<f:if condition="{label}">
-														<span class="info">({label})</span>
+										<div class="form-group form-group-dashed">
+											<label for="em-{item.name}">
+												{item.labelHeadline}<br>
+												<span class="text-monospace text-normal">
+													{category.name}.{item.name}
+													<f:if condition="{item.type} != 'user'">
+														<f:alias map="{label: '{f:translate(key: \'extConfTemplate.type.{item.type}\')}'}">
+															<f:if condition="{label}">
+																({label})
+															</f:if>
+														</f:alias>
 													</f:if>
-												</f:alias>
+												</span>
+											</label>
+											<f:if condition="{item.highlight}">
+												<p class="text-danger">{item.highlight}</p>
+											</f:if>
+											<div class="form-control-wrap">
+												<em:form.typoScriptConstants configuration="{item}" />
+											</div>
+											<f:if condition="{item.labelText}">
+												<div class="help-block">{item.labelText -> f:format.nl2br()}</div>
 											</f:if>
 										</div>
 									</f:for>

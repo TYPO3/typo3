@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**
@@ -78,23 +80,41 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	protected function renderColorPicker(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
+		$elementId = 'em-' . $configuration->getName();
+		$elementName = $this->getName($configuration);
+
+		// configure the field
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
-		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
-		$doc = $this->getDocInstance();
-		$pageRenderer = $doc->getPageRenderer();
-		$pageRenderer->addCssFile('sysext/extensionmanager/Resources/Public/Contrib/Farbtastic/farbtastic.css');
-		$pageRenderer->addJsFile('sysext/extensionmanager/Resources/Public/Contrib/Farbtastic/farbtastic.js');
-		$pageRenderer->addJsInlineCode('colorpicker', '
-			jQuery(document).ready(function() {
-				jQuery(".colorPicker").farbtastic("#em-' . $configuration->getName() . '");
-			});
-		');
+		$this->tag->addAttribute('id', $elementId);
+		$this->tag->addAttribute('name', $elementName);
+		$this->tag->addAttribute('class', 'form-control');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
-		return $this->tag->render() . '<div class="colorPicker"></div>';
+
+		// configure colorpicker wizard
+		$params = array(
+			'formName' => 'configurationform',
+			'itemName' => $elementName,
+		);
+		$onClick =
+			'this.blur();' .
+			'vHWin=window.open(' .
+				GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_colorpicker') . GeneralUtility::implodeArrayForUrl('', array('P' => $params)))  . ' + \'&P[currentValue]=\' + encodeURIComponent(document.getElementById(' . GeneralUtility::quoteJSvalue($elementId) . ').value),' .
+				'\'popUpem-' . GeneralUtility::shortmd5($elementName) . '\',' .
+				'\'height=400,width=400,status=0,menubar=0,scrollbars=1\'' .
+			');' .
+			'vHWin.focus();' .
+			'return false;';
+
+		// wrap the field
+		$output = '<div class="form-wizards-wrap form-wizards-aside">'
+				. '<div class="form-wizards-element">' . $this->tag->render() . '</div>'
+				. '<div class="form-wizards-items"><a href="#" onClick="' . htmlspecialchars($onClick) . '" class="btn btn-default"><span class="t3-icon fa fa-eyedropper"></span></a></div>'
+				. '</div>';
+
+		return $output;
 	}
 
 	/**
@@ -106,9 +126,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	protected function renderOffsetField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
-		$this->tag->addAttribute('name', $this->getName($configuration));
 		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
-		$this->tag->addAttribute('class', 'offset');
+		$this->tag->addAttribute('name', $this->getName($configuration));
+		$this->tag->addAttribute('class', 'form-control t3js-emconf-offset');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -124,9 +144,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	protected function renderWrapField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
-		$this->tag->addAttribute('name', $this->getName($configuration));
 		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
-		$this->tag->addAttribute('class', 'wrap');
+		$this->tag->addAttribute('name', $this->getName($configuration));
+		$this->tag->addAttribute('class', 'form-control t3js-emconf-wrap');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -140,9 +160,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	protected function renderOptionSelect(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
-		$this->tag->addAttribute('name', $this->getName($configuration));
-		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
 		$this->tag->setTagName('select');
+		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
+		$this->tag->addAttribute('name', $this->getName($configuration));
+		$this->tag->addAttribute('class', 'form-control');
 		$optionValueArray = $configuration->getGeneric();
 		$output = '';
 		foreach ($optionValueArray as $label => $value) {
@@ -165,9 +186,10 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	protected function renderPositiveIntegerField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'number');
-		$this->tag->addAttribute('min', '0');
-		$this->tag->addAttribute('name', $this->getName($configuration));
 		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
+		$this->tag->addAttribute('name', $this->getName($configuration));
+		$this->tag->addAttribute('class', 'form-control');
+		$this->tag->addAttribute('min', '0');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -183,8 +205,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	protected function renderIntegerField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'number');
-		$this->tag->addAttribute('name', $this->getName($configuration));
 		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
+		$this->tag->addAttribute('name', $this->getName($configuration));
+		$this->tag->addAttribute('class', 'form-control');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -200,8 +223,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	protected function renderTextField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
 		$this->tag->setTagName('input');
 		$this->tag->addAttribute('type', 'text');
-		$this->tag->addAttribute('name', $this->getName($configuration));
 		$this->tag->addAttribute('id', 'em-' . $configuration->getName());
+		$this->tag->addAttribute('name', $this->getName($configuration));
+		$this->tag->addAttribute('class', 'form-control');
 		if ($configuration->getValue() !== NULL) {
 			$this->tag->addAttribute('value', $configuration->getValue());
 		}
@@ -215,7 +239,6 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	protected function renderSmallTextField(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
-		$this->tag->addAttribute('class', 'small');
 		return $this->renderTextField($configuration);
 	}
 
@@ -234,7 +257,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 			$this->tag->addAttribute('checked', 'checked');
 		}
 		$hiddenField = $this->renderHiddenFieldForEmptyValue($configuration);
-		return $hiddenField . $this->tag->render();
+		return '<div class="checkbox">' . $hiddenField . '<label>' . $this->tag->render() . '</label></div>';
 	}
 
 	/**
@@ -284,19 +307,6 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 			return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="0" />';
 		}
 		return '';
-	}
-
-	/**
-	 * Gets instance of template if exists or create a new one.
-	 *
-	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
-	 */
-	public function getDocInstance() {
-		if (!isset($GLOBALS['SOBE']->doc)) {
-			$GLOBALS['SOBE']->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
-		}
-		return $GLOBALS['SOBE']->doc;
 	}
 
 }
