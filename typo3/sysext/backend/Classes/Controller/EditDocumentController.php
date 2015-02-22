@@ -660,7 +660,21 @@ class EditDocumentController {
 				}
 			}
 ';
+		// define the window size of the element browser
+		$popupWindowWidth  = 700;
+		$popupWindowHeight = 750;
+		$popupWindowSize = trim($GLOBALS['BE_USER']->getTSConfigVal('options.popupWindowSize'));
+		if (!empty($popupWindowSize)) {
+			list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
+		}
+		$t3Configuration = array(
+			'PopupWindow' => array(
+				'width' => $popupWindowWidth,
+				'height' => $popupWindowHeight
+			),
+		);
 		$this->doc->JScode = $this->doc->wrapScriptTags('
+				TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 				// Object: TS:
 				// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
 				// TS object overwrites the object declared in tbe_editor.js
