@@ -11,6 +11,7 @@
 # customsubcategory=300=Offset
 # customsubcategory=400=Color
 # customsubcategory=500=User
+# customsubcategory=600=Options
 # customsubcategory=900=Input
 # customsubcategory=901=Default
 
@@ -72,6 +73,18 @@ offset_4 =
 
 # cat=User/500/10; type=user[TYPO3\CMS\Styleguide\Utility\ExtensionManagerConfigurationUtility->user_1]; label=User - dispaly params
 user_1 = 0
+
+
+###############
+### Options ###
+###############
+
+# cat=Options/600/10; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+options_1 = default
+# cat=Options/600/11; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - default option_2
+options_2 = option_2
+# cat=Options/600/11; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - no default
+options_3 =
 
 
 ############################
