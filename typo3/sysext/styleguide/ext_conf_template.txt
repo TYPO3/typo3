@@ -5,6 +5,8 @@
 # customsubcategory=101=Int
 # customsubcategory=102=Integer
 # customsubcategory=103=Int+
+# customsubcategory=900=Input
+# customsubcategory=901=Default
 
 
 ############################
@@ -36,3 +38,16 @@ intplus_2 =
 intplus_3 = -100
 
 
+#####################
+### Compatibility ###
+#####################
+
+# cat=Compatibility/900/10; type=input; label=Input 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+compat_input_1 = value
+# cat=Compatibility/900/11; type=input; label=Input 2 - no value
+compat_input_2 =
+
+# cat=Compatibility/901/10; type=default; label=Input 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+compat_default_1 = value
+# cat=Compatibility/901/11; type=default; label=Input 2 - no value
+compat_default_2 =
