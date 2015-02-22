@@ -210,12 +210,12 @@ abstract class FunctionalTestCase extends BaseTestCase {
 	protected function setUpBackendUserFromFixture($userUid) {
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
 		$database = $this->getDatabaseConnection();
-		$userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . $userUid);
+		$userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 
 		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
 		$backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$sessionId = $backendUser->createSessionId();
-		$_SERVER['HTTP_COOKIE'] = 'be_typo_user=' . $sessionId . '; path=/';
+		$_COOKIE['be_typo_user'] = $sessionId;
 		$backendUser->id = $sessionId;
 		$backendUser->sendNoCacheHeaders = FALSE;
 		$backendUser->dontSetCookie = TRUE;
