@@ -5,8 +5,73 @@
 # customsubcategory=101=Int
 # customsubcategory=102=Integer
 # customsubcategory=103=Int+
+# customsubcategory=200=String
+# customsubcategory=201=Small
+# customsubcategory=202=Wrap
+# customsubcategory=300=Offset
+# customsubcategory=400=Color
+# customsubcategory=500=User
 # customsubcategory=900=Input
 # customsubcategory=901=Default
+
+
+############
+### Text ###
+############
+
+# cat=Text/200/10; type=string; label=String 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+string_1 = value
+# cat=Text/200/11; type=string; label=String 2 - no value
+string_2 =
+
+# cat=Text/201/10; type=small; label=Small 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+small_1 = value
+# cat=Text/201/11; type=small; label=Small 2 - no value
+small_2 =
+
+# cat=Text/202/10; type=small; label=Wrap 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+wrap_1 = value
+# cat=Text/202/11; type=small; label=Wrap 2 - no value
+wrap_2 =
+
+
+#############
+### Color ###
+#############
+
+# cat=Color/400/10; type=color; label=Color 1 - value black
+color_1 = black
+
+# cat=Color/400/11; type=color; label=Color 2 - value #000000
+color_2 = #000000
+
+# cat=Color/400/12; type=color; label=Color 3 - value 000000
+color_3 = 000000
+
+# cat=Color/400/13; type=color; label=Color 4 - no value
+color_4 =
+
+
+##############
+### Offset ###
+##############
+
+# cat=Offset/300/10; type=offset; label=Offset 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+offset_1 = x,y
+# cat=Offset/300/11; type=offset; label=Offset 2 - value x
+offset_2 = x
+# cat=Offset/300/12; type=offset; label=Offset 2 - value y
+offset_3 = ,y
+# cat=Offset/300/13; type=offset; label=Offset 2 - no value
+offset_4 =
+
+
+############
+### User ###
+############
+
+# cat=User/500/10; type=user[TYPO3\CMS\Styleguide\Utility\ExtensionManagerConfigurationUtility->user_1]; label=User - dispaly params
+user_1 = 0
 
 
 ############################
