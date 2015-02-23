@@ -653,7 +653,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		}
 		$newFileName = $this->sanitizeFileName($newFileName !== '' ? $newFileName : PathUtility::basename($localFilePath));
 		$newFileIdentifier = $this->canonicalizeAndCheckFolderIdentifier($targetFolderIdentifier) . $newFileName;
-		$targetPath = $this->absoluteBasePath . $newFileIdentifier;
+		$targetPath = $this->getAbsolutePath($newFileIdentifier);
 
 		if ($removeOriginal) {
 			if (is_uploaded_file($localFilePath)) {
@@ -768,8 +768,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		$newIdentifier = $targetFolderIdentifier . '/' . $fileName;
 		$newIdentifier = $this->canonicalizeAndCheckFileIdentifier($newIdentifier);
 
-		copy($sourcePath, $this->absoluteBasePath . $newIdentifier);
-		GeneralUtility::fixPermissions($this->absoluteBasePath . $newIdentifier);
+		$absoluteFilePath = $this->getAbsolutePath($newIdentifier);
+		copy($sourcePath, $absoluteFilePath);
+		GeneralUtility::fixPermissions($absoluteFilePath);
 		return $newIdentifier;
 	}
 
