@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
@@ -201,7 +202,7 @@ class DownloadController extends AbstractController {
 				$this->translate('extensionList.updateFlashMessage.title')
 			);
 		} catch (\Exception $e) {
-			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', FlashMessage::ERROR);
 		}
 
 		return '';
@@ -216,14 +217,26 @@ class DownloadController extends AbstractController {
 	 */
 	protected function updateCommentForUpdatableVersionsAction() {
 		$extensionKey = $this->request->getArgument('extension');
-		$version = $this->request->getArgument('integerVersion');
+		$versionStart = $this->request->getArgument('integerVersionStart');
+		$versionStop = $this->request->getArgument('integerVersionStop');
 		$updateComments = array();
 		/** @var Extension[] $updatableVersions */
-		$updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $version, 0, FALSE);
+		$updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
+			$extensionKey,
+			$versionStart,
+			$versionStop
+		);
+		$highestPossibleVersion = FALSE;
+
 		foreach ($updatableVersions as $updatableVersion) {
+			if ($highestPossibleVersion === FALSE) {
+				$highestPossibleVersion = $updatableVersion->getVersion();
+			}
 			$updateComments[$updatableVersion->getVersion()] = $updatableVersion->getUpdateComment();
 		}
-		$this->view->assign('updateComments', $updateComments)->assign('extensionKey', $extensionKey);
+		$this->view->assign('updateComments', $updateComments)
+			->assign('extensionKey', $extensionKey)
+			->assign('version', $highestPossibleVersion);
 	}
 
 	/**

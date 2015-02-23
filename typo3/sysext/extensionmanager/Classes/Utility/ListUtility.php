@@ -139,8 +139,13 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				$terObject = $this->getExtensionTerData($extensionKey, $extensions[$extensionKey]['version']);
 				if ($terObject !== NULL) {
 					$extensions[$extensionKey]['terObject'] = $terObject;
-					$extensions[$extensionKey]['updateAvailable'] = $this->installUtility->isUpdateAvailable($terObject);
-					$extensions[$extensionKey]['updateToVersion'] = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
+					$extensions[$extensionKey]['updateAvailable'] = FALSE;
+					$extensions[$extensionKey]['updateToVersion'] = NULL;
+					$extensionToUpdate = $this->installUtility->getUpdateableVersion($terObject);
+					if ($extensionToUpdate !== FALSE) {
+						$extensions[$extensionKey]['updateAvailable'] = TRUE;
+						$extensions[$extensionKey]['updateToVersion'] = $extensionToUpdate;
+					}
 				}
 			} else {
 				unset($extensions[$extensionKey]);
