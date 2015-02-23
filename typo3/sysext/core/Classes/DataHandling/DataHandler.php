@@ -3253,6 +3253,7 @@ class DataHandler {
 						$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
 						$tE = $this->getTableEntries($table, $TSConfig);
 						// Traverse ALL fields of the selected record:
+						$setDefaultOnCopyArray = array_flip(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy']));
 						foreach ($row as $field => $value) {
 							if (!in_array($field, $nonFields, TRUE)) {
 								// Get TCA configuration for the field:
@@ -3267,7 +3268,7 @@ class DataHandler {
 								} elseif (isset($copyAfterFields[$field])) {
 									// Copy-after value if available:
 									$value = $copyAfterFields[$field];
-								} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'], $field)) {
+								} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && isset($setDefaultOnCopyArray[$field])) {
 									$value = $defaultData[$field];
 								} else {
 									// Hide at copy may override:
@@ -3347,9 +3348,10 @@ class DataHandler {
 		$copyTablesArray = $this->admin ? $this->compileAdminTables() : explode(',', $this->BE_USER->groupData['tables_modify']);
 		// If not all tables are allowed then make a list of allowed tables: That is the tables that figure in both allowed tables AND the copyTable-list
 		if (!strstr($this->copyWhichTables, '*')) {
+			$copyWhichTablesArray = array_flip(GeneralUtility::trimExplode(',', $this->copyWhichTables . ',pages'));
 			foreach ($copyTablesArray as $k => $table) {
 				// Pages are always going...
-				if (!$table || !GeneralUtility::inList(($this->copyWhichTables . ',pages'), $table)) {
+				if (!$table || !isset($copyWhichTablesArray[$table])) {
 					unset($copyTablesArray[$k]);
 				}
 			}
@@ -5957,10 +5959,11 @@ class DataHandler {
 	 */
 	public function getExcludeListArray() {
 		$list = array();
+		$nonExcludeFieldsArray = array_flip(GeneralUtility::trimExplode(',', $this->BE_USER->groupData['non_exclude_fields']));
 		foreach ($GLOBALS['TCA'] as $table => $_) {
 			if (isset($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $config) {
-					if ($config['exclude'] && !GeneralUtility::inList($this->BE_USER->groupData['non_exclude_fields'], ($table . ':' . $field))) {
+					if ($config['exclude'] && !isset($nonExcludeFieldsArray[$table . ':' . $field])) {
 						$list[] = $table . '-' . $field;
 					}
 				}
