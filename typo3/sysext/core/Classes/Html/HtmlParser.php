@@ -1411,7 +1411,10 @@ class HtmlParser
                 }
                 $newTag = '<' . trim($tagName . ' ' . implode(' ', $outA));
                 // All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
-                if (GeneralUtility::inList('img,br,hr,meta,link,base,area,input,param,col', $tagName) || substr($value, -2) == '/>') {
+                if (
+                    $tagName === 'img' || $tagName === 'br' || $tagName === 'hr' || $tagName === 'meta' || $tagName === 'link' || $tagName === 'base'
+                    || $tagName === 'area' || $tagName === 'input' || $tagName === 'param' || $tagName === 'col' || substr($value, -2) === '/>'
+                ) {
                     $newTag .= ' />';
                 } else {
                     $newTag .= '>';

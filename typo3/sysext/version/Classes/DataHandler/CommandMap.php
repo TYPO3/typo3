@@ -292,7 +292,7 @@ class CommandMap
     {
         $scope = self::SCOPE_WorkspacesSwap;
         $dependency = $this->getDependencyUtility($scope);
-        if (GeneralUtility::inList('any,pages', $this->workspacesSwapMode)) {
+        if ($this->workspacesSwapMode === 'any' || $this->workspacesSwapMode === 'pages') {
             $this->invokeWorkspacesSwapItems('applyWorkspacesSwapBehaviour');
         }
         $this->invokeWorkspacesSwapItems('addWorkspacesSwapElements', array($dependency));
@@ -386,7 +386,7 @@ class CommandMap
     {
         $scope = self::SCOPE_WorkspacesSetStage;
         $dependency = $this->getDependencyUtility($scope);
-        if (GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
+        if ($this->workspacesChangeStageMode === 'any' || $this->workspacesChangeStageMode === 'pages') {
             $this->invokeWorkspacesSetStageItems('applyWorkspacesSetStageBehaviour');
         }
         $this->invokeWorkspacesSetStageItems('explodeSetStage');
@@ -407,7 +407,7 @@ class CommandMap
         $extendedCommandMap = array();
         $versionIds = GeneralUtility::trimExplode(',', $versionIdList, true);
         $elementList = array($table => $versionIds);
-        if (GeneralUtility::inList('any,pages', $this->workspacesChangeStageMode)) {
+        if ($this->workspacesChangeStageMode === 'any' || $this->workspacesChangeStageMode === 'pages') {
             if (count($versionIds) === 1) {
                 $workspaceRecord = BackendUtility::getRecord($table, $versionIds[0], 't3ver_wsid');
                 $workspaceId = $workspaceRecord['t3ver_wsid'];

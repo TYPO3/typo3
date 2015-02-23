@@ -410,7 +410,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         if ($externalFile) {
                             $pU = parse_url($absoluteUrl);
                             $pI = pathinfo($pU['path']);
-                            if (GeneralUtility::inList('gif,png,jpeg,jpg', strtolower($pI['extension']))) {
+                            $extension = strtolower($pI['extension']);
+                            if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
                                 $fileName = GeneralUtility::shortMD5($absoluteUrl) . '.' . $pI['extension'];
                                 // We insert this image into the user default upload folder
                                 list($table, $field) = explode(':', $this->elRef);
@@ -699,7 +700,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser
                         // Detects if a file is found in site-root.
                         list($rootFileDat) = explode('?', $link_param);
                         $rFD_fI = pathinfo($rootFileDat);
-                        if (trim($rootFileDat) && !strstr($link_param, '/') && (@is_file((PATH_site . $rootFileDat)) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+                        $fileExtension = strtolower($rFD_fI['extension']);
+                        if ($fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm' || trim($rootFileDat) && !strstr($link_param, '/') && (@is_file((PATH_site . $rootFileDat)))) {
                             $href = $siteUrl . $link_param;
                         } elseif (
                             (

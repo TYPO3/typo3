@@ -603,13 +603,14 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
         // The permanent login checkbox should only be shown if permalogin is not deactivated (-1),
         // not forced to be always active (2) and lifetime is greater than 0
+        $permalogin = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
         if (
             $this->conf['showPermaLogin']
-            && GeneralUtility::inList('0,1', $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'])
+            && ($permalogin === 0 || $permalogin === 1)
             && $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] > 0
         ) {
             $markerArray['###PERMALOGIN###'] = $this->pi_getLL('permalogin', '', true);
-            if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
+            if ($permalogin === 1) {
                 $markerArray['###PERMALOGIN_HIDDENFIELD_ATTRIBUTES###'] = 'disabled="disabled"';
                 $markerArray['###PERMALOGIN_CHECKBOX_ATTRIBUTES###'] = 'checked="checked"';
             } else {

@@ -650,7 +650,7 @@ class SqlParser
             if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+UNIQUE|DROP|ADD|RENAME|DEFAULT[[:space:]]+CHARACTER[[:space:]]+SET|ENGINE)([[:space:]]+|\\(|=)')) {
                 $actionKey = $this->normalizeKeyword($result['action']);
                 // Getting field:
-                if (GeneralUtility::inList('ADDPRIMARYKEY,DROPPRIMARYKEY,ENGINE', $actionKey) || ($fieldKey = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+'))) {
+                if ($actionKey === 'ADDPRIMARYKEY' || $actionKey === 'DROPPRIMARYKEY' || $actionKey === 'ENGINE' || ($fieldKey = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+'))) {
                     switch ($actionKey) {
                         case 'ADD':
                             $result['FIELD'] = $fieldKey;
@@ -1352,7 +1352,8 @@ class SqlParser
                             $this->nextPart($parseString, '([)])');
                             $stack[$level][$pnt[$level]]['value'] = $values;
                         } else {
-                            if (GeneralUtility::inList('IN,NOT IN', $stack[$level][$pnt[$level]]['comparator']) && preg_match('/^[(][[:space:]]*SELECT[[:space:]]+/', $parseString)) {
+                            $comparator = $this->normalizeKeyword($stack[$level][$pnt[$level]]['comparator']);
+                            if (($comparator === 'IN' || $comparator == 'NOT IN') && preg_match('/^[(][[:space:]]*SELECT[[:space:]]+/', $parseString)) {
                                 $this->nextPart($parseString, '^([(])');
                                 $stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString, $parameterReferences);
                                 // Seek to new position in parseString after parsing of the subquery
@@ -1363,20 +1364,18 @@ class SqlParser
                                 if (!$this->nextPart($parseString, '^([)])')) {
                                     return 'No ) parenthesis at end of subquery';
                                 }
+                            } elseif ($comparator === 'BETWEEN' || $comparator === 'NOT BETWEEN') {
+                                $stack[$level][$pnt[$level]]['values'] = array();
+                                $stack[$level][$pnt[$level]]['values'][0] = $this->getValue($parseString);
+                                if (!$this->nextPart($parseString, '^(AND)')) {
+                                    return $this->parseError('No AND operator found as expected in parseWhereClause()', $parseString);
+                                }
+                                $stack[$level][$pnt[$level]]['values'][1] = $this->getValue($parseString);
                             } else {
-                                if (GeneralUtility::inList('BETWEEN,NOT BETWEEN', $stack[$level][$pnt[$level]]['comparator'])) {
-                                    $stack[$level][$pnt[$level]]['values'] = array();
-                                    $stack[$level][$pnt[$level]]['values'][0] = $this->getValue($parseString);
-                                    if (!$this->nextPart($parseString, '^(AND)')) {
-                                        return $this->parseError('No AND operator found as expected in parseWhereClause()', $parseString);
-                                    }
-                                    $stack[$level][$pnt[$level]]['values'][1] = $this->getValue($parseString);
-                                } else {
-                                    // Finding value for comparator:
-                                    $stack[$level][$pnt[$level]]['value'] = &$this->getValueOrParameter($parseString, $stack[$level][$pnt[$level]]['comparator'], '', $parameterReferences);
-                                    if ($this->parse_error) {
-                                        return $this->parse_error;
-                                    }
+                                // Finding value for comparator:
+                                $stack[$level][$pnt[$level]]['value'] = &$this->getValueOrParameter($parseString, $stack[$level][$pnt[$level]]['comparator'], '', $parameterReferences);
+                                if ($this->parse_error) {
+                                    return $this->parse_error;
                                 }
                             }
                         }
@@ -1539,7 +1538,8 @@ class SqlParser
      * @param string $parseString The parseString
      * @param string $comparator The comparator used before.
      * @param string $mode The mode, e.g., "INDEX
-     * @param mixed The value (string/integer) or parameter (:name/?). Otherwise an array with error message in first key (0)
+     * @param mixed $parameterReferences The value (string/integer) or parameter (:name/?). Otherwise an array with error message in first key (0)
+     * @return mixed
      */
     protected function &getValueOrParameter(&$parseString, $comparator = '', $mode = '', array &$parameterReferences = array())
     {
@@ -1576,7 +1576,8 @@ class SqlParser
     protected function getValue(&$parseString, $comparator = '', $mode = '')
     {
         $value = '';
-        if (GeneralUtility::inList('NOTIN,IN,_LIST', strtoupper(str_replace(array(' ', LF, CR, TAB), '', $comparator)))) {
+        $comparator = $this->normalizeKeyword($comparator);
+        if ($comparator === 'NOTIN' || $comparator === 'IN' || $comparator === '_LIST') {
             // List of values:
             if ($this->nextPart($parseString, '^([(])')) {
                 $listValues = array();

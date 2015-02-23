@@ -460,7 +460,7 @@ class ExtendedTemplateService extends TemplateService
                 }
                 $label = $key;
                 // Read only...
-                if (GeneralUtility::inList('types,resources,sitetitle', $depth) && $this->bType == 'setup') {
+                if (($depth === 'types' || $depth === 'resources' || $depth === 'sitetitle') && $this->bType === 'setup') {
                     $label = '<span style="color: #666666;">' . $label . '</span>';
                 } else {
                     if ($this->linkObjects) {
@@ -1050,7 +1050,8 @@ class ExtendedTemplateService extends TemplateService
         } else {
             $m = strcspn($type, ' [');
             $retArr['type'] = strtolower(substr($type, 0, $m));
-            if (GeneralUtility::inList('int,options,file,boolean,offset,user', $retArr['type'])) {
+            $types = ['int' => 1, 'options' => 1, 'file' => 1, 'boolean' => 1, 'offset' => 1, 'user' => 1];
+            if (isset($types[$retArr['type']])) {
                 $p = trim(substr($type, $m));
                 $reg = array();
                 preg_match('/\\[(.*)\\]/', $p, $reg);

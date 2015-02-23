@@ -45,7 +45,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
             $sortByField = GeneralUtility::_GP('sortByField');
             if ($sortByField) {
                 $menuItems = array();
-                if (GeneralUtility::inList('title,subtitle,crdate,tstamp', $sortByField)) {
+                if ($sortByField === 'title' || $sortByField === 'subtitle' || $sortByField === 'crdate' || $sortByField === 'tstamp') {
                     $menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', $sortByField, '', false);
                 } elseif ($sortByField === 'REV') {
                     $menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', 'sorting', '', false);

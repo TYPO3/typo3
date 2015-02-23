@@ -93,7 +93,8 @@ class ElementEntityProcessor
     public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
         $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($caller->getTable(), $callerArguments['field']);
-        if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && !GeneralUtility::inList('field,list', $this->getDataHandler()->getInlineFieldType($fieldConfiguration)))) {
+        $inlineFieldType = $this->getDataHandler()->getInlineFieldType($fieldConfiguration);
+        if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
             return ElementEntity::RESPONSE_Skip;
         }
         return null;
@@ -111,7 +112,8 @@ class ElementEntityProcessor
     public function createNewDependentElementParentReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
         $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($callerArguments['table'], $callerArguments['field']);
-        if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && !GeneralUtility::inList('field,list', $this->getDataHandler()->getInlineFieldType($fieldConfiguration)))) {
+        $inlineFieldType = $this->getDataHandler()->getInlineFieldType($fieldConfiguration);
+        if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
             return ElementEntity::RESPONSE_Skip;
         }
         return null;

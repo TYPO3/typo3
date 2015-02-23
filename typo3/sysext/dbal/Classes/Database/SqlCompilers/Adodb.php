@@ -535,7 +535,7 @@ class Adodb extends AbstractCompiler
                                 $output .= ' ' . $v['comparator'];
                                 // Detecting value type; list or plain:
                                 $comparator = SqlParser::normalizeKeyword($v['comparator']);
-                                if (GeneralUtility::inList('NOTIN,IN', $comparator)) {
+                                if ($comparator === 'NOTIN' || $comparator === 'IN') {
                                     if (isset($v['subquery'])) {
                                         $output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
                                     } else {
@@ -582,7 +582,7 @@ class Adodb extends AbstractCompiler
                                             }
                                         }
                                     }
-                                } elseif (GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+                                } elseif ($comparator === 'BETWEEN' || $comparator === 'NOTBETWEEN') {
                                     $lbound = $v['values'][0];
                                     $ubound = $v['values'][1];
                                     $output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];

@@ -299,7 +299,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 									</tr>
 								';
                     foreach ($diff_1_record as $fN => $fV) {
-                        if ($GLOBALS['TCA'][$this->table]['columns'][$fN] && $GLOBALS['TCA'][$this->table]['columns'][$fN]['config']['type'] !== 'passthrough' && !GeneralUtility::inList('t3ver_label', $fN)) {
+                        if ($GLOBALS['TCA'][$this->table]['columns'][$fN] && $GLOBALS['TCA'][$this->table]['columns'][$fN]['config']['type'] !== 'passthrough' && $fN !== 't3ver_label') {
                             if ((string)$diff_1_record[$fN] !== (string)$diff_2_record[$fN]) {
                                 $diffres = $diffUtility->makeDiffDisplay(
                                     BackendUtility::getProcessedValue($this->table, $fN, $diff_2_record[$fN], 0, 1),

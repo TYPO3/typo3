@@ -282,7 +282,7 @@ class ExtensionManagerConfigurationUtility
         $lang = $this->getLanguageService();
         if ($extConf['enabled']) {
             $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) ?: 'normal';
-            if (!GeneralUtility::inList('normal,rsa', $loginSecurityLevel)) {
+            if ($loginSecurityLevel !== 'normal' && $loginSecurityLevel !== 'rsa') {
                 $this->setErrorLevel('info');
                 $problems[] = '<strong>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
                     '</strong><br /> ' .

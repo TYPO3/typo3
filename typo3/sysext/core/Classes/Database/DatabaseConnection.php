@@ -1927,10 +1927,7 @@ class DatabaseConnection
         }
         $indices_output = array();
         // Notice: Rows are skipped if there is only one result, or if no conditions are set
-        if (
-            $explain_output[0]['rows'] > 1
-            || GeneralUtility::inList('ALL', $explain_output[0]['type'])
-        ) {
+        if ($explain_output[0]['rows'] > 1 || $explain_output[0]['type'] === 'ALL') {
             // Only enable output if it's really useful
             $debug = true;
             foreach ($explain_tables as $table) {

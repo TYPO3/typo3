@@ -1135,7 +1135,7 @@ class GraphicalFunctions
                                 $utf8Chars = $this->singleChars($part['str']);
                                 foreach ($utf8Chars as $utfChar) {
                                     // Find number and evaluate position:
-                                    $uNumber = $this->csConvObj->utf8CharToUnumber($utfChar);
+                                    $uNumber = (int)$this->csConvObj->utf8CharToUnumber($utfChar);
                                     $inRange = 0;
                                     foreach ($ranges as $rangeDef) {
                                         if ($uNumber >= $rangeDef[0] && (!$rangeDef[1] || $uNumber <= $rangeDef[1])) {
@@ -1148,7 +1148,7 @@ class GraphicalFunctions
                                     }
                                     // Initialize first char
                                     // Switch bank:
-                                    if ($inRange != $currentState && !GeneralUtility::inList('32,10,13,9', $uNumber)) {
+                                    if ($inRange != $currentState && $uNumber !== 9 && $uNumber !== 10 && $uNumber !== 13 && $uNumber !== 32) {
                                         // Set result:
                                         if ($bankAccum !== '') {
                                             $newResult[] = array(

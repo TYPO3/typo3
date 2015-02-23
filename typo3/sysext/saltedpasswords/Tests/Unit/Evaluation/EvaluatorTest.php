@@ -47,9 +47,10 @@ class EvaluatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $isSet = null;
         $originalPassword = 'password';
         $saltedPassword = $this->subject->evaluateFieldValue($originalPassword, '', $isSet);
+        $hashingMethod = substr($saltedPassword, 0, 3);
         $this->assertTrue($isSet);
         $this->assertNotEquals($originalPassword, $saltedPassword);
-        $this->assertTrue(GeneralUtility::inList('$1$,$2$,$2a,$P$', substr($saltedPassword, 0, 3)));
+        $this->assertTrue($hashingMethod === '$1$' || $hashingMethod === '$2$' || $hashingMethod === '$2a' || $hashingMethod === '$P$');
     }
 
     /**

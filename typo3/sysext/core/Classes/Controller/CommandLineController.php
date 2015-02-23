@@ -213,7 +213,8 @@ class CommandLineController
     {
         // ONLY makes sense to echo it out since we are awaiting keyboard input - that cannot be silenced
         echo $msg . ' (Yes/No + return): ';
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::inList('y,yes', strtolower($this->cli_keyboardInput()));
+        $input = strtolower($this->cli_keyboardInput());
+        return $input === 'y' || $input === 'yes';
     }
 
     /**

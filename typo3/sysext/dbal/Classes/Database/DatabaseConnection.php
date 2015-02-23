@@ -1835,7 +1835,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                     }
                 } else {
                     // Detecting value type; list or plain:
-                    if (GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', LF, CR, TAB), '', $where_clause[$k]['comparator'])))) {
+                    $comparator = $this->SQLparser->normalizeKeyword($where_clause[$k]['comparator']);
+                    if ($comparator === 'NOTIN' || $comparator === 'IN') {
                         if (isset($v['subquery'])) {
                             $where_clause[$k]['subquery'] = $this->quoteSELECTsubquery($v['subquery']);
                         }
@@ -2611,8 +2612,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
         }
         // This method is heavily used by Extbase, try to handle it with DBAL-native methods
         $queryParts = $this->SQLparser->parseSQL($query);
-        if (is_array($queryParts) && GeneralUtility::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
-            return $this->exec_query($queryParts);
+        if (is_array($queryParts)) {
+            $operation = $queryParts['type'];
+            if ($operation === 'SELECT' || $operation === 'UPDATE' || $operation === 'INSERT' || $operation === 'DELETE') {
+                return $this->exec_query($queryParts);
+            }
         }
         $sqlResult = null;
         switch ($this->handlerCfg['_DEFAULT']['type']) {
@@ -3907,7 +3911,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
                     break;
                 case 'exec_SELECTquery':
                     // Get explain data:
-                    if ($this->conf['debugOptions']['EXPLAIN'] && GeneralUtility::inList('adodb,native', $inData['handlerType'])) {
+                    if ($this->conf['debugOptions']['EXPLAIN'] && ($inData['handlerType'] === 'adodb' || $inData['handlerType'] === 'native')) {
                         $data['EXPLAIN'] = $this->debug_explain($this->lastQuery);
                     }
                     // Check parsing of Query:

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Dbal\Database\SqlCompilers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dbal\Database\SqlParser;
 
 /**
@@ -278,7 +277,8 @@ class Mysql extends AbstractCompiler
                     if ($v['comparator']) {
                         $output .= ' ' . $v['comparator'];
                         // Detecting value type; list or plain:
-                        if (GeneralUtility::inList('NOTIN,IN', SqlParser::normalizeKeyword($v['comparator']))) {
+                        $comparator = SqlParser::normalizeKeyword($v['comparator']);
+                        if ($comparator === 'NOTIN' || $comparator === 'IN') {
                             if (isset($v['subquery'])) {
                                 $output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
                             } else {
@@ -288,23 +288,21 @@ class Mysql extends AbstractCompiler
                                 }
                                 $output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
                             }
+                        } elseif ($comparator === 'BETWEEN' || $comparator === 'NOTBETWEEN') {
+                            $lbound = $v['values'][0];
+                            $ubound = $v['values'][1];
+                            $output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
+                            $output .= ' AND ';
+                            $output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
                         } else {
-                            if (GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
-                                $lbound = $v['values'][0];
-                                $ubound = $v['values'][1];
-                                $output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
-                                $output .= ' AND ';
-                                $output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
-                            } else {
-                                if (isset($v['value']['operator'])) {
-                                    $values = array();
-                                    foreach ($v['value']['args'] as $fieldDef) {
-                                        $values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
-                                    }
-                                    $output .= ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
-                                } else {
-                                    $output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
+                            if (isset($v['value']['operator'])) {
+                                $values = array();
+                                foreach ($v['value']['args'] as $fieldDef) {
+                                    $values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
                                 }
+                                $output .= ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
+                            } else {
+                                $output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
                             }
                         }
                     }

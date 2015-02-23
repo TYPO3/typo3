@@ -1621,7 +1621,12 @@ class ContentObjectRenderer
     public function getBorderAttr($borderAttr)
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        if (!GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $tsfe->xhtmlDoctype) && $tsfe->config['config']['doctype'] != 'html5' && !$tsfe->config['config']['disableImgBorderAttr']) {
+        $docType = $tsfe->xhtmlDoctype;
+        if (
+            $docType !== 'xhtml_strict' && $docType !== 'xhtml_11' && $docType !== 'xhtml_2'
+            && $tsfe->config['config']['doctype'] !== 'html5'
+            && !$tsfe->config['config']['disableImgBorderAttr']
+        ) {
             return $borderAttr;
         }
         return '';
@@ -1821,7 +1826,8 @@ class ContentObjectRenderer
             }
             // Create TARGET-attribute only if the right doctype is used
             $target = '';
-            if (!GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $this->getTypoScriptFrontendController()->xhtmlDoctype)) {
+            $xhtmlDocType = $this->getTypoScriptFrontendController()->xhtmlDoctype;
+            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11' && $xhtmlDocType !== 'xhtml_2') {
                 $target = isset($conf['target.'])
                     ? (string)$this->stdWrap($conf['target'], $conf['target.'])
                     : (string)$conf['target'];
@@ -1881,8 +1887,9 @@ class ContentObjectRenderer
         $tsfe = $this->getTypoScriptFrontendController();
         $incFile = $tsfe->tmpl->getFileName($fName);
         if ($incFile && file_exists($incFile)) {
-            $fileinfo = GeneralUtility::split_fileref($incFile);
-            if (GeneralUtility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
+            $fileInfo = GeneralUtility::split_fileref($incFile);
+            $extension = $fileInfo['fileext'];
+            if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
                 $imgFile = $incFile;
                 $imgInfo = @getImageSize($imgFile);
                 return '<img src="' . $tsfe->absRefPrefix . $imgFile . '" width="' . (int)$imgInfo[0] . '" height="' . (int)$imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
@@ -6337,10 +6344,10 @@ class ContentObjectRenderer
     protected function detectLinkTypeFromLinkParameter($linkParameter)
     {
         // Parse URL:
-        $linkParts = parse_url($linkParameter);
+        $scheme = parse_url($linkParameter, PHP_URL_SCHEME);
         // Detecting kind of link:
         // If it's a mail address:
-        if (strpos($linkParameter, '@') > 0 && (!$linkParts['scheme'] || $linkParts['scheme'] === 'mailto')) {
+        if (strpos($linkParameter, '@') > 0 && (!$scheme || $scheme === 'mailto')) {
             return 'mailto';
         }
 
@@ -6355,7 +6362,8 @@ class ContentObjectRenderer
             list($rootFileDat) = explode('?', rawurldecode($linkParameter));
             $containsSlash = strpos($rootFileDat, '/') !== false;
             $rFD_fI = pathinfo($rootFileDat);
-            if (trim($rootFileDat) && !$containsSlash && (@is_file((PATH_site . $rootFileDat)) || GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+            $fileExtension = strtolower($rFD_fI['extension']);
+            if ($fileExtension === 'php' || $fileExtension === 'html' || $fileExtension === 'htm' || trim($rootFileDat) && !$containsSlash && (@is_file((PATH_site . $rootFileDat)))) {
                 $isLocalFile = 1;
             } elseif ($containsSlash) {
                 // Adding this so realurl directories are linked right (non-existing).
@@ -6364,7 +6372,7 @@ class ContentObjectRenderer
         }
 
         // url (external): If doubleSlash or if a '.' comes before a '/'.
-        if ($linkParts['scheme'] || $isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
+        if ($scheme || $isLocalFile !== 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
             return 'url';
 
         // file (internal)
@@ -6778,7 +6786,8 @@ class ContentObjectRenderer
 
         if ($JSwindowParams) {
             // Create TARGET-attribute only if the right doctype is used
-            if (!GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $tsfe->xhtmlDoctype)) {
+            $xhtmlDocType = $tsfe->xhtmlDoctype;
+            if ($xhtmlDocType !== 'xhtml_strict' && $xhtmlDocType !== 'xhtml_11' && $xhtmlDocType !== 'xhtml_2') {
                 $target = ' target="FEopenLink"';
             } else {
                 $target = '';
@@ -7323,9 +7332,9 @@ class ContentObjectRenderer
         $lines = GeneralUtility::trimExplode(LF, $params, true);
         foreach ($lines as $val) {
             $pair = explode('=', $val, 2);
-            $pair[0] = trim($pair[0]);
-            if (!GeneralUtility::inList('#,/', $pair[0][0])) {
-                $paramArr[$pair[0]] = trim($pair[1]);
+            $key = trim($pair[0]);
+            if ($key[0] !== '#' && $key[0] !== '/') {
+                $paramArr[$key] = trim($pair[1]);
             }
         }
         return $paramArr;

@@ -893,7 +893,7 @@ class SetupModuleController extends AbstractModule
             // Setting comes from another extension
             $context = $strParts[0];
             $field = $strParts[1];
-        } elseif (!GeneralUtility::inList('language,simuser,reset', $str)) {
+        } elseif ($str !== 'language' && $str !== 'simuser' && $str !== 'reset') {
             $field = 'option_' . $str;
         }
         return BackendUtility::wrapInHelp($context, $field, $label);

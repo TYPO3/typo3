@@ -206,8 +206,6 @@ class SpellCheckingController
         }
         // Setting the pspell suggestion mode
         $this->pspellMode = GeneralUtility::_POST('pspell_mode') ? GeneralUtility::_POST('pspell_mode') : $this->pspellMode;
-        // Now sanitize $this->pspellMode
-        $this->pspellMode = GeneralUtility::inList('ultra,fast,normal,bad-spellers', $this->pspellMode) ? $this->pspellMode : 'normal';
         switch ($this->pspellMode) {
             case 'ultra':
 
@@ -221,6 +219,8 @@ class SpellCheckingController
 
             default:
                 $pspellModeFlag = PSPELL_NORMAL;
+                // sanitize $this->pspellMode
+                $this->pspellMode = 'normal';
         }
         // Setting the charset
         if (GeneralUtility::_POST('pspell_charset')) {

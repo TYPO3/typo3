@@ -2191,7 +2191,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             // Check access and whether the proper extensions are loaded:
             if ($this->getBackendUser()->check('tables_select', $tName)
                 && (isset($this->externalTables[$tName])
-                    || GeneralUtility::inList('fe_users,tt_content', $tName)
+                    || $tName === 'fe_users' || $tName === 'tt_content'
                     || \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tName)
                 )
             ) {
@@ -2199,7 +2199,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $c = $this->getDatabase()->exec_SELECTcountRows('uid', $tName, 'pid=' . (int)$id
                     . BackendUtility::deleteClause($tName) . BackendUtility::versioningPlaceholderClause($tName));
                 // If records were found (or if "tt_content" is the table...):
-                if ($c || GeneralUtility::inList('tt_content', $tName)) {
+                if ($c || $tName === 'tt_content') {
                     // Add row to menu:
                     $out .= '
 					<td><a href="#' . $tName . '" title="' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], true) . '"></a>'

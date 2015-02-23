@@ -116,7 +116,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
             $skip = false;
             // Test for wrong salted hashing method
             if ($validPasswd && !(get_class($this->objInstanceSaltedPW) == $defaultHashingClassName) || is_subclass_of($this->objInstanceSaltedPW, $defaultHashingClassName)) {
-                // Instanciate default method class
+                // Instantiate default method class
                 $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null);
                 $this->updatePassword((int)$user['uid'], array('password' => $this->objInstanceSaltedPW->getHashedPassword($password)));
             }
@@ -125,11 +125,12 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
             }
         } elseif (!(int)$this->extConf['forceSalted']) {
             // Stored password is in deprecated salted hashing method
-            if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('C$,M$', substr($user['password'], 0, 2))) {
-                // Instanciate default method class
+            $hashingMethod = substr($user['password'], 0, 2);
+            if ($hashingMethod === 'C$' || $hashingMethod === 'M$') {
+                // Instantiate default method class
                 $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(substr($user['password'], 1));
                 // md5
-                if ($user['password'][0] === 'M') {
+                if ($hashingMethod === 'M$') {
                     $validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
                 } else {
                     $validPasswd = $this->objInstanceSaltedPW->checkPassword($password, substr($user['password'], 1));
@@ -149,7 +150,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService
             }
             // Should we store the new format value in DB?
             if ($validPasswd && (int)$this->extConf['updatePasswd']) {
-                // Instanciate default method class
+                // Instantiate default method class
                 $this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null);
                 $this->updatePassword((int)$user['uid'], array('password' => $this->objInstanceSaltedPW->getHashedPassword($password)));
             }

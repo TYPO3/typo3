@@ -3788,7 +3788,8 @@ class ImportExport
                 $pInfo['type'] = 'softref';
                 $pInfo['_softRefInfo'] = $info;
                 $pInfo['type'] = 'softref';
-                if ($info['error'] && !GeneralUtility::inList('editable,exclude', $this->softrefCfg[$info['subst']['tokenID']]['mode'])) {
+                $mode = $this->softrefCfg[$info['subst']['tokenID']]['mode'];
+                if ($info['error'] && $mode !== 'editable' && $mode !== 'exclude') {
                     $pInfo['msg'] .= $info['error'];
                 }
                 $lines[] = $pInfo;
@@ -4130,7 +4131,8 @@ class ImportExport
      */
     public function includeSoftref($tokenID)
     {
-        return $tokenID && !GeneralUtility::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
+        $mode = $this->softrefCfg[$tokenID]['mode'];
+        return $tokenID && $mode !== 'exclude' && $mode !== 'editable';
     }
 
     /**

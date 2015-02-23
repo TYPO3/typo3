@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Saltedpasswords\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General library class.
@@ -125,7 +124,7 @@ class SaltedPasswordsUtility
         if ($mode === 'BE') {
             return true;
         } elseif ($mode === 'FE' && $extConf['enabled']) {
-            return GeneralUtility::inList('normal,rsa', $securityLevel);
+            return $securityLevel === 'normal' || $securityLevel === 'rsa';
         }
         return false;
     }

@@ -53,7 +53,8 @@ class Evaluator
         $isEnabled = $this->mode ? \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled($this->mode) : \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::isUsageEnabled();
         if ($isEnabled) {
             $isMD5 = preg_match('/[0-9abcdef]{32,32}/', $value);
-            $isDeprecatedSaltedHash = \TYPO3\CMS\Core\Utility\GeneralUtility::inList('C$,M$', substr($value, 0, 2));
+            $hashingMethod = substr($value, 0, 2);
+            $isDeprecatedSaltedHash = ($hashingMethod === 'C$' || $hashingMethod === 'M$');
             /** @var $objInstanceSaltedPW \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
             $objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(null, $this->mode);
             if ($isMD5) {

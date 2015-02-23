@@ -4712,7 +4712,7 @@ class DataHandler
         $action = $command['action'];
         $ids = $command['ids'];
 
-        if (!$field || !GeneralUtility::inList('localize,synchronize', $action) && empty($ids) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+        if (!$field || !($action === 'localize' || $action === 'synchronize') && empty($ids) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
             return;
         }
 

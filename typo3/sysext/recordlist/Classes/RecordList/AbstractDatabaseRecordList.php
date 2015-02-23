@@ -891,8 +891,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
     public function linkUrlMail($code, $testString)
     {
         // Check for URL:
-        $schema = parse_url($testString);
-        if ($schema['scheme'] && GeneralUtility::inList('http,https,ftp', $schema['scheme'])) {
+        $scheme = parse_url($testString, PHP_URL_SCHEME);
+        if ($scheme === 'http' || $scheme === 'https' || $scheme === 'ftp') {
             return '<a href="' . htmlspecialchars($testString) . '" target="_blank">' . $code . '</a>';
         }
         // Check for email:

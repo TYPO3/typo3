@@ -195,13 +195,14 @@ abstract class AbstractConditionMatcher
     /**
      * Evaluates a TypoScript condition given as input, eg. "[applicationContext = Production][...(other condition)...]"
      *
-     * @param string $key The condition to match against its criterias.
+     * @param string $key The condition to match against its criteria.
      * @param string $value
      * @return NULL|bool Result of the evaluation; NULL if condition could not be evaluated
      */
     protected function evaluateConditionCommon($key, $value)
     {
-        if (GeneralUtility::inList('browser,device,version,system,useragent', strtolower($key))) {
+        $lowerKey = strtolower($key);
+        if ($lowerKey === 'browser' || $lowerKey === 'device' || $lowerKey === 'version' || $lowerKey === 'system' || $lowerKey === 'useragent') {
             GeneralUtility::deprecationLog(
                 'Usage of client related conditions (browser, device, version, system, useragent) is deprecated since 7.0.'
             );

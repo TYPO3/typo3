@@ -164,18 +164,13 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
     {
         // Reference index option:
         $refIndexMode = isset($this->cli_args['--refindex']) ? $this->cli_args['--refindex'][0] : 'check';
-        if (!GeneralUtility::inList('update,ignore,check', $refIndexMode)) {
-            $this->cli_echo('ERROR: Wrong value for --refindex argument.
-', 1);
-            die;
-        }
         switch ($refIndexMode) {
             case 'check':
 
             case 'update':
                 $refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
-                list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode == 'check', $this->cli_echo());
-                if ($errorCount && $refIndexMode == 'check') {
+                list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode === 'check', $this->cli_echo());
+                if ($errorCount && $refIndexMode === 'check') {
                     $ok = false;
                     $this->cli_echo('ERROR: Reference Index Check failed! (run with \'--refindex update\' to fix)
 ', 1);
@@ -188,6 +183,11 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 ');
                 $ok = true;
                 break;
+            default:
+                $this->cli_echo('ERROR: Wrong value for --refindex argument.
+', 1);
+                die();
+
         }
         return $ok;
     }

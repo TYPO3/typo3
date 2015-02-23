@@ -176,7 +176,8 @@ class ImportExportController extends BaseScriptClass
                 // Finally: If upload went well, set the new file as the import file:
                 if (!empty($this->uploadedFiles[0])) {
                     // Only allowed extensions....
-                    if (GeneralUtility::inList('t3d,xml', $this->uploadedFiles[0]->getExtension())) {
+                    $extension = $this->uploadedFiles[0]->getExtension();
+                    if ($extension === 't3d' || $extension === 'xml') {
                         $inData['file'] = $this->uploadedFiles[0]->getCombinedIdentifier();
                     }
                 }
@@ -1251,7 +1252,8 @@ class ImportExportController extends BaseScriptClass
                 // Thumbnail icon:
                 if (is_array($import->dat['header']['thumbnail'])) {
                     $pI = pathinfo($import->dat['header']['thumbnail']['filename']);
-                    if (GeneralUtility::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
+                    $extension = strtolower($pI['extension']);
+                    if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
                         // Construct filename and write it:
                         $fileName = PATH_site . 'typo3temp/importthumb.' . $pI['extension'];
                         GeneralUtility::writeFile($fileName, $import->dat['header']['thumbnail']['content']);

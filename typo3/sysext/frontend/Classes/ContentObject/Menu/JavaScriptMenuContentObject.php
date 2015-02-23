@@ -134,7 +134,7 @@ var ' . $this->JSVarName . $a . '=0;';
             $MP_var = implode(',', $MP_array_sub);
             $MP_params = $MP_var ? '&MP=' . rawurlencode($MP_var) : '';
             // If item is a spacer, $spacer is set
-            $spacer = GeneralUtility::inList($this->spacerIDList, $data['doktype']) ? 1 : 0;
+            $spacer = GeneralUtility::inList($this->spacerIDList, $data['doktype']);
             // If the spacer-function is not enabled, spacers will not enter the $menuArr
             if ($this->mconf['SPC'] || !$spacer) {
                 // Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
