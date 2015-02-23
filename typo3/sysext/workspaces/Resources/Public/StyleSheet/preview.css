@@ -6,6 +6,10 @@
  * Tabs
  */
 
+.x-btn button {
+	font-size: 12px;
+}
+
 /* panel containing the tabs */
 .x-tab-panel-header {
 	background-color: #3f3f3f;
@@ -92,8 +96,9 @@ ul.x-tab-strip-top {
 	color: #ffffff;
 }
 
-/* text in tabs should not be italic.. why should it be? */
-.x-tab-strip em {
+/* text in tabs and buttons should not be italic.. why should it be? */
+.x-tab-strip em,
+.x-btn-text {
 	font-style: normal;
 }
 
@@ -274,8 +279,7 @@ ul.x-tab-strip-top {
 	float: right;
 }
 #feToolbarButtonNextStage.x-btn, #feToolbarButtonPreviousStage.x-btn, #feToolbarButtonDiscardStage.x-btn {
-	background-image: url('../Images/button_approve.png');
-	background-repeat: repeat-x;
+	background: url('../Images/button_approve.png') #55A245 repeat-x;
 	border: 1px solid #7c7c7c;
 	-moz-border-radius: 1px;
 	-webkit-border-radius: 1px;
@@ -293,9 +297,11 @@ ul.x-tab-strip-top {
 	color:#7c7c7c;
 }
 #feToolbarButtonPreviousStage.x-btn {
+	background-color: #D5D5D5;
 	background-image: url('../Images/button_reject.png');
 }
 #feToolbarButtonDiscardStage.x-btn {
+	background-color: #CD0505;
 	background-image: url('../Images/button_discard.png');
 }
 #sendToStageWindow .x-btn {
