@@ -1,4 +1,4 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <em:format.jsonEncode additionalAttributes="{updateComments:updateComments,
-url:'{f:uri.action(action:\"updateExtension\", controller:\"Download\", arguments:\"{extension:extensionKey, format:\'json\'}\")}'
+url:'{f:uri.action(action:\"updateExtension\", controller:\"Download\", arguments:\"{extension:extensionKey, version:version, format:\'json\'}\")}'
 }" />
