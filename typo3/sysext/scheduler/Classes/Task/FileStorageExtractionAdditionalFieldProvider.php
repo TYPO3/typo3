@@ -60,7 +60,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 
 		$fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_storage]';
 		$fieldId = 'scheduler_fileStorageIndexing_storage';
-		$fieldHtml = '<select name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
+		$fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
 
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,
@@ -81,7 +81,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 		$fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_fileCount]';
 		$fieldId = 'scheduler_fileStorageIndexing_fileCount';
 		$fieldValue = $task !== NULL ? (int)$task->maxFileCount : 100;
-		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
+		$fieldHtml = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
 
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,

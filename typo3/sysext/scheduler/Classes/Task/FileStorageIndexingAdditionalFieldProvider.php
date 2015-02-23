@@ -56,7 +56,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
 
 		$fieldName = 'tx_scheduler[scheduler_fileStorageIndexing_storage]';
 		$fieldId = 'scheduler_fileStorageIndexing_storage';
-		$fieldHtml = '<select name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
+		$fieldHtml = '<select class="form-control" name="' . $fieldName . '" id="' . $fieldId . '">' . implode("\n", $options) . '</select>';
 
 		$fieldConfiguration = array(
 			'code' => $fieldHtml,

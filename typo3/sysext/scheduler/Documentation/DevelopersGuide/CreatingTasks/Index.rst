@@ -209,7 +209,7 @@ executed. It is thus very strongly recommended to use
 
 ::
 
-   $fieldCode = '<input type="text" name="tx_scheduler[email]" id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['email']) . '" size="30" />';
+   $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[email]" id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['email']) . '" size="30">';
 
 
 .. _naming-of-additional-fields:

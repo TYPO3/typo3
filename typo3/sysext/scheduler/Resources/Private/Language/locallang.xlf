@@ -312,22 +312,22 @@
 			<trans-unit id="status.progress" xml:space="preserve">
 				<source>Progress</source>
 			</trans-unit>
-			<trans-unit id="status.legend" xml:space="preserve">
+			<trans-unit id="status.legend" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Status Legend</source>
 			</trans-unit>
-			<trans-unit id="status.legend.disabled" xml:space="preserve">
+			<trans-unit id="status.legend.disabled" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Disabled, will not be executed, except manually</source>
 			</trans-unit>
-			<trans-unit id="status.legend.failure" xml:space="preserve">
+			<trans-unit id="status.legend.failure" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Failure! An error occurred during the last execution (move over bullet for more details)</source>
 			</trans-unit>
-			<trans-unit id="status.legend.late" xml:space="preserve">
+			<trans-unit id="status.legend.late" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Late, will run with next execution</source>
 			</trans-unit>
-			<trans-unit id="status.legend.running" xml:space="preserve">
+			<trans-unit id="status.legend.running" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Currently running</source>
 			</trans-unit>
-			<trans-unit id="status.legend.scheduled" xml:space="preserve">
+			<trans-unit id="status.legend.scheduled" xml:space="preserve" deprecated="Unused since CMS 7">
 				<source>Scheduled, will run on next possible execution</source>
 			</trans-unit>
 			<trans-unit id="status.disabled" xml:space="preserve">

@@ -63,7 +63,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$fieldId = 'task_saltedpasswordsBulkUpdateCanDeactivateSelf';
 		$fieldValue = 'IsChecked';
 		$fieldChecked = (bool)$taskInfo['scheduler_saltedpasswordsBulkUpdateCanDeactivateSelf'];
-		$fieldHtml = '<input type="checkbox"' . ' name="' . $fieldName . '"' . ' id="' . $fieldId . '"' . ' value="' . $fieldValue . '"' . ($fieldChecked ? ' checked="checked"' : '') . ' />';
+		$fieldHtml = '<div class="checkbox"><label><input type="checkbox"' . ' name="' . $fieldName . '"' . ' id="' . $fieldId . '"' . ' value="' . $fieldValue . '"' . ($fieldChecked ? ' checked="checked"' : '') . '></label></div>';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf',
@@ -74,7 +74,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$fieldName = 'tx_scheduler[scheduler_saltedpasswordsBulkUpdateNumberOfRecords]';
 		$fieldId = 'task_saltedpasswordsBulkUpdateNumberOfRecords';
 		$fieldValue = (int)$taskInfo['scheduler_saltedpasswordsBulkUpdateNumberOfRecords'];
-		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
+		$fieldHtml = '<input type="text" class="form-control" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords',

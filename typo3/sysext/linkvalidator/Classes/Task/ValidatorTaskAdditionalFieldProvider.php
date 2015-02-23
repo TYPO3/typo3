@@ -96,7 +96,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			}
 		}
 		$fieldId = 'task_page';
-		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]" id="' . $fieldId . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
+		$fieldCode = '<input type="text" class="form-control" name="tx_scheduler[linkvalidator][page]" id="' . $fieldId . '" value="' . htmlspecialchars($taskInfo['page']) . '">';
 		$lang = $this->getLanguageService();
 		$label = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.page');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
@@ -114,7 +114,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			'4' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
 			'999' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		);
-		$fieldCode = '<select name="tx_scheduler[linkvalidator][depth]" id="' . $fieldId . '">';
+		$fieldCode = '<select class="form-control" name="tx_scheduler[linkvalidator][depth]" id="' . $fieldId . '">';
 		foreach ($fieldValueArray as $depth => $label) {
 			$fieldCode .= "\t" . '<option value="' . htmlspecialchars($depth) . '"' .
 						(($depth == $taskInfo['depth']) ? ' selected="selected"' : '') .
@@ -128,7 +128,7 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			'label' => $label
 		);
 		$fieldId = 'task_configuration';
-		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldId . '" >' .
+		$fieldCode = '<textarea class="form-control" name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldId . '" >' .
 					htmlspecialchars($taskInfo['configuration']) . '</textarea>';
 		$label = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.conf');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
@@ -137,8 +137,8 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			'label' => $label
 		);
 		$fieldId = 'task_email';
-		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][email]" id="' . $fieldId . '" value="' .
-					htmlspecialchars($taskInfo['email']) . '" />';
+		$fieldCode = '<input type="text" class="form-control" name="tx_scheduler[linkvalidator][email]" id="' . $fieldId . '" value="' .
+					htmlspecialchars($taskInfo['email']) . '">';
 		$label = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
@@ -146,8 +146,8 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			'label' => $label
 		);
 		$fieldId = 'task_emailOnBrokenLinkOnly';
-		$fieldCode = '<input type="checkbox"  name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldId . '" ' .
-					(htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . ' />';
+		$fieldCode = '<div class="checkbox"><label><input type="checkbox" name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldId . '" ' .
+					(htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . '></label></div>';
 		$label = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailOnBrokenLinkOnly');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
@@ -155,8 +155,8 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			'label' => $label
 		);
 		$fieldId = 'task_emailTemplateFile';
-		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldId .
-					'" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '" />';
+		$fieldCode = '<input class="form-control" type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldId .
+					'" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '">';
 		$label = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.emailTemplateFile');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(

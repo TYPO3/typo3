@@ -32,6 +32,11 @@
 	}
 }
 
+// remove margin if .alert is the last element in a table column
+td .alert:last-child {
+	margin-bottom: 0;
+}
+
 .alert-notice {
 	color: @state-notice-text;
 	background-color: @state-notice-bg;

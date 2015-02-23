@@ -52,7 +52,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
 			// build html for additional email field
 		$fieldName = $this->getFullFieldName('notificationEmail');
 		$fieldId = 'task_' . $fieldName;
-		$fieldHtml = '<textarea ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
+		$fieldHtml = '<textarea class="form-control" ' . 'rows="5" cols="50" name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . '>' . htmlspecialchars($taskInfo[$fieldName]) . '</textarea>';
 
 		$additionalFields = array();
 		$additionalFields[$fieldId] = array(

@@ -88,61 +88,15 @@ define('TYPO3/CMS/Scheduler/Scheduler', ['jquery'], function($) {
 	 * Check or uncheck all checkboxes
 	 */
 	Scheduler.checkOrUncheckAllCheckboxes = function(theSelector) {
-		theSelector.parent().parent().parent().parent().find(':checkbox').prop('checked', !allCheckedStatus);
+		theSelector.parents('.tx_scheduler_mod1').find(':checkbox').prop('checked', !allCheckedStatus);
 		allCheckedStatus = !allCheckedStatus;
 		return false;
 	};
 
 	/**
-	 * Change icon when running a single task
-	 */
-	Scheduler.runSingleTask = function(theSelector) {
-		var checkbox = theSelector.parent().parent().parent().find(':checkbox');
-		var idParts = checkbox.attr('id').split('_');
-		$('#executionstatus_' + idParts[1]).attr('src', TYPO3.settings.scheduler.runningIcon);
-	}
-
-	/**
-	 * Handle click event on a table row
-	 */
-	Scheduler.handleTableRowClick = function(theSelector, event) {
-		var checkbox = theSelector.find('input.checkboxes');
-		if (!$(event.target).is('input')) {
-			if (checkbox.prop('checked')) {
-				checkbox.prop('checked', false);
-			} else {
-				checkbox.prop('checked', true);
-			}
-		}
-	}
-
-	/**
-	 * Execute selected task(s)
-	 */
-	Scheduler.executeSelected = function() {
-		// Set the status icon all to same status: running
-		$('.checkboxes:checked').each(function(index) {
-			var idParts = $(this).attr('id').split('_');
-			$('#executionstatus_' + idParts[1]).attr('src', TYPO3.settings.scheduler.runningIcon);
-		});
-	}
-
-	/**
 	 * Registers listeners
 	 */
 	Scheduler.initializeEvents = function() {
-		$('#scheduler_executeselected').on('click', function() {
-			Scheduler.executeSelected();
-		});
-
-		$('.tx_scheduler_mod1 tbody tr').on('click', function(event) {
-			Scheduler.handleTableRowClick($(this), event);
-		});
-
-		$('.fa-play-circle').on('click', function() {
-			Scheduler.runSingleTask($(this));
-		});
-
 		$('#checkall').on('click', function() {
 			Scheduler.checkOrUncheckAllCheckboxes($(this));
 		});

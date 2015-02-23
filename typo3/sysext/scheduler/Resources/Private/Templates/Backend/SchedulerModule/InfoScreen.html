@@ -26,14 +26,9 @@
 				<td>{classInfo.description}</td>
 				<td>
 					<div class="btn-group" role="group">
-						<s:moduleLink
-							controller="scheduler"
-							action="add" arguments="{class: class}"
-							title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"
-							class="btn btn-default"
-						>
-							<s:spriteIcon iconName="actions-document-new" />
-						</s:moduleLink>
+						<span class="btn btn-default">
+							<f:be.buttons.icon uri="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" icon="actions-document-new" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"/>
+						</span>
 					</div>
 				</td>
 			</tr>

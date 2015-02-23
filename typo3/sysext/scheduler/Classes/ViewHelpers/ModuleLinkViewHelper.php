@@ -15,31 +15,13 @@ namespace TYPO3\CMS\Scheduler\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Create internal link tag within backend app
+ * Create internal link within backend app
  * @internal
  */
-class ModuleLinkViewHelper extends AbstractTagBasedViewHelper {
-
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'a';
-
-	/**
-	 * Arguments initialization
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
-		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
-		$this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
-		$this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
-	}
+class ModuleLinkViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render module link with command and arguments
@@ -57,11 +39,7 @@ class ModuleLinkViewHelper extends AbstractTagBasedViewHelper {
 			$moduleArguments['tx_scheduler'] = $arguments;
 		}
 
-		$uri = BackendUtility::getModuleUrl('system_txschedulerM1', $moduleArguments);
-		$this->tag->addAttribute('href', $uri);
-		$this->tag->setContent($this->renderChildren());
-		$this->tag->forceClosingTag(TRUE);
-		return $this->tag->render();
+		return BackendUtility::getModuleUrl('system_txschedulerM1', $moduleArguments);
 	}
 
 }

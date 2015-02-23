@@ -7825,6 +7825,9 @@ table#typo3-history-item img {
 .alert .alert-body p:last-child {
   margin-bottom: 0;
 }
+td .alert:last-child {
+  margin-bottom: 0;
+}
 .alert-notice {
   color: #8c8c8c;
   background-color: #f2f2f2;

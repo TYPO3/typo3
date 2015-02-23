@@ -51,7 +51,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 		$fieldName = 'tx_scheduler[scheduler_recyclerGarbageCollection_numberOfDays]';
 		$fieldId = 'task_recyclerGarbageCollection_numberOfDays';
 		$fieldValue = (int)$taskInfo['scheduler_recyclerGarbageCollection_numberOfDays'];
-		$fieldHtml = '<input type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '" />';
+		$fieldHtml = '<input class="form-control" type="text" name="' . $fieldName . '" id="' . $fieldId . '" value="' . htmlspecialchars($fieldValue) . '">';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.recyclerGarbageCollection.numberOfDays',

@@ -282,7 +282,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 */
 	protected function renderSelectField($name, array $options, $selectedOptionValue) {
 		$html = array(
-			'<select name="tx_scheduler[task_extbase][' . htmlspecialchars($name) . ']">'
+			'<select class="form-control" name="tx_scheduler[task_extbase][' . htmlspecialchars($name) . ']">'
 		);
 		foreach ($options as $optionValue => $optionLabel) {
 			$selected = $optionValue === $selectedOptionValue ? ' selected="selected"' : '';
@@ -305,11 +305,11 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		$fieldName = 'tx_scheduler[task_extbase][arguments][' . htmlspecialchars($name) . ']';
 		if ($type === 'boolean') {
 			// checkbox field for boolean values.
-			$html = '<input type="hidden" name="' . $fieldName . '" value="0" />';
-			$html .= '<input type="checkbox" name="' . $fieldName . '" value="1" ' . ((bool)$currentValue ? ' checked="checked"' : '') . '/>';
+			$html = '<input type="hidden" name="' . $fieldName . '" value="0">';
+			$html .= '<div class="checkbox"><label><input type="checkbox" name="' . $fieldName . '" value="1" ' . ((bool)$currentValue ? ' checked="checked"' : '') . '></label></div>';
 		} else {
 			// regular string, also the default field type
-			$html = '<input type="text" name="' . $fieldName . '" value="' . htmlspecialchars($currentValue) . '" /> ';
+			$html = '<input class="form-control" type="text" name="' . $fieldName . '" value="' . htmlspecialchars($currentValue) . '"> ';
 		}
 		return $html;
 	}
