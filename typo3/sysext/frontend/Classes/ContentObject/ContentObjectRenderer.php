@@ -1507,7 +1507,8 @@ class ContentObjectRenderer {
 		if ($linkWrap) {
 			$theValue = $this->linkWrap($theValue, $linkWrap);
 		} elseif ($conf['imageLinkWrap']) {
-			$theValue = $this->imageLinkWrap($theValue, $info['originalFile'], $conf['imageLinkWrap.']);
+			$originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
+			$theValue = $this->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
 		}
 		$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {
@@ -5435,6 +5436,7 @@ class ContentObjectRenderer {
 				$theImage = $gifCreator->gifBuild();
 			}
 			$imageResource = $gifCreator->getImageDimensions($theImage);
+			$imageResource['origFile'] = $theImage;
 		} else {
 			if ($file instanceof File) {
 				$fileObject = $file;
