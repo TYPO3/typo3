@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -1833,11 +1834,25 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
 		} else {
 			foreach($this->getFileStorages() as $storage) {
-				try {
-					$uploadFolder = $storage->getDefaultFolder();
+				if ($storage->isDefault()) {
+					try {
+						$uploadFolder = $storage->getDefaultFolder();
+						break;
+					} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+						// If the folder is not accessible (no permissions / does not exist) we skip this one.
+					}
 					break;
-				} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
-					// If the folder is not accessible (no permissions / does not exist) try the next one.
+				}
+			}
+			if (!$uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+				/** @var ResourceStorage $storage */
+				foreach ($this->getFileStorages() as $storage) {
+					try {
+						$uploadFolder = $storage->getDefaultFolder();
+						break;
+					} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+						// If the folder is not accessible (no permissions / does not exist) try the next one.
+					}
 				}
 			}
 		}
