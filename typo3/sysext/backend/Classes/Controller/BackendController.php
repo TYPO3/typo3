@@ -146,6 +146,9 @@ class BackendController {
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage', 'function(Storage) {
 			Storage.Persistent.load(' . json_encode($GLOBALS['BE_USER']->uc) . ');
 		}');
+
+		$this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
+
 		$this->css = '';
 
 		$this->initializeToolbarItems();

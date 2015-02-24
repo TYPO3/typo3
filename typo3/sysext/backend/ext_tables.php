@@ -121,4 +121,10 @@ if (TYPO3_MODE === 'BE') {
 		'move_element',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/MoveElement/'
 	);
+
+	// Register show item module
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'show_item',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/ShowItem/'
+	);
 }
