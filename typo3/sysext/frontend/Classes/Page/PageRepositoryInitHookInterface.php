@@ -29,4 +29,3 @@ interface PageRepositoryInitHookInterface {
 	public function init_postProcess(PageRepository $parentObject);
 }
 
-?>
