@@ -1545,4 +1545,40 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->createDriver()->sanitizeFileName('');
 	}
 
+	/**
+	 * @test
+	 */
+	public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfClosure() {
+		$this->setExpectedException('Exception', 'I was called!');
+		$closure = function() {
+			throw new \Exception('I was called!');
+		};
+
+		$filterMethods = array(
+			$closure,
+		);
+
+		$this->createDriver()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+	}
+
+	/**
+	 * @test
+	 */
+	public function applyFilterMethodsToDirectoryItemCallsFilterMethodIfName() {
+		$dummyObject = $this
+			->getMockBuilder('\TYPO3\CMS\Core\Resource\Driver\LocalDriver')
+			->setMethods(array('dummy'))
+			->disableOriginalConstructor()
+			->getMock();
+		$method = array(
+			$dummyObject,
+			'dummy',
+		);
+		$dummyObject->expects($this->once())->method('dummy');
+		$filterMethods = array(
+			$method,
+		);
+		$this->createDriver()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+	}
+
 }
