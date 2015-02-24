@@ -1319,7 +1319,7 @@ class TypoScriptFrontendController {
 			if ($this->isUserOrGroupSet()) {
 				if ($this->loginAllowedInBranch_mode == 'all') {
 					// Clear out user and group:
-					unset($this->fe_user->user);
+					$this->fe_user->hideActiveLogin();
 					$this->gr_list = '0,-1';
 				} else {
 					$this->gr_list = '0,-2';
