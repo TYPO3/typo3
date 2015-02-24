@@ -115,6 +115,11 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 	protected $sessionDataTimestamp = NULL;
 
 	/**
+	 * @var bool
+	 */
+	protected $loginHidden = FALSE;
+
+	/**
 	 * Default constructor.
 	 */
 	public function __construct() {
@@ -425,7 +430,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 				// Remove session-data
 				$this->removeSessionData();
 				// Remove cookie if not logged in as the session data is removed as well
-				if (empty($this->user['uid']) && $this->isCookieSet()) {
+				if (empty($this->user['uid']) && !$this->loginHidden && $this->isCookieSet()) {
 					$this->removeCookie($this->name);
 				}
 			} elseif ($this->sessionDataTimestamp === NULL) {
@@ -639,6 +644,19 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 			}
 		}
 		return $count;
+	}
+
+	/**
+	 * Hide the current login
+	 *
+	 * This is used by the fe_login_mode feature for pages.
+	 * A current login is unset, but we remember that there has been one.
+	 *
+	 * @return void
+	 */
+	public function hideActiveLogin() {
+		$this->user = NULL;
+		$this->loginHidden = TRUE;
 	}
 
 }
