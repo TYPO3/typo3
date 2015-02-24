@@ -32,20 +32,14 @@ class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return boolean TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
-		$success = FALSE;
 		if ((int)$this->storageUid > 0) {
 			$storage = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($this->storageUid);
 			$storage->setEvaluatePermissions(FALSE);
 			$indexer = $this->getIndexer($storage);
-			try {
-				$indexer->processChangesInStorages();
-				$success = TRUE;
-			} catch (\Exception $e) {
-				$success = FALSE;
-			}
+			$indexer->processChangesInStorages();
 			$storage->setEvaluatePermissions(TRUE);
 		}
-		return $success;
+		return TRUE;
 	}
 
 	/**
@@ -57,6 +51,5 @@ class FileStorageIndexingTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	protected function getIndexer(\TYPO3\CMS\Core\Resource\ResourceStorage $storage) {
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Index\\Indexer', $storage);
 	}
-
 
 }
