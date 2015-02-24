@@ -514,6 +514,9 @@ abstract class AbstractConditionMatcher {
 					case 'GP':
 						$value = GeneralUtility::_GP($k);
 						break;
+					case 'GPmerged':
+						$value = GeneralUtility::_GPmerged($k);
+						break;
 					case 'ENV':
 						$value = getenv($k);
 						break;
