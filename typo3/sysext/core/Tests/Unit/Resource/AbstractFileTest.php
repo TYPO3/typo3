@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Resource\File;
 
 /**
  * Testcase for the abstract file class of the TYPO3 FAL
@@ -44,4 +45,22 @@ class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());
 	}
+
+	/**
+	 * This test accounts for an inconsistency in the Storage–Driver interface of FAL: The driver returns the MIME
+	 * type in a field "mimetype", while the file object and the database table use mime_type.
+	 * The test is placed in the test case for AbstractFile because the broken functionality resides there, though
+	 * it is only triggered when constructing a File instance with an index record.
+	 *
+	 * @test
+	 */
+	public function storageIsNotAskedForMimeTypeForPersistedRecord() {
+		$mockedStorage = $this->getMockBuilder('TYPO3\\CMS\\Core\\Resource\\ResourceStorage')
+			->disableOriginalConstructor()->getMock();
+		$mockedStorage->expects($this->never())->method('getFileInfoByIdentifier')->with('/foo', 'mimetype');
+		$subject = new File(array('identifier' => '/foo', 'mime_type' => 'my/mime-type'), $mockedStorage);
+
+		$this->assertEquals('my/mime-type', $subject->getMimeType());
+	}
+
 }
