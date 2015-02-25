@@ -61,7 +61,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function configurePluginWorksForMinimalisticSetup() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
 		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('MyExtension', 'Pi1', array('Blog' => 'index'));
-		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
+		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
@@ -77,7 +77,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function configurePluginCreatesCorrectDefaultTypoScriptSetup() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
 		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('MyExtension', 'Pi1', array('Blog' => 'index'));
-		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
+		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
 		$defaultTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 	}
@@ -91,7 +91,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('MyExtension', 'Pi1', array(
 			'FirstController' => 'index'
 		));
-		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
+		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	extensionName = MyExtension
@@ -140,7 +140,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		), array(
 			'FirstController' => 'index,show'
 		));
-		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
+		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	extensionName = MyExtension
@@ -168,7 +168,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		), array(
 			'FirstController' => 'new,show'
 		));
-		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['43'];
+		$staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 	extensionName = MyExtension

@@ -28,10 +28,9 @@ class ExtensionUtility {
 	 *
 	 * When adding a frontend plugin you will have to add both an entry to the TCA definition
 	 * of tt_content table AND to the TypoScript template which must initiate the rendering.
-	 * Since the static template with uid 43 is the "content.default" and practically always
-	 * used for rendering the content elements it's very useful to have this function automatically
-	 * adding the necessary TypoScript for calling the appropriate controller and action of your plugin.
-	 * It will also work for the extension "css_styled_content"
+	 * Including the plugin code after "defaultContentRendering" adds the necessary TypoScript
+	 * for calling the appropriate controller and action of your plugin.
+	 * This means, it will also work for the extension "css_styled_content"
 	 * FOR USE IN ext_localconf.php FILES
 	 * Usage: 2
 	 *
@@ -99,7 +98,7 @@ tt_content.' . $pluginSignature . ' {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
-' . $pluginContent, 43);
+' . $pluginContent, 'defaultContentRendering');
 	}
 
 	/**

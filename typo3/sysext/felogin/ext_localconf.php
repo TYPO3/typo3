@@ -1,26 +1,25 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-//replace old Login
-$pluginContent = trim('
+// add plugin controller
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('TYPO3.CMS.Felogin', 'setup', '
+# Setting "felogin" plugin TypoScript
 plugin.tx_felogin_pi1 = USER_INT
-plugin.tx_felogin_pi1 {
-	userFunc = TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController->main
-}
+plugin.tx_felogin_pi1.userFunc = TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController->main
 ');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '
-# Setting ' . $_EXTKEY . ' plugin TypoScript
-' . $pluginContent);
-$addLine = '
+
+// Add a default TypoScript for the CType "login" (also replaces history login functionality)
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('TYPO3.CMS.Felogin', 'setup', '
+# Setting "felogin" plugin TypoScript
 tt_content.login = COA
 tt_content.login {
-	10 = < lib.stdheader
+	10 =< lib.stdheader
 	20 >
-	20 = < plugin.tx_felogin_pi1
+	20 =< plugin.tx_felogin_pi1
 }
-';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 43);
+', 'defaultContentRendering');
 
+// add login to new content element wizard
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	mod.wizards.newContentElement.wizardItems.forms {
