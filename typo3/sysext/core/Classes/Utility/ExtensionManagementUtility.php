@@ -1312,10 +1312,16 @@ class ExtensionManagementUtility {
 	}
 
 	/**
-	 * Add PlugIn to Static Template #43
+	 * Add PlugIn to the default template rendering (previously called "Static Template #43")
 	 *
 	 * When adding a frontend plugin you will have to add both an entry to the TCA definition of tt_content table AND to the TypoScript template which must initiate the rendering.
-	 * Since the static template with uid 43 is the "content.default" and practically always used for rendering the content elements it's very useful to have this function automatically adding the necessary TypoScript for calling your plugin. It will also work for the extension "css_styled_content"
+	 *
+	 * The naming of #43 has historic reason and is rooted inside code which is now put into a TER extension called
+	 * "statictemplates". Since the static template with uid 43 is the "content.default" and practically always used
+	 * for rendering the content elements it's very useful to have this function automatically adding the necessary
+	 * TypoScript for calling your plugin. It will also work for the extension "css_styled_content".
+	 * The logic is now generalized and called "defaultContentRendering", see addTypoScript() as well.
+	 *
 	 * $type determines the type of frontend plugin:
 	 * + list_type (default) - the good old "Insert plugin" entry
 	 * + menu_type - a "Menu/Sitemap" entry
@@ -1346,7 +1352,7 @@ plugin.' . $cN . $prefix . ' {
 		self::addTypoScript($key, 'setup', '
 # Setting ' . $key . ' plugin TypoScript
 ' . $pluginContent);
-		// After ST43
+		// Add after defaultContentRendering
 		switch ($type) {
 			case 'list_type':
 				$addLine = 'tt_content.list.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
@@ -1376,7 +1382,7 @@ tt_content.' . $key . $prefix . ' {
 			self::addTypoScript($key, 'setup', '
 # Setting ' . $key . ' plugin TypoScript
 ' . $addLine . '
-', 43);
+', 'defaultContentRendering');
 		}
 	}
 
@@ -1434,7 +1440,8 @@ tt_content.' . $key . $prefix . ' {
 	 * possible that a first extension like css_styled_content registers a "contentRendering" template (= a template that defines default content rendering TypoScript)
 	 * by adding itself to $TYPO3_CONF_VARS[FE][contentRenderingTemplates][] = 'myext/Configuration/TypoScript'.
 	 * An extension calling addTypoScript('myext', 'setup', $typoScript, 'defaultContentRendering') will add its TypoScript directly after;
-	 * For now, "43" and "defaultContentRendering" can be used, but defaultContentRendering is more descriptive and should be used in the future
+	 * For now, "43" and "defaultContentRendering" can be used, but "defaultContentRendering" is more descriptive and
+	 * should be used in the future.
 	 *
 	 * @param string $key Is the extension key (informative only).
 	 * @param string $type Is either "setup" or "constants" and obviously determines which kind of TypoScript code we are adding.
@@ -1455,8 +1462,8 @@ tt_content.' . $key . $prefix . ' {
 ' . $content;
 			if ($afterStaticUid) {
 				// If 'content (default)' is targeted (static uid 43),
-				// the content is added after typoscript of type contentRendering, eg. css_styled_content, see EXT:frontend/TemplateService for that
-				if ($afterStaticUid == 43 || $afterStaticUid === 'defaultContentRendering') {
+				// the content is added after typoscript of type contentRendering, eg. css_styled_content, see EXT:frontend/TemplateService for more information on how the code is parsed
+				if ($afterStaticUid === 'defaultContentRendering' || $afterStaticUid == 43) {
 					$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
 				} else {
 					$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;

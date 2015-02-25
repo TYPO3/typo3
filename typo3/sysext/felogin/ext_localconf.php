@@ -16,13 +16,14 @@ plugin.tx_felogin_pi1 {
 $addLine = '
 tt_content.login = COA
 tt_content.login {
-	10 = < lib.stdheader
+	10 =< lib.stdheader
 	20 >
-	20 = < plugin.tx_felogin_pi1
+	20 =< plugin.tx_felogin_pi1
 }
 ';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 43);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 'defaultContentRendering');
 
+// add login to new content element wizard
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	mod.wizards.newContentElement.wizardItems.forms {
