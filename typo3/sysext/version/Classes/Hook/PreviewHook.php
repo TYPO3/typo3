@@ -96,7 +96,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			// New backend user object
 			$BE_USER = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\FrontendBackendUserAuthentication::class);
 			$BE_USER->userTS_dontGetCached = 1;
-			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->previewConfiguration['BEUSER_uid']);
 			$BE_USER->unpack_uc('');
 			if ($BE_USER->user['uid']) {
@@ -105,7 +104,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			} else {
 				$BE_USER = NULL;
 				$pObj->beUserLogin = FALSE;
-				$_SESSION['TYPO3-TT-start'] = FALSE;
 			}
 			$params['BE_USER'] = $BE_USER;
 		}

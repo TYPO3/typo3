@@ -121,6 +121,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	/**
 	 * Set to 'WIN', if windows
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the constant TYPO3_OS directly
 	 */
 	public $OS = '';
 
@@ -325,6 +326,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		parent::__construct();
 		$this->name = self::getCookieName();
 		$this->loginType = 'BE';
+		$this->OS = TYPO3_OS;
 	}
 
 	/**

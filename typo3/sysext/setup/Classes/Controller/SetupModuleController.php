@@ -692,7 +692,6 @@ class SetupModuleController {
 			// Unset current
 			// New backend user object
 			$BE_USER = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
-			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->simUser);
 			$BE_USER->fetchGroupData();
 			$BE_USER->backendSetUC();
