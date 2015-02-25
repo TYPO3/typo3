@@ -277,14 +277,24 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for different node-Tables is not implemented yet', 1290944650);
 		}
 		$this->treeData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNode::class);
+		$this->loadTreeData();
+		$this->emitPostProcessTreeDataSignal();
+	}
+
+	/**
+	 * Loads the tree data (all possible children)
+	 *
+	 * @return void
+	 */
+	protected function loadTreeData() {
 		$this->treeData->setId($this->getRootUid());
 		$this->treeData->setParentNode(NULL);
-		$childNodes = $this->getChildrenOf($this->treeData, 0);
-		if ($childNodes !== NULL) {
-			$this->treeData->setChildNodes($childNodes);
+		if ($this->levelMaximum >= 1) {
+			$childNodes = $this->getChildrenOf($this->treeData, 1);
+			if ($childNodes !== NULL) {
+				$this->treeData->setChildNodes($childNodes);
+			}
 		}
-
-		$this->emitPostProcessTreeDataSignal();
 	}
 
 	/**
@@ -313,7 +323,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 			foreach ($children as $child) {
 				$node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNode::class);
 				$node->setId($child);
-				if ($level <= $this->levelMaximum) {
+				if ($level < $this->levelMaximum) {
 					$children = $this->getChildrenOf($node, $level + 1);
 					if ($children !== NULL) {
 						$node->setChildNodes($children);

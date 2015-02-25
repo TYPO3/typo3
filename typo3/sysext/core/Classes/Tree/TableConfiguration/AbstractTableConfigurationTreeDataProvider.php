@@ -29,7 +29,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
 	/**
 	 * @var int
 	 */
-	protected $levelMaximum = 2;
+	protected $levelMaximum = 4;
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Tree\TreeNode
