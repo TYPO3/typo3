@@ -49,6 +49,7 @@ td.t3-page-lang-column h3 {
 
 .t3-page-ce-wrapper {
 	padding: 0 0 5px 0;
+	min-height: 2em;
 }
 
 .t3-page-ce-droptarget {
@@ -57,10 +58,11 @@ td.t3-page-lang-column h3 {
 
 .t3-page-ce {
 	min-width: 150px;
+	margin: 12px 0 0;
 }
 
-.t3-page-ce-dropzone {
-	margin: 12px 0;
+.t3-page-ce-dropzone-available.active {
+		height: 2em;
 }
 
 .t3-page-ce-dragitem {
@@ -97,6 +99,10 @@ td.t3-page-lang-column h3 {
 	float: left;
 }
 
+.t3-page-ce-body {
+	margin-bottom: 12px;
+}
+
 .t3-page-ce-body-inner {
 	padding: 7px;
 }
@@ -114,12 +120,12 @@ div.t3-page-lang-copyce {
 	padding: 1px 12px 0 12px;
 }
 
-div.t3-page-lang-copyce {
-	margin-top: 30px;
+div.t3-page-ce div.t3-page-ce {
+	padding: 1px 0 0;
 }
 
-.t3-page-ce:hover .t3-page-ce-body {
-	margin: 0;
+div.t3-page-lang-copyce {
+	margin-top: 30px;
 }
 
 #ext-cms-layout-db-layout-php h2 {

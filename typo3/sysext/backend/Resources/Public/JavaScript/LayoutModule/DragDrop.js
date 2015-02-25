@@ -15,171 +15,133 @@
  * this JS code does the drag+drop logic for the Layout module (Web => Page)
  * based on jQuery UI
  */
-define(['jquery', 'jquery-ui/draggable', 'jquery-ui/droppable'], function ($) {
+define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	var DragDrop = {
 		contentIdentifier: '.t3-page-ce',
-		dragIdentifier: '.t3-page-ce-dragitem',
-		dragHeaderIdentifier: '.t3-page-ce-header',
-		dropZoneIdentifier: '.t3-page-ce-dropzone',
+		dragIdentifier: '.t3-row-header',
+		dropZoneAvailableIdentifier: '.t3-page-ce-dropzone-available',
+		dropPossibleClass: 't3-page-ce-dropzone-possible',
+		sortableItemsIdentifier: '.t3js-page-ce-sortable',
 		columnIdentifier: '.t3-page-column',
-		validDropZoneClass: 't3-page-ce-dropzone-available',
-		dropPossibleHoverClass: 't3-page-ce-drop-possible'
+		langClassPrefix: '.t3js-sortable-lang-'
 	};
 
 	/**
 	 * initializes Drag+Drop for all content elements on the page
 	 */
 	DragDrop.initialize = function() {
-		$(this.contentIdentifier).draggable({
-			handle: this.dragHeaderIdentifier,
-			scope: 'tt_content',
-			cursor: 'move',
-			distance: 20,
-			addClasses: 'active-drag',
-			revert: 'invalid',
-			zIndex: 100,
-			start: function(evt, ui) {
-				DragDrop.onDragStart($(this));
-			},
-			stop: function(evt, ui) {
-				DragDrop.onDragStop($(this));
-			}
-		});
-
-		$(this.dropZoneIdentifier).droppable({
-			accept: this.contentIdentifier,
-			scope: 'tt_content',
-			tolerance: 'pointer',
-			over: function(evt, ui) {
-				DragDrop.onDropHoverOver($(ui.draggable), $(this));
-			},
-			out: function(evt, ui) {
-				DragDrop.onDropHoverOut($(ui.draggable), $(this));
-			},
-			drop: function(evt, ui) {
-				DragDrop.onDrop($(ui.draggable), $(this));
-			}
+		$('td[data-language-uid]').each(function() {
+			var connectWithClassName = DragDrop.langClassPrefix + $(this).data('language-uid');
+			$(connectWithClassName).sortable({
+				items: DragDrop.sortableItemsIdentifier,
+				connectWith: connectWithClassName,
+				handle: DragDrop.dragIdentifier,
+				distance: 20,
+				cursor: 'move',
+				helper: 'clone',
+				placeholder: DragDrop.dropPossibleClass,
+				tolerance: 'pointer',
+				start: function(e, ui) {
+					DragDrop.onSortStart($(this), ui);
+				},
+				stop: function(e, ui) {
+					DragDrop.onSortStop($(this), ui);
+				},
+				change: function(e, ui) {
+					DragDrop.onSortChange($(this), ui);
+				},
+				update: function(e, ui) {
+					DragDrop.onSortUpdate($(this), ui);
+				},
+				receive: function(e, ui) {
+					DragDrop.onSortUpdate($(this), ui, $(this).data('colpos'));
+				}
+			}).disableSelection();
 		});
 	};
 
 	/**
-	 * called when a draggable is selected to be moved
-	 * @param $element a jQuery object for the draggable
-	 * @private
+	 * Called when an item is about to be moved
 	 */
-	DragDrop.onDragStart = function($element) {
-		// Add css class for the drag shadow
-		$element.children(DragDrop.dragIdentifier).addClass('dragitem-shadow');
-		// Hide create new element button
-		$element.children(DragDrop.dropZoneIdentifier).addClass('drag-start');
-		$element.closest(DragDrop.columnIdentifier).removeClass('active');
+	DragDrop.onSortStart = function($container, ui) {
+		var $item = $(ui.item),
+			$helper = $(ui.helper),
+			$placeholder = $(ui.placeholder);
 
-		// make the dropzones visible (all except the previous one in the current list)
-		var $previousDropZone = $element.prev().children(DragDrop.dropZoneIdentifier);
-		$(DragDrop.dropZoneIdentifier).not($previousDropZone).addClass(DragDrop.validDropZoneClass);
+		$placeholder.height($item.height() - $helper.find('.t3js-page-new-ce').height());
+		DragDrop.changeDropzoneVisibility($container, $item);
+
+		// show all dropzones, except the own
+		$helper.find(DragDrop.dropZoneAvailableIdentifier).removeClass('active');
+		$container.parents('table.t3-page-columns').find('.t3js-page-new-ce').hide();
 	};
 
 	/**
-	 * called when a draggable is released
-	 * @param $element a jQuery object for the draggable
-	 * @private
+	 * Called when the sorting stopped
 	 */
-	DragDrop.onDragStop = function($element) {
-		// Remove css class for the drag shadow
-		$element.children(DragDrop.dragIdentifier).removeClass('dragitem-shadow');
-		// Show create new element button
-		$element.children(DragDrop.dropZoneIdentifier).removeClass('drag-start');
-		$element.closest(DragDrop.columnIdentifier).addClass('active');
-		$('.' + DragDrop.validDropZoneClass).removeClass(DragDrop.validDropZoneClass);
+	DragDrop.onSortStop = function($container, ui) {
+		var $allColumns = $container.parents('table.t3-page-columns');
+		$allColumns.find('.t3js-page-new-ce').show();
+		$allColumns.find(DragDrop.dropZoneAvailableIdentifier + '.active').removeClass('active');
 	};
 
 	/**
-	 * adds CSS classes when hovering over a dropzone
-	 * @param $draggableElement
-	 * @param $droppableElement
-	 * @private
+	 * Called when the index of the element in the sortable list has changed
 	 */
-	DragDrop.onDropHoverOver = function($draggableElement, $droppableElement) {
-		if ($droppableElement.hasClass(DragDrop.validDropZoneClass)) {
-			$droppableElement.addClass(DragDrop.dropPossibleHoverClass);
-			$draggableElement.addClass(DragDrop.dropPossibleHoverClass);
+	DragDrop.onSortChange = function($container, ui) {
+		var $placeholder = $(ui.placeholder);
+		DragDrop.changeDropzoneVisibility($container, $placeholder);
+	};
+
+	DragDrop.changeDropzoneVisibility = function($container, $subject) {
+		var $prev = $subject.prev(':visible'),
+			droppableClassName = '.t3js-sortable-lang-' + $container.data('language-uid');
+
+		if ($prev.length === 0) {
+			$prev = $subject.prevUntil(':visible').last().prev();
 		}
+		$container.parents('table.t3-page-columns').find(droppableClassName).find(DragDrop.contentIdentifier + ':not(.ui-sortable-helper)').not($prev).find(DragDrop.dropZoneAvailableIdentifier).addClass('active');
+		$prev.find(DragDrop.dropZoneAvailableIdentifier + '.active').removeClass('active');
 	};
 
 	/**
-	 * removes the CSS classes after hovering out of a dropzone again
-	 * @param $draggableElement
-	 * @param $droppableElement
-	 * @private
+	 * Called when the new position of the element gets stored
 	 */
-	DragDrop.onDropHoverOut = function($draggableElement, $droppableElement) {
-		$droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
-		$draggableElement.removeClass(DragDrop.dropPossibleHoverClass);
-	};
-
-	/**
-	 * this method does the whole logic when a draggable is dropped on to a dropzone
-	 * sending out the request and afterwards move the HTML element in the right place.
-	 *
-	 * @param $draggableElement
-	 * @param $droppableElement
-	 * @private
-	 */
-	DragDrop.onDrop = function($draggableElement, $droppableElement) {
-		var oldColumn = DragDrop.getColumnPositionForElement($draggableElement),
-			newColumn = DragDrop.getColumnPositionForElement($droppableElement);
-
-		$droppableElement.removeClass(DragDrop.dropPossibleHoverClass);
-		$draggableElement.removeClass(DragDrop.dropPossibleHoverClass);
+	DragDrop.onSortUpdate = function($container, ui, newColumn) {
+		var $selectedItem = $(ui.item),
+			contentElementUid = parseInt($selectedItem.data('uid'));
 
 		// send an AJAX requst via the AjaxDataHandler
-		var contentElementUid = parseInt($draggableElement.data('uid'));
 		if (contentElementUid > 0) {
 			var parameters = {};
 			// add the information about a possible column position change
-			if (newColumn !== oldColumn) {
+			if (typeof newColumn !== 'undefined') {
 				parameters['data'] = {tt_content: {}};
 				parameters['data']['tt_content'][contentElementUid] = {colPos: parseInt(newColumn)};
 			}
-
-			var targetContentElementUid = $droppableElement.closest(DragDrop.contentIdentifier).data('uid');
-			// the item was moved to the top of the colPos, so the page ID is used here
-			if (typeof targetContentElementUid === 'undefined') {
-				// the actual page is needed
-				targetContentElementUid = parseInt($droppableElement.closest(DragDrop.contentIdentifier).data('page'));
-			} else {
-				// the negative value of the content element after where it should be moved
-				targetContentElementUid = 0-parseInt(targetContentElementUid);
-			}
-
-			parameters['cmd'] = {tt_content: {}};
-			parameters['cmd']['tt_content'][contentElementUid] = {move: targetContentElementUid};
-			// fire the request, and show a message if it has failed
-			require(['TYPO3/CMS/Backend/AjaxDataHandler'], function(DataHandler) {
-				DataHandler.process(parameters).done(function(result) {
-					if (!result.hasErrors) {
-						// insert draggable on the new position
-						$draggableElement.detach().css({top: 0, left: 0})
-							.insertAfter($droppableElement.closest(DragDrop.contentIdentifier));
-					}
-				});
-			});
 		}
-	};
 
-	/**
-	 * returns the next "upper" container colPos parameter inside the code
-	 * @param $element
-	 * @return int|null the colPos
-	 */
-	DragDrop.getColumnPositionForElement = function($element) {
-		var $columnContainer = $element.closest(DragDrop.columnIdentifier);
-		if ($columnContainer.length && $columnContainer.data('colpos') !== 'undefined') {
-			return $columnContainer.data('colpos');
+		var targetContentElementUid = $selectedItem.prev().data('uid');
+		// the item was moved to the top of the colPos, so the page ID is used here
+		if (typeof targetContentElementUid === 'undefined') {
+			// the actual page is needed
+			targetContentElementUid = parseInt($container.find(DragDrop.contentIdentifier).first().data('page'));
 		} else {
-			return null;
+			// the negative value of the content element after where it should be moved
+			targetContentElementUid = parseInt(targetContentElementUid) * -1;
 		}
+
+		parameters['cmd'] = {tt_content: {}};
+		parameters['cmd']['tt_content'][contentElementUid] = {move: targetContentElementUid};
+		// fire the request, and show a message if it has failed
+		require(['TYPO3/CMS/Backend/AjaxDataHandler'], function(DataHandler) {
+			DataHandler.process(parameters).done(function(result) {
+				if (result.hasErrors) {
+					$container.sortable('cancel');
+				}
+			});
+		});
 	};
 
 	/**

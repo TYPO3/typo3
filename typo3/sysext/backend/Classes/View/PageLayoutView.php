@@ -443,7 +443,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$defLanguageCount[$key] = array();
 					}
 					// Start wrapping div
-					$content[$key] .= '<div class="t3-page-ce-wrapper';
+					$content[$key] .= '<div data-colpos="' . $key . '" data-language-uid="' . $lP . '" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $lP . ' t3-page-ce-wrapper';
 					if (count($contentRecordsPerColumn[$key]) === 0) {
 						$content[$key] .= ' t3-page-ce-empty';
 					}
@@ -451,15 +451,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Add new content at the top most position
 					$content[$key] .= '
 					<div class="t3-page-ce" data-page="' . (int)$id . '" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
-						<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
-							<div class="t3-page-ce-wrapper-new-ce">
-								<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
-									. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-									. IconUtility::getSpriteIcon('actions-document-new')
-									. ' '
-									. $this->getLanguageService()->getLL('content', TRUE) . '</a>
-							</div>
+						<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
+							<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
+								. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
+								. IconUtility::getSpriteIcon('actions-document-new')
+								. ' '
+								. $this->getLanguageService()->getLL('content', TRUE) . '</a>
 						</div>
+						<div class="t3-page-ce-dropzone-available"></div>
 					</div>
 					';
 					$editUidList = '';
@@ -497,16 +496,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								. $this->tt_content_drawItem($row, $isRTE) . '</div>';
 							$singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div>'
 								. $this->tt_content_drawFooter($row);
-							// NOTE: this is the end tag for <div class="t3-page-ce-body">
-							// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
-							$singleElementHTML .= '</div>';
 							$statusHidden = $this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '';
-							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '" id="element-tt_content-'
+							$singleElementHTML = '<div class="t3-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
 								. $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '">' . $singleElementHTML . '</div>';
 							if ($this->tt_contentConfig['languageMode']) {
 								$singleElementHTML .= '<div class="t3-page-ce">';
 							}
-							$singleElementHTML .= '<div class="t3-page-ce-dropzone" id="colpos-' . $key . '-' . 'page-' . $id .
+							$singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id .
 								'-' . str_replace('.', '', uniqid('', TRUE)) . '">';
 							// Add icon "new content element below"
 							if (!$disableMoveAndNewButtons) {
@@ -521,16 +517,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 									$onClick = BackendUtility::editOnClick($params, $this->backPath);
 								}
 								$singleElementHTML .= '
-									<div class="t3-page-ce-wrapper-new-ce">
-										<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
-											. $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-											. IconUtility::getSpriteIcon('actions-document-new')
-											. ' '
-											. $this->getLanguageService()->getLL('content', TRUE) . '</a>
-									</div>
+									<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+										. $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
+										. IconUtility::getSpriteIcon('actions-document-new')
+										. ' '
+										. $this->getLanguageService()->getLL('content', TRUE) . '</a>
 								';
 							}
-							$singleElementHTML .= '</div></div>';
+							$singleElementHTML .= '</div></div><div class="t3-page-ce-dropzone-available"></div></div>';
 							if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
 								$defLangBinding[$key][$lP][$row[$lP ? 'l18n_parent' : 'uid']] = $singleElementHTML;
 							} else {
@@ -606,7 +600,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$grid .= '<td valign="top"' .
 								($colSpan > 0 ? ' colspan="' . $colSpan . '"' : '') .
 								($rowSpan > 0 ? ' rowspan="' . $rowSpan . '"' : '') .
-								' data-colpos="' . (int)$columnConfig['colPos'] . '" class="t3-gridCell t3-page-column t3-page-column-' . $columnKey .
+								' data-colpos="' . (int)$columnConfig['colPos'] . '" data-language-uid="' . $lP . '" class="t3js-page-lang-column-' . $lP . ' t3-gridCell t3-page-column t3-page-column-' . $columnKey .
 								((!isset($columnConfig['colPos']) || $columnConfig['colPos'] === '') ? ' t3-gridCell-unassigned' : '') .
 								((isset($columnConfig['colPos']) && $columnConfig['colPos'] !== '' && !$head[$columnKey]) || !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos']) ? ' t3-gridCell-restricted' : '') .
 								($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
@@ -661,7 +655,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					// Header:
 					$lP = (int)$lP;
 					$cCont[$lP] = '
-						<td valign="top" class="t3-page-lang-column">
+						<td valign="top" class="t3-page-lang-column" data-language-uid="' . $lP . '">
 							<h3>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '</h3>
 						</td>';
 
@@ -692,13 +686,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				// Add headers:
 				$out .= '<tr>' . implode($cCont) . '</tr>';
 				$out .= '<tr>' . implode($sCont) . '</tr>';
+				unset($cCont, $sCont);
+
 				// Traverse previously built content for the columns:
 				foreach ($languageColumn as $cKey => $cCont) {
-					$out .= '
-					<tr>
-						<td valign="top" class="t3-gridCell t3-page-column t3-page-lang-column">' . implode(('</td>' . '
-						<td valign="top" class="t3-gridCell t3-page-column t3-page-lang-column">'), $cCont) . '</td>
-					</tr>';
+					$out .= '<tr>';
+					foreach ($cCont as $languageId => $columnContent) {
+						$out .= '<td valign="top" class="t3-gridCell t3-page-column t3-page-lang-column t3js-page-lang-column t3js-page-lang-column-' . $languageId . '">' . $columnContent . '</td>';
+					}
+					$out .= '</tr>';
 					if ($this->defLangBinding) {
 						// "defLangBinding" mode
 						foreach ($defLanguageCount[$cKey] as $defUid) {
@@ -727,7 +723,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				// Finally, wrap it all in a table and add the language selector on top of it:
 				$out = $languageSelector . '
 					<div class="t3-lang-gridContainer">
-						<table cellpadding="0" cellspacing="0" class="t3-page-langMode">
+						<table cellpadding="0" cellspacing="0" class="t3-page-columns t3-page-langMode">
 							' . $out . '
 						</table>
 					</div>';
@@ -1301,7 +1297,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Display info from records fields:
 		if (count($info)) {
 			$content = '<div class="t3-page-ce-info">
-				' . implode('<br />', $info) . '
+				' . implode('<br>', $info) . '
 				</div>';
 		}
 		// Wrap it
