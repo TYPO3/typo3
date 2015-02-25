@@ -27,8 +27,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] 
 
 // Register bulk update task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Saltedpasswords\Task\BulkUpdateTask::class] = array(
-	'extension' => $_EXTKEY,
-	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.name',
-	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.description',
+	'extension' => 'saltedpasswords',
+	'title' => 'LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.name',
+	'description' => 'LLL:EXT:saltedpasswords/locallang.xlf:ext.saltedpasswords.tasks.bulkupdate.description',
 	'additionalFields' => \TYPO3\CMS\Saltedpasswords\Task\BulkUpdateFieldProvider::class
 );

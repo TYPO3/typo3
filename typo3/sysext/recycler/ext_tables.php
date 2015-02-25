@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.Recycler',
 		'web',
 		'Recycler',
 		'',
@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 		array(
 			'access' => 'user,group',
 			'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
+			'labels' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
 }

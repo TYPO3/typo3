@@ -2,8 +2,8 @@
 defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-	RTE.default.skin = EXT:' . $_EXTKEY . '/rtehtmlarea/htmlarea.css
-	RTE.default.FE.skin = EXT:' . $_EXTKEY . '/rtehtmlarea/htmlarea.css
+	RTE.default.skin = EXT:t3skin/rtehtmlarea/htmlarea.css
+	RTE.default.FE.skin = EXT:t3skin/rtehtmlarea/htmlarea.css
 ');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(

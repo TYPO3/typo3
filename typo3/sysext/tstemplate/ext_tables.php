@@ -2,13 +2,11 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
-	$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY);
-
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
 		'web',
 		'ts',
 		'',
-		$extensionPath . 'ts/',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tstemplate') . 'ts/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'admin',

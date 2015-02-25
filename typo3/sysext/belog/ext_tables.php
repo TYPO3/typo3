@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 
 	// Module Tools->Log
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.Belog',
 		'system',
 		'log',
 		'',
@@ -24,7 +24,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		array(
 			'access' => 'admin',
 			'icon' => 'EXT:belog/Resources/Public/Icons/module-belog.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
+			'labels' => 'LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
 }

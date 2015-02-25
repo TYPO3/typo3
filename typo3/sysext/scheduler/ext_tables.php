@@ -24,14 +24,14 @@ if (TYPO3_MODE === 'BE') {
 	// Add context sensitive help (csh) to the backend module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_system_txschedulerM1',
-		'EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_csh_scheduler.xlf'
+		'EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf'
 	);
 }
 
 // Register specific icon for run task button
 \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
 	array(
-		'run-task' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/RunTask.png'
+		'run-task' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'Resources/Public/Images/Icons/RunTask.png'
 	),
-	$_EXTKEY
+	'scheduler'
 );

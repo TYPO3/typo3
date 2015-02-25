@@ -6,9 +6,9 @@ defined('TYPO3_MODE') or die();
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Linkvalidator\Task\ValidatorTask::class] = array(
-	'extension' => $_EXTKEY,
-	'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:tasks.validate.name',
-	'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:tasks.validate.description',
+	'extension' => 'linkvalidator',
+	'title' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.name',
+	'description' => 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.description',
 	'additionalFields' => \TYPO3\CMS\Linkvalidator\Task\ValidatorTaskAdditionalFieldProvider::class
 );
 

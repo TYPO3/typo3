@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.Extensionmanager',
 		'tools',
 		'extensionmanager', '', array(
 			'List' => 'index,unresolvedDependencies,ter,showAllVersions,distributions',
@@ -17,8 +17,8 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-extensionmanager.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
+			'icon' => 'EXT:extensionmanager/Resources/Public/Icons/module-extensionmanager.png',
+			'labels' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
 
@@ -30,7 +30,7 @@ if (TYPO3_MODE === 'BE') {
 // Register specific icon for update script button
 \TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
 	array(
-		'update-script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/ExtensionUpdateScript.png'
+		'update-script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('extensionmanager') . 'Resources/Public/Images/Icons/ExtensionUpdateScript.png'
 	),
-	$_EXTKEY
+	'extensionmanager'
 );

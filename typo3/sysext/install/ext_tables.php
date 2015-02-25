@@ -13,15 +13,15 @@ if (TYPO3_MODE === 'BE') {
 
 	// Register backend module
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.Install',
 		'system',
 		'install', '', array(
 			'BackendModule' => 'index, showEnableInstallToolButton, enableInstallTool',
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-install.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/BackendModule.xlf',
+			'icon' => 'EXT:install/Resources/Public/Icons/module-install.png',
+			'labels' => 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf',
 		)
 	);
 }

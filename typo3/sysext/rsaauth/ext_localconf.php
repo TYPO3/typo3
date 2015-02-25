@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 // Add the service
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY, 'auth', \TYPO3\CMS\Rsaauth\RsaAuthService::class, array(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService('rsaauth', 'auth', \TYPO3\CMS\Rsaauth\RsaAuthService::class, array(
 	'title' => 'RSA authentication',
 	'description' => 'Authenticates users by using encrypted passwords',
 	'subtype' => 'processLoginDataBE,processLoginDataFE',
@@ -18,14 +18,14 @@ defined('TYPO3_MODE') or die();
 ));
 
 // Add a hook to the BE login form
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'][$_EXTKEY] = \TYPO3\CMS\Rsaauth\Hook\LoginFormHook::class . '->getLoginFormTag';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\LoginFormHook::class . '->getLoginFormTag';
 // Add hook for user setup module
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook'][$_EXTKEY] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->getLoginScripts';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave'][$_EXTKEY] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->decryptPassword';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->getLoginScripts';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->decryptPassword';
 // Add a hook to the FE login form (felogin system extension)
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][$_EXTKEY] = \TYPO3\CMS\Rsaauth\Hook\FrontendLoginHook::class . '->loginFormHook';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\FrontendLoginHook::class . '->loginFormHook';
 // Add a hook to show Backend warnings
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'][$_EXTKEY] = \TYPO3\CMS\Rsaauth\BackendWarnings::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']['rsaauth'] = \TYPO3\CMS\Rsaauth\BackendWarnings::class;
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
 	'BackendLogin::getRsaPublicKey',

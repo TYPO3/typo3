@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or die();
 // Avoid that this block is loaded in frontend or within upgrade wizards
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.Aboutmodules',
 		'help',
 		'aboutmodules',
 		'after:about',
@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		array(
 			'access' => 'user,group',
 			'icon' => 'EXT:aboutmodules/Resources/Public/Icons/module-aboutmodules.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
+			'labels' => 'LLL:EXT:aboutmodules/Resources/Private/Language/locallang_mod.xlf'
 		)
 	);
 }

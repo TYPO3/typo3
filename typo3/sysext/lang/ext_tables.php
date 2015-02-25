@@ -5,7 +5,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 
 	// Register the backend module
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.Lang',
 		'tools',
 		'language',
 		'after:extensionmanager',
@@ -14,8 +14,8 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/module-lang.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
+			'icon' => 'EXT:lang/Resources/Public/Images/module-lang.png',
+			'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
 

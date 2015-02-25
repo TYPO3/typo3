@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 // Register OpenID processing service with TYPO3
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
-	$_EXTKEY,
+	'openid',
 	'auth',
 	'tx_openid_service_process',
 	array(
@@ -22,7 +22,7 @@ defined('TYPO3_MODE') or die();
 
 // Register OpenID authentication service with TYPO3
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
-	$_EXTKEY,
+	'openid',
 	'auth',
 	'tx_openid_service',
 	array(
