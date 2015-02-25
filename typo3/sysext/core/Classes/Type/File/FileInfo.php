@@ -24,12 +24,12 @@ class FileInfo extends \SplFileInfo implements TypeInterface {
 	/**
 	 * Return the mime type of a file.
 	 *
-	 * @return string|FALSE
+	 * @return string|bool Returns the mime type or FALSE if the mime type could not be discovered
 	 */
 	public function getMimeType() {
 		$mimeType = FALSE;
 		if ($this->isFile()) {
-			if (!function_exists('finfo_file')) {
+			if (function_exists('finfo_file')) {
 				$fileInfo = new \finfo();
 				$mimeType = $fileInfo->file($this->getPathname(), FILEINFO_MIME_TYPE);
 			} elseif (function_exists('mime_content_type')) {
