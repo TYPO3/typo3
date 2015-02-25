@@ -4,7 +4,7 @@ System Extensions for TYPO3
 
 This document is a part of the TYPO3 project. TYPO3 is an open source web
 content management system released under the GNU GPL. TYPO3 is copyright
-(c) 1999-2013 by Kasper Skaarhoj.
+(c) 1999-2015 by Kasper Skaarhoj.
 
 This document provides information about the content of the typo3/sysext
 folder.
