@@ -314,7 +314,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 
         $this->arguments['value'] = array('value3', 'value1');
         $this->arguments['name'] = 'myName';
-        $this->arguments['multiple'] = 'multiple';
+        $this->arguments['multiple'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
@@ -379,7 +379,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
         $this->arguments['optionValueField'] = 'id';
         $this->arguments['optionLabelField'] = 'lastName';
         $this->arguments['name'] = 'myName';
-        $this->arguments['multiple'] = 'multiple';
+        $this->arguments['multiple'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
@@ -419,7 +419,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
         $this->arguments['value'] = array($user_rl, $user_is);
         $this->arguments['optionLabelField'] = 'lastName';
         $this->arguments['name'] = 'myName';
-        $this->arguments['multiple'] = 'multiple';
+        $this->arguments['multiple'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
@@ -536,7 +536,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
             'value3' => 'label3'
         );
         $this->arguments['name'] = 'myName';
-        $this->arguments['multiple'] = 'multiple';
+        $this->arguments['multiple'] = true;
         $this->arguments['selectAllByDefault'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -559,7 +559,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
         );
         $this->arguments['value'] = array('value2', 'value1');
         $this->arguments['name'] = 'myName';
-        $this->arguments['multiple'] = 'multiple';
+        $this->arguments['multiple'] = true;
         $this->arguments['selectAllByDefault'] = true;
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);

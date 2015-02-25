@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * </code>
  * Generates a dropdown box like above, except that "VISA Card" is selected.
  *
- * If the select box is a multi-select box (multiple="true"), then "value" can be an array as well.
+ * If the select box is a multi-select box (multiple="1"), then "value" can be an array as well.
  *
  * = Usage on domain objects =
  *
@@ -77,7 +77,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
-        $this->registerTagAttribute('multiple', 'string', 'if set, multiple select field');
         $this->registerTagAttribute('size', 'string', 'Size of input field');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box', true);
@@ -88,6 +87,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
         $this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
         $this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
+        $this->registerArgument('multiple', 'boolean', 'If set multiple options may be selected.', false, false);
     }
 
     /**
@@ -99,7 +99,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     public function render()
     {
         $name = $this->getName();
-        if ($this->hasArgument('multiple')) {
+        if ($this->arguments['multiple']) {
+            $this->tag->addAttribute('multiple', 'multiple');
             $name .= '[]';
         }
         $this->tag->addAttribute('name', $name);
@@ -114,7 +115,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         // register field name for token generation.
         // in case it is a multi-select, we need to register the field name
         // as often as there are elements in the box
-        if ($this->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
+        if ($this->arguments['multiple']) {
             $content .= $this->renderHiddenFieldForEmptyValue();
             for ($i = 0; $i < count($options); $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
