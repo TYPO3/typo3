@@ -10,7 +10,7 @@ The tslib/ directory and the constant PATH_tslib were removed.
 Impact
 ======
 
-Extensions that still use PATH_tslib constant, and reference typo/sysext/cms/tslib/index_ts.php directly won't work.
+Extensions that still use PATH_tslib constant, and reference typo3/sysext/cms/tslib/index_ts.php directly won't work.
 
 
 Affected installations
