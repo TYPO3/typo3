@@ -49,7 +49,7 @@ return array(
 					0 => array(
 						'title' => 'LLL:EXT:cms/locallang_tca.xlf:backend_layout.wizard',
 						'type' => 'popup',
-						'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/wizard_backend_layout.png',
+						'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('frontend') . 'Resources/Public/Images/wizard_backend_layout.png',
 						'module' => array(
 							'name' => 'wizard_backend_layout'
 						),
