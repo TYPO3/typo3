@@ -48,7 +48,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
 		$this->MCONF = array(
 			'name' => $this->moduleName,
 		);
@@ -99,8 +99,8 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			// If no access or if ID == zero
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-				$GLOBALS['LANG']->getLL('clickAPage_content'),
-				$GLOBALS['LANG']->getLL('title'),
+				$this->getLanguageService()->getLL('clickAPage_content'),
+				$this->getLanguageService()->getLL('title'),
 				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
 			);
 			$this->content = $flashMessage->render();
@@ -112,7 +112,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		// Build the <body> for the module
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		// Renders the module page
-		$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
+		$this->content = $this->doc->render($this->getLanguageService()->getLL('title'), $this->content);
 	}
 
 	/**
@@ -141,14 +141,33 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			// View page
 			$buttons['view'] = '<a href="#" '
 				. 'onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" '
-				. 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
+				. 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
 				. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			// Shortcut
-			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			if ($this->getBackendUser()->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 			}
 		}
 		return $buttons;
 	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
 
 }
