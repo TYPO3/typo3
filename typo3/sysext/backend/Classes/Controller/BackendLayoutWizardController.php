@@ -67,7 +67,7 @@ class BackendLayoutWizardController {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$pageRenderer = $this->doc->getPageRenderer();
-		$pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/res/grideditor.js');
+		$pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/grideditor.js');
 		$pageRenderer->addJsInlineCode('storeData', '
 			function storeData(data) {
 				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '[' . GeneralUtility::quoteJSvalue($this->fieldName) . ']) {
@@ -171,7 +171,7 @@ class BackendLayoutWizardController {
 			});
 			t3Grid.drawTable();
 			');
-		$this->doc->styleSheetFile_post = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/res/grideditor.css';
+		$this->doc->styleSheetFile_post = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Css/grideditor.css';
 	}
 
 	/**
@@ -180,7 +180,7 @@ class BackendLayoutWizardController {
 	 * @return void
 	 */
 	public function main() {
-		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('cms') . 'layout/';
+		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/Images/BackendLayoutWizard/';
 		$content = '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" onclick="storeData(t3Grid.export2LayoutRecord());return true;">' . IconUtility::getSpriteIcon('actions-document-save') . '</a>';
 		$content .= '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" onclick="storeData(t3Grid.export2LayoutRecord());window.close();return true;">' . IconUtility::getSpriteIcon('actions-document-save-close') . '</a>';
 		$content .= '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '" onclick="window.close();return true;">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
@@ -194,20 +194,20 @@ class BackendLayoutWizardController {
 				</td>
 				<td width="20" valign="center">
 					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addColumn') . '" onclick="t3Grid.addColumn(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 'res/t3grid-tableright.png" border="0" />
+						<img src="' . $resourcePath . 't3grid-tableright.png" border="0" />
 					</a><br />
 					<a class="removeCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeColumn') . '" onclick="t3Grid.removeColumn(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 'res/t3grid-tableleft.png" border="0" />
+						<img src="' . $resourcePath . 't3grid-tableleft.png" border="0" />
 					</a>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" height="20" align="center">
 					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addRow') . '" onclick="t3Grid.addRow(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 'res/t3grid-tabledown.png" border="0" />
+						<img src="' . $resourcePath . 't3grid-tabledown.png" border="0" />
 					</a>
 					<a class="removeCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeRow') . '" onclick="t3Grid.removeRow(); t3Grid.drawTable(\'editor\');">
-						<img src="' . $resourcePath . 'res/t3grid-tableup.png" border="0" />
+						<img src="' . $resourcePath . 't3grid-tableup.png" border="0" />
 					</a>
 				</td>
 			</tr>

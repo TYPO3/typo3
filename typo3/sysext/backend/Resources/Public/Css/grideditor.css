@@ -59,48 +59,48 @@ div.cell_container:hover {
 }
 
 .link_expand_right {
-	background-image: url(t3grid-editor-right-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-right-inactive.png);
 	left: 46px;
 	top: 14px;
 }
 
 .link_expand_right:hover {
-	background-image: url(t3grid-editor-right.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-right.png);
 }
 
 
 .link_shrink_left {
-	background-image: url(t3grid-editor-left-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-left-inactive.png);
 	left: 0px;
 	top: 14px;
 }
 
 .link_shrink_left:hover {
-	background-image: url(t3grid-editor-left.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-left.png);
 }
 
 .link_expand_down {
-	background-image: url(t3grid-editor-down-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-down-inactive.png);
 	left: 14px;
 	top: 46px;
 }
 
 .link_expand_down:hover {
-	background-image: url(t3grid-editor-down.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-down.png);
 }
 
 .link_shrink_up {
-	background-image: url(t3grid-editor-up-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-up-inactive.png);
 	left: 14px;
 	top: 0px;
 }
 
 .link_shrink_up:hover {
-	background-image: url(t3grid-editor-up.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-up.png);
 }
 
 .link_editor {
-	background-image: url(t3grid-edit-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-edit-inactive.png);
 	width: 32px;
 	height: 32px;
 	left: 14px;
@@ -108,19 +108,19 @@ div.cell_container:hover {
 }
 
 .link_editor:hover {
-	background-image: url(t3grid-edit.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-edit.png);
 }
 
 .question {
-	background-image: url(t3grid-layer-icon-help.png) !important;
+	background-image: url(../Images/BackendLayoutWizard/t3grid-layer-icon-help.png) !important;
 }
 
 .save {
-	background-image: url(t3grid-layer-icon-save.png) !important;
+	background-image: url(../Images/BackendLayoutWizard/t3grid-layer-icon-save.png) !important;
 }
 
 .cancel {
-	background-image: url(t3grid-layer-icon-close.png) !important;
+	background-image: url(../Images/BackendLayoutWizard/t3grid-layer-icon-close.png) !important;
 }
 
 table#outer_container td, table#editor td {
@@ -176,48 +176,48 @@ div.cell_container:hover {
 }
 
 .link_expand_right {
-	background-image: url(t3grid-editor-right-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-right-inactive.png);
 	left: 46px;
 	top: 14px;
 }
 
 .link_expand_right:hover {
-	background-image: url(t3grid-editor-right.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-right.png);
 }
 
 
 .link_shrink_left {
-	background-image: url(t3grid-editor-left-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-left-inactive.png);
 	left: 0px;
 	top: 14px;
 }
 
 .link_shrink_left:hover {
-	background-image: url(t3grid-editor-left.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-left.png);
 }
 
 .link_expand_down {
-	background-image: url(t3grid-editor-down-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-down-inactive.png);
 	left: 14px;
 	top: 46px;
 }
 
 .link_expand_down:hover {
-	background-image: url(t3grid-editor-down.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-down.png);
 }
 
 .link_shrink_up {
-	background-image: url(t3grid-editor-up-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-up-inactive.png);
 	left: 14px;
 	top: 0px;
 }
 
 .link_shrink_up:hover {
-	background-image: url(t3grid-editor-up.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-editor-up.png);
 }
 
 .link_editor {
-	background-image: url(t3grid-edit-inactive.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-edit-inactive.png);
 	width: 32px;
 	height: 32px;
 	left: 14px;
@@ -225,17 +225,17 @@ div.cell_container:hover {
 }
 
 .link_editor:hover {
-	background-image: url(t3grid-edit.png);
+	background-image: url(../Images/BackendLayoutWizard/t3grid-edit.png);
 }
 
 .question {
-	background-image: url(t3grid-layer-icon-help.png) !important;
+	background-image: url(../Images/BackendLayoutWizard/t3grid-layer-icon-help.png) !important;
 }
 
 .save {
-	background-image: url(t3grid-layer-icon-save.png) !important;
+	background-image: url(../Images/BackendLayoutWizard/t3grid-layer-icon-save.png) !important;
 }
 
 .cancel {
-	background-image: url(t3grid-layer-icon-close.png) !important;
+	background-image: url(../Images/BackendLayoutWizard/t3grid-layer-icon-close.png) !important;
 }
