@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\Utility\ResourceUtility;
  */
 class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
+	/**
+	 * @return array
+	 */
 	public function recursiveFileListSortingHelperTestDataProvider() {
 		return array(
 			'normal file list' => array(
@@ -37,6 +40,10 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'mixed capitalization' => array(
 				array('alllower', 'allCAPS', 'ALLcaps', 'mIxedinanotherway', 'ALLCAPS', 'MiXeDcApItAlIzAtIoN'),
+				array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
+			),
+			'mixed capitalization reversed' => array(
+				array('MiXeDcApItAlIzAtIoN', 'mIxedinanotherway', 'ALLcaps', 'allCAPS', 'ALLCAPS', 'alllower'),
 				array('ALLCAPS', 'ALLcaps', 'allCAPS', 'alllower', 'MiXeDcApItAlIzAtIoN', 'mIxedinanotherway')
 			),
 			'recursive list with one sublevel' => array(
@@ -57,6 +64,8 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @dataProvider recursiveFileListSortingHelperTestDataProvider
 	 * @test
+	 * @param array $unsortedList
+	 * @param array $expectedList
 	 */
 	public function recursiveFileListSortingHelperCorrectlySorts($unsortedList, $expectedList) {
 		$result = $unsortedList;
@@ -64,8 +73,7 @@ class ResourceUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$result,
 			array(ResourceUtility::class, 'recursiveFileListSortingHelper')
 		);
-
-		$this->assertEquals($expectedList, $result);
+		$this->assertSame($expectedList, $result);
 	}
 
 }

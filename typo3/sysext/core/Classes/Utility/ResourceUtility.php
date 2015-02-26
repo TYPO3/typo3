@@ -34,7 +34,7 @@ class ResourceUtility {
 		if (strpos($elementA, '/') === FALSE) {
 			// first element is a file
 			if (strpos($elementB, '/') === FALSE) {
-				$result = strnatcasecmp($elementA, $elementB);
+				$result = self::nameCompareSortingHelper($elementA, $elementB);
 			} else {
 				// second element is a directory => always sort it first
 				$result = 1;
@@ -54,9 +54,27 @@ class ResourceUtility {
 					$result = self::recursiveFileListSortingHelper($elementA, $elementB);
 				} else {
 					// different directories => sort by current directories
-					$result = strnatcasecmp($pathPartA, $pathPartB);
+					$result = self::nameCompareSortingHelper($pathPartA, $pathPartB);
 				}
 			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * This is a helper method that can be used with u?sort methods to sort a list of names in natural order. With
+	 * capitalized first if both equal in lowercase.
+	 *
+	 * @param string $elementA
+	 * @param string $elementB
+	 * @return int
+	 */
+	static public function nameCompareSortingHelper($elementA, $elementB) {
+		$result = strnatcasecmp($elementA, $elementB);
+		if ($result === 0) {
+			// Both are same in case insensitive so it's ok to check then now unnaturally.
+			$result = strcmp($elementA, $elementB);
 		}
 
 		return $result;
