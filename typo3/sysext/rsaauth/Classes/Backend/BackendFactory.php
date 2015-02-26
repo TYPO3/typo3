@@ -29,8 +29,8 @@ class BackendFactory {
 	 * @var array
 	 */
 	static protected $availableBackends = array(
-		\TYPO3\CMS\Rsaauth\Backend\PhpBackend::class,
-		\TYPO3\CMS\Rsaauth\Backend\CommandLineBackend::class
+		PhpBackend::class,
+		CommandLineBackend::class
 	);
 
 	/**
@@ -44,18 +44,18 @@ class BackendFactory {
 	/**
 	 * A selected backend. This member is set in the getBackend() function. It
 	 * will not be an abstract backend as shown below but a real class, which is
-	 * derived from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
+	 * derived from the AbstractBackend.
 	 *
-	 * @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend
+	 * @var AbstractBackend
 	 */
 	static protected $selectedBackend = NULL;
 
 	/**
 	 * Obtains a backend. This function will return a non-abstract class, which
-	 * is derived from the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend. Applications should
-	 * not use any methods that are not declared in the \TYPO3\CMS\Rsaauth\Backend\AbstractBackend.
+	 * is derived from the AbstractBackend. Applications should
+	 * not use any methods that are not declared in the AbstractBackend.
 	 *
-	 * @return \TYPO3\CMS\Rsaauth\Backend\AbstractBackend A backend
+	 * @return AbstractBackend A backend
 	 */
 	static public function getBackend() {
 		if (!self::$initialized) {
@@ -64,7 +64,7 @@ class BackendFactory {
 				$backendObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($backend);
 				// Check that it is derived from the proper base class
 				if ($backendObject instanceof AbstractBackend) {
-					/** @var $backendObject \TYPO3\CMS\Rsaauth\Backend\AbstractBackend */
+					/** @var $backendObject AbstractBackend */
 					if ($backendObject->isAvailable()) {
 						// The backend is available, save it and stop the loop
 						self::$selectedBackend = $backendObject;

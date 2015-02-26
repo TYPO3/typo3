@@ -28,8 +28,7 @@ class LoginFormHook {
 	 *
 	 * @param array $params
 	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj
-	 * @return string Form tag
-	 * @throws \TYPO3\CMS\Core\Error\Exception
+	 * @return string|NULL Form tag or NULL if security level is not rsa
 	 */
 	public function getLoginFormTag(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
 		$form = NULL;

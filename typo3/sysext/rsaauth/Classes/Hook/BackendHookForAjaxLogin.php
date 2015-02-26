@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  * This class adds RSA JavaScript to the backend
  */
 class BackendHookForAjaxLogin {
+
 	/**
 	 * Adds RSA-specific JavaScript
 	 *

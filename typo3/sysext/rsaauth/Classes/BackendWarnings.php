@@ -32,27 +32,37 @@ class BackendWarnings {
 		$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
 		if ($backend instanceof \TYPO3\CMS\Rsaauth\Backend\CommandLineBackend) {
 			// Not using the PHP extension!
-			$warnings['rsaauth_cmdline'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_using_cmdline');
+			$lang = $this->getLanguageService();
+			$warnings['rsaauth_cmdline'] = $lang->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_using_cmdline');
 			// Check the path
 			$extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth']);
 			$path = trim($extconf['temporaryDirectory']);
 			if ($path == '') {
 				// Path is empty
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_empty_directory');
+				$warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_empty_directory');
 			} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath($path)) {
 				// Path is not absolute
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_absolute');
+				$warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_absolute');
 			} elseif (!@is_dir($path)) {
 				// Path does not represent a directory
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_exist');
+				$warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_exist');
 			} elseif (!@is_writable($path)) {
 				// Directory is not writable
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_writable');
+				$warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_not_writable');
 			} elseif (substr($path, 0, strlen(PATH_site)) == PATH_site) {
 				// Directory is inside the site root
-				$warnings['rsaauth'] = $GLOBALS['LANG']->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_inside_siteroot');
+				$warnings['rsaauth'] = $lang->sL('LLL:EXT:rsaauth/hooks/locallang.xlf:hook_directory_inside_siteroot');
 			}
 		}
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

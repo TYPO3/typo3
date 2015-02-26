@@ -67,9 +67,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Note: This method must not be called more than one time.
 	 *
 	 * @param int $exponent the new exponent
-	 *
 	 * @return void
-	 *
 	 * @throws \BadMethodCallException if the method was called more than one time
 	 */
 	public function setExponent($exponent) {
@@ -104,9 +102,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Note: This method must not be called more than one time.
 	 *
 	 * @param string $privateKey The new private key
-	 *
 	 * @return void
-	 *
 	 * @throws \BadMethodCallException if the method was called more than one time
 	 */
 	public function setPrivateKey($privateKey) {
@@ -141,9 +137,7 @@ class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Note: This method must not be called more than one time.
 	 *
 	 * @param int $publicKeyModulus the new public key modulus
-	 *
 	 * @return void
-	 *
 	 * @throws \BadMethodCallException if the method was called more than one time
 	 */
 	public function setPublicKey($publicKeyModulus) {

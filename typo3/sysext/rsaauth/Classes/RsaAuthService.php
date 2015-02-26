@@ -72,7 +72,7 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 			// Decrypt the password
 			$password = $loginData['uident'];
 			$key = $storage->get();
-			if ($key != NULL && substr($password, 0, 4) === 'rsa:') {
+			if ($key !== NULL && substr($password, 0, 4) === 'rsa:') {
 				// Decode password and store it in loginData
 				$decryptedPassword = $this->backend->decrypt($key, substr($password, 4));
 				if ($decryptedPassword !== NULL) {
@@ -104,7 +104,7 @@ class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 		if ($available) {
 			// Get the backend
 			$this->backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
-			if (is_null($this->backend)) {
+			if ($this->backend === NULL) {
 				$available = FALSE;
 			}
 		}

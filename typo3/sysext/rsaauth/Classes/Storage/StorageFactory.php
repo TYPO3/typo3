@@ -49,7 +49,7 @@ class StorageFactory {
 	 * @return \TYPO3\CMS\Rsaauth\Storage\AbstractStorage A storage
 	 */
 	static public function getStorage() {
-		if (is_null(self::$storageInstance)) {
+		if (self::$storageInstance === NULL) {
 			self::$storageInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj(self::$preferredStorage);
 		}
 		return self::$storageInstance;

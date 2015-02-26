@@ -68,7 +68,7 @@ class PhpBackend extends AbstractBackend {
 	 *
 	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
 	 * @param string $data Data to decrypt (base64-encoded)
-	 * @return string Decrypted data or NULL in case of a error
+	 * @return string|NULL Decrypted data or NULL in case of a error
 	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {
@@ -83,7 +83,7 @@ class PhpBackend extends AbstractBackend {
 	 * Checks if this backend is available for calling. In particular checks if
 	 * PHP OpenSSl extension is installed and functional.
 	 *
-	 * @return void
+	 * @return bool
 	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::isAvailable()
 	 */
 	public function isAvailable() {
@@ -123,8 +123,7 @@ class PhpBackend extends AbstractBackend {
 	protected function extractPublicKeyModulus($data) {
 		$fragment = preg_replace('/.*Modulus.*?\\n(.*)Exponent:.*/ms', '\\1', $data);
 		$fragment = preg_replace('/[\\s\\n\\r:]/', '', $fragment);
-		$result = trim(strtoupper(substr($fragment, 2)));
-		return $result;
+		return trim(strtoupper(substr($fragment, 2)));
 	}
 
 }

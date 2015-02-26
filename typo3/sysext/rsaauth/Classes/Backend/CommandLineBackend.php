@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 
 /**
  * This class contains a OpenSSL backend for the TYPO3 RSA authentication
@@ -33,7 +34,7 @@ class CommandLineBackend extends AbstractBackend {
 	/**
 	 * A path to the openssl binary or FALSE if the binary does not exist
 	 *
-	 * @var mixed
+	 * @var string|bool
 	 */
 	protected $opensslPath;
 
@@ -51,11 +52,16 @@ class CommandLineBackend extends AbstractBackend {
 	 * binary.
 	 */
 	public function __construct() {
-		$this->opensslPath = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('openssl');
+		$this->opensslPath = CommandUtility::getCommand('openssl');
 		$this->temporaryDirectory = PATH_site . 'typo3temp';
 		// Get temporary directory from the configuration
 		$extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth']);
-		if ($extconf['temporaryDirectory'] != '' && $extconf['temporaryDirectory'][0] == '/' && @is_dir($extconf['temporaryDirectory']) && is_writable($extconf['temporaryDirectory'])) {
+		if (
+			$extconf['temporaryDirectory'] !== ''
+			&& $extconf['temporaryDirectory'][0] === '/'
+			&& @is_dir($extconf['temporaryDirectory'])
+			&& is_writable($extconf['temporaryDirectory'])
+		) {
 			$this->temporaryDirectory = $extconf['temporaryDirectory'];
 		}
 	}
@@ -93,13 +99,13 @@ class CommandLineBackend extends AbstractBackend {
 		} else {
 			$command .= ' 2>/dev/null';
 		}
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
+		CommandUtility::exec($command);
 		// Test that we got a private key
 		$privateKey = file_get_contents($privateKeyFile);
 		if (FALSE !== strpos($privateKey, 'BEGIN RSA PRIVATE KEY')) {
 			// Ok, we got the private key. Get the modulus.
 			$command = $this->opensslPath . ' rsa -noout -modulus -in ' . escapeshellarg($privateKeyFile);
-			$value = \TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
+			$value = CommandUtility::exec($command);
 			if (substr($value, 0, 8) === 'Modulus=') {
 				$publicKey = substr($value, 8);
 
@@ -131,7 +137,7 @@ class CommandLineBackend extends AbstractBackend {
 		$command = $this->opensslPath . ' rsautl -inkey ' . escapeshellarg($privateKeyFile) . ' -in ' . escapeshellarg($dataFile) . ' -decrypt';
 		// Execute the command and capture the result
 		$output = array();
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $output);
+		CommandUtility::exec($command, $output);
 		// Remove the file
 		@unlink($privateKeyFile);
 		@unlink($dataFile);
@@ -142,15 +148,15 @@ class CommandLineBackend extends AbstractBackend {
 	 * Checks if command line version of the OpenSSL is available and can be
 	 * executed successfully.
 	 *
-	 * @return void
+	 * @return bool
 	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::isAvailable()
 	 */
 	public function isAvailable() {
 		$result = FALSE;
 		if ($this->opensslPath) {
 			// If path exists, test that command runs and can produce output
-			$test = \TYPO3\CMS\Core\Utility\CommandUtility::exec($this->opensslPath . ' version');
-			$result = substr($test, 0, 8) == 'OpenSSL ';
+			$test = CommandUtility::exec($this->opensslPath . ' version');
+			$result = substr($test, 0, 8) === 'OpenSSL ';
 		}
 		return $result;
 	}

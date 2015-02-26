@@ -65,7 +65,7 @@ abstract class AbstractBackend {
 	/**
 	 * Checks if this backend is available for calling.
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	abstract public function isAvailable();
 
