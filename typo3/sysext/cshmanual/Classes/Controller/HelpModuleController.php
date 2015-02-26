@@ -141,7 +141,7 @@ class HelpModuleController {
 		// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
 		$showAllToUser = BackendUtility::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules', 'txllxmltranslateM1');
 		$this->limitAccess = isset($GLOBALS['TCA'][$this->table]) ? !$showAllToUser : FALSE;
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_view_help.xlf', 1);
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_view_help.xlf', 1);
 	}
 
 	/**
@@ -168,7 +168,7 @@ class HelpModuleController {
 		$markers = array('CONTENT' => $this->content);
 
 		$this->content = $this->doc->moduleBody(array(), array(), $markers);
-		$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
+		$this->content = $this->doc->render($this->getLanguageService()->getLL('title'), $this->content);
 	}
 
 	/**
@@ -196,7 +196,7 @@ class HelpModuleController {
 		$outputSections = array();
 		$tocArray = array();
 		// TYPO3 Core Features:
-		$GLOBALS['LANG']->loadSingleTableDescription('xMOD_csh_corebe');
+		$this->getLanguageService()->loadSingleTableDescription('xMOD_csh_corebe');
 		$this->render_TOC_el('xMOD_csh_corebe', 'core', $outputSections, $tocArray, $CSHkeys);
 		// Backend Modules:
 		$loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
@@ -204,14 +204,14 @@ class HelpModuleController {
 		foreach ($loadModules->modules as $mainMod => $info) {
 			$cshKey = '_MOD_' . $mainMod;
 			if ($CSHkeys[$cshKey]) {
-				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
+				$this->getLanguageService()->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'modules', $outputSections, $tocArray, $CSHkeys);
 			}
 			if (is_array($info['sub'])) {
 				foreach ($info['sub'] as $subMod => $subInfo) {
 					$cshKey = '_MOD_' . $mainMod . '_' . $subMod;
 					if ($CSHkeys[$cshKey]) {
-						$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
+						$this->getLanguageService()->loadSingleTableDescription($cshKey);
 						$this->render_TOC_el($cshKey, 'modules', $outputSections, $tocArray, $CSHkeys);
 					}
 				}
@@ -220,7 +220,7 @@ class HelpModuleController {
 		// Database Tables:
 		foreach ($TCAkeys as $table) {
 			// Load descriptions for table $table
-			$GLOBALS['LANG']->loadSingleTableDescription($table);
+			$this->getLanguageService()->loadSingleTableDescription($table);
 			if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $GLOBALS['BE_USER']->check('tables_select', $table)) {
 				$this->render_TOC_el($table, 'tables', $outputSections, $tocArray, $CSHkeys);
 			}
@@ -228,33 +228,33 @@ class HelpModuleController {
 		// Extensions
 		foreach ($CSHkeys as $cshKey => $value) {
 			if (GeneralUtility::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
-				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
+				$this->getLanguageService()->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
 		// Other:
 		foreach ($CSHkeys as $cshKey => $value) {
 			if (!GeneralUtility::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
-				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
+				$this->getLanguageService()->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'other', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
 
 		// COMPILE output:
 		$output = '';
-		$output .= '<h1>' . $GLOBALS['LANG']->getLL('manual_title', TRUE) . '</h1>';
-		$output .= '<p class="lead">' . $GLOBALS['LANG']->getLL('description', TRUE) . '</p>';
+		$output .= '<h1>' . $this->getLanguageService()->getLL('manual_title', TRUE) . '</h1>';
+		$output .= '<p class="lead">' . $this->getLanguageService()->getLL('description', TRUE) . '</p>';
 
-		$output .= '<h2>' . $GLOBALS['LANG']->getLL('TOC', TRUE) . '</h2>' . $this->render_TOC_makeTocList($tocArray);
+		$output .= '<h2>' . $this->getLanguageService()->getLL('TOC', TRUE) . '</h2>' . $this->render_TOC_makeTocList($tocArray);
 		if (!$this->renderALL) {
 			$output .= '
 				<br/>
-				<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;renderALL=1">' . $GLOBALS['LANG']->getLL('full_manual', TRUE) . '</a></p>';
+				<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;renderALL=1">' . $this->getLanguageService()->getLL('full_manual', TRUE) . '</a></p>';
 		}
 		if ($this->renderALL) {
 			$output .= '
 
-				<h2>' . $GLOBALS['LANG']->getLL('full_manual_chapters', TRUE) . '</h2>' . implode('
+				<h2>' . $this->getLanguageService()->getLL('full_manual_chapters', TRUE) . '</h2>' . implode('
 
 
 				<!-- NEW SECTION: -->
@@ -282,7 +282,7 @@ class HelpModuleController {
 				$outputSections[$table] = '
 
 		<!-- New CSHkey/Table: ' . $table . ' -->
-		<p class="c-nav"><a name="ANCHOR_' . $table . '" href="#">' . $GLOBALS['LANG']->getLL('to_top', TRUE) . '</a></p>
+		<p class="c-nav"><a name="ANCHOR_' . $table . '" href="#">' . $this->getLanguageService()->getLL('to_top', TRUE) . '</a></p>
 		<h2>' . $this->getTableFieldLabel($table) . '</h2>
 
 		' . $outputSections[$table];
@@ -312,7 +312,7 @@ class HelpModuleController {
 		foreach ($keys as $tocKey) {
 			if (is_array($tocArray[$tocKey])) {
 				$output .= '
-					<li>' . $GLOBALS['LANG']->getLL(('TOC_' . $tocKey), TRUE) . '
+					<li>' . $this->getLanguageService()->getLL(('TOC_' . $tocKey), TRUE) . '
 						<ul>
 							<li>' . implode('</li>
 							<li>', $tocArray[$tocKey]) . '</li>
@@ -346,7 +346,7 @@ class HelpModuleController {
 			$table = $key;
 		}
 		// Load descriptions for table $table
-		$GLOBALS['LANG']->loadSingleTableDescription($key);
+		$this->getLanguageService()->loadSingleTableDescription($key);
 		if (is_array($GLOBALS['TCA_DESCR'][$key]['columns']) && (!$this->limitAccess || $GLOBALS['BE_USER']->check('tables_select', $table))) {
 			// Initialize variables:
 			$parts = array();
@@ -372,7 +372,7 @@ class HelpModuleController {
 		}
 		// TOC link:
 		if (!$this->renderALL) {
-			$tocLink = '<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
+			$tocLink = '<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $this->getLanguageService()->getLL('goToToc', TRUE) . '</a></p>';
 			$output = $tocLink . '
 				<br/>' . $output . '
 				<br />' . $tocLink;
@@ -390,14 +390,14 @@ class HelpModuleController {
 	public function render_Single($key, $field) {
 		$output = '';
 		// Load the description field
-		$GLOBALS['LANG']->loadSingleTableDescription($key);
+		$this->getLanguageService()->loadSingleTableDescription($key);
 		// Render single item
 		$output .= $this->printItem($key, $field);
 		// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
 		$output .= '<br />
-			<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;tfID=' . rawurlencode(($key . '.*')) . '">' . $GLOBALS['LANG']->getLL($getLLKey, TRUE) . '</a></p>
-			<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $GLOBALS['LANG']->getLL('goToToc', TRUE) . '</a></p>';
+			<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '&amp;tfID=' . rawurlencode(($key . '.*')) . '">' . $this->getLanguageService()->getLL($getLLKey, TRUE) . '</a></p>
+			<p class="c-nav"><a href="' . htmlspecialchars($this->moduleUrl) . '">' . $this->getLanguageService()->getLL('goToToc', TRUE) . '</a></p>';
 		return $output;
 	}
 
@@ -530,7 +530,7 @@ class HelpModuleController {
 			// Make seeAlso references.
 			$seeAlsoRes = $this->make_seeAlso($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'], $anchors ? $key : '');
 			// Making item:
-			$out = '<a name="' . $key . '.' . $field . '"></a>' . $this->headerLine($this->getTableFieldLabel($key, $field), 1) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine(($GLOBALS['LANG']->getLL('details') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine(($GLOBALS['LANG']->getLL('syntax') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine(($GLOBALS['LANG']->getLL('seeAlso') . ':')) . '<p>' . $seeAlsoRes . '</p>' : '') . ($this->back ? '<br /><p><a href="' . htmlspecialchars($this->moduleUrl . '&tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') . '<br />';
+			$out = '<a name="' . $key . '.' . $field . '"></a>' . $this->headerLine($this->getTableFieldLabel($key, $field), 1) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine(($this->getLanguageService()->getLL('details') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine(($this->getLanguageService()->getLL('syntax') . ':')) . $this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') . ($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine(($this->getLanguageService()->getLL('seeAlso') . ':')) . '<p>' . $seeAlsoRes . '</p>' : '') . ($this->back ? '<br /><p><a href="' . htmlspecialchars($this->moduleUrl . '&tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($this->getLanguageService()->getLL('goBack')) . '</a></p>' : '') . '<br />';
 		}
 		return $out;
 	}
@@ -543,7 +543,7 @@ class HelpModuleController {
 	 * @return array Table and field labels in a numeric array
 	 */
 	public function getTableFieldNames($key, $field) {
-		$GLOBALS['LANG']->loadSingleTableDescription($key);
+		$this->getLanguageService()->loadSingleTableDescription($key);
 		// Define the label for the key
 		$keyName = $key;
 		if (is_array($GLOBALS['TCA_DESCR'][$key]['columns']['']) && isset($GLOBALS['TCA_DESCR'][$key]['columns']['']['alttitle'])) {
@@ -581,8 +581,17 @@ class HelpModuleController {
 		// Get table / field parts:
 		list($tableName, $fieldName) = $this->getTableFieldNames($key, $field);
 		// Create label:
-		$labelString = $GLOBALS['LANG']->sL($tableName) . ($field ? $mergeToken . rtrim(trim($GLOBALS['LANG']->sL($fieldName)), ':') : '');
+		$labelString = $this->getLanguageService()->sL($tableName) . ($field ? $mergeToken . rtrim(trim($this->getLanguageService()->sL($fieldName)), ':') : '');
 		return $labelString;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
