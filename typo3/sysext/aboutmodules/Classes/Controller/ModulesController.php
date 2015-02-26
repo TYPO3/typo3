@@ -104,7 +104,7 @@ class ModulesController extends ActionController {
 			$mainModuleData = array();
 			$moduleKey = $moduleName . '_tab';
 			$mainModuleData['name'] = $moduleName;
-			$mainModuleData['label'] = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
+			$mainModuleData['label'] = $this->languageService->moduleLabels['tabs'][$moduleKey];
 			if (is_array($moduleInfo['sub']) && count($moduleInfo['sub']) > 0) {
 				$mainModuleData['subModules'] = $this->getSubModuleData($moduleName, $moduleInfo['sub']);
 			}
@@ -126,10 +126,10 @@ class ModulesController extends ActionController {
 			$subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
 			$subModuleData = array();
 			$subModuleData['name'] = $subModuleName;
-			$subModuleData['icon'] = PathUtility::stripPathSitePrefix($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey]);
-			$subModuleData['label'] = $GLOBALS['LANG']->moduleLabels['tabs'][$subModuleKey];
-			$subModuleData['shortDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'label'];
-			$subModuleData['longDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'descr'];
+			$subModuleData['icon'] = PathUtility::stripPathSitePrefix($this->languageService->moduleLabels['tabs_images'][$subModuleKey]);
+			$subModuleData['label'] = $this->languageService->moduleLabels['tabs'][$subModuleKey];
+			$subModuleData['shortDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'label'];
+			$subModuleData['longDescription'] = $this->languageService->moduleLabels['labels'][$subModuleKey . 'descr'];
 			$subModulesData[] = $subModuleData;
 		}
 		return $subModulesData;
