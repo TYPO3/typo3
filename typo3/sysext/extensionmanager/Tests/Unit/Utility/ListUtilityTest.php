@@ -170,7 +170,7 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult) {
-		$this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findOneByExtensionKeyAndVersion'), array(), '', FALSE));
+		$this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ExtensionRepository', array('findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'), array(), '', FALSE));
 		$emConfUtilityMock = $this->getMock('TYPO3\\CMS\\Extensionmanager\\Utility\\EmConfUtility');
 		$emConfUtilityMock->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
 		$this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
