@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Sv;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Authentication services class
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */
-class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService {
+class AuthenticationService extends AbstractAuthenticationService {
 
 	/**
 	 * Process the submitted credentials.
@@ -64,23 +66,23 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 */
 	public function getUser() {
 		$user = FALSE;
-		if ($this->login['status'] == 'login') {
+		if ($this->login['status'] === 'login') {
 			if ($this->login['uident']) {
 				$user = $this->fetchUserRecord($this->login['uname']);
 				if (!is_array($user)) {
 					// Failed login attempt (no username found)
 					$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
 					// Logout written to log
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+					GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				} else {
 					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('User found: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), \TYPO3\CMS\Sv\AuthenticationService::class);
+						GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), AuthenticationService::class);
 					}
 				}
 			} else {
 				// Failed Login attempt (no password given)
 				$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+				GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			}
 		}
 		return $user;
@@ -108,18 +110,18 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				// Failed login attempt (wrong password) - write that to the log!
 				if ($this->writeAttemptLog) {
 					$this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', password not accepted!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+					GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', password not accepted!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				}
 				if ($this->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], \TYPO3\CMS\Sv\AuthenticationService::class, 2);
+					GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], AuthenticationService::class, 2);
 				}
 			}
 			// Checking the domain (lockToDomain)
-			if ($OK && $user['lockToDomain'] && $user['lockToDomain'] != $this->authInfo['HTTP_HOST']) {
+			if ($OK && $user['lockToDomain'] && $user['lockToDomain'] !== $this->authInfo['HTTP_HOST']) {
 				// Lock domain didn't match, so error:
 				if ($this->writeAttemptLog) {
 					$this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+					GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 				}
 				$OK = 0;
 			}
@@ -136,7 +138,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 */
 	public function getGroups($user, $knownGroups) {
 		$groupDataArr = array();
-		if ($this->mode == 'getGroupsFE') {
+		if ($this->mode === 'getGroupsFE') {
 			$groups = array();
 			if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
 				$groupList = $user[$this->db_user['usergroup_column']];
@@ -146,35 +148,31 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 			// ADD group-numbers if the IPmask matches.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['FE']['IPmaskMountGroups'] as $IPel) {
-					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
+					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
 						$groups[] = (int)$IPel[1];
 					}
 				}
 			}
 			$groups = array_unique($groups);
-			if (count($groups)) {
+			if (!empty($groups)) {
 				$list = implode(',', $groups);
 				if ($this->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups with id: ' . $list, \TYPO3\CMS\Sv\AuthenticationService::class);
+					GeneralUtility::devLog('Get usergroups with id: ' . $list, __CLASS__);
 				}
 				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
-				if (!$this->authInfo['showHiddenRecords']) {
-					$hiddenP = 'AND hidden=0 ';
-				}
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
+				$res = $this->getDatabaseConnection()->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
+				while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 					$groupDataArr[$row['uid']] = $row;
 				}
 				if ($res) {
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+					$this->getDatabaseConnection()->sql_free_result($res);
 				}
 			} else {
 				if ($this->writeDevLog) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No usergroups found.', \TYPO3\CMS\Sv\AuthenticationService::class, 2);
+					GeneralUtility::devLog('No usergroups found.', AuthenticationService::class, 2);
 				}
 			}
-		} elseif ($this->mode == 'getGroupsBE') {
-
 		}
 		return $groupDataArr;
 	}
@@ -193,36 +191,43 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	public function getSubGroups($grList, $idList = '', &$groups) {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
-		if (!$this->authInfo['showHiddenRecords']) {
-			$hiddenP = 'AND hidden=0 ';
-		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
+		$hiddenP = !$this->authInfo['showHiddenRecords'] ? 'AND hidden=0 ' : '';
+		$res = $this->getDatabaseConnection()->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
 		// Internal group record storage
 		$groupRows = array();
 		// The groups array is filled
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 			if (!in_array($row['uid'], $groups)) {
 				$groups[] = $row['uid'];
 			}
 			$groupRows[$row['uid']] = $row;
 		}
 		// Traversing records in the correct order
-		$include_staticArr = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $grList);
+		$include_staticArr = GeneralUtility::intExplode(',', $grList);
 		// traversing list
 		foreach ($include_staticArr as $uid) {
 			// Get row:
 			$row = $groupRows[$uid];
 			// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
-			if (is_array($row) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($idList, $uid)) {
+			if (is_array($row) && !GeneralUtility::inList($idList, $uid)) {
 				// Include sub groups
 				if (trim($row['subgroup'])) {
 					// Make integer list
-					$theList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $row['subgroup']));
-					// Call recursively, pass along list of already processed groups so they are not recursed again.
+					$theList = implode(',', GeneralUtility::intExplode(',', $row['subgroup']));
+					// Call recursively, pass along list of already processed groups so they are not processed again.
 					$this->getSubGroups($theList, $idList . ',' . $uid, $groups);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

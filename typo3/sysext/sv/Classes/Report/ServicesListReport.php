@@ -14,29 +14,36 @@ namespace TYPO3\CMS\Sv\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Reports\Controller\ReportController;
+use TYPO3\CMS\Reports\ReportInterface;
+
 /**
  * This class provides a report displaying a list of all installed services
  * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
  *
  * @author Francois Suter <francois@typo3.org>
  */
-class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
+class ServicesListReport implements ReportInterface {
 
 	/**
 	 * Back-reference to the calling reports module
 	 *
-	 * @var \TYPO3\CMS\Reports\Controller\ReportController
+	 * @var ReportController
 	 */
 	protected $reportsModule;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Reports\Controller\ReportController $reportsModule Back-reference to the calling reports module
+	 * @param ReportController $reportsModule Back-reference to the calling reports module
 	 */
-	public function __construct(\TYPO3\CMS\Reports\Controller\ReportController $reportsModule) {
+	public function __construct(ReportController $reportsModule) {
 		$this->reportsModule = $reportsModule;
-		$GLOBALS['LANG']->includeLLFile('EXT:sv/Resources/Private/Language/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:sv/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -58,8 +65,8 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return string The help content for this module.
 	 */
 	protected function renderHelp() {
-		$help = '<p class="lead">' . $GLOBALS['LANG']->getLL('report_explanation') . '</p>';
-		$help .= '<p class="help">' . $GLOBALS['LANG']->getLL('externals_explanation') . '</p>';
+		$help = '<p class="lead">' . $this->getLanguageService()->getLL('report_explanation') . '</p>';
+		$help .= '<p class="help">' . $this->getLanguageService()->getLL('externals_explanation') . '</p>';
 		return $help;
 	}
 
@@ -85,18 +92,19 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return string Service list as HTML for one service type
 	 */
 	protected function renderServiceTypeList($serviceType, $services) {
-		$header = '<h3>' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h3>';
+		$lang = $this->getLanguageService();
+		$header = '<h3>' . sprintf($lang->getLL('service_type'), $serviceType) . '</h3>';
 		$serviceList = '
 			<table class="table table-striped table-hover tx_sv_reportlist">
 				<thead>
 					<tr>
-						<td style="width: 35%">' . $GLOBALS['LANG']->getLL('service') . '</td>
-						<td>' . $GLOBALS['LANG']->getLL('priority') . '</td>
-						<td>' . $GLOBALS['LANG']->getLL('quality') . '</td>
-						<td style="width: 35%">' . $GLOBALS['LANG']->getLL('subtypes') . '</td>
-						<td>' . $GLOBALS['LANG']->getLL('os') . '</td>
-						<td>' . $GLOBALS['LANG']->getLL('externals') . '</td>
-						<td>' . $GLOBALS['LANG']->getLL('available') . '</td>
+						<td style="width: 35%">' . $lang->getLL('service') . '</td>
+						<td>' . $lang->getLL('priority') . '</td>
+						<td>' . $lang->getLL('quality') . '</td>
+						<td style="width: 35%">' . $lang->getLL('subtypes') . '</td>
+						<td>' . $lang->getLL('os') . '</td>
+						<td>' . $lang->getLL('externals') . '</td>
+						<td>' . $lang->getLL('available') . '</td>
 					</tr>
 				</thead>
 			<tbody>';
@@ -128,17 +136,17 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 			$serviceDescription .= '<p class="service-description">' . $serviceInformation['description'] . '</p>';
 		}
 		$serviceSubtypes = $serviceInformation['serviceSubTypes'] ? implode(', ', $serviceInformation['serviceSubTypes']) : '-';
-		$serviceOperatingSystem = $serviceInformation['os'] ?: $GLOBALS['LANG']->getLL('any');
+		$serviceOperatingSystem = $serviceInformation['os'] ?: $this->getLanguageService()->getLL('any');
 		$serviceRequiredExecutables = $serviceInformation['exec'] ?: '-';
 		$serviceAvailabilityClass = 'danger';
-		$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
+		$serviceAvailable = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:no');
 		try {
-			$serviceDetails = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::findServiceByKey($serviceKey);
+			$serviceDetails = ExtensionManagementUtility::findServiceByKey($serviceKey);
 			if ($serviceDetails['available']) {
 				$serviceAvailabilityClass = 'success';
-				$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
+				$serviceAvailable = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 			}
-		} catch (\TYPO3\CMS\Core\Exception $e) {
+		} catch (Exception $e) {
 
 		}
 		$serviceRow = '
@@ -160,30 +168,30 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return string HTML to display
 	 */
 	protected function renderExecutablesSearchPathList() {
-		$searchPaths = \TYPO3\CMS\Core\Utility\CommandUtility::getPaths(TRUE);
-		$content = '<h3>' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
-		if (count($searchPaths) == 0) {
-			$content .= '<p>' . $GLOBALS['LANG']->getLL('no_search_paths') . '</p>';
+		$searchPaths = CommandUtility::getPaths(TRUE);
+		$content = '<h3>' . $this->getLanguageService()->getLL('search_paths') . '</h3>';
+		if (count($searchPaths) === 0) {
+			$content .= '<p>' . $this->getLanguageService()->getLL('no_search_paths') . '</p>';
 		} else {
 			$content .= '
 			<table class="table table-striped table-hover tx_sv_reportlist">
 				<thead>
 					<tr>
-						<td>' . $GLOBALS['LANG']->getLL('path') . '</td>
-						<td>' . $GLOBALS['LANG']->getLL('valid') . '</td>
+						<td>' . $this->getLanguageService()->getLL('path') . '</td>
+						<td>' . $this->getLanguageService()->getLL('valid') . '</td>
 					</tr>
 				</thead>
 				<tbody>';
 			foreach ($searchPaths as $path => $isValid) {
 				$pathAccessibleClass = 'danger';
-				$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:no');
+				$pathAccessible = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:no');
 				if ($isValid) {
 					$pathAccessibleClass = 'success';
-					$pathAccessible = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:yes');
+					$pathAccessible = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:yes');
 				}
 				$content .= '
 					<tr class="' . $pathAccessibleClass . '">
-						<td class="first-cell">' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($path) . '</td>
+						<td class="first-cell">' . GeneralUtility::fixWindowsFilePath($path) . '</td>
 						<td class="last-cell">' . $pathAccessible . '</td>
 					</tr>';
 			}
@@ -243,6 +251,15 @@ class ServicesListReport implements \TYPO3\CMS\Reports\ReportInterface {
 			$result = $a['priority'] > $b['priority'] ? -1 : 1;
 		}
 		return $result;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

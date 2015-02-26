@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Sv;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Controller\LoginController;
+
 /**
  * This class contains a BE login form hook. It adds all necessary JavaScript
  * for the superchallenged authentication.
@@ -26,10 +28,10 @@ class LoginFormHook {
 	 * Provides form code for the superchallenged authentication.
 	 *
 	 * @param array $params Parameters to the script
-	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj Calling object
+	 * @param LoginController $pObj Calling object
 	 * @return string The code for the login form
 	 */
-	public function getLoginFormTag(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
+	public function getLoginFormTag(array $params, LoginController &$pObj) {
 		// Get the code according to the login level
 		switch ($pObj->loginSecurityLevel) {
 			case 'challenged':
@@ -51,12 +53,12 @@ class LoginFormHook {
 	 * Provides form code for the superchallenged authentication.
 	 *
 	 * @param array $params Parameters to the script
-	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj Calling object
+	 * @param LoginController $pObj Calling object
 	 * @return string The code for the login form
 	 */
-	public function getLoginScripts(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
+	public function getLoginScripts(array $params, LoginController &$pObj) {
 		$content = '';
-		if ($pObj->loginSecurityLevel == 'superchallenged' || $pObj->loginSecurityLevel == 'challenged') {
+		if ($pObj->loginSecurityLevel === 'superchallenged' || $pObj->loginSecurityLevel === 'challenged') {
 			$content = '
 				<script type="text/javascript" src="sysext/backend/Resources/Public/JavaScript/md5.js"></script>
 				' . $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
@@ -83,8 +85,7 @@ class LoginFormHook {
 	 * @return string Challenge value
 	 */
 	protected function getChallenge() {
-		$challenge = md5(uniqid('', TRUE) . getmypid());
-		return $challenge;
+		return md5(uniqid('', TRUE) . getmypid());
 	}
 
 }

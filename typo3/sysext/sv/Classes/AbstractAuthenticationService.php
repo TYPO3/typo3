@@ -15,18 +15,19 @@ namespace TYPO3\CMS\Sv;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Service\AbstractService;
 
 /**
  * Authentication services class
  *
  * @author René Fritz <r.fritz@colorcube.de>
  */
-class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractService {
+class AbstractAuthenticationService extends AbstractService {
 
 	/**
 	 * User object
 	 *
-	 * @var \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+	 * @var AbstractUserAuthentication
 	 */
 	public $pObj;
 
@@ -128,12 +129,12 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 	 * @param int $type denotes which module that has submitted the entry. This is the current list:  1=tce_db; 2=tce_file; 3=system (eg. sys_history save); 4=modules; 254=Personal settings changed; 255=login / out action: 1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
 	 * @param int $action denotes which specific operation that wrote the entry (eg. 'delete', 'upload', 'update' and so on...). Specific for each $type. Also used to trigger update of the interface. (see the log-module for the meaning of each number !!)
 	 * @param int $error flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
-	 * @param int $details_nr The message number. Specific for each $type and $action. in the future this will make it possible to translate errormessages to other languages
+	 * @param int $details_nr The message number. Specific for each $type and $action. in the future this will make it possible to translate error messages to other languages
 	 * @param string $details Default text that follows the message
 	 * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
 	 * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param int $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param int $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param int|string $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @return void
 	 */
 	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '') {
@@ -142,17 +143,12 @@ class AbstractAuthenticationService extends \TYPO3\CMS\Core\Service\AbstractServ
 		}
 	}
 
-	/*************************
-	 *
-	 * create/update user - EXPERIMENTAL
-	 *
-	 *************************/
 	/**
 	 * Get a user from DB by username
 	 *
 	 * @param string $username User name
 	 * @param string $extraWhere Additional WHERE clause: " AND ...
-	 * @param array $dbUserSetup User db table definition: $this->db_user
+	 * @param array|string $dbUserSetup User db table definition, or empty string for $this->db_user
 	 * @return mixed User array or FALSE
 	 */
 	public function fetchUserRecord($username, $extraWhere = '', $dbUserSetup = '') {
