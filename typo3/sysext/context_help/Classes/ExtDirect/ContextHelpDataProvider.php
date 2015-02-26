@@ -48,7 +48,7 @@ class ContextHelpDataProvider {
 	public function getTableContextHelp($table) {
 		$output = array();
 		if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
-			$GLOBALS['LANG']->loadSingleTableDescription($table);
+			$this->getLanguageService()->loadSingleTableDescription($table);
 		}
 		if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'])) {
 			$arrow = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-forward');
@@ -75,5 +75,15 @@ class ContextHelpDataProvider {
 		}
 		return $output;
 	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
 
 }
