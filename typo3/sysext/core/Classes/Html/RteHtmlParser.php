@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Html;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Resource;
 
 /**
@@ -679,7 +680,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				} else {
 					// Check for FAL link-handler keyword:
 					list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
-					if ($linkHandlerKeyword === 'file') {
+					if ($linkHandlerKeyword === 'file' && !StringUtility::beginsWith($link_param, 'file://')) {
 						$href = $siteUrl . '?' . $linkHandlerKeyword . ':' . rawurlencode($linkHandlerValue);
 					} else {
 						$fileChar = (int)strpos($link_param, '/');

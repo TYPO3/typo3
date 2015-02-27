@@ -255,8 +255,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 					this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 				}
 				// Set the selection on the last link created
-				var links = node.getElementsByTagName('a');
-				this.editor.getSelection().selectNodeContents(links[links.length-1]);
+				this.editor.getSelection().selectNodeContents(node);
 			}
 			this.close();
 		},
@@ -320,7 +319,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/TYPO3Link',
 						}
 					}
 					if (UserAgent.isGecko) {
-						node.href = decodeURI(node.href);
+						node.href = decodeURI(node.getAttributeNode('href').value);
 					}
 					if (cur_target.trim()) node.target = cur_target.trim();
 						else node.removeAttribute('target');

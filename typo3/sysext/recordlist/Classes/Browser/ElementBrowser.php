@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -2379,7 +2380,7 @@ class ElementBrowser {
 			if (count($specialParts) == 2) {
 				$info['value'] = '#_SPECIAL' . $specialParts[1];
 				$info['act'] = 'spec';
-			} elseif (strpos($href, 'file:') !== FALSE) {
+			} elseif (StringUtility::beginsWith($href, 'file:') && !StringUtility::beginsWith($href, 'file://')) {
 				$rel = substr($href, strpos($href, 'file:') + 5);
 				$rel = rawurldecode($rel);
 				// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
@@ -2393,7 +2394,7 @@ class ElementBrowser {
 				} else {
 					$info['value'] = $rel;
 				}
-			} elseif (GeneralUtility::isFirstPartOfStr($href, $siteUrl)) {
+			} elseif (StringUtility::beginsWith($href, $siteUrl)) {
 				// If URL is on the current frontend website:
 				// URL is a file, which exists:
 				if (file_exists(PATH_site . rawurldecode($href))) {
