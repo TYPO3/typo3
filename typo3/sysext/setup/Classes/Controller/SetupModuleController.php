@@ -689,7 +689,7 @@ class SetupModuleController {
 		if ($this->simUser > 0) {
 			// Save old user...
 			$this->OLD_BE_USER = $this->getBackendUser();
-			unset($this->getBackendUser());
+			unset($GLOBALS['BE_USER']);
 			// Unset current
 			// New backend user object
 			$BE_USER = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
@@ -697,7 +697,7 @@ class SetupModuleController {
 			$BE_USER->fetchGroupData();
 			$BE_USER->backendSetUC();
 			// Must do this, because unsetting $BE_USER before apparently unsets the reference to the global variable by this name!
-			$this->getBackendUser() = $BE_USER;
+			$GLOBALS['BE_USER'] = $BE_USER;
 		}
 	}
 
