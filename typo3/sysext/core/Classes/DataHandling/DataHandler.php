@@ -88,6 +88,7 @@ class DataHandler {
 	 * unescaped data array instead. This switch may totally disappear in future versions of this class!
 	 *
 	 * @var bool
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $stripslashes_values = TRUE;
 
@@ -1371,7 +1372,11 @@ class DataHandler {
 				$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field && !$this->BE_USER->checkLanguageAccess($fieldValue);
 				if (!$languageDeny) {
 					// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
+					// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 					if ($this->stripslashes_values) {
+						GeneralUtility::deprecationLog(
+							'The option stripslash_values is typically set to FALSE as data should be properly prepared before sending to DataHandler. Do not rely on DataHandler removing extra slashes. The option will be removed in TYPO3 CMS 8.'
+						);
 						if (is_array($fieldValue)) {
 							GeneralUtility::stripSlashesOnArray($fieldValue);
 						} else {
