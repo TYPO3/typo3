@@ -326,7 +326,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 					}
 				}
 				if (Ext.isGecko) {
-					node.href = decodeURI(node.href);
+					node.href = decodeURI(node.getAttributeNode('href').value);
 				}
 				if (cur_target.trim()) node.target = cur_target.trim();
 					else node.removeAttribute('target');

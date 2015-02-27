@@ -703,7 +703,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				} else {
 					// Check for FAL link-handler keyword:
 					list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($link_param), 2);
-					if ($linkHandlerKeyword === 'file') {
+					if ($linkHandlerKeyword === 'file' && !GeneralUtility::isFirstPartOfStr($link_param, 'file://')) {
 						$href = $siteUrl . '?' . $linkHandlerKeyword . ':' . rawurlencode($linkHandlerValue);
 					} else {
 						$fileChar = (int)strpos($link_param, '/');
