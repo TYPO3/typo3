@@ -36,4 +36,10 @@ class PageGeneratorFixture extends PageGenerator {
 		return self::generateMetaTagHtml($metaTagTypoScript, $xhtml, $cObj);
 	}
 
+	/**
+	 * Public accessor for the initializeSearchWordDataInTsfe() method.
+	 */
+	public function callInitializeSearchWordDataInTsfe() {
+		static::initializeSearchWordDataInTsfe();
+	}
 }
