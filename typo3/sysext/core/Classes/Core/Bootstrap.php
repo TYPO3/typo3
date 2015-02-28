@@ -161,19 +161,17 @@ class Bootstrap {
 	 */
 	protected function initializeComposerClassLoader() {
 		$respectComposerPackagesForClassLoading = getenv('TYPO3_COMPOSER_AUTOLOAD') ?: (getenv('REDIRECT_TYPO3_COMPOSER_AUTOLOAD') ?: NULL);
+		$possiblePaths = array();
+		$possiblePaths['fallback'] = __DIR__ . '/../../../../contrib/vendor/autoload.php';
 		if (!empty($respectComposerPackagesForClassLoading)) {
-			$possiblePaths = array(
-				'distribution is root package' => __DIR__ . '/../../../../../../Packages/Libraries/autoload.php',
-				'typo3/cms is root package' => __DIR__ . '/../../../../../Packages/Libraries/autoload.php',
-			);
-			foreach ($possiblePaths as $possiblePath) {
-				if (file_exists($possiblePath)) {
-					return include $possiblePath;
-				}
+			$possiblePaths['distribution'] = __DIR__ . '/../../../../../../Packages/Libraries/autoload.php';
+		}
+		foreach ($possiblePaths as $possiblePath) {
+			if (file_exists($possiblePath)) {
+				return include $possiblePath;
 			}
 		}
-		// Committed vendor dir in typo3/contrib
-		return require __DIR__ . '/../../../../contrib/vendor/autoload.php';
+		throw new \LogicException('No class loading information found for TYPO3 CMS. Please make sure you installed TYPO3 with composer or the typo3/contrib/vendor folder is present.', 1425153762);
 	}
 
 	/**
