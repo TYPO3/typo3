@@ -5772,7 +5772,7 @@ class ContentObjectRenderer {
 				}
 			}
 			// Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-			if ($linkHandlerKeyword === 'file') {
+			if ($linkHandlerKeyword === 'file' && !GeneralUtility::isFirstPartOfStr($link_paramA[0], 'file://')) {
 				try {
 					$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
 					// Link to a folder or file
