@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -5906,7 +5907,7 @@ class ContentObjectRenderer {
 		}
 
 		// Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-		if ($linkHandlerKeyword === 'file') {
+		if ($linkHandlerKeyword === 'file' && !StringUtility::beginsWith($linkParameterParts[0], 'file://')) {
 			try {
 				$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
 				// Link to a folder or file
