@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Database;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Reference index processing and relation extraction
@@ -622,7 +621,7 @@ class ReferenceIndex {
 				$fileArray[] = array('table' => 'sys_file', 'id' => $fileUid['uid_local']);
 			}
 			return $fileArray;
-		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && StringUtility::beginsWith($value, 'file:')) {
+		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && GeneralUtility::isFirstPartOfStr($value, 'file:')) {
 			try {
 				$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($value);
 			} catch (\Exception $e) {
