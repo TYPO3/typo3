@@ -31,7 +31,6 @@ if (TYPO3_MODE === 'FE') {
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'], array(
 		'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,
 		'CASE'             => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
-		'COBJ_ARRAY'       => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
 		'COA'              => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class,
 		'COA_INT'          => \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject::class,
 		'USER'             => \TYPO3\CMS\Frontend\ContentObject\UserContentObject::class,
@@ -43,7 +42,6 @@ if (TYPO3_MODE === 'FE') {
 		'CONTENT'          => \TYPO3\CMS\Frontend\ContentObject\ContentContentObject::class,
 		'RECORDS'          => \TYPO3\CMS\Frontend\ContentObject\RecordsContentObject::class,
 		'HMENU'            => \TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject::class,
-		'CASEFUNC'         => \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class,
 		'LOAD_REGISTER'    => \TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject::class,
 		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
 		'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,

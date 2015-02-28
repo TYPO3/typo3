@@ -12,6 +12,9 @@ if (TYPO3_MODE === 'FE') {
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['HRULER']       = \TYPO3\CMS\Compatibility6\ContentObject\HorizontalRulerContentObject::class;
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FORM']         = \TYPO3\CMS\Compatibility6\ContentObject\FormContentObject::class;
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['SEARCHRESULT'] = \TYPO3\CMS\Compatibility6\ContentObject\SearchResultContentObject::class;
+	// deprecated alias names for cObjects in use
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['COBJ_ARRAY']   = \TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject::class;
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['CASEFUNC']     = \TYPO3\CMS\Frontend\ContentObject\CaseContentObject::class;
 
 	// Register a hook for data submission
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']['mailform'] = \TYPO3\CMS\Compatibility6\Controller\FormDataSubmissionController::class;
