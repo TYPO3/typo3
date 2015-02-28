@@ -326,8 +326,8 @@ abstract class AbstractFormElement {
 						$onlyIfSelectedJS =
 							'if (!TBE_EDITOR.curSelected(\'' . $itemName . $listFlag . '\')){' .
 								'alert(' . GeneralUtility::quoteJSvalue($notSelectedText) . ');' .
-								'return false; .
-							}';
+								'return false;' .
+							'}';
 					}
 					$aOnClick =
 						'this.blur();' .
