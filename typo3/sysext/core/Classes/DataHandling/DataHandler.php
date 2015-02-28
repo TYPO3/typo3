@@ -5284,6 +5284,11 @@ class DataHandler {
 	 */
 	protected function updateFlexFormData($flexFormId, array $modifications) {
 		list ($table, $uid, $field) = explode(':', $flexFormId, 3);
+
+		if (!MathUtility::canBeInterpretedAsInteger($uid) && !empty($this->substNEWwithIDs[$uid])) {
+			$uid = $this->substNEWwithIDs[$uid];
+		}
+
 		$record = $this->recordInfo($table, $uid, '*');
 
 		if (!$table || !$uid || !$field || !is_array($record)) {
