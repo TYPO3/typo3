@@ -239,11 +239,13 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		if (!$player) {
 			$player = $prefix . $this->getPathToLibrary('flowplayer/flowplayer-3.2.16.swf');
 		} elseif (strpos($player, 'EXT:') === 0) {
-			$player = $GLOBALS['TSFE']->tmpl->getFileName($player);
+			$player = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($player);
 		}
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
 			$installUrl = $prefix . $this->getPathToLibrary('flowplayer/expressinstall.swf');
+		} elseif (strpos($installUrl, 'EXT:') === 0) {
+			$installUrl = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($installUrl);
 		}
 		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
 		if (!$flashVersion) {
@@ -402,8 +404,8 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
 		foreach ($this->html5TagAttributes as $attribute) {
-			if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strToLower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
-				$attributes .= strToLower($attribute) . '="' . strToLower($attribute) . '" ';
+			if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strtolower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
+				$attributes .= strtolower($attribute) . '="' . strtolower($attribute) . '" ';
 			}
 		}
 		// Media dimensions
@@ -719,12 +721,12 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 	}
 
 	/**
-	 * resolves the path to the main contrib directory
+	 * resolves the path to the extensions' Contrib directory
 	 *
 	 * @param string $fileAndFolderName the file to be located
 	 * @return string
 	 */
 	protected function getPathToLibrary($fileAndFolderName) {
-		return TYPO3_mainDir . 'contrib/' . $fileAndFolderName;
+		return $GLOBALS['TSFE']->tmpl->getFileName('EXT:mediace/Resources/Contrib/' . $fileAndFolderName);
 	}
 }

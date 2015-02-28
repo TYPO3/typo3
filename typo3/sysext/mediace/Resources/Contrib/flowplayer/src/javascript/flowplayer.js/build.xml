@@ -1,0 +1,31 @@
+
+<!-- projet name is used as a base name for distribution files -->
+<project name="flowplayer" default="min">
+
+	<property name="DEVKIT_HOME" value="../../../../lib/devkit"/>
+	<import file="${DEVKIT_HOME}/js.xml"/>
+
+	<property name="version" value="3.2.12"/>
+
+	<!-- concat -->
+	<target name="concat">
+		<concat destfile="flowplayer.js">
+			<fileset dir="${basedir}" includes="flowplayer-src.js"/>
+
+			<fileset dir=".."
+				includes="flashembed.js"/>
+		</concat>
+	</target>
+
+	<target name="min" depends="concat">
+		<ant antfile="${DEVKIT_HOME}/js.xml" target="min"/>
+	</target>
+
+   <target name="lint">
+		<java jar="${rhino}" fork="true">
+			<arg value="${DEVKIT_HOME}/lib/jslint.js" />
+			<arg value="flowplayer-src.js" />
+		</java>
+	</target>
+
+</project>

@@ -102,12 +102,12 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 	}
 
 	/**
-	 * resolves the path to the main contrib directory
+	 * resolves the path to the extensions' Contrib directory
 	 *
 	 * @param string $fileAndFolderName the file to be located
 	 * @return string
 	 */
 	protected function getPathToLibrary($fileAndFolderName) {
-		return TYPO3_mainDir . 'contrib/' . $fileAndFolderName;
+		return $GLOBALS['TSFE']->tmpl->getFileName('EXT:mediace/Resources/Contrib/' . $fileAndFolderName);
 	}
 }
