@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -5317,6 +5318,11 @@ class DataHandler {
 	 */
 	protected function updateFlexFormData($flexFormId, array $modifications) {
 		list ($table, $uid, $field) = explode(':', $flexFormId, 3);
+
+		if (!MathUtility::canBeInterpretedAsInteger($uid) && !empty($this->substNEWwithIDs[$uid])) {
+			$uid = $this->substNEWwithIDs[$uid];
+		}
+
 		$record = $this->recordInfo($table, $uid, '*');
 
 		if (!$table || !$uid || !$field || !is_array($record)) {
