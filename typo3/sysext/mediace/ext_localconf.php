@@ -1,14 +1,12 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-if (TYPO3_MODE === 'FE') {
-	// Register additional content objects
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MULTIMEDIA'] = \TYPO3\CMS\Mediace\ContentObject\MultimediaContentObject::class;
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MEDIA']      = \TYPO3\CMS\Mediace\ContentObject\MediaContentObject::class;
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['SWFOBJECT']  = \TYPO3\CMS\Mediace\ContentObject\ShockwaveFlashObjectContentObject::class;
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FLOWPLAYER'] = \TYPO3\CMS\Mediace\ContentObject\FlowPlayerContentObject::class;
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \TYPO3\CMS\Mediace\ContentObject\QuicktimeObjectContentObject::class;
-}
+// Register additional content objects
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MULTIMEDIA'] = \TYPO3\CMS\Mediace\ContentObject\MultimediaContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['MEDIA']      = \TYPO3\CMS\Mediace\ContentObject\MediaContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['SWFOBJECT']  = \TYPO3\CMS\Mediace\ContentObject\ShockwaveFlashObjectContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['FLOWPLAYER'] = \TYPO3\CMS\Mediace\ContentObject\FlowPlayerContentObject::class;
+$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \TYPO3\CMS\Mediace\ContentObject\QuicktimeObjectContentObject::class;
 
 // Register the "media" CType to the "New Content Element" wizard
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('

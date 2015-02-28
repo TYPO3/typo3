@@ -48,11 +48,6 @@ if (TYPO3_MODE === 'FE') {
 		'RESTORE_REGISTER' => \TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject::class,
 		'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,
 		'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
-		'MULTIMEDIA'       => \TYPO3\CMS\Frontend\ContentObject\MultimediaContentObject::class,
-		'MEDIA'            => \TYPO3\CMS\Frontend\ContentObject\MediaContentObject::class,
-		'SWFOBJECT'        => \TYPO3\CMS\Frontend\ContentObject\ShockwaveFlashObjectContentObject::class,
-		'FLOWPLAYER'       => \TYPO3\CMS\Frontend\ContentObject\FlowPlayerContentObject::class,
-		'QTOBJECT'         => \TYPO3\CMS\Frontend\ContentObject\QuicktimeObjectContentObject::class,
 		'SVG'              => \TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject::class,
 		'EDITPANEL'        => \TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject::class
 	));
