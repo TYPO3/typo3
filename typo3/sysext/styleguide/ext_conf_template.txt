@@ -30,9 +30,9 @@ small_1 = value
 # cat=Text/201/11; type=small; label=Small 2 - no value
 small_2 =
 
-# cat=Text/202/10; type=small; label=Wrap 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
+# cat=Text/202/10; type=wrap; label=Wrap 1 - help text:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel sollicitudin odio.
 wrap_1 = value
-# cat=Text/202/11; type=small; label=Wrap 2 - no value
+# cat=Text/202/11; type=wrap; label=Wrap 2 - no value
 wrap_2 =
 
 
