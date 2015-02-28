@@ -1965,12 +1965,13 @@ class FormEngine {
 				$this->loadJavascriptLib('contrib/placeholdersjs/placeholders.jquery.min.js');
 			}
 
+			// @todo: remove scriptaclous once suggest is moved to RequireJS, see #55575
+			$pageRenderer->loadScriptaculous();
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 
 			// If IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$pageRenderer->loadScriptaculous();
 				// We want to load jQuery-ui inside our js. Enable this using requirejs.
 				$pageRenderer->loadRequireJs();
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
