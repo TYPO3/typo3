@@ -130,6 +130,7 @@ class BackendController {
 		if (!$this->debug) {
 			$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 				LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');
+				LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('logout')) . ');
 			}');
 		}
 

@@ -18,11 +18,6 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'The entry point to logout was moved to an own module. Please use BackendUtility::getModuleUrl(\'logout\') to link to logout.php. This script will be removed in TYPO3 CMS 8.'
-);
 
 $logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LogoutController::class);
 $logoutController->logout();

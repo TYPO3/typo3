@@ -34,7 +34,8 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 		$timeoutModal: '',
 		$backendLockedModal: '',
 		$loginForm: '',
-		loginFramesetUrl: ''
+		loginFramesetUrl: '',
+		logoutUrl: ''
 	};
 
 	/**
@@ -76,6 +77,13 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 	};
 
 	/**
+	 * Set logout url
+	 */
+	LoginRefresh.setLogoutUrl = function(logoutUrl) {
+		LoginRefresh.logoutUrl = logoutUrl;
+	};
+
+	/**
 	 * Generates the modal displayed on near session time outs
 	 */
 	LoginRefresh.initializeTimeoutModal = function() {
@@ -105,7 +113,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 				});
 			}),
 			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + 'logout.php';
+				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + LoginRefresh.logoutUrl;
 			})
 		);
 
@@ -196,7 +204,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 		LoginRefresh.$loginForm.find('.modal-footer').append(
 			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button),
 			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + 'logout.php';
+				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + LoginRefresh.logoutUrl;
 			})
 		);
 
