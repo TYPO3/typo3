@@ -10,6 +10,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * View helper which creates a <base href="..."></base> tag. The Base URI
  * is taken from the current request.
@@ -27,7 +32,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class BaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class BaseViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render the "Base" tag by outputting $request->getBaseUri()
@@ -39,7 +44,29 @@ class BaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @api
 	 */
 	public function render() {
-		return '<base href="' . $this->controllerContext->getRequest()->getBaseUri() . '" />';
+		return self::renderStatic(
+			array(),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * Render the "Base" tag by outputting $request->getBaseUri()
+	 *
+	 * Note: renders as <base></base>, because IE6 will else refuse to display
+	 * the page...
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string "base"-Tag.
+	 * @api
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$controllerContext = $renderingContext->getControllerContext();
+		return '<base href="' . htmlspecialchars($controllerContext->getRequest()->getBaseUri()) . '" />';
 	}
 
 }
