@@ -42,12 +42,12 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 	 * @return array
 	 */
 	protected function getDisableActions() {
-		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
+		$tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
 		$disableItems = array();
 		if (trim($tsConfig['value']) !== '') {
 			$disableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
 		}
-		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.pageTree.disableItems');
+		$tsConfig = $this->getBackendUser()->getTSConfig('options.contextMenu.pageTree.disableItems');
 		$oldDisableItems = array();
 		if (trim($tsConfig['value']) !== '') {
 			$oldDisableItems = GeneralUtility::trimExplode(',', $tsConfig['value']);
@@ -82,6 +82,15 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 			$contextMenuActions = $this->getNextContextMenuLevel($configuration, $node);
 		}
 		return $contextMenuActions;
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

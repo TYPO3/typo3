@@ -70,7 +70,7 @@ abstract class AbstractContextMenuDataProvider {
 	 * @return array
 	 */
 	protected function getConfiguration() {
-		$contextMenuActions = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.' . $this->contextMenuType . '.items');
+		$contextMenuActions = $this->getBackendUser()->getTSConfig('options.contextMenu.' . $this->contextMenuType . '.items');
 		return $contextMenuActions['properties'];
 	}
 
@@ -176,7 +176,7 @@ abstract class AbstractContextMenuDataProvider {
 					unset($action);
 					continue;
 				}
-				$label = $GLOBALS['LANG']->sL($actionConfiguration['label'], TRUE);
+				$label = $this->getLanguageService()->sL($actionConfiguration['label'], TRUE);
 				if ($type === 'SUBMENU') {
 					$action->setType('submenu');
 					$action->setChildActions($this->getNextContextMenuLevel($actionConfiguration, $node, $level + 1));
@@ -218,6 +218,24 @@ abstract class AbstractContextMenuDataProvider {
 			$contentUrl = BackendUtility::getModuleUrl($moduleName, $urlParameters);
 		}
 		return $contentUrl;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
