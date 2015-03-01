@@ -2,7 +2,7 @@ INSTALLING TYPO3
 ================
 
 TYPO3 is an open source PHP based web content management system released
-under the GNU GPL. TYPO3 is copyright (c) 1999-2014 by Kasper Skaarhoj.
+under the GNU GPL. TYPO3 is copyright (c) 1999-2015 by Kasper Skaarhoj.
 
 This document describes:
 
@@ -13,7 +13,7 @@ This document describes:
 Client browser support
 ----------------------
 
-The TYPO3 backend is accessed through a web browser. TYPO3 CMS 7.0
+The TYPO3 backend is accessed through a web browser. TYPO3 CMS 7
 supports the following web browsers:
 
 * Internet Explorer 9 and later
@@ -26,7 +26,7 @@ Server system requirements
 --------------------------
 
 TYPO3 requires a web server with a PHP environment and a database. The minimum
-system requirements for running TYPO3 CMS 7.0 are:
+system requirements for running TYPO3 CMS 7 are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
 * PHP >5.5 up to 5.6
@@ -123,11 +123,11 @@ Installation
 
 ### Important note for upgrades from TYPO3 CMS versions **below 6.2 LTS**
 
-It is not possible to upgrade any version below 6.2 LTS to 7.0 directly,
-since some upgrade wizards are not available anymore on 7.0.
+It is not possible to upgrade any version below 6.2 LTS to 7 directly,
+since some upgrade wizards are not available anymore on 7.
 
 It is highly recommended to upgrade to 6.2 LTS first and continue with
-a second upgrade to 7.0.
+a second upgrade to 7.
 
 ### If SSH and symlinks are possible
 
