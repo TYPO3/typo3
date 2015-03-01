@@ -48,7 +48,7 @@ class RenameFileController {
 	/**
 	 * The file or folder object that should be renamed
 	 *
-	 * @var \TYPO3\CMS\Core\Resource\ResourceInterface $fileOrFolderObject
+	 * @var \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $fileOrFolderObject
 	 */
 	protected $fileOrFolderObject;
 
@@ -78,7 +78,7 @@ class RenameFileController {
 	/**
 	 * Initialize
 	 *
-	 * @return void
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
 	 */
 	protected function init() {
 		// Initialize GPvars:
@@ -89,8 +89,8 @@ class RenameFileController {
 			$this->fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->target);
 		}
 		if (!$this->fileOrFolderObject) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
+			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
+			$message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
 			throw new \RuntimeException($title . ': ' . $message, 1294586844);
 		}
 		if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
@@ -129,8 +129,8 @@ class RenameFileController {
 	 */
 	public function main() {
 		// Make page header:
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
-		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
+		$this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
+		$pageContent = $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.pagetitle'));
 		if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 			$fileIdentifier = $this->fileOrFolderObject->getCombinedIdentifier();
 		} else {
@@ -141,15 +141,15 @@ class RenameFileController {
 		$pageContent .= '
 
 			<div class="form-group">
-				<input class="form-control" type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />
+				<input class="form-control" type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '" ' . $this->getDocumentTemplate()->formWidth(40) . ' />
 				<input type="hidden" name="file[rename][0][data]" value="' . htmlspecialchars($fileIdentifier) . '" />
 			</div>
 		';
 		// Making submit button:
 		$pageContent .= '
 			<div class="form-group">
-				<input class="btn btn-primary" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', TRUE) . '" />
-				<input class="btn btn-danger" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
+				<input class="btn btn-primary" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_rename.php.submit', TRUE) . '" />
+				<input class="btn btn-danger" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 				' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 			</div>
@@ -161,12 +161,12 @@ class RenameFileController {
 		$docHeaderButtons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_rename');
 		// Back
 		if ($this->returnUrl) {
-			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 		// Add the HTML as a section:
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => '',
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title
 		);
@@ -182,6 +182,24 @@ class RenameFileController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns an instance of DocumentTemplate
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

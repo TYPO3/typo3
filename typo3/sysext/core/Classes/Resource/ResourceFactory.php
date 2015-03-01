@@ -422,7 +422,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * - "file:23"
 	 *
 	 * @param string $input
-	 * @return FileInterface|Folder
+	 * @return File|Folder
 	 */
 	public function retrieveFileOrFolderObject($input) {
 		// Remove PATH_site because absolute paths under Windows systems contain ':'
