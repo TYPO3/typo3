@@ -100,7 +100,10 @@ class ClassAliasLoader {
 	 */
 	public function loadClass($className) {
 		if (!$this->caseSensitiveClassLoading) {
-			$className = strtolower($className);
+			$lowerCasedClassName = strtolower($className);
+			if ($this->composerClassLoader->findFile($lowerCasedClassName)) {
+				return $this->composerClassLoader->loadClass($lowerCasedClassName);
+			}
 		}
 		return $this->composerClassLoader->loadClass($className);
 	}
