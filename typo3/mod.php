@@ -27,7 +27,6 @@ if (!$formProtection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP(
 	throw new UnexpectedValueException('Invalid form/module token detected. Access Denied!', 1392409507);
 }
 if ($temp_path = $GLOBALS['TBE_MODULES']['_PATHS'][$moduleName]) {
-	$GLOBALS['MCONF']['_'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
 	if (file_exists($temp_path . 'conf.php')) {
 		require $temp_path . 'conf.php';
 		$moduleConfiguration = $GLOBALS['MCONF'];

@@ -90,6 +90,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected $moduleName = 'system_txschedulerM1';
 
 	/**
+	 * @var string Base URI of scheduler module
+	 */
+	protected $moduleUri;
+
+	/**
 	 * @return \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController
 	 */
 	public function __construct() {
@@ -102,6 +107,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->backendTemplatePath = ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Backend/SchedulerModule/';
 		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$this->view->getRequest()->setControllerExtensionName('scheduler');
+		$this->moduleUri = BackendUtility::getModuleUrl($this->moduleName);
 	}
 
 	/**
@@ -386,7 +392,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Check CLI user
 		$checkUser = $this->checkSchedulerUser();
 		if ($checkUser == -1) {
-			$link = $GLOBALS['MCONF']['_'] . '&SET[function]=check&CMD=user';
+			$link = $this->moduleUri . '&SET[function]=check&CMD=user';
 			$message = sprintf($this->getLanguageService()->getLL('msg.schedulerUserMissing'), htmlspecialchars($link));
 			$severity = FlashMessage::ERROR;
 		} elseif ($checkUser == 0) {
@@ -932,7 +938,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
 
 				foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
-					$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
+					$editAction = '<a href="' . htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					if ((int)$schedulerRecord['disable'] === 1) {
 						$translationKey = 'enable';
@@ -941,13 +947,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$translationKey = 'disable';
 						$spriteIcon = 'actions-edit-hide';
 					}
-					$toggleHiddenAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey, TRUE) . '" class="icon">' .
+					$toggleHiddenAction = '<a href="' . htmlspecialchars($this->moduleUri . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey, TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon($spriteIcon) . '</a>';
-					$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.delete') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
+					$deleteAction = '<a href="' . htmlspecialchars($this->moduleUri . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('msg.delete')) . ');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
-					$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $this->getLanguageService()->getLL('msg.stop') . '\');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
+					$stopAction = '<a href="' . htmlspecialchars($this->moduleUri . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('msg.stop')) . ');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
 						'<img ' . IconUtility::skinImg($this->backPath, (ExtensionManagementUtility::extRelPath('scheduler') . '/Resources/Public/Images/stop.png')) . ' alt="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop') . '" /></a>';
-					$runAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&tx_scheduler[execute][]=' . $schedulerRecord['uid'] . '" title="' . $this->getLanguageService()->getLL('action.run_task') . '" class="icon">' .
+					$runAction = '<a href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
 
 					// Define some default values
@@ -1454,15 +1460,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			'shortcut' => $this->getShortcutButton()
 		);
 		if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden') {
-			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
+			$buttons['reload'] = '<a href="' . htmlspecialchars($this->moduleUri) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 			if ($this->MOD_SETTINGS['function'] === 'scheduler' && count($this->getRegisteredClasses())) {
-				$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
+				$link = $this->moduleUri . '&CMD=add';
 				$image = IconUtility::getSpriteIcon('actions-document-new', array('alt' => $this->getLanguageService()->getLL('action.add')));
 				$buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' . 'title="' . $this->getLanguageService()->getLL('action.add') . '">' . $image . '</a>';
 			}
 		}
 		if ($this->CMD === 'add' || $this->CMD === 'edit') {
-			$buttons['close'] = '<a href="#" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+			$buttons['close'] = '<a href="#" onclick="document.location=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->moduleUri)) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 			$buttons['save'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="save" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-document-save') . '</button>';
 			$buttons['saveclose'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="saveclose" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-document-save-close') . '</button>';
 			$buttons['savenew'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="savenew" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', TRUE) . '" />' . IconUtility::getSpriteIcon('actions-document-save-new') . '</button>';

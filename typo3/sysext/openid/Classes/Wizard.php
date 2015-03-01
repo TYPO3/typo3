@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Openid;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -96,8 +97,9 @@ class Wizard extends OpenidService {
 	 * @return string Full URL with protocol and hostname
 	 */
 	protected function getSelfUrl() {
-		return GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir .
-			$GLOBALS['MCONF']['_'];
+		return GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
+			. TYPO3_mainDir
+			. BackendUtility::getModuleUrl('wizard_openid');
 	}
 
 	/**

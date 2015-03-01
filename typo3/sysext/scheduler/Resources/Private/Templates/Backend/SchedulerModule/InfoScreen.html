@@ -26,12 +26,14 @@
 				<td>{classInfo.description}</td>
 				<td>
 					<div class="btn-group" role="group">
-						<a
-							href="{s:moduleLink(function:'list',cmd:'add',arguments:'{class: class}')}"
+						<s:moduleLink
+							controller="scheduler"
+							action="add" arguments="{class: class}"
 							title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"
-							class="btn btn-default">
-								<s:spriteIcon iconName="actions-document-new" />
-						</a>
+							class="btn btn-default"
+						>
+							<s:spriteIcon iconName="actions-document-new" />
+						</s:moduleLink>
 					</div>
 				</td>
 			</tr>
