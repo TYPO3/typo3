@@ -11,63 +11,52 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper;
+
 /**
- * Testcase for AliasViewHelper
+ * Test case
  */
-class AliasViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class AliasViewHelperTest extends ViewHelperBaseTestcase {
+
+	/**
+	 * @var AliasViewHelper
+	 */
+	protected $subject;
+
+	public function setUp(){
+		parent::setUp();
+		$this->subject = $this->getMock(AliasViewHelper::class, array('renderChildren'));
+		$this->injectDependenciesIntoViewHelper($this->subject);
+	}
 
 	/**
 	 * @test
 	 */
 	public function renderAddsSingleValueToTemplateVariableContainerAndRemovesItAfterRendering() {
-		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper();
-
-		$mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array('evaluateChildNodes'), array(), '', FALSE);
-		$mockViewHelperNode->expects($this->once())->method('evaluateChildNodes')->will($this->returnValue('foo'));
-
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('someAlias', 'someValue');
 		$this->templateVariableContainer->expects($this->at(1))->method('remove')->with('someAlias');
-
-		$this->injectDependenciesIntoViewHelper($viewHelper);
-		$viewHelper->setViewHelperNode($mockViewHelperNode);
-		$viewHelper->render(array('someAlias' => 'someValue'));
+		$this->subject->render(array('someAlias' => 'someValue'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderAddsMultipleValuesToTemplateVariableContainerAndRemovesThemAfterRendering() {
-		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper();
-
-		$mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array('evaluateChildNodes'), array(), '', FALSE);
-		$mockViewHelperNode->expects($this->once())->method('evaluateChildNodes')->will($this->returnValue('foo'));
-
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('someAlias', 'someValue');
 		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('someOtherAlias', 'someOtherValue');
 		$this->templateVariableContainer->expects($this->at(2))->method('remove')->with('someAlias');
 		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('someOtherAlias');
-
-		$this->injectDependenciesIntoViewHelper($viewHelper);
-		$viewHelper->setViewHelperNode($mockViewHelperNode);
-		$viewHelper->render(array('someAlias' => 'someValue', 'someOtherAlias' => 'someOtherValue'));
+		$this->subject->render(array('someAlias' => 'someValue', 'someOtherAlias' => 'someOtherValue'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderDoesNotTouchTemplateVariableContainerAndReturnsChildNodesIfMapIsEmpty() {
-		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper();
-
-		$mockViewHelperNode = $this->getMock(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class, array('evaluateChildNodes'), array(), '', FALSE);
-		$mockViewHelperNode->expects($this->once())->method('evaluateChildNodes')->will($this->returnValue('foo'));
-
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
 		$this->templateVariableContainer->expects($this->never())->method('add');
 		$this->templateVariableContainer->expects($this->never())->method('remove');
-
-		$this->injectDependenciesIntoViewHelper($viewHelper);
-		$viewHelper->setViewHelperNode($mockViewHelperNode);
-
-		$this->assertEquals('foo', $viewHelper->render(array()));
+		$this->assertEquals('foo', $this->subject->render(array()));
 	}
 
 }

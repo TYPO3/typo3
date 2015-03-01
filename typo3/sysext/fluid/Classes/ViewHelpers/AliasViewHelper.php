@@ -11,6 +11,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * Declares new variables which are aliases of other variables.
  * Takes a "map"-Parameter which is an associative array which defines the shorthand mapping.
@@ -39,21 +43,42 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class AliasViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class AliasViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
+	 * Declare aliases
 	 *
 	 * @param array $map array that specifies which variables should be mapped to which alias
 	 * @return string Rendered string
 	 * @api
 	 */
 	public function render(array $map) {
+		return self::renderStatic(
+			array('map' => $map),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * Declare aliases
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$map = $arguments['map'];
+		$templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+
 		foreach ($map as $aliasName => $value) {
-			$this->templateVariableContainer->add($aliasName, $value);
+			$templateVariableContainer->add($aliasName, $value);
 		}
-		$output = $this->renderChildren();
+		$output = $renderChildrenClosure();
 		foreach ($map as $aliasName => $value) {
-			$this->templateVariableContainer->remove($aliasName);
+			$templateVariableContainer->remove($aliasName);
 		}
 		return $output;
 	}
