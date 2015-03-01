@@ -36,8 +36,12 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		,backPath: TYPO3.settings.FormEngine.backPath
 		,openedPopupWindow: null
 		,legacyFieldChangedCb: function() { !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb(); }
+		,browserUrl: ''
 	};
 
+	FormEngine.setBrowserUrl = function(browserUrl) {
+		FormEngine.browserUrl = browserUrl;
+	};
 
 	// functions to connect the db/file browser with this document and the formfields on it!
 
@@ -50,7 +54,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 * @param height height of the window
 	 */
 	FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params, width, height) {
-		var url = FormEngine.backPath + 'browser.php?mode=' + mode + '&bparams=' + params;
+		var url = FormEngine.backPath + FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params;
 		width = width ? width : top.TYPO3.configuration.PopupWindow.width;
 		height = height ? height : top.TYPO3.configuration.PopupWindow.height;
 		FormEngine.openedPopupWindow = window.open(url, 'Typo3WinBrowser', 'height=' + height + ',width=' + width + ',status=0,menubar=0,resizable=1,scrollbars=1');

@@ -133,4 +133,10 @@ if (TYPO3_MODE === 'BE') {
 		'show_item',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/ShowItem/'
 	);
+
+	// Register browser
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'browser',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Browser/'
+	);
 }

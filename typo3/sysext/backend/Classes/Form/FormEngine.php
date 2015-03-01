@@ -1941,7 +1941,9 @@ class FormEngine {
 			}
 			$pageRenderer = $this->getPageRenderer();
 			// load the main module for FormEngine with all important JS functions
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine', 'function(FormEngine) {
+				FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('browser')) . ');
+			}');
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
