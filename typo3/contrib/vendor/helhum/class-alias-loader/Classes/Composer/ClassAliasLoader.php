@@ -100,10 +100,7 @@ class ClassAliasLoader {
 	 */
 	public function loadClass($className) {
 		if (!$this->caseSensitiveClassLoading) {
-			$lowerCasedClassName = strtolower($className);
-			if ($this->composerClassLoader->findFile($lowerCasedClassName)) {
-				return $this->composerClassLoader->loadClass($lowerCasedClassName);
-			}
+			$className = strtolower($className);
 		}
 		return $this->composerClassLoader->loadClass($className);
 	}
@@ -117,15 +114,23 @@ class ClassAliasLoader {
 	 * @return bool
 	 */
 	protected function loadOriginalClassAndSetAliases($originalClassName) {
-		if (class_exists($originalClassName, false) || $this->loadClass($originalClassName)) {
+		if ($this->classOrInterfaceExists($originalClassName) || $this->loadClass($originalClassName)) {
 			foreach ($this->aliasMap['classNameToAliasMapping'][$originalClassName] as $aliasClassName) {
-				if (!class_exists($aliasClassName, false)) {
+				if (!$this->classOrInterfaceExists($aliasClassName)) {
 					class_alias($originalClassName, $aliasClassName);
 				}
 			}
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param string $className
+	 * @return bool
+	 */
+	protected function classOrInterfaceExists($className) {
+		return class_exists($className, false) || interface_exists($className, false);
 	}
 
 	/**
