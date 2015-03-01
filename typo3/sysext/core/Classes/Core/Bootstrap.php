@@ -71,6 +71,12 @@ class Bootstrap {
 	protected $activeErrorHandlerClassName;
 
 	/**
+	 * registered request handlers
+	 * @var RequestHandlerInterface[]
+	 */
+	protected $availableRequestHandlers = array();
+
+	/**
 	 * @var bool
 	 */
 	static protected $usesComposerClassLoading = FALSE;
@@ -152,6 +158,45 @@ class Bootstrap {
 	}
 
 	/**
+	 * Main entry point called at every request usually from Global scope. Checks if everthing is correct,
+	 * and sets up the base request information for a regular request, then
+	 * resolves the RequestHandler which handles the request.
+	 *
+	 * @param string $relativePathPart Relative path of entry script back to document root
+	 * @return Bootstrap
+	 */
+	public function run($relativePathPart = '') {
+		$this->baseSetup($relativePathPart);
+
+		// Failsafe minimal setup mode for the install tool
+		if (defined('TYPO3_enterInstallScript')) {
+			$this->startOutputBuffering()
+				->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
+		} elseif (!$this->checkIfEssentialConfigurationExists() && !defined('TYPO3_cliMode')) {
+			// Redirect to install tool if base configuration is not found
+			$backPathToSiteRoot = '';
+			$pathParts = explode('/', $relativePathPart);
+			for ($i = 1; $i <= count($pathParts); $i++) {
+				$backPathToSiteRoot .= '../';
+			}
+			$this->redirectToInstallTool($backPathToSiteRoot);
+		} else {
+			// Regular request (Frontend, AJAX, Backend, CLI)
+			$this->startOutputBuffering()
+				->loadConfigurationAndInitialize()
+				->loadTypo3LoadedExtAndExtLocalconf(TRUE)
+				->applyAdditionalConfigurationSettings()
+				->initializeTypo3DbGlobal();
+		}
+
+		// Resolve request handler that were registered based on TYPO3_MODE
+		$this->registerRequestHandlers();
+		$requestHandler = $this->resolveRequestHandler();
+		$requestHandler->handleRequest();
+		return $this;
+	}
+
+	/**
 	 * Run the base setup that checks server environment, determines pathes,
 	 * populates base files and sets common configuration.
 	 *
@@ -209,22 +254,83 @@ class Bootstrap {
 	}
 
 	/**
+	 * checks if LocalConfiguration.php or PackageStates.php is missing,
+	 * used to see if a redirect to the install tool is needed
+	 *
+	 * @return bool TRUE when the essential configuration is available, otherwise FALSE
+	 */
+	protected function checkIfEssentialConfigurationExists() {
+		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
+		return (!file_exists($configurationManager->getLocalConfigurationFileLocation()) || !file_exists(PATH_typo3conf . 'PackageStates.php')) ? FALSE : TRUE;
+	}
+
+	/**
 	 * Redirect to install tool if LocalConfiguration.php is missing.
 	 *
 	 * @param string $pathUpToDocumentRoot Can contain '../' if called from a sub directory
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function redirectToInstallTool($pathUpToDocumentRoot = '') {
+		define('TYPO3_enterInstallScript', '1');
+		$this->defineTypo3RequestTypes();
+		Utility\HttpUtility::redirect($pathUpToDocumentRoot . 'typo3/sysext/install/Start/Install.php');
+	}
+
+	/**
+	 * Adds available request handlers, which currently hard-coded here based on the TYPO3_MODE. The extensability
+	 * of adding own request handlers would be too complex for now, but can be added later.
+	 *
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function redirectToInstallerIfEssentialConfigurationDoesNotExist($pathUpToDocumentRoot = '') {
-		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
-		$this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
-		if (!file_exists($configurationManager->getLocalConfigurationFileLocation()) || !file_exists(PATH_typo3conf . 'PackageStates.php')) {
-			define('TYPO3_enterInstallScript', '1');
-			$this->defineTypo3RequestTypes();
-			require_once __DIR__ . '/../Utility/HttpUtility.php';
-			Utility\HttpUtility::redirect($pathUpToDocumentRoot . 'typo3/sysext/install/Start/Install.php');
+	protected function registerRequestHandlers() {
+		// Use the install tool handler if in install tool mode
+		if (!$this->checkIfEssentialConfigurationExists() || (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
+			$this->availableRequestHandlers = array(
+				\TYPO3\CMS\Install\RequestHandler::class
+			);
+		} elseif (TYPO3_MODE == 'BE') {
+			$this->availableRequestHandlers = array(
+				\TYPO3\CMS\Backend\RequestHandler::class,
+				\TYPO3\CMS\Backend\AjaxRequestHandler::class,
+				\TYPO3\CMS\Backend\CliRequestHandler::class
+			);
+		} elseif (TYPO3_MODE == 'FE') {
+			$this->availableRequestHandlers = array(
+				\TYPO3\CMS\Frontend\RequestHandler::class,
+				\TYPO3\CMS\Frontend\EidRequestHandler::class
+			);
 		}
 		return $this;
+	}
+
+	/**
+	 * Fetches the request handler that suits the best based on the priority and the interface
+	 * Be sure to always have the constants that are defined in $this->defineTypo3RequestTypes() are set,
+	 * so most RequestHandlers can check if they can handle the request.
+	 *
+	 * @return RequestHandlerInterface
+	 * @throws \TYPO3\CMS\Core\Exception
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function resolveRequestHandler() {
+		$suitableRequestHandlers = array();
+		foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
+			$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($requestHandlerClassName, $this);
+			if ($requestHandler->canHandleRequest()) {
+				$priority = $requestHandler->getPriority();
+				if (isset($suitableRequestHandlers[$priority])) {
+					throw new \TYPO3\CMS\Core\Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176471352);
+				}
+				$suitableRequestHandlers[$priority] = $requestHandler;
+			}
+		}
+		if (count($suitableRequestHandlers) === 0) {
+			throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1225418233);
+		}
+		ksort($suitableRequestHandlers);
+		return array_pop($suitableRequestHandlers);
 	}
 
 	/**

@@ -40,41 +40,6 @@ class CliBootstrap {
 	}
 
 	/**
-	 * Check and define cli parameters.
-	 * First argument is a key that points to the script configuration.
-	 * If it is not set or not valid, the script exits with an error message.
-	 *
-	 * @return void
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	static public function initializeCliKeyOrDie() {
-		if (!isset($_SERVER['argv'][1]) || !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_SERVER['argv'][1]])) {
-			if (!isset($_SERVER['argv'][1])) {
-				$message = 'This script must have a \'cliKey\' as first argument.';
-			} else {
-				$message = 'The supplied \'cliKey\' is not valid.';
-			}
-			$message .= ' Valid keys are:
-
-';
-			$cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
-			asort($cliKeys);
-			foreach ($cliKeys as $key => $value) {
-				$message .= '  ' . $value . LF;
-			}
-			fwrite(STDERR, $message . LF);
-			die(1);
-		}
-		define('TYPO3_cliKey', $_SERVER['argv'][1]);
-		define('TYPO3_cliInclude', \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][TYPO3_cliKey][0]));
-		$GLOBALS['MCONF']['name'] = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][TYPO3_cliKey][1];
-		// This is a compatibility layer: Some cli scripts rely on this, like ext:phpunit cli
-		$GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
-		$GLOBALS['temp_cliKey'] = array_shift($_SERVER['argv']);
-		array_unshift($_SERVER['argv'], $GLOBALS['temp_cliScriptPath']);
-	}
-
-	/**
 	 * Set up cgi sapi as de facto cli, but check no HTTP
 	 * environment variables are set.
 	 *

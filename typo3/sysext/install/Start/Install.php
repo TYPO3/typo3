@@ -105,9 +105,6 @@ if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
-/*
- * The following functionality must be required from another file, otherwise a parse error
- * "unexpected 'class'" will be shown on PHP 5.4 instead of the die() from version_compare above.
- */
-require __DIR__ . '/../Resources/Private/PHP/Boot.php';
-
+// Bootstrap bare minimum: class loader, LocalConfiguration, but no extensions and such
+require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/sysext/install/Start/')->shutdown();

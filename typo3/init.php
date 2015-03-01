@@ -35,30 +35,12 @@
  * For a detailed description of this script, the scope of constants and variables in it,
  * please refer to the document "Inside TYPO3"
  *
+ * Please note that this file might be removed in the future in favor of adding these lines to all entry
+ * scripts as well.
+ *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_MODE', 'BE');
 
 require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
-
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->baseSetup('typo3/')
-	->redirectToInstallerIfEssentialConfigurationDoesNotExist('../')
-	->startOutputBuffering()
-	->loadConfigurationAndInitialize()
-	->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-	->applyAdditionalConfigurationSettings()
-	->initializeTypo3DbGlobal()
-	->checkLockedBackendAndRedirectOrDie()
-	->checkBackendIpOrDie()
-	->checkSslBackendAndRedirectIfNeeded()
-	->checkValidBrowserOrDie()
-	->loadExtensionTables(TRUE)
-	->initializeSpriteManager()
-	->initializeBackendUser()
-	->initializeBackendAuthentication()
-	->initializeLanguageObject()
-	->initializeBackendTemplate()
-	->endOutputBufferingAndCleanPreviousOutput()
-	->initializeOutputCompression()
-	->sendHttpHeaders();
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');

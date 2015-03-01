@@ -30,29 +30,4 @@ require __DIR__ . '/sysext/core/Classes/Core/CliBootstrap.php';
 \TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
 
 require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->baseSetup('typo3/')
-	->loadConfigurationAndInitialize()
-	->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-	->applyAdditionalConfigurationSettings()
-	->initializeTypo3DbGlobal();
-
-\TYPO3\CMS\Core\Core\CliBootstrap::initializeCliKeyOrDie();
-
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->loadExtensionTables(TRUE)
-	->initializeBackendUser()
-	->initializeBackendAuthentication()
-	->initializeLanguageObject();
-
-	// Make sure output is not buffered, so command-line output and interaction can take place
-\TYPO3\CMS\Core\Utility\GeneralUtility::flushOutputBuffers();
-
-try {
-	include(TYPO3_cliInclude);
-} catch (\Exception $e) {
-	fwrite(STDERR, $e->getMessage() . LF);
-	exit(99);
-}
-
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/')->shutdown();

@@ -30,11 +30,4 @@ if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 define('TYPO3_MODE', 'FE');
 
 require __DIR__ . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->baseSetup('')
-	->redirectToInstallerIfEssentialConfigurationDoesNotExist()
-	->startOutputBuffering()
-	->loadConfigurationAndInitialize();
-
-$frontendRequestHandler = new \TYPO3\CMS\Frontend\FrontendRequestHandler();
-$frontendRequestHandler->handleRequest();
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run()->shutdown();

@@ -14,17 +14,35 @@ namespace TYPO3\CMS\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Frontend\Utility\EidUtility;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * This is the MAIN DOCUMENT of the TypoScript driven standard front-end
+ * This is the main entry point of the TypoScript driven standard front-end
  *
- * Basically put this is the script which all requests for TYPO3
- * delivered pages goes to in the frontend (the website). The script configures
- * constants, includes libraries and does a little logic here and there in order
- * to instantiate the right classes to create the webpage.
+ * Basically put, this is the script which all requests for TYPO3 delivered pages goes to in the
+ * frontend (the website). The script instantiates a $TSFE object, includes libraries and does a little logic here
+ * and there in order to instantiate the right classes to create the webpage.
+ * Previously, this was called index_ts.php and also included the logic for the lightweight "eID" concept,
+ * which is now handled in a separate request handler (EidRequestHandler).
  */
-class FrontendRequestHandler {
+class RequestHandler implements RequestHandlerInterface {
+
+	/**
+	 * Instance of the current TYPO3 bootstrap
+	 * @var Bootstrap
+	 */
+	protected $bootstrap;
+
+	/**
+	 * Constructor handing over the bootstrap
+	 *
+	 * @param Bootstrap $bootstrap
+	 */
+	public function __construct(Bootstrap $bootstrap) {
+		$this->bootstrap = $bootstrap;
+	}
 
 	/**
 	 * Handles a frontend request
@@ -32,9 +50,15 @@ class FrontendRequestHandler {
 	 * @return void
 	 */
 	public function handleRequest() {
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-			->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-			->applyAdditionalConfigurationSettings();
+		// Hook to preprocess the current request:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
+				$hookParameters = array();
+				GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
+			}
+			unset($hookFunction);
+			unset($hookParameters);
+		}
 
 		// Timetracking started
 		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
@@ -49,41 +73,22 @@ class FrontendRequestHandler {
 
 		$GLOBALS['TT']->start();
 
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->initializeTypo3DbGlobal();
-		// Hook to preprocess the current request:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
-				$hookParameters = array();
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-			}
-			unset($hookFunction);
-			unset($hookParameters);
-		}
-		// Look for extension ID which will launch alternative output engine
-		if (EidUtility::isEidRequest()) {
-			// Remove any output produced until now
-			ob_clean();
-			require EidUtility::getEidScriptPath();
-			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
-			exit;
-		}
-
 		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+		$GLOBALS['TSFE'] = GeneralUtility::makeInstance(
 			\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
 			$GLOBALS['TYPO3_CONF_VARS'],
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('type'),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('no_cache'),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cHash'),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('jumpurl'),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('MP'),
-			\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RDCT')
+			GeneralUtility::_GP('id'),
+			GeneralUtility::_GP('type'),
+			GeneralUtility::_GP('no_cache'),
+			GeneralUtility::_GP('cHash'),
+			GeneralUtility::_GP('jumpurl'),
+			GeneralUtility::_GP('MP'),
+			GeneralUtility::_GP('RDCT')
 		);
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_force']
-			&& !\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(
-				\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+			&& !GeneralUtility::cmpIP(
+				GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])
 		) {
 			$GLOBALS['TSFE']->pageUnavailableAndExit('This page is temporarily unavailable.');
@@ -100,7 +105,7 @@ class FrontendRequestHandler {
 				// Prevent errors if ini_set() is unavailable (safe mode)
 				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
 			}
-			ob_start(array(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Utility\CompressionUtility::class), 'compressionOutputHandler'));
+			ob_start(array(GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Utility\CompressionUtility::class), 'compressionOutputHandler'));
 		}
 
 		// FE_USER
@@ -120,9 +125,9 @@ class FrontendRequestHandler {
 		// Initialize admin panel since simulation settings are required here:
 		if ($GLOBALS['TSFE']->isBackendUserLoggedIn()) {
 			$GLOBALS['BE_USER']->initializeAdminPanel();
-			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(TRUE);
+			$this->bootstrap->loadExtensionTables(TRUE);
 		} else {
-			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+			$this->bootstrap->loadCachedTca();
 		}
 		$GLOBALS['TSFE']->checkAlternativeIdMethods();
 		$GLOBALS['TSFE']->clear_preview();
@@ -133,7 +138,7 @@ class FrontendRequestHandler {
 		// \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in.
 		if (
 			$GLOBALS['TSFE']->isBackendUserLoggedIn()
-			&& (!$GLOBALS['BE_USER']->extPageReadAccess($GLOBALS['TSFE']->page) || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ADMCMD_noBeUser'))
+			&& (!$GLOBALS['BE_USER']->extPageReadAccess($GLOBALS['TSFE']->page) || GeneralUtility::_GP('ADMCMD_noBeUser'))
 		) {
 			// Remove user
 			unset($GLOBALS['BE_USER']);
@@ -151,7 +156,7 @@ class FrontendRequestHandler {
 		if ($GLOBALS['TSFE']->isBackendUserLoggedIn()) {
 			$GLOBALS['BE_USER']->initializeFrontendEdit();
 			if ($GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
-				\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+				$this->bootstrap
 					->initializeLanguageObject()
 					->initializeSpriteManager();
 			}
@@ -284,9 +289,26 @@ class FrontendRequestHandler {
 			$GLOBALS['error']->debugOutput();
 		}
 		if (TYPO3_DLOG) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
+			GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
 		}
-		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
 	}
 
+	/**
+	 * This request handler can handle any frontend request.
+	 *
+	 * @return bool If the request is not an eID request, TRUE otherwise FALSE
+	 */
+	public function canHandleRequest() {
+		return GeneralUtility::_GP('eID') ? FALSE : TRUE;
+	}
+
+	/**
+	 * Returns the priority - how eager the handler is to actually handle the
+	 * request.
+	 *
+	 * @return int The priority of the request handler.
+	 */
+	public function getPriority() {
+		return 50;
+	}
 }
