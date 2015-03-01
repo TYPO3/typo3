@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException;
@@ -126,7 +127,7 @@ class TranslateViewHelper extends AbstractViewHelper implements CompilableInterf
 
 		$request = $renderingContext->getControllerContext()->getRequest();
 		$extensionName = $extensionName === NULL ? $request->getControllerExtensionName() : $extensionName;
-		$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($id, $extensionName, $arguments);
+		$value = static::translate($id, $extensionName, $arguments);
 		if ($value === NULL) {
 			$value = $default !== NULL ? $default : $renderChildrenClosure();
 			if (!empty($arguments)) {
@@ -136,6 +137,19 @@ class TranslateViewHelper extends AbstractViewHelper implements CompilableInterf
 			$value = htmlspecialchars($value);
 		}
 		return $value;
+	}
+
+	/**
+	 * Wrapper call to static LocalizationUtility
+	 *
+	 * @param string $id Translation Key compatible to TYPO3 Flow
+	 * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
+	 * @param array $arguments Arguments to be replaced in the resulting string
+	 *
+	 * @return NULL|string
+	 */
+	static protected function translate($id, $extensionName, $arguments) {
+		return LocalizationUtility::translate($id, $extensionName, $arguments);
 	}
 
 }
