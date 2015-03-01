@@ -97,9 +97,9 @@ class Clipboard {
 	public function initializeClipboard() {
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Get data
-		$clipData = $GLOBALS['BE_USER']->getModuleData('clipboard', $GLOBALS['BE_USER']->getTSConfigVal('options.saveClipboard') ? '' : 'ses');
+		$clipData = $this->getBackendUser()->getModuleData('clipboard', $this->getBackendUser()->getTSConfigVal('options.saveClipboard') ? '' : 'ses');
 		// NumberTabs
-		$clNP = $GLOBALS['BE_USER']->getTSConfigVal('options.clipboardNumberPads');
+		$clNP = $this->getBackendUser()->getTSConfigVal('options.clipboardNumberPads');
 		if (MathUtility::canBeInterpretedAsInteger($clNP) && $clNP >= 0) {
 			$this->numberTabs = MathUtility::forceIntegerInRange($clNP, 0, 20);
 		}
@@ -215,7 +215,7 @@ class Clipboard {
 	 *
 	 * @param array $CBarr Element array from outside ("key" => "selected/deselected")
 	 * @param string $table The 'table which is allowed'. Must be set.
-	 * @param bool $removeDeselected Can be set in order to remove entries which are marked for deselection.
+	 * @param bool|int $removeDeselected Can be set in order to remove entries which are marked for deselection.
 	 * @return array Processed input $CBarr
 	 */
 	public function cleanUpCBC($CBarr, $table, $removeDeselected = 0) {
@@ -248,8 +248,8 @@ class Clipboard {
 		$rmall_url = GeneralUtility::linkThisScript(array('CB' => array('removeAll' => $this->current)));
 		// Copymode Selector menu
 		$copymode_url = GeneralUtility::linkThisScript();
-		$moveLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
-		$copyLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
+		$moveLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
+		$copyLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
 		$opt = array();
 		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . IconUtility::skinImg($this->backPath, 'gfx/clip_cut.gif', '', 1) . '\'); background-repeat: no-repeat;" value="" ' . ($this->currentMode() == 'copy' ? '' : 'selected="selected"') . '>' . $moveLabel . '</option>';
 		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . IconUtility::skinImg($this->backPath, 'gfx/clip_copy.gif', '', 1) . '\'); background-repeat: no-repeat;" value="1" ' . ($this->currentMode() == 'copy' ? 'selected="selected"' : '') . '>' . $copyLabel . '</option>';
@@ -269,10 +269,10 @@ class Clipboard {
 		$deleteLink = '';
 		// Delete:
 		if ($elCount) {
-			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($rmall_url) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a>';
-			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
+			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($rmall_url) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a>';
+			if ($this->getBackendUser()->jsConfirmation(4)) {
 				$js = '
-			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
+			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
 				window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=\'+top.rawurlencode(window.location.href);
 			}
 					';
@@ -367,7 +367,7 @@ class Clipboard {
 							$lines[] = '
 								<tr>
 									<td nowrap="nowrap" class="col-icon">' . $icon . '</td>
-									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $GLOBALS['BE_USER']->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
+									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $this->getBackendUser()->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
 											<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $v . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a class="btn btn-default" href="' . htmlspecialchars($this->removeUrl('_FILE', GeneralUtility::shortmd5($v))) . '#clip_head">' . IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>
@@ -386,7 +386,7 @@ class Clipboard {
 							$lines[] = '
 								<tr>
 									<td nowrap="nowrap" class="col-icon">' . $this->linkItemText(IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars(BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . '</td>
-									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
+									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
 											<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . (int)$uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a class="btn btn-default" href="' . htmlspecialchars($this->removeUrl($table, $uid)) . '#clip_head">' . IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>
@@ -453,7 +453,7 @@ class Clipboard {
 			if (isset($tcaCtrl['versioningWS']) && $tcaCtrl['versioningWS']) {
 				$where[] = 't3ver_wsid=' . $parentRec['t3ver_wsid'];
 			}
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $table, implode(' AND ', $where));
+			$rows = $this->getDatabaseConnection()->exec_SELECTgetRows('*', $table, implode(' AND ', $where));
 			if (is_array($rows)) {
 				$modeData = '';
 				if ($pad == 'normal') {
@@ -464,7 +464,7 @@ class Clipboard {
 					$lines[] = '
 					<tr>
 						<td nowrap="nowrap" class="col-icon">' . IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;')) . '</td>
-						<td nowrap="nowrap" width="95%">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])) . $modeData . '</td>
+						<td nowrap="nowrap" width="95%">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])) . $modeData . '</td>
 						<td nowrap="nowrap" class="col-control"></td>
 					</tr>';
 				}
@@ -521,8 +521,8 @@ class Clipboard {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Uid of record
-	 * @param bool $copy If set, copymode will be enabled
-	 * @param bool $deselect If set, the link will deselect, otherwise select.
+	 * @param bool|int $copy If set, copymode will be enabled
+	 * @param bool|int $deselect If set, the link will deselect, otherwise select.
 	 * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
 	 * @return string URL linking to the current script but with the CB array set to select the element with table/uid
 	 */
@@ -539,8 +539,8 @@ class Clipboard {
 	 * Returns the select-url for files
 	 *
 	 * @param string $path Filepath
-	 * @param bool $copy If set, copymode will be enabled
-	 * @param bool $deselect If set, the link will deselect, otherwise select.
+	 * @param bool|int $copy If set, copymode will be enabled
+	 * @param bool|int $deselect If set, the link will deselect, otherwise select.
 	 * @param array $baseArray The base array of GET vars to be sent in addition. Notice that current GET vars WILL automatically be included.
 	 * @return string URL linking to the current script but with the CB array set to select the path
 	 */
@@ -567,7 +567,7 @@ class Clipboard {
 	public function pasteUrl($table, $uid, $setRedirect = TRUE, array $update = NULL) {
 		return ($table == '_FILE' ? BackendUtility::getModuleUrl('tce_file', array(), $this->backPath) : BackendUtility::getModuleUrl('tce_db', array(), $this->backPath)) .
 			($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
-			'&vC=' . $GLOBALS['BE_USER']->veriCode() .
+			'&vC=' . $this->getBackendUser()->veriCode() .
 			'&prErr=1&uPT=1' .
 			'&CB[paste]=' . rawurlencode($table . '|' . $uid) .
 			'&CB[pad]=' . $this->current .
@@ -578,13 +578,13 @@ class Clipboard {
 	/**
 	 * deleteUrl for current pad
 	 *
-	 * @param bool $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
-	 * @param bool $file If set, then the URL will link to the tce_file.php script in the typo3/ dir.
+	 * @param bool|int $setRedirect If set, then the redirect URL will point back to the current script, but with CB reset.
+	 * @param bool|int $file If set, then the URL will link to the tce_file.php script in the typo3/ dir.
 	 * @return string
 	 */
 	public function deleteUrl($setRedirect = 1, $file = 0) {
 		return ($file ? BackendUtility::getModuleUrl('tce_file', array(), $this->backPath) : BackendUtility::getModuleUrl('tce_db', array(), $this->backPath))
-			. ($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode()
+			. ($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $this->getBackendUser()->veriCode()
 			. '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
 	}
 
@@ -630,9 +630,9 @@ class Clipboard {
 	 * @return string JavaScript "confirm" message
 	 */
 	public function confirmMsg($table, $rec, $type, $clElements, $columnLabel = '') {
-		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
+		if ($this->getBackendUser()->jsConfirmation(2)) {
 			$labelKey = 'LLL:EXT:lang/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
-			$msg = $GLOBALS['LANG']->sL($labelKey . ($columnLabel ? '_colPos': ''));
+			$msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos': ''));
 			if ($table == '_FILE') {
 				$thisRecTitle = basename($rec);
 				if ($this->current == 'normal') {
@@ -655,7 +655,7 @@ class Clipboard {
 			// into all available locallang languages.
 			if (!$msg && $columnLabel) {
 				$thisRecTitle .= ' | ' . $columnLabel;
-				$msg = $GLOBALS['LANG']->sL($labelKey);
+				$msg = $this->getLanguageService()->sL($labelKey);
 			}
 
 			// Message
@@ -674,7 +674,7 @@ class Clipboard {
 	 * @return string
 	 */
 	public function clLabel($key, $Akey = 'labels') {
-		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:' . $Akey . '.' . $key));
+		return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:' . $Akey . '.' . $key));
 	}
 
 	/**
@@ -734,7 +734,7 @@ class Clipboard {
 	 * @return void
 	 */
 	public function saveClipboard() {
-		$GLOBALS['BE_USER']->pushModuleData('clipboard', $this->clipData);
+		$this->getBackendUser()->pushModuleData('clipboard', $this->clipData);
 	}
 
 	/**
@@ -826,7 +826,7 @@ class Clipboard {
 	 * Makes sense only for DB records - not files!
 	 *
 	 * @param string $table Table name
-	 * @param int $uid Element uid
+	 * @param int|string $uid Element uid
 	 * @return array Element record with extra field _RECORD_TITLE set to the title of the record
 	 */
 	public function getSelectedRecord($table = '', $uid = '') {
@@ -840,6 +840,7 @@ class Clipboard {
 			$selRec['_RECORD_TITLE'] = BackendUtility::getRecordTitle($table, $selRec);
 			return $selRec;
 		}
+		return array();
 	}
 
 	/**
@@ -972,6 +973,33 @@ class Clipboard {
 		}
 		$this->endClipboard();
 		return $FILE;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Return DatabaseConnection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
