@@ -112,6 +112,11 @@ class ColorpickerController extends AbstractWizardController {
 	public $content;
 
 	/**
+	 * @var string
+	 */
+	protected $exampleImg;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -303,7 +308,7 @@ class ColorpickerController extends AbstractWizardController {
 	/**
 	 * Creates a color matrix table
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function colorMatrix() {
 		$steps = 51;
@@ -341,7 +346,7 @@ class ColorpickerController extends AbstractWizardController {
 	/**
 	 * Creates a selector box with all HTML color names.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function colorList() {
 		// Initialize variables:
@@ -366,14 +371,16 @@ class ColorpickerController extends AbstractWizardController {
 	/**
 	 * Creates a color image selector
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function colorImage() {
 		// Handling color-picker image if any:
 		if (!$this->imageError) {
 			if ($this->pickerImage) {
 				if (GeneralUtility::_POST('coords_x')) {
-					$this->colorValue = '#' . $this->getIndex(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::imageCreateFromFile($this->pickerImage), GeneralUtility::_POST('coords_x'), GeneralUtility::_POST('coords_y'));
+					/* @var $image \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
+					$image = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
+					$this->colorValue = '#' . $this->getIndex($image->imageCreateFromFile($this->pickerImage), GeneralUtility::_POST('coords_x'), GeneralUtility::_POST('coords_y'));
 				}
 				$pickerFormImage = '
 				<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromImage', TRUE) . '</p>
@@ -400,18 +407,19 @@ class ColorpickerController extends AbstractWizardController {
 	 */
 	public function getIndex($im, $x, $y) {
 		$rgb = ImageColorAt($im, $x, $y);
-		$colorrgb = imagecolorsforindex($im, $rgb);
-		$index['r'] = dechex($colorrgb['red']);
-		$index['g'] = dechex($colorrgb['green']);
-		$index['b'] = dechex($colorrgb['blue']);
+		$colorRgb = imagecolorsforindex($im, $rgb);
+		$index['r'] = dechex($colorRgb['red']);
+		$index['g'] = dechex($colorRgb['green']);
+		$index['b'] = dechex($colorRgb['blue']);
+		$hexValue = array();
 		foreach ($index as $value) {
 			if (strlen($value) == 1) {
-				$hexvalue[] = strtoupper('0' . $value);
+				$hexValue[] = strtoupper('0' . $value);
 			} else {
-				$hexvalue[] = strtoupper($value);
+				$hexValue[] = strtoupper($value);
 			}
 		}
-		$hex = implode('', $hexvalue);
+		$hex = implode('', $hexValue);
 		return $hex;
 	}
 
