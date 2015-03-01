@@ -29,6 +29,13 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 	protected $rootLine = array();
 
 	/**
+	 * The uid of the page being handled
+	 *
+	 * @var int
+	 */
+	public $id;
+
+	/**
 	 * Parses the passed TS-Config using conditions and caching
 	 *
 	 * @param string $TStext The TSConfig being parsed
