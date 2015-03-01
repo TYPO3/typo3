@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -73,7 +74,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 		} elseif ($this->environmentService->isEnvironmentInFrontendMode()) {
 			$uriPrefix = $GLOBALS['TSFE']->absRefPrefix;
 		} else {
-			$uriPrefix = '../';
+			$uriPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
 		}
 
 		return $uriPrefix . $imageUrl;
