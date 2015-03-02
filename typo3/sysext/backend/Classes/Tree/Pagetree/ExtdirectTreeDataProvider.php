@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -175,7 +176,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			),
 			'Configuration' => array(
 				'hideFilter' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.hideFilter'),
-				'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(4),
+				'displayDeleteConfirmation' => $GLOBALS['BE_USER']->jsConfirmation(JsConfirmation::DELETE),
 				'canDeleteRecursivly' => $GLOBALS['BE_USER']->uc['recursiveDelete'] == TRUE,
 				'disableIconLinkToContextmenu' => $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu'),
 				'indicator' => $indicators['html'],

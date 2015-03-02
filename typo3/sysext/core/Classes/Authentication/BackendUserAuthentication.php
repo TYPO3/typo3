@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Authentication;
  */
 
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -521,13 +522,13 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public function calcPerms($row) {
 		// Return 31 for admin users.
 		if ($this->isAdmin()) {
-			return 31;
+			return Permission::ALL;
 		}
 		// Return 0 if page is not within the allowed web mount
 		if (!$this->isInWebMount($row['uid'])) {
-			return 0;
+			return Permission::NOTHING;
 		}
-		$out = 0;
+		$out = Permission::NOTHING;
 		if (
 			isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid'])
 			&& isset($row['perms_group']) && isset($row['perms_everybody']) && isset($this->groupList)
@@ -845,23 +846,23 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		} elseif ($tableName == 'pages') {
 			switch ($actionType) {
 				case 'edit':
-					$result = ($compiledPermissions & 2) !== 0;
+					$result = ($compiledPermissions & Permission::PAGE_EDIT) !== 0;
 					break;
 				case 'new':
 					// Create new page OR page content
-					$result = ($compiledPermissions & 8 + 16) !== 0;
+					$result = ($compiledPermissions & Permission::PAGE_NEW + Permission::CONTENT_EDIT) !== 0;
 					break;
 				case 'delete':
-					$result = ($compiledPermissions & 4) !== 0;
+					$result = ($compiledPermissions & Permission::PAGE_DELETE) !== 0;
 					break;
 				case 'editcontent':
-					$result = ($compiledPermissions & 16) !== 0;
+					$result = ($compiledPermissions & Permission::CONTENT_EDIT) !== 0;
 					break;
 				default:
 					$result = FALSE;
 			}
 		} else {
-			$result = ($compiledPermissions & 16) !== 0;
+			$result = ($compiledPermissions & Permission::CONTENT_EDIT) !== 0;
 		}
 		return $result;
 	}
@@ -1123,7 +1124,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 					break;
 				default:
 					// Custom workspace
-					$retVal = $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2);
+					$retVal = $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0) && !($wsAccess['publish_access'] & Permission::PAGE_EDIT);
 					// Either be an adminuser OR have access to online
 					// workspace which is OK as well as long as publishing
 					// access is not limited by workspace option.
@@ -1231,13 +1232,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 
 	/**
 	 * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
-	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
-	 *
-	 * 1 - typeChange
-	 * 2 - copy/move/paste
-	 * 4 - delete
-	 * 8 - frontend editing
-	 * 128 - other (not used yet)
+	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK).
+	 * See \TYPO3\CMS\Core\Type\Bitmask\JsConfirmation.
 	 *
 	 * @param int $bitmask Bitmask
 	 * @return bool TRUE if the confirmation should be shown
@@ -1434,11 +1430,11 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				$this->includeHierarchy[] = $idList;
 				$this->TSdataArray[] = $this->addTScomment('Group "' . $row['title'] . '" [' . $row['uid'] . '] TSconfig field:') . $row['TSconfig'];
 				// Mount group database-mounts
-				if (($this->user['options'] & 1) == 1) {
+				if (($this->user['options'] & Permission::PAGE_SHOW) == 1) {
 					$this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
 				}
 				// Mount group file-mounts
-				if (($this->user['options'] & 2) == 2) {
+				if (($this->user['options'] & Permission::PAGE_EDIT) == 2) {
 					$this->dataLists['filemount_list'] .= ',' . $row['file_mountpoints'];
 				}
 				// The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
@@ -1649,7 +1645,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			}
 
 			// Mount group home-dirs
-			if ((is_array($this->user) && $this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
+			if ((is_array($this->user) && $this->user['options'] & Permission::PAGE_EDIT) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
 				// If groupHomePath is set, we attempt to mount it
 				list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
 				$groupHomeStorageUid = (int)$groupHomeStorageUid;
@@ -1987,7 +1983,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			} else {
 				switch ((string)$wsRec['uid']) {
 					case '0':
-						$retVal = $this->groupData['workspace_perms'] & 1
+						$retVal = $this->groupData['workspace_perms'] & Permission::PAGE_SHOW
 							? array_merge($wsRec, array('_ACCESS' => 'online'))
 							: FALSE;
 						break;

@@ -14,14 +14,16 @@ namespace TYPO3\CMS\Backend\ClickMenu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Clipboard\Clipboard;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -287,7 +289,7 @@ class ClickMenu {
 					$root ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] : GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen']),
 					$this->clipObj->currentMode()
 				);
-				if ($table === 'pages' && $lCP & 8) {
+				if ($table === 'pages' && $lCP & Permission::PAGE_NEW) {
 					if ($elFromAllTables) {
 						$menuItems['pasteinto'] = $this->DB_paste('', $uid, 'into', $elInfo);
 					}
@@ -528,7 +530,7 @@ class ClickMenu {
 	 */
 	public function DB_paste($table, $uid, $type, $elInfo) {
 		$loc = 'top.content.list_frame';
-		if ($this->backendUser->jsConfirmation(2)) {
+		if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
 			$conf = $loc . ' && confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] === 'copy' ? 'copy' : 'move') . '_' . $type)), $elInfo[0], $elInfo[1])) . ')';
 		} else {
 			$conf = $loc;
@@ -727,7 +729,7 @@ class ClickMenu {
 	 */
 	public function DB_delete($table, $uid, $elInfo) {
 		$loc = 'top.content.list_frame';
-		if ($this->backendUser->jsConfirmation(4)) {
+		if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
 			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord'))))) . ')';
 		} else {
 			$conf = '1==1';
@@ -1053,7 +1055,7 @@ class ClickMenu {
 	 */
 	public function FILE_paste($path, $target, $elInfo) {
 		$loc = 'top.content.list_frame';
-		if ($this->backendUser->jsConfirmation(2)) {
+		if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
 			$conf = $loc . ' && confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL(('LLL:EXT:lang/locallang_core.xlf:mess.' . ($elInfo[2] === 'copy' ? 'copy' : 'move') . '_into')), $elInfo[0], $elInfo[1])) . ')';
 		} else {
 			$conf = $loc;

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -204,7 +205,7 @@ class ThumbnailView {
 			// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
 			// René: png work for me
 			$thmMode = MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
-			$outext = $this->image->getExtension() != 'jpg' || $thmMode & 2 ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
+			$outext = $this->image->getExtension() != 'jpg' || $thmMode & Permission::PAGE_EDIT ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 			$outfile = 'tmb_' . substr(md5(($this->image->getName() . $this->mtime . $this->size)), 0, 10) . '.' . $outext;
 			$this->output = $outpath . $outfile;
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {

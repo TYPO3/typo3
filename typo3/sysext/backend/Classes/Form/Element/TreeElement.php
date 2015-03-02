@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -116,7 +117,7 @@ class TreeElement extends AbstractFormElement {
 			|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
 			&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
 		) {
-			if ($GLOBALS['BE_USER']->jsConfirmation(1)) {
+			if ($GLOBALS['BE_USER']->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
 				$onChange .= 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && ' . 'TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 			} else {
 				$onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';

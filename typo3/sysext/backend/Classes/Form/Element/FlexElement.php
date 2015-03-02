@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -485,7 +486,7 @@ class FlexElement extends AbstractFormElement {
 									|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
 									&& GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $key)
 								) {
-									if ($this->getBackendUserAuthentication()->jsConfirmation(1)) {
+									if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
 										$alertMsgOnChange = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 									} else {
 										$alertMsgOnChange = 'if(TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm();}';

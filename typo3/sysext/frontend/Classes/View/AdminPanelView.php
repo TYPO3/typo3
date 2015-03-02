@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -604,7 +605,7 @@ class AdminPanelView {
 
 		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_recordHistory', FALSE)));
 		$toolBar = '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl))) . '#latest">' . $icon . '</a>';
-		if ($perms & 16 && $langAllowed) {
+		if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {
 				$params = '&sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
@@ -612,15 +613,15 @@ class AdminPanelView {
 			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars($newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
 		}
-		if ($perms & 2) {
+		if ($perms & Permission::PAGE_EDIT) {
 			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
-		if ($perms & 8) {
+		if ($perms & Permission::PAGE_NEW) {
 			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
-		if ($perms & 2) {
+		if ($perms & Permission::PAGE_EDIT) {
 			$params = '&edit[pages][' . $id . ']=edit';
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties', FALSE)));
 			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';

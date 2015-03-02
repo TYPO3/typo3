@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -449,7 +450,7 @@ class PageLayoutController {
 		if ($this->id && $access) {
 			// Initialize permission settings:
 			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
-			$this->EDIT_CONTENT = $this->CALC_PERMS & 16 ? 1 : 0;
+			$this->EDIT_CONTENT = $this->CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
 			// Start document template object:
 			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -730,7 +731,7 @@ class PageLayoutController {
 		// Splitting the edit-record cmd value into table/uid:
 		$this->eRParts = explode(':', $edit_record);
 		// Delete-button flag?
-		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($this->eRParts[0] != 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] == 'pages' && $this->CALC_PERMS & 4);
+		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($this->eRParts[0] != 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] == 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
 		// If undo-button should be rendered (depends on available items in sys_history)
 		$this->undoButton = 0;
 		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
@@ -757,7 +758,7 @@ class PageLayoutController {
 			BackendUtility::getModuleUrl('web_layout') . '&id=' . $this->id . '&edit_record='
 		) . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);') . '">' . implode('', $opt) . '</select>';
 		// Creating editing form:
-		if ($GLOBALS['BE_USER']->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & 1)) {
+		if ($GLOBALS['BE_USER']->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & Permission::PAGE_SHOW)) {
 			// Splitting uid parts for special features, if new:
 			list($uidVal, $ex_pid, $ex_colPos) = explode('/', $this->eRParts[1]);
 			// Convert $uidVal to workspace version if any:
@@ -1082,7 +1083,7 @@ class PageLayoutController {
 			}
 
 			// Edit page properties and page language overlay icons
-			if ($this->CALC_PERMS & 2) {
+			if ($this->CALC_PERMS & Permission::PAGE_EDIT) {
 
 				// Edit localized page_language_overlay only when one specific language is selected
 				if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {

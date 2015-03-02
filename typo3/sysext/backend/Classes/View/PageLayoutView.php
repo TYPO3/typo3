@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -844,7 +845,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		if ($this->option_showBigButtons) {
 			$bArray = array();
 			if (!$this->getPageLayoutController()->current_sys_language) {
-				if ($this->ext_CALC_PERMS & 2) {
+				if ($this->ext_CALC_PERMS & Permission::PAGE_EDIT) {
 					$bArray[0] = $this->getPageLayoutController()->doc->t3Button(
 						BackendUtility::editOnClick('&edit[pages][' . $id . ']=edit', $this->backPath, ''),
 						$this->getLanguageService()->getLL('editPageProperties')
@@ -865,14 +866,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					);
 				}
 			}
-			if ($this->ext_CALC_PERMS & 4 || $this->ext_CALC_PERMS & 2) {
+			if ($this->ext_CALC_PERMS & Permission::PAGE_DELETE || $this->ext_CALC_PERMS & Permission::PAGE_EDIT) {
 				$bArray[1] = $this->getPageLayoutController()->doc->t3Button(
 					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element', array(), $this->backPath) . '&table=pages&uid=' . $id
 						. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';',
 					$this->getLanguageService()->getLL('move_page')
 				);
 			}
-			if ($this->ext_CALC_PERMS & 8) {
+			if ($this->ext_CALC_PERMS & Permission::PAGE_NEW) {
 				$parameters = [
 					'id' => $id,
 					'pagesOnly' => 1,

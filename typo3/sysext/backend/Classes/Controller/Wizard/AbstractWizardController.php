@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -39,12 +40,12 @@ class AbstractWizardController {
 			// If pages:
 			if ($table === 'pages') {
 				$calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms($calcPermissionRecord);
-				$hasAccess = $calculatedPermissions & 2;
+				$hasAccess = $calculatedPermissions & Permission::PAGE_EDIT;
 			} else {
 				// Fetching pid-record first.
 				$calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms(
 					BackendUtility::getRecord('pages', $calcPermissionRecord['pid']));
-				$hasAccess = $calculatedPermissions & 16;
+				$hasAccess = $calculatedPermissions & Permission::CONTENT_EDIT;
 			}
 			// Check internals regarding access:
 			if ($hasAccess) {

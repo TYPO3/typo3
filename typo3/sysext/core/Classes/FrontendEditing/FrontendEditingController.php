@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\FrontendEditing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -483,7 +484,7 @@ class FrontendEditingController {
 						$mayEdit = TRUE;
 					}
 				} else {
-					$mayEdit = count($allow) && $perms & 16;
+					$mayEdit = count($allow) && $perms & Permission::CONTENT_EDIT;
 				}
 			}
 		}
@@ -516,15 +517,15 @@ class FrontendEditingController {
 					unset($allow['hide']);
 					unset($allow['delete']);
 				}
-				if (!($perms & 2)) {
+				if (!($perms & Permission::PAGE_EDIT)) {
 					unset($allow['edit']);
 					unset($allow['move']);
 					unset($allow['hide']);
 				}
-				if (!($perms & 4)) {
+				if (!($perms & Permission::PAGE_DELETE)) {
 					unset($allow['delete']);
 				}
-				if (!($perms & 8)) {
+				if (!($perms & Permission::PAGE_NEW)) {
 					unset($allow['new']);
 				}
 			}

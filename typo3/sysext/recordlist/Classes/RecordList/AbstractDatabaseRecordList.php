@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -796,9 +797,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 				// If the listed table is 'pages' we have to request the permission settings for each page:
 				if ($table == 'pages') {
 					$localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
-					$permsEdit = $localCalcPerms & 2;
+					$permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
 				} else {
-					$permsEdit = $this->calcPerms & 16;
+					$permsEdit = $this->calcPerms & Permission::CONTENT_EDIT;
 				}
 				// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 				if ($permsEdit) {

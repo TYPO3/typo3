@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -671,7 +672,7 @@ class InlineElement {
 			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $rec['uid']));
 		}
 		// This expresses the edit permissions for this particular element:
-		$permsEdit = $isPagesTable && $localCalcPerms & 2 || !$isPagesTable && $calcPerms & 16;
+		$permsEdit = $isPagesTable && $localCalcPerms & Permission::PAGE_EDIT || !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT;
 		// Controls: Defines which controls should be shown
 		$enabledControls = $config['appearance']['enabledControls'];
 		// Hook: Can disable/enable single controls for specific child records:
@@ -701,7 +702,7 @@ class InlineElement {
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord) {
 			// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
 			if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])) {
-				if (!$isPagesTable && $calcPerms & 16 || $isPagesTable && $calcPerms & 8) {
+				if (!$isPagesTable && $calcPerms & Permission::CONTENT_EDIT || $isPagesTable && $calcPerms & Permission::PAGE_NEW) {
 					$onClick = 'return inline.createNewRecord(\'' . $nameObjectFt . '\',\'' . $rec['uid'] . '\')';
 					if ($config['inline']['inlineNewButtonStyle']) {
 						$style = ' style="' . $config['inline']['inlineNewButtonStyle'] . '"';
@@ -749,7 +750,7 @@ class InlineElement {
 				}
 			}
 			// "Delete" link:
-			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
+			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & Permission::PAGE_DELETE || !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT)) {
 				$onClick = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');';
 				$cells['delete'] = '
 					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">
@@ -2207,10 +2208,10 @@ class InlineElement {
 				// If pages:
 				if ($table == 'pages') {
 					// Are we allowed to create new subpages?
-					$hasAccess = $CALC_PERMS & 8 ? 1 : 0;
+					$hasAccess = $CALC_PERMS & Permission::PAGE_NEW ? 1 : 0;
 				} else {
 					// Are we allowed to edit content on this page?
-					$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
+					$hasAccess = $CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
 				}
 			} else {
 				$hasAccess = 1;
@@ -2223,11 +2224,11 @@ class InlineElement {
 				// If pages:
 				if ($table == 'pages') {
 					$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
-					$hasAccess = $CALC_PERMS & 2 ? 1 : 0;
+					$hasAccess = $CALC_PERMS & Permission::PAGE_EDIT ? 1 : 0;
 				} else {
 					// Fetching pid-record first.
 					$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-					$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
+					$hasAccess = $CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
 				}
 				// Check internals regarding access:
 				if ($hasAccess) {

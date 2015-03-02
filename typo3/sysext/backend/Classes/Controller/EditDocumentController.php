@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -697,7 +699,7 @@ class EditDocumentController {
 			}
 			function deleteRecord(table,id,url) {	//
 				if (
-					' . ($GLOBALS['BE_USER']->jsConfirmation(4) ? 'confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')' : '1==1') . '
+					' . ($GLOBALS['BE_USER']->jsConfirmation(JsConfirmation::DELETE) ? 'confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')' : '1==1') . '
 				)	{
 					window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1' . BackendUtility::getUrlToken('tceAction') . '&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1";
 				}
@@ -833,10 +835,10 @@ class EditDocumentController {
 										$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 										if ($table == 'pages') {
 											// If pages:
-											$hasAccess = $CALC_PERMS & 8 ? 1 : 0;
+											$hasAccess = $CALC_PERMS & Permission::PAGE_NEW ? 1 : 0;
 											$this->viewId = 0;
 										} else {
-											$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
+											$hasAccess = $CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
 											$this->viewId = $calcPRec['uid'];
 										}
 									}
@@ -850,14 +852,14 @@ class EditDocumentController {
 								if (is_array($calcPRec)) {
 									if ($table == 'pages') { // If pages:
 										$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
-										$hasAccess = $CALC_PERMS & 2 ? 1 : 0;
-										$deleteAccess = $CALC_PERMS & 4 ? 1 : 0;
+										$hasAccess = $CALC_PERMS & Permission::PAGE_EDIT ? 1 : 0;
+										$deleteAccess = $CALC_PERMS & Permission::PAGE_DELETE ? 1 : 0;
 										$this->viewId = $calcPRec['uid'];
 									} else {
 										// Fetching pid-record first
 										$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-										$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
-										$deleteAccess = $CALC_PERMS & 16 ? 1 : 0;
+										$hasAccess = $CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
+										$deleteAccess = $CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
 										$this->viewId = $calcPRec['pid'];
 										// Adding "&L=xx" if the record being edited has a languageField with a value larger than zero!
 										if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $calcPRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0) {

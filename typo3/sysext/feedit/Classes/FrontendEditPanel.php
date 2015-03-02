@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -252,7 +253,7 @@ class FrontendEditPanel {
 				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . 'alt_doc.php?edit[' . $rParts[0] . '][' . $nPid . ']=new&noView=' . $nV, $currentRecord);
 			}
 		} else {
-			if ($confirm && $this->backendUser->jsConfirmation(8)) {
+			if ($confirm && $this->backendUser->jsConfirmation(JsConfirmation::FE_EDIT)) {
 				// Gets htmlspecialchared later
 				$cf1 = 'if (confirm(' . GeneralUtility::quoteJSvalue($confirm, TRUE) . ')) {';
 				$cf2 = '}';

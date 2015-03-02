@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -239,9 +240,9 @@ class LiveSearch {
 		$editLink = '';
 		if ($tableName == 'pages') {
 			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
-			$permsEdit = $localCalcPerms & 2;
+			$permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
 		} else {
-			$permsEdit = $calcPerms & 16;
+			$permsEdit = $calcPerms & Permission::CONTENT_EDIT;
 		}
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		// @todo Is there an existing function to generate this link?

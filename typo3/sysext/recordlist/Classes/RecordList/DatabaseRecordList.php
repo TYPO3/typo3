@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -248,7 +249,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			}
 			// If edit permissions are set, see
 			// \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-			if ($localCalcPerms & 2 && !empty($this->id)) {
+			if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id)) {
 				// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
 				$onClick = htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1));
@@ -257,7 +258,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					. IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			}
 			// Paste
-			if ($localCalcPerms & 8 || $localCalcPerms & 16) {
+			if ($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) {
 				$elFromTable = $this->clipObj->elFromTable('');
 				if (count($elFromTable)) {
 					$onClick = htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable)));
@@ -1187,7 +1188,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
 		}
 		// This expresses the edit permissions for this particular element:
-		$permsEdit = $table === 'pages' && $localCalcPerms & 2 || $table !== 'pages' && $this->calcPerms & 16;
+		$permsEdit = $table === 'pages' && $localCalcPerms & Permission::PAGE_EDIT || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT;
 		// "Show" link (only pages and tt_content elements)
 		if ($table == 'pages' || $table == 'tt_content') {
 			$viewAction = '<a class="btn btn-default" href="#" onclick="'
@@ -1261,7 +1262,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
 			// or if default values can depend on previous record):
 			if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
-				if ($table !== 'pages' && $this->calcPerms & 16 || $table === 'pages' && $this->calcPerms & 8) {
+				if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
 					if ($this->showNewRecLink($table)) {
 						$params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
 						$newAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, $this->backPath, -1))
@@ -1324,7 +1325,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$this->addActionToCellGroup($cells, $hideAction, 'hide');
 			}
 			// "Delete" link:
-			if ($table === 'pages' && $localCalcPerms & 4 || $table !== 'pages' && $this->calcPerms & 16) {
+			if ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT) {
 				// Check if the record version is in "deleted" state, because that will switch the action to "restore"
 				if ($this->getBackendUserAuthentication()->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
 					$actionName = 'restore';
@@ -1361,7 +1362,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// "Levels" links: Moving pages into new levels...
 			if ($permsEdit && $table == 'pages' && !$this->searchLevels) {
 				// Up (Paste as the page right after the current parent page)
-				if ($this->calcPerms & 8) {
+				if ($this->calcPerms & Permission::PAGE_NEW) {
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
 					$moveLeftAction = '<a class="btn btn-default" href="#" onclick="'
 						. htmlspecialchars('return jumpToUrl(\'' . $module->doc->issueCommand($params, -1) . '\');')
@@ -1372,7 +1373,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				// Down (Paste as subpage to the page right above)
 				if ($this->currentTable['prevUid'][$row['uid']]) {
 					$localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
-					if ($localCalcPerms & 8) {
+					if ($localCalcPerms & Permission::PAGE_NEW) {
 						$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
 						$moveRightAction = '<a class="btn btn-default" href="#" onclick="'
 							. htmlspecialchars('return jumpToUrl(\'' . $module->doc->issueCommand($params, -1) . '\');')

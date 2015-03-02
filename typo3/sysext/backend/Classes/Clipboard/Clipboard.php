@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -270,7 +271,7 @@ class Clipboard {
 		// Delete:
 		if ($elCount) {
 			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($rmall_url) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a>';
-			if ($this->getBackendUser()->jsConfirmation(4)) {
+			if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
 				$js = '
 			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
 				window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=\'+top.rawurlencode(window.location.href);
@@ -630,7 +631,7 @@ class Clipboard {
 	 * @return string JavaScript "confirm" message
 	 */
 	public function confirmMsg($table, $rec, $type, $clElements, $columnLabel = '') {
-		if ($this->getBackendUser()->jsConfirmation(2)) {
+		if ($this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
 			$labelKey = 'LLL:EXT:lang/locallang_core.xlf:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
 			$msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos': ''));
 			if ($table == '_FILE') {
