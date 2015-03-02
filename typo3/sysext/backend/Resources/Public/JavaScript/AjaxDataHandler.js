@@ -86,14 +86,14 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashM
 			var $anchorElement = $(this);
 			TYPO3.Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), TYPO3.Severity.error, [
 				{
-					text: TYPO3.lang['button.cancel'],
+					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Close',
 					active: true,
 					trigger: function() {
 						TYPO3.Modal.dismiss();
 					}
 				},
 				{
-					text: TYPO3.lang['button.delete'],
+					text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'OK',
 					btnClass: 'btn-danger',
 					trigger: function() {
 						TYPO3.Modal.dismiss();
