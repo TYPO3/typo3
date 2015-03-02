@@ -267,4 +267,51 @@ Value 2.2
 		$this->assertSame($expected, $result);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function emptyTagsDataProvider() {
+		return array(
+			array(0 , NULL, FALSE, '<h1></h1>', '<h1></h1>'),
+			array(1 , NULL, FALSE, '<h1></h1>', ''),
+			array(1 , NULL, FALSE, '<h1>hallo</h1>', '<h1>hallo</h1>'),
+			array(1 , NULL, FALSE, '<h1 class="something"></h1>', ''),
+			array(1 , NULL, FALSE, '<h1 class="something"></h1><h2></h2>', ''),
+			array(1 , 'h2', FALSE, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'),
+			array(1 , 'h2, h1', FALSE, '<h1 class="something"></h1><h2></h2>', ''),
+			array(1 , NULL, FALSE, '<div><p></p></div>', ''),
+			array(1 , NULL, FALSE, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'),
+			array(1 , NULL, TRUE, '<div><p>&nbsp;&nbsp;</p></div>', ''),
+			array(1 , NULL, TRUE, '<div>&nbsp;&nbsp;<p></p></div>', ''),
+			array(1 , NULL, FALSE, '<div>Some content<p></p></div>', '<div>Some content</div>'),
+			array(1 , NULL, TRUE, '<div>Some content<p></p></div>', '<div>Some content</div>'),
+			array(1 , NULL, FALSE, '<div>Some content</div>', '<div>Some content</div>'),
+			array(1 , NULL, TRUE, '<div>Some content</div>', '<div>Some content</div>'),
+			array(1 , NULL, FALSE, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
+			array(1 , NULL, TRUE, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider emptyTagsDataProvider
+	 * @param bool $stripOn TRUE if stripping should be activated.
+	 * @param string $tagList Comma seperated list of tags that should be stripped.
+	 * @param bool $treatNonBreakingSpaceAsEmpty If TRUE &nbsp; will be considered empty.
+	 * @param string $content The HTML code that should be modified.
+	 * @param string $expectedResult The expected HTML code result.
+	 */
+	public function stripEmptyTags($stripOn, $tagList, $treatNonBreakingSpaceAsEmpty, $content, $expectedResult) {
+		$tsConfig = array(
+			'keepNonMatchedTags' => 1,
+			'stripEmptyTags' => $stripOn,
+			'stripEmptyTags.' => array(
+				'tags' => $tagList,
+				'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
+			),
+		);
+		$config = $this->subject->HTMLparserConfig($tsConfig);
+		$result = $this->subject->HTMLcleaner($content, $config[0], $config[1], $config[2], $config[3]);
+		$this->assertEquals($expectedResult, $result);
+	}
 }
