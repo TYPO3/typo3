@@ -40,11 +40,6 @@ class AdministrationController extends ActionController {
 	protected $pageUid = 0;
 
 	/**
-	 * @var int Max lists per page
-	 */
-	protected $maxListPerPage = 50;
-
-	/**
 	 * @var array External parsers
 	 */
 	protected $external_parsers = array();
@@ -73,7 +68,6 @@ class AdministrationController extends ActionController {
 	 */
 	public function initializeAction() {
 		$this->pageUid = (int)GeneralUtility::_GET('id');
-		$this->maxListPerPage = GeneralUtility::_GP('listALL') ? 100000 : 100;
 		$this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 		$this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
 		$this->indexer = GeneralUtility::makeInstance(Indexer::class);
