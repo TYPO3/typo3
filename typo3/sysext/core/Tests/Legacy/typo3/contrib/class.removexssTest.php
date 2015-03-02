@@ -12,8 +12,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once(PATH_typo3 . 'contrib/RemoveXSS/RemoveXSS.php');
-
 /**
  * Testcase for class RemoveXSS
  *

@@ -27,7 +27,8 @@
 		},
 		"psr-0": {
 			"TYPO3\\Flow\\": "Resources/PHP/TYPO3.Flow/Classes/"
-		}
+		},
+		"classmap": ["Resources/PHP/RemoveXSS.php"]
 	},
 	"autoload-dev": {
 		"psr-4": {

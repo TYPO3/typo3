@@ -251,9 +251,7 @@ class GeneralUtility {
 	 * @return string Input string with potential XSS code removed
 	 */
 	static public function removeXSS($string) {
-		require_once PATH_typo3 . 'contrib/RemoveXSS/RemoveXSS.php';
-		$string = \RemoveXSS::process($string);
-		return $string;
+		return \RemoveXSS::process($string);
 	}
 
 	/*************************

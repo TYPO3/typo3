@@ -135,7 +135,8 @@
 			"TYPO3\\CMS\\Recordlist\\": "typo3/sysext/recordlist/Classes/",
 			"TYPO3\\CMS\\Saltedpasswords\\": "typo3/sysext/saltedpasswords/Classes/",
 			"TYPO3\\CMS\\Sv\\": "typo3/sysext/sv/Classes/"
-		}
+		},
+		"classmap": ["typo3/sysext/core/Resources/PHP/RemoveXSS.php"]
 	},
 	"autoload-dev": {
 		"psr-4": {
