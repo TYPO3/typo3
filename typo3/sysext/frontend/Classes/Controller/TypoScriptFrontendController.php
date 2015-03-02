@@ -2952,8 +2952,11 @@ class TypoScriptFrontendController {
 		}
 		$redirectUrl = $cObj->typoLink_URL(array('parameter' => $parameter));
 
-		// redirect and exit
-		HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
+		// Prevent redirection loop
+		if (!empty($redirectUrl)) {
+			// redirect and exit
+			HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_307);
+		}
 	}
 
 	/********************************************
