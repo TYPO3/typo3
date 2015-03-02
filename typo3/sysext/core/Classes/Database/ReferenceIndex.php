@@ -15,10 +15,16 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Reference index processing and relation extraction
@@ -26,8 +32,11 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * NOTICE: When the reference index is updated for an offline version the results may not be correct.
  * First, lets assumed that the reference update happens in LIVE workspace (ALWAYS update from Live workspace if you analyse whole database!)
  * Secondly, lets assume that in a Draft workspace you have changed the data structure of a parent page record - this is (in TemplaVoila) inherited by subpages.
- * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataSTructure! Thus the evaluation will be based on the Data Structure set in the Live workspace!
- * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
+ * When in the LIVE workspace the data structure for the records/pages in the offline workspace will not be evaluated to the right one simply because the data
+ * structure is taken from a rootline traversal and in the Live workspace that will NOT include the changed DataStructure! Thus the evaluation will be based
+ * on the Data Structure set in the Live workspace!
+ * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring
+ * maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
  * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -84,22 +93,36 @@ class ReferenceIndex {
 	static protected $cachePrefixTableRelationFields = 'core-refidx-tblRelFields-';
 
 	/**
+	 * This array holds the FlexForm references of a record
+	 *
 	 * @var array
+	 * @see getRelations(),FlexFormTools::traverseFlexFormXMLData(),getRelations_flexFormCallBack()
 	 */
 	public $temp_flexRelations = array();
 
 	/**
+	 * Unused log for errors in ReferenceIndex
+	 *
 	 * @var array
+	 * @see error()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $errorLog = array();
 
 	/**
+	 * This variable used to indicate whether referencing should take workspace overlays into account
+	 * It is not used since commit 0c34dac08605ba from 10.04.2006, the bug is investigated in https://forge.typo3.org/issues/65725
+	 *
 	 * @var bool
+	 * @see getRelations()
 	 */
 	public $WSOL = FALSE;
 
 	/**
+	 * An index of all found references of a single record created in createEntryData() and accumulated in generateRefIndexData()
+	 *
 	 * @var array
+	 * @see createEntryData(),generateRefIndexData()
 	 */
 	public $relations = array();
 
@@ -107,15 +130,20 @@ class ReferenceIndex {
 	 * Number which we can increase if a change in the code means we will have to force a re-generation of the index.
 	 *
 	 * @var int
+	 * @see updateRefIndexTable()
 	 */
 	public $hashVersion = 1;
 
 	/**
+	 * Current workspace id
+	 *
 	 * @var int
 	 */
 	protected $workspaceId = 0;
 
 	/**
+	 * Runtime Cache to store and retrieve data computed for a single request
+	 *
 	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
 	 */
 	protected $runtimeCache = NULL;
@@ -128,18 +156,20 @@ class ReferenceIndex {
 	}
 
 	/**
-	 * Sets the current workspace id.
+	 * Sets the current workspace id
 	 *
 	 * @param int $workspaceId
+	 * @see updateIndex()
 	 */
 	public function setWorkspaceId($workspaceId) {
 		$this->workspaceId = (int)$workspaceId;
 	}
 
 	/**
-	 * Gets the current workspace id.
+	 * Gets the current workspace id
 	 *
 	 * @return int
+	 * @see updateRefIndexTable(),createEntryData()
 	 */
 	public function getWorkspaceId() {
 		return $this->workspaceId;
@@ -147,7 +177,10 @@ class ReferenceIndex {
 
 	/**
 	 * Call this function to update the sys_refindex table for a record (even one just deleted)
-	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within flexform fields in some cases where the data structure is defined by another record since the resolving process ignores deleted records! This will also result in bad cleaning up in tcemain I think... Anyway, thats the story of flexforms; as long as the DS can change, lots of references can get lost in no time.
+	 * NOTICE: Currently, references updated for a deleted-flagged record will not include those from within FlexForm
+	 * fields in some cases where the data structure is defined by another record since the resolving process ignores
+	 * deleted records! This will also result in bad cleaning up in DataHandler I think... Anyway, that's the story of
+	 * FlexForms; as long as the DS can change, lots of references can get lost in no time.
 	 *
 	 * @param string $tableName Table name
 	 * @param int $uid UID of record
@@ -172,7 +205,7 @@ class ReferenceIndex {
 		}
 
 		// Fetch tableRelationFields and save them in cache if not there yet
-		$cacheId = static::$cachePrefixTableRelationFields. $tableName;
+		$cacheId = static::$cachePrefixTableRelationFields . $tableName;
 		if (!$this->runtimeCache->has($cacheId)) {
 			$tableRelationFields = $this->fetchTableRelationFields($tableName);
 			$this->runtimeCache->set($cacheId, $tableRelationFields);
@@ -180,12 +213,14 @@ class ReferenceIndex {
 			$tableRelationFields = $this->runtimeCache->get($cacheId);
 		}
 
+		$databaseConnection = $this->getDatabaseConnection();
+
 		// Get current index from Database with hash as index using $uidIndexField
-		$currentRelations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$currentRelations = $databaseConnection->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex')
-			. ' AND recuid=' . (int)$uid . ' AND workspace=' . (int)$this->getWorkspaceId(),
+			'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_refindex')
+			. ' AND recuid=' . (int)$uid . ' AND workspace=' . $this->getWorkspaceId(),
 			'', '', '', 'hash'
 		);
 
@@ -195,23 +230,23 @@ class ReferenceIndex {
 			$relations = $this->generateRefIndexData($tableName, $uid);
 			if (is_array($relations)) {
 				// Traverse the generated index:
-				foreach ($relations as $k => $datRec) {
-					if (!is_array($relations[$k])) {
+				foreach ($relations as &$relation) {
+					if (!is_array($relation)) {
 						continue;
 					}
-					$relations[$k]['hash'] = md5(implode('///', $relations[$k]) . '///' . $this->hashVersion);
+					$relation['hash'] = md5(implode('///', $relation) . '///' . $this->hashVersion);
 					// First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
-					if (isset($currentRelations[$relations[$k]['hash']])) {
-						unset($currentRelations[$relations[$k]['hash']]);
+					if (isset($currentRelations[$relation['hash']])) {
+						unset($currentRelations[$relation['hash']]);
 						$result['keptNodes']++;
-						$relations[$k]['_ACTION'] = 'KEPT';
+						$relation['_ACTION'] = 'KEPT';
 					} else {
 						// If new, add it:
 						if (!$testOnly) {
-							$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_refindex', $relations[$k]);
+							$databaseConnection->exec_INSERTquery('sys_refindex', $relation);
 						}
 						$result['addedNodes']++;
-						$relations[$k]['_ACTION'] = 'ADDED';
+						$relation['_ACTION'] = 'ADDED';
 					}
 				}
 				$result['relations'] = $relations;
@@ -227,7 +262,9 @@ class ReferenceIndex {
 				$result['deletedNodes'] = count($hashList);
 				$result['deletedNodes_hashList'] = implode(',', $hashList);
 				if (!$testOnly) {
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', 'hash IN (' . implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($hashList, 'sys_refindex')) . ')');
+					$databaseConnection->exec_DELETEquery(
+						'sys_refindex', 'hash IN (' . implode(',', $databaseConnection->fullQuoteArray($hashList, 'sys_refindex')) . ')'
+					);
 				}
 			}
 		}
@@ -276,7 +313,7 @@ class ReferenceIndex {
 		}
 
 		// Get raw record from DB:
-		$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($selectFields, $tableName, 'uid=' . (int)$uid);
+		$record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow($selectFields, $tableName, 'uid=' . (int)$uid);
 		if (!is_array($record)) {
 			return NULL;
 		}
@@ -288,7 +325,7 @@ class ReferenceIndex {
 		$recordRelations = $this->getRelations($tableName, $record);
 		// Traverse those relations, compile records to insert in table:
 		foreach ($recordRelations as $fieldName => $fieldRelations) {
-			// Based on type,
+			// Based on type
 			switch ((string)$fieldRelations['type']) {
 				case 'db':
 					$this->createEntryData_dbRels($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['itemArray']);
@@ -299,19 +336,21 @@ class ReferenceIndex {
 					$this->createEntryData_fileRels($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['newValueFiles']);
 					break;
 				case 'flex':
-					// DB references:
+					// DB references in FlexForms
 					if (is_array($fieldRelations['flexFormRels']['db'])) {
 						foreach ($fieldRelations['flexFormRels']['db'] as $flexPointer => $subList) {
 							$this->createEntryData_dbRels($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList);
 						}
 					}
-					// @todo #65463 Test correct handling of file references in flexforms
+					// File references in FlexForms
+					// @todo #65463 Test correct handling of file references in FlexForms
 					if (is_array($fieldRelations['flexFormRels']['file'])) {
 						foreach ($fieldRelations['flexFormRels']['file'] as $flexPointer => $subList) {
 							$this->createEntryData_fileRels($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList);
 						}
 					}
-					// @todo #65464 Test correct handling of soft references in flexforms
+					// Soft references in FlexForms
+					// @todo #65464 Test correct handling of soft references in FlexForms
 					if (is_array($fieldRelations['flexFormRels']['softrefs'])) {
 						foreach ($fieldRelations['flexFormRels']['softrefs'] as $flexPointer => $subList) {
 							$this->createEntryData_softreferences($tableName, $uid, $fieldName, $flexPointer, $deleted, $subList['keys']);
@@ -319,7 +358,7 @@ class ReferenceIndex {
 					}
 					break;
 			}
-			// Soft references in the field:
+			// Soft references in the field
 			if (is_array($fieldRelations['softrefs'])) {
 				$this->createEntryData_softreferences($tableName, $uid, $fieldName, '', $deleted, $fieldRelations['softrefs']['keys']);
 			}
@@ -335,7 +374,7 @@ class ReferenceIndex {
 	 * @param string $table Tablename of source record (where reference is located)
 	 * @param int $uid UID of source record (where reference is located)
 	 * @param string $field Fieldname of source record (where reference is located)
-	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
+	 * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
 	 * @param int $deleted Whether record is deleted-flagged or not
 	 * @param string $ref_table For database references; the tablename the reference points to. Special keyword "_FILE" indicates that "ref_string" is a file reference either absolute or relative to PATH_site. Special keyword "_STRING" indicates some special usage (typ. softreference) where "ref_string" is used for the value.
 	 * @param int $ref_uid For database references; The UID of the record (zero "ref_table" is "_FILE" or "_STRING")
@@ -345,7 +384,7 @@ class ReferenceIndex {
 	 * @param string $softref_id Soft reference ID for key. Might be useful for replace operations.
 	 * @return array Array record to insert into table.
 	 */
-	public function createEntryData($table, $uid, $field, $flexpointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '') {
+	public function createEntryData($table, $uid, $field, $flexPointer, $deleted, $ref_table, $ref_uid, $ref_string = '', $sort = -1, $softref_key = '', $softref_id = '') {
 		if (BackendUtility::isTableWorkspaceEnabled($table)) {
 			$element = BackendUtility::getRecord($table, $uid, 't3ver_wsid');
 			if ($element !== NULL && isset($element['t3ver_wsid']) && (int)$element['t3ver_wsid'] !== $this->getWorkspaceId()) {
@@ -358,7 +397,7 @@ class ReferenceIndex {
 			'tablename' => $table,
 			'recuid' => $uid,
 			'field' => $field,
-			'flexpointer' => $flexpointer,
+			'flexpointer' => $flexPointer,
 			'softref_key' => $softref_key,
 			'softref_id' => $softref_id,
 			'sorting' => $sort,
@@ -375,15 +414,15 @@ class ReferenceIndex {
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
 	 * @param int $uid UID of source record (where reference is located)
-	 * @param string $fieldname Fieldname of source record (where reference is located)
-	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
+	 * @param string $fieldName Fieldname of source record (where reference is located)
+	 * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
 	 * @param int $deleted Whether record is deleted-flagged or not
-	 * @param array $items Data array with databaes relations (table/id)
+	 * @param array $items Data array with database relations (table/id)
 	 * @return void
 	 */
-	public function createEntryData_dbRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
+	public function createEntryData_dbRels($table, $uid, $fieldName, $flexPointer, $deleted, $items) {
 		foreach ($items as $sort => $i) {
-			$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $i['table'], $i['id'], '', $sort);
+			$this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, $i['table'], $i['id'], '', $sort);
 		}
 	}
 
@@ -392,19 +431,19 @@ class ReferenceIndex {
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
 	 * @param int $uid UID of source record (where reference is located)
-	 * @param string $fieldname Fieldname of source record (where reference is located)
-	 * @param string $flexpointer Pointer to location inside flexform structure where reference is located in [field]
+	 * @param string $fieldName Fieldname of source record (where reference is located)
+	 * @param string $flexPointer Pointer to location inside FlexForm structure where reference is located in [field]
 	 * @param int $deleted Whether record is deleted-flagged or not
 	 * @param array $items Data array with file relations
 	 * @return void
 	 */
-	public function createEntryData_fileRels($table, $uid, $fieldname, $flexpointer, $deleted, $items) {
+	public function createEntryData_fileRels($table, $uid, $fieldName, $flexPointer, $deleted, $items) {
 		foreach ($items as $sort => $i) {
 			$filePath = $i['ID_absFile'];
 			if (GeneralUtility::isFirstPartOfStr($filePath, PATH_site)) {
-				$filePath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($filePath);
+				$filePath = PathUtility::stripPathSitePrefix($filePath);
 			}
-			$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_FILE', 0, $filePath, $sort);
+			$this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, '_FILE', 0, $filePath, $sort);
 		}
 	}
 
@@ -413,13 +452,13 @@ class ReferenceIndex {
 	 *
 	 * @param string $table Tablename of source record (where reference is located)
 	 * @param int $uid UID of source record (where reference is located)
-	 * @param string $fieldname Fieldname of source record (where reference is located)
-	 * @param string $flexpointer Pointer to location inside flexform struc
+	 * @param string $fieldName Fieldname of source record (where reference is located)
+	 * @param string $flexPointer Pointer to location inside FlexForm structure
 	 * @param int $deleted
 	 * @param array $keys Data array with soft reference keys
 	 * @return void
 	 */
-	public function createEntryData_softreferences($table, $uid, $fieldname, $flexpointer, $deleted, $keys) {
+	public function createEntryData_softreferences($table, $uid, $fieldName, $flexPointer, $deleted, $keys) {
 		if (is_array($keys)) {
 			foreach ($keys as $spKey => $elements) {
 				if (is_array($elements)) {
@@ -428,15 +467,15 @@ class ReferenceIndex {
 							switch ((string)$el['subst']['type']) {
 								case 'db':
 									list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
-									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
 									break;
 								case 'file_reference':
 									// not used (see getRelations()), but fallback to file
 								case 'file':
-									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, '_FILE', 0, $el['subst']['relFileName'], -1, $spKey, $subKey);
 									break;
 								case 'string':
-									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldName, $flexPointer, $deleted, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
 									break;
 							}
 						}
@@ -451,6 +490,7 @@ class ReferenceIndex {
 	 * Get relations from table row
 	 *
 	 *******************************/
+
 	/**
 	 * Returns relation information for a $table/$row-array
 	 * Traverses all fields in input row which are configured in TCA/columns
@@ -513,7 +553,7 @@ class ReferenceIndex {
 					);
 				}
 				// For "flex" fieldtypes we need to traverse the structure looking for file and db references of course!
-				if ($conf['type'] == 'flex') {
+				if ($conf['type'] === 'flex') {
 					// Get current value array:
 					// NOTICE: failure to resolve Data Structures can lead to integrity problems with the reference index. Please look up the note in the JavaDoc documentation for the function \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS()
 					$currentValueArray = GeneralUtility::xml2array($value);
@@ -525,8 +565,8 @@ class ReferenceIndex {
 							'softrefs' => array()
 						);
 						// Create and call iterator object:
-						$flexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-						$flexObj->traverseFlexFormXMLData($table, $field, $row, $this, 'getRelations_flexFormCallBack');
+						$flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+						$flexFormTools->traverseFlexFormXMLData($table, $field, $row, $this, 'getRelations_flexFormCallBack');
 						// Create an entry for the field:
 						$outRow[$field] = array(
 							'type' => 'flex',
@@ -568,11 +608,11 @@ class ReferenceIndex {
 	 * @param mixed $dataValue Current value
 	 * @param array $PA Additional configuration used in calling function
 	 * @param string $structurePath Path of value in DS structure
-	 * @param object $pObj Object reference to caller
+	 * @param object $parentObject Object reference to caller (unused)
 	 * @return void
-	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_flex_procInData_travDS()
+	 * @see DataHandler::checkValue_flex_procInData_travDS(),FlexFormTools::traverseFlexFormXMLData()
 	 */
-	public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
+	public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $parentObject) {
 		// Removing "data/" in the beginning of path (which points to location in data array)
 		$structurePath = substr($structurePath, 5) . '/';
 		$dsConf = $dsArr['TCEforms']['config'];
@@ -655,7 +695,7 @@ class ReferenceIndex {
 		// Collect file values in array:
 		if ($conf['MM']) {
 			$theFileValues = array();
-			$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+			$dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 			$dbAnalysis->start('', 'files', $conf['MM'], $uid);
 			foreach ($dbAnalysis->itemArray as $someval) {
 				if ($someval['id']) {
@@ -666,12 +706,12 @@ class ReferenceIndex {
 			$theFileValues = explode(',', $value);
 		}
 		// Traverse the files and add them:
-		$uploadFolder = $conf['internal_type'] == 'file' ? $conf['uploadfolder'] : '';
-		$dest = $this->destPathFromUploadFolder($uploadFolder);
+		$uploadFolder = $conf['internal_type'] === 'file' ? $conf['uploadfolder'] : '';
+		$destinationFolder = $this->destPathFromUploadFolder($uploadFolder);
 		$newValueFiles = array();
 		foreach ($theFileValues as $file) {
 			if (trim($file)) {
-				$realFile = $dest . '/' . trim($file);
+				$realFile = $destinationFolder . '/' . trim($file);
 				$newValueFile = array(
 					'filename' => basename($file),
 					'ID' => md5($realFile),
@@ -680,8 +720,8 @@ class ReferenceIndex {
 				// Set sys_file and id for referenced files
 				if ($conf['internal_type'] === 'file_reference') {
 					try {
-						$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
-						if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+						$file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+						if ($file instanceof File || $file instanceof Folder) {
 							// For setting this as sys_file relation later, the keys filename, ID and ID_absFile
 							// have not to be included, because the are not evaluated for db relations.
 							$newValueFile = array(
@@ -714,31 +754,38 @@ class ReferenceIndex {
 		if (empty($conf)) {
 			return FALSE;
 		} elseif ($conf['type'] === 'inline' && !empty($conf['foreign_table']) && empty($conf['MM'])) {
-			$dbAnalysis = $this->getRelationHandler();
+			$dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 			$dbAnalysis->setUseLiveReferenceIds(FALSE);
 			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
-		// DB record lists:
+			// DB record lists:
 		} elseif ($this->isDbReferenceField($conf)) {
-			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
+			$allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			if ($conf['MM_opposite_field']) {
 				return array();
 			}
-			$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+			$dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
-		} elseif ($conf['type'] == 'inline' && $conf['foreign_table'] == 'sys_file_reference') {
+		} elseif ($conf['type'] === 'inline' && $conf['foreign_table'] === 'sys_file_reference') {
 			// @todo It looks like this was never called before since isDbReferenceField also checks for type 'inline' and any 'foreign_table'
-			$files = (array)$GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_local', 'sys_file_reference', ('tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid . ' AND deleted=0'));
+			$files = $this->getDatabaseConnection()->exec_SELECTgetRows(
+				'uid_local',
+				'sys_file_reference',
+				'tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid . ' AND deleted=0'
+			);
 			$fileArray = array();
-			foreach ($files as $fileUid) {
-				$fileArray[] = array(
-					'table' => 'sys_file',
-					'id' => $fileUid['uid_local']
-				);
+			if (!empty($files)) {
+				foreach ($files as $fileUid) {
+					$fileArray[] = array(
+						'table' => 'sys_file',
+						'id' => $fileUid['uid_local']
+					);
+				}
 			}
 			return $fileArray;
 		}
+		return FALSE;
 	}
 
 	/*******************************
@@ -746,113 +793,125 @@ class ReferenceIndex {
 	 * Setting values
 	 *
 	 *******************************/
+
 	/**
 	 * Setting the value of a reference or removing it completely.
 	 * Usage: For lowlevel clean up operations!
-	 * WARNING: With this you can set values that are not allowed in the database since it will bypass all checks for validity! Hence it is targetted at clean-up operations. Please use TCEmain in the usual ways if you wish to manipulate references.
-	 * Since this interface allows updates to soft reference values (which TCEmain does not directly) you may like to use it for that as an exception to the warning above.
-	 * Notice; If you want to remove multiple references from the same field, you MUST start with the one having the highest sorting number. If you don't the removal of a reference with a lower number will recreate an index in which the remaining references in that field has new hash-keys due to new sorting numbers - and you will get errors for the remaining operations which cannot find the hash you feed it!
+	 * WARNING: With this you can set values that are not allowed in the database since it will bypass all checks for validity!
+	 * Hence it is targeted at clean-up operations. Please use DataHandler in the usual ways if you wish to manipulate references.
+	 * Since this interface allows updates to soft reference values (which DataHandler does not directly) you may like to use it
+	 * for that as an exception to the warning above.
+	 * Notice; If you want to remove multiple references from the same field, you MUST start with the one having the highest
+	 * sorting number. If you don't the removal of a reference with a lower number will recreate an index in which the remaining
+	 * references in that field has new hash-keys due to new sorting numbers - and you will get errors for the remaining operations
+	 * which cannot find the hash you feed it!
 	 * To ensure proper working only admin-BE_USERS in live workspace should use this function
 	 *
 	 * @param string $hash 32-byte hash string identifying the record from sys_refindex which you wish to change the value for
 	 * @param mixed $newValue Value you wish to set for reference. If NULL, the reference is removed (unless a soft-reference in which case it can only be set to a blank string). If you wish to set a database reference, use the format "[table]:[uid]". Any other case, the input value is set as-is
 	 * @param bool $returnDataArray Return $dataArray only, do not submit it to database.
 	 * @param bool $bypassWorkspaceAdminCheck If set, it will bypass check for workspace-zero and admin user
-	 * @return string If a return string, that carries an error message, otherwise FALSE (=OK) (except if $returnDataArray is set!)
+	 * @return string|bool|array FALSE (=OK), error message string or array (if $returnDataArray is set!)
 	 */
 	public function setReferenceValue($hash, $newValue, $returnDataArray = FALSE, $bypassWorkspaceAdminCheck = FALSE) {
-		if ($GLOBALS['BE_USER']->workspace === 0 && $GLOBALS['BE_USER']->isAdmin() || $bypassWorkspaceAdminCheck) {
+		$backendUser = $this->getBackendUser();
+		if ($backendUser->workspace === 0 && $backendUser->isAdmin() || $bypassWorkspaceAdminCheck) {
+			$databaseConnection = $this->getDatabaseConnection();
+
 			// Get current index from Database:
-			$refRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_refindex', 'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'sys_refindex'));
+			$referenceRecord = $databaseConnection->exec_SELECTgetSingleRow('*', 'sys_refindex', 'hash=' . $databaseConnection->fullQuoteStr($hash, 'sys_refindex'));
 			// Check if reference existed.
-			if (is_array($refRec)) {
-				if ($GLOBALS['TCA'][$refRec['tablename']]) {
-					// Get that record from database:
-					$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $refRec['tablename'], 'uid=' . (int)$refRec['recuid']);
-					if (is_array($record)) {
-						// Get all relations from record, filter with fieldname:
-						$dbrels = $this->getRelations($refRec['tablename'], $record, $refRec['field']);
-						if ($dat = $dbrels[$refRec['field']]) {
-							// Initialize data array that is to be sent to TCEmain afterwards:
-							$dataArray = array();
-							// Based on type,
-							switch ((string)$dat['type']) {
-								case 'db':
-									$error = $this->setReferenceValue_dbRels($refRec, $dat['itemArray'], $newValue, $dataArray);
-									if ($error) {
-										return $error;
-									}
-									break;
-								case 'file_reference':
-									// not used (see getRelations()), but fallback to file
-								case 'file':
-									$error = $this->setReferenceValue_fileRels($refRec, $dat['newValueFiles'], $newValue, $dataArray);
-									if ($error) {
-										return $error;
-									}
-									break;
-								case 'flex':
-									// DB references:
-									if (is_array($dat['flexFormRels']['db'][$refRec['flexpointer']])) {
-										$error = $this->setReferenceValue_dbRels($refRec, $dat['flexFormRels']['db'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
-										if ($error) {
-											return $error;
-										}
-									}
-									// File references
-									if (is_array($dat['flexFormRels']['file'][$refRec['flexpointer']])) {
-										$this->setReferenceValue_fileRels($refRec, $dat['flexFormRels']['file'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
-										if ($error) {
-											return $error;
-										}
-									}
-									// Soft references in flexforms
-									if ($refRec['softref_key'] && is_array($dat['flexFormRels']['softrefs'][$refRec['flexpointer']]['keys'][$refRec['softref_key']])) {
-										$error = $this->setReferenceValue_softreferences($refRec, $dat['flexFormRels']['softrefs'][$refRec['flexpointer']], $newValue, $dataArray, $refRec['flexpointer']);
-										if ($error) {
-											return $error;
-										}
-									}
-									break;
+			if (!is_array($referenceRecord)) {
+				return 'ERROR: No reference record with hash="' . $hash . '" was found!';
+			}
+
+			if (empty($GLOBALS['TCA'][$referenceRecord['tablename']])) {
+				return 'ERROR: Table "' . $referenceRecord['tablename'] . '" was not in TCA!';
+			}
+
+			// Get that record from database:
+			$record = $databaseConnection->exec_SELECTgetSingleRow('*', $referenceRecord['tablename'], 'uid=' . (int)$referenceRecord['recuid']);
+			if (is_array($record)) {
+				// Get relation for single field from record
+				$recordRelations = $this->getRelations($referenceRecord['tablename'], $record, $referenceRecord['field']);
+				if ($fieldRelation = $recordRelations[$referenceRecord['field']]) {
+					// Initialize data array that is to be sent to DataHandler afterwards:
+					$dataArray = array();
+					// Based on type
+					switch ((string)$fieldRelation['type']) {
+						case 'db':
+							$error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['itemArray'], $newValue, $dataArray);
+							if ($error) {
+								return $error;
 							}
-							// Softreferences in the field:
-							if ($refRec['softref_key'] && is_array($dat['softrefs']['keys'][$refRec['softref_key']])) {
-								$error = $this->setReferenceValue_softreferences($refRec, $dat['softrefs'], $newValue, $dataArray);
+							break;
+						case 'file_reference':
+							// not used (see getRelations()), but fallback to file
+						case 'file':
+							$error = $this->setReferenceValue_fileRels($referenceRecord, $fieldRelation['newValueFiles'], $newValue, $dataArray);
+							if ($error) {
+								return $error;
+							}
+							break;
+						case 'flex':
+							// DB references in FlexForms
+							if (is_array($fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']])) {
+								$error = $this->setReferenceValue_dbRels($referenceRecord, $fieldRelation['flexFormRels']['db'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
 								if ($error) {
 									return $error;
 								}
 							}
-							// Data Array, now ready to sent to TCEmain
-							if ($returnDataArray) {
-								return $dataArray;
-							} else {
-								// Execute CMD array:
-								$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-								$tce->stripslashes_values = FALSE;
-								$tce->dontProcessTransformations = TRUE;
-								$tce->bypassWorkspaceRestrictions = TRUE;
-								$tce->bypassFileHandling = TRUE;
-								// Otherwise this cannot update things in deleted records...
-								$tce->bypassAccessCheckForRecords = TRUE;
-								// Check has been done previously that there is a backend user which is Admin and also in live workspace
-								$tce->start($dataArray, array());
-								$tce->process_datamap();
-								// Return errors if any:
-								if (count($tce->errorLog)) {
-									return LF . 'TCEmain:' . implode((LF . 'TCEmain:'), $tce->errorLog);
+							// File references in FlexForms
+							if (is_array($fieldRelation['flexFormRels']['file'][$referenceRecord['flexpointer']])) {
+								$error = $this->setReferenceValue_fileRels($referenceRecord, $fieldRelation['flexFormRels']['file'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
+								if ($error) {
+									return $error;
 								}
 							}
+							// Soft references in FlexForms
+							if ($referenceRecord['softref_key'] && is_array($fieldRelation['flexFormRels']['softrefs'][$referenceRecord['flexpointer']]['keys'][$referenceRecord['softref_key']])) {
+								$error = $this->setReferenceValue_softreferences($referenceRecord, $fieldRelation['flexFormRels']['softrefs'][$referenceRecord['flexpointer']], $newValue, $dataArray, $referenceRecord['flexpointer']);
+								if ($error) {
+									return $error;
+								}
+							}
+							break;
+					}
+					// Soft references in the field:
+					if ($referenceRecord['softref_key'] && is_array($fieldRelation['softrefs']['keys'][$referenceRecord['softref_key']])) {
+						$error = $this->setReferenceValue_softreferences($referenceRecord, $fieldRelation['softrefs'], $newValue, $dataArray);
+						if ($error) {
+							return $error;
 						}
 					}
-				} else {
-					return 'ERROR: Tablename "' . $refRec['tablename'] . '" was not in TCA!';
+					// Data Array, now ready to be sent to DataHandler
+					if ($returnDataArray) {
+						return $dataArray;
+					} else {
+						// Execute CMD array:
+						$dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+						$dataHandler->stripslashes_values = FALSE;
+						$dataHandler->dontProcessTransformations = TRUE;
+						$dataHandler->bypassWorkspaceRestrictions = TRUE;
+						$dataHandler->bypassFileHandling = TRUE;
+						// Otherwise this cannot update things in deleted records...
+						$dataHandler->bypassAccessCheckForRecords = TRUE;
+						// Check has been done previously that there is a backend user which is Admin and also in live workspace
+						$dataHandler->start($dataArray, array());
+						$dataHandler->process_datamap();
+						// Return errors if any:
+						if (!empty($dataHandler->errorLog)) {
+							return LF . 'DataHandler:' . implode((LF . 'DataHandler:'), $dataHandler->errorLog);
+						}
+					}
 				}
-			} else {
-				return 'ERROR: No reference record with hash="' . $hash . '" was found!';
 			}
+
 		} else {
 			return 'ERROR: BE_USER object is not admin OR not in workspace 0 (Live)';
 		}
+
+		return FALSE;
 	}
 
 	/**
@@ -862,10 +921,10 @@ class ReferenceIndex {
 	 * @param array $itemArray Array of references from that field
 	 * @param string $newValue Value to substitute current value with (or NULL to unset it)
 	 * @param array $dataArray Data array in which the new value is set (passed by reference)
-	 * @param string $flexpointer Flexform pointer, if in a flex form field.
+	 * @param string $flexPointer Flexform pointer, if in a flex form field.
 	 * @return string Error message if any, otherwise FALSE = OK
 	 */
-	public function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
+	public function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '') {
 		if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
 			// Setting or removing value:
 			// Remove value:
@@ -880,16 +939,18 @@ class ReferenceIndex {
 				$saveValue[] = $pair['table'] . '_' . $pair['id'];
 			}
 			// Set in data array:
-			if ($flexpointer) {
-				$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+			if ($flexPointer) {
+				$flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
-				$flexToolObj->setArrayValueByPath(substr($flexpointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
+				$flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
 			} else {
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
 			}
 		} else {
 			return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
 		}
+
+		return FALSE;
 	}
 
 	/**
@@ -899,11 +960,11 @@ class ReferenceIndex {
 	 * @param array $itemArray Array of references from that field
 	 * @param string $newValue Value to substitute current value with (or NULL to unset it)
 	 * @param array $dataArray Data array in which the new value is set (passed by reference)
-	 * @param string $flexpointer Flexform pointer, if in a flex form field.
+	 * @param string $flexPointer Flexform pointer, if in a flex form field.
 	 * @return string Error message if any, otherwise FALSE = OK
 	 */
-	public function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexpointer = '') {
-		$ID_absFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']);
+	public function setReferenceValue_fileRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '') {
+		$ID_absFile = PathUtility::stripPathSitePrefix($itemArray[$refRec['sorting']]['ID_absFile']);
 		if ($ID_absFile === (string)$refRec['ref_string'] && $refRec['ref_table'] === '_FILE') {
 			// Setting or removing value:
 			// Remove value:
@@ -918,16 +979,18 @@ class ReferenceIndex {
 				$saveValue[] = $fileInfo['filename'];
 			}
 			// Set in data array:
-			if ($flexpointer) {
-				$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+			if ($flexPointer) {
+				$flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
-				$flexToolObj->setArrayValueByPath(substr($flexpointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
+				$flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], implode(',', $saveValue));
 			} else {
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
 			}
 		} else {
 			return 'ERROR: either "' . $refRec['ref_table'] . '" was not "_FILE" or file PATH_site+"' . $refRec['ref_string'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['ID_absFile'] . '") in sorting index "' . $refRec['sorting'] . '"';
 		}
+
+		return FALSE;
 	}
 
 	/**
@@ -937,34 +1000,36 @@ class ReferenceIndex {
 	 * @param array $softref Array of soft reference occurencies
 	 * @param string $newValue Value to substitute current value with
 	 * @param array $dataArray Data array in which the new value is set (passed by reference)
-	 * @param string $flexpointer Flexform pointer, if in a flex form field.
+	 * @param string $flexPointer Flexform pointer, if in a flex form field.
 	 * @return string Error message if any, otherwise FALSE = OK
 	 */
-	public function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexpointer = '') {
-		if (is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
-			// Set new value:
-			$softref['keys'][$refRec['softref_key']][$refRec['softref_id']]['subst']['tokenValue'] = '' . $newValue;
-			// Traverse softreferences and replace in tokenized content to rebuild it with new value inside:
-			foreach ($softref['keys'] as $sfIndexes) {
-				foreach ($sfIndexes as $data) {
-					$softref['tokenizedContent'] = str_replace('{softref:' . $data['subst']['tokenID'] . '}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
-				}
-			}
-			// Set in data array:
-			if (!strstr($softref['tokenizedContent'], '{softref:')) {
-				if ($flexpointer) {
-					$flexToolObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-					$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
-					$flexToolObj->setArrayValueByPath(substr($flexpointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], $softref['tokenizedContent']);
-				} else {
-					$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
-				}
-			} else {
-				return 'ERROR: After substituting all found soft references there were still soft reference tokens in the text. (theoretically this does not have to be an error if the string "{softref:" happens to be in the field for another reason.)';
-			}
-		} else {
+	public function setReferenceValue_softreferences($refRec, $softref, $newValue, &$dataArray, $flexPointer = '') {
+		if (!is_array($softref['keys'][$refRec['softref_key']][$refRec['softref_id']])) {
 			return 'ERROR: Soft reference parser key "' . $refRec['softref_key'] . '" or the index "' . $refRec['softref_id'] . '" was not found.';
 		}
+
+		// Set new value:
+		$softref['keys'][$refRec['softref_key']][$refRec['softref_id']]['subst']['tokenValue'] = '' . $newValue;
+		// Traverse softreferences and replace in tokenized content to rebuild it with new value inside:
+		foreach ($softref['keys'] as $sfIndexes) {
+			foreach ($sfIndexes as $data) {
+				$softref['tokenizedContent'] = str_replace('{softref:' . $data['subst']['tokenID'] . '}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
+			}
+		}
+		// Set in data array:
+		if (!strstr($softref['tokenizedContent'], '{softref:')) {
+			if ($flexPointer) {
+				$flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
+				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = array();
+				$flexFormTools->setArrayValueByPath(substr($flexPointer, 0, -1), $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'], $softref['tokenizedContent']);
+			} else {
+				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = $softref['tokenizedContent'];
+			}
+		} else {
+			return 'ERROR: After substituting all found soft references there were still soft reference tokens in the text. (theoretically this does not have to be an error if the string "{softref:" happens to be in the field for another reason.)';
+		}
+
+		return FALSE;
 	}
 
 	/*******************************
@@ -1060,8 +1125,10 @@ class ReferenceIndex {
 	 *
 	 * @param string $msg Error message
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function error($msg) {
+		GeneralUtility::logDeprecatedFunction();
 		$this->errorLog[] = $msg;
 	}
 
@@ -1073,6 +1140,7 @@ class ReferenceIndex {
 	 * @return array Header and body status content
 	 */
 	public function updateIndex($testOnly, $cli_echo = FALSE) {
+		$databaseConnection = $this->getDatabaseConnection();
 		$errors = array();
 		$tableNames = array();
 		$recCount = 0;
@@ -1088,8 +1156,8 @@ class ReferenceIndex {
 			}
 			// Traverse all records in tables, including deleted records:
 			$fieldNames = (BackendUtility::isTableWorkspaceEnabled($tableName) ? 'uid,t3ver_wsid' : 'uid');
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldNames, $tableName, '1=1');
-			if ($GLOBALS['TYPO3_DB']->sql_error()) {
+			$res = $databaseConnection->exec_SELECTquery($fieldNames, $tableName, '1=1');
+			if ($databaseConnection->sql_error()) {
 				// Table exists in $TCA but does not exist in the database
 				GeneralUtility::sysLog(sprintf('Table "%s" exists in $TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', $tableName), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				continue;
@@ -1097,52 +1165,52 @@ class ReferenceIndex {
 			$tableNames[] = $tableName;
 			$tableCount++;
 			$uidList = array(0);
-			while ($recdat = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($record = $databaseConnection->sql_fetch_assoc($res)) {
 				/** @var $refIndexObj ReferenceIndex */
-				$refIndexObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ReferenceIndex::class);
-				if (isset($recdat['t3ver_wsid'])) {
-					$refIndexObj->setWorkspaceId($recdat['t3ver_wsid']);
+				$refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+				if (isset($record['t3ver_wsid'])) {
+					$refIndexObj->setWorkspaceId($record['t3ver_wsid']);
 				}
-				$result = $refIndexObj->updateRefIndexTable($tableName, $recdat['uid'], $testOnly);
-				$uidList[] = $recdat['uid'];
+				$result = $refIndexObj->updateRefIndexTable($tableName, $record['uid'], $testOnly);
+				$uidList[] = $record['uid'];
 				$recCount++;
 				if ($result['addedNodes'] || $result['deletedNodes']) {
-					$Err = 'Record ' . $tableName . ':' . $recdat['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
-					$errors[] = $Err;
+					$error = 'Record ' . $tableName . ':' . $record['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
+					$errors[] = $error;
 					if ($cli_echo) {
-						echo $Err . LF;
+						echo $error . LF;
 					}
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$databaseConnection->sql_free_result($res);
 
 			// Searching lost indexes for this table:
-			$where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') . ' AND recuid NOT IN (' . implode(',', $uidList) . ')';
-			$lostIndexes = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
+			$where = 'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_refindex') . ' AND recuid NOT IN (' . implode(',', $uidList) . ')';
+			$lostIndexes = $databaseConnection->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 			$lostIndexesCount = count($lostIndexes);
 			if ($lostIndexesCount) {
-				$Err = 'Table ' . $tableName . ' has ' . $lostIndexesCount . ' lost indexes which are now deleted';
-				$errors[] = $Err;
+				$error = 'Table ' . $tableName . ' has ' . $lostIndexesCount . ' lost indexes which are now deleted';
+				$errors[] = $error;
 				if ($cli_echo) {
-					echo $Err . LF;
+					echo $error . LF;
 				}
 				if (!$testOnly) {
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', $where);
+					$databaseConnection->exec_DELETEquery('sys_refindex', $where);
 				}
 			}
 		}
 		// Searching lost indexes for non-existing tables:
-		$where = 'tablename NOT IN (' . implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($tableNames, 'sys_refindex')) . ')';
-		$lostTables = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
+		$where = 'tablename NOT IN (' . implode(',', $databaseConnection->fullQuoteArray($tableNames, 'sys_refindex')) . ')';
+		$lostTables = $databaseConnection->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 		$lostTablesCount = count($lostTables);
 		if ($lostTablesCount) {
-			$Err = 'Index table hosted ' . $lostTablesCount . ' indexes for non-existing tables, now removed';
-			$errors[] = $Err;
+			$error = 'Index table hosted ' . $lostTablesCount . ' indexes for non-existing tables, now removed';
+			$errors[] = $error;
 			if ($cli_echo) {
-				echo $Err . LF;
+				echo $error . LF;
 			}
 			if (!$testOnly) {
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', $where);
+				$databaseConnection->exec_DELETEquery('sys_refindex', $where);
 			}
 		}
 		$errorCount = count($errors);
@@ -1158,17 +1226,28 @@ class ReferenceIndex {
 			echo $recordsCheckedString . ($errorCount ? 'Updates: ' . $errorCount : 'Index Integrity was perfect!') . LF;
 		}
 		if (!$testOnly) {
-			$registry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Registry::class);
+			$registry = GeneralUtility::makeInstance(Registry::class);
 			$registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
 		}
 		return array($headerContent, $bodyContent, $errorCount);
 	}
 
 	/**
-	 * @return RelationHandler
+	 * Return DatabaseConnection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected function getRelationHandler() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
