@@ -42,7 +42,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		);
 		$this->templateVariableContainer->add('settings', 'theSettings');
 
-		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
+		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -60,7 +60,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 		);
 		$this->templateVariableContainer->add('settings', 'theSettings');
 
-		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
+		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -75,7 +75,7 @@ class RenderViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 			'someArgument' => 'someValue'
 		);
 
-		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments);
+		$actual = $this->viewHelper->_call('loadSettingsIntoArguments', $arguments, $this->renderingContext);
 		$this->assertEquals($expected, $actual);
 	}
 

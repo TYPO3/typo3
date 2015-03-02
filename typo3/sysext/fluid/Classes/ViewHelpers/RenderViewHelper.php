@@ -11,6 +11,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * ViewHelper that renders a section or a specified partial
  *
@@ -69,7 +73,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RenderViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders the content.
@@ -82,13 +86,39 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @api
 	 */
 	public function render($section = NULL, $partial = NULL, $arguments = array(), $optional = FALSE) {
-		$arguments = $this->loadSettingsIntoArguments($arguments);
+		return self::renderStatic(
+			array(
+				'section' => $section,
+				'partial' => $partial,
+				'arguments' => $arguments,
+				'optional' => $optional,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
 
+	/**
+	 * Renders the content.
+	 *
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$section = $arguments['section'];
+		$partial = $arguments['partial'];
+		$optional = $arguments['optional'];
+		$arguments = static::loadSettingsIntoArguments($arguments['arguments'], $renderingContext);
+
+		$viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
 		if ($partial !== NULL) {
-			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
+			return $viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
 		} elseif ($section !== NULL) {
-			return $this->viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
+			return $viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
 		}
+
 		return '';
 	}
 
@@ -96,11 +126,13 @@ class RenderViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
 	 *
 	 * @param array $arguments
+	 * @param RenderingContextInterface $renderingContext
 	 * @return array
 	 */
-	protected function loadSettingsIntoArguments($arguments) {
-		if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
-			$arguments['settings'] = $this->templateVariableContainer->get('settings');
+	static protected function loadSettingsIntoArguments($arguments, RenderingContextInterface $renderingContext) {
+		$templateVariableContainer = $renderingContext->getTemplateVariableContainer();
+		if (!isset($arguments['settings']) && $templateVariableContainer->exists('settings')) {
+			$arguments['settings'] = $templateVariableContainer->get('settings');
 		}
 		return $arguments;
 	}
