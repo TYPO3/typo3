@@ -873,9 +873,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				);
 			}
 			if ($this->ext_CALC_PERMS & 8) {
+				$parameters = [
+					'id' => $id,
+					'pagesOnly' => 1,
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				];
 				$bArray[2] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=\'' . $this->backPath . 'db_new.php?id=' . $id
-						. '&pagesOnly=1&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';',
+					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', $parameters, $this->backPath)) . ';',
 					$this->getLanguageService()->getLL('newPage2')
 				);
 			}

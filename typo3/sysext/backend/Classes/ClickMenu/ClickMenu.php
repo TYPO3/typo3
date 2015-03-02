@@ -623,7 +623,7 @@ class ClickMenu {
 	}
 
 	/**
-	 * Adding CM element for Create new wizard (either db_new.php or BackendUtility::getModuleUrl('new_content_element') or custom wizard)
+	 * Adding CM element for Create new wizard (either BackendUtility::getModuleUrl('db_new') or BackendUtility::getModuleUrl('new_content_element') or custom wizard)
 	 *
 	 * @param string $table Table name
 	 * @param int $uid UID for the current record.
@@ -637,7 +637,7 @@ class ClickMenu {
 		$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 
 		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
-		$url = $table === 'pages' ? 'db_new.php?id=' . $uid . '&pagesOnly=1' : $newContentWizScriptPath . 'id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
+		$url = $table === 'pages' ? BackendUtility::getModuleUrl('db_new', ['id' => $uid, 'pagesOnly' => 1]) : $newContentWizScriptPath . 'id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
 		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')), IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new'), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 
@@ -706,9 +706,14 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_new($table, $uid) {
-		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . ($this->listFrame ? 'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][-' . $uid . ']=new\'' : 'db_new.php?id=' . (int)$uid . '\'') . ';}';
-		return $this->linkItem($this->label('new'), IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new'), $editOnClick . ';');
+		$frame = 'top.content.list_frame';
+		$location = $this->frameLocation($frame . '.document');
+		$module = $this->listFrame
+			? GeneralUtility::quoteJSvalue('alt_doc.php?edit[' . $table . '][-' . $uid . ']=new&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
+			: GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => (int)$uid]));
+		$editOnClick = 'if(' . $frame . '){' . $frame . '.location.href=top.TS.PATH_typo3+' . $module . ';}';
+		$icon = IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new');
+		return $this->linkItem($this->label('new'), $icon, $editOnClick);
 	}
 
 	/**

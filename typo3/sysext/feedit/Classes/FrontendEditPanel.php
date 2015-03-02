@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Feedit;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -243,7 +244,7 @@ class FrontendEditPanel {
 		} elseif ($cmd == 'new') {
 			$rParts = explode(':', $currentRecord);
 			if ($rParts[0] == 'pages') {
-				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . 'db_new.php?id=' . $rParts[1] . '&pagesOnly=1', $currentRecord);
+				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . BackendUtility::getModuleUrl('db_new', ['id' => $rParts[1], 'pagesOnly' => 1]), $currentRecord);
 			} else {
 				if (!(int)$nPid) {
 					$nPid = MathUtility::canBeInterpretedAsInteger($rParts[1]) ? -$rParts[1] : $this->frontendController->id;
@@ -264,7 +265,7 @@ class FrontendEditPanel {
 	}
 
 	/**
-	 * Creates a link to a script (eg. typo3/alt_doc.php or typo3/db_new.php) which either opens in the current frame OR in a pop-up window.
+	 * Creates a link to a script (eg. typo3/alt_doc.php or NewRecordController) which either opens in the current frame OR in a pop-up window.
 	 *
 	 * @param string $string The string to wrap in a link, typ. and image used as button in the edit panel.
 	 * @param string $url The URL of the link. Should be absolute if supposed to work with <base> path set.

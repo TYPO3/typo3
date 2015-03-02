@@ -116,6 +116,12 @@ if (TYPO3_MODE === 'BE') {
 		)
 	);
 
+	// Register new record
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'db_new',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/NewRecord/'
+	);
+
 	// Register new content element module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'new_content_element',

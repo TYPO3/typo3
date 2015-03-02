@@ -336,7 +336,7 @@ TYPO3.Components.PageTree.Actions = {
 	newPageWizard: function(node) {
 		node.select();
 		TYPO3.Backend.ContentContainer.setUrl(
-			'db_new.php?id=' + node.attributes.nodeData.id + '&pagesOnly=1'
+			TYPO3.settings.NewRecord.moduleUrl + '&id=' + node.attributes.nodeData.id + '&pagesOnly=1'
 		);
 	},
 
