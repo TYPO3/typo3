@@ -116,7 +116,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		// Workaround: If the extension configuration was not updated yet, the value is not existing
 		$this->enableMetaphoneSearch = isset($this->indexerConfig['enableMetaphoneSearch']) ? ($this->indexerConfig['enableMetaphoneSearch'] ? TRUE : FALSE) : TRUE;
 		// Initialize max-list items
-		$this->maxListPerPage = GeneralUtility::_GP('listALL') ? 100000 : 100;
+		$this->maxListPerPage = GeneralUtility::_GP('listAll') ? 100000 : 100;
 		// Processing deletion of phash rows:
 		if (GeneralUtility::_GP('deletePhash')) {
 			$this->removeIndexedPhashRow(GeneralUtility::_GP('deletePhash'));
