@@ -1,22 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns'] = array(
-		'groups' => array('system')
-	);
-}
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_queries'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_queries'] = array(
-		'groups' => array('system')
-	);
-}
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap'] = array(
-		'groups' => array('system')
-	);
-}
-
 // We set the default implementation for Storage Backend & Query Settings in Backend and Frontend.
 // The code below is NO PUBLIC API!
 /** @var $extbaseObjectContainer \TYPO3\CMS\Extbase\Object\Container\Container */

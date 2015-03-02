@@ -415,7 +415,6 @@ class AbstractController {
 		}
 
 		require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'ext_localconf.php');
-		require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('fluid') . 'ext_localconf.php');
 
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['backend']
 			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;

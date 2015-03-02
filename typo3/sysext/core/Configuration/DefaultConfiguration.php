@@ -191,6 +191,11 @@ return array(
 					),
 					'groups' => array('system')
 				),
+				'fluid_template' => array(
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+					'groups' => array('system'),
+				),
 				'extbase_object' => array(
 					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
 					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
@@ -206,6 +211,21 @@ return array(
 						'defaultLifetime' => 0,
 					),
 					'groups' => array('system')
+				),
+				'extbase_typo3dbbackend_tablecolumns' => array(
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+					'groups' => array('system'),
+				),
+				'extbase_typo3dbbackend_queries' => array(
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+					'groups' => array('system'),
+				),
+				'extbase_datamapfactory_datamap' => array(
+					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
+					'groups' => array('system'),
 				),
 			),
 		),
