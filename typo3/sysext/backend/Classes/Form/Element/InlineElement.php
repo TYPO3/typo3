@@ -928,10 +928,7 @@ class InlineElement {
 
 		if ($showUpload && $this->fObj->edit_docModuleUpload) {
 			$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
-			if (
-				$folder instanceof \TYPO3\CMS\Core\Resource\Folder
-				&& $folder->checkActionPermission('add')
-			) {
+			if ($folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
 				$item .= ' <a href="#" class="t3-button t3-drag-uploader"
 					style="display:none"
