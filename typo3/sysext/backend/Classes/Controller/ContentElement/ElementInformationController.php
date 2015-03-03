@@ -77,7 +77,7 @@ class ElementInformationController {
 	 *
 	 * @var array
 	 */
-	public $pageinfo;
+	public $pageInfo;
 
 	/**
 	 * Database records identified by table/uid
@@ -123,7 +123,7 @@ class ElementInformationController {
 		$this->table = GeneralUtility::_GET('table');
 		$this->uid = GeneralUtility::_GET('uid');
 
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->permsClause = $this->getBackendUser()->getPagePermsClause(1);
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->divClass = 'container';
 
@@ -142,16 +142,16 @@ class ElementInformationController {
 		$this->uid = (int)$this->uid;
 
 		// Check permissions and uid value:
-		if ($this->uid && $GLOBALS['BE_USER']->check('tables_select', $this->table)) {
+		if ($this->uid && $this->getBackendUser()->check('tables_select', $this->table)) {
 			if ((string)$this->table == 'pages') {
-				$this->pageinfo = BackendUtility::readPageAccess($this->uid, $this->perms_clause);
-				$this->access = is_array($this->pageinfo) ? 1 : 0;
-				$this->row = $this->pageinfo;
+				$this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause);
+				$this->access = is_array($this->pageInfo) ? 1 : 0;
+				$this->row = $this->pageInfo;
 			} else {
 				$this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
 				if ($this->row) {
-					$this->pageinfo = BackendUtility::readPageAccess($this->row['pid'], $this->perms_clause);
-					$this->access = is_array($this->pageinfo) ? 1 : 0;
+					$this->pageInfo = BackendUtility::readPageAccess($this->row['pid'], $this->permsClause);
+					$this->access = is_array($this->pageInfo) ? 1 : 0;
 				}
 			}
 			/** @var $treatData \TYPO3\CMS\Backend\Form\DataPreprocessor */
@@ -224,14 +224,14 @@ class ElementInformationController {
 	 */
 	protected function renderPageTitle() {
 		if ($this->type === 'folder') {
-			$table = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:folder');
+			$table = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:folder');
 			$title = $this->doc->getResourceHeader($this->folderObject, array(' ', ''), FALSE);
 		} elseif ($this->type === 'file') {
-			$table = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
+			$table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
 			$title = $this->doc->getResourceHeader($this->fileObject, array(' ', ''), FALSE);
 		} else {
-			$table = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
-			$title = $this->doc->getHeader($this->table, $this->row, $this->pageinfo['_thePath'], 1, array(' ', ''), FALSE);
+			$table = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
+			$title = $this->doc->getHeader($this->table, $this->row, $this->pageInfo['_thePath'], 1, array(' ', ''), FALSE);
 		}
 		// Set HTML title tag
 		$this->titleTag = $table . ': ' . strip_tags(BackendUtility::getRecordTitle($this->table, $this->row));
@@ -249,7 +249,7 @@ class ElementInformationController {
 	protected function renderPreview() {
 		// Perhaps @todo in future: Also display preview for records - without fileObject
 		if (!$this->fileObject) {
-			return;
+			return '';
 		}
 
 		$previewTag = '';
@@ -303,7 +303,7 @@ class ElementInformationController {
 				$downloadLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
 						' . IconUtility::getSpriteIcon('actions-edit-download') . '
-						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) . '
+						' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) . '
 					</a>';
 			}
 		}
@@ -321,17 +321,18 @@ class ElementInformationController {
 		$tableRows = array();
 		$extraFields = array();
 
+		$lang = $this->getLanguageService();
 		if (in_array($this->type, array('folder', 'file'), TRUE)) {
 			if ($this->type === 'file') {
-				$extraFields['creation_date'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
-				$extraFields['modification_date'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
+				$extraFields['creation_date'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
+				$extraFields['modification_date'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
 			}
-			$extraFields['storage'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage', TRUE);
-			$extraFields['folder'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:folder', TRUE);
+			$extraFields['storage'] = $lang->sL('LLL:EXT:lang/locallang_tca.xlf:sys_file.storage', TRUE);
+			$extraFields['folder'] = $lang->sL('LLL:EXT:lang/locallang_common.xlf:folder', TRUE);
 		} else {
-			$extraFields['crdate'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
-			$extraFields['cruser_id'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', TRUE);
-			$extraFields['tstamp'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
+			$extraFields['crdate'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationDate', TRUE);
+			$extraFields['cruser_id'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.creationUserId', TRUE);
+			$extraFields['tstamp'] = $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.timestamp', TRUE);
 
 			// check if the special fields are defined in the TCA ctrl section of the table
 			foreach ($extraFields as $fieldName => $fieldLabel) {
@@ -359,7 +360,7 @@ class ElementInformationController {
 			}
 			// show the backend username who created the issue
 			if ($name === 'cruser_id' && $rowValue) {
-				$userTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
+				$userTemp = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
 				if ($userTemp[0]['username'] !== '') {
 					$rowValue = $userTemp[0]['username'];
 					if ($userTemp[0]['realName'] !== '') {
@@ -389,13 +390,13 @@ class ElementInformationController {
 				continue;
 			}
 
-			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $name));
+			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
 			if ($isExcluded) {
 				continue;
 			}
 
 			$itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $uid);
-			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
+			$itemLabel = $lang->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
 					<th>' . $itemLabel . '</th>
@@ -423,12 +424,12 @@ class ElementInformationController {
 			case 'db': {
 				$references = $this->makeRef($this->table, $this->row['uid']);
 				if (!empty($references)) {
-					$content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem'), $references);
+					$content .= $this->doc->section($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem'), $references);
 				}
 
 				$referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
 				if (!empty($referencesFrom)) {
-					$content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem'), $referencesFrom);
+					$content .= $this->doc->section($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesFromThisItem'), $referencesFrom);
 				}
 				break;
 			}
@@ -438,7 +439,7 @@ class ElementInformationController {
 					$references = $this->makeRef('_FILE', $this->fileObject);
 
 					if (!empty($references)) {
-						$header = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem');
+						$header = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.referencesToThisItem');
 						$content .= $this->doc->section($header, $references);
 					}
 				}
@@ -461,7 +462,7 @@ class ElementInformationController {
 			$backLink .= '
 				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '>
 					' . IconUtility::getSpriteIcon('actions-view-go-back') . '
-					' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:back', TRUE) . '
+					' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back', TRUE) . '
 				</a>';
 		}
 		return $backLink;
@@ -479,13 +480,13 @@ class ElementInformationController {
 			if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
 				continue;
 			}
-			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $name));
+			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $this->getBackendUser()->check('non_exclude_fields', $this->table . ':' . $name));
 			if ($isExcluded) {
 				continue;
 			}
 			$uid = $this->row['uid'];
 			$itemValue = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $uid);
-			$itemLabel = $GLOBALS['LANG']->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
+			$itemLabel = $this->getLanguageService()->sL(BackendUtility::getItemLabel($this->table, $name), TRUE);
 			$tableRows[] = '
 				<tr>
 					<th>' . $itemLabel . '</th>
@@ -512,8 +513,8 @@ class ElementInformationController {
 	 */
 	public function printContent() {
 		echo $this->doc->startPage($this->titleTag) .
-				$this->doc->insertStylesAndJS($this->content) .
-				$this->doc->endPage();
+			$this->doc->insertStylesAndJS($this->content) .
+			$this->doc->endPage();
 	}
 
 	/**
@@ -525,7 +526,7 @@ class ElementInformationController {
 	 */
 	public function getLabelForTableColumn($tableName, $fieldName) {
 		if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== NULL) {
-			$field = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
+			$field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
 			if (trim($field) === '') {
 				$field = $fieldName;
 			}
@@ -574,14 +575,14 @@ class ElementInformationController {
 			// Recordlist button
 			$url = BackendUtility::getModuleUrl('web_list', array('id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')));
 			$pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
+				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
 					' . IconUtility::getSpriteIcon('actions-system-list-open') . '
 				</a>';
 
 			// View page button
 			$viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
 			$pageActionIcons .= '
-				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">
+				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">
 					' . IconUtility::getSpriteIcon('actions-document-view') . '
 				</a>';
 		}
@@ -600,6 +601,7 @@ class ElementInformationController {
 	 * @return string HTML
 	 */
 	protected function makeRef($table, $ref) {
+		$lang = $this->getLanguageService();
 		// Files reside in sys_file table
 		if ($table === '_FILE') {
 			$selectTable = 'sys_file';
@@ -608,10 +610,10 @@ class ElementInformationController {
 			$selectTable = $table;
 			$selectUid = $ref;
 		}
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($selectTable, 'sys_refindex') . ' AND ref_uid=' . (int)$selectUid . ' AND deleted=0'
+			'ref_table=' . $this->getDatabaseConnection()->fullQuoteStr($selectTable, 'sys_refindex') . ' AND ref_uid=' . (int)$selectUid . ' AND deleted=0'
 		);
 
 		// Compile information for title tag:
@@ -621,13 +623,13 @@ class ElementInformationController {
 			$infoDataHeader = '
 				<tr>
 					<th class="col-icon"></th>
-					<th class="col-title">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
+					<th class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
 					<th class="col-control"></th>
 				</tr>';
 		}
@@ -659,9 +661,9 @@ class ElementInformationController {
 							' . BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '
 						</a>
 					</td>
-					<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>
+					<td>' . $lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>
 					<td>
-						<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': '
+						<span title="' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': '
 							. htmlspecialchars($parentRecordTitle) . ' (uid=' . $record['pid'] . ')">
 							' . $record['uid'] . '
 						</span>
@@ -676,8 +678,8 @@ class ElementInformationController {
 				$infoData[] = '
 				<tr>
 					<td class="col-icon"></td>
-					<td class="col-title">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . $row['recuid'] . ')</td>
-					<td>' . htmlspecialchars($GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>
+					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . $row['recuid'] . ')</td>
+					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>
 					<td></td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
 					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
@@ -708,32 +710,33 @@ class ElementInformationController {
 	 * @return string HTML
 	 */
 	protected function makeRefFrom($table, $ref) {
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		$lang = $this->getLanguageService();
+		$rows = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'*',
 			'sys_refindex',
-			'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . (int)$ref
+			'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . (int)$ref
 		);
 
 		// Compile information for title tag:
 		$infoData = array();
+		$infoDataHeader = '';
 		if (count($rows)) {
 			$infoDataHeader = '
 				<tr>
 					<th class="col-icon"></th>
-					<th class="col-title">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
-					<th>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refString') . '</th>
+					<th class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.title') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.table') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.uid') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.field') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.flexpointer') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.softrefKey') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.sorting') . '</th>
+					<th>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.refString') . '</th>
 					<th class="col-control"></th>
 				</tr>';
 		}
 		foreach ($rows as $row) {
 			$record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
-			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
 			$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
 			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit');
@@ -749,7 +752,7 @@ class ElementInformationController {
 							' . BackendUtility::getRecordTitle($row['ref_table'], $record, TRUE) . '
 						</a>
 					</td>
-					<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>
+					<td>' . $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>
 					<td>' . htmlspecialchars($row['ref_uid']) . '</td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
 					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
@@ -761,7 +764,7 @@ class ElementInformationController {
 		}
 
 		if (empty($infoData)) {
-			return;
+			return '';
 		}
 
 		return '
@@ -780,7 +783,7 @@ class ElementInformationController {
 	 * @return array
 	 */
 	protected function transformFileReferenceToRecordReference(array $referenceRecord) {
-		$fileReference = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+		$fileReference = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 			'*',
 			'sys_file_reference',
 			'uid=' . (int)$referenceRecord['recuid']
@@ -793,6 +796,33 @@ class ElementInformationController {
 			'softref_key' => '',
 			'sorting' => $fileReference['sorting_foreign']
 		);
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

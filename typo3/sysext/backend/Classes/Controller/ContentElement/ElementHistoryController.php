@@ -37,10 +37,15 @@ class ElementHistoryController {
 	public $doc;
 
 	/**
+	 * @var array
+	 */
+	protected $pageInfo;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_show_rechis.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();
@@ -57,7 +62,7 @@ class ElementHistoryController {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/show_rechis.html');
 		// Start the page header
-		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
+		$this->content .= $this->doc->header($this->getLanguageService()->getLL('title'));
 	}
 
 	/**
@@ -75,8 +80,8 @@ class ElementHistoryController {
 		$markers['CONTENT'] = $this->content;
 		$markers['CSH'] = $docHeaderButtons['csh'];
 		// Build the <body> for the module
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content = $this->doc->startPage($this->getLanguageService()->getLL('title'));
+		$this->content .= $this->doc->moduleBody($this->pageInfo, $docHeaderButtons, $markers);
 	}
 
 	/**
@@ -108,6 +113,15 @@ class ElementHistoryController {
 			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 		return $buttons;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

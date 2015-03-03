@@ -94,14 +94,40 @@ class NewContentElementController {
 	public $config;
 
 	/**
+	 * @var array
+	 */
+	protected $pageInfo;
+
+	/**
+	 * @var array
+	 */
+	protected $elementWrapper;
+
+	/**
+	 * @var array
+	 */
+	protected $elementWrapperForTabs;
+
+	/**
+	 * @var string
+	 */
+	protected $onClickEvent;
+
+	/**
+	 * @var array
+	 */
+	protected $MCONF;
+
+	/**
 	 * Constructor, initializing internal variables.
 	 *
 	 * @return void
 	 */
 	public function init() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$lang = $this->getLanguageService();
+		$lang->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
-		$GLOBALS['LANG']->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
+		$lang->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
 		$GLOBALS['LOCAL_LANG'] = $LOCAL_LANG_orig;
 
@@ -124,9 +150,9 @@ class NewContentElementController {
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Getting the current page and receiving access information (used in main())
-		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
-		$this->access = is_array($this->pageinfo) ? 1 : 0;
+		$perms_clause = $this->getBackendUser()->getPagePermsClause(1);
+		$this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
+		$this->access = is_array($this->pageInfo) ? 1 : 0;
 	}
 
 	/**
@@ -135,6 +161,7 @@ class NewContentElementController {
 	 * @return void
 	 */
 	public function main() {
+		$lang = $this->getLanguageService();
 		if ($this->id && $this->access) {
 			// Init position map object:
 			$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class);
@@ -155,9 +182,8 @@ class NewContentElementController {
 			// ***************************
 			// Creating content
 			// ***************************
-			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('newContentElement'));
+			$this->content .= $this->doc->header($lang->getLL('newContentElement'));
 			// Wizard
-			$code = '';
 			$wizardItems = $this->getWizardItems();
 			// Wrapper for wizards
 			$this->elementWrapper['section'] = array('', '');
@@ -237,20 +263,20 @@ class NewContentElementController {
 			}
 			// Add the wizard table to the content, wrapped in tabs:
 			if ($this->config['renderMode'] == 'tabs') {
-				$code = '<p>' . $GLOBALS['LANG']->getLL('sel1', 1) . '</p>' . $this->doc->getDynamicTabMenu($menuItems, 'new-content-element-wizard');
+				$code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->doc->getDynamicTabMenu($menuItems, 'new-content-element-wizard');
 			} else {
-				$code = '<p>' . $GLOBALS['LANG']->getLL('sel1', 1) . '</p>';
+				$code = '<p>' . $lang->getLL('sel1', 1) . '</p>';
 				foreach ($menuItems as $section) {
 					$code .= '<h3 class="divider">' . $section['label'] . '</h3>' . $section['content'];
 				}
 			}
-			$this->content .= $this->doc->section(!$this->onClickEvent ? $GLOBALS['LANG']->getLL('1_selectType') : '', $code, 0, 1);
+			$this->content .= $this->doc->section(!$this->onClickEvent ? $lang->getLL('1_selectType') : '', $code, 0, 1);
 			// If the user must also select a column:
 			if (!$this->onClickEvent) {
 				// Add anchor "sel2"
 				$this->content .= $this->doc->section('', '<a name="sel2"></a>');
 				// Select position
-				$code = '<p>' . $GLOBALS['LANG']->getLL('sel2', 1) . '</p>';
+				$code = '<p>' . $lang->getLL('sel2', 1) . '</p>';
 
 				// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 				$colPosArray = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
@@ -259,12 +285,12 @@ class NewContentElementController {
 				$colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
 				// Finally, add the content of the column selector to the content:
 				$code .= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
-				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('2_selectPosition'), $code, 0, 1);
+				$this->content .= $this->doc->section($lang->getLL('2_selectPosition'), $code, 0, 1);
 			}
 		} else {
 			// In case of no access:
 			$this->content = '';
-			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('newContentElement'));
+			$this->content .= $this->doc->header($lang->getLL('newContentElement'));
 			$this->content .= $this->doc->spacer(5);
 		}
 		// Setting up the buttons and markers for docheader
@@ -272,8 +298,8 @@ class NewContentElementController {
 		$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
 		// Build the <body> for the module
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('newContentElement'));
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content = $this->doc->startPage($lang->getLL('newContentElement'));
+		$this->content .= $this->doc->moduleBody($this->pageInfo, $docHeaderButtons, $markers);
 		$this->content .= $this->doc->sectionEnd();
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -301,7 +327,7 @@ class NewContentElementController {
 		if ($this->id && $this->access) {
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce');
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 			}
 		}
 		return $buttons;
@@ -328,36 +354,36 @@ class NewContentElementController {
 	 * @return array
 	 */
 	public function wizardArray() {
+		$wizardItems = array();
 		if (is_array($this->config)) {
 			$wizards = $this->config['wizardItems.'];
-		}
-		$appendWizards = $this->wizard_appendWizards($wizards['elements.']);
-		$wizardItems = array();
-		if (is_array($wizards)) {
-			foreach ($wizards as $groupKey => $wizardGroup) {
-				$groupKey = rtrim($groupKey, '.');
-				$showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
-				$showAll = $wizardGroup['show'] === '*';
-				$groupItems = array();
-				if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-					$wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
-				} else {
-					$wizardElements = $wizardGroup['elements.'];
-				}
-				if (is_array($wizardElements)) {
-					foreach ($wizardElements as $itemKey => $itemConf) {
-						$itemKey = rtrim($itemKey, '.');
-						if ($showAll || in_array($itemKey, $showItems)) {
-							$tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
-							if ($tmpItem) {
-								$groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
+			$appendWizards = $this->wizard_appendWizards($wizards['elements.']);
+			if (is_array($wizards)) {
+				foreach ($wizards as $groupKey => $wizardGroup) {
+					$groupKey = rtrim($groupKey, '.');
+					$showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], TRUE);
+					$showAll = $wizardGroup['show'] === '*';
+					$groupItems = array();
+					if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
+						$wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+					} else {
+						$wizardElements = $wizardGroup['elements.'];
+					}
+					if (is_array($wizardElements)) {
+						foreach ($wizardElements as $itemKey => $itemConf) {
+							$itemKey = rtrim($itemKey, '.');
+							if ($showAll || in_array($itemKey, $showItems)) {
+								$tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
+								if ($tmpItem) {
+									$groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
+								}
 							}
 						}
 					}
-				}
-				if (count($groupItems)) {
-					$wizardItems[$groupKey] = $this->wizard_getGroupHeader($groupKey, $wizardGroup);
-					$wizardItems = array_merge($wizardItems, $groupItems);
+					if (count($groupItems)) {
+						$wizardItems[$groupKey] = $this->wizard_getGroupHeader($groupKey, $wizardGroup);
+						$wizardItems = array_merge($wizardItems, $groupItems);
+					}
 				}
 			}
 		}
@@ -391,33 +417,34 @@ class NewContentElementController {
 	}
 
 	/**
-	 * @param string Not used
-	 * @param string Not used
+	 * @param string $groupKey Not used
+	 * @param string $itemKey Not used
 	 * @param array $itemConf
 	 * @return array
 	 */
 	public function wizard_getItem($groupKey, $itemKey, $itemConf) {
-		$itemConf['title'] = $GLOBALS['LANG']->sL($itemConf['title']);
-		$itemConf['description'] = $GLOBALS['LANG']->sL($itemConf['description']);
+		$itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
+		$itemConf['description'] = $this->getLanguageService()->sL($itemConf['description']);
 		$itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
 		unset($itemConf['tt_content_defValues.']);
 		return $itemConf;
 	}
 
 	/**
-	 * @param string Not used
+	 * @param string $groupKey Not used
 	 * @param array $wizardGroup
 	 * @return array
 	 */
 	public function wizard_getGroupHeader($groupKey, $wizardGroup) {
 		return array(
-			'header' => $GLOBALS['LANG']->sL($wizardGroup['header'])
+			'header' => $this->getLanguageService()->sL($wizardGroup['header'])
 		);
 	}
 
 	/**
 	 * Checks the array for elements which might contain unallowed default values and will unset them!
-	 * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check. The values will be added to the "params" key of the array (which should probably be unset or empty by default).
+	 * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname / value pairs and check.
+	 * The values will be added to the "params" key of the array (which should probably be unset or empty by default).
 	 *
 	 * @param array $wizardItems Wizard items, passed by reference
 	 * @return void
@@ -449,13 +476,14 @@ class NewContentElementController {
 			}
 			// If tt_content_defValues are defined...:
 			if (is_array($wizardItems[$key]['tt_content_defValues'])) {
+				$backendUser = $this->getBackendUser();
 				// Traverse field values:
 				foreach ($wizardItems[$key]['tt_content_defValues'] as $fN => $fV) {
 					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 						// Get information about if the field value is OK:
 						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = $config['type'] == 'select' && $config['authMode']
-							&& !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
+							&& !$backendUser->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
 						// explode TSconfig keys only as needed
 						if (!isset($removeItems[$fN])) {
 							$removeItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['removeItems'], TRUE);
@@ -485,6 +513,24 @@ class NewContentElementController {
 				unset($wizardItems[$key]);
 			}
 		}
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
