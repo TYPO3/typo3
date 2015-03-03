@@ -72,6 +72,7 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 			define('TYPO3_PROCEED_IF_NO_USER', 2);
 		}
 
+		$GLOBALS['ajaxID'] = $ajaxID;
 		$this->bootstrap
 			->checkLockedBackendAndRedirectOrDie()
 			->checkBackendIpOrDie()
