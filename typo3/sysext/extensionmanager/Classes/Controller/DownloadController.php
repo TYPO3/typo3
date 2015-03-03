@@ -184,9 +184,19 @@ class DownloadController extends AbstractController {
 	 */
 	protected function updateExtensionAction() {
 		$extensionKey = $this->request->getArgument('extension');
-		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
+		$version = $this->request->getArgument('version');
+		$extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);
+		if (!$extension instanceof Extension) {
+			$extension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
+		}
+		$installedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
 		try {
-			$this->managementService->downloadMainExtension($highestTerVersionExtension);
+			if (in_array($extensionKey, $installedExtensions, TRUE)) {
+				// To resolve new dependencies the extension is installed again
+				$this->managementService->installExtension($extension);
+			} else {
+				$this->managementService->downloadMainExtension($extension);
+			}
 			$this->addFlashMessage(
 				htmlspecialchars($this->translate('extensionList.updateFlashMessage.body', array($extensionKey))),
 				$this->translate('extensionList.updateFlashMessage.title')
