@@ -71,7 +71,7 @@ class FileUploadController {
 	 */
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$GLOBALS['BACK_PATH'] = '';
 
 		$this->init();
@@ -99,8 +99,8 @@ class FileUploadController {
 
 		// Cleaning and checking target directory
 		if (!$this->folderObject) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
+			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
+			$message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
 			throw new \RuntimeException($title . ': ' . $message, 1294586843);
 		}
 		// Setting the title and the icon
@@ -120,9 +120,9 @@ class FileUploadController {
 	 */
 	public function main() {
 		// Make page header:
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle'));
+		$this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle'));
 		$form = $this->renderUploadForm();
-		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle')) . $this->doc->section('', $form);
+		$pageContent = $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.pagetitle')) . $this->doc->section('', $form);
 		// Header Buttons
 		$docHeaderButtons = array(
 			'csh' => BackendUtility::cshItem('xMOD_csh_corebe', 'file_upload'),
@@ -130,13 +130,13 @@ class FileUploadController {
 		);
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => '',
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title
 		);
 		// Back
 		if ($this->returnUrl) {
-			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
 		$this->content .= $this->doc->endPage();
@@ -146,15 +146,15 @@ class FileUploadController {
 	/**
 	 * This function renders the upload form
 	 *
-	 * @return 	string	the HTML form as a string, ready for outputting
+	 * @return string The HTML form as a string, ready for outputting
 	 */
 	public function renderUploadForm() {
 		// Make checkbox for "overwrite"
 		$content = '
 			<div id="c-override">
-				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $GLOBALS['LANG']->getLL('overwriteExistingFiles', 1) . '</label></p>
+				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $this->getLanguageService()->getLL('overwriteExistingFiles', 1) . '</label></p>
 				<p>&nbsp;</p>
-				<p>' . $GLOBALS['LANG']->getLL('uploadMultipleFilesInfo', TRUE) . '</p>
+				<p>' . $this->getLanguageService()->getLL('uploadMultipleFilesInfo', TRUE) . '</p>
 			</div>
 			';
 		// Produce the number of upload-fields needed:
@@ -175,7 +175,7 @@ class FileUploadController {
 			<div id="c-submit">
 				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
 				' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
-				<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
+				<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
 			</div>
 		';
 		return $content;
@@ -188,6 +188,15 @@ class FileUploadController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

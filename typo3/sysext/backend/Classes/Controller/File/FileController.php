@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
- * This script serves as the fileadministration part of the TYPO3 Core Engine.
+ * This script serves as the file administration part of the TYPO3 Core Engine.
  * Basically it includes two libraries which are used to manipulate files on the server.
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
@@ -137,7 +137,7 @@ class FileController {
 		// Checking referrer / executing:
 		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
 		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer'] && $GLOBALS['CLIENT']['BROWSER'] != 'flash') {
+		if ($httpHost != $refInfo['host'] && $this->vC != $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer'] && $GLOBALS['CLIENT']['BROWSER'] != 'flash') {
 			$this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
 		} else {
 			$this->fileProcessor->start($this->file);
@@ -206,7 +206,6 @@ class FileController {
 	 * @return bool|string|array
 	 */
 	protected function flattenResultDataValue($result) {
-
 		if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
 			$result = array_merge(
 				$result->toArray(),
@@ -220,6 +219,15 @@ class FileController {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

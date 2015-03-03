@@ -102,8 +102,8 @@ class CreateFolderController {
 		}
 		// Cleaning and checking target directory
 		if (!$this->folderObject) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
+			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
+			$message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
 			throw new \RuntimeException($title . ': ' . $message, 1294586845);
 		}
 		if ($this->folderObject->getStorage()->getUid() === 0) {
@@ -121,7 +121,7 @@ class CreateFolderController {
 			var path = "' . $this->target . '";
 
 			function reload(a) {	//
-				if (!changed || (changed && confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw')) . '))) {
+				if (!changed || (changed && confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw')) . '))) {
 					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
 					window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('file_newfolder')) . '+params;
 				}
@@ -140,10 +140,11 @@ class CreateFolderController {
 	 * @return void
 	 */
 	public function main() {
+		$lang = $this->getLanguageService();
 		// Start content compilation
-		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
+		$this->content .= $this->doc->startPage($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
 		// Make page header:
-		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
+		$pageContent = $this->doc->header($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
 
 		if ($this->folderObject->checkActionPermission('add')) {
 			$code = '<form role="form" action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
@@ -153,7 +154,7 @@ class CreateFolderController {
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="number-of-new-folders">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.number_of_folders') . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '</label>
+							<label for="number-of-new-folders">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.number_of_folders') . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder') . '</label>
 							<div class="form-control-wrap">
 								<div class="input-group">
 									<select class="form-control form-control-adapt" name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
@@ -172,7 +173,7 @@ class CreateFolderController {
 				$code .= '
 					<div class="form-section">
 						<div class="form-group">
-							<label for="folder_new_' . $a . '">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfolder') . ' ' . ($a + 1) . ':</label>
+							<label for="folder_new_' . $a . '">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfolder') . ' ' . ($a + 1) . ':</label>
 							<div class="form-control-wrap">
 								<input type="text" class="form-control" id="folder_new_' . $a . '" name="file[newfolder][' . $a . '][data]" onchange="changed=true;" />
 								<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" />
@@ -183,13 +184,13 @@ class CreateFolderController {
 			// Making submit button for folder creation:
 			$code .= '
 				</div><div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />
+					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				';
 			// Switching form tags:
-			$pageContent .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders'), $code);
+			$pageContent .= $this->doc->section($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfolders'), $code);
 			$pageContent .= $this->doc->sectionEnd() . '</form>';
 		}
 
@@ -197,8 +198,8 @@ class CreateFolderController {
 			$pageContent .= '<form action="' . BackendUtility::getModuleUrl('tce_file') . '" method="post" name="editform2">';
 			// Create a list of allowed file extensions with the nice format "*.jpg, *.gif" etc.
 			$fileExtList = array();
-			$textfileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], TRUE);
-			foreach ($textfileExt as $fileExt) {
+			$textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], TRUE);
+			foreach ($textFileExt as $fileExt) {
 				if (!preg_match(('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . '/i'), ('.' . $fileExt))) {
 					$fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
 				}
@@ -208,13 +209,13 @@ class CreateFolderController {
 				<div class="form-group">
 					<div class="form-section">
 						<div class="form-group">
-							<label for="newfile">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile') . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '</label>
+							<label for="newfile">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.label_newfile') . ' ' . BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile') . '</label>
 							<div class="form-control-wrap">
 								<input class="form-control" type="text" id="newfile" name="file[newfile][0][data]" onchange="changed=true;" />
 								<input type="hidden" name="file[newfile][0][target]" value="' . htmlspecialchars($this->target) . '" />
 							</div>
 							<div class="help-block">
-								' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions') . '<br>
+								' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions') . '<br>
 								' . implode(' ', $fileExtList) . '
 							</div>
 						</div>
@@ -224,12 +225,12 @@ class CreateFolderController {
 			// Submit button for creation of a new file:
 			$code .= '
 				<div class="form-group">
-					<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', TRUE) . '" />
+					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', TRUE) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				';
-			$pageContent .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile'), $code);
+			$pageContent .= $this->doc->section($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile'), $code);
 			$pageContent .= $this->doc->sectionEnd();
 			$pageContent .= '</form>';
 		}
@@ -239,12 +240,12 @@ class CreateFolderController {
 		);
 		// Back
 		if ($this->returnUrl) {
-			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 		// Add the HTML as a section:
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => '',
 			'CONTENT' => $pageContent,
 			'PATH' => $this->title
 		);
@@ -260,6 +261,15 @@ class CreateFolderController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

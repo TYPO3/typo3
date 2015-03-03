@@ -86,6 +86,7 @@ class EditFileController {
 	 * Initialize script class
 	 *
 	 * @return void
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
 	 */
 	protected function init() {
 		// Setting target, which must be a file reference to a file within the mounts.
@@ -97,8 +98,8 @@ class EditFileController {
 		}
 		// Cleaning and checking target directory
 		if (!$this->fileObject) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
+			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:paramError', TRUE);
+			$message = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:targetNoDir', TRUE);
 			throw new \RuntimeException($title . ': ' . $message, 1294586841);
 		}
 		if ($this->fileObject->getStorage()->getUid() === 0) {
@@ -128,7 +129,7 @@ class EditFileController {
 	 */
 	public function main() {
 		$docHeaderButtons = $this->getButtons();
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle'));
+		$this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle'));
 		// Hook	before compiling the output
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
 			$preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
@@ -142,7 +143,7 @@ class EditFileController {
 				}
 			}
 		}
-		$pageContent = $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle') . ' ' . htmlspecialchars($this->fileObject->getName()));
+		$pageContent = $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.pagetitle') . ' ' . htmlspecialchars($this->fileObject->getName()));
 		$pageContent .= $this->doc->spacer(2);
 		$code = '';
 		$extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
@@ -160,20 +161,20 @@ class EditFileController {
 			// Edit textarea:
 			$code .= '
 				<div id="c-edit">
-					<textarea rows="30" name="file[editfile][0][data]" wrap="off"' . $this->doc->formWidth(48, TRUE, 'width:98%;height:80%') . ' class="text-monospace enable-tab">' . GeneralUtility::formatForTextarea($fileContent) . '</textarea>
+					<textarea rows="30" name="file[editfile][0][data]" wrap="off" ' . $this->doc->formWidth(48, TRUE, 'width:98%;height:80%') . ' class="text-monospace enable-tab">' . GeneralUtility::formatForTextarea($fileContent) . '</textarea>
 					<input type="hidden" name="file[editfile][0][target]" value="' . $this->fileObject->getUid() . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($hValue) . '" />
 					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				<br />';
 			// Make shortcut:
-			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+			if ($this->getBackendUser()->mayMakeShortcut()) {
 				$docHeaderButtons['shortcut'] = $this->doc->makeShortcutIcon('target', '', 'file_edit', 1);
 			} else {
 				$docHeaderButtons['shortcut'] = '';
 			}
 		} catch (\Exception $e) {
-			$code .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'), $extList);
+			$code .= sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.coundNot'), $extList);
 		}
 		// Ending of section and outputting editing form:
 		$pageContent .= $this->doc->sectionEnd();
@@ -194,7 +195,7 @@ class EditFileController {
 		// Add the HTML as a section:
 		$markerArray = array(
 			'CSH' => $docHeaderButtons['csh'],
-			'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
+			'FUNC_MENU' => '',
 			'BUTTONS' => $docHeaderButtons,
 			'PATH' => $this->title,
 			'CONTENT' => $pageContent
@@ -219,19 +220,38 @@ class EditFileController {
 	 * @return array
 	 */
 	public function getButtons() {
+		$lang = $this->getLanguageService();
 		$buttons = array();
 		// CSH button
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit');
 		// Save button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-save');
-		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
+		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
 		// Save and Close button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-save-close');
-		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\'' . htmlspecialchars($this->returnUrl) . '\'; document.editform.submit();" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
+		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\'' . htmlspecialchars($this->returnUrl) . '\'; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
 		// Cancel button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-close');
-		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
+		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
 		return $buttons;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
