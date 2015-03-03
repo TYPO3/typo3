@@ -41,23 +41,22 @@ $signalSlotDispatcher->connect(
 );
 
 if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
-	$buildAliasMap = function() {
-		$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-		$classAliasMap = $bootstrap->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class);
-		$classAliasMap->buildStaticMappingFile();
-	};
+	$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
+	$classAliasMap = $bootstrap->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class);
 	$signalSlotDispatcher->connect(
 		\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
 		'hasInstalledExtensions',
-		$buildAliasMap
+		$classAliasMap,
+		'buildStaticMappingFile'
 	);
 
 	$signalSlotDispatcher->connect(
 		\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 		'afterExtensionUninstall',
-		$buildAliasMap
+		$classAliasMap,
+		'buildStaticMappingFile'
 	);
-	unset($buildAliasMap);
+	unset($bootstrap, $classAliasMap);
 }
 
 unset($signalSlotDispatcher);
