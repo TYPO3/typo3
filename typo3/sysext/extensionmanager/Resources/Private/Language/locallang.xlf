@@ -213,8 +213,11 @@
 			<trans-unit id="extensionList.updateFlashMessage.title" xml:space="preserve">
 				<source>Extension Update</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFlashMessage.message" xml:space="preserve">
+			<trans-unit id="extensionList.updateFlashMessage.message" xml:space="preserve" deprecated="Unused since CMS 6.2">
 				<source>{0} updated!</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFlashMessage.body" xml:space="preserve">
+				<source>%s was updated!</source>
 			</trans-unit>
 			<trans-unit id="extensionList.removalConfirmation.question" xml:space="preserve">
 				<source>Are you sure you want to remove the extension?</source>

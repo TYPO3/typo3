@@ -216,36 +216,8 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 							beforeSend: function() {
 								$extManager.mask();
 							},
-							success: function(data) {
-								if (data.hasErrors) {
-									top.TYPO3.Flashmessage.display(
-										top.TYPO3.Severity.error,
-										TYPO3.lang['downloadExtension.updateExtension.error'],
-										data.errorMessage,
-										15
-									);
-									$extManager.unmask();
-								} else {
-									top.TYPO3.Flashmessage.display(
-										top.TYPO3.Severity.info,
-										TYPO3.lang['extensionList.updateFlashMessage.title'],
-										TYPO3.lang['extensionList.updateFlashMessage.message'].replace(/\{0\}/g, data.extension),
-										15
-									);
-									location.reload();
-								}
-							},
-							error: function(jqXHR, textStatus, errorThrown) {
-								// Create an error message with diagnosis info.
-								var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
-
-								top.TYPO3.Flashmessage.display(
-									top.TYPO3.Severity.error,
-									TYPO3.lang['downloadExtension.updateExtension.error'],
-									errorMessage,
-									15
-								);
-								$extManager.unmask();
+							complete: function() {
+								location.reload();
 							}
 						});
 						top.TYPO3.Modal.dismiss();

@@ -177,23 +177,22 @@ class DownloadController extends AbstractController {
 	 * already. This method should only be called if we are sure that there is
 	 * an update.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function updateExtensionAction() {
-		$hasErrors = FALSE;
-		$errorMessage = '';
-
 		$extensionKey = $this->request->getArgument('extension');
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
 		try {
 			$this->managementService->downloadMainExtension($highestTerVersionExtension);
+			$this->addFlashMessage(
+				htmlspecialchars($this->translate('extensionList.updateFlashMessage.body', array($extensionKey))),
+				$this->translate('extensionList.updateFlashMessage.title')
+			);
 		} catch (\Exception $e) {
-			$hasErrors = TRUE;
-			$errorMessage = $e->getMessage();
+			$this->addFlashMessage(htmlspecialchars($e->getMessage()), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
-		$this->view->assign('extension', $highestTerVersionExtension)
-			->assign('hasErrors', $hasErrors)
-			->assign('errorMessage', $errorMessage);
+
+		return '';
 	}
 
 	/**
