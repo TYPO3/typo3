@@ -750,7 +750,7 @@ class ReferenceIndex {
 				);
 			}
 			return $fileArray;
-		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && GeneralUtility::isFirstPartOfStr($value, 'file:')) {
+		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && $value !== NULL && GeneralUtility::isFirstPartOfStr($value, 'file:')) {
 			try {
 				$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($value);
 			} catch (\Exception $e) {
