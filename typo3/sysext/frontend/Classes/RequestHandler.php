@@ -50,16 +50,6 @@ class RequestHandler implements RequestHandlerInterface {
 	 * @return void
 	 */
 	public function handleRequest() {
-		// Hook to preprocess the current request:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
-				$hookParameters = array();
-				GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
-			}
-			unset($hookFunction);
-			unset($hookParameters);
-		}
-
 		// Timetracking started
 		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
 		if (empty($configuredCookieName)) {
@@ -72,6 +62,16 @@ class RequestHandler implements RequestHandlerInterface {
 		}
 
 		$GLOBALS['TT']->start();
+
+		// Hook to preprocess the current request:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'] as $hookFunction) {
+				$hookParameters = array();
+				GeneralUtility::callUserFunction($hookFunction, $hookParameters, $hookParameters);
+			}
+			unset($hookFunction);
+			unset($hookParameters);
+		}
 
 		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
 		$GLOBALS['TSFE'] = GeneralUtility::makeInstance(
