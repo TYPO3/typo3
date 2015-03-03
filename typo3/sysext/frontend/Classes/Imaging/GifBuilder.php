@@ -206,9 +206,14 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 							$fileInfo = $this->getResource($conf['file'], $conf['file.']);
 							if ($fileInfo) {
 								$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
-								if ($fileInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+								if ($fileInfo['processedFile'] instanceof \TYPO3\CMS\Core\Resource\ProcessedFile) {
+									// Use processed file, if a FAL file has been processed by GIFBUILDER (e.g. scaled/cropped)
+									$this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(FALSE);
+								} elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+									// Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
 									$this->setup[$theKey . '.']['file'] = $fileInfo['originalFile']->getForLocalProcessing(FALSE);
 								} else {
+									// Use normal path from fileInfo if it is a non-FAL file (even non-FAL files have originalFile set, but only non-FAL files have origFile set)
 									$this->setup[$theKey . '.']['file'] = $fileInfo[3];
 								}
 								$this->setup[$theKey . '.']['BBOX'] = $fileInfo;
@@ -216,7 +221,10 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 								if ($conf['mask']) {
 									$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
 									if ($maskInfo) {
-										if ($maskInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+										// the same selection criteria as regarding fileInfo above apply here
+										if ($maskInfo['processedFile'] instanceof \TYPO3\CMS\Core\Resource\ProcessedFile) {
+											$this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(FALSE);
+										} elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo['originalFile']->getForLocalProcessing(FALSE);
 										} else {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
