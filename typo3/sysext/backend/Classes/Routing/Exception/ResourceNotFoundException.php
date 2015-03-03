@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Routing\Exception;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -11,9 +13,8 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-require_once 'init.php';
 
-// Document generation
-$TYPO3backend = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\BackendController::class);
-$TYPO3backend->render();
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
+/**
+ * Exception thrown when a resource was not found.
+ */
+class ResourceNotFoundException extends \TYPO3\CMS\Core\Exception {}

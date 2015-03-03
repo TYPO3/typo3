@@ -1112,6 +1112,20 @@ class Bootstrap {
 	}
 
 	/**
+	 * Initialize the Routing for the TYPO3 Backend
+	 *
+	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function initializeBackendRouter() {
+		$packageManager = $this->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
+		$router = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class, $packageManager);
+		\TYPO3\CMS\Backend\Utility\BackendUtility::setRouter($router);
+		$this->setEarlyInstance(\TYPO3\CMS\Backend\Routing\Router::class, $router);
+		return $this;
+	}
+
+	/**
 	 * Initialize backend user object in globals
 	 *
 	 * @return Bootstrap

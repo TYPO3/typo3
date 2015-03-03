@@ -96,6 +96,7 @@ class BackendController {
 	 * Constructor
 	 */
 	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$this->backendModuleRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
 
 		// Set debug flag for BE development only
@@ -110,6 +111,7 @@ class BackendController {
 		$this->pageRenderer->enableExtJSQuickTips();
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', '//already done', FALSE);
 		$this->pageRenderer->addExtDirectCode();
+		$this->pageRenderer->setBaseUrl(GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR'));
 		// Add default BE javascript
 		$this->jsFiles = array(
 			'locallang' => $this->getLocalLangFileName(),
@@ -156,6 +158,42 @@ class BackendController {
 			$this->menuWidth = (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
 		}
 		$this->executeHook('constructPostProcess');
+
+		$this->includeLegacyBackendItems();
+	}
+
+	/**
+	 * Add hooks from the additional backend items to load certain things for the main backend.
+	 * This was previously called from the global scope from backend.php.
+	 */
+	protected function includeLegacyBackendItems() {
+		$TYPO3backend = $this;
+		// Include extensions which may add css, javascript or toolbar items
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
+				include_once $additionalBackendItem;
+			}
+		}
+
+		// Process ExtJS module js and css
+		if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
+			foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
+				if (is_array($moduleConfig['cssFiles'])) {
+					foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
+						$files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssFile));
+						$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+						$TYPO3backend->addCssFile($cssFileName, '../' . $files[0]);
+					}
+				}
+				if (is_array($moduleConfig['jsFiles'])) {
+					foreach ($moduleConfig['jsFiles'] as $jsFile) {
+						$files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsFile));
+						$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+						$TYPO3backend->addJavascriptFile('../' . $files[0]);
+					}
+				}
+			}
+		}
 	}
 
 	/**

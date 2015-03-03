@@ -13,13 +13,9 @@
  */
 
 /**
- * Login-screen of TYPO3.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Main entry point for the TYPO3 Backend.
+ * See Backend/RequestHandler.php on how the setup and the Routing is done.
  */
-define('TYPO3_PROCEED_IF_NO_USER', 1);
-require __DIR__ . '/init.php';
-
-$loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginController::class);
-$loginController->main();
-$loginController->printContent();
+define('TYPO3_MODE', 'BE');
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/')->shutdown();

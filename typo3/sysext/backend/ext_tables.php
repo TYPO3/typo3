@@ -14,12 +14,6 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/LoginFrameset/'
 	);
 
-	// Register logout
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'logout',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Logout/'
-	);
-
 	// Register file_navframe
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('file', 'file_navframe');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
