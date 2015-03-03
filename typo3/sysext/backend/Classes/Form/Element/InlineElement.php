@@ -995,10 +995,7 @@ class InlineElement {
 		$isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
 		if ($showUpload && $isDirectFileUploadEnabled) {
 			$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
-			if (
-				$folder instanceof \TYPO3\CMS\Core\Resource\Folder
-				&& $folder->checkActionPermission('add')
-			) {
+			if ($folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
 				$item .= ' <a href="#" class="btn btn-default t3-drag-uploader"
 					style="display:none"

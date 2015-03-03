@@ -1816,8 +1816,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * This is used for RTE and its magic images, as well as uploads
 	 * in the TCEforms fields, unless otherwise configured (will be added in the future)
 	 *
-	 * the default upload folder for a user is the defaultFolder on the first
-	 * filestorage/filemount that the user can access
+	 * The default upload folder for a user is the defaultFolder on the first
+	 * filestorage/filemount that the user can access and to which files are allowed to be added
 	 * however, you can set the users' upload folder like this:
 	 *
 	 * options.defaultUploadFolder = 3:myfolder/yourfolder/
@@ -1833,7 +1833,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				if ($storage->isDefault()) {
 					try {
 						$uploadFolder = $storage->getDefaultFolder();
-						break;
+						if ($uploadFolder->checkActionPermission('add')) {
+							break;
+						}
+						$uploadFolder = NULL;
 					} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
 						// If the folder is not accessible (no permissions / does not exist) we skip this one.
 					}
@@ -1845,7 +1848,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				foreach ($this->getFileStorages() as $storage) {
 					try {
 						$uploadFolder = $storage->getDefaultFolder();
-						break;
+						if ($uploadFolder->checkActionPermission('add')) {
+							break;
+						}
+						$uploadFolder = NULL;
 					} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
 						// If the folder is not accessible (no permissions / does not exist) try the next one.
 					}
