@@ -106,6 +106,7 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 		$this->bootstrap->checkLockedBackendAndRedirectOrDie()
 			->checkBackendIpOrDie()
 			->checkSslBackendAndRedirectIfNeeded()
+			->initializeBackendRouter()
 			->loadExtensionTables(TRUE)
 			->initializeSpriteManager()
 			->initializeBackendUser()

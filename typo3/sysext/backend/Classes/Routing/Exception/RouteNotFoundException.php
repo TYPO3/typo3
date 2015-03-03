@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Routing\Exception;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,9 +15,6 @@
  */
 
 /**
- * Logout script for the backend
- * This script saves the interface positions and calls the closeTypo3Windows in the frameset
+ * Exception thrown when a route does not exist
  */
-
-$logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LogoutController::class);
-$logoutController->logout();
+class RouteNotFoundException extends \TYPO3\CMS\Core\Exception {}

@@ -1027,6 +1027,52 @@ class Bootstrap {
 	}
 
 	/**
+	 * Initialize the Routing for the TYPO3 Backend
+	 * Loads all routes registered inside all packages and stores them inside the Router
+	 *
+	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function initializeBackendRouter() {
+		$packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+
+		// See if the Routes.php from all active packages have been built together already
+		$cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((TYPO3_version . PATH_site . 'BackendRoutesFromPackages'));
+
+		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
+		$codeCache = $this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core');
+		$routesFromPackages = array();
+		if ($codeCache->has($cacheIdentifier)) {
+			// substr is necessary, because the php frontend wraps php code around the cache value
+			$routesFromPackages = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
+		} else {
+			// Loop over all packages and check for a Configuration/Backend/Routes.php file
+			$packages = $packageManager->getActivePackages();
+			foreach ($packages as $package) {
+				$routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/Routes.php';
+				if (file_exists($routesFileNameForPackage)) {
+					$definedRoutesInPackage = require $routesFileNameForPackage;
+					if (is_array($definedRoutesInPackage)) {
+						$routesFromPackages += $definedRoutesInPackage;
+					}
+				}
+			}
+			// Store the data from all packages in the cache
+			$codeCache->set($cacheIdentifier, serialize($routesFromPackages));
+		}
+
+		// Build Route objects from the data
+		$router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
+		foreach ($routesFromPackages as $name => $options) {
+			$path = $options['path'];
+			unset($options['path']);
+			$route = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Route::class, $path, $options);
+			$router->addRoute($name, $route);
+		}
+		return $this;
+	}
+
+	/**
 	 * Initialize backend user object in globals
 	 *
 	 * @return Bootstrap

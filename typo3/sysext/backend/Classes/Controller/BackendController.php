@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,7 +30,7 @@ use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 /**
  * Class for rendering the TYPO3 backend
  */
-class BackendController {
+class BackendController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * @var string
@@ -103,6 +105,7 @@ class BackendController {
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
 
 		// Set debug flag for BE development only
@@ -167,6 +170,41 @@ class BackendController {
 			$this->menuWidth = (int)$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
 		}
 		$this->executeHook('constructPostProcess');
+		$this->includeLegacyBackendItems();
+	}
+
+	/**
+	 * Add hooks from the additional backend items to load certain things for the main backend.
+	 * This was previously called from the global scope from backend.php.
+	 */
+	protected function includeLegacyBackendItems() {
+		$TYPO3backend = $this;
+		// Include extensions which may add css, javascript or toolbar items
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
+				include_once $additionalBackendItem;
+			}
+		}
+
+		// Process ExtJS module js and css
+		if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
+			foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
+				if (is_array($moduleConfig['cssFiles'])) {
+					foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
+						$files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssFile));
+						$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+						$TYPO3backend->addCssFile($cssFileName, '../' . $files[0]);
+					}
+				}
+				if (is_array($moduleConfig['jsFiles'])) {
+					foreach ($moduleConfig['jsFiles'] as $jsFile) {
+						$files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsFile));
+						$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+						$TYPO3backend->addJavascriptFile('../' . $files[0]);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -205,40 +243,27 @@ class BackendController {
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the render() method, it is rather simple for now
+	 * This will be split up in an abstract controller once proper routing/dispatcher is in place.
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->render();
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
+	}
+
+	/**
 	 * Main function generating the BE scaffolding
 	 *
 	 * @return void
 	 */
 	public function render() {
-		// Needed for the hooks below, as they previously were located in the global scope
-		// Caution: do not use the global variable anymore but only reference "$this", or use the "renderPreProcess"
-		$GLOBALS['TYPO3backend'] = $TYPO3backend = $this;
-		// Include extensions which may add css, javascript or toolbar items
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
-				include_once $additionalBackendItem;
-			}
-		}
-
-		// Process ExtJS module js and css
-		if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
-			foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
-				if (is_array($moduleConfig['cssFiles'])) {
-					foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
-						$files = array(GeneralUtility::getFileAbsFileName($cssFile));
-						$files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
-						$this->addCssFile($cssFileName, '../' . $files[0]);
-					}
-				}
-				if (is_array($moduleConfig['jsFiles'])) {
-					foreach ($moduleConfig['jsFiles'] as $jsFile) {
-						$files = array(GeneralUtility::getFileAbsFileName($jsFile));
-						$files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
-						$this->addJavascriptFile('../' . $files[0]);
-					}
-				}
-			}
-		}
 		$this->executeHook('renderPreProcess');
 
 		// Prepare the scaffolding, at this point extension may still add javascript and css
@@ -311,7 +336,6 @@ class BackendController {
 		$this->content = $this->getDocumentTemplate()->render($title, $view->render());
 		$hookConfiguration = array('content' => &$this->content);
 		$this->executeHook('renderPostProcess', $hookConfiguration);
-		echo $this->content;
 	}
 
 	/**

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Routing\Exception;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -12,10 +14,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
-
-// Document generation
-$GLOBALS['TYPO3backend'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-	\TYPO3\CMS\Backend\Controller\BackendController::class
-);
-$GLOBALS['TYPO3backend']->render();
+/**
+ * Exception thrown when a resource was not found.
+ */
+class ResourceNotFoundException extends \TYPO3\CMS\Core\Exception {}

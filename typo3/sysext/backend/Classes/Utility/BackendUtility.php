@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Routing\Generator\UrlGenerator;
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -3292,16 +3295,15 @@ class BackendUtility {
 	 * @return string Calculated URL
 	 */
 	static public function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
-		$urlParameters = array(
-			'M' => $moduleName,
-			'moduleToken' => FormProtectionFactory::get()->generateToken('moduleCall', $moduleName)
-		) + $urlParameters;
-		$url = 'index.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
-		if ($returnAbsoluteUrl) {
-			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
-		} else {
-			return PathUtility::getAbsoluteWebPath(PATH_typo3 . $url);
+		/** @var UriBuilder $uriBuilder */
+		$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+		try {
+			$uri = $uriBuilder->buildUriFromRoute($moduleName, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+		} catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
+			// no route registered, use the fallback logic to check for a module
+			$uri = $uriBuilder->buildUriFromModule($moduleName, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
 		}
+		return (string)$uri;
 	}
 
 	/**
@@ -3319,18 +3321,9 @@ class BackendUtility {
 	 * @internal
 	 */
 	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
-		$additionalUrlParameters = array(
-			'ajaxID' => $ajaxIdentifier
-		);
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxIdentifier]['csrfTokenCheck'])) {
-			$additionalUrlParameters['ajaxToken'] = FormProtectionFactory::get()->generateToken('ajaxCall', $ajaxIdentifier);
-		}
-		$url = 'index.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', ($additionalUrlParameters + $urlParameters), '', TRUE, TRUE), '&');
-		if ($returnAbsoluteUrl) {
-			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
-		} else {
-			return PathUtility::getAbsoluteWebPath(PATH_typo3 . $url);
-		}
+		/** @var UriBuilder $uriBuilder */
+		$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+		return (string)$uriBuilder->buildUriFromAjaxId($ajaxIdentifier, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
 	}
 
 	/**

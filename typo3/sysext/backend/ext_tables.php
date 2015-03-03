@@ -2,11 +2,6 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
-	// Main module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'main',
-		'EXT:backend/Modules/Main/'
-	);
 
 	// Register record edit module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
@@ -24,12 +19,6 @@ if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'login_frameset',
 		'EXT:backend/Modules/LoginFrameset/'
-	);
-
-	// Register logout
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'logout',
-		'EXT:backend/Modules/Logout/'
 	);
 
 	// Register file_navframe

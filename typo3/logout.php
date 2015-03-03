@@ -25,5 +25,9 @@ call_user_func(function() {
 
 		$logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LogoutController::class);
 		$logoutController->logout();
+		// do the redirect
+		$redirect = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('redirect'));
+		$redirectUrl = $redirect ?: 'index.php';
+		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 	});
 });

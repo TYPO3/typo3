@@ -659,10 +659,11 @@ class UriBuilder {
 		$this->lastArguments = $arguments;
 		$moduleName = $arguments['M'];
 		unset($arguments['M'], $arguments['moduleToken']);
+		$backendUriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 		if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
-			$uri = BackendUtility::getModuleUrl($moduleName, $arguments, NULL, TRUE);
+			$uri = (string)$backendUriBuilder->buildUriFromModule($moduleName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
 		} else {
-			$uri = BackendUtility::getModuleUrl($moduleName, $arguments);
+			$uri = (string)$backendUriBuilder->buildUriFromModule($moduleName, $arguments);
 		}
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
