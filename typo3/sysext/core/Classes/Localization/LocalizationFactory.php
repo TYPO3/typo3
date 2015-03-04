@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Core\Localization;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Provides a language parser factory.
  *
@@ -48,7 +52,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function initialize() {
-		$this->store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore');
+		$this->store = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore');
 		$this->initializeCache();
 	}
 
@@ -58,7 +62,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function initializeCache() {
-		$this->cacheInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('l10n');
+		$this->cacheInstance = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('l10n');
 	}
 
 	/**
@@ -72,42 +76,47 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array|boolean
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
+		$hash = md5($fileReference . $languageKey . $charset);
+		$this->errorMode = $errorMode;
+		// Check if the default language is processed before processing other language
+		if (!$this->store->hasData($fileReference, 'default') && $languageKey !== 'default') {
+			$this->getParsedData($fileReference, 'default', $charset, $this->errorMode);
+		}
+		// If the content is parsed (local cache), use it
+		if ($this->store->hasData($fileReference, $languageKey)) {
+			return $this->store->getData($fileReference);
+		}
+
+		// If the content is in cache (system cache), use it
+		$data = $this->cacheInstance->get($hash);
+		if ($data !== FALSE) {
+			$this->store->setData($fileReference, $languageKey, $data);
+			return $this->store->getData($fileReference);
+		}
+
 		try {
-			$hash = md5($fileReference . $languageKey . $charset);
-			$this->errorMode = $errorMode;
-			// Check if the default language is processed before processing other language
-			if (!$this->store->hasData($fileReference, 'default') && $languageKey !== 'default') {
-				$this->getParsedData($fileReference, 'default', $charset, $this->errorMode);
-			}
-			// If the content is parsed (local cache), use it
-			if ($this->store->hasData($fileReference, $languageKey)) {
-				return $this->store->getData($fileReference);
-			}
-
-			// If the content is in cache (system cache), use it
-			$data = $this->cacheInstance->get($hash);
-			if ($data !== FALSE) {
-				$this->store->setData($fileReference, $languageKey, $data);
-				return $this->store->getData($fileReference, $languageKey);
-			}
-
 			$this->store->setConfiguration($fileReference, $languageKey, $charset);
 			/** @var $parser \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface */
 			$parser = $this->store->getParserInstance($fileReference);
 			// Get parsed data
 			$LOCAL_LANG = $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey, $charset);
-			// Override localization
-			if (!$isLocalizationOverride && isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'])) {
-				$this->localizationOverride($fileReference, $languageKey, $charset, $errorMode, $LOCAL_LANG);
-			}
-			// Save parsed data in cache
-			$this->store->setData($fileReference, $languageKey, $LOCAL_LANG[$languageKey]);
-			// Cache processed data
-			$this->cacheInstance->set($hash, $this->store->getDataByLanguage($fileReference, $languageKey));
-		} catch (\TYPO3\CMS\Core\Localization\Exception\FileNotFoundException $exception) {
-			// Source localization file not found
+		} catch (Exception\FileNotFoundException $exception) {
+			// Source localization file not found, set empty data as there could be an override
 			$this->store->setData($fileReference, $languageKey, array());
+			$LOCAL_LANG = $this->store->getData($fileReference);
 		}
+
+		// Override localization
+		if (!$isLocalizationOverride && isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'])) {
+			$this->localizationOverride($fileReference, $languageKey, $charset, $errorMode, $LOCAL_LANG);
+		}
+
+		// Save parsed data in cache
+		$this->store->setData($fileReference, $languageKey, $LOCAL_LANG[$languageKey]);
+
+		// Cache processed data
+		$this->cacheInstance->set($hash, $this->store->getDataByLanguage($fileReference, $languageKey));
+
 		return $this->store->getData($fileReference);
 	}
 
@@ -136,8 +145,8 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if (count($overrides) > 0) {
 			foreach ($overrides as $overrideFile) {
-				$languageOverrideFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($overrideFile);
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode, TRUE));
+				$languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);
+				ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode, TRUE));
 			}
 		}
 	}
