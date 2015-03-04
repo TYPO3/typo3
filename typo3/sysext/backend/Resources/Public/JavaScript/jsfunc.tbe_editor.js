@@ -214,7 +214,7 @@ var TBE_EDITOR = {
 
 				} else {
 						// special treatment for file uploads
-					var tempObj = document[TBE_EDITOR.formname][elementName.replace(/^data/, 'data_files')];
+					var tempObj = document[TBE_EDITOR.formname][elementName.replace(/^data/, 'data_files') + '[]'];
 					numberOfElements = form.length;
 
 					if (tempObj && tempObj.type == 'file' && tempObj.value) {
