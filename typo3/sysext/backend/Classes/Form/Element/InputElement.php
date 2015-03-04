@@ -158,7 +158,7 @@ class InputElement extends AbstractFormElement {
 		$attributes['name'] = $additionalInformation['itemFormElName'] . '_hr';
 		$attributes['value'] = '';
 		$attributes['maxlength'] = $config['max'] ?: 256;
-		$attributes['onchange'] = htmlspecialchars(implode('', $additionalInformation['fieldChangeFunc']));
+		$attributes['onchange'] = implode('', $additionalInformation['fieldChangeFunc']);
 
 		if (!empty($styles)) {
 			$attributes['style'] = implode(' ', $styles);
@@ -173,7 +173,7 @@ class InputElement extends AbstractFormElement {
 		// Build the attribute string
 		$attributeString = '';
 		foreach ($attributes as $attributeName => $attributeValue) {
-			$attributeString .= ' '. $attributeName . '="' . $attributeValue . '"';
+			$attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
 		}
 
 		// This is the EDITABLE form field.
@@ -181,7 +181,6 @@ class InputElement extends AbstractFormElement {
 			<input type="text"'
 				. $attributeString
 				. $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
-				. 'style="' . $cssStyle . '" '
 				. $additionalInformation['onFocus'] . ' />';
 
 		// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
