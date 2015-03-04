@@ -144,6 +144,7 @@ lib.parseFunc_RTE {
 		dd < .div
 		ol < .div
 		ul < .div
+		li.stdWrap.parseFunc < lib.parseFunc
 	}
 	nonTypoTagStdWrap.encapsLines {
 		encapsTagList = p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li
