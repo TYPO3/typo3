@@ -60,4 +60,24 @@ class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
 	}
 
+	/**
+	 * @test
+	 */
+	public function getParsedDataCallsLocalizationOverrideIfFileNotFoundExceptionIsThrown() {
+		/** @var $subject LocalizationFactory */
+		$localizationFactory = $this->getAccessibleMock(LocalizationFactory::class, array('localizationOverride'));
+		$languageStore = $this->getMock(\TYPO3\CMS\Core\Localization\LanguageStore::class, array('hasData', 'setConfiguration', 'getData', 'setData'));
+		$cacheInstance = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class, array('get', 'set'), array(), '', FALSE);
+		$localizationFactory->_set('store', $languageStore);
+		$localizationFactory->_set('cacheInstance', $cacheInstance);
+		$languageStore->method('hasData')->willReturn(FALSE);
+		$languageStore->method('getData')->willReturn(array());
+		$languageStore->method('setConfiguration')->willThrowException(new \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException());
+		$cacheInstance->method('get')->willReturn(FALSE);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = array('foo' => 'bar');
+
+		$localizationFactory->expects($this->once())->method('localizationOverride');
+		$localizationFactory->getParsedData('EXT:backend/Resources/Private/Language/locallang_layout.xlf', 'default');
+	}
+
 }
