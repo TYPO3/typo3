@@ -1,8 +1,7 @@
 @charset "UTF-8";
 
 body {
-	/* Font size 62.8% = 1em = 10px */
-	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
+	font: 12px Verdana, Arial, Helvetica, sans-serif;
 	padding-top: 11em;
 	background: #4f4f4f;
 }
@@ -22,7 +21,6 @@ h2 {
 #container {
 	margin: 0 auto;
 	width: 41em;
-	font-size: 110%;
 	line-height: 1.7em;
 }
 

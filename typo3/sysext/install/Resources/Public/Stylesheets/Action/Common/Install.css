@@ -61,7 +61,7 @@ table {
 
 
 body {
-	font: 75% Verdana, Arial, Helvetica, sans-serif;
+	font: 12px/1 Verdana, Arial, Helvetica, sans-serif;
 }
 
 pre {
@@ -318,7 +318,6 @@ button span.t3-install-form-button-icon-negative {
 	padding: 0;
 	list-style: none;
 	width: 18em;
-	font-size: 110%;
 	line-height: 2em;
 }
 
@@ -394,7 +393,6 @@ button span.t3-install-form-button-icon-negative {
 	padding: 0;
 	list-style: none;
 	width: 18em;
-	font-size: 110%;
 	line-height: 2em;
 }
 
@@ -428,7 +426,6 @@ body.standalone #t3-install-menu-logout a {
 	padding: 0;
 	list-style: none;
 	width: 15.2em;
-	font-size: 110%;
 	line-height: 2em;
 }
 
@@ -442,7 +439,6 @@ body.standalone #t3-install-menu-logout a {
 }
 
 #t3-install-box-body {
-	font-size: 110%;
 	line-height: 1.7em;
 	padding: 0.1em 1.8em 1.8em 1.8em;
 	color: #606060;
@@ -548,9 +544,10 @@ h4.item-header {
 }
 
 .typo3-message {
-	padding: 0.6em 0.6em 0.6em 2.6em;
+	font-size: 100%;
+	padding: 0.8em 0.8em 0.8em 2.8em;
 	background-repeat: no-repeat;
-	background-position: 0.5em 0.9em;
+	background-position: 0.8em 0.9em;
 	border: 1px solid;
 	color: #000000;
 	word-wrap: break-word;
