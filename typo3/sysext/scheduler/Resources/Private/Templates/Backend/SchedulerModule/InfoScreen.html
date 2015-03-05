@@ -3,35 +3,36 @@
 <p class="lead">
 	<f:translate key="msg.infoScreenIntro" />
 </p>
-
-<table class="table table-striped table-hover">
-	<thead>
-		<tr>
-			<th>
-				<f:translate key="label.name" />
-			</th>
-			<th>
-				<f:translate key="label.extension" />
-			</th>
-			<th colspan="2">
-				<f:translate key="label.description" />
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-		<f:for each="{registeredClasses}" key="class" as="classInfo">
+<div class="table-responsive">
+	<table class="table table-striped table-hover">
+		<thead>
 			<tr>
-				<td>{classInfo.title}</td>
-				<td>{classInfo.extension}</td>
-				<td>{classInfo.description}</td>
-				<td>
-					<div class="btn-group" role="group">
-						<span class="btn btn-default">
-							<f:be.buttons.icon uri="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" icon="actions-document-new" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"/>
-						</span>
-					</div>
-				</td>
+				<th>
+					<f:translate key="label.name" />
+				</th>
+				<th>
+					<f:translate key="label.extension" />
+				</th>
+				<th colspan="2">
+					<f:translate key="label.description" />
+				</th>
 			</tr>
-		</f:for>
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			<f:for each="{registeredClasses}" key="class" as="classInfo">
+				<tr>
+					<td>{classInfo.title}</td>
+					<td>{classInfo.extension}</td>
+					<td>{classInfo.description}</td>
+					<td>
+						<div class="btn-group" role="group">
+							<span class="btn btn-default">
+								<f:be.buttons.icon uri="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" icon="actions-document-new" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"/>
+							</span>
+						</div>
+					</td>
+				</tr>
+			</f:for>
+		</tbody>
+	</table>
+</div>
