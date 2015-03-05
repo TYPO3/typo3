@@ -1,15 +1,12 @@
 {namespace doc=TYPO3\CMS\Documentation\ViewHelpers}
 
-<f:be.container pageTitle="{f:translate(key: 'documentation_manager')}" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" loadExtJs="false" loadExtJsTheme="true" loadJQuery="true"
+<f:be.container pageTitle="{f:translate(key: 'documentation_manager')}" enableClickMenu="false" loadPrototype="false" loadJQuery="true"
 
 	includeCssFiles="{
 		0:'{f:uri.resource(path:\'Css/main.css\')}'
 	}"
-	includeJsFiles="{
-		0:'contrib/jquery/jquery.dataTables.min.js',
-		1:'contrib/jquery/jquery.clearable.js',
-		2:'{f:uri.resource(path:\'JavaScript/main.js\')}',
-		3:'{f:uri.resource(path:\'JavaScript/configuration.js\')}'
+	includeRequireJsModules="{
+		0: 'TYPO3/CMS/Documentation/Main'
 	}">
 
 	<div id="typo3-docheader">
@@ -21,9 +18,7 @@
 				</doc:be.security.ifAdmin>
 			</f:be.menus.actionMenu>
 		</div>
-		<div class="typo3-docheader-buttons">
-			<f:render section="docheader-buttons" />
-		</div>
+		<div class="typo3-docheader-buttons"></div>
 	</div>
 	<div id="typo3-docbody">
 		<div id="typo3-inner-docbody" class="typo3-documentation">
