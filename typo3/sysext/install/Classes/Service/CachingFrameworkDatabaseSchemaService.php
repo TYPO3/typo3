@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\CacheFactory;
+
 /**
  * This service provides the sql schema for the caching framework
  */
@@ -24,44 +27,24 @@ class CachingFrameworkDatabaseSchemaService {
 	 *
 	 * This method needs ext_localconf and ext_tables loaded!
 	 *
-	 * This is a hack, but there was no smarter solution with current cache configuration setup:
-	 * ToolController sets the extbase caches to NullBackend to ensure the install tool does not
-	 * cache anything. The CacheManager gets the required SQL from database backends only, so we need to
-	 * temporarily 'fake' the standard db backends for extbase caches so they are respected.
-	 *
-	 * Additionally, the extbase_object cache is already in use and instantiated, and the CacheManager singleton
-	 * does not allow overriding this definition. The only option at the moment is to 'fake' another cache with
-	 * a different name, and then substitute this name in the sql content with the real one.
-	 *
-	 * @TODO: http://forge.typo3.org/issues/54498
-	 * @TODO: It might be possible to reduce this ugly construct by circumventing the 'singleton' of CacheManager by using 'new'
-	 *
 	 * @return string Cache framework SQL
 	 */
 	public function getCachingFrameworkRequiredDatabaseSchema() {
-		$cacheConfigurationBackup = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap'] = array(
-			'groups' => array('system')
-		);
-		$extbaseObjectFakeName = uniqid('extbase_object');
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$extbaseObjectFakeName] = array(
-			'groups' => array('system')
-		);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection'] = array(
-			'groups' => array('system')
-		);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns'] = array(
-			'groups' => array('system')
-		);
-		/** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
-		$cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+		// Use new to circumvent the singleton pattern of CacheManager
+		$cacheManager = new CacheManager;
 		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
-		$cacheSqlString = \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
-		$sqlString = str_replace($extbaseObjectFakeName, 'extbase_object', $cacheSqlString);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = $cacheConfigurationBackup;
-		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		// Cache manager needs cache factory. cache factory injects itself to manager in __construct()
+		new CacheFactory('production', $cacheManager);
 
-		return $sqlString;
+		$tableDefinitions = '';
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $cacheName => $_) {
+			$backend = $cacheManager->getCache($cacheName)->getBackend();
+			if (method_exists($backend, 'getTableDefinitions')) {
+				$tableDefinitions .= LF . $backend->getTableDefinitions();
+			}
+		}
+
+		return $tableDefinitions;
 	}
 
 	/**

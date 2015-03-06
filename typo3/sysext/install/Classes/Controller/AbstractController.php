@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 
 /**
  * Controller abstract for shared parts of Tool, Step and Ajax controller
@@ -401,40 +402,34 @@ class AbstractController {
 
 	/**
 	 * Require dbal ext_localconf if extension is loaded
-	 * Required extbase + fluid ext_localconf
-	 * Set caching to null, we do not want dbal, fluid or extbase to cache anything
+	 * Required extbase ext_localconf
+	 * Set caching to NullBackend, install tool must not cache anything
 	 *
 	 * @return void
 	 */
 	protected function loadBaseExtensions() {
 		if ($this->isDbalEnabled()) {
 			require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('dbal') . 'ext_localconf.php');
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['backend']
-				= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['dbal']['options'] = array();
 		}
 
+		// @todo: Find out if this could be left out
 		require(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'ext_localconf.php');
 
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['backend']
-			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_datamapfactory_datamap']['options'] = array();
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_object']['backend']
-			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_object']['options'] = array();
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection']['backend']
-			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_reflection']['options'] = array();
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns']['backend']
-			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['extbase_typo3dbbackend_tablecolumns']['options'] = array();
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['backend']
-			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['options'] = array();
+		$cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+
+		$cacheConfigurationsWithCachesSetToNullBackend = array();
+		foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
+			// cache_core and cache_classes are handled in bootstrap already
+			if (is_array($cacheConfiguration) && $cacheName !== 'cache_core' && $cacheName !== 'cache_classes') {
+				$cacheConfiguration['backend'] = NullBackend::class;
+				$cacheConfiguration['options'] = array();
+			}
+			$cacheConfigurationsWithCachesSetToNullBackend[$cacheName] = $cacheConfiguration;
+		}
 
 		/** @var $cacheManager \TYPO3\CMS\Core\Cache\CacheManager */
 		$cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		$cacheManager->setCacheConfigurations($cacheConfigurationsWithCachesSetToNullBackend);
 	}
 
 	/**
