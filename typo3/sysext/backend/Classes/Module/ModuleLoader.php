@@ -335,10 +335,20 @@ class ModuleLoader {
 
 		// check if there is a navigation component (like the pagetree)
 		if (is_array($this->navigationComponents[$name])) {
-			$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
+			// the navigation component is a module, so the module URL is taken
+			if (isset($GLOBALS['TBE_MODULES']['_PATHS'][$this->navigationComponents[$name]['componentId']])) {
+				$finalModuleConfiguration['navFrameScript'] = BackendUtility::getModuleUrl($this->navigationComponents[$name]['componentId']);
+			} else {
+				$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
+			}
 		// navigation component can be overriden by the main module component
 		} elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== FALSE) {
-			$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
+			// the navigation component is a module, so the module URL is taken
+			if (isset($GLOBALS['TBE_MODULES']['_PATHS'][$this->navigationComponents[$mainModule]['componentId']])) {
+				$finalModuleConfiguration['navFrameScript'] = BackendUtility::getModuleUrl($this->navigationComponents[$mainModule]['componentId']);
+			} else {
+				$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
+			}
 		}
 		return $finalModuleConfiguration;
 	}

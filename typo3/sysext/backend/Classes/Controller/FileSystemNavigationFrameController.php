@@ -102,7 +102,7 @@ class FileSystemNavigationFrameController {
 			$GLOBALS['SOBE']->browser->act = $this->scopeData['browser']['act'];
 		} else {
 			$this->foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Filelist\FileListFolderTree::class);
-			$this->foldertree->thisScript = 'alt_file_navframe.php';
+			$this->foldertree->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_navframe');
 		}
 
 		$this->foldertree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
