@@ -62,6 +62,7 @@
 											uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersion: extension.terObject.integerVersion},format:'json')}"
 											icon="actions-system-extension-update"
 											title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+											additionalAttributes="{data-action:'update-extension'}"
 										/>
 									</span>
 								</f:else>

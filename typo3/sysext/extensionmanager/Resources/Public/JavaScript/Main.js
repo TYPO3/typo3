@@ -97,20 +97,15 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			});
 		});
 
-		$('.t3-icon-system-extension-update').parent().each(function() {
-			var $me = $(this);
-			$me.data('href', $me.attr('href'));
-			$me.attr('href', '#');
-			$me.addClass('transformed');
-			$me.click(function() {
-				$.ajax({
-					url: $(this).data('href'),
-					dataType: 'json',
-					beforeSend: function() {
-						$(ExtensionManager.identifier.extensionManager).mask();
-					},
-					success: ExtensionManager.updateExtension
-				});
+		$('a[data-action=update-extension]').click(function(e) {
+			e.preventDefault();
+			$.ajax({
+				url: $(this).attr('href'),
+				dataType: 'json',
+				beforeSend: function() {
+					$(ExtensionManager.identifier.extensionManager).mask();
+				},
+				success: ExtensionManager.updateExtension
 			});
 		});
 	};
