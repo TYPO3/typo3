@@ -600,7 +600,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 						}
 						$translation = $GLOBALS['LANG']->getLL('hooks.' . $type);
 						$translation = $translation ? $translation : $type;
-						$option = '<input type="checkbox" ' . $additionalAttr . ' id="' . $prefix . 'SET_' . $type . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">' . htmlspecialchars($translation) . '</label>';
+						$option = '<input type="checkbox" ' . $additionalAttr . ' id="' . $prefix . 'SET_' . $type . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET_' . $type . '">' . htmlspecialchars($translation) . '</label>';
 						$hookSectionMarker['option'] = $option;
 						$hookSectionContent .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray(
 							$hookSectionTemplate,
