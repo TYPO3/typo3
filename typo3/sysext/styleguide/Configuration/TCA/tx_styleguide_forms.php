@@ -1750,7 +1750,7 @@ return array(
 		),
 		'inline_2' => array( /** Taken from irre_tutorial 1nff */
 			'exclude' => 1,
-			'label' => 'IRRE: 2 1:n foreign field to table with sheets with a custom text',
+			'label' => 'IRRE: 2 1:n foreign field to table with sheets with a custom text expandSingle',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
@@ -1758,6 +1758,7 @@ return array(
 				'foreign_table_field' => 'parenttable',
 				'maxitems' => 10,
 				'appearance' => array(
+					'expandSingle' => TRUE,
 					'showSynchronizationLink' => TRUE,
 					'showAllLocalizationLink' => TRUE,
 					'showPossibleLocalizationRecords' => TRUE,
