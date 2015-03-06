@@ -2,9 +2,9 @@
 defined('TYPO3_MODE') or die();
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Reports\Task\SystemStatusUpdateTask::class] = array(
-	'extension' => 'recycler',
-	'title' => 'LLL:EXT:recycler/reports/locallang.xlf:status_updateTaskTitle',
-	'description' => 'LLL:EXT:recycler/reports/locallang.xlf:status_updateTaskDescription',
+	'extension' => 'reports',
+	'title' => 'LLL:EXT:reports/reports/locallang.xlf:status_updateTaskTitle',
+	'description' => 'LLL:EXT:reports/reports/locallang.xlf:status_updateTaskDescription',
 	'additionalFields' => \TYPO3\CMS\Reports\Task\SystemStatusUpdateTaskNotificationEmailField::class
 );
 

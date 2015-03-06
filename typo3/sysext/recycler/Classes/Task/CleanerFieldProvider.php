@@ -42,14 +42,14 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
 
 		$additionalFields['period'] = array(
 			'code' => '<input type="text" class="form-control" name="tx_scheduler[RecyclerCleanerPeriod]" value="' . $taskInfo['RecyclerCleanerPeriod'] . '">',
-			'label' => 'LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskPeriod',
+			'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskPeriod',
 			'cshKey' => '',
 			'cshLabel' => 'task_recyclerCleaner_selectedPeriod'
 		);
 
 		$additionalFields['tca'] = array(
 			'code' => $this->getTcaSelectHtml($taskInfo['RecyclerCleanerTCA']),
-			'label' => 'LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskTCA',
+			'label' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskTCA',
 			'cshKey' => '',
 			'cshLabel' => 'task_recyclerCleaner_selectedTables'
 		);
@@ -122,7 +122,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
 			$validTca = TRUE;
 		} else {
 			$schedulerModule->addMessage(
-				$this->getLanguageService()->sL('LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskErrorTCAempty', TRUE),
+				$this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCAempty', TRUE),
 				FlashMessage::ERROR
 			);
 			$validTca = FALSE;
@@ -144,7 +144,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
 			if (!isset($GLOBALS['TCA'][$tcaTable])) {
 				$checkTca = FALSE;
 				$schedulerModule->addMessage(
-					sprintf($this->getLanguageService()->sL('LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskErrorTCANotSet', TRUE), $tcaTable),
+					sprintf($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCANotSet', TRUE), $tcaTable),
 					FlashMessage::ERROR
 				);
 				break;
@@ -168,7 +168,7 @@ class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProvid
 			$validPeriod = TRUE;
 		} else {
 			$schedulerModule->addMessage(
-				$this->getLanguageService()->sL('LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskErrorPeriod', TRUE),
+				$this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorPeriod', TRUE),
 				FlashMessage::ERROR
 			);
 			$validPeriod = FALSE;
