@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Log;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
+
 /**
  * Log record
  *
@@ -98,7 +100,7 @@ class LogRecord implements \ArrayAccess {
 	 * @param array $data Additional data
 	 */
 	public function __construct($component = '', $level, $message, array $data = array()) {
-		$this->setRequestId(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getRequestId())
+		$this->setRequestId(Bootstrap::getInstance()->getRequestId())
 			->setCreated(microtime(TRUE))
 			->setComponent($component)
 			->setLevel($level)
@@ -250,7 +252,15 @@ class LogRecord implements \ArrayAccess {
 	public function __toString() {
 		$timestamp = date('r', (int)$this->created);
 		$levelName = LogLevel::getName($this->level);
-		$data = !empty($this->data) ? '- ' . json_encode($this->data) : '';
+		$data = '';
+		if (!empty($this->data)) {
+			// According to PSR3 the exception-key may hold an \Exception
+			// Since json_encode() does not encode an exception, we run the _toString() here
+			if (isset($this->data['exception']) && $this->data['exception'] instanceof \Exception) {
+				$this->data['exception'] = (string)$this->data['exception'];
+			}
+			$data = '- ' . json_encode($this->data);
+		}
 		$logRecordString = sprintf('%s [%s] request="%s" component="%s": %s %s', $timestamp, $levelName, $this->requestId, $this->component, $this->message, $data);
 		return $logRecordString;
 	}

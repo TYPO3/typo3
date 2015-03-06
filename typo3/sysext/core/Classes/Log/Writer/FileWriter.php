@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Log\Writer;
  */
 
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
+use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,7 +56,7 @@ class FileWriter extends AbstractWriter {
 	 * Constructor, opens the log file handle
 	 *
 	 * @param array $options
-	 * @return \TYPO3\CMS\Core\Log\Writer\FileWriter
+	 * @return FileWriter
 	 */
 	public function __construct(array $options = array()) {
 		// the parent constructor reads $options and sets them
@@ -76,8 +77,8 @@ class FileWriter extends AbstractWriter {
 	 * Sets the path to the log file.
 	 *
 	 * @param string $logFile path to the log file, relative to PATH_site
-	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface
-	 * @throws \TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException
+	 * @return WriterInterface
+	 * @throws InvalidLogWriterConfigurationException
 	 */
 	public function setLogFile($logFile) {
 
@@ -106,11 +107,11 @@ class FileWriter extends AbstractWriter {
 	/**
 	 * Writes the log record
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
-	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
+	 * @param LogRecord $record Log record
+	 * @return WriterInterface $this
 	 * @throws \RuntimeException
 	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
+	public function writeLog(LogRecord $record) {
 		if (FALSE === fwrite(self::$logFileHandles[$this->logFile], $record . LF)) {
 			throw new \RuntimeException('Could not write log record to log file', 1345036335);
 		}

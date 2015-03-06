@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogRecord;
+
 /**
  * Introspection processor to automatically add where the log record came from.
  *
@@ -77,16 +79,16 @@ class IntrospectionProcessor extends AbstractProcessor {
 	 * Add debug backtrace information to logRecord
 	 * It adds: filepath, line number, class and function name
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $logRecord The log record to process
-	 * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
+	 * @param LogRecord $logRecord The log record to process
+	 * @return LogRecord The processed log record with additional data
 	 * @see debug_backtrace()
 	 */
-	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord) {
+	public function processLogRecord(LogRecord $logRecord) {
 		$trace = $this->getDebugBacktrace();
 
 		// skip TYPO3\CMS\Core\Log classes
 		foreach ($trace as $traceEntry) {
-			if (isset($traceEntry['class']) && FALSE !== strpos($traceEntry['class'], \TYPO3\CMS\Core\Log::class)) {
+			if (isset($traceEntry['class']) && FALSE !== strpos($traceEntry['class'], 'TYPO3\\CMS\\Core\\Log')) {
 				$trace = $this->shiftBacktraceLevel($trace);
 			} else {
 				break;
@@ -94,7 +96,7 @@ class IntrospectionProcessor extends AbstractProcessor {
 		}
 
 		// shift a given number of entries from the trace
-		for($i = 0; $i < $this->shiftBackTraceLevel; $i++) {
+		for ($i = 0; $i < $this->shiftBackTraceLevel; $i++) {
 			// shift only if afterwards there is at least one entry left after.
 			if (count($trace) > 1) {
 				$trace = $this->shiftBacktraceLevel($trace);

@@ -151,4 +151,13 @@ class LogRecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertContains(json_encode($dataArray), (string)$record);
 	}
 
+	/**
+	 * @test
+	 */
+	public function toStringIncludesExceptionDataAsJson() {
+		$dataArray = array('exception' => new \Exception('foo'));
+		$record = $this->getRecord(array('data' => $dataArray));
+		$this->assertContains('\'Exception\' with message \'foo\'', (string)$record);
+	}
+
 }
