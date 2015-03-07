@@ -258,6 +258,78 @@
 			<trans-unit id="grid_columnHelp">
 				<source>The column position defines in which area the content is rendered in the frontend.</source>
 			</trans-unit>
+			<trans-unit id="imwizard.open-editor">
+				<source>Open Editor</source>
+			</trans-unit>
+			<trans-unit id="imwizard.supported-types-message">
+				<source>Image manipulation is only available for supported types:</source>
+			</trans-unit>
+			<trans-unit id="imwizard.no-image-found">
+				<source>No image found</source>
+			</trans-unit>
+			<trans-unit id="imwizard.no-image-found-message">
+				<source>No image found. Could also be that image is present but that the original dimensions are unknow.</source>
+			</trans-unit>
+			<trans-unit id="imwizard.image-manipulation">
+				<source>Image manipulation</source>
+			</trans-unit>
+			<trans-unit id="imwizard.image-title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="imwizard.original-dimensions">
+				<source>Original dimensions</source>
+			</trans-unit>
+			<trans-unit id="imwizard.reset">
+				<source>Reset</source>
+			</trans-unit>
+			<trans-unit id="imwizard.accept">
+				<source>Accept</source>
+			</trans-unit>
+			<trans-unit id="imwizard.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="imwizard.aspect-ratio">
+				<source>Aspect ratio</source>
+			</trans-unit>
+			<trans-unit id="imwizard.set-aspect-ratio">
+				<source>Set Aspect Ratio</source>
+			</trans-unit>
+			<trans-unit id="imwizard.ratio.16_9">
+				<source>16:9</source>
+			</trans-unit>
+			<trans-unit id="imwizard.ratio.4_3">
+				<source>4:3</source>
+			</trans-unit>
+			<trans-unit id="imwizard.ratio.1_1">
+				<source>1:1</source>
+			</trans-unit>
+			<trans-unit id="imwizard.ratio.free">
+				<source>Free</source>
+			</trans-unit>
+			<trans-unit id="imwizard.zoom">
+				<source>Zoom</source>
+			</trans-unit>
+			<trans-unit id="imwizard.zoom-in">
+				<source>Zoom in</source>
+			</trans-unit>
+			<trans-unit id="imwizard.zoom-out">
+				<source>Zoom out</source>
+			</trans-unit>
+			<trans-unit id="imwizard.selection">
+				<source>Selected Size</source>
+			</trans-unit>
+			<trans-unit id="imwizard.crop-x">
+				<source>x:</source>
+			</trans-unit>
+			<trans-unit id="imwizard.crop-y">
+				<source>y:</source>
+			</trans-unit>
+			<trans-unit id="imwizard.crop-width">
+				<source>width:</source>
+			</trans-unit>
+			<trans-unit id="imwizard.crop-height">
+				<source>height:</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

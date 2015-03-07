@@ -5609,6 +5609,252 @@ button.close {
   }
 }
 /*!
+ * Cropper v@VERSION
+ * https://github.com/fengyuanchen/cropper
+ *
+ * Copyright (c) 2014-@YEAR Fengyuan Chen and contributors
+ * Released under the MIT license
+ *
+ * Date: @DATE
+ */
+.cropper-container {
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+.cropper-container img {
+  display: block;
+  image-orientation: 0deg !important;
+  width: 100%;
+  height: 100%;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+.cropper-canvas,
+.cropper-drag-box,
+.cropper-crop-box,
+.cropper-modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.cropper-drag-box {
+  background-color: #fff;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.cropper-modal {
+  background-color: #000;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.cropper-view-box {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 1px solid #6699ff;
+  outline-color: rgba(102, 153, 255, 0.75);
+}
+.cropper-dashed {
+  position: absolute;
+  display: block;
+  border: 0 dashed #fff;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.cropper-dashed.dashed-h {
+  top: 33.33333333%;
+  left: 0;
+  width: 100%;
+  height: 33.33333333%;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.cropper-dashed.dashed-v {
+  top: 0;
+  left: 33.33333333%;
+  width: 33.33333333%;
+  height: 100%;
+  border-right-width: 1px;
+  border-left-width: 1px;
+}
+.cropper-face,
+.cropper-line,
+.cropper-point {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  filter: alpha(opacity=10);
+}
+.cropper-face {
+  top: 0;
+  left: 0;
+  cursor: move;
+  background-color: #fff;
+}
+.cropper-line {
+  background-color: #6699ff;
+}
+.cropper-line.line-e {
+  top: 0;
+  right: -3px;
+  width: 5px;
+  cursor: e-resize;
+}
+.cropper-line.line-n {
+  top: -3px;
+  left: 0;
+  height: 5px;
+  cursor: n-resize;
+}
+.cropper-line.line-w {
+  top: 0;
+  left: -3px;
+  width: 5px;
+  cursor: w-resize;
+}
+.cropper-line.line-s {
+  bottom: -3px;
+  left: 0;
+  height: 5px;
+  cursor: s-resize;
+}
+.cropper-point {
+  width: 5px;
+  height: 5px;
+  background-color: #6699ff;
+  opacity: 0.75;
+  filter: alpha(opacity=75);
+}
+.cropper-point.point-e {
+  top: 50%;
+  right: -3px;
+  margin-top: -3px;
+  cursor: e-resize;
+}
+.cropper-point.point-n {
+  top: -3px;
+  left: 50%;
+  margin-left: -3px;
+  cursor: n-resize;
+}
+.cropper-point.point-w {
+  top: 50%;
+  left: -3px;
+  margin-top: -3px;
+  cursor: w-resize;
+}
+.cropper-point.point-s {
+  bottom: -3px;
+  left: 50%;
+  margin-left: -3px;
+  cursor: s-resize;
+}
+.cropper-point.point-ne {
+  top: -3px;
+  right: -3px;
+  cursor: ne-resize;
+}
+.cropper-point.point-nw {
+  top: -3px;
+  left: -3px;
+  cursor: nw-resize;
+}
+.cropper-point.point-sw {
+  bottom: -3px;
+  left: -3px;
+  cursor: sw-resize;
+}
+.cropper-point.point-se {
+  right: -3px;
+  bottom: -3px;
+  width: 20px;
+  height: 20px;
+  cursor: se-resize;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.cropper-point.point-se:before {
+  position: absolute;
+  right: -50%;
+  bottom: -50%;
+  display: block;
+  width: 200%;
+  height: 200%;
+  content: " ";
+  background-color: #6699ff;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+@media (min-width: 768px) {
+  .cropper-point.point-se {
+    width: 15px;
+    height: 15px;
+  }
+}
+@media (min-width: 992px) {
+  .cropper-point.point-se {
+    width: 10px;
+    height: 10px;
+  }
+}
+@media (min-width: 1200px) {
+  .cropper-point.point-se {
+    width: 5px;
+    height: 5px;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+  }
+}
+.cropper-bg {
+  background-image: url("../img/bg.png");
+}
+.cropper-invisible {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.cropper-hide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: auto!important;
+  height: auto!important;
+  min-width: 0!important;
+  min-height: 0!important;
+  max-width: none!important;
+  max-height: none!important;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.cropper-hidden {
+  display: none !important;
+}
+.cropper-move {
+  cursor: move;
+}
+.cropper-crop {
+  cursor: crosshair;
+}
+.cropper-disabled .cropper-canvas,
+.cropper-disabled .cropper-face,
+.cropper-disabled .cropper-line,
+.cropper-disabled .cropper-point {
+  cursor: not-allowed;
+}
+/*!
  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
@@ -7794,6 +8040,22 @@ table#typo3-clipboard tr.bgColor5 td a {
 table#typo3-clipboard tr.bgColor5 td img {
   vertical-align: middle;
 }
+.cropper-line {
+  background-color: #FFFFFF;
+}
+.cropper-point {
+  background-color: #FFFFFF;
+}
+.cropper-point.point-se:before {
+  background-color: #FFFFFF;
+}
+.cropper-view-box {
+  outline: 1px dashed #6699ff;
+  outline-color: #ffffff;
+}
+.cropper-bg {
+  background-image: url("../../Images/cropper-background.png");
+}
 .t3-help-link {
   display: inline!important;
 }
@@ -8458,6 +8720,62 @@ table#typo3-history-item img {
   transition: margin-top 0.1s ease-in;
   border: none;
   overflow: hidden;
+}
+.modal-content .loadmessage {
+  text-align: center;
+  color: #1e1e1e;
+}
+.modal-resize.fade .modal-dialog {
+  -webkit-transition-property: height, width;
+  transition-property: height, width;
+  -webkit-transition-duration: 0.35s;
+  transition-duration: 0.35s;
+  -webkit-transition-timing-function: ease;
+  transition-timing-function: ease;
+}
+.modal-image-manipulation .modal-body .col-lg-12 {
+  padding-right: 450px;
+}
+.modal-image-manipulation .modal-body .col-lg-12 .panel {
+  margin: 0;
+  width: 400px;
+  position: absolute;
+  top: 0px;
+  right: 15px;
+}
+.modal.modal-dark {
+  color: #FFF;
+}
+.modal.modal-dark .modal-content {
+  background-color: #212424;
+}
+.modal.modal-dark .modal-header {
+  color: #FFF;
+  background-color: #484848;
+  border-bottom-color: #000000;
+}
+.modal.modal-dark .modal-body,
+.modal.modal-dark .modal-footer {
+  background-color: #212424;
+  color: #FFF;
+}
+.modal.modal-dark .modal-footer {
+  border-top: none;
+}
+.modal-panel .modal-panel-body {
+  float: left;
+  width: 400px;
+}
+.modal-panel .modal-panel-sidebar-right {
+  width: 300px;
+  float: right;
+  border-left: 1px solid #000000;
+}
+.modal-image-manipulation .modal-panel-body {
+  padding: 20px;
+}
+.modal-image-manipulation .modal-panel-body img {
+  max-width: 100%;
 }
 #typo3-pagetree {
   height: 100%;
@@ -9167,6 +9485,18 @@ fieldset[disabled] .table .btn-default.active {
 .table-vertical-bottom > tfoot > tr > td {
   vertical-align: bottom;
 }
+.table-no-borders {
+  border: none;
+}
+.table-no-borders > thead > tr > th,
+.table-no-borders > tbody > tr > th,
+.table-no-borders > tfoot > tr > th,
+.table-no-borders > thead > tr > td,
+.table-no-borders > tbody > tr > td,
+.table-no-borders > tfoot > tr > td {
+  border: none;
+  padding: 2px;
+}
 .table-fit {
   width: 100%;
   margin-bottom: 1.5em;
@@ -9215,6 +9545,19 @@ fieldset[disabled] .table .btn-default.active {
 }
 .table-fit-inline-block > .table {
   width: auto;
+}
+.table-fit-block {
+  max-width: 100%;
+  width: auto;
+  display: block;
+  margin: 0;
+}
+.table-fit-block > .table {
+  width: auto;
+}
+.table-spacer-wrap {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .tooltip-inner {
   padding: 5px 10px;

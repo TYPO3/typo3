@@ -1039,6 +1039,7 @@ class FormEngine {
 				'none' => 'NoneElement',
 				'user' => 'UserElement',
 				'flex' => 'FlexElement',
+				'image_manipulation' => 'ImageManipulationElement',
 				'unknown' => 'UnknownElement',
 			);
 			if (!isset($typeClassNameMapping[$type])) {

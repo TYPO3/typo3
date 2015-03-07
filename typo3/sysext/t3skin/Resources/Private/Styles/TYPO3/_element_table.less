@@ -192,7 +192,20 @@ table {
 		}
 	}
 }
-
+.table-no-borders {
+	border: none;
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				border: none;
+				padding: 2px;
+			}
+		}
+	}
+}
 //
 // Fits the table in the viewport and makes overflow possible
 //
@@ -258,4 +271,17 @@ table {
 	> .table {
 		width: auto;
 	}
+}
+.table-fit-block {
+	max-width: 100%;
+	width: auto;
+	display: block;
+	margin: 0;
+	> .table {
+		width: auto;
+	}
+}
+.table-spacer-wrap {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }

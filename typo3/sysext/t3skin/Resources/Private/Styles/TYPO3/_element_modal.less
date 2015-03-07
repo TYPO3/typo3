@@ -49,7 +49,6 @@
 		color: @modal-warning-color;
 		border-bottom-color: @modal-warning-border;
 	}
-
 	&.t3-modal-danger .modal-header {
 		background-color: @modal-danger-bg;
 		color: @modal-danger-color;
@@ -84,4 +83,74 @@
 	.transition(margin-top .1s ease-in);
 	border: none;
 	overflow: hidden;
+
+	.loadmessage {
+		text-align: center;
+		color: @gray-darker;
+	}
+}
+
+.modal-resize {
+	&.fade .modal-dialog {
+		.transition-property(~"height, width");
+		.transition-duration(.35s);
+		.transition-timing-function(ease);
+	}
+}
+
+.modal-image-manipulation {
+	.modal-body {
+		.col-lg-12 {
+			padding-right: 450px;
+			.panel {
+				margin: 0;
+				width: 400px;
+				position: absolute;
+				top: 0px;
+				right: 15px;
+			}
+		}
+	}
+}
+
+.modal.modal-dark {
+
+	color: #FFF;
+	.modal-content {
+		background-color: #212424;
+	}
+	.modal-header {
+		color: #FFF;
+		background-color: #484848;
+		border-bottom-color: #000000;
+	}
+	.modal-body, .modal-footer {
+		background-color: #212424;
+		color: #FFF;
+	}
+	.modal-footer {
+		border-top: none;
+	}
+}
+
+// Modal as panel
+.modal-panel {
+	.modal-panel-body {
+		float: left;
+		width: 400px;
+	}
+	.modal-panel-sidebar-right {
+		width: 300px;
+		float: right;
+		border-left: 1px solid #000000;
+	}
+}
+
+.modal-image-manipulation {
+	.modal-panel-body {
+		padding: 20px;
+		img {
+			max-width: 100%;
+		}
+	}
 }

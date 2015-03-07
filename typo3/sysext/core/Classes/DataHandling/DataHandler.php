@@ -1598,7 +1598,7 @@ class DataHandler {
 				$res = $this->checkValue_text($res, $value, $tcaFieldConf, $PP, $field);
 				break;
 			case 'passthrough':
-
+			case 'image_manipulation':
 			case 'user':
 				$res['value'] = $value;
 				break;
@@ -1612,7 +1612,6 @@ class DataHandler {
 				$res = $this->checkValue_radio($res, $value, $tcaFieldConf, $PP);
 				break;
 			case 'group':
-
 			case 'select':
 				$res = $this->checkValue_group_select($res, $value, $tcaFieldConf, $PP, $uploadedFiles, $field);
 				break;

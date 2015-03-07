@@ -735,6 +735,10 @@ return array(
 			'UserSettings::process' => array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Controller\UserSettingsController::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
+			),
+			'ImageManipulationWizard::getHtmlForImageManipulationWizard' => array(
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard::class . '->getHtmlForImageManipulationWizard',
+				'csrfTokenCheck' => TRUE
 			)
 		),
 		'toolbarItems' => array(), // Array: Registered toolbar items classes

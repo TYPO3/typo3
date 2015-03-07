@@ -544,7 +544,7 @@
 				<source>Link</source>
 			</trans-unit>
 			<trans-unit id="sys_file_reference.crop">
-				<source>Crop image</source>
+				<source>Image manipulation</source>
 			</trans-unit>
 			<trans-unit id="sys_file_collection">
 				<source>File collection</source>

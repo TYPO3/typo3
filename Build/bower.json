@@ -35,6 +35,8 @@
     "nprogress": "0.1.6",
     "datatables": "1.10.5",
     "autosize": "2.0.0",
+    "cropper": "0.9.1",
+    "imagesloaded": "3.1.8",
     "Placeholders.js": "4.0.1"
   }
 }

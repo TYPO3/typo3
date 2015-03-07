@@ -112,6 +112,29 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 	};
 
 	/**
+	 * load URL with AJAX, append the content to the modal-body
+	 * and trigger the callback
+	 *
+	 * @param {string} title
+	 * @param {int} severity
+	 * @param {array} buttons
+	 * @param {string} url
+	 * @param {string} target
+	 * @param {function} callback
+	 */
+	Modal.loadUrl = function(title, severity, buttons, url, callback, target) {
+		$.get(url, function(response) {
+			Modal.currentModal.find(target ? target : '.modal-body').empty().append(response);
+			if (callback) {
+				callback();
+			}
+			Modal.currentModal.trigger('modal-loaded');
+		}, 'html');
+		return Modal.show(title, '<p class="loadmessage"><i class="fa fa-spinner fa-spin fa-5x "></i></p>', severity, buttons);
+	};
+
+
+	/**
 	 * Shows a dialog
 	 * Events:
 	 * - button.clicked
@@ -233,6 +256,7 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 		$(document).on('click', '.t3js-modal-trigger', function(evt) {
 			evt.preventDefault();
 			var $element = $(this);
+			var url = $element.data('url') || null;
 			var title = $element.data('title') || 'Alert';
 			var content = $element.data('content') || 'Are you sure?';
 			var severity = (typeof top.TYPO3.Severity[$element.data('severity')] !== 'undefined') ? top.TYPO3.Severity[$element.data('severity')] : top.TYPO3.Severity.info;
@@ -252,7 +276,13 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 					}
 				}
 			];
-			Modal.confirm(title, content, severity, buttons);
+			if (url !== null) {
+				var separator = (url.indexOf('?') > -1) ? '&' : '?';
+				var params = $.param({data: $element.data()});
+				Modal.loadUrl(title, severity, buttons, url + separator + params);
+			} else {
+				Modal.show(title, content, severity, buttons);
+			}
 		});
 	};
 

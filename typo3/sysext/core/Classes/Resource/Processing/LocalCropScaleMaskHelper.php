@@ -76,9 +76,18 @@ class LocalCropScaleMaskHelper {
 
 		$croppedImage = NULL;
 		if (!empty($configuration['crop'])) {
+
+			// check if it is a json object
+			$cropData = json_decode($configuration['crop']);
+			if ($cropData) {
+				$crop = implode(',', array((int)$cropData->x, (int)$cropData->y, (int)$cropData->width, (int)$cropData->height));
+			} else {
+				$crop = $configuration['crop'];
+			}
+
 			$im = $gifBuilder->imageCreateFromFile($originalFileName);
 			$croppedImage = Utility\GeneralUtility::tempnam('crop_', '.' . $sourceFile->getExtension());
-			$gifBuilder->crop($im, ['crop' => $configuration['crop']]);
+			$gifBuilder->crop($im, ['crop' => $crop]);
 			if ($gifBuilder->ImageWrite($im, $croppedImage)) {
 				$originalFileName = $croppedImage;
 			}

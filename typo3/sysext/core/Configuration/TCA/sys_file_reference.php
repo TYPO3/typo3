@@ -221,10 +221,7 @@ return array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.crop',
 			'config' => array(
-				'type' => 'input',
-				'size' => '10',
-				'max' => '30',
-				'placeholder' => 'x,y,w,h',
+				'type' => 'image_manipulation'
 			)
 		)
 	),
