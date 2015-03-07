@@ -222,6 +222,7 @@ class RequestHandler implements RequestHandlerInterface {
 				include_once './' . $temp_file;
 			}
 		}
+		$this->controller->releaseLocks();
 		$this->timeTracker->pull();
 
 		// Render non-cached parts

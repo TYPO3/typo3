@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -786,14 +788,14 @@ class TypoScriptFrontendController {
 	/**
 	 * Locking object for accessing "cache_pagesection"
 	 *
-	 * @var Locker
+	 * @var LockingStrategyInterface
 	 */
 	public $pagesection_lockObj;
 
 	/**
 	 * Locking object for accessing "cache_pages"
 	 *
-	 * @var Locker
+	 * @var LockingStrategyInterface
 	 */
 	public $pages_lockObj;
 
@@ -2244,60 +2246,82 @@ class TypoScriptFrontendController {
 	 * See if page is in cache and get it if so
 	 * Stores the page content in $this->content if something is found.
 	 *
-	 * @return void
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
 	 */
 	public function getFromCache() {
-		if (!$this->no_cache) {
-			$cc = $this->tmpl->getCurrentPageData();
-			if (!is_array($cc)) {
-				$key = $this->id . '::' . $this->MP;
-				// Returns TRUE if the lock is active now
-				$isLocked = $this->acquirePageGenerationLock($this->pagesection_lockObj, $key);
-				if (!$isLocked) {
-					// Lock is no longer active, the data in "cache_pagesection" is now ready
-					$cc = $this->tmpl->getCurrentPageData();
-					if (is_array($cc)) {
-						// Release the lock
-						$this->releasePageGenerationLock($this->pagesection_lockObj);
-					}
-				}
-			}
-			if (is_array($cc)) {
-				// BE CAREFUL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
-				// If this hash is not the same in here in this section and after page-generation, then the page will not be properly cached!
-				// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
-				$cc = $this->tmpl->matching($cc);
-				ksort($cc);
-				$this->all = $cc;
-			}
-			unset($cc);
-		}
 		// clearing the content-variable, which will hold the pagecontent
 		$this->content = '';
 		// Unsetting the lowlevel config
 		unset($this->config);
 		$this->cacheContentFlag = FALSE;
-		// Look for page in cache only if caching is not disabled and if a shift-reload is not sent to the server.
-		if (!$this->no_cache && !$this->headerNoCache()) {
-			$lockHash = $this->getLockHash();
+
+		if ($this->no_cache) {
+			return;
+		}
+
+		$this->pagesection_lockObj = NULL;
+		$pageSectionCacheContent = $this->tmpl->getCurrentPageData();
+		if (!is_array($pageSectionCacheContent)) {
+			// nothing in the cache, we acquire an exclusive lock now
+			$key = $this->id . '::' . $this->MP;
+			$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+			$this->pagesection_lockObj = $lockFactory->createLocker($key);
+			if (!$this->pagesection_lockObj->acquire()) {
+				throw new \RuntimeException('Could not acquire lock for page section generation.', 1294586098);
+			}
+			// query the cache again to see if the data are there meanwhile
+			$pageSectionCacheContent = $this->tmpl->getCurrentPageData();
+			if (is_array($pageSectionCacheContent)) {
+				// we have the content, nice that some other process did the work for us
+				$this->pagesection_lockObj->release();
+				$this->pagesection_lockObj = NULL;
+			} else {
+				// we keep the lock set, because we are the ones generating the page now and filling the cache
+				// the lock will be released in releaseLocks()
+			}
+		}
+
+		if (is_array($pageSectionCacheContent)) {
+			// BE CAREFUL to change the content of the cc-array. This array is serialized and an md5-hash based on this is used for caching the page.
+			// If this hash is not the same in here in this section and after page-generation, then the page will not be properly cached!
+			// This array is an identification of the template. If $this->all is empty it's because the template-data is not cached, which it must be.
+			$pageSectionCacheContent = $this->tmpl->matching($pageSectionCacheContent);
+			ksort($pageSectionCacheContent);
+			$this->all = $pageSectionCacheContent;
+		}
+		unset($pageSectionCacheContent);
+
+		// Look for page in cache only if a shift-reload is not sent to the server.
+		$this->pages_lockObj = NULL;
+		$lockHash = $this->getLockHash();
+		if (!$this->headerNoCache()) {
 			if ($this->all) {
+				// we got page section information
 				$this->newHash = $this->getHash();
 				$GLOBALS['TT']->push('Cache Row', '');
 				$row = $this->getFromCache_queryRow();
 				if (!is_array($row)) {
-					$isLocked = $this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
-					if (!$isLocked) {
-						// Lock is no longer active, the data in "cache_pages" is now ready
-						$row = $this->getFromCache_queryRow();
-						if (is_array($row)) {
-							// Release the lock
-							$this->releasePageGenerationLock($this->pages_lockObj);
-						}
+					// nothing in the cache, we acquire an exclusive lock now
+					$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+					$this->pages_lockObj = $lockFactory->createLocker($lockHash);
+					if (!$this->pages_lockObj->acquire()) {
+						throw new \RuntimeException('Could not acquire lock for page content generation.', 1294586099);
+					}
+					// query the cache again to see if the data are there meanwhile
+					$row = $this->getFromCache_queryRow();
+					if (is_array($row)) {
+						// we have the content, nice that some other process did the work for us
+						$this->pages_lockObj->release();
+						$this->pages_lockObj = NULL;
+					} else {
+						// we keep the lock set, because we are the ones generating the page now and filling the cache
+						// the lock will be released in releaseLocks()
 					}
 				}
 				if (is_array($row)) {
-					// Release this lock
-					$this->releasePageGenerationLock($this->pages_lockObj);
+					// we have data from cache
+
 					// Call hook when a page is retrieved from cache:
 					if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'])) {
 						$_params = array('pObj' => &$this, 'cache_pages_row' => &$row);
@@ -2327,9 +2351,16 @@ class TypoScriptFrontendController {
 					}
 				}
 				$GLOBALS['TT']->pull();
-			} else {
-				$this->acquirePageGenerationLock($this->pages_lockObj, $lockHash);
+
+				return;
 			}
+		}
+		// the user forced rebuilding the page cache or there was no pagesection information
+		// get a lock for the page content so other processes will not interrupt the regeneration
+		$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+		$this->pages_lockObj = $lockFactory->createLocker($lockHash);
+		if (!$this->pages_lockObj->acquire()) {
+			throw new \RuntimeException('Could not acquire lock for page content generation.', 1294586100);
 		}
 	}
 
@@ -3051,6 +3082,8 @@ class TypoScriptFrontendController {
 				// In any case we should not begin another rendering process also, so we silently disable caching and render the page ourselves and that's it.
 				// Actually $cachedRow contains content that we could show instead of rendering. Maybe we should do that to gain more performance but then we should set all the stuff done in $this->getFromCache()... For now we stick to this...
 				$this->set_no_cache('Another process wrote into the cache since the beginning of the render process', TRUE);
+
+				// Since the new Locking API this should never be the case
 			} else {
 				$this->tempContent = TRUE;
 				// This flag shows that temporary content is put in the cache
@@ -3168,8 +3201,10 @@ class TypoScriptFrontendController {
 	 * @param string $key String to identify the lock in the system
 	 * @return bool Returns TRUE if the lock could be obtained, FALSE otherwise (= process had to wait for existing lock to be released)
 	 * @see releasePageGenerationLock()
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function acquirePageGenerationLock(&$lockObj, $key) {
+		GeneralUtility::logDeprecatedFunction();
 		if ($this->no_cache || $this->headerNoCache()) {
 			GeneralUtility::sysLog('Locking: Page is not cached, no locking required', 'cms', GeneralUtility::SYSLOG_SEVERITY_INFO);
 			// No locking is needed if caching is disabled
@@ -3202,8 +3237,10 @@ class TypoScriptFrontendController {
 	 * @param Locker $lockObj Reference to a locking object
 	 * @return bool Returns TRUE on success, FALSE otherwise
 	 * @see acquirePageGenerationLock()
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function releasePageGenerationLock(&$lockObj) {
+		GeneralUtility::logDeprecatedFunction();
 		$success = FALSE;
 		// If lock object is set and was acquired (may also happen if no_cache was enabled during runtime), release it:
 		if (is_object($lockObj) && $lockObj instanceof Locker && $lockObj->getLockStatus()) {
@@ -3214,6 +3251,23 @@ class TypoScriptFrontendController {
 			$success = TRUE;
 		}
 		return $success;
+	}
+
+	/**
+	 * Release pending locks
+	 *
+	 * @internal
+	 * @return void
+	 */
+	public function releaseLocks() {
+		if ($this->pagesection_lockObj) {
+			$this->pagesection_lockObj->release();
+			$this->pagesection_lockObj = NULL;
+		}
+		if ($this->pages_lockObj) {
+			$this->pages_lockObj->release();
+			$this->pages_lockObj = NULL;
+		}
 	}
 
 	/**
@@ -3241,10 +3295,21 @@ class TypoScriptFrontendController {
 		// Same codeline as in getFromCache(). But $this->all has been changed by
 		// \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
 		$this->newHash = $this->getHash();
-		if (!is_object($this->pages_lockObj) || $this->pages_lockObj->getLockStatus() == FALSE) {
-			// Here we put some temporary stuff in the cache in order to let the first hit generate the page. The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page, which will also clear and rewrite the cache.
+
+		// If the pages_lock is set, we are in charge of generating the page.
+		if (is_object($this->pages_lockObj)) {
+			// Here we put some temporary stuff in the cache in order to let the first hit generate the page.
+			// The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page,
+			// which will also clear and rewrite the cache.
 			$this->tempPageCacheContent();
 		}
+		// At this point we have a valid pagesection_cache and also some temporary page_cache content,
+		// so let all other processes proceed now. (They are blocked at the pagessection_lock in getFromCaceh())
+		if ($this->pagesection_lockObj) {
+			$this->pagesection_lockObj->release();
+			$this->pagesection_lockObj = NULL;
+		}
+
 		// Setting cache_timeout_default. May be overridden by PHP include scripts.
 		$this->cacheTimeOutDefault = (int)$this->config['config']['cache_period'];
 		// Page is generated
@@ -3308,9 +3373,6 @@ class TypoScriptFrontendController {
 			$this->clearPageCacheContent();
 			$this->tempContent = FALSE;
 		}
-		// Release open locks
-		$this->releasePageGenerationLock($this->pagesection_lockObj);
-		$this->releasePageGenerationLock($this->pages_lockObj);
 		// Sets sys-last-change:
 		$this->setSysLastChanged();
 	}

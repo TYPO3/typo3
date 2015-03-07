@@ -4951,10 +4951,6 @@ Connection: close
 		}
 		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
 		if (in_array('file', $log) !== FALSE) {
-			// In case lock is acquired before autoloader was defined:
-			if (class_exists(\TYPO3\CMS\Core\Locking\Locker::class) === FALSE) {
-				require_once ExtensionManagementUtility::extPath('core') . 'Classes/Locking/Locker.php';
-			}
 			// Write a longer message to the deprecation log
 			$destination = static::getDeprecationLogFileName();
 			$file = @fopen($destination, 'a');

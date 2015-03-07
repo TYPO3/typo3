@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Locking\LockFactory;
+
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions.
  *
@@ -76,9 +79,9 @@ class MboxTransport implements \Swift_Transport {
 		// Add the complete mail inclusive headers
 		$messageStr .= $message->toString();
 		$messageStr .= LF . LF;
-		$lockObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Locking\Locker::class, $this->debugFile);
-		/** @var \TYPO3\CMS\Core\Locking\Locker $lockObject */
-		$lockObject->acquireExclusiveLock();
+		$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+		$lockObject = $lockFactory->createLocker($this->debugFile);
+		$lockObject->acquire();
 		// Write the mbox file
 		$file = @fopen($this->debugFile, 'a');
 		if (!$file) {
@@ -87,7 +90,7 @@ class MboxTransport implements \Swift_Transport {
 		}
 		@fwrite($file, $messageStr);
 		@fclose($file);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($this->debugFile);
+		GeneralUtility::fixPermissions($this->debugFile);
 		$lockObject->release();
 		// Return every receipient as "delivered"
 		$count = count((array)$message->getTo()) + count((array)$message->getCc()) + count((array)$message->getBcc());

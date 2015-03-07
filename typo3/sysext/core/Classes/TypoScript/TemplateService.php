@@ -399,7 +399,7 @@ class TemplateService {
 	 *
 	 * NOTE about currentPageData:
 	 * It holds information about the TypoScript conditions along with the list
-	 * of template uid's which is used on the page. In the getFromCache function
+	 * of template uid's which is used on the page. In the getFromCache() function
 	 * in TSFE, currentPageData is used to evaluate if there is a template and
 	 * if the matching conditions are alright. Unfortunately this does not take
 	 * into account if the templates in the rowSum of currentPageData has

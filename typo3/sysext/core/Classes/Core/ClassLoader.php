@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Locking\Locker;
+use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Cache;
@@ -94,7 +95,7 @@ class ClassLoader {
 	protected $isLoadingLocker = FALSE;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Locking\Locker
+	 * @var LockingStrategyInterface
 	 */
 	protected $lockObject = NULL;
 
@@ -724,8 +725,8 @@ class ClassLoader {
 			}
 
 			// We didn't lock yet so do it
-			if (!$lockObject->getLockStatus()) {
-				if (!$lockObject->acquireExclusiveLock()) {
+			if (!$lockObject->isAcquired()) {
+				if (!$lockObject->acquire()) {
 					throw new \RuntimeException('Could not acquire lock for ClassLoader cache creation.', 1394480725);
 				}
 
@@ -763,7 +764,7 @@ class ClassLoader {
 		// $this->lockObject can be null in installer context without typo3temp, but then this method shouldn't
 		// be registered as shutdown-function due to caching being disabled in this case.
 		// See @getLocker for more information.
-		if ($error !== NULL && $this->lockObject !== NULL && $this->lockObject->getLockStatus()) {
+		if ($error !== NULL && $this->lockObject !== NULL && $this->lockObject->isAcquired()) {
 			$this->clearClassesCache();
 			$this->releaseLock(TRUE);
 		}
@@ -796,14 +797,14 @@ class ClassLoader {
 	 * Gets the TYPO3 Locker object or creates an instance of it.
 	 *
 	 * @throws \RuntimeException
-	 * @return \TYPO3\CMS\Core\Locking\Locker|NULL Only NULL if we are in installer and typo3temp does not exist yet
+	 * @return LockingStrategyInterface|NULL Only NULL if we are in installer and typo3temp does not exist yet
 	 */
 	protected function getLocker() {
 		if (NULL === $this->lockObject) {
 			$this->isLoadingLocker = TRUE;
 
 			try {
-				$this->lockObject = new Locker('ClassLoader-cache-classes', Locker::LOCKING_METHOD_SIMPLE);
+				$this->lockObject = (new LockFactory())->createLocker('ClassLoader-cache-classes');
 			} catch (\RuntimeException $e) {
 				// The RuntimeException in constructor happens if directory typo3temp/locks could not be created.
 				// This usually happens during installation step 1 where typo3temp itself does not exist yet. In
@@ -818,7 +819,6 @@ class ClassLoader {
 					throw $e;
 				}
 			}
-			$this->lockObject->setEnableLogging(FALSE);
 			$this->isLoadingLocker = FALSE;
 		}
 

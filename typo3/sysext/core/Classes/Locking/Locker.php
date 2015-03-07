@@ -92,8 +92,10 @@ class Locker {
 	 * @param int $step Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock.
 	 * @throws \RuntimeException
 	 * @throws \InvalidArgumentException
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function __construct($id, $method = self::LOCKING_METHOD_SIMPLE, $loops = 0, $step = 0) {
+		GeneralUtility::logDeprecatedFunction();
 		// Force ID to be string
 		$id = (string)$id;
 		if ((int)$loops) {
