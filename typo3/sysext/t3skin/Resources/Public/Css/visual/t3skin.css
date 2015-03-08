@@ -9195,17 +9195,12 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 }
 .list-tree,
 .list-tree ul {
-  margin: 0;
+  margin-left: 0.5em;
   padding: 0;
   list-style: none;
-}
-.list-tree > li {
-  margin-top: 1em;
-}
-.list-tree ul {
-  margin-left: 0.5em;
   position: relative;
 }
+.list-tree:before,
 .list-tree ul:before {
   content: "";
   display: block;
@@ -9217,26 +9212,57 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   margin-bottom: -2px;
   border-left: 1px dotted #c3c3c3;
 }
-.list-tree ul ul {
-  margin-left: 0.25em;
-}
-.list-tree ul li {
+.list-tree li {
   margin: 0;
   padding-left: 1.25em;
   line-height: 1.75em;
-  color: #c3c3c3;
   position: relative;
 }
-.list-tree ul li:before {
+.list-tree li.active > .list-tree-group,
+.list-tree li.active > .list-tree-group a {
+  color: #c83c3c;
+}
+a.list-tree li.active > .list-tree-group:hover,
+a.list-tree li.active > .list-tree-group a:hover {
+  color: #a32e2e;
+}
+.list-tree li:before {
   content: "";
   display: block;
-  width: 0.75em;
+  width: 0.8em;
   height: 0;
-  border-top: 1px dotted;
+  border-top: 1px dotted #c3c3c3;
   margin-top: -2px;
   position: absolute;
   top: 1em;
   left: 2px;
+}
+.list-tree li:last-child:before {
+  background: white;
+  height: auto;
+  top: 1em;
+  left: 0;
+  bottom: 0;
+}
+.list-tree-value {
+  font-weight: bold;
+}
+.list-tree-control:active,
+.list-tree-control:focus,
+.list-tree-control:hover {
+  text-decoration: none;
+}
+.list-tree-control > .fa {
+  font-size: 1.1em;
+  display: inline-block;
+  text-align: center;
+  width: 1em;
+}
+.list-tree-control.list-tree-control-open > .fa:before {
+  content: "\f0d7";
+}
+.list-tree-control.list-tree-control-closed > .fa:before {
+  content: "\f0da";
 }
 table#typo3-tree {
   margin: 10px 0 20px 10px;

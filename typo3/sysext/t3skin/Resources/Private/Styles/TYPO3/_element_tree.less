@@ -1,65 +1,94 @@
 //
-// Trees
+// Variables
 //
-
 @navigation-text: #000;
 @navigation-bg: rgb(245, 245, 245);
 @navigation-border: rgb(195, 195, 195);
-@indentation: 0.5em;
 
+
+//
+// Trees Variables
+//
+@tree-indentation: 0.5em;
+@tree-border: @navigation-border;
+
+
+//
+// Trees
+//
 .list-tree,
 .list-tree ul {
-	margin: 0;
+	margin-left: @tree-indentation;
 	padding: 0;
 	list-style: none;
-}
-
-.list-tree {
-	> li {
-		margin-top: @indentation * 2;
+	position: relative;
+	&:before {
+		content: "";
+		display: block;
+		width: 0;
+		position: absolute;
+		top: 0;
+		bottom: 1em;
+		left: 0;
+		margin-bottom: -2px;
+		border-left: 1px dotted @tree-border;
 	}
-
-	ul {
-		margin-left: @indentation;
-		position: relative;
-
+}
+.list-tree {
+	li {
+		&.active {
+			> .list-tree-group,
+			> .list-tree-group a {
+				.text-danger();
+			}
+		}
 		&:before {
 			content: "";
 			display: block;
-			width: 0;
+			width: @tree-indentation * 1.6;
+			height: 0;
+			border-top: 1px dotted @tree-border;
+			margin-top: -2px;
 			position: absolute;
-			top: 0;
-			bottom: 1em;
+			top: 1em;
+			left: 2px;
+		}
+		&:last-child:before {
+			background: white;
+			height: auto;
+			top: 1em;
 			left: 0;
-			margin-bottom: -2px;
-			border-left: 1px dotted @navigation-border;
+			bottom: 0;
 		}
-
-		ul {
-			margin-left: @indentation / 2;
-		}
-
-		li {
-			&:before {
-				content: "";
-				display: block;
-				width: 0.75em;
-				height: 0;
-				border-top: 1px dotted;
-				margin-top: -2px;
-				position: absolute;
-				top: 1em;
-				left: 2px;
-			}
-
-			margin: 0;
-			padding-left: @indentation * 2.5;
-			line-height: 1.75em;
-			color: @navigation-border;
-			position: relative;
-		}
+		margin: 0;
+		padding-left: @tree-indentation * 2.5;
+		line-height: 1.75em;
+		position: relative;
 	}
 }
+.list-tree-value {
+	font-weight: bold;
+}
+.list-tree-control {
+	&:active,
+	&:focus,
+	&:hover {
+		text-decoration: none;
+	}
+	> .fa {
+		font-size: 1.1em;
+		display: inline-block;
+		text-align: center;
+		width: @tree-indentation * 2;
+	}
+	&.list-tree-control-open > .fa:before {
+		content: "\f0d7";
+	}
+	&.list-tree-control-closed > .fa:before {
+		content: "\f0da";
+	}
+}
+
 
 table#typo3-tree {
 	margin: 10px 0 20px 10px;

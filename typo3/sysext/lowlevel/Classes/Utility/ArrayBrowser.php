@@ -91,57 +91,48 @@ class ArrayBrowser {
 	 * Before calling this function you may want to set some of the internal vars like
 	 * depthKeys, regexMode and fixedLgd.
 	 *
-	 * @param array $arr The array to display
-	 * @param string $depth_in Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
-	 * @param string $depthData Depth-data - basically a prefix for the icons. For calling this function from outside, let it stay blank.
+	 * @param array $array The array to display
+	 * @param string $positionKey Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
+	 * @param string $depthData is deprecated since TYPO3 CMS 7, and will be removed with CMS 8
 	 * @return string HTML for the tree
 	 */
-	public function tree($arr, $depth_in, $depthData) {
-		$HTML = '';
-		$a = 0;
-		if ($depth_in) {
-			$depth_in = $depth_in . '.';
+	public function tree($array, $positionKey, $depthData = NULL) {
+		if ($depthData) {
+			GeneralUtility::deprecationLog('ArrayBrowser::tree parameter $depthData is deprecated since TYPO3 CMS 7 and is not used anymore. Please remove the parameter.');
 		}
-		$c = count($arr);
-		foreach ($arr as $key => $value) {
-			$a++;
-			$depth = $depth_in . $key;
-			$goto = 'a' . substr(md5($depth), 0, 6);
+		$output = '<ul class="list-tree text-monospace">';
+		if ($positionKey) {
+			$positionKey = $positionKey . '.';
+		}
+		foreach ($array as $key => $value) {
+			$depth = $positionKey . $key;
 			if (is_object($value) && !$value instanceof \Traversable) {
 				$value = (array)$value;
 			}
 			$isArray = is_array($value) || $value instanceof \Traversable;
-			$deeper = $isArray && ($this->depthKeys[$depth] || $this->expAll);
-			$LN = $a == $c ? 'blank' : 'line';
-			$BTM = $a == $c ? 'bottom' : '';
-			$PM = $isArray ? ($deeper ? 'minus' : 'plus') : 'join';
-			$HTML .= $depthData;
-			$theIcon = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" border="0" alt="" />';
-			if ($PM == 'join') {
-				$HTML .= $theIcon;
-			} else {
-				$HTML .= ($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('M')) . '&node[' . $depth . ']=' . ($deeper ? 0 : 1) . '#' . $goto)) . '">') . $theIcon . ($this->expAll ? '' : '</a>');
+			$isResult = (bool)$this->searchKeys[$depth];
+			$isExpanded = $isArray && ($this->depthKeys[$depth] || $this->expAll);
+			$output .= '<li' . ($isResult ? ' class="active"' : '') . '>';
+			if ($isArray && !$this->expAll) {
+				$goto = 'a' . substr(md5($depth), 0, 6);
+				$output .= '<a class="list-tree-control' . ($isExpanded ? ' list-tree-control-open' : ' list-tree-control-closed') . '" id="' . $goto . '" href="' . htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('M')) . '&node[' . $depth . ']=' . ($isExpanded ? 0 : 1) . '#' . $goto)) . '"><i class="fa"></i></a> ';
 			}
-			$label = $key;
-			$HTML .= $this->wrapArrayKey($label, $depth, !$isArray ? $value : '');
+			$output .= '<span class="list-tree-group">';
+			$output .= $this->wrapArrayKey($key, $depth, !$isArray ? $value : '');
 			if (!$isArray) {
-				$theValue = $value;
-				if ($this->searchKeys[$depth]) {
-					$HTML .= ' = <span style="color:red;">' . $this->wrapValue($theValue) . '</span>';
-				} else {
-					$HTML .= ' = ' . $this->wrapValue($theValue);
-				}
+				$output .= ' = <span class="list-tree-value">' . $this->wrapValue($value) . '</span>';
 			}
-			$HTML .= '<br />';
-			if ($deeper) {
-				$HTML .= $this->tree(
+			$output .= '</span>';
+			if ($isExpanded) {
+				$output .= $this->tree(
 					$value,
-					$depth,
-					$depthData . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />'
+					$depth
 				);
 			}
+			$output .= '</li>';
 		}
-		return $HTML;
+		$output .= '</ul>';
+		return $output;
 	}
 
 	/**
@@ -153,7 +144,7 @@ class ArrayBrowser {
 	public function wrapValue($theValue) {
 		$wrappedValue = '';
 		if ((string)$theValue !== '') {
-			$wrappedValue = '<strong>' . htmlspecialchars($theValue) . '</strong>';
+			$wrappedValue = htmlspecialchars($theValue);
 		}
 		return $wrappedValue;
 	}
@@ -176,7 +167,7 @@ class ArrayBrowser {
 				. '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = '
 				. (!MathUtility::canBeInterpretedAsInteger($theValue) ? '\''
 				. addslashes($theValue) . '\'' : $theValue) . '; ';
-			$label = '<a href="'
+			$label = '<a class="list-tree-label" href="'
 				. htmlspecialchars((BackendUtility::getModuleUrl(GeneralUtility::_GP('M'))
 				. '&varname=' . urlencode($variableName)))
 				. '#varname">' . $label . '</a>';
