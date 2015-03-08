@@ -10,6 +10,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Formats a given float to a currency representation.
  *
@@ -39,7 +43,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class CurrencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CurrencyViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param string $currencySign (optional) The currency sign, eg $ or €.
@@ -52,7 +56,36 @@ class CurrencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @api
 	 */
 	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE, $decimals = 2) {
-		$floatToFormat = $this->renderChildren();
+		return self::renderStatic(
+			array(
+				'currencySign' => $currencySign,
+				'decimalSeparator' => $decimalSeparator,
+				'thousandsSeparator' => $thousandsSeparator,
+				'prependCurrency' => $prependCurrency,
+				'separateCurrency' => $separateCurrency,
+				'decimals' => $decimals
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$currencySign = $arguments['currencySign'];
+		$decimalSeparator = $arguments['decimalSeparator'];
+		$thousandsSeparator = $arguments['thousandsSeparator'];
+		$prependCurrency = $arguments['prependCurrency'];
+		$separateCurrency = $arguments['separateCurrency'];
+		$decimals = $arguments['decimals'];
+
+		$floatToFormat = $renderChildrenClosure();
 		if (empty($floatToFormat)) {
 			$floatToFormat = 0.0;
 		} else {
