@@ -10,6 +10,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Outputs an argument/value without any escaping and wraps it with CDATA tags.
  *
@@ -41,7 +45,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class CdataViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CdataViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -56,8 +60,24 @@ class CdataViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * @return string
 	 */
 	public function render($value = NULL) {
+		return self::renderStatic(
+			array('value' => $value),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
 		if ($value === NULL) {
-			$value = $this->renderChildren();
+			$value = $renderChildrenClosure();
 		}
 		return sprintf('<![CDATA[%s]]>', $value);
 	}
