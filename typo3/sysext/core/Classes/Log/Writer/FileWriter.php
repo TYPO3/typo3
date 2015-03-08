@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Log writer that writes the log records into a file.
@@ -23,7 +25,7 @@ use TYPO3\CMS\Core\Log\LogRecord;
  * @author Steffen Müller <typo3@t3node.com>
  * @author Ingo Renner <ingo@typo3.org>
  */
-class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class FileWriter extends AbstractWriter {
 
 	/**
 	 * Log file path, relative to PATH_site
@@ -82,10 +84,10 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 
 		// Skip handling if logFile is a stream resource. This is used by unit tests with vfs:// directories
 		if (FALSE === strpos($logFile, '://')) {
-			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath((PATH_site . $logFile))) {
+			if (!GeneralUtility::isAllowedAbsPath((PATH_site . $logFile))) {
 				throw new \InvalidArgumentException('Log file path "' . $logFile . '" is not valid!', 1326411176);
 			}
-			$logFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($logFile);
+			$logFile = GeneralUtility::getFileAbsFileName($logFile);
 		}
 		$this->logFile = $logFile;
 		$this->openLogFile();
@@ -110,7 +112,30 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(LogRecord $record) {
-		if (FALSE === fwrite(self::$logFileHandles[$this->logFile], $record . LF)) {
+		$timestamp = date('r', (int)$record->getCreated());
+		$levelName = LogLevel::getName($record->getLevel());
+		$data = '';
+		$recordData = $record->getData();
+		if (!empty($recordData)) {
+			// According to PSR3 the exception-key may hold an \Exception
+			// Since json_encode() does not encode an exception, we run the _toString() here
+			if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
+				$recordData['exception'] = (string)$recordData['exception'];
+			}
+			$data = '- ' . json_encode($recordData);
+		}
+
+		$message = sprintf(
+			'%s [%s] request="%s" component="%s": %s %s',
+			$timestamp,
+			$levelName,
+			$record->getRequestId(),
+			$record->getComponent(),
+			$record->getMessage(),
+			$data
+		);
+
+		if (FALSE === fwrite(self::$logFileHandles[$this->logFile], $message . LF)) {
 			throw new \RuntimeException('Could not write log record to log file', 1345036335);
 		}
 
@@ -159,12 +184,12 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 		}
 		$logFileDirectory = dirname($this->logFile);
 		if (!@is_dir($logFileDirectory)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($logFileDirectory);
+			GeneralUtility::mkdir_deep($logFileDirectory);
 			// only create .htaccess, if we created the directory on our own
 			$this->createHtaccessFile($logFileDirectory . '/.htaccess');
 		}
 		// create the log file
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->logFile, '');
+		GeneralUtility::writeFile($this->logFile, '');
 	}
 
 	/**
@@ -176,7 +201,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	protected function createHtaccessFile($htaccessFile) {
 		// write .htaccess file to protect the log file
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) && !file_exists($htaccessFile)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($htaccessFile, 'Deny From All');
+			GeneralUtility::writeFile($htaccessFile, 'Deny From All');
 		}
 	}
 

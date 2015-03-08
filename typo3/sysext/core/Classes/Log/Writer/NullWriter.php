@@ -13,20 +13,23 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Log\LogRecord;
+
 /**
  * Null writer - just forgets about everything
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class NullWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class NullWriter extends AbstractWriter {
 
 	/**
 	 * Writes the log record
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
+	 * @param LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
 	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
+	public function writeLog(LogRecord $record) {
 		// do nothing
 		return $this;
 	}
