@@ -10,6 +10,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Case view helper that is only usable within the SwitchViewHelper.
@@ -17,33 +21,53 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CaseViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param mixed $value The switch value. If it matches, the child will be rendered
 	 * @param bool $default If this is set, this child will be rendered, if none else matches
 	 *
 	 * @return string the contents of this view helper if $value equals the expression of the surrounding switch view helper, or $default is TRUE. otherwise an empty string
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 *
 	 * @api
 	 */
 	public function render($value = NULL, $default = FALSE) {
-		$viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-		if (!$viewHelperVariableContainer->exists(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression')) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The case View helper can only be used within a switch View helper', 1368112037);
+		return self::renderStatic(
+			array(
+				'value' => $value,
+				'default' => $default
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return mixed|string
+	 * @throws Exception
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
+		$default = $arguments['default'];
+		$viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
+		if (!$viewHelperVariableContainer->exists(SwitchViewHelper::class, 'switchExpression')) {
+			throw new Exception('The case View helper can only be used within a switch View helper', 1368112037);
 		}
 		if (is_null($value) && $default === FALSE) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('The case View helper must have either value or default argument', 1382867521);
+			throw new Exception('The case View helper must have either value or default argument', 1382867521);
 		}
-		$switchExpression = $viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
+		$switchExpression = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'switchExpression');
 
 		// non-type-safe comparison by intention
 		if ($default === TRUE || $switchExpression == $value) {
-			$viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', TRUE);
-			return $this->renderChildren();
+			$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'break', TRUE);
+			return $renderChildrenClosure();
 		}
 		return '';
 	}
-
 }
