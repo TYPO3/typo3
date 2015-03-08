@@ -14,22 +14,25 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Script Class for rendering the full screen RTE display
+ * Script class for rendering the full screen RTE display
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RteController extends AbstractWizardController {
 
 	/**
-	 * document template object
+	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @var DocumentTemplate
 	 */
 	public $doc;
 
@@ -41,7 +44,7 @@ class RteController extends AbstractWizardController {
 	public $content;
 
 	/**
-	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 * Wizard parameters, coming from FormEngine linking to the wizard.
 	 *
 	 * @var array
 	 */
@@ -60,6 +63,13 @@ class RteController extends AbstractWizardController {
 	 * @var string
 	 */
 	public $R_URI;
+
+	/**
+	 * Module configuration
+	 *
+	 * @var array
+	 */
+	public $MCONF = array();
 
 	/**
 	 * Constructor
@@ -84,7 +94,7 @@ class RteController extends AbstractWizardController {
 		// "Module name":
 		$this->MCONF['name'] = 'wizard_rte';
 		// Starting the document template object:
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $this->getBackPath();
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_rte.html');
 		// Need to NOT have the page wrapped in DIV since if we do that we destroy
@@ -94,20 +104,20 @@ class RteController extends AbstractWizardController {
 	}
 
 	/**
-	 * Main function, rendering the document with the iframe with the RTE in.
+	 * Main function, rendering the document with the iFrame with the RTE in.
 	 *
 	 * @return void
 	 */
 	public function main() {
 		// Translate id to the workspace version:
-		if ($versionRec = BackendUtility::getWorkspaceVersionOfRecord($this->getBackendUserAuthentication()->workspace, $this->P['table'], $this->P['uid'], 'uid')) {
-			$this->P['uid'] = $versionRec['uid'];
+		if ($versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->getBackendUserAuthentication()->workspace, $this->P['table'], $this->P['uid'], 'uid')) {
+			$this->P['uid'] = $versionedRecord['uid'];
 		}
 		// If all parameters are available:
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
 			// Getting the raw record (we need only the pid-value from here...)
-			$rawRec = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
-			BackendUtility::fixVersioningPid($this->P['table'], $rawRec);
+			$rawRecord = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
+			BackendUtility::fixVersioningPid($this->P['table'], $rawRecord);
 
 			// override the default jumpToUrl
 			$this->doc->JScodeArray['jumpToUrl'] = '
@@ -126,41 +136,40 @@ class RteController extends AbstractWizardController {
 
 			// Setting JavaScript of the pid value for viewing:
 			if ($this->popView) {
-				$this->doc->JScode = $this->doc->wrapScriptTags(BackendUtility::viewOnClick($rawRec['pid'], '', BackendUtility::BEgetRootLine($rawRec['pid'])));
+				$this->doc->JScode = $this->doc->wrapScriptTags(BackendUtility::viewOnClick($rawRecord['pid'], '', BackendUtility::BEgetRootLine($rawRecord['pid'])));
 			}
-			// Initialize TCeforms - for rendering the field:
-			$tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
+			// Initialize FormEngine - for rendering the field:
+			/** @var FormEngine $formEngine */
+			$formEngine = GeneralUtility::makeInstance(FormEngine::class);
 			// SPECIAL: Disables all wizards - we are NOT going to need them.
-			$tceforms->disableWizards = 1;
+			$formEngine->disableWizards = 1;
 			// Initialize style for RTE object:
 			// Getting reference to the RTE object used to render the field!
-			$RTEobj = BackendUtility::RTEgetObj();
-			if ($RTEobj->ID == 'rte') {
-				$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';
+			$RTEObject = BackendUtility::RTEgetObj();
+			if ($RTEObject->ID === 'rte') {
+				$RTEObject->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';
 			}
 			// Fetching content of record:
-			$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
-			$trData->lockRecords = 1;
-			$trData->fetchRecord($this->P['table'], $this->P['uid'], '');
+			/** @var DataPreprocessor $dataPreprocessor */
+			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+			$dataPreprocessor->lockRecords = 1;
+			$dataPreprocessor->fetchRecord($this->P['table'], $this->P['uid'], '');
 			// Getting the processed record content out:
-			$rec = reset($trData->regTableItems_data);
-			$rec['uid'] = $this->P['uid'];
-			$rec['pid'] = $rawRec['pid'];
+			$processedRecord = reset($dataPreprocessor->regTableItems_data);
+			$processedRecord['uid'] = $this->P['uid'];
+			$processedRecord['pid'] = $rawRecord['pid'];
 			// TSconfig, setting width:
-			$fieldTSConfig = FormEngineUtility::getTSconfigForTableRow($this->P['table'], $rec, $this->P['field']);
+			$fieldTSConfig = FormEngineUtility::getTSconfigForTableRow($this->P['table'], $processedRecord, $this->P['field']);
 			if ((string)$fieldTSConfig['RTEfullScreenWidth'] !== '') {
 				$width = $fieldTSConfig['RTEfullScreenWidth'];
 			} else {
 				$width = '100%';
 			}
 			// Get the form field and wrap it in the table with the buttons:
-			$formContent = $tceforms->getSoloField($this->P['table'], $rec, $this->P['field']);
+			$formContent = $formEngine->getSoloField($this->P['table'], $processedRecord, $this->P['field']);
 			$formContent = '
 
-
-			<!--
-				RTE wizard:
-			-->
+			<!-- RTE wizard: -->
 				<table border="0" cellpadding="0" cellspacing="0" width="' . $width . '" id="typo3-rtewizard">
 					<tr>
 						<td width="' . $width . '" colspan="2" id="c-formContent">' . $formContent . '</td>
@@ -169,19 +178,19 @@ class RteController extends AbstractWizardController {
 				</table>';
 			// Adding hidden fields:
 			$formContent .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI) . '" />
-						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
+						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />' . FormEngine::getHiddenTokenField('tceAction');
 			// Finally, add the whole setup:
-			$this->content .= $tceforms->printNeededJSFunctions_top() . $formContent . $tceforms->printNeededJSFunctions();
+			$this->content .= $formEngine->printNeededJSFunctions_top() . $formContent . $formEngine->printNeededJSFunctions();
 		} else {
 			// ERROR:
 			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
 		}
-		// Setting up the buttons and markers for docheader
+		// Setting up the buttons and markers for docHeader
 		$docHeaderButtons = $this->getButtons();
 		$markers['CONTENT'] = $this->content;
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('');
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
@@ -215,8 +224,9 @@ class RteController extends AbstractWizardController {
 			$closeUrl = GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
 			// Getting settings for the undo button:
 			$undoButton = 0;
-			$undoRes = $this->getDatabaseConnection()->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . (int)$this->P['uid'], '', 'tstamp DESC', '1');
-			if ($undoButtonR = $this->getDatabaseConnection()->sql_fetch_assoc($undoRes)) {
+			$databaseConnection = $this->getDatabaseConnection();
+			$undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . (int)$this->P['uid'], '', 'tstamp DESC', '1');
+			if ($undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
 				$undoButton = 1;
 			}
 			// Close

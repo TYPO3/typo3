@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ColorpickerController extends AbstractWizardController {
 
 	/**
-	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 * Wizard parameters, coming from FormEngine linking to the wizard.
 	 *
 	 * @var array
 	 */
@@ -42,7 +43,7 @@ class ColorpickerController extends AbstractWizardController {
 
 	/**
 	 * Serialized functions for changing the field...
-	 * Necessary to call when the value is transferred to the TCEform since the form might
+	 * Necessary to call when the value is transferred to the FormEngine since the form might
 	 * need to do internal processing. Otherwise the value is simply not be saved.
 	 *
 	 * @var string
@@ -102,7 +103,7 @@ class ColorpickerController extends AbstractWizardController {
 	/**
 	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @var DocumentTemplate
 	 */
 	public $doc;
 
@@ -161,7 +162,7 @@ class ColorpickerController extends AbstractWizardController {
 			}
 		}
 		// Initialize document object:
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $this->getBackPath();
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function checkReference() {	//
@@ -252,7 +253,7 @@ class ColorpickerController extends AbstractWizardController {
 	}
 
 	/**
-	 * Returnes the sourcecode to the browser
+	 * Returns the sourcecode to the browser
 	 *
 	 * @return void
 	 */
@@ -356,7 +357,7 @@ class ColorpickerController extends AbstractWizardController {
 		$opt[] = '<option value=""></option>';
 		// Traverse colors, making option tags for selector box.
 		foreach ($colors as $colorName) {
-			$opt[] = '<option style="background-color: ' . $colorName . ';" value="' . htmlspecialchars($colorName) . '"' . ($currentValue == $colorName ? ' selected="selected"' : '') . '>' . htmlspecialchars($colorName) . '</option>';
+			$opt[] = '<option style="background-color: ' . $colorName . ';" value="' . htmlspecialchars($colorName) . '"' . ($currentValue === $colorName ? ' selected="selected"' : '') . '>' . htmlspecialchars($colorName) . '</option>';
 		}
 		// Compile selector box and return result:
 		$output = '
@@ -413,7 +414,7 @@ class ColorpickerController extends AbstractWizardController {
 		$index['b'] = dechex($colorRgb['blue']);
 		$hexValue = array();
 		foreach ($index as $value) {
-			if (strlen($value) == 1) {
+			if (strlen($value) === 1) {
 				$hexValue[] = strtoupper('0' . $value);
 			} else {
 				$hexValue[] = strtoupper($value);

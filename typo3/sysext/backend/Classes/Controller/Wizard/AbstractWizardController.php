@@ -1,7 +1,7 @@
 <?php
 namespace TYPO3\CMS\Backend\Controller\Wizard;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -34,22 +34,22 @@ class AbstractWizardController {
 	 * @return bool
 	 */
 	protected function checkEditAccess($table, $uid) {
-		$calcPermissionRecord = BackendUtility::getRecord($table, $uid);
-		BackendUtility::fixVersioningPid($table, $calcPermissionRecord);
-		if (is_array($calcPermissionRecord)) {
+		$record = BackendUtility::getRecord($table, $uid);
+		BackendUtility::fixVersioningPid($table, $record);
+		if (is_array($record)) {
 			// If pages:
 			if ($table === 'pages') {
-				$calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms($calcPermissionRecord);
+				$calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms($record);
 				$hasAccess = $calculatedPermissions & Permission::PAGE_EDIT;
 			} else {
 				// Fetching pid-record first.
 				$calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms(
-					BackendUtility::getRecord('pages', $calcPermissionRecord['pid']));
+					BackendUtility::getRecord('pages', $record['pid']));
 				$hasAccess = $calculatedPermissions & Permission::CONTENT_EDIT;
 			}
 			// Check internals regarding access:
 			if ($hasAccess) {
-				$hasAccess = $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $calcPermissionRecord);
+				$hasAccess = $this->getBackendUserAuthentication()->recordEditAccessInternals($table, $record);
 			}
 		} else {
 			$hasAccess = FALSE;

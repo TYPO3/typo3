@@ -14,10 +14,14 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Script Class for rendering the Table Wizard
@@ -27,9 +31,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class TableController extends AbstractWizardController {
 
 	/**
-	 * document template object
+	 * Document template object
 	 *
-	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @var DocumentTemplate
 	 */
 	public $doc;
 
@@ -41,15 +45,15 @@ class TableController extends AbstractWizardController {
 	public $content;
 
 	/**
-	 * TRUE, then <input> fields are shown, not textareas.
+	 * If TRUE, <input> fields are shown instead of textareas.
 	 *
-	 * @var int
+	 * @var bool
 	 */
-	public $inputStyle = 0;
+	public $inputStyle = FALSE;
 
 	/**
 	 * If set, the string version of the content is interpreted/written as XML
-	 * instead of the original linebased kind. This variable still needs binding
+	 * instead of the original line-based kind. This variable still needs binding
 	 * to the wizard parameters - but support is ready!
 	 *
 	 * @var int
@@ -65,14 +69,14 @@ class TableController extends AbstractWizardController {
 
 	/**
 	 * Name of field in parent record which MAY contain the number of columns for the table
-	 * here hardcoded to the value of tt_content. Should be set by TCEform parameters (from P)
+	 * here hardcoded to the value of tt_content. Should be set by FormEngine parameters (from P)
 	 *
 	 * @var string
 	 */
 	public $colsFieldName = 'cols';
 
 	/**
-	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 * Wizard parameters, coming from FormEngine linking to the wizard.
 	 *
 	 * @var array
 	 */
@@ -123,9 +127,9 @@ class TableController extends AbstractWizardController {
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
 		$this->numNewRows = MathUtility::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
 		// Textareas or input fields:
-		$this->inputStyle = isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
+		$this->inputStyle = isset($this->TABLECFG['textFields']) ? (bool)$this->TABLECFG['textFields'] : TRUE;
 		// Document template object:
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $this->getBackPath();
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/wizard_table.html');
 		// Setting form tag:
@@ -146,13 +150,13 @@ class TableController extends AbstractWizardController {
 		} else {
 			$this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
 		}
-		// Setting up the buttons and markers for docheader
+		// Setting up the buttons and markers for docHeader
 		$docHeaderButtons = $this->getButtons();
 		$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['CONTENT'] = $this->content;
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('Table');
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
@@ -169,7 +173,7 @@ class TableController extends AbstractWizardController {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return array All available buttons as an assoc. array
+	 * @return array All available buttons as an associative array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -201,6 +205,7 @@ class TableController extends AbstractWizardController {
 	 * Draws the table wizard content
 	 *
 	 * @return string HTML content for the form.
+	 * @throws \RuntimeException
 	 */
 	public function tableWizard() {
 		if (!$this->checkEditAccess($this->P['table'], $this->P['uid'])) {
@@ -215,23 +220,24 @@ class TableController extends AbstractWizardController {
 		// saved to database etc. if the form has been submitted in the meantime.
 		$tableCfgArray = $this->getConfigCode($row);
 		// Generation of the Table Wizards HTML code:
-		$content = $this->getTableHTML($tableCfgArray, $row);
+		$content = $this->getTableHTML($tableCfgArray);
 		// Return content:
 		return $content;
 	}
 
-	/***************************
+	/*
 	 *
 	 * Helper functions
 	 *
-	 ***************************/
+	 */
+
 	/**
 	 * Will get and return the configuration code string
 	 * Will also save (and possibly redirect/exit) the content if a save button has been pressed
 	 *
 	 * @param array $row Current parent record row
 	 * @return array Table config code in an array
-	 * @access private
+	 * @internal
 	 */
 	public function getConfigCode($row) {
 		// Get delimiter settings
@@ -249,56 +255,56 @@ class TableController extends AbstractWizardController {
 				// Convert the input array to XML:
 				$bodyText = GeneralUtility::array2xml_cs($this->TABLECFG['c'], 'T3TableWizard');
 				// Setting cfgArr directly from the input:
-				$cfgArr = $this->TABLECFG['c'];
+				$configuration = $this->TABLECFG['c'];
 			} else {
 				// Convert the input array to a string of configuration code:
 				$bodyText = $this->cfgArray2CfgString($this->TABLECFG['c']);
 				// Create cfgArr from the string based configuration - that way it is cleaned up and any incompatibilities will be removed!
-				$cfgArr = $this->cfgString2CfgArray($bodyText, $row[$this->colsFieldName]);
+				$configuration = $this->cfgString2CfgArray($bodyText, $row[$this->colsFieldName]);
 			}
 			// If a save button has been pressed, then save the new field content:
 			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
-				// Make TCEmain object:
-				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-				$tce->stripslashes_values = 0;
+				// Get DataHandler object:
+				/** @var DataHandler $dataHandler */
+				$dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+				$dataHandler->stripslashes_values = FALSE;
 				// Put content into the data array:
 				$data = array();
 				$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $bodyText;
 				// Perform the update:
-				$tce->start($data, array());
-				$tce->process_datamap();
+				$dataHandler->start($data, array());
+				$dataHandler->process_datamap();
 				// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x']) {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
+					HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 				}
 			}
 		} else {
 			// If nothing has been submitted, load the $bodyText variable from the selected database row:
 			if ($this->xmlStorage) {
-				$cfgArr = GeneralUtility::xml2array($row[$this->P['field']]);
+				$configuration = GeneralUtility::xml2array($row[$this->P['field']]);
 			} else {
-				// Regular linebased table configuration:
-				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']], $row[$this->colsFieldName]);
+				// Regular line based table configuration:
+				$configuration = $this->cfgString2CfgArray($row[$this->P['field']], $row[$this->colsFieldName]);
 			}
-			$cfgArr = is_array($cfgArr) ? $cfgArr : array();
+			$configuration = is_array($configuration) ? $configuration : array();
 		}
-		return $cfgArr;
+		return $configuration;
 	}
 
 	/**
 	 * Creates the HTML for the Table Wizard:
 	 *
-	 * @param array $cfgArr Table config array
-	 * @param array $row Current parent record array
+	 * @param array $configuration Table config array
 	 * @return string HTML for the table wizard
-	 * @access private
+	 * @internal
 	 */
-	public function getTableHTML($cfgArr, $row) {
+	public function getTableHTML($configuration) {
 		// Traverse the rows:
 		$tRows = array();
 		$k = 0;
-		$countLines = count($cfgArr);
-		foreach ($cfgArr as $cellArr) {
+		$countLines = count($configuration);
+		foreach ($configuration as $cellArr) {
 			if (is_array($cellArr)) {
 				// Initialize:
 				$cells = array();
@@ -319,13 +325,13 @@ class TableController extends AbstractWizardController {
 				$onClick = ' onclick="' . htmlspecialchars($onClick) . '"';
 				$ctrl = '';
 				$brTag = $this->inputStyle ? '' : '<br />';
-				if ($k != 0) {
+				if ($k !== 0) {
 					$ctrl .= '<input type="image" name="TABLE[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '" />' . $brTag;
 				} else {
 					$ctrl .= '<input type="image" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '" />' . $brTag;
 				}
 				$ctrl .= '<input type="image" name="TABLE[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '" />' . $brTag;
-				if ($k + 1 != $countLines) {
+				if ($k + 1 !== $countLines) {
 					$ctrl .= '<input type="image" name="TABLE[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '" />' . $brTag;
 				} else {
 					$ctrl .= '<input type="image" name="TABLE[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '" />' . $brTag;
@@ -345,29 +351,25 @@ class TableController extends AbstractWizardController {
 		$cells = array();
 		$cells[] = '';
 		// Finding first row:
-		$firstRow = reset($cfgArr);
+		$firstRow = reset($configuration);
 		if (is_array($firstRow)) {
-			// Init:
-			$a = 0;
 			$cols = count($firstRow);
-			// Traverse first row:
-			foreach ($firstRow as $temp) {
+			for ($a = 1; $a <= $cols; $a++) {
+				$b = $a * 2;
 				$ctrl = '';
-				if ($a != 0) {
-					$ctrl .= '<input type="image" name="TABLE[col_left][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_left', TRUE) . '" />';
+				if ($a !== 1) {
+					$ctrl .= '<input type="image" name="TABLE[col_left][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_left', TRUE) . '" />';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[col_end][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_end', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_end][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_end', TRUE) . '" />';
 				}
-				$ctrl .= '<input type="image" name="TABLE[col_remove][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_removeColumn', TRUE) . '" />';
+				$ctrl .= '<input type="image" name="TABLE[col_remove][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_removeColumn', TRUE) . '" />';
 				if ($a + 1 != $cols) {
-					$ctrl .= '<input type="image" name="TABLE[col_right][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_right', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_right][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_right', TRUE) . '" />';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[col_start][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_start', TRUE) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_start][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_start', TRUE) . '" />';
 				}
-				$ctrl .= '<input type="image" name="TABLE[col_add][' . ($a + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_addColumn', TRUE) . '" />';
+				$ctrl .= '<input type="image" name="TABLE[col_add][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_addColumn', TRUE) . '" />';
 				$cells[] = '<span class="c-wizButtonsH">' . $ctrl . '</span>';
-				// Incr. counter:
-				$a++;
 			}
 			$tRows[] = '
 				<tr class="bgColor5">
@@ -379,26 +381,22 @@ class TableController extends AbstractWizardController {
 		// Implode all table rows into a string, wrapped in table tags.
 		$content .= '
 
-
-			<!--
-				Table wizard
-			-->
+			<!-- Table wizard -->
 			<table border="0" cellpadding="0" cellspacing="1" id="typo3-tablewizard">
 				' . implode('', $tRows) . '
 			</table>';
 		// Input type checkbox:
 		$content .= '
 
-			<!--
-				Input mode check box:
-			-->
+			<!-- Input mode check box: -->
 			<div id="c-inputMode">
-				' . '<input type="hidden" name="TABLE[textFields]" value="0" />' . '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' /> <label for="textFields">' . $this->getLanguageService()->getLL('table_smallFields') . '</label>
+				' . '<input type="hidden" name="TABLE[textFields]" value="0" />'
+			. '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' />'
+			. '<label for="textFields">' . $this->getLanguageService()->getLL('table_smallFields') . '</label>
 			</div>
 
 			<br /><br />
 			';
-		// Return content:
 		return $content;
 	}
 
@@ -406,7 +404,7 @@ class TableController extends AbstractWizardController {
 	 * Detects if a control button (up/down/around/delete) has been pressed for an item and accordingly it will manipulate the internal TABLECFG array
 	 *
 	 * @return void
-	 * @access private
+	 * @internal
 	 */
 	public function changeFunc() {
 		if ($this->TABLECFG['col_remove']) {
@@ -445,16 +443,19 @@ class TableController extends AbstractWizardController {
 		} elseif ($this->TABLECFG['row_down']) {
 			$kk = key($this->TABLECFG['row_down']);
 			$cmd = 'row_down';
+		} else {
+			$kk = '';
+			$cmd = '';
 		}
 		if ($cmd && MathUtility::canBeInterpretedAsInteger($kk)) {
-			if (substr($cmd, 0, 4) == 'row_') {
+			if (StringUtility::beginsWith($cmd, 'row_')) {
 				switch ($cmd) {
 					case 'row_remove':
 						unset($this->TABLECFG['c'][$kk]);
 						break;
 					case 'row_add':
 						for ($a = 1; $a <= $this->numNewRows; $a++) {
-							// Checking if set: The point is that any new row inbetween existing rows
+							// Checking if set: The point is that any new row between existing rows
 							// will be TRUE after one row is added while if rows are added in the bottom
 							// of the table there will be no existing rows to stop the addition of new rows
 							// which means it will add up to $this->numNewRows rows then.
@@ -484,7 +485,7 @@ class TableController extends AbstractWizardController {
 				}
 				ksort($this->TABLECFG['c']);
 			}
-			if (substr($cmd, 0, 4) == 'col_') {
+			if (StringUtility::beginsWith($cmd, 'col_')) {
 				foreach ($this->TABLECFG['c'] as $cAK => $value) {
 					switch ($cmd) {
 						case 'col_remove':
@@ -530,54 +531,50 @@ class TableController extends AbstractWizardController {
 	 * @see cfgString2CfgArray()
 	 */
 	public function cfgArray2CfgString($cfgArr) {
-		// Initialize:
 		$inLines = array();
 		// Traverse the elements of the table wizard and transform the settings into configuration code.
-		foreach ($this->TABLECFG['c'] as $a => $value) {
+		foreach ($cfgArr as $valueA) {
 			$thisLine = array();
-			foreach ($this->TABLECFG['c'][$a] as $b => $value) {
-				$thisLine[] = $this->tableParsing_quote . str_replace($this->tableParsing_delimiter, '', $this->TABLECFG['c'][$a][$b]) . $this->tableParsing_quote;
+			foreach ($valueA as $valueB) {
+				$thisLine[] = $this->tableParsing_quote . str_replace($this->tableParsing_delimiter, '', $valueB) . $this->tableParsing_quote;
 			}
 			$inLines[] = implode($this->tableParsing_delimiter, $thisLine);
 		}
 		// Finally, implode the lines into a string:
-		$bodyText = implode(LF, $inLines);
-		// Return the configuration code:
-		return $bodyText;
+		return implode(LF, $inLines);
 	}
 
 	/**
 	 * Converts the input configuration code string into an array
 	 *
-	 * @param string $cfgStr Configuration code
-	 * @param int $cols Default number of columns
+	 * @param string $configurationCode Configuration code
+	 * @param int $columns Default number of columns
 	 * @return array Configuration array
 	 * @see cfgArray2CfgString()
 	 */
-	public function cfgString2CfgArray($cfgStr, $cols) {
+	public function cfgString2CfgArray($configurationCode, $columns) {
 		// Explode lines in the configuration code - each line is a table row.
-		$tLines = explode(LF, $cfgStr);
+		$tableLines = explode(LF, $configurationCode);
 		// Setting number of columns
 		// auto...
-		if (!$cols && trim($tLines[0])) {
-			$cols = count(explode($this->tableParsing_delimiter, $tLines[0]));
+		if (!$columns && trim($tableLines[0])) {
+			$columns = count(explode($this->tableParsing_delimiter, $tableLines[0]));
 		}
-		$cols = $cols ?: 4;
+		$columns = $columns ?: 4;
 		// Traverse the number of table elements:
-		$cfgArr = array();
-		foreach ($tLines as $k => $v) {
+		$configurationArray = array();
+		foreach ($tableLines as $key => $value) {
 			// Initialize:
-			$vParts = explode($this->tableParsing_delimiter, $v);
+			$valueParts = explode($this->tableParsing_delimiter, $value);
 			// Traverse columns:
-			for ($a = 0; $a < $cols; $a++) {
-				if ($this->tableParsing_quote && $vParts[$a][0] === $this->tableParsing_quote && substr($vParts[$a], -1, 1) === $this->tableParsing_quote) {
-					$vParts[$a] = substr(trim($vParts[$a]), 1, -1);
+			for ($a = 0; $a < $columns; $a++) {
+				if ($this->tableParsing_quote && $valueParts[$a][0] === $this->tableParsing_quote && substr($valueParts[$a], -1, 1) === $this->tableParsing_quote) {
+					$valueParts[$a] = substr(trim($valueParts[$a]), 1, -1);
 				}
-				$cfgArr[$k][$a] = $vParts[$a];
+				$configurationArray[$key][$a] = $valueParts[$a];
 			}
 		}
-		// Return configuration array:
-		return $cfgArr;
+		return $configurationArray;
 	}
 
 }

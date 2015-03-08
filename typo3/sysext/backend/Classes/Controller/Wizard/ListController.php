@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in TCEforms
+ * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in FormEngine
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
@@ -30,7 +30,7 @@ class ListController extends AbstractWizardController {
 	public $pid;
 
 	/**
-	 * Wizard parameters, coming from TCEforms linking to the wizard.
+	 * Wizard parameters, coming from FormEngine linking to the wizard.
 	 *
 	 * @var array
 	 */
