@@ -10,6 +10,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * This ViewHelper counts elements of the specified array or countable object.
@@ -32,7 +36,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CountViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var bool
@@ -44,15 +48,32 @@ class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 *
 	 * @param array $subject The array or \Countable to be counted
 	 * @return int The number of elements
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 * @api
 	 */
 	public function render($subject = NULL) {
+		return self::renderStatic(
+			array('subject' => $subject),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return int
+	 * @throws Exception
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$subject = $arguments['subject'];
 		if ($subject === NULL) {
-			$subject = $this->renderChildren();
+			$subject = $renderChildrenClosure();
 		}
 		if (is_object($subject) && !$subject instanceof \Countable) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CountViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
+			throw new Exception('CountViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
 		}
 		return count($subject);
 	}
