@@ -10,17 +10,24 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper;
 
 /**
  * Test case
  */
-class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class DateViewHelperTest extends UnitTestCase {
 
 	/**
 	 * @var array Backup of current locale, it is manipulated in tests
 	 */
 	protected $backupLocales = array();
+
+	/**
+	 * @var DateViewHelper
+	 */
+	protected $subject;
 
 	/**
 	 * @var string Backup of current timezone, it is manipulated in tests
@@ -38,6 +45,10 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->timezone = @date_default_timezone_get();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'Y-m-d';
+		$this->subject = $this->getAccessibleMock(DateViewHelper::class, array('renderChildren'));
+		/** @var RenderingContext $renderingContext */
+		$renderingContext = $this->getMock(RenderingContext::class);
+		$this->subject->_set('renderingContext', $renderingContext);
 	}
 
 	protected function tearDown() {
@@ -52,8 +63,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperFormatsDateCorrectly() {
-		$viewHelper = new DateViewHelper();
-		$actualResult = $viewHelper->render(new \DateTime('1980-12-13'));
+		$actualResult = $this->subject->render(new \DateTime('1980-12-13'));
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
 
@@ -61,8 +71,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperFormatsDateStringCorrectly() {
-		$viewHelper = new DateViewHelper();
-		$actualResult = $viewHelper->render('1980-12-13');
+		$actualResult = $this->subject->render('1980-12-13');
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
 
@@ -70,8 +79,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperRespectsCustomFormat() {
-		$viewHelper = new DateViewHelper();
-		$actualResult = $viewHelper->render(new \DateTime('1980-02-01'), 'd.m.Y');
+		$actualResult = $this->subject->render(new \DateTime('1980-02-01'), 'd.m.Y');
 		$this->assertEquals('01.02.1980', $actualResult);
 	}
 
@@ -79,10 +87,8 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperReturnsEmptyStringIfNULLIsGiven() {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
-		$actualResult = $viewHelper->render();
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
+		$actualResult = $this->subject->render();
 		$this->assertEquals('', $actualResult);
 	}
 
@@ -91,8 +97,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function viewHelperUsesDefaultIfNoSystemFormatIsAvailable() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = '';
-		$viewHelper = new DateViewHelper();
-		$actualResult = $viewHelper->render('@1391876733');
+		$actualResult = $this->subject->render('@1391876733');
 		$this->assertEquals('2014-02-08', $actualResult);
 	}
 
@@ -101,8 +106,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function viewHelperUsesSystemFormat() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'l, j. M y';
-		$viewHelper = new DateViewHelper();
-		$actualResult = $viewHelper->render('@1391876733');
+		$actualResult = $this->subject->render('@1391876733');
 		$this->assertEquals('Saturday, 8. Feb 14', $actualResult);
 	}
 
@@ -111,18 +115,15 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
 	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
-		$viewHelper = new DateViewHelper();
-		$viewHelper->render('foo');
+		$this->subject->render('foo');
 	}
 
 	/**
 	 * @test
 	 */
 	public function viewHelperUsesChildNodesIfDateAttributeIsNotSpecified() {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new \DateTime('1980-12-13')));
-		$actualResult = $viewHelper->render();
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(new \DateTime('1980-12-13')));
+		$actualResult = $this->subject->render();
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
 
@@ -130,10 +131,8 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperUsesChildNodesWithTimestamp() {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('1359891658'));
-		$actualResult = $viewHelper->render();
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue('1359891658'));
+		$actualResult = $this->subject->render();
 		$this->assertEquals('2013-02-03', $actualResult);
 	}
 
@@ -141,10 +140,8 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function dateArgumentHasPriorityOverChildNodes() {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->never())->method('renderChildren');
-		$actualResult = $viewHelper->render('1980-12-12');
+		$this->subject->expects($this->never())->method('renderChildren');
+		$actualResult = $this->subject->render('1980-12-12');
 		$this->assertEquals('1980-12-12', $actualResult);
 	}
 
@@ -171,14 +168,11 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider viewHelperRespectsDefaultTimezoneForIntegerTimestampDataProvider
 	 */
 	public function viewHelperRespectsDefaultTimezoneForIntegerTimestamp($timezone, $expected) {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
-
 		$date = 1359891658; // 2013-02-03 11:40 UTC
 		$format = 'Y-m-d H:i';
 
 		date_default_timezone_set($timezone);
-		$this->assertEquals($expected, $viewHelper->render($date, $format));
+		$this->assertEquals($expected, $this->subject->render($date, $format));
 	}
 
 	/**
@@ -217,12 +211,10 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function viewHelperRespectsDefaultTimezoneForStringTimestamp($timeZone, $date, $expected) {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
 		$format = 'Y-m-d H:i';
 
 		date_default_timezone_set($timeZone);
-		$this->assertEquals($expected, $viewHelper->render($date, $format));
+		$this->assertEquals($expected, $this->subject->render($date, $format));
 	}
 
 	/**
@@ -249,8 +241,6 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function dateViewHelperFormatsDateLocalized($locale, $expected) {
-		/** @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject $viewHelper */
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\DateViewHelper::class, array('renderChildren'));
 		$format = '%d. %B %Y';
 		// 2013-02-03 11:40 UTC
 		$timestamp = '@1359891658';
@@ -259,7 +249,7 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
 		}
 		$this->setLocale($locale);
-		$this->assertEquals($expected, $viewHelper->render($timestamp, $format));
+		$this->assertEquals($expected, $this->subject->render($timestamp, $format));
 	}
 
 	/**

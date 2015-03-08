@@ -11,6 +11,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Formats a \DateTime object.
@@ -67,7 +71,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @api
  */
-class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var bool
@@ -79,17 +83,39 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 *
 	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
 	 * @param string $format Format String which is taken to format the Date/Time
+	 *
 	 * @return string Formatted date
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 * @api
 	 */
 	public function render($date = NULL, $format = '') {
+		return self::renderStatic(
+			array(
+				'date' => $date,
+				'format' => $format
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$date = $arguments['date'];
+		$format = $arguments['format'];
 		if ($format === '') {
 			$format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
 		}
 
 		if ($date === NULL) {
-			$date = $this->renderChildren();
+			$date = $renderChildrenClosure();
 			if ($date === NULL) {
 				return '';
 			}
@@ -103,7 +129,7 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 				}
 				$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 			} catch (\Exception $exception) {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1241722579);
+				throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1241722579);
 			}
 		}
 
@@ -112,7 +138,5 @@ class DateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 		} else {
 			return $date->format($format);
 		}
-
 	}
-
 }
