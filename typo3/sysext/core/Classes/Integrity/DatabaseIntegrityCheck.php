@@ -135,7 +135,7 @@ class DatabaseIntegrityCheck {
 			$newID = $row['uid'];
 			// Build HTML output:
 			if ($this->genTree_makeHTML) {
-				$this->genTree_HTML .= LF . '<div><span class="nobr">';
+				$this->genTree_HTML .= LF . '<div><span class="text-nowrap">';
 				$PM = 'join';
 				$LN = $a == $c ? 'blank' : 'line';
 				$BTM = $a == $c ? 'bottom' : '';
@@ -214,7 +214,7 @@ class DatabaseIntegrityCheck {
 			$newID = $row['uid'];
 			// Build HTML output:
 			if ($this->genTree_makeHTML) {
-				$this->genTree_HTML .= LF . '<div><span class="nobr">';
+				$this->genTree_HTML .= LF . '<div><span class="text-nowrap">';
 				$PM = 'join';
 				$LN = $a == $c ? 'blank' : 'line';
 				$BTM = $a == $c ? 'bottom' : '';

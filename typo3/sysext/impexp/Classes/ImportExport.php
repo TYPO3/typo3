@@ -4138,7 +4138,7 @@ class ImportExport {
 			} else {
 				$output = 'Match';
 			}
-			return '<strong class="nobr">[' . htmlspecialchars(($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid'])) . ']:</strong> ' . $output;
+			return '<strong class="text-nowrap">[' . htmlspecialchars(($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid'])) . ']:</strong> ' . $output;
 		}
 		return 'ERROR: One of the inputs were not an array!';
 	}

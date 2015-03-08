@@ -119,7 +119,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				foreach ($menuItems as $record) {
 					BackendUtility::workspaceOL('pages', $record);
 					if (is_array($record)) {
-						$lines[] = '<nobr>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $record, array('title' => BackendUtility::titleAttribForPages($record, '', FALSE))) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($record['title'], $this->getBackendUser()->uc['titleLen'])) . '</nobr>';
+						$lines[] = '<span class="text-nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $record, array('title' => BackendUtility::titleAttribForPages($record, '', FALSE))) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($record['title'], $this->getBackendUser()->uc['titleLen'])) . '</span>';
 					}
 				}
 				$theCode .= '<h4>' . $this->getLanguageService()->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines);

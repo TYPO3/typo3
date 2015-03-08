@@ -4,7 +4,7 @@
 <f:if condition="{files.noReferences}">
 	<f:then>
 		<f:for each="{files.noReferences}" as="item">
-			<nobr>{item.0}/<strong>{item.1}</strong></nobr>
+			<span class="text-nowrap">{item.0}/<strong>{item.1}</strong></span>
 			<br>
 		</f:for>
 	</f:then>
@@ -17,8 +17,7 @@
 <f:if condition="{files.moreReferences}">
 	<f:then>
 		<f:for each="{files.moreReferences}" as="item">
-			<nobr>{item.0}/<strong>{item.1}</strong>: {item.2} {f:translate(key:'references')}
-			</nobr>
+			<span class="text-nowrap">{item.0}/<strong>{item.1}</strong>: {item.2} {f:translate(key:'references')}</span>
 			<br>{item.3}<br><br>
 		</f:for>
 	</f:then>
@@ -31,8 +30,7 @@
 <f:if condition="{files.noFile}">
 	<f:then>
 		<f:for each="{files.noFile}" as="item">
-			<nobr>{item.0}/<strong>{item.1}</strong> {f:translate(key:'isMissing')}
-			</nobr>
+			<span class="text-nowrap">{item.0}/<strong>{item.1}</strong> {f:translate(key:'isMissing')}</span>
 			<br>{f:translate(key:'referencedFrom')} {item.2}<br><br>
 		</f:for>
 	</f:then>

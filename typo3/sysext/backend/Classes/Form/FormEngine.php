@@ -2221,7 +2221,7 @@ class FormEngine {
 					$fileInformation = pathinfo($imgPath);
 					$fileIcon = IconUtility::getSpriteIconForFile($imgPath, array('title' => htmlspecialchars($fileInformation['basename'] . ($absFilePath && @is_file($absFilePath) ? ' (' . GeneralUtility::formatSize(filesize($absFilePath)) . 'bytes)' : ' - FILE NOT FOUND!'))));
 					$imgs[] =
-						'<span class="nobr">' .
+						'<span class="text-nowrap">' .
 							BackendUtility::thumbCode(
 								$rowCopy,
 								$table,

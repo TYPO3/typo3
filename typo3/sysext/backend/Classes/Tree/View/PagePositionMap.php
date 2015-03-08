@@ -163,7 +163,7 @@ class PagePositionMap {
 				if ($prev_dat['row']['uid'] == $id) {
 					// 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth'])) {
-						$code .= '<span class="nobr">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
+						$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
 					}
 				}
 				// If going down
@@ -174,7 +174,7 @@ class PagePositionMap {
 					// First of all the previous level should have an icon:
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
 						$prevPid = -$prev_dat['row']['uid'];
-						$code .= '<span class="nobr">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="1" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'], 2)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgAfter' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgAfter' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgAfter' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
+						$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="1" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'], 2)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgAfter' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgAfter' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgAfter' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
 					}
 					// Then set the current prevPid
 					$prevPid = -$prev_dat['row']['pid'];
@@ -187,24 +187,24 @@ class PagePositionMap {
 				$prevPid = $dat['row']['pid'];
 			}
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-				$code .= '<span class="nobr">' . $this->insertQuadLines($dat['blankLineCode']) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
+				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImg' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImg' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
 			}
 			// The line with the icon and title:
-			$t_code = '<span class="nobr">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span><br />';
+			$t_code = '<span class="text-nowrap">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span><br />';
 			$code .= $t_code;
 		}
 		// If the current page was the last in the tree:
 		$prev_dat = end($t3lib_pageTree->tree);
 		if ($prev_dat['row']['uid'] == $id) {
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
-				$code .= '<span class="nobr">' . $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . $this->onClickEvent($id, $id, 4) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
+				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . $this->onClickEvent($id, $id, 4) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgSubpage' . $cc . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgSubpage' . $cc . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
 			}
 		}
 		for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
 			$dat = $saveLatestUid[$a];
 			$prevPid = -$dat['row']['uid'];
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-				$code .= '<span class="nobr">' . $this->insertQuadLines($dat['blankLineCode'], 1) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 5)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgEnd' . $a . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgEnd' . $a . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgEnd' . $a . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
+				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode'], 1) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 5)) . '" onmouseover="' . htmlspecialchars(('changeImg(\'mImgEnd' . $a . '\',0);')) . '" onmouseout="' . htmlspecialchars(('changeImg(\'mImgEnd' . $a . '\',1);')) . '">' . '<img' . IconUtility::skinImg($this->backPath, 'gfx/newrecord_marker_d.gif', 'width="281" height="8"') . ' name="mImgEnd' . $a . '" border="0" align="top" title="' . $this->insertlabel() . '" alt="" />' . '</a></span><br />';
 			}
 		}
 		return $code;

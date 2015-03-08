@@ -334,8 +334,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				$out .= '<input class="btn btn-default" type="submit" name="update_value" value="' . $lang->getLL('updateButton') . '" />';
 				$theOutput .= $this->pObj->doc->section($lang->getLL('editProperty'), $out, 0, 0);
 				// Property
-				$out = '<nobr>' . htmlspecialchars($this->pObj->sObj) . '.';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $documentTemplate->formWidth(20) . ' /> = </nobr><br />';
+				$out = '<span class="text-nowrap">' . htmlspecialchars($this->pObj->sObj) . '.';
+				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $documentTemplate->formWidth(20) . ' /> = </span><br />';
 				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $documentTemplate->formWidth(40) . ' />';
 				$out .= '<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
@@ -466,7 +466,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
 			}
 			$menu .= '</div>';
-			$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), '<nobr>' . $menu . '</nobr>', 0, 1);
+			$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), '<span class="text-nowrap">' . $menu . '</span>', 0, 1);
 			// Conditions:
 			if (is_array($templateService->sections) && !empty($templateService->sections)) {
 				$theOutput .= $this->pObj->doc->section($lang->getLL('conditions'), '', 0, 1);

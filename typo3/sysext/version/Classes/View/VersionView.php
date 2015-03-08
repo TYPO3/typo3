@@ -62,7 +62,7 @@ class VersionView {
 				if ($id == $onlineId) {
 					$controls .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', TRUE) . '</strong>';
 				} elseif (!$noAction) {
-					$controls .= '<a href="' . $GLOBALS['TBE_TEMPLATE']->issueCommand(('&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap'), \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $onlineId))) . '" class="nobr">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-version', array(
+					$controls .= '<a href="' . $GLOBALS['TBE_TEMPLATE']->issueCommand(('&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap'), \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('id' => $onlineId))) . '" class="text-nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-version', array(
 						'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', TRUE),
 						'style' => 'margin-left:5px;vertical-align:bottom;'
 					)) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap', TRUE) . '</strong></a>';
