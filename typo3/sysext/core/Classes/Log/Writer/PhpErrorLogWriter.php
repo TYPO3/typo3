@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Log\LogRecord;
+use TYPO3\CMS\Core\Log\LogLevel;
 
 /**
  * Log writer that writes the log records into PHP error log.
@@ -25,15 +27,30 @@ class PhpErrorLogWriter extends AbstractWriter {
 	/**
 	 * Writes the log record
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
+	 * @param LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
 	 * @throws \RuntimeException
 	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		$levelName = \TYPO3\CMS\Core\Log\LogLevel::getName($record->getLevel());
-		$data = $record->getData();
-		$data = !empty($data) ? '- ' . json_encode($data) : '';
-		$message = sprintf('TYPO3 [%s] request="%s" component="%s": %s %s', $levelName, $record->getRequestId(), $record->getComponent(), $record->getMessage(), $data);
+	public function writeLog(LogRecord $record) {
+		$levelName = LogLevel::getName($record->getLevel());
+		$data = '';
+		$recordData = $record->getData();
+		if (!empty($recordData)) {
+			// According to PSR3 the exception-key may hold an \Exception
+			// Since json_encode() does not encode an exception, we run the _toString() here
+			if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
+				$recordData['exception'] = (string)$recordData['exception'];
+			}
+			$data = '- ' . json_encode($recordData);
+		}
+		$message = sprintf(
+			'TYPO3 [%s] request="%s" component="%s": %s %s',
+			$levelName,
+			$record->getRequestId(),
+			$record->getComponent(),
+			$record->getMessage(),
+			$data
+		);
 		if (FALSE === error_log($message)) {
 			throw new \RuntimeException('Could not write log record to PHP error log', 1345036336);
 		}

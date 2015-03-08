@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Test case
@@ -74,20 +75,22 @@ class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'data' => '',
 		);
 		/** @var \TYPO3\CMS\Core\Log\LogRecord|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$logRecordMock = $this->getMock(\TYPO3\CMS\Core\Log\LogRecord::class, array(), array(), '', FALSE);
-		$logRecordMock->expects($this->at(0))->method('offsetGet')->with('requestId')->will($this->returnValue($logRecordData['request_id']));
-		$logRecordMock->expects($this->at(1))->method('offsetGet')->with('created')->will($this->returnValue($logRecordData['time_micro']));
-		$logRecordMock->expects($this->at(2))->method('offsetGet')->with('component')->will($this->returnValue($logRecordData['component']));
-		$logRecordMock->expects($this->at(3))->method('offsetGet')->with('level')->will($this->returnValue($logRecordData['level']));
-		$logRecordMock->expects($this->at(4))->method('offsetGet')->with('message')->will($this->returnValue($logRecordData['message']));
+		$logRecordFixture = $this->getMock(\TYPO3\CMS\Core\Log\LogRecord::class, array(), array(), '', FALSE);
+		$logRecordFixture->expects($this->any())->method('getRequestId')->will($this->returnValue($logRecordData['request_id']));
+		$logRecordFixture->expects($this->any())->method('getCreated')->will($this->returnValue($logRecordData['time_micro']));
+		$logRecordFixture->expects($this->any())->method('getComponent')->will($this->returnValue($logRecordData['component']));
+		$logRecordFixture->expects($this->any())->method('getLevel')->will($this->returnValue($logRecordData['level']));
+		$logRecordFixture->expects($this->any())->method('getMessage')->will($this->returnValue($logRecordData['message']));
+		$logRecordFixture->expects($this->any())->method('getData')->will($this->returnValue(array()));
 
 		/** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
+		#$subject = $this->getMock(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class, array('dummy'), array(), '', FALSE);
+		$subject = new \TYPO3\CMS\Core\Log\Writer\DatabaseWriter();
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $logRecordData);
 
-		$subject->writeLog($logRecordMock);
+		$subject->writeLog($logRecordFixture);
 	}
 
 }

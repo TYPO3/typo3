@@ -261,7 +261,15 @@ class LogRecord implements \ArrayAccess {
 			}
 			$data = '- ' . json_encode($this->data);
 		}
-		$logRecordString = sprintf('%s [%s] request="%s" component="%s": %s %s', $timestamp, $levelName, $this->requestId, $this->component, $this->message, $data);
+		$logRecordString = sprintf(
+			'%s [%s] request="%s" component="%s": %s %s',
+			$timestamp,
+			$levelName,
+			$this->requestId,
+			$this->component,
+			$this->message,
+			$data
+		);
 		return $logRecordString;
 	}
 

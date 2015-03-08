@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Log writer that writes the log records into a database table.
@@ -51,23 +52,42 @@ class DatabaseWriter extends AbstractWriter {
 	/**
 	 * Writes the log record
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
+	 * @param LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
 	 * @throws \RuntimeException
 	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		$data = array(
-			'request_id' => $record['requestId'],
-			'time_micro' => $record['created'],
-			'component' => $record['component'],
-			'level' => $record['level'],
-			'message' => $record['message'],
-			'data' => !empty($record['data']) ? json_encode($record['data']) : ''
+	public function writeLog(LogRecord $record) {
+		$data = '';
+		$recordData = $record->getData();
+		if (!empty($recordData)) {
+			// According to PSR3 the exception-key may hold an \Exception
+			// Since json_encode() does not encode an exception, we run the _toString() here
+			if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
+				$recordData['exception'] = (string)$recordData['exception'];
+			}
+			$data = '- ' . json_encode($recordData);
+		}
+
+		$fieldValues = array(
+			'request_id' => $record->getRequestId(),
+			'time_micro' => $record->getCreated(),
+			'component' => $record->getComponent(),
+			'level' => $record->getLevel(),
+			'message' => $record->getMessage(),
+			'data' => $data
 		);
-		if (FALSE === $GLOBALS['TYPO3_DB']->exec_INSERTquery($this->logTable, $data)) {
+
+		if (FALSE === $this->getDatabaseConnection()->exec_INSERTquery($this->logTable, $fieldValues)) {
 			throw new \RuntimeException('Could not write log record to database', 1345036334);
 		}
 		return $this;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

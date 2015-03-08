@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Log writer that writes to syslog
@@ -26,7 +27,7 @@ class SyslogWriter extends AbstractWriter {
 	 * List of valid syslog facility names.
 	 * private as it's not supposed to be changed.
 	 *
-	 * @var array Facilities
+	 * @var int[] Facilities
 	 */
 	private $facilities = array(
 		'auth' => LOG_AUTH,
@@ -97,24 +98,38 @@ class SyslogWriter extends AbstractWriter {
 	/**
 	 * Returns the data of the record in syslog format
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
+	 * @param LogRecord $record
 	 * @return string
 	 */
-	public function getMessageForSyslog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		$data = $record->getData();
-		$data = !empty($data) ? '- ' . json_encode($data) : '';
-		$message = sprintf('[request="%s" component="%s"] %s %s', $record->getRequestId(), $record->getComponent(), $record->getMessage(), $data);
+	public function getMessageForSyslog(LogRecord $record) {
+		$data = '';
+		$recordData = $record->getData();
+		if (!empty($recordData)) {
+			// According to PSR3 the exception-key may hold an \Exception
+			// Since json_encode() does not encode an exception, we run the _toString() here
+			if (isset($recordData['exception']) && $recordData['exception'] instanceof \Exception) {
+				$recordData['exception'] = (string)$recordData['exception'];
+			}
+			$data = '- ' . json_encode($recordData);
+		}
+		$message = sprintf(
+			'[request="%s" component="%s"] %s %s',
+			$record->getRequestId(),
+			$record->getComponent(),
+			$record->getMessage(),
+			$data
+		);
 		return $message;
 	}
 
 	/**
 	 * Writes the log record to syslog
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
+	 * @param LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface
 	 * @throws \RuntimeException
 	 */
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
+	public function writeLog(LogRecord $record) {
 		if (FALSE === syslog($record->getLevel(), $this->getMessageForSyslog($record))) {
 			throw new \RuntimeException('Could not write log record to syslog', 1345036337);
 		}
