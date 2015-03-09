@@ -8,6 +8,25 @@
 			<ROOT>
 				<TCEforms>
 					<sheetTitle>Standard elements</sheetTitle>
+					<sheetDescription>
+						sheedDescription: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Nam id ante ornare, iaculis elit a, malesuada augue. Etiam neque odio,
+						condimentum sed dolor vitae, sollicitudin varius lacus. Pellentesque sit amet aliquam arcu.
+						Phasellus ut euismod felis. Fusce at tempor turpis.
+
+						Nam eu arcu id lorem vestibulum tristique vel in erat. Phasellus maximus, arcu nec
+						condimentum venenatis, mauris nisl venenatis tellus, eget suscipit arcu nunc et purus.
+						Nunc luctus congue vulputate. Donec placerat, lorem vitae rhoncus euismod, ipsum ligula
+						tempor sapien, ac sodales metus mauris et lacus. Donec in ante a lectus semper rutrum nec
+						ut orci. Quisque id mi ultrices lacus fermentum consequat quis sed odio. Sed quis turpis
+						rutrum, convallis sem vitae, cursus enim. Maecenas sit amet sem nisi.
+					</sheetDescription>
+					<sheetShortDescr>
+						sheetShortDescr: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Nam id ante ornare, iaculis elit a, malesuada augue. Etiam neque odio,
+						condimentum sed dolor vitae, sollicitudin varius lacus. Pellentesque sit amet aliquam arcu.
+						Phasellus ut euismod felis. Fusce at tempor turpis.
+					</sheetShortDescr>
 				</TCEforms>
 				<type>array</type>
 				<el>
