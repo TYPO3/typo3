@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 
 /**
  * An URI Builder
@@ -45,7 +47,7 @@ class UriBuilder {
 	protected $contentObject;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Request
+	 * @var Request
 	 */
 	protected $request;
 
@@ -144,16 +146,16 @@ class UriBuilder {
 	/**
 	 * Sets the current request
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Request $request
+	 * @param Request $request
 	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
 	 */
-	public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request) {
+	public function setRequest(Request $request) {
 		$this->request = $request;
 		return $this;
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Request
+	 * @return Request
 	 */
 	public function getRequest() {
 		return $this->request;
@@ -547,7 +549,8 @@ class UriBuilder {
 				$controllerArguments['controller'],
 				$controllerArguments['action']
 			);
-			$this->setUseCacheHash($this->request->isCached() || $actionIsCacheable);
+			$isRequestCached = $this->request instanceof WebRequest && $this->request->isCached();
+			$this->setUseCacheHash($isRequestCached || $actionIsCacheable);
 		}
 	}
 
@@ -642,7 +645,7 @@ class UriBuilder {
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
 		}
-		if ($this->createAbsoluteUri === TRUE) {
+		if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
 			$uri = $this->request->getBaseUri() . $uri;
 		}
 		return $uri;
