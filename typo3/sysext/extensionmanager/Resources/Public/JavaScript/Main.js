@@ -96,18 +96,6 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 				);
 			});
 		});
-
-		$('a[data-action=update-extension]').click(function(e) {
-			e.preventDefault();
-			$.ajax({
-				url: $(this).attr('href'),
-				dataType: 'json',
-				beforeSend: function() {
-					$(ExtensionManager.identifier.extensionManager).mask();
-				},
-				success: ExtensionManager.updateExtension
-			});
-		});
 	};
 
 	ExtensionManager.removeExtensionFromDisk = function($extension) {
@@ -622,6 +610,18 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 				onClear: function() {
 					dataTable.search('').draw();
 				}
+			});
+
+			$('a[data-action=update-extension]').click(function(e) {
+				e.preventDefault();
+				$.ajax({
+					url: $(this).attr('href'),
+					dataType: 'json',
+					beforeSend: function() {
+						$(ExtensionManager.identifier.extensionManager).mask();
+					},
+					success: ExtensionManager.updateExtension
+				});
 			});
 
 			$('.expandable').expander({
