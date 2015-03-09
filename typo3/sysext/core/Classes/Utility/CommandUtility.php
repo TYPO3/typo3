@@ -350,9 +350,13 @@ class CommandUtility {
 		$cmdArr = array();
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']) {
-			$pathSetup = preg_split('/[\n,]+/', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']);
+			$binSetup = str_replace(array('\'.chr(10).\'', '\' . LF . \''), LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']);
+			$pathSetup = preg_split('/[\n,]+/', $binSetup);
 			foreach ($pathSetup as $val) {
-				list($cmd, $cmdPath) = GeneralUtility::trimExplode('=', $val, TRUE);
+				if (trim($val) === '') {
+					continue;
+				}
+				list($cmd, $cmdPath) = GeneralUtility::trimExplode('=', $val, TRUE, 2);
 				$cmdArr[$cmd]['app'] = basename($cmdPath);
 				$cmdArr[$cmd]['path'] = dirname($cmdPath) . '/';
 				$cmdArr[$cmd]['valid'] = TRUE;
