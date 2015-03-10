@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
 		'web_info',
-		'TYPO3\CMS\InfoPagetsconfig\Controller\InfoPageTyposcriptConfigController',
+		'tx_infopagetsconfig_webinfo',
 		NULL,
 		'LLL:EXT:info_pagetsconfig/locallang.xlf:mod_pagetsconfig'
 	);
