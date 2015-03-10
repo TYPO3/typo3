@@ -89,14 +89,14 @@ class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$message = '';
 
 		$message .= sprintf(
-			$this->getLanguageService()->sL('LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskDescriptionTables'),
+			$this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescriptionTables'),
 			implode(', ', $this->getTcaTables())
 		);
 
 		$message .= '; ';
 
 		$message .= sprintf(
-			$this->getLanguageService()->sL('LLL:EXT:recycler/locallang_tasks.xlf:cleanerTaskDescriptionDays'),
+			$this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescriptionDays'),
 			$this->getPeriod()
 		);
 
