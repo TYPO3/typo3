@@ -7197,7 +7197,7 @@ class DataHandler {
 	 * @return void (Will exit on error)
 	 */
 	public function printLogErrorMessages($redirect) {
-		$res_log = $this->databaseConnection->exec_SELECTquery('*', 'sys_log', 'type=1 AND userid=' . (int)$this->BE_USER->user['uid'] . ' AND tstamp=' . (int)$GLOBALS['EXEC_TIME'] . '	AND error<>0');
+		$res_log = $this->databaseConnection->exec_SELECTquery('*', 'sys_log', 'type=1 AND action<256 AND userid=' . (int)$this->BE_USER->user['uid'] . ' AND tstamp=' . (int)$GLOBALS['EXEC_TIME'] . '	AND error<>0');
 		while ($row = $this->databaseConnection->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
