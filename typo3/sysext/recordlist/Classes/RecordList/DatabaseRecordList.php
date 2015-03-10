@@ -1304,18 +1304,22 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				&& (!$GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude']
 					|| $this->getBackendUserAuthentication()->check('non_exclude_fields', $table . ':' . $hiddenField))
 			) {
-				if ($row[$hiddenField]) {
-					$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
-					$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
-						. ' data-params="' . htmlspecialchars($params) . '"'
-						. ' title="' . $this->getLanguageService()->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
+				if ($this->isRecordCurrentBackendUser($table, $row)) {
+					$hideAction = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 				} else {
-					$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
-					$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
-						. ' data-params="' . htmlspecialchars($params) . '"'
-						. ' title="' . $this->getLanguageService()->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
+					if ($row[$hiddenField]) {
+						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
+						$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
+									  . ' data-params="' . htmlspecialchars($params) . '"'
+									  . ' title="' . $this->getLanguageService()->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
+									  . IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
+					} else {
+						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
+						$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
+									  . ' data-params="' . htmlspecialchars($params) . '"'
+									  . ' title="' . $this->getLanguageService()->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
+									  . IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
+					}
 				}
 				$this->addActionToCellGroup($cells, $hideAction, 'hide');
 			}
@@ -1336,18 +1340,22 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					);
 				}
 
-				$titleOrig = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
-				$title = GeneralUtility::slashJS(GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), TRUE);
-				$warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" ' . '[' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
+				if ($this->isRecordCurrentBackendUser($table, $row)) {
+					$deleteAction = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+				} else {
+					$titleOrig = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
+					$title = GeneralUtility::slashJS(GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), TRUE);
+					$warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" ' . '[' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
 
-				$params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-				$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
-				$linkTitle = $this->getLanguageService()->getLL($actionName, TRUE);
-				$deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
-					. ' data-l10parent="' . htmlspecialchars($row['l10n_parent']) . '"'
-					. ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($titleOrig) . '"'
-					. ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
-					. '>' . $icon . '</a>';
+					$params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
+					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
+					$linkTitle = $this->getLanguageService()->getLL($actionName, TRUE);
+					$deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
+									. ' data-l10parent="' . htmlspecialchars($row['l10n_parent']) . '"'
+									. ' data-params="' . htmlspecialchars($params) . '" data-title="' . htmlspecialchars($titleOrig) . '"'
+									. ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
+									. '>' . $icon . '</a>';
+				}
 				$this->addActionToCellGroup($cells, $deleteAction, 'delete');
 			}
 			// "Levels" links: Moving pages into new levels...
@@ -1872,6 +1880,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$classification = in_array($actionKey, $cellsMap['primary']) ? 'primary' : 'secondary';
 		$cells[$classification][$actionKey] = $action;
 		unset($cells[$actionKey]);
+	}
+
+	/**
+	 * Check if the record represents the current backend user
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @return bool
+	 */
+	protected function isRecordCurrentBackendUser($table, $row) {
+		return $table === 'be_users' && (int)$row['uid'] === $this->getBackendUserAuthentication()->user['uid'];
 	}
 
 	/**
