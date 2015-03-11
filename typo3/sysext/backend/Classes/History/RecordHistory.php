@@ -79,7 +79,7 @@ class RecordHistory {
 	/**
 	 * @todo Define visibility
 	 */
-	public $changeLog;
+	public $changeLog = array();
 
 	/**
 	 * @todo Define visibility
