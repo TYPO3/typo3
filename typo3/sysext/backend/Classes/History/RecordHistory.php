@@ -75,7 +75,7 @@ class RecordHistory {
 	/**
 	 * @var array
 	 */
-	public $changeLog;
+	public $changeLog = array();
 
 	/**
 	 * @var bool

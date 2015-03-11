@@ -55,7 +55,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getHistory($table, $id) {
 		$history = array();
 		$i = 0;
-		foreach ($this->getHistoryObject($table, $id)->changeLog as $entry) {
+		foreach ((array)$this->getHistoryObject($table, $id)->changeLog as $entry) {
 			if ($i++ > 20) {
 				break;
 			}
