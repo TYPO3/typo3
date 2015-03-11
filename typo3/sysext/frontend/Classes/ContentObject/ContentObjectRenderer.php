@@ -6345,7 +6345,7 @@ class ContentObjectRenderer {
 							$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $theTypeP, $targetDomain);
 							if ($targetDomain !== '') {
 								// We will add domain only if URL does not have it already.
-								if ($enableLinksAcrossDomains) {
+								if ($enableLinksAcrossDomains && $targetDomain !== $currentDomain) {
 									// Get rid of the absRefPrefix if necessary. absRefPrefix is applicable only
 									// to the current web site. If we have domain here it means we link across
 									// domains. absRefPrefix can contain domain name, which will screw up
