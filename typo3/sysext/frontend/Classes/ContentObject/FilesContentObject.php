@@ -14,8 +14,16 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\FileCollectionRepository;
+use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Contains FILES content object
@@ -25,17 +33,17 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class FilesContentObject extends AbstractContentObject {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\FileCollectionRepository|NULL
+	 * @var FileCollectionRepository|NULL
 	 */
 	protected $collectionRepository = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory|NULL
+	 * @var ResourceFactory|NULL
 	 */
 	protected $fileFactory = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\FileRepository|NULL
+	 * @var FileRepository|NULL
 	 */
 	protected $fileRepository = NULL;
 
@@ -70,9 +78,9 @@ class FilesContentObject extends AbstractContentObject {
 						$this->getFileFactory()->getFileReferenceObject($referenceUid),
 						$fileObjects
 					);
-				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+				} catch (Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The file-reference with uid  "' . $referenceUid . '" could not be found and won\'t be included in frontend output');
 				}
 			}
@@ -90,9 +98,9 @@ class FilesContentObject extends AbstractContentObject {
 			foreach ($fileUids as $fileUid) {
 				try {
 					$this->addToArray($this->getFileFactory()->getFileObject($fileUid), $fileObjects);
-				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+				} catch (Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The file with uid  "' . $fileUid . '" could not be found and won\'t be included in frontend output');
 				}
 			}
@@ -102,13 +110,13 @@ class FilesContentObject extends AbstractContentObject {
 			foreach ($collectionUids as $collectionUid) {
 				try {
 					$fileCollection = $this->getCollectionRepository()->findByUid($collectionUid);
-					if ($fileCollection instanceof \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection) {
+					if ($fileCollection instanceof AbstractFileCollection) {
 						$fileCollection->loadContents();
 						$this->addToArray($fileCollection->getItems(), $fileObjects);
 					}
-				} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+				} catch (Exception $e) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The file-collection with uid  "' . $collectionUid . '" could not be found or contents could not be loaded and won\'t be included in frontend output');
 				}
 			}
@@ -119,12 +127,12 @@ class FilesContentObject extends AbstractContentObject {
 				if ($folderIdentifier) {
 					try {
 						$folder = $this->getFileFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
-						if ($folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+						if ($folder instanceof Folder) {
 							$this->addToArray(array_values($folder->getFiles()), $fileObjects);
 						}
-					} catch (\TYPO3\CMS\Core\Resource\Exception $e) {
+					} catch (Exception $e) {
 						/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-						$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+						$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 						$logger->warning('The folder with identifier  "' . $folderIdentifier . '" could not be found and won\'t be included in frontend output');
 					}
 				}
@@ -141,7 +149,7 @@ class FilesContentObject extends AbstractContentObject {
 			$sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
 		}
 		if ($sortingProperty !== '' && count($fileObjects) > 1) {
-			@usort($fileObjects, function(\TYPO3\CMS\Core\Resource\FileInterface $a, \TYPO3\CMS\Core\Resource\FileInterface $b) use($sortingProperty) {
+			@usort($fileObjects, function(FileInterface $a, FileInterface $b) use($sortingProperty) {
 				if ($a->hasProperty($sortingProperty) && $b->hasProperty($sortingProperty)) {
 					return strnatcasecmp($a->getProperty($sortingProperty), $b->getProperty($sortingProperty));
 				} else {
@@ -197,7 +205,7 @@ class FilesContentObject extends AbstractContentObject {
 	/**
 	 * Sets the file factory.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory
+	 * @param ResourceFactory $fileFactory
 	 * @return void
 	 */
 	public function setFileFactory($fileFactory) {
@@ -207,11 +215,11 @@ class FilesContentObject extends AbstractContentObject {
 	/**
 	 * Returns the file factory.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @return ResourceFactory
 	 */
 	public function getFileFactory() {
 		if ($this->fileFactory === NULL) {
-			$this->fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+			$this->fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 		}
 
 		return $this->fileFactory;
@@ -220,7 +228,7 @@ class FilesContentObject extends AbstractContentObject {
 	/**
 	 * Sets the file repository.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileRepository $fileRepository
+	 * @param FileRepository $fileRepository
 	 * @return void
 	 */
 	public function setFileRepository($fileRepository) {
@@ -230,11 +238,11 @@ class FilesContentObject extends AbstractContentObject {
 	/**
 	 * Returns the file repository.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\FileRepository
+	 * @return FileRepository
 	 */
 	public function getFileRepository() {
 		if ($this->fileRepository === NULL) {
-			$this->fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
+			$this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 		}
 
 		return $this->fileRepository;
@@ -243,7 +251,7 @@ class FilesContentObject extends AbstractContentObject {
 	/**
 	 * Sets the collection repository.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileCollectionRepository $collectionRepository
+	 * @param FileCollectionRepository $collectionRepository
 	 * @return void
 	 */
 	public function setCollectionRepository($collectionRepository) {
@@ -253,11 +261,11 @@ class FilesContentObject extends AbstractContentObject {
 	/**
 	 * Returns the collection repository.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\FileCollectionRepository
+	 * @return FileCollectionRepository
 	 */
 	public function getCollectionRepository() {
 		if ($this->collectionRepository === NULL) {
-			$this->collectionRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileCollectionRepository::class);
+			$this->collectionRepository = GeneralUtility::makeInstance(FileCollectionRepository::class);
 		}
 
 		return $this->collectionRepository;

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Html\HtmlParser;
 
 /**
  * Contains TEMPLATE class object.
@@ -48,7 +50,7 @@ class TemplateContentObject extends AbstractContentObject {
 		}
 		// Fixing all relative paths found:
 		if ($conf['relPathPrefix']) {
-			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+			$htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
 			$content = $htmlParser->prefixResourcePath($conf['relPathPrefix'], $content, $conf['relPathPrefix.']);
 		}
 		if ($content) {

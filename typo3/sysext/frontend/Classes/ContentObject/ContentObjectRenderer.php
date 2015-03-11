@@ -14,16 +14,33 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
+use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * This class contains all main TypoScript features.
@@ -503,7 +520,7 @@ class ContentObjectRenderer {
 	protected $getImgResourceHookObjects;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\File Current file objects (during iterations over files)
+	 * @var File Current file objects (during iterations over files)
 	 */
 	protected $currentFile = NULL;
 
@@ -565,9 +582,9 @@ class ContentObjectRenderer {
 	public function __sleep() {
 		$vars = get_object_vars($this);
 		unset($vars['typoScriptFrontendController']);
-		if ($this->currentFile instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+		if ($this->currentFile instanceof FileReference) {
 			$this->currentFile = 'FileReference:' . $this->currentFile->getUid();
-		} elseif ($this->currentFile instanceof \TYPO3\CMS\Core\Resource\File) {
+		} elseif ($this->currentFile instanceof File) {
 			$this->currentFile = 'File:' . $this->currentFile->getIdentifier();
 		} else {
 			unset($vars['currentFile']);
@@ -592,7 +609,7 @@ class ContentObjectRenderer {
 				} elseif ($objectType === 'FileReference') {
 					$this->currentFile = ResourceFactory::getInstance()->getFileReferenceObject($identifier);
 				}
-			} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+			} catch (ResourceDoesNotExistException $e) {
 				$this->currentFile = NULL;
 			}
 		}
@@ -636,7 +653,7 @@ class ContentObjectRenderer {
 	 */
 	public function start($data, $table = '') {
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter'] && is_array($data) && !empty($data) && !empty($table)) {
-			\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($data, $table);
+			FrontendContentAdapterService::modifyDBRow($data, $table);
 		}
 		$this->data = $data;
 		$this->table = $table;
@@ -651,8 +668,8 @@ class ContentObjectRenderer {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
-				if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface) {
-					throw new \UnexpectedValueException($classData . ' must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface::class, 1195043965);
+				if (!$hookObject instanceof ContentObjectStdWrapHookInterface) {
+					throw new \UnexpectedValueException($classData . ' must implement interface ' . ContentObjectStdWrapHookInterface::class, 1195043965);
 				}
 				$this->stdWrapHookObjects[] = $hookObject;
 			}
@@ -660,8 +677,8 @@ class ContentObjectRenderer {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $classData) {
 				$postInitializationProcessor = GeneralUtility::getUserObj($classData);
-				if (!$postInitializationProcessor instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface) {
-					throw new \UnexpectedValueException($classData . ' must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface::class, 1274563549);
+				if (!$postInitializationProcessor instanceof ContentObjectPostInitHookInterface) {
+					throw new \UnexpectedValueException($classData . ' must implement interface ' . ContentObjectPostInitHookInterface::class, 1274563549);
 				}
 				$postInitializationProcessor->postProcessContentObjectInitialization($this);
 			}
@@ -689,8 +706,8 @@ class ContentObjectRenderer {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $classData) {
 					$hookObject = GeneralUtility::getUserObj($classData);
-					if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface::class, 1218636383);
+					if (!$hookObject instanceof ContentObjectGetImageResourceHookInterface) {
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetImageResourceHookInterface::class, 1218636383);
 					}
 					$this->getImgResourceHookObjects[] = $hookObject;
 				}
@@ -754,7 +771,7 @@ class ContentObjectRenderer {
 	 */
 	public function cObjGet($setup, $addKey = '') {
 		if (is_array($setup)) {
-			$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($setup);
+			$sKeyArray = TemplateService::sortedKeyList($setup);
 			$content = '';
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $setup[$theKey];
@@ -788,7 +805,7 @@ class ContentObjectRenderer {
 			// Checking if the COBJ is a reference to another object. (eg. name of 'blabla.blabla = < styles.something')
 			if ($name[0] === '<') {
 				$key = trim(substr($name, 1));
-				$cF = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+				$cF = GeneralUtility::makeInstance(TypoScriptParser::class);
 				// $name and $conf is loaded with the referenced values.
 				$confOverride = is_array($conf) ? $conf : array();
 				list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
@@ -819,10 +836,10 @@ class ContentObjectRenderer {
 						if ($name && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'])) {
 							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData) {
 								$hookObject = GeneralUtility::getUserObj($classData);
-								if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface) {
-									throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface::class, 1195043731);
+								if (!$hookObject instanceof ContentObjectGetSingleHookInterface) {
+									throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetSingleHookInterface::class, 1195043731);
 								}
-								/** @var $hookObject \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetSingleHookInterface */
+								/** @var $hookObject ContentObjectGetSingleHookInterface */
 								$content .= $hookObject->getSingleContentObject($name, (array)$conf, $TSkey, $this);
 							}
 						} else {
@@ -940,7 +957,7 @@ class ContentObjectRenderer {
 		}
 
 		if ($exceptionHandlerClassName === '1') {
-			$exceptionHandlerClassName = \TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler::class;
+			$exceptionHandlerClassName = Exception\ProductionExceptionHandler::class;
 		}
 
 		return $exceptionHandlerClassName;
@@ -1063,7 +1080,7 @@ class ContentObjectRenderer {
 	 */
 	public function convertToUserIntObject() {
 		if ($this->userObjectType !== self::OBJECTTYPE_USER) {
-			$GLOBALS['TT']->setTSlogMessage(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
+			$GLOBALS['TT']->setTSlogMessage(ContentObjectRenderer::class . '::convertToUserIntObject() is called in the wrong context or for the wrong object type', 2);
 		} else {
 			$this->doConvertToUserIntObject = TRUE;
 		}
@@ -1603,7 +1620,7 @@ class ContentObjectRenderer {
 							$hookObject = GeneralUtility::getUserObj($classData);
 							if (!$hookObject instanceof ContentObjectOneSourceCollectionHookInterface) {
 								throw new \UnexpectedValueException(
-									'$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface::class,
+									'$hookObject must implement interface ' . ContentObjectOneSourceCollectionHookInterface::class,
 									1380007853
 								);
 							}
@@ -1622,7 +1639,7 @@ class ContentObjectRenderer {
 	 * Wraps the input string in link-tags that opens the image in a new window.
 	 *
 	 * @param string $string String to wrap, probably an <img> tag
-	 * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $imageFile The original image file
+	 * @param string|File|FileReference $imageFile The original image file
 	 * @param array $conf TypoScript properties for the "imageLinkWrap" function
 	 * @return string The input string, $string, wrapped as configured.
 	 * @see cImage()
@@ -1638,15 +1655,15 @@ class ContentObjectRenderer {
 				$imageFile = $this->stdWrap($imageFile, $conf['file.']);
 			}
 
-			if ($imageFile instanceof \TYPO3\CMS\Core\Resource\File) {
+			if ($imageFile instanceof File) {
 				$file = $imageFile;
-			} elseif ($imageFile instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+			} elseif ($imageFile instanceof FileReference) {
 				$file = $imageFile->getOriginalFile();
 			} else {
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imageFile)) {
-					$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject((int)$imageFile);
+				if (MathUtility::canBeInterpretedAsInteger($imageFile)) {
+					$file = ResourceFactory::getInstance()->getFileObject((int)$imageFile);
 				} else {
-					$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($imageFile);
+					$file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($imageFile);
 				}
 			}
 
@@ -1915,7 +1932,7 @@ class ContentObjectRenderer {
 	 * @return string The subpart found, if found.
 	 */
 	public function getSubpart($content, $marker) {
-		return \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($content, $marker);
+		return HtmlParser::getSubpart($content, $marker);
 	}
 
 	/**
@@ -1931,7 +1948,7 @@ class ContentObjectRenderer {
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1) {
-		return \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($content, $marker, $subpartContent, $recursive);
+		return HtmlParser::substituteSubpart($content, $marker, $subpartContent, $recursive);
 	}
 
 	/**
@@ -1942,7 +1959,7 @@ class ContentObjectRenderer {
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpartArray($content, array $subpartsContent) {
-		return \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpartArray($content, $subpartsContent);
+		return HtmlParser::substituteSubpartArray($content, $subpartsContent);
 	}
 
 	/**
@@ -1956,7 +1973,7 @@ class ContentObjectRenderer {
 	 * @see substituteSubpart()
 	 */
 	public function substituteMarker($content, $marker, $markContent) {
-		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarker($content, $marker, $markContent);
+		return HtmlParser::substituteMarker($content, $marker, $markContent);
 	}
 
 	/**
@@ -2099,7 +2116,7 @@ class ContentObjectRenderer {
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	public function substituteMarkerArray($content, array $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
+		return HtmlParser::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**
@@ -2132,7 +2149,7 @@ class ContentObjectRenderer {
 	 * @return string
 	 */
 	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
+		return HtmlParser::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**
@@ -2156,7 +2173,7 @@ class ContentObjectRenderer {
 		} else {
 			if (is_array($row)) {
 				foreach ($row as $field => $value) {
-					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($field)) {
+					if (!MathUtility::canBeInterpretedAsInteger($field)) {
 						if ($HSC) {
 							$value = htmlspecialchars($value);
 						}
@@ -2171,7 +2188,7 @@ class ContentObjectRenderer {
 	/**
 	 * Sets the current file object during iterations over files.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $fileObject The file object.
+	 * @param File $fileObject The file object.
 	 */
 	public function setCurrentFile($fileObject) {
 		$this->currentFile = $fileObject;
@@ -2180,7 +2197,7 @@ class ContentObjectRenderer {
 	/**
 	 * Gets the current file object during iterations over files.
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\File The current file object.
+	 * @return File The current file object.
 	 */
 	public function getCurrentFile() {
 		return $this->currentFile;
@@ -2331,7 +2348,7 @@ class ContentObjectRenderer {
 	public function stdWrap_cacheRead($content = '', $conf = array()) {
 		if (!empty($conf['cache.']['key'])) {
 			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
-			$cacheFrontend = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_hash');
+			$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
 			if ($cacheFrontend && $cacheFrontend->has($conf['cache.']['key'])) {
 				$content = $cacheFrontend->get($conf['cache.']['key']);
 				$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
@@ -2795,7 +2812,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_prioriCalc($content = '', $conf = array()) {
-		$content = \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses($content);
+		$content = MathUtility::calculateWithParentheses($content);
 		if ($conf['prioriCalc'] == 'intval') {
 			$content = (int)$content;
 		}
@@ -3436,7 +3453,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_orderedStdWrap($content = '', $conf = array()) {
-		$sortedKeysArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($conf['orderedStdWrap.'], TRUE);
+		$sortedKeysArray = TemplateService::sortedKeyList($conf['orderedStdWrap.'], TRUE);
 		foreach ($sortedKeysArray as $key) {
 			$content = $this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.']);
 		}
@@ -3477,7 +3494,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_offsetWrap($content = '', $conf = array()) {
-		$controlTable = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\OffsetTableContentObject::class);
+		$controlTable = GeneralUtility::makeInstance(OffsetTableContentObject::class);
 		if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
 			$controlTable->tableParams = isset($conf['offsetWrap.']['tableParams.']) ? $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.']) : $conf['offsetWrap.']['tableParams'];
 		}
@@ -3583,7 +3600,7 @@ class ContentObjectRenderer {
 	public function stdWrap_cacheStore($content = '', $conf = array()) {
 		if (!empty($conf['cache.']['key'])) {
 			/** @var $cacheFrontend \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend */
-			$cacheFrontend = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_hash');
+			$cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
 			if ($cacheFrontend) {
 				$tags = !empty($conf['cache.']['tags']) ? GeneralUtility::trimExplode(',', $conf['cache.']['tags']) : array();
 				if (strtolower($conf['cache.']['lifetime']) == 'unlimited') {
@@ -3708,7 +3725,7 @@ class ContentObjectRenderer {
 	 */
 	public function listNum($content, $listNum, $char) {
 		$char = $char ?: ',';
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($char)) {
+		if (MathUtility::canBeInterpretedAsInteger($char)) {
 			$char = chr($char);
 		}
 		$temp = explode($char, $content);
@@ -3913,7 +3930,7 @@ class ContentObjectRenderer {
 	 * @see stdWrap(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLparserConfig(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLcleaner()
 	 */
 	public function HTMLparser_TSbridge($theValue, $conf) {
-		$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+		$htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
 		$htmlParserCfg = $htmlParser->HTMLparserConfig($conf);
 		return $htmlParser->HTMLcleaner($theValue, $htmlParserCfg[0], $htmlParserCfg[1], $htmlParserCfg[2], $htmlParserCfg[3]);
 	}
@@ -4626,7 +4643,7 @@ class ContentObjectRenderer {
 		$conf['max'] = isset($conf['max.']) ? (int)$this->stdWrap($conf['max'], $conf['max.']) : (int)$conf['max'];
 		$conf['min'] = isset($conf['min.']) ? (int)$this->stdWrap($conf['min'], $conf['min.']) : (int)$conf['min'];
 		$valArr = explode($conf['token'], $value);
-		if (count($valArr) && (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
+		if (count($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
 			$key = isset($conf['returnKey.']) ? (int)$this->stdWrap($conf['returnKey'], $conf['returnKey.']) : (int)$conf['returnKey'];
 			$content = isset($valArr[$key]) ? $valArr[$key] : '';
 		} else {
@@ -4679,7 +4696,7 @@ class ContentObjectRenderer {
 		ksort($configuration, SORT_NUMERIC);
 		foreach ($configuration as $index => $action) {
 			// Checks whether we have an valid action and a numeric key ending with a dot ("10.")
-			if (is_array($action) && substr($index, -1) === '.' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))) {
+			if (is_array($action) && substr($index, -1) === '.' && MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))) {
 				$content = $this->replacementSingle($content, $action);
 			}
 		}
@@ -4830,7 +4847,7 @@ class ContentObjectRenderer {
 		// Process:
 		if ((string)$conf['externalBlocks'] !== '') {
 			$tags = strtolower(implode(',', GeneralUtility::trimExplode(',', $conf['externalBlocks'])));
-			$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
+			$htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
 			$parts = $htmlParser->splitIntoBlock($tags, $theValue);
 			foreach ($parts as $k => $v) {
 				if ($k % 2) {
@@ -5375,7 +5392,7 @@ class ContentObjectRenderer {
 	 *  processedFile => processed file object
 	 *  fileCacheHash => checksum of processed file
 	 *
-	 * @param string|\TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
+	 * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
 	 * @param array $fileArray TypoScript properties for the imgResource type
 	 * @return array|NULL Returns info-array
 	 * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
@@ -5387,7 +5404,7 @@ class ContentObjectRenderer {
 		$imageResource = NULL;
 		if ($file === 'GIFBUILDER') {
 			/** @var GifBuilder $gifCreator */
-			$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+			$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 			$gifCreator->init();
 			$theImage = '';
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -5396,9 +5413,9 @@ class ContentObjectRenderer {
 			}
 			$imageResource = $gifCreator->getImageDimensions($theImage);
 		} else {
-			if ($file instanceof \TYPO3\CMS\Core\Resource\File) {
+			if ($file instanceof File) {
 				$fileObject = $file;
-			} elseif ($file instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+			} elseif ($file instanceof FileReference) {
 				$fileObject = $file->getOriginalFile();
 			} else {
 				try {
@@ -5409,7 +5426,7 @@ class ContentObjectRenderer {
 						}
 					}
 
-					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($file)) {
+					if (MathUtility::canBeInterpretedAsInteger($file)) {
 						if (!empty($fileArray['treatIdAsReference'])) {
 							$fileObject = $this->getResourceFactory()->getFileReferenceObject($file)->getOriginalFile();
 						} else {
@@ -5425,14 +5442,14 @@ class ContentObjectRenderer {
 						$file = GeneralUtility::resolveBackPath($file);
 						$fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
 					}
-				} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+				} catch (Exception $exception) {
 					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 					$logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output');
 					return NULL;
 				}
 			}
-			if ($fileObject instanceof \TYPO3\CMS\Core\Resource\File) {
+			if ($fileObject instanceof File) {
 				$processingConfiguration = array();
 				$processingConfiguration['width'] = isset($fileArray['width.']) ? $this->stdWrap($fileArray['width'], $fileArray['width.']) : $fileArray['width'];
 				$processingConfiguration['height'] = isset($fileArray['height.']) ? $this->stdWrap($fileArray['height'], $fileArray['height.']) : $fileArray['height'];
@@ -5465,7 +5482,7 @@ class ContentObjectRenderer {
 						$processingConfiguration['maskImages']['maskBottomImage'] = $bottomImg['processedFile'];
 						$processingConfiguration['maskImages']['maskBottomImageMask'] = $bottomImg_mask['processedFile'];
 					}
-					$processedFileObject = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
+					$processedFileObject = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
 					$hash = $processedFileObject->calculateChecksum();
 					// store info in the TSFE template cache (kept for backwards compatibility)
 					if ($processedFileObject->isProcessed() && !isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
@@ -5492,7 +5509,7 @@ class ContentObjectRenderer {
 		if (!isset($imageResource)) {
 			$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 			if ($theImage) {
-				$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+				$gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
 				/** @var $gifCreator GifBuilder */
 				$gifCreator->init();
 				$info = $gifCreator->imageMagickConvert($theImage, 'WEB');
@@ -5504,7 +5521,7 @@ class ContentObjectRenderer {
 		}
 		// Hook 'getImgResource': Post-processing of image resources
 		if (isset($imageResource)) {
-			/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface $hookObject */
+			/** @var ContentObjectGetImageResourceHookInterface $hookObject */
 			foreach ($this->getGetImgResourceHookObjects() as $hookObject) {
 				$imageResource = $hookObject->getImgResourcePostProcess($file, (array)$fileArray, $imageResource, $this);
 			}
@@ -5654,19 +5671,19 @@ class ContentObjectRenderer {
 					case 'debug':
 						switch ($key) {
 							case 'rootLine':
-								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->tmpl->rootLine);
+								$retVal = DebugUtility::viewArray($GLOBALS['TSFE']->tmpl->rootLine);
 								break;
 							case 'fullRootLine':
-								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->rootLine);
+								$retVal = DebugUtility::viewArray($GLOBALS['TSFE']->rootLine);
 								break;
 							case 'data':
-								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->data);
+								$retVal = DebugUtility::viewArray($this->data);
 								break;
 							case 'register':
-								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->register);
+								$retVal = DebugUtility::viewArray($GLOBALS['TSFE']->register);
 								break;
 							case 'page':
-								$retVal = \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($GLOBALS['TSFE']->page);
+								$retVal = DebugUtility::viewArray($GLOBALS['TSFE']->page);
 								break;
 						}
 						break;
@@ -5675,8 +5692,8 @@ class ContentObjectRenderer {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] as $classData) {
 					$hookObject = GeneralUtility::getUserObj($classData);
-					if (!$hookObject instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface::class, 1195044480);
+					if (!$hookObject instanceof ContentObjectGetDataHookInterface) {
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetDataHookInterface::class, 1195044480);
 					}
 					$retVal = $hookObject->getDataExtension($string, $fieldArray, $secVal, $retVal, $this);
 				}
@@ -5701,16 +5718,16 @@ class ContentObjectRenderer {
 		try {
 			if ($fileUidOrCurrentKeyword === 'current') {
 				$fileObject = $this->getCurrentFile();
-			} elseif (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
-				/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
-				$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+			} elseif (MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
+				/** @var ResourceFactory $fileFactory */
+				$fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 				$fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
 			} else {
 				$fileObject = NULL;
 			}
-		} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+		} catch (Exception $exception) {
 			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-			$logger = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
+			$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 			$logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output');
 			$fileObject = NULL;
 		}
@@ -5725,7 +5742,7 @@ class ContentObjectRenderer {
 					return $fileObject->getUid();
 					break;
 				case 'originalUid':
-					if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileReference) {
+					if ($fileObject instanceof FileReference) {
 						return $fileObject->getOriginalFile()->getUid();
 					} else {
 						return NULL;
@@ -5911,7 +5928,7 @@ class ContentObjectRenderer {
 			try {
 				$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
 				// Link to a folder or file
-				if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\ResourceInterface) {
+				if ($fileOrFolderObject instanceof File || $fileOrFolderObject instanceof Folder) {
 					$linkParameter = $fileOrFolderObject->getPublicUrl();
 				} else {
 					$linkParameter = NULL;
@@ -5919,7 +5936,7 @@ class ContentObjectRenderer {
 			} catch (\RuntimeException $e) {
 				// Element wasn't found
 				$linkParameter = NULL;
-			} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
+			} catch (ResourceDoesNotExistException $e) {
 				// Resource was not found
 				return $linkText;
 			}
@@ -5995,7 +6012,7 @@ class ContentObjectRenderer {
 		$urlChar = intval(strpos($linkParameter, '.'));
 
 		// Firsts, test if $linkParameter is numeric and page with such id exists. If yes, do not attempt to link to file
-		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkParameter) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($linkParameter)) == 0) {
+		if (!MathUtility::canBeInterpretedAsInteger($linkParameter) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($linkParameter)) == 0) {
 			// Detects if a file is found in site-root and if so it will be treated like a normal file.
 			list($rootFileDat) = explode('?', rawurldecode($linkParameter));
 			$containsSlash = (strpos($rootFileDat, '/') !== FALSE);
@@ -6204,11 +6221,11 @@ class ContentObjectRenderer {
 					}
 
 					$sectionMark = isset($conf['section.']) ? trim($this->stdWrap($conf['section'], $conf['section.'])) : trim($conf['section']);
-					$sectionMark = $sectionMark ? (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark : '';
+					$sectionMark = $sectionMark ? (MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark : '';
 
 					if ($link_params_parts[1] && !$sectionMark) {
 						$sectionMark = trim($link_params_parts[1]);
-						$sectionMark = (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark;
+						$sectionMark = (MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark;
 					}
 					if (count($pairParts) > 1) {
 						// Overruling 'type'
@@ -6216,7 +6233,7 @@ class ContentObjectRenderer {
 						$conf['additionalParams'] .= isset($pairParts[2]) ? $pairParts[2] : '';
 					}
 					// Checking if the id-parameter is an alias.
-					if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($linkParameter)) {
+					if (!MathUtility::canBeInterpretedAsInteger($linkParameter)) {
 						$linkParameter = $GLOBALS['TSFE']->sys_page->getPageIdFromAlias($linkParameter);
 					}
 					// Link to page even if access is missing?
@@ -6260,8 +6277,8 @@ class ContentObjectRenderer {
 							// Mind the order below! See http://forge.typo3.org/issues/17070
 							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
 							if (trim($params, '& ') != '') {
-								/** @var $cacheHash \TYPO3\CMS\Frontend\Page\CacheHashCalculator */
-								$cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
+								/** @var $cacheHash CacheHashCalculator */
+								$cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
 								$cHash = $cacheHash->generateForParameters($params);
 								$addQueryParams .= $cHash ? '&cHash=' . $cHash : '';
 							}
@@ -6280,12 +6297,12 @@ class ContentObjectRenderer {
 							// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
 							// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
 							// they return relative links and (2) show proper page if no RealURL/CoolURI exists when link is clicked
-							if ($enableLinksAcrossDomains && $page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE) {
+							if ($enableLinksAcrossDomains && $page['doktype'] == PageRepository::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == PageRepository::SHORTCUT_MODE_NONE) {
 								// Save in case of broken destination or endless loop
 								$page2 = $page;
 								// Same as in RealURL, seems enough
 								$maxLoopCount = 20;
-								while ($maxLoopCount && is_array($page) && $page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE) {
+								while ($maxLoopCount && is_array($page) && $page['doktype'] == PageRepository::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == PageRepository::SHORTCUT_MODE_NONE) {
 									$page = $GLOBALS['TSFE']->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
 									$maxLoopCount--;
 								}
@@ -6987,7 +7004,7 @@ class ContentObjectRenderer {
 	 * @return string The formatted string
 	 */
 	public function calcAge($seconds, $labels) {
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($labels)) {
+		if (MathUtility::canBeInterpretedAsInteger($labels)) {
 			$labels = ' min| hrs| days| yrs| min| hour| day| year';
 		} else {
 			$labels = str_replace('"', '', $labels);
@@ -7119,7 +7136,7 @@ class ContentObjectRenderer {
 	public function mergeTSRef($confArr, $prop) {
 		if ($confArr[$prop][0] === '<') {
 			$key = trim(substr($confArr[$prop], 1));
-			$cF = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+			$cF = GeneralUtility::makeInstance(TypoScriptParser::class);
 			// $name and $conf is loaded with the referenced values.
 			$old_conf = $confArr[$prop . '.'];
 			list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
@@ -7601,8 +7618,8 @@ class ContentObjectRenderer {
 				foreach ($rows as $row) {
 					$versionState = VersionState::cast($row['t3ver_state']);
 					$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
-					if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER
-						|| $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION
+					if ($row['doktype'] == PageRepository::DOKTYPE_RECYCLER
+						|| $row['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION
 						|| $versionState->indicatesPlaceholder()
 					) {
 						// Doing this after the overlay to make sure changes
@@ -7625,8 +7642,8 @@ class ContentObjectRenderer {
 							'sorting'
 						);
 						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
-						if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER
-							|| $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION
+						if ($row['doktype'] == PageRepository::DOKTYPE_RECYCLER
+							|| $row['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION
 							|| $versionState->indicatesPlaceholder()
 						) {
 							// Doing this after the overlay to make sure
@@ -7882,8 +7899,8 @@ class ContentObjectRenderer {
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 			if (!$error) {
-				$conf['begin'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(ceil($this->calc($conf['begin'])), 0);
-				$conf['max'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(ceil($this->calc($conf['max'])), 0);
+				$conf['begin'] = MathUtility::forceIntegerInRange(ceil($this->calc($conf['begin'])), 0);
+				$conf['max'] = MathUtility::forceIntegerInRange(ceil($this->calc($conf['max'])), 0);
 				if ($conf['begin'] && !$conf['max']) {
 					$conf['max'] = 100000;
 				}
@@ -8212,7 +8229,7 @@ class ContentObjectRenderer {
 	 * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
 	 */
 	public function editPanel($content, $conf, $currentRecord = '', $dataArr = array()) {
-		if ($GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
+		if ($GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
 			if (!$currentRecord) {
 				$currentRecord = $this->currentRecord;
 			}
@@ -8238,7 +8255,7 @@ class ContentObjectRenderer {
 	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
 	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', $dataArr = array(), $addUrlParamStr = '') {
-		if ($GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
+		if ($GLOBALS['TSFE']->beUserLogin && $GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
 			if (!$currentRecord) {
 				$currentRecord = $this->currentRecord;
 			}
@@ -8269,10 +8286,10 @@ class ContentObjectRenderer {
 	/**
 	 * Get instance of FAL resource factory
 	 *
-	 * @return \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @return ResourceFactory
 	 */
 	protected function getResourceFactory() {
-		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		return ResourceFactory::getInstance();
 	}
 
 	/**

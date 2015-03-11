@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Contains an abstract class for all tslib content class implementations.
@@ -23,12 +24,12 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 abstract class AbstractContentObject {
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var ContentObjectRenderer
 	 */
 	protected $cObj;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
+	 * @var ResourceFactory
 	 */
 	protected $fileFactory = NULL;
 
@@ -39,7 +40,7 @@ abstract class AbstractContentObject {
 	 */
 	public function __construct(ContentObjectRenderer $cObj) {
 		$this->cObj = $cObj;
-		$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		$this->fileFactory = ResourceFactory::getInstance();
 	}
 
 	/**
@@ -53,7 +54,7 @@ abstract class AbstractContentObject {
 	/**
 	 * Getter for current cObj
 	 *
-	 * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @return ContentObjectRenderer
 	 */
 	public function getContentObject() {
 		return $this->cObj;

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
+
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional getImgResource processing
  *
@@ -24,10 +26,10 @@ interface FileLinkHookInterface {
 	/**
 	 * Finds alternative previewImage for given File.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\File $file
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @param File $file
+	 * @return File
 	 * @abstract
 	 */
-	public function getPreviewImage(\TYPO3\CMS\Core\Resource\File $file);
+	public function getPreviewImage(File $file);
 
 }

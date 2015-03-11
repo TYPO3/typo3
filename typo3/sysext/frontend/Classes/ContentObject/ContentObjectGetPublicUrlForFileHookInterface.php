@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
+
 /**
  * Interface for hooks to fetch the public URL of files
  *
@@ -26,9 +28,9 @@ interface ContentObjectGetPublicUrlForFileHookInterface {
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent The current content object (context)
 	 * @param array $configuration TypoScript configuration
-	 * @param \TYPO3\CMS\Core\Resource\File $file The file object to be used
+	 * @param File $file The file object to be used
 	 * @param string $pubicUrl Reference to the public URL
 	 */
-	public function postProcess(ContentObjectRenderer $parent, array $configuration, \TYPO3\CMS\Core\Resource\File $file, &$pubicUrl);
+	public function postProcess(ContentObjectRenderer $parent, array $configuration, File $file, &$pubicUrl);
 
 }

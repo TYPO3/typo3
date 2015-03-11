@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains CONTENT class object.
  *
@@ -72,8 +75,8 @@ class ContentContentObject extends AbstractContentObject {
 			} else {
 				$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 				$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
-				/** @var $cObj \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer */
-				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+				/** @var $cObj ContentObjectRenderer */
+				$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 				$this->cObj->currentRecordNumber = 0;
 				$cobjValue = '';
@@ -93,12 +96,12 @@ class ContentContentObject extends AbstractContentObject {
 						// Call hook for possible manipulation of database row for cObj->data
 						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
 							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
-								$_procObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+								$_procObj = GeneralUtility::getUserObj($_classRef);
 								$_procObj->modifyDBRow($row, $conf['table']);
 							}
 						}
 						if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter']) {
-							\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
+							FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
 						}
 						if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
 							$this->cObj->currentRecordNumber++;

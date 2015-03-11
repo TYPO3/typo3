@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains HMENU class object.
@@ -36,8 +37,8 @@ class HierarchicalMenuContentObject extends AbstractContentObject {
 		$theValue = '';
 		$menuType = $conf[1];
 		try {
-			/** @var $menuObjectFactory \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory */
-			$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory::class);
+			/** @var $menuObjectFactory Menu\MenuContentObjectFactory */
+			$menuObjectFactory = GeneralUtility::makeInstance(Menu\MenuContentObjectFactory::class);
 			$menu = $menuObjectFactory->getMenuObjectByType($menuType);
 			$GLOBALS['TSFE']->register['count_HMENU']++;
 			$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
@@ -48,7 +49,7 @@ class HierarchicalMenuContentObject extends AbstractContentObject {
 			$menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
 			$menu->makeMenu();
 			$theValue .= $menu->writeMenu();
-		} catch (\TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException $e) {
+		} catch (Menu\Exception\NoSuchMenuTypeException $e) {
 		}
 		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {
