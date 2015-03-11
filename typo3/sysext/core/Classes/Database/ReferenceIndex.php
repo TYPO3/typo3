@@ -602,7 +602,7 @@ class ReferenceIndex {
 			}
 		}
 		// Add DB:
-		$resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $field);
+		$resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $table, $field);
 		if (!empty($resultsFromDatabase)) {
 			// Create an entry for the field with all DB relations:
 			$this->temp_flexRelations['db'][$structurePath] = $resultsFromDatabase;
