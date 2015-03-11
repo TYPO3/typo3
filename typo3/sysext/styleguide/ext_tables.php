@@ -7,7 +7,7 @@ if (TYPO3_MODE === 'BE') {
 	 */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'TYPO3.CMS.' . $_EXTKEY,
-		'tools',
+		'help',
 		'styleguide',
 		'',
 		array(
