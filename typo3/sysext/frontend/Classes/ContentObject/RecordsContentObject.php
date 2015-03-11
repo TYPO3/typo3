@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
 /**
  * Contains RECORDS class object.
@@ -56,12 +58,10 @@ class RecordsContentObject extends AbstractContentObject {
 		if ($originalRec) {
 			++$GLOBALS['TSFE']->recordRegister[$originalRec];
 		}
-		$tables = isset($conf['tables.']) ? $this->cObj->stdWrap($conf['tables'], $conf['tables.']) : $conf['tables'];
-		$source = isset($conf['source.']) ? $this->cObj->stdWrap($conf['source'], $conf['source.']) : $conf['source'];
-		$categories = isset($conf['categories.']) ? $this->cObj->stdWrap($conf['categories'], $conf['categories.']) : $conf['categories'];
 
-		$tablesArray = array_unique(GeneralUtility::trimExplode(',', $tables, TRUE));
+		$tables = isset($conf['tables.']) ? $this->cObj->stdWrap($conf['tables'], $conf['tables.']) : $conf['tables'];
 		if ($tables) {
+			$tablesArray = array_unique(GeneralUtility::trimExplode(',', $tables, TRUE));
 			// Add tables which have a configuration (note that this may create duplicate entries)
 			if (is_array($conf['conf.'])) {
 				foreach ($conf['conf.'] as $key => $value) {
@@ -73,19 +73,21 @@ class RecordsContentObject extends AbstractContentObject {
 
 			// Get the data, depending on collection method.
 			// Property "source" is considered more precise and thus takes precedence over "categories"
+			$source = isset($conf['source.']) ? $this->cObj->stdWrap($conf['source'], $conf['source.']) : $conf['source'];
+			$categories = isset($conf['categories.']) ? $this->cObj->stdWrap($conf['categories'], $conf['categories.']) : $conf['categories'];
 			if ($source) {
 				$this->collectRecordsFromSource($source, $tablesArray);
 			} elseif ($categories) {
 				$relationField = isset($conf['categories.']['relation.']) ? $this->cObj->stdWrap($conf['categories.']['relation'], $conf['categories.']['relation.']) : $conf['categories.']['relation'];
 				$this->collectRecordsFromCategories($categories, $tablesArray, $relationField);
 			}
-
-			if (count($this->itemArray) > 0) {
-				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-				$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+			$itemArrayCount = count($this->itemArray);
+			if ($itemArrayCount > 0) {
+				/** @var ContentObjectRenderer $cObj */
+				$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 				$this->cObj->currentRecordNumber = 0;
-				$this->cObj->currentRecordTotal = count($this->itemArray);
+				$this->cObj->currentRecordTotal = $itemArrayCount;
 				foreach ($this->itemArray as $val) {
 					$row = $this->data[$val['table']][$val['id']];
 					// Perform overlays if necessary (records coming from category collections are already overlaid)
@@ -146,8 +148,8 @@ class RecordsContentObject extends AbstractContentObject {
 	 * @return void
 	 */
 	protected function collectRecordsFromSource($source, array $tables) {
-		/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
-		$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
+		/** @var RelationHandler $loadDB*/
+		$loadDB = GeneralUtility::makeInstance(RelationHandler::class);
 		$loadDB->setFetchAllFields(TRUE);
 		$loadDB->start($source, implode(',', $tables));
 		foreach ($loadDB->tableArray as $table => $v) {
@@ -179,7 +181,7 @@ class RecordsContentObject extends AbstractContentObject {
 			$categoriesPerRecord = array();
 			foreach ($selectedCategories as $aCategory) {
 				try {
-					$collection = \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection::load(
+					$collection = CategoryCollection::load(
 						$aCategory,
 						TRUE,
 						$table,
@@ -207,7 +209,7 @@ class RecordsContentObject extends AbstractContentObject {
 				}
 			}
 			// Store the resulting records into the itemArray and data results array
-			if (count($tableRecords) > 0) {
+			if (!empty($tableRecords)) {
 				$this->data[$table] = array();
 				foreach ($tableRecords as $record) {
 					$this->itemArray[] = array(
