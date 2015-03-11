@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A repository for extension configuration items
  *
@@ -56,10 +59,7 @@ class ConfigurationItemRepository {
 			$hierarchicConfiguration = array();
 			foreach ($configuration as $configurationOption) {
 				$originalConfiguration = $this->buildConfigurationArray($configurationOption, $extensionKey);
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-					$originalConfiguration,
-					$hierarchicConfiguration
-				);
+				ArrayUtility::mergeRecursiveWithOverrule($originalConfiguration, $hierarchicConfiguration);
 				$hierarchicConfiguration = $originalConfiguration;
 			}
 
@@ -77,7 +77,7 @@ class ConfigurationItemRepository {
 			}
 			unset($tempConfiguration);
 
-			 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($hierarchicConfiguration, $metaInformation);
+			ArrayUtility::mergeRecursiveWithOverrule($hierarchicConfiguration, $metaInformation);
 			$resultArray = $hierarchicConfiguration;
 		}
 
@@ -93,15 +93,15 @@ class ConfigurationItemRepository {
 	 */
 	protected function buildConfigurationArray($configurationOption, $extensionKey) {
 		$hierarchicConfiguration = array();
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
+		if (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeUser($configurationOption);
-		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
+		} elseif (GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeOptions($configurationOption);
 		}
 		if ($this->translate($configurationOption['label'], $extensionKey)) {
 			$configurationOption['label'] = $this->translate($configurationOption['label'], $extensionKey);
 		}
-		$configurationOption['labels'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $configurationOption['label'], FALSE, 2);
+		$configurationOption['labels'] = GeneralUtility::trimExplode(':', $configurationOption['label'], FALSE, 2);
 		$configurationOption['subcat_name'] = $configurationOption['subcat_name'] ?: '__default';
 		$hierarchicConfiguration[$configurationOption['cat']][$configurationOption['subcat_name']][$configurationOption['name']] = $configurationOption;
 		return $hierarchicConfiguration;
@@ -116,9 +116,9 @@ class ConfigurationItemRepository {
 	 */
 	protected function extractInformationForConfigFieldsOfTypeOptions(array $configurationOption) {
 		preg_match('/options\[(.*)\]/is', $configurationOption['type'], $typeMatches);
-		$optionItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $typeMatches[1]);
+		$optionItems = GeneralUtility::trimExplode(',', $typeMatches[1]);
 		foreach ($optionItems as $optionItem) {
-			$optionPair = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $optionItem);
+			$optionPair = GeneralUtility::trimExplode('=', $optionItem);
 			if (count($optionPair) === 2) {
 				$configurationOption['generic'][$optionPair[0]] = $optionPair[1];
 			} else {
@@ -169,15 +169,18 @@ class ConfigurationItemRepository {
 				$this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class)
 					->getConfigurationValueByPath('EXT/extConf/' . $extensionKey)
 			);
+			if (!is_array($currentExtensionConfig)) {
+				$currentExtensionConfig = array();
+			}
 		} catch (\RuntimeException $e) {
 			$currentExtensionConfig = array();
 		}
-		$flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($currentExtensionConfig);
+		$flatExtensionConfig = ArrayUtility::flatten($currentExtensionConfig);
 		$valuedCurrentExtensionConfig = array();
 		foreach ($flatExtensionConfig as $key => $value) {
 			$valuedCurrentExtensionConfig[$key]['value'] = $value;
 		}
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $valuedCurrentExtensionConfig);
+		ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $valuedCurrentExtensionConfig);
 		return $defaultConfiguration;
 	}
 
