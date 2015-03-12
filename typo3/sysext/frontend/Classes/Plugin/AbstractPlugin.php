@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Frontend\Plugin;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -33,7 +35,7 @@ class AbstractPlugin {
 	/**
 	 * The backReference to the mother cObj object set at call time
 	 *
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var ContentObjectRenderer
 	 */
 	public $cObj;
 
@@ -211,7 +213,7 @@ class AbstractPlugin {
 	/**
 	 * internal, don't mess with...
 	 *
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 * @var ContentObjectRenderer
 	 */
 	public $pi_EPtemp_cObj;
 
@@ -258,8 +260,8 @@ class AbstractPlugin {
 		if (!empty($this->frontendController->config['config']['language'])) {
 			$this->LLkey = $this->frontendController->config['config']['language'];
 			if (empty($this->frontendController->config['config']['language_alt'])) {
-				/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-				$locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+				/** @var $locales Locales */
+				$locales = GeneralUtility::makeInstance(Locales::class);
 				if (in_array($this->LLkey, $locales->getLocales())) {
 					$this->altLLkey = '';
 					foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
@@ -338,7 +340,7 @@ class AbstractPlugin {
 	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The resulting URL
 	 * @see pi_linkToPage()
-	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink()
+	 * @see ContentObjectRenderer->getTypoLink()
 	 */
 	public function pi_getPageLink($id, $target = '', $urlParameters = array()) {
 		return $this->cObj->getTypoLink_URL($id, $urlParameters, $target);
@@ -354,7 +356,7 @@ class AbstractPlugin {
 	 * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
 	 * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
 	 * @return string The input string wrapped in <a> tags with the URL and target set.
-	 * @see pi_getPageLink(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTypoLink()
+	 * @see pi_getPageLink(), ContentObjectRenderer::getTypoLink()
 	 */
 	public function pi_linkToPage($str, $id, $target = '', $urlParameters = array()) {
 		return $this->cObj->getTypoLink($str, $id, $urlParameters, $target);
@@ -369,7 +371,7 @@ class AbstractPlugin {
 	 * @param bool $cache If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
 	 * @param int $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
 	 * @return string The input string wrapped in <a> tags
-	 * @see pi_linkTP_keepPIvars(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typoLink()
+	 * @see pi_linkTP_keepPIvars(), ContentObjectRenderer::typoLink()
 	 */
 	public function pi_linkTP($str, $urlParameters = array(), $cache = FALSE, $altPageId = 0) {
 		$conf = array();
@@ -843,7 +845,7 @@ class AbstractPlugin {
 	 * @param string $label A label to show with the panel.
 	 * @param array $conf TypoScript parameters to pass along to the EDITPANEL content Object that gets rendered. The property "allow" WILL get overridden/set though.
 	 * @return string Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
-	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::EDITPANEL()
+	 * @see ContentObjectRenderer::EDITPANEL()
 	 */
 	public function pi_getEditPanel($row = array(), $tablename = '', $label = '', $conf = array()) {
 		$panel = '';
@@ -854,7 +856,7 @@ class AbstractPlugin {
 		if ($this->frontendController->beUserLogin) {
 			// Create local cObj if not set:
 			if (!is_object($this->pi_EPtemp_cObj)) {
-				$this->pi_EPtemp_cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+				$this->pi_EPtemp_cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 				$this->pi_EPtemp_cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 			}
 			// Initialize the cObj object with current row
@@ -885,7 +887,7 @@ class AbstractPlugin {
 	 * @param string $tablename Table name
 	 * @param array $oConf Conf array
 	 * @return string The processed content
-	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::editIcons()
+	 * @see ContentObjectRenderer::editIcons()
 	 */
 	public function pi_getEditIcon($content, $fields, $title = '', $row = array(), $tablename = '', $oConf = array()) {
 		if ($this->frontendController->beUserLogin) {
@@ -1235,7 +1237,7 @@ class AbstractPlugin {
 	 *
 	 * @param string $str The input text string to process
 	 * @return string The processed string
-	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::parseFunc()
+	 * @see ContentObjectRenderer::parseFunc()
 	 */
 	public function pi_RTEcssText($str) {
 		$parseFunc = $this->frontendController->tmpl->setup['lib.']['parseFunc_RTE.'];

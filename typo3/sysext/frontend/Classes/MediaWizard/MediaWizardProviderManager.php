@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Manager to register and call registered media wizard providers
  *
@@ -52,9 +54,9 @@ class MediaWizardProviderManager {
 		$providerClassNames = array_unique(self::$providers);
 		foreach ($providerClassNames as $className) {
 			if (!isset(self::$providerObjects[$className])) {
-				$provider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
+				$provider = GeneralUtility::makeInstance($className);
 				if (!$provider instanceof MediaWizardProviderInterface) {
-					throw new \UnexpectedValueException($className . ' is registered as a mediaWizardProvider, so it must implement interface ' . \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface::class, 1285022360);
+					throw new \UnexpectedValueException($className . ' is registered as a mediaWizardProvider, so it must implement interface ' . MediaWizardProviderInterface::class, 1285022360);
 				}
 				self::$providerObjects[$className] = $provider;
 			}

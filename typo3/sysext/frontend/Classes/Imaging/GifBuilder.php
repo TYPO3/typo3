@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Frontend\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * GIFBUILDER
@@ -132,13 +137,13 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param array $conf TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
 	 * @param array $data The current data record from \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer. Stored internally in the variable ->data
 	 * @return void
-	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::findLargestDims()
+	 * @see ContentObjectRenderer::getImgResource(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::makeGifs(), \TYPO3\CMS\Frontend\ContentObject\Menu\GraphicalMenuContentObject::findLargestDims()
 	 */
 	public function start($conf, $data) {
 		if (is_array($conf)) {
 			$this->setup = $conf;
 			$this->data = $data;
-			$this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+			$this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 			$this->cObj->start($this->data);
 			// Hook preprocess gifbuilder conf
 			// Added by Julle for 3.8.0
@@ -168,7 +173,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				}
 			}
 			// Getting sorted list of TypoScript keys from setup.
-			$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->setup);
+			$sKeyArray = TemplateService::sortedKeyList($this->setup);
 			// Setting the background color, passing it through stdWrap
 			if ($conf['backColor.'] || $conf['backColor']) {
 				$this->setup['backColor'] = isset($this->setup['backColor.']) ? trim($this->cObj->stdWrap($this->setup['backColor'], $this->setup['backColor.'])) : $this->setup['backColor'];
@@ -217,10 +222,10 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 							$fileInfo = $this->getResource($conf['file'], $conf['file.']);
 							if ($fileInfo) {
 								$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
-								if ($fileInfo['processedFile'] instanceof \TYPO3\CMS\Core\Resource\ProcessedFile) {
+								if ($fileInfo['processedFile'] instanceof ProcessedFile) {
 									// Use processed file, if a FAL file has been processed by GIFBUILDER (e.g. scaled/cropped)
 									$this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(FALSE);
-								} elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+								} elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof File) {
 									// Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
 									$this->setup[$theKey . '.']['file'] = $fileInfo['originalFile']->getForLocalProcessing(FALSE);
 								} else {
@@ -233,9 +238,9 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 									$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
 									if ($maskInfo) {
 										// the same selection criteria as regarding fileInfo above apply here
-										if ($maskInfo['processedFile'] instanceof \TYPO3\CMS\Core\Resource\ProcessedFile) {
+										if ($maskInfo['processedFile'] instanceof ProcessedFile) {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(FALSE);
-										} elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof \TYPO3\CMS\Core\Resource\File) {
+										} elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo['originalFile']->getForLocalProcessing(FALSE);
 										} else {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
@@ -251,7 +256,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 					}
 					// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
 					if ($conf['if.']) {
-						$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+						$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 						$cObj->start($this->data);
 						if (!$cObj->checkIf($conf['if.'])) {
 							unset($this->setup[$theKey]);
@@ -332,8 +337,8 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$XY = GeneralUtility::intExplode(',', $this->setup['XY']);
 			$maxWidth = isset($this->setup['maxWidth.']) ? (int)$this->cObj->stdWrap($this->setup['maxWidth'], $this->setup['maxWidth.']) : (int)$this->setup['maxWidth'];
 			$maxHeight = isset($this->setup['maxHeight.']) ? (int)$this->cObj->stdWrap($this->setup['maxHeight'], $this->setup['maxHeight.']) : (int)$this->setup['maxHeight'];
-			$XY[0] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
-			$XY[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
+			$XY[0] = MathUtility::forceIntegerInRange($XY[0], 1, $maxWidth ?: 2000);
+			$XY[1] = MathUtility::forceIntegerInRange($XY[1], 1, $maxHeight ?: 2000);
 			$this->XY = $XY;
 			$this->w = $XY[0];
 			$this->h = $XY[1];
@@ -408,7 +413,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		}
 		// Traverse the GIFBUILDER objects an render each one:
 		if (is_array($this->setup)) {
-			$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->setup);
+			$sKeyArray = TemplateService::sortedKeyList($this->setup);
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $this->setup[$theKey];
 				if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
@@ -555,7 +560,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @access private
 	 */
 	public function checkTextObj($conf) {
-		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 		$cObj->start($this->data);
 		$isStdWrapped = array();
 		foreach ($conf as $key => $value) {
@@ -671,14 +676,14 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
 	 * @return array|NULL Returns an array with file information from ContentObjectRenderer::getImgResource()
 	 * @access private
-	 * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
+	 * @see ContentObjectRenderer::getImgResource()
 	 */
 	public function getResource($file, $fileArray) {
 		if (!GeneralUtility::inList($this->imageFileExt, $fileArray['ext'])) {
 			$fileArray['ext'] = $this->gifExtension;
 		}
-		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-		$cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+		/** @var ContentObjectRenderer $cObj */
+		$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 		$cObj->start($this->data);
 		return $cObj->getImgResource($file, $fileArray);
 	}
@@ -689,7 +694,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @param string $file The resource value.
 	 * @return string Returns the relative filepath
 	 * @access private
-	 * @see \TYPO3\CMS\Core\TypoScript\TemplateService::getFileName()
+	 * @see TemplateService::getFileName()
 	 */
 	public function checkFile($file) {
 		return $GLOBALS['TSFE']->tmpl->getFileName($file);

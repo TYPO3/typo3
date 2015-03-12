@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Logic for cHash calculation
  *
@@ -163,7 +165,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool
 	 */
 	protected function isCoreParameter($key) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::inList('id,type,no_cache,cHash,MP,ftu', $key);
+		return GeneralUtility::inList('id,type,no_cache,cHash,MP,ftu', $key);
 	}
 
 	/**

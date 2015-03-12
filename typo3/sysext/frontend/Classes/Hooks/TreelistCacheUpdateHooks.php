@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\Hooks;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class that hooks into TCEmain and listens for updates to pages to update the
@@ -50,7 +52,7 @@ class TreelistCacheUpdateHooks {
 		// update of the treelist cache, too; so we also add those
 		// example: $TYPO3_CONF_VARS['BE']['additionalTreelistUpdateFields'] .= ',my_field';
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['BE']['additionalTreelistUpdateFields'])) {
-			$additionalTreelistUpdateFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['additionalTreelistUpdateFields'], TRUE);
+			$additionalTreelistUpdateFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['additionalTreelistUpdateFields'], TRUE);
 			$this->updateRequiringFields = array_merge($this->updateRequiringFields, $additionalTreelistUpdateFields);
 		}
 	}
@@ -63,10 +65,10 @@ class TreelistCacheUpdateHooks {
 	 * @param string $table The DB table the operation was carried out on
 	 * @param mixed $recordId The record's uid for update records, a string to look the record's uid up after it has been created
 	 * @param array $updatedFields Array of changed fiels and their new values
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain parent object
+	 * @param DataHandler $tceMain TCEmain parent object
 	 * @return void
 	 */
-	public function processDatamap_afterDatabaseOperations($status, $table, $recordId, array $updatedFields, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
+	public function processDatamap_afterDatabaseOperations($status, $table, $recordId, array $updatedFields, DataHandler $tceMain) {
 		if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
 			$affectedPagePid = 0;
 			$affectedPageUid = 0;
@@ -96,10 +98,10 @@ class TreelistCacheUpdateHooks {
 	 * @param string $table The record's table
 	 * @param int $recordId The record's uid
 	 * @param array $commandValue The commands value, typically an array with more detailed command information
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain The TCEmain parent object
+	 * @param DataHandler $tceMain The TCEmain parent object
 	 * @return void
 	 */
-	public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
+	public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $tceMain) {
 		if ($table == 'pages' && $command == 'delete') {
 			$deletedRecord = BackendUtility::getRecord($table, $recordId, '*', '', FALSE);
 			$affectedPageUid = $deletedRecord['uid'];
@@ -120,10 +122,10 @@ class TreelistCacheUpdateHooks {
 	 * @param int $destinationPid The record's destination page id
 	 * @param array $movedRecord The record that moved
 	 * @param array $updatedFields Array of changed fields
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain parent object
+	 * @param DataHandler $tceMain TCEmain parent object
 	 * @return void
 	 */
-	public function moveRecord_firstElementPostProcess($table, $recordId, $destinationPid, array $movedRecord, array $updatedFields, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
+	public function moveRecord_firstElementPostProcess($table, $recordId, $destinationPid, array $movedRecord, array $updatedFields, DataHandler $tceMain) {
 		if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
 			$affectedPageUid = $recordId;
 			$affectedPageOldPid = $movedRecord['pid'];
@@ -146,10 +148,10 @@ class TreelistCacheUpdateHooks {
 	 * @param int $originalDestinationPid (negative) page id th page has been moved after
 	 * @param array $movedRecord The record that moved
 	 * @param array $updatedFields Array of changed fields
-	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain parent object
+	 * @param DataHandler $tceMain TCEmain parent object
 	 * @return void
 	 */
-	public function moveRecord_afterAnotherElementPostProcess($table, $recordId, $destinationPid, $originalDestinationPid, array $movedRecord, array $updatedFields, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
+	public function moveRecord_afterAnotherElementPostProcess($table, $recordId, $destinationPid, $originalDestinationPid, array $movedRecord, array $updatedFields, DataHandler $tceMain) {
 		if ($table == 'pages' && $this->requiresUpdate($updatedFields)) {
 			$affectedPageUid = $recordId;
 			$affectedPageOldPid = $movedRecord['pid'];

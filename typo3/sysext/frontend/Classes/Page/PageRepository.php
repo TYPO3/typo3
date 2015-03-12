@@ -14,7 +14,12 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -208,8 +213,8 @@ class PageRepository {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface::class, 1251476766);
+				if (!$hookObject instanceof PageRepositoryGetPageHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . PageRepositoryGetPageHookInterface::class, 1251476766);
 				}
 				$hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
 			}
@@ -342,8 +347,8 @@ class PageRepository {
 			foreach ($pagesInput as $origPage) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
 					$hookObject = GeneralUtility::makeInstance($classRef);
-					if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface) {
-						throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
+					if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
+						throw new \UnexpectedValueException('$hookObject must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
 					}
 					$hookObject->getPageOverlay_preProcess($origPage, $lUid, $this);
 				}
@@ -443,8 +448,8 @@ class PageRepository {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
+				if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881658);
 				}
 				$hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
@@ -504,8 +509,8 @@ class PageRepository {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getRecordOverlay'] as $classRef) {
 				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (!$hookObject instanceof \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
+				if (!$hookObject instanceof PageRepositoryGetRecordOverlayHookInterface) {
+					throw new \UnexpectedValueException('$hookObject must implement interface ' . PageRepositoryGetRecordOverlayHookInterface::class, 1269881659);
 				}
 				$hookObject->getRecordOverlay_postProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
@@ -634,10 +639,10 @@ class PageRepository {
 					$redirectUrl .= '/' . $prependStr;
 				}
 				$statusCode = (int)$row['redirectHttpStatusCode'];
-				if ($statusCode && defined(\TYPO3\CMS\Core\Utility\HttpUtility::class . '::HTTP_STATUS_' . $statusCode)) {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, constant(\TYPO3\CMS\Core\Utility\HttpUtility::class . '::HTTP_STATUS_' . $statusCode));
+				if ($statusCode && defined(HttpUtility::class . '::HTTP_STATUS_' . $statusCode)) {
+					HttpUtility::redirect($redirectUrl, constant(HttpUtility::class . '::HTTP_STATUS_' . $statusCode));
 				} else {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl, \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_301);
+					HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_301);
 				}
 				die;
 			} else {
@@ -667,7 +672,7 @@ class PageRepository {
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
 	 */
 	public function getRootLine($uid, $MP = '', $ignoreMPerrors = FALSE) {
-		$rootline = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\RootlineUtility::class, $uid, $MP, $this);
+		$rootline = GeneralUtility::makeInstance(RootlineUtility::class, $uid, $MP, $this);
 		try {
 			return $rootline->get();
 		} catch (\RuntimeException $ex) {
@@ -909,7 +914,7 @@ class PageRepository {
 	 */
 	static public function getHash($hash, $expTime = 0) {
 		$hashContent = NULL;
-		$contentHashCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_hash');
+		$contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
 		$cacheEntry = $contentHashCache->get($hash);
 		if ($cacheEntry) {
 			$hashContent = $cacheEntry;
@@ -932,7 +937,7 @@ class PageRepository {
 	 * @see tslib_TStemplate::start(), getHash()
 	 */
 	static public function storeHash($hash, $data, $ident, $lifetime = 0) {
-		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), (int)$lifetime);
+		GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash')->set($hash, $data, array('ident_' . $ident), (int)$lifetime);
 	}
 
 	/**
@@ -1099,7 +1104,7 @@ class PageRepository {
 	 * @param string $table Table name
 	 * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
 	 * @return void (Passed by ref).
-	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
+	 * @see BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
 	 */
 	public function fixVersioningPid($table, &$rr) {
 		if ($this->versioningPreview && is_array($rr) && $rr['pid'] == -1 && ($table == 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
@@ -1157,7 +1162,7 @@ class PageRepository {
 	 * @param bool $unsetMovePointers If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
 	 * @param bool $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
 	 * @return void (Passed by ref).
-	 * @see fixVersioningPid(), \TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL()
+	 * @see fixVersioningPid(), BackendUtility::workspaceOL()
 	 */
 	public function versionOL($table, &$row, $unsetMovePointers = FALSE, $bypassEnableFieldsCheck = FALSE) {
 		if ($this->versioningPreview && is_array($row)) {
@@ -1230,7 +1235,7 @@ class PageRepository {
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - only online records...
 	 * @return bool TRUE if overlay is made.
-	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::movePlhOl()
+	 * @see BackendUtility::movePlhOl()
 	 */
 	public function movePlhOL($table, &$row) {
 		if (
@@ -1267,7 +1272,7 @@ class PageRepository {
 	 * @param int $uid Record UID of online version
 	 * @param string $fields Field list, default is *
 	 * @return array If found, the record, otherwise nothing.
-	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder()
+	 * @see BackendUtility::getMovePlaceholder()
 	 */
 	public function getMovePlaceholder($table, $uid, $fields = '*') {
 		if ($this->versioningPreview) {
@@ -1295,7 +1300,7 @@ class PageRepository {
 	 * @param string $fields Field list to select
 	 * @param bool $bypassEnableFieldsCheck If TRUE, enablefields are not checked for.
 	 * @return mixed If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
-	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord()
+	 * @see BackendUtility::getWorkspaceVersionOfRecord()
 	 */
 	public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = FALSE) {
 		if ($workspace !== 0 && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
@@ -1348,7 +1353,7 @@ class PageRepository {
 	 * @return bool <code>TRUE</code> if has access
 	 */
 	public function checkWorkspaceAccess($wsid) {
-		if (!$GLOBALS['BE_USER'] || !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+		if (!$GLOBALS['BE_USER'] || !ExtensionManagementUtility::isLoaded('workspaces')) {
 			return FALSE;
 		}
 		if (isset($this->workspaceCache[$wsid])) {
@@ -1378,8 +1383,8 @@ class PageRepository {
 	 * @return array
 	 */
 	public function getFileReferences($tableName, $fieldName, array $element) {
-		/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
-		$fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
+		/** @var $fileRepository FileRepository */
+		$fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 		$currentId = !empty($element['uid']) ? $element['uid'] : 0;
 
 		// Fetch the references of the default element

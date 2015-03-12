@@ -271,7 +271,6 @@ class PageGenerator {
 		/** @var TimeTracker $timeTracker */
 		$timeTracker = $GLOBALS['TT'];
 
-		/** @var PageRenderer $pageRenderer */
 		$pageRenderer = $tsfe->getPageRenderer();
 		if ($tsfe->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Hooks;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Adds extra fields into 'media' flexform
  */
@@ -29,7 +31,7 @@ class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface {
 	public function customMediaRenderTypes(&$params, $conf) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'] as $classRef) {
-				$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObj = GeneralUtility::getUserObj($classRef);
 				$hookObj->customMediaRenderTypes($params, $conf);
 			}
 		}
@@ -45,7 +47,7 @@ class MediaItemHooks implements \TYPO3\CMS\Core\SingletonInterface {
 	public function customMediaParams(&$params, $conf) {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'] as $classRef) {
-				$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
+				$hookObj = GeneralUtility::getUserObj($classRef);
 				$hookObj->customMediaParams($params, $conf);
 			}
 		}

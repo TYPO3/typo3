@@ -19,9 +19,11 @@ use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -32,6 +34,8 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -1772,7 +1776,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param int $tstamp Unix timestamp (number of seconds since 1970)
 	 * @return void
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setSysLastChanged()
+	 * @see TypoScriptFrontendController::setSysLastChanged()
 	 */
 	public function lastChanged($tstamp) {
 		$tstamp = (int)$tstamp;
@@ -5741,7 +5745,7 @@ class ContentObjectRenderer {
 			$fileObject = NULL;
 		}
 
-		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+		if ($fileObject instanceof FileInterface) {
 			// All properties of the \TYPO3\CMS\Core\Resource\FileInterface are available here:
 			switch ($requestedFileInformationKey) {
 				case 'name':
@@ -6334,7 +6338,7 @@ class ContentObjectRenderer {
 							if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
 								$absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
 							} elseif ($page['url_scheme'] > 0) {
-								$absoluteUrlScheme = (int)$page['url_scheme'] === \TYPO3\CMS\Core\Utility\HttpUtility::SCHEME_HTTP ? 'http' : 'https';
+								$absoluteUrlScheme = (int)$page['url_scheme'] === HttpUtility::SCHEME_HTTP ? 'http' : 'https';
 							} elseif ($this->getEnvironmentVariable('TYPO3_SSL')) {
 								$absoluteUrlScheme = 'https';
 							}
@@ -7053,8 +7057,8 @@ class ContentObjectRenderer {
 	 */
 	public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '') {
 		$result = FALSE;
-		/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-		$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		/** @var $mail MailMessage */
+		$mail = GeneralUtility::makeInstance(MailMessage::class);
 		$senderName = trim($senderName);
 		$senderAddress = trim($senderAddress);
 		if ($senderName !== '' && $senderAddress !== '') {
@@ -7062,10 +7066,10 @@ class ContentObjectRenderer {
 		} elseif ($senderAddress !== '') {
 			$sender = array($senderAddress);
 		} else {
-			$sender = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();
+			$sender = MailUtility::getSystemFrom();
 		}
 		$mail->setFrom($sender);
-		$parsedReplyTo = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($replyTo);
+		$parsedReplyTo = MailUtility::parseAddresses($replyTo);
 		if (count($parsedReplyTo) > 0) {
 			$mail->setReplyTo($parsedReplyTo);
 		}
@@ -7075,17 +7079,17 @@ class ContentObjectRenderer {
 			$messageParts = explode(LF, $message, 2);
 			$subject = trim($messageParts[0]);
 			$plainMessage = trim($messageParts[1]);
-			$parsedRecipients = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($recipients);
+			$parsedRecipients = MailUtility::parseAddresses($recipients);
 			if (count($parsedRecipients) > 0) {
 				$mail->setTo($parsedRecipients)
 					->setSubject($subject)
 					->setBody($plainMessage);
 				$mail->send();
 			}
-			$parsedCc = \TYPO3\CMS\Core\Utility\MailUtility::parseAddresses($cc);
+			$parsedCc = MailUtility::parseAddresses($cc);
 			if (count($parsedCc) > 0) {
-				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
-				$mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+				/** @var $mail MailMessage */
+				$mail = GeneralUtility::makeInstance(MailMessage::class);
 				if (count($parsedReplyTo) > 0) {
 					$mail->setReplyTo($parsedReplyTo);
 				}
@@ -7550,7 +7554,7 @@ class ContentObjectRenderer {
 	 * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
 	 * @param int $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
 	 * @return string Returns the list of ids as a comma separated string
-	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkEnableFields(), \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::checkPagerecordForIncludeSection()
+	 * @see TypoScriptFrontendController::checkEnableFields(), TypoScriptFrontendController::checkPagerecordForIncludeSection()
 	 */
 	public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = FALSE, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = array(), $recursionLevel = 0) {
 		$id = (int)$id;

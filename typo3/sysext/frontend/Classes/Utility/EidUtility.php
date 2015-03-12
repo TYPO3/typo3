@@ -14,8 +14,12 @@ namespace TYPO3\CMS\Frontend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Tools for scripts using the eID feature of index.php
@@ -83,7 +87,7 @@ class EidUtility {
 	 */
 	static public function initLanguage($language = 'default') {
 		if (!is_object($GLOBALS['LANG'])) {
-			$GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+			$GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 			$GLOBALS['LANG']->init($language);
 		}
 	}
@@ -99,7 +103,7 @@ class EidUtility {
 		// but in fact it is not loaded. The check below ensure that
 		// TCA is still loaded if such bad extensions are installed
 		if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
-			\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadCachedTca();
+			Bootstrap::getInstance()->loadCachedTca();
 		}
 	}
 
@@ -111,7 +115,7 @@ class EidUtility {
 	 * @return void
 	 */
 	static public function initExtensionTCA($extensionKey) {
-		$extTablesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey, 'ext_tables.php');
+		$extTablesPath = ExtensionManagementUtility::extPath($extensionKey, 'ext_tables.php');
 		if (file_exists($extTablesPath)) {
 			$GLOBALS['_EXTKEY'] = $extensionKey;
 			require_once $extTablesPath;
@@ -131,7 +135,7 @@ class EidUtility {
 		// Cached instance
 		static $tsfe = NULL;
 		if (is_null($tsfe)) {
-			$tsfe = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
+			$tsfe = GeneralUtility::makeInstance(TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
 		}
 		return $tsfe;
 	}

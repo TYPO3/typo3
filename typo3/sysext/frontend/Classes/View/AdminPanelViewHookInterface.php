@@ -28,6 +28,6 @@ interface AdminPanelViewHookInterface {
 	 * @param \TYPO3\CMS\Frontend\View\AdminPanelView $obj The adminPanel object
 	 * @return string Returns content of admin panel
 	 */
-	public function extendAdminPanel($moduleContent, \TYPO3\CMS\Frontend\View\AdminPanelView $obj);
+	public function extendAdminPanel($moduleContent, AdminPanelView $obj);
 
 }

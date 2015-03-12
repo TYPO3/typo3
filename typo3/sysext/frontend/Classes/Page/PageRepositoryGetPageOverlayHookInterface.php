@@ -29,6 +29,6 @@ interface PageRepositoryGetPageOverlayHookInterface {
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent The calling parent object
 	 * @return void
 	 */
-	public function getPageOverlay_preProcess(&$pageInput, &$lUid, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
+	public function getPageOverlay_preProcess(&$pageInput, &$lUid, PageRepository $parent);
 
 }

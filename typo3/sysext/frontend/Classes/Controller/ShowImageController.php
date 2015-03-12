@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -134,9 +135,9 @@ EOF;
 
 		try {
 			if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
-				$this->file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject((int)$fileUid);
+				$this->file = ResourceFactory::getInstance()->getFileObject((int)$fileUid);
 			} else {
-				$this->file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
+				$this->file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
 			}
 		} catch (\TYPO3\CMS\Core\Exception $e) {
 			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);

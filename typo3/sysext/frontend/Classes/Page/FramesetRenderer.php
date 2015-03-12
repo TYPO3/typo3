@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Rendering of framesets
  *
@@ -31,7 +34,7 @@ class FramesetRenderer {
 	public function make($setup) {
 		$content = '';
 		if (is_array($setup)) {
-			$sKeyArray = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($setup);
+			$sKeyArray = TemplateService::sortedKeyList($setup);
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $setup[$theKey];
 				if ((int)$theKey && ($conf = $setup[$theKey . '.'])) {
@@ -44,7 +47,7 @@ class FramesetRenderer {
 							$content .= '<frame' . $this->frameParams($conf, $typeNum) . ' />' . LF;
 							break;
 						case 'FRAMESET':
-							$frameset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\FramesetRenderer::class);
+							$frameset = GeneralUtility::makeInstance(__CLASS__);
 							$content .= $frameset->make($conf) . LF;
 							break;
 					}

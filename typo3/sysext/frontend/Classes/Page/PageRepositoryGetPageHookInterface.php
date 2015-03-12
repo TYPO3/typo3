@@ -29,6 +29,6 @@ interface PageRepositoryGetPageHookInterface {
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent object
 	 * @return void
 	 */
-	public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, \TYPO3\CMS\Frontend\Page\PageRepository $parentObject);
+	public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, PageRepository $parentObject);
 
 }

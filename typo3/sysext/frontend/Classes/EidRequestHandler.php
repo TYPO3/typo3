@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\RequestHandlerInterface;
@@ -52,9 +54,9 @@ class EidRequestHandler implements RequestHandlerInterface {
 			$configuredCookieName = 'be_typo_user';
 		}
 		if ($_COOKIE[$configuredCookieName]) {
-			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker();
+			$GLOBALS['TT'] = new TimeTracker();
 		} else {
-			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
+			$GLOBALS['TT'] = new NullTimeTracker();
 		}
 
 		$GLOBALS['TT']->start();

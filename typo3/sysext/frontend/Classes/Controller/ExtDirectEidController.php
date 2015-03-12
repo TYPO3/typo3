@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Utility\EidUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+
 /**
  * eID controller for ExtDirect
  *
@@ -24,7 +28,7 @@ class ExtDirectEidController {
 	/**
 	 * Ajax Instance
 	 *
-	 * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler
+	 * @var AjaxRequestHandler
 	 */
 	protected $ajaxObject = NULL;
 
@@ -35,12 +39,12 @@ class ExtDirectEidController {
 	 * @return void
 	 */
 	public function routeAction() {
-		\TYPO3\CMS\Frontend\Utility\EidUtility::initLanguage();
-		$ajaxID = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action');
+		EidUtility::initLanguage();
+		$ajaxID = GeneralUtility::_GP('action');
 		$ajaxScript = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['ExtDirect::' . $ajaxID]['callbackMethod'];
-		$this->ajaxObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, 'ExtDirect::' . $ajaxID);
+		$this->ajaxObject = GeneralUtility::makeInstance(AjaxRequestHandler::class, 'ExtDirect::' . $ajaxID);
 		$parameters = array();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($ajaxScript, $parameters, $this->ajaxObject, FALSE, TRUE);
+		GeneralUtility::callUserFunction($ajaxScript, $parameters, $this->ajaxObject, FALSE, TRUE);
 	}
 
 	/**
@@ -49,7 +53,7 @@ class ExtDirectEidController {
 	 * @return bool
 	 */
 	public function actionIsAllowed() {
-		if (!in_array(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('action'), array('route', 'getAPI'))) {
+		if (!in_array(GeneralUtility::_GP('action'), array('route', 'getAPI'))) {
 			return FALSE;
 		}
 		return TRUE;

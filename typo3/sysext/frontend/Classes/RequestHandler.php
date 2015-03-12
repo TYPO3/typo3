@@ -14,9 +14,19 @@ namespace TYPO3\CMS\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\MonitorUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageGenerator;
+use TYPO3\CMS\Frontend\Utility\CompressionUtility;
+use TYPO3\CMS\Frontend\View\AdminPanelView;
 
 /**
  * This is the main entry point of the TypoScript driven standard front-end
@@ -56,9 +66,9 @@ class RequestHandler implements RequestHandlerInterface {
 			$configuredCookieName = 'be_typo_user';
 		}
 		if ($_COOKIE[$configuredCookieName]) {
-			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\TimeTracker();
+			$GLOBALS['TT'] = new TimeTracker();
 		} else {
-			$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker();
+			$GLOBALS['TT'] = new NullTimeTracker();
 		}
 
 		$GLOBALS['TT']->start();
@@ -75,7 +85,7 @@ class RequestHandler implements RequestHandlerInterface {
 
 		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
 		$GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-			\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class,
+			TypoScriptFrontendController::class,
 			$GLOBALS['TYPO3_CONF_VARS'],
 			GeneralUtility::_GP('id'),
 			GeneralUtility::_GP('type'),
@@ -101,11 +111,11 @@ class RequestHandler implements RequestHandlerInterface {
 		// Remove any output produced until now
 		ob_clean();
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] && extension_loaded('zlib')) {
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
+			if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
 				// Prevent errors if ini_set() is unavailable (safe mode)
 				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
 			}
-			ob_start(array(GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Utility\CompressionUtility::class), 'compressionOutputHandler'));
+			ob_start(array(GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler'));
 		}
 
 		// FE_USER
@@ -155,12 +165,12 @@ class RequestHandler implements RequestHandlerInterface {
 		// Admin Panel & Frontend editing
 		if ($GLOBALS['TSFE']->isBackendUserLoggedIn()) {
 			$GLOBALS['BE_USER']->initializeFrontendEdit();
-			if ($GLOBALS['BE_USER']->adminPanel instanceof \TYPO3\CMS\Frontend\View\AdminPanelView) {
+			if ($GLOBALS['BE_USER']->adminPanel instanceof AdminPanelView) {
 				$this->bootstrap
 					->initializeLanguageObject()
 					->initializeSpriteManager();
 			}
-			if ($GLOBALS['BE_USER']->frontendEdit instanceof \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController) {
+			if ($GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController) {
 				$GLOBALS['BE_USER']->frontendEdit->initConfigOptions();
 			}
 		}
@@ -204,27 +214,27 @@ class RequestHandler implements RequestHandlerInterface {
 			if ($temp_theScript) {
 				include $temp_theScript;
 			} else {
-				\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+				PageGenerator::pagegenInit();
 				// Global content object
 				$GLOBALS['TSFE']->newCObj();
 				// LIBRARY INCLUSION, TypoScript
-				$temp_incFiles = \TYPO3\CMS\Frontend\Page\PageGenerator::getIncFiles();
+				$temp_incFiles = PageGenerator::getIncFiles();
 				foreach ($temp_incFiles as $temp_file) {
 					include_once './' . $temp_file;
 				}
 				// Content generation
 				if (!$GLOBALS['TSFE']->isINTincScript()) {
-					\TYPO3\CMS\Frontend\Page\PageGenerator::renderContent();
+					PageGenerator::renderContent();
 					$GLOBALS['TSFE']->setAbsRefPrefix();
 				}
 			}
 			$GLOBALS['TSFE']->generatePage_postProcessing();
 		} elseif ($GLOBALS['TSFE']->isINTincScript()) {
-			\TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit();
+			PageGenerator::pagegenInit();
 			// Global content object
 			$GLOBALS['TSFE']->newCObj();
 			// LIBRARY INCLUSION, TypoScript
-			$temp_incFiles = \TYPO3\CMS\Frontend\Page\PageGenerator::getIncFiles();
+			$temp_incFiles = PageGenerator::getIncFiles();
 			foreach ($temp_incFiles as $temp_file) {
 				include_once './' . $temp_file;
 			}
@@ -267,14 +277,14 @@ class RequestHandler implements RequestHandlerInterface {
 		// Finish timetracking
 		$GLOBALS['TT']->pull();
 		// Check memory usage
-		\TYPO3\CMS\Core\Utility\MonitorUtility::peakMemoryUsage();
+		MonitorUtility::peakMemoryUsage();
 		// beLoginLinkIPList
 		echo $GLOBALS['TSFE']->beLoginLinkIPList();
 
 		// Admin panel
 		if (
 			$GLOBALS['TSFE']->isBackendUserLoggedIn()
-			&& $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
+			&& $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication
 			&& $GLOBALS['BE_USER']->isAdminPanelVisible()
 		) {
 			$GLOBALS['TSFE']->content = str_ireplace('</head>', $GLOBALS['BE_USER']->adminPanel->getAdminPanelHeaderData() . '</head>', $GLOBALS['TSFE']->content);

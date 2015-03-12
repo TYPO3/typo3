@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying page information (records, page record properties)
@@ -51,7 +53,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	 * @return string Output HTML for the module.
 	 */
 	public function main() {
-		$dblist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageLayoutView::class);
+		$dblist = GeneralUtility::makeInstance(PageLayoutView::class);
 		$dblist->descrTable = '_MOD_' . $GLOBALS['MCONF']['name'];
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->thumbs = 0;
@@ -75,7 +77,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		if (is_array($footerContentHook)) {
 			foreach ($footerContentHook as $hook) {
 				$params = array();
-				$theOutput .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hook, $params, $this);
+				$theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
 			}
 		}
 		return $theOutput;

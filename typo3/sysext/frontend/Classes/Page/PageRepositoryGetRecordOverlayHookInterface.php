@@ -30,7 +30,7 @@ interface PageRepositoryGetRecordOverlayHookInterface {
 	 * @param string $OLmode
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
 	 */
-	public function getRecordOverlay_preProcess($table, &$row, &$sys_language_content, $OLmode, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
+	public function getRecordOverlay_preProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 
 	/**
 	 * Enables to postprocess a record overlay
@@ -41,6 +41,6 @@ interface PageRepositoryGetRecordOverlayHookInterface {
 	 * @param string $OLmode
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
 	 */
-	public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, \TYPO3\CMS\Frontend\Page\PageRepository $parent);
+	public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 
 }

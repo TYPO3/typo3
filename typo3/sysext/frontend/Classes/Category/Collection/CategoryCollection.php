@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Category\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Extend category collection for the frontend, to collect related records
  * while respecting language, enable fields, etc.
@@ -34,8 +36,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
 		/** @var $collection \TYPO3\CMS\Frontend\Category\Collection\CategoryCollection */
-		$collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			\TYPO3\CMS\Frontend\Category\Collection\CategoryCollection::class,
+		$collection = GeneralUtility::makeInstance(__CLASS__,
 			$collectionRecord['table_name'],
 			$collectionRecord['field_name']
 		);

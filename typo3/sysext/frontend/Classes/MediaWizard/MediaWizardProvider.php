@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\MediaWizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Contains an implementation of the mediaWizardProvider supporting some
  * well known providers.
@@ -62,7 +64,7 @@ class MediaWizardProvider implements MediaWizardProviderInterface {
 		if (empty($urlInfo['host'])) {
 			return NULL;
 		}
-		$hostName = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $urlInfo['host'], TRUE);
+		$hostName = GeneralUtility::trimExplode('.', $urlInfo['host'], TRUE);
 		foreach ($this->providers as $provider) {
 			$functionName = 'process_' . $provider;
 			if (in_array($provider, $hostName) && is_callable(array($this, $functionName))) {
@@ -284,7 +286,7 @@ class MediaWizardProvider implements MediaWizardProviderInterface {
 	 * @return string
 	 */
 	protected function getUrlSchema() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+		return GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
 	}
 
 }
