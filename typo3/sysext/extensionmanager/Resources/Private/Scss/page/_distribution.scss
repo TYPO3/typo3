@@ -18,6 +18,85 @@
 			text-decoration: underline;
 		}
 	}
+  .typo3-dependency-version {
+    position: absolute;
+    right: 2px;
+
+    .label {
+      display: inline;
+      padding: .2em .6em .3em;
+      font-size: 75%;
+      font-weight: bold;
+      line-height: 1;
+      color: #ffffff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: .25em;
+    }
+    a.label:hover,
+    a.label:focus {
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .label:empty {
+      display: none;
+    }
+    .btn .label {
+      position: relative;
+      top: -1px;
+    }
+    .label-default,
+    .label-obsolete,
+    .label-experimental,
+    .label-test,
+    .label-excludeFromUpdates {
+      background-color: #d7d7d7;
+    }
+    .label-default[href]:hover,
+    .label-default[href]:focus {
+      background-color: #bebebe;
+    }
+    .label-primary {
+      background-color: #0078e6;
+    }
+    .label-primary[href]:hover,
+    .label-primary[href]:focus {
+      background-color: #005db3;
+    }
+    .label-success,
+    .label-stable {
+      background-color: #1eb941;
+    }
+    .label-success[href]:hover,
+    .label-success[href]:focus {
+      background-color: #178d32;
+    }
+    .label-info {
+      background-color: #41b4dc;
+    }
+    .label-info[href]:hover,
+    .label-info[href]:focus {
+      background-color: #249cc6;
+    }
+    .label-warning,
+    .label-beta {
+      background-color: #f07814;
+    }
+    .label-warning[href]:hover,
+    .label-warning[href]:focus {
+      background-color: #c4600d;
+    }
+    .label-danger,
+    .label-alpha {
+      background-color: #c83c3c;
+    }
+    .label-danger[href]:hover,
+    .label-danger[href]:focus {
+      background-color: #a32e2e;
+    }
+  }
 }
 .distribution-holder {
 	@include clearfix;
