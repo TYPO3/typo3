@@ -1896,7 +1896,7 @@ class BackendUtility {
 					foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
 						// Loop on all available items
 						// Keep matches and move on to next value
-						if ($aValue == $itemConfiguration[1]) {
+						if ((string)$aValue === (string)$itemConfiguration[1]) {
 							$labels[] = $GLOBALS['LANG']->sL($itemConfiguration[0]);
 							break;
 						}
