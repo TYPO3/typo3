@@ -707,7 +707,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	public function fileName($pre) {
 		/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
-		$basicFileFunctions = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$basicFileFunctions = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
 		$filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 		$filePrefix = $basicFileFunctions->cleanFileName($filePrefix);
 

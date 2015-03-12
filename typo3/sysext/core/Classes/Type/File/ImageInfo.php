@@ -67,7 +67,7 @@ class ImageInfo extends FileInfo {
 	 */
 	protected function getLogger(){
 		/** @var $loggerManager \TYPO3\CMS\Core\Log\LogManager */
-		$loggerManager = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$loggerManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\LogManager::class);
 
 		return $loggerManager->getLogger(get_class($this));
 	}

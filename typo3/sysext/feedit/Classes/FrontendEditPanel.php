@@ -65,7 +65,7 @@ class FrontendEditPanel {
 		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
 		$this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
 		$this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
-		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->cObj->start(array());
 	}
 

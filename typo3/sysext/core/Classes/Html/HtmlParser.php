@@ -864,7 +864,7 @@ class HtmlParser {
 												if ($tagAttrib[0][$attr][0] === '#') {
 													if ($params['prefixLocalAnchors'] == 2) {
 														/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObjectRenderer */
-														$contentObjectRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+														$contentObjectRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 														$prefix = $contentObjectRenderer->getUrlToCurrentLocation();
 													} else {
 														$prefix = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
