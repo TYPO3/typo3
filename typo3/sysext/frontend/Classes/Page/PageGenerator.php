@@ -14,11 +14,15 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Class for starting TypoScript page generation
@@ -42,120 +46,122 @@ class PageGenerator {
 	 * @return void
 	 */
 	static public function pagegenInit() {
-		if ($GLOBALS['TSFE']->page['content_from_pid'] > 0) {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
+		if ($tsfe->page['content_from_pid'] > 0) {
 			// make REAL copy of TSFE object - not reference!
-			$temp_copy_TSFE = clone $GLOBALS['TSFE'];
+			$temp_copy_TSFE = clone $tsfe;
 			// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
-			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];
+			$temp_copy_TSFE->id = $tsfe->page['content_from_pid'];
 			$temp_copy_TSFE->MP = '';
-			$temp_copy_TSFE->getPageAndRootlineWithDomain($GLOBALS['TSFE']->config['config']['content_from_pid_allowOutsideDomain'] ? 0 : $GLOBALS['TSFE']->domainStartPage);
-			$GLOBALS['TSFE']->contentPid = (int)$temp_copy_TSFE->id;
+			$temp_copy_TSFE->getPageAndRootlineWithDomain($tsfe->config['config']['content_from_pid_allowOutsideDomain'] ? 0 : $tsfe->domainStartPage);
+			$tsfe->contentPid = (int)$temp_copy_TSFE->id;
 			unset($temp_copy_TSFE);
 		}
-		if ($GLOBALS['TSFE']->config['config']['MP_defaults']) {
-			$temp_parts = GeneralUtility::trimExplode('|', $GLOBALS['TSFE']->config['config']['MP_defaults'], TRUE);
+		if ($tsfe->config['config']['MP_defaults']) {
+			$temp_parts = GeneralUtility::trimExplode('|', $tsfe->config['config']['MP_defaults'], TRUE);
 			foreach ($temp_parts as $temp_p) {
 				list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
 				$temp_ids = GeneralUtility::intExplode(',', $temp_idP);
 				foreach ($temp_ids as $temp_id) {
-					$GLOBALS['TSFE']->MP_defaults[$temp_id] = $temp_MPp;
+					$tsfe->MP_defaults[$temp_id] = $temp_MPp;
 				}
 			}
 		}
 		// Global vars...
-		$GLOBALS['TSFE']->indexedDocTitle = $GLOBALS['TSFE']->page['title'];
-		$GLOBALS['TSFE']->debug = '' . $GLOBALS['TSFE']->config['config']['debug'];
+		$tsfe->indexedDocTitle = $tsfe->page['title'];
+		$tsfe->debug = '' . $tsfe->config['config']['debug'];
 		// Base url:
-		if (isset($GLOBALS['TSFE']->config['config']['baseURL'])) {
-			$GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
-			$GLOBALS['TSFE']->anchorPrefix = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
+		if (isset($tsfe->config['config']['baseURL'])) {
+			$tsfe->baseUrl = $tsfe->config['config']['baseURL'];
+			$tsfe->anchorPrefix = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
 		}
 		// Internal and External target defaults
-		$GLOBALS['TSFE']->intTarget = '' . $GLOBALS['TSFE']->config['config']['intTarget'];
-		$GLOBALS['TSFE']->extTarget = '' . $GLOBALS['TSFE']->config['config']['extTarget'];
-		$GLOBALS['TSFE']->fileTarget = '' . $GLOBALS['TSFE']->config['config']['fileTarget'];
-		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
-			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
+		$tsfe->intTarget = '' . $tsfe->config['config']['intTarget'];
+		$tsfe->extTarget = '' . $tsfe->config['config']['extTarget'];
+		$tsfe->fileTarget = '' . $tsfe->config['config']['fileTarget'];
+		if ($tsfe->config['config']['spamProtectEmailAddresses'] === 'ascii') {
+			$tsfe->spamProtectEmailAddresses = 'ascii';
 		} else {
-			$GLOBALS['TSFE']->spamProtectEmailAddresses = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
+			$tsfe->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($tsfe->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
 		}
 		// calculate the absolute path prefix
-		if (!empty($GLOBALS['TSFE']->config['config']['absRefPrefix'])) {
-			$absRefPrefix = trim($GLOBALS['TSFE']->config['config']['absRefPrefix']);
+		if (!empty($tsfe->config['config']['absRefPrefix'])) {
+			$absRefPrefix = trim($tsfe->config['config']['absRefPrefix']);
 			if ($absRefPrefix === 'auto') {
-				$GLOBALS['TSFE']->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+				$tsfe->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
 			} else {
-				$GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
+				$tsfe->absRefPrefix = $absRefPrefix;
 			}
 		} else {
-			$GLOBALS['TSFE']->absRefPrefix = '';
+			$tsfe->absRefPrefix = '';
 		}
-		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset']) {
-			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '_top', $GLOBALS['TSFE']->no_cache, '');
-			$GLOBALS['TSFE']->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($GLOBALS['TSFE']->sPre) . ' && !parent.view_frame) top.location.href="' . $GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']) . '"';
+		if ($tsfe->type && $tsfe->config['config']['frameReloadIfNotInFrameset']) {
+			$tdlLD = $tsfe->tmpl->linkData($tsfe->page, '_top', $tsfe->no_cache, '');
+			$tsfe->additionalJavaScript['JSCode'] .= 'if(!parent.' . trim($tsfe->sPre) . ' && !parent.view_frame) top.location.href="' . $tsfe->baseUrlWrap($tdlLD['totalURL']) . '"';
 		}
-		$GLOBALS['TSFE']->compensateFieldWidth = '' . $GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
-		$GLOBALS['TSFE']->lockFilePath = '' . $GLOBALS['TSFE']->config['config']['lockFilePath'];
-		$GLOBALS['TSFE']->lockFilePath = $GLOBALS['TSFE']->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'] = isset($GLOBALS['TSFE']->config['config']['noScaleUp']) ? '' . $GLOBALS['TSFE']->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
-		$GLOBALS['TSFE']->TYPO3_CONF_VARS['GFX']['im_noScaleUp'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
-		$GLOBALS['TSFE']->ATagParams = trim($GLOBALS['TSFE']->config['config']['ATagParams']) ? ' ' . trim($GLOBALS['TSFE']->config['config']['ATagParams']) : '';
-		if ($GLOBALS['TSFE']->config['config']['setJS_mouseOver']) {
-			$GLOBALS['TSFE']->setJS('mouseOver');
+		$tsfe->compensateFieldWidth = '' . $tsfe->config['config']['compensateFieldWidth'];
+		$tsfe->lockFilePath = '' . $tsfe->config['config']['lockFilePath'];
+		$tsfe->lockFilePath = $tsfe->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'] = isset($tsfe->config['config']['noScaleUp']) ? '' . $tsfe->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
+		$tsfe->TYPO3_CONF_VARS['GFX']['im_noScaleUp'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
+		$tsfe->ATagParams = trim($tsfe->config['config']['ATagParams']) ? ' ' . trim($tsfe->config['config']['ATagParams']) : '';
+		if ($tsfe->config['config']['setJS_mouseOver']) {
+			$tsfe->setJS('mouseOver');
 		}
-		if ($GLOBALS['TSFE']->config['config']['setJS_openPic']) {
-			$GLOBALS['TSFE']->setJS('openPic');
+		if ($tsfe->config['config']['setJS_openPic']) {
+			$tsfe->setJS('openPic');
 		}
 		static::initializeSearchWordDataInTsfe();
 		// linkVars
-		$GLOBALS['TSFE']->calculateLinkVars();
+		$tsfe->calculateLinkVars();
 		// dtdAllowsFrames indicates whether to use the target attribute in links
-		$GLOBALS['TSFE']->dtdAllowsFrames = FALSE;
-		if ($GLOBALS['TSFE']->config['config']['doctype']) {
+		$tsfe->dtdAllowsFrames = FALSE;
+		if ($tsfe->config['config']['doctype']) {
 			if (in_array(
-				(string)$GLOBALS['TSFE']->config['config']['doctype'],
+				(string)$tsfe->config['config']['doctype'],
 				array('xhtml_trans', 'xhtml_frames', 'xhtml_basic', 'xhtml_2', 'html5'),
 				TRUE)
 			) {
-				$GLOBALS['TSFE']->dtdAllowsFrames = TRUE;
+				$tsfe->dtdAllowsFrames = TRUE;
 			}
 		} else {
-			$GLOBALS['TSFE']->dtdAllowsFrames = TRUE;
+			$tsfe->dtdAllowsFrames = TRUE;
 		}
 		// Setting XHTML-doctype from doctype
-		if (!$GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
-			$GLOBALS['TSFE']->config['config']['xhtmlDoctype'] = $GLOBALS['TSFE']->config['config']['doctype'];
+		if (!$tsfe->config['config']['xhtmlDoctype']) {
+			$tsfe->config['config']['xhtmlDoctype'] = $tsfe->config['config']['doctype'];
 		}
-		if ($GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
-			$GLOBALS['TSFE']->xhtmlDoctype = $GLOBALS['TSFE']->config['config']['xhtmlDoctype'];
+		if ($tsfe->config['config']['xhtmlDoctype']) {
+			$tsfe->xhtmlDoctype = $tsfe->config['config']['xhtmlDoctype'];
 			// Checking XHTML-docytpe
-			switch ((string)$GLOBALS['TSFE']->config['config']['xhtmlDoctype']) {
+			switch ((string)$tsfe->config['config']['xhtmlDoctype']) {
 				case 'xhtml_trans':
 
 				case 'xhtml_strict':
 
 				case 'xhtml_frames':
-					$GLOBALS['TSFE']->xhtmlVersion = 100;
+					$tsfe->xhtmlVersion = 100;
 					break;
 				case 'xhtml_basic':
-					$GLOBALS['TSFE']->xhtmlVersion = 105;
+					$tsfe->xhtmlVersion = 105;
 					break;
 				case 'xhtml_11':
 
 				case 'xhtml+rdfa_10':
-					$GLOBALS['TSFE']->xhtmlVersion = 110;
+					$tsfe->xhtmlVersion = 110;
 					break;
 				case 'xhtml_2':
 					GeneralUtility::deprecationLog('The option "config.xhtmlDoctype=xhtml_2" is deprecated since TYPO3 CMS 7, and will be removed with CMS 8');
-					$GLOBALS['TSFE']->xhtmlVersion = 200;
+					$tsfe->xhtmlVersion = 200;
 					break;
 				default:
-					$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
-					$GLOBALS['TSFE']->xhtmlDoctype = '';
-					$GLOBALS['TSFE']->xhtmlVersion = 0;
+					$tsfe->getPageRenderer()->setRenderXhtml(FALSE);
+					$tsfe->xhtmlDoctype = '';
+					$tsfe->xhtmlVersion = 0;
 			}
 		} else {
-			$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
+			$tsfe->getPageRenderer()->setRenderXhtml(FALSE);
 		}
 	}
 
@@ -165,27 +171,29 @@ class PageGenerator {
 	 * @return array Files to include. Paths are relative to PATH_site.
 	 */
 	static public function getIncFiles() {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
 		$incFilesArray = array();
 		// Get files from config.includeLibrary
-		$includeLibrary = trim('' . $GLOBALS['TSFE']->config['config']['includeLibrary']);
+		$includeLibrary = trim('' . $tsfe->config['config']['includeLibrary']);
 		if ($includeLibrary) {
-			$incFile = $GLOBALS['TSFE']->tmpl->getFileName($includeLibrary);
+			$incFile = $tsfe->tmpl->getFileName($includeLibrary);
 			if ($incFile) {
 				$incFilesArray[] = $incFile;
 			}
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['includeLibs.'])) {
-			$incLibs = $GLOBALS['TSFE']->pSetup['includeLibs.'];
+		if (is_array($tsfe->pSetup['includeLibs.'])) {
+			$incLibs = $tsfe->pSetup['includeLibs.'];
 		} else {
 			$incLibs = array();
 		}
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['includeLibs.'])) {
+		if (is_array($tsfe->tmpl->setup['includeLibs.'])) {
 			// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
-			$incLibs += $GLOBALS['TSFE']->tmpl->setup['includeLibs.'];
+			$incLibs += $tsfe->tmpl->setup['includeLibs.'];
 		}
 		if (count($incLibs)) {
 			foreach ($incLibs as $theLib) {
-				if (!is_array($theLib) && ($incFile = $GLOBALS['TSFE']->tmpl->getFileName($theLib))) {
+				if (!is_array($theLib) && ($incFile = $tsfe->tmpl->getFileName($theLib))) {
 					$incFilesArray[] = $incFile;
 				}
 			}
@@ -223,25 +231,31 @@ class PageGenerator {
 	 * @return void
 	 */
 	static public function renderContent() {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
+
+		/** @var TimeTracker $timeTracker */
+		$timeTracker = $GLOBALS['TT'];
+
 		// PAGE CONTENT
-		$GLOBALS['TT']->incStackPointer();
-		$GLOBALS['TT']->push($GLOBALS['TSFE']->sPre, 'PAGE');
-		$pageContent = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup);
-		if ($GLOBALS['TSFE']->pSetup['wrap']) {
-			$pageContent = $GLOBALS['TSFE']->cObj->wrap($pageContent, $GLOBALS['TSFE']->pSetup['wrap']);
+		$timeTracker->incStackPointer();
+		$timeTracker->push($tsfe->sPre, 'PAGE');
+		$pageContent = $tsfe->cObj->cObjGet($tsfe->pSetup);
+		if ($tsfe->pSetup['wrap']) {
+			$pageContent = $tsfe->cObj->wrap($pageContent, $tsfe->pSetup['wrap']);
 		}
-		if ($GLOBALS['TSFE']->pSetup['stdWrap.']) {
-			$pageContent = $GLOBALS['TSFE']->cObj->stdWrap($pageContent, $GLOBALS['TSFE']->pSetup['stdWrap.']);
+		if ($tsfe->pSetup['stdWrap.']) {
+			$pageContent = $tsfe->cObj->stdWrap($pageContent, $tsfe->pSetup['stdWrap.']);
 		}
 		// PAGE HEADER (after content - maybe JS is inserted!
 		// if 'disableAllHeaderCode' is set, all the header-code is discarded!
-		if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
-			$GLOBALS['TSFE']->content = $pageContent;
+		if ($tsfe->config['config']['disableAllHeaderCode']) {
+			$tsfe->content = $pageContent;
 		} else {
 			self::renderContentWithHeader($pageContent);
 		}
-		$GLOBALS['TT']->pull($GLOBALS['TT']->LR ? $GLOBALS['TSFE']->content : '');
-		$GLOBALS['TT']->decStackPointer();
+		$timeTracker->pull($timeTracker->LR ? $tsfe->content : '');
+		$timeTracker->decStackPointer();
 	}
 
 	/**
@@ -251,36 +265,42 @@ class PageGenerator {
 	 * @return void
 	 */
 	static public function renderContentWithHeader($pageContent) {
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
+
+		/** @var TimeTracker $timeTracker */
+		$timeTracker = $GLOBALS['TT'];
+
+		/** @var PageRenderer $pageRenderer */
+		$pageRenderer = $tsfe->getPageRenderer();
+		if ($tsfe->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
-		if ($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']) {
-			$file = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']);
+		if ($tsfe->config['config']['pageRendererTemplateFile']) {
+			$file = $tsfe->tmpl->getFileName($tsfe->config['config']['pageRendererTemplateFile']);
 			if ($file) {
 				$pageRenderer->setTemplateFile($file);
 			}
 		}
-		$headerComment = $GLOBALS['TSFE']->config['config']['headerComment'];
+		$headerComment = $tsfe->config['config']['headerComment'];
 		if (trim($headerComment)) {
 			$pageRenderer->addInlineComment(TAB . str_replace(LF, (LF . TAB), trim($headerComment)) . LF);
 		}
 		// Setting charset:
-		$theCharset = $GLOBALS['TSFE']->metaCharset;
+		$theCharset = $tsfe->metaCharset;
 		// Reset the content variables:
-		$GLOBALS['TSFE']->content = '';
+		$tsfe->content = '';
 		$htmlTagAttributes = array();
-		$htmlLang = $GLOBALS['TSFE']->config['config']['htmlTag_langKey'] ?: ($GLOBALS['TSFE']->sys_language_isocode ?: 'en');
+		$htmlLang = $tsfe->config['config']['htmlTag_langKey'] ?: ($tsfe->sys_language_isocode ?: 'en');
 		// Set content direction: (More info: http://www.tau.ac.il/~danon/Hebrew/HTML_and_Hebrew.html)
-		if ($GLOBALS['TSFE']->config['config']['htmlTag_dir']) {
-			$htmlTagAttributes['dir'] = htmlspecialchars($GLOBALS['TSFE']->config['config']['htmlTag_dir']);
+		if ($tsfe->config['config']['htmlTag_dir']) {
+			$htmlTagAttributes['dir'] = htmlspecialchars($tsfe->config['config']['htmlTag_dir']);
 		}
 		// Setting document type:
 		$docTypeParts = array();
 		$xmlDocument = TRUE;
 		// Part 1: XML prologue
-		switch ((string)$GLOBALS['TSFE']->config['config']['xmlprologue']) {
+		switch ((string)$tsfe->config['config']['xmlprologue']) {
 			case 'none':
 				$xmlDocument = FALSE;
 				break;
@@ -291,15 +311,15 @@ class PageGenerator {
 				$docTypeParts[] = '<?xml version="1.1" encoding="' . $theCharset . '"?>';
 				break;
 			case '':
-				if ($GLOBALS['TSFE']->xhtmlVersion) {
+				if ($tsfe->xhtmlVersion) {
 					$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
 				}
 				break;
 			default:
-				$docTypeParts[] = $GLOBALS['TSFE']->config['config']['xmlprologue'];
+				$docTypeParts[] = $tsfe->config['config']['xmlprologue'];
 		}
 		// Part 2: DTD
-		$doctype = $GLOBALS['TSFE']->config['config']['doctype'];
+		$doctype = $tsfe->config['config']['doctype'];
 		if ($doctype) {
 			switch ($doctype) {
 				case 'xhtml_trans':
@@ -358,24 +378,24 @@ class PageGenerator {
 				$pageRenderer->setMetaCharsetTag('<meta charset="|">');
 			}
 		}
-		if ($GLOBALS['TSFE']->xhtmlVersion) {
+		if ($tsfe->xhtmlVersion) {
 			$htmlTagAttributes['xml:lang'] = $htmlLang;
 		}
-		if ($GLOBALS['TSFE']->xhtmlVersion < 110 || $doctype === 'html5') {
+		if ($tsfe->xhtmlVersion < 110 || $doctype === 'html5') {
 			$htmlTagAttributes['lang'] = $htmlLang;
 		}
-		if ($GLOBALS['TSFE']->xhtmlVersion || $doctype === 'html5' && $xmlDocument) {
+		if ($tsfe->xhtmlVersion || $doctype === 'html5' && $xmlDocument) {
 			// We add this to HTML5 to achieve a slightly better backwards compatibility
 			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
-			if (is_array($GLOBALS['TSFE']->config['config']['namespaces.'])) {
-				foreach ($GLOBALS['TSFE']->config['config']['namespaces.'] as $prefix => $uri) {
+			if (is_array($tsfe->config['config']['namespaces.'])) {
+				foreach ($tsfe->config['config']['namespaces.'] as $prefix => $uri) {
 					// $uri gets htmlspecialchared later
 					$htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri;
 				}
 			}
 		}
 		// Swap XML and doctype order around (for MSIE / Opera standards compliance)
-		if ($GLOBALS['TSFE']->config['config']['doctypeSwitch']) {
+		if ($tsfe->config['config']['doctypeSwitch']) {
 			$docTypeParts = array_reverse($docTypeParts);
 		}
 		// Adding doctype parts:
@@ -383,20 +403,20 @@ class PageGenerator {
 			$pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
 		}
 		// Begin header section:
-		if ($GLOBALS['TSFE']->config['config']['htmlTag_setParams'] !== 'none') {
-			$_attr = $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] ? $GLOBALS['TSFE']->config['config']['htmlTag_setParams'] : GeneralUtility::implodeAttributes($htmlTagAttributes);
+		if ($tsfe->config['config']['htmlTag_setParams'] !== 'none') {
+			$_attr = $tsfe->config['config']['htmlTag_setParams'] ? $tsfe->config['config']['htmlTag_setParams'] : GeneralUtility::implodeAttributes($htmlTagAttributes);
 		} else {
 			$_attr = '';
 		}
 		$htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
-		if (isset($GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.'])) {
-			$htmlTag = $GLOBALS['TSFE']->cObj->stdWrap($htmlTag, $GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.']);
+		if (isset($tsfe->config['config']['htmlTag_stdWrap.'])) {
+			$htmlTag = $tsfe->cObj->stdWrap($htmlTag, $tsfe->config['config']['htmlTag_stdWrap.']);
 		}
 		$pageRenderer->setHtmlTag($htmlTag);
 		// Head tag:
-		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ?: '<head>';
-		if (isset($GLOBALS['TSFE']->pSetup['headTag.'])) {
-			$headTag = $GLOBALS['TSFE']->cObj->stdWrap($headTag, $GLOBALS['TSFE']->pSetup['headTag.']);
+		$headTag = $tsfe->pSetup['headTag'] ?: '<head>';
+		if (isset($tsfe->pSetup['headTag.'])) {
+			$headTag = $tsfe->cObj->stdWrap($headTag, $tsfe->pSetup['headTag.']);
 		}
 		$pageRenderer->setHeadTag($headTag);
 		// Setting charset meta tag:
@@ -406,11 +426,11 @@ class PageGenerator {
 	TYPO3 is copyright ' . TYPO3_copyright_year . ' of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at ' . TYPO3_URL_ORG . '
 ');
-		if ($GLOBALS['TSFE']->baseUrl) {
-			$pageRenderer->setBaseUrl($GLOBALS['TSFE']->baseUrl);
+		if ($tsfe->baseUrl) {
+			$pageRenderer->setBaseUrl($tsfe->baseUrl);
 		}
-		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
-			$favIcon = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['shortcutIcon']);
+		if ($tsfe->pSetup['shortcutIcon']) {
+			$favIcon = $tsfe->tmpl->getFileName($tsfe->pSetup['shortcutIcon']);
 			$iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, PATH_site . $favIcon);
 			if ($iconFileInfo->isFile()) {
 				$iconMimeType = $iconFileInfo->getMimeType();
@@ -422,37 +442,37 @@ class PageGenerator {
 			}
 		}
 		// Including CSS files
-		if (is_array($GLOBALS['TSFE']->tmpl->setup['plugin.'])) {
+		if (is_array($tsfe->tmpl->setup['plugin.'])) {
 			$temp_styleLines = array();
-			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
+			foreach ($tsfe->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode)) {
-					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
+					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($tsfe->config['config']['removeDefaultCss'])) {
 						if (isset($iCSScode['_CSS_DEFAULT_STYLE.'])) {
-							$cssDefaultStyle = $GLOBALS['TSFE']->cObj->stdWrap($iCSScode['_CSS_DEFAULT_STYLE'], $iCSScode['_CSS_DEFAULT_STYLE.']);
+							$cssDefaultStyle = $tsfe->cObj->stdWrap($iCSScode['_CSS_DEFAULT_STYLE'], $iCSScode['_CSS_DEFAULT_STYLE.']);
 						} else {
 							$cssDefaultStyle = $iCSScode['_CSS_DEFAULT_STYLE'];
 						}
 						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle;
 					}
-					if ($iCSScode['_CSS_PAGE_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removePageCss'])) {
+					if ($iCSScode['_CSS_PAGE_STYLE'] && empty($tsfe->config['config']['removePageCss'])) {
 						$cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
 						if (isset($iCSScode['_CSS_PAGE_STYLE.'])) {
-							$cssPageStyle = $GLOBALS['TSFE']->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);
+							$cssPageStyle = $tsfe->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);
 						}
 						$temp_styleLines[] = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssPageStyle;
 					}
 				}
 			}
 			if (count($temp_styleLines)) {
-				if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
+				if ($tsfe->config['config']['inlineStyle2TempFile']) {
 					$pageRenderer->addCssFile(self::inline2TempFile(implode(LF, $temp_styleLines), 'css'));
 				} else {
 					$pageRenderer->addCssInlineBlock('TSFEinlineStyle', implode(LF, $temp_styleLines));
 				}
 			}
 		}
-		if ($GLOBALS['TSFE']->pSetup['stylesheet']) {
-			$ss = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
+		if ($tsfe->pSetup['stylesheet']) {
+			$ss = $tsfe->tmpl->getFileName($tsfe->pSetup['stylesheet']);
 			if ($ss) {
 				$pageRenderer->addCssFile($ss);
 			}
@@ -460,14 +480,14 @@ class PageGenerator {
 		/**********************************************************************/
 		/* config.includeCSS / config.includeCSSLibs
 		/**********************************************************************/
-		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
-			foreach ($GLOBALS['TSFE']->pSetup['includeCSS.'] as $key => $CSSfile) {
+		if (is_array($tsfe->pSetup['includeCSS.'])) {
+			foreach ($tsfe->pSetup['includeCSS.'] as $key => $CSSfile) {
 				if (!is_array($CSSfile)) {
-					$cssFileConfig = &$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.'];
-					if (isset($cssFileConfig['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($cssFileConfig['if.'])) {
+					$cssFileConfig = &$tsfe->pSetup['includeCSS.'][$key . '.'];
+					if (isset($cssFileConfig['if.']) && !$tsfe->cObj->checkIf($cssFileConfig['if.'])) {
 						continue;
 					}
-					$ss = $cssFileConfig['external'] ? $CSSfile : $GLOBALS['TSFE']->tmpl->getFileName($CSSfile);
+					$ss = $cssFileConfig['external'] ? $CSSfile : $tsfe->tmpl->getFileName($CSSfile);
 					if ($ss) {
 						if ($cssFileConfig['import']) {
 							if (!$cssFileConfig['external'] && $ss[0] !== '/') {
@@ -493,14 +513,14 @@ class PageGenerator {
 				}
 			}
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['includeCSSLibs.'])) {
-			foreach ($GLOBALS['TSFE']->pSetup['includeCSSLibs.'] as $key => $CSSfile) {
+		if (is_array($tsfe->pSetup['includeCSSLibs.'])) {
+			foreach ($tsfe->pSetup['includeCSSLibs.'] as $key => $CSSfile) {
 				if (!is_array($CSSfile)) {
-					$cssFileConfig = &$GLOBALS['TSFE']->pSetup['includeCSSLibs.'][$key . '.'];
-					if (isset($cssFileConfig['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($cssFileConfig['if.'])) {
+					$cssFileConfig = &$tsfe->pSetup['includeCSSLibs.'][$key . '.'];
+					if (isset($cssFileConfig['if.']) && !$tsfe->cObj->checkIf($cssFileConfig['if.'])) {
 						continue;
 					}
-					$ss = $cssFileConfig['external'] ? $CSSfile : $GLOBALS['TSFE']->tmpl->getFileName($CSSfile);
+					$ss = $cssFileConfig['external'] ? $CSSfile : $tsfe->tmpl->getFileName($CSSfile);
 					if ($ss) {
 						if ($cssFileConfig['import']) {
 							if (!$cssFileConfig['external'] && $ss[0] !== '/') {
@@ -529,8 +549,8 @@ class PageGenerator {
 
 		// Stylesheets
 		$style = '';
-		if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE']) {
-			$pageTSConfig = $GLOBALS['TSFE']->getPagesTSconfig();
+		if ($tsfe->pSetup['insertClassesFromRTE']) {
+			$pageTSConfig = $tsfe->getPagesTSconfig();
 			$RTEclasses = $pageTSConfig['RTE.']['classes.'];
 			if (is_array($RTEclasses)) {
 				foreach ($RTEclasses as $RTEclassName => $RTEvalueArray) {
@@ -540,8 +560,8 @@ class PageGenerator {
 					}
 				}
 			}
-			if ($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs'] && is_array($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'])) {
-				$mSOa_tList = GeneralUtility::trimExplode(',', strtoupper($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']), TRUE);
+			if ($tsfe->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs'] && is_array($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'])) {
+				$mSOa_tList = GeneralUtility::trimExplode(',', strtoupper($tsfe->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']), TRUE);
 				foreach ($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'] as $mSOa_key => $mSOa_value) {
 					if (!is_array($mSOa_value) && (in_array('*', $mSOa_tList) || in_array($mSOa_key, $mSOa_tList))) {
 						$style .= '
@@ -551,12 +571,12 @@ class PageGenerator {
 			}
 		}
 		// Setting body tag margins in CSS:
-		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']) && $GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
-			$margins = (int)$GLOBALS['TSFE']->pSetup['bodyTagMargins'];
+		if (isset($tsfe->pSetup['bodyTagMargins']) && $tsfe->pSetup['bodyTagMargins.']['useCSS']) {
+			$margins = (int)$tsfe->pSetup['bodyTagMargins'];
 			$style .= '
 	BODY {margin: ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px;}';
 		}
-		if ($GLOBALS['TSFE']->pSetup['adminPanelStyles']) {
+		if ($tsfe->pSetup['adminPanelStyles']) {
 			$style .= '
 
 	/* Default styles for the Admin Panel */
@@ -571,42 +591,42 @@ class PageGenerator {
 			';
 		}
 		// CSS_inlineStyle from TS
-		$style .= trim($GLOBALS['TSFE']->pSetup['CSS_inlineStyle']);
-		$style .= $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['cssInline.'], 'cssInline.');
+		$style .= trim($tsfe->pSetup['CSS_inlineStyle']);
+		$style .= $tsfe->cObj->cObjGet($tsfe->pSetup['cssInline.'], 'cssInline.');
 		if (trim($style)) {
-			if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
+			if ($tsfe->config['config']['inlineStyle2TempFile']) {
 				$pageRenderer->addCssFile(self::inline2TempFile($style, 'css'));
 			} else {
 				$pageRenderer->addCssInlineBlock('additionalTSFEInlineStyle', $style);
 			}
 		}
 		// Javascript Libraries
-		if (is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.'])) {
-			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['SVG']) {
+		if (is_array($tsfe->pSetup['javascriptLibs.'])) {
+			if ($tsfe->pSetup['javascriptLibs.']['SVG']) {
 				$pageRenderer->loadSvg();
-				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['SVG.']['debug']) {
+				if ($tsfe->pSetup['javascriptLibs.']['SVG.']['debug']) {
 					$pageRenderer->enableSvgDebug();
 				}
-				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['SVG.']['forceFlash']) {
+				if ($tsfe->pSetup['javascriptLibs.']['SVG.']['forceFlash']) {
 					$pageRenderer->svgForceFlash();
 				}
 			}
-			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['Prototype']) {
+			if ($tsfe->pSetup['javascriptLibs.']['Prototype']) {
 				$pageRenderer->loadPrototype();
 			}
-			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous']) {
-				$modules = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ?: '';
+			if ($tsfe->pSetup['javascriptLibs.']['Scriptaculous']) {
+				$modules = $tsfe->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ?: '';
 				$pageRenderer->loadScriptaculous($modules);
 			}
-			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore']) {
+			if ($tsfe->pSetup['javascriptLibs.']['ExtCore']) {
 				$pageRenderer->loadExtCore();
-				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore.']['debug']) {
+				if ($tsfe->pSetup['javascriptLibs.']['ExtCore.']['debug']) {
 					$pageRenderer->enableExtCoreDebug();
 				}
 			}
 			// Include jQuery into the page renderer
-			if (!empty($GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery'])) {
-				$jQueryTS = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.'];
+			if (!empty($tsfe->pSetup['javascriptLibs.']['jQuery'])) {
+				$jQueryTS = $tsfe->pSetup['javascriptLibs.']['jQuery.'];
 				// Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
 				$version = isset($jQueryTS['version']) ? $jQueryTS['version'] : NULL;
 				$source = isset($jQueryTS['source']) ? $jQueryTS['source'] : NULL;
@@ -616,49 +636,49 @@ class PageGenerator {
 					if (!empty($jQueryTS['noConflict.']['namespace'])) {
 						$namespace = $jQueryTS['noConflict.']['namespace'];
 					} else {
-						$namespace = \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT;
+						$namespace = PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT;
 					}
 				} else {
-					$namespace = \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE;
+					$namespace = PageRenderer::JQUERY_NAMESPACE_NONE;
 				}
 				$pageRenderer->loadJQuery($version, $source, $namespace);
 			}
-			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs']) {
-				$css = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
-				$theme = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
-				$adapter = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['adapter'] ?: '';
+			if ($tsfe->pSetup['javascriptLibs.']['ExtJs']) {
+				$css = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
+				$theme = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
+				$adapter = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['adapter'] ?: '';
 				$pageRenderer->loadExtJs($css, $theme, $adapter);
-				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
+				if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
 					$pageRenderer->enableExtJsDebug();
 				}
-				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['quickTips']) {
+				if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['quickTips']) {
 					$pageRenderer->enableExtJSQuickTips();
 				}
 			}
 		}
 		// JavaScript library files
-		if (is_array($GLOBALS['TSFE']->pSetup['includeJSlibs.']) || is_array($GLOBALS['TSFE']->pSetup['includeJSLibs.'])) {
-			if (!is_array($GLOBALS['TSFE']->pSetup['includeJSlibs.'])) {
-				$GLOBALS['TSFE']->pSetup['includeJSlibs.'] = array();
+		if (is_array($tsfe->pSetup['includeJSlibs.']) || is_array($tsfe->pSetup['includeJSLibs.'])) {
+			if (!is_array($tsfe->pSetup['includeJSlibs.'])) {
+				$tsfe->pSetup['includeJSlibs.'] = array();
 			} else {
 				GeneralUtility::deprecationLog('The property page.includeJSlibs is marked for deprecation and will be removed in TYPO3 CMS 8. Please use page.includeJSLibs (with a uppercase L) instead.');
 			}
-			if (!is_array($GLOBALS['TSFE']->pSetup['includeJSLibs.'])) {
-				$GLOBALS['TSFE']->pSetup['includeJSLibs.'] = array();
+			if (!is_array($tsfe->pSetup['includeJSLibs.'])) {
+				$tsfe->pSetup['includeJSLibs.'] = array();
 			}
 			ArrayUtility::mergeRecursiveWithOverrule(
-				$GLOBALS['TSFE']->pSetup['includeJSLibs.'],
-				$GLOBALS['TSFE']->pSetup['includeJSlibs.']
+				$tsfe->pSetup['includeJSLibs.'],
+				$tsfe->pSetup['includeJSlibs.']
 			);
-			unset($GLOBALS['TSFE']->pSetup['includeJSlibs.']);
-			foreach ($GLOBALS['TSFE']->pSetup['includeJSLibs.'] as $key => $JSfile) {
+			unset($tsfe->pSetup['includeJSlibs.']);
+			foreach ($tsfe->pSetup['includeJSLibs.'] as $key => $JSfile) {
 				if (!is_array($JSfile)) {
-					if (isset($GLOBALS['TSFE']->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($GLOBALS['TSFE']->pSetup['includeJSLibs.'][($key . '.')]['if.'])) {
+					if (isset($tsfe->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSLibs.'][($key . '.')]['if.'])) {
 						continue;
 					}
-					$ss = $GLOBALS['TSFE']->pSetup['includeJSLibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					$ss = $tsfe->pSetup['includeJSLibs.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
 					if ($ss) {
-						$jsFileConfig = &$GLOBALS['TSFE']->pSetup['includeJSLibs.'][$key . '.'];
+						$jsFileConfig = &$tsfe->pSetup['includeJSLibs.'][$key . '.'];
 						$type = $jsFileConfig['type'];
 						if (!$type) {
 							$type = 'text/javascript';
@@ -680,15 +700,15 @@ class PageGenerator {
 				}
 			}
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'])) {
-			foreach ($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
+		if (is_array($tsfe->pSetup['includeJSFooterlibs.'])) {
+			foreach ($tsfe->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
 				if (!is_array($JSfile)) {
-					if (isset($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][($key . '.')]['if.'])) {
+					if (isset($tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooterlibs.'][($key . '.')]['if.'])) {
 						continue;
 					}
-					$ss = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					$ss = $tsfe->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
 					if ($ss) {
-						$jsFileConfig = &$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.'];
+						$jsFileConfig = &$tsfe->pSetup['includeJSFooterlibs.'][$key . '.'];
 						$type = $jsFileConfig['type'];
 						if (!$type) {
 							$type = 'text/javascript';
@@ -710,15 +730,15 @@ class PageGenerator {
 			}
 		}
 		// JavaScript files
-		if (is_array($GLOBALS['TSFE']->pSetup['includeJS.'])) {
-			foreach ($GLOBALS['TSFE']->pSetup['includeJS.'] as $key => $JSfile) {
+		if (is_array($tsfe->pSetup['includeJS.'])) {
+			foreach ($tsfe->pSetup['includeJS.'] as $key => $JSfile) {
 				if (!is_array($JSfile)) {
-					if (isset($GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($GLOBALS['TSFE']->pSetup['includeJS.'][($key . '.')]['if.'])) {
+					if (isset($tsfe->pSetup['includeJS.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJS.'][($key . '.')]['if.'])) {
 						continue;
 					}
-					$ss = $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					$ss = $tsfe->pSetup['includeJS.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
 					if ($ss) {
-						$jsConfig = &$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.'];
+						$jsConfig = &$tsfe->pSetup['includeJS.'][$key . '.'];
 						$type = $jsConfig['type'];
 						if (!$type) {
 							$type = 'text/javascript';
@@ -738,15 +758,15 @@ class PageGenerator {
 				}
 			}
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['includeJSFooter.'])) {
-			foreach ($GLOBALS['TSFE']->pSetup['includeJSFooter.'] as $key => $JSfile) {
+		if (is_array($tsfe->pSetup['includeJSFooter.'])) {
+			foreach ($tsfe->pSetup['includeJSFooter.'] as $key => $JSfile) {
 				if (!is_array($JSfile)) {
-					if (isset($GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$GLOBALS['TSFE']->cObj->checkIf($GLOBALS['TSFE']->pSetup['includeJSFooter.'][($key . '.')]['if.'])) {
+					if (isset($tsfe->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$tsfe->cObj->checkIf($tsfe->pSetup['includeJSFooter.'][($key . '.')]['if.'])) {
 						continue;
 					}
-					$ss = $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					$ss = $tsfe->pSetup['includeJSFooter.'][$key . '.']['external'] ? $JSfile : $tsfe->tmpl->getFileName($JSfile);
 					if ($ss) {
-						$jsConfig = &$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.'];
+						$jsConfig = &$tsfe->pSetup['includeJSFooter.'][$key . '.'];
 						$type = $jsConfig['type'];
 						if (!$type) {
 							$type = 'text/javascript';
@@ -767,49 +787,49 @@ class PageGenerator {
 			}
 		}
 		// Headerdata
-		if (is_array($GLOBALS['TSFE']->pSetup['headerData.'])) {
-			$pageRenderer->addHeaderData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['headerData.'], 'headerData.'));
+		if (is_array($tsfe->pSetup['headerData.'])) {
+			$pageRenderer->addHeaderData($tsfe->cObj->cObjGet($tsfe->pSetup['headerData.'], 'headerData.'));
 		}
 		// Footerdata
-		if (is_array($GLOBALS['TSFE']->pSetup['footerData.'])) {
-			$pageRenderer->addFooterData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['footerData.'], 'footerData.'));
+		if (is_array($tsfe->pSetup['footerData.'])) {
+			$pageRenderer->addFooterData($tsfe->cObj->cObjGet($tsfe->pSetup['footerData.'], 'footerData.'));
 		}
 		static::generatePageTitle();
 
 		$metaTagsHtml = static::generateMetaTagHtml(
-			isset($GLOBALS['TSFE']->pSetup['meta.']) ? $GLOBALS['TSFE']->pSetup['meta.'] : array(),
-			$GLOBALS['TSFE']->xhtmlVersion,
-			$GLOBALS['TSFE']->cObj
+			isset($tsfe->pSetup['meta.']) ? $tsfe->pSetup['meta.'] : array(),
+			$tsfe->xhtmlVersion,
+			$tsfe->cObj
 		);
 		foreach ($metaTagsHtml as $metaTag) {
 			$pageRenderer->addMetaTag($metaTag);
 		}
 
-		unset($GLOBALS['TSFE']->additionalHeaderData['JSCode']);
-		if (is_array($GLOBALS['TSFE']->config['INTincScript'])) {
-			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;
+		unset($tsfe->additionalHeaderData['JSCode']);
+		if (is_array($tsfe->config['INTincScript'])) {
+			$tsfe->additionalHeaderData['JSCode'] = $tsfe->JSCode;
 			// Storing the JSCode vars...
-			$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] = $GLOBALS['TSFE']->uniqueHash();
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalHeaderData'] = $GLOBALS['TSFE']->additionalHeaderData;
+			$tsfe->config['INTincScript_ext']['divKey'] = $tsfe->uniqueHash();
+			$tsfe->config['INTincScript_ext']['additionalHeaderData'] = $tsfe->additionalHeaderData;
 			// Storing the header-data array
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalFooterData'] = $GLOBALS['TSFE']->additionalFooterData;
+			$tsfe->config['INTincScript_ext']['additionalFooterData'] = $tsfe->additionalFooterData;
 			// Storing the footer-data array
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalJavaScript'] = $GLOBALS['TSFE']->additionalJavaScript;
+			$tsfe->config['INTincScript_ext']['additionalJavaScript'] = $tsfe->additionalJavaScript;
 			// Storing the JS-data array
-			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalCSS'] = $GLOBALS['TSFE']->additionalCSS;
+			$tsfe->config['INTincScript_ext']['additionalCSS'] = $tsfe->additionalCSS;
 			// Storing the Style-data array
-			$GLOBALS['TSFE']->additionalHeaderData = array('<!--HD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->');
+			$tsfe->additionalHeaderData = array('<!--HD_' . $tsfe->config['INTincScript_ext']['divKey'] . '-->');
 			// Clearing the array
-			$GLOBALS['TSFE']->additionalFooterData = array('<!--FD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->');
+			$tsfe->additionalFooterData = array('<!--FD_' . $tsfe->config['INTincScript_ext']['divKey'] . '-->');
 			// Clearing the array
-			$GLOBALS['TSFE']->divSection .= '<!--TDS_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->';
+			$tsfe->divSection .= '<!--TDS_' . $tsfe->config['INTincScript_ext']['divKey'] . '-->';
 		} else {
-			$GLOBALS['TSFE']->INTincScript_loadJSCode();
+			$tsfe->INTincScript_loadJSCode();
 		}
 		$JSef = self::JSeventFunctions();
 		$scriptJsCode = $JSef[0];
 
-		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
+		if ($tsfe->spamProtectEmailAddresses && $tsfe->spamProtectEmailAddresses !== 'ascii') {
 			$scriptJsCode = '
 			// decrypt helper function
 		function decryptCharcode(n,start,end,offset) {
@@ -841,15 +861,15 @@ class PageGenerator {
 		}
 			// decrypt spam-protected emails
 		function linkTo_UnCryptMailto(s) {
-			location.href = decryptString(s,' . $GLOBALS['TSFE']->spamProtectEmailAddresses * -1 . ');
+			location.href = decryptString(s,' . $tsfe->spamProtectEmailAddresses * -1 . ');
 		}
 		';
 		}
 		// Add inline JS
 		$inlineJS = '';
 		// defined in php
-		if (is_array($GLOBALS['TSFE']->inlineJS)) {
-			foreach ($GLOBALS['TSFE']->inlineJS as $key => $val) {
+		if (is_array($tsfe->inlineJS)) {
+			foreach ($tsfe->inlineJS as $key => $val) {
 				if (!is_array($val)) {
 					$inlineJS .= LF . $val . LF;
 				}
@@ -857,45 +877,45 @@ class PageGenerator {
 		}
 		// defined in TS with page.inlineJS
 		// Javascript inline code
-		$inline = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['jsInline.'], 'jsInline.');
+		$inline = $tsfe->cObj->cObjGet($tsfe->pSetup['jsInline.'], 'jsInline.');
 		if ($inline) {
 			$inlineJS .= LF . $inline . LF;
 		}
 		// Javascript inline code for Footer
-		$inlineFooterJs = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['jsFooterInline.'], 'jsFooterInline.');
+		$inlineFooterJs = $tsfe->cObj->cObjGet($tsfe->pSetup['jsFooterInline.'], 'jsFooterInline.');
 		// Should minify?
-		if ($GLOBALS['TSFE']->config['config']['compressJs']) {
+		if ($tsfe->config['config']['compressJs']) {
 			$pageRenderer->enableCompressJavascript();
 			$minifyErrorScript = ($minifyErrorInline = '');
 			$scriptJsCode = GeneralUtility::minifyJavaScript($scriptJsCode, $minifyErrorScript);
 			if ($minifyErrorScript) {
-				$GLOBALS['TT']->setTSlogMessage($minifyErrorScript, 3);
+				$timeTracker->setTSlogMessage($minifyErrorScript, 3);
 			}
 			if ($inlineJS) {
 				$inlineJS = GeneralUtility::minifyJavaScript($inlineJS, $minifyErrorInline);
 				if ($minifyErrorInline) {
-					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
+					$timeTracker->setTSlogMessage($minifyErrorInline, 3);
 				}
 			}
 			if ($inlineFooterJs) {
 				$inlineFooterJs = GeneralUtility::minifyJavaScript($inlineFooterJs, $minifyErrorInline);
 				if ($minifyErrorInline) {
-					$GLOBALS['TT']->setTSlogMessage($minifyErrorInline, 3);
+					$timeTracker->setTSlogMessage($minifyErrorInline, 3);
 				}
 			}
 		}
-		if (!$GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
+		if (!$tsfe->config['config']['removeDefaultJS']) {
 			// inlude default and inlineJS
 			if ($scriptJsCode) {
-				$pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $tsfe->config['config']['compressJs']);
 			}
 			if ($inlineJS) {
-				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $tsfe->config['config']['compressJs']);
 			}
 			if ($inlineFooterJs) {
-				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $tsfe->config['config']['compressJs']);
 			}
-		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS'] === 'external') {
+		} elseif ($tsfe->config['config']['removeDefaultJS'] === 'external') {
 			/*
 			 * This keeps inlineJS from *_INT Objects from being moved to external files.
 			 * At this point in frontend rendering *_INT Objects only have placeholders instead
@@ -908,91 +928,91 @@ class PageGenerator {
 			$inlineJSint = '';
 			self::stripIntObjectPlaceholder($inlineJS, $inlineJSint);
 			if ($inlineJSint) {
-				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $tsfe->config['config']['compressJs']);
 			}
 			if (trim($scriptJsCode . $inlineJS)) {
-				$pageRenderer->addJsFile(self::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsFile(self::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $tsfe->config['config']['compressJs']);
 			}
 			if ($inlineFooterJs) {
 				$inlineFooterJSint = '';
 				self::stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
 				if ($inlineFooterJSint) {
-					$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
+					$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $tsfe->config['config']['compressJs']);
 				}
-				$pageRenderer->addJsFooterFile(self::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsFooterFile(self::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $tsfe->config['config']['compressJs']);
 			}
 		} else {
 			// Include only inlineJS
 			if ($inlineJS) {
-				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $tsfe->config['config']['compressJs']);
 			}
 			if ($inlineFooterJs) {
-				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $tsfe->config['config']['compressJs']);
 			}
 		}
 		// ExtJS specific code
-		if (is_array($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.'])) {
-			$pageRenderer->addInlineLanguageLabelArray($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.']);
+		if (is_array($tsfe->pSetup['inlineLanguageLabel.'])) {
+			$pageRenderer->addInlineLanguageLabelArray($tsfe->pSetup['inlineLanguageLabel.']);
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['inlineSettings.'])) {
-			$pageRenderer->addInlineSettingArray('TS', $GLOBALS['TSFE']->pSetup['inlineSettings.']);
+		if (is_array($tsfe->pSetup['inlineSettings.'])) {
+			$pageRenderer->addInlineSettingArray('TS', $tsfe->pSetup['inlineSettings.']);
 		}
-		if (is_array($GLOBALS['TSFE']->pSetup['extOnReady.'])) {
-			$pageRenderer->addExtOnReadyCode($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['extOnReady.'], 'extOnReady.'));
+		if (is_array($tsfe->pSetup['extOnReady.'])) {
+			$pageRenderer->addExtOnReadyCode($tsfe->cObj->cObjGet($tsfe->pSetup['extOnReady.'], 'extOnReady.'));
 		}
 		// Compression and concatenate settings
-		if ($GLOBALS['TSFE']->config['config']['compressCss']) {
+		if ($tsfe->config['config']['compressCss']) {
 			$pageRenderer->enableCompressCss();
 		}
-		if ($GLOBALS['TSFE']->config['config']['compressJs']) {
+		if ($tsfe->config['config']['compressJs']) {
 			$pageRenderer->enableCompressJavascript();
 		}
-		if ($GLOBALS['TSFE']->config['config']['concatenateCss']) {
+		if ($tsfe->config['config']['concatenateCss']) {
 			$pageRenderer->enableConcatenateCss();
 		}
-		if ($GLOBALS['TSFE']->config['config']['concatenateJs']) {
+		if ($tsfe->config['config']['concatenateJs']) {
 			$pageRenderer->enableConcatenateJavascript();
 		}
 		// Backward compatibility for old configuration
-		if ($GLOBALS['TSFE']->config['config']['concatenateJsAndCss']) {
+		if ($tsfe->config['config']['concatenateJsAndCss']) {
 			$pageRenderer->enableConcatenateFiles();
 		}
 		// Add header data block
-		if ($GLOBALS['TSFE']->additionalHeaderData) {
-			$pageRenderer->addHeaderData(implode(LF, $GLOBALS['TSFE']->additionalHeaderData));
+		if ($tsfe->additionalHeaderData) {
+			$pageRenderer->addHeaderData(implode(LF, $tsfe->additionalHeaderData));
 		}
 		// Add footer data block
-		if ($GLOBALS['TSFE']->additionalFooterData) {
-			$pageRenderer->addFooterData(implode(LF, $GLOBALS['TSFE']->additionalFooterData));
+		if ($tsfe->additionalFooterData) {
+			$pageRenderer->addFooterData(implode(LF, $tsfe->additionalFooterData));
 		}
 		// Header complete, now add content
-		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
-			$fs = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\FramesetRenderer::class);
-			$pageRenderer->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
+		if ($tsfe->pSetup['frameSet.']) {
+			$fs = GeneralUtility::makeInstance(FramesetRenderer::class);
+			$pageRenderer->addBodyContent($fs->make($tsfe->pSetup['frameSet.']));
 			$pageRenderer->addBodyContent(LF . '<noframes>' . LF);
 		}
 		// Bodytag:
-		if ($GLOBALS['TSFE']->config['config']['disableBodyTag']) {
+		if ($tsfe->config['config']['disableBodyTag']) {
 			$bodyTag = '';
 		} else {
-			$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
+			$defBT = $tsfe->pSetup['bodyTagCObject'] ? $tsfe->cObj->cObjGetSingle($tsfe->pSetup['bodyTagCObject'], $tsfe->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
 			if (!$defBT) {
-				$defBT = $GLOBALS['TSFE']->defaultBodyTag;
+				$defBT = $tsfe->defaultBodyTag;
 			}
-			$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
-			if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
-				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';
+			$bodyTag = $tsfe->pSetup['bodyTag'] ? $tsfe->pSetup['bodyTag'] : $defBT;
+			if ($bgImg = $tsfe->cObj->getImgResource($tsfe->pSetup['bgImg'], $tsfe->pSetup['bgImg.'])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $tsfe->absRefPrefix . $bgImg[3] . '">';
 			}
-			if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
-				$margins = (int)$GLOBALS['TSFE']->pSetup['bodyTagMargins'];
-				if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
+			if (isset($tsfe->pSetup['bodyTagMargins'])) {
+				$margins = (int)$tsfe->pSetup['bodyTagMargins'];
+				if ($tsfe->pSetup['bodyTagMargins.']['useCSS']) {
 
 				} else {
 					$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
 				}
 			}
-			if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) {
-				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
+			if (trim($tsfe->pSetup['bodyTagAdd'])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($tsfe->pSetup['bodyTagAdd']) . '>';
 			}
 			// Event functions
 			if (count($JSef[1])) {
@@ -1001,23 +1021,23 @@ class PageGenerator {
 		}
 		$pageRenderer->addBodyContent(LF . $bodyTag);
 		// Div-sections
-		if ($GLOBALS['TSFE']->divSection) {
-			$pageRenderer->addBodyContent(LF . $GLOBALS['TSFE']->divSection);
+		if ($tsfe->divSection) {
+			$pageRenderer->addBodyContent(LF . $tsfe->divSection);
 		}
 		// Page content
 		$pageRenderer->addBodyContent(LF . $pageContent);
-		if (!empty($GLOBALS['TSFE']->config['INTincScript']) && is_array($GLOBALS['TSFE']->config['INTincScript'])) {
+		if (!empty($tsfe->config['INTincScript']) && is_array($tsfe->config['INTincScript'])) {
 			// Store the serialized pageRenderer in configuration
-			$GLOBALS['TSFE']->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
+			$tsfe->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
 			// Render complete page, keep placeholders for JavaScript and CSS
-			$GLOBALS['TSFE']->content = $pageRenderer->renderPageWithUncachedObjects($GLOBALS['TSFE']->config['INTincScript_ext']['divKey']);
+			$tsfe->content = $pageRenderer->renderPageWithUncachedObjects($tsfe->config['INTincScript_ext']['divKey']);
 		} else {
 			// Render complete page
-			$GLOBALS['TSFE']->content = $pageRenderer->render();
+			$tsfe->content = $pageRenderer->render();
 		}
 		// Ending page
-		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
-			$GLOBALS['TSFE']->content .= LF . '</noframes>';
+		if ($tsfe->pSetup['frameSet.']) {
+			$tsfe->content .= LF . '</noframes>';
 		}
 	}
 
@@ -1079,7 +1099,7 @@ class PageGenerator {
 		$OK = FALSE;
 		// Integer
 		if ($needle == 'int' || $needle == 'integer') {
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($haystack)) {
+			if (MathUtility::canBeInterpretedAsInteger($haystack)) {
 				$OK = TRUE;
 			}
 		} elseif (preg_match('/^\\/.+\\/[imsxeADSUXu]*$/', $needle)) {
@@ -1089,7 +1109,7 @@ class PageGenerator {
 			}
 		} elseif (strstr($needle, '-')) {
 			// Range
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($haystack)) {
+			if (MathUtility::canBeInterpretedAsInteger($haystack)) {
 				$range = explode('-', $needle);
 				if ($range[0] <= $haystack && $range[1] >= $haystack) {
 					$OK = TRUE;
@@ -1118,38 +1138,41 @@ class PageGenerator {
 	 * @return void
 	 */
 	static public function generatePageTitle() {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
+
 		$pageTitleSeparator = '';
 
 		// check for a custom pageTitleSeparator, and perform stdWrap on it
-		if (isset($GLOBALS['TSFE']->config['config']['pageTitleSeparator']) && $GLOBALS['TSFE']->config['config']['pageTitleSeparator'] !== '') {
-			$pageTitleSeparator = $GLOBALS['TSFE']->config['config']['pageTitleSeparator'];
+		if (isset($tsfe->config['config']['pageTitleSeparator']) && $tsfe->config['config']['pageTitleSeparator'] !== '') {
+			$pageTitleSeparator = $tsfe->config['config']['pageTitleSeparator'];
 
-			if (isset($GLOBALS['TSFE']->config['config']['pageTitleSeparator.']) && is_array($GLOBALS['TSFE']->config['config']['pageTitleSeparator.'])) {
-				$pageTitleSeparator = $GLOBALS['TSFE']->cObj->stdWrap($pageTitleSeparator, $GLOBALS['TSFE']->config['config']['pageTitleSeparator.']);
+			if (isset($tsfe->config['config']['pageTitleSeparator.']) && is_array($tsfe->config['config']['pageTitleSeparator.'])) {
+				$pageTitleSeparator = $tsfe->cObj->stdWrap($pageTitleSeparator, $tsfe->config['config']['pageTitleSeparator.']);
 			} else {
 				$pageTitleSeparator .= ' ';
 			}
 		}
 
-		$titleTagContent = $GLOBALS['TSFE']->tmpl->printTitle(
-			$GLOBALS['TSFE']->altPageTitle ?: $GLOBALS['TSFE']->page['title'],
-			$GLOBALS['TSFE']->config['config']['noPageTitle'],
-			$GLOBALS['TSFE']->config['config']['pageTitleFirst'],
+		$titleTagContent = $tsfe->tmpl->printTitle(
+			$tsfe->altPageTitle ?: $tsfe->page['title'],
+			$tsfe->config['config']['noPageTitle'],
+			$tsfe->config['config']['pageTitleFirst'],
 			$pageTitleSeparator
 		);
-		if ($GLOBALS['TSFE']->config['config']['titleTagFunction']) {
-			$titleTagContent = $GLOBALS['TSFE']->cObj->callUserFunction(
-				$GLOBALS['TSFE']->config['config']['titleTagFunction'],
+		if ($tsfe->config['config']['titleTagFunction']) {
+			$titleTagContent = $tsfe->cObj->callUserFunction(
+				$tsfe->config['config']['titleTagFunction'],
 				array(),
 				$titleTagContent
 			);
 		}
 		// stdWrap around the title tag
-		if (isset($GLOBALS['TSFE']->config['config']['pageTitle.']) && is_array($GLOBALS['TSFE']->config['config']['pageTitle.'])) {
-			$titleTagContent = $GLOBALS['TSFE']->cObj->stdWrap($titleTagContent, $GLOBALS['TSFE']->config['config']['pageTitle.']);
+		if (isset($tsfe->config['config']['pageTitle.']) && is_array($tsfe->config['config']['pageTitle.'])) {
+			$titleTagContent = $tsfe->cObj->stdWrap($titleTagContent, $tsfe->config['config']['pageTitle.']);
 		}
-		if ($titleTagContent !== '' && (int)$GLOBALS['TSFE']->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
-			$GLOBALS['TSFE']->getPageRenderer()->setTitle($titleTagContent);
+		if ($titleTagContent !== '' && (int)$tsfe->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
+			$tsfe->getPageRenderer()->setTitle($titleTagContent);
 		}
 	}
 
@@ -1170,7 +1193,7 @@ class PageGenerator {
 		);
 
 		/** @var TypoScriptService $typoScriptService */
-		$typoScriptService = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Service\TypoScriptService::class);
+		$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
 		$conf = $typoScriptService->convertTypoScriptArrayToPlainArray($metaTagTypoScript);
 		foreach ($conf as $key => $properties) {
 			if (is_array($properties)) {
@@ -1198,16 +1221,19 @@ class PageGenerator {
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::sWordRegEx
 	 */
 	static protected function initializeSearchWordDataInTsfe() {
-		$GLOBALS['TSFE']->sWordRegEx = '';
-		$GLOBALS['TSFE']->sWordList = GeneralUtility::_GP('sword_list');
-		if (is_array($GLOBALS['TSFE']->sWordList)) {
-			$space = !empty($GLOBALS['TSFE']->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
-			foreach ($GLOBALS['TSFE']->sWordList as $val) {
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $GLOBALS['TSFE'];
+
+		$tsfe->sWordRegEx = '';
+		$tsfe->sWordList = GeneralUtility::_GP('sword_list');
+		if (is_array($tsfe->sWordList)) {
+			$space = !empty($tsfe->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
+			foreach ($tsfe->sWordList as $val) {
 				if (trim($val) !== '') {
-					$GLOBALS['TSFE']->sWordRegEx .= $space . preg_quote($val, '/') . $space . '|';
+					$tsfe->sWordRegEx .= $space . preg_quote($val, '/') . $space . '|';
 				}
 			}
-			$GLOBALS['TSFE']->sWordRegEx = rtrim($GLOBALS['TSFE']->sWordRegEx, '|');
+			$tsfe->sWordRegEx = rtrim($tsfe->sWordRegEx, '|');
 		}
 	}
 }
