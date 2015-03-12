@@ -24,6 +24,8 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 		dropPossibleClass: 't3-page-ce-dropzone-possible',
 		sortableItemsIdentifier: '.t3js-page-ce-sortable',
 		columnIdentifier: '.t3-page-column',
+		columnHolderIdentifier: 'table.t3-page-columns',
+		addContentIdentifier: '.t3js-page-new-ce',
 		langClassPrefix: '.t3js-sortable-lang-'
 	};
 
@@ -52,10 +54,9 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 					DragDrop.onSortChange($(this), ui);
 				},
 				update: function(e, ui) {
-					DragDrop.onSortUpdate($(this), ui);
-				},
-				receive: function(e, ui) {
-					DragDrop.onSortUpdate($(this), ui, $(this).data('colpos'));
+					if (this === ui.item.parent()[0]) {
+						DragDrop.onSortUpdate($(this), ui)
+					}
 				}
 			}).disableSelection();
 		});
@@ -69,20 +70,20 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 			$helper = $(ui.helper),
 			$placeholder = $(ui.placeholder);
 
-		$placeholder.height($item.height() - $helper.find('.t3js-page-new-ce').height());
+		$placeholder.height($item.height() - $helper.find(DragDrop.addContentIdentifier).height());
 		DragDrop.changeDropzoneVisibility($container, $item);
 
 		// show all dropzones, except the own
 		$helper.find(DragDrop.dropZoneAvailableIdentifier).removeClass('active');
-		$container.parents('table.t3-page-columns').find('.t3js-page-new-ce').hide();
+		$container.parents(DragDrop.columnHolderIdentifier).find(DragDrop.addContentIdentifier).hide();
 	};
 
 	/**
 	 * Called when the sorting stopped
 	 */
 	DragDrop.onSortStop = function($container, ui) {
-		var $allColumns = $container.parents('table.t3-page-columns');
-		$allColumns.find('.t3js-page-new-ce').show();
+		var $allColumns = $container.parents(DragDrop.columnHolderIdentifier);
+		$allColumns.find(DragDrop.addContentIdentifier).show();
 		$allColumns.find(DragDrop.dropZoneAvailableIdentifier + '.active').removeClass('active');
 	};
 
@@ -96,19 +97,19 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	DragDrop.changeDropzoneVisibility = function($container, $subject) {
 		var $prev = $subject.prev(':visible'),
-			droppableClassName = '.t3js-sortable-lang-' + $container.data('language-uid');
+			droppableClassName = DragDrop.langClassPrefix + $container.data('language-uid');
 
 		if ($prev.length === 0) {
 			$prev = $subject.prevUntil(':visible').last().prev();
 		}
-		$container.parents('table.t3-page-columns').find(droppableClassName).find(DragDrop.contentIdentifier + ':not(.ui-sortable-helper)').not($prev).find(DragDrop.dropZoneAvailableIdentifier).addClass('active');
+		$container.parents(DragDrop.columnHolderIdentifier).find(droppableClassName).find(DragDrop.contentIdentifier + ':not(.ui-sortable-helper)').not($prev).find(DragDrop.dropZoneAvailableIdentifier).addClass('active');
 		$prev.find(DragDrop.dropZoneAvailableIdentifier + '.active').removeClass('active');
 	};
 
 	/**
 	 * Called when the new position of the element gets stored
 	 */
-	DragDrop.onSortUpdate = function($container, ui, newColumn) {
+	DragDrop.onSortUpdate = function($container, ui) {
 		var $selectedItem = $(ui.item),
 			contentElementUid = parseInt($selectedItem.data('uid'));
 
@@ -116,10 +117,8 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 		if (contentElementUid > 0) {
 			var parameters = {};
 			// add the information about a possible column position change
-			if (typeof newColumn !== 'undefined') {
-				parameters['data'] = {tt_content: {}};
-				parameters['data']['tt_content'][contentElementUid] = {colPos: parseInt(newColumn)};
-			}
+			parameters['data'] = {tt_content: {}};
+			parameters['data']['tt_content'][contentElementUid] = {colPos: parseInt($container.data('colpos'))};
 		}
 
 		var targetContentElementUid = $selectedItem.prev().data('uid');
