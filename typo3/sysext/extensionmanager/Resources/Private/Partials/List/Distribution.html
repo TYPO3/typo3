@@ -1,6 +1,11 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <div class="distribution">
 	<div class="distribution-image">
+		<f:if condition="{distribution.dependencies}">
+			<div class="typo3-dependency-version">
+				<em:typo3Dependency extension="{distribution}" />
+			</div>
+		</f:if>
 		<em:image
 				src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
 				fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
@@ -10,7 +15,7 @@
 		<div class="distribution-hover">
 			<div class="distribution-hover-inner">
 				<dl class="dl-horizontal">
-					 <dt><f:translate key="extensionList.distribution.title" /></dt>
+					<dt><f:translate key="extensionList.distribution.title" /></dt>
 					<dd>{distribution.title}</dd>
 					<dt><f:translate key="extensionList.distribution.key" /></dt>
 					<dd>{distribution.extensionKey}</dd>

@@ -11051,6 +11051,10 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 .distribution:hover .distribution-more {
   text-decoration: underline;
 }
+.distribution .typo3-dependency-version {
+  position: absolute;
+  right: 0px;
+}
 .distribution-holder {
   top: 0px;
   bottom: 0px;
