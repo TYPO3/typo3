@@ -192,6 +192,9 @@ class ReviewController extends AbstractController {
 		foreach ($javaScriptFiles as $javaScriptFile) {
 			$this->pageRenderer->addJsFile($javaScriptFile);
 		}
+		foreach ($this->getAdditionalResourceService()->getLocalizationResources() as $localizationResource) {
+			$this->pageRenderer->addInlineLanguageLabelFile($localizationResource);
+		}
 		$this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', BackendUtility::getModuleUrl('record_history'));
 	}
 

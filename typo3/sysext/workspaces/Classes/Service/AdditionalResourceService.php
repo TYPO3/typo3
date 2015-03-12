@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Service for additional columns in GridPanel
  *
@@ -32,6 +34,11 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $stylesheetResources = array();
 
 	/**
+	 * @var array
+	 */
+	protected $localizationResources = array();
+
+	/**
 	 * @return \TYPO3\CMS\Workspaces\Service\AdditionalResourceService
 	 */
 	static public function getInstance() {
@@ -42,7 +49,7 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	static public function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
 	/**
@@ -64,6 +71,15 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @param string $resourcePath
+	 * @return void
+	 */
+	public function addLocalizationResource($resourcePath) {
+		$absoluteResourcePath = GeneralUtility::getFileAbsFileName($resourcePath);
+		$this->localizationResources[$absoluteResourcePath] = $absoluteResourcePath;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getJavaScriptResources() {
@@ -78,13 +94,20 @@ class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getLocalizationResources() {
+		return $this->localizationResources;
+	}
+
+	/**
 	 * Resolve path
 	 *
 	 * @param string $resourcePath
 	 * @return NULL|string
 	 */
 	protected function resolvePath($resourcePath) {
-		$absoluteFilePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($resourcePath);
+		$absoluteFilePath = GeneralUtility::getFileAbsFileName($resourcePath);
 		$absolutePath = dirname($absoluteFilePath);
 		$fileName = basename($absoluteFilePath);
 
