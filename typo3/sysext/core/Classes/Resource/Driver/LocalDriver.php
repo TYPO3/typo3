@@ -320,9 +320,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 		}
 		// Strip trailing dots and return
 		$cleanFileName = rtrim($cleanFileName, '.');
-		if (!$cleanFileName) {
+		if ($cleanFileName === '') {
 			throw new Exception\InvalidFileNameException(
-				'File name ' . $cleanFileName . ' is invalid.',
+				'File name ' . $fileName . ' is invalid.',
 				1320288991
 			);
 		}
