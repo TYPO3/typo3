@@ -320,7 +320,7 @@ class PageRepository {
 	public function getPageOverlay($pageInput, $lUid = -1) {
 		$rows = $this->getPagesOverlay(array($pageInput), $lUid);
 		// Always an array in return
-		return count($rows) ? $rows[0] : array();
+		return isset($rows[0]) ? $rows[0] : array();
 	}
 
 	/**
@@ -335,7 +335,7 @@ class PageRepository {
 	 *			   are returned.
 	 */
 	public function getPagesOverlay(array $pagesInput, $lUid = -1) {
-		if (count($pagesInput) == 0) {
+		if (empty($pagesInput)) {
 			return array();
 		}
 		// Initialize:
@@ -373,8 +373,8 @@ class PageRepository {
 					$page_ids[] = $origPage;
 				}
 			}
-			if (count($fieldArr)) {
-				if (!in_array('pid', $fieldArr)) {
+			if (!empty($fieldArr)) {
+				if (!in_array('pid', $fieldArr, TRUE)) {
 					$fieldArr[] = 'pid';
 				}
 				// NOTE to enabledFields('pages_language_overlay'):
@@ -388,9 +388,7 @@ class PageRepository {
 					implode(',', $fieldArr),
 					'pages_language_overlay',
 					'pid IN(' . implode(',', $this->getDatabaseConnection()->cleanIntArray($page_ids)) . ')'
-						. ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay'),
-					'',
-					''
+						. ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay')
 				);
 				$overlays = array();
 				while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
@@ -454,7 +452,7 @@ class PageRepository {
 				$hookObject->getRecordOverlay_preProcess($table, $row, $sys_language_content, $OLmode, $this);
 			}
 		}
-		if ($row['uid'] > 0 && ($row['pid'] > 0 || in_array($table, $this->tableNamesAllowedOnRootLevel))) {
+		if ($row['uid'] > 0 && ($row['pid'] > 0 || in_array($table, $this->tableNamesAllowedOnRootLevel, TRUE))) {
 			if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 				if (!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
 					// Will not be able to work with other tables (Just didn't implement it yet;
@@ -480,15 +478,15 @@ class PageRepository {
 									$row['_ORIG_pid'] = $olrow['_ORIG_pid'];
 								}
 								foreach ($row as $fN => $fV) {
-									if ($fN != 'uid' && $fN != 'pid' && isset($olrow[$fN])) {
+									if ($fN !== 'uid' && $fN !== 'pid' && isset($olrow[$fN])) {
 										if ($this->shouldFieldBeOverlaid($table, $fN, $olrow[$fN])) {
 											$row[$fN] = $olrow[$fN];
 										}
-									} elseif ($fN == 'uid') {
+									} elseif ($fN === 'uid') {
 										$row['_LOCALIZED_UID'] = $olrow['uid'];
 									}
 								}
-							} elseif ($OLmode === 'hideNonTranslated' && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0) {
+							} elseif ($OLmode === 'hideNonTranslated' && (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === 0) {
 								// Unset, if non-translated records should be hidden. ONLY done if the source
 								// record really is default language and not [All] in which case it is allowed.
 								unset($row);
@@ -564,7 +562,7 @@ class PageRepository {
 					// Using "getPage" is OK since we need the check for enableFields AND for type 2
 					// of mount pids we DO require a doktype < 200!
 					$mp_row = $this->getPage($mount_info['mount_pid']);
-					if (count($mp_row)) {
+					if (!empty($mp_row)) {
 						$row = $mp_row;
 						$row['_MP_PARAM'] = $mount_info['MPvar'];
 					} else {
@@ -572,18 +570,20 @@ class PageRepository {
 					}
 				}
 				// If shortcut, look up if the target exists and is currently visible
-				if ($row['doktype'] == self::DOKTYPE_SHORTCUT && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts) {
-					if ($row['shortcut_mode'] == self::SHORTCUT_MODE_NONE) {
+				$doktype = (int)$row['doktype'];
+				$shortcutMode = (int)$row['shortcut_mode'];
+				if ($doktype === self::DOKTYPE_SHORTCUT && ($row['shortcut'] || $shortcutMode) && $checkShortcuts) {
+					if ($shortcutMode === self::SHORTCUT_MODE_NONE) {
 						// No shortcut_mode set, so target is directly set in $row['shortcut']
 						$searchField = 'uid';
 						$searchUid = (int)$row['shortcut'];
-					} elseif ($row['shortcut_mode'] == self::SHORTCUT_MODE_FIRST_SUBPAGE || $row['shortcut_mode'] == self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+					} elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
 						// Check subpages - first subpage or random subpage
 						$searchField = 'pid';
 						// If a shortcut mode is set and no valid page is given to select subpags
 						// from use the actual page.
 						$searchUid = (int)$row['shortcut'] ?: $row['uid'];
-					} elseif ($row['shortcut_mode'] == self::SHORTCUT_MODE_PARENT_PAGE) {
+					} elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
 						// Shortcut to parent page
 						$searchField = 'uid';
 						$searchUid = $row['pid'];
@@ -592,7 +592,7 @@ class PageRepository {
 					if (!$count) {
 						unset($row);
 					}
-				} elseif ($row['doktype'] == self::DOKTYPE_SHORTCUT && $checkShortcuts) {
+				} elseif ($doktype === self::DOKTYPE_SHORTCUT && $checkShortcuts) {
 					// Neither shortcut target nor mode is set. Remove the page from the menu.
 					unset($row);
 				}
@@ -678,7 +678,7 @@ class PageRepository {
 		} catch (\RuntimeException $ex) {
 			if ($ignoreMPerrors) {
 				$this->error_getRootLine = $ex->getMessage();
-				if (substr($this->error_getRootLine, -7) == 'uid -1.') {
+				if (substr($this->error_getRootLine, -7) === 'uid -1.') {
 					$this->error_getRootLine_failPid = -1;
 				}
 				return array();
@@ -722,7 +722,7 @@ class PageRepository {
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()
 	 */
 	public function getExtURL($pagerow, $disable = 0) {
-		if ($pagerow['doktype'] == self::DOKTYPE_LINK && !$disable) {
+		if ((int)$pagerow['doktype'] === self::DOKTYPE_LINK && !$disable) {
 			$redirectTo = $this->urltypes[$pagerow['urltype']] . $pagerow['url'];
 			// If relative path, prefix Site URL:
 			$uI = parse_url($redirectTo);
@@ -768,7 +768,7 @@ class PageRepository {
 			}
 			// Look for mount pid value plus other required circumstances:
 			$mount_pid = (int)$pageRec['mount_pid'];
-			if (is_array($pageRec) && $pageRec['doktype'] == self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids)) {
+			if (is_array($pageRec) && (int)$pageRec['doktype'] === self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids, TRUE)) {
 				// Get the mount point record (to verify its general existence):
 				$res = $this->getDatabaseConnection()->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . $mount_pid . ' AND pages.deleted=0 AND pages.doktype<>255');
 				$mountRec = $this->getDatabaseConnection()->sql_fetch_assoc($res);
@@ -851,7 +851,7 @@ class PageRepository {
 		$uid = (int)$uid;
 		// Excluding pages here so we can ask the function BEFORE TCA gets initialized.
 		// Support for this is followed up in deleteClause()...
-		if ((is_array($GLOBALS['TCA'][$table]) || $table == 'pages') && $uid > 0) {
+		if ((is_array($GLOBALS['TCA'][$table]) || $table === 'pages') && $uid > 0) {
 			$res = $this->getDatabaseConnection()->exec_SELECTquery($fields, $table, 'uid = ' . $uid . $this->deleteClause($table));
 			$row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
 			$this->getDatabaseConnection()->sql_free_result($res);
@@ -888,7 +888,7 @@ class PageRepository {
 				}
 			}
 			$this->getDatabaseConnection()->sql_free_result($res);
-			if (count($rows)) {
+			if (!empty($rows)) {
 				return $rows;
 			}
 		}
@@ -905,7 +905,7 @@ class PageRepository {
 	 * Can be used to retrieved a cached value, array or object
 	 * Can be used from your frontend plugins if you like. It is also used to
 	 * store the parsed TypoScript template structures. You can call it directly
-	 * like \TYPO3\CMS\Frontend\Page\PageRepository::getHash()
+	 * like PageRepository::getHash()
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
 	 * @param int The expiration time (not used anymore)
@@ -927,7 +927,7 @@ class PageRepository {
 	 * and visual/symbolic identification, $ident
 	 *
 	 * Can be used from your frontend plugins if you like. You can call it
-	 * directly like \TYPO3\CMS\Frontend\Page\PageRepository::storeHash()
+	 * directly like PageRepository::storeHash()
 	 *
 	 * @param string $hash 32 bit hash string (eg. a md5 hash of a serialized array identifying the data being stored)
 	 * @param mixed $data The data to store
@@ -979,7 +979,7 @@ class PageRepository {
 		if ($show_hidden === -1 && is_object($this->getTypoScriptFrontendController())) {
 			// If show_hidden was not set from outside and if TSFE is an object, set it
 			// based on showHiddenPage and showHiddenRecords from TSFE
-			$show_hidden = $table == 'pages' ? $this->getTypoScriptFrontendController()->showHiddenPage : $this->getTypoScriptFrontendController()->showHiddenRecords;
+			$show_hidden = $table === 'pages' ? $this->getTypoScriptFrontendController()->showHiddenPage : $this->getTypoScriptFrontendController()->showHiddenRecords;
 		}
 		if ($show_hidden === -1) {
 			$show_hidden = 0;
@@ -1107,7 +1107,7 @@ class PageRepository {
 	 * @see BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
 	 */
 	public function fixVersioningPid($table, &$rr) {
-		if ($this->versioningPreview && is_array($rr) && $rr['pid'] == -1 && ($table == 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+		if ($this->versioningPreview && is_array($rr) && (int)$rr['pid'] === -1 && ($table === 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
 			// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 			// Check values for t3ver_oid and t3ver_wsid:
 			if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
@@ -1239,7 +1239,7 @@ class PageRepository {
 	 */
 	public function movePlhOL($table, &$row) {
 		if (
-			($table == 'pages'
+			($table === 'pages'
 				|| (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
 			) && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
 		) {
@@ -1277,7 +1277,7 @@ class PageRepository {
 	public function getMovePlaceholder($table, $uid, $fields = '*') {
 		if ($this->versioningPreview) {
 			$workspace = (int)$this->versioningWorkspaceId;
-			if (($table == 'pages' || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $workspace !== 0) {
+			if (($table === 'pages' || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $workspace !== 0) {
 				// Select workspace version of record:
 				$row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, 'pid<>-1 AND
 						t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND
@@ -1308,7 +1308,7 @@ class PageRepository {
 			$uid = (int)$uid;
 			// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 			// Setting up enableFields for version record:
-			if ($table == 'pages') {
+			if ($table === 'pages') {
 				$enFields = $this->versioningPreview_where_hid_del;
 			} else {
 				$enFields = $this->enableFields($table, -1, array(), TRUE);
@@ -1371,7 +1371,7 @@ class PageRepository {
 			$ws = $GLOBALS['BE_USER']->checkWorkspace($ws);
 			$this->workspaceCache[$wsid] = $ws;
 		}
-		return $ws['_ACCESS'] != '';
+		return (string)$ws['_ACCESS'] !== '';
 	}
 
 	/**
