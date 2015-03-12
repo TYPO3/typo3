@@ -55,7 +55,7 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 				},
 				update: function(e, ui) {
 					if (this === ui.item.parent()[0]) {
-						DragDrop.onSortUpdate($(this), ui)
+						DragDrop.onSortUpdate($(this), ui);
 					}
 				}
 			}).disableSelection();
