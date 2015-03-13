@@ -150,7 +150,8 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function baseSetup($relativePathPart = '') {
-		$this->initializeComposerClassLoader();
+		$composerClassLoader = $this->initializeComposerClassLoader();
+		$this->setEarlyInstance('Composer\\Autoload\\ClassLoader', $composerClassLoader);
 		SystemEnvironmentBuilder::run($relativePathPart);
 		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
@@ -280,6 +281,7 @@ class Bootstrap {
 		$classLoader->setRuntimeClassLoadingInformationFromAutoloadRegistry((array) include __DIR__ . '/../../ext_autoload.php');
 		$classAliasMap = new ClassAliasMap();
 		$classAliasMap->injectClassLoader($classLoader);
+		$classAliasMap->injectComposerClassLoader($this->getEarlyInstance('Composer\\Autoload\\ClassLoader'));
 		$this->setEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassAliasMap', $classAliasMap);
 		$classLoader->injectClassAliasMap($classAliasMap);
 		spl_autoload_register(array($classLoader, 'loadClass'), TRUE, FALSE);

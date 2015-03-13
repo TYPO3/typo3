@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Helhum\ClassAliasLoader\Composer\ClassAliasLoader;
+
 /**
  * This class is responsible for setting and containing class aliases
  */
@@ -48,6 +50,11 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $classLoader;
 
 	/**
+	 * @var ClassAliasLoader
+	 */
+	protected $composerClassLoader;
+
+	/**
 	 * @var \TYPO3\Flow\Package\Package[]
 	 */
 	protected $packages = array();
@@ -71,6 +78,13 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function injectClassLoader(ClassLoader $classLoader) {
 		$this->classLoader = $classLoader;
+	}
+
+	/**
+	 * @param ClassAliasLoader $composerClassLoader
+	 */
+	public function injectComposerClassLoader(ClassAliasLoader $composerClassLoader) {
+		$this->composerClassLoader = $composerClassLoader;
 	}
 
 	/**
@@ -170,11 +184,12 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Get final class name of alias
 	 *
 	 * @param string $alias
-	 * @return mixed
+	 * @return string
 	 */
 	public function getClassNameForAlias($alias) {
 		$lookUpClassName = strtolower($alias);
-		return isset($this->aliasToClassNameMapping[$lookUpClassName]) ? $this->aliasToClassNameMapping[$lookUpClassName] : $alias;
+		$className = $this->composerClassLoader->getClassNameForAlias($alias);
+		return isset($this->aliasToClassNameMapping[$lookUpClassName]) ? $this->aliasToClassNameMapping[$lookUpClassName] : $className;
 	}
 
 
