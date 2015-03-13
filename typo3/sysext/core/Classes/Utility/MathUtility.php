@@ -122,7 +122,7 @@ class MathUtility {
 		$err = '';
 		$buffer = doubleval(current($reg[2]));
 		// Advance pointer
-		$regSliced = array_slice($reg[2], 1, null, true);
+		$regSliced = array_slice($reg[2], 1, NULL, TRUE);
 		foreach ($regSliced as $k => $v) {
 			$v = doubleval($v);
 			$sign = $reg[1][$k];

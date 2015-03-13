@@ -958,7 +958,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			? $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly']
 			: (isset($this->buttonConfig['properties.']['title.']['readOnly'])
 				? $this->buttonConfig['properties.']['title.']['readOnly']
-				: false);
+				: FALSE);
 		if ($readOnly) {
 			$currentClass = $this->curUrlInfo['act'] === $this->act ? $this->curUrlArray['class'] : '';
 			if (!$currentClass) {

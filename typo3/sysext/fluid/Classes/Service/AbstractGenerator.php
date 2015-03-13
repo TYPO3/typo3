@@ -103,7 +103,7 @@ abstract class AbstractGenerator {
 
 		$childNode = $domDocument->appendChild($domDocument->createElement($childNodeName));
 		$childNode->appendChild($domDocument->createCDATASection($childNodeValue));
-		$childNodeTarget = $parentDomNode->ownerDocument->importNode($childNode, true);
+		$childNodeTarget = $parentDomNode->ownerDocument->importNode($childNode, TRUE);
 		$parentDomNode->appendChild($childNodeTarget);
 		return simplexml_import_dom($childNodeTarget);
 	}
