@@ -130,8 +130,6 @@ class RteController extends AbstractWizardController {
 			}
 			// Initialize TCeforms - for rendering the field:
 			$tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-			// Init...
-			$tceforms->initDefaultBEMode();
 			// SPECIAL: Disables all wizards - we are NOT going to need them.
 			$tceforms->disableWizards = 1;
 			// Initialize style for RTE object:

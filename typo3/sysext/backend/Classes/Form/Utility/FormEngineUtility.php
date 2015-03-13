@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * This is a static, internal and intermediate helper class for various
@@ -540,6 +541,213 @@ class FormEngineUtility {
 	}
 
 	/**
+	 * Extracts FlexForm parts of a form element name like
+	 * data[table][uid][field][sDEF][lDEF][FlexForm][vDEF]
+	 * Helper method used in inline
+	 *
+	 * @param string $formElementName The form element name
+	 * @param string $prependFormFieldNames Prepended form field name
+	 * @return array|NULL
+	 * @internal
+	 */
+	static public function extractFlexFormParts($formElementName, $prependFormFieldNames) {
+		$flexFormParts = NULL;
+
+		$matches = array();
+		$prefix = preg_quote($prependFormFieldNames, '#');
+
+		if (preg_match('#^' . $prefix . '(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
+			$flexFormParts = GeneralUtility::trimExplode(
+				'][',
+				trim($matches[1], '[]')
+			);
+		}
+
+		return $flexFormParts;
+	}
+
+	/**
+	 * Get inlineFirstPid from a given objectId string
+	 *
+	 * @param string $domObjectId The id attribute of an element
+	 * @return integer|NULL Pid or null
+	 * @internal
+	 */
+	static public function getInlineFirstPidFromDomObjectId($domObjectId) {
+		// Substitute FlexForm addition and make parsing a bit easier
+		$domObjectId = str_replace('---', ':', $domObjectId);
+		// The starting pattern of an object identifier (e.g. "data-<firstPidValue>-<anything>)
+		$pattern = '/^data' . '-' . '(.+?)' . '-' . '(.+)$/';
+		if (preg_match($pattern, $domObjectId, $match)) {
+			return $match[1];
+		}
+		return NULL;
+	}
+
+	/**
+	 * Adds / adapts some general options of main TCA config for inline usage
+	 *
+	 * @param array $config TCA field configuration
+	 * @return array Modified configuration
+	 * @internal
+	 */
+	static public function mergeInlineConfiguration($config) {
+		// Init appearance if not set:
+		if (!isset($config['appearance']) || !is_array($config['appearance'])) {
+			$config['appearance'] = array();
+		}
+		// Set the position/appearance of the "Create new record" link:
+		if (
+			isset($config['foreign_selector'])
+			&& $config['foreign_selector']
+			&& (!isset($config['appearance']['useCombination']) || !$config['appearance']['useCombination'])
+		) {
+			$config['appearance']['levelLinksPosition'] = 'none';
+		} elseif (
+			!isset($config['appearance']['levelLinksPosition'])
+			|| !in_array($config['appearance']['levelLinksPosition'], array('top', 'bottom', 'both', 'none'))
+		) {
+			$config['appearance']['levelLinksPosition'] = 'top';
+		}
+		// Defines which controls should be shown in header of each record:
+		$enabledControls = array(
+			'info' => TRUE,
+			'new' => TRUE,
+			'dragdrop' => TRUE,
+			'sort' => TRUE,
+			'hide' => TRUE,
+			'delete' => TRUE,
+			'localize' => TRUE
+		);
+		if (isset($config['appearance']['enabledControls']) && is_array($config['appearance']['enabledControls'])) {
+			$config['appearance']['enabledControls'] = array_merge($enabledControls, $config['appearance']['enabledControls']);
+		} else {
+			$config['appearance']['enabledControls'] = $enabledControls;
+		}
+		return $config;
+	}
+
+	/**
+	 * Determine the configuration and the type of a record selector.
+	 * This is a helper method for inline / IRRE handling
+	 *
+	 * @param array $conf TCA configuration of the parent(!) field
+	 * @param string $field Field name
+	 * @return array Associative array with the keys 'PA' and 'type', both are FALSE if the selector was not valid.
+	 * @internal
+	 */
+	static public function getInlinePossibleRecordsSelectorConfig($conf, $field = '') {
+		$foreign_table = $conf['foreign_table'];
+		$foreign_selector = $conf['foreign_selector'];
+		$PA = FALSE;
+		$type = FALSE;
+		$table = FALSE;
+		$selector = FALSE;
+		if ($field) {
+			$PA = array();
+			$PA['fieldConf'] = $GLOBALS['TCA'][$foreign_table]['columns'][$field];
+			if ($PA['fieldConf'] && $conf['foreign_selector_fieldTcaOverride']) {
+				ArrayUtility::mergeRecursiveWithOverrule($PA['fieldConf'], $conf['foreign_selector_fieldTcaOverride']);
+			}
+			$PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($foreign_table, array(), $field);
+			$config = $PA['fieldConf']['config'];
+			// Determine type of Selector:
+			$type = static::getInlinePossibleRecordsSelectorType($config);
+			// Return table on this level:
+			$table = $type === 'select' ? $config['foreign_table'] : $config['allowed'];
+			// Return type of the selector if foreign_selector is defined and points to the same field as in $field:
+			if ($foreign_selector && $foreign_selector == $field && $type) {
+				$selector = $type;
+			}
+		}
+		return array(
+			'PA' => $PA,
+			'type' => $type,
+			'table' => $table,
+			'selector' => $selector
+		);
+	}
+
+	/**
+	 * Determine the type of a record selector, e.g. select or group/db.
+	 *
+	 * @param array $config TCE configuration of the selector
+	 * @return mixed The type of the selector, 'select' or 'groupdb' - FALSE not valid
+	 * @internal
+	 */
+	static protected function getInlinePossibleRecordsSelectorType($config) {
+		$type = FALSE;
+		if ($config['type'] === 'select') {
+			$type = 'select';
+		} elseif ($config['type'] === 'group' && $config['internal_type'] === 'db') {
+			$type = 'groupdb';
+		}
+		return $type;
+	}
+
+	/**
+	 * Update expanded/collapsed states on new inline records if any.
+	 *
+	 * @param array $uc The uc array to be processed and saved (by reference)
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tce Instance of FormEngine that saved data before
+	 * @return void
+	 * @internal
+	 */
+	static public function updateInlineView(&$uc, $tce) {
+		$backendUser = static::getBackendUserAuthentication();
+		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
+			$inlineView = (array)unserialize($backendUser->uc['inlineView']);
+			foreach ($uc['inlineView'] as $topTable => $topRecords) {
+				foreach ($topRecords as $topUid => $childElements) {
+					foreach ($childElements as $childTable => $childRecords) {
+						$uids = array_keys($tce->substNEWwithIDs_table, $childTable);
+						if (!empty($uids)) {
+							$newExpandedChildren = array();
+							foreach ($childRecords as $childUid => $state) {
+								if ($state && in_array($childUid, $uids)) {
+									$newChildUid = $tce->substNEWwithIDs[$childUid];
+									$newExpandedChildren[] = $newChildUid;
+								}
+							}
+							// Add new expanded child records to UC (if any):
+							if (!empty($newExpandedChildren)) {
+								$inlineViewCurrent = &$inlineView[$topTable][$topUid][$childTable];
+								if (is_array($inlineViewCurrent)) {
+									$inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
+								} else {
+									$inlineViewCurrent = $newExpandedChildren;
+								}
+							}
+						}
+					}
+				}
+			}
+			$backendUser->uc['inlineView'] = serialize($inlineView);
+			$backendUser->writeUC();
+		}
+	}
+
+	/**
+	 * Gets an array with the uids of related records out of a list of items.
+	 * This list could contain more information than required. This methods just
+	 * extracts the uids.
+	 *
+	 * @param string $itemList The list of related child records
+	 * @return array An array with uids
+	 * @internal
+	 */
+	static public function getInlineRelatedRecordsUidArray($itemList) {
+		$itemArray = GeneralUtility::trimExplode(',', $itemList, TRUE);
+		// Perform modification of the selected items array:
+		foreach ($itemArray as &$value) {
+			$parts = explode('|', $value, 2);
+			$value = $parts[0];
+		}
+		unset($value);
+		return $itemArray;
+	}
+
+	/**
 	 * Adds records from a foreign table (for selector boxes). Helper for addSelectOptionsToItemArray()
 	 *
 	 * @param array $items The array of items (label,value,icon)
@@ -548,6 +756,7 @@ class FormEngineUtility {
 	 * @param string $field The fieldname
 	 * @param bool $pFFlag If set, then we are fetching the 'neg_' foreign tables.
 	 * @return array The $items array modified.
+	 * @internal
 	 */
 	static protected function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = FALSE) {
 		$languageService = static::getLanguageService();
@@ -616,6 +825,13 @@ class FormEngineUtility {
 	 */
 	static protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	static protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

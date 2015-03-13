@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
+namespace TYPO3\CMS\Backend\Tests\Unit\Form;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,121 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
  */
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Backend\Form\Element\InlineElement;
-use TYPO3\CMS\Backend\Form\FormEngine;
+use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 
 /**
  * Test case
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class InlineElementTest extends UnitTestCase {
-
-	/**
-	 * @var \TYPO3\CMS\Backend\Form\Element\InlineElement
-	 */
-	protected $subject;
-
-	/**
-	 * Sets up this test case.
-	 */
-	protected function setUp() {
-		/** @var InlineElement|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface subject */
-		$this->subject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
-		$this->subject->_set('formEngine', $this->getMock(FormEngine::class, array(), array(), '', FALSE));
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param array $expectedInlineStructure
-	 * @param array $expectedInlineNames
-	 * @dataProvider pushStructureFillsInlineStructureDataProvider
-	 * @test
-	 */
-	public function pushStructureFillsInlineStructure(array $arguments, array $expectedInlineStructure, array $expectedInlineNames) {
-		$this->subject->inlineFirstPid = 'pageId';
-
-		call_user_func_array(array($this->subject, 'pushStructure'), $arguments);
-
-		$this->assertEquals($expectedInlineStructure, $this->subject->inlineStructure);
-		$this->assertEquals($expectedInlineNames, $this->subject->inlineNames);
-	}
-
-	/**
-	 * Provide structure for DataProvider tests
-	 *
-	 * @return array
-	 */
-	public function pushStructureFillsInlineStructureDataProvider() {
-		return array(
-			'regular field' => array(
-				array(
-					'parentTable',
-					'parentUid',
-					'parentField'
-				),
-				array(
-					'stable' => array(
-						array(
-							'table' => 'parentTable',
-							'uid' => 'parentUid',
-							'field' => 'parentField',
-							'config' => array(),
-							'localizationMode' => FALSE,
-						),
-					),
-				),
-				array(
-					'form' => '[parentTable][parentUid][parentField]',
-					'object' => 'data-pageId-parentTable-parentUid-parentField',
-				)
-			),
-			'flexform field' => array(
-				array(
-					'parentTable',
-					'parentUid',
-					'parentField',
-					array(),
-					array(
-						'itemFormElName' => 'data[parentTable][parentUid][parentField][data][sDEF][lDEF][grandParentFlexForm][vDEF]'
-					)
-				),
-				array(
-					'stable' => array(
-						array(
-							'table' => 'parentTable',
-							'uid' => 'parentUid',
-							'field' => 'parentField',
-							'config' => array(),
-							'localizationMode' => FALSE,
-							'flexform' => array(
-								'data', 'sDEF', 'lDEF', 'grandParentFlexForm', 'vDEF',
-							),
-						),
-					),
-				),
-				array(
-					'form' => '[parentTable][parentUid][parentField][data][sDEF][lDEF][grandParentFlexForm][vDEF]',
-					'object' => 'data-pageId-parentTable-parentUid-parentField---data---sDEF---lDEF---grandParentFlexForm---vDEF',
-				)
-			),
-		);
-	}
-
-	/**
-	 * @param string $string
-	 * @param array $expectedInlineStructure
-	 * @param array $expectedInlineNames
-	 * @dataProvider structureStringIsParsedDataProvider
-	 * @test
-	 */
-	public function structureStringIsParsed($string, array $expectedInlineStructure, array $expectedInlineNames) {
-		$this->subject->parseStructureString($string, FALSE);
-
-		$this->assertEquals('pageId', $this->subject->inlineFirstPid);
-		$this->assertEquals($expectedInlineStructure, $this->subject->inlineStructure);
-		$this->assertEquals($expectedInlineNames, $this->subject->inlineNames);
-	}
+class InlineStackProcessorTest extends UnitTestCase {
 
 	/**
 	 * @return array
@@ -181,7 +72,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
@@ -201,7 +92,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
@@ -222,7 +113,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
@@ -246,7 +137,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
@@ -271,7 +162,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
@@ -297,7 +188,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
@@ -325,7 +216,7 @@ class InlineElementTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => '[parentTable][parentUid][parentField]',
+					'form' => 'pageId[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField',
 				),
 			),
@@ -333,42 +224,37 @@ class InlineElementTest extends UnitTestCase {
 	}
 
 	/**
-	 * Checks if the given filetype may be uploaded without *ANY* limit to
-	 * filetypes being given
-	 *
+	 * @dataProvider structureStringIsParsedDataProvider
 	 * @test
 	 */
-	public function checkFileTypeAccessForFieldForFieldNoFiletypesReturnsTrue(){
-		$selectorData = array();
-		$fileData['extension'] = 'png';
-		$mockObject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
-		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
-		$this->assertTrue($mayUploadFile);
+	public function initializeByParsingDomObjectIdStringParsesStructureString($string, array $expectedInlineStructure, array $_) {
+		/** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock(InlineStackProcessor::class, array('dummy'));
+		$subject->initializeByParsingDomObjectIdString($string, FALSE);
+		$structure = $subject->_get('inlineStructure');
+		$this->assertEquals($expectedInlineStructure, $structure);
 	}
 
 	/**
-	 * Checks if the given filetype may be uploaded and the given filetype is *NOT*
-	 * in the list of allowed files
+	 * @dataProvider structureStringIsParsedDataProvider
 	 * @test
 	 */
-	public function checkFileTypeAccessForFieldFiletypesSetRecordTypeNotInListReturnsFalse(){
-		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
-		$fileData['extension'] = 'php';
-		$mockObject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
-		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
-		$this->assertFalse($mayUploadFile);
+	public function getCurrentStructureFormPrefixReturnsExceptedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName) {
+		/** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = new InlineStackProcessor;
+		$subject->initializeByParsingDomObjectIdString($string, FALSE);
+		$this->assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix('pageId'));
 	}
 
 	/**
-	 * Checks if the given filetype may be uploaded and the given filetype *is*
-	 * in the list of allowed files
+	 * @dataProvider structureStringIsParsedDataProvider
 	 * @test
 	 */
-	public function checkFileTypeAccessForFieldFiletypesSetRecordTypeInListReturnsTrue(){
-		$selectorData['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'] = 'doc, png, jpg, tiff';
-		$fileData['extension'] = 'png';
-		$mockObject = $this->getAccessibleMock(InlineElement::class, array('dummy'));
-		$mayUploadFile = $mockObject->_call('checkFileTypeAccessForField', $selectorData, $fileData);
-		$this->assertTrue($mayUploadFile);
+	public function getCurrentStructureDomObjectIdPrefixReturnsExceptedStringAfterInitializationByStructureString($string, array $_, array $expectedFormName) {
+		/** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = new InlineStackProcessor;
+		$subject->initializeByParsingDomObjectIdString($string, FALSE);
+		$this->assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));
 	}
+
 }

@@ -15,19 +15,11 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 /**
- * Interface for classes which hook into \TYPO3\CMS\Backend\Form\Element\InlineElement
+ * Interface for classes which hook into inline element handling
  *
  * @author Oliver Hader <oh@inpublica.de>
  */
 interface InlineElementHookInterface {
-
-	/**
-	 * Initializes this hook object.
-	 *
-	 * @param \TYPO3\CMS\Backend\Form\Element\InlineElement $parentObject
-	 * @return void
-	 */
-	public function init(&$parentObject);
 
 	/**
 	 * Pre-processing to define which control items are enabled or disabled.

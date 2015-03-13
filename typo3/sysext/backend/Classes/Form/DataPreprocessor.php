@@ -37,14 +37,6 @@ class DataPreprocessor {
 	public $lockRecords = 0;
 
 	/**
-	 * Is set externally if RTE is disabled.
-	 *
-	 * @var int
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public $disableRTE = 0;
-
-	/**
 	 * If the pid in the command is 'prev' then $prevPageID is used as pid for the record.
 	 * This is used to attach new records to other previous records eg. new pages.
 	 *

@@ -56,13 +56,6 @@ class FormDataTraverser {
 	protected $currentTable;
 
 	/**
-	 * Reference to the calling FormEngine.
-	 *
-	 * @var \TYPO3\CMS\Backend\Form\FormEngine
-	 */
-	protected $formEngine;
-
-	/**
 	 * If the first record in the chain is translatable the language
 	 * UID of this record is stored in this variable.
 	 *
@@ -71,14 +64,18 @@ class FormDataTraverser {
 	protected $originalLanguageUid = NULL;
 
 	/**
-	 * Initializes a new traverser, reference to calling FormEngine
-	 * required.
+	 * Inline first pid
 	 *
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $formEngine
+	 * @var integer
 	 */
-	public function __construct(\TYPO3\CMS\Backend\Form\FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
+	protected $inlineFirstPid;
+
+	/**
+	 * General prefix of forms
+	 *
+	 * @var string
+	 */
+	protected $prependFormFieldNames;
 
 	/**
 	 * Traverses the array of given field names by using the TCA.
@@ -86,11 +83,15 @@ class FormDataTraverser {
 	 * @param array $fieldNameArray The field names that should be traversed.
 	 * @param string $tableName The starting table name.
 	 * @param array $row The starting record row.
+	 * @param int $inlineFirstPid Inline first pid
+	 * @param string $prependFormFieldNames General prefix of forms
 	 * @return mixed The value of the last field in the chain.
 	 */
-	public function getTraversedFieldValue(array $fieldNameArray, $tableName, array $row) {
+	public function getTraversedFieldValue(array $fieldNameArray, $tableName, array $row, $inlineFirstPid, $prependFormFieldNames) {
 		$this->currentTable = $tableName;
 		$this->currentRow = $row;
+		$this->inlineFirstPid = $inlineFirstPid;
+		$this->prependFormFieldNames = $prependFormFieldNames;
 		$fieldValue = '';
 		if (count($fieldNameArray) > 0) {
 			$this->initializeOriginalLanguageUid();
@@ -168,10 +169,9 @@ class FormDataTraverser {
 				$possibleUids = $this->getRelatedGroupFieldUids($fieldConfig, $value);
 				break;
 			case 'select':
-				/**
-				 * @var $selectObject \TYPO3\CMS\Backend\Form\Element\SelectElement
-				 */
-				$selectObject = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\SelectElement::class, $this->formEngine);
+				// @todo: This misuses SelectElement and should be solved differently
+				/** @var $selectObject \TYPO3\CMS\Backend\Form\Element\SelectElement */
+				$selectObject = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\SelectElement::class);
 				$selectObject->setCurrentRow($this->currentRow);
 				$selectObject->setCurrentTable($this->currentTable);
 				$selectObject->setAlternativeFieldValue($this->alternativeFieldValue);
@@ -243,7 +243,8 @@ class FormDataTraverser {
 		$relatedUids = array();
 
 		$PA = array('itemFormElValue' => $value);
-		$items = $this->formEngine->inline->getRelatedRecords($this->currentTable, $fieldName, $this->currentRow, $PA, $fieldConfig);
+		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
+		$items = $inlineRelatedRecordResolver->getRelatedRecords($this->currentTable, $fieldName, $this->currentRow, $PA, $fieldConfig, $this->inlineFirstPid, $this->prependFormFieldNames);
 		if ($items['count'] > 0) {
 			$this->currentTable = $fieldConfig['foreign_table'];
 			foreach ($items['records'] as $inlineRecord) {

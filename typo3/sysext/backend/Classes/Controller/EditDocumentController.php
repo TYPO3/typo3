@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Script Class: Drawing the editing form for editing records in TYPO3.
@@ -172,14 +173,6 @@ class EditDocumentController {
 	 * @var string
 	 */
 	public $recTitle;
-
-	/**
-	 * Disable help... ?
-	 *
-	 * @var bool
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public $disHelp;
 
 	/**
 	 * If set, then no SAVE/VIEW button is printed
@@ -557,7 +550,7 @@ class EditDocumentController {
 			// If there was saved any new items, load them:
 			if (count($tce->substNEWwithIDs_table)) {
 				// save the expanded/collapsed states for new inline records, if any
-				\TYPO3\CMS\Backend\Form\Element\InlineElement::updateInlineView($this->uc, $tce);
+				FormEngineUtility::updateInlineView($this->uc, $tce);
 				$newEditConf = array();
 				foreach ($this->editconf as $tableName => $tableCmds) {
 					$keys = array_keys($tce->substNEWwithIDs_table, $tableName);
@@ -845,7 +838,6 @@ class EditDocumentController {
 		if (is_array($this->editconf)) {
 			// Initialize TCEforms (rendering the forms)
 			$this->tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-			$this->tceforms->initDefaultBEMode();
 			$this->tceforms->doSaveFieldName = 'doSave';
 			$this->tceforms->localizationMode = GeneralUtility::inList('text,media', $this->localizationMode) ? $this->localizationMode : '';
 			// text,media is keywords defined in TYPO3 Core API..., see "l10n_cat"
@@ -1044,8 +1036,6 @@ class EditDocumentController {
 									if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
 										$this->tceforms->hiddenFieldListArr = array_keys($this->overrideVals[$table]);
 									}
-									// Register default language labels, if any:
-									$this->tceforms->registerDefaultLanguageData($table, $rec);
 									// Create form for the record (either specific list of fields or the whole record):
 									$panel = '';
 									if ($this->columnsOnly) {
@@ -1282,17 +1272,6 @@ class EditDocumentController {
 		}
 		$aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('returnUrl' => 'close.html'))) . ',\'' . md5($this->R_URI) . '\',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-window-open') . '</a>';
-	}
-
-	/**
-	 * Reads comment messages from TCEforms and prints them in a HTML comment in the bottom of the page.
-	 *
-	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function tceformMessages() {
-		GeneralUtility::logDeprecatedFunction();
-		return '';
 	}
 
 	/***************************

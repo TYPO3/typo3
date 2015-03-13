@@ -14,19 +14,25 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer;
+use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
+use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
- * @author Steffen Ritter <info@steffen-ritter.net>
- * @author Steffen Kamper <steffen@typo3.org>
+ * @todo: Refactor - This class is not a "usual" element but just called as a sub class of SelectElement
  */
 class TreeElement extends AbstractFormElement {
 
 	/**
-	 * renders the tree as replacement for the selector
+	 * Renders the tree as replacement for the selector
 	 *
 	 * @param string $table The table name of the record
 	 * @param string $field The field name which this element is supposed to edit
@@ -34,10 +40,10 @@ class TreeElement extends AbstractFormElement {
 	 * @param array $PA An array with additional configuration options.
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
 	 * @param array $possibleSelectboxItems Items available for selection
-	 * @param string $noMatchLabel Label for no-matching-value
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems, $noMatchLabel) {
+	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems) {
+		$backendUserAuthentication = $this->getBackendUserAuthentication();
 		$valueArray = array();
 		$selectedNodes = array();
 		if (!empty($PA['itemFormElValue'])) {
@@ -55,12 +61,12 @@ class TreeElement extends AbstractFormElement {
 				$allowedUids[] = $item[1];
 			}
 		}
-		$treeDataProvider = \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory::getDataProvider($config, $table, $field, $row);
+		$treeDataProvider = TreeDataProviderFactory::getDataProvider($config, $table, $field, $row);
 		$treeDataProvider->setSelectedList(implode(',', $selectedNodes));
 		$treeDataProvider->setItemWhiteList($allowedUids);
 		$treeDataProvider->initializeTreeData();
-		$treeRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer::class);
-		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree::class);
+		$treeRenderer = GeneralUtility::makeInstance(ExtJsArrayTreeRenderer::class);
+		$tree = GeneralUtility::makeInstance(TableConfigurationTree::class);
 		$tree->setDataProvider($treeDataProvider);
 		$tree->setNodeRenderer($treeRenderer);
 		$treeData = $tree->render();
@@ -77,7 +83,7 @@ class TreeElement extends AbstractFormElement {
 					if (file_exists(PATH_typo3 . $additionalItem[3])) {
 						$item->icon = $additionalItem[3];
 					} elseif (trim($additionalItem[3]) !== '') {
-						$item->iconCls = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($additionalItem[3]);
+						$item->iconCls = IconUtility::getSpriteIconClasses($additionalItem[3]);
 					}
 					$itemArray[] = $item;
 				}
@@ -91,6 +97,7 @@ class TreeElement extends AbstractFormElement {
 		} else {
 			$height = 280;
 		}
+		$autoSizeMax = NULL;
 		if (isset($PA['fieldConf']['config']['autoSizeMax']) && (int)$PA['fieldConf']['config']['autoSizeMax'] > 0) {
 			$autoSizeMax = (int)$PA['fieldConf']['config']['autoSizeMax'] * 20;
 		}
@@ -117,7 +124,7 @@ class TreeElement extends AbstractFormElement {
 			|| !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'])
 			&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
 		) {
-			if ($GLOBALS['BE_USER']->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
+			if ($backendUserAuthentication->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
 				$onChange .= 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && ' . 'TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 			} else {
 				$onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
@@ -127,7 +134,7 @@ class TreeElement extends AbstractFormElement {
 		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
 		$pageRenderer->loadExtJs();
 		$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/tree.js');
-		$pageRenderer->addInlineLanguageLabelFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_csh_corebe.xlf', 'tcatree');
+		$pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('lang') . 'locallang_csh_corebe.xlf', 'tcatree');
 		$pageRenderer->addExtOnReadyCode('
 			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . $treeData . ';
 			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
@@ -197,17 +204,30 @@ class TreeElement extends AbstractFormElement {
 	}
 
 	/**
-	 * Dummy handler
+	 * Dummy method at the moment ...
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @throws \RuntimeException
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
-		// deliberately empty as this class is not used the same way
-		return '';
+	public function render() {
+		throw new \RuntimeException(
+			'This method is not supposed to be called',
+			1427114105
+		);
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

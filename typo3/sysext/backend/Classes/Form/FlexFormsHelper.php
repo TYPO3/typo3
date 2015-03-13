@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
  *
  * @author Kai Vogel <kai.vogel(at)speedprogs.de>
  */
-class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
+class FlexFormsHelper extends FormEngine {
 
 	/**
 	 * Options that will be removed from config after creating items for a select to prevent double parsing

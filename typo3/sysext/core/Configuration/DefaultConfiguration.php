@@ -645,19 +645,19 @@ return array(
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::createNewRecord' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::getRecordDetails' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::setExpandedCollapsedState' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class . '->processAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_suggest::searchRecord' => array(

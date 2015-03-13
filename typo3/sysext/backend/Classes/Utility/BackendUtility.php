@@ -3677,18 +3677,18 @@ class BackendUtility {
 
 	/**
 	 * Returns first possible RTE object if available.
-	 * Usage: $RTEobj = &BackendUtility::RTEgetObj();
+	 * Usage: $RTEobj = BackendUtility::RTEgetObj();
 	 *
 	 * @return mixed If available, returns RTE object, otherwise an array of messages from possible RTEs
 	 */
-	static public function &RTEgetObj() {
+	static public function RTEgetObj() {
 		// If no RTE object has been set previously, try to create it:
 		if (!isset($GLOBALS['T3_VAR']['RTEobj'])) {
 			// Set the object string to blank by default:
 			$GLOBALS['T3_VAR']['RTEobj'] = array();
 			// Traverse registered RTEs:
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'] as $extKey => $rteObjCfg) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'] as $rteObjCfg) {
 					$rteObj = GeneralUtility::getUserObj($rteObjCfg['objRef']);
 					if (is_object($rteObj)) {
 						if ($rteObj->isAvailable()) {

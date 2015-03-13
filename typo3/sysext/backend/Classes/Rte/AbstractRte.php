@@ -72,7 +72,7 @@ class AbstractRte {
 	 * @param int $thePidValue PID value of record (true parent page id)
 	 * @return string HTML code for RTE!
 	 */
-	public function drawRTE(&$pObj, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
+	public function drawRTE($pObj, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		// Transform value:
 		$value = $this->transformContent('rte', $PA['itemFormElValue'], $table, $field, $row, $specConf, $thisConfig, $RTErelPath, $thePidValue);
 		// Create item:

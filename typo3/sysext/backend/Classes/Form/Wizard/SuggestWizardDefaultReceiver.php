@@ -98,7 +98,6 @@ class SuggestWizardDefaultReceiver {
 	 *
 	 * @param string $table The table to query
 	 * @param array $config The configuration (TCA overlayed with TSconfig) to use for this selector
-	 * @return void
 	 */
 	public function __construct($table, $config) {
 		$this->table = $table;
@@ -139,7 +138,7 @@ class SuggestWizardDefaultReceiver {
 	 * this function itself
 	 *
 	 * @param array $params
-	 * @param int $ref The parent object
+	 * @param int $recursionCounter The parent object
 	 * @return array Array of rows or FALSE if nothing found
 	 */
 	public function queryTable(&$params, $recursionCounter = 0) {

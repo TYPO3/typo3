@@ -269,11 +269,6 @@ class t3lib_transferData extends \TYPO3\CMS\Backend\Form\DataPreprocessor {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_TCEforms_inline extends \TYPO3\CMS\Backend\Form\Element\InlineElement {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 interface t3lib_tceformsInlineHook extends \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface {}
 
 /**

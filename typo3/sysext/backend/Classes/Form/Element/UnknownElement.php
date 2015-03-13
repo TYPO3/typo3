@@ -22,14 +22,13 @@ class UnknownElement extends AbstractFormElement {
 	/**
 	 * Handler for unknown types.
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
-		return 'Unknown type: ' . $additionalInformation['fieldConf']['config']['form_type'] . '<br />';
+	public function render() {
+		$type = $this->globalOptions['parameterArray']['fieldConf']['config']['type'];
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = 'Unknown type: ' . $type . '<br />';
+		return $resultArray;
 	}
 
 }

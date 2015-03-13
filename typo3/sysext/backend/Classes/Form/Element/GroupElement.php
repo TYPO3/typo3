@@ -17,10 +17,12 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Generation of TCEform elements of the type "group"
@@ -28,19 +30,20 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class GroupElement extends AbstractFormElement {
 
 	/**
-	 * This will render a selectorbox into which elements from either
+	 * This will render a selector box into which elements from either
 	 * the file system or database can be inserted. Relations.
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
-
-		$config = $additionalInformation['fieldConf']['config'];
+	public function render() {
+		$table = $this->globalOptions['table'];
+		$fieldName = $this->globalOptions['fieldName'];
+		$row = $this->globalOptions['databaseRow'];
+		$parameterArray = $this->globalOptions['parameterArray'];
+		$config = $parameterArray['fieldConf']['config'];
 		$show_thumbs = $config['show_thumbs'];
+		$resultArray = $this->initializeResultArray();
+
 		$size = isset($config['size']) ? (int)$config['size'] : $this->minimumInputWidth;
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
 		if (!$maxitems) {
@@ -52,40 +55,45 @@ class GroupElement extends AbstractFormElement {
 		$disallowed = GeneralUtility::trimExplode(',', $config['disallowed'], TRUE);
 		$disabled = ($this->isGlobalReadonly() || $config['readOnly']);
 		$info = array();
-		$additionalInformation['itemFormElID_file'] = $additionalInformation['itemFormElID'] . '_files';
+		$parameterArray['itemFormElID_file'] = $parameterArray['itemFormElID'] . '_files';
 
 		// whether the list and delete controls should be disabled
 		$noList = isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'list');
 		$noDelete = isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'delete');
 
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
+		$specConf = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
 
-		// Register properties in requiredFields and requiredElements
-		$this->formEngine->registerRequiredProperty(
-			'range',
-			$additionalInformation['itemFormElName'],
-			array(
-				$minitems,
-				$maxitems,
-				'imgName' => $table . '_' . $row['uid'] . '_' . $field
-			)
+		// Register properties in requiredElements
+		$resultArray['requiredElements'][$parameterArray['itemFormElName']] = array(
+			$minitems,
+			$maxitems,
+			'imgName' => $table . '_' . $row['uid'] . '_' . $fieldName
 		);
-
-		// if maxitems==1 then automatically replace the current item (in list and file selector)
-		if ($maxitems === 1) {
-			$this->formEngine->additionalJS_post[] = 'TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[\'' . $additionalInformation['itemFormElName'] . '\'] = {
-					itemFormElID_file: \'' . $additionalInformation['itemFormElID_file'] . '\'
-				}';
-			$additionalInformation['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(\'' . $additionalInformation['itemFormElName']
-				. '\', \'Remove\'); ' . $additionalInformation['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
-		} elseif ($noList) {
-			// If the list controls have been removed and the maximum number is reached, remove the first entry to avoid "write once" field
-			$additionalInformation['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(\'' . $additionalInformation['itemFormElName']
-				. '\', \'RemoveFirstIfFull\', \'' . $maxitems . '\'); ' . $additionalInformation['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+		$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
+		if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
+			array_shift($match);
+			$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
+				'parts' => $match,
+				'level' => $tabAndInlineStack,
+			);
 		}
 
-		$item = '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
+		// If maxitems==1 then automatically replace the current item (in list and file selector)
+		if ($maxitems === 1) {
+			$resultArray['additionalJavaScriptPost'][] =
+				'TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[\'' . $parameterArray['itemFormElName'] . '\'] = {
+					itemFormElID_file: ' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElID_file']) . '
+				}';
+			$parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(\'' . $parameterArray['itemFormElName']
+				. '\', \'Remove\'); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+		} elseif ($noList) {
+			// If the list controls have been removed and the maximum number is reached, remove the first entry to avoid "write once" field
+			$parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(\'' . $parameterArray['itemFormElName']
+				. '\', \'RemoveFirstIfFull\', \'' . $maxitems . '\'); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+		}
+
+		$html = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
 
 		// Acting according to either "file" or "db" type:
 		switch ((string)$config['internal_type']) {
@@ -98,7 +106,7 @@ class GroupElement extends AbstractFormElement {
 					$allowed = array('*');
 				}
 				// Making the array of file items:
-				$itemArray = GeneralUtility::trimExplode(',', $additionalInformation['itemFormElValue'], TRUE);
+				$itemArray = GeneralUtility::trimExplode(',', $parameterArray['itemFormElValue'], TRUE);
 				$fileFactory = ResourceFactory::getInstance();
 				// Correct the filename for the FAL items
 				foreach ($itemArray as &$fileItem) {
@@ -111,7 +119,6 @@ class GroupElement extends AbstractFormElement {
 				}
 				// Showing thumbnails:
 				if ($show_thumbs) {
-					$imgs = array();
 					foreach ($itemArray as $imgRead) {
 						$imgP = explode('|', $imgRead);
 						$imgPath = rawurldecode($imgP[0]);
@@ -136,14 +143,14 @@ class GroupElement extends AbstractFormElement {
 							}
 						} else {
 							$rowCopy = array();
-							$rowCopy[$field] = $imgPath;
+							$rowCopy[$fieldName] = $imgPath;
 							try {
 								$thumbnails[] = array(
 									'name' => $imgPath,
 									'image' => BackendUtility::thumbCode(
 										$rowCopy,
 										$table,
-										$field,
+										$fieldName,
 										'',
 										'',
 										$config['uploadfolder'],
@@ -158,8 +165,8 @@ class GroupElement extends AbstractFormElement {
 									FlashMessage::class,
 									htmlspecialchars($message), '', FlashMessage::ERROR, TRUE
 								);
-								/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-								$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+								/** @var $flashMessageService FlashMessageService */
+								$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 								$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 								$defaultFlashMessageQueue->enqueue($flashMessage);
 								$logMessage = $message . ' (' . $table . ':' . $row['uid'] . ')';
@@ -185,14 +192,14 @@ class GroupElement extends AbstractFormElement {
 					'noList' => $noList,
 					'noDelete' => $noDelete
 				);
-				$item .= $this->dbFileIcons(
-					$additionalInformation['itemFormElName'],
+				$html .= $this->dbFileIcons(
+					$parameterArray['itemFormElName'],
 					'file',
 					implode(',', $allowed),
 					$itemArray,
 					'',
 					$params,
-					$additionalInformation['onFocus'],
+					$parameterArray['onFocus'],
 					'',
 					'',
 					'',
@@ -208,11 +215,11 @@ class GroupElement extends AbstractFormElement {
 							$multipleAttribute = ' multiple="multiple"';
 							$multipleFilenameSuffix = '[]';
 						}
-						$item .= '
-							<div id="' . $additionalInformation['itemFormElID_file'] . '">
+						$html .= '
+							<div id="' . $parameterArray['itemFormElID_file'] . '">
 								<input type="file"' . $multipleAttribute . '
-									name="' . $additionalInformation['itemFormElName_file'] . $multipleFilenameSuffix . '"
-									size="35" onchange="' . implode('', $additionalInformation['fieldChangeFunc']) . '"
+									name="' . $parameterArray['itemFormElName_file'] . $multipleFilenameSuffix . '"
+									size="35" onchange="' . implode('', $parameterArray['fieldChangeFunc']) . '"
 								/>
 							</div>';
 					}
@@ -221,7 +228,7 @@ class GroupElement extends AbstractFormElement {
 			case 'folder':
 				// If the element is of the internal type "folder":
 				// Array of folder items:
-				$itemArray = GeneralUtility::trimExplode(',', $additionalInformation['itemFormElValue'], TRUE);
+				$itemArray = GeneralUtility::trimExplode(',', $parameterArray['itemFormElValue'], TRUE);
 				// Creating the element:
 				$params = array(
 					'size' => $size,
@@ -235,14 +242,14 @@ class GroupElement extends AbstractFormElement {
 					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
 					'noList' => $noList
 				);
-				$item .= $this->dbFileIcons(
-					$additionalInformation['itemFormElName'],
+				$html .= $this->dbFileIcons(
+					$parameterArray['itemFormElName'],
 					'folder',
 					'',
 					$itemArray,
 					'',
 					$params,
-					$additionalInformation['onFocus']
+					$parameterArray['onFocus']
 				);
 				break;
 			case 'db':
@@ -251,27 +258,26 @@ class GroupElement extends AbstractFormElement {
 				$onlySingleTableAllowed = FALSE;
 				$languageService = $this->getLanguageService();
 
+				$allowedTables = array();
 				if ($allowed[0] === '*') {
 					$allowedTables = array(
 						'name' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables'))
 					);
 				} elseif ($allowed) {
 					$onlySingleTableAllowed = count($allowed) == 1;
-					$allowedTables = array();
 					foreach ($allowed as $allowedTable) {
 						$allowedTables[] = array(
 							'name' => htmlspecialchars($languageService->sL($GLOBALS['TCA'][$allowedTable]['ctrl']['title'])),
 							'icon' => IconUtility::getSpriteIconForRecord($allowedTable, array()),
-							'onClick' => 'setFormValueOpenBrowser(\'db\', \'' . ($additionalInformation['itemFormElName'] . '|||' . $allowedTable) . '\'); return false;'
+							'onClick' => 'setFormValueOpenBrowser(\'db\', \'' . ($parameterArray['itemFormElName'] . '|||' . $allowedTable) . '\'); return false;'
 						);
 					}
 				}
 				$perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
 				$itemArray = array();
-				$imgs = array();
 
 				// Thumbnails:
-				$temp_itemArray = GeneralUtility::trimExplode(',', $additionalInformation['itemFormElValue'], TRUE);
+				$temp_itemArray = GeneralUtility::trimExplode(',', $parameterArray['itemFormElValue'], TRUE);
 				foreach ($temp_itemArray as $dbRead) {
 					$recordParts = explode('|', $dbRead);
 					list($this_table, $this_uid) = BackendUtility::splitTable_Uid($recordParts[0]);
@@ -307,39 +313,47 @@ class GroupElement extends AbstractFormElement {
 					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
 					'noList' => $noList
 				);
-				$item .= $this->dbFileIcons(
-					$additionalInformation['itemFormElName'],
+				$html .= $this->dbFileIcons(
+					$parameterArray['itemFormElName'],
 					'db',
 					implode(',', $allowed),
 					$itemArray,
 					'',
 					$params,
-					$additionalInformation['onFocus'],
+					$parameterArray['onFocus'],
 					$table,
-					$field,
+					$fieldName,
 					$row['uid'],
 					$config
 				);
 				break;
 		}
 		// Wizards:
-		$altItem = '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
+		$altItem = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 		if (!$disabled) {
-			$item = $this->renderWizards(
+			$html = $this->renderWizards(
 				array(
-					$item,
+					$html,
 					$altItem
 				),
 				$config['wizards'],
 				$table,
 				$row,
-				$field,
-				$additionalInformation,
-				$additionalInformation['itemFormElName'],
+				$fieldName,
+				$parameterArray,
+				$parameterArray['itemFormElName'],
 				$specConf
 			);
 		}
-		return $item;
+		$resultArray['html'] = $html;
+		return $resultArray;
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

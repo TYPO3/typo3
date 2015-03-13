@@ -20,7 +20,6 @@ return array(
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'shadowColumnsForNewPlaceholders' => 'title',
 		'languageField' => 'sys_language_uid',
-		'mainpalette' => 1,
 		'type' => 'doktype',
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-content-page-language-overlay'

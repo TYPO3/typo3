@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -30,23 +28,13 @@ use TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 
 /**
- * Base class for form elements of FormEngine
+ * Base class for form elements of FormEngine. Contains several helper methods used by single elements.
  */
-abstract class AbstractFormElement {
-
-	/**
-	 * @var FormEngine
-	 */
-	protected $formEngine;
-
-	/**
-	 * A list of global options given from FormEngine to child elements
-	 *
-	 * @var array
-	 */
-	protected $globalOptions = array();
+abstract class AbstractFormElement extends AbstractNode {
 
 	/**
 	 * Default width value for a couple of elements like text
@@ -73,37 +61,6 @@ abstract class AbstractFormElement {
 	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard|NULL
 	 */
 	protected $clipboard = NULL;
-
-	/**
-	 * Constructor function, setting the FormEngine
-	 *
-	 * @param FormEngine $formEngine
-	 */
-	public function __construct(FormEngine $formEngine) {
-		$this->formEngine = $formEngine;
-	}
-
-	/**
-	 * Set global options from parent FormEngine instance
-	 *
-	 * @param array $globalOptions Global options like 'readonly' for all elements
-	 * @return AbstractFormElement
-	 */
-	public function setGlobalOptions(array $globalOptions) {
-		$this->globalOptions = $globalOptions;
-		return $this;
-	}
-
-	/**
-	 * Handler for Flex Forms
-	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
-	 */
-	abstract public function render($table, $field, $row, &$additionalInformation);
 
 	/**
 	 * @return bool TRUE if field is set to read only
@@ -176,7 +133,7 @@ abstract class AbstractFormElement {
 		// Manipulate the field name (to be the TRUE form field name) and remove
 		// a suffix-value if the item is a selector box with renderMode "singlebox":
 		$listFlag = '_list';
-		if ($PA['fieldConf']['config']['form_type'] == 'select') {
+		if ($PA['fieldConf']['config']['type'] == 'select') {
 			// Single select situation:
 			if ($PA['fieldConf']['config']['maxitems'] <= 1) {
 				$listFlag = '';
@@ -472,17 +429,17 @@ abstract class AbstractFormElement {
 				// Setting the item to a hidden-field.
 				$item = $itemKinds[1];
 				if (is_array($wizardConfiguration['hideParent'])) {
-					// NoneElement does not access formEngine properties, use a dummy for decoupling
-					$formEngineDummy = new FormEngine;
 					/** @var NoneElement $noneElement */
-					$noneElement = GeneralUtility::makeInstance(NoneElement::class, $formEngineDummy);
-					$elementConfiguration = array(
+					$noneElement = GeneralUtility::makeInstance(NoneElement::class);
+					$noneElementOptions = $this->globalOptions;
+					$noneElementOptions['parameterArray'] = array(
 						'fieldConf' => array(
 							'config' => $wizardConfiguration['hideParent'],
 						),
 						'itemFormElValue' => $PA['itemFormElValue'],
 					);
-					$item .= $noneElement->render('', '', '', $elementConfiguration);
+					$noneElementResult = $noneElement->setGlobalOptions($noneElementOptions)->render();
+					$item .= $noneElementResult['html'];
 				}
 			}
 		}
@@ -614,13 +571,14 @@ abstract class AbstractFormElement {
 		if (!$params['readOnly'] && !$params['noList']) {
 			if (!$params['noBrowser']) {
 				// Check against inline uniqueness
-				/** @var InlineElement $inline */
-				$inline = $this->globalOptions['inline'];
-				$inlineParent = $inline->getStructureLevel(-1);
+				/** @var InlineStackProcessor $inlineStackProcessor */
+				$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
+				$inlineStackProcessor->initializeByGivenStructure($this->globalOptions['inlineStructure']);
+				$inlineParent = $inlineStackProcessor->getStructureLevel(-1);
 				$aOnClickInline = '';
 				if (is_array($inlineParent) && $inlineParent['uid']) {
 					if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
-						$objectPrefix = $inline->inlineNames['object'] . InlineElement::Structure_Separator . $table;
+						$objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']) . '-' . $table;
 						$aOnClickInline = $objectPrefix . '|inline.checkUniqueElement|inline.setUniqueElement';
 						$rOnClickInline = 'inline.revertUnique(\'' . $objectPrefix . '\',null,\'' . $uid . '\');';
 					}
@@ -906,27 +864,6 @@ abstract class AbstractFormElement {
 	 */
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
-
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 	/**

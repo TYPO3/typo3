@@ -26,55 +26,52 @@ class RadioElement extends AbstractFormElement {
 	/**
 	 * This will render a series of radio buttons.
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
-		$config = $additionalInformation['fieldConf']['config'];
-		$item = '';
+	public function render() {
+		$parameterArray = $this->globalOptions['parameterArray'];
+		$config = $parameterArray['fieldConf']['config'];
+		$html = '';
 		$disabled = '';
 		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = ' disabled';
 		}
 
 		// Get items for the array
-		$selectedItems = FormEngineUtility::initItemArray($additionalInformation['fieldConf']);
+		$selectedItems = FormEngineUtility::initItemArray($parameterArray['fieldConf']);
 		if ($config['itemsProcFunc']) {
 			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
 			$selectedItems = $dataPreprocessor->procItems(
 				$selectedItems,
-				$additionalInformation['fieldTSConfig']['itemsProcFunc.'],
+				$parameterArray['fieldTSConfig']['itemsProcFunc.'],
 				$config,
-				$table,
-				$row,
-				$field
+				$this->globalOptions['table'],
+				$this->globalOptions['databaseRow'],
+				$this->globalOptions['fieldName']
 			);
 		}
 
 		// Traverse the items, making the form elements
 		foreach ($selectedItems as $radioButton => $selectedItem) {
-			if (isset($additionalInformation['fieldTSConfig']['altLabels.'][$radioButton])) {
+			if (isset($parameterArray['fieldTSConfig']['altLabels.'][$radioButton])) {
 				$label = $this->getLanguageService()->sL(
-					$additionalInformation['fieldTSConfig']['altLabels.'][$radioButton]
+					$parameterArray['fieldTSConfig']['altLabels.'][$radioButton]
 				);
 			} else {
 				$label =  $selectedItem[0];
 			}
-			$radioId = htmlspecialchars($additionalInformation['itemFormElID'] . '_' . $radioButton);
-			$radioOnClick = implode('', $additionalInformation['fieldChangeFunc']);
-			$radioChecked = (string)$selectedItem[1] === (string)$additionalInformation['itemFormElValue'] ? ' checked="checked"' : '';
-			$item .= '<div class="radio' . $disabled . '">'
+			$radioId = htmlspecialchars($parameterArray['itemFormElID'] . '_' . $radioButton);
+			$radioOnClick = implode('', $parameterArray['fieldChangeFunc']);
+			$radioChecked = (string)$selectedItem[1] === (string)$parameterArray['itemFormElValue'] ? ' checked="checked"' : '';
+			$html .= '<div class="radio' . $disabled . '">'
 				. '<label for="' . $radioId . '">'
 				. '<input '
 				. 'type="radio" '
-				. 'name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '" '
+				. 'name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
 				. 'id="' . $radioId . '" '
 				. 'value="' . htmlspecialchars($selectedItem[1]) . '" '
 				. $radioChecked . ' '
-				. $additionalInformation['onFocus'] . ' '
+				. $parameterArray['onFocus'] . ' '
 				. $disabled . ' '
 				. 'onclick="' . htmlspecialchars($radioOnClick) . '" '
 				. '/>'
@@ -82,7 +79,9 @@ class RadioElement extends AbstractFormElement {
 				. '</label>'
 			. '</div>';
 		}
-		return $item;
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = $html;
+		return $resultArray;
 	}
 
 }

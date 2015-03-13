@@ -26,7 +26,6 @@ return array(
 			'1' => 'status-user-admin',
 			'default' => 'status-user-backend'
 		),
-		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'searchFields' => 'username,email,realName'

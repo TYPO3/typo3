@@ -19,14 +19,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
- * Generation of crop image TCEform elements
+ * Generation of image manipulation TCEform element
  */
 class ImageManipulationElement extends AbstractFormElement {
 
@@ -50,18 +48,19 @@ class ImageManipulationElement extends AbstractFormElement {
 	/**
 	 * Handler for unknown types.
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
+	public function render() {
+		$languageService = $this->getLanguageService();
+
+		$row = $this->globalOptions['databaseRow'];
+		$parameterArray = $this->globalOptions['parameterArray'];
+
 		// If ratios are set do not add default options
-		if (isset($additionalInformation['fieldConf']['config']['ratios'])) {
+		if (isset($parameterArray['fieldConf']['config']['ratios'])) {
 			unset($this->defaultConfig['ratios']);
 		}
-		$config = ArrayUtility::arrayMergeRecursiveOverrule($this->defaultConfig, $additionalInformation['fieldConf']['config']);
+		$config = ArrayUtility::arrayMergeRecursiveOverrule($this->defaultConfig, $parameterArray['fieldConf']['config']);
 
 		// By default we allow all image extensions that can be handled by the GFX functionality
 		if ($config['allowedExtensions'] === NULL) {
@@ -75,7 +74,7 @@ class ImageManipulationElement extends AbstractFormElement {
 				'fieldConf' => array(
 					'config' => $config,
 				),
-				'itemFormElValue' => $additionalInformation['itemFormElValue'],
+				'itemFormElValue' => $parameterArray['itemFormElValue'],
 			);
 			return $noneElement->render('', '', '', $elementConfiguration);
 		}
@@ -90,10 +89,9 @@ class ImageManipulationElement extends AbstractFormElement {
 		if (GeneralUtility::inList(mb_strtolower($config['allowedExtensions']), mb_strtolower($file->getExtension()))) {
 
 			// Get preview
-			$preview = $this->getPreview($file, $additionalInformation['itemFormElValue']);
+			$preview = $this->getPreview($file, $parameterArray['itemFormElValue']);
 
 			// Check if ratio labels hold translation strings
-			$languageService = $this->getLanguageService();
 			foreach ((array)$config['ratios'] as $ratio => $label) {
 				$config['ratios'][$ratio] = $languageService->sL($label, TRUE);
 			}
@@ -125,12 +123,12 @@ class ImageManipulationElement extends AbstractFormElement {
 
 			$inputField = '<input type="hidden" '
 				. 'id="' . $formFieldId . '" '
-				. 'name="' . $additionalInformation['itemFormElName'] . '" '
-				. 'value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
+				. 'name="' . $parameterArray['itemFormElName'] . '" '
+				. 'value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 
 			$content .= $inputField . $button;
 
-			$content .= $this->getImageManipulationInfoTable($additionalInformation['itemFormElValue']);
+			$content .= $this->getImageManipulationInfoTable($parameterArray['itemFormElValue']);
 
 			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
@@ -149,7 +147,9 @@ class ImageManipulationElement extends AbstractFormElement {
 		$item .= '<div class="media-body">' . $content . '</div>';
 		$item .= '</div>';
 
-		return $item;
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = $item;
+		return $resultArray;
 	}
 
 	/**

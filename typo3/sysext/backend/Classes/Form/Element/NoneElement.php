@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Form\FormEngine;
 
 /**
  * Generation of TCEform elements where no rendering could be found
@@ -26,15 +27,12 @@ class NoneElement extends AbstractFormElement {
 	/**
 	 * This will render a non-editable display of the content of the field.
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
-		$config = $additionalInformation['fieldConf']['config'];
-		$itemValue = $additionalInformation['itemFormElValue'];
+	public function render() {
+		$parameterArray = $this->globalOptions['parameterArray'];
+		$config = $parameterArray['fieldConf']['config'];
+		$itemValue = $parameterArray['itemFormElValue'];
 
 		if ($config['format']) {
 			$itemValue = $this->formatValue($config, $itemValue);
@@ -43,6 +41,7 @@ class NoneElement extends AbstractFormElement {
 			$itemValue = htmlspecialchars($itemValue);
 		}
 
+		$resultArray = $this->initializeResultArray();
 		$rows = (int)$config['rows'];
 		// Render as textarea
 		if ($rows > 1 || $config['type'] === 'text') {
@@ -51,7 +50,7 @@ class NoneElement extends AbstractFormElement {
 			}
 			$cols = MathUtility::forceIntegerInRange($config['cols'] ?: $this->defaultInputWidth, 5, $this->maxInputWidth);
 			$width = $this->formMaxWidth($cols);
-			$item = '
+			$html = '
 				<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
 					<textarea class="form-control" rows="' . $rows . '" disabled>' . $itemValue . '</textarea>
 				</div>';
@@ -59,13 +58,14 @@ class NoneElement extends AbstractFormElement {
 			$cols = $config['cols'] ?: ($config['size'] ?: $this->defaultInputWidth);
 			$size = MathUtility::forceIntegerInRange($cols ?: $this->defaultInputWidth, 5, $this->maxInputWidth);
 			$width = $this->formMaxWidth($size);
-			$item = '
+			$html = '
 				<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
 					<input class="form-control" value="'. $itemValue .'" type="text" disabled>
 				</div>
 				' . ((string)$itemValue !== '' ? '<p class="help-block">' . $itemValue . '</p>' : '');
 		}
-		return $item;
+		$resultArray['html'] = $html;
+		return $resultArray;
 	}
 
 	/**
@@ -155,13 +155,14 @@ class NoneElement extends AbstractFormElement {
 			case 'user':
 				$func = trim($config['format.']['userFunc']);
 				if ($func) {
+					$dummyFormEngine = new FormEngine;
 					$params = array(
 						'value' => $itemValue,
 						'args' => $config['format.']['userFunc'],
 						'config' => $config,
-						'pObj' => &$this
+						'pObj' => $dummyFormEngine
 					);
-					$itemValue = GeneralUtility::callUserFunction($func, $params, $this);
+					$itemValue = GeneralUtility::callUserFunction($func, $params, $dummyFormEngine);
 				}
 				break;
 			default:

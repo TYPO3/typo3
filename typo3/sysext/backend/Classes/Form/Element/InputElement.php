@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Backend\Form\FormEngine;
 
 /**
  * Generation of TCEform elements of the type "input"
@@ -28,18 +27,20 @@ class InputElement extends AbstractFormElement {
 	/**
 	 * This will render a single-line input form field, possibly with various control/validation features
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
+	public function render() {
+		$languageService = $this->getLanguageService();
 
+		$table = $this->globalOptions['table'];
+		$fieldName = $this->globalOptions['fieldName'];
+		$row = $this->globalOptions['databaseRow'];
+		$parameterArray = $this->globalOptions['parameterArray'];
+		$resultArray = $this->initializeResultArray();
 		$isDateField = FALSE;
 
-		$config = $additionalInformation['fieldConf']['config'];
-		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
+		$config = $parameterArray['fieldConf']['config'];
+		$specConf = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
 		$size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		$classes = array();
@@ -67,7 +68,7 @@ class InputElement extends AbstractFormElement {
 
 		// readonly
 		if ($this->isGlobalReadonly() || $config['readOnly']) {
-			$itemFormElValue = $additionalInformation['itemFormElValue'];
+			$itemFormElValue = $parameterArray['itemFormElValue'];
 			if (in_array('date', $evalList)) {
 				$config['format'] = 'date';
 			} elseif (in_array('datetime', $evalList)) {
@@ -78,17 +79,17 @@ class InputElement extends AbstractFormElement {
 			if (in_array('password', $evalList)) {
 				$itemFormElValue = $itemFormElValue ? '*********' : '';
 			}
-			$formEngineDummy = new FormEngine;
-			$noneElement = GeneralUtility::makeInstance(NoneElement::class, $formEngineDummy);
-			$elementConfiguration = array(
+			/** @var NoneElement $noneElement */
+			$noneElement = GeneralUtility::makeInstance(NoneElement::class);
+			$noneElementOptions = $this->globalOptions;
+			$noneElementOptions['parameterArray'] = array(
 				'fieldConf' => array(
 					'config' => $config,
 				),
 				'itemFormElValue' => $itemFormElValue,
 			);
-			return $noneElement->render('', '', '', $elementConfiguration);
+			return $noneElement->setGlobalOptions($noneElementOptions)->render();
 		}
-
 
 		if (in_array('datetime', $evalList, TRUE)
 			|| in_array('date', $evalList)) {
@@ -102,8 +103,8 @@ class InputElement extends AbstractFormElement {
 				$attributes['data-date-type'] = 'date';
 				$dateFormat = $dateFormats['date'];
 			}
-			if ($additionalInformation['itemFormElValue'] > 0) {
-				$additionalInformation['itemFormElValue'] += date('Z', $additionalInformation['itemFormElValue']);
+			if ($parameterArray['itemFormElValue'] > 0) {
+				$parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
 			}
 			if (isset($config['range']['lower'])) {
 				$attributes['data-date-minDate'] = (int)$config['range']['lower'];
@@ -127,14 +128,23 @@ class InputElement extends AbstractFormElement {
 			}
 		}
 
-
 		foreach ($evalList as $func) {
 			switch ($func) {
 				case 'required':
-					$this->formEngine->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $additionalInformation['itemFormElName']);
+					$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
+					$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
+					if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
+						array_shift($match);
+						$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
+							'parts' => $match,
+							'level' => $tabAndInlineStack,
+						);
+					}
 					// Mark this field for date/time disposal:
 					if (array_intersect($evalList, array('date', 'datetime', 'time', 'timesec'))) {
-						$this->formEngine->requiredAdditional[$additionalInformation['itemFormElName']]['isPositiveNumber'] = TRUE;
+						$resultArray['requiredAdditional'][$parameterArray['itemFormElName']] = array(
+							'isPositiveNumber' => TRUE,
+						);
 					}
 					break;
 				default:
@@ -142,14 +152,14 @@ class InputElement extends AbstractFormElement {
 					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
 					if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
 						$_params = array(
-							'value' => $additionalInformation['itemFormElValue']
+							'value' => $parameterArray['itemFormElValue']
 						);
-						$additionalInformation['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+						$parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
 					}
 			}
 		}
-		$paramsList = '\'' . $additionalInformation['itemFormElName'] . '\',\'' . implode(',', $evalList) . '\',\'' . trim($config['is_in']) . '\',' . ($checkboxIsset ? 1 : 0) . ',\'' . $config['checkbox'] . '\'';
-		$additionalInformation['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'), $additionalInformation['fieldChangeFunc']);
+		$paramsList = GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ',' . GeneralUtility::quoteJSvalue(implode(',', $evalList)) . ',' . GeneralUtility::quoteJSvalue(trim($config['is_in'])) . ',' . ($config['checkbox'] ? 1 : 0) . ',' . GeneralUtility::quoteJSvalue($config['checkbox']);
+		$parameterArray['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'), $parameterArray['fieldChangeFunc']);
 
 		// set classes
 		$classes[] = 'form-control';
@@ -158,10 +168,10 @@ class InputElement extends AbstractFormElement {
 
 		// calculate attributes
 		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
-		$attributes['name'] = $additionalInformation['itemFormElName'] . '_hr';
+		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
 		$attributes['value'] = '';
 		$attributes['maxlength'] = $config['max'] ?: 256;
-		$attributes['onchange'] = implode('', $additionalInformation['fieldChangeFunc']);
+		$attributes['onchange'] = implode('', $parameterArray['fieldChangeFunc']);
 
 		if (!empty($styles)) {
 			$attributes['style'] = implode(' ', $styles);
@@ -180,33 +190,35 @@ class InputElement extends AbstractFormElement {
 		}
 
 		// This is the EDITABLE form field.
-		$item = '
+		$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
+		$placeholderAttribute = '';
+		if (!empty($placeholderValue)) {
+			$placeholderAttribute = ' placeholder="' . htmlspecialchars(trim($languageService->sL($placeholderValue))) . '" ';
+		}
+
+		$html = '
 			<input type="text"'
 				. $attributeString
-				. $this->formEngine->getPlaceholderAttribute($table, $field, $config, $row)
-				. $additionalInformation['onFocus'] . ' />';
+				. $placeholderAttribute
+				. $parameterArray['onFocus'] . ' />';
 
 		// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-		$item .= '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
+		$html .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 
-		$this->formEngine->extJSCODE .= 'typo3form.fieldSet(' . $paramsList . ');';
+		$resultArray['extJSCODE'] = 'typo3form.fieldSet(' . $paramsList . ');';
 		// Going through all custom evaluations configured for this field
 		foreach ($evalList as $evalData) {
 			$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData] . ':&' . $evalData);
 			if (is_object($evalObj) && method_exists($evalObj, 'returnFieldJS')) {
-				$this->formEngine->extJSCODE .= '
-TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
-' . $evalObj->returnFieldJS() . '
-}
-';
+				$resultArray['extJSCODE'] .= LF . 'TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {' . $evalObj->returnFieldJS() . '}';
 			}
 		}
 
 		// add HTML wrapper
 		if ($isDateField) {
-			$item = '
+			$html = '
 				<div class="input-group">
-					' . $item . '
+					' . $html . '
 					<span class="input-group-btn">
 						<label class="btn btn-default" for="' . $attributes['id'] . '">
 							' . IconUtility::getSpriteIcon('actions-edit-pick-date') . '
@@ -217,24 +229,25 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 
 		// Creating an alternative item without the JavaScript handlers.
 		$altItem = '
-			<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '_hr" value="" />
-			<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
+			<input type="hidden" name="' . $parameterArray['itemFormElName'] . '_hr" value="" />
+			<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 
 		// Wrap a wizard around the item?
-		$item = $this->renderWizards(
-			array($item, $altItem),
+		$html = $this->renderWizards(
+			array($html, $altItem),
 			$config['wizards'],
 			$table,
 			$row,
-			$field,
-			$additionalInformation,
-			$additionalInformation['itemFormElName'] . '_hr', $specConf
+			$fieldName,
+			$parameterArray,
+			$parameterArray['itemFormElName'] . '_hr', $specConf
 		);
 
 		// Add a wrapper to remain maximum width
 		$width = (int)$this->formMaxWidth($size);
-		$item = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>' . $item . '</div>';
-		return $item;
+		$html = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>' . $html . '</div>';
+		$resultArray['html'] = $html;
+		return $resultArray;
 	}
 
 }

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\FormEngine;
 
 /**
  * Generation of TCEform elements of the type "user"
@@ -24,25 +25,26 @@ class UserElement extends AbstractFormElement {
 	/**
 	 * User defined field type
 	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
-		$additionalInformation['table'] = $table;
-		$additionalInformation['field'] = $field;
-		$additionalInformation['row'] = $row;
-		$additionalInformation['parameters'] = isset($additionalInformation['fieldConf']['config']['parameters'])
-			? $additionalInformation['fieldConf']['config']['parameters']
+	public function render() {
+		$parameterArray = $this->globalOptions['parameterArray'];
+		$parameterArray['table'] = $this->globalOptions['table'];
+		$parameterArray['field'] = $this->globalOptions['fieldName'];
+		$parameterArray['row'] = $this->globalOptions['databaseRow'];
+		$parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
+			? $parameterArray['fieldConf']['config']['parameters']
 			: array();
-		$additionalInformation['pObj'] = $this->formEngine;
-		return GeneralUtility::callUserFunction(
-			$additionalInformation['fieldConf']['config']['userFunc'],
-			$additionalInformation,
-			$this->formEngine
+		// Instance of FormEngine is kept here for backwards compatibility - but it is a dummy only
+		$dummyFormEngine = new FormEngine;
+		$parameterArray['pObj'] = $dummyFormEngine;
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = GeneralUtility::callUserFunction(
+			$parameterArray['fieldConf']['config']['userFunc'],
+			$parameterArray,
+			$dummyFormEngine
 		);
+		return $resultArray;
 	}
 
 }

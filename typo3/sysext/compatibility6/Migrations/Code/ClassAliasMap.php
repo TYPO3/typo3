@@ -52,7 +52,6 @@ return array(
 	'SC_wizard_rte' => \TYPO3\CMS\Backend\Controller\Wizard\RteController::class,
 	'SC_wizard_table' => \TYPO3\CMS\Backend\Controller\Wizard\TableController::class,
 	't3lib_transferData' => \TYPO3\CMS\Backend\Form\DataPreprocessor::class,
-	't3lib_TCEforms_inline' => \TYPO3\CMS\Backend\Form\Element\InlineElement::class,
 	't3lib_tceformsInlineHook' => \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface::class,
 	't3lib_TCEforms' => \TYPO3\CMS\Backend\Form\FormEngine::class,
 	't3lib_TCEforms_FE' => \TYPO3\CMS\Backend\Form\FrontendFormEngine::class,

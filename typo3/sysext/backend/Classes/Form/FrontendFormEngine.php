@@ -32,22 +32,14 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 	}
 
 	/**
-	 * Function for wrapping labels.
-	 *
-	 * @param string $str The string to wrap
-	 * @return string
-	 */
-	public function wrapLabels($str) {
-		return '<font face="verdana" size="1" color="black">' . $str . '</font>';
-	}
-
-	/**
 	 * Prints the palette in the frontend editing (forms-on-page?)
 	 *
 	 * @param array $paletteArray The palette array to print
 	 * @return string HTML output
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printPalette(array $paletteArray) {
+		GeneralUtility::logDeprecatedFunction();
 		$out = '';
 		$bgColor = ' bgcolor="#D6DAD0"';
 		foreach ($paletteArray as $content) {
@@ -62,31 +54,6 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 	}
 
 	/**
-	 * Sets the fancy front-end design of the editor.
-	 * Frontend
-	 *
-	 * @return void
-	 */
-	public function setFancyDesign() {
-		$this->fieldTemplate = '
-	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6">###FIELD_HELP_ICON###<font face="verdana" size="1" color="black"><strong>###FIELD_NAME###</strong></font>###FIELD_HELP_TEXT###</td>
-	</tr>
-	<tr>
-		<td nowrap="nowrap" bgcolor="#ABBBB4"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><font face="verdana" size="1" color="black">###FIELD_ITEM###</font>###FIELD_PAL_LINK_ICON###</td>
-	</tr>	';
-		$this->totalWrap = '<table border="0" cellpadding="1" cellspacing="0" bgcolor="black"><tr><td><table border="0" cellpadding="2" cellspacing="0">|</table></td></tr></table>';
-		$this->palFieldTemplate = '
-	<tr>
-		<td nowrap="nowrap" bgcolor="#ABBBB4"><font face="verdana" size="1" color="black">###FIELD_PALETTE###</font></td>
-	</tr>	';
-		$this->palFieldTemplateHeader = '
-	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><strong>###FIELD_HEADER###</strong></font></td>
-	</tr>	';
-	}
-
-	/**
 	 * Includes a javascript library that exists in the core /typo3/ directory. The
 	 * backpath is automatically applied.
 	 * This method adds the library to $GLOBALS['TSFE']->additionalHeaderData[$lib].
@@ -98,21 +65,6 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$pageRenderer->addJsLibrary($lib, $this->prependBackPath($lib));
-	}
-
-	/**
-	 * Insert additional style sheet link
-	 *
-	 * @param string $key Some key identifying the style sheet
-	 * @param string $href Uri to the style sheet file
-	 * @param string $title Value for the title attribute of the link element
-	 * @param string $relation Value for the rel attribute of the link element
-	 * @return void
-	 */
-	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$pageRenderer->addCssFile($this->prependBackPath($href), $relation, 'screen', $title);
 	}
 
 	/**

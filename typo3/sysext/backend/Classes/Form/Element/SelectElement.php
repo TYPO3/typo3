@@ -21,9 +21,13 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Generation of TCEform elements of the type "select"
+ *
+ * @todo: This class does way to much and is also misused by FormDataTraverser. It should be split / refactored.
  */
 class SelectElement extends AbstractFormElement {
 
@@ -58,58 +62,77 @@ class SelectElement extends AbstractFormElement {
 	protected $currentTable;
 
 	/**
-	 * This will render a selector box element, or possibly a special construction with two selector boxes.
-	 * That depends on configuration.
-	 *
-	 * @param string $table The table name of the record
-	 * @param string $field The field name which this element is supposed to edit
-	 * @param array $row The record data array where the value(s) for the field can be found
-	 * @param array $additionalInformation An array with additional configuration options.
-	 * @return string The HTML code for the TCEform field
+	 * @var array Result array given returned by render() - This property is a helper until class is properly refactored
 	 */
-	public function render($table, $field, $row, &$additionalInformation) {
+	protected $resultArray = array();
+
+	/**
+	 * This will render a selector box element, or possibly a special construction with two selector boxes.
+	 *
+	 * @return array As defined in initializeResultArray() of AbstractNode
+	 * @todo: This method is more like a container and not a single element ...
+	 */
+	public function render() {
+		$table = $this->globalOptions['table'];
+		$field = $this->globalOptions['fieldName'];
+		$row = $this->globalOptions['databaseRow'];
+		$parameterArray = $this->globalOptions['parameterArray'];
 		// Field configuration from TCA:
-		$config = $additionalInformation['fieldConf']['config'];
+		$config = $parameterArray['fieldConf']['config'];
 		$disabled = '';
 		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
+		$this->resultArray = $this->initializeResultArray();
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($additionalInformation['extra'], $additionalInformation['fieldConf']['defaultExtras']);
-		$selItems = $this->getSelectItems($table, $field, $row, $additionalInformation);
+		$specConf = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
+		$selItems = $this->getSelectItems($table, $field, $row, $parameterArray);
 
 		// Creating the label for the "No Matching Value" entry.
-		$nMV_label = isset($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
-			? $this->getLanguageService()->sL($additionalInformation['fieldTSConfig']['noMatchingValue_label'])
+		$nMV_label = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+			? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 		// Prepare some values:
 		$maxitems = (int)$config['maxitems'];
 		// If a SINGLE selector box...
 		if ($maxitems <= 1 && $config['renderMode'] !== 'tree') {
-			$item = $this->getSingleField_typeSelect_single($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
+			$html = $this->getSingleField_typeSelect_single($table, $field, $row, $parameterArray, $config, $selItems, $nMV_label);
 		} elseif ($config['renderMode'] === 'checkbox') {
 			// Checkbox renderMode
-			$item = $this->getSingleField_typeSelect_checkbox($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
+			$html = $this->getSingleField_typeSelect_checkbox($table, $field, $row, $parameterArray, $config, $selItems, $nMV_label);
 		} elseif ($config['renderMode'] === 'singlebox') {
 			// Single selector box renderMode
-			$item = $this->getSingleField_typeSelect_singlebox($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
+			$html = $this->getSingleField_typeSelect_singlebox($table, $field, $row, $parameterArray, $config, $selItems, $nMV_label);
 		} elseif ($config['renderMode'] === 'tree') {
 			// Tree renderMode
-			$treeClass = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\Element\TreeElement::class, $this->formEngine);
-			$item = $treeClass->renderField($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
+			$treeClass = GeneralUtility::makeInstance(TreeElement::class);
+			$html = $treeClass->renderField($table, $field, $row, $parameterArray, $config, $selItems);
 			// Register the required number of elements
 			$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
-			$this->formEngine->registerRequiredProperty('range', $additionalInformation['itemFormElName'], array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field));
+			$this->resultArray['requiredElements'][$parameterArray['itemFormElName']] = array(
+				$minitems,
+				$maxitems,
+				'imgName' => $table . '_' . $row['uid'] . '_' . $field
+			);
+			$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
+			if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
+				array_shift($match);
+				$this->resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
+					'parts' => $match,
+					'level' => $tabAndInlineStack,
+				);
+			}
 		} else {
 			// Traditional multiple selector box:
-			$item = $this->getSingleField_typeSelect_multiple($table, $field, $row, $additionalInformation, $config, $selItems, $nMV_label);
+			$html = $this->getSingleField_typeSelect_multiple($table, $field, $row, $parameterArray, $config, $selItems, $nMV_label);
 		}
 		// Wizards:
 		if (!$disabled) {
-			$altItem = '<input type="hidden" name="' . $additionalInformation['itemFormElName'] . '" value="' . htmlspecialchars($additionalInformation['itemFormElValue']) . '" />';
-			$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $additionalInformation, $additionalInformation['itemFormElName'], $specConf);
+			$altItem = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
+			$html = $this->renderWizards(array($html, $altItem), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
 		}
-		return $item;
+		$this->resultArray['html'] = $html;
+		return $this->resultArray;
 	}
 
 	/**
@@ -144,7 +167,19 @@ class SelectElement extends AbstractFormElement {
 		}
 		$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
 		// Register the required number of elements:
-		$this->formEngine->registerRequiredProperty('range', $PA['itemFormElName'], array($minitems, $maxitems, 'imgName' => $table . '_' . $row['uid'] . '_' . $field));
+		$this->resultArray['requiredElements'][$PA['itemFormElName']] = array(
+			$minitems,
+			$maxitems,
+			'imgName' => $table . '_' . $row['uid'] . '_' . $field
+		);
+		$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
+		if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $PA['itemFormElName'], $match)) {
+			array_shift($match);
+			$this->resultArray['requiredNested'][$PA['itemFormElName']] = array(
+				'parts' => $match,
+				'level' => $tabAndInlineStack,
+			);
+		}
 		// Get "removeItems":
 		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
 		// Get the array with selected items:
@@ -165,7 +200,7 @@ class SelectElement extends AbstractFormElement {
 			$tvP = explode('|', $tv, 2);
 			$evalValue = $tvP[0];
 			$isRemoved = in_array($evalValue, $removeItems)
-				|| $config['form_type'] == 'select' && $config['authMode']
+				|| $config['type'] == 'select' && $config['authMode']
 				&& !$this->getBackendUserAuthentication()->checkAuthMode($table, $field, $evalValue, $config['authMode']);
 			if ($isRemoved && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
@@ -340,7 +375,7 @@ class SelectElement extends AbstractFormElement {
 
 			$authModeDeny = FALSE;
 			if (
-				($config['form_type'] === 'select')
+				($config['type'] === 'select')
 				&& $config['authMode']
 				&& !$beUserAuth->checkAuthMode($table, $fieldName, $selectItem[1], $config['authMode'])
 			) {
@@ -377,18 +412,23 @@ class SelectElement extends AbstractFormElement {
 	 * @param string $noMatchingLabel Label for no-matching-value
 	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
+	 * @todo: Needs refactoring - somewhere else - own element and make select itself a container?
 	 */
 	public function getSingleField_typeSelect_single($table, $field, $row, &$PA, $config, $selectItems, $noMatchingLabel) {
 
-		// check against inline uniqueness
-		$inlineParent = $this->formEngine->inline->getStructureLevel(-1);
+		// Check against inline uniqueness
+		/** @var InlineStackProcessor $inlineStackProcessor */
+		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
+		$inlineStackProcessor->initializeByGivenStructure($this->globalOptions['inlineStructure']);
+		$inlineParent = $inlineStackProcessor->getStructureLevel(-1);
 		$uniqueIds = NULL;
 		if (is_array($inlineParent) && $inlineParent['uid']) {
+			$inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
+			$inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix($this->globalOptions['prependFormFieldNames']);
 			if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
-				$uniqueIds = $this->formEngine->inline->inlineData['unique'][$this->formEngine->inline->inlineNames['object']
-				. InlineElement::Structure_Separator . $table]['used'];
-				$PA['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,\'' . $this->formEngine->inline->inlineNames['object']
-					. InlineElement::Structure_Separator . $table . '\',\'' . $this->formEngine->inline->inlineNames['form']
+				$uniqueIds = $this->globalOptions['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
+				$PA['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,\'' . $inlineObjectName
+					. '-' . $table . '\',\'' . $inlineFormName
 					. '\',\'' . $row['uid'] . '\');';
 			}
 			// hide uid of parent record for symmetric relations
@@ -418,7 +458,15 @@ class SelectElement extends AbstractFormElement {
 		}
 		// Register as required if minitems is greater than zero
 		if (($minItems = MathUtility::forceIntegerInRange($config['minitems'], 0)) > 0) {
-			$this->formEngine->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $PA['itemFormElName']);
+			$this->resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $field] = $PA['itemFormElName'];
+			$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
+			if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $PA['itemFormElName'], $match)) {
+				array_shift($match);
+				$this->resultArray['requiredNested'][$PA['itemFormElName']] = array(
+					'parts' => $match,
+					'level' => $tabAndInlineStack,
+				);
+			}
 		}
 
 		// Icon configuration:
@@ -564,7 +612,7 @@ class SelectElement extends AbstractFormElement {
 					$out .= $selectIcons[$selectIconCount]['icon'];
 					$out .= (!$onlySelectedIconShown ? '</a>' : '');
 				}
-				$out . '</td>';
+				$out .= '</td>';
 			}
 			$out .= '</tr></tbody></table></div>';
 		}
@@ -585,6 +633,7 @@ class SelectElement extends AbstractFormElement {
 	 * @param string $nMV_label Label for no-matching-value
 	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
+	 * @todo: Needs refactoring - somewhere else - own element and make select itself a container?
 	 */
 	public function getSingleField_typeSelect_checkbox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
 		if (empty($selItems)) {
@@ -790,6 +839,7 @@ class SelectElement extends AbstractFormElement {
 	 * @param string $nMV_label Label for no-matching-value
 	 * @return string The HTML code for the item
 	 * @see getSingleField_typeSelect()
+	 * @todo: Needs refactoring - somewhere else - own element and make select itself a container?
 	 */
 	public function getSingleField_typeSelect_singlebox($table, $field, $row, &$PA, $config, $selItems, $nMV_label) {
 		$languageService = $this->getLanguageService();
@@ -891,6 +941,7 @@ class SelectElement extends AbstractFormElement {
 	 * @param string $fieldName The name of the select field.
 	 * @param string $value The current value in the local record, usually a comma separated list of selected values.
 	 * @return array Array of related UIDs.
+	 * @todo: Needs refactoring and probably out of this class
 	 */
 	public function getRelatedSelectFieldUids(array $fieldConfig, $fieldName, $value) {
 		$relatedUids = array();
@@ -904,7 +955,6 @@ class SelectElement extends AbstractFormElement {
 
 		$PA = array();
 		$PA['fieldConf']['config'] = $fieldConfig;
-		$PA['fieldConf']['config']['form_type'] = $PA['fieldConf']['config']['form_type'] ? $PA['fieldConf']['config']['form_type'] : $PA['fieldConf']['config']['type'];
 		$PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($this->currentTable, $this->currentRow, $fieldName);
 		$PA['fieldConf']['config'] = FormEngineUtility::overrideFieldConf($PA['fieldConf']['config'], $PA['fieldTSConfig']);
 		$selectItemArray = $this->getSelectItems($this->currentTable, $fieldName, $this->currentRow, $PA);
@@ -1008,6 +1058,13 @@ class SelectElement extends AbstractFormElement {
 	 */
 	public function isForceAlternativeFieldValueUse() {
 		return $this->forceAlternativeFieldValueUse;
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
