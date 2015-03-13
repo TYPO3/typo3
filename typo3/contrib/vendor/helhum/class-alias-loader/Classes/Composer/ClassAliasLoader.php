@@ -70,6 +70,17 @@ class ClassAliasLoader {
 	}
 
 	/**
+	 * Get final class name of alias
+	 *
+	 * @param string $alias
+	 * @return string
+	 */
+	public function getClassNameForAlias($alias) {
+		$lookUpClassName = strtolower($alias);
+		return isset($this->aliasMap['aliasToClassNameMapping'][$lookUpClassName]) ? $this->aliasMap['aliasToClassNameMapping'][$lookUpClassName] : $alias;
+	}
+
+	/**
 	 * Main class loading method registered with spl_autoload_register()
 	 *
 	 * @param string $className
