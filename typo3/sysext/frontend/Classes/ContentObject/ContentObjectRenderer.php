@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
+use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
@@ -957,7 +958,7 @@ class ContentObjectRenderer {
 		}
 
 		if ($exceptionHandlerClassName === '1') {
-			$exceptionHandlerClassName = Exception\ProductionExceptionHandler::class;
+			$exceptionHandlerClassName = ProductionExceptionHandler::class;
 		}
 
 		return $exceptionHandlerClassName;
