@@ -162,10 +162,10 @@ class Bootstrap {
 	protected function initializeComposerClassLoader() {
 		$respectComposerPackagesForClassLoading = getenv('TYPO3_COMPOSER_AUTOLOAD') ?: (getenv('REDIRECT_TYPO3_COMPOSER_AUTOLOAD') ?: NULL);
 		$possiblePaths = array();
-		$possiblePaths['fallback'] = __DIR__ . '/../../../../contrib/vendor/autoload.php';
 		if (!empty($respectComposerPackagesForClassLoading)) {
 			$possiblePaths['distribution'] = __DIR__ . '/../../../../../../Packages/Libraries/autoload.php';
 		}
+		$possiblePaths['fallback'] = __DIR__ . '/../../../../contrib/vendor/autoload.php';
 		foreach ($possiblePaths as $possiblePath) {
 			if (file_exists($possiblePath)) {
 				return include $possiblePath;
