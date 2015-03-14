@@ -1654,7 +1654,7 @@ abstract class AbstractMenuContentObject {
 			// Using raw record since the record was overlaid and is correct already:
 			$originalPage = $this->sys_page->getRawRecord('pages', $page['uid']);
 
-			if (!empty($originalPage['shortcut'])) {
+			if ($originalPage['shortcut_mode'] === $page['shortcut_mode'] && !empty($originalPage['shortcut'])) {
 				$page['shortcut'] = $originalPage['shortcut'];
 			}
 		}
