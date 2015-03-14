@@ -5794,9 +5794,6 @@ class ContentObjectRenderer {
 				case 'publicUrl':
 					return $fileObject->getPublicUrl();
 					break;
-				case 'localPath':
-					return $fileObject->getForLocalProcessing();
-					break;
 				default:
 					// Generic alternative here
 					return $fileObject->getProperty($requestedFileInformationKey);
