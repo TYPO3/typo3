@@ -127,7 +127,6 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	public function __construct(ContentObjectRenderer $cObj = NULL) {
 		if (!is_null($cObj)) {
 			$this->cObj = $cObj;
-			$this->fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		}
 	}
 

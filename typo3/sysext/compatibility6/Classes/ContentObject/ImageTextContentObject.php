@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Compatibility6\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+
 /**
  * Contains IMGTEXT content object.
  *
@@ -21,6 +24,11 @@ namespace TYPO3\CMS\Compatibility6\ContentObject;
  * @author Steffen Kamper <steffen@typo3.org>
  */
 class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
+
+	/**
+	 * @var ResourceFactory
+	 */
+	protected $fileFactory = NULL;
 
 	/**
 	 * Rendering the cObject, IMGTEXT
@@ -38,7 +46,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 		}
 		$imgList = isset($conf['imgList.']) ? trim($this->cObj->stdWrap($conf['imgList'], $conf['imgList.'])) : trim($conf['imgList']);
 		if ($imgList) {
-			$imgs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $imgList, TRUE);
+			$imgs = GeneralUtility::trimExplode(',', $imgList, TRUE);
 			$imgStart = isset($conf['imgStart.']) ? (int)$this->cObj->stdWrap($conf['imgStart'], $conf['imgStart.']) : (int)$conf['imgStart'];
 			$imgCount = count($imgs) - $imgStart;
 			$imgMax = isset($conf['imgMax.']) ? (int)$this->cObj->stdWrap($conf['imgMax'], $conf['imgMax.']) : (int)$conf['imgMax'];
@@ -156,7 +164,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			$equalHeight = isset($conf['equalH.']) ? (int)$this->cObj->stdWrap($conf['equalH'], $conf['equalH.']) : (int)$conf['equalH'];
 			// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
 			if ($equalHeight) {
-				$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+				$gifCreator = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 				$gifCreator->init();
 				$relations = array();
 				$relations_cols = array();
@@ -483,7 +491,20 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 	 * @return void
 	 */
 	protected function setCurrentFileInContentObjectRenderer($fileUid) {
-		$imageFile = $this->fileFactory->getFileReferenceObject($fileUid);
+		$imageFile = $this->getFileFactory()->getFileReferenceObject($fileUid);
 		$this->cObj->setCurrentFile($imageFile);
+	}
+
+	/**
+	 * Returns the file factory.
+	 *
+	 * @return ResourceFactory
+	 */
+	public function getFileFactory() {
+		if ($this->fileFactory === NULL) {
+			$this->fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+		}
+
+		return $this->fileFactory;
 	}
 }
