@@ -5606,7 +5606,7 @@ class ContentObjectRenderer {
 					return $fileObject->getPublicUrl();
 					break;
 				case 'localPath':
-					return $fileObject->getForLocalProcessing();
+					return $fileObject->getForLocalProcessing(FALSE);
 					break;
 				default:
 					// Generic alternative here
