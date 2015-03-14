@@ -1512,9 +1512,7 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	protected function loadCshJavascript() {
-		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/contexthelp.js');
-		$this->pageRenderer->addExtDirectCode();
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
 	}
 
 	/**

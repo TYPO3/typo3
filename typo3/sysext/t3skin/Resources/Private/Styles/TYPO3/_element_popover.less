@@ -1,0 +1,30 @@
+//
+// Popover
+//
+
+.popover {
+	padding: 0;
+
+	&-title {
+		font-size: 15px;
+		border-bottom: 0;
+		padding: 12px 14px;
+	}
+
+	&-content p {
+		margin: 0;
+	}
+
+	.close {
+		margin-right: 10px;
+		margin-top: 10px;
+	}
+
+	&.bottom .arrow:after {
+		border-bottom-color: @popover-title-bg;
+	}
+
+	&.no-title .arrow:after {
+		border-bottom-color: @popover-bg;
+	}
+}

@@ -248,9 +248,9 @@ class BackendController {
 			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
 			if (typeof console === "undefined") {
 				console = TYPO3.Backend.DebugConsole;
-			}
-			TYPO3.ContextHelpWindow.init(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('help_cshmanual')) . ');';
+			}';
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
+		$this->pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_cshmanual'));
 		// Set document title:
 		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
 		// Renders the module page
