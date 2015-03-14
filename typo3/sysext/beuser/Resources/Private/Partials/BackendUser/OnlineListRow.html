@@ -1,3 +1,4 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
 <f:for each="{onlineUser.sessions}" as="session" iteration="it">
@@ -34,13 +35,13 @@
 							arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
 							onclick="javascript:return confirm('{f:translate(key: 'reallyLogout')} {onlineUser.backendUser.userName}?');"
 						>
-							<bu:spriteManagerIcon iconName="actions-document-close" />
+							<be:spriteManagerIcon iconName="actions-document-close" />
 							<f:translate key="endSession" />
 						</f:link.action>
 					</f:else>
 				</f:if>
 				<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
-					<bu:SpriteManagerIcon iconName="actions-document-info" />
+					<be:spriteManagerIcon iconName="actions-document-info" />
 				</a>
 			</div>
 		</td>

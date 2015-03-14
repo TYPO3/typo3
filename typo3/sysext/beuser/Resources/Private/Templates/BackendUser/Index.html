@@ -1,9 +1,10 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&amp;edit[be_users][0]=new'; return false;"><bu:spriteManagerIcon iconName="actions-document-new" /></a>
+	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl='+T3_THIS_LOCATION+'&amp;edit[be_users][0]=new'; return false;"><be:spriteManagerIcon iconName="actions-document-new" /></a>
 </f:section>
 
 <f:section name="headline">
@@ -32,7 +33,7 @@
 							</td>
 							<td>
 								<f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right">
-									<bu:SpriteManagerIcon iconName="actions-selection-delete" />
+									<be:spriteManagerIcon iconName="actions-selection-delete" />
 								</f:link.action>
 							</td>
 						</tr>

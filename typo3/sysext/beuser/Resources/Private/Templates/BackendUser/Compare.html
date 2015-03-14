@@ -1,9 +1,10 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<f:link.action action="index"><bu:spriteManagerIcon iconName="actions-view-go-back" /></f:link.action>
+	<f:link.action action="index"><be:spriteManagerIcon iconName="actions-view-go-back" /></f:link.action>
 </f:section>
 
 <f:section name="headline">
@@ -66,12 +67,12 @@
 							<f:if condition="{compareUser.isDisabled} == 1">
 								<f:then>
 									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
-										<bu:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
+										<be:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
 									</a>
 								</f:then>
 								<f:else>
 									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
-										<bu:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
+										<be:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
 									</a>
 								</f:else>
 							</f:if>
