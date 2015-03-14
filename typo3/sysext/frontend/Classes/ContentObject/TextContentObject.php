@@ -41,7 +41,7 @@ class TextContentObject extends AbstractContentObject {
 			$content = $this->cObj->stdWrap($content, $conf['value.']);
 			unset($conf['value.']);
 		}
-		if (count($conf)) {
+		if (!empty($conf)) {
 			$content = $this->cObj->stdWrap($content, $conf);
 		}
 		return $content;
