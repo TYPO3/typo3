@@ -77,7 +77,6 @@ class BackendLayoutWizardController {
 		if (!$this->P['hmac'] || ($this->P['hmac'] !== $hmac_validate)) {
 			throw new \InvalidArgumentException('Hmac Validation failed for backend_layout wizard', 1385811397);
 		}
-		$this->md5ID = $this->P['md5ID'];
 		$uid = (int)$this->P['uid'];
 		// Initialize document object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
@@ -243,7 +242,6 @@ class BackendLayoutWizardController {
 	public function printContent() {
 		echo $this->doc->render('Grid wizard', $this->content);
 	}
-
 
 	/**
 	 * Returns LanguageService

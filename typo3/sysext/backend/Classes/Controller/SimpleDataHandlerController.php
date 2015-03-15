@@ -16,6 +16,13 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
 /**
  * Script Class, creating object of \TYPO3\CMS\Core\DataHandling\DataHandler and
@@ -101,13 +108,6 @@ class SimpleDataHandlerController {
 	public $uPT;
 
 	/**
-	 * String, general comment (for raising stages of workspace versions)
-	 *
-	 * @var string
-	 */
-	public $generalComment;
-
-	/**
 	 * TYPO3 Core Engine
 	 *
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
@@ -128,6 +128,7 @@ class SimpleDataHandlerController {
 	 * @return void
 	 */
 	public function init() {
+		$beUser = $this->getBackendUser();
 		// GPvars:
 		$this->flags = GeneralUtility::_GP('flags');
 		$this->data = GeneralUtility::_GP('data');
@@ -139,24 +140,22 @@ class SimpleDataHandlerController {
 		$this->CB = GeneralUtility::_GP('CB');
 		$this->vC = GeneralUtility::_GP('vC');
 		$this->uPT = GeneralUtility::_GP('uPT');
-		$this->generalComment = GeneralUtility::_GP('generalComment');
 		// Creating TCEmain object
-		$this->tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+		$this->tce = GeneralUtility::makeInstance(DataHandler::class);
 		$this->tce->stripslashes_values = 0;
-		$this->tce->generalComment = $this->generalComment;
 		// Configuring based on user prefs.
-		if ($GLOBALS['BE_USER']->uc['recursiveDelete']) {
+		if ($beUser->uc['recursiveDelete']) {
 			// TRUE if the delete Recursive flag is set.
 			$this->tce->deleteTree = 1;
 		}
-		if ($GLOBALS['BE_USER']->uc['copyLevels']) {
+		if ($beUser->uc['copyLevels']) {
 			// Set to number of page-levels to copy.
-			$this->tce->copyTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
+			$this->tce->copyTree = MathUtility::forceIntegerInRange($beUser->uc['copyLevels'], 0, 100);
 		}
-		if ($GLOBALS['BE_USER']->uc['neverHideAtCopy']) {
+		if ($beUser->uc['neverHideAtCopy']) {
 			$this->tce->neverHideAtCopy = 1;
 		}
-		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
+		$TCAdefaultOverride = $beUser->getTSConfigProp('TCAdefaults');
 		if (is_array($TCAdefaultOverride)) {
 			$this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
 		}
@@ -173,7 +172,7 @@ class SimpleDataHandlerController {
 	 */
 	public function initClipboard() {
 		if (is_array($this->CB)) {
-			$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+			$clipObj = GeneralUtility::makeInstance(Clipboard::class);
 			$clipObj->initializeClipboard();
 			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
@@ -204,7 +203,7 @@ class SimpleDataHandlerController {
 		// Checking referer / executing
 		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
 		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+		if ($httpHost != $refInfo['host'] && $this->vC != $this->getBackendUser()->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 			$this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
 		} else {
 			// Register uploaded files
@@ -218,7 +217,7 @@ class SimpleDataHandlerController {
 			}
 			// Update page tree?
 			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
-				\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('updatePageTree');
+				BackendUtility::setUpdateSignal('updatePageTree');
 			}
 		}
 	}
@@ -234,8 +233,8 @@ class SimpleDataHandlerController {
 		if ($this->prErr) {
 			$this->tce->printLogErrorMessages($this->redirect);
 		}
-		if ($this->redirect && !$this->tce->debug) {
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirect);
+		if ($this->redirect) {
+			HttpUtility::redirect($this->redirect);
 		}
 	}
 
@@ -245,12 +244,13 @@ class SimpleDataHandlerController {
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
 	 */
-	public function processAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
+	public function processAjaxRequest($parameters, AjaxRequestHandler $ajaxRequestHandler) {
 		// do the regular / main logic
 		$this->initClipboard();
 		$this->main();
 
-		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
 		$content = array(
 			'redirect' => $this->redirect,
@@ -279,6 +279,15 @@ class SimpleDataHandlerController {
 		}
 		$ajaxRequestHandler->setContentFormat('json');
 		$ajaxRequestHandler->setContent($content);
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

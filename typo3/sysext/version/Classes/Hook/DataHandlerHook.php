@@ -37,13 +37,6 @@ class DataHandlerHook {
 	protected $notificationEmailInfo = array();
 
 	/**
-	 * General comment, eg. for staging in workspaces
-	 *
-	 * @var string
-	 */
-	protected $generalComment = '';
-
-	/**
 	 * Contains remapped IDs.
 	 *
 	 * @var array
@@ -82,7 +75,7 @@ class DataHandlerHook {
 		if ($command == 'version') {
 			$commandIsProcessed = TRUE;
 			$action = (string)$value['action'];
-			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
+			$comment = !empty($value['comment']) ? $value['comment'] : '';
 			$notificationAlternativeRecipients = (isset($value['notificationAlternativeRecipients'])) && is_array($value['notificationAlternativeRecipients']) ? $value['notificationAlternativeRecipients'] : array();
 			switch ($action) {
 				case 'new':

@@ -19,6 +19,10 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
+use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script class for 'db_new'
@@ -150,7 +154,7 @@ class NewRecordController {
 	 */
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$GLOBALS['BACK_PATH'] = '';
 
 		$this->init();
@@ -162,11 +166,12 @@ class NewRecordController {
 	 * @return void
 	 */
 	protected function init() {
+		$beUser = $this->getBackendUserAuthentication();
 		// Page-selection permission clause (reading)
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->perms_clause = $beUser->getPagePermsClause(1);
 		// This will hide records from display - it has nothing to do with user rights!!
-		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
-			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
+		if ($pidList = $beUser->getTSConfigVal('options.hideRecords.pages')) {
+			if ($pidList = $this->getDatabaseConnection()->cleanIntList($pidList)) {
 				$this->perms_clause .= ' AND pages.uid NOT IN (' . $pidList . ')';
 			}
 		}
@@ -176,7 +181,7 @@ class NewRecordController {
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		$this->pagesOnly = GeneralUtility::_GP('pagesOnly');
 		// Create instance of template class for output
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new.html');
 		$this->doc->JScode = '';
@@ -184,7 +189,7 @@ class NewRecordController {
 		$this->doc->getContextMenuCode();
 		// Creating content
 		$this->content = '';
-		$this->content .= $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
+		$this->content .= $this->doc->header($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
 		// Id a positive id is supplied, ask for the page record with permission information contained:
 		if ($this->id > 0) {
 			$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -194,16 +199,16 @@ class NewRecordController {
 			// Get record of parent page
 			$this->pidInfo = BackendUtility::getRecord('pages', $this->pageinfo['pid']);
 			// Checking the permissions for the user with regard to the parent page: Can he create new pages, new content record, new page after?
-			if ($GLOBALS['BE_USER']->doesUserHaveAccess($this->pageinfo, 8)) {
+			if ($beUser->doesUserHaveAccess($this->pageinfo, 8)) {
 				$this->newPagesInto = 1;
 			}
-			if ($GLOBALS['BE_USER']->doesUserHaveAccess($this->pageinfo, 16)) {
+			if ($beUser->doesUserHaveAccess($this->pageinfo, 16)) {
 				$this->newContentInto = 1;
 			}
-			if (($GLOBALS['BE_USER']->isAdmin() || is_array($this->pidInfo)) && $GLOBALS['BE_USER']->doesUserHaveAccess($this->pidInfo, 8)) {
+			if (($beUser->isAdmin() || is_array($this->pidInfo)) && $beUser->doesUserHaveAccess($this->pidInfo, 8)) {
 				$this->newPagesAfter = 1;
 			}
-		} elseif ($GLOBALS['BE_USER']->isAdmin()) {
+		} elseif ($beUser->isAdmin()) {
 			// Admins can do it all
 			$this->newPagesInto = 1;
 			$this->newContentInto = 1;
@@ -223,7 +228,7 @@ class NewRecordController {
 	 */
 	public function main() {
 		// If there was a page - or if the user is admin (admins has access to the root) we proceed:
-		if ($this->pageinfo['uid'] || $GLOBALS['BE_USER']->isAdmin()) {
+		if ($this->pageinfo['uid'] || $this->getBackendUserAuthentication()->isAdmin()) {
 			// Acquiring TSconfig for this module/current page:
 			$this->web_list_modTSconfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 			$this->allowedNewTables = GeneralUtility::trimExplode(',', $this->web_list_modTSconfig['properties']['allowedNewTables'], TRUE);
@@ -264,7 +269,7 @@ class NewRecordController {
 			$markers['CSH'] = $docHeaderButtons['csh'];
 			$markers['CONTENT'] = $this->content;
 			// Build the <body> for the module
-			$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
+			$this->content = $this->doc->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle'));
 			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 			$this->content .= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -287,7 +292,7 @@ class NewRecordController {
 		if (!$this->pagesOnly) {
 			// New page
 			if ($this->showNewRecLink('pages')) {
-				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
 			}
 			// CSH
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular');
@@ -298,11 +303,11 @@ class NewRecordController {
 		}
 		// Back
 		if ($this->R_URI) {
-			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 		if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 			// View
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $this->backPath, BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		}
 		return $buttons;
 	}
@@ -313,12 +318,12 @@ class NewRecordController {
 	 * @return void
 	 */
 	public function pagesOnly() {
-		$numberOfPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', '1=1' . BackendUtility::deleteClause('pages'));
+		$numberOfPages = $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'pages', '1=1' . BackendUtility::deleteClause('pages'));
 		if ($numberOfPages > 0) {
 			$this->code .= '
-				<h3>' . htmlspecialchars($GLOBALS['LANG']->getLL('selectPosition')) . ':</h3>
+				<h3>' . htmlspecialchars($this->getLanguageService()->getLL('selectPosition')) . ':</h3>
 			';
-			$positionMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PagePositionMap::class, \TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView::class);
+			$positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
 			/** @var $positionMap \TYPO3\CMS\Backend\Tree\View\PagePositionMap */
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {
@@ -328,7 +333,7 @@ class NewRecordController {
 			$endPos = strpos($javascript, '\';');
 			$url = substr($javascript, $startPos, $endPos - $startPos);
 			@ob_end_clean();
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
+			HttpUtility::redirect($url);
 		}
 	}
 
@@ -338,7 +343,7 @@ class NewRecordController {
 	 * @return void
 	 */
 	public function regularNew() {
-		$doNotShowFullDescr = FALSE;
+		$lang = $this->getLanguageService();
 		// Initialize array for accumulating table rows:
 		$this->tRows = array();
 		// Get TSconfig for current page
@@ -362,16 +367,16 @@ class NewRecordController {
 		$newPageLinks = array();
 		if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
 			// Create link to new page inside:
-			$newPageLinks[] = $this->linkWrap(IconUtility::getSpriteIconForRecord($table, array()) . $GLOBALS['LANG']->sL($v['ctrl']['title'], TRUE) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', TRUE) . ')', $table, $this->id);
+			$newPageLinks[] = $this->linkWrap(IconUtility::getSpriteIconForRecord($table, array()) . $lang->sL($v['ctrl']['title'], TRUE) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', TRUE) . ')', $table, $this->id);
 		}
 		// New pages AFTER this pages
 		if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
-			$newPageLinks[] = $this->linkWrap($pageIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'], TRUE) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after', TRUE) . ')', 'pages', -$this->id);
+			$newPageLinks[] = $this->linkWrap($pageIcon . $lang->sL($v['ctrl']['title'], TRUE) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after', TRUE) . ')', 'pages', -$this->id);
 		}
 		// New pages at selection position
 		if ($this->newPagesSelectPosition) {
 			// Link to page-wizard:
-			$newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => 1))) . '">' . $pageIcon . htmlspecialchars($GLOBALS['LANG']->getLL('pageSelectPosition')) . '</a>';
+			$newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => 1))) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
 		}
 		// Assemble all new page links
 		$numPageLinks = count($newPageLinks);
@@ -381,41 +386,42 @@ class NewRecordController {
 		// Add row header and half-line if not empty
 		if (!empty($rowContent)) {
 			$rowContent = '<ul class="list-tree"><li>' .$newPageIcon . '<strong>' .
-				$GLOBALS['LANG']->getLL('createNewPage') . '</strong><ul>' . $rowContent . '</ul></li>';
+				$lang->getLL('createNewPage') . '</strong><ul>' . $rowContent . '</ul></li>';
 		}
 		// Compile table row to show the icon for "new page (select position)"
 		$startRows = array();
 		if ($this->showNewRecLink('pages') && !empty($rowContent)) {
 			$startRows[] = $rowContent;
 		}
+		$iconFile = array();
 		// New tables (but not pages) INSIDE this pages
-		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
+		$isAdmin = $this->getBackendUserAuthentication()->isAdmin();
 		$newContentIcon = IconUtility::getSpriteIcon('actions-document-new');
 		if ($this->newContentInto) {
 			if (is_array($GLOBALS['TCA'])) {
 				$groupName = '';
 				foreach ($GLOBALS['TCA'] as $table => $v) {
-					$counter = 1;
 					if ($table != 'pages'
 						&& $this->showNewRecLink($table)
 						&& $this->isTableAllowedForThisPage($this->pageinfo, $table)
-						&& $GLOBALS['BE_USER']->check('tables_modify', $table)
+						&& $this->getBackendUserAuthentication()->check('tables_modify', $table)
 						&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
-						&& $GLOBALS['BE_USER']->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
+						&& $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
 					) {
 						$newRecordIcon = IconUtility::getSpriteIconForRecord($table, array());
 						$rowContent = '';
+						$thisTitle = '';
 						// Create new link for record:
-						$newLink = $this->linkWrap($newRecordIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'], TRUE), $table, $this->id);
+						$newLink = $this->linkWrap($newRecordIcon . $lang->sL($v['ctrl']['title'], TRUE), $table, $this->id);
 						// If the table is 'tt_content' (from "cms" extension), create link to wizard
 						if ($table == 'tt_content') {
-							$groupName = $GLOBALS['LANG']->getLL('createNewContent');
-							$rowContent = $newContentIcon . '<strong>' . $GLOBALS['LANG']->getLL('createNewContent') . '</strong><ul>';
+							$groupName = $lang->getLL('createNewContent');
+							$rowContent = $newContentIcon . '<strong>' . $lang->getLL('createNewContent') . '</strong><ul>';
 							// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
 							$overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
 							$pathToWizard = ExtensionManagementUtility::isLoaded($overrideExt) ? ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
 							$href = $pathToWizard . 'id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-							$rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($GLOBALS['LANG']->getLL('clickForWizard')) . '</a></li></ul>';
+							$rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard')) . '</a></li></ul>';
 						} else {
 							// Get the title
 							if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
@@ -426,6 +432,7 @@ class NewRecordController {
 							}
 							$nameParts = explode('_', $table);
 							$thisTitle = '';
+							$_EXTKEY = '';
 							if ($nameParts[0] == 'tx' || $nameParts[0] == 'tt') {
 								// Try to extract extension name
 								if (substr($v['ctrl']['title'], 0, 8) == 'LLL:EXT:') {
@@ -435,10 +442,12 @@ class NewRecordController {
 										// First try to get localisation of extension title
 										$temp = explode(':', substr($v['ctrl']['title'], 9 + strlen($_EXTKEY)));
 										$langFile = $temp[0];
-										$thisTitle = $GLOBALS['LANG']->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
+										$thisTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
 										// If no localisation available, read title from ext_emconf.php
-										if (!$thisTitle && is_file(ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php')) {
-											include ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php';
+										$extEmConfFile = ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php';
+										if (!$thisTitle && is_file($extEmConfFile)) {
+											$EM_CONF = array();
+											include $extEmConfFile;
 											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
 										}
 										$iconFile[$_EXTKEY] = '<img ' . 'src="' . ExtensionManagementUtility::extRelPath($_EXTKEY) . $GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" ' . 'width="16" height="16" ' . 'alt="' . $thisTitle . '" />';
@@ -454,7 +463,7 @@ class NewRecordController {
 									continue;
 								}
 								$_EXTKEY = 'system';
-								$thisTitle = $GLOBALS['LANG']->getLL('system_records');
+								$thisTitle = $lang->getLL('system_records');
 								$iconFile['system'] = IconUtility::getSpriteIcon('apps-pagetree-root');
 							}
 							if ($groupName == '' || $groupName != $_EXTKEY) {
@@ -562,11 +571,7 @@ class NewRecordController {
 	 */
 	public function isTableAllowedForThisPage($pid_row, $checkTable) {
 		if (!is_array($pid_row)) {
-			if ($GLOBALS['BE_USER']->user['admin']) {
-				return TRUE;
-			} else {
-				return FALSE;
-			}
+			return $this->getBackendUserAuthentication()->isAdmin();
 		}
 		// be_users and be_groups may not be created anywhere but in the root.
 		if ($checkTable == 'be_users' || $checkTable == 'be_groups') {
@@ -627,6 +632,15 @@ class NewRecordController {
 			$languageCount = TRUE;
 		}
 		return $languageCount;
+	}
+
+	/**
+	 * Return language service instance
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 	/**

@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
@@ -55,7 +59,7 @@ class ClickMenuController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$GLOBALS['SOBE'] = $this;
 
 		// Setting GPvars:
@@ -67,7 +71,7 @@ class ClickMenuController {
 		$this->extClassArray = $GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'];
 
 		// Initialize template object
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 	}
 
 	/**
@@ -89,7 +93,7 @@ class ClickMenuController {
 	public function main() {
 		GeneralUtility::logDeprecatedFunction();
 		// Initialize Clipboard object:
-		$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+		$clipObj = GeneralUtility::makeInstance(Clipboard::class);
 		$clipObj->initializeClipboard();
 		// This locks the clipboard to the Normal for this request.
 		$clipObj->lockToNormal();
@@ -100,11 +104,10 @@ class ClickMenuController {
 		// Saves
 		$clipObj->endClipboard();
 		// Create clickmenu object
-		$clickMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ClickMenu\ClickMenu::class);
+		$clickMenu = GeneralUtility::makeInstance(ClickMenu::class);
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
-		$clickMenu->backPath = $this->backPath;
 		// Set content of the clickmenu with the incoming var, "item"
 		$this->content .= $clickMenu->init();
 	}
@@ -127,12 +130,12 @@ class ClickMenuController {
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
 	 */
-	public function printContentForAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
+	public function printContentForAjaxRequest($parameters, AjaxRequestHandler $ajaxRequestHandler) {
 
 		// XML has to be parsed, no parse errors allowed
 		@ini_set('display_errors', 0);
 
-		$clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+		$clipObj = GeneralUtility::makeInstance(Clipboard::class);
 		$clipObj->initializeClipboard();
 		// This locks the clipboard to the Normal for this request.
 		$clipObj->lockToNormal();
@@ -143,7 +146,7 @@ class ClickMenuController {
 		// Saves
 		$clipObj->endClipboard();
 		// Create clickmenu object
-		$clickMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\ClickMenu\ClickMenu::class);
+		$clickMenu = GeneralUtility::makeInstance(ClickMenu::class);
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
@@ -155,6 +158,15 @@ class ClickMenuController {
 		$ajaxContent = '<?xml version="1.0"?><t3ajax>' . $ajaxContent . '</t3ajax>';
 		$ajaxRequestHandler->addContent('ClickMenu', $ajaxContent);
 		$ajaxRequestHandler->setContentFormat('xml');
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }

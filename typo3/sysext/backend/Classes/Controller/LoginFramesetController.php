@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+
 /**
  * Script Class, putting the frameset together.
  *
@@ -34,13 +37,13 @@ class LoginFramesetController {
 	 */
 	public function main() {
 		$title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
-		$GLOBALS['TBE_TEMPLATE']->startPage($title);
+		$this->getDocumentTemplate()->startPage($title);
 
 		// Create the frameset for the window
-		$this->content = $GLOBALS['TBE_TEMPLATE']->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) . '
+		$this->content = $this->getDocumentTemplate()->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
-				<frame name="dummy" src="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
+				<frame name="dummy" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
 			</frameset>
 		</html>';
 	}
@@ -52,6 +55,15 @@ class LoginFramesetController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * Returns an instance of DocumentTemplate
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

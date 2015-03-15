@@ -17,6 +17,12 @@ namespace TYPO3\CMS\Backend\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\View\PageTreeView;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Main script class for the page tree navigation frame
@@ -103,12 +109,13 @@ class PageTreeNavigationController {
 		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');
 		$this->setTempDBmount = GeneralUtility::_GP('setTempDBmount');
 		// Create page tree object:
-		$this->pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageTreeView::class);
-		$this->pagetree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
-		$this->pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-		$this->pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
-		$this->pagetree->ext_separateNotinmenuPages = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.separateNotinmenuPages');
-		$this->pagetree->ext_alphasortNotinmenuPages = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.alphasortNotinmenuPages');
+		$beUser = $this->getBackendUser();
+		$this->pagetree = GeneralUtility::makeInstance(PageTreeView::class);
+		$this->pagetree->ext_IconMode = $beUser->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
+		$this->pagetree->ext_showPageId = $beUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$this->pagetree->ext_showNavTitle = $beUser->getTSConfigVal('options.pageTree.showNavTitle');
+		$this->pagetree->ext_separateNotinmenuPages = $beUser->getTSConfigVal('options.pageTree.separateNotinmenuPages');
+		$this->pagetree->ext_alphasortNotinmenuPages = $beUser->getTSConfigVal('options.pageTree.alphasortNotinmenuPages');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
 		$this->pagetree->addField('alias');
 		$this->pagetree->addField('shortcut');
@@ -128,9 +135,9 @@ class PageTreeNavigationController {
 	 */
 	public function initPage() {
 		// Setting highlight mode:
-		$this->doHighlight = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableTitleHighlight');
+		$doHighlight = !$this->getBackendUser()->getTSConfigVal('options.pageTree.disableTitleHighlight');
 		// Create template object:
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_db_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
@@ -140,8 +147,8 @@ class PageTreeNavigationController {
 		$dragDropCode = 'Tree.registerDragDropHandlers();';
 
 		// If highlighting is active, define the CSS class for the active item depending on the workspace
-		if ($this->doHighlight) {
-			$hlClass = $GLOBALS['BE_USER']->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
+		if ($doHighlight) {
+			$hlClass = $this->getBackendUser()->workspace === 0 ? 'active' : 'active active-ws wsver' . $this->getBackendUser()->workspace;
 			$dragDropCode .= '
 				Tree.highlightClass = "' . $hlClass . '";
 				Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);';
@@ -164,7 +171,7 @@ class PageTreeNavigationController {
 			top.fsMod.currentBank = bank;
 			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
-			' . ($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '') . '
+			' . ($doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '') . '
 			if (linkObj) { linkObj.blur(); }
 			return false;
 		}
@@ -185,9 +192,9 @@ class PageTreeNavigationController {
 		// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint) {
 			$flashText = '
-				<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>		<br />' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xlf:labels.path', TRUE) . ': <span title="' . htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)) . '</span>
+				<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.temporaryDBmount', TRUE) . '</a>		<br />' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_core.xlf:labels.path', TRUE) . ': <span title="' . htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)) . '</span>
 			';
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $flashText, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $flashText, '', FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		// Outputting page tree:
@@ -198,10 +205,9 @@ class PageTreeNavigationController {
 			'WORKSPACEINFO' => $this->getWorkspaceInfo(),
 			'CONTENT' => $this->content
 		);
-		$subparts = array();
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('TYPO3 Page Tree');
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers);
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
@@ -228,9 +234,9 @@ class PageTreeNavigationController {
 		);
 		// New Page
 		$onclickNewPageWizard = 'top.content.list_frame.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['pagesOnly' => 1, 'id' => ''])) . '+Tree.pageID;';
-		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
+		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $this->getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
 		// Refresh
-		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', BackendUtility::cshItem('xMOD_csh_corebe', 'pagetree'));
 		return $buttons;
@@ -242,8 +248,8 @@ class PageTreeNavigationController {
 	 * @return string HTML containing workspace info
 	 */
 	protected function getWorkspaceInfo() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces') && ($GLOBALS['BE_USER']->workspace !== 0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))) {
-			$wsTitle = htmlspecialchars(\TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
+		if (ExtensionManagementUtility::isLoaded('workspaces') && ($this->getBackendUser()->workspace !== 0 || $this->getBackendUser()->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))) {
+			$wsTitle = htmlspecialchars(WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
 			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">' . IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array(
 				'title' => $wsTitle,
@@ -251,6 +257,8 @@ class PageTreeNavigationController {
 				'style' => 'cursor:pointer;'
 			)) . $wsTitle . '</div>
 			';
+		} else {
+			$workspaceInfo = '';
 		}
 		return $workspaceInfo;
 	}
@@ -266,10 +274,11 @@ class PageTreeNavigationController {
 	 * @return void
 	 */
 	public function initializeTemporaryDBmount() {
+		$beUser = $this->getBackendUser();
 		// Set/Cancel Temporary DB Mount:
 		if ((string)$this->setTempDBmount !== '') {
-			$set = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->setTempDBmount, 0);
-			if ($set > 0 && $GLOBALS['BE_USER']->isInWebMount($set)) {
+			$set = MathUtility::forceIntegerInRange($this->setTempDBmount, 0);
+			if ($set > 0 && $beUser->isInWebMount($set)) {
 				// Setting...:
 				$this->settingTemporaryMountPoint($set);
 			} else {
@@ -278,10 +287,10 @@ class PageTreeNavigationController {
 			}
 		}
 		// Getting temporary mount point ID:
-		$temporaryMountPoint = (int)$GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint');
+		$temporaryMountPoint = (int)$beUser->getSessionData('pageTree_temporaryMountPoint');
 		// If mount point ID existed and is within users real mount points, then set it temporarily:
-		if ($temporaryMountPoint > 0 && $GLOBALS['BE_USER']->isInWebMount($temporaryMountPoint)) {
-			if ($this->active_tempMountPoint = BackendUtility::readPageAccess($temporaryMountPoint, $GLOBALS['BE_USER']->getPagePermsClause(1))) {
+		if ($temporaryMountPoint > 0 && $beUser->isInWebMount($temporaryMountPoint)) {
+			if ($this->active_tempMountPoint = BackendUtility::readPageAccess($temporaryMountPoint, $beUser->getPagePermsClause(1))) {
 				$this->pagetree->MOUNTS = array($temporaryMountPoint);
 			} else {
 				// Clear temporary mount point as we have no access to it any longer
@@ -297,7 +306,7 @@ class PageTreeNavigationController {
 	 * @return void
 	 */
 	public function settingTemporaryMountPoint($pageId) {
-		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$pageId);
+		$this->getBackendUser()->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$pageId);
 	}
 
 	/**********************************
@@ -321,6 +330,24 @@ class PageTreeNavigationController {
 		} else {
 			$ajaxObj->addContent('tree', $tree);
 		}
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

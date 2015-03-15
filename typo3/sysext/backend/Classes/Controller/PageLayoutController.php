@@ -20,10 +20,21 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
+use TYPO3\CMS\Recordlist\RecordList;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Backend\Form\FormEngine;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\Tree\View\ContentLayoutPagePositionMap;
 
 /**
  * Script Class for Web > Layout module
@@ -246,19 +257,54 @@ class PageLayoutController {
 	protected $markers = array();
 
 	/**
+	 * @var array
+	 */
+	protected $eRParts = array();
+
+	/**
+	 * @var string
+	 */
+	protected $editSelect;
+
+	/**
+	 * @var bool
+	 */
+	protected $deleteButton;
+
+	/**
+	 * @var bool
+	 */
+	protected $undoButton;
+
+	/**
+	 * @var array
+	 */
+	protected $undoButtonR;
+
+	/**
+	 * @var string
+	 */
+	protected $R_URI;
+
+	/**
+	 * @var string
+	 */
+	protected $closeUrl;
+
+	/**
 	 * Initializing the module
 	 *
 	 * @return void
 	 */
 	public function init() {
-		$GLOBALS['LANG']->includeLLFile('EXT:cms/layout/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:cms/layout/locallang.xlf');
 
 		// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
-		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Get session data
-		$sessionData = $GLOBALS['BE_USER']->getSessionData(\TYPO3\CMS\Recordlist\RecordList::class);
+		$sessionData = $this->getBackendUser()->getSessionData(RecordList::class);
 		$this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';
 		// GPvars:
 		$this->id = (int)GeneralUtility::_GP('id');
@@ -275,7 +321,7 @@ class PageLayoutController {
 		$this->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
 		$sessionData['search_field'] = $this->search_field;
 		// Store session data
-		$GLOBALS['BE_USER']->setAndSaveSessionData(\TYPO3\CMS\Recordlist\RecordList::class, $sessionData);
+		$this->getBackendUser()->setAndSaveSessionData(RecordList::class, $sessionData);
 		// Load page info array:
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		// Initialize menu
@@ -295,18 +341,19 @@ class PageLayoutController {
 	 * @return void
 	 */
 	public function menuConfig() {
+		$lang = $this->getLanguageService();
 		// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => '',
 			'showPalettes' => '',
 			'showDescriptions' => '',
 			'function' => array(
-				0 => $GLOBALS['LANG']->getLL('m_function_0'),
-				1 => $GLOBALS['LANG']->getLL('m_function_1'),
-				2 => $GLOBALS['LANG']->getLL('m_function_2')
+				0 => $lang->getLL('m_function_0'),
+				1 => $lang->getLL('m_function_1'),
+				2 => $lang->getLL('m_function_2')
 			),
 			'language' => array(
-				0 => $GLOBALS['LANG']->getLL('m_default')
+				0 => $lang->getLL('m_default')
 			)
 		);
 		// example settings:
@@ -323,20 +370,20 @@ class PageLayoutController {
 				}
 				if (is_array($tableSettings) && count($tableSettings) > 1) {
 					foreach ($tableSettings as $key => $settings) {
-						$this->MOD_MENU[$table][$key] = $GLOBALS['LANG']->sL($settings['MENU']);
+						$this->MOD_MENU[$table][$key] = $lang->sL($settings['MENU']);
 					}
 				}
 			}
 		}
 		// First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
 		$res = $this->exec_languageQuery($this->id);
-		while ($lrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if ($GLOBALS['BE_USER']->checkLanguageAccess($lrow['uid'])) {
-				$this->MOD_MENU['language'][$lrow['uid']] = $lrow['hidden'] ? '(' . $lrow['title'] . ')' : $lrow['title'];
+		while ($lRow = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+			if ($this->getBackendUser()->checkLanguageAccess($lRow['uid'])) {
+				$this->MOD_MENU['language'][$lRow['uid']] = $lRow['hidden'] ? '(' . $lRow['title'] . ')' : $lRow['title'];
 			}
 		}
 		// Find if there are ANY languages at all (and if not, remove the language option from function menu).
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'sys_language', $GLOBALS['BE_USER']->isAdmin() ? '' : 'hidden=0');
+		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', $this->getBackendUser()->isAdmin() ? '' : 'hidden=0');
 		if (!$count) {
 			unset($this->MOD_MENU['function']['2']);
 		}
@@ -358,7 +405,7 @@ class PageLayoutController {
 		// Clean up settings
 		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_layout');
 		// For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
-		if ($GLOBALS['BE_USER']->workspace != 0 || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
+		if ($this->getBackendUser()->workspace != 0 || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
 			$this->MOD_SETTINGS['tt_content_showHidden'] = 1;
 		}
 	}
@@ -370,8 +417,8 @@ class PageLayoutController {
 	 */
 	public function clearCache() {
 		if ($this->clear_cache) {
-			$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-			$tce->stripslashes_values = 0;
+			$tce = GeneralUtility::makeInstance(DataHandler::class);
+			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd($this->id);
 		}
@@ -384,16 +431,17 @@ class PageLayoutController {
 	 */
 	protected function getHeaderFlashMessagesForCurrentPid() {
 		$content = '';
+		$lang = $this->getLanguageService();
 		// If page is a folder
-		if ($this->pageinfo['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER) {
+		if ($this->pageinfo['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
 			// Access to list module
-			$moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
+			$moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
 			$moduleLoader->load($GLOBALS['TBE_MODULES']);
 			$modules = $moduleLoader->modules;
 			if (is_array($modules['web']['sub']['list'])) {
-				$title = $GLOBALS['LANG']->getLL('goToListModule');
-				$message = '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>';
-				$message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '</a>';
+				$title = $lang->getLL('goToListModule');
+				$message = '<p>' . $lang->getLL('goToListModuleMessage') . '</p>';
+				$message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $lang->getLL('goToListModule') . '</a>';
 
 				$view = GeneralUtility::makeInstance(StandaloneView::class);
 				$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
@@ -411,7 +459,7 @@ class PageLayoutController {
 			$title = BackendUtility::getRecordTitle('pages', $contentPage);
 			$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
 			$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link), '', FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, sprintf($lang->getLL('content_from_pid_title'), $link), '', FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		}
 		return $content;
@@ -423,7 +471,7 @@ class PageLayoutController {
 	 */
 	protected function getLocalizedPageTitle() {
 		if ($this->current_sys_language > 0) {
-			$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			$overlayRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 				'title',
 				'pages_language_overlay',
 				'pid = ' . (int)$this->id .
@@ -448,15 +496,16 @@ class PageLayoutController {
 	 * @return void
 	 */
 	public function main() {
+		$lang = $this->getLanguageService();
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$access = is_array($this->pageinfo) ? 1 : 0;
 		if ($this->id && $access) {
 			// Initialize permission settings:
-			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
+			$this->CALC_PERMS = $this->getBackendUser()->calcPerms($this->pageinfo);
 			$this->EDIT_CONTENT = $this->CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
 			// Start document template object:
-			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+			$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 
@@ -481,8 +530,8 @@ class PageLayoutController {
 			' . ($this->popView ? BackendUtility::viewOnClick($this->id, $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->id)) : '') . '
 
 				function deleteRecord(table,id,url) {	//
-					if (confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {
-						window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1";
+					if (confirm(' . GeneralUtility::quoteJSvalue($lang->getLL('deleteWarning')) . ')) {
+						window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $this->getBackendUser()->veriCode() . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -558,9 +607,9 @@ class PageLayoutController {
 				)) . '" method="post">';
 			// Creating the top function menu:
 			$this->topFuncMenu = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], '', '');
-			$this->languageMenu = count($this->MOD_MENU['language']) > 1 ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], '', '') : '';
+			$languageMenu = count($this->MOD_MENU['language']) > 1 ? $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], '', '') : '';
 			// Find backend layout / coumns
-			$backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
+			$backendLayout = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
 			if (count($backendLayout['__colPosList'])) {
 				$this->colPosList = implode(',', $backendLayout['__colPosList']);
 			}
@@ -598,15 +647,15 @@ class PageLayoutController {
 			$docHeaderButtons = $this->getButtons($this->MOD_SETTINGS['function'] == 0 ? 'quickEdit' : '');
 			$this->markers['CSH'] = $docHeaderButtons['csh'];
 			$this->markers['TOP_FUNCTION_MENU'] = $this->topFuncMenu . $this->editSelect;
-			$this->markers['LANGSELECTOR'] = $this->languageMenu;
+			$this->markers['LANGSELECTOR'] = $languageMenu;
 			$this->markers['CONTENT'] = $body;
 			// Build the <body> for the module
 			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $this->markers);
 			// Renders the module page
-			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
+			$this->content = $this->doc->render($lang->getLL('title'), $this->content);
 		} else {
 			// If no access or id value, create empty document:
-			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+			$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -615,8 +664,8 @@ class PageLayoutController {
 
 			$body = $this->doc->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 
-			$title = $GLOBALS['LANG']->getLL('clickAPage_header');
-			$message = $GLOBALS['LANG']->getLL('clickAPage_content');
+			$title = $lang->getLL('clickAPage_header');
+			$message = $lang->getLL('clickAPage_content');
 
 			$view = GeneralUtility::makeInstance(StandaloneView::class);
 			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
@@ -653,16 +702,19 @@ class PageLayoutController {
 			$this->markers['CONTENT'] = $body;
 			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $this->markers);
 			// Renders the module page
-			$this->content = $this->doc->render($GLOBALS['LANG']->getLL('title'), $this->content);
+			$this->content = $this->doc->render($lang->getLL('title'), $this->content);
 		}
 	}
 
 	/**
 	 * Rendering the quick-edit view.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function renderQuickEdit() {
+		$databaseConnection = $this->getDatabaseConnection();
+		$beUser = $this->getBackendUser();
+		$lang = $this->getLanguageService();
 		// Alternative template
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout_quickedit.html');
 		// Alternative form tag; Quick Edit submits its content to tce_db.php.
@@ -673,21 +725,21 @@ class PageLayoutController {
 		$edit_record = $this->edit_record;
 		// If a command to edit all records in a column is issue, then select all those elements, and redirect to FormEngine
 		if (substr($edit_record, 0, 9) == '_EDIT_COL') {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND colPos=' . (int)substr($edit_record, 10) . ' AND sys_language_uid=' . (int)$this->current_sys_language . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
+			$res = $databaseConnection->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND colPos=' . (int)substr($edit_record, 10) . ' AND sys_language_uid=' . (int)$this->current_sys_language . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
 			$idListA = array();
-			while ($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($cRow = $databaseConnection->sql_fetch_assoc($res)) {
 				$idListA[] = $cRow['uid'];
 			}
 			$url = BackendUtility::getModuleUrl('record_edit', array(
 				'edit[tt_content][' . implode(',', $idListA) . ']' => 'edit',
 				'returnUrl' => $this->local_linkThisScript(array('edit_record' => ''))
 			));
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
+			HttpUtility::redirect($url);
 		}
 		// If the former record edited was the creation of a NEW record, this will look up the created records uid:
 		if ($this->new_unique_uid) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'userid=' . (int)$GLOBALS['BE_USER']->user['uid'] . ' AND NEWid=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->new_unique_uid, 'sys_log'));
-			$sys_log_row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$res = $databaseConnection->exec_SELECTquery('*', 'sys_log', 'userid=' . (int)$beUser->user['uid'] . ' AND NEWid=' . $databaseConnection->fullQuoteStr($this->new_unique_uid, 'sys_log'));
+			$sys_log_row = $databaseConnection->sql_fetch_assoc($res);
 			if (is_array($sys_log_row)) {
 				$edit_record = $sys_log_row['tablename'] . ':' . $sys_log_row['recuid'];
 			}
@@ -702,19 +754,19 @@ class PageLayoutController {
 		if (is_array($languageOverlayRecord)) {
 			$inValue = 'pages_language_overlay:' . $languageOverlayRecord['uid'];
 			$is_selected += (int)$edit_record == $inValue;
-			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editLanguageHeader', TRUE) . ' ]</option>';
+			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $lang->getLL('editLanguageHeader', TRUE) . ' ]</option>';
 		} else {
 			$inValue = 'pages:' . $this->id;
 			$is_selected += (int)$edit_record == $inValue;
-			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . ' ]</option>';
+			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $lang->getLL('editPageProperties', TRUE) . ' ]</option>';
 		}
 		// Selecting all content elements from this language and allowed colPos:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
+		$res = $databaseConnection->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
 		$colPos = NULL;
 		$first = 1;
 		// Page is the pid if no record to put this after.
 		$prev = $this->id;
-		while ($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($cRow = $databaseConnection->sql_fetch_assoc($res)) {
 			BackendUtility::workspaceOL('tt_content', $cRow);
 			if (is_array($cRow)) {
 				if ($first) {
@@ -726,11 +778,11 @@ class PageLayoutController {
 				if (!isset($colPos) || $cRow['colPos'] !== $colPos) {
 					$colPos = $cRow['colPos'];
 					$opt[] = '<option value=""></option>';
-					$opt[] = '<option value="_EDIT_COL:' . $colPos . '">__' . $GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), TRUE) . ':__</option>';
+					$opt[] = '<option value="_EDIT_COL:' . $colPos . '">__' . $lang->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $colPos), TRUE) . ':__</option>';
 				}
 				$inValue = 'tt_content:' . $cRow['uid'];
 				$is_selected += (int)$edit_record == $inValue;
-				$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $GLOBALS['BE_USER']->uc['titleLen'])) . '</option>';
+				$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(($cRow['header'] ? $cRow['header'] : '[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title') . '] ' . strip_tags($cRow['bodytext'])), $beUser->uc['titleLen'])) . '</option>';
 				$prev = -$cRow['uid'];
 			}
 		}
@@ -739,22 +791,22 @@ class PageLayoutController {
 			$edit_record = 'tt_content:new/' . $prev . '/' . $colPos;
 			$inValue = 'tt_content:new/' . $prev . '/' . $colPos;
 			$is_selected += (int)$edit_record == $inValue;
-			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $GLOBALS['LANG']->getLL('newLabel', 1) . ' ]</option>';
+			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $lang->getLL('newLabel', 1) . ' ]</option>';
 		}
 		// If none is yet selected...
 		if (!$is_selected) {
 			$opt[] = '<option value=""></option>';
-			$opt[] = '<option value="' . $edit_record . '"  selected="selected">[ ' . $GLOBALS['LANG']->getLL('newLabel', TRUE) . ' ]</option>';
+			$opt[] = '<option value="' . $edit_record . '"  selected="selected">[ ' . $lang->getLL('newLabel', TRUE) . ' ]</option>';
 		}
 		// Splitting the edit-record cmd value into table/uid:
 		$this->eRParts = explode(':', $edit_record);
 		// Delete-button flag?
 		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($this->eRParts[0] != 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] == 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
 		// If undo-button should be rendered (depends on available items in sys_history)
-		$this->undoButton = 0;
-		$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
-		if ($this->undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
-			$this->undoButton = 1;
+		$this->undoButton = FALSE;
+		$undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
+		if ($this->undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
+			$this->undoButton = TRUE;
 		}
 		// Setting up the Return URL for coming back to THIS script (if links take the user to another script)
 		$R_URL_parts = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
@@ -775,18 +827,19 @@ class PageLayoutController {
 		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue(
 			BackendUtility::getModuleUrl('web_layout') . '&id=' . $this->id . '&edit_record='
 		) . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);') . '">' . implode('', $opt) . '</select>';
+		$content = '';
 		// Creating editing form:
-		if ($GLOBALS['BE_USER']->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & Permission::PAGE_SHOW)) {
+		if ($beUser->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & Permission::PAGE_SHOW)) {
 			// Splitting uid parts for special features, if new:
 			list($uidVal, $ex_pid, $ex_colPos) = explode('/', $this->eRParts[1]);
 			// Convert $uidVal to workspace version if any:
 			if ($uidVal != 'new') {
-				if ($draftRecord = BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $this->eRParts[0], $uidVal, 'uid')) {
+				if ($draftRecord = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, $this->eRParts[0], $uidVal, 'uid')) {
 					$uidVal = $draftRecord['uid'];
 				}
 			}
 			// Initializing transfer-data object:
-			$trData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
+			$trData = GeneralUtility::makeInstance(DataPreprocessor::class);
 			$trData->addRawData = TRUE;
 			$trData->defVals[$this->eRParts[0]] = array(
 				'colPos' => (int)$ex_colPos,
@@ -795,6 +848,7 @@ class PageLayoutController {
 			$trData->lockRecords = 1;
 			// 'new'
 			$trData->fetchRecord($this->eRParts[0], $uidVal == 'new' ? $this->id : $uidVal, $uidVal);
+			$new_unique_uid = '';
 			// Getting/Making the record:
 			reset($trData->regTableItems_data);
 			$rec = current($trData->regTableItems_data);
@@ -806,20 +860,20 @@ class PageLayoutController {
 			} else {
 				$rec['uid'] = $uidVal;
 				// Checking internals access:
-				$recordAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($this->eRParts[0], $uidVal);
+				$recordAccess = $beUser->recordEditAccessInternals($this->eRParts[0], $uidVal);
 			}
 			if (!$recordAccess) {
 				// If no edit access, print error message:
-				$content = $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />' . ($GLOBALS['BE_USER']->errorMsg ? 'Reason: ' . $GLOBALS['BE_USER']->errorMsg . '<br /><br />' : ''), 0, 1);
+				$content = $this->doc->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg') . '<br /><br />' . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : ''), 0, 1);
 			} elseif (is_array($rec)) {
 				// If the record is an array (which it will always be... :-)
 				// Create instance of TCEforms, setting defaults:
-				$tceforms = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\FormEngine::class);
-				$tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
+				$tceForms = GeneralUtility::makeInstance(FormEngine::class);
+				$tceForms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 				// Render form, wrap it:
 				$panel = '';
-				$panel .= $tceforms->getMainFields($this->eRParts[0], $rec);
-				$panel = $tceforms->wrapTotal($panel, $rec, $this->eRParts[0]);
+				$panel .= $tceForms->getMainFields($this->eRParts[0], $rec);
+				$panel = $tceForms->wrapTotal($panel, $rec, $this->eRParts[0]);
 				// Add hidden fields:
 				$theCode = $panel;
 				if ($uidVal == 'new') {
@@ -836,14 +890,15 @@ class PageLayoutController {
 							'returnUrl' => $this->returnUrl
 						)
 					) : $this->R_URI)) . '" />
-					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
+					' . FormEngine::getHiddenTokenField('tceAction');
 				// Add JavaScript as needed around the form:
-				$theCode = $tceforms->printNeededJSFunctions_top() . $theCode . $tceforms->printNeededJSFunctions();
+				$theCode = $tceForms->printNeededJSFunctions_top() . $theCode . $tceForms->printNeededJSFunctions();
 				// Add warning sign if record was "locked":
 				if ($lockInfo = BackendUtility::isRecordLocked($this->eRParts[0], $rec['uid'])) {
-					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
+					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+					$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
 					/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-					$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+					$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 					/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 					$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 					$defaultFlashMessageQueue->enqueue($flashMessage);
@@ -853,7 +908,7 @@ class PageLayoutController {
 			}
 		} else {
 			// If no edit access, print error message:
-			$content = $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />', 0, 1);
+			$content = $this->doc->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg') . '<br /><br />', 0, 1);
 		}
 		// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
@@ -861,14 +916,14 @@ class PageLayoutController {
 		$h_func_b = '<div class="checkbox">' .
 			'<label for="checkTt_content_showHidden">' .
 			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
-			(!$q_count ? ('<span class="text-muted">' . $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . '</span>') : $GLOBALS['LANG']->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
+			(!$q_count ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', TRUE) . '</span>') : $lang->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
 			'</label>' .
 			'</div>';
 
 		$h_func_b .= '<div class="checkbox">' .
 			'<label for="checkShowPalettes">' .
 			BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], '', '', 'id="checkShowPalettes"') .
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
+			$lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
 			'</label>' .
 			'</div>';
 
@@ -876,7 +931,7 @@ class PageLayoutController {
 			$h_func_b .= '<div class="checkbox">' .
 				'<label for="checkShowDescriptions">' .
 				BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], '', '', 'id="checkShowDescriptions"') .
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', TRUE) .
+				$lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', TRUE) .
 				'</label>' .
 				'</div>';
 		}
@@ -885,7 +940,7 @@ class PageLayoutController {
 		$content .= $this->doc->spacer(10);
 		// Select element matrix:
 		if ($this->eRParts[0] == 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-			$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentLayoutPagePositionMap::class);
+			$posMap = GeneralUtility::makeInstance(ContentLayoutPagePositionMap::class);
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			$posMap->cur_sys_language = $this->current_sys_language;
 			$HTMLcode = '';
@@ -893,7 +948,7 @@ class PageLayoutController {
 			$HTMLcode .= BackendUtility::cshItem($this->descrTable, 'quickEdit_selElement', NULL, '|<br />');
 			$HTMLcode .= $posMap->printContentElementColumns($this->id, $this->eRParts[1], $this->colPosList, $this->MOD_SETTINGS['tt_content_showHidden'], $this->R_URI);
 			$content .= $this->doc->spacer(20);
-			$content .= $this->doc->section($GLOBALS['LANG']->getLL('CEonThisPage'), $HTMLcode, 0, 1);
+			$content .= $this->doc->section($lang->getLL('CEonThisPage'), $HTMLcode, 0, 1);
 			$content .= $this->doc->spacer(20);
 		}
 		return $content;
@@ -902,34 +957,35 @@ class PageLayoutController {
 	/**
 	 * Rendering all other listings than QuickEdit
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function renderListContent() {
 		// Initialize list object (see "class.db_layout.inc"):
-		/** @var $dblist \TYPO3\CMS\Backend\View\PageLayoutView */
-		$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\PageLayoutView::class);
-		$dblist->backPath = $GLOBALS['BACK_PATH'];
-		$dblist->thumbs = $this->imagemode;
-		$dblist->no_noWrap = 1;
-		$dblist->descrTable = $this->descrTable;
+		/** @var $dbList \TYPO3\CMS\Backend\View\PageLayoutView */
+		$dbList = GeneralUtility::makeInstance(PageLayoutView::class);
+		$dbList->backPath = $GLOBALS['BACK_PATH'];
+		$dbList->thumbs = $this->imagemode;
+		$dbList->no_noWrap = 1;
+		$dbList->descrTable = $this->descrTable;
 		$this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
-		$dblist->script = BackendUtility::getModuleUrl('web_layout');
-		$dblist->showIcon = 0;
-		$dblist->setLMargin = 0;
-		$dblist->doEdit = $this->EDIT_CONTENT;
-		$dblist->ext_CALC_PERMS = $this->CALC_PERMS;
-		$dblist->agePrefixes = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
-		$dblist->id = $this->id;
-		$dblist->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
-		$dblist->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] === '0';
-		$dblist->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
-		$dblist->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
-		if (!$dblist->nextThree) {
-			$dblist->nextThree = 1;
+		$dbList->script = BackendUtility::getModuleUrl('web_layout');
+		$dbList->showIcon = 0;
+		$dbList->setLMargin = 0;
+		$dbList->doEdit = $this->EDIT_CONTENT;
+		$dbList->ext_CALC_PERMS = $this->CALC_PERMS;
+		$dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
+		$dbList->id = $this->id;
+		$dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
+		$dbList->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] === '0';
+		$dbList->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
+		$dbList->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
+		if (!$dbList->nextThree) {
+			$dbList->nextThree = 1;
 		}
-		$dblist->externalTables = $this->externalTables;
+		$dbList->externalTables = $this->externalTables;
 		// Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)
-		$h_menu = $dblist->getTableMenu($this->id);
+		// also fills $dbList->activeTables
+		$dbList->getTableMenu($this->id);
 		// Initialize other variables:
 		$h_func = '';
 		$tableOutput = array();
@@ -937,25 +993,26 @@ class PageLayoutController {
 		$CMcounter = 0;
 		// Traverse the list of table names which has records on this page (that array is populated
 		// by the $dblist object during the function getTableMenu()):
-		foreach ($dblist->activeTables as $table => $value) {
-			if (!isset($dblist->externalTables[$table])) {
+		foreach ($dbList->activeTables as $table => $value) {
+			$h_func_b = '';
+			if (!isset($dbList->externalTables[$table])) {
 				$q_count = $this->getNumberOfHiddenElements();
 
 				$h_func_b = '<div class="checkbox">' .
 					'<label for="checkTt_content_showHidden">' .
 					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
-					(!$q_count ? ('<span class="text-muted">' . $GLOBALS['LANG']->getLL('hiddenCE') . '</span>') : $GLOBALS['LANG']->getLL('hiddenCE') . ' (' . $q_count . ')') .
+					(!$q_count ? ('<span class="text-muted">' . $this->getLanguageService()->getLL('hiddenCE') . '</span>') : $this->getLanguageService()->getLL('hiddenCE') . ' (' . $q_count . ')') .
 					'</label>' .
 					'</div>';
 
 				// Boolean: Display up/down arrows and edit icons for tt_content records
-				$dblist->tt_contentConfig['showCommands'] = 1;
+				$dbList->tt_contentConfig['showCommands'] = 1;
 				// Boolean: Display info-marks or not
-				$dblist->tt_contentConfig['showInfo'] = 1;
+				$dbList->tt_contentConfig['showInfo'] = 1;
 				// Setting up the tt_content columns to show:
 				if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
 					$colList = array();
-					$tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
+					$tcaItems = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
 					foreach ($tcaItems as $temp) {
 						$colList[] = $temp[1];
 					}
@@ -967,16 +1024,16 @@ class PageLayoutController {
 					$colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
 				}
 				// The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
-				$dblist->tt_contentConfig['cols'] = implode(',', $colList);
-				$dblist->tt_contentConfig['activeCols'] = $this->activeColPosList;
-				$dblist->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
-				$dblist->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
+				$dbList->tt_contentConfig['cols'] = implode(',', $colList);
+				$dbList->tt_contentConfig['activeCols'] = $this->activeColPosList;
+				$dbList->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
+				$dbList->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
 				// If the function menu is set to "Language":
 				if ($this->MOD_SETTINGS['function'] == 2) {
-					$dblist->tt_contentConfig['single'] = 0;
-					$dblist->tt_contentConfig['languageMode'] = 1;
-					$dblist->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
-					$dblist->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
+					$dbList->tt_contentConfig['single'] = 0;
+					$dbList->tt_contentConfig['languageMode'] = 1;
+					$dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
+					$dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
 				}
 			} else {
 				if (isset($this->MOD_SETTINGS) && isset($this->MOD_MENU)) {
@@ -986,25 +1043,24 @@ class PageLayoutController {
 				}
 			}
 			// Start the dblist object:
-			$dblist->itemsLimitSingleTable = 1000;
-			$dblist->start($this->id, $table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
-			$dblist->counter = $CMcounter;
-			$dblist->ext_function = $this->MOD_SETTINGS['function'];
+			$dbList->itemsLimitSingleTable = 1000;
+			$dbList->start($this->id, $table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
+			$dbList->counter = $CMcounter;
+			$dbList->ext_function = $this->MOD_SETTINGS['function'];
 			// Render versioning selector:
-			$dblist->HTMLcode .= $this->doc->getVersionSelector($this->id);
+			$dbList->HTMLcode .= $this->doc->getVersionSelector($this->id);
 			// Generate the list of elements here:
-			$dblist->generateList();
+			$dbList->generateList();
 			// Adding the list content to the tableOutput variable:
-			$tableOutput[$table] = ($h_func ? $h_func . '<br /><img src="clear.gif" width="1" height="4" alt="" /><br />' : '') . $dblist->HTMLcode . ($h_func_b ? '<img src="clear.gif" width="1" height="10" alt="" /><br />' . $h_func_b : '');
+			$tableOutput[$table] = ($h_func ? $h_func . '<br /><img src="clear.gif" width="1" height="4" alt="" /><br />' : '') . $dbList->HTMLcode . ($h_func_b ? '<img src="clear.gif" width="1" height="10" alt="" /><br />' . $h_func_b : '');
 			// ... and any accumulated JavaScript goes the same way!
-			$tableJSOutput[$table] = $dblist->JScode;
+			$tableJSOutput[$table] = $dbList->JScode;
 			// Increase global counter:
-			$CMcounter += $dblist->counter;
+			$CMcounter += $dbList->counter;
 			// Reset variables after operation:
-			$dblist->HTMLcode = '';
-			$dblist->JScode = '';
+			$dbList->HTMLcode = '';
+			$dbList->JScode = '';
 			$h_func = '';
-			$h_func_b = '';
 		}
 		// END: traverse tables
 		// For Context Sensitive Menus:
@@ -1027,8 +1083,8 @@ class PageLayoutController {
 		}
 		// Making search form:
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && count($tableOutput)) {
-			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
-			$this->markers['SEARCHBOX'] = $dblist->getSearchBox(0);
+			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
+			$this->markers['SEARCHBOX'] = $dbList->getSearchBox(0);
 		}
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
@@ -1062,6 +1118,7 @@ class PageLayoutController {
 	 * @return array all available buttons as an assoc. array
 	 */
 	protected function getButtons($function = '') {
+		$lang = $this->getLanguageService();
 		$buttons = array(
 			'view' => '',
 			'history_page' => '',
@@ -1083,14 +1140,14 @@ class PageLayoutController {
 			'history_record' => ''
 		);
 		// View page
-		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
+		if ($this->getBackendUser()->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 		// Cache
 		if (!$this->modTSconfig['properties']['disableAdvanced']) {
-			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-cache-clear') . '</a>';
+			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-cache-clear') . '</a>';
 		}
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
@@ -1100,7 +1157,7 @@ class PageLayoutController {
 					'uid' => $this->eRParts[1],
 					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 				];
-				$buttons['move_record'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', $urlParameters)) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
+				$buttons['move_record'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', $urlParameters)) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $lang->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
 			}
 
 			// Edit page properties and page language overlay icons
@@ -1108,7 +1165,7 @@ class PageLayoutController {
 
 				// Edit localized page_language_overlay only when one specific language is selected
 				if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
-					$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+					$overlayRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
 						'uid',
 						'pages_language_overlay',
 						'pid = ' . (int)$this->id . ' ' .
@@ -1124,8 +1181,8 @@ class PageLayoutController {
 					$editLanguageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit'));
 					$buttons['edit_language'] = '<a href="#" ' .
 						'onclick="' . $editLanguageOnClick . '"' .
-						'title="' . $GLOBALS['LANG']->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
-						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') .
+						'title="' . $lang->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
+						IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') .
 						'</a>';
 				}
 
@@ -1134,8 +1191,8 @@ class PageLayoutController {
 				$editPageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
 				$buttons['edit_page'] = '<a href="#" ' .
 					'onclick="' . $editPageOnClick . '"' .
-					'title="' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . '">' .
-					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open') .
+					'title="' . $lang->getLL('editPageProperties', TRUE) . '">' .
+					IconUtility::getSpriteIcon('actions-page-open') .
 					'</a>';
 			}
 
@@ -1147,16 +1204,16 @@ class PageLayoutController {
 			}
 			if ($function == 'quickEdit') {
 				// Save record
-				$buttons['savedok'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
+				$buttons['savedok'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 				// Save and close
-				$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
+				$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
 				// Save record and show page
-				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';
+				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';
 				// Close record
-				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 				// Delete record
 				if ($this->deleteButton) {
-					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');') . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');') . '" title="' . $lang->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				}
 				if ($this->undoButton) {
 					// Undo button
@@ -1174,7 +1231,7 @@ class PageLayoutController {
 									)
 								)
 							) . '; return false;') . '"
-						title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
+						title="' . htmlspecialchars(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . IconUtility::getSpriteIcon('actions-edit-undo') . '</a>';
 					// History button
 					$buttons['history_record'] = '<a href="#"
 						onclick="' . htmlspecialchars('jumpToUrl(' .
@@ -1188,7 +1245,7 @@ class PageLayoutController {
 									)
 								) . '#latest'
 							) . ');return false;') . '"
-						title="' . $GLOBALS['LANG']->getLL('recordHistory', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
+						title="' . $lang->getLL('recordHistory', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
 				}
 			}
 		}
@@ -1207,7 +1264,7 @@ class PageLayoutController {
 	 * @return int
 	 */
 	public function getNumberOfHiddenElements() {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+		return $this->getDatabaseConnection()->exec_SELECTcountRows(
 			'uid',
 			'tt_content',
 			'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . BackendUtility::BEenableFields('tt_content', 1) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content')
@@ -1236,8 +1293,8 @@ class PageLayoutController {
 	public function exec_languageQuery($id) {
 		if ($id) {
 			$exQ = BackendUtility::deleteClause('pages_language_overlay') .
-				($GLOBALS['BE_USER']->isAdmin() ? '' : ' AND sys_language.hidden=0');
-			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
+			return $this->getDatabaseConnection()->exec_SELECTquery(
 				'sys_language.*',
 				'pages_language_overlay,sys_language',
 				'pages_language_overlay.sys_language_uid=sys_language.uid AND pages_language_overlay.pid=' . (int)$id . $exQ .
@@ -1246,7 +1303,7 @@ class PageLayoutController {
 				'sys_language.title'
 			);
 		} else {
-			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			return $this->getDatabaseConnection()->exec_SELECTquery(
 				'sys_language.*',
 				'sys_language',
 				'sys_language.hidden=0',
@@ -1254,6 +1311,33 @@ class PageLayoutController {
 				'sys_language.title'
 			);
 		}
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

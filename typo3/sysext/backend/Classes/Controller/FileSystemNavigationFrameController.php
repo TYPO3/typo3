@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Filelist\FileListFolderTree;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Main script class for rendering of the folder tree
@@ -32,7 +35,7 @@ class FileSystemNavigationFrameController {
 	public $content;
 
 	/**
-	 * @var \TYPO3\CMS\Filelist\FileListFolderTree $foldertree the folder tree object
+	 * @var \TYPO3\CMS\Filelist\FileListFolderTree
 	 */
 	public $foldertree;
 
@@ -63,6 +66,11 @@ class FileSystemNavigationFrameController {
 	 * @var array
 	 */
 	protected $scopeData;
+
+	/**
+	 * @var bool
+	 */
+	public $doHighlight;
 
 	/**
 	 * Constructor
@@ -101,11 +109,11 @@ class FileSystemNavigationFrameController {
 			$GLOBALS['SOBE']->browser->mode = $this->scopeData['browser']['mode'];
 			$GLOBALS['SOBE']->browser->act = $this->scopeData['browser']['act'];
 		} else {
-			$this->foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Filelist\FileListFolderTree::class);
-			$this->foldertree->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_navframe');
+			$this->foldertree = GeneralUtility::makeInstance(FileListFolderTree::class);
+			$this->foldertree->thisScript = BackendUtility::getModuleUrl('file_navframe');
 		}
 
-		$this->foldertree->ext_IconMode = $GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
+		$this->foldertree->ext_IconMode = $this->getBackendUser()->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
 	}
 
 	/**
@@ -116,9 +124,9 @@ class FileSystemNavigationFrameController {
 	 */
 	public function initPage() {
 		// Setting highlight mode:
-		$this->doHighlight = !$GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.disableTitleHighlight');
+		$this->doHighlight = !$this->getBackendUser()->getTSConfigVal('options.pageTree.disableTitleHighlight');
 		// Create template object:
-		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_file_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
@@ -127,7 +135,7 @@ class FileSystemNavigationFrameController {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 			Tree.registerDragDropHandlers()';
 		if ($this->doHighlight) {
-			$hlClass = $GLOBALS['BE_USER']->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
+			$hlClass = $this->getBackendUser()->workspace === 0 ? 'active' : 'active active-ws wsver' . $GLOBALS['BE_USER']->workspace;
 			$dragDropCode .= '
 			Tree.highlightClass = "' . $hlClass . '";
 			Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);
@@ -175,7 +183,7 @@ class FileSystemNavigationFrameController {
 		$subparts = array();
 		// Build the <body> for the module
 		$this->content = $this->doc->startPage('TYPO3 Folder Tree');
-		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markers, $subparts);
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
@@ -202,7 +210,7 @@ class FileSystemNavigationFrameController {
 		// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
-		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filetree'));
+		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', BackendUtility::cshItem('xMOD_csh_corebe', 'filetree'));
 		return $buttons;
 	}
 
@@ -227,6 +235,13 @@ class FileSystemNavigationFrameController {
 		} else {
 			$ajaxObj->addContent('tree', $tree);
 		}
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

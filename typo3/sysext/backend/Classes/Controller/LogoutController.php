@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script Class for logging a user out.
@@ -31,12 +33,23 @@ class LogoutController {
 	 */
 	public function logout() {
 		// Logout written to log
-		$GLOBALS['BE_USER']->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($GLOBALS['BE_USER']->user['username']));
-		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->removeSessionTokenFromRegistry();
-		$GLOBALS['BE_USER']->logoff();
+		$this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($this->getBackendUser()->user['username']));
+		/** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
+		$backendFormProtection = FormProtectionFactory::get();
+		$backendFormProtection->removeSessionTokenFromRegistry();
+		$this->getBackendUser()->logoff();
 		$redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$redirectUrl = $redirect ? $redirect : 'index.php';
-		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
+		HttpUtility::redirect($redirectUrl);
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

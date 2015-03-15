@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class for redirecting shortcut actions to the correct script
  *
@@ -23,23 +25,37 @@ namespace TYPO3\CMS\Backend\Controller;
 class ListFrameLoaderController {
 
 	/**
+	 * @var string
+	 */
+	protected $content;
+
+	/**
 	 * Main content generated
 	 *
 	 * @return void
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function main() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		$GLOBALS['TBE_TEMPLATE']->divClass = '';
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('List Frame Loader');
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$this->content .= $this->getDocumentTemplate()->startPage('List Frame Loader');
+		$this->content .= $this->getDocumentTemplate()->wrapScriptTags('
 			var theUrl = top.getModuleUrl("");
 			if (theUrl)	window.location.href=theUrl;
 		');
 		// End page:
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
+		$this->content .= $this->getDocumentTemplate()->endPage();
 		// Output:
 		echo $this->content;
+	}
+
+	/**
+	 * Returns an instance of DocumentTemplate
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

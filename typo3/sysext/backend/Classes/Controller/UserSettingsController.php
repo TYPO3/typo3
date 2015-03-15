@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * A wrapper class to call BE_USER->uc
@@ -30,7 +31,7 @@ class UserSettingsController {
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
 	 */
-	public function processAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
+	public function processAjaxRequest($parameters, AjaxRequestHandler $ajaxRequestHandler) {
 		// do the regular / main logic, depending on the action parameter
 		$action = GeneralUtility::_GP('action');
 		$key = GeneralUtility::_GP('key');

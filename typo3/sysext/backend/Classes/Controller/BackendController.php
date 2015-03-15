@@ -17,6 +17,11 @@ namespace TYPO3\CMS\Backend\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Class for rendering the TYPO3 backend
@@ -96,14 +101,14 @@ class BackendController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->backendModuleRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
+		$this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
 
 		// Set debug flag for BE development only
 		$this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
 		// Initializes the backend modules structure for use later.
-		$this->moduleLoader = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
+		$this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$this->pageRenderer = $this->getDocumentTemplate()->getPageRenderer();
 		$this->pageRenderer->loadExtJS();
 		// included for the module menu JavaScript, please note that this is subject to change
 		$this->pageRenderer->loadJquery();
@@ -142,7 +147,7 @@ class BackendController {
 
 		// load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage', 'function(Storage) {
-			Storage.Persistent.load(' . json_encode($GLOBALS['BE_USER']->uc) . ');
+			Storage.Persistent.load(' . json_encode($this->getBackendUser()->uc) . ');
 		}');
 
 		// load debug console
@@ -170,10 +175,10 @@ class BackendController {
 		$classNameRegistry = $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'];
 		foreach ($classNameRegistry as $className) {
 			$toolbarItemInstance = GeneralUtility::makeInstance($className);
-			if (!$toolbarItemInstance instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface) {
+			if (!$toolbarItemInstance instanceof ToolbarItemInterface) {
 				throw new \RuntimeException(
 					'class ' . $className . ' is registered as toolbar item but does not implement'
-						. \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface::class,
+						. ToolbarItemInterface::class,
 					1415958218
 				);
 			}
@@ -215,15 +220,15 @@ class BackendController {
 			foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
 				if (is_array($moduleConfig['cssFiles'])) {
 					foreach ($moduleConfig['cssFiles'] as $cssFileName => $cssFile) {
-						$files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cssFile));
-						$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+						$files = array(GeneralUtility::getFileAbsFileName($cssFile));
+						$files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
 						$this->addCssFile($cssFileName, '../' . $files[0]);
 					}
 				}
 				if (is_array($moduleConfig['jsFiles'])) {
 					foreach ($moduleConfig['jsFiles'] as $jsFile) {
-						$files = array(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($jsFile));
-						$files = \TYPO3\CMS\Core\Utility\GeneralUtility::removePrefixPathFromList($files, PATH_site);
+						$files = array(GeneralUtility::getFileAbsFileName($jsFile));
+						$files = GeneralUtility::removePrefixPathFromList($files, PATH_site);
 						$this->addJavascriptFile('../' . $files[0]);
 					}
 				}
@@ -236,7 +241,7 @@ class BackendController {
 
 		// Render the TYPO3 logo in the left corner
 		$logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: 'gfx/typo3-topbar@2x.png';
-		$logoPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
+		$logoPath = GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
 		list($logoWidth, $logoHeight) = @getimagesize($logoPath);
 
 		// High-resolution?
@@ -275,8 +280,8 @@ class BackendController {
 		$this->loadResourcesForRegisteredNavigationComponents();
 
 		// Add state provider
-		$GLOBALS['TBE_TEMPLATE']->setExtDirectStateProvider();
-		$states = $GLOBALS['BE_USER']->uc['BackendComponents']['States'];
+		$this->getDocumentTemplate()->setExtDirectStateProvider();
+		$states = $this->getBackendUser()->uc['BackendComponents']['States'];
 		// Save states in BE_USER->uc
 		$extOnReadyCode = '
 			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
@@ -298,7 +303,7 @@ class BackendController {
 		// Set document title:
 		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
 		// Renders the module page
-		$this->content = $GLOBALS['TBE_TEMPLATE']->render($title, $view->render());
+		$this->content = $this->getDocumentTemplate()->render($title, $view->render());
 		$hookConfiguration = array('content' => &$this->content);
 		$this->executeHook('renderPostProcess', $hookConfiguration);
 		echo $this->content;
@@ -415,6 +420,7 @@ class BackendController {
 	 * which can be used in JavaScript code.
 	 *
 	 * @return string File name of the JS file, relative to TYPO3_mainDir
+	 * @throws \RuntimeException
 	 */
 	protected function getLocalLangFileName() {
 		$code = $this->generateLocalLang();
@@ -435,31 +441,32 @@ class BackendController {
 	 * @return string JavaScript code containing the LLL labels in TYPO3.LLL
 	 */
 	protected function generateLocalLang() {
+		$lang = $this->getLanguageService();
 		$coreLabels = array(
-			'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logging_in'),
-			'refresh_login_failed' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed'),
-			'refresh_login_failed_message' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed_message'),
-			'refresh_login_title' => sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_title'), htmlspecialchars($GLOBALS['BE_USER']->user['username'])),
-			'login_expired' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_expired'),
-			'refresh_login_username' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_username'),
-			'refresh_login_password' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_password'),
-			'refresh_login_emptyPassword' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_emptyPassword'),
-			'refresh_login_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_button'),
-			'refresh_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_logout_button'),
-			'please_wait' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.please_wait'),
-			'loadingIndicator' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:loadingIndicator'),
-			'be_locked' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.be_locked'),
-			'refresh_login_countdown_singular' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown_singular'),
-			'refresh_login_countdown' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown'),
-			'login_about_to_expire' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire'),
-			'login_about_to_expire_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire_title'),
-			'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_refresh_button'),
-			'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_direct_logout_button'),
-			'tabs_closeAll' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeAll'),
-			'tabs_closeOther' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeOther'),
-			'tabs_close' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tabs.close'),
-			'tabs_openInBrowserWindow' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:tabs.openInBrowserWindow'),
-			'csh_tooltip_loading' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:csh_tooltip_loading')
+			'waitTitle' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_logging_in'),
+			'refresh_login_failed' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed'),
+			'refresh_login_failed_message' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_failed_message'),
+			'refresh_login_title' => sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_title'), htmlspecialchars($this->getBackendUser()->user['username'])),
+			'login_expired' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_expired'),
+			'refresh_login_username' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_username'),
+			'refresh_login_password' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_password'),
+			'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_emptyPassword'),
+			'refresh_login_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_button'),
+			'refresh_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_logout_button'),
+			'please_wait' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.please_wait'),
+			'loadingIndicator' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:loadingIndicator'),
+			'be_locked' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.be_locked'),
+			'refresh_login_countdown_singular' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown_singular'),
+			'refresh_login_countdown' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_countdown'),
+			'login_about_to_expire' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire'),
+			'login_about_to_expire_title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.login_about_to_expire_title'),
+			'refresh_login_refresh_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login_refresh_button'),
+			'refresh_direct_logout_button' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_direct_logout_button'),
+			'tabs_closeAll' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeAll'),
+			'tabs_closeOther' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.closeOther'),
+			'tabs_close' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.close'),
+			'tabs_openInBrowserWindow' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:tabs.openInBrowserWindow'),
+			'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:csh_tooltip_loading')
 		);
 		$labels = array(
 			'fileUpload' => array(
@@ -519,7 +526,7 @@ class BackendController {
 			// Then loop over every single label
 			foreach ($categoryLabels as $label) {
 				// LLL identifier must be called $categoryName_$label, e.g. liveSearch_loadingText
-				$generatedLabels[$categoryName][$label] = $GLOBALS['LANG']->getLL($categoryName . '_' . $label);
+				$generatedLabels[$categoryName][$label] = $this->getLanguageService()->getLL($categoryName . '_' . $label);
 			}
 		}
 		return 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
@@ -532,19 +539,20 @@ class BackendController {
 	 */
 	protected function generateJavascript() {
 
+		$beUser = $this->getBackendUser();
 		// Needed for FormEngine manipulation (date picker)
 		$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
 		$this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 		// define the window size of the element browser etc.
 		$popupWindowWidth  = 700;
 		$popupWindowHeight = 750;
-		$popupWindowSize = trim($GLOBALS['BE_USER']->getTSConfigVal('options.popupWindowSize'));
+		$popupWindowSize = trim($beUser->getTSConfigVal('options.popupWindowSize'));
 		if (!empty($popupWindowSize)) {
 			list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
 		}
 
 		// define the window size of the popups within the RTE
-		$rtePopupWindowSize = trim($GLOBALS['BE_USER']->getTSConfigVal('options.rte.popupWindowSize'));
+		$rtePopupWindowSize = trim($beUser->getTSConfigVal('options.rte.popupWindowSize'));
 		if (!empty($rtePopupWindowSize)) {
 			list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
 		}
@@ -553,29 +561,29 @@ class BackendController {
 
 		$pathTYPO3 = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/';
 		// If another page module was specified, replace the default Page module with the new one
-		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
+		$newPageModule = trim($beUser->getTSConfigVal('options.overridePageModule'));
 		$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
+		if (!$beUser->check('modules', $pageModule)) {
 			$pageModule = '';
 		}
 		$t3Configuration = array(
 			'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
 			'PATH_typo3' => $pathTYPO3,
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
-			'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
+			'username' => htmlspecialchars($beUser->user['username']),
 			'uniqueID' => GeneralUtility::shortMD5(uniqid('', TRUE)),
 			'securityLevel' => trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal',
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,
-			'inWorkspace' => $GLOBALS['BE_USER']->workspace !== 0,
-			'workspaceFrontendPreviewEnabled' => $GLOBALS['BE_USER']->user['workspace_preview'] ? 1 : 0,
-			'veriCode' => $GLOBALS['BE_USER']->veriCode(),
+			'inWorkspace' => $beUser->workspace !== 0,
+			'workspaceFrontendPreviewEnabled' => $beUser->user['workspace_preview'] ? 1 : 0,
+			'veriCode' => $beUser->veriCode(),
 			'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
 			'moduleMenuWidth' => $this->menuWidth - 1,
 			'topBarHeight' => isset($GLOBALS['TBE_STYLES']['dims']['topFrameH']) ? (int)$GLOBALS['TBE_STYLES']['dims']['topFrameH'] : 30,
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] : FALSE,
 			'listModulePath' => ExtensionManagementUtility::extRelPath('recordlist') . 'mod1/',
-			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
+			'debugInWindow' => $beUser->uc['debugInWindow'] ? 1 : 0,
 			'ContextHelpWindows' => array(
 				'width' => 600,
 				'height' => 400
@@ -636,13 +644,14 @@ class BackendController {
 	 * @return void
 	 */
 	protected function handlePageEditing() {
+		$beUser = $this->getBackendUser();
 		// EDIT page:
 		$editId = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('edit'));
 		$editRecord = '';
 		if ($editId) {
 			// Looking up the page to edit, checking permissions:
-			$where = ' AND (' . $GLOBALS['BE_USER']->getPagePermsClause(2) . ' OR ' . $GLOBALS['BE_USER']->getPagePermsClause(16) . ')';
-			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($editId)) {
+			$where = ' AND (' . $beUser->getPagePermsClause(2) . ' OR ' . $beUser->getPagePermsClause(16) . ')';
+			if (MathUtility::canBeInterpretedAsInteger($editId)) {
 				$editRecord = BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
 			} else {
 				$records = BackendUtility::getRecordsByField('pages', 'alias', $editId, $where);
@@ -652,22 +661,22 @@ class BackendController {
 				}
 			}
 			// If the page was accessible, then let the user edit it.
-			if (is_array($editRecord) && $GLOBALS['BE_USER']->isInWebMount($editRecord['uid'])) {
+			if (is_array($editRecord) && $beUser->isInWebMount($editRecord['uid'])) {
 				// Setting JS code to open editing:
 				$this->js .= '
 		// Load page to edit:
 	window.setTimeout("top.loadEditId(' . (int)$editRecord['uid'] . ');", 500);
 			';
 				// Checking page edit parameter:
-				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree')) {
-					$bookmarkKeepExpanded = $GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_keepExistingExpanded');
+				if (!$beUser->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree')) {
+					$bookmarkKeepExpanded = $beUser->getTSConfigVal('options.bookmark_onEditId_keepExistingExpanded');
 					// Expanding page tree:
 					BackendUtility::openPageTree((int)$editRecord['pid'], !$bookmarkKeepExpanded);
 				}
 			} else {
 				$this->js .= '
 		// Warning about page editing:
-	alert(' . GeneralUtility::quoteJSvalue(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId)) . ');
+	alert(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ');
 			';
 			}
 		}
@@ -680,15 +689,17 @@ class BackendController {
 	 */
 	protected function setStartupModule() {
 		$startModule = preg_replace('/[^[:alnum:]_]/', '', GeneralUtility::_GET('module'));
+		$startModuleParameters = '';
 		if (!$startModule) {
+			$beUser = $this->getBackendUser();
 			// start module on first login, will be removed once used the first time
-			if (isset($GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'])) {
-				$startModule = $GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'];
-				unset($GLOBALS['BE_USER']->uc['startModuleOnFirstLogin']);
-				$GLOBALS['BE_USER']->writeUC();
-			} elseif ($GLOBALS['BE_USER']->uc['startModule']) {
-				$startModule = $GLOBALS['BE_USER']->uc['startModule'];
-			} elseif ($GLOBALS['BE_USER']->uc['startInTaskCenter']) {
+			if (isset($beUser->uc['startModuleOnFirstLogin'])) {
+				$startModule = $beUser->uc['startModuleOnFirstLogin'];
+				unset($beUser->uc['startModuleOnFirstLogin']);
+				$beUser->writeUC();
+			} elseif ($beUser->uc['startModule']) {
+				$startModule = $beUser->uc['startModule'];
+			} elseif ($beUser->uc['startInTaskCenter']) {
 				$startModule = 'user_task';
 			}
 
@@ -751,6 +762,7 @@ class BackendController {
 	 *
 	 * @param string $css Css snippet
 	 * @return void
+	 * @throws \InvalidArgumentException
 	 */
 	public function addCss($css) {
 		if (!is_string($css)) {
@@ -844,11 +856,38 @@ class BackendController {
 	 * @return \TYPO3\CMS\Fluid\View\StandaloneView
 	 */
 	protected function getFluidTemplateObject($templatePathAndFileName = NULL) {
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		$view = GeneralUtility::makeInstance(StandaloneView::class);
 		if ($templatePathAndFileName) {
 			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
 		}
 		return $view;
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns an instance of DocumentTemplate
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

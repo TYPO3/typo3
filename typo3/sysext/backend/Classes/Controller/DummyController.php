@@ -33,9 +33,9 @@ class DummyController {
 	 */
 	public function main() {
 		// Start page
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('Dummy document');
+		$this->content .= $this->getDocumentTemplate()->startPage('Dummy document');
 		// End page:
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
+		$this->content .= $this->getDocumentTemplate()->endPage();
 	}
 
 	/**
@@ -45,6 +45,15 @@ class DummyController {
 	 */
 	public function printContent() {
 		echo $this->content;
+	}
+
+	/**
+	 * Returns an instance of DocumentTemplate
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

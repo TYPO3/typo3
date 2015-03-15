@@ -55,6 +55,11 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	protected $scope;
 
 	/**
+	 * @var bool
+	 */
+	public $ext_noTempRecyclerDirs;
+
+	/**
 	 * Constructor function of the class
 	 */
 	public function __construct() {
