@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * User toolbar item
@@ -104,7 +105,7 @@ class UserToolbarItem implements ToolbarItemInterface {
 		// Logout button
 		$buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
 		$dropdown[] = '<li class="reset-dropdown">';
-		$dropdown[] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top"><i class="fa fa-power-off"></i> ';
+		$dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top"><i class="fa fa-power-off"></i> ';
 		$dropdown[] = $languageService->sL($buttonLabel, TRUE);
 		$dropdown[] = '</a>';
 		$dropdown[] = '</li>';

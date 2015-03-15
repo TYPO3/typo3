@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class to render the shortcut menu
@@ -192,7 +194,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function renderAjaxMenu($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
+	public function renderAjaxMenu($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
 		$menuContent = $this->getDropDown();
 		$ajaxObj->addContent('shortcutMenu', $menuContent);
 	}
@@ -418,7 +420,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function getAjaxShortcutEditForm($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
+	public function getAjaxShortcutEditForm($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
 		$selectedShortcutId = (int)GeneralUtility::_GP('shortcutId');
 		$selectedShortcutGroupId = (int)GeneralUtility::_GP('shortcutGroup');
 		$selectedShortcut = $this->getShortcutById($selectedShortcutId);
@@ -462,7 +464,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function deleteAjaxShortcut($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
+	public function deleteAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
 		$databaseConnection = $this->getDatabaseConnection();
 		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
 		$fullShortcut = $this->getShortcutById($shortcutId);
@@ -483,7 +485,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Oject of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function createAjaxShortcut($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
+	public function createAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
 		$databaseConnection = $this->getDatabaseConnection();
 		$languageService = $this->getLanguageService();
 		$shortcutCreated = 'failed';
@@ -559,7 +561,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
 	 * @return void
 	 */
-	public function setAjaxShortcut($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj = NULL) {
+	public function setAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
 		$databaseConnection = $this->getDatabaseConnection();
 		$backendUser = $this->getBackendUser();
 		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
@@ -689,7 +691,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					// Change icon of fileadmin references - otherwise it doesn't differ with Web->List
 					$icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
 					if (GeneralUtility::isAbsPath($icon)) {
-						$icon = '../' . \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($icon);
+						$icon = '../' . PathUtility::stripPathSitePrefix($icon);
 					}
 					// @todo: hardcoded width as we don't have a way to address module icons with an API yet.
 					$icon = '<img src="' . htmlspecialchars($icon) . '" alt="' . $titleAttribute . '" width="16">';
