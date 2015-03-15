@@ -26,7 +26,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
 		$registry = $this->getMock(\TYPO3\CMS\Core\Registry::class);
-		$versionArray = array(uniqId());
+		$versionArray = array($this->getUniqueId());
 		$registry->expects($this->once())->method('set')->with('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
 		$instance->_set('registry', $registry);
 		$instance->expects($this->once())->method('fetchVersionMatrixFromRemote')->will($this->returnValue($versionArray));
@@ -378,7 +378,7 @@ class CoreVersionServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var $instance \TYPO3\CMS\Install\Service\CoreVersionService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
 		$instance = $this->getAccessibleMock(\TYPO3\CMS\Install\Service\CoreVersionService::class, array('fetchVersionMatrixFromRemote'), array(), '', FALSE);
 		$registry = $this->getMock(\TYPO3\CMS\Core\Registry::class);
-		$versionArray = array(uniqId());
+		$versionArray = array($this->getUniqueId());
 		$registry->expects($this->once())->method('get')->will($this->returnValue($versionArray));
 		$instance->_set('registry', $registry);
 		$this->assertSame($versionArray, $instance->_call('getVersionMatrix'));

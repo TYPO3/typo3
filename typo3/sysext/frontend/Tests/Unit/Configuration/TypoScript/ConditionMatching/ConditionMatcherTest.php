@@ -444,7 +444,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnArrayExpressionWithZeroAsKey() {
-		$testKey = uniqid('test');
+		$testKey = $this->getUniqueId('test');
 		$testValue = '1';
 		$_GET = array();
 		$_POST = array($testKey => array('0' => $testValue));
