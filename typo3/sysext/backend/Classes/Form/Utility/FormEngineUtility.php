@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Utility;
  */
 
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
