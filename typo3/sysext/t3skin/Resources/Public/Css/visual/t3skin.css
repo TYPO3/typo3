@@ -4967,6 +4967,110 @@ button.close {
   border-left-color: #ffffff;
   bottom: -10px;
 }
+.tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  visibility: visible;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.4;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.tooltip.in {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.tooltip.top {
+  margin-top: -3px;
+  padding: 3px 0;
+}
+.tooltip.right {
+  margin-left: 3px;
+  padding: 0 3px;
+}
+.tooltip.bottom {
+  margin-top: 3px;
+  padding: 3px 0;
+}
+.tooltip.left {
+  margin-left: -3px;
+  padding: 0 3px;
+}
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  background-color: #333333;
+  border-radius: 2px;
+}
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -3px;
+  border-width: 3px 3px 0;
+  border-top-color: #333333;
+}
+.tooltip.top-left .tooltip-arrow {
+  bottom: 0;
+  right: 3px;
+  margin-bottom: -3px;
+  border-width: 3px 3px 0;
+  border-top-color: #333333;
+}
+.tooltip.top-right .tooltip-arrow {
+  bottom: 0;
+  left: 3px;
+  margin-bottom: -3px;
+  border-width: 3px 3px 0;
+  border-top-color: #333333;
+}
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -3px;
+  border-width: 3px 3px 3px 0;
+  border-right-color: #333333;
+}
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -3px;
+  border-width: 3px 0 3px 3px;
+  border-left-color: #333333;
+}
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -3px;
+  border-width: 0 3px 3px;
+  border-bottom-color: #333333;
+}
+.tooltip.bottom-left .tooltip-arrow {
+  top: 0;
+  right: 3px;
+  margin-top: -3px;
+  border-width: 0 3px 3px;
+  border-bottom-color: #333333;
+}
+.tooltip.bottom-right .tooltip-arrow {
+  top: 0;
+  left: 3px;
+  margin-top: -3px;
+  border-width: 0 3px 3px;
+  border-bottom-color: #333333;
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,
@@ -8994,6 +9098,9 @@ fieldset[disabled] .table .btn-default.active {
 .table-fit-inline-block > .table {
   width: auto;
 }
+.tooltip-inner {
+  padding: 5px 10px;
+}
 .panel.ui-sortable-helper {
   border-style: dashed;
 }
@@ -11557,20 +11664,16 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 .typo3-extension-manager form#extensionUploadForm div.control-group:last-child {
   margin-bottom: 0;
 }
-.headerTooltip,
-.tooltip {
+.headerTooltip {
   -webkit-box-shadow: 2px 2px 11px #666666;
   box-shadow: 2px 2px 11px #666666;
   display: none;
-  width: 400px;
+  width: 150px;
   background-color: #ffa;
   border: 1px solid #cc9;
   padding: 3px;
   font-size: 13px;
   z-index: 1000;
-}
-.headerTooltip {
-  width: 150px;
 }
 #terTableWrapper {
   position: relative;

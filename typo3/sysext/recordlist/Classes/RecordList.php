@@ -268,6 +268,7 @@ class RecordList {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
 		// Loading current page record and checking access:
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
