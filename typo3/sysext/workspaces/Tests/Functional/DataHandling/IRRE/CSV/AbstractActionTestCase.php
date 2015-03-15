@@ -281,7 +281,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->recordIds['newContentId'] = $newTableIds['tt_content'][0];
 		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
 		$this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
-		$versionedCopiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
+		$versionedCopiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
 		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedCopiedContentId);
 	}
 
@@ -318,7 +318,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 			)
 		);
 		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
-		$this->recordIds['versionedNewContentId'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $this->recordIds['newContentId']);
+		$this->recordIds['versionedNewContentId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['newContentId']);
 		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
 		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
 		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['versionedNewContentId']);
@@ -340,7 +340,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
 		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
-		$versionedLocalizedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $this->recordIds['localizedContentId']);
+		$versionedLocalizedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['localizedContentId']);
 		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedLocalizedContentId);
 	}
 
@@ -382,7 +382,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
 			)
 		);
-		$modifiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
 		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $modifiedContentId);
 	}
 
@@ -397,8 +397,8 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
 			)
 		);
-		$modifiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
-		$modifiedHotelId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Hotel, 4);
+		$modifiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$modifiedHotelId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 4);
 		$this->actionService->clearWorkspaceRecords(
 				array(
 					self::TABLE_Content => array($modifiedContentId),
@@ -443,9 +443,9 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 				self::TABLE_Hotel => array('uid' => 4, 'title' => 'Testing #1'),
 			)
 		);
-		$this->recordIds['versionedContentId'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
-		$this->recordIds['versionedHotelIdFirst'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Hotel, 3);
-		$this->recordIds['versionedHotelIdSecond'] = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Hotel, 4);
+		$this->recordIds['versionedContentId'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		$this->recordIds['versionedHotelIdFirst'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 3);
+		$this->recordIds['versionedHotelIdSecond'] = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Hotel, 4);
 		$this->actionService->clearWorkspaceRecords(
 			array(
 				self::TABLE_Content => array($this->recordIds['versionedContentId']),
