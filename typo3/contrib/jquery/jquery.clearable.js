@@ -45,7 +45,7 @@
 				// Wrap it with a div and add a span that is the trigger for
 				// clearing.
 				$input.wrap('<div class="form-control-clearable" />');
-				$input.after('<button type="button" class="close"><span class="fa fa-times" /></button>');
+				$input.after('<button type="button" class="close" tabindex="-1" aria-hidden="true"><span class="fa fa-times" /></button>');
 				$input.addClass('t3js-clearable');
 
 				var $clearer = $input.next();
