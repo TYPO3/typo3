@@ -500,7 +500,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 	 *
 	 * @return ResourceFactory
 	 */
-	public function getFileFactory() {
+	protected function getFileFactory() {
 		if ($this->fileFactory === NULL) {
 			$this->fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 		}
