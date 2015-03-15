@@ -81,7 +81,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	public function createContentAndDiscardCreatedContent() {
 		$newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, array('header' => 'Testing #1'));
 		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
-		$versionedNewContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $this->recordIds['newContentId']);
+		$versionedNewContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['newContentId']);
 		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedNewContentId);
 	}
 
@@ -93,7 +93,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 		$copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_PageId);
 		$this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
-		$versionedCopiedContentId = $this->actionService->getDataHander()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
+		$versionedCopiedContentId = $this->actionService->getDataHandler()->getAutoVersionId(self::TABLE_Content, $this->recordIds['copiedContentId']);
 		$this->actionService->clearWorkspaceRecord(self::TABLE_Content, $versionedCopiedContentId);
 	}
 

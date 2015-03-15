@@ -29,7 +29,7 @@ class ActionService {
 	/**
 	 * @return DataHandler
 	 */
-	public function getDataHander() {
+	public function getDataHandler() {
 		return $this->dataHandler;
 	}
 
