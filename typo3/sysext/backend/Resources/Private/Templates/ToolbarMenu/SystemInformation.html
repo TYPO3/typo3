@@ -1,0 +1,32 @@
+<ul class="dropdown-list">
+	<li class="dropdown-header"><f:translate key="systemmessage.header" /></li>
+	<li id="systeminformation_installtool" class="dropdown-intro typo3-module-menu-item submodule mod-system_InstallInstall" data-modulename="system_InstallInstall">
+		<f:translate key="systemmessage.intro" arguments="{0: '{installToolUrl}'}" />
+	</li>
+	<li>
+		<dl class="dl-horizontal">
+			<f:for each="{systemInformation}" as="info">
+				<dt title="{info.title}"><f:format.raw>{info.icon}</f:format.raw> {info.title}</dt>
+				<dd><f:if condition="{info.status}">
+					<f:then>
+						<span class="text-{info.status}">{info.value}</span>
+					</f:then>
+					<f:else>
+						{info.value}
+					</f:else>
+				</f:if></dd>
+			</f:for>
+		</dl>
+	</li>
+	<li class="divider"></li>
+	<f:if condition="{messages -> f:count()} > 0">
+		<f:then>
+			<f:for each="{messages}" as="message">
+				<li><span class="text-{message.status}">{message.text}</span></li>
+			</f:for>
+		</f:then>
+		<f:else>
+			<li><span class="text-success"><f:format.nl2br><f:translate key="systemmessage.allgood" /></f:format.nl2br></span></li>
+		</f:else>
+	</f:if>
+</ul>

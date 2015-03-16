@@ -3165,6 +3165,28 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		return strpos($this->handlerCfg[$this->lastHandlerKey]['config']['driver'], $driver) !== FALSE;
 	}
 
+	/**
+	 * Get the SQL server version
+	 *
+	 * @return string
+	 */
+	public function getServerVersion() {
+		$result = '';
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+			case 'native':
+				$result = $this->handlerInstance[$this->lastHandlerKey]['link']->server_info;
+				break;
+			case 'adodb':
+			case 'userdefined':
+				if (is_object($this->handlerInstance[$this->lastHandlerKey])) {
+					$serverInfo = $this->handlerInstance[$this->lastHandlerKey]->ServerInfo();
+					$result = $serverInfo['version'];
+				}
+				break;
+		}
+		return $result;
+	}
+
 	/************************************
 	 *
 	 * Table/Field mapping

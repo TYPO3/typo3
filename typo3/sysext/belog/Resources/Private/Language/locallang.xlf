@@ -354,6 +354,9 @@
 			<trans-unit id="chLog_menuTime">
 				<source>Time</source>
 			</trans-unit>
+			<trans-unit id="systemmessage.errorsInPeriod">
+				<source>We have found %1$d errors. Please check your administration log.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class to encapsulate base setup of bootstrap.
  *
@@ -49,6 +51,13 @@ class SystemEnvironmentBuilder {
 		'cgi-fcgi',
 		'srv', // HHVM with fastcgi
 	);
+
+	/**
+	 * An array of disabled methods
+	 *
+	 * @var string[]
+	 */
+	static protected $disabledFunctions = NULL;
 
 	/**
 	 * Run base setup.
@@ -194,8 +203,8 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function handleMagicQuotesGpc() {
 		if (!get_magic_quotes_gpc()) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::addSlashesOnArray($_GET);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::addSlashesOnArray($_POST);
+			GeneralUtility::addSlashesOnArray($_GET);
+			GeneralUtility::addSlashesOnArray($_POST);
 			$GLOBALS['HTTP_GET_VARS'] = $_GET;
 			$GLOBALS['HTTP_POST_VARS'] = $_POST;
 		}
@@ -210,7 +219,7 @@ class SystemEnvironmentBuilder {
 		// Unset variable(s) in global scope (security issue #13959)
 		unset($GLOBALS['error']);
 		// Set up base information about browser/user-agent
-		$GLOBALS['CLIENT'] = \TYPO3\CMS\Core\Utility\GeneralUtility::clientInfo();
+		$GLOBALS['CLIENT'] = GeneralUtility::clientInfo();
 		$GLOBALS['TYPO3_MISC'] = array();
 		$GLOBALS['T3_VAR'] = array();
 		$GLOBALS['T3_SERVICES'] = array();
@@ -224,7 +233,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function initializeGlobalTimeTrackingVariables() {
 		// Set PARSETIME_START to the system time in milliseconds.
-		$GLOBALS['PARSETIME_START'] = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
+		$GLOBALS['PARSETIME_START'] = GeneralUtility::milliseconds();
 		// Microtime of (nearly) script start
 		$GLOBALS['TYPO3_MISC']['microtime_start'] = microtime(TRUE);
 		// EXEC_TIME is set so that the rest of the script has a common value for the script execution time
@@ -458,4 +467,20 @@ class SystemEnvironmentBuilder {
 		die($message);
 	}
 
+	/**
+	 * Check if the given function is disabled in the system
+	 *
+	 * @param string $function
+	 * @return bool
+	 */
+	static public function isFunctionDisabled($function) {
+		if (static::$disabledFunctions === NULL) {
+			static::$disabledFunctions = GeneralUtility::trimExplode(',', ini_get('disable_functions'));
+		}
+		if (!empty(static::$disabledFunctions)) {
+			return in_array($function, static::$disabledFunctions, TRUE);
+		}
+
+		return FALSE;
+	}
 }

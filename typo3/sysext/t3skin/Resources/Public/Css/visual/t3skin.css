@@ -9920,6 +9920,24 @@ table#typo3-tree tr:hover {
 .label-block {
   display: block;
 }
+.badge-success {
+  background-color: #1eb941;
+}
+a.badge-success:hover {
+  background-color: #178d32;
+}
+.badge-warning {
+  background-color: #f07814;
+}
+a.badge-warning:hover {
+  background-color: #c4600d;
+}
+.badge-danger {
+  background-color: #c83c3c;
+}
+a.badge-danger:hover {
+  background-color: #a32e2e;
+}
 .btn .t3-icon {
   margin: 0;
 }
@@ -11192,6 +11210,21 @@ iframe {
   margin-right: -16px;
   padding: 8px 16px;
 }
+.typo3-topbar-navigation-items .dropdown-list .dropdown-intro {
+  color: #aaaaaa;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 8px 16px;
+}
+.typo3-topbar-navigation-items .dropdown-list .dl-horizontal dt {
+  width: 140px;
+  text-align: left;
+  font-weight: normal;
+}
+.typo3-topbar-navigation-items .dropdown-list .dl-horizontal dd {
+  margin-left: 150px;
+  width: 170px;
+}
 .typo3-topbar-navigation-items .dropdown-list-link {
   max-width: 300px;
   overflow: hidden;
@@ -11208,6 +11241,10 @@ iframe {
 .typo3-topbar-navigation-items .dropdown-list-link:hover {
   color: #ffffff;
   background-color: #333333;
+}
+.typo3-topbar-navigation-items .dropdown-list-link .badge {
+  background-color: #c83c3c;
+  color: #ffffff;
 }
 .typo3-topbar-navigation-items .dropdown-list-link-edit,
 .typo3-topbar-navigation-items .dropdown-list-link-delete,

@@ -1703,6 +1703,15 @@ class DatabaseConnection {
 		$this->link = $handle;
 	}
 
+	/**
+	 * Get the MySQL server version
+	 *
+	 * @return string
+	 */
+	public function getServerVersion() {
+		return $this->link->server_info;
+	}
+
 	/******************************
 	 *
 	 * Debugging

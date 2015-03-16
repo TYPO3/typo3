@@ -240,6 +240,23 @@
 			margin-right: -@topbar-dropdown-padding;
 			padding: (@topbar-dropdown-padding / 2) @topbar-dropdown-padding;
 		}
+		.dropdown-intro {
+			color: darken(@topbar-color, 20%);
+			margin-left: -@topbar-dropdown-padding;
+			margin-right: -@topbar-dropdown-padding;
+			padding: (@topbar-dropdown-padding / 2) @topbar-dropdown-padding;
+		}
+		.dl-horizontal {
+			dt {
+				width: 140px;
+				text-align: left;
+				font-weight: normal;
+			}
+			dd {
+				margin-left: 150px;
+				width: 170px;
+			}
+		}
 	}
 	.dropdown-list-link {
 		max-width: 300px;
@@ -256,6 +273,10 @@
 		&:hover {
 			color: @topbar-dropdown-link-hover-color;
 			background-color: @topbar-dropdown-link-hover-bg;
+		}
+		.badge {
+			background-color: @brand-danger;
+			color: @btn-danger-color;
 		}
 	}
 	.dropdown-list-link-edit,
