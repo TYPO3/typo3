@@ -16,5 +16,10 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Mediace\\": "Classes/"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Mediace\\Tests\\": "Tests/"
+		}
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\MediaWizard;
+namespace TYPO3\CMS\Mediace\MediaWizard;
 
 /*
  * This file is part of the TYPO3 CMS project.

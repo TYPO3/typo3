@@ -17,9 +17,6 @@ if (TYPO3_MODE === 'FE') {
 	// Register eID provider for ExtDirect for the frontend
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = 'EXT:frontend/Resources/PHP/Eid/ExtDirect.php';
 
-	// Register the core media wizard provider
-	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider(\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider::class);
-
 	// Register all available content objects
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'], array(
 		'TEXT'             => \TYPO3\CMS\Frontend\ContentObject\TextContentObject::class,

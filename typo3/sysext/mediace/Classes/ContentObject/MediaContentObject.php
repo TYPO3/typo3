@@ -170,7 +170,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 				$conf['forcePlayer'] = 0;
 				$renderType = 'swf';
 			} elseif (isset($conf['file']) && strpos($conf['file'], '://') !== FALSE) {
-				$mediaWizard = \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($conf['file']);
+				$mediaWizard = \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($conf['file']);
 				if ($mediaWizard !== NULL) {
 					$conf['installUrl'] = 'null';
 					$conf['forcePlayer'] = 0;
@@ -243,8 +243,8 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		// because the file value can possibly have link parameters, use explode to split all values
 		$fileParts = explode(' ', $file);
 
-		/** @var $mediaWizard \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface */
-		$mediaWizard = \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($fileParts[0]);
+		/** @var $mediaWizard \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderInterface */
+		$mediaWizard = \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderManager::getValidMediaWizardProvider($fileParts[0]);
 		// Get the path relative to the page currently outputted
 		if (substr($fileParts[0], 0, 5) === 'file:') {
 			$fileUid = substr($fileParts[0], 5);
