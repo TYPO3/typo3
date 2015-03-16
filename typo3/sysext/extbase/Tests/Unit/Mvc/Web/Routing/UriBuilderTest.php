@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\ValueObjectFixture;
 use TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing\Fixtures\EntityFixture;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -774,6 +775,19 @@ class UriBuilderTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function convertDomainObjectsToIdentityArraysConvertsObjectStoragesWithDomainObjects() {
+		$objectStorage  = new ObjectStorage();
+		$mockChildObject1 = $this->getAccessibleMock(AbstractEntity::class, array('dummy'));
+		$mockChildObject1->_set('uid', '123');
+		$objectStorage->attach($mockChildObject1);
+		$expectedResult = array('foo' => array('bar' => 'baz'), 'objectStorage' => array('123'));
+		$actualResult = $this->uriBuilder->_call('convertDomainObjectsToIdentityArrays', array('foo' => array('bar' => 'baz'), 'objectStorage' => $objectStorage));
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
 	public function conversionOfTansientObjectsIsInvoked() {
 		$mockValueObject = new ValueObjectFixture();
 		$mockValueObject->name = 'foo';
@@ -806,6 +820,35 @@ class UriBuilderTest extends UnitTestCase {
 		$uriBuilder = new UriBuilder();
 		$actualResult = $uriBuilder->convertTransientObjectToArray($mockValueObject);
 		$expectedResult = array('name' => 'foo', 'object' => NULL, 'uid' => NULL, 'pid' => NULL);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function tansientObjectsWithObjectStorageAreConvertedToAnArrayOfProperties() {
+		$mockValueObject = new ValueObjectFixture();
+		$objectStorage = new ObjectStorage();
+		$mockValueObject->name = 'foo';
+		$mockValueObject2 = new ValueObjectFixture();
+		$mockValueObject2->name = 'bar';
+		$objectStorage->attach($mockValueObject2);
+		$mockValueObject->object = $objectStorage;
+		$uriBuilder = new UriBuilder();
+		$actualResult = $uriBuilder->convertTransientObjectToArray($mockValueObject);
+		$expectedResult = array(
+			'name' => 'foo',
+			'object' => array(
+				array(
+					'name' => 'bar',
+					'uid' => NULL,
+					'pid' => NULL,
+					'object' => NULL
+				)
+			),
+			'uid' => NULL,
+			'pid' => NULL
+		);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -890,6 +933,26 @@ class UriBuilderTest extends UnitTestCase {
 		$expectedResult = array('foo' => 'bar');
 		$actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
 		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function convertIteratorToArrayConvertsIteratorsToArrayProvider() {
+		return array(
+			'Extbase ObjectStorage' => array(new ObjectStorage()),
+			'SplObjectStorage' => array(new \SplObjectStorage()),
+			'ArrayIterator' => array(new \ArrayIterator())
+		);
+	}
+
+	/**
+	 * @dataProvider convertIteratorToArrayConvertsIteratorsToArrayProvider
+	 * @test
+	 */
+	public function convertIteratorToArrayConvertsIteratorsToArray($iterator) {
+		$result = $this->uriBuilder->_call('convertIteratorToArray', $iterator);
+		$this->assertTrue(is_array($result));
 	}
 
 }

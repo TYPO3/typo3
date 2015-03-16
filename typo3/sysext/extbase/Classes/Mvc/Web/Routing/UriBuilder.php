@@ -751,6 +751,9 @@ class UriBuilder {
 				// hidden and thus the $argumentValue would be NULL.
 				$arguments[$argumentKey] = $argumentValue;
 			}
+			if ($argumentValue instanceof \Iterator) {
+				$argumentValue = $this->convertIteratorToArray($argumentValue);
+			}
 			if ($argumentValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 				if ($argumentValue->getUid() !== NULL) {
 					$arguments[$argumentKey] = $argumentValue->getUid();
@@ -767,6 +770,19 @@ class UriBuilder {
 	}
 
 	/**
+	 * @param \Iterator $iterator
+	 * @return array
+	 */
+	protected function convertIteratorToArray(\Iterator $iterator) {
+		if (method_exists($iterator, 'toArray')) {
+			$array = $iterator->toArray();
+		} else {
+			$array = iterator_to_array($iterator);
+		}
+		return $array;
+	}
+
+	/**
 	 * Converts a given object recursively into an array.
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object
@@ -776,6 +792,9 @@ class UriBuilder {
 	public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object) {
 		$result = array();
 		foreach ($object->_getProperties() as $propertyName => $propertyValue) {
+			if ($propertyValue instanceof \Iterator) {
+				$propertyValue = $this->convertIteratorToArray($propertyValue);
+			}
 			if ($propertyValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 				if ($propertyValue->getUid() !== NULL) {
 					$result[$propertyName] = $propertyValue->getUid();
