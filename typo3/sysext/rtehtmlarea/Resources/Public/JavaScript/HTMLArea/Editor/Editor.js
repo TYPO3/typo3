@@ -517,13 +517,18 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Editor',
 	 */
 	Editor.prototype.scrollToCaret = function () {
 		if (!UserAgent.isIE) {
-			var e = this.getSelection().getParentElement(),
-				w = this.iframe.getEl().contentWindow ? this.iframe.getEl().contentWindow : window,
-				h = w.innerHeight || w.height,
-				d = this.document,
-				t = d.documentElement.scrollTop || d.body.scrollTop;
-			if (e.offsetTop > h+t || e.offsetTop < t) {
-				this.getSelection().getParentElement().scrollIntoView();
+			var contentWindow = this.iframe.getEl().contentWindow;
+			if (contentWindow) {
+				var windowHeight = contentWindow.innerHeight,
+					element = this.getSelection().getParentElement(),
+					elementOffset = element.offsetTop,
+					elementHeight = Dom.getSize(element).height,
+					bodyScrollTop = contentWindow.document.body.scrollTop;
+				// If the current selection is out of view
+				if (elementOffset > windowHeight + bodyScrollTop || elementOffset < bodyScrollTop) {
+					// Scroll the iframe contentWindow
+					contentWindow.scrollTo(0, elementOffset - windowHeight + elementHeight);
+				}
 			}
 		}
 	};
