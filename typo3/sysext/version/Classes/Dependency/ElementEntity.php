@@ -330,11 +330,11 @@ class ElementEntity {
 	 * @return array
 	 */
 	public function getRecord() {
-		if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->id) {
+		if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->getId()) {
 			$this->record = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_wsid,t3ver_state,t3ver_oid', $this->getTable(), 'uid=' . $this->getId());
-			if (is_array($rows)) {
-				$this->record = $rows[0];
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,pid,t3ver_wsid,t3ver_state,t3ver_oid', $this->getTable(), 'uid=' . $this->getId());
+			if (is_array($row)) {
+				$this->record = $row;
 			}
 		}
 		return $this->record;
