@@ -71,22 +71,22 @@ All search words are converted to lowercase.
 			</trans-unit>
 
 
-			<trans-unit id="types.0" xml:space="preserve">
+			<trans-unit id="searchTypes.0" xml:space="preserve">
 				<source>Distinct word</source>
 			</trans-unit>
-			<trans-unit id="types.1" xml:space="preserve">
+			<trans-unit id="searchTypes.1" xml:space="preserve">
 				<source>Part of word</source>
 			</trans-unit>
-			<trans-unit id="types.2" xml:space="preserve">
+			<trans-unit id="searchTypes.2" xml:space="preserve">
 				<source>First part of word</source>
 			</trans-unit>
-			<trans-unit id="types.3" xml:space="preserve">
+			<trans-unit id="searchTypes.3" xml:space="preserve">
 				<source>Last part of word</source>
 			</trans-unit>
-			<trans-unit id="types.10" xml:space="preserve">
+			<trans-unit id="searchTypes.10" xml:space="preserve">
 				<source>Sounds like</source>
 			</trans-unit>
-			<trans-unit id="types.20" xml:space="preserve">
+			<trans-unit id="searchTypes.20" xml:space="preserve">
 				<source>Sentence</source>
 			</trans-unit>
 
@@ -116,16 +116,16 @@ All search words are converted to lowercase.
 			<trans-unit id="sections.-3" xml:space="preserve">
 				<source>Level 2 and out</source>
 			</trans-unit>
-			<trans-unit id="sections.RL1" xml:space="preserve">
+			<trans-unit id="sections.rootLevel1" xml:space="preserve">
 				<source>Level 1:</source>
 			</trans-unit>
-			<trans-unit id="sections.RL1All" xml:space="preserve">
+			<trans-unit id="sections.rootLevel1All" xml:space="preserve">
 				<source>All pages on level 1</source>
 			</trans-unit>
-			<trans-unit id="sections.RL2" xml:space="preserve">
+			<trans-unit id="sections.rootLevel2" xml:space="preserve">
 				<source>- Level 2:</source>
 			</trans-unit>
-			<trans-unit id="sections.RL2All" xml:space="preserve">
+			<trans-unit id="sections.rootLevel2All" xml:space="preserve">
 				<source>- All pages on level 2</source>
 			</trans-unit>
 
@@ -145,7 +145,7 @@ All search words are converted to lowercase.
 			<trans-unit id="indexingConfigurations.-2" xml:space="preserve">
 				<source>All, categorized</source>
 			</trans-unit>
-			<trans-unit id="indexingConfigurations._0" xml:space="preserve">
+			<trans-unit id="indexingConfigurations.0" xml:space="preserve">
 				<source>Pages</source>
 			</trans-unit>
 
