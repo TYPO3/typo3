@@ -46,8 +46,8 @@ styles.content.editPanelPage {
 
 
 
-
-
+# default link target for external URLs
+config.extTarget = {$styles.content.links.extTarget}
 
 
 

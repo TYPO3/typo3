@@ -10,13 +10,6 @@ if (TYPO3_MODE === 'FE' && !isset($_REQUEST['eID'])) {
 	);
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
-	'frontend',
-	'setup',
-	'config.extTarget = _top'
-);
-
-
 if (TYPO3_MODE === 'FE') {
 
 	// Register eID provider for showpic
