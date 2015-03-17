@@ -1876,18 +1876,19 @@ return array(
 			),
 		),
 		'palette_6_1' => array(
+			'label' => 'PALETTE: Simple field with palette below',
+			'exclude' => 1,
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+		'palette_6_2' => array(
 			'label' => 'Palette Field',
 			'config' => array(
 				'type' => 'input',
 			),
 		),
-		'palette_7_1' => array(
-			'label' => 'Palette Field',
-			'config' => array(
-				'type' => 'input',
-			),
-		),
-		'palette_7_2' => array(
+		'palette_6_3' => array(
 			'label' => 'Palette Field',
 			'config' => array(
 				'type' => 'input',
@@ -2081,6 +2082,7 @@ return array(
 					--palette--;Palettes 3;palettes_3,
 					--palette--;;palettes_4,
 					--palette--;Palettes 5;palettes_5,
+					palette_6_1;Field with palette below;palettes_6,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 
@@ -2108,6 +2110,9 @@ return array(
 		'palettes_5' => array(
 			'showitem' => 'palette_5_1, --linebreak--, palette_5_2',
 			'canNotCollapse' => 1,
+		),
+		'palettes_6' => array(
+			'showitem' => 'palette_6_2, palette_6_3',
 		),
 		'visibility' => array(
 			'showitem' => 'hidden;Shown in frontend',
