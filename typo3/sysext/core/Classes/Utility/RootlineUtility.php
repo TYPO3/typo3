@@ -86,7 +86,6 @@ class RootlineUtility {
 		'extendToSubpages',
 		'doktype',
 		'TSconfig',
-		'storage_pid',
 		'is_siteroot',
 		'mount_pid',
 		'mount_pid_ol',

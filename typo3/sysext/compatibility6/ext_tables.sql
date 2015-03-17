@@ -10,3 +10,10 @@ CREATE TABLE tt_content (
 	longdescURL text,
 	titleText text
 );
+
+#
+# Table structure for table 'pages'
+#
+CREATE TABLE pages (
+	storage_pid int(11) DEFAULT '0' NOT NULL
+);

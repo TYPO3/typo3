@@ -263,7 +263,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						'cache_timeout',
 						'php_tree_stop',
 						'TSconfig',
-						'storage_pid',
 						'is_siteroot',
 						'fe_login_mode'
 					);

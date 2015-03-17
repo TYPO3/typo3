@@ -138,6 +138,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$this->spid = $this->conf['storagePid'];
 			}
 		} else {
+			GeneralUtility::deprecationLog('Extension "felogin" must have a storagePid set via TypoScript or the plugin configuration.');
 			$pids = $this->frontendController->getStorageSiterootPids();
 			$this->spid = $pids['_STORAGE_PID'];
 		}

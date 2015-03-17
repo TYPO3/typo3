@@ -4127,8 +4127,10 @@ class TypoScriptFrontendController {
 	 * Traverses the ->rootLine and returns an array with the first occurrance of storage pid and siteroot pid
 	 *
 	 * @return array Array with keys '_STORAGE_PID' and '_SITEROOT' set to the first occurrences found.
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8. The usage of "storage_pid" is discouraged, the option for "is_siteroot" is handled via the RootlineUtility directly.
 	 */
 	public function getStorageSiterootPids() {
+		GeneralUtility::logDeprecatedFunction();
 		$res = array();
 		if (!is_array($this->rootLine)) {
 			return array();

@@ -122,7 +122,6 @@ CREATE TABLE pages (
 	title varchar(255) DEFAULT '' NOT NULL,
 	doktype int(11) unsigned DEFAULT '0' NOT NULL,
 	TSconfig text,
-	storage_pid int(11) DEFAULT '0' NOT NULL,
 	is_siteroot tinyint(4) DEFAULT '0' NOT NULL,
 	php_tree_stop tinyint(4) DEFAULT '0' NOT NULL,
 	tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,

@@ -352,7 +352,6 @@ class BackendUtility {
 					'doktype' => $val['doktype'],
 					'TSconfig' => $val['TSconfig'],
 					'is_siteroot' => $val['is_siteroot'],
-					'storage_pid' => $val['storage_pid'],
 					't3ver_oid' => $val['t3ver_oid'],
 					't3ver_wsid' => $val['t3ver_wsid'],
 					't3ver_state' => $val['t3ver_state'],
