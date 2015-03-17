@@ -43,7 +43,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected $defaultResultNumber = 10;
 
 	/**
-	 * Lexer object
+	 * Search repository
 	 *
 	 * @var \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository
 	 */
@@ -56,29 +56,67 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected $lexerObj;
 
-	// External parser objects
+	/**
+	 * External parser objects
+	 * @var array
+	 */
 	protected $externalParsers = array();
 
-	// Will hold the first row in result - used to calculate relative hit-ratings.
+	/**
+	 * Will hold the first row in result - used to calculate relative hit-ratings.
+	 *
+	 * @var array
+	 */
 	protected $firstRow = array();
 
-	// Domain records (needed ?)
+	/**
+	 * sys_domain records
+	 *
+	 * @var array
+	 */
 	protected $domainRecords = array();
 
-	// Required fe_groups memberships for display of a result.
+	/**
+	 * Required fe_groups memberships for display of a result.
+	 *
+	 * @var array
+	 */
 	protected $requiredFrontendUsergroups = array();
 
-	// Page tree sections for search result.
+	/**
+	 * Page tree sections for search result.
+	 *
+	 * @var array
+	 */
 	protected $resultSections = array();
 
-	// Caching of page path
+	/**
+	 * Caching of page path
+	 *
+	 * @var array
+	 */
 	protected $pathCache = array();
 
-	// Storage of icons
+	/**
+	 * Storage of icons
+	 *
+	 * @var array
+	 */
 	protected $iconFileNameCache = array();
 
-	// Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
+	/**
+	 * Indexer configuration, coming from $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']
+	 *
+	 * @var array
+	 */
 	protected $indexerConfig = array();
+
+	/**
+	 * Flag whether metaphone search should be enabled
+	 *
+	 * @var bool
+	 */
+	protected $enableMetaphoneSearch = FALSE;
 
 	/**
 	 * sets up all necessary object for searching
@@ -390,8 +428,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				'sys_language_uid' => $row['sys_language_uid']
 			));
 			// check if the access is restricted
-			if (is_array($this->requiredFrontendUsergroups[$id]) && count($this->requiredFrontendUsergroups[$id])) {
-				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'indexed_search'), implode(',', array_unique($this->requiredFrontendUsergroups[$id]))) . '" alt="" />';
+			if (is_array($this->requiredFrontendUsergroups[$pathId]) && count($this->requiredFrontendUsergroups[$pathId])) {
+				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'indexed_search'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId]))) . '" alt="" />';
 			}
 		}
 		// If there are subrows (eg. subpages in a PDF-file or if a duplicate page
@@ -912,7 +950,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					continue;
 				}
 				if ($name = $obj->searchTypeMediaTitle($extension)) {
-					$allOptions[$extension] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $extension, $name);
+					$translatedName = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $extension, 'indexed_search');
+					$allOptions[$extension] = $translatedName ?: $name;
 				}
 			}
 		}
@@ -970,8 +1009,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		// This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub sections.
 		if ($this->settings['displayLevel1Sections']) {
 			$firstLevelMenu = $this->getMenuOfPages($this->searchRootPageIdList);
-			$labelLevel1 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.Rl1', 'indexed_search');
-			$labelLevel2 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.Rl2', 'indexed_search');
+			$labelLevel1 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1', 'indexed_search');
+			$labelLevel2 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel2', 'indexed_search');
 			foreach ($firstLevelMenu as $firstLevelKey => $menuItem) {
 				if (!$menuItem['nav_hide']) {
 					$allOptions['rl1_' . $menuItem['uid']] = trim($labelLevel1 . ' ' . $menuItem['title']);
@@ -984,13 +1023,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 								unset($secondLevelMenu[$secondLevelKey]);
 							}
 						}
-						$allOptions['rl2_' . implode(',', array_keys($secondLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.Rl2All', 'indexed_search');
+						$allOptions['rl2_' . implode(',', array_keys($secondLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel2All', 'indexed_search');
 					}
 				} else {
 					unset($firstLevelMenu[$firstLevelKey]);
 				}
 			}
-			$allOptions['rl1_' . implode(',', array_keys($firstLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.Rl1All', 'indexed_search');
+			$allOptions['rl1_' . implode(',', array_keys($firstLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1All', 'indexed_search');
 		}
 		// disable single entries by TypoScript
 		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['sections.']);
@@ -1155,6 +1194,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		if (!is_array($this->domainRecords[$pageUid])) {
 			$this->getPathFromPageId($pageUid);
 		}
+		$target = '';
 		// If external domain, then link to that:
 		if (count($this->domainRecords[$pageUid])) {
 			$scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
@@ -1199,8 +1239,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Returns the path to the page $id
 	 *
-	 * @param integer $id Page ID
-	 * @param string MP variable content
+	 * @param int $id Page ID
+	 * @param string $pathMP MP variable content
 	 * @return string Path
 	 */
 	protected function getPathFromPageId($id, $pathMP = '') {
