@@ -190,6 +190,9 @@ CREATE TABLE tx_styleguide_forms (
 	palette_4_4 tinytext NOT NULL,
 	palette_5_1 tinytext NOT NULL,
 	palette_5_2 tinytext NOT NULL,
+	palette_6_1 tinytext NOT NULL,
+	palette_6_2 tinytext NOT NULL,
+	palette_6_3 tinytext NOT NULL,
 
 	wizard_1 tinytext NOT NULL,
 	wizard_2 tinytext NOT NULL,
