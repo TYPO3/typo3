@@ -838,7 +838,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function getAllAvailableSearchTypeOptions() {
 		$allOptions = array();
 		$types = array(0, 1, 2, 3, 10, 20);
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['searchType']) {
 			foreach ($types as $typeNum) {
 				$allOptions[$typeNum] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('searchTypes.' . $typeNum, 'indexed_search');
@@ -860,7 +860,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function getAllAvailableOperandsOptions() {
 		$allOptions = array();
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['defaultOperand']) {
 			$allOptions = array(
 				0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('defaultOperands.0', 'indexed_search'),
@@ -880,7 +880,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function getAllAvailableMediaTypesOptions() {
 		$allOptions = array();
 		$mediaTypes = array(-1, 0, -2);
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['mediaType']) {
 			foreach ($mediaTypes as $mediaType) {
 				$allOptions[$mediaType] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $mediaType, 'indexed_search');
@@ -917,7 +917,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			'-1' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('languageUids.-1', 'indexed_search'),
 			'0' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('languageUids.0', 'indexed_search')
 		);
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['languageUid']) {
 			// Add search languages
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_language', '1=1' . $GLOBALS['TSFE']->cObj->enableFields('sys_language'));
@@ -946,7 +946,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function getAllAvailableSectionsOptions() {
 		$allOptions = array();
 		$sections = array(0, -1, -2, -3);
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['sections']) {
 			foreach ($sections as $section) {
 				$allOptions[$section] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.' . $section, 'indexed_search');
@@ -994,7 +994,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			'-2' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.-2', 'indexed_search'),
 			'0' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.0', 'indexed_search')
 		);
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['indexingConfigurations']) {
 			// add an additional index configuration
 			if ($this->settings['defaultFreeIndexUidList']) {
@@ -1026,7 +1026,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function getAllAvailableSortOrderOptions() {
 		$allOptions = array();
 		$sortOrders = array('rank_flag', 'rank_freq', 'rank_first', 'rank_count', 'mtime', 'title', 'crdate');
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['sortOrder']) {
 			foreach ($sortOrders as $order) {
 				$allOptions[$order] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.' . $order, 'indexed_search');
@@ -1044,7 +1044,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function getAllAvailableGroupOptions() {
 		$allOptions = array();
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['groupBy']) {
 			$allOptions = array(
 				'sections' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('groupBy.sections', 'indexed_search'),
@@ -1063,7 +1063,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function getAllAvailableSortDescendingOptions() {
 		$allOptions = array();
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['descending']) {
 			$allOptions = array(
 				0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.descending', 'indexed_search'),
@@ -1082,7 +1082,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function getAllAvailableNumberOfResultsOptions() {
 		$allOptions = array();
-		$blindSettings = $this->settings['blind.'];
+		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['numberOfResults']) {
 			$allOptions = array(
 				10 => 10,
