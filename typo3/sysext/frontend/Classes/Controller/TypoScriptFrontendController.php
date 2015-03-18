@@ -3338,7 +3338,11 @@ class TypoScriptFrontendController {
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
 		$this->divSection = '';
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
-			$this->setPageRenderer(unserialize($this->config['INTincScript_ext']['pageRenderer']));
+			/** @var PageRenderer $pageRenderer */
+			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
+			$this->setPageRenderer($pageRenderer);
+			// restore current page title in this class to prevent overwriting custom titles of USER plugin coming from the cache
+			$this->indexedDocTitle = $this->altPageTitle = $this->page['title'] = $pageRenderer->getTitle();
 		}
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$GLOBALS['TT']->push('Substitute header section');
