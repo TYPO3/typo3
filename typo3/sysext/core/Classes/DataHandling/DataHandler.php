@@ -670,13 +670,6 @@ class DataHandler {
 	protected $runtimeCache = NULL;
 
 	/**
-	 * Prefix for the cache entries of 'eval'-strings from table fields since the runtimeCache has a global scope.
-	 *
-	 * @var string
-	 */
-	protected $cachePrefixFieldEval = 'core-datahandler-eval-';
-
-	/**
 	 * Prefix for the cache entries of nested element calls since the runtimeCache has a global scope.
 	 *
 	 * @var string
@@ -1652,7 +1645,7 @@ class DataHandler {
 		if (!isset($tcaFieldConf['eval']) || $tcaFieldConf['eval'] === '') {
 			return array('value' => $value);
 		}
-		$cacheId = $this->cachePrefixFieldEval . $tcaFieldConf['eval'];
+		$cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
 		if ($this->runtimeCache->has($cacheId)) {
 			$evalCodesArray = $this->runtimeCache->get($cacheId);
 		} else {
@@ -1705,7 +1698,7 @@ class DataHandler {
 			$res = array('value' => $value);
 		} else {
 			// Process evaluation settings:
-			$cacheId = $this->cachePrefixFieldEval . $tcaFieldConf['eval'];
+			$cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
 			if ($this->runtimeCache->has($cacheId)) {
 				$evalCodesArray = $this->runtimeCache->get($cacheId);
 			} else {
@@ -7521,6 +7514,16 @@ class DataHandler {
 				$haystack[$key] = NULL;
 			}
 		}
+	}
+
+	/**
+	 * Return the cache entry identifier for field evals
+	 *
+	 * @param string $additionalIdentifier
+	 * @return string
+	 */
+	protected function getFieldEvalCacheIdentifier($additionalIdentifier) {
+		return 'core-datahandler-eval-' . md5($additionalIdentifier);
 	}
 
 	/**
