@@ -92,7 +92,7 @@ TYPO3.Workspaces.Actions = {
 		if (response.error) {
 			top.Ext.getCmp('executeMassActionProgressBar').hide();
 			top.Ext.getCmp('executeMassActionOkButton').hide();
-			top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.l10n.localize('close'));
+			top.Ext.getCmp('executeMassActionCancelButton').setText(TYPO3.l10n.localize('close'));
 			top.Ext.getCmp('executeMassActionForm').show();
 			top.Ext.getCmp('executeMassActionForm').update(response.error);
 			TYPO3.Workspaces.Helpers.refreshPageTree();
@@ -102,7 +102,7 @@ TYPO3.Workspaces.Actions = {
 			} else {
 				top.Ext.getCmp('executeMassActionProgressBar').hide();
 				top.Ext.getCmp('executeMassActionOkButton').hide();
-				top.Ext.getCmp('executeMassActionCancleButton').setText(TYPO3.l10n.localize('close'));
+				top.Ext.getCmp('executeMassActionCancelButton').setText(TYPO3.l10n.localize('close'));
 				top.Ext.getCmp('executeMassActionForm').show();
 				top.Ext.getCmp('executeMassActionForm').update(TYPO3.l10n.localize('runMassAction.done').replace('%d', response.total));
 				TYPO3.Workspaces.Helpers.refreshPageTree();
