@@ -36,7 +36,7 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
-		"helhum/class-alias-loader": "1.0.*@dev",
+		"helhum/class-alias-loader": "1.1.*@dev",
 		"typo3/cms-composer-installers": "1.1.*@dev"
 	},
 	"require-dev": {
