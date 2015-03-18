@@ -272,7 +272,7 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 						}
 					},
 					{
-						id: 'executeMassActionCancleButton',
+						id: 'executeMassActionCancelButton',
 						scope: this,
 						text: TYPO3.l10n.localize('cancel'),
 						handler: function() {
