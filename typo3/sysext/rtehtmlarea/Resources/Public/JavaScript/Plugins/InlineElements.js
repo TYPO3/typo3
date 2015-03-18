@@ -62,7 +62,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/InlineElements',
 			 */
 			var buttonId = 'FormatText';
 			// Wrap the options text in the corresponding inline element
-			var options = this.buttonsConfiguration[buttonId.toLowerCase()] ? this.buttonsConfiguration[buttonId.toLowerCase()].options : [];
+			var options = this.buttonsConfiguration[buttonId.toLowerCase()] && this.buttonsConfiguration[buttonId.toLowerCase()].options ? this.buttonsConfiguration[buttonId.toLowerCase()].options : [];
 			for (var i = 0, n = options.length; i < n; i++) {
 				options[i][0] = '<' + options[i][1] + '>' + options[i][0] + '</' + options[i][1] + '>';
 			}
