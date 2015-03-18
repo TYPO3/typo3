@@ -109,7 +109,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/BlockElements',
 			var dropDownConfiguration = {
 				id: buttonId,
 				tooltip: this.localize(buttonId + '-Tooltip'),
-				options: this.buttonsConfiguration.formatblock ? this.buttonsConfiguration.formatblock.options : [],
+				options: this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.options? this.buttonsConfiguration.formatblock.options : [],
 				action: 'onChange'
 			};
 			if (this.buttonsConfiguration.formatblock) {
