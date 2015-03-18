@@ -362,6 +362,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						$removedProperties = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], TRUE);
 					}
 				}
+				$classesImageJSOptions = '';
 				if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
 					$classesImageArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], TRUE);
 					$classesImageJSOptions = '<option value=""></option>';
@@ -389,8 +390,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						SelectImage.RTEtsConfigParams = "' . rawurlencode($this->RTEtsConfigParams) . '";
 						SelectImage.bparams = "' . $this->bparams . '";
 						SelectImage.classesImage =  ' . $classesImage . ';
-						SelectImage.labels = ' . json_encode($localizedLabels) . '
-						SelectImage.Form.build("' . $classesImageJSOptions . '", ' . json_encode($removedProperties) . ', ' . $lockPlainWidth . ', ' . $lockPlainHeight . ');
+						SelectImage.labels = ' . json_encode($localizedLabels) . ';
+						SelectImage.Form.build(' . GeneralUtility::quoteJSvalue($classesImageJSOptions) . ', ' . json_encode($removedProperties) . ', ' . $lockPlainWidth . ', ' . $lockPlainHeight . ');
 						SelectImage.Form.insertImageProperties();
 					});';
 				$this->content .= '<br />' . $this->doc->wrapScriptTags($JScode);
