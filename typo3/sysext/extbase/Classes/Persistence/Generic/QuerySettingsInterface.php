@@ -167,7 +167,7 @@ interface QuerySettingsInterface {
 	 *
 	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @return void
-	 * @deprecated since Extbase 6.2, will be removed two versions later
+	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult);
 
@@ -175,7 +175,7 @@ interface QuerySettingsInterface {
 	 * Returns the state, if the QueryResult should be returned unmapped.
 	 *
 	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
-	 * @deprecated since Extbase 6.2, will be removed two versions later
+	 * @deprecated since Extbase 6.2, will be removed two versions later. Please use argument in query->execute() instead.
 	 */
 	public function getReturnRawQueryResult();
 
