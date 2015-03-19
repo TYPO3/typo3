@@ -69,7 +69,7 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	 	 	removeAttributes: /^(id|on*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
 	 	},
 		pasteFormat: {
-			keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|strike|strong|sub|sup|tt|u|var)$/i,
+			keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|img|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|strike|strong|sub|sup|tt|u|var)$/i,
 			removeAttributes:  /^(id|on*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
 	 	}
 	},
@@ -233,20 +233,39 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onPaste: function (event) {
 		if (!this.getButton('PasteToggle').inactive) {
+			var clipboardText = '';
 			switch (this.currentBehaviour) {
 				case 'plainText':
-					// Only IE before IE9 and Chrome will allow access to the clipboard content by default, in plain text only however
-					if (HTMLArea.isIEBeforeIE9 || Ext.isChrome) {
-						var clipboardText = this.grabClipboardText(event);
-						if (clipboardText) {
-							this.editor.getSelection().insertHtml(clipboardText);
+					// Let's see if clipboardData can be used for plain text
+					clipboardText = this.grabClipboardText(event, 'plain');
+					if (clipboardText) {
+						// Stop the event
+						if (HTMLArea.isIEBeforeIE9) {
+							event.browserEvent.returnValue = false;
+						} else {
+							event.stopEvent();
 						}
-						return !this.clipboardText;
+						this.editor.getSelection().insertHtml(clipboardText);
+						return false;
 					}
 				case 'pasteStructure':
 				case 'pasteFormat':
-					if (Ext.isIE) {
-							// Show the pasting pad
+					// Let's see if clipboardData can be used for html text
+					clipboardText = this.grabClipboardText(event, 'html');
+					if (clipboardText) {
+						// Stop the event
+						if (HTMLArea.isIEBeforeIE9) {
+							event.browserEvent.returnValue = false;
+						} else {
+							event.stopEvent();
+						}
+						// Clean content
+						this.processClipboardContent(clipboardText);
+						return false;
+					}
+					// Could be IE or WebKit denying access to the clipboard
+					if (Ext.isIE || Ext.isWebKit) {
+						// Show the pasting pad
 						this.openPastingPad(
 							'PasteToggle',
 							this.currentBehaviour,
@@ -265,11 +284,11 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 						}
 						return false;
 					} else {
-							// Redirect the paste operation to a hidden section
+						// Falling back to old ways...
+						// Redirect the paste operation to a hidden section
 						this.redirectPaste();
-							// Process the content of the hidden section after the paste operation is completed
-							// WebKit seems to be pondering a very long time over what is happenning here...
-						this.processPastedContent.defer(Ext.isWebKit ? 500 : 50, this);
+						// Process the content of the hidden section after the paste operation is completed
+						this.processPastedContent.defer(50, this);
 					}
 					break;
 				default:
@@ -278,41 +297,68 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		}
 		return true;
 	},
-	/*
+
+	/**
 	 * Grab the text content directly from the clipboard
-	 * If successful, stop the paste event
 	 *
-	 * @param	object		event: the paste event
-	 *
-	 * @return	string		clipboard content, in plain text, if access was granted
+	 * @param object event: the paste event
+	 * @param string type: type of content to grab 'plain' ot 'html'
+	 * @return string clipboard content, if access was granted
 	 */
-	grabClipboardText: function (event) {
-		var clipboardText = '';
-			// Grab the text content
-		if (window.clipboardData || event.browserEvent.clipboardData || event.browserEvent.dataTransfer) {
-			clipboardText = (window.clipboardData || event.browserEvent.clipboardData || event.browserEvent.dataTransfer).getData('text');
+	grabClipboardText: function (event, type) {
+		var clipboardText = '',
+			browserEvent = event.browserEvent,
+			clipboardData = '',
+			contentTypes = '';
+		if (browserEvent && (browserEvent.clipboardData || window.clipboardData) && (browserEvent.clipboardData || window.clipboardData).getData) {
+			var clipboardData = (browserEvent.clipboardData || window.clipboardData);
+			var contentTypes = clipboardData.types;
 		}
-		if (clipboardText) {
-				// Stop the event
-			event.stopEvent();
-		} else {
-				// If the user denied access to the clipboard, let the browser paste without intervention
-			TYPO3.Dialog.InformationDialog({
-				title: this.localize('Paste-as-Plain-Text'),
-				msg: this.localize('Access-to-clipboard-denied')
-			});
+		if (clipboardData) {
+			switch (type) {
+				case 'plain':
+					if (/text\/plain/.test(contentTypes) || Ext.isIE) {
+						clipboardText = clipboardData.getData(Ext.isIE ? 'Text' : 'text/plain');
+					}
+					break;
+				case 'html':
+					if (contentTypes && Object.prototype.toString.call(contentTypes) === '[object Array]' && contentTypes.length > 0) {
+						var i = 0, contentType;
+						while (i < contentTypes.length) {
+							contentType = contentTypes[i];
+							if (/text\/plain|text\/html/.test(contentType)) {
+								clipboardText += clipboardData.getData(contentType);
+							}
+							i++;
+						}
+					}
+					break;
+			}
 		}
 		return clipboardText;
 	},
-	/*
+
+	/**
 	 * Redirect the paste operation towards a hidden section
 	 *
 	 * @return	void
 	 */
 	redirectPaste: function () {
-			// Save the current selection
+		// Save the current selection
 		this.bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
-			// Create and append hidden section
+		// Create and append hidden section
+		var hiddenSection = this.createHiddenSection();
+		// Move the selection to the hidden section and let the browser paste into the hidden section
+		this.editor.getSelection().selectNodeContents(hiddenSection);
+	},
+
+	/**
+	 * Create an hidden section inside the RTE content
+	 *
+	 * @return object the hidden section
+	 */
+	createHiddenSection: function () {
+		// Create and append hidden section
 		var hiddenSection = this.editor.document.createElement('div');
 		HTMLArea.DOM.addClass(hiddenSection, 'htmlarea-paste-hidden-section');
 		hiddenSection.setAttribute('style', 'position: absolute; left: -10000px; top: ' + this.editor.document.body.scrollTop + 'px; overflow: hidden;');
@@ -320,9 +366,9 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		if (Ext.isWebKit) {
 			hiddenSection.innerHTML = '&nbsp;';
 		}
-			// Move the selection to the hidden section and let the browser paste into the hidden section
-		this.editor.getSelection().selectNodeContents(hiddenSection);
+		return hiddenSection;
 	},
+
 	/*
 	 * Process the pasted content that was redirected towards a hidden section
 	 * and insert it at the original selection
@@ -359,6 +405,29 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 			this.editor.getSelection().execCommand('insertHTML', false, content);
 		}
 	},
+
+	/**
+	 * Process the content that was grabbed form the clipboard
+	 * and insert it at the original selection
+	 *
+	 * @param string content: html content grabbed form the clipboard
+	 * @return void
+	 */
+	processClipboardContent: function (content) {
+		this.editor.focus();
+		// Create and append hidden section and insert content
+		var hiddenSection = this.createHiddenSection();
+		hiddenSection.innerHTML = content.replace(/(<html>)|(<body>)|(<\/html>)|(<\/body>)/gi, '');
+		// Get clean content
+		var cleanContent = this.cleaners[this.currentBehaviour].render(hiddenSection, false);
+		// Remove the hidden section from the document
+		HTMLArea.DOM.removeFromParent(hiddenSection);
+		// Insert the cleaned content
+		if (cleanContent) {
+			this.editor.getSelection().execCommand('insertHTML', false, cleanContent);
+		}
+	},
+
 	/*
 	 * Open the pasting pad window (for IE)
 	 *
