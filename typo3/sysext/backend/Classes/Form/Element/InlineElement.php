@@ -457,10 +457,8 @@ class InlineElement {
 					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="' . $rec['hidden'] . '" />';
 				}
 			}
-			// If this record should be shown collapsed
-			if (!$isExpanded) {
-				$class = 'panel-collapsed';
-			}
+			// If this record should be shown or collapsed
+			$class = $isExpanded ? 'panel-visible' : 'panel-collapsed';
 		}
 		if ($config['renderFieldsOnly']) {
 			$out = $fields . $combination;
