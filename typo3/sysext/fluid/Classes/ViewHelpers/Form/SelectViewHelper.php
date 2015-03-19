@@ -155,7 +155,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 		$options = array();
 		$optionsArgument = $this->arguments['options'];
 		foreach ($optionsArgument as $key => $value) {
-			if (is_object($value) || is_array($value)) {
+			if (is_object($value)) {
 				if ($this->hasArgument('optionValueField')) {
 					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
 					if (is_object($key)) {
