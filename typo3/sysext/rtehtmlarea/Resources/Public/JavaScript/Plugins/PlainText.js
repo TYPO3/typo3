@@ -86,11 +86,11 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		cleanerConfig: {
 			pasteStructure: {
 				keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd)$/i,
-				removeAttributes: /^(id|on*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
+				removeAttributes: /^(id|on.*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
 			},
 			pasteFormat: {
 				keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|img|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|strike|strong|sub|sup|tt|u|var)$/i,
-				removeAttributes:  /^(id|on*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
+				removeAttributes:  /^(id|on.*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
 			}
 		},
 
