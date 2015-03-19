@@ -99,20 +99,21 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function install($extensionKey) {
 		$extension = $this->enrichExtensionWithDetails($extensionKey);
-		$this->importInitialFiles($extension['siteRelPath'], $extensionKey);
-		$this->processDatabaseUpdates($extension);
 		$this->ensureConfiguredDirectoriesExist($extension);
 		if (!$this->isLoaded($extensionKey)) {
 			$this->loadExtension($extensionKey);
 		}
-		$this->reloadCaches();
-		$this->processRuntimeDatabaseUpdates($extensionKey);
-		$this->saveDefaultConfiguration($extension['key']);
 		if (!empty($extension['clearcacheonload']) || !empty($extension['clearCacheOnLoad'])) {
 			$this->cacheManager->flushCaches();
 		} else {
 			$this->cacheManager->flushCachesInGroup('system');
 		}
+		$this->reloadCaches();
+
+		$this->importInitialFiles($extension['siteRelPath'], $extensionKey);
+		$this->processDatabaseUpdates($extension);
+		$this->processRuntimeDatabaseUpdates($extensionKey);
+		$this->saveDefaultConfiguration($extension['key']);
 
 		$this->emitAfterExtensionInstallSignal($extensionKey);
 	}
