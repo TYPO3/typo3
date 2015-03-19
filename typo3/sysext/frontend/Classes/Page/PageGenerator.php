@@ -1117,7 +1117,7 @@ class PageGenerator {
 		$endingSlash = $xhtml ? ' /' : '';
 
 		$metaTags = array(
-			'<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>'
+			'<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '"' . $endingSlash . '>'
 		);
 
 		/** @var TypoScriptService $typoScriptService */
