@@ -119,6 +119,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected $enableMetaphoneSearch = FALSE;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
+	 * @inject
+	 */
+	protected $typoScriptService;
+
+	/**
 	 * sets up all necessary object for searching
 	 *
 	 * @param array $searchData The incoming search parameters
@@ -360,7 +366,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return string HTML code
 	 */
 	protected function compileSingleResultRow($row, $headerOnly = 0) {
-		$specRowConf = $this->getSpecialConfigForResultRow($row);
+		$specRowConf = $this->getSpecialConfigurationForResultRow($row);
 		$resultData = $row;
 		$resultData['headerOnly'] = $headerOnly;
 		$resultData['CSSsuffix'] = $specRowConf['CSSsuffix'] ? '-' . $specRowConf['CSSsuffix'] : '';
@@ -456,15 +462,15 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @param array $row Result row
 	 * @return array Configuration array
 	 */
-	protected function getSpecialConfigForResultRow($row) {
+	protected function getSpecialConfigurationForResultRow($row) {
 		$pathId = $row['data_page_id'] ?: $row['page_id'];
 		$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
 		$rl = $GLOBALS['TSFE']->sys_page->getRootLine($pathId, $pathMP);
-		$specConf = $this->settings['specialConfiguration.']['0.'];
+		$specConf = $this->settings['specialConfiguration']['0'];
 		if (is_array($rl)) {
 			foreach ($rl as $dat) {
-				if (is_array($this->conf['specialConfiguration.'][$dat['uid'] . '.'])) {
-					$specConf = $this->conf['specialConfiguration.'][$dat['uid'] . '.'];
+				if (is_array($this->settings['specialConfiguration'][$dat['uid']])) {
+					$specConf = $this->settings['specialConfiguration'][$dat['uid']];
 					$specConf['_pid'] = $dat['uid'];
 					break;
 				}
@@ -504,10 +510,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				return ceil(log($total) / log($max) * 100) . '%';
 				break;
 			case 'crdate':
-				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
+				return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
 				break;
 			case 'mtime':
-				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
+				return $GLOBALS['TSFE']->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'], 0);
 				break;
 			default:
 				return ' ';
@@ -525,11 +531,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		// If search result is a TYPO3 page:
 		if ((string) $row['item_type'] === '0') {
 			// If TypoScript is used to render the flag:
-			if (is_array($this->settings['flagRendering.'])) {
+			if (is_array($this->settings['flagRendering'])) {
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
 				$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 				$cObj->setCurrentVal($row['sys_language_uid']);
-				$output = $cObj->cObjGetSingle($this->settings['flagRendering'], $this->settings['flagRendering.']);
+				$typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['flagRendering']);
+				$output = $cObj->cObjGetSingle($this->settings['flagRendering']['_typoScriptNodeValue'], $typoScriptArray);
 			} else {
 				// ... otherwise, get flag from sys_language record:
 				$languageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('flag, title', 'sys_language', 'uid=' . (int)$row['sys_language_uid'] . $GLOBALS['TSFE']->cObj->enableFields('sys_language'));
@@ -560,22 +567,25 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function makeItemTypeIcon($imageType, $alt, $specRowConf) {
 		// Build compound key if item type is 0, iconRendering is not used
-		// and specConfs.[pid].pageIcon was set in TS
-		if ($imageType === '0' && $specRowConf['_pid'] && is_array($specRowConf['pageIcon.']) && !is_array($this->settings['iconRendering.'])) {
+		// and specialConfiguration.[pid].pageIcon was set in TS
+		if ($imageType === '0' && $specRowConf['_pid'] && is_array($specRowConf['pageIcon']) && !is_array($this->settings['iconRendering'])) {
 			$imageType .= ':' . $specRowConf['_pid'];
 		}
 		if (!isset($this->iconFileNameCache[$imageType])) {
 			$this->iconFileNameCache[$imageType] = '';
 			// If TypoScript is used to render the icon:
-			if (is_array($this->settings['iconRendering.'])) {
-				$this->cObj->setCurrentVal($imageType);
-				$this->iconFileNameCache[$imageType] = $this->cObj->cObjGetSingle($this->settings['iconRendering'], $this->settings['iconRendering.']);
+			if (is_array($this->settings['iconRendering'])) {
+				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
+				$cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+				$cObj->setCurrentVal($imageType);
+				$typoScriptArray = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings['iconRendering']);
+				$this->iconFileNameCache[$imageType] = $cObj->cObjGetSingle($this->settings['iconRendering']['_typoScriptNodeValue'], $typoScriptArray);
 			} else {
 				// Default creation / finding of icon:
 				$icon = '';
 				if ($imageType === '0' || substr($imageType, 0, 2) == '0:') {
-					if (is_array($specRowConf['pageIcon.'])) {
-						$this->iconFileNameCache[$imageType] = $this->cObj->IMAGE($specRowConf['pageIcon.']);
+					if (is_array($specRowConf['pageIcon'])) {
+						$this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
 					} else {
 						$icon = 'EXT:indexed_search/pi/res/pages.gif';
 					}
@@ -839,7 +849,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		// Adding search field value
 		$this->view->assign('sword', $this->sword);
 		// Additonal keyword => "Add to current search words"
-		$showAdditionalKeywordSearch = $this->settings['clearSearchBox'] && $this->settings['clearSearchBox.']['enableSubSearchCheckBox'];
+		$showAdditionalKeywordSearch = $this->settings['clearSearchBox'] && $this->settings['clearSearchBox']['enableSubSearchCheckBox'];
 		if ($showAdditionalKeywordSearch) {
 			$this->view->assign('previousSearchWord', $this->settings['clearSearchBox'] ? '' : $this->sword);
 		}
@@ -903,7 +913,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			unset($allOptions[10]);
 		}
 		// disable single entries by TypoScript
-		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['searchType.']);
+		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['searchType']);
 		return $allOptions;
 	}
 
@@ -922,7 +932,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			);
 		}
 		// disable single entries by TypoScript
-		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['defaultOperand.']);
+		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['defaultOperand']);
 		return $allOptions;
 	}
 
@@ -956,7 +966,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 		}
 		// disable single entries by TypoScript
-		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['mediaType.']);
+		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['mediaType']);
 		return $allOptions;
 	}
 
@@ -980,7 +990,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				}
 			}
 			// disable single entries by TypoScript
-			$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['languageUid.']);
+			$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['languageUid']);
 		} else {
 			$allOptions = array();
 		}
@@ -1032,7 +1042,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$allOptions['rl1_' . implode(',', array_keys($firstLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1All', 'indexed_search');
 		}
 		// disable single entries by TypoScript
-		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['sections.']);
+		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['sections']);
 		return $allOptions;
 	}
 
@@ -1060,7 +1070,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				}
 			}
 			// disable single entries by TypoScript
-			$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['indexingConfigurations.']);
+			$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['indexingConfigurations']);
 		} else {
 			$allOptions = array();
 		}

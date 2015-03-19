@@ -69,6 +69,13 @@ plugin.tx_indexedsearch {
 			default = TEXT
 			default.value = TYPO3 pages
 		}
+
+		specialConfiguration {
+			0.pageIcon = IMAGE
+			0.pageIcon.file = typo3/sysext/indexed_search/pi/res/pages.gif
+			1.pageIcon = IMAGE
+			1.pageIcon.file = typo3/sysext/indexed_search/pi/res/pdf.gif
+		}
 */
 		defaultOptions {
 			defaultOperand = 0
