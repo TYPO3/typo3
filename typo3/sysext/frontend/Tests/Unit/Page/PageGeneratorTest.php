@@ -52,7 +52,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				FALSE,
 				array(
-					'<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '">',
+					'<meta name="generator" content="TYPO3 CMS">',
 					'<meta name="author" content="Markus Klein">',
 				)
 			),
@@ -62,7 +62,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				TRUE,
 				array(
-					'<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '" />',
+					'<meta name="generator" content="TYPO3 CMS" />',
 					'<meta name="author" content="Markus Klein" />',
 				)
 			),
@@ -73,7 +73,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				FALSE,
 				array(
-					'<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '">',
+					'<meta name="generator" content="TYPO3 CMS">',
 					'<meta name="author" content="Markus Klein">',
 				)
 			),
@@ -84,7 +84,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				FALSE,
 			    array(
-				    '<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '">',
+				    '<meta name="generator" content="TYPO3 CMS">',
 					'<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'
 			    )
 			),
@@ -95,7 +95,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				TRUE,
 				array(
-					'<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '" />',
+					'<meta name="generator" content="TYPO3 CMS" />',
 					'<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
 				)
 		    ),
@@ -105,7 +105,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				FALSE,
 				array(
-					'<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '">',
+					'<meta name="generator" content="TYPO3 CMS">',
 					'<meta http-equiv="refresh" content="10">',
 				)
 			),
@@ -115,7 +115,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			    ),
 			    FALSE,
 			    array(
-				    '<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '">',
+				    '<meta name="generator" content="TYPO3 CMS">',
 				    '<meta name="DC.author" content="Markus Klein">',
 			    )
 		    ),
@@ -125,7 +125,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			    ),
 			    FALSE,
 			    array(
-				    '<meta name="generator" content="TYPO3 CMS ' . TYPO3_branch . '">',
+				    '<meta name="generator" content="TYPO3 CMS">',
 				    '<meta name="OG:title" content="Magic Tests">',
 			    )
 		    ),
