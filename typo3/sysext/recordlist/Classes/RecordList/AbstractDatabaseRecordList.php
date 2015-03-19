@@ -699,7 +699,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 					foreach ($searchableFields as $fieldName) {
 						if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
 							$fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-							$format = 'LCASE(%s) LIKE LCASE(%s)';
+							$format = 'LOWER(%s) LIKE LOWER(%s)';
 							if (is_array($fieldConfig['search'])) {
 								if (in_array('case', $fieldConfig['search'])) {
 									$format = '%s LIKE %s';

@@ -314,7 +314,7 @@ class LiveSearch {
 				if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
 					$fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 					// Check whether search should be case-sensitive or not
-					$format = 'LCASE(%s) LIKE LCASE(%s)';
+					$format = 'LOWER(%s) LIKE LOWER(%s)';
 					if (is_array($fieldConfig['search'])) {
 						if (in_array('case', $fieldConfig['search'])) {
 							$format = '%s LIKE %s';
