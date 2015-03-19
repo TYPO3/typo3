@@ -71,14 +71,16 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 			}
 			return true;
 		},
-		/*
+
+		/**
 		 * The list of buttons added by this plugin
 		 */
 		buttonList: {
 			PasteToggle: 	['pastetoggle', 'paste-toggle', false],
 			PasteBehaviour:	['pastebehaviour', 'paste-behaviour', true]
 		},
-		/*
+
+		/**
 		 * Cleaner configurations
 		 */
 		cleanerConfig: {
@@ -87,15 +89,16 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 				removeAttributes: /^(id|on*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
 			},
 			pasteFormat: {
-				keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|strike|strong|sub|sup|tt|u|var)$/i,
+				keepTags: /^(a|p|h[0-6]|pre|address|article|aside|blockquote|div|footer|header|nav|section|hr|br|img|table|thead|tbody|tfoot|caption|tr|th|td|ul|ol|dl|li|dt|dd|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|strike|strong|sub|sup|tt|u|var)$/i,
 				removeAttributes:  /^(id|on*|style|class|className|lang|align|valign|bgcolor|color|border|face|.*:.*)$/i
 			}
 		},
-		/*
+
+		/**
 		 * This function gets called when the plugin is generated
 		 */
 		onGenerate: function () {
-				// Create cleaners
+			// Create cleaners
 			if (this.buttonsConfiguration && this.buttonsConfiguration['pastebehaviour']) {
 				this.pasteBehaviourConfiguration = this.buttonsConfiguration['pastebehaviour'];
 			}
@@ -111,13 +114,13 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 				}
 				this.cleaners[behaviour] = new Walker(this.cleanerConfig[behaviour]);
 			}
-				// Initial behaviour
+			// Initial behaviour
 			this.currentBehaviour = 'plainText';
-				// May be set in TYPO3 User Settings
+			// May be set in TYPO3 User Settings
 			if (this.buttonsConfiguration && this.buttonsConfiguration['pastebehaviour'] && this.buttonsConfiguration['pastebehaviour']['current']) {
 				this.currentBehaviour = this.buttonsConfiguration['pastebehaviour']['current'];
 			}
-				// Set the toggle ON, if configured
+			// Set the toggle ON, if configured
 			if (this.buttonsConfiguration && this.buttonsConfiguration['pastetoggle'] && this.buttonsConfiguration['pastetoggle'].setActiveOnRteOpen) {
 				this.toggleButton('PasteToggle');
 			}
@@ -134,25 +137,25 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		 * @return	void
 		 */
 		toggleButton: function (buttonId) {
-				// Set new state
+			// Set new state
 			var button = this.getButton(buttonId);
 			button.setInactive(!button.inactive);
 		},
-		/*
+
+		/**
 		 * This function gets called when a button was pressed.
 		 *
 		 * @param	object		editor: the editor instance
 		 * @param	string		id: the button id or the key
-		 *
 		 * @return	boolean		false if action is completed
 		 */
 		onButtonPress: function (editor, id, target) {
-				// Could be a button or its hotkey
+			// Could be a button or its hotkey
 			var buttonId = this.translateHotKey(id);
 			buttonId = buttonId ? buttonId : id;
 			switch (buttonId) {
 				case 'PasteBehaviour':
-						// Open dialogue window
+					// Open dialogue window
 					this.openDialogue(
 						buttonId,
 						'PasteBehaviourTooltip',
@@ -172,13 +175,13 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 				}
 			return false;
 		},
-		/*
+
+		/**
 		 * Open the dialogue window
 		 *
 		 * @param	string		buttonId: the button id
 		 * @param	string		title: the window title
 		 * @param	object		dimensions: the opening dimensions of the window
-		 *
 		 * @return	void
 		 */
 		openDialogue: function (buttonId, title, dimensions) {
@@ -226,7 +229,8 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 			});
 			this.show();
 		},
-		/*
+
+		/**
 		 * Handler invoked when the OK button of the Clean Paste Behaviour window is pressed
 		 */
 		onOK: function () {
@@ -254,19 +258,30 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		 */
 		onPaste: function (event) {
 			if (!this.getButton('PasteToggle').inactive) {
+				var clipboardText = '';
 				switch (this.currentBehaviour) {
 					case 'plainText':
-						// Only Chrome will allow access to the clipboard content by default, in plain text only however
-						if (UserAgent.isChrome) {
-							var clipboardText = this.grabClipboardText(event);
-							if (clipboardText) {
-								this.editor.getSelection().insertHtml(clipboardText);
-							}
-							return !this.clipboardText;
+						// Let's see if clipboardData can be used for plain text
+						clipboardText = this.grabClipboardText(event, 'plain');
+						if (clipboardText) {
+							// Stop the event
+							Event.stopEvent(event);
+							this.editor.getSelection().insertHtml(clipboardText);
+							return false;
 						}
 					case 'pasteStructure':
 					case 'pasteFormat':
-						if (UserAgent.isIE) {
+						// Let's see if clipboardData can be used for html text
+						clipboardText = this.grabClipboardText(event, 'html');
+						if (clipboardText) {
+							// Stop the event
+							Event.stopEvent(event);
+							// Clean content
+							this.processClipboardContent(clipboardText);
+							return false;
+						}
+						// Could be IE or WebKit denying access to the clipboard
+						if (UserAgent.isIE || UserAgent.isWebKit) {
 							// Show the pasting pad
 							this.openPastingPad(
 								'PasteToggle',
@@ -282,14 +297,14 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 							Event.stopEvent(event);
 							return false;
 						} else {
+							// Falling back to old ways...
 							// Redirect the paste operation to a hidden section
 							this.redirectPaste();
 							// Process the content of the hidden section after the paste operation is completed
-							// WebKit seems to be pondering a very long time over what is happenning here...
 							var self = this;
 							window.setTimeout(function () {
 								self.processPastedContent();
-							}, UserAgent.isWebKit ? 500 : 50);
+							}, 50);
 						}
 						break;
 					default:
@@ -304,24 +319,38 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		 * If successful, stop the paste event
 		 *
 		 * @param object event: the jQuery paste event
-		 * @return string clipboard content, in plain text, if access was granted
+		 * @param string type: type of content to grab 'plain' ot 'html'
+		 * @return string clipboard content, if access was granted
 		 */
-		grabClipboardText: function (event) {
-			var clipboardText = '';
-			var browserEvent = Event.getBrowserEvent(event);
-			// Grab the text content
-			if (window.clipboardData || browserEvent.clipboardData || browserEvent.dataTransfer) {
-				clipboardText = (window.clipboardData || browserEvent.clipboardData || browserEvent.dataTransfer).getData('text');
+		grabClipboardText: function (event, type) {
+			var clipboardText = '',
+				browserEvent = Event.getBrowserEvent(event),
+				clipboardData = '',
+				contentTypes = '';
+			if (browserEvent && (browserEvent.clipboardData || window.clipboardData) && (browserEvent.clipboardData || window.clipboardData).getData) {
+				var clipboardData = (browserEvent.clipboardData || window.clipboardData);
+				var contentTypes = clipboardData.types;
 			}
-			if (clipboardText) {
-				// Stop the event
-				Event.stopEvent(event);
-			} else {
-				// If the user denied access to the clipboard, let the browser paste without intervention
-				TYPO3.Dialog.InformationDialog({
-					title: this.localize('Paste-as-Plain-Text'),
-					msg: this.localize('Access-to-clipboard-denied')
-				});
+			if (clipboardData) {
+				switch (type) {
+					case 'plain':
+						if (/text\/plain/.test(contentTypes) || UserAgent.isIE) {
+							clipboardText = clipboardData.getData(UserAgent.isIE ? 'Text' : 'text/plain');
+						}
+						break;
+					case 'html':
+						if (contentTypes && Object.prototype.toString.call(contentTypes) === '[object Array]' && contentTypes.length > 0) {
+							var i = 0, contentType;
+							while (i < contentTypes.length) {
+								contentType = contentTypes[i];
+								if (/text\/plain|text\/html/.test(contentType)) {
+									clipboardText += clipboardData.getData(contentType);
+								}
+								i++;
+							}
+						}
+						break;
+				}
 			}
 			return clipboardText;
 		},
@@ -332,9 +361,21 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		 * @return	void
 		 */
 		redirectPaste: function () {
-				// Save the current selection
+			// Save the current selection
 			this.bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
-				// Create and append hidden section
+			// Create and append hidden section
+			var hiddenSection = this.createHiddenSection();
+			// Move the selection to the hidden section and let the browser paste into the hidden section
+			this.editor.getSelection().selectNodeContents(hiddenSection);
+		},
+
+		/**
+		 * Create an hidden section inside the RTE content
+		 *
+		 * @return object the hidden section
+		 */
+		createHiddenSection: function () {
+			// Create and append hidden section
 			var hiddenSection = this.editor.document.createElement('div');
 			Dom.addClass(hiddenSection, 'htmlarea-paste-hidden-section');
 			hiddenSection.setAttribute('style', 'position: absolute; left: -10000px; top: ' + this.editor.document.body.scrollTop + 'px; overflow: hidden;');
@@ -342,10 +383,10 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 			if (UserAgent.isWebKit) {
 				hiddenSection.innerHTML = '&nbsp;';
 			}
-				// Move the selection to the hidden section and let the browser paste into the hidden section
-			this.editor.getSelection().selectNodeContents(hiddenSection);
+			return hiddenSection;
 		},
-		/*
+
+		/**
 		 * Process the pasted content that was redirected towards a hidden section
 		 * and insert it at the original selection
 		 *
@@ -353,32 +394,54 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		 */
 		processPastedContent: function () {
 			this.editor.focus();
-				// Get the hidden section
+			// Get the hidden section
 			var divs = this.editor.document.getElementsByClassName('htmlarea-paste-hidden-section');
 			var hiddenSection = divs[0];
-				// Delete any other hidden sections
+			// Delete any other hidden sections
 			for (var i = divs.length; --i >= 1;) {
 				Dom.removeFromParent(divs[i]);
 			}
 			var content = '';
 			switch (this.currentBehaviour) {
 				case 'plainText':
-						// Get plain text content
+					// Get plain text content
 					content = hiddenSection.textContent;
 					break;
 				case 'pasteStructure':
 				case 'pasteFormat':
-						// Get clean content
+					// Get clean content
 					content = this.cleaners[this.currentBehaviour].render(hiddenSection, false);
 					break;
 			}
-				// Remove the hidden section from the document
+			// Remove the hidden section from the document
 			Dom.removeFromParent(hiddenSection);
-				// Restore the selection
+			// Restore the selection
 			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(this.bookmark));
-				// Insert the cleaned content
+			// Insert the cleaned content
 			if (content) {
 				this.editor.getSelection().execCommand('insertHTML', false, content);
+			}
+		},
+
+		/**
+		 * Process the content that was grabbed form the clipboard
+		 * and insert it at the original selection
+		 *
+		 * @param string content: html content grabbed form the clipboard
+		 * @return void
+		 */
+		processClipboardContent: function (content) {
+			this.editor.focus();
+			// Create and append hidden section and insert content
+			var hiddenSection = this.createHiddenSection();
+			hiddenSection.innerHTML = content.replace(/(<html>)|(<body>)|(<\/html>)|(<\/body>)/gi, '');
+			// Get clean content
+			var cleanContent = this.cleaners[this.currentBehaviour].render(hiddenSection, false);
+			// Remove the hidden section from the document
+			Dom.removeFromParent(hiddenSection);
+			// Insert the cleaned content
+			if (cleanContent) {
+				this.editor.getSelection().execCommand('insertHTML', false, cleanContent);
 			}
 		},
 
@@ -421,7 +484,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 							marginBottom: '5px'
 						}
 					},{
-							// The iframe
+						// The iframe
 						xtype: 'box',
 						itemId: 'pasting-pad-iframe',
 						autoEl: {
@@ -434,7 +497,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 				],
 				buttons: [
 					this.buildButtonConfig('OK', this.onPastingPadOK),
-					this.buildButtonConfig('Cancel', this.onCancel)
+					this.buildButtonConfig('Cancel', function () {try { this.onCancel(); } catch (e) {}})
 				]
 			});
 			// Apparently, IE needs some time before being able to show the iframe
@@ -513,7 +576,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 			this.restoreSelection();
 			// Insert the cleaned pasting pad content
 			this.editor.getSelection().insertHtml(this.pastingPadBody.innerHTML);
-			this.close();
+			try { this.close(); } catch (e) {}
 			return false;
 		},
 
@@ -521,7 +584,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/PlainText',
 		 * Remove the listeners on the pasing pad
 		 */
 		removeListeners: function () {
-			if(this.pastingPadBody) {
+			if (this.pastingPadBody) {
 				Event.off(this.pastingPadBody);
 				Event.off(this.pastingPadDocument.documentElement);
 			}
