@@ -115,11 +115,13 @@ class DocumentationService {
 				// Fetch next language
 				continue;
 			} else {
-				foreach ($packages[$version] as $locale => $_) {
-					if (GeneralUtility::isFirstPartOfStr($locale, $language)) {
-						$success |= $this->fetchDocument($url, $key, $version, $locale);
-						// Fetch next language (jump current foreach up to the loop of $languages)
-						continue 2;
+				if (isset($packages[$version])) {
+					foreach ($packages[$version] as $locale => $_) {
+						if (GeneralUtility::isFirstPartOfStr($locale, $language)) {
+							$success |= $this->fetchDocument($url, $key, $version, $locale);
+							// Fetch next language (jump current foreach up to the loop of $languages)
+							continue 2;
+						}
 					}
 				}
 			}
