@@ -327,8 +327,9 @@ class Package implements PackageInterface {
 		// According to http://getcomposer.org/doc/02-libraries.md#platform-packages
 		// the following regex should capture all non composer requirements.
 		// typo3 is included in the list because it's a meta package and not supported for now.
+		// typo3/cms is included since it's basically a container and cannot be detected at runtime.
 		// composer/installers is included until extensionmanager can handle composer packages natively
-		return preg_match('/^(php(-64bit)?|ext-[^\/]+|lib-(curl|iconv|libxml|openssl|pcre|uuid|xsl)|typo3|composer\/installers)$/', $requirement) !== 1;
+		return preg_match('/^(php(-64bit)?|ext-[^\/]+|lib-(curl|iconv|libxml|openssl|pcre|uuid|xsl)|typo3|typo3\/cms|composer\/installers)$/', $requirement) !== 1;
 	}
 
 	/**
