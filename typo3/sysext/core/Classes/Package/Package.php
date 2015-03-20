@@ -201,6 +201,22 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 	public function getPackageMetaData() {
 		if ($this->packageMetaData === NULL) {
 			parent::getPackageMetaData();
+
+			// Fallback to retrieve the version number from ext_emconf.php
+			// in case no version is found in the composer.json manifest.
+			$version = $this->packageMetaData->getVersion();
+			if (!$this->isVersionValid($version)) {
+				$_EXTKEY = $this->packageKey; // required so to resolve $EM_CONF[$_EXTKEY] in ext_emconf.php
+				$path = $this->packagePath . '/ext_emconf.php';
+				if (@file_exists($path)) {
+					include $path;
+					if (is_array($EM_CONF[$_EXTKEY])) {
+						$extensionManagerConfiguration = $EM_CONF[$_EXTKEY];
+						$this->packageMetaData->setVersion($extensionManagerConfiguration['version']);
+					}
+				}
+			}
+
 			$suggestions = $this->getComposerManifest('suggest');
 			if ($suggestions !== NULL) {
 				foreach ($suggestions as $suggestion => $version) {
@@ -314,6 +330,14 @@ class Package extends \TYPO3\Flow\Package\Package implements PackageInterface {
 			}
 		}
 		return $this->classAliases;
+	}
+
+	/**
+	 * @param $version
+	 * @return bool
+	 */
+	protected function isVersionValid($version) {
+		return !is_null($version) && $version !== '';
 	}
 
 	/**
