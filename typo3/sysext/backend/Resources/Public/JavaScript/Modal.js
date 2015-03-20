@@ -131,14 +131,15 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'],
 			$(this).remove();
 			// Keep class modal-open on body tag as long as open modals exist
 			if (Modal.instances.length > 0) {
-				$('body').addClass('modal-open');
+				top.TYPO3.jQuery('body').addClass('modal-open');
 			}
 		});
 		Modal.currentModal.on('show.bs.modal', function(e) {
 			Modal.instances.push(Modal.currentModal);
 			Modal.center();
 		});
-		$('body').append(Modal.currentModal);
+		Modal.currentModal.on('modal-dismiss', Modal.dismiss);
+		top.TYPO3.jQuery('body').append(Modal.currentModal);
 		Modal.currentModal.modal();
 
 		return Modal.currentModal;
