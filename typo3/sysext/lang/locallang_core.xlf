@@ -76,6 +76,9 @@
 				<source>There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
+			<trans-unit id="labels.remainingCharacters" xml:space="preserve">
+				<source>Remaining characters: {0}</source>
+			</trans-unit>
 			<trans-unit id="labels.maxItemsAllowed" xml:space="preserve">
 				<source>A maximum of {0} child records are allowed.</source>
 			</trans-unit>

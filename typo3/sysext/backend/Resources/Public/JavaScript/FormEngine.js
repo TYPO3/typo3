@@ -553,11 +553,13 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			}
 		});
 
+		FormEngine.initializeRemainingCharacterViews();
+
 		// in multi-select environments with two (e.g. "Access"), on click the item from the right should go to the left
 		$(document).on('click', '.t3js-formengine-select-itemstoselect', function(evt) {
 			var $el = $(this)
-					,fieldName = $el.data('relatedfieldname')
-					,exclusiveValues = $el.data('exclusivevalues');
+				,fieldName = $el.data('relatedfieldname')
+				,exclusiveValues = $el.data('exclusivevalues');
 
 			if (fieldName) {
 				// try to add each selected field to the "left" select field
@@ -567,6 +569,61 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 				});
 			}
 		});
+	};
+
+	/**
+	 * Initializes the remaining character views based on the fields' maxlength attribute
+	 */
+	FormEngine.initializeRemainingCharacterViews = function() {
+		// all fields with a "maxlength" attribute
+		var $maxlengthElements = $('[maxlength]');
+		$maxlengthElements.on('focus', function(e) {
+			var $field = $(this),
+				$parent = $field.parents('.t3js-formengine-field-item'),
+				maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
+
+			// append the counter only at focus to avoid cluttering the DOM
+			$parent.append($('<div />', {'class': 't3js-charcounter'}).append(
+				$('<span />', {'class': maxlengthProperties.labelClass}).text(TBE_EDITOR.labels.remainingCharacters.replace('{0}', maxlengthProperties.remainingCharacters))
+			));
+		}).on('blur', function() {
+			var $field = $(this),
+				$parent = $field.parents('.t3js-formengine-field-item');
+			$parent.find('.t3js-charcounter').remove();
+		}).on('keyup', function() {
+			var $field = $(this),
+				$parent = $field.parents('.t3js-formengine-field-item'),
+				maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
+
+			// change class and value
+			$parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TBE_EDITOR.labels.remainingCharacters.replace('{0}', maxlengthProperties.remainingCharacters))
+		});
+	};
+
+	/**
+	 * Get the properties required for proper rendering of the character counter
+	 */
+	FormEngine.getCharacterCounterProperties = function($field) {
+		var fieldText = $field.val(),
+			maxlength = $field.attr('maxlength'),
+			currentFieldLength = fieldText.length,
+			numberOfLineBreaks = (fieldText.match(/\n/g)||[]).length, // count line breaks
+			remainingCharacters = maxlength - currentFieldLength - numberOfLineBreaks,
+			threshold = 15, // hard limit of remaining characters when the label class changes
+			labelClass = '';
+
+		if (remainingCharacters < threshold) {
+			labelClass = 'label-danger';
+		} else if(remainingCharacters < threshold * 2) {
+			labelClass = 'label-warning';
+		} else {
+			labelClass = 'label-info';
+		}
+
+		return {
+			remainingCharacters: remainingCharacters,
+			labelClass: 'label ' + labelClass
+		};
 	};
 
 	/**
