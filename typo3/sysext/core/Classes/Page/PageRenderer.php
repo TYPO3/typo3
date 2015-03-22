@@ -2247,21 +2247,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			// Remove extjs from JScodeLibArray
 			unset($this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all.js'], $this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all-debug.js']);
 		}
-		if (count($this->inlineLanguageLabelFiles)) {
-			foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
-				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['errorMode']);
-			}
-		}
-		$this->inlineLanguageLabelFiles = array();
-		// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
-		if ($this->getCharSet() !== 'utf-8') {
-			if ($this->inlineLanguageLabels) {
-				$this->csConvObj->convArray($this->inlineLanguageLabels, $this->getCharSet(), 'utf-8');
-			}
-			if ($this->inlineSettings) {
-				$this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
-			}
-		}
+		$this->loadBackendJavaScriptLanguageStrings();
 		if (TYPO3_MODE === 'BE') {
 			$this->addAjaxUrlsToInlineSettings();
 		}
@@ -2310,9 +2296,33 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				// make sure the global TYPO3 is available
 				$inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
 				$out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
+				if (TYPO3_MODE === 'BE') {
+					$this->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
+				}
 			}
 		}
 		return $out;
+	}
+
+	/**
+	 * Load the language strings of the backend module into JavaScript
+	 */
+	protected function loadBackendJavaScriptLanguageStrings() {
+		if (count($this->inlineLanguageLabelFiles)) {
+			foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
+				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['errorMode']);
+			}
+		}
+		$this->inlineLanguageLabelFiles = array();
+		// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
+		if ($this->getCharSet() !== 'utf-8') {
+			if ($this->inlineLanguageLabels) {
+				$this->csConvObj->convArray($this->inlineLanguageLabels, $this->getCharSet(), 'utf-8');
+			}
+			if ($this->inlineSettings) {
+				$this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
+			}
+		}
 	}
 
 	/**
