@@ -168,17 +168,22 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @param string $extensionKey
 	 * @param int $lowestVersion
 	 * @param int $highestVersion
+	 * @param bool $includeCurrentVersion
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
-	public function findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $lowestVersion = 0, $highestVersion = 0) {
+	public function findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $lowestVersion = 0, $highestVersion = 0, $includeCurrentVersion = TRUE) {
 		$query = $this->createQuery();
 		$constraint = NULL;
 		if ($lowestVersion !== 0 && $highestVersion !== 0) {
 			$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
-		} elseif ($lowestVersion === 0 && $highestVersion !== 0) {
+		} elseif ($lowestVersion === 0 && $highestVersion !== 0 && $includeCurrentVersion) {
 			$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
-		} elseif ($lowestVersion !== 0 && $highestVersion === 0) {
+		} elseif ($lowestVersion === 0 && $highestVersion !== 0) {
+			$constraint = $query->logicalAnd($query->lessThan('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
+		} elseif ($lowestVersion !== 0 && $highestVersion === 0 && $includeCurrentVersion) {
 			$constraint = $query->logicalAnd($query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+		} elseif ($lowestVersion !== 0 && $highestVersion === 0) {
+			$constraint = $query->logicalAnd($query->greaterThan('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
 		} elseif ($lowestVersion === 0 && $highestVersion === 0) {
 			$constraint = $query->equals('extensionKey', $extensionKey);
 		}

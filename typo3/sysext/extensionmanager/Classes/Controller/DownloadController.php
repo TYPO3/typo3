@@ -207,7 +207,7 @@ class DownloadController extends AbstractController {
 		$version = $this->request->getArgument('integerVersion');
 		$updateComments = array();
 		/** @var Extension[] $updatableVersions */
-		$updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $version);
+		$updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $version, 0, FALSE);
 		foreach ($updatableVersions as $updatableVersion) {
 			$updateComments[$updatableVersion->getVersion()] = $updatableVersion->getUpdateComment();
 		}
