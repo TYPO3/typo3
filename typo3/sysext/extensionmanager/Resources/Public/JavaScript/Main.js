@@ -604,15 +604,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 
 			$(document).on('click', '.onClickMaskExtensionManager', function() {
 				$(ExtensionManager.identifier.extensionManager).mask();
-			});
-
-			$(ExtensionManager.identifier.searchField).clearable({
-				onClear: function() {
-					dataTable.search('').draw();
-				}
-			});
-
-			$('a[data-action=update-extension]').click(function(e) {
+			}).on('click', 'a[data-action=update-extension]', function(e) {
 				e.preventDefault();
 				$.ajax({
 					url: $(this).attr('href'),
@@ -622,6 +614,12 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 					},
 					success: ExtensionManager.updateExtension
 				});
+			});
+
+			$(ExtensionManager.identifier.searchField).clearable({
+				onClear: function() {
+					dataTable.search('').draw();
+				}
 			});
 
 			$('.expandable').expander({
