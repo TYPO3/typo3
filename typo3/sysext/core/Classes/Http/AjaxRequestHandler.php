@@ -239,7 +239,7 @@ class AjaxRequestHandler {
 	 * in your AJAX options of your AJAX request object in JS
 	 *
 	 * the content will be available
-	 * - in the second parameter of the onSuccess / onComplete callback (except when contentFormat = 'jsonbody')
+	 * - in the second parameter of the onSuccess / onComplete callback
 	 * - and in the xhr.responseText as a string (except when contentFormat = 'jsonhead')
 	 * you can evaluate this in JS with xhr.responseText.evalJSON();
 	 *
@@ -248,9 +248,11 @@ class AjaxRequestHandler {
 	protected function renderAsJSON() {
 		$content = json_encode($this->content);
 		header('Content-type: application/json; charset=utf-8');
-		header('X-JSON: ' . ($this->contentFormat != 'jsonbody' ? $content : TRUE));
 		// Bring content in xhr.responseText except when in "json head only" mode
-		if ($this->contentFormat != 'jsonhead') {
+		if ($this->contentFormat === 'jsonhead') {
+			header('X-JSON: ' . $content);
+		} else {
+			header('X-JSON: true');
 			echo $content;
 		}
 	}
