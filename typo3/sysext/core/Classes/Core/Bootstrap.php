@@ -496,7 +496,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadTypo3LoadedExtAndExtLocalconf($allowCaching = TRUE) {
-		$this->loadAdditionalConfigurationFromExtensions($allowCaching);
+		Utility\ExtensionManagementUtility::loadExtLocalconf($allowCaching);
 		return $this;
 	}
 
@@ -782,20 +782,6 @@ class Bootstrap {
 		define('TYPO3_REQUESTTYPE_AJAX', 8);
 		define('TYPO3_REQUESTTYPE_INSTALL', 16);
 		define('TYPO3_REQUESTTYPE', (TYPO3_MODE == 'FE' ? TYPO3_REQUESTTYPE_FE : 0) | (TYPO3_MODE == 'BE' ? TYPO3_REQUESTTYPE_BE : 0) | (defined('TYPO3_cliMode') && TYPO3_cliMode ? TYPO3_REQUESTTYPE_CLI : 0) | (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript ? TYPO3_REQUESTTYPE_INSTALL : 0) | ($GLOBALS['TYPO3_AJAX'] ? TYPO3_REQUESTTYPE_AJAX : 0));
-		return $this;
-	}
-
-	/**
-	 * Load extension configuration files (ext_localconf.php)
-	 *
-	 * The ext_localconf.php files in extensions are meant to make changes
-	 * to the global $TYPO3_CONF_VARS configuration array.
-	 *
-	 * @param bool $allowCaching
-	 * @return Bootstrap
-	 */
-	protected function loadAdditionalConfigurationFromExtensions($allowCaching = TRUE) {
-		Utility\ExtensionManagementUtility::loadExtLocalconf($allowCaching);
 		return $this;
 	}
 
