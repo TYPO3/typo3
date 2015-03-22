@@ -49,7 +49,6 @@ class ListController extends AbstractController {
 	 * Add the needed JavaScript files for all actions
 	 */
 	public function initializeAction() {
-		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 		$this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
 	}
 
