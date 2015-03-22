@@ -288,7 +288,7 @@
 			<trans-unit id="records_description" xml:space="preserve">
 				<source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
 			</trans-unit>
-			<trans-unit id="search" xml:space="preserve">
+			<trans-unit id="search_whole_database" xml:space="preserve">
 				<source>Search whole Database</source>
 			</trans-unit>
 			<trans-unit id="search_description" xml:space="preserve">
