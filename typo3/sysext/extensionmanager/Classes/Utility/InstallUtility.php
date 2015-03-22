@@ -113,6 +113,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$this->cacheManager->flushCachesInGroup('system');
 		}
+
+		$this->emitAfterExtensionInstallSignal($extensionKey);
 	}
 
 	/**
@@ -168,6 +170,15 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->packageManager->deactivatePackage($extensionKey);
 		$this->emitAfterExtensionUninstallSignal($extensionKey);
 		$this->cacheManager->flushCachesInGroup('system');
+	}
+
+	/**
+	 * Emits a signal after an extension has been installed
+	 *
+	 * @param string $extensionKey
+	 */
+	protected function emitAfterExtensionInstallSignal($extensionKey) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionInstall', array($extensionKey, $this));
 	}
 
 	/**

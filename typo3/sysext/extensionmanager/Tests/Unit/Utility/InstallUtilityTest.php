@@ -60,7 +60,8 @@ class InstallUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'saveDefaultConfiguration',
 				'enrichExtensionWithDetails',
 				'ensureConfiguredDirectoriesExist',
-				'importInitialFiles'
+				'importInitialFiles',
+				'emitAfterExtensionInstallSignal'
 			),
 			array(),
 			'',
