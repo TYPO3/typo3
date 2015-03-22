@@ -9431,7 +9431,7 @@ p.c-refresh img {
   vertical-align: middle;
 }
 #typo3-pagetree #typo3-docheader div.buttonsright,
-#typo3-alt-file-navframe-php #typo3-docheader div.buttonsright {
+#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader div.buttonsright {
   margin-right: 3px;
 }
 body#typo3-alt-db-navframe-php div.c-notice {
@@ -9451,12 +9451,12 @@ table.t3-tree-config .t3-tree-config-header {
   text-align: left;
 }
 body#typo3-pagetree,
-body#typo3-alt-file-navframe-php {
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
   margin: 0;
   padding: 0;
 }
 body#typo3-pagetree #typo3-inner-docbody,
-body#typo3-alt-file-navframe-php #typo3-inner-docbody {
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
   padding: 0 0 10px 0;
 }
 ul.tree {
@@ -9569,7 +9569,7 @@ ul.tree div.treeLinkItem span.dragIcon {
   visibility: hidden;
 }
 #typo3-pagetree #typo3-docheader img,
-#typo3-alt-file-navframe-php #typo3-docheader img {
+#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader img {
   margin: 2px;
 }
 .t3-icon-treeline {
@@ -9583,12 +9583,12 @@ ul.tree div.treeLinkItem span.dragIcon {
   overflow: hidden;
 }
 body#typo3-pagetree,
-body#typo3-alt-file-navframe-php {
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
   background: #ebebeb;
 }
-#typo3-alt-file-navframe-php #typo3-docbody,
-#typo3-alt-file-navframe-php #typo3-docheader-row1,
-#typo3-alt-file-navframe-php #typo3-docheader-row2,
+#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docbody,
+#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader-row1,
+#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader-row2,
 .typo3-pagetree-indicatorBar-item,
 #typo3-pagetree-topPanelItems,
 #typo3-pagetree-topPanel .typo3-pagetree-topPanel-item,
@@ -9598,7 +9598,7 @@ body#typo3-alt-file-navframe-php {
   background-position: right;
   background-repeat: repeat-y;
 }
-#typo3-alt-file-navframe-php #typo3-docbody,
+#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docbody,
 #typo3-pagetree-treeContainer {
   border-right: 1px solid #c3c3c3;
   background-color: #f5f5f5;
