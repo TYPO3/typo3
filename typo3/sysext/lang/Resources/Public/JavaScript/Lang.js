@@ -20,7 +20,6 @@ define('TYPO3/CMS/Lang/Lang', ['jquery'], function($) {
 	var Lang = {};
 
 	Lang.convertToOneDimension = function() {
-		console.log(TYPO3.lang);
 		var originalLangObject = $.extend(true, {}, TYPO3.lang);
 		TYPO3.lang = [];
 		$.each(originalLangObject, function(index, value) {
