@@ -10375,7 +10375,7 @@ iframe {
 }
 [id="typo3-module-menu"] {
   background: #222222;
-  color: #dddddd;
+  color: #ffffff;
 }
 [id="typo3-module-menu-xsplit"] {
   z-index: 10;
@@ -10407,7 +10407,7 @@ iframe {
   -o-transition: background-color 0.4s ease-in-out;
   transition: background-color 0.4s ease-in-out;
   position: relative;
-  color: #dddddd;
+  color: #ffffff;
   background-color: #222222;
   border-top: 1px solid #2b2b2b;
   border-bottom: 1px solid #111111;
@@ -10447,7 +10447,7 @@ iframe {
   cursor: pointer;
   display: block;
   padding: 4px 9px;
-  color: #666666;
+  color: #aaaaaa;
   border-radius: 0 2px 2px 0;
   text-decoration: none;
 }
@@ -10470,7 +10470,7 @@ iframe {
 [id="typo3-menu"] .typo3-module-menu-item-link:focus,
 [id="typo3-menu"] .typo3-module-menu-item-link:hover {
   outline: none;
-  color: #dddddd;
+  color: #ffffff;
   background-color: #2a2a2a;
 }
 [id="typo3-menu"] .typo3-module-menu-item.active .typo3-module-menu-item-link {
