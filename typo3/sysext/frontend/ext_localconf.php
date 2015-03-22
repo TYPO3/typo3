@@ -51,7 +51,6 @@ if (TYPO3_MODE === 'FE') {
 	options.saveDocNew.pages = 0
 	options.saveDocNew.sys_file = 0
 	options.disableDelete.sys_file = 1
-	TCAdefaults.tt_content.imagecols = 2
 ');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement {

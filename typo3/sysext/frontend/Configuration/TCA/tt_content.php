@@ -888,7 +888,7 @@ return array(
 						8
 					)
 				),
-				'default' => 1
+				'default' => 2
 			)
 		),
 		'imagecaption' => array(
