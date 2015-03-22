@@ -305,9 +305,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @var array
 	 */
-	protected $jsFilesNoConcatenation = array(
-		'modernizr' => 'contrib/modernizr/modernizr.min.js'
-	);
+	protected $jsFilesNoConcatenation = array();
 
 	/**
 	 * Will output the parsetime of the scripts in milliseconds (for admin-users).
