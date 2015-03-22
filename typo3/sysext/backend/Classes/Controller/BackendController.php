@@ -117,14 +117,14 @@ class BackendController {
 			'md5' => 'sysext/backend/Resources/Public/JavaScript/md5.js',
 			'modulemenu' => 'sysext/backend/Resources/Public/JavaScript/modulemenu.js',
 			'evalfield' => 'sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js',
-			'tabclosemenu' => 'js/extjs/ux/ext.ux.tabclosemenu.js',
+			'tabclosemenu' => 'sysext/backend/Resources/Public/JavaScript/extjs/ux/ext.ux.tabclosemenu.js',
 			'notifications' => 'sysext/backend/Resources/Public/JavaScript/notifications.js',
 			'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
-			'debugPanel' => 'js/extjs/debugPanel.js',
-			'viewport' => 'js/extjs/viewport.js',
+			'debugPanel' => 'sysext/backend/Resources/Public/JavaScript/extjs/debugPanel.js',
+			'viewport' => 'sysext/backend/Resources/Public/JavaScript/extjs/viewport.js',
 			'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
-			'backendcontentiframe' => 'js/extjs/backendcontentiframe.js',
-			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
+			'backendcontentiframe' => 'sysext/backend/Resources/Public/JavaScript/extjs/backendcontentiframe.js',
+			'viewportConfiguration' => 'sysext/backend/Resources/Public/JavaScript/extjs/viewportConfiguration.js',
 			'util' => 'sysext/backend/Resources/Public/JavaScript/util.js'
 		);
 		if (!$this->debug) {
@@ -278,7 +278,7 @@ class BackendController {
 			$component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
 			$componentDirectory = 'components/' . $component . '/';
 			if ($info['isCoreComponent']) {
-				$absoluteComponentPath = PATH_site . 'typo3/js/extjs/' . $componentDirectory;
+				$absoluteComponentPath = PATH_site . 'typo3/sysext/backend/Resources/Public/JavaScript/extjs/' . $componentDirectory;
 				$relativeComponentPath = '../' . str_replace(PATH_site, '', $absoluteComponentPath);
 			} else {
 				$absoluteComponentPath = ExtensionManagementUtility::extPath($info['extKey']) . $componentDirectory;

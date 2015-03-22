@@ -150,9 +150,9 @@ class ReviewController extends AbstractController {
 		$this->pageRenderer->addExtDirectCode(array(
 			'TYPO3.Workspaces'
 		));
-		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.grid.RowExpander.js');
-		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.app.SearchField.js');
-		$this->pageRenderer->addJsFile($this->backPath . 'js/extjs/ux/Ext.ux.FitToParent.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/extjs/ux/Ext.grid.RowExpander.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/extjs/ux/Ext.app.SearchField.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/extjs/ux/Ext.ux.FitToParent.js');
 		$resourcePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 
 		// @todo Integrate additional stylesheet resources
