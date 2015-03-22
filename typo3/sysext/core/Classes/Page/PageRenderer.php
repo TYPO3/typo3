@@ -2247,7 +2247,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			// Remove extjs from JScodeLibArray
 			unset($this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all.js'], $this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all-debug.js']);
 		}
-		$this->loadBackendJavaScriptLanguageStrings();
+		$this->loadJavaScriptLanguageStrings();
 		if (TYPO3_MODE === 'BE') {
 			$this->addAjaxUrlsToInlineSettings();
 		}
@@ -2305,9 +2305,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Load the language strings of the backend module into JavaScript
+	 * Load the language strings into JavaScript
 	 */
-	protected function loadBackendJavaScriptLanguageStrings() {
+	protected function loadJavaScriptLanguageStrings() {
 		if (count($this->inlineLanguageLabelFiles)) {
 			foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
 				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['errorMode']);
@@ -2315,7 +2315,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$this->inlineLanguageLabelFiles = array();
 		// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
-		if ($this->getCharSet() !== 'utf-8') {
+		if (TYPO3_MODE === 'FE' && $this->getCharSet() !== 'utf-8') {
 			if ($this->inlineLanguageLabels) {
 				$this->csConvObj->convArray($this->inlineLanguageLabels, $this->getCharSet(), 'utf-8');
 			}
