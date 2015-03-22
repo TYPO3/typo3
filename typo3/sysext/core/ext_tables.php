@@ -61,7 +61,67 @@ $GLOBALS['TBE_MODULES'] = array(
 	'user' => '',
 	'tools' => '',
 	'system' => '',
-	'help' => ''
+	'help' => '',
+	'_configuration' => array(
+		'web' => array(
+			'labels' => array(
+				'tabs_images' => array('tab' => 'website.gif'),
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_web.xlf'
+			),
+			'configuration' => array(
+				'name' => 'web',
+				'access' => 'user,group'
+			)
+		),
+		'file' => array(
+			'labels' => array(
+				'tabs_images' => array('tab' => 'file.gif'),
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_file.xlf'
+			),
+			'configuration' => array(
+				'name' => 'file',
+				'access' => 'user,group',
+				'workspaces' => 'online,custom'
+			)
+		),
+		'user' => array(
+			'labels' => array(
+				'tabs_images' => array('tab' => 'user.gif'),
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_usertools.xlf'
+			),
+			'configuration' => array(
+				'name' => 'user',
+				'access' => 'user,group'
+			)
+		),
+		'tools' => array(
+			'labels' => array(
+				'tabs_images' => array('tab' => 'tool.gif'),
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_admintools.xlf'
+			),
+			'configuration' => array(
+				'name' => 'tools',
+				'access' => 'admin'
+			)
+		),
+		'system' => array(
+			'labels' => array(
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_system.xlf'
+			),
+			'configuration' => array(
+				'name' => 'system',
+				'access' => 'admin'
+			)
+		),
+		'help' => array(
+			'labels' => array(
+				'll_ref' => 'LLL:EXT:lang/locallang_mod_help.xlf'
+			),
+			'configuration' => array(
+				'name' => 'help'
+			)
+		)
+	)
 );
 
 
