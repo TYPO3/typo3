@@ -19,5 +19,6 @@ namespace TYPO3\CMS\Core\Resource;
  */
 interface ResourceFactoryInterface
 {
+    const SIGNAL_PreProcessStorage = 'preProcessStorage';
     const SIGNAL_PostProcessStorage = 'postProcessStorage';
 }

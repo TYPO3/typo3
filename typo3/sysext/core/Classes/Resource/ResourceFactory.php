@@ -144,6 +144,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
         if (!$this->storageInstances[$uid]) {
             $storageConfiguration = null;
             $storageObject = null;
+            list($_, $uid, $recordData, $fileIdentifier) = $this->emitPreProcessStorageSignal($uid, $recordData, $fileIdentifier);
             // If the built-in storage with UID=0 is requested:
             if ($uid === 0) {
                 $recordData = array(
@@ -178,6 +179,19 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             $this->storageInstances[$uid] = $storageObject;
         }
         return $this->storageInstances[$uid];
+    }
+
+    /**
+     * Emits a signal before a resource storage was initialized
+     *
+     * @param int $uid
+     * @param array $recordData
+     * @param string $fileIdentifier
+     * @return mixed
+     */
+    protected function emitPreProcessStorageSignal($uid, $recordData, $fileIdentifier)
+    {
+        return $this->signalSlotDispatcher->dispatch(\TYPO3\CMS\Core\Resource\ResourceFactory::class, self::SIGNAL_PreProcessStorage, array($this, $uid, $recordData, $fileIdentifier));
     }
 
     /**
