@@ -52,16 +52,6 @@ class AjaxRequestHandler {
 	/**
 	 * @var string
 	 */
-	protected $charset = 'utf-8';
-
-	/**
-	 * @var string
-	 */
-	protected $requestCharset = 'utf-8';
-
-	/**
-	 * @var string
-	 */
 	protected $javascriptCallbackWrap = '
 		<script type="text/javascript">
 			/*<![CDATA[*/
@@ -71,27 +61,11 @@ class AjaxRequestHandler {
 	';
 
 	/**
-	 * Sets the charset and the ID for the AJAX call
-	 * due to some charset limitations in Javascript (prototype uses encodeURIcomponent, which converts
-	 * all data to utf-8), we need to detect if the encoding of the request differs from the
-	 * backend encoding, and then convert all incoming data (_GET and _POST)
-	 * in the expected backend encoding.
+	 * Sets the ID for the AJAX call
 	 *
 	 * @param string $ajaxId The AJAX id
 	 */
 	public function __construct($ajaxId) {
-		// Get charset from current AJAX request (which is expected to be utf-8)
-		preg_match('/;\\s*charset\\s*=\\s*([a-zA-Z0-9_-]*)/i', $_SERVER['CONTENT_TYPE'], $contenttype);
-		$charset = $GLOBALS['LANG']->csConvObj->parse_charset($contenttype[1]);
-		if ($charset && $charset != $this->requestCharset) {
-			$this->requestCharset = $charset;
-		}
-		// If the AJAX request does not have the same encoding like the backend
-		// we need to convert the POST and GET parameters in the right charset
-		if ($this->charset != $this->requestCharset) {
-			$GLOBALS['LANG']->csConvObj->convArray($_POST, $this->requestCharset, $this->charset);
-			$GLOBALS['LANG']->csConvObj->convArray($_GET, $this->requestCharset, $this->charset);
-		}
 		$this->ajaxId = $ajaxId;
 	}
 
@@ -105,7 +79,7 @@ class AjaxRequestHandler {
 	}
 
 	/**
-	 * Overwrites the existing content with the first parameter
+	 * Overwrites the existing content with the data supplied
 	 *
 	 * @param array $content The new content
 	 * @return mixed The old content as array; if the new content was not an array, FALSE is returned
@@ -230,7 +204,7 @@ class AjaxRequestHandler {
 	 */
 	protected function renderAsError() {
 		header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500 . ' (AJAX)');
-		header('Content-type: text/xml; charset=' . $this->charset);
+		header('Content-type: text/xml; charset=utf-8');
 		header('X-JSON: false');
 		die('<t3err>' . htmlspecialchars($this->errorMessage) . '</t3err>');
 	}
@@ -242,7 +216,7 @@ class AjaxRequestHandler {
 	 * @return void
 	 */
 	protected function renderAsPlain() {
-		header('Content-type: text/html; charset=' . $this->charset);
+		header('Content-type: text/html; charset=utf-8');
 		header('X-JSON: true');
 		echo implode('', $this->content);
 	}
@@ -254,7 +228,7 @@ class AjaxRequestHandler {
 	 * @return void
 	 */
 	protected function renderAsXML() {
-		header('Content-type: text/xml; charset=' . $this->charset);
+		header('Content-type: text/xml; charset=utf-8');
 		header('X-JSON: true');
 		echo implode('', $this->content);
 	}
@@ -272,13 +246,8 @@ class AjaxRequestHandler {
 	 * @return void
 	 */
 	protected function renderAsJSON() {
-		// If the backend does not run in UTF-8 then we need to convert it to unicode as
-		// the json_encode method will return empty otherwise
-		if ($this->charset != $this->requestCharset) {
-			$GLOBALS['LANG']->csConvObj->convArray($this->content, $this->charset, $this->requestCharset);
-		}
 		$content = json_encode($this->content);
-		header('Content-type: application/json; charset=' . $this->requestCharset);
+		header('Content-type: application/json; charset=utf-8');
 		header('X-JSON: ' . ($this->contentFormat != 'jsonbody' ? $content : TRUE));
 		// Bring content in xhr.responseText except when in "json head only" mode
 		if ($this->contentFormat != 'jsonhead') {
@@ -293,13 +262,8 @@ class AjaxRequestHandler {
 	 * @return void
 	 */
 	protected function renderAsJavascript() {
-		// If the backend does not run in UTF-8 then we need to convert it to unicode as
-		// the json_encode method will return empty otherwise
-		if ($this->charset != $this->requestCharset) {
-			$GLOBALS['LANG']->csConvObj->convArray($this->content, $this->charset, $this->requestCharset);
-		}
 		$content = str_replace('|', json_encode($this->content), $this->javascriptCallbackWrap);
-		header('Content-type: text/html; charset=' . $this->requestCharset);
+		header('Content-type: text/html; charset=utf-8');
 		echo $content;
 	}
 
