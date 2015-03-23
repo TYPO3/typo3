@@ -36,6 +36,7 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
+		"swiftmailer/swiftmailer": "5.2.1",
 		"helhum/class-alias-loader": "1.1.*@dev",
 		"typo3/cms-composer-installers": "1.1.*@dev"
 	},

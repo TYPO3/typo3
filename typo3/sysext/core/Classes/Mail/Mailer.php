@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
-// Make sure Swift's auto-loader is registered
-require_once PATH_typo3 . 'contrib/swiftmailer/lib/swift_required.php';
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
