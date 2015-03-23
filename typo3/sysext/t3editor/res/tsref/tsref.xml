@@ -6419,7 +6419,7 @@ instead.]]></description>
 ]]></default>
 		</property>
 		<property name="alternativeTempPath" type="string">
-			<description><![CDATA[Enter an alternative path to use for temp images. Must be found in the list in TYPO3_CONF_VARS[FE][allowedTempPaths]]]></description>
+			<description><![CDATA[Enter an alternative path to use for temp images.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6503,7 +6503,7 @@ If you add "m" to either the width or height, the image will be held in proporti
 	</type>
 	<type id="imgResource">
 		<property name="alternativeTempPath" type="string">
-			<description><![CDATA[Enter an alternative path to use for temp images. Must be found in the list in TYPO3_CONF_VARS[FE][allowedTempPaths]]]></description>
+			<description><![CDATA[Enter an alternative path to use for temp images.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
