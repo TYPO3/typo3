@@ -16,10 +16,14 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Script Class for rendering the login form
@@ -27,9 +31,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class LoginController {
-
-	const SIGNAL_RenderLoginForm = 'renderLoginForm';
-
 	/**
 	 * The URL to redirect to after login.
 	 *
@@ -140,11 +141,6 @@ class LoginController {
 	public $loginSecurityLevel = 'superchallenged';
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
-
-	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -178,18 +174,17 @@ class LoginController {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
 		}
 		// Try to get the preferred browser language
-		$preferredBrowserLanguage = $GLOBALS['LANG']->csConvObj->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+		$preferredBrowserLanguage = $this->getLanguageService()->csConvObj->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 		// If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
-		// initialize $GLOBALS['LANG'] again with $preferredBrowserLanguage
-		if ($preferredBrowserLanguage !== 'default' && empty($GLOBALS['BE_USER']->user['uid'])) {
-			$GLOBALS['LANG']->init($preferredBrowserLanguage);
+		// initialize $this->getLanguageService() again with $preferredBrowserLanguage
+		if ($preferredBrowserLanguage !== 'default' && empty($this->getBackendUserAuthentication()->user['uid'])) {
+			$this->getLanguageService()->init($preferredBrowserLanguage);
 		}
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xlf');
 		// Setting the redirect URL to "backend.php" if no alternative input is given
 		$this->redirectToURL = $this->redirect_url ?: 'backend.php';
 		// Do a logout if the command is set
-		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
-			$GLOBALS['BE_USER']->logoff();
+		if ($this->L == 'OUT' && is_object($this->getBackendUserAuthentication())) {
+			$this->getBackendUserAuthentication()->logoff();
 			HttpUtility::redirect($this->redirect_url);
 		}
 	}
@@ -201,9 +196,10 @@ class LoginController {
 	 */
 	public function main() {
 		// Initialize template object:
-		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('EXT:backend/Resources/Private/Templates/login.html');
+		$view = $this->getFluidTemplateObject('EXT:backend/Resources/Private/Templates/Login.html');
+
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$pageRenderer = $this->getDocumentTemplate()->getPageRenderer();
 		$pageRenderer->loadJquery();
 
 		// support placeholders for IE9 and lower
@@ -216,9 +212,9 @@ class LoginController {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'] as $function) {
 				$params = array();
-				$JSCode = GeneralUtility::callUserFunction($function, $params, $this);
-				if ($JSCode) {
-					$GLOBALS['TBE_TEMPLATE']->JScode .= $JSCode;
+				$javaScriptCode = GeneralUtility::callUserFunction($function, $params, $this);
+				if ($javaScriptCode) {
+					$this->getDocumentTemplate()->JScode .= $javaScriptCode;
 					break;
 				}
 			}
@@ -227,25 +223,48 @@ class LoginController {
 		// Checking, if we should make a redirect.
 		// Might set JavaScript in the header to close window.
 		$this->checkRedirect();
-		// Initialize interface selectors:
-		$this->makeInterfaceSelectorBox();
-		// Creating form based on whether there is a login or not:
-		if (empty($GLOBALS['BE_USER']->user['uid'])) {
-			$GLOBALS['TBE_TEMPLATE']->form = $this->startForm();
-			$loginForm = $this->makeLoginForm();
+
+		if ($GLOBALS['TBE_STYLES']['logo_login']) {
+			$logo = '<img src="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login'])) . '" alt="" class="t3-login-logo" />';
 		} else {
-			$GLOBALS['TBE_TEMPLATE']->form = '
-				<form action="index.php" method="post" name="loginform">
-				<input type="hidden" name="login_status" value="logout" />
-				';
-			$loginForm = $this->makeLogoutForm();
+			$logo = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3-transparent@2x.png', 'width="140" height="39"') . ' alt="" class="t3-login-logo t3-default-logo" />';
 		}
 
+		$formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'loginForm' : 'logoutForm';
+		$loginNewsTitle = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']
+			? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']
+			: $this->getLanguageService()->getLL('newsheadline');
+
+		// Start form
+		$view->assignMultiple(array(
+			'formTag' => $this->startForm(),
+			'labelPrefixPath' => 'LLL:EXT:lang/locallang_login.xlf:',
+			'backendUser' => $this->getBackendUserAuthentication()->user,
+			'hasLoginError' => $this->isLoginInProgress(),
+			'presetUsername' => $this->u,
+			'presetPassword' => $this->p,
+			'presetOpenId' => $this->openIdUrl,
+			'formType' => $formType,
+			'logo' => $logo,
+			'isOpenIdLoaded' => ExtensionManagementUtility::isLoaded('openid'),
+			'copyright' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
+			'loginNewsTitle' => $loginNewsTitle,
+			'loginNewsItems' => $this->getSystemNews()
+		));
+
+		// Initialize interface selectors:
+		$this->makeInterfaceSelectorBox();
+		$view->assignMultiple(array(
+			'interfaceSelector' => $this->interfaceSelector,
+			'interfaceSelectorJump' => $this->interfaceSelector_jump
+		));
+
 		// Starting page:
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
-		// Add login form:
-		$this->content .= $this->wrapLoginForm($loginForm);
-		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
+		$this->content .= $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' .
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
+		// Add Content:
+		$this->content .= $view->render();
+		$this->content .= $this->getDocumentTemplate()->endPage();
 	}
 
 	/**
@@ -263,151 +282,49 @@ class LoginController {
 	 *
 	 ******************************/
 	/**
-	 * Creates the login form
-	 * This is drawn when NO login exists.
-	 *
-	 * @return string HTML output
-	 */
-	public function makeLoginForm() {
-		$content = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
-		$markers = array(
-			'VALUE_USERNAME' => htmlspecialchars($this->u),
-			'VALUE_PASSWORD' => htmlspecialchars($this->p),
-			'VALUE_OPENID_URL' => htmlspecialchars($this->openIdUrl),
-			'VALUE_SUBMIT' => $GLOBALS['LANG']->getLL('labels.submitLogin', TRUE)
-		);
-		// Show an error message if the login command was successful already, otherwise remove the subpart
-		if (!$this->isLoginInProgress()) {
-			$content = HtmlParser::substituteSubpart($content, '###LOGIN_ERROR###', '');
-		} else {
-			$markers['ERROR_MESSAGE'] = $GLOBALS['LANG']->getLL('error.login', TRUE);
-			$markers['ERROR_LOGIN_TITLE'] = $GLOBALS['LANG']->getLL('error.login.title', TRUE);
-			$markers['ERROR_LOGIN_DESCRIPTION'] = $GLOBALS['LANG']->getLL('error.login.description', TRUE);
-		}
-		// Remove the interface selector markers if it's not available
-		if (!($this->interfaceSelector && !$this->loginRefresh)) {
-			$content = HtmlParser::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
-		} else {
-			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', TRUE);
-			$markers['VALUE_INTERFACE'] = $this->interfaceSelector;
-		}
-		return HtmlParser::substituteMarkerArray($content, $markers, '###|###');
-	}
-
-	/**
-	 * Creates the logout form
-	 * This is drawn if a user login already exists.
-	 *
-	 * @return string HTML output
-	 */
-	public function makeLogoutForm() {
-		$content = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGOUT_FORM###');
-		$markers = array(
-			'LABEL_USERNAME' => $GLOBALS['LANG']->getLL('labels.username', TRUE),
-			'VALUE_USERNAME' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
-			'VALUE_SUBMIT' => $GLOBALS['LANG']->getLL('labels.submitLogout', TRUE)
-		);
-		// Remove the interface selector markers if it's not available
-		if (!$this->interfaceSelector_jump) {
-			$content = HtmlParser::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
-		} else {
-			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', TRUE);
-			$markers['VALUE_INTERFACE'] = $this->interfaceSelector_jump;
-		}
-		return HtmlParser::substituteMarkerArray($content, $markers, '###|###');
-	}
-
-	/**
-	 * Wrapping the login form table in another set of tables etc:
-	 *
-	 * @param string $content HTML content for the login form
-	 * @return string The HTML for the page.
-	 */
-	public function wrapLoginForm($content) {
-		$mainContent = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###PAGE###');
-
-		if ($GLOBALS['TBE_STYLES']['logo_login']) {
-			$logo = '<img src="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login'])) . '" alt="" class="t3-login-logo" />';
-		} else {
-			$logo = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3-transparent@2x.png', 'width="140" height="39"') . ' alt="" class="t3-login-logo t3-default-logo" />';
-		}
-
-		$additionalCssClasses = array();
-		if ($this->isLoginInProgress()) {
-			$additionalCssClasses[] = 'error';
-		}
-		if ($this->loginRefresh) {
-			$additionalCssClasses[] = 'refresh';
-		}
-		$markers = array(
-			'LOGO' => $logo,
-			'LOGINBOX_IMAGE' => '',
-			'FORM' => $content,
-			'NEWS' => $this->makeLoginNews(),
-			'COPYRIGHT' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
-			'CSS_CLASSES' => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
-			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('openid') ? 'enabled' : 'disabled'),
-			// The labels will be replaced later on, thus the other parts above
-			// can use these markers as well and it will be replaced
-			'HEADLINE' => $GLOBALS['LANG']->getLL('headline', TRUE),
-			'INFO_ABOUT' => $GLOBALS['LANG']->getLL('info.about', TRUE),
-			'INFO_RELOAD' => $GLOBALS['LANG']->getLL('info.reset', TRUE),
-			'INFO' => $GLOBALS['LANG']->getLL('info.cookies_and_js', TRUE),
-			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', TRUE),
-			'ERROR_COOKIES' => $GLOBALS['LANG']->getLL('error.cookies', TRUE),
-			'ERROR_COOKIES_IGNORE' => $GLOBALS['LANG']->getLL('error.cookies_ignore', TRUE),
-			'ERROR_CAPSLOCK' => $GLOBALS['LANG']->getLL('error.capslock', TRUE),
-			'ERROR_FURTHERHELP' => $GLOBALS['LANG']->getLL('error.furtherInformation', TRUE),
-			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', TRUE),
-			'LABEL_USERNAME' => $GLOBALS['LANG']->getLL('labels.username', TRUE),
-			'LABEL_OPENID' => $GLOBALS['LANG']->getLL('labels.openId', TRUE),
-			'LABEL_PASSWORD' => $GLOBALS['LANG']->getLL('labels.password', TRUE),
-			'LABEL_WHATISOPENID' => $GLOBALS['LANG']->getLL('labels.whatIsOpenId', TRUE),
-			'LABEL_SWITCHOPENID' => $GLOBALS['LANG']->getLL('labels.switchToOpenId', TRUE),
-			'LABEL_SWITCHDEFAULT' => $GLOBALS['LANG']->getLL('labels.switchToDefault', TRUE),
-			'CLEAR' => $GLOBALS['LANG']->getLL('clear', TRUE),
-			'LOGIN_PROCESS' => $GLOBALS['LANG']->getLL('login_process', TRUE),
-			'SITELINK' => '<a href="/">###SITENAME###</a>',
-			// Global variables will now be replaced (at last)
-			'SITENAME' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
-		);
-		$markers = $this->emitRenderLoginFormSignal($markers);
-		$mainContent = HtmlParser::substituteMarkerArray($mainContent, $markers, '###|###');
-
-		// OPENID_LOADED
-		if (!ExtensionManagementUtility::isLoaded('openid')) {
-			$mainContent = HtmlParser::substituteSubpart($mainContent, 'OPENID_LOADED', '');
-		}
-		return $mainContent;
-	}
-
-	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
 	 *
 	 * @return void
 	 */
 	public function checkRedirect() {
-		// Do redirect:
-		// If a user is logged in AND a) if either the login is just done (isLoginInProgress) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
-		if (!empty($GLOBALS['BE_USER']->user['uid']) && ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector)) {
-			// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
-			if (!$_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
+		/*
+		 * Do redirect:
+		 *
+		 * If a user is logged in AND
+		 *   a) if either the login is just done (isLoginInProgress) or
+		 *   b) a loginRefresh is done or c) the interface-selector is NOT enabled
+		 *      (If it is on the other hand, it should not just load an interface,
+		 *      because people has to choose then...)
+		 */
+		if (!empty($this->getBackendUserAuthentication()->user['uid'])
+			&& ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector)) {
+			/*
+			 * If no cookie has been set previously we tell people that this is a problem.
+			 * This assumes that a cookie-setting script (like this one) has been hit at
+			 * least once prior to this instance.
+			 */
+			if (!$_COOKIE[BackendUserAuthentication::getCookieName()]) {
 				if ($this->commandLI == 'setCookie') {
-					// we tried it a second time but still no cookie
-					// 26/4 2005: This does not work anymore, because the saving of challenge values in $_SESSION means the system will act as if the password was wrong.
-					throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3.<br /><br />Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
+					/*
+					 * we tried it a second time but still no cookie
+					 * 26/4 2005: This does not work anymore, because the saving of challenge values
+					 * in $_SESSION means the system will act as if the password was wrong.
+					 */
+					throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3.<br /><br />' .
+						'Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
 				} else {
 					// try it once again - that might be needed for auto login
 					$this->redirectToURL = 'index.php?commandLI=setCookie';
 				}
 			}
-			if ($redirectToURL = (string)$GLOBALS['BE_USER']->getTSConfigVal('auth.BE.redirectToURL')) {
-				$this->redirectToURL = $redirectToURL;
+			$redirectToUrl = (string)$this->getBackendUserAuthentication()->getTSConfigVal('auth.BE.redirectToURL');
+			if (!empty($redirectToUrl)) {
+				$this->redirectToURL = $redirectToUrl;
 				$this->GPinterface = '';
 			}
 			// store interface
-			$GLOBALS['BE_USER']->uc['interfaceSetup'] = $this->GPinterface;
-			$GLOBALS['BE_USER']->writeUC();
+			$this->getBackendUserAuthentication()->uc['interfaceSetup'] = $this->GPinterface;
+			$this->getBackendUserAuthentication()->writeUC();
 			// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface) {
 				case 'backend':
@@ -418,7 +335,7 @@ class LoginController {
 					break;
 			}
 			/** @var $formProtection \TYPO3\CMS\Core\FormProtection\BackendFormProtection */
-			$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+			$formProtection = FormProtectionFactory::get();
 			// If there is a redirect URL AND if loginRefresh is not set...
 			if (!$this->loginRefresh) {
 				$formProtection->storeSessionTokenInRegistry();
@@ -426,14 +343,14 @@ class LoginController {
 			} else {
 				$formProtection->setSessionTokenFromRegistry();
 				$formProtection->persistSessionToken();
-				$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+				$this->getDocumentTemplate()->JScode .= $this->getDocumentTemplate()->wrapScriptTags('
 					if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.LoginRefresh) {
 						parent.opener.TYPO3.LoginRefresh.startTask();
 						parent.close();
 					}
 				');
 			}
-		} elseif (empty($GLOBALS['BE_USER']->user['uid']) && $this->isLoginInProgress()) {
+		} elseif (empty($this->getBackendUserAuthentication()->user['uid']) && $this->isLoginInProgress()) {
 			// Wrong password, wait for 5 seconds
 			sleep(5);
 		}
@@ -456,8 +373,8 @@ class LoginController {
 			if (count($parts) > 1) {
 				// Initialize:
 				$labels = array(
-					'backend' => $GLOBALS['LANG']->getLL('interface.backend'),
-					'frontend' => $GLOBALS['LANG']->getLL('interface.frontend')
+					'backend' => $this->getLanguageService()->getLL('interface.backend'),
+					'frontend' => $this->getLanguageService()->getLL('interface.frontend')
 				);
 				$jumpScript = array(
 					'backend' => 'backend.php',
@@ -484,62 +401,6 @@ class LoginController {
 	}
 
 	/**
-	 * Returns the login box image, whether the default or an image from the rotation folder.
-	 *
-	 * @return string HTML image tag.
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, see Deprecation-60559-MakeLoginBoxImage.rst
-	 */
-	public function makeLoginBoxImage() {
-		GeneralUtility::logDeprecatedFunction();
-		return '';
-	}
-
-	/**
-	 * Make login news - renders the HTML content for a list of news shown under
-	 * the login form. News data is added through sys_news records
-	 *
-	 * @return string HTML content
-	 * @credits Idea by Jan-Hendrik Heuing
-	 */
-	public function makeLoginNews() {
-		$newsContent = '';
-		$systemNews = $this->getSystemNews();
-		// Traverse news array IF there are records in it:
-		if (is_array($systemNews) && count($systemNews) && !GeneralUtility::_GP('loginRefresh')) {
-			/** @var $htmlParser \TYPO3\CMS\Core\Html\RteHtmlParser */
-			$htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
-			$htmlParser->procOptions['dontHSC_rte'] = TRUE;
-
-			// Get the main news template, and replace the subpart after looped through
-			$newsContent = HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
-			$newsItemTemplate = HtmlParser::getSubpart($newsContent, '###NEWS_ITEM###');
-			$newsItem = '';
-			$count = 1;
-			foreach ($systemNews as $newsItemData) {
-				$additionalClass = '';
-				if ($count === 1) {
-					$additionalClass = ' first-item';
-				} elseif ($count === count($systemNews)) {
-					$additionalClass = ' last-item';
-				}
-				$newsItemContent = $htmlParser->TS_transform_rte($htmlParser->TS_links_rte($newsItemData['content']));
-				$newsItemMarker = array(
-					'###HEADER###' => htmlspecialchars($newsItemData['header']),
-					'###DATE###' => htmlspecialchars($newsItemData['date']),
-					'###CONTENT###' => $newsItemContent,
-					'###CLASS###' => $additionalClass
-				);
-				$count++;
-				$newsItem .= HtmlParser::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
-			}
-			$title = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] : $GLOBALS['LANG']->getLL('newsheadline');
-			$newsContent = HtmlParser::substituteMarker($newsContent, '###NEWS_HEADLINE###', htmlspecialchars($title));
-			$newsContent = HtmlParser::substituteSubpart($newsContent, '###NEWS_ITEM###', $newsItem);
-		}
-		return $newsContent;
-	}
-
-	/**
 	 * Gets news from sys_news and converts them into a format suitable for
 	 * showing them at the login screen.
 	 *
@@ -548,7 +409,7 @@ class LoginController {
 	protected function getSystemNews() {
 		$systemNewsTable = 'sys_news';
 		$systemNews = array();
-		$systemNewsRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
+		$systemNewsRecords = $this->getDatabaseConntection()->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
 		foreach ($systemNewsRecords as $systemNewsRecord) {
 			$systemNews[] = array(
 				'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
@@ -610,29 +471,6 @@ class LoginController {
 	}
 
 	/**
-	 * Emits the render login form signal
-	 *
-	 * @param array $markers Array with markers for the login form
-	 * @return array Modified markers array
-	 */
-	protected function emitRenderLoginFormSignal(array $markers) {
-		$signalArguments = $this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Backend\Controller\LoginController::class, self::SIGNAL_RenderLoginForm, array($this, $markers));
-		return $signalArguments[1];
-	}
-
-	/**
-	 * Get the SignalSlot dispatcher
-	 *
-	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected function getSignalSlotDispatcher() {
-		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-		}
-		return $this->signalSlotDispatcher;
-	}
-
-	/**
 	 * Get the ObjectManager
 	 *
 	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
@@ -641,4 +479,50 @@ class LoginController {
 		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 	}
 
+	/**
+	 * returns a new standalone view, shorthand function
+	 *
+	 * @param string $templatePathAndFileName optional the path to set the template path and filename
+	 *
+	 * @return StandaloneView
+	 */
+	protected function getFluidTemplateObject($templatePathAndFileName = NULL) {
+		$this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_login.xlf');
+
+		$view = GeneralUtility::makeInstance(StandaloneView::class);
+		if ($templatePathAndFileName) {
+			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
+		}
+		$view->getRequest()->setControllerExtensionName('backend');
+		return $view;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConntection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
+	}
 }
