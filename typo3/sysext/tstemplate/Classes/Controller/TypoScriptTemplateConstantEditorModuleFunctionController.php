@@ -158,7 +158,9 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
 			}
 			$theOutput .= $this->pObj->doc->spacer(10);
 			if (!empty($this->pObj->MOD_MENU['constant_editor_cat'])) {
-				$menu = BackendUtility::getFuncMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
+				$menu = '<div class="form-inline form-inline-spaced">';
+				$menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
+				$menu .= '</div>';
 				$theOutput .= $this->pObj->doc->section($lang->getLL('category', TRUE), '<span class="text-nowrap">' . $menu . '</span>', FALSE);
 			} else {
 				$theOutput .= $this->pObj->doc->section($lang->getLL('noConstants', TRUE), $lang->getLL('noConstantsDescription', TRUE), FALSE, FALSE, 1);

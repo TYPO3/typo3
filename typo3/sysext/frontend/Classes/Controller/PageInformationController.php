@@ -28,7 +28,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	/**
 	 * Returns the menu array
 	 *
-	 * @return 	array
+	 * @return array
 	 */
 	public function modMenu() {
 		return array(
@@ -65,13 +65,21 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];
 		// ONLY for the sake of dblist module which uses this value.
-		$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
-		$h_func .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
+		$h_func = BackendUtility::getDropdownMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
+		$h_func .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
 		$dblist->start($this->pObj->id, 'pages', 0);
 		$dblist->generateList();
 		// CSH
-		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:page_title'));
 		$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />') . $h_func . $dblist->HTMLcode, 0, 1);
+		$theOutput .= $this->pObj->doc->section(
+			'',
+			BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />')
+			. '<div class="form-inline form-inline-spaced">'
+			. $h_func . $dblist->HTMLcode
+			. '</div>',
+			0,
+			1
+		);
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];
 		if (is_array($footerContentHook)) {
@@ -82,5 +90,4 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		}
 		return $theOutput;
 	}
-
 }

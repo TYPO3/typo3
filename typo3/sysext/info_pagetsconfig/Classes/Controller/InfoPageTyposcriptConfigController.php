@@ -91,8 +91,10 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				1
 			);
 		} else {
-			$menu = BackendUtility::getFuncMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
+			$menu = '<div class="form-inline form-inline-spaced">';
+			$menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
 			$menu .= '<div class="checkbox"><label for="checkTsconf_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"') . $this->getLanguageService()->getLL('sort_alphabetic', TRUE) . '</label></div>';
+			$menu .= '</div>';
 			$theOutput = $this->pObj->doc->header($this->getLanguageService()->getLL('tsconf_title'));
 
 			if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {

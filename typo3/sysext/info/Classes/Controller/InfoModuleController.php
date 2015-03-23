@@ -105,7 +105,7 @@ class InfoModuleController extends BaseScriptClass {
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
 			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
-				'" method="post" name="webinfoForm">';
+				'" method="post" name="webinfoForm" class="form-inline form-inline-spaced">';
 			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
 				$this->content .= $this->doc->section('', $vContent);

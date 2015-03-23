@@ -2981,6 +2981,43 @@ class BackendUtility {
 	}
 
 	/**
+	 * Returns a selector box to switch the view
+	 * Requires the JS function jumpToUrl() to be available
+	 * Based on BackendUtility::getFuncMenu() but done as new function because it has another purpose.
+	 * Mingling with getFuncMenu would harm the docHeader Menu.
+	 *
+	 * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
+	 * @param string $elementName The form elements name, probably something like "SET[...]
+	 * @param string $currentValue The value to be selected currently.
+	 * @param array $menuItems An array with the menu items for the selector box
+	 * @param string $script The script to send the &id to, if empty it's automatically found
+	 * @param string $addParams Additional parameters to pass to the script.
+	 * @return string HTML code for selector box
+	 */
+	static public function getDropdownMenu($mainParams, $elementName, $currentValue, $menuItems, $script = '', $addParams = '') {
+		if (!is_array($menuItems) || count($menuItems) <= 1) {
+			return '';
+		}
+		$scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
+		$options = array();
+		foreach ($menuItems as $value => $label) {
+			$options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
+		}
+		if (!empty($options)) {
+			$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value,this);';
+			return '
+			<div class="form-group">
+				<!-- Function Menu of module -->
+				<select class="form-control input-sm" name="' . htmlspecialchars($elementName) . '" onchange="' . htmlspecialchars($onChange) . '">
+					' . implode(LF, $options) . '
+				</select>
+			</div>
+						';
+		}
+		return '';
+	}
+
+	/**
 	 * Checkbox function menu.
 	 * Works like ->getFuncMenu() but takes no $menuItem array since this is a simple checkbox.
 	 *

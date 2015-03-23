@@ -393,14 +393,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				$theOutput .= '
 						<div class="form-group">
 							<label class="control-label">' . $lang->getLL('browse') . '</label>'
-							. BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']). '
+							. BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']). '
 						</div>';
 			}
 			if(is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1){
 				$theOutput .= '
 						<div class="form-group">
 							<label class="control-label" for="ts_browser_toplevel_' . $bType . '">' . $lang->getLL('objectList') . '</label> '
-							. BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) . '
+							. BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) . '
 						</div>';
 			}
 			$theOutput .= '
@@ -474,8 +474,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_fixedLgd">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
 			$menu .= $lang->getLL('cropLines') . '</label></div>';
 			if ($bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
-				$menu .= '<br /><br /><label>' . $lang->getLL('displayConstants') . '</label>';
-				$menu .= BackendUtility::getFuncMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
+				$menu .= '<div class="form-inline form-inline-spaced"><label>' . $lang->getLL('displayConstants') . '</label>';
+				$menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
+				$menu .= '</div>';
 			}
 			$menu .= '</div>';
 			$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), '<span class="text-nowrap">' . $menu . '</span>', 0, 1);
