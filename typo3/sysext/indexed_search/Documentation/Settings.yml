@@ -8,4 +8,20 @@ conf.py:
   project: Indexed Search Engine
   version: 7
   release: 7
+  latex_documents:
+  - - Index
+    - indexed_search.tex
+    - Indexed Search
+    - Kasper Skaarhoj
+    - manual
+  latex_elements:
+    papersize: a4paper
+    pointsize: 10pt
+    preamble: \usepackage{typo3}
+  latex_use_parts: True
+  latex_show_pagerefs: True
+  intersphinx_mapping:
+    t3tsref:
+    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - null
 ...
