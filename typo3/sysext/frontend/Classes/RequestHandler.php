@@ -46,6 +46,18 @@ class RequestHandler implements RequestHandlerInterface {
 	protected $bootstrap;
 
 	/**
+	 * Instance of the timetracker
+	 * @var NullTimeTracker|TimeTracker
+	 */
+	protected $timeTracker;
+
+	/**
+	 * Instance of the TSFE object
+	 * @var TypoScriptFrontendController
+	 */
+	protected $controller;
+
+	/**
 	 * Constructor handing over the bootstrap
 	 *
 	 * @param Bootstrap $bootstrap
@@ -60,18 +72,7 @@ class RequestHandler implements RequestHandlerInterface {
 	 * @return void
 	 */
 	public function handleRequest() {
-		// Timetracking started
-		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
-		if (empty($configuredCookieName)) {
-			$configuredCookieName = 'be_typo_user';
-		}
-		if ($_COOKIE[$configuredCookieName]) {
-			$GLOBALS['TT'] = new TimeTracker();
-		} else {
-			$GLOBALS['TT'] = new NullTimeTracker();
-		}
-
-		$GLOBALS['TT']->start();
+		$this->initializeTimeTracker();
 
 		// Hook to preprocess the current request:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
@@ -83,87 +84,69 @@ class RequestHandler implements RequestHandlerInterface {
 			unset($hookParameters);
 		}
 
-		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-			TypoScriptFrontendController::class,
-			$GLOBALS['TYPO3_CONF_VARS'],
-			GeneralUtility::_GP('id'),
-			GeneralUtility::_GP('type'),
-			GeneralUtility::_GP('no_cache'),
-			GeneralUtility::_GP('cHash'),
-			GeneralUtility::_GP('jumpurl'),
-			GeneralUtility::_GP('MP'),
-			GeneralUtility::_GP('RDCT')
-		);
+		$this->initializeController();
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_force']
 			&& !GeneralUtility::cmpIP(
 				GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])
 		) {
-			$GLOBALS['TSFE']->pageUnavailableAndExit('This page is temporarily unavailable.');
+			$this->controller->pageUnavailableAndExit('This page is temporarily unavailable.');
 		}
 
-		$GLOBALS['TSFE']->connectToDB();
-		$GLOBALS['TSFE']->sendRedirect();
+		$this->controller->connectToDB();
+		$this->controller->sendRedirect();
 
 		// Output compression
 		// Remove any output produced until now
-		ob_clean();
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] && extension_loaded('zlib')) {
-			if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
-				// Prevent errors if ini_set() is unavailable (safe mode)
-				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
-			}
-			ob_start(array(GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler'));
-		}
+		$this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
+		$this->initializeOutputCompression();
 
-		// FE_USER
-		$GLOBALS['TT']->push('Front End user initialized', '');
-		/** @var $GLOBALS['TSFE'] \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
-		$GLOBALS['TSFE']->initFEuser();
-		$GLOBALS['TT']->pull();
+		// Initializing the Frontend User
+		$this->timeTracker->push('Front End user initialized', '');
+		$this->controller->initFEuser();
+		$this->timeTracker->pull();
 
-		// BE_USER
+		// Initializing a possible logged-in Backend User
 		/** @var $GLOBALS['BE_USER'] \TYPO3\CMS\Backend\FrontendBackendUserAuthentication */
-		$GLOBALS['BE_USER'] = $GLOBALS['TSFE']->initializeBackendUser();
+		$GLOBALS['BE_USER'] = $this->controller->initializeBackendUser();
 
 		// Process the ID, type and other parameters.
 		// After this point we have an array, $page in TSFE, which is the page-record
 		// of the current page, $id.
-		$GLOBALS['TT']->push('Process ID', '');
+		$this->timeTracker->push('Process ID', '');
 		// Initialize admin panel since simulation settings are required here:
-		if ($GLOBALS['TSFE']->isBackendUserLoggedIn()) {
+		if ($this->controller->isBackendUserLoggedIn()) {
 			$GLOBALS['BE_USER']->initializeAdminPanel();
 			$this->bootstrap->loadExtensionTables(TRUE);
 		} else {
 			$this->bootstrap->loadCachedTca();
 		}
-		$GLOBALS['TSFE']->checkAlternativeIdMethods();
-		$GLOBALS['TSFE']->clear_preview();
-		$GLOBALS['TSFE']->determineId();
+		$this->controller->checkAlternativeIdMethods();
+		$this->controller->clear_preview();
+		$this->controller->determineId();
 
 		// Now, if there is a backend user logged in and he has NO access to this page,
 		// then re-evaluate the id shown! _GP('ADMCMD_noBeUser') is placed here because
 		// \TYPO3\CMS\Version\Hook\PreviewHook might need to know if a backend user is logged in.
 		if (
-			$GLOBALS['TSFE']->isBackendUserLoggedIn()
-			&& (!$GLOBALS['BE_USER']->extPageReadAccess($GLOBALS['TSFE']->page) || GeneralUtility::_GP('ADMCMD_noBeUser'))
+			$this->controller->isBackendUserLoggedIn()
+			&& (!$GLOBALS['BE_USER']->extPageReadAccess($this->controller->page) || GeneralUtility::_GP('ADMCMD_noBeUser'))
 		) {
 			// Remove user
 			unset($GLOBALS['BE_USER']);
-			$GLOBALS['TSFE']->beUserLogin = FALSE;
+			$this->controller->beUserLogin = FALSE;
 			// Re-evaluate the page-id.
-			$GLOBALS['TSFE']->checkAlternativeIdMethods();
-			$GLOBALS['TSFE']->clear_preview();
-			$GLOBALS['TSFE']->determineId();
+			$this->controller->checkAlternativeIdMethods();
+			$this->controller->clear_preview();
+			$this->controller->determineId();
 		}
 
-		$GLOBALS['TSFE']->makeCacheHash();
-		$GLOBALS['TT']->pull();
+		$this->controller->makeCacheHash();
+		$this->timeTracker->pull();
 
 		// Admin Panel & Frontend editing
-		if ($GLOBALS['TSFE']->isBackendUserLoggedIn()) {
+		if ($this->controller->isBackendUserLoggedIn()) {
 			$GLOBALS['BE_USER']->initializeFrontendEdit();
 			if ($GLOBALS['BE_USER']->adminPanel instanceof AdminPanelView) {
 				$this->bootstrap
@@ -176,123 +159,124 @@ class RequestHandler implements RequestHandlerInterface {
 		}
 
 		// Starts the template
-		$GLOBALS['TT']->push('Start Template', '');
-		$GLOBALS['TSFE']->initTemplate();
-		$GLOBALS['TT']->pull();
+		$this->timeTracker->push('Start Template', '');
+		$this->controller->initTemplate();
+		$this->timeTracker->pull();
 		// Get from cache
-		$GLOBALS['TT']->push('Get Page from cache', '');
-		$GLOBALS['TSFE']->getFromCache();
-		$GLOBALS['TT']->pull();
+		$this->timeTracker->push('Get Page from cache', '');
+		$this->controller->getFromCache();
+		$this->timeTracker->pull();
 		// Get config if not already gotten
 		// After this, we should have a valid config-array ready
-		$GLOBALS['TSFE']->getConfigArray();
+		$this->controller->getConfigArray();
 		// Setting language and locale
-		$GLOBALS['TT']->push('Setting language and locale', '');
-		$GLOBALS['TSFE']->settingLanguage();
-		$GLOBALS['TSFE']->settingLocale();
-		$GLOBALS['TT']->pull();
+		$this->timeTracker->push('Setting language and locale', '');
+		$this->controller->settingLanguage();
+		$this->controller->settingLocale();
+		$this->timeTracker->pull();
 
 		// Convert POST data to internal "renderCharset" if different from the metaCharset
-		$GLOBALS['TSFE']->convPOSTCharset();
+		$this->controller->convPOSTCharset();
 
 		// Check JumpUrl
-		$GLOBALS['TSFE']->setExternalJumpUrl();
-		$GLOBALS['TSFE']->checkJumpUrlReferer();
+		$this->controller->setExternalJumpUrl();
+		$this->controller->checkJumpUrlReferer();
 
-		$GLOBALS['TSFE']->handleDataSubmission();
+		$this->controller->handleDataSubmission();
 
 		// Check for shortcut page and redirect
-		$GLOBALS['TSFE']->checkPageForShortcutRedirect();
-		$GLOBALS['TSFE']->checkPageForMountpointRedirect();
+		$this->controller->checkPageForShortcutRedirect();
+		$this->controller->checkPageForMountpointRedirect();
 
 		// Generate page
-		$GLOBALS['TSFE']->setUrlIdToken();
-		$GLOBALS['TT']->push('Page generation', '');
-		if ($GLOBALS['TSFE']->isGeneratePage()) {
-			$GLOBALS['TSFE']->generatePage_preProcessing();
-			$temp_theScript = $GLOBALS['TSFE']->generatePage_whichScript();
+		$this->controller->setUrlIdToken();
+		$this->timeTracker->push('Page generation', '');
+		if ($this->controller->isGeneratePage()) {
+			$this->controller->generatePage_preProcessing();
+			$temp_theScript = $this->controller->generatePage_whichScript();
 			if ($temp_theScript) {
 				include $temp_theScript;
 			} else {
 				PageGenerator::pagegenInit();
 				// Global content object
-				$GLOBALS['TSFE']->newCObj();
+				$this->controller->newCObj();
 				// LIBRARY INCLUSION, TypoScript
 				$temp_incFiles = PageGenerator::getIncFiles();
 				foreach ($temp_incFiles as $temp_file) {
 					include_once './' . $temp_file;
 				}
 				// Content generation
-				if (!$GLOBALS['TSFE']->isINTincScript()) {
+				if (!$this->controller->isINTincScript()) {
 					PageGenerator::renderContent();
-					$GLOBALS['TSFE']->setAbsRefPrefix();
+					$this->controller->setAbsRefPrefix();
 				}
 			}
-			$GLOBALS['TSFE']->generatePage_postProcessing();
-		} elseif ($GLOBALS['TSFE']->isINTincScript()) {
+			$this->controller->generatePage_postProcessing();
+		} elseif ($this->controller->isINTincScript()) {
 			PageGenerator::pagegenInit();
 			// Global content object
-			$GLOBALS['TSFE']->newCObj();
+			$this->controller->newCObj();
 			// LIBRARY INCLUSION, TypoScript
 			$temp_incFiles = PageGenerator::getIncFiles();
 			foreach ($temp_incFiles as $temp_file) {
 				include_once './' . $temp_file;
 			}
 		}
-		$GLOBALS['TT']->pull();
+		$this->timeTracker->pull();
 
-		// $GLOBALS['TSFE']->config['INTincScript']
-		if ($GLOBALS['TSFE']->isINTincScript()) {
-			$GLOBALS['TT']->push('Non-cached objects', '');
-			$GLOBALS['TSFE']->INTincScript();
-			$GLOBALS['TT']->pull();
+		// Render non-cached parts
+		if ($this->controller->isINTincScript()) {
+			$this->timeTracker->push('Non-cached objects', '');
+			$this->controller->INTincScript();
+			$this->timeTracker->pull();
 		}
+
 		// Output content
 		$sendTSFEContent = FALSE;
-		if ($GLOBALS['TSFE']->isOutputting()) {
-			$GLOBALS['TT']->push('Print Content', '');
-			$GLOBALS['TSFE']->processOutput();
+		if ($this->controller->isOutputting()) {
+			$this->timeTracker->push('Print Content', '');
+			$this->controller->processOutput();
 			$sendTSFEContent = TRUE;
-			$GLOBALS['TT']->pull();
+			$this->timeTracker->pull();
 		}
 		// Store session data for fe_users
-		$GLOBALS['TSFE']->storeSessionData();
+		$this->controller->storeSessionData();
 		// Statistics
 		$GLOBALS['TYPO3_MISC']['microtime_end'] = microtime(TRUE);
-		$GLOBALS['TSFE']->setParseTime();
-		if (isset($GLOBALS['TSFE']->config['config']['debug'])) {
-			$debugParseTime = (bool)$GLOBALS['TSFE']->config['config']['debug'];
+		$this->controller->setParseTime();
+		if (isset($this->controller->config['config']['debug'])) {
+			$debugParseTime = (bool)$this->controller->config['config']['debug'];
 		} else {
-			$debugParseTime = !empty($GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['debug']);
+			$debugParseTime = !empty($this->controller->TYPO3_CONF_VARS['FE']['debug']);
 		}
-		if ($GLOBALS['TSFE']->isOutputting() && $debugParseTime) {
-			$GLOBALS['TSFE']->content .= LF . '<!-- Parsetime: ' . $GLOBALS['TSFE']->scriptParseTime . 'ms -->';
+		if ($this->controller->isOutputting() && $debugParseTime) {
+			$this->controller->content .= LF . '<!-- Parsetime: ' . $this->controller->scriptParseTime . 'ms -->';
 		}
 		// Check JumpUrl
-		$GLOBALS['TSFE']->jumpurl();
+		$this->controller->jumpurl();
 		// Preview info
-		$GLOBALS['TSFE']->previewInfo();
+		$this->controller->previewInfo();
 		// Hook for end-of-frontend
-		$GLOBALS['TSFE']->hook_eofe();
+		$this->controller->hook_eofe();
 		// Finish timetracking
-		$GLOBALS['TT']->pull();
+		$this->timeTracker->pull();
 		// Check memory usage
 		MonitorUtility::peakMemoryUsage();
 		// beLoginLinkIPList
-		echo $GLOBALS['TSFE']->beLoginLinkIPList();
+		echo $this->controller->beLoginLinkIPList();
 
 		// Admin panel
 		if (
-			$GLOBALS['TSFE']->isBackendUserLoggedIn()
+			$this->controller->isBackendUserLoggedIn()
 			&& $GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication
 			&& $GLOBALS['BE_USER']->isAdminPanelVisible()
 		) {
-			$GLOBALS['TSFE']->content = str_ireplace('</head>', $GLOBALS['BE_USER']->adminPanel->getAdminPanelHeaderData() . '</head>', $GLOBALS['TSFE']->content);
-			$GLOBALS['TSFE']->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $GLOBALS['TSFE']->content);
+			$this->controller->content = str_ireplace('</head>', $GLOBALS['BE_USER']->adminPanel->getAdminPanelHeaderData() . '</head>', $this->controller->content);
+			$this->controller->content = str_ireplace('</body>', $GLOBALS['BE_USER']->displayAdminPanel() . '</body>', $this->controller->content);
 		}
 
 		if ($sendTSFEContent) {
-			echo $GLOBALS['TSFE']->content;
+			echo $this->controller->content;
 		}
 		// Debugging Output
 		if (isset($GLOBALS['error']) && is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debugOutput'))) {
@@ -320,5 +304,59 @@ class RequestHandler implements RequestHandlerInterface {
 	 */
 	public function getPriority() {
 		return 50;
+	}
+
+	/**
+	 * Initializes output compression when enabled, could be split up and put into Bootstrap
+	 * at a later point
+	 */
+	protected function initializeOutputCompression() {
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] && extension_loaded('zlib')) {
+			if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'])) {
+				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel']);
+			}
+			ob_start(array(GeneralUtility::makeInstance(CompressionUtility::class), 'compressionOutputHandler'));
+		}
+	}
+
+	/**
+	 * Timetracking started depending if a Backend User is logged in
+	 *
+	 * @return void
+	 */
+	protected function initializeTimeTracker() {
+		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
+		if (empty($configuredCookieName)) {
+			$configuredCookieName = 'be_typo_user';
+		}
+		if ($_COOKIE[$configuredCookieName]) {
+			$this->timeTracker = new TimeTracker();
+		} else {
+			$this->timeTracker = new NullTimeTracker();
+		}
+
+		$GLOBALS['TT'] = $this->timeTracker;
+		$this->timeTracker->start();
+	}
+
+	/**
+	 * Creates an instance of TSFE and sets it as a global variable
+	 *
+	 * @return void
+	 */
+	protected function initializeController() {
+		$this->controller = GeneralUtility::makeInstance(
+			TypoScriptFrontendController::class,
+			$GLOBALS['TYPO3_CONF_VARS'],
+			GeneralUtility::_GP('id'),
+			GeneralUtility::_GP('type'),
+			GeneralUtility::_GP('no_cache'),
+			GeneralUtility::_GP('cHash'),
+			GeneralUtility::_GP('jumpurl'),
+			GeneralUtility::_GP('MP'),
+			GeneralUtility::_GP('RDCT')
+		);
+		// setting the global variable for the controller
+		$GLOBALS['TSFE'] = $this->controller;
 	}
 }
