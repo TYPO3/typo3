@@ -18,60 +18,10 @@
  *
  * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
-if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) === 'cli_dispatch.phpsh') {
-	$hasTask = TRUE;
-	// Create an instance of the scheduler object
-	/** @var $scheduler \TYPO3\CMS\Scheduler\Scheduler */
-	$scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
-	/** @var \TYPO3\CMS\Core\Controller\CommandLineController $cli */
-	$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Controller\CommandLineController::class);
-	// If a specific id is given in arguments, then run that task. Otherwise run scheduled tasks.
-	if ($cli->cli_isArg('-i')) {
-		$taskId = (int)$cli->cli_argValue('-i');
-		if ($taskId > 0) {
-			// Force the execution of the task even if it is disabled or no execution scheduled
-			if ($cli->cli_isArg('-f')) {
-				$task = $scheduler->fetchTask($taskId);
-			} else {
-				$whereClause = 'uid = ' . $taskId . ' AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'];
-				list($task) = $scheduler->fetchTasksWithCondition($whereClause);
-			}
-			if ($scheduler->isValidTaskObject($task)) {
-				try {
-					$scheduler->executeTask($task);
-				} catch (\Exception $e) {
 
-				}
-				// Record the run in the system registry
-				$scheduler->recordLastRun('cli-by-id');
-			}
-		}
-	} else {
-		// Loop as long as there are tasks
-		do {
-			// Try getting the next task and execute it
-			// If there are no more tasks to execute, an exception is thrown by \TYPO3\CMS\Scheduler\Scheduler::fetchTask()
-			try {
-				/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
-				$task = $scheduler->fetchTask();
-				$hasTask = TRUE;
-				try {
-					$scheduler->executeTask($task);
-				} catch (\Exception $e) {
-					// We ignore any exception that may have been thrown during execution,
-					// as this is a background process.
-					// The exception message has been recorded to the database anyway
-					continue;
-				}
-			} catch (\OutOfBoundsException $e) {
-				$hasTask = FALSE;
-			} catch (\UnexpectedValueException $e) {
-				continue;
-			}
-		} while ($hasTask);
-		// Record the run in the system registry
-		$scheduler->recordLastRun();
-	}
+if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) === 'cli_dispatch.phpsh') {
+	$schedulerCliController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerCliController::class);
+	$schedulerCliController->run();
 } else {
 	die('This script must be included by the "CLI module dispatcher"');
 }
