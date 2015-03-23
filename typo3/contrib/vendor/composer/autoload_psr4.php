@@ -18,6 +18,5 @@ return array(
     'TYPO3\\CMS\\Cshmanual\\' => array($baseDir . '/typo3/sysext/cshmanual/Classes'),
     'TYPO3\\CMS\\Core\\' => array($baseDir . '/typo3/sysext/core/Classes'),
     'TYPO3\\CMS\\Backend\\' => array($baseDir . '/typo3/sysext/backend/Classes'),
-    'Psr\\Log\\' => array($baseDir . '/typo3/contrib/Psr/Log'),
     'Helhum\\ClassAliasLoader\\' => array($vendorDir . '/helhum/class-alias-loader/Classes'),
 );

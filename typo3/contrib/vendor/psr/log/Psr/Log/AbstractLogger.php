@@ -3,21 +3,13 @@
 namespace Psr\Log;
 
 /**
- * Describes a logger instance
+ * This is a simple Logger implementation that other Loggers can inherit from.
  *
- * The message MUST be a string or object implementing __toString().
- *
- * The message MAY contain placeholders in the form: {foo} where foo
- * will be replaced by the context data in key "foo".
- *
- * The context array can contain arbitrary data, the only assumption that
- * can be made by implementors is that if an Exception instance is given
- * to produce a stack trace, it MUST be in a key named "exception".
- *
- * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
- * for the full interface specification.
+ * It simply delegates all log-level-specific methods to the `log` method to
+ * reduce boilerplate code that a simple Logger that does the same thing with
+ * messages regardless of the error level has to implement.
  */
-interface LoggerInterface
+abstract class AbstractLogger implements LoggerInterface
 {
     /**
      * System is unusable.
@@ -26,7 +18,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function emergency($message, array $context = array());
+    public function emergency($message, array $context = array())
+    {
+        $this->log(LogLevel::EMERGENCY, $message, $context);
+    }
 
     /**
      * Action must be taken immediately.
@@ -38,7 +33,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function alert($message, array $context = array());
+    public function alert($message, array $context = array())
+    {
+        $this->log(LogLevel::ALERT, $message, $context);
+    }
 
     /**
      * Critical conditions.
@@ -49,7 +47,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function critical($message, array $context = array());
+    public function critical($message, array $context = array())
+    {
+        $this->log(LogLevel::CRITICAL, $message, $context);
+    }
 
     /**
      * Runtime errors that do not require immediate action but should typically
@@ -59,7 +60,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function error($message, array $context = array());
+    public function error($message, array $context = array())
+    {
+        $this->log(LogLevel::ERROR, $message, $context);
+    }
 
     /**
      * Exceptional occurrences that are not errors.
@@ -71,7 +75,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function warning($message, array $context = array());
+    public function warning($message, array $context = array())
+    {
+        $this->log(LogLevel::WARNING, $message, $context);
+    }
 
     /**
      * Normal but significant events.
@@ -80,7 +87,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function notice($message, array $context = array());
+    public function notice($message, array $context = array())
+    {
+        $this->log(LogLevel::NOTICE, $message, $context);
+    }
 
     /**
      * Interesting events.
@@ -91,7 +101,10 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function info($message, array $context = array());
+    public function info($message, array $context = array())
+    {
+        $this->log(LogLevel::INFO, $message, $context);
+    }
 
     /**
      * Detailed debug information.
@@ -100,15 +113,8 @@ interface LoggerInterface
      * @param array $context
      * @return null
      */
-    public function debug($message, array $context = array());
-
-    /**
-     * Logs with an arbitrary level.
-     *
-     * @param mixed $level
-     * @param string $message
-     * @param array $context
-     * @return null
-     */
-    public function log($level, $message, array $context = array());
+    public function debug($message, array $context = array())
+    {
+        $this->log(LogLevel::DEBUG, $message, $context);
+    }
 }

@@ -7,4 +7,5 @@ $baseDir = dirname(dirname(dirname($vendorDir)));
 
 return array(
     'TYPO3\\Flow\\' => array($baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
 );

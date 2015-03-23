@@ -36,6 +36,7 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
+		"psr/log": "1.0.*@dev",
 		"swiftmailer/swiftmailer": "5.2.1",
 		"helhum/class-alias-loader": "1.1.*@dev",
 		"typo3/cms-composer-installers": "1.1.*@dev"
@@ -123,7 +124,6 @@
 			"TYPO3\\Flow\\": "typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes/"
 		},
 		"psr-4": {
-			"Psr\\Log\\": "typo3/contrib/Psr/Log/",
 			"TYPO3\\CMS\\Backend\\": "typo3/sysext/backend/Classes/",
 			"TYPO3\\CMS\\Core\\": "typo3/sysext/core/Classes/",
 			"TYPO3\\CMS\\Cshmanual\\": "typo3/sysext/cshmanual/Classes/",
