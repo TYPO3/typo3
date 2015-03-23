@@ -74,6 +74,7 @@ class PageGenerator {
 		// Base url:
 		if (isset($tsfe->config['config']['baseURL'])) {
 			$tsfe->baseUrl = $tsfe->config['config']['baseURL'];
+			// Deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 			$tsfe->anchorPrefix = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
 		}
 		// Internal and External target defaults

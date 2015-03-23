@@ -1487,9 +1487,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$lines = array();
 			$html = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS###');
 			$item = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS_LINK###');
+			$anchorPrefix = $GLOBALS['TSFE']->baseUrl ? substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) : '';
 			foreach ($this->resultSections as $id => $dat) {
 				$markerArray = array();
-				$aBegin = '<a href="' . htmlspecialchars(($this->frontendController->anchorPrefix . '#anchor_' . md5($id))) . '">';
+				$aBegin = '<a href="' . htmlspecialchars($anchorPrefix . '#anchor_' . md5($id)) . '">';
 				$aContent = htmlspecialchars((trim($dat[0]) ? trim($dat[0]) : $this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', TRUE) . ')';
 				$aEnd = '</a>';
 				$markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;

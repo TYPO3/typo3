@@ -689,6 +689,7 @@ class TypoScriptFrontendController {
 	/**
 	 * The proper anchor prefix needed when using speaking urls. (only set if
 	 * baseUrl is set)
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) directly
 	 * @var string
 	 */
 	public $anchorPrefix = '';
