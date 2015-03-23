@@ -53,6 +53,12 @@ class BackendUserGroupController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	 * @return void
 	 */
 	public function indexAction() {
+		$this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser', array(
+			'tx_beuser_system_beusertxbeuser' => array(
+				'action' => 'index',
+				'controller' => 'BackendUserGroup'
+			)
+		))));
 		$this->view->assign('backendUserGroups', $this->backendUserGroupRepository->findAll());
 	}
 }

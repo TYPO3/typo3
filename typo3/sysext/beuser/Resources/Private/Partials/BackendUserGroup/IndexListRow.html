@@ -8,7 +8,7 @@
 		</a>
 	</td>
 	<td class="col-title">
-		<a href="#" onclick="document.location.href='alt_doc.php?edit[be_groups][{backendUserGroup.uid}]=edit&amp;returnUrl='+T3_THIS_LOCATION">
+		<a href="alt_doc.php?edit[be_groups][{backendUserGroup.uid}]=edit&amp;returnUrl={returnUrl}">
 			<b>{backendUserGroup.title}</b><br />
 			{backendUser.realName}
 		</a>
@@ -24,7 +24,7 @@
 	<td class="col-control">
 		<div class="btn-group" role="group">
 			<a class="btn btn-default" href="#" onclick="top.launchView('be_groups', '{backendUserGroup.uid}'); return false;"><be:spriteManagerIcon iconName="actions-document-info" /></a>
-			<a class="btn btn-default" href="#" onclick="document.location.href='alt_doc.php?edit[be_groups][{backendUserGroup.uid}]=edit&amp;returnUrl='+T3_THIS_LOCATION"><be:spriteManagerIcon iconName="actions-document-open" /></a>
+			<a class="btn btn-default" href="alt_doc.php?edit[be_groups][{backendUserGroup.uid}]=edit&amp;returnUrl={returnUrl}"><be:spriteManagerIcon iconName="actions-document-open" /></a>
 			<f:if condition="{backendUserGroup.hidden}">
 				<f:then>
 					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}"><be:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" /></a>
