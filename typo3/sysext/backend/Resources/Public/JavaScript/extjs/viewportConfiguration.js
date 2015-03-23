@@ -163,23 +163,6 @@ TYPO3.Viewport.configuration = {
 							items: TYPO3.Viewport.ContentCards.cards
 						}
 					]
-				},
-				{
-					region: 'south',
-					xtype: 'typo3DebugPanel',
-					collapsible: true,
-					collapseMode: 'mini',
-					collapsed: true,
-					hideCollapseTool: true,
-					animCollapse: false,
-					split: true,
-					useSplitTips: true,
-					collapsibleSplitTip: top.TYPO3.LLL.viewPort.tooltipDebugPanelSplitDrag,
-					autoScroll: true,
-					hidden: true,
-					height: 200,
-					id: 'typo3-debug-console',
-					border: false
 				}
 			]
 		}

@@ -119,7 +119,6 @@ class BackendController {
 			'tabclosemenu' => 'sysext/backend/Resources/Public/JavaScript/extjs/ux/ext.ux.tabclosemenu.js',
 			'notifications' => 'sysext/backend/Resources/Public/JavaScript/notifications.js',
 			'backend' => 'sysext/backend/Resources/Public/JavaScript/backend.js',
-			'debugPanel' => 'sysext/backend/Resources/Public/JavaScript/extjs/debugPanel.js',
 			'viewport' => 'sysext/backend/Resources/Public/JavaScript/extjs/viewport.js',
 			'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
 			'backendcontentiframe' => 'sysext/backend/Resources/Public/JavaScript/extjs/backendcontentiframe.js',
@@ -146,6 +145,9 @@ class BackendController {
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Storage', 'function(Storage) {
 			Storage.Persistent.load(' . json_encode($GLOBALS['BE_USER']->uc) . ');
 		}');
+
+		// load debug console
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
 
 		$this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
 

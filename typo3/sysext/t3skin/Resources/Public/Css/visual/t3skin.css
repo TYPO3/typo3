@@ -7742,17 +7742,6 @@ a img {
     margin-left: 135px;
   }
 }
-.typo3-debugPanel-dragDropArrowDown {
-  background-image: url('../../../../icons/gfx/arrowdown.png');
-  display: block;
-  visibility: visible;
-  z-index: 20000;
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 0;
-  left: 0;
-}
 .collapse-horizontal {
   height: auto;
   width: 0;
@@ -11528,6 +11517,53 @@ fieldset[disabled] .live-search-list .x-btn button.active {
 .search-list-help-content p {
   margin-top: 0.5em;
   margin-bottom: 0;
+}
+#typo3-debug-console {
+  background-color: #f5f5f5;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: 5000;
+  border: 1px solid #b1b1b1;
+}
+#typo3-debug-console .topbar {
+  background-color: #d7d7d7;
+  padding: 6px 6px;
+  border-bottom: 1px solid #b1b1b1;
+}
+#typo3-debug-console .topbar:before,
+#typo3-debug-console .topbar:after {
+  content: " ";
+  display: table;
+}
+#typo3-debug-console .topbar:after {
+  clear: both;
+}
+#typo3-debug-console .topbar:before,
+#typo3-debug-console .topbar:after {
+  content: " ";
+  display: table;
+}
+#typo3-debug-console .topbar:after {
+  clear: both;
+}
+#typo3-debug-console .topbar .badge {
+  margin-left: 6px;
+}
+#typo3-debug-console .messages {
+  padding: 6px 6px;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  height: 250px;
+  overflow: auto;
+}
+#typo3-debug-console .messages .table {
+  width: auto;
+}
+#typo3-debug-console .messages p {
+  margin: 0;
+}
+#typo3-debug-console .messages p strong {
+  padding-right: 4px;
 }
 #typo3-dblist-sysnotes {
   margin-top: 15px;

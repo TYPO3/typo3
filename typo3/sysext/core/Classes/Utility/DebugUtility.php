@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class to handle debug
@@ -20,24 +21,6 @@ namespace TYPO3\CMS\Core\Utility;
  * @author Steffen Kamper <steffen@typo3.org>
  */
 class DebugUtility {
-
-	/**
-	 * Template for debug output
-	 *
-	 * @var string
-	 */
-	const DEBUG_TABLE_TEMPLATE = '
-	<table class="typo3-debug" border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;">
-		<tr>
-			<td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">%s</td>
-		</tr>
-		<tr>
-			<td>
-			%s
-			</td>
-		</tr>
-	</table>
-	';
 
 	/**
 	 * Debug
@@ -53,41 +36,21 @@ class DebugUtility {
 			ob_start();
 		}
 		$debug = self::convertVariableToString($var);
-		if ($header) {
-			$debug = sprintf(self::DEBUG_TABLE_TEMPLATE, htmlspecialchars((string)$header), $debug);
-		}
 		if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
 			$tabHeader = $header ?: 'Debug';
 			$script = '
 				(function debug() {
-					var debugMessage = ' . GeneralUtility::quoteJSvalue($debug) . ';
-					var header = ' . GeneralUtility::quoteJSvalue($tabHeader) . ';
-					var group = ' . GeneralUtility::quoteJSvalue($group) . ';
-
-					if (typeof Ext !== "object" && (top && typeof top.Ext !== "object")) {
-						document.write(debugMessage);
-						return;
-					}
-
-					if (top && typeof Ext !== "object") {
-						Ext = top.Ext;
-					}
-
-					Ext.onReady(function() {
-						var TYPO3ViewportInstance = null;
-
-						if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
-							TYPO3ViewportInstance = top.TYPO3.Backend;
-						} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
-							TYPO3ViewportInstance = TYPO3.Backend;
+					var message = ' . GeneralUtility::quoteJSvalue($debug) . ',
+						header = ' . GeneralUtility::quoteJSvalue($header) . ',
+						group = ' . GeneralUtility::quoteJSvalue($group) . ';
+					if (top.TYPO3.DebugConsole) {
+						top.TYPO3.DebugConsole.add(message, header, group);
+					} else {
+						var consoleMessage = [group, header, message].join(" | ");
+						if (typeof console === "object" && typeof console.log === "function") {
+							console.log(consoleMessage);
 						}
-
-						if (TYPO3ViewportInstance !== null) {
-							TYPO3ViewportInstance.DebugConsole.addTab(debugMessage, header, group);
-						} else {
-							document.write(debugMessage);
-						}
-					});
+					};
 				})();
 			';
 			echo GeneralUtility::wrapJS($script);
@@ -106,13 +69,11 @@ class DebugUtility {
 		if (is_array($variable)) {
 			$string = self::viewArray($variable);
 		} elseif (is_object($variable)) {
-			$string = '<strong>|Object:<pre>';
-			$string .= print_r($variable, TRUE);
-			$string .= '</pre>|</strong>';
+			$string = json_encode($variable, TRUE);
 		} elseif ((string)$variable !== '') {
-			$string = '<strong>|' . htmlspecialchars((string)$variable) . '|</strong>';
+			$string = htmlspecialchars((string)$variable);
 		} else {
-			$string = '<strong>| debug |</strong>';
+			$string = '| debug |';
 		}
 		return $string;
 	}
@@ -191,50 +152,14 @@ class DebugUtility {
 	 *
 	 * @param mixed $rows Array of arrays with similar keys
 	 * @param string $header Table header
-	 * @param bool $returnHTML If TRUE, will return content instead of echo'ing out.
+	 * @param bool $returnHTML If TRUE, will return content instead of echo'ing out. Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return void Outputs to browser.
 	 */
 	static public function debugRows($rows, $header = '', $returnHTML = FALSE) {
-		if (is_array($rows)) {
-			$firstEl = reset($rows);
-			if (is_array($firstEl)) {
-				$headerColumns = array_keys($firstEl);
-				$tRows = array();
-				// Header:
-				$tRows[] = '<tr><td colspan="' . count($headerColumns) . '" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' . htmlspecialchars($header) . '</strong></td></tr>';
-				$tCells = array();
-				foreach ($headerColumns as $key) {
-					$tCells[] = '
-							<td><font face="Verdana,Arial" size="1"><strong>' . htmlspecialchars($key) . '</strong></font></td>';
-				}
-				$tRows[] = '
-						<tr>' . implode('', $tCells) . '
-						</tr>';
-				// Rows:
-				foreach ($rows as $singleRow) {
-					$tCells = array();
-					foreach ($headerColumns as $key) {
-						$tCells[] = '
-							<td><font face="Verdana,Arial" size="1">' . (is_array($singleRow[$key]) ? self::debugRows($singleRow[$key], '', TRUE) : htmlspecialchars($singleRow[$key])) . '</font></td>';
-					}
-					$tRows[] = '
-						<tr>' . implode('', $tCells) . '
-						</tr>';
-				}
-				$table = '
-					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">' . implode('', $tRows) . '
-					</table>';
-				if ($returnHTML) {
-					return $table;
-				} else {
-					echo $table;
-				}
-			} else {
-				debug('Empty array of rows', $header);
-			}
-		} else {
-			debug('No array of rows', $header);
+		if ($returnHTML !== FALSE) {
+			GeneralUtility::deprecationLog('Setting the parameter $returnHTML is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8.');
 		}
+		self::debug(DebuggerUtility::var_dump($rows, $header, 8, FALSE, TRUE, TRUE), $header);
 	}
 
 	/**
@@ -264,48 +189,7 @@ class DebugUtility {
 	 * @return string HTML output
 	 */
 	static public function viewArray($array_in) {
-		if (is_array($array_in)) {
-			$result = '
-			<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
-			if (count($array_in) == 0) {
-				$result .= '<tr><td><font face="Verdana,Arial" size="1"><strong>EMPTY!</strong></font></td></tr>';
-			} else {
-				foreach ($array_in as $key => $val) {
-					$result .= '<tr>
-						<td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string)$key) . '</font></td>
-						<td>';
-					if (is_array($val)) {
-						$result .= self::viewArray($val);
-					} elseif (is_object($val)) {
-						$string = '';
-						if (method_exists($val, '__toString')) {
-							$string .= get_class($val) . ': ' . (string)$val;
-						} else {
-							$string .= print_r($val, TRUE);
-						}
-						$result .= '<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string)) . '<br /></font>';
-					} else {
-						if (gettype($val) == 'object') {
-							$string = 'Unknown object';
-						} else {
-							$string = (string)$val;
-						}
-						$result .= '<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string)) . '<br /></font>';
-					}
-					$result .= '</td>
-					</tr>';
-				}
-			}
-			$result .= '</table>';
-		} else {
-			$result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
-				<tr>
-					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string)$array_in)) . '<br /></font></td>
-				</tr>
-			</table>';
-		}
-		// Output it as a string.
-		return $result;
+		return DebuggerUtility::var_dump($array_in, '', 8, FALSE, TRUE, TRUE);
 	}
 
 	/**

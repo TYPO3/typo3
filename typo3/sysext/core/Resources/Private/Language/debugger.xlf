@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1417684108" source-language="en" datatype="plaintext" original="messages" date="2014-12-04T09:12:34Z" product-name="core">
+		<header/>
+		<body>
+			<trans-unit id="debuggerconsole.autoscroll" xml:space="preserve">
+				<source>Scroll down automatically</source>
+			</trans-unit>
+			<trans-unit id="debuggerconsole.toggle.expand" xml:space="preserve">
+				<source>Expand</source>
+			</trans-unit>
+			<trans-unit id="debuggerconsole.toggle.collapse" xml:space="preserve">
+				<source>Collapse</source>
+			</trans-unit>
+			<trans-unit id="debuggerconsole.clear" xml:space="preserve">
+				<source>Clear</source>
+			</trans-unit>
+			<trans-unit id="debuggerconsole.close" xml:space="preserve">
+				<source>Close</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

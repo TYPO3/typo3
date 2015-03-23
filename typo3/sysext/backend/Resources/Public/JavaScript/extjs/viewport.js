@@ -159,8 +159,6 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 		this.NavigationIframe = Ext.getCmp('typo3-navigationIframe');
 		this.Topbar = Ext.getCmp('typo3-topbar');
 		this.ModuleMenuContainer = Ext.getCmp('typo3-module-menu');
-		this.DebugConsole = Ext.getCmp('typo3-debug-console');
-
 	}
 });
 

@@ -1367,10 +1367,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'extDirect_timeoutMessage' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xlf:extDirect_timeoutMessage')
 			));
 		}
+
 		$token = ($api = '');
 		if (TYPO3_MODE === 'BE') {
 			$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 			$token = $formprotection->generateToken('extDirect');
+
+			// Debugger Console strings
+			$this->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
 		}
 		/** @var $extDirect \TYPO3\CMS\Core\ExtDirect\ExtDirectApi */
 		$extDirect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class);

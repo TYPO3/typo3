@@ -1,0 +1,39 @@
+@console-border-color: darken(@gray-light, 15%);
+#typo3-debug-console {
+	background-color: @gray-lighter;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	z-index: 5000;
+	border: 1px solid @console-border-color;
+
+	.topbar {
+		.clearfix();
+		background-color: @gray-light;
+		padding: @padding-base-vertical @padding-base-horizontal;
+		border-bottom: 1px solid @console-border-color;
+
+		.badge {
+			margin-left: @padding-base-vertical;
+		}
+	}
+
+	.messages {
+		padding: @padding-base-vertical @padding-base-horizontal;
+		font-family: @font-family-monospace;
+		height: 250px;
+		overflow: auto;
+
+		.table {
+			width: auto;
+		}
+
+		p {
+			margin: 0;
+
+			strong {
+				padding-right: @padding-small-horizontal;
+			}
+		}
+	}
+}
