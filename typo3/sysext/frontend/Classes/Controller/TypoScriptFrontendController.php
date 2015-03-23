@@ -3273,12 +3273,6 @@ class TypoScriptFrontendController {
 		if ($this->no_cacheBeforePageGen) {
 			$this->set_no_cache('no_cache has been set before the page was generated - safety check', TRUE);
 		}
-		// Fix local anchors in links, if flag set
-		if ($this->doLocalAnchorFix() == 'all') {
-			$GLOBALS['TT']->push('Local anchor fix, all', '');
-			$this->prefixLocalAnchorsWithScript();
-			$GLOBALS['TT']->pull();
-		}
 		// Hook for post-processing of page content cached/non-cached:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'])) {
 			$_params = array('pObj' => &$this);
@@ -3288,12 +3282,6 @@ class TypoScriptFrontendController {
 		}
 		// Processing if caching is enabled:
 		if (!$this->no_cache) {
-			// Fix local anchors in links, if flag set
-			if ($this->doLocalAnchorFix() == 'cached') {
-				$GLOBALS['TT']->push('Local anchor fix, cached', '');
-				$this->prefixLocalAnchorsWithScript();
-				$GLOBALS['TT']->pull();
-			}
 			// Hook for post-processing of page content before being cached:
 			if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-cached'])) {
 				$_params = array('pObj' => &$this);
@@ -3511,8 +3499,10 @@ class TypoScriptFrontendController {
 	 * Returns the mode of Local Anchor prefixing
 	 *
 	 * @return string Keyword: "all", "cached" or "output
+	 * @deprecated The TypoScript option "config.prefixLocalAnchors" and the according method in TSFE have been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.
 	 */
 	public function doLocalAnchorFix() {
+		GeneralUtility::logDeprecatedFunction();
 		return isset($this->config['config']['prefixLocalAnchors']) ? $this->config['config']['prefixLocalAnchors'] : NULL;
 	}
 
@@ -3584,12 +3574,6 @@ class TypoScriptFrontendController {
 		// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
 		if (!$this->isClientCachable) {
 			$this->contentStrReplace();
-		}
-		// Fix local anchors in links, if flag set
-		if ($this->doLocalAnchorFix() == 'output') {
-			$GLOBALS['TT']->push('Local anchor fix, output', '');
-			$this->prefixLocalAnchorsWithScript();
-			$GLOBALS['TT']->pull();
 		}
 		// Hook for post-processing of page content before output:
 		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'])) {
@@ -3983,8 +3967,10 @@ class TypoScriptFrontendController {
 	 * Substitutes all occurencies of <a href="#"... in $this->content with <a href="[path-to-url]#"...
 	 *
 	 * @return void Works directly on $this->content
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function prefixLocalAnchorsWithScript() {
+		GeneralUtility::logDeprecatedFunction();
 		if (!$this->beUserLogin) {
 			if (!is_object($this->cObj)) {
 				$this->newCObj();
