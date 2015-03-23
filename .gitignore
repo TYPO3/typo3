@@ -25,6 +25,7 @@
 .TemporaryItems
 .webprj
 bin/*
+Build/node_modules/*
 nbproject
 Packages/*
 typo3temp/*

@@ -1,0 +1,15 @@
+{
+	"name": "typo3-cms",
+	"description": "TYPO3 CMS is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.",
+	"repository": "https://git.typo3.org/Packages/TYPO3.CMS.git",
+	"readme": "../README.md",
+	"homepage": "http://www.typo3.org",
+	"author": "TYPO3 CMS Core Team",
+	"version": "7.2.0-dev",
+	"license": "GPL-2.0+",
+	"devDependencies": {
+		"grunt": "~0.4.5",
+		"grunt-contrib-less": "~1.0.0",
+		"grunt-contrib-watch": "~0.6.1"
+	}
+}
