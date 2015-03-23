@@ -3036,7 +3036,7 @@ class ImportExport {
 
 					if (isset($fieldConfiguration['titleTexts'])) {
 						$titleTextField = $fieldConfiguration['titleTexts'];
-						if ($row[$titleTextField] !== '') {
+						if (isset($row[$titleTextField]) && $row[$titleTextField] !== '') {
 							$titleTextContents = explode(LF, $row[$titleTextField]);
 							$updateData[$table][$uid][$titleTextField] = '';
 						}
@@ -3044,7 +3044,7 @@ class ImportExport {
 
 					if (isset($fieldConfiguration['alternativeTexts'])) {
 						$alternativeTextField = $fieldConfiguration['alternativeTexts'];
-						if ($row[$alternativeTextField] !== '') {
+						if (isset($row[$alternativeTextField]) && $row[$alternativeTextField] !== '') {
 							$alternativeTextContents = explode(LF, $row[$alternativeTextField]);
 							$updateData[$table][$uid][$alternativeTextField] = '';
 						}

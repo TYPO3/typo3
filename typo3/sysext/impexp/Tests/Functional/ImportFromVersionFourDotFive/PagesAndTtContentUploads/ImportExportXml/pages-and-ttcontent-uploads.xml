@@ -90,8 +90,6 @@
 				<field index="hidden">0</field>
 				<field index="CType">uploads</field>
 				<field index="header">Uploads</field>
-				<field index="imagecaption">Description text one
-Description text two</field>
 				<field index="media">typo3_image2.jpg,typo3_image3.jpg</field>
 			</fieldlist>
 			<related index="rels" type="array">
