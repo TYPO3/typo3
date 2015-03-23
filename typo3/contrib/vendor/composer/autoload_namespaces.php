@@ -8,4 +8,7 @@ $baseDir = dirname(dirname(dirname($vendorDir)));
 return array(
     'TYPO3\\Flow\\' => array($baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'PEAR' => array($vendorDir . '/pear/pear_exception'),
+    'Net' => array($vendorDir . '/pear/net_url2'),
+    'HTTP_Request2' => array($vendorDir . '/pear/http_request2'),
 );

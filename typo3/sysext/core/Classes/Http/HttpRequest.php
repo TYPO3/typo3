@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once('HTTP/Request2.php');
-
 /**
  * HTTP Request Utility class
  *

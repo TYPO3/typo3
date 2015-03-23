@@ -1,0 +1,17 @@
+<phpunit bootstrap="Net/URL2.php"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="true">
+  <testsuites>
+    <testsuite name="Tests">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist>
+      <file>Net/URL2.php</file>
+    </whitelist>
+  </filter>
+</phpunit>

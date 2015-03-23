@@ -1,0 +1,38 @@
+filter:
+    excluded_paths:
+        - 'docs/*'
+tools:
+    php_code_coverage:
+        enabled: true
+        test_command: phpunit
+    php_cpd:
+        excluded_dirs:
+            - tests
+        filter:
+            excluded_paths: []
+    php_pdepend:
+        excluded_dirs:
+            - tests
+    php_hhvm:
+        filter:
+            excluded_paths: []
+    php_mess_detector:
+        filter:
+            excluded_paths: []
+    php_analyzer:
+        enabled: true
+        filter:
+            excluded_paths: ['docs/*']
+    php_code_sniffer:
+        enabled: true
+        filter:
+            excluded_paths: ['docs/*']
+        config:
+            tab_width: 4
+            encoding: utf8
+            ruleset: ~
+            standard: PEAR
+    php_loc:
+        excluded_dirs:
+            - tests
+            - docs

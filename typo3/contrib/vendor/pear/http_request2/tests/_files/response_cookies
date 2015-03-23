@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Date: Fri, 01 Jan 2010 02:03:04 GMT
+Server: Apache/3.0.1 (Unix)
+X-Powered-By: PHP/6.2.2
+Set-Cookie: foo=bar
+Set-Cookie: PHPSESSID=1234567890abcdef1234567890abcdef; path=/; secure
+Set-Cookie: A=B=C
+Set-Cookie: baz=%20a%20value; expires=Sun, 03 Jan 2010 03:04:05 GMT; domain=pear.php.net
+Content-Type: text/html; charset=windows-1251
+Content-Length: 32
+Connection: close
+
+Nothing to see here, move along.

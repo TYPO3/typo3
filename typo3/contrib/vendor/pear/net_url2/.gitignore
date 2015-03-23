@@ -1,0 +1,7 @@
+# pear related
+/Net_URL2-*.tgz
+
+# composer related
+vendor/
+/composer.lock
+/composer.phar

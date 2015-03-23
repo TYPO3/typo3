@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Date: Fri, 01 Jan 2010 02:03:04 GMT
+Server: Apache/3.0.1 (Unix)
+X-Powered-By: PHP/6.2.2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Encoding: deflate
+Content-Length: 0
+Connection: close
+

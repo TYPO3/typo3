@@ -63,7 +63,6 @@ class SystemEnvironmentBuilder {
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
 		self::handleMagicQuotesGpc();
-		self::addCorePearPathToIncludePath();
 		self::initializeGlobalVariables();
 		self::initializeGlobalTimeTrackingVariables();
 		self::initializeBasicErrorReporting();
@@ -200,25 +199,6 @@ class SystemEnvironmentBuilder {
 			$GLOBALS['HTTP_GET_VARS'] = $_GET;
 			$GLOBALS['HTTP_POST_VARS'] = $_POST;
 		}
-	}
-
-	/**
-	 * Add typo3/contrib/pear/ as first include folder in
-	 * include path, because the shipped PEAR packages use
-	 * relative paths to include their files.
-	 *
-	 * This is required for \TYPO3\CMS\Core\Http\HttpRequest
-	 * to work.
-	 *
-	 * Having the TYPO3 folder first will make sure that the
-	 * shipped version is loaded before any local PEAR package,
-	 * thus avoiding any incompatibilities with newer or older
-	 * versions.
-	 *
-	 * @return void
-	 */
-	static protected function addCorePearPathToIncludePath() {
-		set_include_path(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR . get_include_path());
 	}
 
 	/**

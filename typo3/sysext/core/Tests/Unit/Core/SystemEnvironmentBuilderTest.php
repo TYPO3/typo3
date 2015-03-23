@@ -121,17 +121,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function addCorePearPathToIncludePathAddsTypo3ContribPearToPathAsFirstEntry() {
-		$backupPath = get_include_path();
-		$this->subject->_call('addCorePearPathToIncludePath');
-		$actualValue = get_include_path();
-		set_include_path($backupPath);
-		$this->assertStringStartsWith(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR, $actualValue);
-	}
-
-	/**
-	 * @test
-	 */
 	public function initializeGlobalVariablesUnsetsGlobalErrorArray() {
 		$GLOBALS['error'] = 'foo';
 		$this->subject->_call('initializeGlobalVariables');

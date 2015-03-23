@@ -37,6 +37,7 @@
 		"ext-session": "*",
 		"ext-xml": "*",
 		"psr/log": "1.0.*@dev",
+		"pear/http_request2": "2.2.1",
 		"swiftmailer/swiftmailer": "5.2.1",
 		"helhum/class-alias-loader": "1.1.*@dev",
 		"typo3/cms-composer-installers": "1.1.*@dev"
@@ -166,5 +167,8 @@
 			"TYPO3\\CMS\\Sv\\Tests\\": "typo3/sysext/sv/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/"
 		}
-	}
+	},
+	"include-path": [
+		"./typo3/contrib/vendor/pear/http_request2"
+	]
 }

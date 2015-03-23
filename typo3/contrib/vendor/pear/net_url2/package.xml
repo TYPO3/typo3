@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.5.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0"
+         xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+  <name>Net_URL2</name>
+  <channel>pear.php.net</channel>
+  <extends>Net_URL</extends>
+  <summary>Class for parsing and handling URL.</summary>
+  <description>
+    Provides parsing of URLs into their constituent parts (scheme, host, path etc.), URL generation, and resolving of
+    relative URLs.
+  </description>
+  <lead>
+    <name>Tom Klingenberg</name>
+    <user>tkli</user>
+    <email>tkli@php.net</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>David Coallier</name>
+    <user>davidc</user>
+    <email>davidc@php.net</email>
+    <active>no</active>
+  </lead>
+  <lead>
+    <name>Christian Schmidt</name>
+    <user>schmidt</user>
+    <email>schmidt@php.net</email>
+    <active>no</active>
+  </lead>
+
+  <date>2014-12-27</date>
+  <time>14:00:00</time>
+  <version>
+    <release>2.1.1</release>
+    <api>2.1.0</api>
+  </version>
+  <stability>
+    <release>stable</release>
+    <api>stable</api>
+  </stability>
+  <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+  <notes>
+    * Fixed #20473: Normalize query and fragment broken
+  </notes>
+
+  <contents>
+    <dir name="/">
+      <dir name="docs">
+        <file baseinstalldir="Net" name="example.php" role="doc" />
+        <file baseinstalldir="Net" name="6470.php" role="doc" />
+        <file baseinstalldir="Net" name="BSD-3-CLAUSE-Heyes" role="doc" />
+      </dir>
+      <!-- //docs -->
+      <dir name="tests">
+        <file name="AllTests.php" role="test" />
+        <dir name="Net">
+          <file name="URL2Test.php" role="test">
+            <tasks:replace type="package-info" to="version" from="@package_version@" />
+          </file>
+        </dir>
+      </dir>
+      <dir name="Net">
+        <file name="URL2.php" role="php">
+          <tasks:replace type="package-info" to="version" from="@package_version@" />
+        </file>
+      </dir>
+    </dir>
+    <!-- / -->
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.1.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.0b1</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <phprelease />
+  <changelog>
+    <release>
+      <date>2014-12-27</date>
+      <time>14:00:00</time>
+      <version>
+        <release>2.1.1</release>
+        <api>2.1.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20473: Normalize query and fragment broken
+      </notes>
+    </release>
+    <release>
+      <date>2014-10-21</date>
+      <time>18:09:00</time>
+      <version>
+        <release>2.1.0</release>
+        <api>2.1.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * New: OPTION_DROP_SEQUENCE
+      </notes>
+    </release>
+    <release>
+      <date>2014-10-21</date>
+      <time>18:06:00</time>
+      <version>
+        <release>2.0.12</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Removed: OPTION_DROP_SEQUENCE
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-10-18</date>
+      <time>08:39:00</time>
+      <version>
+        <release>2.0.11</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * New: OPTION_DROP_SEQUENCE
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-10-09</date>
+      <time>22:12:00</time>
+      <version>
+        <release>2.0.10</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Imp: composer for pear
+        * Fix: Documentation problem
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-10-08</date>
+      <time>15:52:00</time>
+      <version>
+        <release>2.0.9</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20418: Incorrect normalization of URI with missing authority
+        * Upd: Test for RFC 3986 Section 1.1.2 Examples
+        * Upd: Travis CI - PHP 5.6 added
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-10-07</date>
+      <time>23:25:00</time>
+      <version>
+        <release>2.0.8</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20420: Inconsistent setAuthority and getAuthority
+        * Fixed #20423: URI with IPv6 or IPvFuture not parsed
+        * Imp: Test for RFC 3986 Section 1.1.2 Examples
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-09-07</date>
+      <time>08:34:00</time>
+      <version>
+        <release>2.0.7</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20385: Incorrect normalization of userinfo
+        * Fixed #20399: Setting userinfo to FALSE not transparent
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-07-21</date>
+      <time>00:03:00</time>
+      <version>
+        <release>2.0.6</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20304: file:// URI gets crippled
+      </notes>
+    </release>
+
+    <release>
+      <date>2014-01-01</date>
+      <time>21:59:00</time>
+      <version>
+        <release>2.0.5</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #17036: Brackets broken for query variables
+        * Fixed diverse coding style violations and misc. minor issues
+        * Increased code coverage
+      </notes>
+    </release>
+
+    <release>
+      <date>2013-12-31</date>
+      <time>01:59:00</time>
+      <version>
+        <release>2.0.4</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20161: URLs with "0" as host fail to normalize with empty path
+        * A flaw in NetURL2::removeDotSegments() introduced in 2.0.1 has been fixed
+        * New: NetURL2::removeDotSegments() emits a warning on loop limit reach
+        * Url-segment maximum count raised from 100 to 256 (loop limit)
+      </notes>
+    </release>
+
+    <release>
+      <date>2013-12-30</date>
+      <time>01:32:00</time>
+      <version>
+        <release>2.0.3</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #20156: setAuthority() flaw with "0" as host
+        * Fixed #20157: normalize() flaw with "0" as path
+        * Fixed #20158: Fragment-only references are not resolved to non-absolute base URI
+        * Fixed #20159: Authority not terminated by slash
+        * Fixed diverse coding style violations and misc. minor issues
+        * Increased code coverage
+        * Added support for Scrutinizer CI
+      </notes>
+    </release>
+
+    <release>
+      <date>2013-12-27</date>
+      <time>19:16:00</time>
+      <version>
+        <release>2.0.2</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</license>
+      <notes>
+        * Fixed #19684: Redirects containing spaces do not work
+        * Fixed diverse coding style violations and misc. minor issues
+        * Improved source package distribution
+        * Added support for Travis CI
+      </notes>
+    </release>
+
+    <release>
+      <date>2013-12-24</date>
+      <time>18:12:00</time>
+      <version>
+        <release>2.0.1</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license>BSD-3-Clause</license>
+      <notes>
+        * Fixed Bug #20013: getNormalizedURL() adds leading "@" chars in the Authority
+        * Fixed Bug #20016: Wrong data in 6d4f4dd "Package.xml preparation."
+        * Fixed Bug #19176: resolve() does not merge the path if the base path is empty
+        * Fixed Bug #19315: removeDotSegments("0") not working
+      </notes>
+    </release>
+
+    <release>
+      <date>2011-10-20</date>
+      <time>10:43:00</time>
+      <version>
+        <release>2.0.0</release>
+        <api>2.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license>BSD-3-Clause</license>
+      <notes>
+        * Fixed the version of the release. Follow the convention for Package2.
+        * Fixed Bug #18917: URL2.php moved to ./Net/Net (davidc)
+      </notes>
+    </release>
+
+    <release>
+      <version>
+        <release>1.0.0</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <date>2011-10-20</date>
+      <license>BSD-3-Clause</license>
+      <notes>
+        * Fixed Bug #17036: Problem with parsed query string
+        * Fixed Bug #17087: setOption() function is gone
+        * Fixed #17166: Fluent Interface
+        * Fixed #17167: Refactor __construct
+        * Fixed Bug #18267: setQueryVariables() fails to encode array values
+        * Fixed Bug #14399: Fixed multiple bugs in Net_URL2 (Missing setOption value, unused properties, etc.)
+      </notes>
+    </release>
+
+    <release>
+      <version>
+        <release>0.3.1</release>
+        <api>0.3.0</api>
+      </version>
+      <stability>
+        <release>beta</release>
+        <api>beta</api>
+      </stability>
+      <date>2011-02-22</date>
+      <license>BSD-3-Clause</license>
+      <notes>
+        * BC break: Removed setOption() to avoid undefined behaviour (bug #16674)
+        * Fixed Bug #16854: Invalid package.xml making it impossible to install with Pyrus
+        * Fixed Bug #16651: Port may be an empty string
+        * Fixed Bug #16653: Don't make OPTION_SEPARATOR_(IN|OUT)PUT default to arg_separator.(in|out)put
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.3.0</release>
+        <api>0.3.0</api>
+      </version>
+      <stability>
+        <release>beta</release>
+        <api>beta</api>
+      </stability>
+      <date>2009-09-05</date>
+      <license>BSD-3-Clause</license>
+      <notes>
+        * Fixed #14399 (Errors in URL parsing (items #1 and #3))
+        * Fixed #14735 (Encode query string values)
+        * Fixed #15546 (Add adding __toString())
+        * Fixed #15367 (Use RFC 3986-compliant version of rawurlencode() in PHP &lt; 5.2)
+        * Fixed #14289 (Add __get() and __set())
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.2.0</release>
+        <api>0.2.0</api>
+      </version>
+      <stability>
+        <release>beta</release>
+        <api>beta</api>
+      </stability>
+      <date>2008-06-18</date>
+      <license>BSD-3-Clause</license>
+      <notes>
+        * Major rewrite to comply with RFC3986 (bug #11574).
+        * Much better support for resolving relative URLs.
+        * WARNING: Method and property names has changed to reflect the terminology used in the RFC - THIS RELEASE IS
+        NOT BACKWARDS COMPATIBLE WITH VERSION 0.1.0.
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.1.0</release>
+        <api>0.1.0</api>
+      </version>
+      <stability>
+        <release>beta</release>
+        <api>beta</api>
+      </stability>
+      <date>2007-05-08</date>
+      <license>BSD-3-Clause</license>
+      <notes>Convert to PHP5 only. PHP4 users should continue with version 1.0.15</notes>
+    </release>
+  </changelog>
+</package>
