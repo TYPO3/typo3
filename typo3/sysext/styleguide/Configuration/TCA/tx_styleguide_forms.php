@@ -2085,10 +2085,6 @@ return array(
 					palette_6_1;Field with palette below;palettes_6,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
-
-				--div--;Access,
-					--palette--;Visibility;visibility,
-					--palette--;Access;access
 			',
 		),
 	),
@@ -2116,10 +2112,6 @@ return array(
 		),
 		'visibility' => array(
 			'showitem' => 'hidden;Shown in frontend',
-			'canNotCollapse' => 1,
-		),
-		'access' => array(
-			'showitem' => 'starttime;Publish Date, endtime;Expiration Date',
 			'canNotCollapse' => 1,
 		),
 	),
