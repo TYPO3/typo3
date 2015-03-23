@@ -170,10 +170,14 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 	ExtensionManager.updateExtension = function(data) {
 		var message = '<h1>' + TYPO3.lang['extensionList.updateConfirmation.title'] + '</h1>';
 		message += '<h2>' + TYPO3.lang['extensionList.updateConfirmation.message'] + '</h2>';
+		message += '<form>';
+		var i = 0;
 		$.each(data.updateComments, function(version, comment) {
-			message += '<h3>' + version + '</h3>';
+			message += '<h3><input type="radio" ' + (i == 0 ? 'checked="checked" ' : '') + 'name="version" value="' + version + '" /> ' + version + '</h3>';
 			message += '<div>' + comment + '</div>';
+			i++;
 		});
+		message += '</form>';
 
 		var $extManager = $(ExtensionManager.identifier.extensionManager);
 		$extManager.unmask();
@@ -195,6 +199,11 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 					trigger: function() {
 						$.ajax({
 							url: data.url,
+							data: {
+								tx_extensionmanager_tools_extensionmanagerextensionmanager: {
+									version: $('input:radio[name=version]:checked', top.TYPO3.Modal.currentModal).val()
+								}
+							},
 							dataType: 'json',
 							beforeSend: function() {
 								$extManager.mask();

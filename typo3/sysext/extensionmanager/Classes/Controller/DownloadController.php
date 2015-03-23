@@ -181,9 +181,13 @@ class DownloadController extends AbstractController {
 	 */
 	protected function updateExtensionAction() {
 		$extensionKey = $this->request->getArgument('extension');
-		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
+		$version = $this->request->getArgument('version');
+		$extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);
+		if (!$extension instanceof Extension) {
+			$extension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
+		}
 		try {
-			$this->managementService->downloadMainExtension($highestTerVersionExtension);
+			$this->managementService->downloadMainExtension($extension);
 			$this->addFlashMessage(
 				htmlspecialchars($this->translate('extensionList.updateFlashMessage.body', array($extensionKey))),
 				$this->translate('extensionList.updateFlashMessage.title')
