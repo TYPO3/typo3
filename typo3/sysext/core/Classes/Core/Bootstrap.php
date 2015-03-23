@@ -878,25 +878,22 @@ class Bootstrap {
 	 * to an URL in file typo3conf/LOCK_BACKEND or exit the script
 	 *
 	 * @throws \RuntimeException
+	 * @param bool $forceProceeding if this option is set, the bootstrap will proceed even if the user is logged in (usually only needed for special AJAX cases, see AjaxRequestHandler)
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function checkLockedBackendAndRedirectOrDie() {
+	public function checkLockedBackendAndRedirectOrDie($forceProceeding = FALSE) {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
 			throw new \RuntimeException('TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".', 1294586847);
 		}
-		if (@is_file((PATH_typo3conf . 'LOCK_BACKEND'))) {
-			if (TYPO3_PROCEED_IF_NO_USER === 2) {
-
+		if (@is_file(PATH_typo3conf . 'LOCK_BACKEND') && $forceProceeding === FALSE) {
+			$fileContent = Utility\GeneralUtility::getUrl(PATH_typo3conf . 'LOCK_BACKEND');
+			if ($fileContent) {
+				header('Location: ' . $fileContent);
 			} else {
-				$fileContent = Utility\GeneralUtility::getUrl(PATH_typo3conf . 'LOCK_BACKEND');
-				if ($fileContent) {
-					header('Location: ' . $fileContent);
-				} else {
-					throw new \RuntimeException('TYPO3 Backend locked: Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.', 1294586848);
-				}
-				die;
+				throw new \RuntimeException('TYPO3 Backend locked: Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.', 1294586848);
 			}
+			die;
 		}
 		return $this;
 	}
@@ -1088,11 +1085,12 @@ class Bootstrap {
 	 * Initializes and ensures authenticated access
 	 *
 	 * @internal This is not a public API method, do not use in own extensions
+	 * @param bool $proceedIfNoUserIsLoggedIn if set to TRUE, no forced redirect to the login page will be done
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
-	public function initializeBackendAuthentication() {
+	public function initializeBackendAuthentication($proceedIfNoUserIsLoggedIn = FALSE) {
 		$GLOBALS['BE_USER']->checkCLIuser();
-		$GLOBALS['BE_USER']->backendCheckLogin();
+		$GLOBALS['BE_USER']->backendCheckLogin($proceedIfNoUserIsLoggedIn);
 		return $this;
 	}
 

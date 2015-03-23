@@ -36,6 +36,19 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 	protected $bootstrap;
 
 	/**
+	 * List of requests that don't need a valid BE user
+	 * @var array
+	 */
+	protected $publicAjaxIds = array(
+		'BackendLogin::login',
+		'BackendLogin::logout',
+		'BackendLogin::refreshLogin',
+		'BackendLogin::isTimedOut',
+		'BackendLogin::getChallenge',
+		'BackendLogin::getRsaPublicKey'
+	);
+
+	/**
 	 * Constructor handing over the bootstrap
 	 *
 	 * @param Bootstrap $bootstrap
@@ -50,42 +63,14 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 	 * @return void
 	 */
 	public function handleRequest() {
-
-		// This is a list of requests that don't necessarily need a valid BE user
-		$noUserAjaxIDs = array(
-			'BackendLogin::login',
-			'BackendLogin::logout',
-			'BackendLogin::refreshLogin',
-			'BackendLogin::isTimedOut',
-			'BackendLogin::getRsaPublicKey',
-		);
-
 		// First get the ajaxID
 		$ajaxID = isset($_POST['ajaxID']) ? $_POST['ajaxID'] : $_GET['ajaxID'];
 		if (isset($ajaxID)) {
 			$ajaxID = (string)stripslashes($ajaxID);
 		}
 
-		// If we're trying to do an ajax login, don't require a user.
-		if (in_array($ajaxID, $noUserAjaxIDs)) {
-			define('TYPO3_PROCEED_IF_NO_USER', 2);
-		}
-
 		$GLOBALS['ajaxID'] = $ajaxID;
-		$this->bootstrap
-			->checkLockedBackendAndRedirectOrDie()
-			->checkBackendIpOrDie()
-			->checkSslBackendAndRedirectIfNeeded()
-			->checkValidBrowserOrDie()
-			->loadExtensionTables(TRUE)
-			->initializeSpriteManager()
-			->initializeBackendUser()
-			->initializeBackendAuthentication()
-			->initializeLanguageObject()
-			->initializeBackendTemplate()
-			->endOutputBufferingAndCleanPreviousOutput()
-			->initializeOutputCompression()
-			->sendHttpHeaders();
+		$this->boot($ajaxID);
 
 		// Finding the script path from the registry
 		$ajaxRegistryEntry = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID]) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID] : NULL;
@@ -150,5 +135,30 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 	 */
 	public function getPriority() {
 		return 80;
+	}
+
+	/**
+	 * Start the Backend bootstrap part
+	 *
+	 * @param string $ajaxId Contains the string of the ajaxId used
+	 */
+	protected function boot($ajaxId) {
+		// If we're trying to do an ajax login, don't require a user
+		$proceedIfNoUserIsLoggedIn = in_array($ajaxId, $this->publicAjaxIds, TRUE);
+
+		$this->bootstrap
+			->checkLockedBackendAndRedirectOrDie($proceedIfNoUserIsLoggedIn)
+			->checkBackendIpOrDie()
+			->checkSslBackendAndRedirectIfNeeded()
+			->checkValidBrowserOrDie()
+			->loadExtensionTables(TRUE)
+			->initializeSpriteManager()
+			->initializeBackendUser()
+			->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
+			->initializeLanguageObject()
+			->initializeBackendTemplate()
+			->endOutputBufferingAndCleanPreviousOutput()
+			->initializeOutputCompression()
+			->sendHttpHeaders();
 	}
 }

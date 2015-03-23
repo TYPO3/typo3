@@ -2266,12 +2266,13 @@ This is a dump of the failures:
 	 * but this will happen ONLY if the constant TYPO3_PROCEED_IF_NO_USER is set TRUE.
 	 * This function is called right after ->start() in fx. the TYPO3 CMS bootsrap
 	 *
+	 * @param bool $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
 	 * @throws \RuntimeException
 	 * @return void
 	 */
-	public function backendCheckLogin() {
+	public function backendCheckLogin($proceedIfNoUserIsLoggedIn = FALSE) {
 		if (empty($this->user['uid'])) {
-			if (!defined('TYPO3_PROCEED_IF_NO_USER') || !TYPO3_PROCEED_IF_NO_USER) {
+			if ($proceedIfNoUserIsLoggedIn === FALSE) {
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($GLOBALS['BACK_PATH']);
 			}
 		} else {

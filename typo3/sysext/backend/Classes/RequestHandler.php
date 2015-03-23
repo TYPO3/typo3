@@ -47,6 +47,13 @@ class RequestHandler implements RequestHandlerInterface {
 	 * @return void
 	 */
 	public function handleRequest() {
+		// Evaluate the constant for skipping the BE user check for the bootstrap
+		if (defined('TYPO3_PROCEED_IF_NO_USER') && TYPO3_PROCEED_IF_NO_USER) {
+			$proceedIfNoUserIsLoggedIn = TRUE;
+		} else {
+			$proceedIfNoUserIsLoggedIn = FALSE;
+		}
+
 		$this->bootstrap
 			->checkLockedBackendAndRedirectOrDie()
 			->checkBackendIpOrDie()
@@ -55,7 +62,7 @@ class RequestHandler implements RequestHandlerInterface {
 			->loadExtensionTables(TRUE)
 			->initializeSpriteManager()
 			->initializeBackendUser()
-			->initializeBackendAuthentication()
+			->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
 			->initializeLanguageObject()
 			->initializeBackendTemplate()
 			->endOutputBufferingAndCleanPreviousOutput()

@@ -50,14 +50,7 @@ class CliRequestHandler implements RequestHandlerInterface {
 		$commandLineKey = $this->getCommandLineKeyOrDie();
 		$commandLineScript = $this->getIncludeScriptByCommandLineKey($commandLineKey);
 
-		$this->bootstrap
-			->loadExtensionTables(TRUE)
-			->initializeBackendUser()
-			->initializeBackendAuthentication()
-			->initializeLanguageObject();
-
-		// Make sure output is not buffered, so command-line output and interaction can take place
-		GeneralUtility::flushOutputBuffers();
+		$this->boot();
 
 		try {
 			include($commandLineScript);
@@ -65,6 +58,27 @@ class CliRequestHandler implements RequestHandlerInterface {
 			fwrite(STDERR, $e->getMessage() . LF);
 			exit(99);
 		}
+	}
+
+	/**
+	 * Execute TYPO3 bootstrap
+	 */
+	protected function boot() {
+		// Evaluate the constant for skipping the BE user check for the bootstrap
+		if (defined('TYPO3_PROCEED_IF_NO_USER') && TYPO3_PROCEED_IF_NO_USER) {
+			$proceedIfNoUserIsLoggedIn = TRUE;
+		} else {
+			$proceedIfNoUserIsLoggedIn = FALSE;
+		}
+
+		$this->bootstrap
+			->loadExtensionTables(TRUE)
+			->initializeBackendUser()
+			->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
+			->initializeLanguageObject();
+
+		// Make sure output is not buffered, so command-line output and interaction can take place
+		GeneralUtility::flushOutputBuffers();
 	}
 
 	/**
