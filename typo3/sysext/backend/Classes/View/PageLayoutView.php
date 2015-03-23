@@ -1843,10 +1843,14 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					. $id . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRecord['doktype']
 					. '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='
 					. rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'';
-				return $this->getLanguageService()->getLL('new_language', TRUE)
-					. ': <select name="createNewLanguage" onchange="' . htmlspecialchars($onChangeContent) . '">
-						' . implode('', $langSelItems) . '
-					</select><br /><br />';
+				return '<div class="form-inline form-inline-spaced">'
+					. '<div class="form-group">'
+					. '<label for="createNewLanguage">'
+					. $this->getLanguageService()->getLL('new_language', TRUE)
+					. '</label>'
+					. '<select class="form-control input-sm" name="createNewLanguage" onchange="' . htmlspecialchars($onChangeContent) . '">'
+					. implode('', $langSelItems)
+					. '</select></div></div>';
 			}
 		}
 		return '';
