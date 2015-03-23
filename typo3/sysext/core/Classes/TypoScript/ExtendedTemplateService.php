@@ -439,11 +439,8 @@ class ExtendedTemplateService extends TemplateService {
 				$LN = $a == $c ? 'blank' : 'line';
 				$BTM = $a == $c ? 'bottom' : '';
 				$PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
-				$HTML .= $depthData;
-				$theIcon = IconUtility::getSpriteIcon('treeline-' . $PM . $BTM);
-				if ($PM == 'join') {
-					$HTML .= $theIcon;
-				} else {
+				$HTML .= $depthData . '<li>';
+				if ($PM !== 'join') {
 					$urlParameters = array(
 						'id' => $GLOBALS['SOBE']->id,
 						'tsbr[' . $depth . ']' => $deeper ? 0 : 1
@@ -452,7 +449,7 @@ class ExtendedTemplateService extends TemplateService {
 						$urlParameters['breakPointLN'] = GeneralUtility::_GP('breakPointLN');
 					}
 					$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
-					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
+					$HTML .= '<a class="list-tree-control' . ($PM === 'minus' ? ' list-tree-control-open' : ' list-tree-control-closed') . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '"><i class="fa"></i></a>';
 				}
 				$label = $key;
 				// Read only...
@@ -480,7 +477,7 @@ class ExtendedTemplateService extends TemplateService {
 						$label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($ln) . '">' . $label . '</a>';
 					}
 				}
-				$HTML .= '[' . $label . ']';
+				$HTML .= '<span class="list-tree-group">[' . $label . ']</span>';
 				if (isset($arr[$key])) {
 					$theValue = $arr[$key];
 					if ($this->fixedLgd) {
@@ -506,17 +503,19 @@ class ExtendedTemplateService extends TemplateService {
 							$comment = preg_replace('/^[#\\*\\s]+/', '# ', $comment);
 							// Masking HTML Tags: Replace < with &lt; and > with &gt;
 							$comment = htmlspecialchars($comment);
-							$HTML .= ' <span class="comment">' . trim($comment) . '</span>';
+							$HTML .= ' <i class="text-muted">' . trim($comment) . '</i>';
 						}
 					}
 				}
-				$HTML .= '<br />';
 				if ($deeper) {
-					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData
-						. IconUtility::getSpriteIcon('treeline-' . $LN), '', $arr[$key], $alphaSort);
+					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData, '', $arr[$key], $alphaSort);
 				}
 			}
 		}
+		if ($HTML !== '') {
+			$HTML = '<ul class="list-tree text-monospace">' . $HTML . '</ul>';
+		}
+
 		return $HTML;
 	}
 
