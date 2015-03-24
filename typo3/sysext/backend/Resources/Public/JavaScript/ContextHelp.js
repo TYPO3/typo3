@@ -51,8 +51,15 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover'],
 		TYPO3.Popover.popover($element);
 
 		$(document).on('show.bs.popover', ContextHelp.selector, function(evt) {
-			if ($(this).attr('data-loaded') === 'false' && $(this).data('table')) {
-				ContextHelp.loadHelp($(this));
+			var $me = $(this),
+				description = $me.data('description');
+			if (typeof description !== 'undefined' && description !== '') {
+				TYPO3.Popover.setOptions($me, {
+					title: $me.data('title'),
+					content: description
+				});
+			} else if ($me.attr('data-loaded') === 'false' && $me.data('table')) {
+				ContextHelp.loadHelp($me);
 			}
 		});
 		$(document).on('shown.bs.popover', ContextHelp.selector, function(evt) {
@@ -62,9 +69,10 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover'],
 			}
 		});
 		$(document).on('click', '.tipIsLinked', function(e) {
+			var $me = $(this);
 			$('.popover').each(function() {
-				if ($(this).has(e.target).length) {
-					ContextHelp.showHelpPopup($(this).data('bs.popover').$element);
+				if ($me.has(e.target).length) {
+					ContextHelp.showHelpPopup($me.data('bs.popover').$element);
 				}
 			});
 		});
@@ -122,8 +130,8 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover'],
 				var title = data.title || '';
 				var content = data.content || '<p></p>';
 				TYPO3.Popover.setOptions($trigger, {
-					'title': title,
-					'content': content
+					title: title,
+					content: content
 				});
 				$trigger
 					.attr('data-loaded', 'true')
