@@ -7965,6 +7965,7 @@ div#contentMenu1 {
   margin-left: 6px;
 }
 #typo3-docheader .buttongroup {
+  float: left;
   margin-right: 6px;
 }
 #typo3-docheader .buttongroup .c-inputButton {
