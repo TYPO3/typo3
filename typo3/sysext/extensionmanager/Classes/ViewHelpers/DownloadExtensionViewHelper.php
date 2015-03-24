@@ -37,6 +37,9 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 	 */
 	public function render(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
 		$installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
+		if (empty($installPaths)) {
+			return '';
+		}
 		$pathSelector = '<ul class="is-hidden">';
 		foreach ($installPaths as $installPathType => $installPath) {
 			$pathSelector .= '<li>
