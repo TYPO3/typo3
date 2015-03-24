@@ -97,16 +97,14 @@ table#typo3-tree {
 
 	tr {
 		td {
-			padding: 0px;
+			padding: 0;
 
 			img {
 				vertical-align: middle;
+				&.c-recIcon {
+					margin-right: 1px;
+				}
 			}
-
-			img.c-recIcon {
-				margin-right: 1px;
-			}
-
 		}
 	}
 
@@ -167,7 +165,6 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbod
 ul.tree {
 	line-height: 12px;
 	list-style: none;
-	padding-left: 0;
 	clear: both;
 	margin: 16px 0 0 10px;
 	padding: 0;
@@ -187,9 +184,8 @@ ul.tree {
 	}
 
 	ul {
-		padding: 0;
+		padding: 0 0 0 19px;
 		margin: 0;
-		padding-left: 19px;
 		list-style: none;
 
 		li {
@@ -202,9 +198,8 @@ ul.tree {
 		li.active  {
 			div.treeLinkItem {
 				background-color: #fff;
-				border-color: #d7d7d7;
-				border-width: 1px 0 1px 1px;
-				border-style: solid;
+				boder: 1px solid #d7d7d7;
+				border-right: 0;
 			}
 
 			li div.treeLinkItem {
@@ -274,10 +269,8 @@ ul.tree div.treeLinkItem span.dragIcon {
 }
 
 #treeFilterBox {
+	background: url('../../../../icons/gfx/filter_bg.gif') 0 -2px no-repeat;
 	background-color: #dadada;
-	background-image: url('../../../../icons/gfx/filter_bg.gif');
-	background-repeat: no-repeat;
-	background-position: 0 -2px;
 	display: none;
 	height: 25px;
 	position: absolute;
@@ -299,11 +292,11 @@ ul.tree div.treeLinkItem span.dragIcon {
 }
 
 #treeFilterReset {
-	border: 0;
-	cursor: pointer;
-	left: 192px;
 	position: absolute;
 	top: 5px;
+	left: 192px;
+	border: 0;
+	cursor: pointer;
 	visibility: hidden;
 }
 
@@ -369,7 +362,7 @@ table#typo3-tree tr:hover {
 
 #treeFilter {
 	background: transparent;
-	border: 0px;
+	border: 0;
 }
 
 #tree-toolbar-filter-item {

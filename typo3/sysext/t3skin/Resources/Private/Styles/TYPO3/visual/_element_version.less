@@ -31,22 +31,39 @@ table#typo3-versionSelector {
 	background-color: transparent;
 }
 
-table.ver-subtree a {
-	text-decoration: none;
+table.ver-subtree {
+	a {
+		text-decoration: none;
+	}
+	tr td.iconTitle {
+		white-space: nowrap;
+	}
+	tr td.diffCell {
+		white-space: normal;
+	}
+	table.diffTable {
+		background-color: white;
+		border: 1px solid black;
+	}
+	tr.typo3-ver td.iconTitle,
+	tr.typo3-ver td.diffCell,
+	tr.typo3-ver td.cmdCell {
+		background-color: #c5c1b5;
+	}
+	tr.typo3-ver-hl td.iconTitle,
+	tr.typo3-ver-hl td.diffCell,
+	tr.typo3-ver-hl td.cmdCell {
+		background-color: #999;
+	}
+	tr.typo3-ver-new td {
+		background-color: #eee;
+		color: #666;
+	}
+	tr.typo3-ver-noComp td {
+		font-style: italic;
+	}
 }
 
-table.ver-subtree tr td.iconTitle {
-	white-space: nowrap;
-}
-
-table.ver-subtree tr td.diffCell {
-	white-space: normal;
-}
-
-table.ver-subtree table.diffTable {
-	background-color: white;
-	border: 1px solid black;
-}
 
 table.ver-subtree div.diffLayer,
 div.logLayer {
@@ -59,26 +76,6 @@ table.ver-verElement td.c-diffCell {
 	border: 1px solid #666;
 }
 
-table.ver-subtree tr.typo3-ver td.iconTitle,
-table.ver-subtree tr.typo3-ver td.diffCell,
-table.ver-subtree tr.typo3-ver td.cmdCell {
-	background-color: #c5c1b5;
-}
-
-table.ver-subtree tr.typo3-ver-hl td.iconTitle,
-table.ver-subtree tr.typo3-ver-hl td.diffCell,
-table.ver-subtree tr.typo3-ver-hl td.cmdCell {
-	background-color: #999;
-}
-
-table.ver-subtree tr.typo3-ver-new td {
-	background-color: #eee;
-	color: #666;
-}
-
-table.ver-subtree tr.typo3-ver-noComp td {
-	font-style: italic;
-}
 
 .ver-wl-table {
 	border: 1px solid black;

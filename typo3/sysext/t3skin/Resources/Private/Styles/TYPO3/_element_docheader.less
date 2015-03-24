@@ -19,76 +19,65 @@
 		margin-bottom: 3px;
 	}
 
+	// left col
 	.left {
-		float: left;
-
-		//
-		// Extra margin 6px added to it-icon margin, doubled spacing = 12px
-		//
-		.buttongroup {
-			.pull-left;
-			margin-right: 6px;
-			.c-inputButton {
-				color: inherit;
-			}
-		}
-
-		select {
-			margin-right: 12px;
-		}
+		&:extend(.pull-left);
 		.t3-icon {
 			margin-right: 6px;
 		}
-
 	}
-
+	// right col
 	.right {
-		.pull-right;
-
+		&:extend(.pull-right);
 		.t3-icon {
 			margin-left: 6px;
 		}
 	}
 
+	// Extra margin 6px added to it-icon margin, doubled spacing = 12px
+	.buttongroup {
+		margin-right: 6px;
+		.c-inputButton {
+			color: inherit;
+		}
+	}
 
-	.typo3-docheader-functions {
+	select {
+		margin-right: 12px;
+	}
+
+	a {
+		color: @docheader-text;
+
+		&:hover {
+			color: #000;
+		}
+	}
+
+	.typo3-docheader-functions,
+	.typo3-docheader-buttons {
 		color: @docheader-text;
 		border-bottom: 1px solid @docheader-border;
+		overflow: hidden;
+		padding: 0 24px;
+	}
+
+	// first row
+	.typo3-docheader-functions {
 		height: 27px;
 		line-height: 27px;
-		padding: 0 24px;
-		overflow: hidden;
 
-		a {
-			color: @docheader-text;
-
-			&:hover {
-				color: #000;
-			}
-		}
-
-		//
 		// overwrite defaults from normalize.css
-		//
 		select {
 			color: @docheader-text;
 		}
 	}
 
+	// second row
 	.typo3-docheader-buttons {
-		color: @docheader-text;
-		border-bottom: 1px solid @docheader-border;
 		height: 22px;
-		padding: 3px 24px;
-		overflow: hidden;
-
-		a {
-			color: @docheader-text;
-
-			&:hover {
-				color: #000;
-			}
-		}
+		padding-top: 3px;
+		padding-bottom: 3px;
 	}
 }
 

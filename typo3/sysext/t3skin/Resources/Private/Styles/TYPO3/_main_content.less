@@ -45,12 +45,15 @@ ol {
 // Preformatted text - not used so much in TYPO3
 
 pre {
-	margin: 0px;
+	margin: 0;
 }
 
 // horizontal ruler
 
+hr,
 div.hr {
+	background: none;
+	border: none;
 	height: 1px;
 }
 
@@ -74,14 +77,6 @@ video {
 //
 // Various classes
 //
-
-div.diff-r {
-	padding: 3px 3px 3px 3px;
-}
-
-div.diff-g {
-	padding: 3px 3px 3px 3px;
-}
 
 img.absmiddle {
 	vertical-align: middle;
@@ -116,14 +111,6 @@ a.t3-link {
 	text-decoration: underline;
 }
 
-// horizontal ruler
-
-hr, div.hr {
-	background: none;
-	border: none;
-	height: 1px;
-}
-
 em {
 	font-style: italic;
 }
@@ -137,7 +124,7 @@ em {
 .typo3-app-icon {
 	position: relative;
 	display: inline-block;
-	padding: 0px;
+	padding: 0;
 	height: @app-icon-width;
 	width: @app-icon-height;
 	overflow: hidden;
@@ -182,19 +169,22 @@ em {
 .diff-r {
 	color: red;
 }
-
-.diff-g {
-	color: green;
-}
-
 div.diff-r {
 	background-color: red;
 	color: black;
 }
 
+.diff-g {
+	color: green;
+}
 div.diff-g {
 	background-color: green;
 	color: black;
+}
+
+div.diff-r,
+div.diff-g {
+	padding: 3px;
 }
 
 // used in the admin tools => DB check
@@ -222,10 +212,10 @@ div.diff-g {
 table.warningbox {
 	border: solid 2px black;
 	background-color: yellow;
-	margin: 20px 0px 20px 0px;
+	margin: 20px 0;
 
 	td {
-		padding: 20px 20px 20px 20px;
+		padding: 20px;
 		font-weight: bold;
 
 		a {
@@ -238,7 +228,7 @@ div.warningbox {
 	border: solid 2px black;
 	background-color: yellow;
 	font-weight: bold;
-	margin: 10px 0px 10px 0px;
+	margin: 10px 0;
 	padding: 10px;
 }
 

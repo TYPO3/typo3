@@ -3,12 +3,6 @@
 //
 
 // Extension list
-.typo3-extension-list {
-	.ext-icon {
-		max-height: 16px;
-		width: auto;
-	}
-}
 .typo3-extensionmanager-headerRowLeft {
 	float: left;
 }
@@ -188,42 +182,62 @@
 	float: left;
 	cursor: pointer;
 }
-.paging_full_numbers .ui-button {
-	padding: 2px 6px;
-	margin: 0;
-	cursor: pointer;
-	color: #333 !important;
-}
-.dataTables_paginate .ui-button {
-	margin-right: -0.1em !important;
-}
 .paging_full_numbers {
 	float: right;
+	.ui-button {
+		padding: 2px 6px;
+		margin: 0;
+		cursor: pointer;
+		color: #333 !important;
+	}
 }
 .dataTables_paginate {
 	width: auto;
-}
-.typo3-extension-list tr.installed td {
-	background-color: #c8ffaa;
-}
-.typo3-extension-list tr.available td {
-	background-color: #E1E1aa;
-}
-.typo3-extension-manager .insecure {
-	color: #ff2262;
-}
-.typo3-extension-manager .outdated {
-	color: #0c08ff;
-}
-.typo3-extension-manager form#extensionUploadForm {
-	margin-bottom: 0;
-	div.control-group:last-child {
-		margin-bottom: 0;
+	.ui-button {
+		margin-right: -0.1em !important;
 	}
 }
-.typo3-extension-list .inactive {
-	color: rgb(170, 170, 170);
+.typo3-extension-list {
+
+	.ext-icon {
+		max-height: 16px;
+		width: auto;
+	}
+
+	tr.installed td {
+		background-color: #c8ffaa;
+	}
+
+	tr.available td {
+		background-color: #E1E1aa;
+	}
+
+	.inactive {
+		color: rgb(170, 170, 170);
+	}
+
+	// Hide author for now
+	.author {
+		display: none;
+	}
 }
+
+
+.typo3-extension-manager {
+	.insecure {
+		color: #ff2262;
+	}
+	.outdated {
+		color: #0c08ff;
+	}
+	form#extensionUploadForm {
+		margin-bottom: 0;
+		div.control-group:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
 .headerTooltip,
 .tooltip {
 	.box-shadow(2px 2px 11px #666);
@@ -280,13 +294,6 @@
 	display: none;
 }
 
-.typo3-extension-list {
-	// Hide author for now
-	.author {
-		display: none;
-	}
-}
-
 // Show all versions
 .versions-all {
 	display: inline-block;
@@ -323,12 +330,3 @@ span.ter-ext-state {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-

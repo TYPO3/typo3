@@ -10,9 +10,18 @@
 		height: 100%;
 	}
 
+	.x-toolbar {
+		background: none;
+		border: none;
+		padding: 0;
+	}
+
 	.x-panel-tbar {
 		padding: 0;
 		margin: 0;
+		.x-toolbar {
+			height: 26px;
+		}
 	}
 
 	.t3-icon {
@@ -34,18 +43,6 @@
 		margin-top: 3px;
 		margin-bottom: -2px;
 		padding: 2px 3px 4px 3px;
-	}
-
-	.x-panel-tbar {
-		.x-toolbar {
-			height: 26px;
-		}
-	}
-
-	.x-toolbar {
-		background: none;
-		border: none;
-		padding: 0;
 	}
 
 	.x-toolbar-ct {
@@ -172,7 +169,7 @@
 .x-dd-drag-ghost {
 	background-color: inherit;
 	border: none;
-	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
 	span {
 		margin: 0 1px 0 3px;
@@ -275,9 +272,7 @@
 	border: none;
 	top: 0;
 	left: 0;
-	background-repeat: repeat-x;
-	background-image: none;
-	background-color: transparent;
+	background: none;
 }
 
 
@@ -337,10 +332,6 @@
 
 .typo3-pagetree-topPanel-item {
 	padding: 0 3px 0 3px;
-	height: 22px;
-}
-
-#typo3-pagetree-topPanel-filterWrap {
 	height: 22px;
 }
 
@@ -404,7 +395,7 @@
 	color: #434343;
 	cursor: pointer;
 	display: inline-block;
-	padding: 0px 6px;
+	padding: 0 6px;
 	margin-left: 24px;
 
 	&:hover {
@@ -444,25 +435,19 @@
 // Indicator Bar
 //
 
+#typo3-pagetree-indicatorBar-filter,
 #typo3-pagetree-indicatorBar-temporaryMountPoint {
 	background-color: #eaf7ff;
 	border-bottom: 1px solid #c5dbe6;
 	color: #4c73a1;
 
 	p {
-		line-height: 13px;
 		padding: 10px 35px;
 	}
 }
 
-#typo3-pagetree-indicatorBar-filter {
-	background-color: #eaf7ff;
-	border-bottom: 1px solid #c5dbe6;
-	color: #4c73a1;
-
-	p {
-		padding: 10px 35px;
-	}
+#typo3-pagetree-indicatorBar-temporaryMountPoint p {
+	line-height: 13px;
 }
 
 #typo3-pagetree-indicatorBar-indicatorTitle {

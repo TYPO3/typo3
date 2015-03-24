@@ -66,36 +66,52 @@ div.typo3-TCEforms-suggest-choices {
 	position: absolute;
 	width: 250px;
 	z-index: 4000;
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		cursor: pointer;
+		background-color: #efeff4;
+		background-repeat: no-repeat;
+		background-position: 4px center;
+		list-style-type: none;
+		display: block;
+		margin: 0;
+		padding: 4px 2px 4px 24px;
+
+		&.selected {
+			background-color: #ffb !important;
+		}
+
+		&.pages {
+			background-color: #fcc;
+		}
+
+		&.suggest-noresults {
+			height: auto;
+		}
+	}
+
+	span {
+		&.suggest-uid {
+			margin-left: 0.3em;
+			font-size: 0.9em;
+		}
+
+		&.suggest-path {
+			font-size: 0.9em;
+			margin-top: 0.3em;
+			abbr {
+				border-bottom: none;
+			}
+		}
+	}
 }
 
-div.typo3-TCEforms-suggest-choices ul {
-	margin: 0;
-	padding: 0;
-}
-
-div.typo3-TCEforms-suggest-choices li {
-	cursor: pointer;
-	background-color: #efeff4;
-	background-repeat: no-repeat;
-	background-position: 4px center;
-	list-style-type: none;
-	display: block;
-	margin: 0;
-	padding: 4px 2px 4px 24px;
-}
-
-div.typo3-TCEforms-suggest-choices li.suggest-noresults {
-	height: auto;
-}
-
-div.typo3-TCEforms-suggest-choices span.suggest-uid {
-	margin-left: 0.3em;
-}
-
-div.typo3-TCEforms-suggest-choices span.suggest-path {
-	font-size: 0.9em;
-	margin-top: 0.3em;
-}
 
 //
 // TCEforms Flexforms
@@ -223,38 +239,42 @@ table.typo3-TCEforms-select-checkbox {
 	border: 1px solid #aaa;
 }
 
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
-	background-color: #fff;
-	font-weight: bold;
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
+
+	tr.c-header td {
+		background-color: #fff;
+		font-weight: bold;
+	}
+
+	tr:nth-child(2n) {
+		background-color: #f7f7f7;
+	}
+
+	tr.c-selectedItem {
+		background-color: #d8ecd0;
+	}
+
+	tr.c-invalidItem {
+		color: #dddddd;
+	}
+
+	tr:hover {
+		background-color: #dedede;
+	}
+
+	tr.c-selectedItem:hover {
+		background-color: #abd99a;
+	}
+
+	tr.c-invalidItem:hover {
+		background-color: transparent;
+	}
+
+	tr td.c-labelCell {
+		white-space: nowrap;
+	}
 }
 
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
-	background-color: #f7f7f7;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
-	background-color: #d8ecd0;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
-	color: #dddddd;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr:hover {
-	background-color: #dedede;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
-	background-color: #abd99a;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
-	background-color: transparent;
-}
-
-.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	white-space: nowrap;
-}
 
 // show text of default language under the translated input field
 
@@ -288,30 +308,9 @@ table.typo3-TCEforms-select-checkbox {
 	padding-right: 5px;
 }
 
-div.typo3-TCEforms-suggest-choices ul {
-	list-style-type: none;
-}
-
-div.typo3-TCEforms-suggest-choices li.selected {
-	background-color: #ffb !important;
-}
-
-div.typo3-TCEforms-suggest-choices li.pages {
-	background-color: #fcc;
-}
-
-div.typo3-TCEforms-suggest-choices span.suggest-uid {
-	font-size: 0.9em;
-}
-
-div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
-	border-bottom: none;
-}
-
 div.typo3-TCEforms-suggest-choises a {
 	cursor: pointer;
 }
-
 //
 // TCEforms Flexforms
 //

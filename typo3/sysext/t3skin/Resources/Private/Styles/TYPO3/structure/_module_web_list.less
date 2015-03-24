@@ -2,62 +2,59 @@
 // Web > List
 //
 
-table.typo3-dblist tr.c-table-row-spacer td {
-	display: none;
+table.typo3-dblist {
+	tr.c-table-row-spacer td {
+		display: none;
+	}
+
+	tr {
+		td {
+			div.typo3-DBctrl {
+				height: 16px;
+				min-width: 252px;
+			}
+			div.typo3-clipCtrl {
+				height: 16px;
+				min-width: 72px;
+			}
+			.typo3-DBctrl .typo3-ctrl-versioning {
+				display: block;
+				float: left;
+				height: 16px;
+				margin: 0 1px;
+				width: 16px;
+			}
+			.typo3-DBctrl .typo3-ctrl-versioning-hidden {
+				visibility: hidden;
+			}
+		}
+		td.col-icon {
+			vertical-align: middle;
+			width: 20px;
+			a img.collapseIcon {
+				margin: 1px 0 0 2px;
+			}
+		}
+		td.col-title {
+			overflow: hidden;
+			vertical-align: middle;
+			width: 350px;
+		}
+		td.col-title.localization {
+			padding-left: 18px;
+		}
+		td.col-control {
+			width: 250px;
+		}
+		td.col-control-space {
+			width: 4px;
+		}
+		td.col-clipboard {
+			width: 74px;
+		}
+	}
 }
 
-table.typo3-dblist tr td div.typo3-DBctrl {
-	height: 16px;
-	min-width: 252px;
-}
-
-table.typo3-dblist tr td div.typo3-clipCtrl {
-	height: 16px;
-	min-width: 72px;
-}
-
-table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {
-	display: block;
-	float: left;
-	height: 16px;
-	margin: 0px 1px;
-	width: 16px;
-}
-
-table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-hidden {
-	visibility: hidden;
-}
-
-table.typo3-dblist tr td.col-icon {
-	vertical-align: middle;
-	width: 20px;
-}
-
-table.typo3-dblist tr td.col-icon a img.collapseIcon {
-	margin: 1px 0px 0px 2px;
-}
-
-table.typo3-dblist tr td.col-title {
-	overflow: hidden;
-	vertical-align: middle;
-	width: 350px;
-}
-
-table.typo3-dblist tr td.col-title.localization {
-	padding-left: 18px;
-}
-
-table.typo3-dblist tr td.col-control {
-	width: 250px;
-}
-
-table.typo3-dblist tr td.col-control-space {
-	width: 4px;
-}
-
-table.typo3-dblist tr td.col-clipboard {
-	width: 74px;
-}
 
 table#typo3-dblist-fieldSelect {
 	margin-top: 20px;
@@ -67,26 +64,24 @@ table.typo3-dblist-overview {
 	margin-top: 10px;
 	margin-left: 1px;
 	width: 410px;
+	td.c-tableDescription {
+		padding-left: 10px;
+		img {
+			margin-right: 10px;
+		}
+	}
 }
 
-table.typo3-dblist-overview td.c-tableDescription {
-	padding-left: 10px;
-}
-
-table.typo3-dblist-overview td.c-tableDescription img {
-	margin-right: 10px;
-}
 
 table#typo3-versionSelector {
 	margin-bottom: 5px;
 	margin-top: 5px;
 	padding: 5px;
-}
-
-table#typo3-versionSelector td {
-	padding-left: 2px;
-	padding-right: 2px;
-	vertical-align:middle;
+	td {
+		padding-left: 2px;
+		padding-right: 2px;
+		vertical-align:middle;
+	}
 }
 
 div#typo3-newRecordLink,
@@ -106,8 +101,8 @@ div.typo3-synchronizationLink img {
 
 input.smallCheckboxes {
 	height: 12px;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	vertical-align: middle;
 	width: 12px;
 }

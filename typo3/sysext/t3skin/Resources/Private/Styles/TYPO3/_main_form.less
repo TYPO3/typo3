@@ -18,16 +18,16 @@
 //
 // Go back A-tags
 //
-a.typo3-goBack img {
-	margin-right: 5px;
-	vertical-align: middle;
+a.typo3-goBack {
+	font-weight: bold;
+	img {
+		margin-right: 5px;
+		vertical-align: middle;
+	}
 }
 span.typo3-moduleHeader img {
 	margin-right: 4px;
 	vertical-align: middle;
-}
-a.typo3-goBack {
-	font-weight: bold;
 }
 
 //
@@ -140,8 +140,7 @@ select {
 .form-inline-spaced {
 	margin: 0 -0.5em @line-height-computed;
 	.form-group {
-		margin: 0.5em;
-		margin-bottom: 0;
+		margin: 0.5em 0.5em 0;
 		label {
 			margin-right: 0.5em;
 		}
@@ -175,7 +174,7 @@ select {
 	}
 }
 .form-section-headline {
-	margin-top: 0px;
+	margin-top: 0;
 	margin-bottom: 10px;
 }
 
@@ -222,11 +221,7 @@ select {
 .form-irre-header {
 	display: table;
 	margin: -5px;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+	.user-select(none);
 }
 .form-irre-header-cell {
 	display: table-cell;
@@ -243,7 +238,7 @@ select {
 	}
 }
 .form-irre-header-icon {
-	padding-right: 0px;
+	padding-right: 0;
 }
 .form-irre-header-control {
 	cursor: auto;

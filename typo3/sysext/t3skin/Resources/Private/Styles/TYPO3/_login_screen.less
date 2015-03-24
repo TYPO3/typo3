@@ -12,7 +12,6 @@
 
 #typo3-index-php {
 	background: rgb(235, 235, 235);
-
 	min-width: 400px;
 	min-height: 550px;
 
@@ -24,116 +23,112 @@
 		z-index: 1;
 		padding-top: 50px;
 		padding-bottom: 100px;
+	}
 
-		.t3-login-header {
-			padding: @line-height-computed;
+	.t3-login-header {
+		padding: @line-height-computed;
+	}
 
-			.t3-default-logo {
-				margin: 5px 15px;
+	.t3-default-logo {
+		margin: 5px 15px;
+	}
+
+	.t3-login-body {
+		background-color: @gray-dark;
+		padding: 25px 40px;
+
+		a {
+			cursor: pointer;
+			i {
+				margin-right: 6px;
+			}
+			&.switchToOpenId {
+				color: lighten(@gray-dark, 30%);
 			}
 		}
+	}
 
-		.t3-login-body {
-			background-color: @gray-dark;
-			padding: 25px 40px;
+	.form-group {
+		margin-bottom: 10px;
+		position: relative;
 
-			.form-group {
-				margin-bottom: 10px;
-				position: relative;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 
-				.form-control {
-					border-radius: 0;
-					background-color: darken(@gray-dark, 12.5%);
-					color: lighten(@gray-dark, 30%);
-					border: none;
-					font-size: @font-size-base;
-					height: @input-height-large;
-					padding-left: 12px;
-					padding-right: 12px;
-				}
-				.form-control:hover {
-					color: #fff;
-				}
-				.form-control:focus {
-					border: none;
-					box-shadow: none;
-				}
+	.form-control {
+		border-radius: 0;
+		background-color: darken(@gray-dark, 12.5%);
+		color: lighten(@gray-dark, 30%);
+		border: none;
+		font-size: @font-size-base;
+		height: @input-height-large;
+		padding-left: 12px;
+		padding-right: 12px;
 
-				.input-group-addon {
-					background-color: darken(@gray-dark, 12.5%);
-					color: lighten(@gray-dark, 30%);
-					border-radius: 0;
-					border: none;
-				}
-
-				#t3-login-submit {
-					background-color: #ff8600;
-					background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
-					background-repeat: repeat-x;
-					text-shadow: 0px -1px 0px rgba(149, 81, 5, 0.6);
-					color: #fff;
-					padding: 4px 20px;
-					height: @input-height-large;
-				}
-
-				#t3-login-process {
-					background-color: #ff8600;
-					color: #fff;
-					cursor: wait;
-					position: absolute;
-					top: 0;
-					right: 0;
-					bottom: 0;
-					left: 0;
-					z-index: 10;
-					line-height: @input-height-large;
-					text-align: center;
-				}
-
-			}
-
-			.form-group:last-child {
-				margin-bottom: 0;
-			}
-
-			a {
-				cursor: pointer;
-
-				i {
-					margin-right: 6px;
-				}
-
-				&.switchToOpenId {
-					color: lighten(@gray-dark, 30%);
-				}
-			}
-
-
+		&:hover {
+			color: #fff;
 		}
 
-		#t3-login-news {
-			background: #fff;
-			padding: 25px 40px;
+		&:focus {
+			border: none;
+			box-shadow: none;
+		}
+	}
 
-			h4 {
-				margin-top: 0;
-			}
+	.input-group-addon {
+		background-color: darken(@gray-dark, 12.5%);
+		color: lighten(@gray-dark, 30%);
+		border-radius: 0;
+		border: none;
+	}
 
-			dl {
-				margin-bottom: 0;
+	#t3-login-submit {
+		background-color: #ff8600;
+		background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
+		background-repeat: repeat-x;
+		text-shadow: 0px -1px 0 rgba(149, 81, 5, 0.6);
+		color: #fff;
+		padding: 4px 20px;
+		height: @input-height-large;
+	}
 
-				dt {
-					span {
-						color: @headings-small-color;
-						font-size: @font-size-small;
-					}
+	#t3-login-process {
+		background-color: #ff8600;
+		color: #fff;
+		cursor: wait;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 10;
+		line-height: @input-height-large;
+		text-align: center;
+	}
 
-					font-size: @font-size-h3;
-					font-weight: @headings-font-weight;
-				}
-			}
+	#t3-login-news {
+		background: #fff;
+		padding: 25px 40px;
+
+		h4 {
+			margin-top: 0;
 		}
 
+		dl {
+			margin-bottom: 0;
+
+			dt {
+				span {
+					color: @headings-small-color;
+					font-size: @font-size-small;
+				}
+
+				font-size: @font-size-h3;
+				font-weight: @headings-font-weight;
+			}
+		}
 	}
 
 	#t3-login-copyright {
@@ -143,15 +138,12 @@
 		bottom: @line-height-computed;
 		left: @line-height-computed;
 		right: @line-height-computed;
-
 		a {
 			color: darken(@gray, 15%);
 			text-decoration: underline;
+			&:hover {
+				color: #000;
+			}
 		}
-
-		a:hover {
-			color: #000;
-		}
-
 	}
 }

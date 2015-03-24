@@ -37,51 +37,53 @@ td .alert:last-child {
 	margin-bottom: 0;
 }
 
-.alert-notice {
-	color: @state-notice-text;
-	background-color: @state-notice-bg;
-	border-color: @state-notice-border;
 
-	a {
-		color: darken(@state-notice-text, 5%);
-		&:hover {
-			color: darken(@state-notice-text, 10%);
+// alert styling
+// -------------------------
+
+.alert {
+	&-notice {
+		color: @state-notice-text;
+		background-color: @state-notice-bg;
+		border-color: @state-notice-border;
+
+		a {
+			color: darken(@state-notice-text, 5%);
+			&:hover {
+				color: darken(@state-notice-text, 10%);
+			}
 		}
 	}
-}
-
-.alert-success {
-	a {
-		color: darken(@brand-success, 10%);
-		&:hover {
-			color: darken(@brand-success, 15%);
+	&-success {
+		a {
+			color: darken(@brand-success, 10%);
+			&:hover {
+				color: darken(@brand-success, 15%);
+			}
 		}
 	}
-}
-
-.alert-info {
-	a {
-		color: darken(@brand-info, 5%);
-		&:hover {
-			color: darken(@brand-info, 10%);
+	&-info {
+		a {
+			color: darken(@brand-info, 5%);
+			&:hover {
+				color: darken(@brand-info, 10%);
+			}
 		}
 	}
-}
-
-.alert-warning {
-	a {
-		color: @brand-warning;
-		&:hover {
-			color: darken(@brand-warning, 5%)
+	&-warning {
+		a {
+			color: @brand-warning;
+			&:hover {
+				color: darken(@brand-warning, 5%)
+			}
 		}
 	}
-}
-
-.alert-danger {
-	a {
-		color: @brand-danger;
-		&:hover {
-			color: darken(@brand-danger, 10%);
+	&-danger {
+		a {
+			color: @brand-danger;
+			&:hover {
+				color: darken(@brand-danger, 10%);
+			}
 		}
 	}
 }
