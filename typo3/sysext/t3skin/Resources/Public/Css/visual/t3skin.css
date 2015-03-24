@@ -8333,6 +8333,7 @@ td .alert:last-child {
 }
 .modal-footer .btn {
   margin-right: 0;
+  min-width: 100px;
 }
 .modal-content {
   -webkit-transition: margin-top 0.1s ease-in;

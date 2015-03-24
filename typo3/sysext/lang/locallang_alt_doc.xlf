@@ -42,6 +42,18 @@
 			<trans-unit id="noDocuments_listmodule" xml:space="preserve">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
+			<trans-unit id="buttons.confirm.close_without_save.yes" xml:space="preserve">
+				<source>Yes, discard my changes</source>
+			</trans-unit>
+			<trans-unit id="buttons.confirm.close_without_save.no" xml:space="preserve">
+				<source>No, I will continue editing</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.close_without_save.title" xml:space="preserve">
+				<source>Do you want to quit without saving?</source>
+			</trans-unit>
+			<trans-unit id="label.confirm.close_without_save.content" xml:space="preserve">
+				<source>You have currently unsaved changes. Are you sure that you want to discard all changes?</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

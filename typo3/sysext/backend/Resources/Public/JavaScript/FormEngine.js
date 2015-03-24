@@ -662,6 +662,47 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			DateTimePicker.initialize();
 		});
 		FormEngine.convertTextareasResizable();
+		$(document).on('click', '.t3js-editform-close', function(e) {
+			e.preventDefault();
+			FormEngine.preventExitIfNotSaved();
+		});
+	};
+
+	/**
+	 * Show modal to confirm closing the document without saving
+	 */
+	FormEngine.preventExitIfNotSaved = function() {
+		if ($('.has-change').length > 0) {
+			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
+			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
+			top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+				{
+					text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
+					active: true,
+					trigger: function() {
+						top.TYPO3.Modal.dismiss();
+					}
+				},
+				{
+					text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
+					btnClass: 'btn-warning',
+					trigger: function() {
+						top.TYPO3.Modal.dismiss();
+						FormEngine.closeDocument();
+					}
+				}
+			]);
+		} else {
+			FormEngine.closeDocument()
+		}
+	};
+
+	/**
+	 * Close current open document
+	 */
+	FormEngine.closeDocument = function() {
+		document.editform.closeDoc.value=1;
+		document.editform.submit();
 	};
 
 	/**
