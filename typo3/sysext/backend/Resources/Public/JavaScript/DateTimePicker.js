@@ -68,10 +68,10 @@ define('TYPO3/CMS/Backend/DateTimePicker', ['jquery'], function ($) {
 							break;
 						case 'time':
 							options.pickDate = false;
-							options.format = 'hh:mm';
+							options.format = 'HH:mm';
 							break;
 						case 'timesec':
-							options.format = 'hh:mm:ss';
+							options.format = 'HH:mm:ss';
 							options.pickDate = false;
 							options.useSeconds = true;
 							break;
