@@ -1,12 +1,8 @@
-*******************************************************************************
-*                                                                             *
-*                    IDNA Convert (idna_convert.class.php)                    *
-*                                                                             *
-* http://idnaconv.phlymail.de                     mailto:phlymail@phlylabs.de *
-*******************************************************************************
-* (c) 2004-2011 phlyLabs, Berlin                                              *
-* This file is encoded in UTF-8                                               *
-*******************************************************************************
+IDNA Convert (idna_convert.class.php)
+=====================================
+http://idnaconv.phlymail.de                  mailto:phlymail@phlylabs.de
+
+(c) 2004-2014 phlyLabs, Berlin
 
 Introduction
 ------------
@@ -21,7 +17,7 @@ what you would expect them to do. You are allowed to use complete domain names,
 simple strings and complete email addresses as well. That means, that you might
 use any of the following notations:
 
-- www.nšrgler.com
+- www.nÃ¶rgler.com
 - xn--nrgler-wxa
 - xn--brse-5qa.xn--knrz-1ra.info
 
@@ -34,28 +30,33 @@ arrays. The default format is UTF-8. For setting different encodings, you can
 call the method setParams() - please see the inline documentation for details.
 ACE strings (the Punycode form) are always 7bit ASCII strings.
 
-ATTENTION: As of version 0.6.0 this class is written in the OOP style of PHP5.
+**ATTENTION:** As of version 0.6.0 this class is written in the OOP style of PHP5.
 Since PHP4 is no longer actively maintained, you should switch to PHP5 as fast as
 possible.
 We expect to see no compatibility issues with the upcoming PHP6, too.
 
-ATTENTION: BC break! As of version 0.6.4 the class per default allows the German
-ligature § to be encoded as the DeNIC, the registry for .DE allows domains
-containing §.
-In older builds "§" was mapped to "ss". Should you still need this behaviour,
+**ATTENTION:** BC break! As of version 0.6.4 the class per default allows the German
+ligature ÃŸ to be encoded as the DeNIC, the registry for .DE allows domains
+containing ÃŸ.
+In older builds "ÃŸ" was mapped to "ss". Should you still need this behaviour,
 see example 5 below.
 
-ATTENTION: As of version 0.8.0 the class fully supports IDNA 2008. Thus the 
+**ATTENTION:** As of version 0.8.0 the class fully supports IDNA 2008. Thus the
 aforementioned parameter is deprecated and replaced by a parameter to switch
 between the standards. See the updated example 5 below.
 
 Files
 -----
 idna_convert.class.php         - The actual class
+
 example.php                    - An example web page for converting
+
 transcode_wrapper.php          - Convert various encodings, see below
+
 uctc.php                       - phlyLabs' Unicode Transcoder, see below
+
 ReadMe.txt                     - This file
+
 LICENCE                        - The LGPL licence file
 
 The class is contained in idna_convert.class.php.
@@ -63,23 +64,25 @@ The class is contained in idna_convert.class.php.
 
 Examples
 --------
-1. Say we wish to encode the domain name nšrgler.com:
+1. Say we wish to encode the domain name nÃ¶rgler.com:
 
+```php
 // Include the class
 require_once('idna_convert.class.php');
 // Instantiate it
 $IDN = new idna_convert();
 // The input string, if input is not UTF-8 or UCS-4, it must be converted before
-$input = utf8_encode('nšrgler.com');
+$input = utf8_encode('nÃ¶rgler.com');
 // Encode it to its punycode presentation
 $output = $IDN->encode($input);
 // Output, what we got now
 echo $output; // This will read: xn--nrgler-wxa.com
-
+```
 
 2. We received an email from a punycoded domain and are willing to learn, how
    the domain name reads originally
 
+```php
 // Include the class
 require_once('idna_convert.class.php');
 // Instantiate it
@@ -90,13 +93,14 @@ $input = 'andre@xn--brse-5qa.xn--knrz-1ra.info';
 $output = $IDN->decode($input);
 // Output, what we got now, if output should be in a format different to UTF-8
 // or UCS-4, you will have to convert it before outputting it
-echo utf8_decode($output); // This will read: andre@bšrse.knšrz.info
-
+echo utf8_decode($output); // This will read: andre@bÃ¶rse.knÃ¶rz.info
+```
 
 3. The input is read from a UCS-4 coded file and encoded line by line. By
    appending the optional second parameter we tell enode() about the input
    format to be used
 
+```php
 // Include the class
 require_once('idna_convert.class.php');
 // Instantiate it
@@ -106,46 +110,48 @@ foreach (file('ucs4-domains.txt') as $line) {
     echo $IDN->encode(trim($line), 'ucs4_string');
     echo "\n";
 }
-
+```
 
 4. We wish to convert a whole URI into the IDNA form, but leave the path or
    query string component of it alone. Just using encode() would lead to mangled
    paths or query strings. Here the public method encode_uri() comes into play:
 
+```php
 // Include the class
 require_once('idna_convert.class.php');
 // Instantiate it
 $IDN = new idna_convert();
 // The input string, a whole URI in UTF-8 (!)
-$input = 'http://nšrgler:secret@nšrgler.com/my_pŠth_is_not_€SCII/');
+$input = 'http://nÃ¶rgler:secret@nÃ¶rgler.com/my_pÃ¤th_is_not_Ã„SCII/');
 // Encode it to its punycode presentation
 $output = $IDN->encode_uri($input);
 // Output, what we got now
-echo $output; // http://nšrgler:secret@xn--nrgler-wxa.com/my_pŠth_is_not_€SCII/
-
+echo $output; // http://nÃ¶rgler:secret@xn--nrgler-wxa.com/my_pÃ¤th_is_not_Ã„SCII/
+```
 
 5. To support IDNA 2008, the class needs to be invoked with an additional
    parameter. This can also be achieved on an instance.
 
+```php
 // Include the class
 require_once('idna_convert.class.php');
 // Instantiate it
 $IDN = new idna_convert(array('idn_version' => 2008));
-// Sth. containing the German letter §
-$input = 'meine-stra§e.de');
+// Sth. containing the German letter ÃŸ
+$input = 'meine-straÃŸe.de');
 // Encode it to its punycode presentation
 $output = $IDN->encode_uri($input);
 // Output, what we got now
 echo $output; // xn--meine-strae-46a.de
 // Switch back to old IDNA 2003, the original standard
 $IDN->set_parameter('idn_version', 2003);
-// Sth. containing the German letter §
-$input = 'meine-stra§e.de');
+// Sth. containing the German letter ÃŸ
+$input = 'meine-straÃŸe.de');
 // Encode it to its punycode presentation
 $output = $IDN->encode_uri($input);
 // Output, what we got now
 echo $output; // meine-strasse.de
-
+```
 
 Transcode wrapper
 -----------------
@@ -159,6 +165,7 @@ encode_utf8() as a replacement for utf8_encode() and
 decode_utf8() as a replacement for utf8_decode().
 
 Example usage:
+```php
 <?php
 require_once('idna_convert.class.php');
 require_once('transcode_wrapper.php');
@@ -166,7 +173,7 @@ $mystring = '<something in e.g. ISO-8859-15';
 $mystring = encode_utf8($mystring, 'ISO-8859-15');
 echo $IDN->encode($mystring);
 ?>
-
+```
 
 UCTC - Unicode Transcoder
 -------------------------
@@ -181,12 +188,13 @@ UCS-4 array is jsut an array, where each value represents one codepoint in the s
 every value is a 32bit integer value.
 
 Example usage:
+```php
 <?php
 require_once('uctc.php');
-$mystring = 'nšrgler.com';
+$mystring = 'nÃ¶rgler.com';
 echo uctc::convert($mystring, 'utf8', 'utf7imap');
 ?>
-
+```
 
 Contact us
 ----------

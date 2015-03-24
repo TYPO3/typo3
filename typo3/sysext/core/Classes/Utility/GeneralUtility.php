@@ -1251,7 +1251,6 @@ class GeneralUtility {
 			return self::$idnaStringCache[$value];
 		} else {
 			if (!self::$idnaConverter) {
-				require_once PATH_typo3 . 'contrib/idna/idna_convert.class.php';
 				self::$idnaConverter = new \idna_convert(array('idn_version' => 2008));
 			}
 			self::$idnaStringCache[$value] = self::$idnaConverter->encode($value);
