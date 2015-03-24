@@ -28,6 +28,7 @@ bin/*
 Build/node_modules/*
 nbproject
 Packages/*
+typo3/contrib/vendor/*
 typo3temp/*
 typo3conf/*
 fileadmin/*

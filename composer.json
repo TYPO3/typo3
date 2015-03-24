@@ -24,7 +24,7 @@
 		"news": "nntp://lists.typo3.org"
 	},
 	"config": {
-		"vendor-dir": "Packages/Libraries",
+		"vendor-dir": "typo3/contrib/vendor",
 		"bin-dir": "bin"
 	},
 	"scripts": {
