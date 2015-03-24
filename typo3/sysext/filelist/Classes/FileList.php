@@ -696,8 +696,7 @@ class FileList extends AbstractRecordList {
 									} else {
 										$href = $GLOBALS['SOBE']->doc->issueCommand(
 											'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
-											$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId)) .
-											'&returnUrl=' . rawurlencode($this->listURL()) . BackendUtility::getUrlToken('editRecord')
+											BackendUtility::getModuleUrl('record_edit', array('justLocalized' => rawurlencode('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId), 'returnUrl' => rawurlencode($this->listURL())), $this->backPath) . BackendUtility::getUrlToken('editRecord')
 										);
 										$flagButtonIcon = IconUtility::getSpriteIcon(
 											$flagIcon,

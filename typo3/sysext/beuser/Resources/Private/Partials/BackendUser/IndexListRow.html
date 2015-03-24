@@ -8,7 +8,7 @@
 		</a>
 	</td>
 	<td class="col-title">
-		<a href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&amp;returnUrl={returnUrl}">
+		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}">
 			<b>{backendUser.userName}</b><br />
 			{backendUser.realName}
 		</a>
@@ -27,7 +27,7 @@
 		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default"><be:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
 		<div class="btn-group" role="group">
 			<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><be:spriteManagerIcon iconName="actions-document-info" /></a>
-			<a class="btn btn-default" href="alt_doc.php?edit[be_users][{backendUser.uid}]=edit&amp;returnUrl={returnUrl}"><be:spriteManagerIcon iconName="actions-document-open" /></a>
+			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><be:spriteManagerIcon iconName="actions-document-open" /></a>
 			<f:if condition="{backendUser.currentlyLoggedIn} == 1">
 				<f:then>
 					<span class="btn btn-default disabled"><be:spriteManagerIcon iconName="empty-empty" /></span>

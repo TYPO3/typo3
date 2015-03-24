@@ -656,14 +656,17 @@ class PageLayoutController {
 		$this->doc->getContextMenuCode();
 		// Set the edit_record value for internal use in this function:
 		$edit_record = $this->edit_record;
-		// If a command to edit all records in a column is issue, then select all those elements, and redirect to alt_doc.php:
+		// If a command to edit all records in a column is issue, then select all those elements, and redirect to FormEngine
 		if (substr($edit_record, 0, 9) == '_EDIT_COL') {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND colPos=' . (int)substr($edit_record, 10) . ' AND sys_language_uid=' . (int)$this->current_sys_language . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'sorting');
 			$idListA = array();
 			while ($cRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$idListA[] = $cRow['uid'];
 			}
-			$url = $GLOBALS['BACK_PATH'] . 'alt_doc.php?edit[tt_content][' . implode(',', $idListA) . ']=edit&returnUrl=' . rawurlencode($this->local_linkThisScript(array('edit_record' => '')));
+			$url = BackendUtility::getModuleUrl('record_edit', array(
+				'edit[tt_content][' . implode(',', $idListA) . ']' => 'edit',
+				'returnUrl' => rawurlencode($this->local_linkThisScript(array('edit_record' => '')))
+			));
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
 		}
 		// If the former record edited was the creation of a NEW record, this will look up the created records uid:

@@ -323,7 +323,7 @@ TYPO3.Components.PageTree.Actions = {
 		}
 
 		TYPO3.Backend.ContentContainer.setUrl(
-			'alt_doc.php?edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' + returnUrl
+			TYPO3.settings.FormEngine.moduleUrl + '&edit[pages][' + node.attributes.nodeData.id + ']=edit&returnUrl=' + returnUrl
 		);
 	},
 

@@ -117,7 +117,7 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 
 	/**
 	 * Initializes an anonymous template container.
-	 * The created container can be compared to alt_doc.php in backend-only disposal.
+	 * The created container can be compared to "record_edit" module in backend-only disposal.
 	 *
 	 * @return void
 	 */

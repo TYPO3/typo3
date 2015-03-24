@@ -54,7 +54,7 @@ class AddController extends AbstractWizardController {
 	public $table;
 
 	/**
-	 * Loaded with the created id of a record when TCEforms (alt_doc.php) returns ...
+	 * Loaded with the created id of a record FormEngine returns ...
 	 *
 	 * @var int
 	 */
@@ -68,7 +68,7 @@ class AddController extends AbstractWizardController {
 	public $P;
 
 	/**
-	 * Information coming back from alt_doc.php script, telling what the table/id was of the newly created record.
+	 * Information coming back from the FormEngine script, telling what the table/id was of the newly created record.
 	 *
 	 * @var array
 	 */
@@ -136,7 +136,7 @@ class AddController extends AbstractWizardController {
 
 	/**
 	 * Main function
-	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
+	 * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
 	 *
 	 * @return void
 	 */
@@ -195,12 +195,16 @@ class AddController extends AbstractWizardController {
 					$tce->process_datamap();
 				}
 			}
-			// Return to the parent alt_doc.php record editing session:
+			// Return to the parent FormEngine record editing session:
 			HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 		} else {
-			// Redirecting to alt_doc.php with instructions to create a new record
+			// Redirecting to FormEngine with instructions to create a new record
 			// AND when closing to return back with information about that records ID etc.
-			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
+			$redirectUrl = BackendUtility::getModuleUrl('record_edit', array(
+				'returnEditConf' => 1,
+				'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
+				'returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+			));
 			HttpUtility::redirect($redirectUrl);
 		}
 	}

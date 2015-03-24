@@ -63,7 +63,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 	 */
 	public function loadDocsFromUserSession() {
 		$backendUser = $this->getBackendUser();
-		list($this->openDocs, ) = $backendUser->getModuleData('alt_doc.php', 'ses');
+		list($this->openDocs, ) = $backendUser->getModuleData('FormEngine', 'ses');
 		$this->recentDocs = $backendUser->getModuleData('opendocs::recent');
 	}
 
@@ -138,7 +138,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		}
 		$label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $record);
-		$link = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
+		$link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
 		$pageId = (int)$document[3]['uid'];
 		if ($document[3]['table'] !== 'pages') {
 			$pageId = (int)$document[3]['pid'];
@@ -223,8 +223,8 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			}
 			// Remove it from the list of the open documents, and store the status
 			unset($this->openDocs[$md5sum]);
-			list(, $docDat) = $backendUser->getModuleData('alt_doc.php', 'ses');
-			$backendUser->pushModuleData('alt_doc.php', array($this->openDocs, $docDat));
+			list(, $docDat) = $backendUser->getModuleData('FormEngine', 'ses');
+			$backendUser->pushModuleData('FormEngine', array($this->openDocs, $docDat));
 			$backendUser->pushModuleData('opendocs::recent', $this->recentDocs);
 		}
 		$this->renderAjax($params, $ajaxObj);

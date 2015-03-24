@@ -63,7 +63,7 @@ class ListController extends AbstractWizardController {
 
 	/**
 	 * Main function
-	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
+	 * Will issue a location-header, redirecting either BACK or to a new FormEngine instance...
 	 *
 	 * @return void
 	 */

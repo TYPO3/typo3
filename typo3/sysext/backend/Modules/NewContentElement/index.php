@@ -46,7 +46,12 @@ class ext_posMap extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @return string
 	 */
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
-		$location = $this->backPath . 'alt_doc.php?edit[tt_content][' . (is_array($row) ? -$row['uid'] : $pid) . ']=new&defVals[tt_content][colPos]=' . $vv . '&defVals[tt_content][sys_language_uid]=' . $sys_lang . '&returnUrl=' . rawurlencode($GLOBALS['SOBE']->R_URI);
+		$location = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit', array(
+			'edit[tt_content][' . (is_array($row) ? -$row['uid'] : $pid) . ']' => 'new',
+			'defVals[tt_content][colPos]' => $vv,
+			'defVals[tt_content][sys_language_uid]' => $sys_lang,
+			'returnUrl' => rawurlencode($GLOBALS['SOBE']->R_URI)
+		));
 		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
 	}
 

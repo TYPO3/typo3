@@ -56,7 +56,7 @@ class EditController extends AbstractWizardController {
 	 */
 	protected function init() {
 		$this->P = GeneralUtility::_GP('P');
-		// Used for the return URL to alt_doc.php so that we can close the window.
+		// Used for the return URL to FormEngine so that we can close the window.
 		$this->doClose = GeneralUtility::_GP('doClose');
 	}
 
@@ -75,28 +75,35 @@ class EditController extends AbstractWizardController {
 			$field = $this->P['field'];
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$fTable = $this->P['currentValue'] < 0 ? $config['neg_foreign_table'] : $config['foreign_table'];
+
+			$urlParameters = array(
+				'returnUrl' => rawurlencode(BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1)))
+			);
+
 			// Detecting the various allowed field type setups and acting accordingly.
 			if (is_array($config) && $config['type'] == 'select' && !$config['MM'] && $config['maxitems'] <= 1 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['currentValue']) && $this->P['currentValue'] && $fTable) {
-				// SINGLE value:
-				$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))) . '&edit[' . $fTable . '][' . $this->P['currentValue'] . ']=edit';
-				HttpUtility::redirect($redirectUrl);
+				// SINGLE value
+				$urlParameters['edit[' . $fTable . '][' . $this->P['currentValue'] . ']'] = 'edit';
+				// Redirect to FormEngine
+				$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+				HttpUtility::redirect($url);
 			} elseif (is_array($config) && $this->P['currentSelectedValues'] && ($config['type'] == 'select' && $config['foreign_table'] || $config['type'] == 'group' && $config['internal_type'] == 'db')) {
 				// MULTIPLE VALUES:
 				// Init settings:
 				$allowedTables = $config['type'] == 'group' ? $config['allowed'] : $config['foreign_table'] . ',' . $config['neg_foreign_table'];
 				$prependName = 1;
-				$params = '';
 				// Selecting selected values into an array:
 				$dbAnalysis = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 				$dbAnalysis->start($this->P['currentSelectedValues'], $allowedTables);
 				$value = $dbAnalysis->getValueArray($prependName);
-				// Traverse that array and make parameters for alt_doc.php:
+				// Traverse that array and make parameters for FormEngine
 				foreach ($value as $rec) {
 					$recTableUidParts = GeneralUtility::revExplode('_', $rec, 2);
-					$params .= '&edit[' . $recTableUidParts[0] . '][' . $recTableUidParts[1] . ']=edit';
+					$urlParameters['edit[' . $recTableUidParts[0] . '][' . $recTableUidParts[1] . ']'] = 'edit';
 				}
-				// Redirect to alt_doc.php:
-				HttpUtility::redirect('alt_doc.php?returnUrl=' . rawurlencode(BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))) . $params);
+				// Redirect to FormEngine
+				$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+				HttpUtility::redirect($url);
 			} else {
 				$this->closeWindow();
 			}

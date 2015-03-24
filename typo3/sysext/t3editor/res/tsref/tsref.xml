@@ -7235,7 +7235,7 @@ Set to value "2" the content will be printed in a table - looks nicer.]]></descr
 ]]></default>
 		</property>
 		<property name="editIcons" type="string">
-			<description><![CDATA[If not empty, then insert an icon linking to the typo3/alt_doc.php with some parameters to build and backend user edit form for certain fields.
+			<description><![CDATA[If not empty, then insert an icon linking to the FormEngine with some parameters to build and backend user edit form for certain fields.
 The value of this property is a list of fields from a table to edit. It's assumed that the current record of the cObj is the record to be edited.
 Syntax: optional tablename : comma list of fieldnames[list of pallette-field names separated by | ]
 

@@ -737,11 +737,12 @@ class InlineElement {
 					'sys_file_metadata',
 					'file = ' . (int)substr($rec['uid_local'], 9) . ' AND sys_language_uid = ' . $rec['sys_language_uid']
 				);
-				$editUid = $recordInDatabase['uid'];
 				if ($GLOBALS['BE_USER']->check('tables_modify', 'sys_file_metadata')) {
-					$editOnClick = 'if(top.content.list_frame){top.content.list_frame.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode('
-						. 'top.content.list_frame.document.location' . '.pathname+top.content.list_frame.document.location' . '.search)+'
-						. '\'&edit[sys_file_metadata][' . (int)$editUid . ']=edit\';}';
+					$url = BackendUtility::getModuleUrl('record_edit', array(
+						'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit'
+					));
+					$editOnClick = 'if(top.content.list_frame){top.content.list_frame.location.href=top.TS.PATH_typo3+\'' . $url . '&returnUrl=\'+top.rawurlencode('
+						. 'top.content.list_frame.document.location' . '.pathname+top.content.list_frame.document.location' . '.search);}';
 					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
 					$cells['editmetadata'] = '
 						<a class="btn btn-default" href="#" class="btn" onclick="' . htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">
@@ -2176,7 +2177,7 @@ class InlineElement {
 	}
 
 	/**
-	 * Checks the page access rights (Code for access check mostly taken from alt_doc.php)
+	 * Checks the page access rights (Code for access check mostly taken from EditDocumentController)
 	 * as well as the table access rights of the user.
 	 *
 	 * @param string $cmd The command that should be performed ('new' or 'edit')

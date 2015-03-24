@@ -71,8 +71,13 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			if (!$secure) {
 				$value = $GLOBALS['LANG']->getLL('status_insecure');
 				$severity = \TYPO3\CMS\Reports\Status::ERROR;
-				$editUserAccountUrl = 'alt_doc.php?returnUrl=' .
-					rawurlencode(BackendUtility::getModuleUrl('system_ReportsTxreportsm1')) . '&edit[be_users][' . $row['uid'] . ']=edit';
+				$editUserAccountUrl = BackendUtility::getModuleUrl(
+					'record_edit',
+					array(
+						'edit[be_users][' . $row['uid'] . ']' => 'edit',
+						'returnUrl' => rawurlencode(BackendUtility::getModuleUrl('system_ReportsTxreportsm1'))
+					)
+				);
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_admin'),
 					'<a href="' . htmlspecialchars($editUserAccountUrl) . '">', '</a>');
 			}

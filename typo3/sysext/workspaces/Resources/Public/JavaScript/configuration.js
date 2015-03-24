@@ -277,7 +277,7 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 			tooltip: TYPO3.l10n.localize('tooltip.editElementAction'),
 			handler: function(grid, rowIndex, colIndex) {
 				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-				var newUrl = 'alt_doc.php?returnUrl=' + encodeURIComponent(document.location.href) + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
+				var newUrl = TYPO3.settings.FormEngine.moduleUrl + '&returnUrl=' + encodeURIComponent(document.location.href) + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
 				// Append workspace of record in all-workspaces view
 				if (TYPO3.settings.Workspaces.allView) {
 					newUrl += '&workspace=' + record.json.t3ver_wsid;

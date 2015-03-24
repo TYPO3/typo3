@@ -652,8 +652,10 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_editAccess($table, $uid) {
-		$addParam = '&columnsOnly=' . rawurlencode((implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : '')));
-		$url = 'alt_doc.php?edit[' . $table . '][' . $uid . ']=edit' . $addParam;
+		$url = BackendUtility::getModuleUrl('record_edit', array(
+			'columnsOnly' => rawurlencode((implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : ''))),
+			'edit[' . $table . '][' . $uid . ']' => 'edit'
+		));
 		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editAccess')), IconUtility::getSpriteIcon('actions-document-edit-access'), $this->urlRefForCM($url, 'returnUrl'), 1);
 	}
 
@@ -665,7 +667,9 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_editPageProperties($uid) {
-		$url = 'alt_doc.php?edit[pages][' . $uid . ']=edit';
+		$url = BackendUtility::getModuleUrl('record_edit', array(
+			'edit[pages][' . $uid . ']' => 'edit'
+		));
 		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editPageProperties')), IconUtility::getSpriteIcon('actions-page-open'), $this->urlRefForCM($url, 'returnUrl'), 1);
 	}
 
@@ -685,16 +689,21 @@ class ClickMenu {
 		$loc = 'top.content.list_frame';
 		$addParam = '';
 		$theIcon = 'actions-document-open';
+
+		$link = BackendUtility::getModuleUrl('record_edit', array(
+			'edit[' . $table . '][' . $uid . ']' => 'edit'
+		));
+
 		if ($this->iParts[0] === 'pages' && $this->iParts[1] && $this->backendUser->check('modules', $pageModule)) {
 			$this->editPageIconSet = TRUE;
 			if ($this->backendUser->uc['classicPageEditMode']) {
 				$addParam = '&editRegularContentFromId=' . (int)$this->iParts[1];
 			} else {
-				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][' . $uid . ']=edit' . $addParam . '\';}';
+				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
 			}
 		}
 		if (!$editOnClick) {
-			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'alt_doc.php?returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'&edit[' . $table . '][' . $uid . ']=edit' . $addParam . '\';}';
+			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
 		}
 		return $this->linkItem($this->label('edit'), IconUtility::getSpriteIcon($theIcon), $editOnClick . ';');
 	}
@@ -711,8 +720,8 @@ class ClickMenu {
 		$frame = 'top.content.list_frame';
 		$location = $this->frameLocation($frame . '.document');
 		$module = $this->listFrame
-			? GeneralUtility::quoteJSvalue('alt_doc.php?edit[' . $table . '][-' . $uid . ']=new&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
-			: GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => (int)$uid]));
+			? GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][-' . $uid . ']' => 'new')) . '&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
+			: GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', array('id' => (int)$uid)));
 		$editOnClick = 'if(' . $frame . '){' . $frame . '.location.href=top.TS.PATH_typo3+' . $module . ';}';
 		$icon = IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new');
 		return $this->linkItem($this->label('new'), $icon, $editOnClick);

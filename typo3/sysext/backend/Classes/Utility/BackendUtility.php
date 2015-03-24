@@ -2668,11 +2668,11 @@ class BackendUtility {
 	}
 
 	/**
-	 * Returns a JavaScript string (for an onClick handler) which will load the alt_doc.php script that shows the form for editing of the record(s) you have send as params.
+	 * Returns a JavaScript string (for an onClick handler) which will load the EditDocumentController script that shows the form for editing of the record(s) you have send as params.
 	 * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
 	 *
-	 * @param string $params Parameters sent along to alt_doc.php. This requires a much more details description which you must seek in Inside TYPO3s documentation of the alt_doc.php API. And example could be '&edit[pages][123] = edit' which will show edit form for page record 123.
-	 * @param string $backPath Must point back to the TYPO3_mainDir directory (where alt_doc.php is)
+	 * @param string $params Parameters sent along to EditDocumentController. This requires a much more details description which you must seek in Inside TYPO3s documentation of the FormEngine API. And example could be '&edit[pages][123] = edit' which will show edit form for page record 123.
+	 * @param string $backPath Must point back to the TYPO3_mainDir directory (where the main entry point is)
 	 * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
 	 *
 	 * @return string
@@ -2683,7 +2683,7 @@ class BackendUtility {
 			? '\'+T3_THIS_LOCATION+\''
 			: rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$retUrlParam = 'returnUrl=' . $returnUrl;
-		return 'window.location.href=\'' . $backPath . 'alt_doc.php?' . $retUrlParam . $params . '\'; return false;';
+		return 'window.location.href=\'' . self::getModuleUrl('record_edit', array(), $backPath) . '&' . $retUrlParam . $params . '\'; return false;';
 	}
 
 	/**
@@ -3266,7 +3266,7 @@ class BackendUtility {
 	 * @param int $uid Record uid
 	 * @return array
 	 * @internal
-	 * @see class.db_layout.inc, alt_db_navframe.php, alt_doc.php, db_layout.php
+	 * @see class.db_layout.inc, alt_db_navframe.php, EditDocumentController, db_layout.php
 	 */
 	static public function isRecordLocked($table, $uid) {
 		if (!is_array($GLOBALS['LOCKED_RECORDS'])) {

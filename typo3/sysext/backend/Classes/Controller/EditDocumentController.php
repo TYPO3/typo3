@@ -232,7 +232,7 @@ class EditDocumentController {
 
 	/**
 	 * Return URL script, processed. This contains the script (if any) that we should
-	 * RETURN TO from the alt_doc.php script IF we press the close button. Thus this
+	 * RETURN TO from the FormEngine script IF we press the close button. Thus this
 	 * variable is normally passed along from the calling script so we can properly return if needed.
 	 *
 	 * @var string
@@ -454,7 +454,7 @@ class EditDocumentController {
 		$this->dontStoreDocumentRef = 0;
 		$this->storeTitle = '';
 		// Get session data for the module:
-		$this->docDat = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
+		$this->docDat = $GLOBALS['BE_USER']->getModuleData('FormEngine', 'ses');
 		$this->docHandler = $this->docDat[0];
 		// If a request for closing the document has been sent, act accordingly:
 		if ($this->closeDoc > 0) {
@@ -739,7 +739,7 @@ class EditDocumentController {
 				// Checking if the currently open document is stored in the list of "open documents" - if not, then add it:
 				if (($this->docDat[1] !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5])) && !$this->dontStoreDocumentRef) {
 					$this->docHandler[$this->storeUrlMd5] = array($this->storeTitle, $this->storeArray, $this->storeUrl, $this->firstEl);
-					$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->docHandler, $this->storeUrlMd5));
+					$GLOBALS['BE_USER']->pushModuleData('FormEngine', array($this->docHandler, $this->storeUrlMd5));
 					BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
 				}
 				// Module configuration
@@ -1124,11 +1124,11 @@ class EditDocumentController {
 	 */
 	public function functionMenus() {
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShowPalettes')) {
-			// Show palettes:
+			// Show palettes
 
 			return '<div class="checkbox">' .
 				'<label for="checkShowPalettes">' .
-					BackendUtility::getFuncCheck('', 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'alt_doc.php', (GeneralUtility::implodeArrayForUrl('', array_merge($this->R_URL_getvars, array('SET' => ''))) . BackendUtility::getUrlToken('editRecord')), 'id="checkShowPalettes"') .
+					BackendUtility::getFuncCheck('', 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], BackendUtility::getModuleUrl('record_edit'), (GeneralUtility::implodeArrayForUrl('', array_merge($this->R_URL_getvars, array('SET' => ''))) . BackendUtility::getUrlToken('editRecord')), 'id="checkShowPalettes"') .
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
 				'</label>'.
 			'</div>';
@@ -1233,11 +1233,16 @@ class EditDocumentController {
 							$newTranslation = isset($rowsByLang[$lang['uid']]) ? '' : ' [' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.new', TRUE) . ']';
 							// Create url for creating a localized record
 							if ($newTranslation) {
-								$href = $this->doc->issueCommand('&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'], $this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(($table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'])) . '&returnUrl=' . rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord'));
+								$redirectUrl = BackendUtility::getModuleUrl('record_edit', array(
+									'justLocalized' => rawurlencode(($table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'])),
+									'returnUrl' => rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord')
+								));
+								$href = $this->doc->issueCommand('&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'], $redirectUrl);
 							} else {
-								$href = $this->backPath . 'alt_doc.php?';
-								$href .= '&edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']=edit';
-								$href .= '&returnUrl=' . rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord');
+								$href = BackendUtility::getModuleUrl('record_edit', array(
+									'edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']' => 'edit',
+									'returnUrl' => rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord')
+								));
 							}
 							$langSelItems[$lang['uid']] = '
 								<option value="' . htmlspecialchars($href) . '"' . ($currentLanguage == $lang['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($lang['title'] . $newTranslation)) . '</option>';
@@ -1257,7 +1262,7 @@ class EditDocumentController {
 	}
 
 	/**
-	 * Redirects to alt_doc with new parameters to edit a just created localized record
+	 * Redirects to FormEngine with new parameters to edit a just created localized record
 	 *
 	 * @param string $justLocalized String passed by GET &justLocalized=
 	 * @return void
@@ -1268,10 +1273,11 @@ class EditDocumentController {
 			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$language . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$orig_uid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
-				$params = '&edit[' . $table . '][' . $localizedRecord['uid'] . ']=edit';
-				$returnUrl = '&returnUrl=' . rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl')));
-				$location = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl . BackendUtility::getUrlToken('editRecord');
-				HttpUtility::redirect($location);
+				$location = BackendUtility::getModuleUrl('record_edit', array(
+					'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
+					'returnUrl' => rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl')))
+				));
+				HttpUtility::redirect($location . BackendUtility::getUrlToken('editRecord'));
 			}
 		}
 	}
@@ -1471,7 +1477,7 @@ class EditDocumentController {
 				$this->docHandler = array();
 			}
 			$GLOBALS['BE_USER']->pushModuleData('opendocs::recent', $recentDocs);
-			$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->docHandler, $this->docDat[1]));
+			$GLOBALS['BE_USER']->pushModuleData('FormEngine', array($this->docHandler, $this->docDat[1]));
 			BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
 		}
 		// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
@@ -1480,7 +1486,8 @@ class EditDocumentController {
 		}
 		// If code is NOT set OR set to 1, then make a header location redirect to $this->retUrl
 		if (!$code || $code == 1) {
-			HttpUtility::redirect($this->retUrl);
+			// @todo: find out why we need rawurldecode here!
+			HttpUtility::redirect(rawurldecode($this->retUrl));
 		} else {
 			$this->setDocument('', $this->retUrl);
 		}

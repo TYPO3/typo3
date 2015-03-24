@@ -623,9 +623,13 @@ class AdminPanelView {
 			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
-			$params = '&edit[pages][' . $id . ']=edit';
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
+			$url = BackendUtility::getModuleUrl('record_edit', array(
+				'edit[pages][' . $id . ']' => 'edit',
+				'noView' => 1,
+				'returnUrl' => rawurlencode($returnUrl)
+			), FALSE, TRUE);
+			$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid,pid,t3ver_state',
@@ -636,9 +640,13 @@ class AdminPanelView {
 				);
 				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
-					$params = '&edit[pages_language_overlay][' . $row['uid'] . ']=edit';
 					$icon = IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay', array('title' => $this->extGetLL('edit_editPageOverlay', FALSE)));
-					$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
+					$url = BackendUtility::getModuleUrl('record_edit', array(
+						'edit[pages_language_overlay][' . $row['uid'] . ']' => 'edit',
+						'noView' => 1,
+						'returnUrl' => rawurlencode($returnUrl)
+					), FALSE, TRUE);
+					$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 				}
 			}
 		}

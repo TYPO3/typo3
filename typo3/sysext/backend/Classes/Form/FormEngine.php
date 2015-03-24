@@ -372,7 +372,7 @@ class FormEngine {
 	public $hookObjectsSingleField = array();
 
 	/**
-	 * Rows getting inserted into the alt_doc headers (when called from alt_doc.php)
+	 * Rows getting inserted into the headers (when called from the EditDocumentController)
 	 *
 	 * @var array
 	 */
@@ -920,10 +920,14 @@ class FormEngine {
 						$item = $this->renderDefaultLanguageContent($table, $field, $row, $item);
 						$item = $this->renderDefaultLanguageDiff($table, $field, $row, $item);
 					}
-					// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in alt_doc.php
+					// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in the EditDocumentController
 					$label = htmlspecialchars($PA['label'], ENT_COMPAT, 'UTF-8', FALSE);
 					if (MathUtility::canBeInterpretedAsInteger($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'] && !GeneralUtility::_GP('columnsOnly')) {
-						$lTTS_url = 'alt_doc.php?edit[' . $table . '][' . $row['uid'] . ']=edit&columnsOnly=' . $field . '&returnUrl=' . rawurlencode($this->thisReturnUrl());
+						$lTTS_url = BackendUtility::getModuleUrl('record_edit', array(
+							'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
+							'columnsOnly' => $field,
+							'returnUrl' => rawurlencode($this->thisReturnUrl())
+						));
 						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}
 
@@ -1366,7 +1370,7 @@ class FormEngine {
 	 * Will register data from original language records if the current record is a translation of another.
 	 * The original data is shown with the edited record in the form.
 	 * The information also includes possibly diff-views of what changed in the original record.
-	 * Function called from outside (see alt_doc.php + quick edit) before rendering a form for a record
+	 * Function called from outside (see EditDocumentController + quick edit) before rendering a form for a record
 	 *
 	 * @param string $table Table name of the record being edited
 	 * @param array $rec Record array of the record being edited
@@ -1664,7 +1668,7 @@ class FormEngine {
 
 	/**
 	 * Wraps all the table rows into a single table.
-	 * Used externally from scripts like alt_doc.php and db_layout.php (which uses TCEforms...)
+	 * Used externally from scripts like EditDocumentController and PageLayoutController (which uses FormEngine)
 	 *
 	 * @param string $c Code to output between table-parts; table rows
 	 * @param array $rec The record

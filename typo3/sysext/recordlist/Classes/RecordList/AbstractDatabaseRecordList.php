@@ -998,7 +998,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 	}
 
 	/**
-	 * Redirects to TCEforms (alt_doc) if a record is just localized.
+	 * Redirects to FormEngine if a record is just localized.
 	 *
 	 * @param string $justLocalized String with table, orig uid and language separated by ":
 	 * @return void
@@ -1010,10 +1010,14 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
 				$url = substr($this->listURL(), strlen($this->backPath));
-				$params = '&edit[' . $table . '][' . $localizedRecord['uid'] . ']=edit';
-				$returnUrl = '&returnUrl=' . rawurlencode($url);
-				$location = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $params . $returnUrl;
-				HttpUtility::redirect($location);
+				$editUserAccountUrl = BackendUtility::getModuleUrl(
+					'record_edit',
+					array(
+						'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
+						'returnUrl' => rawurlencode($url)
+					)
+				);
+				HttpUtility::redirect($editUserAccountUrl);
 			}
 		}
 	}

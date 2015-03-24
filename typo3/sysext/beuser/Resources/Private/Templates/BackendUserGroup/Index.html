@@ -4,7 +4,7 @@
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<a href="#" onclick="window.location.href='alt_doc.php?returnUrl=' + T3_THIS_LOCATION + '&amp;edit[be_groups][0]=new'; return false;"><be:spriteManagerIcon iconName="actions-document-new" /></a>
+	<a href="{bu:editRecord:(parameters: 'edit[be_groups][0]=new&returnUrl={returnUrl}')}"><be:spriteManagerIcon iconName="actions-document-new" /></a>
 </f:section>
 
 <f:section name="headline">

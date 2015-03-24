@@ -2,6 +2,12 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
+	// Register record edit module
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'record_edit',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/FormEngine/'
+	);
+
 	// Register record history module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'record_history',

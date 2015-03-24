@@ -1228,8 +1228,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Draw header for a content element column:
 	 *
 	 * @param string $colName Column name
-	 * @param string $editParams Edit params (Syntax: &edit[...] for alt_doc.php)
-	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php) OBSOLETE
+	 * @param string $editParams Edit params (Syntax: &edit[...] for FormEngine)
+	 * @param string $newParams New element params (Syntax: &edit[...] for FormEngine) OBSOLETE
 	 * @param array|NULL $pasteParams Paste element params (i.e. array(colPos => 1, sys_language_uid => 2))
 	 * @return string HTML table
 	 */
@@ -1832,10 +1832,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			// If any languages are left, make selector:
 			if (count($langSelItems) > 1) {
-				$onChangeContent = 'window.location.href=\'' . $this->backPath . 'alt_doc.php?&edit[pages_language_overlay]['
-					. $id . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageRecord['doktype']
-					. '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl='
-					. rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'';
+				$url = BackendUtility::getModuleUrl('record_edit', array(
+					'edit[pages_language_overlay]['. $id . ']' => 'new',
+					'overrideVals[pages_language_overlay][doktype]' => (int)$this->pageRecord['doktype'],
+					'returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+				), $this->backPath);
+				$onChangeContent = 'window.location.href=\'' . $url . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value';
 				return '<div class="form-inline form-inline-spaced">'
 					. '<div class="form-group">'
 					. '<label for="createNewLanguage">'

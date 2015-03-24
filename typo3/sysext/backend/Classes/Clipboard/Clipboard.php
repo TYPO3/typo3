@@ -592,20 +592,19 @@ class Clipboard {
 	/**
 	 * editUrl of all current elements
 	 * ONLY database
-	 * Links to alt_doc.php
+	 * Links to FormEngine
 	 *
-	 * @return string The URL to alt_doc.php with parameters.
+	 * @return string The URL to FormEngine with parameters.
 	 */
 	public function editUrl() {
+		$parameters = array();
 		// All records
 		$elements = $this->elFromTable('');
-		$editCMDArray = array();
 		foreach ($elements as $tP => $value) {
 			list($table, $uid) = explode('|', $tP);
-			$editCMDArray[] = '&edit[' . $table . '][' . $uid . ']=edit';
+			$parameters['edit[' . $table . '][' . $uid . ']'] = 'edit';
 		}
-		$rU = $this->backPath . 'alt_doc.php?' . implode('', $editCMDArray);
-		return $rU;
+		return BackendUtility::getModuleUrl('record_edit', $parameters);
 	}
 
 	/**

@@ -31,7 +31,7 @@ class RecyclerUtility {
 	 *
 	 ************************************************************/
 	/**
-	 * Checks the page access rights (Code for access check mostly taken from alt_doc.php)
+	 * Checks the page access rights (Code for access check mostly taken from FormEngine)
 	 * as well as the table access rights of the user.
 	 *
 	 * @param string $table The table to check access for
