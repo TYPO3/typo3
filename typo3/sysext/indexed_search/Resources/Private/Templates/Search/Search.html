@@ -1,4 +1,4 @@
-{namespace is=Tx_IndexedSearch_ViewHelpers}
+{namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
 
 <f:alias map="{sword: searchParams.sword}">
 	<f:render partial="Form" arguments="{_all}"/>
@@ -8,7 +8,7 @@
 	<f:if condition="{result.categoryTitle}">
 		<h1 class="tx-indexedsearch-category">{result.categoryTitle}</h1>
 	</f:if>
-	
+
 	<!-- show the info what was searched for -->
 	<f:for each="{searchWords}" as="searchWord" key="key">
 		<f:if condition="{key} > 0">
@@ -26,6 +26,10 @@
 	<f:if condition="{result.count} > 0">
 		<f:then>
 			<div class="tx-indexedsearch-browsebox">
+				<p>
+					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
+					{result.sectionText}
+				</p>
 				<!-- render the anchor-links to the sections inside the displayed result rows -->
 				<f:if condition="{result.affectedSections}">
 					<div class="tx-indexedsearch-sectionlinks">
@@ -46,17 +50,13 @@
 						</table>
 					</div>
 				</f:if>
-				<p>
-					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
-					{result.sectionText}
-				</p>
 				<is:pageBrowsing maximumNumberOfResultPages="{settings.search.page_links}" numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
 			</div>
 			<f:for each="{result.rows}" as="row">
 				<f:if condition="{row.isSectionHeader}">
 					<f:then>
-					<div id="{row.anchorId}" class="tx-indexedsearch-sectionhead">
-						<h2 class="tx-indexedsearch-title">{row.sectionTitle} <span class="tx-indexedsearch-result-count">{row.numResultRows} <f:translate key="{f:if(condition: '{row.numResultRows} > 1', then: 'result.pages', else: 'result.page')}" /></span></h2>
+					<div id="anchor_{row.sectionId}" class="tx-indexedsearch-sectionhead">
+						<h2 class="tx-indexedsearch-title"><f:format.html>{row.sectionTitle}</f:format.html> <span class="tx-indexedsearch-result-count">{row.numResultRows} <f:translate key="{f:if(condition: '{row.numResultRows} > 1', then: 'result.pages', else: 'result.page')}" /></span></h2>
 					</div>
 					</f:then>
 					<f:else>
