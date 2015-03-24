@@ -18,13 +18,13 @@
 define(['jquery', 'jquery-ui/sortable'], function ($) {
 
 	var DragDrop = {
-		contentIdentifier: '.t3-page-ce',
-		dragIdentifier: '.t3-row-header',
-		dropZoneAvailableIdentifier: '.t3-page-ce-dropzone-available',
+		contentIdentifier: '.t3js-page-ce',
+		dragIdentifier: '.t3js-page-ce-draghandle',
+		dropZoneAvailableIdentifier: '.t3js-page-ce-dropzone-available',
 		dropPossibleClass: 't3-page-ce-dropzone-possible',
 		sortableItemsIdentifier: '.t3js-page-ce-sortable',
-		columnIdentifier: '.t3-page-column',
-		columnHolderIdentifier: 'table.t3-page-columns',
+		columnIdentifier: '.t3js-page-column',
+		columnHolderIdentifier: '.t3js-page-columns',
 		addContentIdentifier: '.t3js-page-new-ce',
 		langClassPrefix: '.t3js-sortable-lang-'
 	};

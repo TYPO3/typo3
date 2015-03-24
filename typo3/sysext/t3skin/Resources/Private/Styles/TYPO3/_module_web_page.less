@@ -1,0 +1,206 @@
+//
+// Variables
+//
+@page-grid-spacing: 10px;
+@page-grid-cell-bg: #fafafa;
+@page-grid-cell-border: #cdcdcd;
+@page-grid-cell-restricted: @state-danger-bg;
+
+@page-column-header-color: #999;
+@page-column-header-bg: #fff;
+@page-column-header-border: @page-grid-cell-border;
+
+@page-ce-border: #ccc;
+@page-ce-hover-border: #aaa;
+@page-ce-border-radius: 2px;
+@page-ce-header-color: #fff;
+@page-ce-header-bg: #eaeaea;
+@page-ce-header-hover-bg: #d0d0d0;
+@page-ce-body-bg: #fff;
+@page-ce-footer-bg: #fafafa;
+@page-ce-hidden-opacity: 0.4;
+
+@page-ce-dropzone-bg: @state-success-bg;
+@page-ce-dropzone-border: @state-success-border;
+@page-ce-dropzone-border-radius: @page-ce-border-radius;
+
+
+//
+// Grid
+//
+.t3-grid-table {
+	border-collapse: separate;
+	border-spacing: @page-grid-spacing 0;
+	width: 100%;
+}
+.t3-grid-container {
+	margin: 0px (@page-grid-spacing * -1);
+}
+.t3-grid-cell {
+	background-color: @page-grid-cell-bg;
+	border-bottom: 1px solid @page-grid-cell-border;
+}
+.t3-grid-cell-restricted {
+	background-color: @page-grid-cell-restricted;
+}
+.t3-grid-cell-unassigned {
+	background: url('../../../../images/backgrounds/layout-not-assigned.png') repeat;
+}
+
+
+//
+// Columns
+//
+.t3-page-columns {
+	width: 100%;
+}
+.t3-page-column {
+	min-width: 150px;
+	max-width: 300px;
+	> h2 {
+		margin: 0;
+	}
+}
+.t3-page-column-header-icons {
+	visibility: hidden;
+	position: absolute;
+	right: 0;
+}
+.t3-page-column-header {
+	padding: (@page-grid-spacing * 2) @page-grid-spacing (@page-grid-spacing / 2) @page-grid-spacing;
+	position: relative;
+	background: @page-column-header-bg;
+	border-bottom: 1px solid @page-column-header-border;
+	color: @page-column-header-color;
+	text-align: left;
+	a {
+		position: relative;
+	}
+	&:hover {
+		.t3-page-column-header-icons {
+			visibility: visible;
+		}
+	}
+}
+.t3-page-columns-mode {
+	img.c-divider {
+		margin: @page-grid-spacing 0 (@page-grid-spacing / 2) 0;
+	}
+}
+
+
+//
+// Language
+//
+.t3-page-lang-copyce {
+	margin: @page-grid-spacing;
+}
+
+
+//
+// Content elements
+//
+.t3-page-ce-wrapper {
+	min-height: 2em;
+}
+.t3-page-ce {
+	.transition(opacity .15s ease-in);
+	margin: @page-grid-spacing;
+	&.active-drag {
+		z-index: 4500;
+	}
+	// reset border-spacing from page column grid
+	* {
+		border-spacing: 0;
+	}
+	> .t3-page-ce {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.t3-page-ce-body-inner {
+		padding: @page-grid-spacing;
+	}
+	.t3-page-ce-header {
+		.clearfix();
+		.transition(background .15s ease-in);
+		padding: (@page-grid-spacing / 2);
+		border: 1px solid @page-ce-border;
+		border-bottom: 0;
+		border-radius: @page-ce-border-radius @page-ce-border-radius 0 0;
+		background: @page-ce-header-bg;
+	}
+	.t3-page-ce-header-icons-left {
+		float: left;
+		> a {
+			display: inline-block;
+			padding: @padding-small-vertical @padding-small-horizontal;
+		}
+	}
+	.t3-page-ce-header-icons-right {
+		.transition(opacity .15s ease-in);
+		opacity: 0.3;
+		float: right;
+	}
+	.t3-page-ce-body {
+		margin-bottom: @page-grid-spacing;
+		border: 1px solid @page-ce-border;
+		border-top: 0;
+		border-radius: 0 0 @page-ce-border-radius @page-ce-border-radius;
+		background-color: @page-ce-body-bg;
+	}
+	.t3-page-ce-footer {
+		.text-monospace();
+		font-size: 11px;
+		padding: (@page-grid-spacing / 2) @page-grid-spacing;
+		background: @page-ce-footer-bg;
+	}
+	&:hover {
+		.t3-page-ce-header {
+			background: @page-ce-header-hover-bg;
+		}
+		.t3-page-ce-header,
+		.t3-page-ce-body {
+			border-color: @page-ce-hover-border;
+		}
+		.t3-page-ce-body {
+			.box-shadow(0px 1px 0px rgba(0, 0, 0, 0.15));
+		}
+		.t3-page-ce-header-icons-right {
+			opacity: 1;
+		}
+	}
+}
+.t3-page-ce-hidden {
+	opacity: @page-ce-hidden-opacity;
+	.transition(opacity .15s ease-in);
+	&:hover {
+		opacity: 1.0;
+	}
+}
+
+
+//
+// Dropzone
+//
+.t3-page-ce-dropzone-available.active,
+.t3-page-ce-dropzone-possible {
+	border: 1px dashed @page-ce-dropzone-border;
+	border-radius: @page-ce-dropzone-border-radius;
+	background-color: @page-ce-dropzone-bg;
+}
+.t3-page-ce-dropzone-available.active {
+	height: 2em;
+}
+.t3-page-ce-dropzone-possible {
+	margin: @page-grid-spacing;
+}
+
+
+//
+// Dragging
+//
+.t3-page-ce-dragitem {
+	.t3-page-ce-header:hover {
+		cursor: move;
+	}
+}
