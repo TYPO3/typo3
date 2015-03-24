@@ -240,7 +240,6 @@ class FileListController {
 
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->doc->getPageRenderer();
-		$pageRenderer->loadPrototype();
 		$pageRenderer->loadJQuery();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 
