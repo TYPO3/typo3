@@ -1765,9 +1765,7 @@ class ElementBrowser {
 				$ATag_e = '</a>';
 			}
 		}
-		$pBicon = $ATag2 ? '<img'
-			. IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"')
-			. ' alt="" />' : '';
+		$pBicon = $ATag2 ? IconUtility::getSpriteIcon('actions-edit-add') : '';
 		$pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRec['title'], $titleLen));
 		$out .= $picon . $ATag2 . $pBicon . $ATag_e . $ATag . $pText . $ATag_e . '<br />';
 		// Initialize the record listing:
@@ -2042,13 +2040,8 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-						<td>' . ($ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
-							'width="18" height="16"') . ' title="' . $lang->getLL('addToList', TRUE)
-							. '" alt="" />' . $ATag_e) . '</td>
-						<td nowrap="nowrap">' . ($ATag2 . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'],
-							'gfx/zoom2.gif', 'width="12" height="12"') . ' title="'
-							. $lang->getLL('info', TRUE) . '" alt="" /> '
-							. $lang->getLL('info', TRUE) . $ATag2_e) . '</td>
+						<td>' . $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $ATag_e . '</td>
+						<td nowrap="nowrap">' . $ATag2 . IconUtility::getSpriteIcon('actions-document-info', array('title' => $lang->getLL('info', TRUE))) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 					</tr>';
 				$lines[] = '
@@ -2059,13 +2052,8 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-						<td>' . ($ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
-							'width="18" height="16"') . ' title="' . $lang->getLL('addToList', TRUE)
-							. '" alt="" />' . $ATag_e) . '</td>
-						<td nowrap="nowrap">' . ($ATag2 . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'],
-							'gfx/zoom2.gif', 'width="12" height="12"') . ' title="'
-							. $lang->getLL('info', TRUE) . '" alt="" /> '
-						. $lang->getLL('info', TRUE) . $ATag2_e) . '</td>
+						<td>' . $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $ATag_e . '</td>
+						<td nowrap="nowrap">' . $ATag2 . IconUtility::getSpriteIcon('actions-document-info', array('title' => $lang->getLL('info', TRUE))) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td>&nbsp;</td>
 					</tr>';
 			}
@@ -2117,8 +2105,7 @@ class ElementBrowser {
 			. ', \'\', \'\',\'\',1);">';
 		// Add the foder icon
 		$folderIcon = $aTag;
-		$folderIcon .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif',
-				'width="18" height="16"') . ' alt="" />';
+		$folderIcon .= IconUtility::getSpriteIcon('apps-filetree-folder-default');
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($baseFolder->getName(), $titleLength));
 		$folderIcon .= '</a>';
 		$content .= $folderIcon . '<br />';
@@ -2128,10 +2115,8 @@ class ElementBrowser {
 		foreach ($folders as $subFolder) {
 			$subFolderIdentifier = $subFolder->getCombinedIdentifier();
 			// Create folder icon:
-			$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'
-				. IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif',
-					'width="16" height="16"') . ' title="' . htmlspecialchars($subFolder->getName())
-				. '" class="absmiddle" alt="" />';
+			$icon = '<img src="clear.gif" width="16" height="16" alt="" />';
+			$icon .= IconUtility::getSpriteIcon('apps-filetree-folder-default', array('title' => htmlspecialchars($subFolder->getName())));
 			// Create links for adding the folder:
 			if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
 				$aTag = '<a href="#" onclick="return set_folderpath(' . GeneralUtility::quoteJSvalue($subFolderIdentifier)
@@ -2163,9 +2148,7 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="bgColor4">
 						<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
-						<td>' . $aTag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif',
-						'width="18" height="16"') . ' title="' . $lang->getLL('addToList', TRUE)
-					. '" alt="" />' . $aTag_e . ' </td>
+						<td>' . $aTag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $aTag_e . ' </td>
 						<td>&nbsp;</td>
 					</tr>';
 			}
@@ -2203,7 +2186,7 @@ class ElementBrowser {
 		if (!$folder->getStorage()->isPublic()) {
 			// Print this warning if the folder is NOT a web folder
 			return $this->barheader($lang->getLL('files'))
-				. $this->getMsgBox($lang->getLL('noWebFolder'), 'icon_warning2');
+				. $this->getMsgBox($lang->getLL('noWebFolder'), 'status-dialog-warning');
 		}
 		$out = '';
 
@@ -2213,7 +2196,7 @@ class ElementBrowser {
 
 		$out .= $this->barheader(sprintf($lang->getLL('files') . ' (%s):', count($files)));
 		$titleLen = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
-		$picon = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
+		$picon = IconUtility::getSpriteIcon('apps-filetree-folder-default');
 		$picon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
 		$out .= $picon . '<br />';
 		// Init row-array:
@@ -2260,9 +2243,8 @@ class ElementBrowser {
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td nowrap="nowrap">' . ($imgInfo[0] != $IW
 						? '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('noLimit' => '1')))
-						. '">' . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif',
-							'width="18" height="16"') . ' title="'
-						. $lang->getLL('clickToRedrawFullSize', TRUE) . '" alt="" />' . '</a>'
+						. '">' . IconUtility::getSpriteIcon('status-dialog-warning', array('title' => $lang->getLL('clickToRedrawFullSize', TRUE)))
+						. '</a>'
 						: '')
 					. $pDim . '&nbsp;</td>
 					</tr>';
@@ -2313,25 +2295,19 @@ class ElementBrowser {
 	/**
 	 * Displays a message box with the input message
 	 *
-	 * @param string $in_msg Input message to show (will be htmlspecialchars()'ed inside of this function)
-	 * @param string $icon Icon filename body from gfx/ (default is "icon_note") - meant to allow change to warning type icons...
+	 * @param string $inputMessage Input message to show (will be htmlspecialchars()'ed inside of this function)
+	 * @param string $icon Sprite sprite name. Default is 'actions-document-info'.
 	 * @return string HTML for the message (wrapped in a table).
 	 */
-	public function getMsgBox($in_msg, $icon = 'icon_note') {
-		$msg = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/' . $icon . '.gif'), 'width="18" height="16"')
-			. ' alt="" />' . htmlspecialchars($in_msg);
-		$msg = '
-
-			<!--
-				Message box:
-			-->
+	public function getMsgBox($inputMessage, $icon = 'actions-document-info') {
+		return '
+			<!-- Message box -->
 			<table cellspacing="0" class="bgColor4" id="typo3-msgBox">
 				<tr>
-					<td>' . $msg . '</td>
+					<td>' . IconUtility::getSpriteIcon($icon) . htmlspecialchars($inputMessage) . '</td>
 				</tr>
 			</table>
 			';
-		return $msg;
 	}
 
 	/**
@@ -2619,11 +2595,11 @@ class ElementBrowser {
 		// Getting flag for showing/not showing thumbnails:
 		$noThumbsInEB = $this->getBackendUserAuthentication()->getTSConfigVal('options.noThumbsInEB');
 		$out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()">'
-			. '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/import.gif', 'width="12" height="12"')
-			. ' title="' . $labelImportSelection . '" alt="" /> ' . $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
-			. '<a href="#" onclick="BrowseLinks.Selector.toggle()">' . '<img'
-			. IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_select.gif', 'width="12" height="12"')
-			. ' title="' . $labelToggleSelection . '" alt="" /> ' . $labelToggleSelection . '</a>' . '</div>';
+			. IconUtility::getSpriteIcon('actions-document-import-t3d', array('title' => $labelImportSelection))
+			. $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
+			. '<a href="#" onclick="BrowseLinks.Selector.toggle()">'
+			. IconUtility::getSpriteIcon('actions-document-select', array('title' => $labelToggleSelection))
+			. $labelToggleSelection . '</a>' . '</div>';
 		if (!$noThumbsInEB && $this->selectedFolder) {
 			// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
 			$_MOD_MENU = array('displayThumbs' => '');

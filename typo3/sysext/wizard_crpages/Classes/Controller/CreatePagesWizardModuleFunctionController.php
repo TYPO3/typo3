@@ -213,7 +213,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 						'<div class="form-control-wrap">' .
 							'<div class="input-group">' .
 								'<div id="page_new_icon_' . $index . '" class="input-group-addon input-group-icon">' .
-									'<img src="' . IconUtility::skinImg($this->backPath, 'gfx/i/pages.gif', '', 1) . '" />' .
+									IconUtility::getSpriteIconForRecord('pages', array()) .
 								'</div>' .
 								'<select class="form-control form-control-adapt t3js-wizardcrpages-select-doktype" name="data[pages][NEW' . $index . '][doktype]" data-target="#page_new_icon_' . $index . '">' .
 									$this->typeSelectHtml .

@@ -222,7 +222,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 		// initialize
 		$theOutput = '';
 		if ($existTemplate) {
-			$content = ' <img ' . IconUtility::skinImg($this->getBackPath(), IconUtility::getIcon('sys_template', $tplRow)) . ' align="top" /> <strong>'
+			$content = ' ' . IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . ' <strong>'
 				. $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants')) . '</strong>'
 				. htmlspecialchars(trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : '');
 			$theOutput .= $this->pObj->doc->section($lang->getLL('currentTemplate'), $content);

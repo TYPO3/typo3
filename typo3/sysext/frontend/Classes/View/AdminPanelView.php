@@ -404,7 +404,7 @@ class AdminPanelView {
 			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth + 1);
 			$GLOBALS['BE_USER']->extGetTreeList($GLOBALS['TSFE']->id, $depth, 0, $GLOBALS['BE_USER']->getPagePermsClause(1));
 			foreach ($GLOBALS['BE_USER']->extPageInTreeInfo as $row) {
-				$outTable .= '<tr>' . '<td><img src="typo3/gfx/clear.gif" width="' . ($depth + 1 - $row[2]) * 18 . '" height="1" alt="" /><img ' . IconUtility::skinImg(TYPO3_mainDir, 'gfx/i/pages.gif', 'width="18" height="16"') . ' align="top" alt="" /> ' . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
+				$outTable .= '<tr>' . '<td><img src="typo3/gfx/clear.gif" width="' . ($depth + 1 - $row[2]) * 18 . '" height="1" alt="" />' . IconUtility::getSpriteIcon('apps-pagetree-page-default') . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
 			}
 			$outTable = '<br /><table>' . $outTable . '</table>';
 			$outTable .= '<input type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';

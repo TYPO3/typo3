@@ -202,9 +202,13 @@ class FrontendEditPanel {
 	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArr = array(), $addUrlParamStr = '', $table, $editUid, $fieldList) {
 		// Special content is about to be shown, so the cache must be disabled.
 		$this->frontendController->set_no_cache('Display frontend edit icons', TRUE);
-		$style = $conf['styleAttribute'] ? ' style="' . htmlspecialchars($conf['styleAttribute']) . '"' : '';
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
-		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img  ' . IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit_fe.gif', 'width="11" height="12" border="0" align="top" ') . ' title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', FALSE) . '"' . $style . ' class="frontEndEditIcons" alt="" />';
+		$optionsArray = array(
+			'title' => htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', FALSE),
+			'class' => 'frontEndEditIcons',
+			'style' => $conf['styleAttribute'] ? htmlspecialchars($conf['styleAttribute']) : ''
+		);
+		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : IconUtility::getSpriteIcon('actions-document-open', $optionsArray);
 		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
 
 		$url = BackendUtility::getModuleUrl(

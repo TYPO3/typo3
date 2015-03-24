@@ -94,7 +94,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 		$ATag = '<a href="#" onclick="' . $aOnClick . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 		$ATag_e = '</a>';
-		return $ATag . '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', TRUE) . '" alt="" />' . $ATag_e . $ATag_alt . $code . $ATag_e;
+		return $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('addToList', TRUE))) . $ATag_e . $ATag_alt . $code . $ATag_e;
 	}
 
 	/**
