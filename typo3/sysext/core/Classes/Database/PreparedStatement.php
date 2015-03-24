@@ -351,14 +351,16 @@ class PreparedStatement {
 		}
 
 		// ->bind_param requires second up to last arguments as references
-		$bindParamArguments = array();
-		$bindParamArguments[] = $combinedTypes;
-		$numberOfExtraParamArguments = count($values);
-		for ($i = 0; $i < $numberOfExtraParamArguments; $i++) {
-			$bindParamArguments[] = &$values[$i];
-		}
+		if (!empty($combinedTypes)) {
+			$bindParamArguments = array();
+			$bindParamArguments[] = $combinedTypes;
+			$numberOfExtraParamArguments = count($values);
+			for ($i = 0; $i < $numberOfExtraParamArguments; $i++) {
+				$bindParamArguments[] = &$values[$i];
+			}
 
-		call_user_func_array(array($this->statement, 'bind_param'), $bindParamArguments);
+			call_user_func_array(array($this->statement, 'bind_param'), $bindParamArguments);
+		}
 
 		$success = $this->statement->execute();
 
