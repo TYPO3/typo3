@@ -15,7 +15,7 @@
  * JavaScript RequireJS module called "TYPO3/CMS/Backend/DragUploader"
  *
  */
-define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
+define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], function($) {
 
 	/*
 	 * part 1: a generic jQuery plugin "$.dragUploader"
@@ -94,7 +94,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			me.queueLength = 0;
 
 			// ask user if we should override files
-			var override = confirm(TYPO3.l10n.localize('file_upload.overwriteExistingFiles'));
+			var override = confirm(TYPO3.lang['file_upload.overwriteExistingFiles']);
 			if (!me.$fileList.is(':visible')) {
 				me.$fileList.show();
 			}
@@ -133,7 +133,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			me.$dropzoneMask.on('dragleave', me.fileOutOfDropzone);
 			me.$dropzoneMask.on('drop', me.handleDrop);
 
-			me.$dropzone.prepend('<h4>'+TYPO3.l10n.localize('file_upload.dropzonehint.title')+'</h4><p>'+TYPO3.l10n.localize('file_upload.dropzonehint.message')+'</p>')
+			me.$dropzone.prepend('<h4>' + TYPO3.lang['file_upload.dropzonehint.title'] + '</h4><p>' + TYPO3.lang['file_upload.dropzonehint.message'] + '</p>')
 				.click(function(){me.$fileInput.click()});
 			$('<span />').addClass('t3-icon t3-icon-actions t3-icon-actions-close t3-dropzone-close').html('&nbsp;').click(me.hideDropzone).appendTo(me.$dropzone);
 
@@ -210,7 +210,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 		};
 
 		me.uploadError = function(response) {
-			me.updateMessage(TYPO3.l10n.localize('file_upload.uploadFailed').replace(/\{0\}/g, me.file.name));
+			me.updateMessage(TYPO3.lang['file_upload.uploadFailed'].replace(/\{0\}/g, me.file.name));
 			var error = $(response.responseText);
 			if (error.is('t3err')) {
 				me.$progressPercentage.text(error.text());
@@ -310,7 +310,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 				return true;
 			}
 			return false;
-		}
+		};
 
 		// position queue item in file list
 		if ($('tbody tr.t3-upload-queue-item', me.dragUploader.$fileList).length === 0) {
@@ -325,18 +325,18 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 
 		// check file size
 		if (me.file.size > me.dragUploader.maxFileSize) {
-			me.updateMessage(TYPO3.l10n.localize('file_upload.maxFileSizeExceeded')
+			me.updateMessage(TYPO3.lang['file_upload.maxFileSizeExceeded']
 				.replace(/\{0\}/g, me.file.name)
 				.replace(/\{1\}/g, me.fileSizeAsString(me.dragUploader.maxFileSize)));
 			me.$row.addClass('error');
 
 		// check filename/extension against deny pattern
 		} else if (me.dragUploader.fileDenyPattern && me.file.name.match(me.dragUploader.fileDenyPattern)) {
-			me.updateMessage(TYPO3.l10n.localize('file_upload.fileNotAllowed').replace(/\{0\}/g, me.file.name));
+			me.updateMessage(TYPO3.lang['file_upload.fileNotAllowed'].replace(/\{0\}/g, me.file.name));
 			me.$row.addClass('error');
 
 		} else if (!me.checkAllowedExtensions()) {
-			me.updateMessage(TYPO3.l10n.localize('file_upload.fileExtensionExpected')
+			me.updateMessage(TYPO3.lang['file_upload.fileExtensionExpected']
 				.replace(/\{0\}/g, me.dragUploader.filesExtensionsAllowed)
 			);
 			me.$row.addClass('error');
@@ -372,8 +372,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 			// start upload
 			me.upload = $.ajax(s);
 		}
-
-	}
+	};
 
 	/**
 	 * part 2: The main module of this file
@@ -412,7 +411,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery'], function($) {
 
 
 	/**
-     * part 3: initialize the RequireJS module, require possible post-initialize hooks,
+	 * part 3: initialize the RequireJS module, require possible post-initialize hooks,
 	 * and return the main object
 	 */
 	var initialize = function() {
