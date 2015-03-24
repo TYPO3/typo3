@@ -186,7 +186,7 @@ class LoginController {
 		}
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xlf');
 		// Setting the redirect URL to "backend.php" if no alternative input is given
-		$this->redirectToURL = $this->redirect_url ?: BackendUtility::getModuleUrl('backend');
+		$this->redirectToURL = $this->redirect_url ?: 'backend.php';
 		// Do a logout if the command is set
 		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
 			$GLOBALS['BE_USER']->logoff();
@@ -251,24 +251,11 @@ class LoginController {
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use $this->indexAction()
+	 * @return void
 	 */
 	public function printContent() {
-		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
-
-	/**
-	 * Calls the main method and returns the content
-	 *
-	 * @return string
-	 */
-	public function indexAction() {
-		$this->main();
-		return $this->content;
-	}
-
 
 	/*****************************
 	 *
@@ -424,7 +411,7 @@ class LoginController {
 			// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface) {
 				case 'backend':
-					$this->redirectToURL = BackendUtility::getModuleUrl('backend');
+					$this->redirectToURL = 'backend.php';
 					break;
 				case 'frontend':
 					$this->redirectToURL = '../';
@@ -473,7 +460,7 @@ class LoginController {
 					'frontend' => $GLOBALS['LANG']->getLL('interface.frontend')
 				);
 				$jumpScript = array(
-					'backend' => BackendUtility::getModuleUrl('backend'),
+					'backend' => 'backend.php',
 					'frontend' => '../'
 				);
 				// Traverse the interface keys:

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script Class for logging a user out.
@@ -35,19 +34,9 @@ class LogoutController {
 		$GLOBALS['BE_USER']->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($GLOBALS['BE_USER']->user['username']));
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->removeSessionTokenFromRegistry();
 		$GLOBALS['BE_USER']->logoff();
-		$this->redirect();
-	}
-
-	/**
-	 * Redirects based on the "redirect" parameter, otherwise falls back to the login page
-	 */
-	protected function redirect() {
-		$redirectUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
-		if (empty($redirectUrl)) {
-			// @todo: use the UrlGenerator in the future for that
-			$redirectUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('login', array(), FALSE, TRUE);
-		}
-		HttpUtility::redirect($redirectUrl);
+		$redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
+		$redirectUrl = $redirect ? $redirect : 'index.php';
+		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 	}
 
 }

@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Routing\Generator\UrlGenerator;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -57,22 +55,6 @@ class BackendUtility {
 	 * @see getTCAtypes()
 	 */
 	static protected $tcaTableTypeConfigurationCache = array();
-
-	/**
-	 * @var Router
-	 */
-	static protected $router;
-
-	/**
-	 * Sets the router for all that backwards compatibility stuff,
-	 * so it doesn't have to be fetched through the bootstrap.
-	 *
-	 * @param Router $router
-	 * @internal
-	 */
-	static public function setRouter(Router $router) {
-		static::$router = $router;
-	}
 
 	/*******************************************
 	 *
@@ -3157,13 +3139,6 @@ class BackendUtility {
 	 * @return string Calculated URL
 	 */
 	static public function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
-		if (self::$router !== NULL) {
-			try {
-				return self::$router->generate($moduleName, $urlParameters, $returnAbsoluteUrl ? UrlGenerator::ABSOLUTE_PATH : UrlGenerator::RELATIVE_PATH);
-			} catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
-				// do nothing, to have a proper fallback
-			}
-		}
 		if ($backPathOverride === FALSE) {
 			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
 		} else {

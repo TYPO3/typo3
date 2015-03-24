@@ -466,7 +466,6 @@ function jumpToUrl(URL) {
 		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
 			$this->pageRenderer->enableDebugMode();
 		}
-		$this->pageRenderer->setBaseUrl(GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR'));
 		return $this->pageRenderer;
 	}
 

@@ -78,7 +78,6 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 			->checkBackendIpOrDie()
 			->checkSslBackendAndRedirectIfNeeded()
 			->checkValidBrowserOrDie()
-			->initializeBackendRouter()
 			->loadExtensionTables(TRUE)
 			->initializeSpriteManager()
 			->initializeBackendUser()

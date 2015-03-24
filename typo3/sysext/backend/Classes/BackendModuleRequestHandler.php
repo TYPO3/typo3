@@ -86,7 +86,6 @@ class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandler
 			->checkBackendIpOrDie()
 			->checkSslBackendAndRedirectIfNeeded()
 			->checkValidBrowserOrDie()
-			->initializeBackendRouter()
 			->loadExtensionTables(TRUE)
 			->initializeSpriteManager()
 			->initializeBackendUser()
