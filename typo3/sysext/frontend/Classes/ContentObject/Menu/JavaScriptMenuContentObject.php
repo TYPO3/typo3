@@ -78,7 +78,7 @@ var ' . $this->JSVarName . $a . '=0;';
 			$formCode .= '<select name="selector' . $a . '" onchange="' . $this->JSMenuName . '.act(' . $a . ');"' . ($levelConf['additionalParams'] ? ' ' . $levelConf['additionalParams'] : '') . '>';
 			for ($b = 0; $b < $height; $b++) {
 				$formCode .= '<option value="0">';
-				if ($b == 0) {
+				if ($b === 0) {
 					$formCode .= $lengthStr;
 				}
 				$formCode .= '</option>';
@@ -105,6 +105,7 @@ var ' . $this->JSVarName . $a . '=0;';
 	 * @access private
 	 */
 	public function generate_level($levels, $count, $pid, $menuItemArray = '', $MP_array = array()) {
+		$count = (int)$count;
 		$levelConf = $this->mconf[$count . '.'];
 		// Translate PID to a mount page, if any:
 		$mount_info = $this->sys_page->getMountPointInfo($pid);
@@ -117,7 +118,7 @@ var ' . $this->JSVarName . $a . '=0;';
 		// Initializing variables:
 		$var = $this->JSVarName;
 		$menuName = $this->JSMenuName;
-		$parent = $count == 1 ? 0 : $var . ($count - 1);
+		$parent = $count === 1 ? 0 : $var . ($count - 1);
 		$prev = 0;
 		$c = 0;
 		$codeLines = '';
@@ -160,7 +161,7 @@ var ' . $this->JSVarName . $a . '=0;';
 					$first = !$c && $levelConf['showFirst'];
 					// do it...
 					if ($active || $first) {
-						if ($count == 1) {
+						if ($count === 1) {
 							$codeLines .= LF . $menuName . '.openID = ' . $var . $count . ';';
 						} else {
 							$codeLines .= LF . $menuName . '.entry[' . $parent . '].openID = ' . $var . $count . ';';

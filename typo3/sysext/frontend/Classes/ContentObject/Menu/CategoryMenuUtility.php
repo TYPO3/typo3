@@ -112,7 +112,7 @@ class CategoryMenuUtility {
 				// Make sure the order property is either "asc" or "desc" (default is "asc")
 				if (!empty($order)) {
 					$order = strtolower($order);
-					if ($order != 'desc') {
+					if ($order !== 'desc') {
 						$order = 'asc';
 					}
 				}
@@ -124,7 +124,7 @@ class CategoryMenuUtility {
 					)
 				);
 				// If the sort order is descending, reverse the sorted array
-				if ($order == 'desc') {
+				if ($order === 'desc') {
 					$pages = array_reverse($pages, TRUE);
 				}
 			}

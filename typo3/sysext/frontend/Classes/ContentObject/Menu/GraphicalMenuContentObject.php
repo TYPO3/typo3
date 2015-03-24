@@ -124,7 +124,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 		foreach ($conf as $key => $val) {
 			$this->getTypoScriptFrontendController()->register['count_HMENU_MENUOBJ']++;
 			$this->getTypoScriptFrontendController()->register['count_MENUOBJ']++;
-			if ($items == $c + 1 && $minDim) {
+			if ($items === $c + 1 && $minDim) {
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
 				if ($Lobjs) {
 					$Lobjs = GeneralUtility::intExplode(',', $Lobjs);
@@ -156,7 +156,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				$gifCreator->init();
 				$gifCreator->start($val, $this->menuArr[$key]);
 				// If useLargestItemH/W is specified
-				if (count($totalWH) && ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'])) {
+				if (!empty($totalWH) && ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'])) {
 					$tempXY = explode(',', $gifCreator->setup['XY']);
 					if ($this->mconf['useLargestItemX']) {
 						$tempXY[0] = max($totalWH['W']);
@@ -171,7 +171,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 					$gifCreator->start($val, $this->menuArr[$key]);
 				}
 				// If distributeH/W is specified
-				if (count($totalWH) && ($this->mconf['distributeX'] || $this->mconf['distributeY'])) {
+				if (!empty($totalWH) && ($this->mconf['distributeX'] || $this->mconf['distributeY'])) {
 					$tempXY = explode(',', $gifCreator->setup['XY']);
 					if ($this->mconf['distributeX']) {
 						$diff = $this->mconf['distributeX'] - $totalWH['W_total'] - $distributeAccu['W'];
@@ -284,6 +284,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 	 * @see makeGifs()
 	 */
 	public function findLargestDims($conf, $items, $Hobjs, $Wobjs, $minDim, $maxDim) {
+		$items = (int)$items;
 		$totalWH = array(
 			'W' => array(),
 			'H' => array(),
@@ -296,7 +297,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 		$maxFlag = 0;
 		foreach ($conf as $key => $val) {
 			// SAME CODE AS makeGifs()! BEGIN
-			if ($items == $c + 1 && $minDim) {
+			if ($items === $c + 1 && $minDim) {
 				$Lobjs = $this->mconf['removeObjectsOfDummy'];
 				if ($Lobjs) {
 					$Lobjs = GeneralUtility::intExplode(',', $Lobjs);
