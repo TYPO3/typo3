@@ -35,9 +35,15 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 	protected $searchData;
 
-	// This is the id of the site root.
-	// This value may be a commalist of integer (prepared for this)
-	// Root-page PIDs to search in (rl0 field where clause, see initialize() function)
+	/**
+	 * This is the id of the site root.
+	 * This value may be a commalist of integer (prepared for this)
+	 * Root-page PIDs to search in (rl0 field where clause, see initialize() function)
+	 *
+	 * If this value is set to less than zero (eg. -1) searching will happen
+	 * in ALL of the page tree with no regard to branches at all.
+	 * @var int|string
+	 */
 	protected $searchRootPageIdList = 0;
 
 	protected $defaultResultNumber = 10;
@@ -773,7 +779,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$sWordArray = $hookObj->getSearchWords_splitSWords($searchWords, $defaultOperator);
 		} else {
 			// sentence
-			if ($this->searchDat['searchType'] == 20) {
+			if ($this->searchData['searchType'] == 20) {
 				$sWordArray = array(
 					array(
 						'sword' => trim($searchWords),
@@ -888,8 +894,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->view->assign('allNumberOfResults', $allNumberOfResults);
 			$allGroups = $this->getAllAvailableGroupOptions();
 			$this->view->assign('allGroups', $allGroups);
-			$this->view->assign('searchParams', $searchData);
 		}
+		$this->view->assign('searchParams', $searchData);
 	}
 
 	/****************************************
