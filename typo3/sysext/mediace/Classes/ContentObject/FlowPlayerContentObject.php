@@ -350,7 +350,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Configure captions
 		if ($conf['type'] === 'video' && isset($conf['caption'])) {
 			// Assemble captions track tag
-			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '"></track>' . LF;
+			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '" default>' . LF;
 			// Add videoJS extension for captions
 			$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/captions.js'));
 			// Flowplayer captions
@@ -521,6 +521,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			track.setAttribute("src", "' . $conf['caption'] . '");
 			track.setAttribute("id", "' . $replaceElementIdString . '_captions_track");
 			track.setAttribute("kind", "captions");
+			track.setAttribute("default", "default");
 			' . $replaceElementIdString . '_video_js.appendChild(track);';
 						}
 						$videoTagAssembly .= '
