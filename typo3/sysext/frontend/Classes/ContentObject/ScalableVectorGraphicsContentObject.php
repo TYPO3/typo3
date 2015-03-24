@@ -71,7 +71,6 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject {
 				</noscript>
 			';
 		}
-		$GLOBALS['TSFE']->getPageRenderer()->loadSvg();
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}

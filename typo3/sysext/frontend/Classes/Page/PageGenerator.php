@@ -601,15 +601,6 @@ class PageGenerator {
 		}
 		// Javascript Libraries
 		if (is_array($tsfe->pSetup['javascriptLibs.'])) {
-			if ($tsfe->pSetup['javascriptLibs.']['SVG']) {
-				$pageRenderer->loadSvg();
-				if ($tsfe->pSetup['javascriptLibs.']['SVG.']['debug']) {
-					$pageRenderer->enableSvgDebug();
-				}
-				if ($tsfe->pSetup['javascriptLibs.']['SVG.']['forceFlash']) {
-					$pageRenderer->svgForceFlash();
-				}
-			}
 			if ($tsfe->pSetup['javascriptLibs.']['Prototype']) {
 				$pageRenderer->loadPrototype();
 			}

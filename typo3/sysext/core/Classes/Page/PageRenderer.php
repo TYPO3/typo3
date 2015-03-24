@@ -293,11 +293,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $extJsPath = 'contrib/extjs/';
 
 	/**
-	 * @var string
-	 */
-	protected $svgPath = 'contrib/websvg/';
-
-	/**
 	 * The local directory where one can find jQuery versions and plugins
 	 *
 	 * @var string
@@ -458,18 +453,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var string
 	 */
 	protected $endingSlash = '';
-
-	/**
-	 * SVG library
-	 *
-	 * @var bool
-	 */
-	protected $addSvg = FALSE;
-
-	/**
-	 * @var bool
-	 */
-	protected $enableSvgDebug = FALSE;
 
 	/**
 	 * Used by BE modules
@@ -727,16 +710,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->extJsPath = $path;
 	}
 
-	/**
-	 * Sets Path for SVG library (websvg)
-	 *
-	 * @param string $path
-	 * @return void
-	 */
-	public function setSvgPath($path) {
-		$this->svgPath = $path;
-	}
-
 	/*****************************************************/
 	/*                                                   */
 	/*  Public Enablers / Disablers                      */
@@ -883,7 +856,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->enableExtCoreDebug = TRUE;
 		$this->enableExtJsDebug = TRUE;
 		$this->enableJqueryDebug = TRUE;
-		$this->enableSvgDebug = TRUE;
 	}
 
 	/*****************************************************/
@@ -1097,15 +1069,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getExtJsPath() {
 		return $this->extJsPath;
-	}
-
-	/**
-	 * Gets Path for SVG library (relative to typo3 directory)
-	 *
-	 * @return string
-	 */
-	public function getSvgPath() {
-		return $this->svgPath;
 	}
 
 	/**
@@ -1789,33 +1752,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Call function if you need the SVG library
-	 *
-	 * @return void
-	 */
-	public function loadSvg() {
-		$this->addSvg = TRUE;
-	}
-
-	/**
-	 * Call this function to load debug version of ExtJS. Use this for development only
-	 *
-	 * @return void
-	 */
-	public function enableSvgDebug() {
-		$this->enableSvgDebug = TRUE;
-	}
-
-	/**
-	 * Call this function to force flash usage with SVG library
-	 *
-	 * @return void
-	 */
-	public function svgForceFlash() {
-		$this->addMetaTag('<meta name="svg.render.forceflash" content="true" />');
-	}
-
-	/**
 	 * Call this function to load debug version of ExtJS. Use this for development only
 	 *
 	 * @return void
@@ -2169,7 +2105,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Helper function for render the main JavaScript libraries,
-	 * currently: RequireJS, jQuery, PrototypeJS, Scriptaculous, SVG, ExtJs
+	 * currently: RequireJS, jQuery, PrototypeJS, Scriptaculous, ExtJs
 	 *
 	 * @return string Content with JavaScript libraries
 	 */
@@ -2184,9 +2120,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->requireJsPath . 'require.js')) . '" type="text/javascript"></script>' . LF;
 		}
 
-		if ($this->addSvg) {
-			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->svgPath . 'svg.js')) . '" data-path="' . $this->backPath . $this->svgPath . '"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>' . LF;
-		}
 		// Include jQuery Core for each namespace, depending on the version and source
 		if (!empty($this->jQueryVersions)) {
 			foreach ($this->jQueryVersions as $namespace => $jQueryVersion) {

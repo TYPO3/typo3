@@ -5948,15 +5948,6 @@ javascriptLibs {
 
      # includes ExtJS debug file (uncompressed)
    ExtJs.debug = 1
-
-		#load SVG library
-		SVG = 1
-
-		#add SVG debug
-		SVG.debug = 1
-
-		#force render with flash
-		SVG.forceFlash = 1
 }
 ]]></description>
 			<default><![CDATA[
