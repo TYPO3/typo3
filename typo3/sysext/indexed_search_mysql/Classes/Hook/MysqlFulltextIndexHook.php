@@ -22,7 +22,7 @@ namespace TYPO3\CMS\IndexedSearchMysql\Hook;
 class MysqlFulltextIndexHook {
 
 	/**
-	 * @var \TYPO3\CMS\IndexedSearch\Controller\SearchFormController
+	 * @var \TYPO3\CMS\IndexedSearch\Controller\SearchFormController|\TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository
 	 */
 	public $pObj;
 
@@ -61,14 +61,16 @@ class MysqlFulltextIndexHook {
 	public function getSearchString($searchWordArray) {
 		// Initialize variables:
 		$count = 0;
-		$searchBoolean = FALSE;
 		// Change this to TRUE to force BOOLEAN SEARCH MODE (useful if fulltext index is still empty)
+		$searchBoolean = FALSE;
 		$fulltextIndex = 'index_fulltext.fulltextdata';
-		$naturalSearchString = '';
 		// This holds the result if the search is natural (doesn't contain any boolean operators)
-		$booleanSearchString = '';
+		$naturalSearchString = '';
 		// This holds the result if the search is boolen (contains +/-/| operators)
-		$searchType = (string)$this->pObj->piVars['type'];
+		$booleanSearchString = '';
+
+		$searchType = (string)$this->pObj->getSearchType();
+
 		// Traverse searchwords and prefix them with corresponding operator
 		foreach ($searchWordArray as $searchWordData) {
 			// Making the query for a single search word based on the search-type
@@ -145,22 +147,24 @@ class MysqlFulltextIndexHook {
 		// Indexing configuration clause:
 		$freeIndexUidClause = $this->pObj->freeIndexUidWhere($freeIndexUid);
 		// Calling hook for alternative creation of page ID list
+		$searchRootPageIdList = $this->pObj->getSearchRootPageIdList();
 		if ($hookObj = &$this->pObj->hookRequest('execFinalQuery_idList')) {
 			$pageWhere = $hookObj->execFinalQuery_idList('');
-		} elseif ($this->pObj->join_pages) {
+		} elseif ($this->pObj->getJoinPagesForQuery()) {
 			// Alternative to getting all page ids by ->getTreeList() where "excludeSubpages" is NOT respected.
 			$pageJoin = ',
 				pages';
 			$pageWhere = 'pages.uid = ISEC.page_id
-				' . $this->pObj->cObj->enableFields('pages') . '
+				' . $GLOBALS['TSFE']->cObj->enableFields('pages') . '
 				AND pages.no_search=0
 				AND pages.doktype<200
 			';
-		} elseif ($this->pObj->wholeSiteIdList >= 0) {
-			// Collecting all pages IDs in which to search; filtering out ALL pages that are not accessible due to enableFields. Does NOT look for "no_search" field!
-			$siteIdNumbers = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->pObj->wholeSiteIdList);
+		} elseif ($searchRootPageIdList[0] >= 0) {
+
+			// Collecting all pages IDs in which to search;
+			// filtering out ALL pages that are not accessible due to enableFields. Does NOT look for "no_search" field!
 			$idList = array();
-			foreach ($siteIdNumbers as $rootId) {
+			foreach ($searchRootPageIdList as $rootId) {
 				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
 				$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 				$idList[] = $cObj->getTreeList( -1 * $rootId, 9999);
@@ -174,10 +178,17 @@ class MysqlFulltextIndexHook {
 		if ($searchData['searchBoolean']) {
 			$searchBoolean = ' IN BOOLEAN MODE';
 		}
-		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_fulltext.*, ISEC.*, IP.*', 'index_fulltext, index_section ISEC, index_phash IP' . $pageJoin, 'MATCH (' . $searchData['fulltextIndex'] . ') AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'], 'index_fulltext') . $searchBoolean . ') ' . $this->pObj->mediaTypeWhere() . ' ' . $this->pObj->languageWhere() . $freeIndexUidClause . '
-					AND index_fulltext.phash = IP.phash
-					AND ISEC.phash = IP.phash
-					AND ' . $pageWhere, 'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId');
+		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'index_fulltext.*, ISEC.*, IP.*',
+			'index_fulltext, index_section ISEC, index_phash IP' . $pageJoin,
+			'MATCH (' . $searchData['fulltextIndex'] . ')
+				AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'], 'index_fulltext') . $searchBoolean . ') ' .
+				$this->pObj->mediaTypeWhere() . ' ' . $this->pObj->languageWhere() . $freeIndexUidClause . '
+				AND index_fulltext.phash = IP.phash
+				AND ISEC.phash = IP.phash
+				AND ' . $pageWhere,
+			'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId'
+		);
 		return $resource;
 	}
 

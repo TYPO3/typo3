@@ -85,6 +85,7 @@ plugin.tx_indexedsearch {
 			sortOrder = rank_flag
 			languageUid = -1
 			sortDesc = 1
+			searchType = 1
 		}
 
 	}

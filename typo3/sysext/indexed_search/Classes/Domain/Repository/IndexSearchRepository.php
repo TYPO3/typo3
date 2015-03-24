@@ -58,11 +58,19 @@ class IndexSearchRepository {
 	// formally known as $this->piVars['result']
 	protected $numberOfResults = 10;
 
-	// list of all root pages that will be used
+	/**
+	 * list of all root pages that will be used
+	 * If this value is set to less than zero (eg. -1) searching will happen
+	 * in ALL of the page tree with no regard to branches at all.
+	 */
 	protected $searchRootPageIdList;
 
-	// formally known as $conf['search.']['searchSkipExtendToSubpagesChecking']
-	// enabled through settings.searchSkipExtendToSubpagesChecking
+	/**
+	 * formally known as $conf['search.']['searchSkipExtendToSubpagesChecking']
+	 * enabled through settings.searchSkipExtendToSubpagesChecking
+	 *
+	 * @var bool
+	 */
 	protected $joinPagesForQuery = FALSE;
 
 	// Select clauses for individual words,
@@ -481,9 +489,9 @@ class IndexSearchRepository {
 	}
 
 	/**
-	 * Returns AND statement for selection of langauge
+	 * Returns AND statement for selection of language
 	 *
-	 * @return string AND statement for selection of langauge
+	 * @return string AND statement for selection of language
 	 */
 	public function languageWhere() {
 		// -1 is the same as ALL language.
@@ -550,13 +558,12 @@ class IndexSearchRepository {
 		// Calling hook for alternative creation of page ID list
 		if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
 			$page_where = $hookObj->execFinalQuery_idList($list);
-		}
-		// Alternative to getting all page ids by ->getTreeList() where
-		// "excludeSubpages" is NOT respected.
-		if ($this->joinPagesForQuery) {
+		} elseif ($this->joinPagesForQuery) {
+			// Alternative to getting all page ids by ->getTreeList() where
+			// "excludeSubpages" is NOT respected.
 			$page_join = ',
 				pages';
-			$page_where = ' AND pages.uid = ISEC.page_id
+			$page_where = 'pages.uid = ISEC.page_id
 				' . $this->enableFields('pages') . '
 				AND pages.no_search=0
 				AND pages.doktype<200
@@ -570,7 +577,10 @@ class IndexSearchRepository {
 			foreach ($siteIdNumbers as $rootId) {
 				$pageIdList[] = $GLOBALS['TSFE']->cObj->getTreeList(-1 * $rootId, 9999);
 			}
-			$page_where = ' AND ISEC.page_id IN (' . implode(',', $pageIdList) . ')';
+			$page_where = 'ISEC.page_id IN (' . implode(',', $pageIdList) . ')';
+		} else {
+			// Disable everything... (select all)
+			$page_where = '1=1';
 		}
 		// otherwise select all / disable everything
 		// If any of the ranking sortings are selected, we must make a
@@ -601,13 +611,24 @@ class IndexSearchRepository {
 					$grsel = 'SUM(IR.freq) AS order_val';
 					$orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*, ' . $grsel, 'index_words IW,
-							index_rel IR,
-							index_section ISEC,
-							index_phash IP' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . $this->languageWhere() . $freeIndexUidClause . '
-							AND IW.wid=IR.wid
-							AND ISEC.phash = IR.phash
-							AND IP.phash = IR.phash' . $page_where, 'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', $orderBy);
+			// So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
+			$wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'ISEC.*, IP.*, ' . $grsel,
+				'index_words IW,
+					index_rel IR,
+					index_section ISEC,
+					index_phash IP' . $page_join,
+				$wordSel .
+				'IP.phash IN (' . $list . ') ' .
+					$this->mediaTypeWhere() . ' ' . $this->languageWhere() . $freeIndexUidClause . '
+					AND IW.wid=IR.wid
+					AND ISEC.phash = IR.phash
+					AND IP.phash = IR.phash
+					AND ' . $page_where,
+				'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId',
+				$orderBy
+			);
 		} else {
 			// Otherwise, if sorting are done with the pages table or other fields,
 			// there is no need for joining with the rel/word tables:
@@ -768,4 +789,32 @@ class IndexSearchRepository {
 		}
 	}
 
+	/**
+	 * Search type
+	 * e.g. sentence (20), any part of the word (1)
+	 *
+	 * @return int
+	 */
+	public function getSearchType() {
+		return (int)$this->searchType;
+	}
+
+	/**
+	 * A list of integer which should be root-pages to search from
+	 *
+	 * @return int[]
+	 */
+	public function getSearchRootPageIdList() {
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->searchRootPageIdList);
+	}
+
+	/**
+	 * Getter for joinPagesForQuery flag
+	 * enabled through TypoScript 'settings.skipExtendToSubpagesChecking'
+	 *
+	 * @return bool
+	 */
+	public function getJoinPagesForQuery() {
+		return $this->joinPagesForQuery;
+	}
 }
