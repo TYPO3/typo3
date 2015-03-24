@@ -252,12 +252,12 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					$addPasteButton = TRUE;
 					foreach ($elFromTable as $element) {
 						$clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-						if ($clipBoardElement instanceof Folder && $this->folderObject->getStorage()->isWithinFolder($clipBoardElement, $folderObject)) {
+						if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $folderObject)) {
 							$addPasteButton = FALSE;
 						}
 					}
 					if ($addPasteButton) {
-						$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
+						$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
 					}
 				}
 			}
@@ -377,7 +377,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 						$addPasteButton = TRUE;
 						foreach ($elFromTable as $element) {
 							$clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-							if ($clipBoardElement instanceof Folder && $this->folderObject->getStorage()->isWithinFolder($clipBoardElement, $this->folderObject)) {
+							if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $this->folderObject)) {
 								$addPasteButton = FALSE;
 							}
 						}
@@ -838,7 +838,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$addPasteButton = TRUE;
 			foreach ($elFromTable as $element) {
 				$clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
-				if ($clipBoardElement instanceof Folder && $fileOrFolderObject->getStorage()->isWithinFolder($clipBoardElement, $fileOrFolderObject)) {
+				if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $fileOrFolderObject)) {
 					$addPasteButton = FALSE;
 				}
 			}
