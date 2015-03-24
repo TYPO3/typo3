@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -241,12 +242,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 			$node->setExpanded(TRUE);
 			$node->setLabel($GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->tableName]['ctrl']['title']));
 		} else {
-			$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($this->tableName, $basicNode->getId(), '*', '', FALSE);
-			if ($this->getLabelField() !== '') {
-				$node->setLabel($row[$this->getLabelField()]);
-			} else {
-				$node->setLabel($basicNode->getId());
-			}
+			$row = BackendUtility::getRecordWSOL($this->tableName, $basicNode->getId(), '*', '', FALSE);
+			$node->setLabel(BackendUtility::getRecordTitle($this->tableName, $row) ?: $basicNode->getId());
 			$node->setSelected(GeneralUtility::inList($this->getSelectedList(), $basicNode->getId()));
 			$node->setExpanded($this->isExpanded($basicNode));
 		}
