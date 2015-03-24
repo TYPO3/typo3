@@ -334,7 +334,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				if (!trim($sectionName)) {
 					$sectionTitleLinked = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.unnamedSection', 'indexed_search') . ':';
 				} else {
-					$onclick = 'document.' . $this->prefixId . '[\'' . $this->prefixId . '[_sections]\'].value=\'' . $theRLid . '\';document.' . $this->prefixId . '.submit();return false;';
+					$onclick = 'document.forms[\'tx_indexedsearch\'][\'tx_indexedsearch_pi2[search][_sections]\'].value=' . GeneralUtility::quoteJSvalue($theRLid) . ';document.forms[\'tx_indexedsearch\'].submit();return false;';
 					$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
 				}
 				$this->resultSections[$id] = array($sectionName, count($resultRows));
@@ -342,7 +342,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				$finalResultRows[] = array(
 					'isSectionHeader' => TRUE,
 					'numResultRows' => count($resultRows),
-					'anchorName' => 'anchor_' . md5($id),
+					'sectionId' => $id,
 					'sectionTitle' => $sectionTitleLinked
 				);
 				// Render result rows
