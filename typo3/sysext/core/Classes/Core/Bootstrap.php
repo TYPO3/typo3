@@ -596,9 +596,9 @@ class Bootstrap {
 	 */
 	protected function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class, 'web', 'user,group');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class, 'web', 'user,group');
-			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', \TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class, 'web', 'user,group');
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class);
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class);
+			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', \TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class);
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', \TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect\LiveSearchDataProvider::class, 'web_list', 'user,group');
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class);
 			if (Utility\ExtensionManagementUtility::isLoaded('context_help')) {
@@ -607,7 +607,7 @@ class Bootstrap {
 			Utility\ExtensionManagementUtility::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', \TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider::class);
 			Utility\ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.DragAndDrop.CommandController',
-				Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:' . \TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands::class, 'web', 'user,group'
+				Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:' . \TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands::class
 			);
 		}
 		return $this;
