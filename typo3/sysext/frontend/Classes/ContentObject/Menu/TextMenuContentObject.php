@@ -30,6 +30,7 @@ class TextMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abstr
 	 * @todo Define visibility
 	 */
 	public function generate() {
+		$NOconf = array();
 		$splitCount = count($this->menuArr);
 		if ($splitCount) {
 			list($NOconf) = $this->procesItemStates($splitCount);
