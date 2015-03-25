@@ -91,8 +91,7 @@ class InputElement extends AbstractFormElement {
 
 
 		if (in_array('datetime', $evalList, TRUE)
-			|| in_array('date', $evalList)
-			|| in_array('time', $evalList)) {
+			|| in_array('date', $evalList)) {
 
 			$classes[] = 't3js-datetimepicker';
 			$isDateField = TRUE;
@@ -102,9 +101,6 @@ class InputElement extends AbstractFormElement {
 			} elseif (in_array('date', $evalList)) {
 				$attributes['data-date-type'] = 'date';
 				$dateFormat = $dateFormats['date'];
-			} else {
-				$attributes['data-date-type'] = 'time';
-				$dateFormat = $dateFormats['time'];
 			}
 			if ($additionalInformation['itemFormElValue'] > 0) {
 				$additionalInformation['itemFormElValue'] += date('Z', $additionalInformation['itemFormElValue']);
@@ -115,7 +111,14 @@ class InputElement extends AbstractFormElement {
 			if (isset($config['range']['upper'])) {
 				$attributes['data-date-maxDate'] = (int)$config['range']['upper'];
 			}
+		} elseif (in_array('time', $evalList)) {
+			$dateFormat = $dateFormats['time'];
+			$isDateField = TRUE;
+			$classes[] = 't3js-datetimepicker';
+			$attributes['data-date-type'] = 'time';
 		} elseif (in_array('timesec', $evalList)) {
+			$dateFormat = $dateFormats['timesec'];
+			$isDateField = TRUE;
 			$classes[] = 't3js-datetimepicker';
 			$attributes['data-date-type'] = 'timesec';
 		} else {
@@ -130,7 +133,7 @@ class InputElement extends AbstractFormElement {
 				case 'required':
 					$this->formEngine->registerRequiredProperty('field', $table . '_' . $row['uid'] . '_' . $field, $additionalInformation['itemFormElName']);
 					// Mark this field for date/time disposal:
-					if (array_intersect($evalList, array('date', 'datetime', 'time'))) {
+					if (array_intersect($evalList, array('date', 'datetime', 'time', 'timesec'))) {
 						$this->formEngine->requiredAdditional[$additionalInformation['itemFormElName']]['isPositiveNumber'] = TRUE;
 					}
 					break;
