@@ -1468,31 +1468,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$out .= $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br />';
 					}
 					break;
-				case 'text':
-
-				case 'textpic':
-
-				case 'image':
-					if ($row['CType'] == 'text' || $row['CType'] == 'textpic') {
-						if ($row['bodytext']) {
-							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-						}
-					}
-					if ($row['CType'] == 'textpic' || $row['CType'] == 'image') {
-						if ($row['image']) {
-							$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
-							$fileReferences = BackendUtility::resolveFileReferences('tt_content', 'image', $row);
-							if (!empty($fileReferences)) {
-								$linkedContent = '';
-								foreach ($fileReferences as $fileReference) {
-									$linkedContent .= htmlspecialchars($fileReference->getDescription()) . '<br />';
-								}
-								$out .= $this->linkEditContent($linkedContent, $row);
-								unset($linkedContent);
-							}
-						}
-					}
-					break;
 				case 'bullets':
 				case 'table':
 					if ($row['bodytext']) {
@@ -1502,12 +1477,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				case 'uploads':
 					if ($row['media']) {
 						$out .= $this->thumbCode($row, 'tt_content', 'media') . '<br />';
-					}
-					break;
-				case 'multimedia':
-					if ($row['multimedia']) {
-						$out .= $this->renderText($row['multimedia']) . '<br />';
-						$out .= $this->renderText($row['parameters']) . '<br />';
 					}
 					break;
 				case 'menu':
@@ -1581,12 +1550,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages']),
 							TRUE
 						) . '<br />';
-					break;
-				case 'script':
-					$out .= $this->getLanguageService()->sL(BackendUtility::getItemLabel('tt_content', 'select_key'), TRUE)
-						. ' ' . $row['select_key'] . '<br />';
-					$out .= '<br />' . $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-					$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
 					break;
 				default:
 					$contentType = $this->CType_labels[$row['CType']];

@@ -58,9 +58,11 @@ mod.wizards.newContentElement.wizardItems.forms {
 }
 ');
 
-// Add a for previewing tt_content elements of CType="mailform"
+// Register for hook to show preview of tt_content element of CType="mailform" in page module
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['mailform'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\MailformPreviewRenderer::class;
 
+// Register for hook to show preview of tt_content element of CType="script" in page module
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['script'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\ScriptPreviewRenderer::class;
 
 /**
  * CType "search"

@@ -18,3 +18,15 @@ if (!$_EXTCONF || $_EXTCONF['removePositionTypes']) {
 // Mark the delivered TypoScript templates as "content rendering template" (providing the hooks of "static template 43" = content (default))
 $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/';
 $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'cssstyledcontent/static/v6.2/';
+
+// Register for hook to show preview of tt_content element of CType="image" in page module
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['image'] =
+	\TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\ImagePreviewRenderer::class;
+
+// Register for hook to show preview of tt_content element of CType="textpic" in page module
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['textpic'] =
+	\TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\TextpicPreviewRenderer::class;
+
+// Register for hook to show preview of tt_content element of CType="text" in page module
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['text'] =
+	\TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\TextPreviewRenderer::class;

@@ -29,3 +29,9 @@ if (TYPO3_MODE === 'FE') {
 	// Register the basic media wizard provider
 	\TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider(\TYPO3\CMS\Mediace\MediaWizard\MediaWizardProvider::class);
 }
+
+if (TYPO3_MODE === 'BE') {
+	// Register for hook to show preview of tt_content element of CType="multimedia" in page module
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['multimedia'] =
+		\TYPO3\CMS\Mediace\Hooks\PageLayoutView\MultimediaPreviewRenderer::class;
+}
