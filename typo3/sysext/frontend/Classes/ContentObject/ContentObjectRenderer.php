@@ -5232,6 +5232,9 @@ class ContentObjectRenderer {
 	 * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
 	 */
 	public function getImgResource($file, $fileArray) {
+		if (empty($file) && empty($fileArray)) {
+			return NULL;
+		}
 		if (!is_array($fileArray)) {
 			$fileArray = (array) $fileArray;
 		}
