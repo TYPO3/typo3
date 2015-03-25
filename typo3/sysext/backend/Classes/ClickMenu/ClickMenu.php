@@ -942,13 +942,14 @@ class ClickMenu {
 			if (!in_array('paste', $this->disabledItems) && $elFromAllTables && $folder && $fileObject->checkActionPermission('write')) {
 				$elArr = $this->clipObj->elFromTable('_FILE');
 				$selItem = reset($elArr);
-				$elInfo = array(
-					basename($selItem),
-					basename($identifier),
-					$this->clipObj->currentMode()
-				);
 				$clickedFileOrFolder = ResourceFactory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
 				$fileOrFolderInClipBoard = ResourceFactory::getInstance()->retrieveFileOrFolderObject($selItem);
+				$fileInfo = $fileOrFolderInClipBoard->getStorage()->getFileInfoByIdentifier(substr(strstr($selItem, ':'), 1));
+				$elInfo = array(
+					$fileInfo['name'],
+					$clickedFileOrFolder->getName(),
+					$this->clipObj->currentMode()
+				);
 				if (!$fileOrFolderInClipBoard instanceof Folder || !$fileOrFolderInClipBoard->getStorage()->isWithinFolder($fileOrFolderInClipBoard, $clickedFileOrFolder)) {
 					$menuItems['pasteinto'] = $this->FILE_paste($identifier, $selItem, $elInfo);
 				}
