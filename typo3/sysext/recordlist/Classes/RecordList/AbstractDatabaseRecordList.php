@@ -513,32 +513,30 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 		// Table with the search box:
 		$content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
-				<div id="typo3-dblist-search" class="container">
-					<div class="row">
-						<div class="col-xs-3 col-md-3 col-lg-3">
-							<div class="input-group">
-								<label class="pull-left" for="search_field">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.searchString', TRUE) . ': </label>
-								<input class="form-control" type="search" placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', TRUE) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString', TRUE) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
-							</div>
-						</div>
-						<div class="col-xs-3 col-md-3 col-lg-3">
-							<div class="input-group">
-								<label class="pull-left" for="search_levels">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels', TRUE) . ': </label>
-								' . $lMenu . '
-							</div>
-						</div>
-						<div class="col-xs-3 col-md-3 col-lg-3">
-							<div class="input-group">
-								<label class="pull-left" for="showLimit">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', TRUE) . ': </label>
-								<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', TRUE) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
-							</div>
-						</div>
-						<div class="col-xs-3 col-md-3 col-lg-3">
-							<div class="input-group">
-								<input type="submit" class="btn btn-default btn-block" name="search" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '" />
+				<div id="typo3-dblist-search">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="form-inline form-inline-spaced">
+								<div class="form-group">
+									<input class="form-control" type="search" placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', TRUE) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString', TRUE) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
+								</div>
+								<div class="form-group">
+									<label for="search_levels">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels', TRUE) . ': </label>
+									' . $lMenu . '
+								</div>
+								<div class="form-group">
+									<label for="showLimit">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', TRUE) . ': </label>
+									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', TRUE) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-default" name="search" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '">
+										<i class="fa fa-search"></i> ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 			' . $formElements[1] . '</div></div>';
 		return $content;
 	}

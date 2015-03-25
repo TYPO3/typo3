@@ -12106,21 +12106,30 @@ div#typo3-listOptions {
   padding: 4px 5px;
   width: 7px;
 }
-.db_list-searchbox-toolbar {
-  background: #dadada;
-  border-top: 1px solid #b3b3b3;
-  padding: 5px 5px 0 5px;
+.db_list-searchbox-toolbar .form-inline {
+  margin-top: -0.5em;
+  margin-bottom: 0;
+}
+.typo3-docheader-buttons + .db_list-searchbox-toolbar {
+  -webkit-box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.15);
   position: absolute;
   z-index: 2000;
   width: 100%;
 }
-#typo3-docheader .db_list-searchbox-toolbar input {
-  cursor: auto !important;
-  margin-right: 10px !important;
+.typo3-docheader-buttons + .db_list-searchbox-toolbar .panel {
+  border-radius: 0;
+  border: 0;
+  margin: 0;
 }
-#typo3-docheader .db_list-searchbox-toolbar select {
-  vertical-align: text-bottom !important;
-  margin-right: 10px !important;
+.typo3-docheader-buttons + .db_list-searchbox-toolbar .panel-default {
+  background-color: #eee;
+}
+#typo3-browse-links-php .db_list-searchbox-toolbar form {
+  padding: 0;
+}
+#typo3-browse-links-php .db_list-searchbox-toolbar .panel {
+  margin: 0.5em 0;
 }
 .t3icon-ext-upload {
   background: url('../../../../icons/gfx/upload.gif') 3px 4px no-repeat !important;
