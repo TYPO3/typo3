@@ -80,6 +80,8 @@ class SilentConfigurationUpgradeService {
 		'SYS/useCachingFramework',
 		// #65912
 		'FE/allowedTempPaths',
+		// #66034
+		'FE/activateContentAdapter',
 	);
 
 	/**

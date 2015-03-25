@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -99,9 +98,6 @@ class ContentContentObject extends AbstractContentObject {
 								$_procObj = GeneralUtility::getUserObj($_classRef);
 								$_procObj->modifyDBRow($row, $conf['table']);
 							}
-						}
-						if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter']) {
-							FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
 						}
 						if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
 							$this->cObj->currentRecordNumber++;

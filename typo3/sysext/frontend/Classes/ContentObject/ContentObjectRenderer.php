@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -657,9 +656,6 @@ class ContentObjectRenderer {
 	 * @return void
 	 */
 	public function start($data, $table = '') {
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['activateContentAdapter'] && is_array($data) && !empty($data) && !empty($table)) {
-			FrontendContentAdapterService::modifyDBRow($data, $table);
-		}
 		$this->data = $data;
 		$this->table = $table;
 		$this->currentRecord = $table ? $table . ':' . $this->data['uid'] : '';
@@ -5471,8 +5467,6 @@ class ContentObjectRenderer {
 						if (isset($importedFile) && !empty($importedFile) && !empty($fileArray['import'])) {
 							$file = $fileArray['import'] . $file;
 						}
-						// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
-						$file = GeneralUtility::resolveBackPath($file);
 						$fileObject = $this->getResourceFactory()->retrieveFileOrFolderObject($file);
 					}
 				} catch (Exception $exception) {
