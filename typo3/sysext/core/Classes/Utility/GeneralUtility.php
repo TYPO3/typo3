@@ -814,20 +814,21 @@ class GeneralUtility {
 	/**
 	 * Splits a reference to a file in 5 parts
 	 *
-	 * @param string $fileref Filename/filepath to be analysed
+	 * @param string $fileNameWithPath File name with path to be analysed (must exist if open_basedir is set)
 	 * @return array Contains keys [path], [file], [filebody], [fileext], [realFileext]
 	 */
-	static public function split_fileref($fileref) {
+	static public function split_fileref($fileNameWithPath) {
 		$reg = array();
-		if (preg_match('/(.*\\/)(.*)$/', $fileref, $reg)) {
+		if (preg_match('/(.*\\/)(.*)$/', $fileNameWithPath, $reg)) {
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
 		} else {
 			$info['path'] = '';
-			$info['file'] = $fileref;
+			$info['file'] = $fileNameWithPath;
 		}
 		$reg = '';
-		if (!is_dir($fileref) && preg_match('/(.*)\\.([^\\.]*$)/', $info['file'], $reg)) {
+		// If open_basedir is set and the fileName was supplied without a path the is_dir check fails
+		if (!is_dir($fileNameWithPath) && preg_match('/(.*)\\.([^\\.]*$)/', $info['file'], $reg)) {
 			$info['filebody'] = $reg[1];
 			$info['fileext'] = strtolower($reg[2]);
 			$info['realFileext'] = $reg[2];
