@@ -680,12 +680,11 @@ class ResourceStorage implements ResourceStorageInterface {
 		$fileName = $this->driver->sanitizeFileName($fileName);
 		$isAllowed = GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
 		if ($isAllowed) {
-			$fileInfo = GeneralUtility::split_fileref($fileName);
+			$fileExtension = strtolower(PathUtility::pathinfo($fileName, PATHINFO_EXTENSION));
 			// Set up the permissions for the file extension
 			$fileExtensionPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'];
 			$fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['allow']));
 			$fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['deny']));
-			$fileExtension = strtolower($fileInfo['fileext']);
 			if ($fileExtension !== '') {
 				// If the extension is found amongst the allowed types, we return TRUE immediately
 				if ($fileExtensionPermissions['allow'] === '*' || GeneralUtility::inList($fileExtensionPermissions['allow'], $fileExtension)) {
@@ -2487,17 +2486,16 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function getUniqueName(Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
 		static $maxNumber = 99, $uniqueNamePrefix = '';
-		// Fetches info about path, name, extention of $theFile
-		$origFileInfo = GeneralUtility::split_fileref($theFile);
+		// Fetches info about path, name, extension of $theFile
+		$origFileInfo = PathUtility::pathinfo($theFile);
 		// Adds prefix
 		if ($uniqueNamePrefix) {
-			$origFileInfo['file'] = $uniqueNamePrefix . $origFileInfo['file'];
-			$origFileInfo['filebody'] = $uniqueNamePrefix . $origFileInfo['filebody'];
+			$origFileInfo['basename'] = $uniqueNamePrefix . $origFileInfo['basename'];
+			$origFileInfo['filename'] = $uniqueNamePrefix . $origFileInfo['filename'];
 		}
 		// Check if the file exists and if not - return the fileName...
-		$fileInfo = $origFileInfo;
 		// The destinations file
-		$theDestFile = $fileInfo['file'];
+		$theDestFile = $origFileInfo['basename'];
 		// If the file does NOT exist we return this fileName
 		if (!$this->driver->fileExistsInFolder($theDestFile, $folder->getIdentifier()) || $dontCheckForUnique) {
 			return $theDestFile;
@@ -2505,8 +2503,8 @@ class ResourceStorage implements ResourceStorageInterface {
 		// Well the fileName in its pure form existed. Now we try to append
 		// numbers / unique-strings and see if we can find an available fileName
 		// This removes _xx if appended to the file
-		$theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filebody']);
-		$theOrigExt = $origFileInfo['realFileext'] ? '.' . $origFileInfo['realFileext'] : '';
+		$theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filename']);
+		$theOrigExt = $origFileInfo['extension'] ? '.' . $origFileInfo['extension'] : '';
 		for ($a = 1; $a <= $maxNumber + 1; $a++) {
 			// First we try to append numbers
 			if ($a <= $maxNumber) {
