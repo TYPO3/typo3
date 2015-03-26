@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -1769,6 +1770,12 @@ class BackendUtility
                     try {
                         /** @var File $fileObject */
                         $fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileName);
+                        // Skip the resource if it's not of type AbstractFile. One case where this can happen if the
+                        // storage has been externally modified and the field value now points to a folder
+                        // instead of a file.
+                        if (!$fileObject instanceof AbstractFile) {
+                            continue;
+                        }
                         if ($fileObject->isMissing()) {
                             $flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
                             $thumbData .= $flashMessage->render();
