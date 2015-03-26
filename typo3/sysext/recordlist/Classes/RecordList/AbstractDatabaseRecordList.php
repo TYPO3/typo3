@@ -1014,7 +1014,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 					'record_edit',
 					array(
 						'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
-						'returnUrl' => rawurlencode($url)
+						'returnUrl' => $url
 					)
 				);
 				HttpUtility::redirect($editUserAccountUrl);

@@ -545,7 +545,7 @@ class QueryView {
 			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
 			$out .= '<a class="btn btn-default" href="#" onClick="' . BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
-			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db', array(), $GLOBALS['BACK_PATH']), array(
+			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => GeneralUtility::linkThisScript(array())
 				)) . BackendUtility::getUrlToken('tceAction') . '">';
@@ -555,7 +555,7 @@ class QueryView {
 				'returnUrl' => GeneralUtility::linkThisScript(array())
 			);
 			$redirectUrl = BackendUtility::getModuleUrl('record_edit', $formEngineParameters);
-			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db', array(), $GLOBALS['BACK_PATH']), array(
+			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => $redirectUrl
 				)) . BackendUtility::getUrlToken('tceAction') . '">';

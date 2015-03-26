@@ -861,8 +861,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			if ($this->ext_CALC_PERMS & Permission::PAGE_DELETE || $this->ext_CALC_PERMS & Permission::PAGE_EDIT) {
 				$bArray[1] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element', array(), $this->backPath) . '&table=pages&uid=' . $id
-						. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';',
+					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')])) . ';',
 					$this->getLanguageService()->getLL('move_page')
 				);
 			}
@@ -873,7 +872,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 				];
 				$bArray[2] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', $parameters, $this->backPath)) . ';',
+					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', $parameters)) . ';',
 					$this->getLanguageService()->getLL('newPage2')
 				);
 			}
@@ -1835,8 +1834,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$url = BackendUtility::getModuleUrl('record_edit', array(
 					'edit[pages_language_overlay]['. $id . ']' => 'new',
 					'overrideVals[pages_language_overlay][doktype]' => (int)$this->pageRecord['doktype'],
-					'returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
-				), $this->backPath);
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				));
 				$onChangeContent = 'window.location.href=\'' . $url . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value';
 				return '<div class="form-inline form-inline-spaced">'
 					. '<div class="form-group">'

@@ -96,7 +96,7 @@ TYPO3.Workspaces.Component.TabPanel = Ext.extend(Ext.TabPanel, {
 	},
 
 	handleTriggerUrl: function(item) {
-		location.href = TYPO3.settings.Workspaces.PATH_typo3 + item.triggerUrl;
+		location.href = item.triggerUrl;
 	},
 
 	handleResize: function(width, height) {

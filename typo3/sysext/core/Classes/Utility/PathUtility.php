@@ -33,6 +33,28 @@ class PathUtility {
 	}
 
 	/**
+	 * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
+	 *
+	 * @param string $targetPath can be "../../typo3/contrib/myfile.js" or "/myfile.js"
+	 * @return string something like "/mysite/typo3/sysext/backend.js"
+	 */
+	static public function getAbsoluteWebPath($targetPath) {
+		if ($targetPath[0] === '/') {
+			if (StringUtility::beginsWith($targetPath, PATH_site)) {
+				$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . self::stripPathSitePrefix($targetPath);
+			}
+		} elseif (strpos($targetPath, '://') !== FALSE) {
+			return $targetPath;
+		} else {
+			// Make an absolute path out of it
+			$targetPath = GeneralUtility::resolveBackPath(dirname(PATH_thisScript) . '/' . $targetPath);
+			$targetPath = self::stripPathSitePrefix($targetPath);
+			$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+		}
+		return $targetPath;
+	}
+
+	/**
 	 * Gets the relative path from a source directory to a target directory.
 	 * The allowed TYPO3 path is checked as well, thus it's not possible to go to upper levels.
 	 *

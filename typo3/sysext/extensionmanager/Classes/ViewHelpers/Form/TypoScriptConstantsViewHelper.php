@@ -101,7 +101,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$onClick =
 			'this.blur();' .
 			'vHWin=window.open(' .
-				GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_colorpicker') . GeneralUtility::implodeArrayForUrl('', array('P' => $params)))  . ' + \'&P[currentValue]=\' + encodeURIComponent(document.getElementById(' . GeneralUtility::quoteJSvalue($elementId) . ').value),' .
+				GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_colorpicker', array('P' => $params))) . ' + \'&P[currentValue]=\' + encodeURIComponent(document.getElementById(' . GeneralUtility::quoteJSvalue($elementId) . ').value),' .
 				'\'popUpem-' . GeneralUtility::shortmd5($elementName) . '\',' .
 				'\'height=400,width=400,status=0,menubar=0,scrollbars=1\'' .
 			');' .

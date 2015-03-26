@@ -141,7 +141,7 @@ class FileSystemNavigationFrameController {
 		$this->doc->JScode .= $this->doc->wrapScriptTags(($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
 		// Function, loading the list frame from navigation tree:
 		function jumpTo(id, linkObj, highlightID, bank) {
-			var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
+			var theUrl = top.currentSubScript;
 			if (theUrl.indexOf("?") != -1) {
 				theUrl += "&id=" + id
 			} else {

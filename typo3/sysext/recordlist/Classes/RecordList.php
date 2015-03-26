@@ -301,7 +301,7 @@ class RecordList {
 		/** @var $dblist RecordList\DatabaseRecordList */
 		$dblist = GeneralUtility::makeInstance(RecordList\DatabaseRecordList::class);
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
-		$dblist->script = BackendUtility::getModuleUrl('web_list', array(), '');
+		$dblist->script = BackendUtility::getModuleUrl('web_list');
 		$dblist->calcPerms = $backendUser->calcPerms($this->pageinfo);
 		$dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
 		$dblist->returnUrl = $this->returnUrl;
@@ -405,7 +405,7 @@ class RecordList {
 				' . $this->doc->redirectUrls($listUrl) . '
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {	//
-					window.location.href="' . BackendUtility::getModuleUrl('record_edit', array('returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . BackendUtility::getModuleUrl('record_edit', array('returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {	//
 					var list="";

@@ -207,7 +207,7 @@ class FrontendEditPanel {
 		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img  ' . IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit_fe.gif', 'width="11" height="12" border="0" align="top" ') . ' title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', FALSE) . '"' . $style . ' class="frontEndEditIcons" alt="" />';
 		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
 		$adminURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
-		$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL . BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][' . $editUid . ']' => 'edit', 'columnsOnly' => rawurlencode($fieldList), 'noView' => $nV)) . $addUrlParamStr);
+		$icon = $this->editPanelLinkWrap_doWrap($iconImg, $adminURL . BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][' . $editUid . ']' => 'edit', 'columnsOnly' => $fieldList, 'noView' => $nV)) . $addUrlParamStr);
 		if ($conf['beforeLastTag'] < 0) {
 			$content = $icon . $content;
 		} elseif ($conf['beforeLastTag'] > 0) {

@@ -162,7 +162,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 					'record_edit',
 					array(
 						'edit[sys_action][' . $actionRow['uid'] . ']' => 'edit',
-						'returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 					),
 					FALSE,
 					TRUE
@@ -204,7 +204,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'record_edit',
 				array(
 					'edit[sys_action][0]' => 'new',
-					'returnUrl' => rawurlencode($this->moduleUrl)
+					'returnUrl' => $this->moduleUrl
 				),
 				FALSE,
 				TRUE
@@ -627,7 +627,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			'record_edit',
 			array(
 				'edit[' . $record['t3_tables'] . '][' . (int)$record['t3_listPid'] . ']' => 'new',
-				'returnUrl' => rawurlencode($this->moduleUrl)
+				'returnUrl' => $this->moduleUrl
 			),
 			FALSE,
 			TRUE
@@ -662,7 +662,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'record_edit',
 				array(
 					'edit[' . $el['table'] . '][' . $el['id'] . ']' => 'edit',
-					'returnUrl' => rawurlencode($this->moduleUrl)
+					'returnUrl' => $this->moduleUrl
 				),
 				FALSE,
 				TRUE
@@ -817,7 +817,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {
-					window.location.href="' . BackendUtility::getModuleUrl('record_edit', array('returnUrl' => rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . BackendUtility::getModuleUrl('record_edit', array('returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {
 					var list="";

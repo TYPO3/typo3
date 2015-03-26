@@ -201,7 +201,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$_POST['foo2'] = 'bar2';
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
-		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId&foo=bar&foo2=bar2';
+		$expectedResult = PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId&foo=bar&foo2=bar2';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -215,7 +215,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$_POST['foo2'] = 'bar2';
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setAddQueryStringMethod(NULL);
-		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId&foo=bar';
+		$expectedResult = PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId&foo=bar';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -238,7 +238,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'M',
 					'id'
 				),
-				'mod.php?moduleToken=dummyToken&foo=bar&foo2=bar2'
+				PATH_typo3 . 'mod.php?moduleToken=dummyToken&foo=bar&foo2=bar2'
 			),
 			'Arguments to be excluded in the end' => array(
 				array(
@@ -253,7 +253,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'M',
 					'id'
 				),
-				'mod.php?moduleToken=dummyToken&foo=bar&foo2=bar2'
+				PATH_typo3 . 'mod.php?moduleToken=dummyToken&foo=bar&foo2=bar2'
 			),
 			'Arguments in nested array to be excluded' => array(
 				array(
@@ -270,7 +270,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'id',
 					'tx_foo[bar]'
 				),
-				'mod.php?M=moduleKey&moduleToken=dummyToken&foo2=bar2'
+				PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken&foo2=bar2'
 			),
 			'Arguments in multidimensional array to be excluded' => array(
 				array(
@@ -289,7 +289,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'id',
 					'tx_foo[bar][baz]'
 				),
-				'mod.php?M=moduleKey&moduleToken=dummyToken&foo2=bar2'
+				PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken&foo2=bar2'
 			),
 		);
 	}
@@ -313,7 +313,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
-		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId';
+		$expectedResult = PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken&id=pageId';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -324,7 +324,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function buildBackendUriMergesAndOverrulesQueryParametersWithArguments() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 		$this->uriBuilder->setArguments(array('M' => 'overwrittenModuleKey', 'somePrefix' => array('bar' => 'baz')));
-		$expectedResult = 'mod.php?M=overwrittenModuleKey&moduleToken=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
+		$expectedResult = PATH_typo3 . 'mod.php?M=overwrittenModuleKey&moduleToken=dummyToken&id=pageId&somePrefix%5Bbar%5D=baz';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -337,7 +337,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockDomainObject = $this->getAccessibleMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class, array('dummy'));
 		$mockDomainObject->_set('uid', '123');
 		$this->uriBuilder->setArguments(array('somePrefix' => array('someDomainObject' => $mockDomainObject)));
-		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
+		$expectedResult = PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken&somePrefix%5BsomeDomainObject%5D=123';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -348,7 +348,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function buildBackendUriRespectsSection() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$this->uriBuilder->setSection('someSection');
-		$expectedResult = 'mod.php?M=moduleKey&moduleToken=dummyToken#someSection';
+		$expectedResult = PATH_typo3 . 'mod.php?M=moduleKey&moduleToken=dummyToken#someSection';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -358,7 +358,9 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function buildBackendUriCreatesAbsoluteUrisIfSpecified() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
-		$this->mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://baseuri/' . TYPO3_mainDir));
+		$_SERVER['HTTP_HOST'] = 'baseuri';
+		$_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
+		$this->mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://baseuri'));
 		$this->uriBuilder->setCreateAbsoluteUri(TRUE);
 		$expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'mod.php?M=moduleKey&moduleToken=dummyToken';
 		$actualResult = $this->uriBuilder->buildBackendUri();
@@ -392,7 +394,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setAddQueryStringMethod('POST,GET');
-		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('mod.php?moduleToken=dummyToken&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl(PATH_typo3 . 'mod.php?moduleToken=dummyToken&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}
@@ -424,7 +426,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setAddQueryStringMethod('GET,POST');
-		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('mod.php?moduleToken=dummyToken&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
+		$expectedResult = $this->rawUrlEncodeSquareBracketsInUrl(PATH_typo3 . 'mod.php?moduleToken=dummyToken&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
 	}

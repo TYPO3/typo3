@@ -43,13 +43,12 @@ TCEForms.Suggest = Class.create({
 	 * @param string newRecordRow JSON encoded new content element. Only set when new record is inside flexform
 	 */
 	initialize: function(objectId, table, field, uid, pid, minimumCharacters, fieldType, newRecordRow) {
-		var PATH_typo3 = top.TS.PATH_typo3 || window.opener.top.TS.PATH_typo3;
 		this.objectId = objectId;
 		this.suggestField = objectId + 'Suggest';
 		this.suggestResultList = objectId + 'SuggestChoices';
 		this.fieldType = fieldType;
 
-		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, PATH_typo3 + TYPO3.settings.ajaxUrls['t3lib_TCEforms_suggest::searchRecord'], {
+		new Ajax.Autocompleter(this.suggestField, this.suggestResultList, TYPO3.settings.ajaxUrls['t3lib_TCEforms_suggest::searchRecord'], {
 				paramName: 'value',
 				minChars: (minimumCharacters ? minimumCharacters : this.minimumCharacters),
 				updateElement: this.addElementToList.bind(this),

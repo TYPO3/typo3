@@ -97,7 +97,7 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover', 
 		var identifier = $trigger.data('table') + '.' + $trigger.data('field');
 		try {
 			var cshWindow = window.open(
-				top.TYPO3.configuration.PATH_typo3 + ContextHelp.helpModuleUrl + '&tfID=' + identifier,
+				ContextHelp.helpModuleUrl + '&tfID=' + identifier,
 				'ContextHelpWindow',
 				'height=' + top.TYPO3.configuration.ContextHelpWindows.height + ',width=' + top.TYPO3.configuration.ContextHelpWindows.width + ',status=0,menubar=0,scrollbars=1'
 			);

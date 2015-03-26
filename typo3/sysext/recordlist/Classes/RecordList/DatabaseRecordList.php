@@ -242,7 +242,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			}
 			// New record
 			if (!$module->modTSconfig['properties']['noCreateRecordsLink']) {
-				$onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id], $this->backPath)) . ');');
+				$onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');');
 				$buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
 					. $lang->getLL('newRecordGeneral', TRUE) . '">'
 					. IconUtility::getSpriteIcon('actions-document-new') . '</a>';
@@ -949,14 +949,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 								$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc)
 									? $this->backPath . ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?id=' . $this->id
-									: BackendUtility::getModuleUrl('new_content_element', array('id' => $this->id), $this->backPath);
+									: BackendUtility::getModuleUrl('new_content_element', array('id' => $this->id));
 
 								$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
 								$icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 									. $lang->getLL('new', TRUE) . '">' . $spriteIcon . '</a>';
 							} elseif ($table == 'pages' && $this->newWizards) {
 								$parameters = ['id' => $this->id, 'pagesOnly' => 1, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')];
-								$href = BackendUtility::getModuleUrl('db_new', $parameters, $this->backPath);
+								$href = BackendUtility::getModuleUrl('db_new', $parameters);
 								$icon = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="' . $lang->getLL('new', TRUE) . '">'
 									. $spriteIcon . '</a>';
 							} else {

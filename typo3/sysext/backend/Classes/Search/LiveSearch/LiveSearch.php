@@ -249,7 +249,7 @@ class LiveSearch {
 			$returnUrl = BackendUtility::getModuleUrl('web_list', array('id' => $row['pid']));
 			$editLink = BackendUtility::getModuleUrl('record_edit', array(
 				'edit[' . $tableName . '][' . $row['uid'] . ']' => 'edit',
-				'returnUrl' => rawurlencode($returnUrl)
+				'returnUrl' => $returnUrl
 			));
 		}
 		return $editLink;

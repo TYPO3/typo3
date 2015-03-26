@@ -490,7 +490,7 @@ class ClickMenu {
 	public function urlRefForCM($url, $retUrl = '', $hideCM = TRUE, $overrideLoc = '') {
 		$loc = 'top.content.list_frame';
 		return ($overrideLoc ? 'var docRef=' . $overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:' . $loc)
-			. '; docRef.location.href=top.TS.PATH_typo3+\'' . $url . '\'' . ($retUrl ? '+\'&' . $retUrl . '=\'+top.rawurlencode('
+			. '; docRef.location.href=\'' . $url . '\'' . ($retUrl ? '+\'&' . $retUrl . '=\'+top.rawurlencode('
 			. $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '')
 			. ';';
 	}
@@ -535,7 +535,7 @@ class ClickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
+		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
 		return $this->linkItem($this->label('paste' . $type), IconUtility::getSpriteIcon('actions-document-paste-' . $type), $editOnClick . 'return false;');
 	}
 
@@ -699,11 +699,11 @@ class ClickMenu {
 			if ($this->backendUser->uc['classicPageEditMode']) {
 				$addParam = '&editRegularContentFromId=' . (int)$this->iParts[1];
 			} else {
-				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
+				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
 			}
 		}
 		if (!$editOnClick) {
-			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
+			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
 		}
 		return $this->linkItem($this->label('edit'), IconUtility::getSpriteIcon($theIcon), $editOnClick . ';');
 	}
@@ -722,7 +722,7 @@ class ClickMenu {
 		$module = $this->listFrame
 			? GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][-' . $uid . ']' => 'new')) . '&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
 			: GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', array('id' => (int)$uid)));
-		$editOnClick = 'if(' . $frame . '){' . $frame . '.location.href=top.TS.PATH_typo3+' . $module . ';}';
+		$editOnClick = 'if(' . $frame . '){' . $frame . '.location.href=' . $module . ';}';
 		$icon = IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new');
 		return $this->linkItem($this->label('new'), $icon, $editOnClick);
 	}
@@ -743,7 +743,7 @@ class ClickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+' .
+		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=' .
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
@@ -819,7 +819,7 @@ class ClickMenu {
 	public function DB_changeFlag($table, $rec, $flagField, $title) {
 		$uid = $rec['_ORIG_uid'] ?: $rec['uid'];
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+' .
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' .
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
@@ -1003,7 +1003,7 @@ class ClickMenu {
 			$scriptUrl = BackendUtility::getModuleUrl($moduleName);
 		}
 
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=top.TS.PATH_typo3+' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
 		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon($iconName), $editOnClick . 'top.nav.refresh();');
 	}
 
@@ -1044,7 +1044,7 @@ class ClickMenu {
 		} else {
 			$conf = '1==1';
 		}
-		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=top.TS.PATH_typo3+' .
+		$editOnClick = 'if(' . $loc . ' && ' . $conf . ' ){' . $loc . '.location.href=' .
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
@@ -1069,7 +1069,7 @@ class ClickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
+		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=\'' . $this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
 		return $this->linkItem($this->label('pasteinto'), IconUtility::getSpriteIcon('actions-document-paste-into'), $editOnClick . 'return false;');
 	}
 
@@ -1148,7 +1148,7 @@ class ClickMenu {
 	public function dragDrop_copymovepage($srcUid, $dstUid, $action, $into) {
 		$negativeSign = $into === 'into' ? '' : '-';
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+' .
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=' .
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
@@ -1169,7 +1169,7 @@ class ClickMenu {
 	 */
 	public function dragDrop_copymovefolder($srcPath, $dstPath, $action) {
 		$loc = 'top.content.list_frame';
-		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=top.TS.PATH_typo3+' .
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.document.location=' .
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(

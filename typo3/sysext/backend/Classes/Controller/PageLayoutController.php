@@ -483,7 +483,7 @@ class PageLayoutController {
 
 				function deleteRecord(table,id,url) {	//
 					if (confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {
-						window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db', array(), $GLOBALS['BACK_PATH']) . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1";
+						window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -662,7 +662,7 @@ class PageLayoutController {
 		// Alternative template
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout_quickedit.html');
 		// Alternative form tag; Quick Edit submits its content to tce_db.php.
-		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', array(), $GLOBALS['BACK_PATH']) . '&prErr=1&uPT=1') . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', ['prErr' => 1, 'uPT' => 1])) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Set the edit_record value for internal use in this function:
@@ -676,7 +676,7 @@ class PageLayoutController {
 			}
 			$url = BackendUtility::getModuleUrl('record_edit', array(
 				'edit[tt_content][' . implode(',', $idListA) . ']' => 'edit',
-				'returnUrl' => rawurlencode($this->local_linkThisScript(array('edit_record' => '')))
+				'returnUrl' => $this->local_linkThisScript(array('edit_record' => ''))
 			));
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
 		}
@@ -1093,7 +1093,12 @@ class PageLayoutController {
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
 			if (MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-				$buttons['move_record'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', array(), $GLOBALS['BACK_PATH']) . '&table=' . $this->eRParts[0] . '&uid=' . $this->eRParts[1] . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
+				$urlParameters = [
+					'table' => $this->eRParts[0],
+					'uid' => $this->eRParts[1],
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				];
+				$buttons['move_record'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', $urlParameters)) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
 			}
 
 			// Edit page properties and page language overlay icons

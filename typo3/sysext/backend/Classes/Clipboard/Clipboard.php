@@ -503,7 +503,7 @@ class Clipboard {
 			if ($this->fileMode) {
 				$str = '<span class="text-muted">' . $str . '</span>';
 			} else {
-				$str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']), $this->backPath)) . '">' . $str . '</a>';
+				$str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']))) . '">' . $str . '</a>';
 			}
 		} elseif (file_exists($rec)) {
 			if (!$this->fileMode) {
@@ -566,14 +566,20 @@ class Clipboard {
 	 * @return string
 	 */
 	public function pasteUrl($table, $uid, $setRedirect = TRUE, array $update = NULL) {
-		return ($table == '_FILE' ? BackendUtility::getModuleUrl('tce_file', array(), $this->backPath) : BackendUtility::getModuleUrl('tce_db', array(), $this->backPath)) .
-			($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') .
-			'&vC=' . $this->getBackendUser()->veriCode() .
-			'&prErr=1&uPT=1' .
-			'&CB[paste]=' . rawurlencode($table . '|' . $uid) .
-			'&CB[pad]=' . $this->current .
-			(is_array($update) ? GeneralUtility::implodeArrayForUrl('CB[update]', $update) : '') .
-			BackendUtility::getUrlToken('tceAction');
+		$urlParameters = [
+			'vC' => $this->getBackendUser()->veriCode(),
+			'prErr' => 1,
+			'uPT' => 1,
+			'CB[paste]' => $table . '|' . $uid,
+			'CB[pad]' => $this->current
+		];
+		if ($setRedirect) {
+			$urlParameters['redirect'] = GeneralUtility::linkThisScript(array('CB' => ''));
+		}
+		if (is_array($update)) {
+			$urlParameters['CB[update]'] = $update;
+		}
+		return BackendUtility::getModuleUrl($table === '_FILE' ? 'tce_file' : 'tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
 	}
 
 	/**
@@ -584,9 +590,17 @@ class Clipboard {
 	 * @return string
 	 */
 	public function deleteUrl($setRedirect = 1, $file = 0) {
-		return ($file ? BackendUtility::getModuleUrl('tce_file', array(), $this->backPath) : BackendUtility::getModuleUrl('tce_db', array(), $this->backPath))
-			. ($setRedirect ? '&redirect=' . rawurlencode(GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $this->getBackendUser()->veriCode()
-			. '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . BackendUtility::getUrlToken('tceAction');
+		$urlParameters = [
+			'vC' => $this->getBackendUser()->veriCode(),
+			'prErr' => 1,
+			'uPT' => 1,
+			'CB[delete]' => 1,
+			'CB[pad]' => $this->current
+		];
+		if ($setRedirect) {
+			$urlParameters['redirect'] = GeneralUtility::linkThisScript(array('CB' => ''));
+		}
+		return BackendUtility::getModuleUrl($file ? 'tce_file' : 'tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
 	}
 
 	/**

@@ -926,7 +926,7 @@ class FormEngine {
 						$lTTS_url = BackendUtility::getModuleUrl('record_edit', array(
 							'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
 							'columnsOnly' => $field,
-							'returnUrl' => rawurlencode($this->thisReturnUrl())
+							'returnUrl' => $this->thisReturnUrl()
 						));
 						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}

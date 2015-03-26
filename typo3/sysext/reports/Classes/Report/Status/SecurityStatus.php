@@ -75,7 +75,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 					'record_edit',
 					array(
 						'edit[be_users][' . $row['uid'] . ']' => 'edit',
-						'returnUrl' => rawurlencode(BackendUtility::getModuleUrl('system_ReportsTxreportsm1'))
+						'returnUrl' => BackendUtility::getModuleUrl('system_ReportsTxreportsm1')
 					)
 				);
 				$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.backend_admin'),

@@ -741,7 +741,7 @@ class InlineElement {
 					$url = BackendUtility::getModuleUrl('record_edit', array(
 						'edit[sys_file_metadata][' . (int)$recordInDatabase['uid'] . ']' => 'edit'
 					));
-					$editOnClick = 'if(top.content.list_frame){top.content.list_frame.location.href=top.TS.PATH_typo3+\'' . $url . '&returnUrl=\'+top.rawurlencode('
+					$editOnClick = 'if(top.content.list_frame){top.content.list_frame.location.href=\'' . $url . '&returnUrl=\'+top.rawurlencode('
 						. 'top.content.list_frame.document.location' . '.pathname+top.content.list_frame.document.location' . '.search);}';
 					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
 					$cells['editmetadata'] = '

@@ -684,7 +684,7 @@ class EditDocumentController {
 			function typoSetup() {	//
 				this.uniqueID = "";
 				this.passwordDummy = "********";
-				this.PATH_typo3 = " ";
+				this.PATH_typo3 = "";
 				this.decimalSign = ".";
 			}
 			var TS = new typoSetup();

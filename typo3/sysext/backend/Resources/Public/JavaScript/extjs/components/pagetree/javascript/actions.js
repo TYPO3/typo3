@@ -715,7 +715,7 @@ TYPO3.Components.PageTree.Actions = {
 		fsMod.recentIds['web'] = node.attributes.nodeData.id;
 
 		TYPO3.Backend.ContentContainer.setUrl(
-			TS.PATH_typo3 + currentSubScript + separator + 'id=' + node.attributes.nodeData.id
+			currentSubScript + separator + 'id=' + node.attributes.nodeData.id
 		);
 	},
 

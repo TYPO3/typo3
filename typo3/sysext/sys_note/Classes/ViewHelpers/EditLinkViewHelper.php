@@ -31,7 +31,7 @@ class EditLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 			'record_edit',
 			array(
 				'edit[sys_note][' . $id . ']' => 'edit',
-				'returnUrl' => rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
+				'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')
 			)
 		);
 	}

@@ -2672,7 +2672,7 @@ class BackendUtility {
 	 * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
 	 *
 	 * @param string $params Parameters sent along to EditDocumentController. This requires a much more details description which you must seek in Inside TYPO3s documentation of the FormEngine API. And example could be '&edit[pages][123] = edit' which will show edit form for page record 123.
-	 * @param string $backPath Must point back to the TYPO3_mainDir directory (where the main entry point is)
+	 * @param string $backPath (unused)
 	 * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
 	 *
 	 * @return string
@@ -2683,7 +2683,7 @@ class BackendUtility {
 			? '\'+T3_THIS_LOCATION+\''
 			: rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$retUrlParam = 'returnUrl=' . $returnUrl;
-		return 'window.location.href=\'' . self::getModuleUrl('record_edit', array(), $backPath) . '&' . $retUrlParam . $params . '\'; return false;';
+		return 'window.location.href=\'' . self::getModuleUrl('record_edit') . '&' . $retUrlParam . $params . '\'; return false;';
 	}
 
 	/**
@@ -3136,16 +3136,11 @@ class BackendUtility {
 	 *
 	 * @param string $moduleName Name of the module
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
-	 * @param bool|string $backPathOverride backpath that should be used instead of the global $BACK_PATH
+	 * @param bool|string $backPathOverride (unused)
 	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return string Calculated URL
 	 */
 	static public function getModuleUrl($moduleName, $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
-		if ($backPathOverride === FALSE) {
-			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
-		} else {
-			$backPath = $backPathOverride;
-		}
 		$urlParameters = array(
 			'M' => $moduleName,
 			'moduleToken' => FormProtectionFactory::get()->generateToken('moduleCall', $moduleName)
@@ -3154,7 +3149,7 @@ class BackendUtility {
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
 		} else {
-			return $backPath . $url;
+			return PathUtility::getAbsoluteWebPath(PATH_typo3 . $url);
 		}
 	}
 

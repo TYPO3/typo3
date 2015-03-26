@@ -641,12 +641,13 @@ class UriBuilder {
 		$this->lastArguments = $arguments;
 		$moduleName = $arguments['M'];
 		unset($arguments['M'], $arguments['moduleToken']);
-		$uri = BackendUtility::getModuleUrl($moduleName, $arguments, '');
+		if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
+			$uri = BackendUtility::getModuleUrl($moduleName, $arguments, NULL, TRUE);
+		} else {
+			$uri = BackendUtility::getModuleUrl($moduleName, $arguments);
+		}
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
-		}
-		if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
-			$uri = $this->request->getBaseUri() . $uri;
 		}
 		return $uri;
 	}

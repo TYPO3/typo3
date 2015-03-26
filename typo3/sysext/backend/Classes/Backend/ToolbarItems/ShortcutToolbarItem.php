@@ -324,7 +324,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 
 		if (strpos($parsedUrl['path'], 'mod.php') !== FALSE && isset($parameters['M'])) {
 			$module = $parameters['M'];
-			$url = str_replace('mod.php', '', $parsedUrl['path']) . BackendUtility::getModuleUrl($module, $parameters);
+			$url = BackendUtility::getModuleUrl($module, $parameters);
 		}
 		return $url;
 	}

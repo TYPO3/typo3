@@ -627,7 +627,7 @@ class AdminPanelView {
 			$url = BackendUtility::getModuleUrl('record_edit', array(
 				'edit[pages][' . $id . ']' => 'edit',
 				'noView' => 1,
-				'returnUrl' => rawurlencode($returnUrl)
+				'returnUrl' => $returnUrl
 			), FALSE, TRUE);
 			$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
@@ -644,7 +644,7 @@ class AdminPanelView {
 					$url = BackendUtility::getModuleUrl('record_edit', array(
 						'edit[pages_language_overlay][' . $row['uid'] . ']' => 'edit',
 						'noView' => 1,
-						'returnUrl' => rawurlencode($returnUrl)
+						'returnUrl' => $returnUrl
 					), FALSE, TRUE);
 					$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 				}

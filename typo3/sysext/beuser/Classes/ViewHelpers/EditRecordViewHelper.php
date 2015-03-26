@@ -32,9 +32,6 @@ class EditRecordViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 */
 	public function render($parameters) {
 		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($parameters);
-		if (isset($parameters['returnUrl'])) {
-			$parameters['returnUrl'] = rawurlencode($parameters['returnUrl']);
-		}
 		return BackendUtility::getModuleUrl('record_edit', $parameters);
 	}
 
