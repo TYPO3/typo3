@@ -270,7 +270,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * default path to the requireJS library, relative to the typo3/ directory
 	 * @var string
 	 */
-	protected $requireJsPath = 'contrib/requirejs/';
+	protected $requireJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/requirejs/';
 
 	/**
 	 * @var string

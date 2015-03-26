@@ -25,5 +25,8 @@
   "devDependencies": {
     "fontawesome": "4.3.0",
     "bootstrap": "3.3.2"
+  },
+  "dependencies": {
+    "requirejs": "2.1.15"
   }
 }
