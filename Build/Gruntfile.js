@@ -45,7 +45,8 @@ module.exports = function(grunt) {
 			},
 			all: {
 				files: {
-					'<%= paths.core %>Public/JavaScript/Contrib/': '/nprogress/nprogress.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': '/nprogress/nprogress.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery.dataTables.js': '/datatables/media/js/jquery.dataTables.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js'
 				}

@@ -29,6 +29,7 @@
   "dependencies": {
     "requirejs": "2.1.15",
     "moment": "2.8.3",
-    "nprogress": "0.1.6"
+    "nprogress": "0.1.6",
+    "datatables": "1.10.5"
   }
 }
