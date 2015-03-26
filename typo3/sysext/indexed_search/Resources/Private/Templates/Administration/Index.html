@@ -67,21 +67,17 @@
 					</div>
 				</f:then>
 				<f:else>
-					<div class="alert alert-notice">
-						<div class="message-body">
-							<f:translate key="administration.statistics.noResultForPage"/>
-						</div>
-					</div>
+					<f:be.infobox>
+						<f:translate key="administration.statistics.noResultForPage"/>
+					</f:be.infobox>
 				</f:else>
 			</f:if>
 
 		</f:then>
 		<f:else>
-			<div class="alert alert-info">
-				<div class="message-body">
-					<f:translate key="administration.statistics.selectPage"/>
-				</div>
-			</div>
+			<f:be.infobox state="-1">
+				<f:translate key="administration.statistics.selectPage"/>
+			</f:be.infobox>
 		</f:else>
 	</f:if>
 </f:section>
@@ -112,11 +108,9 @@
 			</table>
 		</f:then>
 		<f:else>
-			<div class="alert alert-notice">
-				<div class="message-body">
-					<f:translate key="administration.statistics.noResult"/>
-				</div>
-			</div>
+			<f:be.infobox state="2">
+				<f:translate key="administration.statistics.noResult"/>
+			</f:be.infobox>
 		</f:else>
 	</f:if>
 </f:section>

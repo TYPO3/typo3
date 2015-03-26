@@ -268,7 +268,7 @@
 				<source>The backend user "_cli_scheduler" exists but is currently disabled.</source>
 			</trans-unit>
 			<trans-unit id="msg.schedulerUserMissing" xml:space="preserve">
-				<source>The backend user "_cli_scheduler" was not found. &lt;a href="%s" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;.</source>
+				<source>The backend user "_cli_scheduler" was not found.&lt;br/&gt;&lt;br/&gt; &lt;a href="%s" class="btn btn-danger" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;</source>
 			</trans-unit>
 			<trans-unit id="msg.serverTime" xml:space="preserve">
 				<source>Current server time is %s.</source>

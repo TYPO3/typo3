@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Func\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
  * Script Class for the Web > Functions module
@@ -97,13 +99,11 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$markers['CONTENT'] = $this->content;
 		} else {
 			// If no access or if ID == zero
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				\TYPO3\CMS\Core\Messaging\FlashMessage::class,
-				$this->getLanguageService()->getLL('clickAPage_content'),
-				$this->getLanguageService()->getLL('title'),
-				\TYPO3\CMS\Core\Messaging\FlashMessage::INFO
-			);
-			$this->content = $flashMessage->render();
+			$title = $this->getLanguageService()->getLL('title');
+			$message = $this->getLanguageService()->getLL('clickAPage_content');
+			$viewHelper = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::class);
+			$this->content = $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
+
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];

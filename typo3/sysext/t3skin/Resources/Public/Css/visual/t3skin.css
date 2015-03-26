@@ -501,10 +501,10 @@ a.bg-success:hover {
   background-color: #b8d39a;
 }
 .bg-info {
-  background-color: #ffffff;
+  background-color: #ebf3fb;
 }
 a.bg-info:hover {
-  background-color: #ffcccc;
+  background-color: #c1dbf2;
 }
 .bg-warning {
   background-color: #fbefdd;
@@ -1497,14 +1497,14 @@ table th[class*="col-"] {
 .table > thead > tr.info > th,
 .table > tbody > tr.info > th,
 .table > tfoot > tr.info > th {
-  background-color: #ffffff;
+  background-color: #ebf3fb;
 }
 .table-hover > tbody > tr > td.info:hover,
 .table-hover > tbody > tr > th.info:hover,
 .table-hover > tbody > tr.info:hover > td,
 .table-hover > tbody > tr:hover > .info,
 .table-hover > tbody > tr.info:hover > th {
-  background-color: #ffe5e5;
+  background-color: #d6e7f6;
 }
 .table > thead > tr > td.warning,
 .table > tbody > tr > td.warning,
@@ -4240,7 +4240,7 @@ a.list-group-item-success.active:focus {
 }
 .list-group-item-info {
   color: #6daae0;
-  background-color: #ffffff;
+  background-color: #ebf3fb;
 }
 a.list-group-item-info {
   color: #6daae0;
@@ -4251,7 +4251,7 @@ a.list-group-item-info .list-group-item-heading {
 a.list-group-item-info:hover,
 a.list-group-item-info:focus {
   color: #6daae0;
-  background-color: #ffe5e5;
+  background-color: #d6e7f6;
 }
 a.list-group-item-info.active,
 a.list-group-item-info.active:hover,
@@ -4602,14 +4602,14 @@ a.list-group-item-danger.active:focus {
 }
 .panel-info > .panel-heading {
   color: #6daae0;
-  background-color: #ffffff;
+  background-color: #ebf3fb;
   border-color: #6daae0;
 }
 .panel-info > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #6daae0;
 }
 .panel-info > .panel-heading .badge {
-  color: #ffffff;
+  color: #ebf3fb;
   background-color: #6daae0;
 }
 .panel-info > .panel-footer + .panel-collapse > .panel-body {
@@ -7582,6 +7582,9 @@ button.close {
   opacity: 0.2;
   filter: alpha(opacity=20);
 }
+.typo3-message .media-body {
+  vertical-align: middle;
+}
 .typo3-message .message-header {
   font-weight: bold;
   margin-bottom: 9px;
@@ -8214,6 +8217,9 @@ table#typo3-history-item img {
   opacity: 0.2;
   filter: alpha(opacity=20);
 }
+.alert .media-body {
+  vertical-align: middle;
+}
 .alert-title {
   font-size: 1.12em;
   font-weight: bold;
@@ -8260,6 +8266,105 @@ table#typo3-history-item img {
 #alert-container .alert.fade.in {
   opacity: 0.95;
   filter: alpha(opacity=95);
+}
+.callout {
+  background-color: #f0f0f0;
+  border-left: 3px solid #cccccc;
+  margin: 20px 0;
+  padding: 20px;
+  color: #333333;
+}
+.callout .media {
+  margin: 0;
+}
+.callout .media .fa-stack {
+  color: #ffffff;
+}
+.callout .media .fa-stack > .fa:first-child {
+  color: #cccccc;
+}
+.callout .media-body {
+  vertical-align: middle;
+}
+.callout-icon {
+  margin-top: -2px;
+}
+.callout-title {
+  font-size: 1.3em;
+  margin: 0 0 0.5em;
+}
+.callout-body > *:last-child {
+  margin-bottom: 0;
+}
+.callout-success {
+  background-color: #d1e2bd;
+  border-color: #79a548;
+  color: #333333;
+}
+.callout-success .media {
+  margin: 0;
+}
+.callout-success .media .fa-stack {
+  color: #ffffff;
+}
+.callout-success .media .fa-stack > .fa:first-child {
+  color: #79a548;
+}
+.callout-info {
+  background-color: #ebf3fb;
+  border-color: #6daae0;
+  color: #333333;
+}
+.callout-info .media {
+  margin: 0;
+}
+.callout-info .media .fa-stack {
+  color: #ffffff;
+}
+.callout-info .media .fa-stack > .fa:first-child {
+  color: #6daae0;
+}
+.callout-warning {
+  background-color: #fbefdd;
+  border-color: #e8a33d;
+  color: #333333;
+}
+.callout-warning .media {
+  margin: 0;
+}
+.callout-warning .media .fa-stack {
+  color: #ffffff;
+}
+.callout-warning .media .fa-stack > .fa:first-child {
+  color: #e8a33d;
+}
+.callout-danger {
+  background-color: #efc7c7;
+  border-color: #c83c3c;
+  color: #333333;
+}
+.callout-danger .media {
+  margin: 0;
+}
+.callout-danger .media .fa-stack {
+  color: #ffffff;
+}
+.callout-danger .media .fa-stack > .fa:first-child {
+  color: #c83c3c;
+}
+.callout-notice {
+  background-color: #f9f9f9;
+  border-color: #a0a0a0;
+  color: #333333;
+}
+.callout-notice .media {
+  margin: 0;
+}
+.callout-notice .media .fa-stack {
+  color: #ffffff;
+}
+.callout-notice .media .fa-stack > .fa:first-child {
+  color: #a0a0a0;
 }
 .modal.t3-modal-notice .modal-header {
   background-color: #eeeeee;
@@ -10220,7 +10325,7 @@ span.typo3-moduleHeader img {
 .has-change .input-group-addon {
   color: #6daae0;
   border-color: #6daae0;
-  background-color: #ffffff;
+  background-color: #ebf3fb;
 }
 .has-change .form-control-feedback {
   color: #6daae0;

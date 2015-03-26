@@ -6,21 +6,16 @@
 	<f:form action="enableInstallTool" method="post" id="t3-install-form-unlock">
 		<f:form.hidden name="installToolEnableToken" value="{installToolEnableToken}" />
 		<div id="container">
-			<div class="typo3-message message-warning">
-				<h4>
-					<f:translate
-						key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolTitle"
-					/>
-				</h4>
+			<f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolTitle')}">
 				<f:translate
 					key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolMessage"
-				/>
-				<button class="btn btn-warning" value="enableInstallTool">
+					/>
+				<button class="btn btn-info" value="enableInstallTool">
 					<f:translate
 						key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirmUnlockInstallToolButton"
-					/>
+						/>
 				</button>
-			</div>
+			</f:be.infobox>
 		</div>
 	</f:form>
 </f:section>

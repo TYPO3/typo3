@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -364,11 +365,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$lastRun = $registry->get('tx_scheduler', 'lastRun');
 		if (!is_array($lastRun)) {
 			$message = $this->getLanguageService()->getLL('msg.noLastRun');
-			$severity = FlashMessage::WARNING;
+			$severity = InfoboxViewHelper::STATE_WARNING;
 		} else {
 			if (empty($lastRun['end']) || empty($lastRun['start']) || empty($lastRun['type'])) {
 				$message = $this->getLanguageService()->getLL('msg.incompleteLastRun');
-				$severity = FlashMessage::WARNING;
+				$severity = InfoboxViewHelper::STATE_WARNING;
 			} else {
 				$startDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['start']);
 				$startTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['start']);
@@ -380,28 +381,27 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				}
 				$type = $this->getLanguageService()->getLL('label.' . $label);
 				$message = sprintf($this->getLanguageService()->getLL('msg.lastRun'), $type, $startDate, $startTime, $endDate, $endTime);
-				$severity = FlashMessage::INFO;
+				$severity = InfoboxViewHelper::STATE_INFO;
 			}
 		}
-		/** @var $flashMessage FlashMessage */
-		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
-		$this->view->assign('lastRun', $flashMessage->render());
+		$this->view->assign('lastRunMessage', $message);
+		$this->view->assign('lastRunSeverity', $severity);
 
 		// Check CLI user
 		$checkUser = $this->checkSchedulerUser();
 		if ($checkUser == -1) {
 			$link = $this->moduleUri . '&SET[function]=check&CMD=user';
 			$message = sprintf($this->getLanguageService()->getLL('msg.schedulerUserMissing'), htmlspecialchars($link));
-			$severity = FlashMessage::ERROR;
+			$severity = InfoboxViewHelper::STATE_ERROR;
 		} elseif ($checkUser == 0) {
 			$message = $this->getLanguageService()->getLL('msg.schedulerUserFoundButDisabled');
-			$severity = FlashMessage::WARNING;
+			$severity = InfoboxViewHelper::STATE_WARNING;
 		} else {
 			$message = $this->getLanguageService()->getLL('msg.schedulerUserFound');
-			$severity = FlashMessage::OK;
+			$severity = InfoboxViewHelper::STATE_OK;
 		}
-		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
-		$this->view->assign('cliUser', $flashMessage->render());
+		$this->view->assign('cliUserMessage', $message);
+		$this->view->assign('cliUserSeverity', $severity);
 
 		// Check if CLI script is executable or not
 		$script = PATH_typo3 . 'cli_dispatch.phpsh';
@@ -416,13 +416,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		if ($isExecutable) {
 			$message = $this->getLanguageService()->getLL('msg.cliScriptExecutable');
-			$severity = FlashMessage::OK;
+			$severity = InfoboxViewHelper::STATE_OK;
 		} else {
 			$message = $this->getLanguageService()->getLL('msg.cliScriptNotExecutable');
-			$severity = FlashMessage::ERROR;
+			$severity = InfoboxViewHelper::STATE_ERROR;
 		}
-		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $message, '', $severity);
-		$this->view->assign('isExecutable', $flashMessage->render());
+		$this->view->assign('isExecutableMessage', $message);
+		$this->view->assign('isExecutableSeverity', $severity);
 
 		return $this->view->render();
 	}
@@ -919,10 +919,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// No tasks defined, display information message
 		if ($numRows == 0) {
 			$this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'ListTasksNoTasks.html');
-
-			/** @var $flashMessage FlashMessage */
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('msg.noTasks'), '', FlashMessage::INFO);
-			$this->view->assign('message', $flashMessage->render());
 			return $this->view->render();
 		} else {
 			$this->pageRenderer->loadJquery();

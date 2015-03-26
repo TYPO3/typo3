@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -433,8 +434,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 					$errMsg[] = $inf[1] . ': &nbsp; &nbsp;' . $inf[0] . $errorLink;
 				}
 				$theOutput .= $this->pObj->doc->spacer(10);
-				$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, implode($errMsg, '<br />'), $lang->getLL('errorsWarnings'), FlashMessage::ERROR);
-				$theOutput .= $flashMessage->render();
+
+				$title = $lang->getLL('errorsWarnings');
+				$message = '<p>' . implode($errMsg, '<br />') . '</p>';
+				$viewHelper = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::class);
+				$theOutput .= $viewHelper->render($title, $message, InfoboxViewHelper::STATE_WARNING);
 			}
 
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {

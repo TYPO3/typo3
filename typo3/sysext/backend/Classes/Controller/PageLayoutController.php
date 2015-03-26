@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
  * Script Class for Web > Layout module
@@ -394,11 +395,11 @@ class PageLayoutController {
 			$moduleLoader->load($GLOBALS['TBE_MODULES']);
 			$modules = $moduleLoader->modules;
 			if (is_array($modules['web']['sub']['list'])) {
-				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
-					<p>' . IconUtility::getSpriteIcon('actions-system-list-open') . '<a href="javascript:top.goToModule( \'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '
-						</a>
-					</p>', '', FlashMessage::INFO);
-				$content .= $flashMessage->render();
+				$title = $GLOBALS['LANG']->getLL('goToListModule');
+				$message = '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>';
+				$message .= '<a class="btn btn-info" href="javascript:top.goToModule( \'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '</a>';
+				$viewHelper = GeneralUtility::makeInstance(InfoboxViewHelper::class);
+				$content .= $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
 			}
 		}
 		// If content from different pid is displayed
@@ -610,8 +611,11 @@ class PageLayoutController {
 			');
 
 			$body = $this->doc->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('clickAPage_content'), $GLOBALS['LANG']->getLL('clickAPage_header'), FlashMessage::INFO);
-			$body .= $flashMessage->render();
+
+			$title = $GLOBALS['LANG']->getLL('clickAPage_header');
+			$message = $GLOBALS['LANG']->getLL('clickAPage_content');
+			$viewHelper = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::class);
+			$body .= $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = array(
 				'view' => '',
