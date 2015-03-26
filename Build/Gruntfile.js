@@ -45,7 +45,8 @@ module.exports = function(grunt) {
 			},
 			all: {
 				files: {
-					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js'
+					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js'
 				}
 			}
 		}
