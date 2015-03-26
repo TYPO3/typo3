@@ -3901,7 +3901,6 @@ if (version == "n3") {
 		if ($doCache && !$this->beUserLogin && !$this->doWorkspacePreview() && $loginsDeniedCfg) {
 			// Build headers:
 			$headers = array(
-				'Last-Modified: ' . gmdate('D, d M Y H:i:s T', $this->register['SYS_LASTCHANGED']),
 				'Expires: ' . gmdate('D, d M Y H:i:s T', $this->cacheExpires),
 				'ETag: "' . md5($this->content) . '"',
 				'Cache-Control: max-age=' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']),
