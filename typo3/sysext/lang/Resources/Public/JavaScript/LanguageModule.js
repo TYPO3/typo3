@@ -16,7 +16,7 @@
  *
  * @author Kai Vogel <k.vogel@reply.de>
  */
-define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
+define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.clearable', 'moment'], function($) {
 	var LanguageModule = {
 		me: this,
 		context: null,
@@ -385,7 +385,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 				callback($row, status, data, response);
 				if (status === 'success') {
 					if (rows.length) {
-						loadTranslationsByRows(rows, callback);
+						LanguageModule.loadTranslationsByRows(rows, callback);
 					} else {
 						callback($row, 'finished', data, response);
 					}
@@ -536,8 +536,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 	 * Format date
 	 */
 	LanguageModule.formatDate = function(timestamp) {
-		var date = new Date(timestamp * 1000);
-		return date.format(LanguageModule.labels.dateFormat);
+		return moment.unix(timestamp).format(LanguageModule.labels.dateFormat);
 	};
 
 	/**

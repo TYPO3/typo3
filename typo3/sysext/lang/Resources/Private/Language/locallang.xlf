@@ -133,7 +133,7 @@
 				<source>No data available in table</source>
 			</trans-unit>
 			<trans-unit id="table.dateFormat" xml:space="preserve">
-				<source>Y-m-d H:i:s</source>
+				<source>YYYY-MM-DD HH:mm</source>
 			</trans-unit>
 		</body>
 	</file>
