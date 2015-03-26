@@ -1595,7 +1595,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
 				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment/moment',
 				'twbs' => $this->backPath . 'contrib/twbs/bootstrap.min',
-				'twbs/bootstrap-datetimepicker' => $this->backPath . 'contrib/twbs/bootstrap-datetimepicker.min',
+				'twbs/bootstrap-datetimepicker' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
 			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();

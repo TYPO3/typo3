@@ -14,9 +14,6 @@
 // Prefix for libraries loaded via bower
 @library-directory-prefix: "../../../../../sysext/core/Resources/Contrib/components";
 
-// Prefix for third-party libraries in typo3/contrib/
-@typo3contrib-directory-prefix: "../../../../../contrib/";
-
 // Core variables and mixins
 @import "@{library-directory-prefix}/bootstrap/less/variables.less";
 @import "bootstrap/variables.less";
@@ -70,7 +67,7 @@
 @import "@{library-directory-prefix}/bootstrap/less/responsive-utilities.less";
 
 // Components from bootstrap plugins
-@import "@{typo3contrib-directory-prefix}/twbs/bootstrap-datetimepicker.less";
+@import "@{library-directory-prefix}/eonasdan-bootstrap-datetimepicker/src/less/bootstrap-datetimepicker.less";
 
 /*!
  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome

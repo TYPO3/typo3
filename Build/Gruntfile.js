@@ -49,6 +49,7 @@ module.exports = function(grunt) {
 					'<%= paths.core %>Public/JavaScript/Contrib/jquery.dataTables.js': '/datatables/media/js/jquery.dataTables.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js': '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 					/**
 					 * copy needed parts of jquery-ui
 					 */
