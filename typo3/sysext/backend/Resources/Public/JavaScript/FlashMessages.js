@@ -43,39 +43,80 @@ define('TYPO3/CMS/Backend/FlashMessages', ['jquery'], function ($) {
 	 */
 	Flashmessage.display = function (severity, title, message, duration) {
 		var className = '';
+		var icon = '';
 		switch (severity) {
 			case TYPO3.Severity.notice:
 				className = 'notice';
+				icon = 'lightbulb-o';
 				break;
 			case TYPO3.Severity.info:
 				className = 'info';
+				icon = 'info';
 				break;
 			case TYPO3.Severity.ok:
 				className = 'success';
+				icon = 'check';
 				break;
 			case TYPO3.Severity.warning:
 				className = 'warning';
+				icon = 'exclamation';
 				break;
 			case TYPO3.Severity.error:
 				className = 'danger';
+				icon = 'times';
 				break;
 			default:
 				className = 'info';
+				icon = 'info';
 		}
 		duration = duration || 5;
 		if (!this.messageContainer) {
 			this.messageContainer = $('<div id="alert-container"></div>').appendTo('body');
 		}
-		$box = $('<div class="alert alert-' + className + ' alert-dismissible fade in" role="alert">' +
-		'<button type="button" class="close" data-dismiss="alert">' +
-		'<span aria-hidden="true">&times;</span>' +
-		'<span class="sr-only">Close</span>' +
-		'</button>' +
-		'<h4>' + title + '</h4>' +
-		'<p>' + message + '</p>' +
-		'</div>');
+		$box = $(
+			'<div class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
+				'<button type="button" class="close" data-dismiss="alert">' +
+					'<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
+					'<span class="sr-only">Close</span>' +
+				'</button>' +
+				'<div class="media">' +
+					'<div class="media-left">' +
+						'<span class="fa-stack fa-lg">' +
+							'<i class="fa fa-circle fa-stack-2x"></i>' +
+							'<i class="fa fa-' + icon + ' fa-stack-1x"></i>' +
+						'</span>' +
+					'</div>' +
+					'<div class="media-body">' +
+						'<h4 class="alert-title">' + title + '</h4>' +
+						'<p class="alert-message">' + message + '</p>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>'
+		);
+		$box.on('close.bs.alert', function(e) {
+			e.preventDefault();
+			$(this)
+				.clearQueue()
+				.queue(function(next) {
+					$(this).removeClass('in');
+					next();
+				})
+				.slideUp(function () {
+					$(this).remove();
+				});
+		});
 		$box.appendTo(this.messageContainer);
-		$box.fadeIn().delay(duration * 1000).slideUp();
+		$box.delay('fast')
+			.queue(function(next) {
+				$(this).addClass('in');
+				next();
+			})
+			.delay(duration * 1000)
+			.queue(function(next) {
+				$(this).alert('close');
+				next();
+			});
 	};
 
 	/**

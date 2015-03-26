@@ -13,11 +13,12 @@
 @gray-light:             rgb(215, 215, 215);
 @gray-lighter:           rgb(245, 245, 245);
 
-@brand-primary:          rgb(0, 120, 230);
-@brand-success:          rgb(30, 185, 65);
-@brand-info:             rgb(65, 180, 220);
-@brand-warning:          rgb(240, 120, 20);
-@brand-danger:           rgb(200, 60, 60);
+@brand-primary:          #0078e6;
+@brand-success:          #79a548;
+@brand-info:             #6daae0;
+@brand-warning:          #e8a33d;
+@brand-danger:           #c83c3c;
+@brand-notice:           #333;
 
 
 //== Scaffolding
@@ -489,7 +490,7 @@
 //## Define colors for form feedback states and, by default, alerts.
 
 @state-success-text:             @brand-success;
-@state-success-bg:               lighten(@brand-success, 45%);
+@state-success-bg:               lighten(@brand-success, 35%);
 @state-success-border:           @brand-success;
 
 @state-info-text:                @brand-info;
@@ -505,9 +506,9 @@
 @state-danger-border:            @brand-danger;
 
 // TYPO3
-@state-notice-text:              rgb(140, 140, 140);
-@state-notice-bg:                lighten(rgb(140, 140, 140), 40%);
-@state-notice-border:            rgb(140, 140, 140);
+@state-notice-text:              rgb(160, 160, 160);
+@state-notice-bg:                lighten(rgb(160, 160, 160), 35%);
+@state-notice-border:            rgb(160, 160, 160);
 
 
 //== Tooltips
@@ -617,25 +618,29 @@
 //
 //## Define alert colors, border radius, and padding.
 
-@alert-padding:               15px;
-@alert-border-radius:         0;
+@alert-padding:               11px;
+@alert-border-radius:         2px;
 @alert-link-font-weight:      bold;
 
-@alert-success-bg:            @state-success-bg;
-@alert-success-text:          rgb(50,50,50);
-@alert-success-border:        @state-success-border;
+@alert-success-bg:            @brand-success;
+@alert-success-text:          #fff;
+@alert-success-border:        transparent;
 
-@alert-info-bg:               @state-info-bg;
-@alert-info-text:             rgb(50,50,50);
-@alert-info-border:           @state-info-border;
+@alert-info-bg:               @brand-info;
+@alert-info-text:             #fff;
+@alert-info-border:           transparent;
 
-@alert-warning-bg:            @state-warning-bg;
-@alert-warning-text:          rgb(50,50,50);
-@alert-warning-border:        @state-warning-border;
+@alert-warning-bg:            @brand-warning;
+@alert-warning-text:          #fff;
+@alert-warning-border:        transparent;
 
-@alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           rgb(50,50,50);
-@alert-danger-border:         @state-danger-border;
+@alert-danger-bg:             @brand-danger;
+@alert-danger-text:           #fff;
+@alert-danger-border:         transparent;
+
+@alert-notice-bg:             @brand-notice;
+@alert-notice-text:           #fff;
+@alert-notice-border:         transparent;
 
 
 //== Progress bars

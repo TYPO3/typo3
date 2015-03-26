@@ -1,89 +1,76 @@
 //
-// Messages
+// Alert notice
 //
+.alert-notice {
+	.alert-variant(@alert-notice-bg; @alert-notice-border; @alert-notice-text);
+}
 
+
+//
+// Alerts
+//
+.alert {
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+	border: 0;
+	a {
+		color: inherit;
+		text-decoration: underline;
+	}
+	.media {
+		margin: 0;
+		.fa-stack {
+			> .fa:first-child {
+				.opacity(0.2);
+			}
+		}
+	}
+}
+.alert-title {
+	font-size: 1.12em;
+	font-weight: bold;
+	margin: 0 0 0.25em;
+}
+.alert-body,
+.alert-message {
+	margin: 0;
+	font-size: .9em;
+	> *:last-child {
+		margin-bottom: 0;
+	}
+	> ul {
+		padding-left: 1.5em;
+	}
+}
+.alert-dismissible {
+	.close {
+		.opacity(0.5);
+		padding: 1px;
+		top: -3px;
+		right: -22px;
+		color: inherit;
+		&:hover {
+			.opacity(1);
+			color: inherit;
+		}
+	}
+}
+
+
+//
+// JavaScript Flashmessages
+//
 #alert-container {
 	width: 400px;
 	position: absolute;
-	left: 50%;
-	margin-left: -200px;
+	right: 5px;
+	top: 46px;
 	z-index: 10000;
-
 	.alert {
+		box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1), 0 2px 0 0 rgba(0,0,0,0.15);
 		position: relative;
-		margin: 0 auto 10px;
-	}
-}
-
-.alert {
-	border-top: 0;
-	border-right: 0;
-	border-bottom: 0;
-	border-left-width: 6px;
-
-	a {
-		text-decoration: underline;
-	}
-
-	.alert-body {
-		p:last-child {
-			margin-bottom: 0;
-		}
-	}
-}
-
-// remove margin if .alert is the last element in a table column
-td .alert:last-child {
-	margin-bottom: 0;
-}
-
-
-// alert styling
-// -------------------------
-
-.alert {
-	&-notice {
-		color: @state-notice-text;
-		background-color: @state-notice-bg;
-		border-color: @state-notice-border;
-
-		a {
-			color: darken(@state-notice-text, 5%);
-			&:hover {
-				color: darken(@state-notice-text, 10%);
-			}
-		}
-	}
-	&-success {
-		a {
-			color: darken(@brand-success, 10%);
-			&:hover {
-				color: darken(@brand-success, 15%);
-			}
-		}
-	}
-	&-info {
-		a {
-			color: darken(@brand-info, 5%);
-			&:hover {
-				color: darken(@brand-info, 10%);
-			}
-		}
-	}
-	&-warning {
-		a {
-			color: @brand-warning;
-			&:hover {
-				color: darken(@brand-warning, 5%)
-			}
-		}
-	}
-	&-danger {
-		a {
-			color: @brand-danger;
-			&:hover {
-				color: darken(@brand-danger, 10%);
-			}
+		margin: 5px auto;
+		&.fade.in {
+			.opacity(0.95);
 		}
 	}
 }

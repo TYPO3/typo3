@@ -40,6 +40,17 @@ class FlashMessage extends AbstractMessage {
 	);
 
 	/**
+	 * @var string The message severity icon names
+	 */
+	protected $icons = array(
+		self::NOTICE => 'lightbulb-o',
+		self::INFO => 'info',
+		self::OK => 'check',
+		self::WARNING => 'exclamation',
+		self::ERROR => 'times'
+	);
+
+	/**
 	 * Constructor for a flash message
 	 *
 	 * @param string $message The message.
@@ -84,6 +95,15 @@ class FlashMessage extends AbstractMessage {
 	}
 
 	/**
+	 * Gets the message severity icon name
+	 *
+	 * @return string The message severity icon name
+	 */
+	protected function getIconName() {
+		return $this->icons[$this->severity];
+	}
+
+	/**
 	 * Renders the flash message.
 	 *
 	 * @return string The flash message as HTML.
@@ -91,9 +111,23 @@ class FlashMessage extends AbstractMessage {
 	public function render() {
 		$title = '';
 		if (!empty($this->title)) {
-			$title = '<h4>' . $this->title . '</h4>';
+			$title = '<h4 class="alert-title">' . $this->title . '</h4>';
 		}
-		$message = '<div class="alert ' . $this->getClass() . '">' . $title . '<div class="alert-body">' . $this->message . '</div>' . '</div>';
+		$message = '
+			<div class="alert ' . $this->getClass() . '">
+				<div class="media">
+					<div class="media-left">
+						<span class="fa-stack fa-lg">
+							<i class="fa fa-circle fa-stack-2x"></i>
+							<i class="fa fa-' . $this->getIconName() . ' fa-stack-1x"></i>
+						</span>
+					</div>
+					<div class="media-body">
+						' . $title . '
+						<div class="alert-message">' . $this->message . '</div>
+					</div>
+				</div>
+			</div>';
 		return $message;
 	}
 
