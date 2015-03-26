@@ -203,8 +203,24 @@ class BackendController {
 
 		// Prepare the scaffolding, at this point extension may still add javascript and css
 		$view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
-		// @todo: kick logo view class and move all logic to Fluid
-		$view->assign('logo', GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\LogoView::class)->render());
+
+		// Render the TYPO3 logo in the left corner
+		$logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: 'gfx/typo3-topbar@2x.png';
+		$logoPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
+		list($logoWidth, $logoHeight) = @getimagesize($logoPath);
+
+		// High-resolution?
+		if (strpos($logoUrl, '@2x.') !== FALSE) {
+			$logoWidth = $logoWidth/2;
+			$logoHeight = $logoHeight/2;
+		}
+
+		$view->assign('logoUrl', $logoUrl);
+		$view->assign('logoWidth', $logoWidth);
+		$view->assign('logoHeight', $logoHeight);
+		$view->assign('logoLink', TYPO3_URL_GENERAL);
+		$view->assign('applicationVersion', TYPO3_version);
+		$view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 		$view->assign('moduleMenu', $this->generateModuleMenu());
 		$view->assign('toolbar', $this->renderToolbar());
 
