@@ -463,6 +463,7 @@ class BackendController {
 			'viewPort' => array(
 				'tooltipModuleMenuSplit',
 				'tooltipNavigationContainerSplitDrag',
+				'tooltipNavigationContainerSplitClick',
 				'tooltipDebugPanelSplitDrag'
 			)
 		);

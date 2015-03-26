@@ -430,7 +430,10 @@
 				<source>Drag to resize the Modules Menu</source>
 			</trans-unit>
 			<trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" xml:space="preserve">
-				<source>Drag to resize or double click to collapse the tree</source>
+				<source>Drag to resize or double click to collapse the page tree area</source>
+			</trans-unit>
+			<trans-unit id="viewPort_tooltipNavigationContainerSplitClick" xml:space="preserve">
+				<source>Click to toggle the page tree area</source>
 			</trans-unit>
 			<trans-unit id="viewPort_tooltipDebugPanelSplitDrag" xml:space="preserve">
 				<source>Drag to resize or click to collapse the Debug Panel.</source>

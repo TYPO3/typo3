@@ -37,6 +37,7 @@ Ext.override(Ext.layout.BorderLayout.SplitRegion, {
 			});
 			this.miniSplitEl.addClassOnOver('x-layout-mini-over');
 			this.miniSplitEl.on('click', this.onCollapseClick, this, {stopEvent:true});
+			this.miniSplitEl.dom.title = this.collapsible ? this.collapsibleSplitClickTip : this.splitTip;
 		}
 
 		var s = this.splitSettings[ps];

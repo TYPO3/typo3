@@ -121,6 +121,7 @@ TYPO3.Viewport.configuration = {
 					collapseMode: 'mini',
 					useSplitTips: true,
 					collapsibleSplitTip: top.TYPO3.LLL.viewPort.tooltipNavigationContainerSplitDrag,
+					collapsibleSplitClickTip: top.TYPO3.LLL.viewPort.tooltipNavigationContainerSplitClick,
 					hideCollapseTool: true,
 					hidden: true,
 					border: false,
