@@ -753,7 +753,7 @@ abstract class AbstractFormElement {
 								' . ($config['internal_type'] === 'db'
 							? $this->getControllerDocumentTemplate()->wrapClickMenuOnIcon($thumbnail['name'], $thumbnail['table'], $thumbnail['uid'], 1, '', '+copy,info,edit,view')
 							: $thumbnail['name']) . '
-								' . ($config['internal_type'] === 'db' ? '' : ' <span class="text-muted">[' . $thumbnail['uid'] . ']</span>') . '
+								' . ($config['internal_type'] === 'db' ? ' <span class="text-muted">[' . $thumbnail['uid'] . ']</span>' : '') . '
 							</td>
 						</tr>
 						';
