@@ -1,0 +1,29 @@
+{
+  "name": "typo3",
+  "version": "7.2.0-dev",
+  "authors": [
+    {
+      "name": "TYPO3 CMS Core Team",
+      "role": "Developer",
+      "homepage": "http://forge.typo3.org/projects/typo3cms-core"
+    },
+    {
+      "name": "The TYPO3 Community",
+      "role": "Contributor",
+      "homepage": "https://typo3.org/community/"
+    }
+  ],
+  "description": "TYPO3 CMS is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.",
+  "keywords": [
+    "typo3",
+    "cms",
+    "content management system"
+  ],
+  "license": "GPL-2.0+",
+  "homepage": "http://typo3.org/",
+  "private": true,
+  "devDependencies": {
+    "fontawesome": "4.3.0",
+    "bootstrap": "3.3.2"
+  }
+}
