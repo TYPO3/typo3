@@ -1,18 +1,13 @@
 /*!
- * jQuery UI Resizable @VERSION
+ * jQuery UI Resizable 1.11.2
  * http://jqueryui.com
  *
  * Copyright 2014 jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/resizable/
  */
-
-//>>label: Resizble
-//>>group: Interactions
-//>>description: Enables resize functionality for any element.
-//>>docs: http://api.jqueryui.com/resizable/
-//>>demos: http://jqueryui.com/resizable/
-
 (function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 
@@ -31,7 +26,7 @@
 }(function( $ ) {
 
 $.widget("ui.resizable", $.ui.mouse, {
-	version: "@VERSION",
+	version: "1.11.2",
 	widgetEventPrefix: "resize",
 	options: {
 		alsoResize: false,

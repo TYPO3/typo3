@@ -48,7 +48,19 @@ module.exports = function(grunt) {
 					'<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': '/nprogress/nprogress.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/jquery.dataTables.js': '/datatables/media/js/jquery.dataTables.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js'
+					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js',
+					/**
+					 * copy needed parts of jquery-ui
+					 */
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js': '/jquery-ui/ui/core.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js': '/jquery-ui/ui/draggable.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js': '/jquery-ui/ui/droppable.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js': '/jquery-ui/ui/mouse.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js': '/jquery-ui/ui/position.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js': '/jquery-ui/ui/resizable.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js': '/jquery-ui/ui/selectable.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js': '/jquery-ui/ui/sortable.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js': '/jquery-ui/ui/widget.js'
 				}
 			}
 		}

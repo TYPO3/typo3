@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Position @VERSION
+ * jQuery UI Position 1.11.2
  * http://jqueryui.com
  *
  * Copyright 2014 jQuery Foundation and other contributors
@@ -8,13 +8,6 @@
  *
  * http://api.jqueryui.com/position/
  */
-
-//>>label: Position
-//>>group: UI Core
-//>>description: Positions elements relative to other elements.
-//>>docs: http://api.jqueryui.com/position/
-//>>demos: http://jqueryui.com/position/
-
 (function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 
