@@ -1592,7 +1592,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'jquery-ui' => $this->backPath . 'contrib/jquery-ui',
 				'jquery' => $this->backPath . 'contrib/jquery',
 				'datatables' => $this->backPath . 'contrib/jquery/jquery.dataTables.min',
-				'nprogress' => $this->backPath . 'contrib/nprogress/nprogress',
+				'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
 				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment/moment',
 				'twbs' => $this->backPath . 'contrib/twbs/bootstrap.min',
 				'twbs/bootstrap-datetimepicker' => $this->backPath . 'contrib/twbs/bootstrap-datetimepicker.min',

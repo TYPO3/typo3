@@ -17,9 +17,9 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		paths: {
-			root   : "../",
-			t3skin : "<%= paths.root %>typo3/sysext/t3skin/Resources/",
-			core   : "<%= paths.root %>typo3/sysext/core/Resources/"
+			root    : "../",
+			t3skin  : "<%= paths.root %>typo3/sysext/t3skin/Resources/",
+			core    : "<%= paths.root %>typo3/sysext/core/Resources/"
 		},
 		less: {
 			t3skin: {
@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 			},
 			all: {
 				files: {
+					'<%= paths.core %>Public/JavaScript/Contrib/': '/nprogress/nprogress.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js'
 				}
