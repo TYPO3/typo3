@@ -348,7 +348,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 			passwordFieldValue = $passwordField.val();
 
 		if (passwordFieldValue === '') {
-			top.TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
+			top.TYPO3.Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 			$passwordField.focus();
 			return;
 		}
@@ -386,8 +386,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
 					// User is logged in
 					LoginRefresh.hideLoginForm();
 				} else {
-					// TODO: add failure to notification system instead of alert
-					top.TYPO3.Flashmessage.display(TYPO3.Severity.error, TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+					top.TYPO3.Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
 					$passwordField.focus();
 				}
 			}

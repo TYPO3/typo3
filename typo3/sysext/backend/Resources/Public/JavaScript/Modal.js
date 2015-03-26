@@ -13,9 +13,9 @@
 
 /**
  * API for modal windows powered by Twitter Bootstrap.
- * This module depends on TYPO3/CMS/Backend/FlashMessages due to TYPO3.Severity.
+ * This module depends on TYPO3/CMS/Backend/Notification due to top.TYPO3.Severity.
  */
-define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'], function($) {
+define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification'], function($) {
 
 	/**
 	 * The main object of the modal API
@@ -44,26 +44,26 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'],
 	/**
 	 * Get the correct css class for given severity
 	 *
-	 * @param {int} severity use constants from TYPO3.Severity.*
+	 * @param {int} severity use constants from top.TYPO3.Severity.*
 	 * @returns {string}
 	 * @private
 	 */
 	Modal.getSeverityClass = function(severity) {
 		var severityClass;
 		switch (severity) {
-			case TYPO3.Severity.notice:
+			case top.TYPO3.Severity.notice:
 				severityClass = 'notice';
 				break;
-			case TYPO3.Severity.ok:
+			case top.TYPO3.Severity.ok:
 				severityClass = 'success';
 				break;
-			case TYPO3.Severity.warning:
+			case top.TYPO3.Severity.warning:
 				severityClass = 'warning';
 				break;
-			case TYPO3.Severity.error:
+			case top.TYPO3.Severity.error:
 				severityClass = 'danger';
 				break;
-			case TYPO3.Severity.info:
+			case top.TYPO3.Severity.info:
 			default:
 				severityClass = 'info';
 				break;
@@ -76,11 +76,11 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'],
 	 *
 	 * @param {string} title the title for the confirm modal
 	 * @param {string} content the content for the conform modal, e.g. the main question
-	 * @param {int} severity default TYPO3.Severity.info
+	 * @param {int} severity default top.TYPO3.Severity.info
 	 * @param {array} buttons an array with buttons, default no buttons
 	 */
 	Modal.confirm = function(title, content, severity, buttons) {
-		severity = (typeof severity !== 'undefined' ? severity : TYPO3.Severity.info);
+		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.info);
 		buttons = buttons || [];
 		Modal.currentModal = Modal.template.clone();
 		Modal.currentModal.attr('tabindex', '-1');
@@ -182,7 +182,7 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/FlashMessages'],
 			var $element = $(this);
 			var title = $element.data('title') || 'Alert';
 			var content = $element.data('content') || 'Are you sure?';
-			var severity = (typeof TYPO3.Severity[$element.data('severity')] !== 'undefined') ? TYPO3.Severity[$element.data('severity')] : TYPO3.Severity.info;
+			var severity = (typeof top.TYPO3.Severity[$element.data('severity')] !== 'undefined') ? top.TYPO3.Severity[$element.data('severity')] : top.TYPO3.Severity.info;
 			var buttons = [
 				{
 					text: $element.data('button-close-text') || 'Close',

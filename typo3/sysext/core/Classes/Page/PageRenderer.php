@@ -1421,11 +1421,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 			Ext.Direct.on("exception", function(event) {
 				if (event.code === Ext.Direct.exceptions.TRANSPORT && !event.where) {
-					top.TYPO3.Flashmessage.display(
-						top.TYPO3.Severity.error,
+					top.TYPO3.Notification.error(
 						TYPO3.l10n.localize("extDirect_timeoutHeader"),
-						TYPO3.l10n.localize("extDirect_timeoutMessage"),
-						30
+						TYPO3.l10n.localize("extDirect_timeoutMessage")
 					);
 				} else {
 					var backtrace = "";
@@ -1436,11 +1434,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 							"ExtDirect - Exception"
 						);
 					} else if (event.code === "router") {
-						top.TYPO3.Flashmessage.display(
-							top.TYPO3.Severity.error,
+						top.TYPO3.Notification.error(
 							event.code,
-							event.message,
-							30
+							event.message
 						);
 					} else if (event.where) {
 						backtrace = "<p style=\\"margin-top: 20px;\\">" +

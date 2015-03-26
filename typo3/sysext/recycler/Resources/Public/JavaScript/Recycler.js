@@ -427,8 +427,11 @@ define(['jquery', 'nprogress', 'jquery/jquery.clearable'], function($, NProgress
 				NProgress.start();
 			},
 			success: function(data) {
-				var severity = data.success ? top.TYPO3.Severity.ok : top.TYPO3.Severity.error;
-				top.TYPO3.Flashmessage.display(severity, '', data.message);
+				if (data.success) {
+					top.TYPO3.Notification.success('', data.message);
+				} else {
+					top.TYPO3.Notification.error('', data.message);
+				}
 
 				// reload recycler data
 				Recycler.paging.currentPage = 1;

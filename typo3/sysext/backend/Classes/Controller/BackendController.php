@@ -133,8 +133,8 @@ class BackendController {
 			}');
 		}
 
-		// load FlashMessages functionality
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FlashMessages');
+		// load Notification functionality
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
 
 		// load Modals
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');

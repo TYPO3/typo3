@@ -388,7 +388,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			]);
 		} else {
 			if(data.hasErrors) {
-				top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, data.title, data.message, 15);
+				top.TYPO3.Notification.error(data.title, data.message, 15);
 			} else {
 				Repository.getResolveDependenciesAndInstallResult(data.url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + Repository.downloadPath);
 			}
@@ -433,7 +433,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 						});
 						successMessage += '</ul>';
 					});
-					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
+					top.TYPO3.Notification.info(TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
 					top.TYPO3.ModuleMenu.App.refreshMenu();
 				}
 			}
@@ -509,7 +509,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			success: function(data) {
 				// Something went wrong, show message
 				if (data.errorMessage.length) {
-					top.TYPO3.Flashmessage.display(top.TYPO3.Severity.warning, TYPO3.lang['extensionList.updateFromTerFlashMessage.title'], data.errorMessage, 10);
+					top.TYPO3.Notification.error(TYPO3.lang['extensionList.updateFromTerFlashMessage.title'], data.errorMessage, 10);
 				}
 
 				// Message with latest updates
@@ -535,8 +535,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 				// Create an error message with diagnosis info.
 				var errorMessage = textStatus + '(' + errorThrown + '): ' + jqXHR.responseText;
 
-				top.TYPO3.Flashmessage.display(
-					top.TYPO3.Severity.warning,
+				top.TYPO3.Notification.warning(
 					TYPO3.lang['extensionList.updateFromTerFlashMessage.title'],
 					errorMessage,
 					10

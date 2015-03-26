@@ -173,7 +173,7 @@ var inline = {
 			if (matches) {
 				title = TYPO3.jQuery('#' + matches[1] + '_records').data('title');
 			}
-			top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, title, message, 5);
+			top.TYPO3.Notification.error(title, message, 5);
 		}
 		return false;
 	},
@@ -520,7 +520,7 @@ var inline = {
 		} else {
 			var message = TBE_EDITOR.labels.maxItemsAllowed.replace('{0}', this.data.config[objectPrefix].max);
 			var title = $insertObject.data('title');
-			top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, title, message, 500);
+			top.TYPO3.Notification.error(title, message);
 		}
 	},
 

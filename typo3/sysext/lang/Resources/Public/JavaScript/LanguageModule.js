@@ -449,7 +449,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 	 */
 	LanguageModule.displayError = function(label) {
 		if (typeof label === 'string' && label !== '') {
-			top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, LanguageModule.labels.errorHeader, label, 5);
+			top.TYPO3.Notification.error(LanguageModule.labels.errorHeader, label);
 		}
 	};
 
@@ -458,7 +458,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 	 */
 	LanguageModule.displayInformation = function(label) {
 		if (typeof label === 'string' && label !== '') {
-			top.TYPO3.Flashmessage.display(top.TYPO3.Severity.info, LanguageModule.labels.infoHeader, label, 3);
+			top.TYPO3.Notification.info(LanguageModule.labels.infoHeader, label);
 		}
 	};
 
@@ -467,7 +467,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'datatables', 'jquery/jquery.
 	 */
 	LanguageModule.displaySuccess = function(label) {
 		if (typeof label === 'string' && label !== '') {
-			top.TYPO3.Flashmessage.display(top.TYPO3.Severity.ok, LanguageModule.labels.successHeader, label, 3);
+			top.TYPO3.Notification.success(LanguageModule.labels.successHeader, label);
 		}
 	};
 

@@ -14,7 +14,7 @@
 /**
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
-define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashMessages', 'TYPO3/CMS/Backend/Modal'], function ($) {
+define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Backend/Modal'], function ($) {
 	var AjaxDataHandler = {};
 
 	/**
@@ -84,7 +84,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashM
 		$(document).on('click', '.t3js-record-delete', function(evt) {
 			evt.preventDefault();
 			var $anchorElement = $(this);
-			TYPO3.Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), TYPO3.Severity.error, [
+			TYPO3.Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), top.TYPO3.Severity.error, [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Close',
 					active: true,
@@ -166,7 +166,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/FlashM
 	 */
 	AjaxDataHandler.handleErrors = function(result) {
 		$.each(result.messages, function(position, message) {
-			top.TYPO3.Flashmessage.display(message.severity, message.title, message.message);
+			top.TYPO3.Notification.error(message.title, message.message);
 		});
 	};
 

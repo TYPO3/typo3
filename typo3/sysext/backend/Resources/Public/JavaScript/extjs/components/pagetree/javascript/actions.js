@@ -31,7 +31,7 @@ TYPO3.Components.PageTree.Actions = {
 	 */
 	evaluateResponse: function(response) {
 		if (response.success === false) {
-			top.TYPO3.Flashmessage.display(top.TYPO3.Severity.error, 'Exception', response.message);
+			top.TYPO3.Notification.error('Exception', response.message);
 			return false;
 		}
 
