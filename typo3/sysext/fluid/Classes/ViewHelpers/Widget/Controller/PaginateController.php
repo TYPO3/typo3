@@ -38,7 +38,8 @@ class PaginateController extends AbstractWidgetController {
 		'insertAbove' => FALSE,
 		'insertBelow' => TRUE,
 		'maximumNumberOfLinks' => 99,
-		'addQueryStringMethod' => ''
+		'addQueryStringMethod' => '',
+		'section' => ''
 	);
 
 	/**
