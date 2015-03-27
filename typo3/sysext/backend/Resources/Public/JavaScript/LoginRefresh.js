@@ -15,7 +15,7 @@
  * Task that periodically checks if a blocking event in the backend occurred and
  * displays a proper dialog to the user.
  */
-define('TYPO3/CMS/Backend/LoginRefresh', ['jquery'], function($) {
+define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 	var LoginRefresh = {
 		identifier: {
 			loginrefresh: 't3-modal-loginrefresh',

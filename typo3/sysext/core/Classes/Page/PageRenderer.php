@@ -1590,7 +1590,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'datatables' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
 				'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
 				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment/moment',
-				'twbs' => $this->backPath . 'contrib/twbs/bootstrap.min',
+				'bootstrap' => $this->backPath . 'contrib/twbs/bootstrap.min',
 				'twbs/bootstrap-datetimepicker' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
 			);
 			// get all extensions that are loaded

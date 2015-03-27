@@ -14,7 +14,7 @@
 /**
  * API for popover windows powered by Twitter Bootstrap.
  */
-define('TYPO3/CMS/Backend/Popover', ['jquery'], function($) {
+define('TYPO3/CMS/Backend/Popover', ['jquery', 'bootstrap'], function($) {
 
 	/**
 	 * the main popover object
