@@ -468,7 +468,7 @@ class HelpModuleController {
 					$imgInfo = @getimagesize($absImagePath);
 					if (is_array($imgInfo)) {
 						$imgFile = '../' . $imgFile;
-						$code .= '<br /><img src="' . $imgFile . '" ' . $imgInfo[3] . ' class="c-inlineimg" alt="" /><br />
+						$code .= '<br /><img src="' . $imgFile . '" ' . $imgInfo[3] . ' class="c-inlineimg img-responsive" alt="" /><br />
 						';
 						$code .= '<p><em>' . htmlspecialchars($descr) . '</em></p>
 						';
@@ -493,11 +493,11 @@ class HelpModuleController {
 	public function headerLine($str, $type = 0) {
 		switch ($type) {
 			case 1:
-				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
+				$str = '<h2>' . htmlspecialchars($str) . '</h2>
 					';
 				break;
 			case 0:
-				$str = '<h3 class="divider">' . htmlspecialchars($str) . '</h3>
+				$str = '<h3>' . htmlspecialchars($str) . '</h3>
 					';
 				break;
 		}
