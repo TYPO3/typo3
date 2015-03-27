@@ -83,6 +83,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Callouts
+	 */
+	public function calloutAction() {
+	}
+
+	/**
 	 * Helpers
 	 */
 	public function helpersAction() {
