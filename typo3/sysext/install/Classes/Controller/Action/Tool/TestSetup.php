@@ -515,7 +515,7 @@ class TestSetup extends Action\AbstractAction {
 			$testResults['niceText']['title'] = 'Render text with TrueType font using \'niceText\' option';
 			$testResults['niceText']['outputFile'] = $result[3];
 			$testResults['niceText']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-niceText.' . $gifOrPng;
-			$testResults['niceText']['commands'] = $imageProcessor->IM_commands;
+			$testResults['niceText']['command'] = $imageProcessor->IM_commands;
 			/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
 			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
 			$message->setTitle('Note on \'niceText\'');
@@ -551,7 +551,7 @@ class TestSetup extends Action\AbstractAction {
 			$testResults['shadow']['title'] = 'Render \'niceText\' with a shadow under';
 			$testResults['shadow']['outputFile'] = $result[3];
 			$testResults['shadow']['referenceFile'] = $this->imageBasePath . 'TestReference/Gdlib-shadow.' . $gifOrPng;
-			$testResults['shadow']['commands'] = $imageProcessor->IM_commands;
+			$testResults['shadow']['command'] = $imageProcessor->IM_commands;
 			/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
 			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
 			$message->setTitle('Note on \'shadow\'');
