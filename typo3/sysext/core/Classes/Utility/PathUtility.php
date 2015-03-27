@@ -39,7 +39,7 @@ class PathUtility {
 	 * @return string something like "/mysite/typo3/sysext/backend.js"
 	 */
 	static public function getAbsoluteWebPath($targetPath) {
-		if ($targetPath[0] === '/') {
+		if (self::isAbsolutePath($targetPath)) {
 			if (StringUtility::beginsWith($targetPath, PATH_site)) {
 				$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . self::stripPathSitePrefix($targetPath);
 			}
