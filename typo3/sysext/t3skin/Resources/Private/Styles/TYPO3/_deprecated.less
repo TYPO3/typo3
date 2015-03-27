@@ -154,3 +154,79 @@
     color: #aa0225;
   }
 }
+
+
+//
+// Docheader
+//
+div#typo3-docbody {
+	bottom: 0;
+	overflow: auto;
+	position: absolute;
+	top: 51px;
+	width: 100%;
+}
+
+
+//
+// Context Sensitive Help (CSH)
+//
+a.typo3-csh-link {
+	span.typo3-csh-inline {
+		display: none;
+	}
+	&:hover span.typo3-csh-inline {
+		display: block;
+	}
+}
+.t3-help-link {
+	span.t3-help-inline {
+		display: none;
+	}
+	&:hover span.t3-help-inline {
+		display: block;
+	}
+}
+
+
+//
+// TYPO3 backend scaffolding
+//
+iframe {
+	width: 100%;
+}
+#typo3-side-menu,
+iframe {
+	height: 100%;
+	overflow: auto;
+}
+
+
+//
+// Print
+//
+@media print {
+	div#typo3-docbody {
+		overflow: visible;
+	}
+}
+
+
+//
+// Basic styles
+//
+a img {
+	border: none;
+}
+
+.typo3-newRecord-treeline {
+	padding-right: 20px;
+}
+
+.typo3-newRecord-treeline img {
+	vertical-align: middle;
+}
+
+#typo3-newRecord tr {
+	line-height: 13px;
+}

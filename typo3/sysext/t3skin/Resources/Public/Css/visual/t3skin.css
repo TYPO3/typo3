@@ -7676,6 +7676,50 @@ button.close {
 .message-error a {
   color: #aa0225;
 }
+div#typo3-docbody {
+  bottom: 0;
+  overflow: auto;
+  position: absolute;
+  top: 51px;
+  width: 100%;
+}
+a.typo3-csh-link span.typo3-csh-inline {
+  display: none;
+}
+a.typo3-csh-link:hover span.typo3-csh-inline {
+  display: block;
+}
+.t3-help-link span.t3-help-inline {
+  display: none;
+}
+.t3-help-link:hover span.t3-help-inline {
+  display: block;
+}
+iframe {
+  width: 100%;
+}
+#typo3-side-menu,
+iframe {
+  height: 100%;
+  overflow: auto;
+}
+@media print {
+  div#typo3-docbody {
+    overflow: visible;
+  }
+}
+a img {
+  border: none;
+}
+.typo3-newRecord-treeline {
+  padding-right: 20px;
+}
+.typo3-newRecord-treeline img {
+  vertical-align: middle;
+}
+#typo3-newRecord tr {
+  line-height: 13px;
+}
 .text-monospace {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }

@@ -278,8 +278,6 @@ function jumpToUrl(URL) {
 	 * @var array
 	 */
 	protected $stylesheetsCore = array(
-		'structure' => 'sysext/backend/Resources/Public/Css/structure/',
-		'visual' => 'sysext/backend/Resources/Public/Css/visual/',
 		'generatedSprites' => '../typo3temp/sprites/'
 	);
 
