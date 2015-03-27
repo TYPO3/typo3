@@ -802,8 +802,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 				// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 				if ($permsEdit) {
 					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-					$code = '<a href="#" onclick="' . htmlspecialchars(
-							BackendUtility::editOnClick($params, $this->backPath, -1)) . '" title="' . $lang->getLL('edit', TRUE) . '">' . $code . '</a>';
+					$code = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1)) . '" title="' . $lang->getLL('edit', TRUE) . '">' . $code . '</a>';
 				}
 				break;
 			case 'show':

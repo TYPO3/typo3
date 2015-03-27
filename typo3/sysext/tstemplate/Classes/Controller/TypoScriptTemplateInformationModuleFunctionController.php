@@ -64,7 +64,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$startAnchor = '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">';
 		} else {
 			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
-			$editOnClick = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
+			$editOnClick = BackendUtility::editOnClick($params);
 			$startAnchor = '<a href="#" onclick="' . $editOnClick . '">';
 		}
 		$icon = IconUtility::getSpriteIcon(
@@ -275,7 +275,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$outCode = '<div class="table-fit"><table class="table table-striped table-hover">' . $outCode . '</table></div>';
 
 			// Edit all icon:
-			$editOnClick = BackendUtility::editOnClick(rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $GLOBALS['BACK_PATH'], '');
+			$editOnClick = BackendUtility::editOnClick(rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit');
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $lang->getLL('editTemplateRecord'))) . $lang->getLL('editTemplateRecord');
 			$outCode .= '<br /><a href="#" onclick="' . $editOnClick . '"><strong>' . $icon . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);

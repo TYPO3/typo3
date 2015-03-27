@@ -545,7 +545,7 @@ class ElementInformationController {
 		}
 
 		// Edit button
-		$editOnClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit', $GLOBALS['BACK_PATH']);
+		$editOnClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit');
 		$pageActionIcons = '
 			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($editOnClick) . '">
 				' . IconUtility::getSpriteIcon('actions-document-open') . '
@@ -638,7 +638,7 @@ class ElementInformationController {
 			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
 			$icon = (is_array($record)) ? IconUtility::getSpriteIconForRecord($row['tablename'], $record) : '';
 			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit', $GLOBALS['BACK_PATH']);
+			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit');
 			$infoData[] = '
 				<tr>
 					<td class="col-icon">
@@ -714,7 +714,7 @@ class ElementInformationController {
 			$parentRecord = BackendUtility::getRecord('pages', $record['pid']);
 			$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit', $GLOBALS['BACK_PATH']);
+			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit');
 			$infoData[] = '
 				<tr>
 					<td class="col-icon">

@@ -468,7 +468,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$actionLink = '<a href="#" onclick="';
 		$actionLink .= htmlspecialchars(BackendUtility::editOnClick(
 			'&edit[' . $table . '][' . $row['record_uid'] . ']=edit',
-			$GLOBALS['BACK_PATH'],
+			'',
 			$requestUri
 		));
 		$actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';

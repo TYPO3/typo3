@@ -596,7 +596,7 @@ class FileList extends AbstractRecordList {
 				$data = array(
 					'sys_file_metadata' => array($metaData['uid'] => 'edit')
 				);
-				$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+				$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), '', $this->listUrl());
 				$title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
 				$code = '<a href="#" title="' . $title . '" onclick="' . htmlspecialchars($editOnClick) . '">' . GeneralUtility::fixed_lgd_cs($code, $this->fixedL) . '</a>';
 			}
@@ -691,7 +691,7 @@ class FileList extends AbstractRecordList {
 										$data = array(
 											'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
 										);
-										$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+										$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), '', $this->listUrl());
 										$languageCode .= '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '">' . $flagButtonIcon . '</a>';
 									} else {
 										$href = $GLOBALS['SOBE']->doc->issueCommand(

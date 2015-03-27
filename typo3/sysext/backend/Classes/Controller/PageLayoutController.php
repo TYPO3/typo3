@@ -1119,11 +1119,7 @@ class PageLayoutController {
 						'sys_language_uid'
 					);
 
-					$editLanguageOnClick = htmlspecialchars(
-						BackendUtility::editOnClick(
-						'&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit',
-						$GLOBALS['BACK_PATH'])
-					);
+					$editLanguageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit'));
 					$buttons['edit_language'] = '<a href="#" ' .
 						'onclick="' . $editLanguageOnClick . '"' .
 						'title="' . $GLOBALS['LANG']->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
@@ -1133,9 +1129,7 @@ class PageLayoutController {
 
 
 				// Edit page properties
-				$editPageOnClick = htmlspecialchars(
-					BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit', $GLOBALS['BACK_PATH'])
-				);
+				$editPageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
 				$buttons['edit_page'] = '<a href="#" ' .
 					'onclick="' . $editPageOnClick . '"' .
 					'title="' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . '">' .

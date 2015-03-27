@@ -132,9 +132,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$info = '';
 			$editUid = $data['row']['uid'];
 			$params = '&edit[pages][' . $editUid . ']=edit';
-			$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(
-					$params, $GLOBALS['BACK_PATH'])
-				) . '" title="' . $lang->sL(
+			$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+				. '" title="' . $lang->sL(
 					'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editDefaultLanguagePage'
 				) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			$info .= str_replace('###LANG_UID###', '0', $viewPageLink);
@@ -178,9 +177,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 						$info = '';
 						$editUid = $row['uid'];
 						$params = '&edit[pages_language_overlay][' . $editUid . ']=edit';
-						$info .= '<a href="#" onclick="' . htmlspecialchars(
-								BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])
-							) . '" title="' . $lang->sL(
+						$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+							. '" title="' . $lang->sL(
 								'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editLanguageOverlayRecord'
 							) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
@@ -217,9 +215,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		$tCells[] = '<td>' . $lang->sL('LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_page') . ':</td>';
 		if (is_array($langRecUids[0])) {
 			$params = '&edit[pages][' . implode(',', $langRecUids[0]) . ']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
-			$editIco = '<a href="#" onclick="' . htmlspecialchars(
-					BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])
-				) . '" title="' . $lang->sL(
+			$editIco = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+				. '" title="' . $lang->sL(
 					'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editPageProperties'
 				) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		} else {
@@ -237,9 +234,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$params = '&edit[pages_language_overlay][' .
 						implode(',', $langRecUids[$langRow['uid']]) .
 						']=edit&columnsOnly=title,nav_title,hidden';
-					$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(
-							BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])
-						) . '" title="' . $lang->sL(
+					$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+						. '" title="' . $lang->sL(
 							'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editLangOverlays'
 						) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 				} else {
@@ -250,9 +246,8 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$newOL_js[$langRow['uid']] .
 					'+\'&columnsOnly=title,hidden,sys_language_uid&defVals[pages_language_overlay][sys_language_uid]=' .
 					$langRow['uid'];
-				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(
-						BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])
-					) . '" title="' . $lang->sL(
+				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+					. '" title="' . $lang->sL(
 						'LLL:EXT:cms/web_info/locallang.xlf:lang_getlangsta_createNewTranslationHeaders'
 					) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a></td>';
 			}

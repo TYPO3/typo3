@@ -362,7 +362,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 					<td>' . $row['t3ver_stage'] . '</td>
 					<td>' . $row['t3ver_count'] . '</td>
 					<td>' . $row['pid'] . '</td>
-					<td nowrap="nowrap"><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(('&edit[' . $this->table . '][' . $row['uid'] . ']=edit&columnsOnly=t3ver_label'), $this->doc->backPath)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>' . htmlspecialchars($row['t3ver_label']) . '</td>
+					<td nowrap="nowrap"><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[' . $this->table . '][' . $row['uid'] . ']=edit&columnsOnly=t3ver_label')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>' . htmlspecialchars($row['t3ver_label']) . '</td>
 					<td class="version-diff-1"><input type="radio" name="diff_1" value="' . $row['uid'] . '"' . ($diff_1 == $row['uid'] ? ' checked="checked"' : '') . '/></td>
 					<td class="version-diff-2"><input type="radio" name="diff_2" value="' . $row['uid'] . '"' . ($diff_2 == $row['uid'] ? ' checked="checked"' : '') . '/></td>
 				</tr>';
@@ -472,7 +472,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 */
 	public function adminLinks($table, $row) {
 		// Edit link:
-		$adminLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(('&edit[' . $table . '][' . $row['uid'] . ']=edit'), $this->doc->backPath)) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+		$adminLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick('&edit[' . $table . '][' . $row['uid'] . ']=edit')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.edit', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		// Delete link:
 		$adminLink .= '<a href="' . htmlspecialchars($this->doc->issueCommand(('&cmd[' . $table . '][' . $row['uid'] . '][delete]=1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 		if ($table === 'pages') {

@@ -110,7 +110,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 							$pTitle = $this->pObj->doc->getHeader('pages', $row, '', FALSE);
 							$editIdList = substr($k, 4);
 							$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=TSconfig';
-							$onclickUrl = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
+							$onclickUrl = BackendUtility::editOnClick($params);
 							$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 						}
 						$TScontent = nl2br(htmlspecialchars(trim($v) . LF));
@@ -126,7 +126,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				}
 				if (count($pUids)) {
 					$params = '&edit[pages][' . implode(',', $pUids) . ']=edit&columnsOnly=TSconfig';
-					$onclickUrl = BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
+					$onclickUrl = BackendUtility::editOnClick($params);
 					$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
 				} else {
 					$editIcon = '';
