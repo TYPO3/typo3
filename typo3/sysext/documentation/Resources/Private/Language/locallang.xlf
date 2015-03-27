@@ -93,6 +93,11 @@
 			<trans-unit id="downloadFailedDetails">
 				<source>The documentation for "%s" could not be downloaded, because of the following error: %s (%d).</source>
 			</trans-unit>
+
+			<trans-unit id="documentationList.search">
+				<source>Search</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>

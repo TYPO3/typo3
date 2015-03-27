@@ -11184,6 +11184,7 @@ em {
   overflow: hidden;
   border-radius: 2px;
   background-color: #484848;
+  vertical-align: middle;
 }
 .typo3-app-icon > span {
   display: table;
