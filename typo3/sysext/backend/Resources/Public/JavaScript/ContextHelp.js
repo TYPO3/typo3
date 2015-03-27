@@ -69,10 +69,10 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover'],
 			}
 		});
 		$(document).on('click', '.tipIsLinked', function(e) {
-			var $me = $(this);
 			$('.popover').each(function() {
-				if ($me.has(e.target).length) {
-					ContextHelp.showHelpPopup($me.data('bs.popover').$element);
+				var $popover = $(this);
+				if ($popover.has(e.target).length) {
+					ContextHelp.showHelpPopup($popover.data('bs.popover').$element);
 				}
 			});
 		});
