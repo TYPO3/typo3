@@ -51,6 +51,17 @@ module.exports = function(grunt) {
 					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js': '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 					/**
+					 * copy needed files of scriptaculous
+					 */
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/builder.js': '/scriptaculous-bower/builder.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/controls.js': '/scriptaculous-bower/controls.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/dragdrop.js': '/scriptaculous-bower/dragdrop.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/effects.js': '/scriptaculous-bower/effects.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/scriptaculous.js': '/scriptaculous-bower/scriptaculous.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/slider.js': '/scriptaculous-bower/slider.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/sound.js': '/scriptaculous-bower/sound.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/unittest.js': '/scriptaculous-bower/unittest.js',
+					/**
 					 * copy needed parts of jquery-ui
 					 */
 					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js': '/jquery-ui/ui/core.js',

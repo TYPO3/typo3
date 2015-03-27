@@ -64,7 +64,7 @@ Autocompleter.Base = Class.create({
     this.options.onShow       = this.options.onShow ||
       function(element, update){
         if(!update.style.position || update.style.position=='absolute') {
-          update.style.position = (Prototype.Browser.IE) ? 'inline':'absolute';
+          update.style.position = 'absolute';
           Position.clone(element, update, {
             setHeight: false,
             offsetTop: element.offsetHeight
@@ -99,7 +99,7 @@ Autocompleter.Base = Class.create({
       new Insertion.After(this.update,
        '<iframe id="' + this.update.id + '_iefix" '+
        'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-       'src="about:blank" frameborder="0" scrolling="no"></iframe>');
+       'src="javascript:false;" frameborder="0" scrolling="no"></iframe>');
       this.iefix = $(this.update.id+'_iefix');
     }
     if(this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);

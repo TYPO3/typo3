@@ -280,7 +280,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var string
 	 */
-	protected $scriptaculousPath = 'contrib/scriptaculous/';
+	protected $scriptaculousPath = 'sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/';
 
 	/**
 	 * @var string
