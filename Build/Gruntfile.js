@@ -85,6 +85,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-npm-install');
 	grunt.loadNpmTasks('grunt-bower-just-install');
 
+	/**
+	 * grunt default task
+	 *
+	 * call "$ grunt"
+	 *
+	 * this will trigger the less build
+	 */
+	grunt.registerTask('default', ['less']);
 
 	/**
 	 * grunt update task
