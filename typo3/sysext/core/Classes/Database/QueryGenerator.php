@@ -1490,7 +1490,6 @@ class QueryGenerator {
 			<script language="javascript" type="text/javascript">
 				TBE_EDITOR.formname = "' . $formname . '";
 				TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
-				TBE_EDITOR.backend_interface = "' . $GLOBALS['BE_USER']->uc['interfaceSetup'] . '";
 				' . $this->extJSCODE . '
 			</script>';
 		}
