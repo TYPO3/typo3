@@ -1147,7 +1147,7 @@ class ReferenceIndex {
 		$recordsCheckedString = $recCount . ' records from ' . $tableCount . ' tables were checked/updated.' . LF;
 		$flashMessage = GeneralUtility::makeInstance(
 			FlashMessage::class,
-			$errorCount ? implode(LF, $errors) : 'Index Integrity was perfect!',
+			$errorCount ? implode('##LF##', $errors) : 'Index Integrity was perfect!',
 			$recordsCheckedString,
 			$errorCount ? FlashMessage::ERROR : FlashMessage::OK
 		);

@@ -274,7 +274,7 @@ class DatabaseIntegrityView extends BaseScriptClass {
 			// Call the functionality
 			$refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
 			list(,$bodyContent) = $refIndexObj->updateIndex($testOnly);
-			$this->view->assign('content', str_replace(LF, '<br/>', $bodyContent));
+			$this->view->assign('content', str_replace('##LF##', '<br />', $bodyContent));
 		}
 	}
 
