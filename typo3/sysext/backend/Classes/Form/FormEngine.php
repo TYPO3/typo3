@@ -1991,7 +1991,6 @@ class FormEngine {
 			}
 			$out .= '
 			TBE_EDITOR.images.req.src = "' . IconUtility::skinImg('', 'gfx/required_h.gif', '', 1) . '";
-			TBE_EDITOR.images.sel.src = "' . IconUtility::skinImg('', 'gfx/content_selected.gif', '', 1) . '";
 			TBE_EDITOR.images.clear.src = "clear.gif";
 
 			TBE_EDITOR.formname = "' . $formname . '";
