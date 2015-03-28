@@ -99,7 +99,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	 */
 	function loadPluginArray() {
 		new Ajax.Request(
-			T3editor.URL_typo3 + TYPO3.settings.ajaxUrls['T3Editor::getPlugins'],
+			TYPO3.settings.ajaxUrls['T3Editor::getPlugins'],
 				{
 				method: 'get',
 				onSuccess: function(transport) {
@@ -147,7 +147,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	function loadExtTemplatesAsync() {
 		var urlParameters = '&pageId=' + getGetVar('id');
 		new Ajax.Request(
-			T3editor.URL_typo3 + TYPO3.settings.ajaxUrls['CodeCompletion::loadTemplates'],
+			TYPO3.settings.ajaxUrls['CodeCompletion::loadTemplates'],
 			{
 				method: 'get',
 				parameters: urlParameters,

@@ -183,7 +183,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 				'T3editor.lang = ' . json_encode($GLOBALS['LANG']->getLabelsWithPrefix('js.', 'label_')) . ';' . LF .
 				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . $path_t3e . '"; ' . LF .
 				'T3editor.PATH_codemirror = "' . $GLOBALS['BACK_PATH'] . $path_codemirror . '"; ' . LF .
-				'T3editor.URL_typo3 = "' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; ' . LF .
 				'T3editor.template = ' . $this->getPreparedTemplate() . ';' . LF .
 				'T3editor.ajaxSavetype = "' . $this->ajaxSaveType . '";' . LF
 			);

@@ -320,7 +320,7 @@ if (!Prototype.Browser.MobileSafari) {
 						}, event.memo.parameters);
 
 						new Ajax.Request(
-							T3editor.URL_typo3 + TYPO3.settings.ajaxUrls['T3Editor::saveCode'], {
+							TYPO3.settings.ajaxUrls['T3Editor::saveCode'], {
 								parameters: params,
 								onComplete: function(ajaxrequest) {
 									var wasSuccessful = ajaxrequest.status == 200

@@ -3162,17 +3162,12 @@ class BackendUtility {
 	 *
 	 * @param string $ajaxIdentifier Identifier of the AJAX callback
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
-	 * @param bool $backPathOverride Backpath that should be used instead of the global $BACK_PATH
+	 * @param bool $backPathOverride (unused)
 	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return string Calculated URL
 	 * @internal
 	 */
 	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
-		if ($backPathOverride) {
-			$backPath = $backPathOverride;
-		} else {
-			$backPath = isset($GLOBALS['BACK_PATH']) ? $GLOBALS['BACK_PATH'] : '';
-		}
 		$additionalUrlParameters = array(
 			'ajaxID' => $ajaxIdentifier
 		);
@@ -3183,7 +3178,7 @@ class BackendUtility {
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
 		} else {
-			return $backPath . $url;
+			return PathUtility::getAbsoluteWebPath(PATH_typo3 . $url);
 		}
 	}
 
