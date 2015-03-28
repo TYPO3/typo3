@@ -75,6 +75,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-documentation' => 'fa-anchor',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-download ' => 'fa-cloud-download',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-download' => 'fa-download',
+		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-import' => 'fa-cloud-download',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-install' => 'fa-plus-circle',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-sqldump' => 'fa-database',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-update' => 'fa-refresh',
