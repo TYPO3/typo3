@@ -1,5 +1,4 @@
 {
-  "directory": "../typo3/sysext/core/Resources/Contrib/components/",
   "analytics": false,
   "timeout": 120000
 }

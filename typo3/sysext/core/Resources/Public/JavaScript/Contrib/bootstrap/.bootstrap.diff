@@ -1,10 +1,8 @@
-diff --git a/typo3/contrib/twbs/.bootstrap.min.diff b/typo3/contrib/twbs/.bootstrap.min.diff
-new file mode 100644
-index 0000000..e69de29
-diff --git a/typo3/contrib/twbs/bootstrap.min.js b/typo3/contrib/twbs/bootstrap.min.js
+# This patch file shows the changes needed to make this file an AMD module
+diff --git a/bootstrap.js b/typo3/bootstrap.js
 index ca55776..92d7d3e 100644
---- a/typo3/contrib/twbs/bootstrap.min.js
-+++ b/typo3/contrib/twbs/bootstrap.min.js
+--- a/bootstrap.js
++++ b/bootstrap.js
 @@ -9,7 +9,17 @@
   * this file will be deleted once twbs 4 is included
   */

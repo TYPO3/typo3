@@ -270,12 +270,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * default path to the requireJS library, relative to the typo3/ directory
 	 * @var string
 	 */
-	protected $requireJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/requirejs/';
+	protected $requireJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/';
 
 	/**
 	 * @var string
 	 */
-	protected $prototypePath = 'contrib/prototype/';
+	protected $prototypePath = 'sysext/core/Resources/Public/JavaScript/Contrib/';
 
 	/**
 	 * @var string
@@ -1589,8 +1589,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'jquery' => $this->backPath . 'contrib/jquery',
 				'datatables' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
 				'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
-				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment/moment',
-				'bootstrap' => $this->backPath . 'contrib/twbs/bootstrap.min',
+				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment',
+				'bootstrap' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
 				'twbs/bootstrap-datetimepicker' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
 			);
 			// get all extensions that are loaded

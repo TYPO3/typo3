@@ -41,14 +41,14 @@ module.exports = function(grunt) {
 				clean: false,
 				report: false,
 				runBower: false,
-				srcPrefix: "<%= paths.core %>Contrib/components/"
+				srcPrefix: "bower_components/"
 			},
 			all: {
 				files: {
 					'<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': '/nprogress/nprogress.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/jquery.dataTables.js': '/datatables/media/js/jquery.dataTables.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/requirejs/': '/requirejs/require.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/moment/': '/moment/moment.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/require.js': '/requirejs/require.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/moment.js': '/moment/moment.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js': '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 					/**
 					 * copy needed files of scriptaculous

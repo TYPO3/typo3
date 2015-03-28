@@ -25,10 +25,10 @@
 .TemporaryItems
 .webprj
 bin/*
+Build/bower_components/*
 Build/node_modules/*
 nbproject
 Packages/*
-typo3/sysext/core/Resources/Contrib/components/*
 typo3/contrib/vendor/*
 typo3temp/*
 typo3conf/*
