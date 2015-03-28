@@ -1126,7 +1126,7 @@ class EditDocumentController {
 			if ($this->firstEl['cmd'] != 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
 				// Delete:
 				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')) {
-					$aOnClick = 'return deleteRecord(\'' . $this->firstEl['table'] . '\',\'' . $this->firstEl['uid'] . '\', ' . GeneralUtility::quoteJSvalue($this->retUrl) . ');';
+					$aOnClick = 'return deleteRecord(' . GeneralUtility::quoteJSvalue($this->firstEl['table']) . ',' . GeneralUtility::quoteJSvalue($this->firstEl['uid']) . ', ' . GeneralUtility::quoteJSvalue($this->retUrl) . ');';
 					$buttons['delete'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				}
 				// Undo:
@@ -1270,7 +1270,7 @@ class EditDocumentController {
 		if ($this->returnUrl == 'close.html') {
 			return '';
 		}
-		$aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('returnUrl' => 'close.html'))) . ',\'' . md5($this->R_URI) . '\',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+		$aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('returnUrl' => 'close.html'))) . ',' . GeneralUtility::quoteJSvalue(md5($this->R_URI)) . ',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-window-open') . '</a>';
 	}
 

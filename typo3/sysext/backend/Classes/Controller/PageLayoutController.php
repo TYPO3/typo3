@@ -398,7 +398,7 @@ class PageLayoutController {
 			if (is_array($modules['web']['sub']['list'])) {
 				$title = $GLOBALS['LANG']->getLL('goToListModule');
 				$message = '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>';
-				$message .= '<a class="btn btn-info" href="javascript:top.goToModule( \'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '</a>';
+				$message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '</a>';
 				// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
 				// A complete refactoring is necessary at this point
 				$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -766,7 +766,7 @@ class PageLayoutController {
 			$this->closeUrl = $this->returnUrl;
 		}
 		// Return-url for JavaScript:
-		$retUrlStr = $this->returnUrl ? '+\'&returnUrl=\'+\'' . rawurlencode($this->returnUrl) . '\'' : '';
+		$retUrlStr = $this->returnUrl ? '+\'&returnUrl=\'+' . GeneralUtility::quoteJSvalue(rawurlencode($this->returnUrl)) : '';
 		// Drawing the edit record selectbox
 		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue(
 			BackendUtility::getModuleUrl('web_layout') . '&id=' . $this->id . '&edit_record='
@@ -1149,10 +1149,10 @@ class PageLayoutController {
 				// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';
 				// Close record
-				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($this->closeUrl) . '\')); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 				// Delete record
 				if ($this->deleteButton) {
-					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(\'' . $this->eRParts[0] . '\',\'' . $this->eRParts[1] . '\',\'' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id . '\');') . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');') . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				}
 				if ($this->undoButton) {
 					// Undo button

@@ -370,7 +370,7 @@ class ModuleSettings {
 		// LOAD, REMOVE, but also show selector so you can overwrite an entry with SAVE
 		if ($storedEntries && count($showElements)) {
 			// Selector box
-			$onChange = 'document.forms[\'' . $this->formName . '\'][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';';
+			$onChange = 'document.forms[' . GeneralUtility::quoteJSvalue($this->formName) . '][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';';
 			$code = '
 					<select name="storeControl[STORE]" onChange="' . htmlspecialchars($onChange) . '">
 					' . implode('
@@ -391,7 +391,7 @@ class ModuleSettings {
 		}
 		// SAVE
 		if (in_array('save', $showElements)) {
-			$onClick = !$storedEntries ? '' : 'if (document.forms[\'' . $this->formName . '\'][\'storeControl[STORE]\'].options[document.forms[\'' . $this->formName . '\'][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing entry?\');';
+			$onClick = !$storedEntries ? '' : 'if (document.forms[' . GeneralUtility::quoteJSvalue($this->formName) . '][\'storeControl[STORE]\'].options[document.forms[' . GeneralUtility::quoteJSvalue($this->formName) . '][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing entry?\');';
 			$code = '<input name="storeControl[title]" value="" type="text" max="80" width="25"> ';
 			$code .= '<input class="btn btn-default" type="submit" name="storeControl[SAVE]" value="Save" onClick="' . htmlspecialchars($onClick) . '" />';
 			$codeTD[] = '<td nowrap="nowrap">' . $code . '</td>';

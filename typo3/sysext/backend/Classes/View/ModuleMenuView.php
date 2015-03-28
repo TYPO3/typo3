@@ -112,7 +112,7 @@ class ModuleMenuView {
 				$data['root'][$num]['label'] = $moduleData['title'];
 				$data['root'][$num]['subitems'] = is_array($moduleData['subitems']) ? count($moduleData['subitems']) : 0;
 				if ($moduleData['link'] && $this->linkModules) {
-					$data['root'][$num]['link'] = 'top.goToModule(\'' . $moduleData['name'] . '\')';
+					$data['root'][$num]['link'] = 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleData['name']) . ')';
 				}
 				// Traverse submodules
 				if (is_array($moduleData['subitems'])) {
@@ -214,7 +214,7 @@ class ModuleMenuView {
 			$modules[$moduleKey] = array(
 				'name' => $moduleName,
 				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-				'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
+				'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
 				'icon' => $moduleIcon,
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
@@ -224,7 +224,7 @@ class ModuleMenuView {
 				$modules[$moduleKey]['subitems'][$moduleKey] = array(
 					'name' => $moduleName,
 					'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-					'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
+					'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
 					'icon' => $this->getModuleIcon($moduleName . '_tab'),
 					'link' => $moduleLink,
 					'originalLink' => $moduleLink,
@@ -257,7 +257,7 @@ class ModuleMenuView {
 					$modules[$moduleKey]['subitems'][$submoduleKey] = array(
 						'name' => $moduleName . '_' . $submoduleName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
-						'onclick' => 'top.goToModule(\'' . $moduleName . '_' . $submoduleName . '\');',
+						'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
 						'icon' => $submoduleIcon,
 						'link' => $submoduleLink,
 						'originalLink' => $originalLink,

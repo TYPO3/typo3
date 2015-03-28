@@ -269,7 +269,7 @@ class PagePositionMap {
 		$TSconfigProp = $this->getModConfig($newPagePID);
 		if ($TSconfigProp['overrideWithExtension']) {
 			if (ExtensionManagementUtility::isLoaded($TSconfigProp['overrideWithExtension'])) {
-				$onclick = 'window.location.href=\'' . ExtensionManagementUtility::extRelPath($TSconfigProp['overrideWithExtension']) . 'mod1/index.php?cmd=crPage&positionPid=' . $pid . '\';';
+				$onclick = 'window.location.href=' . GeneralUtility::quoteJSvalue(ExtensionManagementUtility::extRelPath($TSconfigProp['overrideWithExtension']) . 'mod1/index.php?cmd=crPage&positionPid=' . $pid) . ';';
 				return $onclick;
 			}
 		}

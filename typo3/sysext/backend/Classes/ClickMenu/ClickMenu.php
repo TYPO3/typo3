@@ -490,7 +490,7 @@ class ClickMenu {
 	public function urlRefForCM($url, $retUrl = '', $hideCM = TRUE, $overrideLoc = '') {
 		$loc = 'top.content.list_frame';
 		return ($overrideLoc ? 'var docRef=' . $overrideLoc : 'var docRef=(top.content.list_frame)?top.content.list_frame:' . $loc)
-			. '; docRef.location.href=\'' . $url . '\'' . ($retUrl ? '+\'&' . $retUrl . '=\'+top.rawurlencode('
+			. '; docRef.location.href=' . GeneralUtility::quoteJSvalue($url) . ($retUrl ? '+' . GeneralUtility::quoteJSvalue('&' . $retUrl . '=') . '+top.rawurlencode('
 			. $this->frameLocation('docRef.document') . '.pathname+' . $this->frameLocation('docRef.document') . '.search)' : '')
 			. ';';
 	}
@@ -535,7 +535,7 @@ class ClickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=\'' . $this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
+		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
 		return $this->linkItem($this->label('paste' . $type), IconUtility::getSpriteIcon('actions-document-paste-' . $type), $editOnClick . 'return false;');
 	}
 
@@ -548,7 +548,7 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_info($table, $uid) {
-		return $this->linkItem($this->label('info'), IconUtility::getSpriteIcon('actions-document-info'), 'top.launchView(\'' . $table . '\', \'' . $uid . '\');');
+		return $this->linkItem($this->label('info'), IconUtility::getSpriteIcon('actions-document-info'), 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . ');');
 	}
 
 	/**
@@ -605,7 +605,11 @@ class ClickMenu {
 		$urlParams['id'] = $table === 'pages' ? $uid : $rec['pid'];
 		$urlParams['table'] = $table === 'pages' ? '' : $table;
 		$url = BackendUtility::getModuleUrl('web_list', $urlParams, '', TRUE);
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_db_list')), IconUtility::getSpriteIcon('actions-system-list-open'), 'top.nextLoadModuleUrl=\'' . $url . '\';top.goToModule(\'web_list\', 1);', 0);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_db_list')),
+			IconUtility::getSpriteIcon('actions-system-list-open'), 'top.nextLoadModuleUrl=' . GeneralUtility::quoteJSvalue($url) . ';top.goToModule(\'web_list\', 1);',
+			0
+		);
 	}
 
 	/**
@@ -699,11 +703,11 @@ class ClickMenu {
 			if ($this->backendUser->uc['classicPageEditMode']) {
 				$addParam = '&editRegularContentFromId=' . (int)$this->iParts[1];
 			} else {
-				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
+				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($link . '&returnUrl=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' . GeneralUtility::quoteJSvalue($addParam) . ';}';
 			}
 		}
 		if (!$editOnClick) {
-			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=\'' . $link . '&returnUrl=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+\'' . $addParam . '\';}';
+			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($link . '&returnUrl=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' . GeneralUtility::quoteJSvalue($addParam) . ';}';
 		}
 		return $this->linkItem($this->label('edit'), IconUtility::getSpriteIcon($theIcon), $editOnClick . ';');
 	}
@@ -1069,7 +1073,7 @@ class ClickMenu {
 		} else {
 			$conf = $loc;
 		}
-		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=\'' . $this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
+		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
 		return $this->linkItem($this->label('pasteinto'), IconUtility::getSpriteIcon('actions-document-paste-into'), $editOnClick . 'return false;');
 	}
 

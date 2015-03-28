@@ -49,7 +49,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	 */
 	public function wrapTitle($title, $v, $ext_pArrPages = '') {
 		if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
-			$aOnClick = 'return link_typo3Page(\'' . $v['uid'] . '\');';
+			$aOnClick = 'return link_typo3Page(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($v['uid']) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
 			return '<span style="color: #666666;">' . $title . '</span>';

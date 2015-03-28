@@ -329,7 +329,7 @@ class ColorpickerController extends AbstractWizardController {
 			$tCells = array();
 			for ($i = 0; $i < $columns; $i++) {
 				$tCells[] = '
-					<td bgcolor="' . $color[($columns * $rows + $i)] . '" onclick="document.colorform.colorValue.value = \'' . $color[($columns * $rows + $i)] . '\'; document.colorform.submit();" title="' . $color[($columns * $rows + $i)] . '">&nbsp;&nbsp;</td>';
+					<td bgcolor="' . $color[($columns * $rows + $i)] . '" onclick="document.colorform.colorValue.value = ' . GeneralUtility::quoteJSvalue($color[($columns * $rows + $i)]) . '; document.colorform.submit();" title="' . $color[($columns * $rows + $i)] . '">&nbsp;&nbsp;</td>';
 			}
 			$tRows[] = '
 				<tr>' . implode('', $tCells) . '

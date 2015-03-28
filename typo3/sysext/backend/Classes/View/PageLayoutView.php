@@ -1665,7 +1665,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$params .= '&cmd[tt_content][' . $uidVal . '][localize]=' . $lP;
 		}
 		// Copy for language:
-		$onClick = 'window.location.href=\'' . $this->getPageLayoutController()->doc->issueCommand($params) . '\'; return false;';
+		$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue($this->getPageLayoutController()->doc->issueCommand($params)) . '; return false;';
 		$theNewButton = '<div class="t3-page-lang-copyce">' .
 			$this->getPageLayoutController()->doc->t3Button(
 				$onClick,
@@ -1685,9 +1685,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function newContentElementOnClick($id, $colPos, $sys_language) {
 		if ($this->option_newWizard) {
-			$onClick = 'window.location.href=\'' . BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id . '&colPos=' . $colPos
+			$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id . '&colPos=' . $colPos
 				. '&sys_language_uid=' . $sys_language . '&uid_pid=' . $id
-				. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';';
+				. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
 		} else {
 			$onClick = BackendUtility::editOnClick('&edit[tt_content][' . $id . ']=new&defVals[tt_content][colPos]='
 				. $colPos . '&defVals[tt_content][sys_language_uid]=' . $sys_language);
@@ -1796,7 +1796,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					'overrideVals[pages_language_overlay][doktype]' => (int)$this->pageRecord['doktype'],
 					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 				));
-				$onChangeContent = 'window.location.href=\'' . $url . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value';
+				$onChangeContent = 'window.location.href=' . GeneralUtility::quoteJSvalue($url . '&overrideVals[pages_language_overlay][sys_language_uid]=') . '+this.options[this.selectedIndex].value';
 				return '<div class="form-inline form-inline-spaced">'
 					. '<div class="form-group">'
 					. '<label for="createNewLanguage">'

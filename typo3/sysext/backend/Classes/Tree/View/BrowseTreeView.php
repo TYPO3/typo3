@@ -83,7 +83,7 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		if (!$this->ext_IconMode) {
 			$theIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theIcon, $this->treeName, $this->getId($row), 0);
 		} elseif ($this->ext_IconMode === 'titlelink') {
-			$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $this->bank . ');';
+			$aOnClick = 'return jumpTo(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $this->bank . ');';
 			$theIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $theIcon . '</a>';
 		}
 		return $theIcon;

@@ -687,7 +687,7 @@ class BackendController {
 		if ($startModule) {
 			return '
 					// start in module:
-				top.startInModule = [\'' . $startModule . '\', ' . GeneralUtility::quoteJSvalue($moduleParameters) . '];
+				top.startInModule = [' . GeneralUtility::quoteJSvalue($startModule) . ', ' . GeneralUtility::quoteJSvalue($moduleParameters) . '];
 			';
 		} else {
 			return '';

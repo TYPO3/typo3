@@ -1641,7 +1641,7 @@ class BackendUtility {
 					$imgTag = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName()));
 				}
 				if ($linkInfoPopup) {
-					$onClick = 'top.launchView(\'_FILE\',\'' . $fileObject->getUid() . '\',\'' . $backPath . '\'); return false;';
+					$onClick = 'top.launchView(\'_FILE\',\'' . (int)$fileObject->getUid() . '\',' . GeneralUtility::quoteJSvalue($backPath) . '); return false;';
 					$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $imgTag . '</a> ';
 				} else {
 					$thumbData .= $imgTag;
@@ -1686,7 +1686,7 @@ class BackendUtility {
 						))->getPublicUrl(TRUE);
 						$image = '<img src="' . htmlspecialchars($imageUrl) . '" hspace="2" border="0" title="' . htmlspecialchars($fileObject->getName()) . '"' . $tparams . ' alt="" />';
 						if ($linkInfoPopup) {
-							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\');return false;';
+							$onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\',' . GeneralUtility::quoteJSvalue($backPath) . ');return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $image . '</a> ';
 						} else {
 							$thumbData .= $image;
@@ -1695,7 +1695,7 @@ class BackendUtility {
 						// Gets the icon
 						$fileIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName()));
 						if ($linkInfoPopup) {
-							$onClick = 'top.launchView(\'_FILE\', \'' . $fileName . '\',\'\',\'' . $backPath . '\'); return false;';
+							$onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\',' . GeneralUtility::quoteJSvalue($backPath) . '); return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
 						} else {
 							$thumbData .= $fileIcon;
@@ -2738,7 +2738,7 @@ class BackendUtility {
 			? '\'+T3_THIS_LOCATION+\''
 			: rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
 		$retUrlParam = 'returnUrl=' . $returnUrl;
-		return 'window.location.href=\'' . self::getModuleUrl('record_edit') . '&' . $retUrlParam . $params . '\'; return false;';
+		return 'window.location.href=' . GeneralUtility::quoteJSvalue(self::getModuleUrl('record_edit') . '&' . $retUrlParam . $params) . '; return false;';
 	}
 
 	/**
@@ -2779,7 +2779,7 @@ class BackendUtility {
 			$previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
 		}
 
-		$onclickCode = 'var previewWin = window.open(\'' . $previewUrl . '\',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '');
+		$onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($previewUrl) . ',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '');
 		return $onclickCode;
 	}
 

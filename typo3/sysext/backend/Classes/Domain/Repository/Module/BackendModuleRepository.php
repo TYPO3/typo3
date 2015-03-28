@@ -244,7 +244,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			$modules[$moduleKey] = array(
 				'name' => $moduleName,
 				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-				'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
+				'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
 				'icon' => $moduleIcon,
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
@@ -254,7 +254,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				$modules[$moduleKey]['subitems'][$moduleKey] = array(
 					'name' => $moduleName,
 					'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-					'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
+					'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
 					'icon' => $this->getModuleIcon($moduleName . '_tab'),
 					'link' => $moduleLink,
 					'originalLink' => $moduleLink,
@@ -287,7 +287,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 					$modules[$moduleKey]['subitems'][$submoduleKey] = array(
 						'name' => $moduleName . '_' . $submoduleName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
-						'onclick' => 'top.goToModule(\'' . $moduleName . '_' . $submoduleName . '\');',
+						'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
 						'icon' => $submoduleIcon,
 						'link' => $submoduleLink,
 						'originalLink' => $originalLink,

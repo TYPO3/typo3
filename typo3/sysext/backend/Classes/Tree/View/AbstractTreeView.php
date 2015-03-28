@@ -539,7 +539,7 @@ abstract class AbstractTreeView {
 	 * @access private
 	 */
 	public function wrapTitle($title, $row, $bank = 0) {
-		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $bank . ');';
+		$aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $bank . ');';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 	}
 

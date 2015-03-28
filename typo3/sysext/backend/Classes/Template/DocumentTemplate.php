@@ -630,7 +630,7 @@ function jumpToUrl(URL) {
 			$mMN = '';
 		}
 		$confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark'));
-		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(\'' . rawurlencode($modName) . '\', ' . '\'' . rawurlencode(($pathInfo['path'] . '?' . $storeUrl)) . $mMN . '\', ' . $confirmationText . ');return false;';
+		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) . ', ' . GeneralUtility::quoteJSvalue(rawurlencode($pathInfo['path'] . '?' . $storeUrl) . $mMN) . ', ' . $confirmationText . ');return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 	}
 
@@ -700,8 +700,8 @@ function jumpToUrl(URL) {
 			'popViewId' => ''
 		));
 		$out = '
-	var T3_RETURN_URL = \'' . str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl')))) . '\';
-	var T3_THIS_LOCATION = \'' . str_replace('%20', '', rawurlencode($thisLocation)) . '\';
+	var T3_RETURN_URL = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))))) . ';
+	var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode($thisLocation))) . '
 		';
 		return $out;
 	}
