@@ -239,6 +239,7 @@ class DownloadController extends AbstractController {
 		$errorMessages = array();
 		try {
 			$this->downloadUtility->setDownloadPath($downloadPath);
+			$this->managementService->setAutomaticInstallationEnabled($this->configurationUtility->getCurrentConfiguration('extensionmanager')['automaticInstallation']['value']);
 			if (($result = $this->managementService->installExtension($extension)) === FALSE) {
 				$errorMessages = $this->managementService->getDependencyErrors();
 			}

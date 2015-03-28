@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
@@ -60,10 +63,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $downloadUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-	 * @inject
+	 * @var bool
 	 */
-	protected $configurationUtility;
+	protected $automaticInstallationEnabled = TRUE;
 
 	/**
 	 * @var bool
@@ -130,13 +132,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Returns whether automatic installation is enabled.
-	 *
-	 * @return array
+	 * @param bool $automaticInstallationEnabled
 	 */
-	protected function isAutomaticInstallationEnabled() {
-		$emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
-		return (bool)$emConfiguration['automaticInstallation']['value'];
+	public function setAutomaticInstallationEnabled($automaticInstallationEnabled) {
+		$this->automaticInstallationEnabled = (bool)$automaticInstallationEnabled;
 	}
 
 	/**
@@ -163,7 +162,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (array_key_exists('download', $queue)) {
 			$downloadedDependencies = $this->downloadDependencies($queue['download']);
 		}
-		if ($this->isAutomaticInstallationEnabled()) {
+		if ($this->automaticInstallationEnabled) {
 			if (array_key_exists('update', $queue)) {
 				$this->downloadDependencies($queue['update']);
 				$updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
@@ -234,8 +233,8 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		$installPaths = Extension::returnAllowedInstallPaths();
 		foreach ($copyQueue as $extensionKey => $sourceFolder) {
 			$destination = $installPaths['Local'] . $extensionKey;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($destination);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::copyDirectory($sourceFolder . $extensionKey, $destination);
+			GeneralUtility::mkdir($destination);
+			GeneralUtility::copyDirectory($sourceFolder . $extensionKey, $destination);
 			$this->markExtensionForInstallation($extensionKey);
 			$this->downloadQueue->removeExtensionFromCopyQueue($extensionKey);
 		}
@@ -346,12 +345,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Get the SignalSlot dispatcher
 	 *
-	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @return Dispatcher
 	 */
 	protected function getSignalSlotDispatcher() {
 		if (!isset($this->signalSlotDispatcher)) {
-			$this->signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
-				->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+			$this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)
+				->get(Dispatcher::class);
 		}
 		return $this->signalSlotDispatcher;
 	}
