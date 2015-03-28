@@ -78,7 +78,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$subject->addCssInlineBlock('general2', 'body {margin:20px;}');
 		$subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', NULL, TRUE);
 
-		$expectedLoadPrototypeRegExp = '#<script src="contrib/prototype/prototype\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedLoadPrototypeRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/prototype\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$subject->loadPrototype();
 
 		$subject->loadScriptaculous('slider,controls');
