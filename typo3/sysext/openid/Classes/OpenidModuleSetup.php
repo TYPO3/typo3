@@ -59,10 +59,10 @@ class OpenidModuleSetup {
 			'<div class="input-group-addon">' .
 				'<a href="#" onclick="' .
 				'vHWin=window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_openid') . '&P[itemName]=data%5Bbe_users%5D%5Btx_openid_openid%5D') .
-				',null,\'width=600,height=400,status=0,menubar=0,scrollbars=0\');' .
+				',null,\'width=800,height=400,status=0,menubar=0,scrollbars=0\');' .
 				'vHWin.focus();return false;' .
 				'">' .
-					'<img src="../typo3/sysext/openid/ext_icon.png" alt="' . $add . '" title="' . $add . '"/>' .
+					'<img src="../typo3/sysext/openid/ext_icon_small.png" alt="' . $add . '" title="' . $add . '"/>' .
 				'</a>' .
 			'</div>' .
 			'</div>';

@@ -97,9 +97,7 @@ class Wizard extends OpenidService {
 	 * @return string Full URL with protocol and hostname
 	 */
 	protected function getSelfUrl() {
-		return GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
-			. TYPO3_mainDir
-			. BackendUtility::getModuleUrl('wizard_openid');
+		return BackendUtility::getModuleUrl('wizard_openid');
 	}
 
 	/**

@@ -38,6 +38,9 @@
 			<trans-unit id="html.openid_url" xml:space="preserve">
 				<source>OpenID identifier</source>
 			</trans-unit>
+			<trans-unit id="html.search" xml:space="preserve">
+				<source>Search</source>
+			</trans-unit>
 			<trans-unit id="html.submit" xml:space="preserve">
 				<source>Login</source>
 			</trans-unit>
