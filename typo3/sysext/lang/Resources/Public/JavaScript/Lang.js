@@ -23,7 +23,7 @@ define('TYPO3/CMS/Lang/Lang', ['jquery'], function($) {
 		var originalLangObject = $.extend(true, {}, TYPO3.lang);
 		TYPO3.lang = [];
 		$.each(originalLangObject, function(index, value) {
-			TYPO3.lang[index] = value[0].target || value[0].source;
+			TYPO3.lang[index] = value[0].target || value[0].source || value;
 		});
 
 		delete originalLangObject;
