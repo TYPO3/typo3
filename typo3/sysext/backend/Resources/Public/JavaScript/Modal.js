@@ -19,25 +19,28 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 
 	/**
 	 * The main object of the modal API
-	 * @type {{currentModal: null, template: (*|jQuery)}}
+	 *
+	 * @type {{instances: Array, currentModal: null, template: (*|jQuery|HTMLElement)}}
 	 */
 	var Modal = {
 		instances: [],
 		currentModal: null,
-		template: $('<div />', {class: 't3-modal modal fade'}).append(
-			$('<div />', {class: 'modal-dialog'}).append(
-				$('<div />', {class: 'modal-content'}).append(
-					$('<div />', {class: 'modal-header'}).append(
-						$('<button />', {class: 'close'}).append(
-							$('<span />', {'aria-hidden': 'true'}).html('&times;'),
-							$('<span />', {class: 'sr-only'})
-						),
-						$('<h4 />', {class: 'modal-title'})
-					),
-					$('<div />', {class: 'modal-body'}),
-					$('<div />', {class: 'modal-footer'})
-				)
-			)
+		template: $(
+			'<div class="t3-modal modal fade">' +
+				'<div class="modal-dialog">' +
+					'<div class="modal-content">' +
+						'<div class="modal-header">' +
+							'<button class="close">' +
+								'<span aria-hidden="true">&times;</span>' +
+								'<span class="sr-only"></span>' +
+							'</button>' +
+							'<h4 class="modal-title"></h4>' +
+						'</div>' +
+						'<div class="modal-body"></div>' +
+						'<div class="modal-footer"></div>' +
+					'</div>' +
+				'</div>' +
+			'</div>'
 		)
 	};
 
@@ -68,18 +71,57 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 				severityClass = 'info';
 				break;
 		}
-		return 't3-modal-' + severityClass;
+		return severityClass;
 	};
 
 	/**
 	 * Shows a confirmation dialog
+	 * Events:
+	 * - button.clicked
+	 * - confirm.button.cancel
+	 * - confirm.button.ok
+	 *
+	 * @param {string} title the title for the confirm modal
+	 * @param {string} content the content for the conform modal, e.g. the main question
+	 * @param {int} severity default top.TYPO3.Severity.warning
+	 * @param {array} buttons an array with buttons, default no buttons
+	 */
+	Modal.confirm = function(title, content, severity, buttons) {
+		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.warning);
+		buttons = buttons || [
+			{
+				text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+				active: true,
+				name: 'cancel'
+			},
+			{
+				text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+				btnClass: 'btn-' + Modal.getSeverityClass(severity),
+				name: 'ok'
+			}
+		];
+		$modal = Modal.show(title, content, severity, buttons);
+		$modal.on('button.clicked', function(e) {
+			if (e.target.name === 'cancel') {
+				$(this).trigger('confirm.button.cancel');
+			} else if (e.target.name === 'ok') {
+				$(this).trigger('confirm.button.ok');
+			}
+		});
+		return $modal;
+	};
+
+	/**
+	 * Shows a dialog
+	 * Events:
+	 * - button.clicked
 	 *
 	 * @param {string} title the title for the confirm modal
 	 * @param {string} content the content for the conform modal, e.g. the main question
 	 * @param {int} severity default top.TYPO3.Severity.info
 	 * @param {array} buttons an array with buttons, default no buttons
 	 */
-	Modal.confirm = function(title, content, severity, buttons) {
+	Modal.show = function(title, content, severity, buttons) {
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.info);
 		buttons = buttons || [];
 		Modal.currentModal = Modal.template.clone();
@@ -100,12 +142,11 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 			Modal.currentModal.find('.modal-body').html(content);
 		}
 
-		Modal.currentModal.addClass(Modal.getSeverityClass(severity));
+		Modal.currentModal.addClass('t3-modal-' + Modal.getSeverityClass(severity));
 		if (buttons.length > 0) {
 			for (var i=0; i<buttons.length; i++) {
 				var button = buttons[i];
 				var $button = $('<button />', {class: 'btn'});
-				$button.on('click', button.trigger);
 				$button.html(button.text);
 				if (button.active) {
 					$button.addClass('t3js-active');
@@ -113,8 +154,20 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 				if (button.btnClass) {
 					$button.addClass(button.btnClass);
 				}
+				if (button.name) {
+					$button.attr('name', button.name);
+				}
+				if (button.trigger) {
+					$button.on('click', button.trigger);
+				}
 				Modal.currentModal.find('.modal-footer').append($button);
 			}
+			Modal.currentModal
+				.find('.modal-footer button')
+				.on('click', function() {
+					$(this).trigger('button.clicked');
+				});
+
 		} else {
 			Modal.currentModal.find('.modal-footer').remove();
 		}

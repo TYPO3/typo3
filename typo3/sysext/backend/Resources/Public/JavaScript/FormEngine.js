@@ -732,23 +732,26 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		if ($('.has-change').length > 0) {
 			var title = TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to quit without saving?';
 			var content = TYPO3.lang['label.confirm.close_without_save.content'] || 'You have currently unsaved changes. Are you sure that you want to discard all changes?';
-			top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			$modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.close_without_save.no'] || 'No, I will continue editing',
 					active: true,
-					trigger: function() {
-						top.TYPO3.Modal.dismiss();
-					}
+					name: 'no'
 				},
 				{
 					text: TYPO3.lang['buttons.confirm.close_without_save.yes'] || 'Yes, discard my changes',
 					btnClass: 'btn-warning',
-					trigger: function() {
-						top.TYPO3.Modal.dismiss();
-						FormEngine.closeDocument();
-					}
+					name: 'yes'
 				}
 			]);
+			$modal.on('button.clicked', function(e) {
+				if (e.target.name === 'no') {
+					top.TYPO3.Modal.dismiss();
+				} else if (e.target.name === 'yes') {
+					top.TYPO3.Modal.dismiss();
+					FormEngine.closeDocument();
+				}
+			});
 		} else {
 			FormEngine.closeDocument()
 		}
