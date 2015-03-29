@@ -184,6 +184,60 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function renderSetsTemplateFileByTemplateNameInView() {
+		$this->addMockViewToSubject();
+
+		$this->standaloneView
+			->expects($this->any())
+			->method('getFormat')
+			->will($this->returnValue('html'));
+		$this->standaloneView
+			->expects($this->once())
+			->method('setTemplate')
+			->with('foo');
+
+		$this->subject->render(array(
+			'templateName' => 'foo',
+			'templateRootPaths.' => array(
+				0 => 'dummyPath1/',
+				1 => 'dummyPath2/')
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderSetsTemplateFileByTemplateNameStdWrapInView() {
+		$this->addMockViewToSubject();
+
+		$this->contentObjectRenderer
+			->expects($this->once())
+			->method('stdWrap')
+			->with('TEXT', array('value' => 'bar'))
+			->will($this->returnValue('bar'));
+		$this->standaloneView
+			->expects($this->any())
+			->method('getFormat')
+			->will($this->returnValue('html'));
+		$this->standaloneView
+			->expects($this->once())
+			->method('setTemplate')
+			->with('bar');
+
+		$this->subject->render(array(
+			'templateName' => 'TEXT',
+			'templateName.' => array('value' => 'bar'),
+			'templateRootPaths.' => array(
+				0 => 'dummyPath1/',
+				1 => 'dummyPath2/')
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function renderSetsLayoutRootPathInView() {
 		$this->addMockViewToSubject();
 		$this->standaloneView

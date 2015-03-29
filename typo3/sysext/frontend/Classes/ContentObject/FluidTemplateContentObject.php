@@ -14,18 +14,13 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Contains TEMPLATE class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
- * @author Bastian Waidelich <bastian@typo3.org>
- * @author Steffen Ritter <info@steffen-ritter.net>
- * @author Benjamin Mack <benni@typo3.org>
+ * Contains FLUIDTEMPLATE class object
  */
 class FluidTemplateContentObject extends AbstractContentObject {
 
@@ -49,9 +44,10 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 *
 	 * Example:
 	 * 10 = FLUIDTEMPLATE
-	 * 10.template = FILE
-	 * 10.template.file = fileadmin/templates/mytemplate.html
-	 * 10.partialRootPaths.10 = fileadmin/templates/partial/
+	 * 10.templateName = MyTemplate
+	 * 10.templateRootPaths.10 = EXT:site_configuration/Resources/Private/Templates/
+	 * 10.partialRootPaths.10 = EXT:site_configuration/Resources/Private/Patials/
+	 * 10.layoutRootPaths.10 = EXT:site_configuration/Resources/Private/Layouts/
 	 * 10.variables {
 	 *   mylabel = TEXT
 	 *   mylabel.value = Label from TypoScript coming
@@ -68,10 +64,10 @@ class FluidTemplateContentObject extends AbstractContentObject {
 			$conf = array();
 		}
 
+		$this->setFormat($conf);
 		$this->setTemplate($conf);
 		$this->setLayoutRootPath($conf);
 		$this->setPartialRootPath($conf);
-		$this->setFormat($conf);
 		$this->setExtbaseVariables($conf);
 		$this->assignSettings($conf);
 		$this->assignContentObjectVariables($conf);
@@ -105,10 +101,20 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function setTemplate(array $conf) {
-		// Fetch the Fluid template
-		if (!empty($conf['template']) && !empty($conf['template.'])) {
+		// Fetch the Fluid template by templateName
+		if (!empty($conf['templateName']) && !empty($conf['templateRootPaths.']) && is_array($conf['templateRootPaths.'])) {
+			$templateRootPaths = array();
+			foreach ($conf['templateRootPaths.'] as $key => $path) {
+				$templateRootPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+			}
+			$this->view->setTemplateRootPaths($templateRootPaths);
+			$templateName = isset($conf['templateName.']) ? $this->cObj->stdWrap($conf['templateName'], $conf['templateName.']) : $conf['templateName'];
+			$this->view->setTemplate($templateName);
+		// Fetch the Fluid template by template cObject
+		} elseif (!empty($conf['template']) && !empty($conf['template.'])) {
 			$templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.']);
 			$this->view->setTemplateSource($templateSource);
+		// Fetch the Fluid template by file stdWrap
 		} else {
 			$file = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
 			/** @var $templateService \TYPO3\CMS\Core\TypoScript\TemplateService */
@@ -283,5 +289,4 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		}
 		return $content;
 	}
-
 }
