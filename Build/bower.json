@@ -33,6 +33,7 @@
     "eonasdan-bootstrap-datetimepicker": "3.1.3",
     "moment": "2.8.3",
     "nprogress": "0.1.6",
-    "datatables": "1.10.5"
+    "datatables": "1.10.5",
+    "autosize": "2.0.0"
   }
 }
