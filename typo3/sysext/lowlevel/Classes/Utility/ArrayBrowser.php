@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Lowlevel\Utility;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -195,14 +194,14 @@ class ArrayBrowser {
 			$deeper = is_array($keyArr[$key]);
 			if ($this->regexMode) {
 				if (
-					preg_match('/' . $searchString . '/', $keyArr[$key])
+					is_scalar($keyArr[$key]) && preg_match('/' . $searchString . '/', $keyArr[$key])
 					|| $this->searchKeysToo && preg_match('/' . $searchString . '/', $key)
 				) {
 					$this->searchKeys[$depth] = 1;
 				}
 			} else {
 				if (
-					!$deeper && stristr($keyArr[$key], $searchString)
+					is_scalar($keyArr[$key]) && stristr($keyArr[$key], $searchString)
 					|| $this->searchKeysToo && stristr($key, $searchString)
 				) {
 					$this->searchKeys[$depth] = 1;
