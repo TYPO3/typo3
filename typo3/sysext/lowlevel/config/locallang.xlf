@@ -52,7 +52,7 @@
 				<source>Search</source>
 			</trans-unit>
 			<trans-unit id="useRegExp" xml:space="preserve">
-				<source>Use regular expression</source>
+				<source>Use regular expression (phrase is surrounded by slashes automatically)</source>
 			</trans-unit>
 			<trans-unit id="writeValue" xml:space="preserve">
 				<source>Write value to configuration file</source>
