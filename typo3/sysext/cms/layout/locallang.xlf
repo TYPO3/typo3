@@ -38,6 +38,7 @@
 			</trans-unit>
 			<trans-unit id="newRecordHere" deprecated="Unused since CMS 7">
 				<source>Add a new record at this place</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="move_record">
 				<source>Re-position current content element</source>

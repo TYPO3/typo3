@@ -215,6 +215,7 @@
 			</trans-unit>
 			<trans-unit id="extensionList.updateFlashMessage.message" deprecated="Unused since CMS 6.2">
 				<source>{0} updated!</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 6.2</note>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFlashMessage.body">
 				<source>%s was updated!</source>

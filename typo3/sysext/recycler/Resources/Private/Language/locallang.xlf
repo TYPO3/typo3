@@ -11,6 +11,7 @@
 			</trans-unit>
 			<trans-unit id="label_alltables" deprecated="Unused since CMS 7">
 				<source>All tables</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="label_allrecordtypes">
 				<source>All Record Types</source>
@@ -125,99 +126,131 @@
 			</trans-unit>
 			<trans-unit id="js.label_lostandfound" deprecated="Unused since CMS 7">
 				<source>Lost and found</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_deletedTab" deprecated="Unused since CMS 7">
 				<source>Deleted data</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_loadMessage" deprecated="Unused since CMS 7">
 				<source>Please wait...&lt;br/&gt;Records would be loaded!</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_doDelete_confirmText" deprecated="Unused since CMS 7">
 				<source>Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_deleteButton_text" deprecated="Unused since CMS 7">
 				<source>Delete</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_deleteButton_tooltip" deprecated="Unused since CMS 7">
 				<source>Delete selected items</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_undeleteButton_text" deprecated="Unused since CMS 7">
 				<source>Undelete</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_undeleteButton_tooltip" deprecated="Unused since CMS 7">
 				<source>Undelete selected items</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_error_NoSelectedRows_title" deprecated="Unused since CMS 7">
 				<source>No row selected</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_error_NoSelectedRows_msg" deprecated="Unused since CMS 7">
 				<source>You must select a row!</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_yes" deprecated="Unused since CMS 7">
 				<source>Yes</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_no" deprecated="Unused since CMS 7">
 				<source>No</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_sure" deprecated="Unused since CMS 7">
 				<source>Are you Sure?</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_crdate" deprecated="Unused since CMS 7">
 				<source>Created</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_owner" deprecated="Unused since CMS 7">
 				<source>Owner</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_tstamp" deprecated="Unused since CMS 7">
 				<source>Last edit</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_clear" deprecated="Unused since CMS 7">
 				<source>Clear</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_filter" deprecated="Unused since CMS 7">
 				<source>Filter</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_title_undelete" deprecated="Unused since CMS 7">
 				<source>Undelete?</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_text_undelete" deprecated="Unused since CMS 7">
 				<source>Undelete records from tables: </source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_title_delete" deprecated="Unused since CMS 7">
 				<source>Delete?</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_text_delete" deprecated="Unused since CMS 7">
 				<source>Delete records from tables: </source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_boxLabel_undelete_recursive" deprecated="Unused since CMS 7">
 				<source>Undelete recursively</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_tableMenu_label" deprecated="Unused since CMS 7">
 				<source>Table:</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_tableMenu_emptyText" deprecated="Unused since CMS 7">
 				<source>Choose a table...</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_filter_emptyText" deprecated="Unused since CMS 7">
 				<source>Keyword</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_search" deprecated="Unused since CMS 7">
 				<source>Search:</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_pagingMessage" deprecated="Unused since CMS 7">
 				<source>Displaying records {0} - {1} of {2}</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_pagingEmpty" deprecated="Unused since CMS 7">
 				<source>No records to display</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_noValueFound" deprecated="Unused since CMS 7">
 				<source>No records for {0}</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_records" deprecated="Unused since CMS 7">
 				<source>Records</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="js.label_table" deprecated="Unused since CMS 7">
 				<source>Table</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 		</body>
 	</file>

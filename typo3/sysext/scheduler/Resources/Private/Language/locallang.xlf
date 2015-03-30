@@ -314,21 +314,27 @@
 			</trans-unit>
 			<trans-unit id="status.legend" deprecated="Unused since CMS 7">
 				<source>Status Legend</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status.legend.disabled" deprecated="Unused since CMS 7">
 				<source>Disabled, will not be executed, except manually</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status.legend.failure" deprecated="Unused since CMS 7">
 				<source>Failure! An error occurred during the last execution (move over bullet for more details)</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status.legend.late" deprecated="Unused since CMS 7">
 				<source>Late, will run with next execution</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status.legend.running" deprecated="Unused since CMS 7">
 				<source>Currently running</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status.legend.scheduled" deprecated="Unused since CMS 7">
 				<source>Scheduled, will run on next possible execution</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status.disabled">
 				<source>disabled</source>

@@ -8,27 +8,35 @@
 			</trans-unit>
 			<trans-unit id="state.notAvailable" deprecated="Unused since CMS 7">
 				<source>Not available</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="state.failed" deprecated="Unused since CMS 7">
 				<source>Failed</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="state.upToDate" deprecated="Unused since CMS 7">
 				<source>Up to date</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="state.invalid" deprecated="Unused since CMS 7">
 				<source>Invalid</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="state.updated" deprecated="Unused since CMS 7">
 				<source>Updated</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="state.checking" deprecated="Unused since CMS 7">
 				<source>Checking...</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="state.notChecked" deprecated="Unused since CMS 7">
 				<source>Not checked</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="button.update" deprecated="Unused since CMS 7">
 				<source>Update from repository</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="button.downloadAll">
 				<source>Download all</source>
