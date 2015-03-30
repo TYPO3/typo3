@@ -14,7 +14,7 @@
 /**
  * RequireJS module for Recycler
  */
-define(['jquery', 'nprogress', 'jquery/jquery.clearable'], function($, NProgress) {
+define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress) {
 	var Recycler = {
 		identifiers: {
 			searchForm: '#recycler-form',

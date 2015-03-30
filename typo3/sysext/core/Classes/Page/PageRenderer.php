@@ -1606,7 +1606,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'imagesloaded' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/imagesloaded.pkgd.min',
 				'bootstrap' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap',
 				'twbs/bootstrap-datetimepicker' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-datetimepicker',
-				'autosize' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/autosize',
+				'autosize' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/autosize'
 			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();

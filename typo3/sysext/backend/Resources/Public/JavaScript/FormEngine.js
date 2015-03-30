@@ -710,7 +710,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	FormEngine.reinitialize = function() {
 		// apply "close" button to all input / datetime fields
 		if ($('.t3js-clearable').length) {
-			require(['jquery/jquery.clearable'], function() {
+			require(['TYPO3/CMS/Backend/jquery.clearable'], function() {
 				$('.t3js-clearable').clearable();
 			});
 		}

@@ -14,7 +14,7 @@
 /**
  * JavaScript module for the backend login form
  */
-define('TYPO3/CMS/Backend/Login', ['jquery', 'jquery/jquery.clearable', 'bootstrap'], function($) {
+define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($) {
 	var BackendLogin = {
 		options: {
 			interfaceField: '.t3js-login-interface-field',

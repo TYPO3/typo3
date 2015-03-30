@@ -17,7 +17,7 @@
  * ExtensionManager.Update => Various AJAX functions to display updates
  * ExtensionManager.uploadForm => helper to show the upload form
  */
-define(['jquery', 'nprogress', 'datatables', 'jquery/jquery.clearable'], function($, NProgress) {
+define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, NProgress) {
 	var ExtensionManager = {
 		identifier: {
 			extensionlist: '#typo3-extension-list',

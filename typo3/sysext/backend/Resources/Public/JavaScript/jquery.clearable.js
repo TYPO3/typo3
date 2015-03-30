@@ -20,7 +20,15 @@
  *					'this' is set to the clearable input element. Defaults to an
  *					empty function.
  */
-(function($) {
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		// AMD. Register as an anonymous module.
+		define([ "jquery" ], factory);
+	} else {
+		// Browser globals, TYPO3.jQuery kept for backwards-compatibility, will be removed with CMS 8
+		factory(jQuery || TYPO3.jQuery);
+	}
+}(function($) {
 	$.fn.clearable = function(options) {
 
 		var defaults = {
@@ -94,4 +102,4 @@
 			}
 		});
 	};
-})(jQuery || TYPO3.jQuery);
+}));
