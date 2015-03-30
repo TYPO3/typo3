@@ -32,6 +32,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$statuses = array(
 			'oldXclassStatus' => $this->getOldXclassUsageStatus(),
 			'registeredXclass' => $this->getRegisteredXclassStatus(),
+			'compatibility6' => $this->getCompatibility6Status(),
 		);
 		return $statuses;
 	}
@@ -69,7 +70,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 	/**
-	 * List any Xclasses registered in the stystem
+	 * List any Xclasses registered in the system
 	 *
 	 * @return \TYPO3\CMS\Reports\Status
 	 */
@@ -105,6 +106,31 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		return GeneralUtility::makeInstance(
 			ReportStatus::class,
 			$GLOBALS['LANG']->getLL('status_xclassUsage'),
+			$value,
+			$message,
+			$severity
+		);
+	}
+
+	/**
+	 * Check for usage of EXT:compatibility6
+	 *
+	 * @return \TYPO3\CMS\Reports\Status
+	 */
+	protected function getCompatibility6Status() {
+		$message = '';
+		$value = $GLOBALS['LANG']->getLL('status_disabled');
+		$severity = ReportStatus::OK;
+
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('compatibility6')) {
+			$value = $GLOBALS['LANG']->getLL('status_enabled');
+			$message = $GLOBALS['LANG']->getLL('status_compatibility6Usage_message');
+			$severity = ReportStatus::WARNING;
+		}
+
+		return GeneralUtility::makeInstance(
+			ReportStatus::class,
+			$GLOBALS['LANG']->getLL('status_compatibility6Usage'),
 			$value,
 			$message,
 			$severity

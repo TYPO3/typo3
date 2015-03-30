@@ -288,6 +288,12 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 			<trans-unit id="status_xclassUsageFound_message_detail" xml:space="preserve">
 				<source>%2s registers an XCLASS of %1s</source>
 			</trans-unit>
+			<trans-unit id="status_compatibility6Usage" xml:space="preserve">
+				<source>Extension compatibility6</source>
+			</trans-unit>
+			<trans-unit id="status_compatibility6Usage_message" xml:space="preserve">
+				<source>Extension compatibility6 is loaded. You should check that every third-party extension is natively compatible with this version of TYPO3 and then unload this compatibility extension. As long as this compatibility extension is loaded, you will suffer performance drawbacks</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
