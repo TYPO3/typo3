@@ -286,7 +286,7 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 				<source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
 			</trans-unit>
 			<trans-unit id="status_xclassUsageFound_message_detail" xml:space="preserve">
-				<source>%2s registers an XCLASS of %1s</source>
+				<source>%2$s registers an XCLASS of %1$s</source>
 			</trans-unit>
 		</body>
 	</file>
