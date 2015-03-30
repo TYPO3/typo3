@@ -435,7 +435,7 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject->enableLogging = TRUE;
 		$this->subject->errorLog = array();
 		$logDetails = $this->getUniqueId('details');
-		$this->subject->log('', 23, 0, 42, 1, '%1s' . $logDetails . '%2s', -1, array('foo', 'bar'));
+		$this->subject->log('', 23, 0, 42, 1, '%1$s' . $logDetails . '%2$s', -1, array('foo', 'bar'));
 		$expected = 'foo' . $logDetails . 'bar';
 		$this->assertStringEndsWith($expected, $this->subject->errorLog[0]);
 	}

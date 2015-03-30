@@ -480,7 +480,7 @@
 				<source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
 			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" xml:space="preserve">
-				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
+				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
 			<trans-unit id="report.status.existingExtensions.title" xml:space="preserve">
 				<source>Security status of existing, but not loaded extensions</source>
@@ -495,7 +495,7 @@
 				<source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
 			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" xml:space="preserve">
-				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
+				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
 			<trans-unit id="report.status.loadedOutdatedExtensions.title" xml:space="preserve">
 				<source>Outdated status of loaded extensions</source>
@@ -510,7 +510,7 @@
 				<source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
 			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" xml:space="preserve">
-				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
+				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
 			<trans-unit id="report.status.existingOutdatedExtensions.title" xml:space="preserve">
 				<source>Outdated status of existing, but not loaded extensions</source>
@@ -525,7 +525,7 @@
 				<source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
 			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" xml:space="preserve">
-				<source>&lt;strong&gt;%1s&lt;/strong&gt; (version %2s)&lt;br&gt;</source>
+				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
 			<trans-unit id="fileHandling.couldNotRemoveDirectory" xml:space="preserve">
 				<source>ERROR: Could not remove extension directory "%s". Reasons:</source>
