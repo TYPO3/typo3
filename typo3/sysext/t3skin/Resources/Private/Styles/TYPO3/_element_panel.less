@@ -1,7 +1,14 @@
 //
+// Variables
+//
+@panel-lg-padding:          35px;
+
+
+//
 // Panel
 //
 .panel {
+	.box-shadow(0px 2px 0px rgba(0, 0, 0, 0.1));
 	&.ui-sortable-helper {
 		border-style: dashed;
 	}
@@ -14,6 +21,15 @@
 		margin: 0;
 	}
 }
+
+
+//
+// Panel carousel
+//
+.panel-carousel {
+	padding: @panel-body-padding;
+}
+
 
 //
 // Panel heading
@@ -110,5 +126,22 @@
 .tab-pane {
 	> .panel-tab:first-child {
 		border-top: none;
+	}
+}
+
+
+//
+// Panel large
+//
+.panel-lg {
+	.panel-body {
+		padding: @panel-lg-padding;
+	}
+	.panel-heading,
+	.panel-footer {
+		padding: ceil(@panel-lg-padding * 0.5) @panel-lg-padding;
+	}
+	.panel-carousel {
+		padding: @panel-lg-padding;
 	}
 }

@@ -1,104 +1,113 @@
-
-<div id="t3-login-wrap">
-	<div class="t3-login-header">
-		<f:format.raw>{logo}</f:format.raw>
-	</div>
-
-	<div class="t3-login-body">
-		<f:render section="{formType}" arguments="{_all}" />
-
-		<div class="t3-login-footer">
-			<div id="t3-login-form-footer-default">
-				<f:if condition="{isOpenIdLoaded}">
-					<a id="t3-login-switchToOpenId" class="switchToOpenId text-muted">
-						<i class="fa fa-openid"></i><f:translate key="{labelPrefixPath}labels.switchToOpenId" />
-					</a>
-				</f:if>
-			</div>
-			<f:if condition="{isOpenIdLoaded}">
-				<div id="t3-login-form-footer-openId" style="display: none;">
-					<a id="t3-login-switchToDefault" class="switchToOpenId">
-						<i class="fa fa-key"></i><f:translate key="{labelPrefixPath}labels.switchToDefault" />
-					</a>
+<div class="typo3-login">
+	<div class="typo3-login-container">
+		<div class="typo3-login-wrap">
+			<div class="panel panel-lg panel-login">
+				<div class="panel-body">
+					<div class="typo3-login-logo">
+						<f:image src="{logo}" class="typo3-login-image" />
+					</div>
+					<f:render section="{formType}" arguments="{_all}" />
 				</div>
-			</f:if>
-		</div>
-	</div>
-	<f:render section="loginNews" arguments="{_all}" />
-</div>
-<div id="t3-login-copyright">
-	<f:format.raw>{copyright}</f:format.raw>
-	<a href="http://typo3.org" target="_blank" class="t3-login-link-typo3">TYPO3.org</a>,
-	<strong><a href="http://typo3.org/donate/" target="_blank" class="t3-login-link-donate"><f:translate key="{labelPrefixPath}labels.donate" /></a></strong>
-</div>
-
-
-
-<f:section name="loginForm">
-	<f:format.raw>{formTag}</f:format.raw>
-		<f:if condition="{hasLoginError}">
-			<div id="t3-login-error" class="alert alert-danger">
-				<strong><f:translate key="{labelPrefixPath}error.login.title" /></strong>
-				<p><f:translate key="{labelPrefixPath}error.login.description" /></p>
-			</div>
-		</f:if>
-
-		<noscript>
-			<div id="t3-noscript-error" class="t3-login-alert t3-login-alert-error">
-				<h4><f:translate key="{labelPrefixPath}error.javascript" /></h4>
-			</div>
-		</noscript>
-
-		<div id="t3-nocookies-error" class="t3-login-alert alert alert-warning" style="display:none;">
-			<h4><f:translate key="{labelPrefixPath}error.cookies" /></h4>
-		</div>
-
-		<div class="form-group" id="t3-login-username-section">
-			<input type="text" id="t3-username" name="username" value="{presetUsername}" placeholder="{f:translate(key: '{labelPrefixPath}labels.username')}" class="form-control t3-username" autofocus="autofocus" required="required">
-
-			<div class="t3-login-alert-capslock" id="t3-username-alert-capslock" style="display: none;">
-				<img src="sysext/t3skin/icons/login_capslock.gif" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
-			</div>
-		</div>
-
-		<div class="form-group" id="t3-login-password-section">
-			<input type="password" id="t3-password" name="p_field" value="{presetPassword}" placeholder="{f:translate(key: '{labelPrefixPath}labels.password')}" class="form-control t3-password" required="required">
-
-			<div class="t3-login-alert-capslock" id="t3-password-alert-capslock" style="display: none;">
-				<img src="sysext/t3skin/icons/login_capslock.gif" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
-			</div>
-		</div>
-
-		<f:if condition="{isOpenIdLoaded}">
-			<div class="form-group" id="t3-login-openid_url-section" style="display: none;">
-				<div class="input-group">
-					<input type="text" id="openid_url" name="openid_url" value="{presetOpenId}" placeholder="{f:translate(key: '{labelPrefixPath}labels.openId')}" class="form-control t3-openidurl" />
-
-					<div class="input-group-addon">
-						<span class="fa fa-openid"></span>
+				<f:render section="loginNews" arguments="{_all}" />
+				<div class="panel-footer">
+					<div class="login-copyright-wrap">
+						<a href="#loginCopyright" class="typo3-login-copyright-link collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="loginCopyright">
+							<span><f:translate key="{labelPrefixPath}copyright.link" /></span>
+							<f:image src="EXT:backend/Resources/Public/Images/typo3_orange.svg" alt="{f:translate(key: '{labelPrefixPath}typo3.logo')}" width="70" height="20" />
+						</a>
+						<div id="loginCopyright" class="collapse">
+							<div class="typo3-login-copyright-text">
+								<p>
+									<f:format.raw>{copyright}</f:format.raw>
+								</p>
+								<ul class="list-unstyled">
+									<li><a href="http://typo3.org" target="_blank" class="t3-login-link-typo3"><i class="fa fa-external-link"></i> TYPO3.org</a></li>
+									<li><a href="http://typo3.org/donate/" target="_blank" class="t3-login-link-donate"><i class="fa fa-external-link"></i> <f:translate key="{labelPrefixPath}labels.donate" /></a></li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</f:if>
+		</div>
+	</div>
+</div>
 
-		<f:if condition="{interfaceSelector}">
-			<div class="form-group">
-				<div class="t3-login-interface" id="t3-login-interface-section">
-					<f:format.raw>{interfaceSelector}</f:format.raw>
-				</div>
-			</div>
-		</f:if>
 
-		<div class="form-group">
-			<input class="btn btn-block" type="submit" name="commandLI" value="{f:translate(key: '{labelPrefixPath}labels.submitLogin')}" id="t3-login-submit" />
-			<div id="t3-login-process" style="display: none;">
-				<i class="fa fa-spin fa-spinner"></i>
-				<f:translate key="{labelPrefixPath}login_process" />
+<f:section name="loginForm">
+	<f:if condition="{hasLoginError}">
+		<div class="t3js-login-error" id="t3-login-error">
+			<div class="alert alert-danger">
+				<strong><f:translate key="{labelPrefixPath}error.login.title" /></strong>
+				<p><f:translate key="{labelPrefixPath}error.login.description" /></p>
 			</div>
 		</div>
-	</form>
+	</f:if>
+	<noscript>
+		<f:be.infobox message="{f:translate(key: '{labelPrefixPath}error.javascript')}" state="2" />
+	</noscript>
+	<div class="hidden t3js-login-error-nocookies">
+		<f:be.infobox message="{f:translate(key: '{labelPrefixPath}error.cookies')}" state="2" />
+	</div>
+	<div class="typo3-login-form t3js-login-formfields">
+		<f:format.raw>{formTag}</f:format.raw>
+			<f:if condition="{interfaceSelector}">
+				<div class="form-group t3js-login-interface-section" id="t3-login-interface-section">
+					<div class="form-control-wrap">
+						<f:format.raw>{interfaceSelector}</f:format.raw>
+					</div>
+				</div>
+			</f:if>
+			<div class="form-group t3js-login-username-section" id="t3-login-username-section">
+				<div class="form-control-wrap">
+					<div class="form-control-holder">
+						<input type="text" id="t3-username" name="username" value="{presetUsername}" placeholder="{f:translate(key: '{labelPrefixPath}labels.username')}" class="form-control input-login t3js-clearable t3js-login-username-field" autofocus="autofocus" required="required">
+						<div class="form-notice-capslock hidden t3js-login-alert-capslock">
+							<f:image src="EXT:backend/Resources/Public/Images/icon_capslock.svg" width="14" height="14" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group t3js-login-password-section" id="t3-login-password-section">
+				<div class="form-control-wrap">
+					<div class="form-control-holder">
+						<input type="password" id="t3-password" name="p_field" value="{presetPassword}" placeholder="{f:translate(key: '{labelPrefixPath}labels.password')}" class="form-control input-login t3js-clearable t3js-login-password-field" required="required">
+						<div class="form-notice-capslock hidden t3js-login-alert-capslock">
+							<f:image src="EXT:backend/Resources/Public/Images/icon_capslock.svg" width="14" height="14" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<f:if condition="{isOpenIdLoaded}">
+				<div class="form-group hidden t3js-login-openid-section" id="t3-login-openid_url-section">
+					<div class="input-group">
+						<input type="text" id="openid_url" name="openid_url" value="{presetOpenId}" placeholder="{f:translate(key: '{labelPrefixPath}labels.openId')}" class="form-control input-login t3js-clearable t3js-login-openid-field" />
+						<div class="input-group-addon">
+							<span class="fa fa-openid"></span>
+						</div>
+					</div>
+				</div>
+			</f:if>
+			<div class="form-group" id="t3-login-submit-section">
+				<button class="btn btn-block btn-login t3js-login-submit" id="t3-login-submit" type="submit" name="commandLI" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {f:translate(key: '{labelPrefixPath}login_process')}" autocomplete="off">
+					<f:translate key="{labelPrefixPath}labels.submitLogin" />
+				</button>
+			</div>
+			<f:if condition="{isOpenIdLoaded}">
+				<ul class="list-unstyled typo3-login-links">
+					<li>
+						<a class="t3js-login-switch-to-openid">
+							<i class="fa fa-fw fa-openid"></i> <span><f:translate key="{labelPrefixPath}labels.switchToOpenId" /></span>
+						</a>
+						<a class="t3js-login-switch-to-default hidden">
+							  <i class="fa fa-fw fa-key"></i> <span><f:translate key="{labelPrefixPath}labels.switchToDefault" /></span>
+						</a>
+					</li>
+				</ul>
+			</f:if>
+		</form>
+	</div>
 </f:section>
-
 
 
 <f:section name="logoutForm">
@@ -123,28 +132,33 @@
 					</div>
 				</f:if>
 				<input type="hidden" name="p_field" value="" />
-				<input class="btn btn-block" type="submit" name="commandLO" value="{f:translate(key: '{labelPrefixPath}labels.submitLogin')}" id="t3-login-submit" />
+				<input class="btn btn-block btn-lg" type="submit" name="commandLO" value="{f:translate(key: '{labelPrefixPath}labels.submitLogin')}" id="t3-login-submit" />
 			</div>
 		</div>
 	</form>
 </f:section>
 
 
-
 <f:section name="loginNews">
 	<f:if condition="{loginNewsItems}">
-		<div id="t3-login-news">
-			<div class="t3-login-box-body">
-				<dl>
-					<f:for each="{loginNewsItems}" as="item">
-						<dt>
-							<span class="t3-news-date">{item.date}</span><br>
-							{item.header}
-						</dt>
-						<dd><f:format.html>{item.content}</f:format.html></dd>
-					</f:for>
-				</dl>
+		<div class="panel-carousel carousel slide t3js-login-news-carousel" id="loginNews" data-interval="0" data-ride="carousel">
+			<div class="carousel-inner" role="listbox">
+				<f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
+				<div class="item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
+					<h3 class="typo3-login-news-heading">{item.header}</h3>
+					<f:format.html>{item.content}</f:format.html>
+					<span class="text-muted">{item.date}</span>
+				</div>
+				</f:for>
 			</div>
+			<a class="left typo3-login-carousel-control" href="#loginNews" role="button" data-slide="prev">
+				<i class="fa fa-angle-left"></i>
+				<span class="sr-only"><f:translate key="{labelPrefixPath}labels.previous" /></span>
+			</a>
+			<a class="right typo3-login-carousel-control" href="#loginNews" role="button" data-slide="next">
+				<i class="fa fa-angle-right"></i>
+				<span class="sr-only"><f:translate key="{labelPrefixPath}labels.next" /></span>
+			</a>
 		</div>
 	</f:if>
 </f:section>

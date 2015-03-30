@@ -1,0 +1,12 @@
+###################
+### LOGINSCREEN ###
+###################
+
+# cat=Login; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.loginLogo
+loginLogo =
+
+# cat=Login; type=color; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.loginHighlightColor
+loginHighlightColor =
+
+# cat=Login; type=string; label=LLL:EXT:backend/Resources/Private/Language/locallang.xlf:config.loginBackgroundImage
+loginBackgroundImage =

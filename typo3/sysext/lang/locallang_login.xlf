@@ -15,6 +15,12 @@
 			<trans-unit id="labels.interface">
 				<source>Interface</source>
 			</trans-unit>
+			<trans-unit id="labels.previous">
+				<source>Previous</source>
+			</trans-unit>
+			<trans-unit id="labels.next">
+				<source>Next</source>
+			</trans-unit>
 			<trans-unit id="labels.submitLogin">
 				<source>Login</source>
 			</trans-unit>
@@ -116,6 +122,9 @@
 			</trans-unit>
 			<trans-unit id="copyright">
 				<source>Copyright</source>
+			</trans-unit>
+			<trans-unit id="copyright.link">
+				<source>More about TYPO3</source>
 			</trans-unit>
 			<trans-unit id="extension.copyright">
 				<source>Extensions are copyright of their respective owners.</source>

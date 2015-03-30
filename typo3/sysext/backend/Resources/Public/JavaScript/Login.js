@@ -10,21 +10,33 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
+
+/**
+ * JavaScript module for the backend login form
+ */
+define('TYPO3/CMS/Backend/Login', ['jquery', 'jquery/jquery.clearable', 'bootstrap'], function($) {
 	var BackendLogin = {
 		options: {
-			usernameField: '#t3-username',
-			passwordField: '#t3-password',
-			useridentField: '#t3-field-userident',
-			openIdField: '#openid_url',
-			submitButton: '#t3-login-submit',
-			clearIconSelector: '.t3-login-clearInputField',
-			interfaceSelector: '#t3-interfaceselector'
+			interfaceField: '.t3js-login-interface-field',
+			interfaceSection: '.t3js-login-interface-section',
+			usernameField: '.t3js-login-username-field',
+			usernameSection: '.t3js-login-username-section',
+			passwordField: '.t3js-login-password-field',
+			passwordSection: '.t3js-login-password-section',
+			openIdField: '.t3js-login-openid-field',
+			openIdSection: '.t3js-login-openid-section',
+			useridentField: '.t3js-login-userident-field',
+			submitButton: '.t3js-login-submit',
+			error: '.t3js-login-error',
+			errorNoCookies: '.t3js-login-error-nocookies',
+			formFields: '.t3js-login-formfields',
+			switchOpenIdSelector: '.t3js-login-switch-to-openid',
+			switchDefaultSelector: '.t3js-login-switch-to-default'
 		}
 	},
 	options = BackendLogin.options;
 
-	// Checks weather capslock is enabled (returns TRUE if enabled, false otherwise)
+	// Checks whether capslock is enabled (returns TRUE if enabled, false otherwise)
 	// thanks to http://24ways.org/2007/capturing-caps-lock
 	BackendLogin.isCapslockEnabled = function(e) {
 		var ev = e ? e : window.event;
@@ -52,53 +64,51 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	/**
 	 * Change to Interface for OpenId login and save the selection to a cookie
 	 */
-	BackendLogin.switchToOpenId = function() {
-		$('#t3-login-form-footer-default').hide();
-		$('#t3-login-form-footer-openId').show();
-
-		$('#t3-login-username-section, #t3-login-password-section').hide();
-		$('#t3-login-openid_url-section').show();
-		$('#t3-login-interface-section').hide();
-
-		$(options.openIdField).trigger('focus');
-		$(options.usernameField).val('openid_url');
-		$(options.passwordField).val('');
-
-		BackendLogin.setLogintypeCookie('openid');
+	BackendLogin.switchToOpenId = function(e) {
+		if (!$(this).hasClass("disabled")) {
+			$(options.switchOpenIdSelector).addClass('hidden');
+			$(options.switchDefaultSelector).removeClass('hidden');
+			$(options.interfaceSection).addClass('hidden');
+			$(options.passwordSection + ', ' + options.usernameSection).addClass('hidden');
+			$(options.openIdSection).removeClass('hidden');
+			$(options.openIdField).trigger('focus');
+			$(options.usernameField).val('openid_url');
+			$(options.passwordField).val('');
+			BackendLogin.setLogintypeCookie('openid');
+		} else {
+			return false;
+		}
 	};
 
 	/**
 	 * Change to Interface for default login and save the selection to a cookie
 	 */
-	BackendLogin.switchToDefault = function() {
-		$('#t3-login-openIdLogo').hide();
-
-		$(options.openIdField).val('');
-		$(options.usernameField).val('');
-
-
-		$('#t3-login-form-footer-default').show();
-		$('#t3-login-form-footer-openId').hide();
-		$('#t3-login-username-section, #t3-login-password-section').show();
-		$('#t3-login-openid_url-section').hide();
-		$('#t3-login-interface-section').show();
-
-		$(options.usernameField).trigger('focus');
-
-		BackendLogin.setLogintypeCookie('username');
+	BackendLogin.switchToDefault = function(e) {
+		if (!$(this).hasClass("disabled")) {
+			$(options.switchOpenIdSelector).removeClass('hidden');
+			$(options.switchDefaultSelector).addClass('hidden');
+			$(options.interfaceSection).removeClass('hidden');
+			$(options.passwordSection + ', ' + options.usernameSection).removeClass('hidden');
+			$(options.openIdSection).addClass('hidden');
+			$(options.usernameField).trigger('focus');
+			$(options.openIdField).val('');
+			$(options.usernameField).val('');
+			BackendLogin.setLogintypeCookie('username');
+		} else {
+			return false;
+		}
 	};
 
 	/**
 	 * Hide all form fields and show a progress message and icon
 	 */
 	BackendLogin.showLoginProcess = function() {
-		// setting a fixed height (based on the current, calculated height of the browser) for
-		// the box with the login form, so it doesn't jump around when the spinner is shown
-		var loginBoxHeight = $('#t3-login-form-fields').height();
-		$('#t3-login-process').height(loginBoxHeight).show();
-		$('#t3-login-error').hide();
-		$('#t3-login-form-fields').hide();
-		$('#t3-nocookies-error').hide();
+		$(options.submitButton).button('loading');
+		$(options.error).addClass('hidden');
+		$(options.errorNoCookies).addClass('hidden');
+
+		$(options.switchOpenIdSelector).addClass('disabled');
+		$(options.switchDefaultSelector).addClass('disabled');
 	};
 
 	/**
@@ -126,18 +136,7 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	BackendLogin.interfaceSelectorChanged = function() {
 		var now = new Date();
 		var expires = new Date(now.getTime() + 1000*60*60*24*365); // cookie expires in one year
-		document.cookie = 'typo3-login-interface=' + $(options.interfaceSelector).val() + '; expires=' + expires.toGMTString() + ';';
-	};
-
-	/**
-	 * Shows up the clear icon for a field which is not empty, and hides it otherwise
-	 */
-	BackendLogin.setVisibilityOfClearIcon = function($formFieldElement) {
-		if ($formFieldElement.val().length > 0) {
-			$formFieldElement.next(options.clearIconSelector).find('a').show();
-		} else {
-			$formFieldElement.next(options.clearIconSelector).find('a').hide();
-		}
+		document.cookie = 'typo3-login-interface=' + $(options.interfaceField).val() + '; expires=' + expires.toGMTString() + ';';
 	};
 
 	/**
@@ -151,13 +150,13 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	 * Check if an interface was stored in a cookie and preselect it in the select box
 	 */
 	BackendLogin.checkForInterfaceCookie = function() {
-		if ($(options.interfaceSelector).length) {
+		if ($(options.interfaceField).length) {
 			var posStart = document.cookie.indexOf('typo3-login-interface=');
 			if (posStart != -1) {
 				var selectedInterface = document.cookie.substr(posStart + 22);
 				selectedInterface = selectedInterface.substr(0, selectedInterface.indexOf(';'));
 			}
-			$(options.interfaceSelector).val(selectedInterface);
+			$(options.interfaceField).val(selectedInterface);
 		}
 	};
 
@@ -166,9 +165,9 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	 */
 	BackendLogin.showCapsLockWarning = function($alertIconElement, event) {
 		if (BackendLogin.isCapslockEnabled(event) === true) {
-			$alertIconElement.show();
+			$alertIconElement.removeClass('hidden');
 		} else {
-			$alertIconElement.hide();
+			$alertIconElement.addClass('hidden');
 		}
 	};
 
@@ -176,16 +175,16 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	 * Hides input fields and shows cookie warning
 	 */
 	BackendLogin.showCookieWarning = function() {
-		$('#t3-login-form-fields').hide();
-		$('#t3-nocookies-error').show();
+		$(options.formFields).addClass('hidden');
+		$(options.errorNoCookies).removeClass('hidden');
 	};
 
 	/**
 	 * Hides cookie warning and shows input fields
 	 */
 	BackendLogin.hideCookieWarning = function() {
-		$('#t3-nocookies-error').hide();
-		$('#t3-login-form-fields').show();
+		$(options.formFields).removeClass('hidden');
+		$(options.errorNoCookies).addClass('hidden');
 	};
 
 	/**
@@ -219,28 +218,29 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	 * Registers listeners for the Login Interface (e.g. to toggle OpenID and Default login)
 	 */
 	BackendLogin.initializeEvents = function() {
-		$(document).on('click', '#t3-login-switchToOpenId', BackendLogin.switchToOpenId);
-		$(document).on('click', '#t3-login-switchToDefault', BackendLogin.switchToDefault);
+		$(document).on('click', options.switchOpenIdSelector, BackendLogin.switchToOpenId);
+		$(document).on('click', options.switchDefaultSelector, BackendLogin.switchToDefault);
 		$(document).on('click', options.submitButton, BackendLogin.showLoginProcess);
 
 			// The Interface selector is not always present, so this check is needed
-		if ($(options.interfaceSelector).length > 0) {
-			$(document).on('change blur', options.interfaceSelector, BackendLogin.interfaceSelectorChanged);
+		if ($(options.interfaceField).length > 0) {
+			$(document).on('change blur', options.interfaceField, BackendLogin.interfaceSelectorChanged);
 		}
 
-		$(document).on('click', options.clearIconSelector, function() {
-			BackendLogin.clearInputField($(this).prev());
-		});
-		$(document).on('focus blur keypress', options.usernameField + ', ' + options.passwordField + ', ' + options.openIdField, function() {
-			BackendLogin.setVisibilityOfClearIcon($(this));
-		});
 		$(document).on('keypress', options.usernameField + ', ' + options.passwordField + ', ' + options.openIdField, function(evt) {
-			BackendLogin.showCapsLockWarning($(this).siblings('.t3-login-alert-capslock'), evt);
+			BackendLogin.showCapsLockWarning($(this).parent().parent().find('.t3js-login-alert-capslock'), evt);
+		});
+
+		$('.t3js-clearable').clearable();
+
+		// carousel news height transition
+		$('.t3js-login-news-carousel').on('slide.bs.carousel', function(e) {
+			var nextH = $(e.relatedTarget).height();
+			$(this).find('div.active').parent().animate({ height: nextH }, 500);
 		});
 	};
 	// initialize and return the BackendLogin object
 	return function() {
-
 		$(document).ready(function() {
 			BackendLogin.checkForInterfaceCookie();
 			BackendLogin.checkForLogintypeCookie();
@@ -255,10 +255,7 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 				if (parent.opener && parent.opener.TS && parent.opener.TS.username) {
 					$(options.usernameField).val(parent.opener.TS.username);
 				}
-			} catch(error) {} // continue
-
-			BackendLogin.setVisibilityOfClearIcon($(options.usernameField));
-			BackendLogin.setVisibilityOfClearIcon($(options.passwordField));
+			} catch (error) {} // continue
 
 			// previously named "check focus"
 			if ($(options.usernameField).val() == '') {

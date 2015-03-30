@@ -10,140 +10,189 @@
 // Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use the stylesheet to obstruct the display.
 //
 
-#typo3-index-php {
-	background: rgb(235, 235, 235);
-	min-width: 400px;
-	min-height: 550px;
 
-	#t3-login-wrap {
-		position: absolute;
-		left: 50%;
-		margin-left: -200px;
-		width: 400px;
-		z-index: 1;
-		padding-top: 50px;
-		padding-bottom: 100px;
-	}
+@login-width:				360px;
+@login-bg:					#eee;
 
-	.t3-login-header {
-		padding: @line-height-computed;
-	}
+@login-highlight:			#ff8800;
+@login-btn-text:			#fff;
+@login-btn-bg:				@login-highlight;
 
-	.t3-default-logo {
-		margin: 5px 15px;
-	}
+@login-copyright-text:		#444;
 
-	.t3-login-body {
-		background-color: @gray-dark;
-		padding: 25px 40px;
+@login-input-height:				@input-height-large;
+@login-input-font-size:				12px;
+@login-input-line-height:			@line-height-large;
+@login-input-border-radius:			2px;
+@login-input-border-color:			#ccc;
+@login-input-padding-vertical:		@padding-large-vertical;
+@login-input-padding-horizontal:	@padding-large-horizontal;
 
-		a {
-			cursor: pointer;
-			i {
-				margin-right: 6px;
-			}
-			&.switchToOpenId {
-				color: lighten(@gray-dark, 30%);
-			}
+
+//
+// Login
+//
+.typo3-login {
+	background-color: @login-bg;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	display: table;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	width: 100%;
+	min-height: 100%;
+	height: 100%;
+}
+.typo3-login-container {
+	display: table-cell;
+	vertical-align: middle;
+}
+.typo3-login-wrap {
+	max-width: @login-width;
+	margin: 0 auto;
+}
+.typo3-login-links {
+	padding-top: inherit;
+	margin-top: 40px;
+	margin-bottom: 0;
+	.disabled {
+		cursor: not-allowed!important;
+		text-decoration: none!important;
+		color: @text-muted!important;
+		span {
+			cursor: inherit;
 		}
 	}
+}
 
-	.form-group {
-		margin-bottom: 10px;
-		position: relative;
 
-		&:last-child {
-			margin-bottom: 0;
+//
+// Logo
+//
+.typo3-login-logo {
+	margin-bottom: 30px;
+	> img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin: 0 auto;
+	}
+}
+
+
+//
+// News
+//
+.typo3-login-news-heading {
+	font-size: 14px;
+	line-height: 1.3em;
+	margin-top: 0;
+}
+
+
+//
+// Panel
+//
+.panel-login {
+	border-color: darken(@login-bg, 10%);
+	.panel-body {
+		border-bottom: 3px solid @login-highlight;
+	}
+	a {
+		font-weight: bold;
+	}
+	@media (max-width: @screen-xs-max){
+		margin-bottom: 0;
+	}
+}
+
+
+//
+// Forms
+//
+.input-login {
+	border-color: @login-input-border-color;
+	.box-shadow(none);
+	.input-size(@login-input-height; @login-input-padding-vertical; @login-input-padding-horizontal; @login-input-font-size; @login-input-line-height; @login-input-border-radius);
+	&:focus {
+		.box-shadow(none);
+	}
+}
+.btn-login {
+	.button-size(@login-input-padding-vertical; @login-input-padding-horizontal; @login-input-font-size; 1em; @login-input-border-radius);
+	.button-variant(@login-btn-text; @login-btn-bg; rgba(0,0,0,0.1));
+	line-height: 1.3em;
+	&:focus {
+		outline: none;
+		.box-shadow(none);
+	}
+}
+
+
+//
+// Carousel
+//
+.typo3-login-carousel-control {
+	top: 50%;
+	margin-top: -30px;
+	height: 60px;
+	line-height: 60px;
+	width: 10px;
+	background-color: #ffffff;
+	text-align: center;
+	position: absolute;
+	.opacity(0.25);
+	.transition(opacity 0.2s ease-in-out);
+	&:hover {
+		.opacity(1);
+	}
+	&.left {
+		left: -10px;
+		border: 1px solid darken(@login-bg, 10%);
+		border-right: 0;
+		border-radius: 2px 0 0 2px;
+	}
+	&.right {
+		right: -10px;
+		border: 1px solid darken(@login-bg, 10%);
+		border-left: 0;
+		border-radius: 0 2px 2px 0;
+	}
+	@media (min-width: @screen-sm-min){
+		width: 20px;
+		&.left {
+			left: -20px;
+		}
+		&.right {
+			right: -20px;
 		}
 	}
+}
 
-	.form-control {
-		border-radius: 0;
-		background-color: darken(@gray-dark, 12.5%);
-		color: lighten(@gray-dark, 30%);
-		border: none;
-		font-size: @font-size-base;
-		height: @input-height-large;
-		padding-left: 12px;
-		padding-right: 12px;
 
-		&:hover {
-			color: #fff;
-		}
-
-		&:focus {
-			border: none;
-			box-shadow: none;
-		}
+//
+// Copyright
+//
+.typo3-login-copyright-link {
+	.clearfix();
+	> img {
+		float: right;
+		margin-top: -4px;
 	}
-
-	.input-group-addon {
-		background-color: darken(@gray-dark, 12.5%);
-		color: lighten(@gray-dark, 30%);
-		border-radius: 0;
-		border: none;
+}
+.typo3-login-copyright-text {
+	margin-top: @line-height-computed;
+	color: @login-copyright-text;
+	.fa {
+		font-size: 13px;
 	}
-
-	#t3-login-submit {
-		background-color: #ff8600;
-		background-image: linear-gradient(center top, #fe9500 0%, #cf6610 100%);
-		background-repeat: repeat-x;
-		text-shadow: 0px -1px 0 rgba(149, 81, 5, 0.6);
-		color: #fff;
-		padding: 4px 20px;
-		height: @input-height-large;
+	> *:first-child {
+		margin-top: 0;
 	}
-
-	#t3-login-process {
-		background-color: #ff8600;
-		color: #fff;
-		cursor: wait;
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: 10;
-		line-height: @input-height-large;
-		text-align: center;
-	}
-
-	#t3-login-news {
-		background: #fff;
-		padding: 25px 40px;
-
-		h4 {
-			margin-top: 0;
-		}
-
-		dl {
-			margin-bottom: 0;
-
-			dt {
-				span {
-					color: @headings-small-color;
-					font-size: @font-size-small;
-				}
-
-				font-size: @font-size-h3;
-				font-weight: @headings-font-weight;
-			}
-		}
-	}
-
-	#t3-login-copyright {
-		font-size: 11px;
-		color: @gray;
-		position: fixed;
-		bottom: @line-height-computed;
-		left: @line-height-computed;
-		right: @line-height-computed;
-		a {
-			color: darken(@gray, 15%);
-			text-decoration: underline;
-			&:hover {
-				color: #000;
-			}
-		}
+	> *:last-child {
+		margin-bottom: 0;
 	}
 }

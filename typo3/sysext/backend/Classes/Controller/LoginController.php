@@ -224,18 +224,52 @@ class LoginController {
 		// Might set JavaScript in the header to close window.
 		$this->checkRedirect();
 
-		if ($GLOBALS['TBE_STYLES']['logo_login']) {
-			$logo = '<img src="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login'])) . '" alt="" class="t3-login-logo" />';
-		} else {
-			$logo = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3-transparent@2x.png', 'width="140" height="39"') . ' alt="" class="t3-login-logo t3-default-logo" />';
+		// Extension Configuration
+		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['backend']);
+
+		// Background Image
+		if (!empty($extConf['loginBackgroundImage'])) {
+			$this->getDocumentTemplate()->inDocStylesArray[] = '
+				@media (min-width: 768px){
+					.typo3-login { background-image: url("' . $extConf['loginBackgroundImage'] . '"); }
+				}
+			';
 		}
 
-		$formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'loginForm' : 'logoutForm';
-		$loginNewsTitle = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']
-			? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle']
-			: $this->getLanguageService()->getLL('newsheadline');
+		// Add additional css to use the highlight color in the login screen
+		if (!empty($extConf['loginHighlightColor'])) {
+			$this->getDocumentTemplate()->inDocStylesArray[] = '
+				.btn-login.disabled, .btn-login[disabled], fieldset[disabled] .btn-login,
+				.btn-login.disabled:hover, .btn-login[disabled]:hover, fieldset[disabled] .btn-login:hover,
+				.btn-login.disabled:focus, .btn-login[disabled]:focus, fieldset[disabled] .btn-login:focus,
+				.btn-login.disabled.focus, .btn-login[disabled].focus, fieldset[disabled] .btn-login.focus,
+				.btn-login.disabled:active, .btn-login[disabled]:active, fieldset[disabled] .btn-login:active,
+				.btn-login.disabled.active, .btn-login[disabled].active, fieldset[disabled] .btn-login.active,
+				.btn-login:hover, .btn-login:focus, .btn-login:active,
+				.btn-login { background-color: ' . $extConf['loginHighlightColor'] . '; }
+				.panel-login .panel-body { border-color: ' . $extConf['loginHighlightColor'] . '; }
+			';
+		}
+
+		// Logo
+		$logo = '';
+		if (!empty($extConf['loginLogo'])) {
+			$logo = $extConf['loginLogo'];
+		} elseif (!empty($GLOBALS['TBE_STYLES']['logo_login'])) {
+			// Fallback to old TBE_STYLES login logo
+			$logo = $GLOBALS['TBE_STYLES']['logo_login'];
+			GeneralUtility::deprecationLog('$GLOBALS["TBE_STYLES"]["logo_login"] is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8, please head to the backend extension configuration instead.');
+		} else {
+			// Use TYPO3 logo depending on highlight color
+			if (!empty($extConf['loginHighlightColor'])) {
+				$logo = 'EXT:backend/Resources/Public/Images/typo3_black.svg';
+			} else {
+				$logo = 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
+			}
+		}
 
 		// Start form
+		$formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'loginForm' : 'logoutForm';
 		$view->assignMultiple(array(
 			'formTag' => $this->startForm(),
 			'labelPrefixPath' => 'LLL:EXT:lang/locallang_login.xlf:',
@@ -248,7 +282,6 @@ class LoginController {
 			'logo' => $logo,
 			'isOpenIdLoaded' => ExtensionManagementUtility::isLoaded('openid'),
 			'copyright' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
-			'loginNewsTitle' => $loginNewsTitle,
 			'loginNewsItems' => $this->getSystemNews()
 		));
 
@@ -388,10 +421,10 @@ class LoginController {
 							<option value="' . htmlspecialchars($jumpScript[$valueStr]) . '">' . htmlspecialchars($labels[$valueStr]) . '</option>';
 				}
 				$this->interfaceSelector = '
-						<select id="t3-interfaceselector" name="interface" class="form-control t3-interfaces input-lg" tabindex="3">' . $this->interfaceSelector . '
+						<select id="t3-interfaceselector" name="interface" class="form-control input-login t3js-login-interface-field" tabindex="3">' . $this->interfaceSelector . '
 						</select>';
 				$this->interfaceSelector_jump = '
-						<select id="t3-interfaceselector" name="interface" class="form-control t3-interfaces input-lg" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">' . $this->interfaceSelector_jump . '
+						<select id="t3-interfaceselector" name="interface" class="form-control input-login t3js-login-interface-field" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">' . $this->interfaceSelector_jump . '
 						</select>';
 			} elseif (!$this->redirect_url) {
 				// If there is only ONE interface value set and no redirect_url is present:
@@ -443,7 +476,7 @@ class LoginController {
 			}
 		}
 		$output .= $form . '<input type="hidden" name="login_status" value="login" />' .
-			'<input type="hidden" id="t3-field-userident" name="userident" value="" />' .
+			'<input type="hidden" id="t3-field-userident" class="t3js-login-userident-field" name="userident" value="" />' .
 			'<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' .
 			'<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' .
 			$this->interfaceSelector_hidden . $this->addFields_hidden;

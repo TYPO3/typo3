@@ -70,6 +70,8 @@ class SilentConfigurationUpgradeService {
 		'BE/staticFileEditPath',
 		// #64226
 		'BE/accessListRenderMode',
+		// #66431
+		'BE/loginNewsTitle',
 		// #24900
 		'SYS/compat_version',
 		// #64643

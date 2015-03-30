@@ -69,6 +69,9 @@ span.typo3-moduleHeader img {
 .form-control-wrap {
 	margin: 9px 0;
 }
+.form-control-holder {
+	position: relative;
+}
 .row {
 	> .form-group {
 		> .form-control-wrap {
@@ -135,6 +138,25 @@ select {
 		.form-control {
 			display: block;
 		}
+	}
+}
+
+//
+// Styles for the "capslock" jquery plugin.
+//
+.form-notice-capslock {
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	margin-top: -10px;
+	height: 20px;
+	width: 20px;
+	padding: 3px;
+	z-index: 10;
+	background-color: #fff;
+	> img {
+		display: block;
+		opacity: 0.5;
 	}
 }
 

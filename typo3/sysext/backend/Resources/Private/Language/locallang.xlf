@@ -19,6 +19,15 @@
 				<source>Your system is fully operational.
 Have a nice day.</source>
 			</trans-unit>
+			<trans-unit id="config.loginLogo">
+				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields.</source>
+			</trans-unit>
+			<trans-unit id="config.loginHighlightColor">
+				<source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
+			</trans-unit>
+			<trans-unit id="config.loginBackgroundImage">
+				<source>Background Image: If set, this image will be used as background image for the login screen for screen sizes greater than 767 pixel. This should be a URI such as /fileadmin/my-background.jpg</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
