@@ -205,7 +205,7 @@ class LoginController {
 		// support placeholders for IE9 and lower
 		$clientInfo = GeneralUtility::clientInfo();
 		if ($clientInfo['BROWSER'] == 'msie' && $clientInfo['VERSION'] <= 9) {
-			$pageRenderer->addJsLibrary('placeholders', 'contrib/placeholdersjs/placeholders.jquery.min.js');
+			$pageRenderer->addJsLibrary('placeholders', 'sysext/core/Resources/Public/JavaScript/Contrib/placeholders.jquery.min.js');
 		}
 
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');

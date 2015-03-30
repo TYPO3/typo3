@@ -34,6 +34,7 @@
     "moment": "2.8.3",
     "nprogress": "0.1.6",
     "datatables": "1.10.5",
-    "autosize": "2.0.0"
+    "autosize": "2.0.0",
+    "Placeholders.js": "4.0.1"
   }
 }

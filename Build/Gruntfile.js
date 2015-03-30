@@ -51,6 +51,8 @@ module.exports = function(grunt) {
 					'<%= paths.core %>Public/JavaScript/Contrib/moment.js': '/moment/moment.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js': '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/autosize.js': '/autosize/dest/autosize.min.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/placeholders.jquery.min.js': '/Placeholders.js/dist/placeholders.jquery.min.js',
+
 					/**
 					 * copy needed files of scriptaculous
 					 */

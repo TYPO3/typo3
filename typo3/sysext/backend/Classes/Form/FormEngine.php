@@ -1971,7 +1971,7 @@ class FormEngine {
 			// support placeholders for IE9 and lower
 			$clientInfo = GeneralUtility::clientInfo();
 			if ($clientInfo['BROWSER'] == 'msie' && $clientInfo['VERSION'] <= 9) {
-				$this->loadJavascriptLib('contrib/placeholdersjs/placeholders.jquery.min.js');
+				$this->loadJavascriptLib('sysext/core/Resources/Public/JavaScript/Contrib/placeholders.jquery.min.js');
 			}
 
 			// @todo: remove scriptaclous once suggest is moved to RequireJS, see #55575
