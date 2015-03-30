@@ -84,7 +84,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 		$(document).on('click', '.t3js-record-delete', function(evt) {
 			evt.preventDefault();
 			var $anchorElement = $(this);
-			TYPO3.Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), top.TYPO3.Severity.error, [
+			TYPO3.Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), top.TYPO3.Severity.warning, [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Close',
 					active: true,
@@ -94,7 +94,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 				},
 				{
 					text: $(this).data('button-ok-text') || TYPO3.lang['button.delete'] || 'OK',
-					btnClass: 'btn-danger',
+					btnClass: 'btn-warning',
 					trigger: function() {
 						TYPO3.Modal.dismiss();
 						AjaxDataHandler.deleteRecord($anchorElement);
