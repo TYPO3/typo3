@@ -81,8 +81,11 @@
 			<trans-unit id="button.resolveDependencies">
 				<source>Resolve dependencies</source>
 			</trans-unit>
+			<trans-unit id="label.resolveDependenciesEnableButton">
+				<source>I understand what this means and I'm able to investigate on possibly occurring issues by myself.</source>
+			</trans-unit>
 			<trans-unit id="button.resolveDependenciesIgnore">
-				<source>Continue anyway</source>
+				<source>I know what I'm doing, continue anyway</source>
 			</trans-unit>
 			<trans-unit id="extensionList.clickToConfigure">
 				<source>(Click to configure)</source>

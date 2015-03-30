@@ -407,7 +407,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			success: function (data) {
 				$extManager.unmask();
 				if (data.errorCount > 0) {
-					top.TYPO3.Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.warning, [
+					top.TYPO3.Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.error, [
 						{
 							text: TYPO3.lang['button.cancel'],
 							active: true,
@@ -416,13 +416,19 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 							}
 						}, {
 							text: TYPO3.lang['button.resolveDependenciesIgnore'],
-							btnClass: 'btn-warning',
+							btnClass: 'btn-danger disabled t3js-dependencies',
 							trigger: function() {
 								Repository.getResolveDependenciesAndInstallResult(data.skipDependencyUri);
 								top.TYPO3.Modal.dismiss();
 							}
 						}
 					]);
+					top.TYPO3.Modal.currentModal.on('shown.bs.modal', function() {
+						var $actionButton = top.TYPO3.Modal.currentModal.find('.t3js-dependencies');
+						top.TYPO3.jQuery('input[name=unlockDependencyIgnoreButton]').on('change', function() {
+							$actionButton.toggleClass('disabled', !$(this).prop('checked'));
+						});
+					});
 				} else {
 					var successMessage = TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.message' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension) + ' <br />';
 					successMessage += '<br /><h3>' + TYPO3.lang['extensionList.dependenciesResolveDownloadSuccess.header'] + ':</h3>';
@@ -622,6 +628,9 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 					},
 					success: ExtensionManager.updateExtension
 				});
+			}).on('change', 'input[name=unlockDependencyIgnoreButton]', function() {
+				var $actionButton = TYPO3.jQuery('.t3js-dependencies');
+				$actionButton.toggleClass('disabled', !$(this).prop('checked'));
 			});
 
 			$(ExtensionManager.identifier.searchField).clearable({

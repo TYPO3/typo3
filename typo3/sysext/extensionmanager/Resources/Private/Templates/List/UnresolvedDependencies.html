@@ -18,7 +18,7 @@
 	<f:link.action action="index" class="btn btn-default onClickMaskExtensionManager">
 		Go back
 	</f:link.action>
-	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="btn btn-default onClickMaskExtensionManager">
+	<f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="btn btn-default t3js-dependencies disabled onClickMaskExtensionManager">
 		<span class="t3-icon t3-icon-actions t3-icon-dialog-error">&nbsp;</span> <f:translate key="dependencyCheck.unresolvedDependencies.proceed" />
 	</f:link.action>
 </f:section>
