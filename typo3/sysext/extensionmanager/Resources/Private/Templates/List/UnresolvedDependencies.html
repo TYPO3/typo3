@@ -12,14 +12,9 @@
 <f:section name="Content">
 	<f:flashMessages renderMode="div" />
 	<f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
-	<br />
-	<div class="alert alert-danger">
-		<div class="header-container">
-			<h4><f:translate key="dependencyCheck.unresolvedDependencies.title" /></h4>
-		</div>
-		<div class="alert-body"><f:render partial="List/UnresolvedDependenciesMessage" /></div>
-	</div>
-	<br />
+	<f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="1">
+		<f:render partial="List/UnresolvedDependenciesMessage" />
+	</f:be.infobox>
 	<f:link.action action="index" class="btn btn-default onClickMaskExtensionManager">
 		Go back
 	</f:link.action>
