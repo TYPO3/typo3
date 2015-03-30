@@ -3,199 +3,199 @@
 	<file t3:id="1415814850" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="about" xml:space="preserve">
+			<trans-unit id="about">
 				<source>About</source>
 			</trans-unit>
-			<trans-unit id="and" xml:space="preserve">
+			<trans-unit id="and">
 				<source>and</source>
 			</trans-unit>
-			<trans-unit id="ascending" xml:space="preserve">
+			<trans-unit id="ascending">
 				<source>Ascending</source>
 			</trans-unit>
-			<trans-unit id="back" xml:space="preserve">
+			<trans-unit id="back">
 				<source>Back</source>
 			</trans-unit>
-			<trans-unit id="byteSizeUnits" xml:space="preserve">
+			<trans-unit id="byteSizeUnits">
 				<source> B| KB| MB| GB</source>
 			</trans-unit>
-			<trans-unit id="cancel" xml:space="preserve">
+			<trans-unit id="cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="category" xml:space="preserve">
+			<trans-unit id="category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="close" xml:space="preserve">
+			<trans-unit id="close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="delete" xml:space="preserve">
+			<trans-unit id="delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="descending" xml:space="preserve">
+			<trans-unit id="descending">
 				<source>Descending</source>
 			</trans-unit>
-			<trans-unit id="details" xml:space="preserve">
+			<trans-unit id="details">
 				<source>Details</source>
 			</trans-unit>
-			<trans-unit id="disable" xml:space="preserve">
+			<trans-unit id="disable">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="disabled" xml:space="preserve">
+			<trans-unit id="disabled">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="down" xml:space="preserve">
+			<trans-unit id="down">
 				<source>Down</source>
 			</trans-unit>
-			<trans-unit id="download" xml:space="preserve">
+			<trans-unit id="download">
 				<source>Download</source>
 			</trans-unit>
-			<trans-unit id="edit" xml:space="preserve">
+			<trans-unit id="edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="editField" xml:space="preserve">
+			<trans-unit id="editField">
 				<source>Edit field</source>
 			</trans-unit>
-			<trans-unit id="editFile" xml:space="preserve">
+			<trans-unit id="editFile">
 				<source>Edit file</source>
 			</trans-unit>
-			<trans-unit id="enable" xml:space="preserve">
+			<trans-unit id="enable">
 				<source>Enable</source>
 			</trans-unit>
-			<trans-unit id="enabled" xml:space="preserve">
+			<trans-unit id="enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="file" xml:space="preserve">
+			<trans-unit id="file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="files" xml:space="preserve">
+			<trans-unit id="files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="folder" xml:space="preserve">
+			<trans-unit id="folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="first" xml:space="preserve">
+			<trans-unit id="first">
 				<source>First</source>
 			</trans-unit>
-			<trans-unit id="from" xml:space="preserve">
+			<trans-unit id="from">
 				<source>From</source>
 			</trans-unit>
-			<trans-unit id="go" xml:space="preserve">
+			<trans-unit id="go">
 				<source>Go</source>
 			</trans-unit>
-			<trans-unit id="goTo" xml:space="preserve">
+			<trans-unit id="goTo">
 				<source>Go to</source>
 			</trans-unit>
-			<trans-unit id="help" xml:space="preserve">
+			<trans-unit id="help">
 				<source>Help</source>
 			</trans-unit>
-			<trans-unit id="item" xml:space="preserve">
+			<trans-unit id="item">
 				<source>Item</source>
 			</trans-unit>
-			<trans-unit id="items" xml:space="preserve">
+			<trans-unit id="items">
 				<source>Items</source>
 			</trans-unit>
-			<trans-unit id="last" xml:space="preserve">
+			<trans-unit id="last">
 				<source>Last</source>
 			</trans-unit>
-			<trans-unit id="left" xml:space="preserve">
+			<trans-unit id="left">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="login" xml:space="preserve">
+			<trans-unit id="login">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="logout" xml:space="preserve">
+			<trans-unit id="logout">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="more" xml:space="preserve">
+			<trans-unit id="more">
 				<source>More</source>
 			</trans-unit>
-			<trans-unit id="move" xml:space="preserve">
+			<trans-unit id="move">
 				<source>Move</source>
 			</trans-unit>
-			<trans-unit id="new" xml:space="preserve">
+			<trans-unit id="new">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="next" xml:space="preserve">
+			<trans-unit id="next">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="no" xml:space="preserve">
+			<trans-unit id="no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="ok" xml:space="preserve">
+			<trans-unit id="ok">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="open" xml:space="preserve">
+			<trans-unit id="open">
 				<source>Open</source>
 			</trans-unit>
-			<trans-unit id="page" xml:space="preserve">
+			<trans-unit id="page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages" xml:space="preserve">
+			<trans-unit id="pages">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="previous" xml:space="preserve">
+			<trans-unit id="previous">
 				<source>Previous</source>
 			</trans-unit>
-			<trans-unit id="print" xml:space="preserve">
+			<trans-unit id="print">
 				<source>Print</source>
 			</trans-unit>
-			<trans-unit id="reload" xml:space="preserve">
+			<trans-unit id="reload">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="right" xml:space="preserve">
+			<trans-unit id="right">
 				<source>Right</source>
 			</trans-unit>
-			<trans-unit id="save" xml:space="preserve">
+			<trans-unit id="save">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="saveAndClose" xml:space="preserve">
+			<trans-unit id="saveAndClose">
 				<source>Save and close</source>
 			</trans-unit>
-			<trans-unit id="saveAndCloseDoc" xml:space="preserve">
+			<trans-unit id="saveAndCloseDoc">
 				<source>Save and close document</source>
 			</trans-unit>
-			<trans-unit id="saveAndCreateNewDoc" xml:space="preserve">
+			<trans-unit id="saveAndCreateNewDoc">
 				<source>Save and create new document</source>
 			</trans-unit>
-			<trans-unit id="saveAndViewPage" xml:space="preserve">
+			<trans-unit id="saveAndViewPage">
 				<source>Save and view page</source>
 			</trans-unit>
-			<trans-unit id="search" xml:space="preserve">
+			<trans-unit id="search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="send" xml:space="preserve">
+			<trans-unit id="send">
 				<source>Send</source>
 			</trans-unit>
-			<trans-unit id="start" xml:space="preserve">
+			<trans-unit id="start">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="stop" xml:space="preserve">
+			<trans-unit id="stop">
 				<source>Stop</source>
 			</trans-unit>
-			<trans-unit id="submit" xml:space="preserve">
+			<trans-unit id="submit">
 				<source>Submit</source>
 			</trans-unit>
-			<trans-unit id="to" xml:space="preserve">
+			<trans-unit id="to">
 				<source>To</source>
 			</trans-unit>
-			<trans-unit id="tsRef" xml:space="preserve">
+			<trans-unit id="tsRef">
 				<source>TSref reference</source>
 			</trans-unit>
-			<trans-unit id="up" xml:space="preserve">
+			<trans-unit id="up">
 				<source>Up</source>
 			</trans-unit>
-			<trans-unit id="upload" xml:space="preserve">
+			<trans-unit id="upload">
 				<source>Upload</source>
 			</trans-unit>
-			<trans-unit id="user" xml:space="preserve">
+			<trans-unit id="user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="users" xml:space="preserve">
+			<trans-unit id="users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="view" xml:space="preserve">
+			<trans-unit id="view">
 				<source>View</source>
 			</trans-unit>
-			<trans-unit id="yes" xml:space="preserve">
+			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
 		</body>

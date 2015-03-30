@@ -3,20 +3,20 @@
 	<file t3:id="1415814858" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title.description" xml:space="preserve">
+			<trans-unit id="title.description">
 				<source>Enter the name of this additional system language.</source>
 			</trans-unit>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>This option will hide the system language from being available in the backend.</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>Defines which languages are alternatively available on each webpage.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
 				<source>The Web&gt;Page module has a feature which allows users to edit page content divided into not only columns but also languages. The languages available for translation are determined by the number of Website Language record created.
 For a webpage to be available in another language an "Alternative Page Language" record must be created on the page.</source>
 			</trans-unit>
-			<trans-unit id="_.seeAlso" xml:space="preserve">
+			<trans-unit id="_.seeAlso">
 				<source>pages_language_overlay</source>
 			</trans-unit>
 		</body>

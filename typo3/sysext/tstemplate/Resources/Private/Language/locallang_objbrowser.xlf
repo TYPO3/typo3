@@ -3,127 +3,127 @@
 	<file t3:id="1415815006" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="constants" xml:space="preserve">
+			<trans-unit id="constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="setup" xml:space="preserve">
+			<trans-unit id="setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="all" xml:space="preserve">
+			<trans-unit id="all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="plainSubstitution" xml:space="preserve">
+			<trans-unit id="plainSubstitution">
 				<source>Plain substitution (default)</source>
 			</trans-unit>
-			<trans-unit id="substitutedGreen" xml:space="preserve">
+			<trans-unit id="substitutedGreen">
 				<source>Substituted constants in green</source>
 			</trans-unit>
-			<trans-unit id="unsubstitutedGreen" xml:space="preserve">
+			<trans-unit id="unsubstitutedGreen">
 				<source>UN-substituted constants in green</source>
 			</trans-unit>
-			<trans-unit id="currentTemplate" xml:space="preserve">
+			<trans-unit id="currentTemplate">
 				<source>Current template</source>
 			</trans-unit>
-			<trans-unit id="badProperty" xml:space="preserve">
+			<trans-unit id="badProperty">
 				<source>Bad property!</source>
 			</trans-unit>
-			<trans-unit id="noSpaces" xml:space="preserve">
+			<trans-unit id="noSpaces">
 				<source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
 			</trans-unit>
-			<trans-unit id="nothingUpdated" xml:space="preserve">
+			<trans-unit id="nothingUpdated">
 				<source>Nothing was updated!</source>
 			</trans-unit>
-			<trans-unit id="propertyAdded" xml:space="preserve">
+			<trans-unit id="propertyAdded">
 				<source>Property added</source>
 			</trans-unit>
-			<trans-unit id="valueUpdated" xml:space="preserve">
+			<trans-unit id="valueUpdated">
 				<source>Value updated</source>
 			</trans-unit>
-			<trans-unit id="objectCleared" xml:space="preserve">
+			<trans-unit id="objectCleared">
 				<source>Object cleared</source>
 			</trans-unit>
-			<trans-unit id="updateButton" xml:space="preserve">
+			<trans-unit id="updateButton">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="editProperty" xml:space="preserve">
+			<trans-unit id="editProperty">
 				<source>Edit object/property value:</source>
 			</trans-unit>
-			<trans-unit id="addButton" xml:space="preserve">
+			<trans-unit id="addButton">
 				<source>Add</source>
 			</trans-unit>
-			<trans-unit id="addProperty" xml:space="preserve">
+			<trans-unit id="addProperty">
 				<source>Add object property:</source>
 			</trans-unit>
-			<trans-unit id="clear" xml:space="preserve">
+			<trans-unit id="clear">
 				<source>Clear?</source>
 			</trans-unit>
-			<trans-unit id="clearButton" xml:space="preserve">
+			<trans-unit id="clearButton">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="clearObject" xml:space="preserve">
+			<trans-unit id="clearObject">
 				<source>Clear object:</source>
 			</trans-unit>
-			<trans-unit id="edit" xml:space="preserve">
+			<trans-unit id="edit">
 				<source>Edit:</source>
 			</trans-unit>
-			<trans-unit id="noCurrentTemplate" xml:space="preserve">
+			<trans-unit id="noCurrentTemplate">
 				<source>You cannot edit properties and values, if there's no current template.</source>
 			</trans-unit>
-			<trans-unit id="addKey" xml:space="preserve">
+			<trans-unit id="addKey">
 				<source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
 			</trans-unit>
-			<trans-unit id="removeKey" xml:space="preserve">
+			<trans-unit id="removeKey">
 				<source>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</source>
 			</trans-unit>
-			<trans-unit id="back" xml:space="preserve">
+			<trans-unit id="back">
 				<source>&lt; Back</source>
 			</trans-unit>
-			<trans-unit id="browse" xml:space="preserve">
+			<trans-unit id="browse">
 				<source>Browse:</source>
 			</trans-unit>
-			<trans-unit id="objectList" xml:space="preserve">
+			<trans-unit id="objectList">
 				<source>Object List:</source>
 			</trans-unit>
-			<trans-unit id="search" xml:space="preserve">
+			<trans-unit id="search">
 				<source>Search:</source>
 			</trans-unit>
-			<trans-unit id="regExp" xml:space="preserve">
+			<trans-unit id="regExp">
 				<source>Regular expressions</source>
 			</trans-unit>
-			<trans-unit id="errorsWarnings" xml:space="preserve">
+			<trans-unit id="errorsWarnings">
 				<source>Errors and warnings</source>
 			</trans-unit>
-			<trans-unit id="errorShowDetails" xml:space="preserve">
+			<trans-unit id="errorShowDetails">
 				<source>Show details</source>
 			</trans-unit>
-			<trans-unit id="removeKey" xml:space="preserve">
+			<trans-unit id="removeKey">
 				<source>Remove key from OL</source>
 			</trans-unit>
-			<trans-unit id="setupRoot" xml:space="preserve">
+			<trans-unit id="setupRoot">
 				<source>setup root</source>
 			</trans-unit>
-			<trans-unit id="constantRoot" xml:space="preserve">
+			<trans-unit id="constantRoot">
 				<source>constants root</source>
 			</trans-unit>
-			<trans-unit id="displayComments" xml:space="preserve">
+			<trans-unit id="displayComments">
 				<source>Display comments</source>
 			</trans-unit>
-			<trans-unit id="sortAlphabetically" xml:space="preserve">
+			<trans-unit id="sortAlphabetically">
 				<source>Sort alphabetically</source>
 			</trans-unit>
-			<trans-unit id="cropLines" xml:space="preserve">
+			<trans-unit id="cropLines">
 				<source>Crop lines</source>
 			</trans-unit>
-			<trans-unit id="displayConstants" xml:space="preserve">
+			<trans-unit id="displayConstants">
 				<source>Display constants:</source>
 			</trans-unit>
-			<trans-unit id="displayOptions" xml:space="preserve">
+			<trans-unit id="displayOptions">
 				<source>Display options</source>
 			</trans-unit>
-			<trans-unit id="conditions" xml:space="preserve">
+			<trans-unit id="conditions">
 				<source>Conditions</source>
 			</trans-unit>
-			<trans-unit id="setConditions" xml:space="preserve">
+			<trans-unit id="setConditions">
 				<source>Set conditions</source>
 			</trans-unit>
 		</body>

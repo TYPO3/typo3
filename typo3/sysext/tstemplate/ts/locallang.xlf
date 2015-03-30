@@ -3,85 +3,85 @@
 	<file t3:id="1415815007" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="moduleTitle" xml:space="preserve">
+			<trans-unit id="moduleTitle">
 				<source>Template tools</source>
 			</trans-unit>
-			<trans-unit id="templateAnalyzer" xml:space="preserve">
+			<trans-unit id="templateAnalyzer">
 				<source>Template Analyzer</source>
 			</trans-unit>
-			<trans-unit id="constantEditor" xml:space="preserve">
+			<trans-unit id="constantEditor">
 				<source>Constant Editor</source>
 			</trans-unit>
-			<trans-unit id="infoModify" xml:space="preserve">
+			<trans-unit id="infoModify">
 				<source>Info/Modify</source>
 			</trans-unit>
-			<trans-unit id="objectBrowser" xml:space="preserve">
+			<trans-unit id="objectBrowser">
 				<source>TypoScript Object Browser</source>
 			</trans-unit>
-			<trans-unit id="viewTemplates" xml:space="preserve">
+			<trans-unit id="viewTemplates">
 				<source>Viewing templates of</source>
 			</trans-unit>
-			<trans-unit id="pageName" xml:space="preserve">
+			<trans-unit id="pageName">
 				<source>Page name</source>
 			</trans-unit>
-			<trans-unit id="templates" xml:space="preserve">
+			<trans-unit id="templates">
 				<source>Templates</source>
 			</trans-unit>
-			<trans-unit id="isRoot" xml:space="preserve">
+			<trans-unit id="isRoot">
 				<source>Is Root?</source>
 			</trans-unit>
-			<trans-unit id="isExt" xml:space="preserve">
+			<trans-unit id="isExt">
 				<source>Is Ext?</source>
 			</trans-unit>
-			<trans-unit id="overview" xml:space="preserve">
+			<trans-unit id="overview">
 				<source>This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</source>
 			</trans-unit>
-			<trans-unit id="areYouSure" xml:space="preserve">
+			<trans-unit id="areYouSure">
 				<source>Are you sure you want to do this?</source>
 			</trans-unit>
-			<trans-unit id="noTemplate" xml:space="preserve">
+			<trans-unit id="noTemplate">
 				<source>No template</source>
 			</trans-unit>
-			<trans-unit id="noTemplateDescription" xml:space="preserve">
+			<trans-unit id="noTemplateDescription">
 				<source>There was no template on this page!</source>
 			</trans-unit>
-			<trans-unit id="createTemplate" xml:space="preserve">
+			<trans-unit id="createTemplate">
 				<source>Create a template record first in order to edit constants!</source>
 			</trans-unit>
-			<trans-unit id="createTemplateToEditConfiguration" xml:space="preserve">
+			<trans-unit id="createTemplateToEditConfiguration">
 				<source>You need to create a template record below in order to edit your configuration.</source>
 			</trans-unit>
-			<trans-unit id="newWebsite" xml:space="preserve">
+			<trans-unit id="newWebsite">
 				<source>Create new website</source>
 			</trans-unit>
-			<trans-unit id="newWebsiteDescription" xml:space="preserve">
+			<trans-unit id="newWebsiteDescription">
 				<source>If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</source>
 			</trans-unit>
-			<trans-unit id="newWebsiteAction" xml:space="preserve">
+			<trans-unit id="newWebsiteAction">
 				<source>Create template for a new site</source>
 			</trans-unit>
-			<trans-unit id="extTemplate" xml:space="preserve">
+			<trans-unit id="extTemplate">
 				<source>Create extension template</source>
 			</trans-unit>
-			<trans-unit id="extTemplateDescription" xml:space="preserve">
+			<trans-unit id="extTemplateDescription">
 				<source>An extension template allows you to enter TypoScript values that will affect only this page and subpages.</source>
 			</trans-unit>
-			<trans-unit id="extTemplateAction" xml:space="preserve">
+			<trans-unit id="extTemplateAction">
 				<source>Click here to create an extension template.</source>
 			</trans-unit>
-			<trans-unit id="goToClosest" xml:space="preserve">
+			<trans-unit id="goToClosest">
 				<source>Go to closest page with template</source>
 			</trans-unit>
-			<trans-unit id="goToClosestDescription" xml:space="preserve">
+			<trans-unit id="goToClosestDescription">
 				<source>Closest template is on page '%s' (uid %s).</source>
 			</trans-unit>
-			<trans-unit id="goToClosestAction" xml:space="preserve">
+			<trans-unit id="goToClosestAction">
 				<source>Click here to go.</source>
 			</trans-unit>
-			<trans-unit id="titleNewSiteStandard" xml:space="preserve">
+			<trans-unit id="titleNewSiteStandard">
 				<source>NEW SITE, based on standard</source>
 			</trans-unit>
-			<trans-unit id="titleNewSite" xml:space="preserve">
+			<trans-unit id="titleNewSite">
 				<source>NEW SITE</source>
 			</trans-unit>
 		</body>

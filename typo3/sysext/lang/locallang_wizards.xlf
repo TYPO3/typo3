@@ -3,259 +3,259 @@
 	<file t3:id="1415814890" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="rte_undoLastChange" xml:space="preserve">
+			<trans-unit id="rte_undoLastChange">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="tsprop" xml:space="preserve">
+			<trans-unit id="tsprop">
 				<source>TypoScript property lookup</source>
 			</trans-unit>
-			<trans-unit id="tsprop_TSref" xml:space="preserve">
+			<trans-unit id="tsprop_TSref">
 				<source>TSref online</source>
 			</trans-unit>
-			<trans-unit id="tsprop_tsconfig" xml:space="preserve">
+			<trans-unit id="tsprop_tsconfig">
 				<source>TSconfig online</source>
 			</trans-unit>
-			<trans-unit id="tsprop_title" xml:space="preserve">
+			<trans-unit id="tsprop_title">
 				<source>Object title</source>
 			</trans-unit>
-			<trans-unit id="tsprop_prefix" xml:space="preserve">
+			<trans-unit id="tsprop_prefix">
 				<source>Object prefix</source>
 			</trans-unit>
-			<trans-unit id="tsprop_mixer_indent" xml:space="preserve">
+			<trans-unit id="tsprop_mixer_indent">
 				<source>Indent +2</source>
 			</trans-unit>
-			<trans-unit id="tsprop_mixer_outdent" xml:space="preserve">
+			<trans-unit id="tsprop_mixer_outdent">
 				<source>Outdent -2</source>
 			</trans-unit>
-			<trans-unit id="tsprop_mixer_wrap" xml:space="preserve">
+			<trans-unit id="tsprop_mixer_wrap">
 				<source>Wrap</source>
 			</trans-unit>
-			<trans-unit id="tsprop_mixer_transfer" xml:space="preserve">
+			<trans-unit id="tsprop_mixer_transfer">
 				<source>Transfer &amp; Close</source>
 			</trans-unit>
-			<trans-unit id="tsprop_addToList" xml:space="preserve">
+			<trans-unit id="tsprop_addToList">
 				<source>Add to list...</source>
 			</trans-unit>
-			<trans-unit id="table_title" xml:space="preserve">
+			<trans-unit id="table_title">
 				<source>Table wizard</source>
 			</trans-unit>
-			<trans-unit id="table_smallFields" xml:space="preserve">
+			<trans-unit id="table_smallFields">
 				<source>Small fields</source>
 			</trans-unit>
-			<trans-unit id="table_addColumn" xml:space="preserve">
+			<trans-unit id="table_addColumn">
 				<source>Add column to the right</source>
 			</trans-unit>
-			<trans-unit id="table_removeColumn" xml:space="preserve">
+			<trans-unit id="table_removeColumn">
 				<source>Remove column</source>
 			</trans-unit>
-			<trans-unit id="table_addRow" xml:space="preserve">
+			<trans-unit id="table_addRow">
 				<source>Add row below</source>
 			</trans-unit>
-			<trans-unit id="table_removeRow" xml:space="preserve">
+			<trans-unit id="table_removeRow">
 				<source>Remove row</source>
 			</trans-unit>
-			<trans-unit id="table_left" xml:space="preserve">
+			<trans-unit id="table_left">
 				<source>Move left</source>
 			</trans-unit>
-			<trans-unit id="table_right" xml:space="preserve">
+			<trans-unit id="table_right">
 				<source>Move right</source>
 			</trans-unit>
-			<trans-unit id="table_up" xml:space="preserve">
+			<trans-unit id="table_up">
 				<source>Move up</source>
 			</trans-unit>
-			<trans-unit id="table_down" xml:space="preserve">
+			<trans-unit id="table_down">
 				<source>Move down</source>
 			</trans-unit>
-			<trans-unit id="table_top" xml:space="preserve">
+			<trans-unit id="table_top">
 				<source>Move to top</source>
 			</trans-unit>
-			<trans-unit id="table_bottom" xml:space="preserve">
+			<trans-unit id="table_bottom">
 				<source>Move to bottom</source>
 			</trans-unit>
-			<trans-unit id="table_start" xml:space="preserve">
+			<trans-unit id="table_start">
 				<source>Move to first column</source>
 			</trans-unit>
-			<trans-unit id="table_end" xml:space="preserve">
+			<trans-unit id="table_end">
 				<source>Move to last column</source>
 			</trans-unit>
-			<trans-unit id="table_noData" xml:space="preserve">
+			<trans-unit id="table_noData">
 				<source>No table,field or uid given</source>
 			</trans-unit>
-			<trans-unit id="forms_title" xml:space="preserve">
+			<trans-unit id="forms_title">
 				<source>Forms wizard</source>
 			</trans-unit>
-			<trans-unit id="forms_refresh" xml:space="preserve">
+			<trans-unit id="forms_refresh">
 				<source>Refresh without saving</source>
 			</trans-unit>
-			<trans-unit id="forms_label" xml:space="preserve">
+			<trans-unit id="forms_label">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="forms_type" xml:space="preserve">
+			<trans-unit id="forms_type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="forms_type_textarea" xml:space="preserve">
+			<trans-unit id="forms_type_textarea">
 				<source>Text area</source>
 			</trans-unit>
-			<trans-unit id="forms_type_input" xml:space="preserve">
+			<trans-unit id="forms_type_input">
 				<source>Input field</source>
 			</trans-unit>
-			<trans-unit id="forms_type_password" xml:space="preserve">
+			<trans-unit id="forms_type_password">
 				<source>Password field</source>
 			</trans-unit>
-			<trans-unit id="forms_type_file" xml:space="preserve">
+			<trans-unit id="forms_type_file">
 				<source>File upload</source>
 			</trans-unit>
-			<trans-unit id="forms_type_check" xml:space="preserve">
+			<trans-unit id="forms_type_check">
 				<source>Check box</source>
 			</trans-unit>
-			<trans-unit id="forms_type_select" xml:space="preserve">
+			<trans-unit id="forms_type_select">
 				<source>Selector box</source>
 			</trans-unit>
-			<trans-unit id="forms_type_radio" xml:space="preserve">
+			<trans-unit id="forms_type_radio">
 				<source>Radio buttons</source>
 			</trans-unit>
-			<trans-unit id="forms_type_hidden" xml:space="preserve">
+			<trans-unit id="forms_type_hidden">
 				<source>Hidden value</source>
 			</trans-unit>
-			<trans-unit id="forms_type_submit" xml:space="preserve">
+			<trans-unit id="forms_type_submit">
 				<source>Submit Button</source>
 			</trans-unit>
-			<trans-unit id="forms_type_property" xml:space="preserve">
+			<trans-unit id="forms_type_property">
 				<source>Property</source>
 			</trans-unit>
-			<trans-unit id="forms_type_label" xml:space="preserve">
+			<trans-unit id="forms_type_label">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="forms_required" xml:space="preserve">
+			<trans-unit id="forms_required">
 				<source>Required</source>
 			</trans-unit>
-			<trans-unit id="forms_fieldName" xml:space="preserve">
+			<trans-unit id="forms_fieldName">
 				<source>Field</source>
 			</trans-unit>
-			<trans-unit id="forms_cols" xml:space="preserve">
+			<trans-unit id="forms_cols">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="forms_rows" xml:space="preserve">
+			<trans-unit id="forms_rows">
 				<source>Rows</source>
 			</trans-unit>
-			<trans-unit id="forms_size" xml:space="preserve">
+			<trans-unit id="forms_size">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="forms_max" xml:space="preserve">
+			<trans-unit id="forms_max">
 				<source>Max</source>
 			</trans-unit>
-			<trans-unit id="forms_autosize" xml:space="preserve">
+			<trans-unit id="forms_autosize">
 				<source>Auto size</source>
 			</trans-unit>
-			<trans-unit id="forms_extra" xml:space="preserve">
+			<trans-unit id="forms_extra">
 				<source>No Wrap</source>
 			</trans-unit>
-			<trans-unit id="forms_default" xml:space="preserve">
+			<trans-unit id="forms_default">
 				<source>Value</source>
 			</trans-unit>
-			<trans-unit id="forms_multiple" xml:space="preserve">
+			<trans-unit id="forms_multiple">
 				<source>Multiple</source>
 			</trans-unit>
-			<trans-unit id="forms_options" xml:space="preserve">
+			<trans-unit id="forms_options">
 				<source>List options</source>
 			</trans-unit>
-			<trans-unit id="forms_checked" xml:space="preserve">
+			<trans-unit id="forms_checked">
 				<source>Checked</source>
 			</trans-unit>
-			<trans-unit id="forms_preview" xml:space="preserve">
+			<trans-unit id="forms_preview">
 				<source>Preview of element</source>
 			</trans-unit>
-			<trans-unit id="forms_element" xml:space="preserve">
+			<trans-unit id="forms_element">
 				<source>Element type</source>
 			</trans-unit>
-			<trans-unit id="forms_config" xml:space="preserve">
+			<trans-unit id="forms_config">
 				<source>Detailed configuration</source>
 			</trans-unit>
-			<trans-unit id="forms_eform_subject" xml:space="preserve">
+			<trans-unit id="forms_eform_subject">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="forms_eform_recipient" xml:space="preserve">
+			<trans-unit id="forms_eform_recipient">
 				<source>Recipient email</source>
 			</trans-unit>
-			<trans-unit id="forms_eform_html_enabled" xml:space="preserve">
+			<trans-unit id="forms_eform_html_enabled">
 				<source>HTML mode enabled</source>
 			</trans-unit>
-			<trans-unit id="forms_eform_formtype_mail" xml:space="preserve">
+			<trans-unit id="forms_eform_formtype_mail">
 				<source>Send button label</source>
 			</trans-unit>
-			<trans-unit id="forms_special_eform" xml:space="preserve">
+			<trans-unit id="forms_special_eform">
 				<source>Special configuration for mail forms</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_title" xml:space="preserve">
+			<trans-unit id="colorpicker_title">
 				<source>Color Picker</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_setClose" xml:space="preserve">
+			<trans-unit id="colorpicker_setClose">
 				<source>Save and Close</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_colorValue" xml:space="preserve">
+			<trans-unit id="colorpicker_colorValue">
 				<source>Selected Color:</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_fromImage" xml:space="preserve">
+			<trans-unit id="colorpicker_fromImage">
 				<source>Capture color from image (click on image):</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_fromMatrix" xml:space="preserve">
+			<trans-unit id="colorpicker_fromMatrix">
 				<source>Select color from matrix (websafe colors):</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_fromList" xml:space="preserve">
+			<trans-unit id="colorpicker_fromList">
 				<source>Select HTML color name:</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_black" xml:space="preserve">
+			<trans-unit id="colorpicker_black">
 				<source>BLACK</source>
 			</trans-unit>
-			<trans-unit id="colorpicker_white" xml:space="preserve">
+			<trans-unit id="colorpicker_white">
 				<source>WHITE</source>
 			</trans-unit>
-			<trans-unit id="grid_windowTitle" xml:space="preserve">
+			<trans-unit id="grid_windowTitle">
 				<source>Set cell name and column number</source>
 			</trans-unit>
-			<trans-unit id="grid_labelName" xml:space="preserve">
+			<trans-unit id="grid_labelName">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="grid_labelColumn" xml:space="preserve">
+			<trans-unit id="grid_labelColumn">
 				<source>Column Number</source>
 			</trans-unit>
-			<trans-unit id="grid_labelSave" xml:space="preserve">
+			<trans-unit id="grid_labelSave">
 				<source>Save to cell</source>
 			</trans-unit>
-			<trans-unit id="grid_addColumn" xml:space="preserve">
+			<trans-unit id="grid_addColumn">
 				<source>Add column</source>
 			</trans-unit>
-			<trans-unit id="grid_removeColumn" xml:space="preserve">
+			<trans-unit id="grid_removeColumn">
 				<source>Remove column</source>
 			</trans-unit>
-			<trans-unit id="grid_addRow" xml:space="preserve">
+			<trans-unit id="grid_addRow">
 				<source>Add row</source>
 			</trans-unit>
-			<trans-unit id="grid_removeRow" xml:space="preserve">
+			<trans-unit id="grid_removeRow">
 				<source>Remove row</source>
 			</trans-unit>
-			<trans-unit id="grid_editCell" xml:space="preserve">
+			<trans-unit id="grid_editCell">
 				<source>Edit cell</source>
 			</trans-unit>
-			<trans-unit id="grid_mergeCell" xml:space="preserve">
+			<trans-unit id="grid_mergeCell">
 				<source>Combine with next cell</source>
 			</trans-unit>
-			<trans-unit id="grid_splitCell" xml:space="preserve">
+			<trans-unit id="grid_splitCell">
 				<source>Split cell</source>
 			</trans-unit>
-			<trans-unit id="grid_name" xml:space="preserve">
+			<trans-unit id="grid_name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="grid_column" xml:space="preserve">
+			<trans-unit id="grid_column">
 				<source>Column number</source>
 			</trans-unit>
-			<trans-unit id="grid_notSet" xml:space="preserve">
+			<trans-unit id="grid_notSet">
 				<source>not set</source>
 			</trans-unit>
-			<trans-unit id="grid_nameHelp" xml:space="preserve">
+			<trans-unit id="grid_nameHelp">
 				<source>Enter a name for the cell.</source>
 			</trans-unit>
-			<trans-unit id="grid_columnHelp" xml:space="preserve">
+			<trans-unit id="grid_columnHelp">
 				<source>The column position defines in which area the content is rendered in the frontend.</source>
 			</trans-unit>
 		</body>

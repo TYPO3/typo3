@@ -3,451 +3,451 @@
 	<file t3:id="1415814876" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Workspace overview</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Workspace overview showing the changes you have made in the workspace. Here you can also publish the changes to the website if you are allowed to do that.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Workspace Manager</source>
 			</trans-unit>
-			<trans-unit id="menuitem_review" xml:space="preserve">
+			<trans-unit id="menuitem_review">
 				<source>Review and Publish</source>
 			</trans-unit>
-			<trans-unit id="menuitem_workspaces" xml:space="preserve">
+			<trans-unit id="menuitem_workspaces">
 				<source>Workspace List</source>
 			</trans-unit>
-			<trans-unit id="filter_drafts" xml:space="preserve">
+			<trans-unit id="filter_drafts">
 				<source>Drafts</source>
 			</trans-unit>
-			<trans-unit id="filter_archive" xml:space="preserve">
+			<trans-unit id="filter_archive">
 				<source>Archive</source>
 			</trans-unit>
-			<trans-unit id="filter_all" xml:space="preserve">
+			<trans-unit id="filter_all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="diff_no_diff" xml:space="preserve">
+			<trans-unit id="diff_no_diff">
 				<source>Do not show differences</source>
 			</trans-unit>
-			<trans-unit id="diff_show_inline" xml:space="preserve">
+			<trans-unit id="diff_show_inline">
 				<source>Show differences inline</source>
 			</trans-unit>
-			<trans-unit id="diff_show_popup" xml:space="preserve">
+			<trans-unit id="diff_show_popup">
 				<source>Show diff. popups (branches)</source>
 			</trans-unit>
-			<trans-unit id="label_errors" xml:space="preserve">
+			<trans-unit id="label_errors">
 				<source>Errors:</source>
 			</trans-unit>
-			<trans-unit id="workspace_description_live" xml:space="preserve">
+			<trans-unit id="workspace_description_live">
 				<source>The LIVE workspace allows changes to take effect immediately on the website. However versioning can be applied inside the live workspace and this overview shows you draft and archive versions from the various workspaces, including the LIVE workspace.</source>
 			</trans-unit>
-			<trans-unit id="workspace_description_draft" xml:space="preserve">
+			<trans-unit id="workspace_description_draft">
 				<source>In the Draft workspace all changes will be made as new versions of the live content. Changes can be previewed, reviewed and eventually published live.</source>
 			</trans-unit>
-			<trans-unit id="workspace_description_no_access" xml:space="preserve">
+			<trans-unit id="workspace_description_no_access">
 				<source>You have no access to any workspace which might be an error. Please contact you administrator!</source>
 			</trans-unit>
-			<trans-unit id="edit_workspace_no_permission" xml:space="preserve">
+			<trans-unit id="edit_workspace_no_permission">
 				<source>You have no permission to edit this workspace. Only admin users or owners of the workspace can modify its parameters.</source>
 			</trans-unit>
-			<trans-unit id="create_workspace_no_permission" xml:space="preserve">
+			<trans-unit id="create_workspace_no_permission">
 				<source>You have no permission to create workspaces. Only admin users can create workspaces.</source>
 			</trans-unit>
-			<trans-unit id="submit_publish_workspace" xml:space="preserve">
+			<trans-unit id="submit_publish_workspace">
 				<source>Publish workspace</source>
 			</trans-unit>
-			<trans-unit id="submit_publish_workspace_confirmation_1" xml:space="preserve">
+			<trans-unit id="submit_publish_workspace_confirmation_1">
 				<source>Are you sure you want to publish all content in "Publish" stage from the workspace?</source>
 			</trans-unit>
-			<trans-unit id="submit_publish_workspace_confirmation_2" xml:space="preserve">
+			<trans-unit id="submit_publish_workspace_confirmation_2">
 				<source>Are you sure you want to publish all content from the workspace?</source>
 			</trans-unit>
-			<trans-unit id="submit_swap_workspace" xml:space="preserve">
+			<trans-unit id="submit_swap_workspace">
 				<source>Swap workspace</source>
 			</trans-unit>
-			<trans-unit id="submit_swap_workspace_confirmation_1" xml:space="preserve">
+			<trans-unit id="submit_swap_workspace_confirmation_1">
 				<source>Are you sure you want to publish (swap) all content in "Publish" stage from the workspace?</source>
 			</trans-unit>
-			<trans-unit id="submit_swap_workspace_confirmation_2" xml:space="preserve">
+			<trans-unit id="submit_swap_workspace_confirmation_2">
 				<source>Are you sure you want to publish (swap) all content from the workspace?</source>
 			</trans-unit>
-			<trans-unit id="submit_apply_action_on_selected_elements" xml:space="preserve">
+			<trans-unit id="submit_apply_action_on_selected_elements">
 				<source>Sure you want to perform this action with selected elements?</source>
 			</trans-unit>
-			<trans-unit id="no_publish_permission" xml:space="preserve">
+			<trans-unit id="no_publish_permission">
 				<source>You are not permitted to publish from this workspace</source>
 			</trans-unit>
-			<trans-unit id="label_workspace" xml:space="preserve">
+			<trans-unit id="label_workspace">
 				<source>Workspace:</source>
 			</trans-unit>
-			<trans-unit id="label_description" xml:space="preserve">
+			<trans-unit id="label_description">
 				<source>Description:</source>
 			</trans-unit>
-			<trans-unit id="label_options" xml:space="preserve">
+			<trans-unit id="label_options">
 				<source>Options:</source>
 			</trans-unit>
-			<trans-unit id="label_status" xml:space="preserve">
+			<trans-unit id="label_status">
 				<source>Status:</source>
 			</trans-unit>
-			<trans-unit id="label_pagetree" xml:space="preserve">
+			<trans-unit id="label_pagetree">
 				<source>Pagetree:</source>
 			</trans-unit>
-			<trans-unit id="label_live_version" xml:space="preserve">
+			<trans-unit id="label_live_version">
 				<source>Live Version:</source>
 			</trans-unit>
-			<trans-unit id="label_draft_versions" xml:space="preserve">
+			<trans-unit id="label_draft_versions">
 				<source>Workspace Versions:</source>
 			</trans-unit>
-			<trans-unit id="label_stage" xml:space="preserve">
+			<trans-unit id="label_stage">
 				<source>Stage:</source>
 			</trans-unit>
-			<trans-unit id="label_publish" xml:space="preserve">
+			<trans-unit id="label_publish">
 				<source>Publish:</source>
 			</trans-unit>
-			<trans-unit id="label_lifecycle" xml:space="preserve">
+			<trans-unit id="label_lifecycle">
 				<source>Lifecycle:</source>
 			</trans-unit>
-			<trans-unit id="label_access_level" xml:space="preserve">
+			<trans-unit id="label_access_level">
 				<source>Access level:</source>
 			</trans-unit>
-			<trans-unit id="img_title_publish" xml:space="preserve">
+			<trans-unit id="img_title_publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="img_title_swap" xml:space="preserve">
+			<trans-unit id="img_title_swap">
 				<source>Swap</source>
 			</trans-unit>
-			<trans-unit id="remove_from_ws_confirmation" xml:space="preserve">
+			<trans-unit id="remove_from_ws_confirmation">
 				<source>Remove from workspace?</source>
 			</trans-unit>
-			<trans-unit id="img_title_remove_from_ws" xml:space="preserve">
+			<trans-unit id="img_title_remove_from_ws">
 				<source>Remove from workspace?</source>
 			</trans-unit>
-			<trans-unit id="img_title_edit_page" xml:space="preserve">
+			<trans-unit id="img_title_edit_page">
 				<source>Edit page</source>
 			</trans-unit>
-			<trans-unit id="img_title_edit_element" xml:space="preserve">
+			<trans-unit id="img_title_edit_element">
 				<source>Edit element</source>
 			</trans-unit>
-			<trans-unit id="img_title_show_log" xml:space="preserve">
+			<trans-unit id="img_title_show_log">
 				<source>Show Log</source>
 			</trans-unit>
-			<trans-unit id="diffview_label_field_name" xml:space="preserve">
+			<trans-unit id="diffview_label_field_name">
 				<source>Fieldname:</source>
 			</trans-unit>
-			<trans-unit id="diffview_label_colored_diff_view" xml:space="preserve">
+			<trans-unit id="diffview_label_colored_diff_view">
 				<source>Colored diff-view:</source>
 			</trans-unit>
-			<trans-unit id="diffview_complete_match" xml:space="preserve">
+			<trans-unit id="diffview_complete_match">
 				<source>Complete match on editable fields.</source>
 			</trans-unit>
-			<trans-unit id="diffview_cannot_find_records" xml:space="preserve">
+			<trans-unit id="diffview_cannot_find_records">
 				<source>ERROR: Records could strangely not be found!</source>
 			</trans-unit>
-			<trans-unit id="img_title_show_more" xml:space="preserve">
+			<trans-unit id="img_title_show_more">
 				<source>Show more</source>
 			</trans-unit>
-			<trans-unit id="img_title_current_workspace" xml:space="preserve">
+			<trans-unit id="img_title_current_workspace">
 				<source>This is a current workspace!</source>
 			</trans-unit>
-			<trans-unit id="img_title_create_new_workspace" xml:space="preserve">
+			<trans-unit id="img_title_create_new_workspace">
 				<source>Create new workspace</source>
 			</trans-unit>
-			<trans-unit id="link_text_create_new_workspace" xml:space="preserve">
+			<trans-unit id="link_text_create_new_workspace">
 				<source>Create new workspace</source>
 			</trans-unit>
-			<trans-unit id="edit_workspace_go_back" xml:space="preserve">
+			<trans-unit id="edit_workspace_go_back">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="edit_workspace_title_edit" xml:space="preserve">
+			<trans-unit id="edit_workspace_title_edit">
 				<source>Edit workspace</source>
 			</trans-unit>
-			<trans-unit id="edit_workspace_title_new" xml:space="preserve">
+			<trans-unit id="edit_workspace_title_new">
 				<source>Create new workspace</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_current_workspace" xml:space="preserve">
+			<trans-unit id="workspace_list_label_current_workspace">
 				<source>Current:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_workspace_title" xml:space="preserve">
+			<trans-unit id="workspace_list_label_workspace_title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_workspace_description" xml:space="preserve">
+			<trans-unit id="workspace_list_label_workspace_description">
 				<source>Description:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_owners" xml:space="preserve">
+			<trans-unit id="workspace_list_label_owners">
 				<source>Owners:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_members" xml:space="preserve">
+			<trans-unit id="workspace_list_label_members">
 				<source>Members:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_reviewers" xml:space="preserve">
+			<trans-unit id="workspace_list_label_reviewers">
 				<source>Reviewers:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_admins_only" xml:space="preserve">
+			<trans-unit id="workspace_list_access_admins_only">
 				<source>Admins only</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_anyone" xml:space="preserve">
+			<trans-unit id="workspace_list_access_anyone">
 				<source>no restrictions</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_file_mountpoints" xml:space="preserve">
+			<trans-unit id="workspace_list_label_file_mountpoints">
 				<source>File mountpoints:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_db_mountpoints" xml:space="preserve">
+			<trans-unit id="workspace_list_label_db_mountpoints">
 				<source>Database mountpoints:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_frozen" xml:space="preserve">
+			<trans-unit id="workspace_list_label_frozen">
 				<source>Frozen:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_publish_date" xml:space="preserve">
+			<trans-unit id="workspace_list_label_publish_date">
 				<source>Publish date:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_unpublish_date" xml:space="preserve">
+			<trans-unit id="workspace_list_label_unpublish_date">
 				<source>Unpublish date:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_your_access" xml:space="preserve">
+			<trans-unit id="workspace_list_label_your_access">
 				<source>Your access:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_workspace_users" xml:space="preserve">
+			<trans-unit id="workspace_list_label_workspace_users">
 				<source>Workspace users:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_frozen_yes" xml:space="preserve">
+			<trans-unit id="workspace_list_label_frozen_yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_frozen_no" xml:space="preserve">
+			<trans-unit id="workspace_list_label_frozen_no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_icon_title_edit_workspace" xml:space="preserve">
+			<trans-unit id="workspace_list_icon_title_edit_workspace">
 				<source>Edit workspace</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_icon_title_switch_workspace" xml:space="preserve">
+			<trans-unit id="workspace_list_icon_title_switch_workspace">
 				<source>Switch workspace</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_admin" xml:space="preserve">
+			<trans-unit id="workspace_list_access_admin">
 				<source>Admin</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_online" xml:space="preserve">
+			<trans-unit id="workspace_list_access_online">
 				<source>Online</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_offline" xml:space="preserve">
+			<trans-unit id="workspace_list_access_offline">
 				<source>Offline</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_owner" xml:space="preserve">
+			<trans-unit id="workspace_list_access_owner">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_member" xml:space="preserve">
+			<trans-unit id="workspace_list_access_member">
 				<source>Member</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_access_reviewer" xml:space="preserve">
+			<trans-unit id="workspace_list_access_reviewer">
 				<source>Reviewer</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_publishing_count_draft" xml:space="preserve">
+			<trans-unit id="workspace_list_publishing_count_draft">
 				<source>Draft</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_publishing_count_archive" xml:space="preserve">
+			<trans-unit id="workspace_list_publishing_count_archive">
 				<source>Archive</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_publishing_count" xml:space="preserve">
+			<trans-unit id="workspace_list_publishing_count">
 				<source>Published %d times</source>
 			</trans-unit>
-			<trans-unit id="stage_sent_to_review" xml:space="preserve">
+			<trans-unit id="stage_sent_to_review">
 				<source>"%s" sent element to "Review"</source>
 			</trans-unit>
-			<trans-unit id="stage_approved_for_publish" xml:space="preserve">
+			<trans-unit id="stage_approved_for_publish">
 				<source>"%s" approved for "Publish"</source>
 			</trans-unit>
-			<trans-unit id="stage_rejected" xml:space="preserve">
+			<trans-unit id="stage_rejected">
 				<source>"%s" rejected element!</source>
 			</trans-unit>
-			<trans-unit id="stage_reset_to_editing" xml:space="preserve">
+			<trans-unit id="stage_reset_to_editing">
 				<source>"%s" reset to "Editing"</source>
 			</trans-unit>
-			<trans-unit id="stage_undefined" xml:space="preserve">
+			<trans-unit id="stage_undefined">
 				<source>[undefined]</source>
 			</trans-unit>
-			<trans-unit id="stage_label_user_comment" xml:space="preserve">
+			<trans-unit id="stage_label_user_comment">
 				<source>User Comment:</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_mount_point_inaccessible" xml:space="preserve">
+			<trans-unit id="workspace_list_mount_point_inaccessible">
 				<source>This mount point is defined for workspace but not accessible to you. If you need access to this mount point, ask your system administrator to give you access to it.</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_file_mount_point_live" xml:space="preserve">
+			<trans-unit id="workspace_list_file_mount_point_live">
 				<source>Mount points from user profile are used.</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_file_mount_point_draft" xml:space="preserve">
+			<trans-unit id="workspace_list_file_mount_point_draft">
 				<source>File mount points are not available in draft workspace.</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_file_mount_point_custom" xml:space="preserve">
+			<trans-unit id="workspace_list_file_mount_point_custom">
 				<source>File mount points are not defined for this workspace. Therefore no file mount points available in the workspace.</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_db_mount_point_live" xml:space="preserve">
+			<trans-unit id="workspace_list_db_mount_point_live">
 				<source>Mount points from user profile are used.</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_db_mount_point_draft" xml:space="preserve">
+			<trans-unit id="workspace_list_db_mount_point_draft">
 				<source>Mount points from user profile are used.</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_db_mount_point_custom" xml:space="preserve">
+			<trans-unit id="workspace_list_db_mount_point_custom">
 				<source>Mount points from user profile are used.</source>
 			</trans-unit>
-			<trans-unit id="publish_title" xml:space="preserve">
+			<trans-unit id="publish_title">
 				<source>Publish workspace</source>
 			</trans-unit>
-			<trans-unit id="swap_title" xml:space="preserve">
+			<trans-unit id="swap_title">
 				<source>Swap workspace</source>
 			</trans-unit>
-			<trans-unit id="publish_status" xml:space="preserve">
+			<trans-unit id="publish_status">
 				<source>Published records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</source>
 			</trans-unit>
-			<trans-unit id="swap_status" xml:space="preserve">
+			<trans-unit id="swap_status">
 				<source>Swapped records &lt;strong&gt;%d&lt;/strong&gt; to &lt;strong&gt;%d&lt;/strong&gt; of &lt;strong&gt;%d&lt;/strong&gt;.</source>
 			</trans-unit>
-			<trans-unit id="publish_prepare" xml:space="preserve">
+			<trans-unit id="publish_prepare">
 				<source>TYPO3 is preparing to publish records.</source>
 			</trans-unit>
-			<trans-unit id="swap_prepare" xml:space="preserve">
+			<trans-unit id="swap_prepare">
 				<source>TYPO3 is preparing to swap records.</source>
 			</trans-unit>
-			<trans-unit id="please_wait" xml:space="preserve">
+			<trans-unit id="please_wait">
 				<source>Please, wait...</source>
 			</trans-unit>
-			<trans-unit id="return_to_index" xml:space="preserve">
+			<trans-unit id="return_to_index">
 				<source>Return to Workspace module</source>
 			</trans-unit>
-			<trans-unit id="do_not_interrupt_publishing_1" xml:space="preserve">
+			<trans-unit id="do_not_interrupt_publishing_1">
 				<source>Do not interrupt publishing process or</source>
 			</trans-unit>
-			<trans-unit id="do_not_interrupt_publishing_2" xml:space="preserve">
+			<trans-unit id="do_not_interrupt_publishing_2">
 				<source>workspace may be left in half-published state!</source>
 			</trans-unit>
-			<trans-unit id="workspace_published" xml:space="preserve">
+			<trans-unit id="workspace_published">
 				<source>Workspace has been published.</source>
 			</trans-unit>
-			<trans-unit id="workspace_swapped" xml:space="preserve">
+			<trans-unit id="workspace_swapped">
 				<source>Workspace has been swapped.</source>
 			</trans-unit>
-			<trans-unit id="label_reject" xml:space="preserve">
+			<trans-unit id="label_reject">
 				<source>Reject</source>
 			</trans-unit>
-			<trans-unit id="label_review" xml:space="preserve">
+			<trans-unit id="label_review">
 				<source>Review</source>
 			</trans-unit>
-			<trans-unit id="label_sendtoreview" xml:space="preserve">
+			<trans-unit id="label_sendtoreview">
 				<source>Send to review</source>
 			</trans-unit>
-			<trans-unit id="label_approveforpublishing" xml:space="preserve">
+			<trans-unit id="label_approveforpublishing">
 				<source>Approve for publishing</source>
 			</trans-unit>
-			<trans-unit id="stage_editing" xml:space="preserve">
+			<trans-unit id="stage_editing">
 				<source>Editing</source>
 			</trans-unit>
-			<trans-unit id="stage_review" xml:space="preserve">
+			<trans-unit id="stage_review">
 				<source>Review</source>
 			</trans-unit>
-			<trans-unit id="stage_publish" xml:space="preserve">
+			<trans-unit id="stage_publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="label_subelements" xml:space="preserve">
+			<trans-unit id="label_subelements">
 				<source>Sub elements</source>
 			</trans-unit>
-			<trans-unit id="label_subelementsdetails" xml:space="preserve">
+			<trans-unit id="label_subelementsdetails">
 				<source>Sub elements, click for details</source>
 			</trans-unit>
-			<trans-unit id="label_commentforreviewer" xml:space="preserve">
+			<trans-unit id="label_commentforreviewer">
 				<source>Comment for Reviewer:</source>
 			</trans-unit>
-			<trans-unit id="label_commentforpublisher" xml:space="preserve">
+			<trans-unit id="label_commentforpublisher">
 				<source>Comment for Publisher:</source>
 			</trans-unit>
-			<trans-unit id="label_resetstage" xml:space="preserve">
+			<trans-unit id="label_resetstage">
 				<source>Reset stage</source>
 			</trans-unit>
-			<trans-unit id="label_undefined" xml:space="preserve">
+			<trans-unit id="label_undefined">
 				<source>Undefined</source>
 			</trans-unit>
-			<trans-unit id="explain_reject" xml:space="preserve">
+			<trans-unit id="explain_reject">
 				<source>Please explain why you reject:</source>
 			</trans-unit>
-			<trans-unit id="label_element" xml:space="preserve">
+			<trans-unit id="label_element">
 				<source>Element</source>
 			</trans-unit>
-			<trans-unit id="label_page" xml:space="preserve">
+			<trans-unit id="label_page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="label_branch" xml:space="preserve">
+			<trans-unit id="label_branch">
 				<source>Branch</source>
 			</trans-unit>
-			<trans-unit id="label_newrecord" xml:space="preserve">
+			<trans-unit id="label_newrecord">
 				<source>New element</source>
 			</trans-unit>
-			<trans-unit id="label_deletedrecord" xml:space="preserve">
+			<trans-unit id="label_deletedrecord">
 				<source>Deleted element</source>
 			</trans-unit>
-			<trans-unit id="label_otherversions" xml:space="preserve">
+			<trans-unit id="label_otherversions">
 				<source>Other version(s) in workspace(s):</source>
 			</trans-unit>
-			<trans-unit id="label_multipleversions" xml:space="preserve">
+			<trans-unit id="label_multipleversions">
 				<source>Multiple versions in same workspace!</source>
 			</trans-unit>
-			<trans-unit id="label_nestedversions" xml:space="preserve">
+			<trans-unit id="label_nestedversions">
 				<source>Version inside version!</source>
 			</trans-unit>
-			<trans-unit id="label_rejected" xml:space="preserve">
+			<trans-unit id="label_rejected">
 				<source>Rejected</source>
 			</trans-unit>
-			<trans-unit id="label_showsubelements" xml:space="preserve">
+			<trans-unit id="label_showsubelements">
 				<source>Show sub elements</source>
 			</trans-unit>
-			<trans-unit id="label_onlymychanges" xml:space="preserve">
+			<trans-unit id="label_onlymychanges">
 				<source>Show only my changes</source>
 			</trans-unit>
-			<trans-unit id="label_offlineWSes" xml:space="preserve">
+			<trans-unit id="label_offlineWSes">
 				<source>Draft workspaces</source>
 			</trans-unit>
-			<trans-unit id="label_allWSes" xml:space="preserve">
+			<trans-unit id="label_allWSes">
 				<source>All workspaces</source>
 			</trans-unit>
-			<trans-unit id="label_notapplicable" xml:space="preserve">
+			<trans-unit id="label_notapplicable">
 				<source>n/a</source>
 			</trans-unit>
-			<trans-unit id="label_percentchange" xml:space="preserve">
+			<trans-unit id="label_percentchange">
 				<source>%%% change:</source>
 			</trans-unit>
-			<trans-unit id="label_percentChange" xml:space="preserve">
+			<trans-unit id="label_percentChange">
 				<source>%d%% change:</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_default" xml:space="preserve">
+			<trans-unit id="label_doaction_default">
 				<source>Do:</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_publish" xml:space="preserve">
+			<trans-unit id="label_doaction_publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_swap" xml:space="preserve">
+			<trans-unit id="label_doaction_swap">
 				<source>Swap</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_release" xml:space="preserve">
+			<trans-unit id="label_doaction_release">
 				<source>Remove this version</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_reject" xml:space="preserve">
+			<trans-unit id="label_doaction_stage_reject">
 				<source>Reject changes</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_editing" xml:space="preserve">
+			<trans-unit id="label_doaction_stage_editing">
 				<source>Send to stage: Editing</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_review" xml:space="preserve">
+			<trans-unit id="label_doaction_stage_review">
 				<source>Send to stage: Review</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_stage_publish" xml:space="preserve">
+			<trans-unit id="label_doaction_stage_publish">
 				<source>Send to stage: Publish</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_flush" xml:space="preserve">
+			<trans-unit id="label_doaction_flush">
 				<source>Flush ALL changes/versions</source>
 			</trans-unit>
-			<trans-unit id="label_moveto_placeholder" xml:space="preserve">
+			<trans-unit id="label_moveto_placeholder">
 				<source>Move-to placeholder (destination)</source>
 			</trans-unit>
-			<trans-unit id="label_moveto_pointer" xml:space="preserve">
+			<trans-unit id="label_moveto_pointer">
 				<source>Move-to pointer (source)</source>
 			</trans-unit>
 		</body>

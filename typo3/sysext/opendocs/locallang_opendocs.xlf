@@ -3,16 +3,16 @@
 	<file t3:id="1415814901" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="opendocs">
 		<header/>
 		<body>
-			<trans-unit id="toolbaritem" xml:space="preserve">
+			<trans-unit id="toolbaritem">
 				<source>Open and Recently Used Documents</source>
 			</trans-unit>
-			<trans-unit id="open_docs" xml:space="preserve">
+			<trans-unit id="open_docs">
 				<source>Open Documents</source>
 			</trans-unit>
-			<trans-unit id="recent_docs" xml:space="preserve">
+			<trans-unit id="recent_docs">
 				<source>Recently Used Documents</source>
 			</trans-unit>
-			<trans-unit id="no_docs" xml:space="preserve">
+			<trans-unit id="no_docs">
 				<source>There are no open documents at this time.</source>
 			</trans-unit>
 		</body>

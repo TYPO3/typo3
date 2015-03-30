@@ -3,29 +3,29 @@
 	<file t3:id="1415814854" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle" xml:space="preserve">
+			<trans-unit id=".alttitle">
 				<source>TYPO3 Core</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>TYPO3 is a Content Management Framework which consists of a central program core with only limited functionality. To extend this core system there are hundreds of extensions which in combination will provide a very capable system.</source>
 			</trans-unit>
-			<trans-unit id=".details" xml:space="preserve">
+			<trans-unit id=".details">
 				<source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
 			</trans-unit>
-			<trans-unit id="_.seeAlso" xml:space="preserve">
+			<trans-unit id="_.seeAlso">
 				<source>Inside TYPO3 | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/</source>
 			</trans-unit>
-			<trans-unit id="_.image" xml:space="preserve">
+			<trans-unit id="_.image">
 				<source>EXT:lang/cshimages/login.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr" xml:space="preserve">
+			<trans-unit id=".image_descr">
 				<source>TYPO3 backend login screen.</source>
 			</trans-unit>
-			<trans-unit id="menu_modules.alttitle" xml:space="preserve">
+			<trans-unit id="menu_modules.alttitle">
 				<source>Backend modules</source>
 			</trans-unit>
-			<trans-unit id="menu_modules.description" xml:space="preserve">
+			<trans-unit id="menu_modules.description">
 				<source>The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</source>
 			</trans-unit>
 			<trans-unit id="menu_modules.details" xml:space="preserve">
@@ -50,10 +50,10 @@ EXT:lang/cshimages/core_3.png</source>
 				<source>This is the range of menu options for a typical backend user.
 For another backend user it might be different. This screenshot shows how another user has different permissions set and therefore access to other modules only. Also the backend language has been set different for this user.</source>
 			</trans-unit>
-			<trans-unit id="menu_adminFunction.alttitle" xml:space="preserve">
+			<trans-unit id="menu_adminFunction.alttitle">
 				<source>Admin Functions</source>
 			</trans-unit>
-			<trans-unit id="menu_adminFunction.description" xml:space="preserve">
+			<trans-unit id="menu_adminFunction.description">
 				<source>The Admin Functions allow administrators to clear caches etc.</source>
 			</trans-unit>
 			<trans-unit id="menu_adminFunction.details" xml:space="preserve">
@@ -67,18 +67,18 @@ TYPO3 also caches small configuration scripts from extensions, "ext_localconf.ph
 
 &lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
 			</trans-unit>
-			<trans-unit id="_menu_adminFunction.seeAlso" xml:space="preserve">
+			<trans-unit id="_menu_adminFunction.seeAlso">
 				<source>be_users:admin</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_menu_adminFunction.image" xml:space="preserve">
+			<trans-unit id="_menu_adminFunction.image">
 				<source>EXT:lang/cshimages/core_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pagetree.alttitle" xml:space="preserve">
+			<trans-unit id="pagetree.alttitle">
 				<source>The Page Tree</source>
 			</trans-unit>
-			<trans-unit id="pagetree.description" xml:space="preserve">
+			<trans-unit id="pagetree.description">
 				<source>This is the hierarchical organization of pages in TYPO3. Typically websites are build so they reflect the page structure in the page tree directly in the website navigation.</source>
 			</trans-unit>
 			<trans-unit id="pagetree.details" xml:space="preserve">
@@ -113,10 +113,10 @@ Clicking the icon of a page displays a context sensitive menu with options for t
 Clicking the title of a page in the page tree will load the right frame with the current submodule. The page id is passed to the module so it displays content related to the page you clicked.
 Holding the mouse pointer over a page icon for a few seconds will display tool-tip information telling you details about the state of the page. Here a page is access restricted and you will be told which group the access is set for by the tool-tip.</source>
 			</trans-unit>
-			<trans-unit id="filetree.alttitle" xml:space="preserve">
+			<trans-unit id="filetree.alttitle">
 				<source>The Folder Tree</source>
 			</trans-unit>
-			<trans-unit id="filetree.description" xml:space="preserve">
+			<trans-unit id="filetree.description">
 				<source>Shows the directory structure of a mounted path on the webserver. You can browse the folder tree like you are used to browse the file system on your own computer.</source>
 			</trans-unit>
 			<trans-unit id="filetree.details" xml:space="preserve">
@@ -153,31 +153,31 @@ EXT:lang/cshimages/core_10.png</source>
 Clicking the icon of a folder displays the context menu of the folder.
 If you click the folder title in the Folder Tree you will see the sub-module loaded in the right frame. Here it is the File &gt; Filelist module that will display files and folders inside. Clicking the icon of a file will display a context menu for the file.</source>
 			</trans-unit>
-			<trans-unit id="tcatree.collapseAll" xml:space="preserve">
+			<trans-unit id="tcatree.collapseAll">
 				<source>Collapse All</source>
 			</trans-unit>
-			<trans-unit id="tcatree" xml:space="preserve">
+			<trans-unit id="tcatree">
 				<source>TYPO3 TCA tree</source>
 			</trans-unit>
-			<trans-unit id="tcatree.expandAll" xml:space="preserve">
+			<trans-unit id="tcatree.expandAll">
 				<source>Expand All</source>
 			</trans-unit>
-			<trans-unit id="tcatree.findItem" xml:space="preserve">
+			<trans-unit id="tcatree.findItem">
 				<source>Find Item</source>
 			</trans-unit>
-			<trans-unit id="tcatree.filter.startsWith" xml:space="preserve">
+			<trans-unit id="tcatree.filter.startsWith">
 				<source>starts with</source>
 			</trans-unit>
-			<trans-unit id="tcatree.filter.contains" xml:space="preserve">
+			<trans-unit id="tcatree.filter.contains">
 				<source>contains</source>
 			</trans-unit>
-			<trans-unit id="tcatree.enableRecursiveSelection" xml:space="preserve">
+			<trans-unit id="tcatree.enableRecursiveSelection">
 				<source>enable recursive selection</source>
 			</trans-unit>
-			<trans-unit id="list_module.alttitle" xml:space="preserve">
+			<trans-unit id="list_module.alttitle">
 				<source>The Web&gt;List module</source>
 			</trans-unit>
-			<trans-unit id="list_module.description" xml:space="preserve">
+			<trans-unit id="list_module.description">
 				<source>Listing records located on a page. From here you can copy/cut/paste records around in the system. You can edit records, access the change history of elements etc.</source>
 			</trans-unit>
 			<trans-unit id="list_module.details" xml:space="preserve">
@@ -208,20 +208,20 @@ EXT:lang/cshimages/core_34.png,</source>
 If you enable "Extended mode" and the "Clipboard" you will get additional buttons in the interface to operate on the records shown here. Also notice how you can click any record icon to get a "Clickmenu" for the element.
 Here you see the single-table mode active for the "Page content" table (Content Elements). In the fieldbox the "Hide" field is selected to be included in the listing. If you click any of the edit icons (marked with red border) you will be able to edit [from left to right] a) all listed fields (here "Header" and "Hide"), b) full record or c) a single field (eg. "Hide") for &lt;u&gt;only&lt;/u&gt; the selected records (defined by the checkboxes seen).</source>
 			</trans-unit>
-			<trans-unit id="list_module_noId.alttitle" xml:space="preserve">
+			<trans-unit id="list_module_noId.alttitle">
 				<source>Web&gt;List module with no ID given</source>
 			</trans-unit>
-			<trans-unit id="list_module_noId.description" xml:space="preserve">
+			<trans-unit id="list_module_noId.description">
 				<source>The Web&gt;List module must have a page ID passed to it before it can display any content. Please click a page title in the Page Tree.</source>
 			</trans-unit>
-			<trans-unit id="_list_module_noId.seeAlso" xml:space="preserve">
+			<trans-unit id="_list_module_noId.seeAlso">
 				<source>xMOD_csh_corebe:list_module</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="list_module_root.alttitle" xml:space="preserve">
+			<trans-unit id="list_module_root.alttitle">
 				<source>Root of the Page Tree</source>
 			</trans-unit>
-			<trans-unit id="list_module_root.description" xml:space="preserve">
+			<trans-unit id="list_module_root.description">
 				<source>The root of the Page Tree is having id 0 (zero = no page) and the special circumstance is that records in the page tree root can be accessed and edited &lt;i&gt;only&lt;/i&gt; by "Admin" users.</source>
 			</trans-unit>
 			<trans-unit id="list_module_root.details" xml:space="preserve">
@@ -242,10 +242,10 @@ EXT:lang/cshimages/core_14.png,</source>
 				<source>Example of records in the page tree root; Backend users, groups, filemounts and website languages.
 When "Admin"-users wants to create a new record in the page tree root they will see a limited number of record types to create. This reflects which tables are configured to be created in the page tree root.</source>
 			</trans-unit>
-			<trans-unit id="list_clipboard.alttitle" xml:space="preserve">
+			<trans-unit id="list_clipboard.alttitle">
 				<source>TYPO3 Clipboard</source>
 			</trans-unit>
-			<trans-unit id="list_clipboard.description" xml:space="preserve">
+			<trans-unit id="list_clipboard.description">
 				<source>The clipboard is an internal registry where records and files can be "stored" temporarily. Usually the clipboard is used for copy/cut/paste operations internally of one or more elements.</source>
 			</trans-unit>
 			<trans-unit id="_list_clipboard.seeAlso" xml:space="preserve">
@@ -266,24 +266,24 @@ EXT:lang/cshimages/core_17.png,</source>
 				<source>Whenever you use the copy/cut/paste functions in the clickmenus you will actually use the clipboard to store the element internally in TYPO3.
 If you select one of the numeric clipboard pads you will be able to store more than a single element on the clipboard at a time. In the record listings you will then see checkboxes next to the elements by which you can select/deselect elements for the clipboard.</source>
 			</trans-unit>
-			<trans-unit id="list_searchbox.alttitle" xml:space="preserve">
+			<trans-unit id="list_searchbox.alttitle">
 				<source>Search Box</source>
 			</trans-unit>
-			<trans-unit id="list_searchbox.description" xml:space="preserve">
+			<trans-unit id="list_searchbox.description">
 				<source>By this search box you can do a free text search in all the listed records. You can also search recursively in sub-pages by selecting a number of levels to search in the selector box to the right of the search field.</source>
 			</trans-unit>
-			<trans-unit id="_list_searchbox.seeAlso" xml:space="preserve">
+			<trans-unit id="_list_searchbox.seeAlso">
 				<source>xMOD_csh_corebe:list_module</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_list_searchbox.image" xml:space="preserve">
+			<trans-unit id="_list_searchbox.image">
 				<source>EXT:lang/cshimages/core_15.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="list_options.alttitle" xml:space="preserve">
+			<trans-unit id="list_options.alttitle">
 				<source>List module options</source>
 			</trans-unit>
-			<trans-unit id="list_options.description" xml:space="preserve">
+			<trans-unit id="list_options.description">
 				<source>Enable additional options like the "Extended view" mode to see additional control buttons for each record in the listing or the "Clipboard" to see the clipboard and its content.</source>
 			</trans-unit>
 			<trans-unit id="_list_options.seeAlso" xml:space="preserve">
@@ -301,10 +301,10 @@ EXT:lang/cshimages/core_19.png,</source>
 				<source>The options checkboxes.
 Selecting "Extended view" will enable the control buttons in the record lists.</source>
 			</trans-unit>
-			<trans-unit id="new_regular.alttitle" xml:space="preserve">
+			<trans-unit id="new_regular.alttitle">
 				<source>Create new record</source>
 			</trans-unit>
-			<trans-unit id="new_regular.description" xml:space="preserve">
+			<trans-unit id="new_regular.description">
 				<source>This list shows the types of records (database tables) you can create on the page. Click a table name to select the type.</source>
 			</trans-unit>
 			<trans-unit id="_new_regular.seeAlso" xml:space="preserve">
@@ -312,17 +312,17 @@ Selecting "Extended view" will enable the control buttons in the record lists.</
 xMOD_csh_corebe:new_pages</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_new_regular.image" xml:space="preserve">
+			<trans-unit id="_new_regular.image">
 				<source>EXT:lang/cshimages/core_70.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="new_regular.image_descr" xml:space="preserve">
+			<trans-unit id="new_regular.image_descr">
 				<source>The selection of records a user can create on this particular page. The selection depends on the users permissions and the page type. For example a SysFolder page type can contain any kind of record while regular pages can contain only some types (like content elements).</source>
 			</trans-unit>
-			<trans-unit id="new_pages.alttitle" xml:space="preserve">
+			<trans-unit id="new_pages.alttitle">
 				<source>Create new page wizard</source>
 			</trans-unit>
-			<trans-unit id="new_pages.description" xml:space="preserve">
+			<trans-unit id="new_pages.description">
 				<source>Creating a new page means you have to find a position for it in the page tree. This wizard helps you find this position easily by clicking the flashing arrow pointing to the position you want.</source>
 			</trans-unit>
 			<trans-unit id="_new_pages.seeAlso" xml:space="preserve">
@@ -340,13 +340,13 @@ EXT:lang/cshimages/core_21.png,</source>
 				<source>Between each page in the tree you find small icons that point out a place for a new page. Select a position by clicking one of these icons.
 To access the "Create new page wizard" in the first place, just click the link in the Create new record dialog.</source>
 			</trans-unit>
-			<trans-unit id="new_ce.alttitle" xml:space="preserve">
+			<trans-unit id="new_ce.alttitle">
 				<source>Create new Content Element Wizard</source>
 			</trans-unit>
-			<trans-unit id="new_ce.description" xml:space="preserve">
+			<trans-unit id="new_ce.description">
 				<source>Content Elements come in many flavors and inserting new content on a page means you have to select the right element type. This wizard helps you to pick a main type of element before you actually begin to enter content.</source>
 			</trans-unit>
-			<trans-unit id="new_ce.details" xml:space="preserve">
+			<trans-unit id="new_ce.details">
 				<source>Selecting an element type here will just preset the content element with certain values. You can always change the values later and if you cannot find exactly the type you need you can just pick the one that comes closest to your need, then adjust the details later.</source>
 			</trans-unit>
 			<trans-unit id="_new_ce.seeAlso" xml:space="preserve">
@@ -368,13 +368,13 @@ EXT:lang/cshimages/core_24.png,</source>
 After selecting the type you will (often) have to select a position of the element among the other existing Content Elements on the page.
 You can access the Content Element wizard from the Create new record dialog.</source>
 			</trans-unit>
-			<trans-unit id="move_el_pages.alttitle" xml:space="preserve">
+			<trans-unit id="move_el_pages.alttitle">
 				<source>Move page wizard</source>
 			</trans-unit>
-			<trans-unit id="move_el_pages.description" xml:space="preserve">
+			<trans-unit id="move_el_pages.description">
 				<source>By this wizard you can visually re-position (or copy) a page inside TYPO3. The element you move is shown in the top.</source>
 			</trans-unit>
-			<trans-unit id="move_el_pages.details" xml:space="preserve">
+			<trans-unit id="move_el_pages.details">
 				<source>As an alternative to using the regular Copy/Cut/Paste functions in the clickmenus of records you can also use the move-page wizard. It lets you re-position a page by a visual view of the page tree rather than using the concept of "Paste into" and "Paste after".</source>
 			</trans-unit>
 			<trans-unit id="_move_el_pages.seeAlso" xml:space="preserve">
@@ -392,13 +392,13 @@ EXT:lang/cshimages/core_28.png,</source>
 				<source>The wizard works like when you create new pages with the wizard; You position the element by the grey arrows.
 To access the "Move page wizard" you open the clickmenu of the page, select "More options..." and then "Move page". Alternatively you can click the "Move page" icon in the "Extended view" of the Web&gt;List module.</source>
 			</trans-unit>
-			<trans-unit id="move_el_cs.alttitle" xml:space="preserve">
+			<trans-unit id="move_el_cs.alttitle">
 				<source>Move Content Element Wizard</source>
 			</trans-unit>
-			<trans-unit id="move_el_cs.description" xml:space="preserve">
+			<trans-unit id="move_el_cs.description">
 				<source>By this wizard you can visually re-position (or copy) a Content Element inside TYPO3. The element you move is shown in the top.</source>
 			</trans-unit>
-			<trans-unit id="move_el_cs.details" xml:space="preserve">
+			<trans-unit id="move_el_cs.details">
 				<source>By the grey icons in the content element list you can point out the new position of the content element. If you need to move the element to another page, simply browse the page tree in the bottom of the wizard.</source>
 			</trans-unit>
 			<trans-unit id="_move_el_cs.seeAlso" xml:space="preserve">
@@ -415,10 +415,10 @@ EXT:lang/cshimages/core_26.png,</source>
 				<source>The wizard works like when you create new Content Elements with the wizard; You position the element by the grey arrows.
 To access the "Move Content Element Wizard" you click the "Move element" icon in the "Extended view" of the Web&gt;List module.</source>
 			</trans-unit>
-			<trans-unit id="history_log.alttitle" xml:space="preserve">
+			<trans-unit id="history_log.alttitle">
 				<source>History log</source>
 			</trans-unit>
-			<trans-unit id="history_log.description" xml:space="preserve">
+			<trans-unit id="history_log.description">
 				<source>The History log gives you a visual overview of the changes that has happened to the element over the last editing operations. You can roll back changes to any state by using the icons in the interface.</source>
 			</trans-unit>
 			<trans-unit id="history_log.details" xml:space="preserve">
@@ -446,10 +446,10 @@ EXT:lang/cshimages/core_38.png</source>
 				<source>You can access the History/Undo log from the Web&gt;List module when in "Extended view" mode. Alternatively you can access it under "More options..." in the clickmenu of an element.
 The History log shows visually the changes between each step of editing.</source>
 			</trans-unit>
-			<trans-unit id="history_sum.alttitle" xml:space="preserve">
+			<trans-unit id="history_sum.alttitle">
 				<source>History Summary</source>
 			</trans-unit>
-			<trans-unit id="history_sum.description" xml:space="preserve">
+			<trans-unit id="history_sum.description">
 				<source>This shows the total difference between the selected state in history to the current state of this element.</source>
 			</trans-unit>
 			<trans-unit id="history_sum.details" xml:space="preserve">
@@ -463,30 +463,30 @@ Finally you can revert either the whole record to this state in history by the r
 Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_history_sum.image" xml:space="preserve">
+			<trans-unit id="_history_sum.image">
 				<source>EXT:lang/cshimages/core_39.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="history_sum.image_descr" xml:space="preserve">
+			<trans-unit id="history_sum.image_descr">
 				<source>The Info view of a state in history shows the "sum" of changes from current time to that point in history for the element.</source>
 			</trans-unit>
-			<trans-unit id="history_entry.alttitle" xml:space="preserve">
+			<trans-unit id="history_entry.alttitle">
 				<source>Log entry history</source>
 			</trans-unit>
-			<trans-unit id="history_entry.description" xml:space="preserve">
+			<trans-unit id="history_entry.description">
 				<source>This view displays the changes made to the content element for the log entry you clicked. The red and green values in the text shows the previous/new values of the record.</source>
 			</trans-unit>
-			<trans-unit id="history_entry.details" xml:space="preserve">
+			<trans-unit id="history_entry.details">
 				<source>&lt;b&gt;Notice:&lt;/b&gt; If you do not see red/green difference values, the server TYPO3 runs on does not support making difference views or it has been incorrectly configured to provide this feature.</source>
 			</trans-unit>
-			<trans-unit id="_history_entry.image" xml:space="preserve">
+			<trans-unit id="_history_entry.image">
 				<source>EXT:lang/cshimages/core_40.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="TCEforms.alttitle" xml:space="preserve">
+			<trans-unit id="TCEforms.alttitle">
 				<source>TYPO3 Editing Forms</source>
 			</trans-unit>
-			<trans-unit id="TCEforms.description" xml:space="preserve">
+			<trans-unit id="TCEforms.description">
 				<source>All records in TYPO3 is edited through a standardized form interface like the one you see here. No matter if you edit pages, content elements, guestbook items or user records you will use the same familiar interface.</source>
 			</trans-unit>
 			<trans-unit id="TCEforms.details" xml:space="preserve">
@@ -528,37 +528,37 @@ Here "Show secondary options (palettes)" is enabled. The result is that a number
 The "additional fields" from the example above is located in a so called "palette" which is normally shown in the top frame when "Show secondary options" is disabled. Whether you prefer the one or the other solution is your choice.
 This is an example of three Content Elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
 			</trans-unit>
-			<trans-unit id="TCEforms_docSelector.alttitle" xml:space="preserve">
+			<trans-unit id="TCEforms_docSelector.alttitle">
 				<source>Document Selector</source>
 			</trans-unit>
-			<trans-unit id="TCEforms_docSelector.description" xml:space="preserve">
+			<trans-unit id="TCEforms_docSelector.description">
 				<source>Here you can switch between "open documents" in TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="_TCEforms_docSelector.image" xml:space="preserve">
+			<trans-unit id="_TCEforms_docSelector.image">
 				<source>EXT:lang/cshimages/core_35.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="TCEforms_cacheSelector.alttitle" xml:space="preserve">
+			<trans-unit id="TCEforms_cacheSelector.alttitle">
 				<source>Forms Menu</source>
 			</trans-unit>
-			<trans-unit id="TCEforms_cacheSelector.description" xml:space="preserve">
+			<trans-unit id="TCEforms_cacheSelector.description">
 				<source>This is alternative ways to select "Save"/"Close" operations for records. You can also select "clear-cache" operations if you are allowed access to them.</source>
 			</trans-unit>
 			<trans-unit id="TCEforms_cacheSelector.details" xml:space="preserve">
 				<source>Clearing the cache for pages and clearing all cache can be done from this menu as well. If you wonder why content on the frontend webpage seems to be different from what is in the database you might need to clear the page cache by using one of these options.
 If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
 			</trans-unit>
-			<trans-unit id="_TCEforms_cacheSelector.seeAlso" xml:space="preserve">
+			<trans-unit id="_TCEforms_cacheSelector.seeAlso">
 				<source>User TSconfig (See "clearCache.pages/.all") | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
 			</trans-unit>
-			<trans-unit id="_TCEforms_cacheSelector.image" xml:space="preserve">
+			<trans-unit id="_TCEforms_cacheSelector.image">
 				<source>EXT:lang/cshimages/core_36.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="perm_module.alttitle" xml:space="preserve">
+			<trans-unit id="perm_module.alttitle">
 				<source>Viewing page permissions</source>
 			</trans-unit>
-			<trans-unit id="perm_module.description" xml:space="preserve">
+			<trans-unit id="perm_module.description">
 				<source>This view will tell you about the page permissions in the page tree.</source>
 			</trans-unit>
 			<trans-unit id="perm_module.details" xml:space="preserve">
@@ -583,10 +583,10 @@ _MOD_user_setup:option_helpText</source>
 EXT:lang/cshimages/core_41.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="perm_module_setting.alttitle" xml:space="preserve">
+			<trans-unit id="perm_module_setting.alttitle">
 				<source>Setting permissions for a page</source>
 			</trans-unit>
-			<trans-unit id="perm_module_setting.description" xml:space="preserve">
+			<trans-unit id="perm_module_setting.description">
 				<source>Select the owner user and group plus the permissions for each in the matrix. Only an owner of a page (or the "Admin"-user) can change permissions for the page.</source>
 			</trans-unit>
 			<trans-unit id="perm_module_setting.details" xml:space="preserve">
@@ -612,17 +612,17 @@ Allows users to create sub-pages to this page.</source>
 User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_perm_module_setting.image" xml:space="preserve">
+			<trans-unit id="_perm_module_setting.image">
 				<source>EXT:lang/cshimages/core_42.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="perm_module_setting.image_descr" xml:space="preserve">
+			<trans-unit id="perm_module_setting.image_descr">
 				<source>In this matrix you can set permissions for owner, group and everybody in the five categories available.</source>
 			</trans-unit>
-			<trans-unit id="filelist_module.alttitle" xml:space="preserve">
+			<trans-unit id="filelist_module.alttitle">
 				<source>File &gt; Filelist module</source>
 			</trans-unit>
-			<trans-unit id="filelist_module.description" xml:space="preserve">
+			<trans-unit id="filelist_module.description">
 				<source>Shows the files and folders from the folder title you have clicked in the folder tree. Click the icons of the files and folders to perform various actions on the elements.</source>
 			</trans-unit>
 			<trans-unit id="filelist_module.details" xml:space="preserve">
@@ -651,10 +651,10 @@ EXT:lang/cshimages/core_49.png</source>
 				<source>Here the content of the TEMP folder is shown in the list frame. You can see the filetype, the modification time, size of the file. If you click the filename you will open the file in the browser (if the path is in the web-root).
 When you click a file icon you see a context menu appear over it. Here you can perform file operations on the item.</source>
 			</trans-unit>
-			<trans-unit id="filelist_clipboard.alttitle" xml:space="preserve">
+			<trans-unit id="filelist_clipboard.alttitle">
 				<source>Filelist Clipboard</source>
 			</trans-unit>
-			<trans-unit id="filelist_clipboard.description" xml:space="preserve">
+			<trans-unit id="filelist_clipboard.description">
 				<source>The TYPO3 clipboard works for files as well as for database records (see the Web&gt;List module). You only need to enable the clipboard if you want to use the numeric clipboard pads.</source>
 			</trans-unit>
 			<trans-unit id="_filelist_clipboard.seeAlso" xml:space="preserve">
@@ -671,10 +671,10 @@ EXT:lang/cshimages/core_46.png</source>
 				<source>This shows the "Normal" pad on the clipboard. Here an image is now stored. The "Thumbnails" button of the clipboard is enabled so you will see the image icon.
 When the numeric clipboard pads are enabled you will be able to place multiple items on the clipboard at one time. If the items selected are found in the current folder you can also see the selection reflected in the checkboxes of the items. To paste the contents into a file folder you use the paste icons available in the Filelist module.</source>
 			</trans-unit>
-			<trans-unit id="filelist_options.alttitle" xml:space="preserve">
+			<trans-unit id="filelist_options.alttitle">
 				<source>File &gt; Filelist options</source>
 			</trans-unit>
-			<trans-unit id="filelist_options.description" xml:space="preserve">
+			<trans-unit id="filelist_options.description">
 				<source>You can enable the display of image thumbnails and show the clipboard if you need to copy/cut/paste multiple files or folders at a time.</source>
 			</trans-unit>
 			<trans-unit id="_filelist_options.seeAlso" xml:space="preserve">
@@ -683,34 +683,34 @@ _MOD_user_setup:option_showThumbs,
 xMOD_csh_corebe:filelist_clipboard</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_filelist_options.image" xml:space="preserve">
+			<trans-unit id="_filelist_options.image">
 				<source>EXT:lang/cshimages/core_48.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="filelist_options.image_descr" xml:space="preserve">
+			<trans-unit id="filelist_options.image_descr">
 				<source>Enabling thumbnails means that all image file types will be displayed with their thumbnails. This makes it easy to browse an archive of files.</source>
 			</trans-unit>
-			<trans-unit id="file_edit.alttitle" xml:space="preserve">
+			<trans-unit id="file_edit.alttitle">
 				<source>Editing a file</source>
 			</trans-unit>
-			<trans-unit id="file_edit.description" xml:space="preserve">
+			<trans-unit id="file_edit.description">
 				<source>You can edit the contents of a text file with this dialog.</source>
 			</trans-unit>
-			<trans-unit id="_file_edit.seeAlso" xml:space="preserve">
+			<trans-unit id="_file_edit.seeAlso">
 				<source>xMOD_csh_corebe:filelist_module</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_file_edit.image" xml:space="preserve">
+			<trans-unit id="_file_edit.image">
 				<source>EXT:lang/cshimages/core_50.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="file_edit.image_descr" xml:space="preserve">
+			<trans-unit id="file_edit.image_descr">
 				<source>The editing form for a file is this simple textarea field. It's nothing fancy and experienced coders will miss such as TAB-functionality, but it can edit a stylesheet if badly needed...</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.alttitle" xml:space="preserve">
+			<trans-unit id="file_newfolder.alttitle">
 				<source>Creating a new folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.description" xml:space="preserve">
+			<trans-unit id="file_newfolder.description">
 				<source>Enter a name for a new file folder in the tree here. If you want to create multiple folders, please select the number of new folders before entering folder names.</source>
 			</trans-unit>
 			<trans-unit id="_file_newfolder.seeAlso" xml:space="preserve">
@@ -730,13 +730,13 @@ EXT:lang/cshimages/core_53.png,</source>
 As the next step you select the number of folders to create and then you enter the new folder names.
 After pressing the "Create folders" button the folders will appear in the folder tree when you reload it.</source>
 			</trans-unit>
-			<trans-unit id="file_newfile.alttitle" xml:space="preserve">
+			<trans-unit id="file_newfile.alttitle">
 				<source>Creating a new file</source>
 			</trans-unit>
-			<trans-unit id="file_newfile.description" xml:space="preserve">
+			<trans-unit id="file_newfile.description">
 				<source>Enter a filename here if you want to create a new text-based file. Notice that it must have one of the endings in the list of text-endings shown above (except "php" endings).</source>
 			</trans-unit>
-			<trans-unit id="file_newfile.details" xml:space="preserve">
+			<trans-unit id="file_newfile.details">
 				<source>Newly created files will have the size of 0 (zero). After creating a new file it would be natural that you wanted to edit the file to put content into it. This is done simply by clicking the icon of the file and select "Edit" from the clickmenu.</source>
 			</trans-unit>
 			<trans-unit id="_file_newfile.seeAlso" xml:space="preserve">
@@ -757,13 +757,13 @@ EXT:lang/cshimages/core_55.png,</source>
 Then enter the filename in the dialog in the right frame.
 After pressing "Create file" you will see a new, empty file in the folder you selected.</source>
 			</trans-unit>
-			<trans-unit id="file_rename.alttitle" xml:space="preserve">
+			<trans-unit id="file_rename.alttitle">
 				<source>Rename a file or folder</source>
 			</trans-unit>
-			<trans-unit id="file_rename.description" xml:space="preserve">
+			<trans-unit id="file_rename.description">
 				<source>You can rename files or folders in TYPO3 quite easily. Just notice that certain characters are not allowed. So use a-z, numbers, underscores and don't make the names too long. If you enter invalid characters it will be automatically corrected.</source>
 			</trans-unit>
-			<trans-unit id="_file_rename.seeAlso" xml:space="preserve">
+			<trans-unit id="_file_rename.seeAlso">
 				<source>xMOD_csh_corebe:filelist_module</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -776,10 +776,10 @@ EXT:lang/cshimages/core_57.png,</source>
 				<source>To rename a file (or folder for that sake) just click the icon of it, select "Rename" and enter the new name.
 Notice that restrictions may apply on filenaming, for instance ".php" is usually not a valid extension of a filename for security reasons.</source>
 			</trans-unit>
-			<trans-unit id="file_upload.alttitle" xml:space="preserve">
+			<trans-unit id="file_upload.alttitle">
 				<source>Uploading files.</source>
 			</trans-unit>
-			<trans-unit id="file_upload.description" xml:space="preserve">
+			<trans-unit id="file_upload.description">
 				<source>Here you can upload one or more files to the server. Start by selecting the number of files to upload, then you begin to select files from your local computer to upload.</source>
 			</trans-unit>
 			<trans-unit id="file_upload.details" xml:space="preserve">
@@ -803,10 +803,10 @@ EXT:lang/cshimages/core_59.png,</source>
 				<source>To upload files, first click the folder icon where you want to upload to. From the clickmenu you select "Upload files".
 In the next screen you select the number of files and click the "Browse..." buttons to select files from your computer. Finally you click the "Upload files" button to start the upload process (which might take some minutes with large files!)</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz.alttitle" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz.alttitle">
 				<source>Forms Wizard</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz.description" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz.description">
 				<source>The Form Wizard enables you to create form elements through a nice interface rather than "coding" a certain syntax for the elements.</source>
 			</trans-unit>
 			<trans-unit id="wizard_forms_wiz.details" xml:space="preserve">
@@ -831,36 +831,36 @@ EXT:lang/cshimages/core_69.png,</source>
 				<source>This is how the form wizard looks in action. Using the form fields for setting up forms rather than coding them is much easier.
 Usually you enter the Form Wizard by clicking the form wizard icon next for a text field like this. Notice the contents of the field to the left of the icon - this is the "raw codes" that the Form Wizard saves you from editing manually!</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_buttons.alttitle" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz_buttons.alttitle">
 				<source>Form Wizard buttons</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_buttons.description" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz_buttons.description">
 				<source>Use the refresh button to update the form (without saving it), for instance if you changed a field type or so. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
 			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz_buttons.image" xml:space="preserve">
+			<trans-unit id="_wizard_forms_wiz_buttons.image">
 				<source>EXT:lang/cshimages/core_62.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_formmail_info.alttitle" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz_formmail_info.alttitle">
 				<source>Mailform Info Fields</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_formmail_info.description" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz_formmail_info.description">
 				<source>These fields specifically apply to the usage of the form wizard with Content Elements of the type "Form". They allow you to enter information like the subject line of the email sent, the recipient address and whether the sent email should be in HTML or not.</source>
 			</trans-unit>
-			<trans-unit id="wizard_forms_wiz_formmail_info.details" xml:space="preserve">
+			<trans-unit id="wizard_forms_wiz_formmail_info.details">
 				<source>Notice: In order to enter a recipient address you need access to the "Subheader" field in the Content Elements. Yes, its quite strange, but so it is. Ask your administrator for access if you don't have it.</source>
 			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz_formmail_info.seeAlso" xml:space="preserve">
+			<trans-unit id="_wizard_forms_wiz_formmail_info.seeAlso">
 				<source>Howto create Mail Forms | http://typo3.org/documentation/document-library/doc_tut_quickstart/Email_form/</source>
 			</trans-unit>
-			<trans-unit id="_wizard_forms_wiz_formmail_info.image" xml:space="preserve">
+			<trans-unit id="_wizard_forms_wiz_formmail_info.image">
 				<source>EXT:lang/cshimages/core_61.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="wizard_table_wiz.alttitle" xml:space="preserve">
+			<trans-unit id="wizard_table_wiz.alttitle">
 				<source>Table wizard</source>
 			</trans-unit>
-			<trans-unit id="wizard_table_wiz.description" xml:space="preserve">
+			<trans-unit id="wizard_table_wiz.description">
 				<source>The table wizard helps you create tables that are normally stored in the database by XML or a syntax where each line represents a row and each cell is divided by a vertical line sign, "|". This wizard makes it transparent for you.</source>
 			</trans-unit>
 			<trans-unit id="wizard_table_wiz.details" xml:space="preserve">
@@ -872,24 +872,24 @@ You can also disable the setting "Small fields" below the wizard if you want lar
 Table Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizard_scripts_in_th/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_wizard_table_wiz.image" xml:space="preserve">
+			<trans-unit id="_wizard_table_wiz.image">
 				<source>EXT:lang/cshimages/core_63.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="wizard_table_wiz_buttons.alttitle" xml:space="preserve">
+			<trans-unit id="wizard_table_wiz_buttons.alttitle">
 				<source>Table wizard buttons</source>
 			</trans-unit>
-			<trans-unit id="wizard_table_wiz_buttons.description" xml:space="preserve">
+			<trans-unit id="wizard_table_wiz_buttons.description">
 				<source>Use the refresh button to update the form without saving it. When you are done you should click one of the real save buttons to save and return to the form from which you entered the wizard. The information from this wizard should then be saved into the field the wizard was associated with.</source>
 			</trans-unit>
-			<trans-unit id="_wizard_table_wiz_buttons.image" xml:space="preserve">
+			<trans-unit id="_wizard_table_wiz_buttons.image">
 				<source>EXT:lang/cshimages/core_62.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="shortcuts.alttitle" xml:space="preserve">
+			<trans-unit id="shortcuts.alttitle">
 				<source>Backend Shortcuts</source>
 			</trans-unit>
-			<trans-unit id="shortcuts.description" xml:space="preserve">
+			<trans-unit id="shortcuts.description">
 				<source>You can create shortcuts to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
 			</trans-unit>
 			<trans-unit id="shortcuts.details" xml:space="preserve">
@@ -901,7 +901,7 @@ Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other user
 
 Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
 			</trans-unit>
-			<trans-unit id="_shortcuts.seeAlso" xml:space="preserve">
+			<trans-unit id="_shortcuts.seeAlso">
 				<source>User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
 			</trans-unit>
 			<trans-unit id="_shortcuts.image" xml:space="preserve">
@@ -917,16 +917,16 @@ You will have to confirm the creation of the shortcut. It is nothing dangerous -
 When you answer "OK" you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
 You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the "Edit" checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a "group" - here, just click the "0" (zero) to the left of the icons and you will remove all shortcuts in the group.</source>
 			</trans-unit>
-			<trans-unit id="bookmarks.alttitle" xml:space="preserve">
+			<trans-unit id="bookmarks.alttitle">
 				<source>Backend Bookmarks</source>
 			</trans-unit>
-			<trans-unit id="bookmarks.description" xml:space="preserve">
+			<trans-unit id="bookmarks.description">
 				<source>You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</source>
 			</trans-unit>
-			<trans-unit id="bookmarks.details" xml:space="preserve">
+			<trans-unit id="bookmarks.details">
 				<source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
 			</trans-unit>
-			<trans-unit id="_bookmarks.seeAlso" xml:space="preserve">
+			<trans-unit id="_bookmarks.seeAlso">
 				<source>User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
 			</trans-unit>
 			<trans-unit id="_bookmarks.image" xml:space="preserve">
@@ -942,10 +942,10 @@ You will have to confirm the creation of the bookmark. It is nothing dangerous -
 When you answer "OK" you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
 You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the "Edit" checkbox and then click the bookmark icon.</source>
 			</trans-unit>
-			<trans-unit id="workspaceSelector.alttitle" xml:space="preserve">
+			<trans-unit id="workspaceSelector.alttitle">
 				<source>Workspace Selector</source>
 			</trans-unit>
-			<trans-unit id="workspaceSelector.description" xml:space="preserve">
+			<trans-unit id="workspaceSelector.description">
 				<source>By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</source>
 			</trans-unit>
 			<trans-unit id="workspaceSelector.details" xml:space="preserve">

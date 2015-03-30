@@ -3,166 +3,166 @@
 	<file t3:id="1415814881" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>List of database-records</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>The Web&gt;List module provides low level access to records appearing on a page.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+			<trans-unit id="mlang_tabs_tab">
 				<source>List</source>
 			</trans-unit>
-			<trans-unit id="clip_pasteAfter" xml:space="preserve">
+			<trans-unit id="clip_pasteAfter">
 				<source>Paste after: Clipboard content is inserted after this record</source>
 			</trans-unit>
-			<trans-unit id="clip_pasteInto" xml:space="preserve">
+			<trans-unit id="clip_pasteInto">
 				<source>Paste into: Clipboard content is inserted on this page</source>
 			</trans-unit>
-			<trans-unit id="clip_paste" xml:space="preserve">
+			<trans-unit id="clip_paste">
 				<source>Paste in clipboard content</source>
 			</trans-unit>
-			<trans-unit id="clip_markRecords" xml:space="preserve">
+			<trans-unit id="clip_markRecords">
 				<source>Mark All/Mark none</source>
 			</trans-unit>
-			<trans-unit id="clip_selectMarked" xml:space="preserve">
+			<trans-unit id="clip_selectMarked">
 				<source>Transfer the selection of records to clipboard</source>
 			</trans-unit>
-			<trans-unit id="clip_duplicates" xml:space="preserve">
+			<trans-unit id="clip_duplicates">
 				<source>Mark duplicates</source>
 			</trans-unit>
-			<trans-unit id="clip_editMarked" xml:space="preserve">
+			<trans-unit id="clip_editMarked">
 				<source>Edit marked</source>
 			</trans-unit>
-			<trans-unit id="clip_deleteMarked" xml:space="preserve">
+			<trans-unit id="clip_deleteMarked">
 				<source>Delete marked</source>
 			</trans-unit>
-			<trans-unit id="clip_deleteMarkedWarning" xml:space="preserve">
+			<trans-unit id="clip_deleteMarkedWarning">
 				<source>Are you sure you want to delete all marked records from the table '%s'?</source>
 			</trans-unit>
-			<trans-unit id="showInfo" xml:space="preserve">
+			<trans-unit id="showInfo">
 				<source>Display information</source>
 			</trans-unit>
-			<trans-unit id="edit" xml:space="preserve">
+			<trans-unit id="edit">
 				<source>Edit record</source>
 			</trans-unit>
-			<trans-unit id="editPage" xml:space="preserve">
+			<trans-unit id="editPage">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="new" xml:space="preserve">
+			<trans-unit id="new">
 				<source>New record</source>
 			</trans-unit>
-			<trans-unit id="newPage" xml:space="preserve">
+			<trans-unit id="newPage">
 				<source>Create new page after this page</source>
 			</trans-unit>
-			<trans-unit id="newRecord" xml:space="preserve">
+			<trans-unit id="newRecord">
 				<source>Create new record after this record</source>
 			</trans-unit>
-			<trans-unit id="newRecordGeneral" xml:space="preserve">
+			<trans-unit id="newRecordGeneral">
 				<source>Create new record</source>
 			</trans-unit>
-			<trans-unit id="moveUp" xml:space="preserve">
+			<trans-unit id="moveUp">
 				<source>Move up in list</source>
 			</trans-unit>
-			<trans-unit id="moveDown" xml:space="preserve">
+			<trans-unit id="moveDown">
 				<source>Move down in list</source>
 			</trans-unit>
-			<trans-unit id="move_record" xml:space="preserve">
+			<trans-unit id="move_record">
 				<source>Re-position content element</source>
 			</trans-unit>
-			<trans-unit id="move_page" xml:space="preserve">
+			<trans-unit id="move_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="hide" xml:space="preserve">
+			<trans-unit id="hide">
 				<source>Hide record</source>
 			</trans-unit>
-			<trans-unit id="unHide" xml:space="preserve">
+			<trans-unit id="unHide">
 				<source>Un-hide record</source>
 			</trans-unit>
-			<trans-unit id="hidePage" xml:space="preserve">
+			<trans-unit id="hidePage">
 				<source>Hide page</source>
 			</trans-unit>
-			<trans-unit id="unHidePage" xml:space="preserve">
+			<trans-unit id="unHidePage">
 				<source>Un-hide page</source>
 			</trans-unit>
-			<trans-unit id="prevLevel" xml:space="preserve">
+			<trans-unit id="prevLevel">
 				<source>Move this page to the position after the current parent page (Inwards)</source>
 			</trans-unit>
-			<trans-unit id="nextLevel" xml:space="preserve">
+			<trans-unit id="nextLevel">
 				<source>Move this page to be a subpage of the page above (Outwards)</source>
 			</trans-unit>
-			<trans-unit id="delete" xml:space="preserve">
+			<trans-unit id="delete">
 				<source>Delete record (!)</source>
 			</trans-unit>
-			<trans-unit id="restore" xml:space="preserve">
+			<trans-unit id="restore">
 				<source>Restore record</source>
 			</trans-unit>
-			<trans-unit id="history" xml:space="preserve">
+			<trans-unit id="history">
 				<source>Display change history / Un-do</source>
 			</trans-unit>
-			<trans-unit id="displayVersions" xml:space="preserve">
+			<trans-unit id="displayVersions">
 				<source>Display versions</source>
 			</trans-unit>
-			<trans-unit id="permissions" xml:space="preserve">
+			<trans-unit id="permissions">
 				<source>Set permissions for page</source>
 			</trans-unit>
-			<trans-unit id="largeControl" xml:space="preserve">
+			<trans-unit id="largeControl">
 				<source>Extended view</source>
 			</trans-unit>
-			<trans-unit id="contractView" xml:space="preserve">
+			<trans-unit id="contractView">
 				<source>List all tables</source>
 			</trans-unit>
-			<trans-unit id="expandView" xml:space="preserve">
+			<trans-unit id="expandView">
 				<source>List only this table</source>
 			</trans-unit>
-			<trans-unit id="showClipBoard" xml:space="preserve">
+			<trans-unit id="showClipBoard">
 				<source>Show clipboard</source>
 			</trans-unit>
-			<trans-unit id="editShownColumns" xml:space="preserve">
+			<trans-unit id="editShownColumns">
 				<source>Edit all shown fields of the listed records</source>
 			</trans-unit>
-			<trans-unit id="editThisColumn" xml:space="preserve">
+			<trans-unit id="editThisColumn">
 				<source>Edit the '%s' field of the listed records</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning" xml:space="preserve">
+			<trans-unit id="deleteWarning">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="restoreWarning" xml:space="preserve">
+			<trans-unit id="restoreWarning">
 				<source>Are you sure you want to restore this record by reverting the delete status?</source>
 			</trans-unit>
-			<trans-unit id="localization" xml:space="preserve">
+			<trans-unit id="localization">
 				<source>Localization view</source>
 			</trans-unit>
-			<trans-unit id="defaultLanguage" xml:space="preserve">
+			<trans-unit id="defaultLanguage">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="multipleLanguages" xml:space="preserve">
+			<trans-unit id="multipleLanguages">
 				<source>All languages</source>
 			</trans-unit>
-			<trans-unit id="Localize" xml:space="preserve">
+			<trans-unit id="Localize">
 				<source>Localize to:</source>
 			</trans-unit>
-			<trans-unit id="viewRecords" xml:space="preserve">
+			<trans-unit id="viewRecords">
 				<source>Viewing records of</source>
 			</trans-unit>
-			<trans-unit id="pageIndicator" xml:space="preserve">
+			<trans-unit id="pageIndicator">
 				<source>Page %1$s of %2$d</source>
 			</trans-unit>
-			<trans-unit id="rangeIndicator" xml:space="preserve">
+			<trans-unit id="rangeIndicator">
 				<source>Records %1$d - %2$d</source>
 			</trans-unit>
-			<trans-unit id="missingTcaColumnsMessageTitle" xml:space="preserve">
+			<trans-unit id="missingTcaColumnsMessageTitle">
 				<source>Missing TCA definition</source>
 			</trans-unit>
-			<trans-unit id="missingTcaColumnsMessage" xml:space="preserve">
+			<trans-unit id="missingTcaColumnsMessage">
 				<source>Warning: No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
 			</trans-unit>
-			<trans-unit id="noRecordsOnThisPage" xml:space="preserve">
+			<trans-unit id="noRecordsOnThisPage">
 				<source>There are no records on this page.</source>
 			</trans-unit>
-			<trans-unit id="button.cancel" xml:space="preserve">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.delete" xml:space="preserve">
+			<trans-unit id="button.delete">
 				<source>Delete</source>
 			</trans-unit>
 

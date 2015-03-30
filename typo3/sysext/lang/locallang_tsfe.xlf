@@ -3,196 +3,196 @@
 	<file t3:id="1415814887" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="adminOptions" xml:space="preserve">
+			<trans-unit id="adminOptions">
 				<source>ADMIN PANEL</source>
 			</trans-unit>
-			<trans-unit id="adminPanelTitle" xml:space="preserve">
+			<trans-unit id="adminPanelTitle">
 				<source>TYPO3 ADMIN PANEL</source>
 			</trans-unit>
-			<trans-unit id="preview" xml:space="preserve">
+			<trans-unit id="preview">
 				<source>Preview</source>
 			</trans-unit>
-			<trans-unit id="preview_showHiddenPages" xml:space="preserve">
+			<trans-unit id="preview_showHiddenPages">
 				<source>Show hidden pages</source>
 			</trans-unit>
-			<trans-unit id="preview_showHiddenRecords" xml:space="preserve">
+			<trans-unit id="preview_showHiddenRecords">
 				<source>Show hidden records</source>
 			</trans-unit>
-			<trans-unit id="preview_simulateDate" xml:space="preserve">
+			<trans-unit id="preview_simulateDate">
 				<source>Simulate time</source>
 			</trans-unit>
-			<trans-unit id="preview_simulateUserGroup" xml:space="preserve">
+			<trans-unit id="preview_simulateUserGroup">
 				<source>Simulate user group</source>
 			</trans-unit>
-			<trans-unit id="cache" xml:space="preserve">
+			<trans-unit id="cache">
 				<source>Cache</source>
 			</trans-unit>
-			<trans-unit id="cache_noCache" xml:space="preserve">
+			<trans-unit id="cache_noCache">
 				<source>No caching</source>
 			</trans-unit>
-			<trans-unit id="cache_doit" xml:space="preserve">
+			<trans-unit id="cache_doit">
 				<source>Clear cache now!</source>
 			</trans-unit>
-			<trans-unit id="cache_clearLevels" xml:space="preserve">
+			<trans-unit id="cache_clearLevels">
 				<source>Clear levels</source>
 			</trans-unit>
-			<trans-unit id="cache_cacheEntries" xml:space="preserve">
+			<trans-unit id="cache_cacheEntries">
 				<source>Cache entries</source>
 			</trans-unit>
-			<trans-unit id="publish" xml:space="preserve">
+			<trans-unit id="publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="publish_levels" xml:space="preserve">
+			<trans-unit id="publish_levels">
 				<source>Publish levels</source>
 			</trans-unit>
-			<trans-unit id="publish_tree" xml:space="preserve">
+			<trans-unit id="publish_tree">
 				<source>Publish pages</source>
 			</trans-unit>
-			<trans-unit id="publish_doit" xml:space="preserve">
+			<trans-unit id="publish_doit">
 				<source>Publish now!</source>
 			</trans-unit>
-			<trans-unit id="edit" xml:space="preserve">
+			<trans-unit id="edit">
 				<source>Editing</source>
 			</trans-unit>
-			<trans-unit id="edit_displayIcons" xml:space="preserve">
+			<trans-unit id="edit_displayIcons">
 				<source>Display edit panels</source>
 			</trans-unit>
-			<trans-unit id="edit_displayFieldIcons" xml:space="preserve">
+			<trans-unit id="edit_displayFieldIcons">
 				<source>Display edit icons</source>
 			</trans-unit>
-			<trans-unit id="edit_editFormsOnPage" xml:space="preserve">
+			<trans-unit id="edit_editFormsOnPage">
 				<source>Editforms on page</source>
 			</trans-unit>
-			<trans-unit id="edit_editNoPopup" xml:space="preserve">
+			<trans-unit id="edit_editNoPopup">
 				<source>No popup window</source>
 			</trans-unit>
-			<trans-unit id="edit_openAB" xml:space="preserve">
+			<trans-unit id="edit_openAB">
 				<source>Open TYPO3 Backend</source>
 			</trans-unit>
-			<trans-unit id="edit_recordHistory" xml:space="preserve">
+			<trans-unit id="edit_recordHistory">
 				<source>View record change history</source>
 			</trans-unit>
-			<trans-unit id="edit_newContentElement" xml:space="preserve">
+			<trans-unit id="edit_newContentElement">
 				<source>Create new content element</source>
 			</trans-unit>
-			<trans-unit id="edit_move_page" xml:space="preserve">
+			<trans-unit id="edit_move_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="edit_newPage" xml:space="preserve">
+			<trans-unit id="edit_newPage">
 				<source>Create new page</source>
 			</trans-unit>
-			<trans-unit id="edit_editPageProperties" xml:space="preserve">
+			<trans-unit id="edit_editPageProperties">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="edit_editPageOverlay" xml:space="preserve">
+			<trans-unit id="edit_editPageOverlay">
 				<source>Edit properties of translated page</source>
 			</trans-unit>
-			<trans-unit id="edit_db_list" xml:space="preserve">
+			<trans-unit id="edit_db_list">
 				<source>Web&gt;List module</source>
 			</trans-unit>
-			<trans-unit id="tsdebug" xml:space="preserve">
+			<trans-unit id="tsdebug">
 				<source>TypoScript</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_tree" xml:space="preserve">
+			<trans-unit id="tsdebug_tree">
 				<source>Tree display</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_LR" xml:space="preserve">
+			<trans-unit id="tsdebug_LR">
 				<source>Track content rendering</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_forceTemplateParsing" xml:space="preserve">
+			<trans-unit id="tsdebug_forceTemplateParsing">
 				<source>Force TS Rendering</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayTimes" xml:space="preserve">
+			<trans-unit id="tsdebug_displayTimes">
 				<source>Display all times</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayMessages" xml:space="preserve">
+			<trans-unit id="tsdebug_displayMessages">
 				<source>Display messages</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayContent" xml:space="preserve">
+			<trans-unit id="tsdebug_displayContent">
 				<source>Display content</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayQueries" xml:space="preserve">
+			<trans-unit id="tsdebug_displayQueries">
 				<source>Explain SELECT queries</source>
 			</trans-unit>
-			<trans-unit id="info" xml:space="preserve">
+			<trans-unit id="info">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="info_imagesOnPage" xml:space="preserve">
+			<trans-unit id="info_imagesOnPage">
 				<source>Images on this page</source>
 			</trans-unit>
-			<trans-unit id="info_imagesSize" xml:space="preserve">
+			<trans-unit id="info_imagesSize">
 				<source>Total image file sizes</source>
 			</trans-unit>
-			<trans-unit id="info_DocumentSize" xml:space="preserve">
+			<trans-unit id="info_DocumentSize">
 				<source>Document size</source>
 			</trans-unit>
-			<trans-unit id="info_id" xml:space="preserve">
+			<trans-unit id="info_id">
 				<source>Page Uid</source>
 			</trans-unit>
-			<trans-unit id="info_type" xml:space="preserve">
+			<trans-unit id="info_type">
 				<source>Page type</source>
 			</trans-unit>
-			<trans-unit id="info_groupList" xml:space="preserve">
+			<trans-unit id="info_groupList">
 				<source>Frontenduser group combination</source>
 			</trans-unit>
-			<trans-unit id="info_noCache" xml:space="preserve">
+			<trans-unit id="info_noCache">
 				<source>Page cached</source>
 			</trans-unit>
-			<trans-unit id="info_noCache_yes" xml:space="preserve">
+			<trans-unit id="info_noCache_yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="info_noCache_no" xml:space="preserve">
+			<trans-unit id="info_noCache_no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="info_countUserInt" xml:space="preserve">
+			<trans-unit id="info_countUserInt">
 				<source>Count of USER_INT objects</source>
 			</trans-unit>
-			<trans-unit id="info_feuserName" xml:space="preserve">
+			<trans-unit id="info_feuserName">
 				<source>Name of logged in FE-User</source>
 			</trans-unit>
-			<trans-unit id="info_feuserId" xml:space="preserve">
+			<trans-unit id="info_feuserId">
 				<source>Id of logged in FE-User</source>
 			</trans-unit>
-			<trans-unit id="info_totalParsetime" xml:space="preserve">
+			<trans-unit id="info_totalParsetime">
 				<source>Total parsetime</source>
 			</trans-unit>
-			<trans-unit id="div_Levels_0" xml:space="preserve">
+			<trans-unit id="div_Levels_0">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="div_Levels_1" xml:space="preserve">
+			<trans-unit id="div_Levels_1">
 				<source>+ 1 sublevel</source>
 			</trans-unit>
-			<trans-unit id="div_Levels_2" xml:space="preserve">
+			<trans-unit id="div_Levels_2">
 				<source>+ 2 sublevels</source>
 			</trans-unit>
-			<trans-unit id="update" xml:space="preserve">
+			<trans-unit id="update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="p_editRecord" xml:space="preserve">
+			<trans-unit id="p_editRecord">
 				<source>Edit record</source>
 			</trans-unit>
-			<trans-unit id="p_moveUp" xml:space="preserve">
+			<trans-unit id="p_moveUp">
 				<source>Move up</source>
 			</trans-unit>
-			<trans-unit id="p_moveDown" xml:space="preserve">
+			<trans-unit id="p_moveDown">
 				<source>Move down</source>
 			</trans-unit>
-			<trans-unit id="p_unhide" xml:space="preserve">
+			<trans-unit id="p_unhide">
 				<source>Un-Hide</source>
 			</trans-unit>
-			<trans-unit id="p_hide" xml:space="preserve">
+			<trans-unit id="p_hide">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="p_newSubpage" xml:space="preserve">
+			<trans-unit id="p_newSubpage">
 				<source>New subpage</source>
 			</trans-unit>
-			<trans-unit id="p_newRecordAfter" xml:space="preserve">
+			<trans-unit id="p_newRecordAfter">
 				<source>New record after</source>
 			</trans-unit>
-			<trans-unit id="p_delete" xml:space="preserve">
+			<trans-unit id="p_delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="p_deleteConfirm" xml:space="preserve">
+			<trans-unit id="p_deleteConfirm">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
 			<trans-unit id="p_hideConfirm" xml:space="preserve">

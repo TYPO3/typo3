@@ -3,106 +3,106 @@
 	<file t3:id="1415814809" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="css_styled_content">
 		<header/>
 		<body>
-			<trans-unit id="label.toTop" xml:space="preserve">
+			<trans-unit id="label.toTop">
 				<source>To top</source>
 			</trans-unit>
-			<trans-unit id="uploads.icon" xml:space="preserve">
+			<trans-unit id="uploads.icon">
 				<source>File link icon for %s</source>
 			</trans-unit>
-			<trans-unit id="login.username" xml:space="preserve">
+			<trans-unit id="login.username">
 				<source>Username:</source>
 			</trans-unit>
-			<trans-unit id="login.password" xml:space="preserve">
+			<trans-unit id="login.password">
 				<source>Password:</source>
 			</trans-unit>
-			<trans-unit id="login.login" xml:space="preserve">
+			<trans-unit id="login.login">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="login.logout" xml:space="preserve">
+			<trans-unit id="login.logout">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="search.emptySearch" xml:space="preserve">
+			<trans-unit id="search.emptySearch">
 				<source>Sorry, your search was empty!</source>
 			</trans-unit>
-			<trans-unit id="search.resultRange" xml:space="preserve">
+			<trans-unit id="search.resultRange">
 				<source>Searchresult: ###RANGELOW###-###RANGEHIGH### of ###TOTAL###</source>
 			</trans-unit>
-			<trans-unit id="search.searchResultNext" xml:space="preserve">
+			<trans-unit id="search.searchResultNext">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="search.searchResultPrev" xml:space="preserve">
+			<trans-unit id="search.searchResultPrev">
 				<source>Prev</source>
 			</trans-unit>
-			<trans-unit id="search.searchWord" xml:space="preserve">
+			<trans-unit id="search.searchWord">
 				<source>Searchword:</source>
 			</trans-unit>
-			<trans-unit id="search.searchIn" xml:space="preserve">
+			<trans-unit id="search.searchIn">
 				<source>Search in:</source>
 			</trans-unit>
-			<trans-unit id="search.headersKeywords" xml:space="preserve">
+			<trans-unit id="search.headersKeywords">
 				<source>Headers and keywords</source>
 			</trans-unit>
-			<trans-unit id="search.pageContent" xml:space="preserve">
+			<trans-unit id="search.pageContent">
 				<source>Page content</source>
 			</trans-unit>
-			<trans-unit id="search.searchButton" xml:space="preserve">
+			<trans-unit id="search.searchButton">
 				<source>Search now!</source>
 			</trans-unit>
-			<trans-unit id="menu.bypassNavigation" xml:space="preserve">
+			<trans-unit id="menu.bypassNavigation">
 				<source>Skip navigation block</source>
 			</trans-unit>
-			<trans-unit id="eIcon.html" xml:space="preserve">
+			<trans-unit id="eIcon.html">
 				<source>Edit pure HTML content</source>
 			</trans-unit>
-			<trans-unit id="eIcon.header" xml:space="preserve">
+			<trans-unit id="eIcon.header">
 				<source>Edit header</source>
 			</trans-unit>
-			<trans-unit id="eIcon.subheader" xml:space="preserve">
+			<trans-unit id="eIcon.subheader">
 				<source>Edit subheader</source>
 			</trans-unit>
-			<trans-unit id="eIcon.bodytext" xml:space="preserve">
+			<trans-unit id="eIcon.bodytext">
 				<source>Edit bodytext</source>
 			</trans-unit>
-			<trans-unit id="eIcon.images" xml:space="preserve">
+			<trans-unit id="eIcon.images">
 				<source>Edit images</source>
 			</trans-unit>
-			<trans-unit id="eIcon.caption" xml:space="preserve">
+			<trans-unit id="eIcon.caption">
 				<source>Edit image caption</source>
 			</trans-unit>
-			<trans-unit id="eIcon.caption_position" xml:space="preserve">
+			<trans-unit id="eIcon.caption_position">
 				<source>Edit image caption alignment</source>
 			</trans-unit>
-			<trans-unit id="eIcon.bullets" xml:space="preserve">
+			<trans-unit id="eIcon.bullets">
 				<source>Edit bullet list</source>
 			</trans-unit>
-			<trans-unit id="eIcon.table" xml:space="preserve">
+			<trans-unit id="eIcon.table">
 				<source>Edit table</source>
 			</trans-unit>
-			<trans-unit id="eIcon.filelist" xml:space="preserve">
+			<trans-unit id="eIcon.filelist">
 				<source>Edit file list</source>
 			</trans-unit>
-			<trans-unit id="eIcon.menuSitemap" xml:space="preserve">
+			<trans-unit id="eIcon.menuSitemap">
 				<source>Edit menu / sitemap</source>
 			</trans-unit>
-			<trans-unit id="eIcon.recordList" xml:space="preserve">
+			<trans-unit id="eIcon.recordList">
 				<source>Edit recordlist</source>
 			</trans-unit>
-			<trans-unit id="eIcon.plugin" xml:space="preserve">
+			<trans-unit id="eIcon.plugin">
 				<source>Change/configure plugin</source>
 			</trans-unit>
-			<trans-unit id="eIcon.multimedia" xml:space="preserve">
+			<trans-unit id="eIcon.multimedia">
 				<source>Edit multimedia element</source>
 			</trans-unit>
-			<trans-unit id="eIcon.form" xml:space="preserve">
+			<trans-unit id="eIcon.form">
 				<source>Edit email form</source>
 			</trans-unit>
-			<trans-unit id="eIcon.search" xml:space="preserve">
+			<trans-unit id="eIcon.search">
 				<source>Edit search element</source>
 			</trans-unit>
-			<trans-unit id="eIcon.login" xml:space="preserve">
+			<trans-unit id="eIcon.login">
 				<source>Edit login element</source>
 			</trans-unit>
-			<trans-unit id="eIcon.page" xml:space="preserve">
+			<trans-unit id="eIcon.page">
 				<source>Page:</source>
 			</trans-unit>
 		</body>

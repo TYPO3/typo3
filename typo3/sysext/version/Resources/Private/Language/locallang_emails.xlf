@@ -3,7 +3,7 @@
 	<file t3:id="1415815010" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="version">
 		<header/>
 		<body>
-			<trans-unit id="subject" xml:space="preserve">
+			<trans-unit id="subject">
 				<source>TYPO3 Workspace Note: Stage Change for ###ELEMENT_NAME###</source>
 			</trans-unit>
 			<trans-unit id="message" xml:space="preserve">

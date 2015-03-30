@@ -3,151 +3,151 @@
 	<file t3:id="1415814783" source-language="en" datatype="plaintext" original="messages" date="2012-07-16T10:11:32Z" product-name="beuser">
 		<header/>
 		<body>
-			<trans-unit id="activeSessions" xml:space="preserve">
+			<trans-unit id="activeSessions">
 				<source>Active Sessions</source>
 			</trans-unit>
-			<trans-unit id="userName" xml:space="preserve">
+			<trans-unit id="userName">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="realName" xml:space="preserve">
+			<trans-unit id="realName">
 				<source>Real Name</source>
 			</trans-unit>
-			<trans-unit id="lastAccess" xml:space="preserve">
+			<trans-unit id="lastAccess">
 				<source>Last access</source>
 			</trans-unit>
-			<trans-unit id="ipAddress" xml:space="preserve">
+			<trans-unit id="ipAddress">
 				<source>IP address</source>
 			</trans-unit>
-			<trans-unit id="backendUserListing" xml:space="preserve">
+			<trans-unit id="backendUserListing">
 				<source>Backend User Listing</source>
 			</trans-unit>
-			<trans-unit id="subGroups" xml:space="preserve">
+			<trans-unit id="subGroups">
 				<source>Sub Groups</source>
 			</trans-unit>
-			<trans-unit id="email" xml:space="preserve">
+			<trans-unit id="email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="admin" xml:space="preserve">
+			<trans-unit id="admin">
 				<source>Admin</source>
 			</trans-unit>
-			<trans-unit id="users" xml:space="preserve">
+			<trans-unit id="users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="yes" xml:space="preserve">
+			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="no" xml:space="preserve">
+			<trans-unit id="no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="never" xml:space="preserve">
+			<trans-unit id="never">
 				<source>Never</source>
 			</trans-unit>
-			<trans-unit id="disable" xml:space="preserve">
+			<trans-unit id="disable">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="disable_compare" xml:space="preserve">
+			<trans-unit id="disable_compare">
 				<source>Is active?</source>
 			</trans-unit>
-			<trans-unit id="startDateAndTime" xml:space="preserve">
+			<trans-unit id="startDateAndTime">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="endDateAndTime" xml:space="preserve">
+			<trans-unit id="endDateAndTime">
 				<source>Stop</source>
 			</trans-unit>
-			<trans-unit id="lastLogin" xml:space="preserve">
+			<trans-unit id="lastLogin">
 				<source>Last login</source>
 			</trans-unit>
-			<trans-unit id="allowedLanguages" xml:space="preserve">
+			<trans-unit id="allowedLanguages">
 				<source>Limit to languages</source>
 			</trans-unit>
-			<trans-unit id="dbMountPoints" xml:space="preserve">
+			<trans-unit id="dbMountPoints">
 				<source>DB mountpoints</source>
 			</trans-unit>
-			<trans-unit id="fileMounts" xml:space="preserve">
+			<trans-unit id="fileMounts">
 				<source>File mountpoints</source>
 			</trans-unit>
-			<trans-unit id="disableIpLock" xml:space="preserve">
+			<trans-unit id="disableIpLock">
 				<source>Disable IP lock</source>
 			</trans-unit>
-			<trans-unit id="compareBackendUsers" xml:space="preserve">
+			<trans-unit id="compareBackendUsers">
 				<source>Compare backend users</source>
 			</trans-unit>
-			<trans-unit id="compareUserList" xml:space="preserve">
+			<trans-unit id="compareUserList">
 				<source>Compare user list</source>
 			</trans-unit>
-			<trans-unit id="status" xml:space="preserve">
+			<trans-unit id="status">
 				<source>Status</source>
 			</trans-unit>
-			<trans-unit id="both" xml:space="preserve">
+			<trans-unit id="both">
 				<source>Both</source>
 			</trans-unit>
-			<trans-unit id="any" xml:space="preserve">
+			<trans-unit id="any">
 				<source>Any</source>
 			</trans-unit>
-			<trans-unit id="adminOnly" xml:space="preserve">
+			<trans-unit id="adminOnly">
 				<source>Admin only</source>
 			</trans-unit>
-			<trans-unit id="normalUserOnly" xml:space="preserve">
+			<trans-unit id="normalUserOnly">
 				<source>Normal users only</source>
 			</trans-unit>
-			<trans-unit id="activeOnly" xml:space="preserve">
+			<trans-unit id="activeOnly">
 				<source>Active only</source>
 			</trans-unit>
-			<trans-unit id="inactiveOnly" xml:space="preserve">
+			<trans-unit id="inactiveOnly">
 				<source>Inactive only</source>
 			</trans-unit>
-			<trans-unit id="loginBefore" xml:space="preserve">
+			<trans-unit id="loginBefore">
 				<source>Logged in before</source>
 			</trans-unit>
-			<trans-unit id="neverLoggedIn" xml:space="preserve">
+			<trans-unit id="neverLoggedIn">
 				<source>Never logged in</source>
 			</trans-unit>
-			<trans-unit id="filter" xml:space="preserve">
+			<trans-unit id="filter">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="reallyLogout" xml:space="preserve">
+			<trans-unit id="reallyLogout">
 				<source>Really logout</source>
 			</trans-unit>
-			<trans-unit id="endSession" xml:space="preserve">
+			<trans-unit id="endSession">
 				<source>End session</source>
 			</trans-unit>
-			<trans-unit id="backendUsers" xml:space="preserve">
+			<trans-unit id="backendUsers">
 				<source>Backend users</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroupsMenu" xml:space="preserve">
+			<trans-unit id="backendUserGroupsMenu">
 				<source>Backend user groups</source>
 			</trans-unit>
-			<trans-unit id="onlineUsers" xml:space="preserve">
+			<trans-unit id="onlineUsers">
 				<source>Online users</source>
 			</trans-unit>
-			<trans-unit id="backendUserAdministration" xml:space="preserve">
+			<trans-unit id="backendUserAdministration">
 				<source>Backend User Administration</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroup" xml:space="preserve">
+			<trans-unit id="backendUserGroup">
 				<source>User group</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroups" xml:space="preserve">
+			<trans-unit id="backendUserGroups">
 				<source>Member of groups</source>
 			</trans-unit>
-			<trans-unit id="changeToMode" xml:space="preserve">
+			<trans-unit id="changeToMode">
 				<source>[change-to mode]</source>
 			</trans-unit>
-			<trans-unit id="switchBackMode" xml:space="preserve">
+			<trans-unit id="switchBackMode">
 				<source>Switch to user</source>
 			</trans-unit>
-			<trans-unit id="confirm" xml:space="preserve">
+			<trans-unit id="confirm">
 				<source>Are you sure you want to delete this backend user %s?</source>
 			</trans-unit>
-			<trans-unit id="section.compare" xml:space="preserve">
+			<trans-unit id="section.compare">
 				<source>Compare</source>
 			</trans-unit>
-			<trans-unit id="compare" xml:space="preserve">
+			<trans-unit id="compare">
 				<source>Compare</source>
 			</trans-unit>
-			<trans-unit id="terminateSessionSuccess" xml:space="preserve">
+			<trans-unit id="terminateSessionSuccess">
 				<source>Session successfully terminated.</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroupListing" xml:space="preserve">
+			<trans-unit id="backendUserGroupListing">
 				<source>Backend User Group Listing</source>
 			</trans-unit>
 		</body>

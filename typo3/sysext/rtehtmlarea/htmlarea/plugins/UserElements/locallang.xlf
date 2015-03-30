@@ -3,7 +3,7 @@
 	<file t3:id="1415814969" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Insert custom element" xml:space="preserve">
+			<trans-unit id="Insert custom element">
 				<source>Insert custom element</source>
 			</trans-unit>
 		</body>

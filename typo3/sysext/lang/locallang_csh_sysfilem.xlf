@@ -3,7 +3,7 @@
 	<file t3:id="1415814857" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>Filemounts describe a filepath on the server, relative or absolute.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -17,18 +17,18 @@ be_users:file_mountpoints,
 More about File mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_.image" xml:space="preserve">
+			<trans-unit id="_.image">
 				<source>EXT:lang/cshimages/filemount_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="title.description" xml:space="preserve">
+			<trans-unit id="title.description">
 				<source>Enter a title for the filemount. The title will appear as the name of the file mount when it is applied to users and groups.</source>
 			</trans-unit>
-			<trans-unit id="_title.image" xml:space="preserve">
+			<trans-unit id="_title.image">
 				<source>EXT:lang/cshimages/be_groups_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="path.description" xml:space="preserve">
+			<trans-unit id="path.description">
 				<source>Enter the path of the filemount, relative or absolute depending on the settings of BASE.</source>
 			</trans-unit>
 			<trans-unit id="path.details" xml:space="preserve">
@@ -55,23 +55,23 @@ EXT:lang/cshimages/be_groups_7.png</source>
 				<source>This is a filemount relative to "fileadmin/". The mounted folder is "fileadmin/user_upload/" since "user_upload" is the value of the "Path" field.
 The directory structure of "fileadmin/" where you can see the "user_upload" folder in the bottom of the list.</source>
 			</trans-unit>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>Use this option to temporarily disable the filemount.</source>
 			</trans-unit>
-			<trans-unit id="hidden.details" xml:space="preserve">
+			<trans-unit id="hidden.details">
 				<source>All backend users using the mount will not have access anymore. This includes 'Admin'-users.</source>
 			</trans-unit>
-			<trans-unit id="base.description" xml:space="preserve">
+			<trans-unit id="base.description">
 				<source>Determines whether the value of the PATH field is to be recognized as an absolute path on the server or a path relative to the fileadmin/ subfolder to the website.</source>
 			</trans-unit>
-			<trans-unit id="_base.seeAlso" xml:space="preserve">
+			<trans-unit id="_base.seeAlso">
 				<source>sys_filemounts:path</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="read_only.description">
 				<source>Display this file mount as read-only.</source>
 			</trans-unit>
-			<trans-unit id="read_only.details" xml:space="preserve">
+			<trans-unit id="read_only.details">
 				<source>Read-only file mounts are displayed in the File List and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
 			</trans-unit>
 		</body>

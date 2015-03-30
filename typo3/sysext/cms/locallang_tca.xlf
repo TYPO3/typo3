@@ -3,622 +3,622 @@
 	<file t3:id="1415814790" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="mod_tx_cms_webinfo_page" xml:space="preserve">
+			<trans-unit id="mod_tx_cms_webinfo_page">
 				<source>Pagetree Overview</source>
 			</trans-unit>
-			<trans-unit id="mod_tx_cms_webinfo_lang" xml:space="preserve">
+			<trans-unit id="mod_tx_cms_webinfo_lang">
 				<source>Localization Overview</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.standard" xml:space="preserve">
+			<trans-unit id="pages.palettes.standard">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.title" xml:space="preserve">
+			<trans-unit id="pages.palettes.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.visibility" xml:space="preserve">
+			<trans-unit id="pages.palettes.visibility">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.access" xml:space="preserve">
+			<trans-unit id="pages.palettes.access">
 				<source>Publish Dates and Access Rights</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract" xml:space="preserve">
+			<trans-unit id="pages.palettes.abstract">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.metatags" xml:space="preserve">
+			<trans-unit id="pages.palettes.metatags">
 				<source>Meta Tags</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.editorial" xml:space="preserve">
+			<trans-unit id="pages.palettes.editorial">
 				<source>Editorial</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract" xml:space="preserve">
+			<trans-unit id="pages.palettes.abstract">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.layout" xml:space="preserve">
+			<trans-unit id="pages.palettes.layout">
 				<source>Page Layout</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.module" xml:space="preserve">
+			<trans-unit id="pages.palettes.module">
 				<source>Use as Container</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.replace" xml:space="preserve">
+			<trans-unit id="pages.palettes.replace">
 				<source>Replace Content</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.links" xml:space="preserve">
+			<trans-unit id="pages.palettes.links">
 				<source>Links to this Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.caching" xml:space="preserve">
+			<trans-unit id="pages.palettes.caching">
 				<source>Caching</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.language" xml:space="preserve">
+			<trans-unit id="pages.palettes.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.miscellaneous" xml:space="preserve">
+			<trans-unit id="pages.palettes.miscellaneous">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.media" xml:space="preserve">
+			<trans-unit id="pages.palettes.media">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.storage" xml:space="preserve">
+			<trans-unit id="pages.palettes.storage">
 				<source>General Record Storage Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.config" xml:space="preserve">
+			<trans-unit id="pages.palettes.config">
 				<source>TypoScript Configuration</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype_formlabel" xml:space="preserve">
+			<trans-unit id="pages.doktype_formlabel">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.0" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.0">
 				<source>Advanced</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.2" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.2">
 				<source>Shortcut</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.3" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.3">
 				<source>Not in Menu</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.4" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.4">
 				<source>Backend User Section</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.5" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.5">
 				<source>Mount Point</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.7" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.7">
 				<source>Menu Separator</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.8" xml:space="preserve">
+			<trans-unit id="pages.doktype.I.8">
 				<source>Link to External URL</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.page" xml:space="preserve">
+			<trans-unit id="pages.doktype.div.page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.link" xml:space="preserve">
+			<trans-unit id="pages.doktype.div.link">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.special" xml:space="preserve">
+			<trans-unit id="pages.doktype.div.special">
 				<source>Special</source>
 			</trans-unit>
-			<trans-unit id="pages.title_formlabel" xml:space="preserve">
+			<trans-unit id="pages.title_formlabel">
 				<source>Page Title</source>
 			</trans-unit>
-			<trans-unit id="pages.starttime_formlabel" xml:space="preserve">
+			<trans-unit id="pages.starttime_formlabel">
 				<source>Publish Date</source>
 			</trans-unit>
-			<trans-unit id="pages.endtime_formlabel" xml:space="preserve">
+			<trans-unit id="pages.endtime_formlabel">
 				<source>Expiration Date</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_group_formlabel" xml:space="preserve">
+			<trans-unit id="pages.fe_group_formlabel">
 				<source>Usergroup Access Rights</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden" xml:space="preserve">
+			<trans-unit id="pages.hidden">
 				<source>Hide page:</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden_formlabel" xml:space="preserve">
+			<trans-unit id="pages.hidden_formlabel">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden_checkbox_1_formlabel" xml:space="preserve">
+			<trans-unit id="pages.hidden_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.layout_formlabel" xml:space="preserve">
+			<trans-unit id="pages.layout_formlabel">
 				<source>Frontend Layout</source>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.1" xml:space="preserve">
+			<trans-unit id="pages.layout.I.1">
 				<source>Layout 1</source>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.2" xml:space="preserve">
+			<trans-unit id="pages.layout.I.2">
 				<source>Layout 2</source>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.3" xml:space="preserve">
+			<trans-unit id="pages.layout.I.3">
 				<source>Layout 3</source>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme" xml:space="preserve">
+			<trans-unit id="pages.url_scheme">
 				<source>Enforce Protocol:</source>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme_formlabel" xml:space="preserve">
+			<trans-unit id="pages.url_scheme_formlabel">
 				<source>Use Protocol</source>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme.http" xml:space="preserve">
+			<trans-unit id="pages.url_scheme.http">
 				<source>http://</source>
 			</trans-unit>
-			<trans-unit id="pages.url_scheme.https" xml:space="preserve">
+			<trans-unit id="pages.url_scheme.https">
 				<source>https://</source>
 			</trans-unit>
-			<trans-unit id="pages.extendToSubpages" xml:space="preserve">
+			<trans-unit id="pages.extendToSubpages">
 				<source>Include Subpages:</source>
 			</trans-unit>
-			<trans-unit id="pages.extendToSubpages_formlabel" xml:space="preserve">
+			<trans-unit id="pages.extendToSubpages_formlabel">
 				<source>Extend to Subpages</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_title" xml:space="preserve">
+			<trans-unit id="pages.nav_title">
 				<source>Navigation Title:</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_title_formlabel" xml:space="preserve">
+			<trans-unit id="pages.nav_title_formlabel">
 				<source>Alternative Navigation Title</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide" xml:space="preserve">
+			<trans-unit id="pages.nav_hide">
 				<source>Hide in Menu:</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_formlabel" xml:space="preserve">
+			<trans-unit id="pages.nav_hide_formlabel">
 				<source>In Menus</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_checkbox_1_formlabel" xml:space="preserve">
+			<trans-unit id="pages.nav_hide_checkbox_1_formlabel">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="pages.subtitle" xml:space="preserve">
+			<trans-unit id="pages.subtitle">
 				<source>Subtitle:</source>
 			</trans-unit>
-			<trans-unit id="pages.subtitle_formlabel" xml:space="preserve">
+			<trans-unit id="pages.subtitle_formlabel">
 				<source>Subtitle</source>
 			</trans-unit>
-			<trans-unit id="pages.target" xml:space="preserve">
+			<trans-unit id="pages.target">
 				<source>Target:</source>
 			</trans-unit>
-			<trans-unit id="pages.target_formlabel" xml:space="preserve">
+			<trans-unit id="pages.target_formlabel">
 				<source>Link Target</source>
 			</trans-unit>
-			<trans-unit id="pages.alias" xml:space="preserve">
+			<trans-unit id="pages.alias">
 				<source>Alias:</source>
 			</trans-unit>
-			<trans-unit id="pages.alias_formlabel" xml:space="preserve">
+			<trans-unit id="pages.alias_formlabel">
 				<source>URL Alias</source>
 			</trans-unit>
-			<trans-unit id="pages.url" xml:space="preserve">
+			<trans-unit id="pages.url">
 				<source>URL:</source>
 			</trans-unit>
-			<trans-unit id="pages.url_formlabel" xml:space="preserve">
+			<trans-unit id="pages.url_formlabel">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.urltype_formlabel" xml:space="preserve">
+			<trans-unit id="pages.urltype_formlabel">
 				<source>Protocol</source>
 			</trans-unit>
-			<trans-unit id="pages.lastUpdated" xml:space="preserve">
+			<trans-unit id="pages.lastUpdated">
 				<source>Last Updated:</source>
 			</trans-unit>
-			<trans-unit id="pages.lastUpdated_formlabel" xml:space="preserve">
+			<trans-unit id="pages.lastUpdated_formlabel">
 				<source>Last Update</source>
 			</trans-unit>
-			<trans-unit id="pages.newUntil" xml:space="preserve">
+			<trans-unit id="pages.newUntil">
 				<source>'New' Until:</source>
 			</trans-unit>
-			<trans-unit id="pages.newUntil_formlabel" xml:space="preserve">
+			<trans-unit id="pages.newUntil_formlabel">
 				<source>Mark as 'New' Until</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout">
 				<source>Cache Expires:</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout_formlabel" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout_formlabel">
 				<source>Cache Lifetime</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.1" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.1">
 				<source>1 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.2" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.2">
 				<source>5 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.3" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.3">
 				<source>15 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.4" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.4">
 				<source>30 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.5" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.5">
 				<source>1 hour</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.6" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.6">
 				<source>4 hours</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.7" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.7">
 				<source>1 day</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.8" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.8">
 				<source>2 days</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.9" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.9">
 				<source>7 days</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.10" xml:space="preserve">
+			<trans-unit id="pages.cache_timeout.I.10">
 				<source>1 month</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_tags" xml:space="preserve">
+			<trans-unit id="pages.cache_tags">
 				<source>Cache Tags:</source>
 			</trans-unit>
-			<trans-unit id="pages.editlock_formlabel" xml:space="preserve">
+			<trans-unit id="pages.editlock_formlabel">
 				<source>Editable for Admins Only</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.metadata" xml:space="preserve">
+			<trans-unit id="pages.tabs.metadata">
 				<source>Metadata</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.files" xml:space="preserve">
+			<trans-unit id="pages.tabs.files">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.resources" xml:space="preserve">
+			<trans-unit id="pages.tabs.resources">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.access" xml:space="preserve">
+			<trans-unit id="pages.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.options" xml:space="preserve">
+			<trans-unit id="pages.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.mount" xml:space="preserve">
+			<trans-unit id="pages.tabs.mount">
 				<source>Mount</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.shortcut" xml:space="preserve">
+			<trans-unit id="pages.tabs.shortcut">
 				<source>Shortcut</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.url" xml:space="preserve">
+			<trans-unit id="pages.tabs.url">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.extended" xml:space="preserve">
+			<trans-unit id="pages.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.appearance" xml:space="preserve">
+			<trans-unit id="pages.tabs.appearance">
 				<source>Appearance</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.behaviour" xml:space="preserve">
+			<trans-unit id="pages.tabs.behaviour">
 				<source>Behaviour</source>
 			</trans-unit>
-			<trans-unit id="pages.no_cache" xml:space="preserve">
+			<trans-unit id="pages.no_cache">
 				<source>No Cache:</source>
 			</trans-unit>
-			<trans-unit id="pages.no_cache_formlabel" xml:space="preserve">
+			<trans-unit id="pages.no_cache_formlabel">
 				<source>Cache</source>
 			</trans-unit>
-			<trans-unit id="pages.no_cache_checkbox_1_formlabel" xml:space="preserve">
+			<trans-unit id="pages.no_cache_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.no_search" xml:space="preserve">
+			<trans-unit id="pages.no_search">
 				<source>No Search:</source>
 			</trans-unit>
-			<trans-unit id="pages.no_search_formlabel" xml:space="preserve">
+			<trans-unit id="pages.no_search_formlabel">
 				<source>Include in Search</source>
 			</trans-unit>
-			<trans-unit id="pages.no_search_checkbox_1_formlabel" xml:space="preserve">
+			<trans-unit id="pages.no_search_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode" xml:space="preserve">
+			<trans-unit id="pages.shortcut_mode">
 				<source>Shortcut Mode:</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode_formlabel" xml:space="preserve">
+			<trans-unit id="pages.shortcut_mode_formlabel">
 				<source>Shortcut Mode</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.0" xml:space="preserve">
+			<trans-unit id="pages.shortcut_mode.I.0">
 				<source>Selected page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.1" xml:space="preserve">
+			<trans-unit id="pages.shortcut_mode.I.1">
 				<source>First subpage of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.2" xml:space="preserve">
+			<trans-unit id="pages.shortcut_mode.I.2">
 				<source>Random subpage of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.3" xml:space="preserve">
+			<trans-unit id="pages.shortcut_mode.I.3">
 				<source>Parent page of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_formlabel" xml:space="preserve">
+			<trans-unit id="pages.shortcut_formlabel">
 				<source>Shortcut Target</source>
 			</trans-unit>
-			<trans-unit id="pages.content_from_pid" xml:space="preserve">
+			<trans-unit id="pages.content_from_pid">
 				<source>Show content from this page instead:</source>
 			</trans-unit>
-			<trans-unit id="pages.content_from_pid_formlabel" xml:space="preserve">
+			<trans-unit id="pages.content_from_pid_formlabel">
 				<source>Show Content from Page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid" xml:space="preserve">
+			<trans-unit id="pages.mount_pid">
 				<source>Mount Point (advanced):</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_formlabel" xml:space="preserve">
+			<trans-unit id="pages.mount_pid_formlabel">
 				<source>Mounted page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol" xml:space="preserve">
+			<trans-unit id="pages.mount_pid_ol">
 				<source>Substitute Mount Point (this page) with Mounted page:</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol_formlabel" xml:space="preserve">
+			<trans-unit id="pages.mount_pid_ol_formlabel">
 				<source>Show Content from</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol.I.0" xml:space="preserve">
+			<trans-unit id="pages.mount_pid_ol.I.0">
 				<source>This Page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol.I.1" xml:space="preserve">
+			<trans-unit id="pages.mount_pid_ol.I.1">
 				<source>Mounted Page</source>
 			</trans-unit>
-			<trans-unit id="pages.abstract" xml:space="preserve">
+			<trans-unit id="pages.abstract">
 				<source>Abstract:</source>
 			</trans-unit>
-			<trans-unit id="pages.abstract_formlabel" xml:space="preserve">
+			<trans-unit id="pages.abstract_formlabel">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.keywords_formlabel" xml:space="preserve">
+			<trans-unit id="pages.keywords_formlabel">
 				<source>Keywords</source>
 			</trans-unit>
-			<trans-unit id="pages.description_formlabel" xml:space="preserve">
+			<trans-unit id="pages.description_formlabel">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="pages.author_formlabel" xml:space="preserve">
+			<trans-unit id="pages.author_formlabel">
 				<source>Author Name</source>
 			</trans-unit>
-			<trans-unit id="pages.author_email_formlabel" xml:space="preserve">
+			<trans-unit id="pages.author_email_formlabel">
 				<source>Author Email</source>
 			</trans-unit>
-			<trans-unit id="pages.media" xml:space="preserve">
+			<trans-unit id="pages.media">
 				<source>Files:</source>
 			</trans-unit>
-			<trans-unit id="pages.media_formlabel" xml:space="preserve">
+			<trans-unit id="pages.media_formlabel">
 				<source>Media</source>
 			</trans-unit>
-			<trans-unit id="pages.php_tree_stop_formlabel" xml:space="preserve">
+			<trans-unit id="pages.php_tree_stop_formlabel">
 				<source>Stop Page Tree</source>
 			</trans-unit>
-			<trans-unit id="pages.is_siteroot" xml:space="preserve">
+			<trans-unit id="pages.is_siteroot">
 				<source>Is Root of Website:</source>
 			</trans-unit>
-			<trans-unit id="pages.is_siteroot_formlabel" xml:space="preserve">
+			<trans-unit id="pages.is_siteroot_formlabel">
 				<source>Use as Root Page</source>
 			</trans-unit>
-			<trans-unit id="pages.module" xml:space="preserve">
+			<trans-unit id="pages.module">
 				<source>Contains Plugin:</source>
 			</trans-unit>
-			<trans-unit id="pages.module_formlabel" xml:space="preserve">
+			<trans-unit id="pages.module_formlabel">
 				<source>Contains Plugin</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.1" xml:space="preserve">
+			<trans-unit id="pages.module.I.1">
 				<source>Shop</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.2" xml:space="preserve">
+			<trans-unit id="pages.module.I.2">
 				<source>Board</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.3" xml:space="preserve">
+			<trans-unit id="pages.module.I.3">
 				<source>News</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.4" xml:space="preserve">
+			<trans-unit id="pages.module.I.4">
 				<source>Website Users</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.5" xml:space="preserve">
+			<trans-unit id="pages.module.I.5">
 				<source>Direct Mail</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.6" xml:space="preserve">
+			<trans-unit id="pages.module.I.6">
 				<source>Approvals</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg" xml:space="preserve">
+			<trans-unit id="pages.l18n_cfg">
 				<source>Localization Settings:</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg_formlabel" xml:space="preserve">
+			<trans-unit id="pages.l18n_cfg_formlabel">
 				<source>Localization</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.1" xml:space="preserve">
+			<trans-unit id="pages.l18n_cfg.I.1">
 				<source>Hide default translation of page</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.2" xml:space="preserve">
+			<trans-unit id="pages.l18n_cfg.I.2">
 				<source>Hide page if no translation for current language exists</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.2a" xml:space="preserve">
+			<trans-unit id="pages.l18n_cfg.I.2a">
 				<source>Show page even if no translation exists</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode">
 				<source>Login Mode:</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode_formlabel" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode_formlabel">
 				<source>Login Behaviour</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disable" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode.disable">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.enable" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode.enable">
 				<source>Enable login</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disableAll" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode.disableAll">
 				<source>Disable login</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disableGroups" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode.disableGroups">
 				<source>Enable user login, Disable usergroup login</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.enableAgain" xml:space="preserve">
+			<trans-unit id="pages.fe_login_mode.enableAgain">
 				<source>Re-Enable login</source>
 			</trans-unit>
-			<trans-unit id="pages.storage_pid_formlabel" xml:space="preserve">
+			<trans-unit id="pages.storage_pid_formlabel">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.TSconfig_formlabel" xml:space="preserve">
+			<trans-unit id="pages.TSconfig_formlabel">
 				<source>Page TSConfig</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout_formlabel" xml:space="preserve">
+			<trans-unit id="pages.backend_layout_formlabel">
 				<source>Backend Layout (this page only)</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout_next_level_formlabel" xml:space="preserve">
+			<trans-unit id="pages.backend_layout_next_level_formlabel">
 				<source>Backend Layout (subpages of this page)</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout.none" xml:space="preserve">
+			<trans-unit id="pages.backend_layout.none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout.default" xml:space="preserve">
+			<trans-unit id="pages.backend_layout.default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="tt_content" xml:space="preserve">
+			<trans-unit id="tt_content">
 				<source>Page Content</source>
 			</trans-unit>
-			<trans-unit id="fe_users" xml:space="preserve">
+			<trans-unit id="fe_users">
 				<source>Website User</source>
 			</trans-unit>
-			<trans-unit id="fe_users.username" xml:space="preserve">
+			<trans-unit id="fe_users.username">
 				<source>Username:</source>
 			</trans-unit>
-			<trans-unit id="fe_users.password" xml:space="preserve">
+			<trans-unit id="fe_users.password">
 				<source>Password:</source>
 			</trans-unit>
-			<trans-unit id="fe_users.usergroup" xml:space="preserve">
+			<trans-unit id="fe_users.usergroup">
 				<source>Groups:</source>
 			</trans-unit>
-			<trans-unit id="fe_users.lockToDomain" xml:space="preserve">
+			<trans-unit id="fe_users.lockToDomain">
 				<source>Lock to Domain:</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.personelData" xml:space="preserve">
+			<trans-unit id="fe_users.tabs.personelData">
 				<source>Personal Data</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.access" xml:space="preserve">
+			<trans-unit id="fe_users.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.options" xml:space="preserve">
+			<trans-unit id="fe_users.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.extended" xml:space="preserve">
+			<trans-unit id="fe_users.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="fe_groups" xml:space="preserve">
+			<trans-unit id="fe_groups">
 				<source>Website Usergroup</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.title" xml:space="preserve">
+			<trans-unit id="fe_groups.title">
 				<source>Group Title:</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.lockToDomain" xml:space="preserve">
+			<trans-unit id="fe_groups.lockToDomain">
 				<source>Lock to Domain:</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.subgroup" xml:space="preserve">
+			<trans-unit id="fe_groups.subgroup">
 				<source>Subgroups:</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.tabs.options" xml:space="preserve">
+			<trans-unit id="fe_groups.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.tabs.extended" xml:space="preserve">
+			<trans-unit id="fe_groups.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="sys_domain" xml:space="preserve">
+			<trans-unit id="sys_domain">
 				<source>Domain</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.domainName" xml:space="preserve">
+			<trans-unit id="sys_domain.domainName">
 				<source>Domain:</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectTo" xml:space="preserve">
+			<trans-unit id="sys_domain.redirectTo">
 				<source>Redirect to:</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode" xml:space="preserve">
+			<trans-unit id="sys_domain.redirectHttpStatusCode">
 				<source>HTTP Status Code for the Redirect:</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.301" xml:space="preserve">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.301">
 				<source>Moved permanently (301)</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.302" xml:space="preserve">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.302">
 				<source>Found (302)</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.303" xml:space="preserve">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.303">
 				<source>See Other (303)</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.redirectHttpStatusCode.307" xml:space="preserve">
+			<trans-unit id="sys_domain.redirectHttpStatusCode.307">
 				<source>Moved Temporarily (307)</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.prepend_params" xml:space="preserve">
+			<trans-unit id="sys_domain.prepend_params">
 				<source>Transfer parameters to Redirect URL:</source>
 			</trans-unit>
-			<trans-unit id="sys_domain.forced" xml:space="preserve">
+			<trans-unit id="sys_domain.forced">
 				<source>Always prepend this domain in links:</source>
 			</trans-unit>
-			<trans-unit id="sys_template" xml:space="preserve">
+			<trans-unit id="sys_template">
 				<source>Template</source>
 			</trans-unit>
-			<trans-unit id="sys_template.title" xml:space="preserve">
+			<trans-unit id="sys_template.title">
 				<source>Template Title:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.root" xml:space="preserve">
+			<trans-unit id="sys_template.root">
 				<source>Rootlevel:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.clear" xml:space="preserve">
+			<trans-unit id="sys_template.clear">
 				<source>Clear:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.sitetitle" xml:space="preserve">
+			<trans-unit id="sys_template.sitetitle">
 				<source>Website Title:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.constants" xml:space="preserve">
+			<trans-unit id="sys_template.constants">
 				<source>Constants:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.resources" xml:space="preserve">
+			<trans-unit id="sys_template.resources">
 				<source>Resources:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.nextLevel" xml:space="preserve">
+			<trans-unit id="sys_template.nextLevel">
 				<source>Template on Next Level:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.include_static_file" xml:space="preserve">
+			<trans-unit id="sys_template.include_static_file">
 				<source>Include static (from extensions):</source>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn" xml:space="preserve">
+			<trans-unit id="sys_template.basedOn">
 				<source>Include Basis Template:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.includeStaticAfterBasedOn" xml:space="preserve">
+			<trans-unit id="sys_template.includeStaticAfterBasedOn">
 				<source>Include Static Templates After Basis Templates:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.config" xml:space="preserve">
+			<trans-unit id="sys_template.config">
 				<source>Setup:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.editorcfg" xml:space="preserve">
+			<trans-unit id="sys_template.editorcfg">
 				<source>Backend Editor Configuration:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.description" xml:space="preserve">
+			<trans-unit id="sys_template.description">
 				<source>Description:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode" xml:space="preserve">
+			<trans-unit id="sys_template.static_file_mode">
 				<source>Static Template Files from TYPO3 Extensions:</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.0" xml:space="preserve">
+			<trans-unit id="sys_template.static_file_mode.0">
 				<source>Default (include before if root flag is set)</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.1" xml:space="preserve">
+			<trans-unit id="sys_template.static_file_mode.1">
 				<source>Always include before this template record</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.2" xml:space="preserve">
+			<trans-unit id="sys_template.static_file_mode.2">
 				<source>Never include before this template record</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.3" xml:space="preserve">
+			<trans-unit id="sys_template.static_file_mode.3">
 				<source>Include before all static templates if root flag is set</source>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn_add" xml:space="preserve">
+			<trans-unit id="sys_template.basedOn_add">
 				<source>Add New Basis Template</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.files" xml:space="preserve">
+			<trans-unit id="sys_template.tabs.files">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.include" xml:space="preserve">
+			<trans-unit id="sys_template.tabs.include">
 				<source>Includes</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.options" xml:space="preserve">
+			<trans-unit id="sys_template.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.access" xml:space="preserve">
+			<trans-unit id="sys_template.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="pages_language_overlay" xml:space="preserve">
+			<trans-unit id="pages_language_overlay">
 				<source>Alternative Page Language</source>
 			</trans-unit>
-			<trans-unit id="backend_layout" xml:space="preserve">
+			<trans-unit id="backend_layout">
 				<source>Backend Layout</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.title" xml:space="preserve">
+			<trans-unit id="backend_layout.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.description" xml:space="preserve">
+			<trans-unit id="backend_layout.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.config" xml:space="preserve">
+			<trans-unit id="backend_layout.config">
 				<source>Config</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.wizard" xml:space="preserve">
+			<trans-unit id="backend_layout.wizard">
 				<source>Wizard</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.icon" xml:space="preserve">
+			<trans-unit id="backend_layout.icon">
 				<source>Icon</source>
 			</trans-unit>
 		</body>

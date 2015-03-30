@@ -3,7 +3,7 @@
 	<file t3:id="1415814888" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="tsparser_ext.make_copy" xml:space="preserve">
+			<trans-unit id="tsparser_ext.make_copy">
 				<source>This will make a copy of the current file, '%s'. Do you really want that?</source>
 			</trans-unit>
 		</body>

@@ -3,70 +3,70 @@
 	<file t3:id="1415814871" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>About TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="typo3_logo" xml:space="preserve">
+			<trans-unit id="typo3_logo">
 				<source>TYPO3 CMS logo</source>
 			</trans-unit>
-			<trans-unit id="information" xml:space="preserve">
+			<trans-unit id="information">
 				<source>TYPO3 Information</source>
 			</trans-unit>
-			<trans-unit id="welcome" xml:space="preserve">
+			<trans-unit id="welcome">
 				<source>TYPO3 CMS - Professional Web Content Management System</source>
 			</trans-unit>
-			<trans-unit id="minor" xml:space="preserve">
+			<trans-unit id="minor">
 				<source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="http://typo3.org/about/typo3-the-cms/" target="_blank"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.org/license" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using %s %s</source>
 			</trans-unit>
-			<trans-unit id="cms_description" xml:space="preserve">
+			<trans-unit id="cms_description">
 				<source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="http://typo3.org/about/typo3-the-cms/" target="_blank"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="http://typo3.org/license" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using version %s - Copyright %s %s</source>
 			</trans-unit>
-			<trans-unit id="community_credits" xml:space="preserve">
+			<trans-unit id="community_credits">
 				<source>Community Credits</source>
 			</trans-unit>
-			<trans-unit id="information_detail" xml:space="preserve">
+			<trans-unit id="information_detail">
 				<source>Visit &lt;a href="http://typo3.org/community/" target="_blank"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
 			</trans-unit>
-			<trans-unit id="coredevs" xml:space="preserve">
+			<trans-unit id="coredevs">
 				<source>Core Team</source>
 			</trans-unit>
-			<trans-unit id="coredevs_detail" xml:space="preserve">
+			<trans-unit id="coredevs_detail">
 				<source>Visit &lt;a href="http://typo3.org/teams/core/members/" target="_blank"&gt;typo3.org/teams/core/members/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="http://forge.typo3.org/projects/show/typo3v4-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
 			</trans-unit>
-			<trans-unit id="extension_authors" xml:space="preserve">
+			<trans-unit id="extension_authors">
 				<source>Extension Authors</source>
 			</trans-unit>
-			<trans-unit id="extension_list_info" xml:space="preserve">
+			<trans-unit id="extension_list_info">
 				<source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
 			</trans-unit>
-			<trans-unit id="extension" xml:space="preserve">
+			<trans-unit id="extension">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="extension_author" xml:space="preserve">
+			<trans-unit id="extension_author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>About TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+			<trans-unit id="mlang_tabs_tab">
 				<source>About TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="donation_header" xml:space="preserve">
+			<trans-unit id="donation_header">
 				<source>TYPO3 Donation</source>
 			</trans-unit>
-			<trans-unit id="donation_message" xml:space="preserve">
+			<trans-unit id="donation_message">
 				<source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
 			</trans-unit>
-			<trans-unit id="donation_button" xml:space="preserve">
+			<trans-unit id="donation_button">
 				<source>Donate now</source>
 			</trans-unit>
-			<trans-unit id="external_libraries" xml:space="preserve">
+			<trans-unit id="external_libraries">
 				<source>External Libraries</source>
 			</trans-unit>
-			<trans-unit id="external_thanks" xml:space="preserve">
+			<trans-unit id="external_thanks">
 				<source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
 			</trans-unit>
 		</body>

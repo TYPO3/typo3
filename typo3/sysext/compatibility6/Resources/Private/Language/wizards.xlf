@@ -3,10 +3,10 @@
 	<file t3:id="1415814826" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="compatibility6">
 		<header/>
 		<body>
-			<trans-unit id="wiz_lWizards" xml:space="preserve">
+			<trans-unit id="wiz_lWizards">
 				<source>Select Wizard</source>
 			</trans-unit>
-			<trans-unit id="mod_wizards" xml:space="preserve">
+			<trans-unit id="mod_wizards">
 				<source>Wizards</source>
 			</trans-unit>
 		</body>

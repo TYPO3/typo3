@@ -3,88 +3,88 @@
 	<file t3:id="1415814792" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="page_title" xml:space="preserve">
+			<trans-unit id="page_title">
 				<source>Pagetree overview</source>
 			</trans-unit>
-			<trans-unit id="page_sysnote" xml:space="preserve">
+			<trans-unit id="page_sysnote">
 				<source>Internal notes</source>
 			</trans-unit>
-			<trans-unit id="pageInformation" xml:space="preserve">
+			<trans-unit id="pageInformation">
 				<source>Page information</source>
 			</trans-unit>
-			<trans-unit id="pages_0" xml:space="preserve">
+			<trans-unit id="pages_0">
 				<source>Basic settings</source>
 			</trans-unit>
-			<trans-unit id="pages_2" xml:space="preserve">
+			<trans-unit id="pages_2">
 				<source>Cache and Age</source>
 			</trans-unit>
-			<trans-unit id="pages_1" xml:space="preserve">
+			<trans-unit id="pages_1">
 				<source>Record overview</source>
 			</trans-unit>
-			<trans-unit id="stat_type_0" xml:space="preserve">
+			<trans-unit id="stat_type_0">
 				<source>Page hits</source>
 			</trans-unit>
-			<trans-unit id="stat_type_1" xml:space="preserve">
+			<trans-unit id="stat_type_1">
 				<source>Total hits</source>
 			</trans-unit>
-			<trans-unit id="stat_type_2" xml:space="preserve">
+			<trans-unit id="stat_type_2">
 				<source>Hits in main sections</source>
 			</trans-unit>
-			<trans-unit id="stat_period" xml:space="preserve">
+			<trans-unit id="stat_period">
 				<source>Statistics in the period %s back to %s</source>
 			</trans-unit>
-			<trans-unit id="pI_crUser" xml:space="preserve">
+			<trans-unit id="pI_crUser">
 				<source>Created by</source>
 			</trans-unit>
-			<trans-unit id="pI_crDate" xml:space="preserve">
+			<trans-unit id="pI_crDate">
 				<source>Created date</source>
 			</trans-unit>
-			<trans-unit id="pI_lastChange" xml:space="preserve">
+			<trans-unit id="pI_lastChange">
 				<source>Last change</source>
 			</trans-unit>
-			<trans-unit id="pI_lastChangeContent" xml:space="preserve">
+			<trans-unit id="pI_lastChangeContent">
 				<source>Last change, content</source>
 			</trans-unit>
-			<trans-unit id="hits_title" xml:space="preserve">
+			<trans-unit id="hits_title">
 				<source>Hit Statistics</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_viewPage" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_viewPage">
 				<source>View page</source>
 			</trans-unit>
-			<trans-unit id="lang_title" xml:space="preserve">
+			<trans-unit id="lang_title">
 				<source>Localization overview</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editDefaultLanguagePage" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_editDefaultLanguagePage">
 				<source>Edit default language page properties</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLangOverlays" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_editLangOverlays">
 				<source>Edit all language overlay records</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageProperties" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_editPageProperties">
 				<source>Edit all page properties</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPage" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_editPage">
 				<source>Edit page</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageLang" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_editPageLang">
 				<source>Edit page translation</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_badThingThereAre" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_badThingThereAre">
 				<source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord">
 				<source>Edit language overlay record</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_page" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_default" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="lang_getlangsta_createNewTranslationHeaders" xml:space="preserve">
+			<trans-unit id="lang_getlangsta_createNewTranslationHeaders">
 				<source>Create new translation headers</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_CEcount" xml:space="preserve">
+			<trans-unit id="lang_renderl10n_CEcount">
 				<source>Content Element Count</source>
 			</trans-unit>
 		</body>

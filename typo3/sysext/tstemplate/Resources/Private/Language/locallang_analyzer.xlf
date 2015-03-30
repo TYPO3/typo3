@@ -3,61 +3,61 @@
 	<file t3:id="1415815003" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="currentTemplate" xml:space="preserve">
+			<trans-unit id="currentTemplate">
 				<source>Current template</source>
 			</trans-unit>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="rootlevel" xml:space="preserve">
+			<trans-unit id="rootlevel">
 				<source>Rootlevel</source>
 			</trans-unit>
-			<trans-unit id="clearSetup" xml:space="preserve">
+			<trans-unit id="clearSetup">
 				<source>Clear Setup</source>
 			</trans-unit>
-			<trans-unit id="clearConstants" xml:space="preserve">
+			<trans-unit id="clearConstants">
 				<source>Clear Constants</source>
 			</trans-unit>
-			<trans-unit id="pid" xml:space="preserve">
+			<trans-unit id="pid">
 				<source>PID</source>
 			</trans-unit>
-			<trans-unit id="rootline" xml:space="preserve">
+			<trans-unit id="rootline">
 				<source>Rootline</source>
 			</trans-unit>
-			<trans-unit id="nextLevel" xml:space="preserve">
+			<trans-unit id="nextLevel">
 				<source>Next Level</source>
 			</trans-unit>
-			<trans-unit id="templateHierarchy" xml:space="preserve">
+			<trans-unit id="templateHierarchy">
 				<source>Template hierarchy</source>
 			</trans-unit>
-			<trans-unit id="displayOptions" xml:space="preserve">
+			<trans-unit id="displayOptions">
 				<source>Display Options</source>
 			</trans-unit>
-			<trans-unit id="lineNumbers" xml:space="preserve">
+			<trans-unit id="lineNumbers">
 				<source>Line numbers</source>
 			</trans-unit>
-			<trans-unit id="syntaxHighlight" xml:space="preserve">
+			<trans-unit id="syntaxHighlight">
 				<source>Syntax highlight</source>
 			</trans-unit>
-			<trans-unit id="comments" xml:space="preserve">
+			<trans-unit id="comments">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="cropLines" xml:space="preserve">
+			<trans-unit id="cropLines">
 				<source>Crop lines</source>
 			</trans-unit>
-			<trans-unit id="blockMode" xml:space="preserve">
+			<trans-unit id="blockMode">
 				<source>Block mode</source>
 			</trans-unit>
-			<trans-unit id="constants" xml:space="preserve">
+			<trans-unit id="constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="setup" xml:space="preserve">
+			<trans-unit id="setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="viewCompleteTS" xml:space="preserve">
+			<trans-unit id="viewCompleteTS">
 				<source>View the complete TS Listing</source>
 			</trans-unit>
-			<trans-unit id="completeTS" xml:space="preserve">
+			<trans-unit id="completeTS">
 				<source>Complete TS</source>
 			</trans-unit>
 		</body>

@@ -3,10 +3,10 @@
 	<file t3:id="1415814807" source-language="en" datatype="plaintext" original="messages" date="2011-12-21T11:57:33Z" product-name="tests">
 		<header/>
 		<body>
-			<trans-unit id="label1" xml:space="preserve">
+			<trans-unit id="label1">
 				<source>This is my 1st label</source>
 			</trans-unit>
-			<trans-unit id="label2" xml:space="preserve">
+			<trans-unit id="label2">
 				<source>This is my 2nd label</source>
 			</trans-unit>
 		</body>

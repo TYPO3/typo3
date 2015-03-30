@@ -3,7 +3,7 @@
 	<file t3:id="1415814853" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>This is the table of backend administration users. Backend users can login in the backend of TYPO3 and are typically producers of content on a website.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -37,17 +37,17 @@ EXT:lang/cshimages/beuser_3.png</source>
 The editing form of a backend users record.
 The "Tools &gt; User Admin" module where you can get an overview of the users on the system and what permissions they have. Click the "SU" button to switch to a users account.</source>
 			</trans-unit>
-			<trans-unit id="username.description" xml:space="preserve">
+			<trans-unit id="username.description">
 				<source>Enter the login name of the backend user.</source>
 			</trans-unit>
-			<trans-unit id="username.details" xml:space="preserve">
+			<trans-unit id="username.details">
 				<source>A username is required and must be in lowercase without spaces in it. Furthermore the username must be unique. If it is not unique a number will be appended automatically.</source>
 			</trans-unit>
-			<trans-unit id="_username.seeAlso" xml:space="preserve">
+			<trans-unit id="_username.seeAlso">
 				<source>be_users:password</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="password.description" xml:space="preserve">
+			<trans-unit id="password.description">
 				<source>Enter the password for the backend username above (Notice the value you enter &lt;i&gt;will&lt;/i&gt; be readable in the field!).</source>
 			</trans-unit>
 			<trans-unit id="password.details" xml:space="preserve">
@@ -61,11 +61,11 @@ When you enter the password in the password field it is initially visible in cle
 &lt;b&gt;User changing password&lt;/b&gt;
 Users can change their password from the User &gt; Setup module</source>
 			</trans-unit>
-			<trans-unit id="_password.seeAlso" xml:space="preserve">
+			<trans-unit id="_password.seeAlso">
 				<source>_MOD_user_setup:option_newPassword</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="usergroup.description" xml:space="preserve">
+			<trans-unit id="usergroup.description">
 				<source>Assign backend user groups to the user.</source>
 			</trans-unit>
 			<trans-unit id="usergroup.details" xml:space="preserve">
@@ -77,10 +77,10 @@ The first (top) group in the list is the group which will, by default, be the ow
 be_groups</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description" xml:space="preserve">
+			<trans-unit id="lockToDomain.description">
 				<source>Enter the host name from which the user is forced to login.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.details" xml:space="preserve">
+			<trans-unit id="lockToDomain.details">
 				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
 			</trans-unit>
 			<trans-unit id="_lockToDomain.seeAlso" xml:space="preserve">
@@ -89,13 +89,13 @@ fe_users:lockToDomain,
 fe_groups:lockToDomain</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="disableIPlock.description" xml:space="preserve">
+			<trans-unit id="disableIPlock.description">
 				<source>Disable the lock of the backend users session to the remote IP number.</source>
 			</trans-unit>
-			<trans-unit id="disableIPlock.details" xml:space="preserve">
+			<trans-unit id="disableIPlock.details">
 				<source>You will have to disable this lock if backend users are accessing TYPO3 from ISDN or modem connections which may shutdown and reconnect with a new IP. The same would be true for DHCP assignment of IP numbers where new IP numbers are frequently assigned.</source>
 			</trans-unit>
-			<trans-unit id="db_mountpoints.description" xml:space="preserve">
+			<trans-unit id="db_mountpoints.description">
 				<source>Assign startpoints for the users page tree.</source>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.details" xml:space="preserve">
@@ -120,7 +120,7 @@ EXT:lang/cshimages/be_groups_4.png</source>
 				<source>A DB mount is assigned to the user. Users can only operate on pages and records which are inside their DB mounts!
 When a page is mounted for a user it will become the root of their page tree. The user must have access to the page through the regular page permissions set in the Web &gt; Access module.</source>
 			</trans-unit>
-			<trans-unit id="file_mountpoints.description" xml:space="preserve">
+			<trans-unit id="file_mountpoints.description">
 				<source>Assign startpoints for the file folder tree.</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints.details" xml:space="preserve">
@@ -136,7 +136,7 @@ xMOD_csh_corebe:filetree,
 sys_filemounts</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="email.description" xml:space="preserve">
+			<trans-unit id="email.description">
 				<source>Enter the email address of the user.</source>
 			</trans-unit>
 			<trans-unit id="email.details" xml:space="preserve">
@@ -148,10 +148,10 @@ sys_filemounts</source>
 _MOD_user_setup:option_newPassword</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="realName.description" xml:space="preserve">
+			<trans-unit id="realName.description">
 				<source>Enter the ordinary name of the user, eg. John Doe.</source>
 			</trans-unit>
-			<trans-unit id="realName.details" xml:space="preserve">
+			<trans-unit id="realName.details">
 				<source>&lt;strong&gt;Notice&lt;/strong&gt; the user is able to change this value by himself from within the User&gt;Setup module.</source>
 			</trans-unit>
 			<trans-unit id="_realName.seeAlso" xml:space="preserve">
@@ -159,7 +159,7 @@ _MOD_user_setup:option_newPassword</source>
 _MOD_user_setup:option_newPassword</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="disable.description" xml:space="preserve">
+			<trans-unit id="disable.description">
 				<source>This option will temporarily disable the user from logging in.</source>
 			</trans-unit>
 			<trans-unit id="_disable.seeAlso" xml:space="preserve">
@@ -167,7 +167,7 @@ _MOD_user_setup:option_newPassword</source>
 be_users:endtime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="admin.description" xml:space="preserve">
+			<trans-unit id="admin.description">
 				<source>'Admin' users have TOTAL access to the system!</source>
 			</trans-unit>
 			<trans-unit id="admin.details" xml:space="preserve">
@@ -177,11 +177,11 @@ be_users:endtime</source>
 
 You should probably not assign any other users than yourself as an 'Admin' user.</source>
 			</trans-unit>
-			<trans-unit id="_admin.image" xml:space="preserve">
+			<trans-unit id="_admin.image">
 				<source>EXT:lang/cshimages/beuser_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="options.description" xml:space="preserve">
+			<trans-unit id="options.description">
 				<source>Select if the user should inherit page tree or folder tree mountpoints from member groups.</source>
 			</trans-unit>
 			<trans-unit id="options.details" xml:space="preserve">
@@ -193,7 +193,7 @@ If you don't check these options, you must make sure the mount points for the pa
 be_users:file_mountpoints</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="file_permissions.description" xml:space="preserve">
+			<trans-unit id="file_permissions.description">
 				<source>Select file operation permissions for the user.</source>
 			</trans-unit>
 			<trans-unit id="file_permissions.details" xml:space="preserve">
@@ -206,7 +206,7 @@ be_users:file_mountpoints</source>
 be_group:file_permissions</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="fileoper_perms.description" xml:space="preserve">
+			<trans-unit id="fileoper_perms.description">
 				<source>Select file operation permissions for the user.</source>
 			</trans-unit>
 			<trans-unit id="fileoper_perms.details" xml:space="preserve">
@@ -219,7 +219,7 @@ be_group:file_permissions</source>
 be_group:file_permissions</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="starttime.description" xml:space="preserve">
+			<trans-unit id="starttime.description">
 				<source>Enter the date from which the account is active.</source>
 			</trans-unit>
 			<trans-unit id="_starttime.seeAlso" xml:space="preserve">
@@ -228,7 +228,7 @@ be_users:endtime,
 pages:starttime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="endtime.description" xml:space="preserve">
+			<trans-unit id="endtime.description">
 				<source>Enter the date from which the account is disabled.</source>
 			</trans-unit>
 			<trans-unit id="_endtime.seeAlso" xml:space="preserve">
@@ -237,10 +237,10 @@ be_users:starttime,
 pages:starttime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lastlogin.description" xml:space="preserve">
+			<trans-unit id="lastlogin.description">
 				<source>This field shows the user's last log in date.</source>
 			</trans-unit>
-			<trans-unit id="lang.description" xml:space="preserve">
+			<trans-unit id="lang.description">
 				<source>Select the &lt;i&gt;default&lt;/i&gt; language.</source>
 			</trans-unit>
 			<trans-unit id="lang.details" xml:space="preserve">
@@ -249,11 +249,11 @@ pages:starttime</source>
 
 &lt;b&gt;Notice&lt;/b&gt; this is only setting the default language. As soon as the user has logged in the language must be changed through the User&gt;Setup module. Also you will have to install the corresponding language pack which can be found as an extension on TYPO3.org with the prefix "csh_XX" where XX is the TYPO3 language key.</source>
 			</trans-unit>
-			<trans-unit id="_lang.seeAlso" xml:space="preserve">
+			<trans-unit id="_lang.seeAlso">
 				<source>_MOD_user_setup:language</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="userMods.description" xml:space="preserve">
+			<trans-unit id="userMods.description">
 				<source>Select available backend modules for the user.</source>
 			</trans-unit>
 			<trans-unit id="userMods.details" xml:space="preserve">
@@ -261,14 +261,14 @@ pages:starttime</source>
 
 Notice that the same list of modules may be configured for the backend user groups and that these will be inherited by the user in addition to the modules you select here. It's highly likely that you should not set any modules for the user himself but rather select the modules in the backend groups he's a member of. However this list provides a great way to add a single module for specific users.</source>
 			</trans-unit>
-			<trans-unit id="_userMods.seeAlso" xml:space="preserve">
+			<trans-unit id="_userMods.seeAlso">
 				<source>be_groups:groupMods</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="TSconfig.description" xml:space="preserve">
+			<trans-unit id="TSconfig.description">
 				<source>Enter additional TSconfig for the user (advanced).</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.details" xml:space="preserve">
+			<trans-unit id="TSconfig.details">
 				<source>This field allows you to extend the configuration of the user in severe details. A brief summary of the options include a more detailed configuration of the backend modules, setting of user specific default table field values, setting of Rich Text Editor options etc.</source>
 			</trans-unit>
 			<trans-unit id="_TSconfig.seeAlso" xml:space="preserve">
@@ -278,17 +278,17 @@ be_groups:TSconfig,
 User TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/User_TSconfig/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="allowed_languages.description" xml:space="preserve">
+			<trans-unit id="allowed_languages.description">
 				<source>Select which record languages the group members are limited to edit.</source>
 			</trans-unit>
-			<trans-unit id="allowed_languages.details" xml:space="preserve">
+			<trans-unit id="allowed_languages.details">
 				<source>You can also limit users to specific languages with user group settings. Please see the same field for backend user groups for more details.</source>
 			</trans-unit>
-			<trans-unit id="_allowed_languages.seeAlso" xml:space="preserve">
+			<trans-unit id="_allowed_languages.seeAlso">
 				<source>be_groups:allowed_languages</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_allowed_languages.image" xml:space="preserve">
+			<trans-unit id="_allowed_languages.image">
 				<source>EXT:lang/cshimages/be_groups_18.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

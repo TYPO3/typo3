@@ -3,23 +3,23 @@
 	<file t3:id="1415814829" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="impexp">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle" xml:space="preserve">
+			<trans-unit id=".alttitle">
 				<source>Import/Export</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>Native Import/Export module for TYPO3 data. Can export single records, content of tables, single pages or whole branches of the page tree. Includes attached media like image and preserves relations between records. Exports only to TYPO3 specific format, either a binary format (.T3D) or XML. The format is meant for exchange between TYPO3 systems.</source>
 			</trans-unit>
-			<trans-unit id="_.image" xml:space="preserve">
+			<trans-unit id="_.image">
 				<source>EXT:impexp/cshimages/impexp.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr" xml:space="preserve">
+			<trans-unit id=".image_descr">
 				<source>Example of the preview display during export configuration of a page. Notice how records on the page are include plus how references inside the record is found and included as well (bottom of screen).</source>
 			</trans-unit>
-			<trans-unit id="export.alttitle" xml:space="preserve">
+			<trans-unit id="export.alttitle">
 				<source>Exporting records from TYPO3</source>
 			</trans-unit>
-			<trans-unit id="export.description" xml:space="preserve">
+			<trans-unit id="export.description">
 				<source>To export TYPO3 T3D/XML files you click any record icon or page in the page tree (including the root page!), select "More options" and then "Export to .t3d". This will bring up the export interface where you can configure options for your export session.</source>
 			</trans-unit>
 			<trans-unit id="export.details" xml:space="preserve">
@@ -35,7 +35,7 @@ Regardless of your configuration for export you will always see a complete refle
 
 &lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before exporting if there are any error messages there!</source>
 			</trans-unit>
-			<trans-unit id="_export.seeAlso" xml:space="preserve">
+			<trans-unit id="_export.seeAlso">
 				<source>xMOD_tx_impexp:import</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -50,49 +50,49 @@ EXT:impexp/cshimages/export2.png</source>
 With the Web&gt;List module you can also export all records from a table by first clicking the table title to see only this table, then next to the CSV export you will find the export button for a T3D export of the table.
 You can export the contents of the clipboard as well by simply selecting "Export" in the menu.</source>
 			</trans-unit>
-			<trans-unit id="pageTreeCfg.alttitle" xml:space="preserve">
+			<trans-unit id="pageTreeCfg.alttitle">
 				<source>Configuration of page tree export</source>
 			</trans-unit>
 			<trans-unit id="pageTreeCfg.description" xml:space="preserve">
 				<source>Here you configure how a page or a branch of the page tree should be exported. Using the selector box you can set the number of levels of subpages to include in the export.
 By default all records belonging to a page is included when a page is exported.</source>
 			</trans-unit>
-			<trans-unit id="_pageTreeCfg.image" xml:space="preserve">
+			<trans-unit id="_pageTreeCfg.image">
 				<source>EXT:impexp/cshimages/pagetreecfg.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pageTreeDisplay.alttitle" xml:space="preserve">
+			<trans-unit id="pageTreeDisplay.alttitle">
 				<source>Page Tree</source>
 			</trans-unit>
-			<trans-unit id="pageTreeDisplay.description" xml:space="preserve">
+			<trans-unit id="pageTreeDisplay.description">
 				<source>Based on the levels selected for page tree export this will show the structure that is about to be exported. If any pages are specifically excluded by the exclude option they are not shown either.</source>
 			</trans-unit>
-			<trans-unit id="pageTreeMode.alttitle" xml:space="preserve">
+			<trans-unit id="pageTreeMode.alttitle">
 				<source>Levels</source>
 			</trans-unit>
-			<trans-unit id="pageTreeMode.description" xml:space="preserve">
+			<trans-unit id="pageTreeMode.description">
 				<source>Here you select how deeply in the page tree from the current starting point to go for this export.</source>
 			</trans-unit>
-			<trans-unit id="pageTreeMode.details" xml:space="preserve">
+			<trans-unit id="pageTreeMode.details">
 				<source>If you select "Expanded tree" it will base the export on the currently expanded levels of the page tree. Another special option is "Tables on this page" which will not include the page record itself but only include records from tables on the page, depending on the table configuration of course.</source>
 			</trans-unit>
-			<trans-unit id="_pageTreeMode.image" xml:space="preserve">
+			<trans-unit id="_pageTreeMode.image">
 				<source>EXT:impexp/cshimages/impexp_misc.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pageTreeRecordLimit.alttitle" xml:space="preserve">
+			<trans-unit id="pageTreeRecordLimit.alttitle">
 				<source>Include tables</source>
 			</trans-unit>
-			<trans-unit id="pageTreeRecordLimit.description" xml:space="preserve">
+			<trans-unit id="pageTreeRecordLimit.description">
 				<source>When you export a page all records on the page is included by default. By this selector you can pick which tables to include exclusively if there are certain records you are not interested in seeing included.</source>
 			</trans-unit>
-			<trans-unit id="pageTreeRecordLimit.details" xml:space="preserve">
+			<trans-unit id="pageTreeRecordLimit.details">
 				<source>In the box "Max number of records" you can set a limit to how many records are selected from a single table. This is a runaway brake in case you have an unusual large amount of records from a table.</source>
 			</trans-unit>
-			<trans-unit id="singleRecord.alttitle" xml:space="preserve">
+			<trans-unit id="singleRecord.alttitle">
 				<source>Export single record</source>
 			</trans-unit>
-			<trans-unit id="singleRecord.description" xml:space="preserve">
+			<trans-unit id="singleRecord.description">
 				<source>This overview tells you which independent records has been independently selected for export.</source>
 			</trans-unit>
 			<trans-unit id="_singleRecord.image" xml:space="preserve">
@@ -100,16 +100,16 @@ By default all records belonging to a page is included when a page is exported.<
 EXT:impexp/cshimages/export2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="singleRecord.image_descr" xml:space="preserve">
+			<trans-unit id="singleRecord.image_descr">
 				<source>The way to export multiple records like this is using the clipboard like shown below.</source>
 			</trans-unit>
-			<trans-unit id="tableList.alttitle" xml:space="preserve">
+			<trans-unit id="tableList.alttitle">
 				<source>Table export</source>
 			</trans-unit>
-			<trans-unit id="tableList.description" xml:space="preserve">
+			<trans-unit id="tableList.description">
 				<source>Export of all records on a page from a specific table. This is configured from the Web&gt;List module where you will have to select table-only view and click a button in the top of the page.</source>
 			</trans-unit>
-			<trans-unit id="tableList.details" xml:space="preserve">
+			<trans-unit id="tableList.details">
 				<source>Tip: You can select multiple table lists by simply saving each selecting as a preset and finally load/merge the selections together.</source>
 			</trans-unit>
 			<trans-unit id="_tableList.image" xml:space="preserve">
@@ -121,16 +121,16 @@ EXT:impexp/cshimages/export1.png</source>
 				<source>Here two tables from different pages are selected. This is done by first selecting the one, saving it as a preset, then select the other and merge with the saved preset.
 Here you see how to use the Web&gt;List module to export all records from a table on a page.</source>
 			</trans-unit>
-			<trans-unit id="tableListMaxNumber.alttitle" xml:space="preserve">
+			<trans-unit id="tableListMaxNumber.alttitle">
 				<source>Max number to export</source>
 			</trans-unit>
-			<trans-unit id="tableListMaxNumber.description" xml:space="preserve">
+			<trans-unit id="tableListMaxNumber.description">
 				<source>Run-away brake that will make sure a large amount of records does not halt the interface. Default is 100, but you can change it to anything you like of course.</source>
 			</trans-unit>
-			<trans-unit id="inclRelations.alttitle" xml:space="preserve">
+			<trans-unit id="inclRelations.alttitle">
 				<source>Include relations</source>
 			</trans-unit>
-			<trans-unit id="inclRelations.description" xml:space="preserve">
+			<trans-unit id="inclRelations.description">
 				<source>Configure the tables from which you want to include records that are found as relations in the main export configuration.</source>
 			</trans-unit>
 			<trans-unit id="inclRelations.details" xml:space="preserve">
@@ -152,13 +152,13 @@ EXT:impexp/cshimages/references2.png</source>
 Notice in the previous image how the relation to the frontend user group was lost. This has been corrected in this screenshot where the fe_group table has been selected in the list of table for which to include relations. The result is that the frontend usergroup is included as a record outside the exported pagetree. If you wanted to keep the relation but not include the usergroup you have to set "fe_groups" as a static table instead. See below.
 This example shows a TypoScript Template Record where multiple soft references has been found. The first one is an email address. Here it is configured to be editable. This means that upon import the user will have a chance to edit the value before the import is actually done. This is very useful when exported files are used as templates. Another example includes a PHP script which we don't want to include in the export and therefore we have selected the exclude option for the soft reference.</source>
 			</trans-unit>
-			<trans-unit id="staticRelations.alttitle" xml:space="preserve">
+			<trans-unit id="staticRelations.alttitle">
 				<source>Set static tables</source>
 			</trans-unit>
-			<trans-unit id="staticRelations.description" xml:space="preserve">
+			<trans-unit id="staticRelations.description">
 				<source>Select which tables in addition to the static TYPO3 tables to keep relations untouched for. Takes precedence over "Include relations" configured tables.</source>
 			</trans-unit>
-			<trans-unit id="staticRelations.details" xml:space="preserve">
+			<trans-unit id="staticRelations.details">
 				<source>By default all relations to static tables in TYPO3 are kept untouched. Of course those static tables should be present in the import system in order for this to work correctly. However there might be circumstances where you move information between two systems where theoretically non-static tables should just keep relations untouched. Examples could be "sys_languages" or TemplaVoila data structures / template objects where two systems might contain the same set of records in those tables while you are importing pages and content elements freely.</source>
 			</trans-unit>
 			<trans-unit id="_staticRelations.image" xml:space="preserve">
@@ -170,49 +170,49 @@ EXT:impexp/cshimages/static1.png</source>
 				<source>In this example you see how a number of records are pointing to a System Language record which will become lost relations when imported because the record is not included in the export. However; in the target system the System Languages are exactly the same and therefore you just want a static mapping of the relations.
 The static mapping is obtained by selecting the "sys_language" table as a static template meaning that the relations are kept at their current values assuming that they will be exactly the same in the target system when imported.</source>
 			</trans-unit>
-			<trans-unit id="excludedElements.alttitle" xml:space="preserve">
+			<trans-unit id="excludedElements.alttitle">
 				<source>Excluded elements</source>
 			</trans-unit>
-			<trans-unit id="excludedElements.description" xml:space="preserve">
+			<trans-unit id="excludedElements.description">
 				<source>By the "Exclude" checkbox you can exclude specific records from the preview display of the export. Which records has been picked for specific exclusion is listed here. You can also clear the exclusion configuration.</source>
 			</trans-unit>
-			<trans-unit id="_excludedElements.image" xml:space="preserve">
+			<trans-unit id="_excludedElements.image">
 				<source>EXT:impexp/cshimages/excludebox.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="htmlCssResources.alttitle" xml:space="preserve">
+			<trans-unit id="htmlCssResources.alttitle">
 				<source>Exclude resources from HTML and CSS files</source>
 			</trans-unit>
-			<trans-unit id="htmlCssResources.description" xml:space="preserve">
+			<trans-unit id="htmlCssResources.description">
 				<source>When an HTML or CSS file is found as a soft reference the files are parsed for references to external media (such as images) and if any are found they are also exported. If you don't want this behaviour, click this option.</source>
 			</trans-unit>
-			<trans-unit id="htmlCssResources.details" xml:space="preserve">
+			<trans-unit id="htmlCssResources.details">
 				<source>Notice: Resources found inside an HTML or CSS file are not analysed further. For instance it means that any CSS files referred to from within an HTML will not be traversed - but CSS files referred to inside the Setup or Constant field of a TypoScript template record will be!</source>
 			</trans-unit>
-			<trans-unit id="_htmlCssResources.image" xml:space="preserve">
+			<trans-unit id="_htmlCssResources.image">
 				<source>EXT:impexp/cshimages/htmlcss.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="htmlCssResources.image_descr" xml:space="preserve">
+			<trans-unit id="htmlCssResources.image_descr">
 				<source>In this example you can see that a soft reference has been found pointing to an HTML file inside fileadmin/ Since it was an HTML file it was parsed and further a number of files were found referenced inside it and now included with the export. This feature is specifically created to support export of template configurations where external HTML files play a role.</source>
 			</trans-unit>
-			<trans-unit id="extensionDependencies.alttitle" xml:space="preserve">
+			<trans-unit id="extensionDependencies.alttitle">
 				<source>Extension Dependencies</source>
 			</trans-unit>
-			<trans-unit id="extensionDependencies.description" xml:space="preserve">
+			<trans-unit id="extensionDependencies.description">
 				<source>Select which extensions should be installed in the import system in order for your exported content to work correctly. Examples could be "templavoila" for templating, "css_styled_content" for the template, "tt_news" for a news archive etc.</source>
 			</trans-unit>
-			<trans-unit id="extensionDependencies.details" xml:space="preserve">
+			<trans-unit id="extensionDependencies.details">
 				<source>During import warnings will appear for all selected extensions from this list which were not installed.</source>
 			</trans-unit>
-			<trans-unit id="_extensionDependencies.image" xml:space="preserve">
+			<trans-unit id="_extensionDependencies.image">
 				<source>EXT:impexp/cshimages/extdep.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="presets.alttitle" xml:space="preserve">
+			<trans-unit id="presets.alttitle">
 				<source>Configuration presets</source>
 			</trans-unit>
-			<trans-unit id="presets.description" xml:space="preserve">
+			<trans-unit id="presets.description">
 				<source>Enables you to save an export configuration for later re-use. Useful if you need to export the same configuration with regular intervals.</source>
 			</trans-unit>
 			<trans-unit id="presets.details" xml:space="preserve">
@@ -234,10 +234,10 @@ EXT:impexp/cshimages/impexp_misc2.png</source>
 				<source>The preset selector in the export interface.
 Presets from the task center.</source>
 			</trans-unit>
-			<trans-unit id="metadata.alttitle" xml:space="preserve">
+			<trans-unit id="metadata.alttitle">
 				<source>Meta data setting</source>
 			</trans-unit>
-			<trans-unit id="metadata.description" xml:space="preserve">
+			<trans-unit id="metadata.description">
 				<source>Set meta data for the export. This is highly encouraged if your exported content goes into eg. a template collection of sorts.</source>
 			</trans-unit>
 			<trans-unit id="metadata.details" xml:space="preserve">
@@ -246,14 +246,14 @@ The "Title" and "Description" should contain the basic information about the exp
 The "Notes" field can be used for additional details, especially remarks about intensions or requirements that apply.
 The thumbnail field is used for thumbnails if you need that for your export. This is very useful when export files are used as page templates where the template selector can take advantage of the thumbnail. The format should be a web-format like jpg, gif or png and the dimensions should fit exactly the final display dimensions intended; so don't upload very large images!</source>
 			</trans-unit>
-			<trans-unit id="_metadata.image" xml:space="preserve">
+			<trans-unit id="_metadata.image">
 				<source>EXT:impexp/cshimages/metadata.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="fileFormat.alttitle" xml:space="preserve">
+			<trans-unit id="fileFormat.alttitle">
 				<source>File format options</source>
 			</trans-unit>
-			<trans-unit id="fileFormat.description" xml:space="preserve">
+			<trans-unit id="fileFormat.description">
 				<source>You can export your records to a TYPO3 specific binary format (serialized PHP array) called "T3D". Alternatively you can select a plain-text XML export which potentially can be imported by other applications written to support this format. However the schema of the XML is TYPO3 specific.</source>
 			</trans-unit>
 			<trans-unit id="fileFormat.details" xml:space="preserve">
@@ -263,14 +263,14 @@ With "Max size of files to include" you can set a limit to the size of attached 
 
 Entering a file name to save to makes it possible to write your export directly to a file (pressing "Save to filename") instead of downloading it (pressing "Download export"). The correct file extensions depending on file format is automatically applied. Files are saved in a proper filemount in "fileadmin/". This is shown to you upon saving. Existing files are overwritten.</source>
 			</trans-unit>
-			<trans-unit id="_fileFormat.image" xml:space="preserve">
+			<trans-unit id="_fileFormat.image">
 				<source>EXT:impexp/cshimages/fileformat.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="import.alttitle" xml:space="preserve">
+			<trans-unit id="import.alttitle">
 				<source>Importing TYPO3 records</source>
 			</trans-unit>
-			<trans-unit id="import.description" xml:space="preserve">
+			<trans-unit id="import.description">
 				<source>To import TYPO3 T3D/XML files into the page tree you click any page in the page tree (including the root page!), select "More options" and then "Import from .t3d". This will bring up the import interface where you can select a file to import or upload a new one.</source>
 			</trans-unit>
 			<trans-unit id="import.details" xml:space="preserve">
@@ -279,32 +279,32 @@ To make sure that no records are lost during the import, you can make yourself s
 
 &lt;b&gt;Error messages:&lt;/b&gt; Remember to consult the Message-tab before/after importing to see if there are any error messages there!</source>
 			</trans-unit>
-			<trans-unit id="_import.seeAlso" xml:space="preserve">
+			<trans-unit id="_import.seeAlso">
 				<source>xMOD_tx_impexp:export</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_import.image" xml:space="preserve">
+			<trans-unit id="_import.image">
 				<source>EXT:impexp/cshimages/import.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="importFile.alttitle" xml:space="preserve">
+			<trans-unit id="importFile.alttitle">
 				<source>Select file to import</source>
 			</trans-unit>
-			<trans-unit id="importFile.description" xml:space="preserve">
+			<trans-unit id="importFile.description">
 				<source>The files displayed are those with an extension T3D or XML from fileadmin/, fileadmin/export/ and your "TEMP" folder (if any).</source>
 			</trans-unit>
-			<trans-unit id="_importFile.seeAlso" xml:space="preserve">
+			<trans-unit id="_importFile.seeAlso">
 				<source>xMOD_tx_impexp:fileFormat</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_importFile.image" xml:space="preserve">
+			<trans-unit id="_importFile.image">
 				<source>EXT:impexp/cshimages/import_selectfile.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="update.alttitle" xml:space="preserve">
+			<trans-unit id="update.alttitle">
 				<source>Update instead of Insert</source>
 			</trans-unit>
-			<trans-unit id="update.description" xml:space="preserve">
+			<trans-unit id="update.description">
 				<source>By default the import operation inserts new records in the system. Using this option will update existing records.</source>
 			</trans-unit>
 			<trans-unit id="update.details" xml:space="preserve">
@@ -323,13 +323,13 @@ If you intend to update a system and some elements from the import are not mappa
 EXT:impexp/cshimages/update.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="update.image_descr" xml:space="preserve">
+			<trans-unit id="update.image_descr">
 				<source>In Update mode you can select various settings for each record. You will also be able to see a diff-view where the differences between the existing record and the one from the import is shown.</source>
 			</trans-unit>
-			<trans-unit id="options.alttitle" xml:space="preserve">
+			<trans-unit id="options.alttitle">
 				<source>Import options</source>
 			</trans-unit>
-			<trans-unit id="options.description" xml:space="preserve">
+			<trans-unit id="options.description">
 				<source>Various options for import.</source>
 			</trans-unit>
 			<trans-unit id="options.details" xml:space="preserve">
@@ -349,7 +349,7 @@ EXT:impexp/cshimages/phpext.png</source>
 				<source>Options for import.
 Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"</source>
 			</trans-unit>
-			<trans-unit id="action.alttitle" xml:space="preserve">
+			<trans-unit id="action.alttitle">
 				<source>Import Action</source>
 			</trans-unit>
 			<trans-unit id="action.description" xml:space="preserve">
@@ -358,59 +358,59 @@ Press "Import"/"Update" if you want to perform the actual import.
 
 Before importing make sure you change any editable soft references that are shown in the preview data.</source>
 			</trans-unit>
-			<trans-unit id="_action.image" xml:space="preserve">
+			<trans-unit id="_action.image">
 				<source>EXT:impexp/cshimages/diffview.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="action.image_descr" xml:space="preserve">
+			<trans-unit id="action.image_descr">
 				<source>Example of the result view after importing. As you can see the RTE attached images (soft references) has been written to new file names and the difference view tells you that the names changed in the bodytext content.</source>
 			</trans-unit>
-			<trans-unit id="enableLogging.alttitle" xml:space="preserve">
+			<trans-unit id="enableLogging.alttitle">
 				<source>Enable System Logging</source>
 			</trans-unit>
-			<trans-unit id="enableLogging.description" xml:space="preserve">
+			<trans-unit id="enableLogging.description">
 				<source>If you set this the system backend log will be filled with entries for all the actions that the import actually performs. By default this is left out for the sake of clarity.</source>
 			</trans-unit>
-			<trans-unit id="upload.alttitle" xml:space="preserve">
+			<trans-unit id="upload.alttitle">
 				<source>Upload import file</source>
 			</trans-unit>
-			<trans-unit id="upload.description" xml:space="preserve">
+			<trans-unit id="upload.description">
 				<source>Select a file to import from your local computer and upload it here. If the upload completes successfully you can immediately see its content displayed in the preview display.</source>
 			</trans-unit>
-			<trans-unit id="upload.details" xml:space="preserve">
+			<trans-unit id="upload.details">
 				<source>Notice that there are usually limits set by the server (PHP) to the size of uploaded files at around 2 MB in which case nothing will happen.</source>
 			</trans-unit>
-			<trans-unit id="task.title" xml:space="preserve">
+			<trans-unit id="task.title">
 				<source>Preset title</source>
 			</trans-unit>
-			<trans-unit id="task.icon" xml:space="preserve">
+			<trans-unit id="task.icon">
 				<source>Icon</source>
 			</trans-unit>
-			<trans-unit id="task.public" xml:space="preserve">
+			<trans-unit id="task.public">
 				<source>Public</source>
 			</trans-unit>
-			<trans-unit id="task.owner" xml:space="preserve">
+			<trans-unit id="task.owner">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="task.page" xml:space="preserve">
+			<trans-unit id="task.page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="task.path" xml:space="preserve">
+			<trans-unit id="task.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="task.meta" xml:space="preserve">
+			<trans-unit id="task.meta">
 				<source>Meta data</source>
 			</trans-unit>
-			<trans-unit id="task.own" xml:space="preserve">
+			<trans-unit id="task.own">
 				<source>Own</source>
 			</trans-unit>
-			<trans-unit id="notes" xml:space="preserve">
+			<trans-unit id="notes">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="single-record" xml:space="preserve">
+			<trans-unit id="single-record">
 				<source>Single record</source>
 			</trans-unit>
-			<trans-unit id="no-presets" xml:space="preserve">
+			<trans-unit id="no-presets">
 				<source>No presets found!</source>
 			</trans-unit>
 		</body>

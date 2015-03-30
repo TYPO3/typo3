@@ -3,1091 +3,1091 @@
 	<file t3:id="1415814851" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="labels.openInNewWindow" xml:space="preserve">
+			<trans-unit id="labels.openInNewWindow">
 				<source>Open in new window</source>
 			</trans-unit>
-			<trans-unit id="labels.goBack" xml:space="preserve">
+			<trans-unit id="labels.goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="labels.makeShortcut" xml:space="preserve">
+			<trans-unit id="labels.makeShortcut">
 				<source>Create a shortcut to this page?</source>
 			</trans-unit>
-			<trans-unit id="labels.makeBookmark" xml:space="preserve">
+			<trans-unit id="labels.makeBookmark">
 				<source>Create a bookmark to this page</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecord" xml:space="preserve">
+			<trans-unit id="labels.lockedRecord">
 				<source>The user '%s' began to edit this record %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecord_content" xml:space="preserve">
+			<trans-unit id="labels.lockedRecord_content">
 				<source>The user '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecordUser" xml:space="preserve">
+			<trans-unit id="labels.lockedRecordUser">
 				<source>The %s '%s' began to edit this record %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecordUser_content" xml:space="preserve">
+			<trans-unit id="labels.lockedRecordUser_content">
 				<source>The %s '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.user" xml:space="preserve">
+			<trans-unit id="labels.user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="labels.beUser" xml:space="preserve">
+			<trans-unit id="labels.beUser">
 				<source>BE-User</source>
 			</trans-unit>
-			<trans-unit id="labels.feUser" xml:space="preserve">
+			<trans-unit id="labels.feUser">
 				<source>FE-User</source>
 			</trans-unit>
-			<trans-unit id="labels.unknownUser" xml:space="preserve">
+			<trans-unit id="labels.unknownUser">
 				<source>-Unknown-</source>
 			</trans-unit>
-			<trans-unit id="labels.showRecords" xml:space="preserve">
+			<trans-unit id="labels.showRecords">
 				<source>Show records</source>
 			</trans-unit>
-			<trans-unit id="labels.path" xml:space="preserve">
+			<trans-unit id="labels.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="labels.resetFilter" xml:space="preserve">
+			<trans-unit id="labels.resetFilter">
 				<source>Reset Filter</source>
 			</trans-unit>
-			<trans-unit id="labels.table" xml:space="preserve">
+			<trans-unit id="labels.table">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="labels.upOneLevel" xml:space="preserve">
+			<trans-unit id="labels.upOneLevel">
 				<source>Up one level</source>
 			</trans-unit>
-			<trans-unit id="labels.expandTable" xml:space="preserve">
+			<trans-unit id="labels.expandTable">
 				<source>Expand table</source>
 			</trans-unit>
-			<trans-unit id="labels.collapseTable" xml:space="preserve">
+			<trans-unit id="labels.collapseTable">
 				<source>Collapse table</source>
 			</trans-unit>
-			<trans-unit id="labels.enterSearchString" xml:space="preserve">
+			<trans-unit id="labels.enterSearchString">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="labels.enterSearchLevels" xml:space="preserve">
+			<trans-unit id="labels.enterSearchLevels">
 				<source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
 			</trans-unit>
-			<trans-unit id="labels.noEditPermission" xml:space="preserve">
+			<trans-unit id="labels.noEditPermission">
 				<source>Sorry, you didn't have proper permissions to perform this change.</source>
 			</trans-unit>
-			<trans-unit id="labels.fieldsMissing" xml:space="preserve">
+			<trans-unit id="labels.fieldsMissing">
 				<source>The fields marked with a yellow exclamation mark are not yet correctly filled in. Please complete them properly.</source>
 			</trans-unit>
 			<trans-unit id="labels.fieldsChanged" xml:space="preserve">
 				<source>There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
-			<trans-unit id="labels.remainingCharacters" xml:space="preserve">
+			<trans-unit id="labels.remainingCharacters">
 				<source>Remaining characters: {0}</source>
 			</trans-unit>
-			<trans-unit id="labels.maxItemsAllowed" xml:space="preserve">
+			<trans-unit id="labels.maxItemsAllowed">
 				<source>A maximum of {0} child records are allowed.</source>
 			</trans-unit>
-			<trans-unit id="labels.noRTEfound" xml:space="preserve">
+			<trans-unit id="labels.noRTEfound">
 				<source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
 			</trans-unit>
-			<trans-unit id="labels.showPalettes" xml:space="preserve">
+			<trans-unit id="labels.showPalettes">
 				<source>Show secondary options (palettes)</source>
 			</trans-unit>
-			<trans-unit id="labels.showDescriptions" xml:space="preserve">
+			<trans-unit id="labels.showDescriptions">
 				<source>Show field descriptions</source>
 			</trans-unit>
-			<trans-unit id="labels.disableRTE" xml:space="preserve">
+			<trans-unit id="labels.disableRTE">
 				<source>Disable Rich Text Editor (RTE)</source>
 			</trans-unit>
-			<trans-unit id="labels._CONTROL_" xml:space="preserve">
+			<trans-unit id="labels._CONTROL_">
 				<source>Control</source>
 			</trans-unit>
-			<trans-unit id="labels._PATH_" xml:space="preserve">
+			<trans-unit id="labels._PATH_">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="labels._LOCALIZATION_" xml:space="preserve">
+			<trans-unit id="labels._LOCALIZATION_">
 				<source>Localization</source>
 			</trans-unit>
-			<trans-unit id="labels.setFields" xml:space="preserve">
+			<trans-unit id="labels.setFields">
 				<source>Set fields</source>
 			</trans-unit>
-			<trans-unit id="labels.search" xml:space="preserve">
+			<trans-unit id="labels.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="labels.author" xml:space="preserve">
+			<trans-unit id="labels.author">
 				<source>Author:</source>
 			</trans-unit>
-			<trans-unit id="labels.note" xml:space="preserve">
+			<trans-unit id="labels.note">
 				<source>Note:</source>
 			</trans-unit>
-			<trans-unit id="labels.category" xml:space="preserve">
+			<trans-unit id="labels.category">
 				<source>Category:</source>
 			</trans-unit>
-			<trans-unit id="labels.reload" xml:space="preserve">
+			<trans-unit id="labels.reload">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="labels.csv" xml:space="preserve">
+			<trans-unit id="labels.csv">
 				<source>Download CSV file</source>
 			</trans-unit>
-			<trans-unit id="labels.clear_cache" xml:space="preserve">
+			<trans-unit id="labels.clear_cache">
 				<source>Clear cache for this page</source>
 			</trans-unit>
-			<trans-unit id="labels.no_title" xml:space="preserve">
+			<trans-unit id="labels.no_title">
 				<source>No title</source>
 			</trans-unit>
-			<trans-unit id="labels.cancel" xml:space="preserve">
+			<trans-unit id="labels.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="labels.hidden" xml:space="preserve">
+			<trans-unit id="labels.hidden">
 				<source>Hidden</source>
 			</trans-unit>
-			<trans-unit id="labels.starttime" xml:space="preserve">
+			<trans-unit id="labels.starttime">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="labels.endtime" xml:space="preserve">
+			<trans-unit id="labels.endtime">
 				<source>End</source>
 			</trans-unit>
-			<trans-unit id="labels.minutesHoursDaysYears" xml:space="preserve">
+			<trans-unit id="labels.minutesHoursDaysYears">
 				<source> min| hrs| days| yrs| min| hour| day| year</source>
 			</trans-unit>
-			<trans-unit id="labels.menu" xml:space="preserve">
+			<trans-unit id="labels.menu">
 				<source>Menu:</source>
 			</trans-unit>
-			<trans-unit id="labels.showPage" xml:space="preserve">
+			<trans-unit id="labels.showPage">
 				<source>View webpage</source>
 			</trans-unit>
-			<trans-unit id="labels.showList" xml:space="preserve">
+			<trans-unit id="labels.showList">
 				<source>Show record list</source>
 			</trans-unit>
-			<trans-unit id="labels.days" xml:space="preserve">
+			<trans-unit id="labels.days">
 				<source>days</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_0" xml:space="preserve">
+			<trans-unit id="labels.depth_0">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_1" xml:space="preserve">
+			<trans-unit id="labels.depth_1">
 				<source>1 level</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_2" xml:space="preserve">
+			<trans-unit id="labels.depth_2">
 				<source>2 levels</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_3" xml:space="preserve">
+			<trans-unit id="labels.depth_3">
 				<source>3 levels</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_4" xml:space="preserve">
+			<trans-unit id="labels.depth_4">
 				<source>4 levels</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_infi" xml:space="preserve">
+			<trans-unit id="labels.depth_infi">
 				<source>Infinite</source>
 			</trans-unit>
-			<trans-unit id="labels.allow" xml:space="preserve">
+			<trans-unit id="labels.allow">
 				<source>Allow</source>
 			</trans-unit>
-			<trans-unit id="labels.deny" xml:space="preserve">
+			<trans-unit id="labels.deny">
 				<source>Deny</source>
 			</trans-unit>
-			<trans-unit id="labels.automatic" xml:space="preserve">
+			<trans-unit id="labels.automatic">
 				<source>Auto</source>
 			</trans-unit>
-			<trans-unit id="labels.enabled" xml:space="preserve">
+			<trans-unit id="labels.enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="labels.show" xml:space="preserve">
+			<trans-unit id="labels.show">
 				<source>Show</source>
 			</trans-unit>
-			<trans-unit id="labels.generalTab" xml:space="preserve">
+			<trans-unit id="labels.generalTab">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="labels.refresh" xml:space="preserve">
+			<trans-unit id="labels.refresh">
 				<source>Reload the tree from server</source>
 			</trans-unit>
-			<trans-unit id="labels.temporaryDBmount" xml:space="preserve">
+			<trans-unit id="labels.temporaryDBmount">
 				<source>Cancel temporary DB mount</source>
 			</trans-unit>
-			<trans-unit id="labels.refreshList" xml:space="preserve">
+			<trans-unit id="labels.refreshList">
 				<source>Reload list from server</source>
 			</trans-unit>
-			<trans-unit id="labels.close" xml:space="preserve">
+			<trans-unit id="labels.close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="labels.new" xml:space="preserve">
+			<trans-unit id="labels.new">
 				<source>NEW</source>
 			</trans-unit>
-			<trans-unit id="labels.createNewPage" xml:space="preserve">
+			<trans-unit id="labels.createNewPage">
 				<source>Create new %s</source>
 			</trans-unit>
-			<trans-unit id="labels.createNewRecord" xml:space="preserve">
+			<trans-unit id="labels.createNewRecord">
 				<source>Create new %s on page "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.createNewRecordRootLevel" xml:space="preserve">
+			<trans-unit id="labels.createNewRecordRootLevel">
 				<source>Create new %s on root level</source>
 			</trans-unit>
-			<trans-unit id="labels.editPage" xml:space="preserve">
+			<trans-unit id="labels.editPage">
 				<source>Edit %s "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.editRecord" xml:space="preserve">
+			<trans-unit id="labels.editRecord">
 				<source>Edit %s "%s" on page "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.editRecordNoTitle" xml:space="preserve">
+			<trans-unit id="labels.editRecordNoTitle">
 				<source>Edit %s on page "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.editRecordRootLevel" xml:space="preserve">
+			<trans-unit id="labels.editRecordRootLevel">
 				<source>Edit %s "%s" on root level</source>
 			</trans-unit>
-			<trans-unit id="labels.rootLevel" xml:space="preserve">
+			<trans-unit id="labels.rootLevel">
 				<source>root level</source>
 			</trans-unit>
-			<trans-unit id="labels.addnew" xml:space="preserve">
+			<trans-unit id="labels.addnew">
 				<source>Add new</source>
 			</trans-unit>
-			<trans-unit id="labels.toggleall" xml:space="preserve">
+			<trans-unit id="labels.toggleall">
 				<source>Toggle all</source>
 			</trans-unit>
-			<trans-unit id="labels.selected" xml:space="preserve">
+			<trans-unit id="labels.selected">
 				<source>Selected Items</source>
 			</trans-unit>
-			<trans-unit id="labels.items" xml:space="preserve">
+			<trans-unit id="labels.items">
 				<source>Available Items</source>
 			</trans-unit>
-			<trans-unit id="labels.remove_selected" xml:space="preserve">
+			<trans-unit id="labels.remove_selected">
 				<source>Remove selected items</source>
 			</trans-unit>
-			<trans-unit id="labels.move_to_top" xml:space="preserve">
+			<trans-unit id="labels.move_to_top">
 				<source>Move selected items to top</source>
 			</trans-unit>
-			<trans-unit id="labels.move_up" xml:space="preserve">
+			<trans-unit id="labels.move_up">
 				<source>Move selected items upwards</source>
 			</trans-unit>
-			<trans-unit id="labels.move_down" xml:space="preserve">
+			<trans-unit id="labels.move_down">
 				<source>Move selected items downwards</source>
 			</trans-unit>
-			<trans-unit id="labels.move_to_bottom" xml:space="preserve">
+			<trans-unit id="labels.move_to_bottom">
 				<source>Move selected items to bottom</source>
 			</trans-unit>
-			<trans-unit id="labels.move" xml:space="preserve">
+			<trans-unit id="labels.move">
 				<source>Move this item</source>
 			</trans-unit>
-			<trans-unit id="labels.browse_file" xml:space="preserve">
+			<trans-unit id="labels.browse_file">
 				<source>Browse for files</source>
 			</trans-unit>
-			<trans-unit id="labels.browse_db" xml:space="preserve">
+			<trans-unit id="labels.browse_db">
 				<source>Browse for records</source>
 			</trans-unit>
-			<trans-unit id="labels.clipInsert_file" xml:space="preserve">
+			<trans-unit id="labels.clipInsert_file">
 				<source>Insert %s file(s) from the clipboard</source>
 			</trans-unit>
-			<trans-unit id="labels.clipInsert_db" xml:space="preserve">
+			<trans-unit id="labels.clipInsert_db">
 				<source>Insert %s record(s) from the clipboard</source>
 			</trans-unit>
-			<trans-unit id="labels.generalOptions" xml:space="preserve">
+			<trans-unit id="labels.generalOptions">
 				<source>General options:</source>
 			</trans-unit>
-			<trans-unit id="labels.generalOptions_more" xml:space="preserve">
+			<trans-unit id="labels.generalOptions_more">
 				<source>General options (continued):</source>
 			</trans-unit>
-			<trans-unit id="labels.allTables" xml:space="preserve">
+			<trans-unit id="labels.allTables">
 				<source>[All tables]</source>
 			</trans-unit>
-			<trans-unit id="labels.moreOptions" xml:space="preserve">
+			<trans-unit id="labels.moreOptions">
 				<source>More options...</source>
 			</trans-unit>
-			<trans-unit id="labels.noMatchingValue" xml:space="preserve">
+			<trans-unit id="labels.noMatchingValue">
 				<source>INVALID VALUE ("%s")</source>
 			</trans-unit>
-			<trans-unit id="labels.thumbmode_clip" xml:space="preserve">
+			<trans-unit id="labels.thumbmode_clip">
 				<source>Show Thumbnails on ClipBoard</source>
 			</trans-unit>
-			<trans-unit id="labels.copymode" xml:space="preserve">
+			<trans-unit id="labels.copymode">
 				<source>Copy items instead of moving them</source>
 			</trans-unit>
-			<trans-unit id="labels.clipNoEl" xml:space="preserve">
+			<trans-unit id="labels.clipNoEl">
 				<source>No elements</source>
 			</trans-unit>
-			<trans-unit id="labels.normal" xml:space="preserve">
+			<trans-unit id="labels.normal">
 				<source>Normal (single record mode)</source>
 			</trans-unit>
-			<trans-unit id="labels.normal-description" xml:space="preserve">
+			<trans-unit id="labels.normal-description">
 				<source>"Normal" clipboard allows to copy/move one record at time.</source>
 			</trans-unit>
-			<trans-unit id="labels.cliptabs" xml:space="preserve">
+			<trans-unit id="labels.cliptabs">
 				<source>Clipboard #</source>
 			</trans-unit>
-			<trans-unit id="labels.cliptabs-name" xml:space="preserve">
+			<trans-unit id="labels.cliptabs-name">
 				<source>Clipboard #%s (multi-selection mode)</source>
 			</trans-unit>
-			<trans-unit id="labels.cliptabs-description" xml:space="preserve">
+			<trans-unit id="labels.cliptabs-description">
 				<source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
 			</trans-unit>
-			<trans-unit id="labels.removeItem" xml:space="preserve">
+			<trans-unit id="labels.removeItem">
 				<source>Remove item</source>
 			</trans-unit>
-			<trans-unit id="labels.holdDownCTRL" xml:space="preserve">
+			<trans-unit id="labels.holdDownCTRL">
 				<source>Important: Hold down the CTRL key while toggling elements in this list!</source>
 			</trans-unit>
-			<trans-unit id="labels.revertSelection" xml:space="preserve">
+			<trans-unit id="labels.revertSelection">
 				<source>Revert selection</source>
 			</trans-unit>
-			<trans-unit id="labels.setAllCheckboxes" xml:space="preserve">
+			<trans-unit id="labels.setAllCheckboxes">
 				<source>Select All Checkboxes</source>
 			</trans-unit>
-			<trans-unit id="labels.checkAll" xml:space="preserve">
+			<trans-unit id="labels.checkAll">
 				<source>Check all</source>
 			</trans-unit>
-			<trans-unit id="labels.uncheckAll" xml:space="preserve">
+			<trans-unit id="labels.uncheckAll">
 				<source>Uncheck all</source>
 			</trans-unit>
-			<trans-unit id="labels.placeholder.override" xml:space="preserve">
+			<trans-unit id="labels.placeholder.override">
 				<source>Override "%s"?</source>
 			</trans-unit>
-			<trans-unit id="labels.changeInOrig" xml:space="preserve">
+			<trans-unit id="labels.changeInOrig">
 				<source>Changed in original translation</source>
 			</trans-unit>
-			<trans-unit id="labels.expandAll" xml:space="preserve">
+			<trans-unit id="labels.expandAll">
 				<source>Expand all</source>
 			</trans-unit>
-			<trans-unit id="labels.new_section" xml:space="preserve">
+			<trans-unit id="labels.new_section">
 				<source>Create new:</source>
 			</trans-unit>
-			<trans-unit id="labels.count" xml:space="preserve">
+			<trans-unit id="labels.count">
 				<source>Quantity:</source>
 			</trans-unit>
-			<trans-unit id="labels.findRecord" xml:space="preserve">
+			<trans-unit id="labels.findRecord">
 				<source>Find records</source>
 			</trans-unit>
-			<trans-unit id="labels.noRecordFound" xml:space="preserve">
+			<trans-unit id="labels.noRecordFound">
 				<source>No record found</source>
 			</trans-unit>
-			<trans-unit id="labels.title.searchIcon" xml:space="preserve">
+			<trans-unit id="labels.title.searchIcon">
 				<source>Toggle search toolbar</source>
 			</trans-unit>
-			<trans-unit id="labels.title.searchString" xml:space="preserve">
+			<trans-unit id="labels.title.searchString">
 				<source>Search term</source>
 			</trans-unit>
-			<trans-unit id="labels.title.limit" xml:space="preserve">
+			<trans-unit id="labels.title.limit">
 				<source>Limit</source>
 			</trans-unit>
-			<trans-unit id="labels.title.search" xml:space="preserve">
+			<trans-unit id="labels.title.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="labels.title.search_levels" xml:space="preserve">
+			<trans-unit id="labels.title.search_levels">
 				<source>Search levels</source>
 			</trans-unit>
-			<trans-unit id="labels.label.searchString" xml:space="preserve">
+			<trans-unit id="labels.label.searchString">
 				<source>Search term</source>
 			</trans-unit>
-			<trans-unit id="labels.label.limit" xml:space="preserve">
+			<trans-unit id="labels.label.limit">
 				<source>Limit</source>
 			</trans-unit>
-			<trans-unit id="labels.label.search_levels" xml:space="preserve">
+			<trans-unit id="labels.label.search_levels">
 				<source>Search levels</source>
 			</trans-unit>
-			<trans-unit id="alttext.suggestSearching" xml:space="preserve">
+			<trans-unit id="alttext.suggestSearching">
 				<source>Searching...</source>
 			</trans-unit>
-			<trans-unit id="ver.online" xml:space="preserve">
+			<trans-unit id="ver.online">
 				<source>ONLINE</source>
 			</trans-unit>
-			<trans-unit id="ver.mgm" xml:space="preserve">
+			<trans-unit id="ver.mgm">
 				<source>Version Management</source>
 			</trans-unit>
-			<trans-unit id="ver.selVer" xml:space="preserve">
+			<trans-unit id="ver.selVer">
 				<source>Select version:</source>
 			</trans-unit>
-			<trans-unit id="ver.swap" xml:space="preserve">
+			<trans-unit id="ver.swap">
 				<source>Swap/Publish</source>
 			</trans-unit>
-			<trans-unit id="ver.swapPage" xml:space="preserve">
+			<trans-unit id="ver.swapPage">
 				<source>Publish this version of the page including content</source>
 			</trans-unit>
-			<trans-unit id="TYPO3_Element_Browser" xml:space="preserve">
+			<trans-unit id="TYPO3_Element_Browser">
 				<source>TYPO3 Element Browser</source>
 			</trans-unit>
-			<trans-unit id="labels.referencesToRecord" xml:space="preserve">
+			<trans-unit id="labels.referencesToRecord">
 				<source>(There are %s reference(s) to this record!)</source>
 			</trans-unit>
-			<trans-unit id="labels.translationsOfRecord" xml:space="preserve">
+			<trans-unit id="labels.translationsOfRecord">
 				<source>(This record has %s translation(s) which will be deleted, too!)</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.viewItem" xml:space="preserve">
+			<trans-unit id="show_item.php.viewItem">
 				<source>View Item</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.referencesToThisItem" xml:space="preserve">
+			<trans-unit id="show_item.php.referencesToThisItem">
 				<source>References to this item:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.referencesFromThisItem" xml:space="preserve">
+			<trans-unit id="show_item.php.referencesFromThisItem">
 				<source>References from this item:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.file" xml:space="preserve">
+			<trans-unit id="show_item.php.file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.dimensions" xml:space="preserve">
+			<trans-unit id="show_item.php.dimensions">
 				<source>Dimensions</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.filesize" xml:space="preserve">
+			<trans-unit id="show_item.php.filesize">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.pixels" xml:space="preserve">
+			<trans-unit id="show_item.php.pixels">
 				<source>Pixels</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.files" xml:space="preserve">
+			<trans-unit id="show_item.php.files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.cannotDisplayArchive" xml:space="preserve">
+			<trans-unit id="show_item.php.cannotDisplayArchive">
 				<source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.table" xml:space="preserve">
+			<trans-unit id="show_item.php.table">
 				<source>Table:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.uid" xml:space="preserve">
+			<trans-unit id="show_item.php.uid">
 				<source>Uid:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.title" xml:space="preserve">
+			<trans-unit id="show_item.php.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.field" xml:space="preserve">
+			<trans-unit id="show_item.php.field">
 				<source>Field:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.flexpointer" xml:space="preserve">
+			<trans-unit id="show_item.php.flexpointer">
 				<source>Flexpointer:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.softrefKey" xml:space="preserve">
+			<trans-unit id="show_item.php.softrefKey">
 				<source>Softref Key:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.sorting" xml:space="preserve">
+			<trans-unit id="show_item.php.sorting">
 				<source>Sorting:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refTable" xml:space="preserve">
+			<trans-unit id="show_item.php.refTable">
 				<source>Ref Table:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refUid" xml:space="preserve">
+			<trans-unit id="show_item.php.refUid">
 				<source>Ref Uid:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refString" xml:space="preserve">
+			<trans-unit id="show_item.php.refString">
 				<source>Ref String:</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.ftp_area" xml:space="preserve">
+			<trans-unit id="show_item.php.ftp_area">
 				<source>FTP AREA</source>
 			</trans-unit>
-			<trans-unit id="db_new.php.pagetitle" xml:space="preserve">
+			<trans-unit id="db_new.php.pagetitle">
 				<source>New record</source>
 			</trans-unit>
-			<trans-unit id="db_new.php.after" xml:space="preserve">
+			<trans-unit id="db_new.php.after">
 				<source>after</source>
 			</trans-unit>
-			<trans-unit id="db_new.php.inside" xml:space="preserve">
+			<trans-unit id="db_new.php.inside">
 				<source>inside</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.pagetitle" xml:space="preserve">
+			<trans-unit id="file_upload.php.pagetitle">
 				<source>Upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.submit" xml:space="preserve">
+			<trans-unit id="file_upload.php.submit">
 				<source>Upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.files" xml:space="preserve">
+			<trans-unit id="file_upload.php.files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.dropzonehint.title" xml:space="preserve">
+			<trans-unit id="file_upload.dropzonehint.title">
 				<source>Drag &amp; drop to upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.dropzonehint.message" xml:space="preserve">
+			<trans-unit id="file_upload.dropzonehint.message">
 				<source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
 			</trans-unit>
-			<trans-unit id="file_upload.select-and-submit" xml:space="preserve">
+			<trans-unit id="file_upload.select-and-submit">
 				<source>Select &amp; upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.maxFileSizeExceeded" xml:space="preserve">
+			<trans-unit id="file_upload.maxFileSizeExceeded">
 				<source>File &quot;{0}&quot; exceeds maximum file size of {1}!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.fileNotAllowed" xml:space="preserve">
+			<trans-unit id="file_upload.fileNotAllowed">
 				<source>Filename &quot;{0}&quot; is not allowed!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.fileExtensionExpected" xml:space="preserve">
+			<trans-unit id="file_upload.fileExtensionExpected">
 				<source>Upload failed! A file with &quot;{0}&quot; extension is expected!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.uploadFailed" xml:space="preserve">
+			<trans-unit id="file_upload.uploadFailed">
 				<source>Upload of file &quot;{0}&quot; failed!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-in-progress" xml:space="preserve">
+			<trans-unit id="file_upload.upload-in-progress">
 				<source>File upload in progress...</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-progress-info" xml:space="preserve">
+			<trans-unit id="file_upload.upload-progress-info">
 				<source>Uploading file {0} out of {1} files.</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-finished" xml:space="preserve">
+			<trans-unit id="file_upload.upload-finished">
 				<source>Upload complete! Filelist reloading...</source>
 			</trans-unit>
-			<trans-unit id="file_upload.overwriteExistingFiles" xml:space="preserve">
+			<trans-unit id="file_upload.overwriteExistingFiles">
 				<source>Shall existing files be overwritten?</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.number_of_files" xml:space="preserve">
+			<trans-unit id="file_upload.php.number_of_files">
 				<source>Number of files:</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.pagetitle" xml:space="preserve">
+			<trans-unit id="file_rename.php.pagetitle">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.submit" xml:space="preserve">
+			<trans-unit id="file_rename.php.submit">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.pagetitle" xml:space="preserve">
+			<trans-unit id="file_edit.php.pagetitle">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.submit" xml:space="preserve">
+			<trans-unit id="file_edit.php.submit">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.saveAndClose" xml:space="preserve">
+			<trans-unit id="file_edit.php.saveAndClose">
 				<source>Save and Close</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.coundNot" xml:space="preserve">
+			<trans-unit id="file_edit.php.coundNot">
 				<source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.pagetitle" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.pagetitle">
 				<source>New file or folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfolders" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.newfolders">
 				<source>Create new folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfolder" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.label_newfolder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.submit" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.submit">
 				<source>Create folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.folders" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.folders">
 				<source>folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile_submit" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.newfile_submit">
 				<source>Create file</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.newfile">
 				<source>Create new textfile</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfile" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.label_newfile">
 				<source>File name:</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.number_of_folders" xml:space="preserve">
+			<trans-unit id="file_newfolder.php.number_of_folders">
 				<source>Number of folders:</source>
 			</trans-unit>
-			<trans-unit id="file_clipupload.php.warning_head" xml:space="preserve">
+			<trans-unit id="file_clipupload.php.warning_head">
 				<source>Upload path error</source>
 			</trans-unit>
-			<trans-unit id="file_clipupload.php.warning" xml:space="preserve">
+			<trans-unit id="file_clipupload.php.warning">
 				<source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
 			</trans-unit>
-			<trans-unit id="mess.redraw" xml:space="preserve">
+			<trans-unit id="mess.redraw">
 				<source>Redrawing the page will discard the current data. Do you want to continue?</source>
 			</trans-unit>
-			<trans-unit id="mess.delete" xml:space="preserve">
+			<trans-unit id="mess.delete">
 				<source>Are you sure you want to delete "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.deleteClip" xml:space="preserve">
+			<trans-unit id="mess.deleteClip">
 				<source>Are you sure you want to delete ALL selected elements (%s) on the clipboard?</source>
 			</trans-unit>
 			<trans-unit id="mess.refresh_login" xml:space="preserve">
 				<source>Your login has probably expired.
 Do you want to refresh it now?</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_refresh_button" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_refresh_button">
 				<source>Stay logged in!</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_logout_button" xml:space="preserve">
+			<trans-unit id="mess.refresh_logout_button">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_direct_logout_button" xml:space="preserve">
+			<trans-unit id="mess.refresh_direct_logout_button">
 				<source>No, log out.</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_countdown" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_countdown">
 				<source>{0} seconds</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_countdown_singular" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_countdown_singular">
 				<source>{0} second</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_logging_in" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_logging_in">
 				<source>Logging in...</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_failed" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_failed">
 				<source>Login failed</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_failed_message" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_failed_message">
 				<source>Password not correct.</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_title" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_title">
 				<source>Refresh Login to TYPO3 (User: %s)</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_username" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_username">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_password" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_password">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_button" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_button">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_emptyPassword" xml:space="preserve">
+			<trans-unit id="mess.refresh_login_emptyPassword">
 				<source>Empty password is not allowed!</source>
 			</trans-unit>
-			<trans-unit id="mess.please_wait" xml:space="preserve">
+			<trans-unit id="mess.please_wait">
 				<source>Please wait ...</source>
 			</trans-unit>
-			<trans-unit id="mess.be_locked" xml:space="preserve">
+			<trans-unit id="mess.be_locked">
 				<source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
 			</trans-unit>
-			<trans-unit id="mess.login_about_to_expire" xml:space="preserve">
+			<trans-unit id="mess.login_about_to_expire">
 				<source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
 			</trans-unit>
-			<trans-unit id="mess.login_about_to_expire_title" xml:space="preserve">
+			<trans-unit id="mess.login_about_to_expire_title">
 				<source>TYPO3 login expiration notice</source>
 			</trans-unit>
-			<trans-unit id="mess.login_expired" xml:space="preserve">
+			<trans-unit id="mess.login_expired">
 				<source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
 			</trans-unit>
-			<trans-unit id="mess.noSelItemForEdit" xml:space="preserve">
+			<trans-unit id="mess.noSelItemForEdit">
 				<source>Please select one or more items in the list before you can edit.</source>
 			</trans-unit>
 			<trans-unit id="mess.onChangeAlert" xml:space="preserve">
 				<source>This change will affect which fields are available in the form.
 Would you like to save now in order to refresh the display?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_into" xml:space="preserve">
+			<trans-unit id="mess.move_into">
 				<source>Move "%s" into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_into_colPos" xml:space="preserve">
+			<trans-unit id="mess.move_into_colPos">
 				<source>Move "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_after" xml:space="preserve">
+			<trans-unit id="mess.move_after">
 				<source>Move "%s" to after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copy_into" xml:space="preserve">
+			<trans-unit id="mess.copy_into">
 				<source>Copy "%s" into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copy_into_colPos" xml:space="preserve">
+			<trans-unit id="mess.copy_into_colPos">
 				<source>Copy "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copy_after" xml:space="preserve">
+			<trans-unit id="mess.copy_after">
 				<source>Copy "%s" to after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copycb_into" xml:space="preserve">
+			<trans-unit id="mess.copycb_into">
 				<source>Copy all elements (%s) from the clipboard into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copycb_after" xml:space="preserve">
+			<trans-unit id="mess.copycb_after">
 				<source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.movecb_into" xml:space="preserve">
+			<trans-unit id="mess.movecb_into">
 				<source>Move all elements (%s) from the clipboard into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.movecb_after" xml:space="preserve">
+			<trans-unit id="mess.movecb_after">
 				<source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="rm.menu" xml:space="preserve">
+			<trans-unit id="rm.menu">
 				<source>[menu]</source>
 			</trans-unit>
-			<trans-unit id="rm.saveDoc" xml:space="preserve">
+			<trans-unit id="rm.saveDoc">
 				<source>Save document</source>
 			</trans-unit>
-			<trans-unit id="rm.saveDocShow" xml:space="preserve">
+			<trans-unit id="rm.saveDocShow">
 				<source>Save document and view page</source>
 			</trans-unit>
-			<trans-unit id="rm.saveCloseDoc" xml:space="preserve">
+			<trans-unit id="rm.saveCloseDoc">
 				<source>Save and close document</source>
 			</trans-unit>
-			<trans-unit id="rm.translationSaveDoc" xml:space="preserve">
+			<trans-unit id="rm.translationSaveDoc">
 				<source>Translation finished, save and close</source>
 			</trans-unit>
-			<trans-unit id="rm.translationSaveDocClear" xml:space="preserve">
+			<trans-unit id="rm.translationSaveDocClear">
 				<source>Translation NOT finished, Save</source>
 			</trans-unit>
-			<trans-unit id="rm.saveCloseAllDocs" xml:space="preserve">
+			<trans-unit id="rm.saveCloseAllDocs">
 				<source>Save and close all documents</source>
 			</trans-unit>
-			<trans-unit id="rm.saveNewDoc" xml:space="preserve">
+			<trans-unit id="rm.saveNewDoc">
 				<source>Save document and create a new one</source>
 			</trans-unit>
-			<trans-unit id="rm.closeDoc" xml:space="preserve">
+			<trans-unit id="rm.closeDoc">
 				<source>Close document</source>
 			</trans-unit>
-			<trans-unit id="rm.closeAllDocs" xml:space="preserve">
+			<trans-unit id="rm.closeAllDocs">
 				<source>Close all documents</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_clearCache" xml:space="preserve">
+			<trans-unit id="rm.clearCache_clearCache">
 				<source>Clear cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_thisPage" xml:space="preserve">
+			<trans-unit id="rm.clearCache_thisPage">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_all" xml:space="preserve">
+			<trans-unit id="rm.clearCache_all">
 				<source>Clear FE cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_pages" xml:space="preserve">
+			<trans-unit id="rm.clearCache_pages">
 				<source>Clear Page Cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_allTypo3Conf" xml:space="preserve">
+			<trans-unit id="rm.clearCache_allTypo3Conf">
 				<source>Clear cache in typo3conf/</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_all" xml:space="preserve">
+			<trans-unit id="rm.clearCacheMenu_all">
 				<source>Clear all caches</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_pages" xml:space="preserve">
+			<trans-unit id="rm.clearCacheMenu_pages">
 				<source>Clear page content cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_allTypo3Conf" xml:space="preserve">
+			<trans-unit id="rm.clearCacheMenu_allTypo3Conf">
 				<source>Clear configuration cache</source>
 			</trans-unit>
-			<trans-unit id="flushPageCachesTitle" xml:space="preserve">
+			<trans-unit id="flushPageCachesTitle">
 				<source>Flush frontend caches</source>
 			</trans-unit>
-			<trans-unit id="flushPageCachesDescription" xml:space="preserve">
+			<trans-unit id="flushPageCachesDescription">
 				<source>Clear frontend and page-related caches.</source>
 			</trans-unit>
-			<trans-unit id="flushAllCachesTitle" xml:space="preserve">
+			<trans-unit id="flushAllCachesTitle">
 				<source>Flush all caches</source>
 			</trans-unit>
-			<trans-unit id="flushAllCachesDescription" xml:space="preserve">
+			<trans-unit id="flushAllCachesDescription">
 				<source>Clear all caches, including frontend caches, and extension-specific caches. Compile-time caches / system caches that are needed for TYPO3 to run are not touched.</source>
 			</trans-unit>
-			<trans-unit id="flushGeneralCachesTitle" xml:space="preserve">
+			<trans-unit id="flushGeneralCachesTitle">
 				<source>Flush general caches</source>
 			</trans-unit>
-			<trans-unit id="flushGeneralCachesDescription" xml:space="preserve">
+			<trans-unit id="flushGeneralCachesDescription">
 				<source>Clear frontend and page-related caches, plus some backend-related caches.</source>
 			</trans-unit>
-			<trans-unit id="flushSystemCachesTitle" xml:space="preserve">
+			<trans-unit id="flushSystemCachesTitle">
 				<source>Flush system caches</source>
 			</trans-unit>
-			<trans-unit id="flushSystemCachesDescription" xml:space="preserve">
+			<trans-unit id="flushSystemCachesDescription">
 				<source>Clear all system-related caches, including the class loader, localization and extension configuration file caches. Rebuilding this cache may take some time. </source>
 			</trans-unit>
-			<trans-unit id="rm.adminFunctions" xml:space="preserve">
+			<trans-unit id="rm.adminFunctions">
 				<source>Admin functions</source>
 			</trans-unit>
-			<trans-unit id="rm.edit" xml:space="preserve">
+			<trans-unit id="rm.edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="rm.export" xml:space="preserve">
+			<trans-unit id="rm.export">
 				<source>Export</source>
 			</trans-unit>
-			<trans-unit id="rm.delete" xml:space="preserve">
+			<trans-unit id="rm.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileNotDeletedHasReferences" xml:space="preserve">
+			<trans-unit id="message.header.fileNotDeletedHasReferences">
 				<source>File not deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileNotDeletedHasReferences" xml:space="preserve">
+			<trans-unit id="message.description.fileNotDeletedHasReferences">
 				<source>The file cannot be deleted since it is still used at the following places:</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" xml:space="preserve">
+			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences">
 				<source>Folder not deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" xml:space="preserve">
+			<trans-unit id="message.description.folderNotDeletedHasFilesWithReferences">
 				<source>The folder cannot be deleted since it still contains files in use.</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileHasBrokenReferences" xml:space="preserve">
+			<trans-unit id="message.header.fileHasBrokenReferences">
 				<source>File has broken references</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileHasBrokenReferences" xml:space="preserve">
+			<trans-unit id="message.description.fileHasBrokenReferences">
 				<source>The file has %s broken reference(s) but it will be deleted regardless.</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileNotFound" xml:space="preserve">
+			<trans-unit id="message.header.fileNotFound">
 				<source>File not found</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileNotFound" xml:space="preserve">
+			<trans-unit id="message.description.fileNotFound">
 				<source>The file %s is not found, possible already removed.</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileDeleted" xml:space="preserve">
+			<trans-unit id="message.header.fileDeleted">
 				<source>File deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileDeleted" xml:space="preserve">
+			<trans-unit id="message.description.fileDeleted">
 				<source>The file "%s" was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderDeleted" xml:space="preserve">
+			<trans-unit id="message.header.folderDeleted">
 				<source>Folder deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.folderDeleted" xml:space="preserve">
+			<trans-unit id="message.description.folderDeleted">
 				<source>The folder "%s" was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderNotDeletedHasFiles" xml:space="preserve">
+			<trans-unit id="message.header.folderNotDeletedHasFiles">
 				<source>Folder not deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.folderNotDeletedHasFiles" xml:space="preserve">
+			<trans-unit id="message.description.folderNotDeletedHasFiles">
 				<source>The folder cannot be deleted since it still contains files.</source>
 			</trans-unit>
 
-			<trans-unit id="buttons.logout" xml:space="preserve">
+			<trans-unit id="buttons.logout">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="buttons.exit" xml:space="preserve">
+			<trans-unit id="buttons.exit">
 				<source>Exit</source>
 			</trans-unit>
-			<trans-unit id="buttons.selMenu_modules" xml:space="preserve">
+			<trans-unit id="buttons.selMenu_modules">
 				<source>MODULES</source>
 			</trans-unit>
-			<trans-unit id="buttons.clear" xml:space="preserve">
+			<trans-unit id="buttons.clear">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="buttons.clipboard" xml:space="preserve">
+			<trans-unit id="buttons.clipboard">
 				<source>Clipboard</source>
 			</trans-unit>
-			<trans-unit id="cm.copy" xml:space="preserve">
+			<trans-unit id="cm.copy">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="cm.cut" xml:space="preserve">
+			<trans-unit id="cm.cut">
 				<source>Cut</source>
 			</trans-unit>
-			<trans-unit id="cm.view" xml:space="preserve">
+			<trans-unit id="cm.view">
 				<source>Show</source>
 			</trans-unit>
-			<trans-unit id="cm.edit" xml:space="preserve">
+			<trans-unit id="cm.edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="cm.editcontent" xml:space="preserve">
+			<trans-unit id="cm.editcontent">
 				<source>Edit content</source>
 			</trans-unit>
-			<trans-unit id="cm.editMetadata" xml:space="preserve">
+			<trans-unit id="cm.editMetadata">
 				<source>Edit Metadata of this file</source>
 			</trans-unit>
-			<trans-unit id="cm.new" xml:space="preserve">
+			<trans-unit id="cm.new">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="cm.pasteinto" xml:space="preserve">
+			<trans-unit id="cm.pasteinto">
 				<source>Paste into</source>
 			</trans-unit>
-			<trans-unit id="cm.pasteafter" xml:space="preserve">
+			<trans-unit id="cm.pasteafter">
 				<source>Paste after</source>
 			</trans-unit>
-			<trans-unit id="cm.select" xml:space="preserve">
+			<trans-unit id="cm.select">
 				<source>Select</source>
 			</trans-unit>
-			<trans-unit id="cm.deselect" xml:space="preserve">
+			<trans-unit id="cm.deselect">
 				<source>Deselect</source>
 			</trans-unit>
-			<trans-unit id="cm.selectto" xml:space="preserve">
+			<trans-unit id="cm.selectto">
 				<source>Select to</source>
 			</trans-unit>
-			<trans-unit id="cm.deselectto" xml:space="preserve">
+			<trans-unit id="cm.deselectto">
 				<source>Deselect to</source>
 			</trans-unit>
-			<trans-unit id="cm.delete" xml:space="preserve">
+			<trans-unit id="cm.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="cm.hide" xml:space="preserve">
+			<trans-unit id="cm.hide">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="cm.unhide" xml:space="preserve">
+			<trans-unit id="cm.unhide">
 				<source>Unhide</source>
 			</trans-unit>
-			<trans-unit id="cm.online" xml:space="preserve">
+			<trans-unit id="cm.online">
 				<source>Turn online</source>
 			</trans-unit>
-			<trans-unit id="cm.offline" xml:space="preserve">
+			<trans-unit id="cm.offline">
 				<source>Turn offline</source>
 			</trans-unit>
-			<trans-unit id="cm.upload" xml:space="preserve">
+			<trans-unit id="cm.upload">
 				<source>Upload Files</source>
 			</trans-unit>
-			<trans-unit id="cm.rename" xml:space="preserve">
+			<trans-unit id="cm.rename">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="cm.open" xml:space="preserve">
+			<trans-unit id="cm.open">
 				<source>Open</source>
 			</trans-unit>
-			<trans-unit id="cm.save" xml:space="preserve">
+			<trans-unit id="cm.save">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="cm.unzip" xml:space="preserve">
+			<trans-unit id="cm.unzip">
 				<source>Unzip</source>
 			</trans-unit>
-			<trans-unit id="cm.info" xml:space="preserve">
+			<trans-unit id="cm.info">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="cm.createnew" xml:space="preserve">
+			<trans-unit id="cm.createnew">
 				<source>Create new</source>
 			</trans-unit>
-			<trans-unit id="cm.createnew.link" xml:space="preserve">
+			<trans-unit id="cm.createnew.link">
 				<source>Create new %s</source>
 			</trans-unit>
-			<trans-unit id="cm.tempMountPoint" xml:space="preserve">
+			<trans-unit id="cm.tempMountPoint">
 				<source>Mount as treeroot</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPage_into" xml:space="preserve">
+			<trans-unit id="cm.copyPage_into">
 				<source>Copy page into</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPage_after" xml:space="preserve">
+			<trans-unit id="cm.copyPage_after">
 				<source>Copy page after</source>
 			</trans-unit>
-			<trans-unit id="cm.movePage_into" xml:space="preserve">
+			<trans-unit id="cm.movePage_into">
 				<source>Move page into</source>
 			</trans-unit>
-			<trans-unit id="cm.movePage_after" xml:space="preserve">
+			<trans-unit id="cm.movePage_after">
 				<source>Move page after</source>
 			</trans-unit>
-			<trans-unit id="cm.copyFolder_into" xml:space="preserve">
+			<trans-unit id="cm.copyFolder_into">
 				<source>Copy folder into</source>
 			</trans-unit>
-			<trans-unit id="cm.moveFolder_into" xml:space="preserve">
+			<trans-unit id="cm.moveFolder_into">
 				<source>Move folder into</source>
 			</trans-unit>
-			<trans-unit id="cm.createNewRelation" xml:space="preserve">
+			<trans-unit id="cm.createNewRelation">
 				<source>Create new relation</source>
 			</trans-unit>
-			<trans-unit id="cm.branchActions" xml:space="preserve">
+			<trans-unit id="cm.branchActions">
 				<source>Branch Actions</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPasteActions" xml:space="preserve">
+			<trans-unit id="cm.copyPasteActions">
 				<source>Page Actions</source>
 			</trans-unit>
-			<trans-unit id="cm.collapseBranch" xml:space="preserve">
+			<trans-unit id="cm.collapseBranch">
 				<source>Collapse Branch</source>
 			</trans-unit>
-			<trans-unit id="cm.expandBranch" xml:space="preserve">
+			<trans-unit id="cm.expandBranch">
 				<source>Expand Branch</source>
 			</trans-unit>
-			<trans-unit id="cm.more" xml:space="preserve">
+			<trans-unit id="cm.more">
 				<source>More options...</source>
 			</trans-unit>
-			<trans-unit id="cm.allowedFileExtensions" xml:space="preserve">
+			<trans-unit id="cm.allowedFileExtensions">
 				<source>Allowed file extensions:</source>
 			</trans-unit>
-			<trans-unit id="tree.defaultPageTitle" xml:space="preserve">
+			<trans-unit id="tree.defaultPageTitle">
 				<source>[Default Title]</source>
 			</trans-unit>
-			<trans-unit id="tree.copyHint" xml:space="preserve">
+			<trans-unit id="tree.copyHint">
 				<source>Press Ctrl to copy.</source>
 			</trans-unit>
-			<trans-unit id="tree.activeFilterMode" xml:space="preserve">
+			<trans-unit id="tree.activeFilterMode">
 				<source>Active Filtering Mode</source>
 			</trans-unit>
-			<trans-unit id="tree.dropToRemove" xml:space="preserve">
+			<trans-unit id="tree.dropToRemove">
 				<source>Drop here to delete</source>
 			</trans-unit>
-			<trans-unit id="tree.dropZoneElementRemoved" xml:space="preserve">
+			<trans-unit id="tree.dropZoneElementRemoved">
 				<source>Click here to undelete</source>
 			</trans-unit>
-			<trans-unit id="tree.dropZoneElementRestored" xml:space="preserve">
+			<trans-unit id="tree.dropZoneElementRestored">
 				<source>Page restored</source>
 			</trans-unit>
-			<trans-unit id="tree.buttonNewNode" xml:space="preserve">
+			<trans-unit id="tree.buttonNewNode">
 				<source>Create new pages</source>
 			</trans-unit>
-			<trans-unit id="tree.buttonFilter" xml:space="preserve">
+			<trans-unit id="tree.buttonFilter">
 				<source>Filter tree</source>
 			</trans-unit>
-			<trans-unit id="tree.searchTermInfo" xml:space="preserve">
+			<trans-unit id="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="warning.install_password" xml:space="preserve">
+			<trans-unit id="warning.install_password">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.installtool_default_password" xml:space="preserve">
+			<trans-unit id="warning.installtool_default_password">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.backend_admin" xml:space="preserve">
+			<trans-unit id="warning.backend_admin">
 				<source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
 			</trans-unit>
-			<trans-unit id="warning.file_deny_pattern" xml:space="preserve">
+			<trans-unit id="warning.file_deny_pattern">
 				<source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
 			</trans-unit>
-			<trans-unit id="warning.file_deny_pattern_partsNotPresent" xml:space="preserve">
+			<trans-unit id="warning.file_deny_pattern_partsNotPresent">
 				<source>Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
 			</trans-unit>
-			<trans-unit id="warning.file_deny_htaccess" xml:space="preserve">
+			<trans-unit id="warning.file_deny_htaccess">
 				<source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_enabled" xml:space="preserve">
+			<trans-unit id="warning.install_enabled">
 				<source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_enabled_cmd" xml:space="preserve">
+			<trans-unit id="warning.install_enabled_cmd">
 				<source>Click to remove the file now!</source>
 			</trans-unit>
-			<trans-unit id="warning.install_encryption" xml:space="preserve">
+			<trans-unit id="warning.install_encryption">
 				<source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_update" xml:space="preserve">
+			<trans-unit id="warning.install_update">
 				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
 			</trans-unit>
-			<trans-unit id="warning.header" xml:space="preserve">
+			<trans-unit id="warning.header">
 				<source>Important Notice!</source>
 			</trans-unit>
-			<trans-unit id="warning.backend_reference" xml:space="preserve">
+			<trans-unit id="warning.backend_reference">
 				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
-			<trans-unit id="warning.backend_reference_index" xml:space="preserve">
+			<trans-unit id="warning.backend_reference_index">
 				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
-			<trans-unit id="warning.memcache_not_usable" xml:space="preserve">
+			<trans-unit id="warning.memcache_not_usable">
 				<source>Memcache is configured, but connection to memcached failed with these configuration(s):</source>
 			</trans-unit>
-			<trans-unit id="warning.file_missing" xml:space="preserve">
+			<trans-unit id="warning.file_missing">
 				<source>File is missing!</source>
 			</trans-unit>
-			<trans-unit id="warning.file_missing_text" xml:space="preserve">
+			<trans-unit id="warning.file_missing_text">
 				<source>This file is marked as missing:</source>
 			</trans-unit>
-			<trans-unit id="warning.header.storage_is_no_public" xml:space="preserve">
+			<trans-unit id="warning.header.storage_is_no_public">
 				<source>Storage is not public</source>
 			</trans-unit>
-			<trans-unit id="warning.message.storage_is_no_public" xml:space="preserve">
+			<trans-unit id="warning.message.storage_is_no_public">
 				<source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
 			</trans-unit>
-			<trans-unit id="warning.inline_use_combination" xml:space="preserve">
+			<trans-unit id="warning.inline_use_combination">
 				<source>This record will be modified globally.</source>
 			</trans-unit>
-			<trans-unit id="error.formProtection.tokenInvalid" xml:space="preserve">
+			<trans-unit id="error.formProtection.tokenInvalid">
 				<source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcuts" xml:space="preserve">
+			<trans-unit id="toolbarItems.shortcuts">
 				<source>Shortcuts</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcut" xml:space="preserve">
+			<trans-unit id="toolbarItems.shortcut">
 				<source>Shortcut</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcutsGroup" xml:space="preserve">
+			<trans-unit id="toolbarItems.shortcutsGroup">
 				<source>Shortcut Group</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcutsEdit" xml:space="preserve">
+			<trans-unit id="toolbarItems.shortcutsEdit">
 				<source>Edit Shortcut</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcutsDelete" xml:space="preserve">
+			<trans-unit id="toolbarItems.shortcutsDelete">
 				<source>Delete Shortcut</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks" xml:space="preserve">
+			<trans-unit id="toolbarItems.bookmarks">
 				<source>Bookmarks</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmark" xml:space="preserve">
+			<trans-unit id="toolbarItems.bookmark">
 				<source>Bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksGroup" xml:space="preserve">
+			<trans-unit id="toolbarItems.bookmarksGroup">
 				<source>Bookmark group</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksEdit" xml:space="preserve">
+			<trans-unit id="toolbarItems.bookmarksEdit">
 				<source>Edit bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksDelete" xml:space="preserve">
+			<trans-unit id="toolbarItems.bookmarksDelete">
 				<source>Delete bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.search" xml:space="preserve">
+			<trans-unit id="toolbarItems.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.workspace" xml:space="preserve">
+			<trans-unit id="toolbarItems.workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="tabs.closeAll" xml:space="preserve">
+			<trans-unit id="tabs.closeAll">
 				<source>Close All Tabs</source>
 			</trans-unit>
-			<trans-unit id="tabs.closeOther" xml:space="preserve">
+			<trans-unit id="tabs.closeOther">
 				<source>Close Other Tabs</source>
 			</trans-unit>
-			<trans-unit id="tabs.close" xml:space="preserve">
+			<trans-unit id="tabs.close">
 				<source>Close Tab</source>
 			</trans-unit>
-			<trans-unit id="tabs.openInBrowserWindow" xml:space="preserve">
+			<trans-unit id="tabs.openInBrowserWindow">
 				<source>Open In Browser Window</source>
 			</trans-unit>
-			<trans-unit id="donateWindow.title" xml:space="preserve">
+			<trans-unit id="donateWindow.title">
 				<source>TYPO3 donation notice</source>
 			</trans-unit>
-			<trans-unit id="donateWindow.message" xml:space="preserve">
+			<trans-unit id="donateWindow.message">
 				<source>&lt;b&gt;You have now used TYPO3 for more than three months.&lt;/b&gt; It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</source>
 			</trans-unit>
-			<trans-unit id="donateWindow.button_donate" xml:space="preserve">
+			<trans-unit id="donateWindow.button_donate">
 				<source>Donate now</source>
 			</trans-unit>
-			<trans-unit id="donateWindow.button_disable" xml:space="preserve">
+			<trans-unit id="donateWindow.button_disable">
 				<source>Never show again</source>
 			</trans-unit>
-			<trans-unit id="donateWindow.button_postpone" xml:space="preserve">
+			<trans-unit id="donateWindow.button_postpone">
 				<source>Remind me later</source>
 			</trans-unit>
 			<trans-unit id="ExtDirect.namespaceError" xml:space="preserve">
@@ -1098,34 +1098,34 @@ Check also the following points:\n
 - URL typo3/ajax.php: namespace parameter should be like: "TYPO3.MyExtension"\n
 - javascript: method\'s name should be like: "TYPO3.MyExtension.Sample.myMethod"\n</source>
 			</trans-unit>
-			<trans-unit id="ExtDirect.noNamespace" xml:space="preserve">
+			<trans-unit id="ExtDirect.noNamespace">
 				<source>Ext Direct error in "%s": no namespace has been found.</source>
 			</trans-unit>
-			<trans-unit id="extension.not.installed" xml:space="preserve">
+			<trans-unit id="extension.not.installed">
 				<source>Extension "%s" is not installed.</source>
 			</trans-unit>
-			<trans-unit id="link.to.dblist.correctly" xml:space="preserve">
+			<trans-unit id="link.to.dblist.correctly">
 				<source>Please, do not link to this page. Use \TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink() for link generation.</source>
 			</trans-unit>
-			<trans-unit id="link.to.filefile.correctly" xml:space="preserve">
+			<trans-unit id="link.to.filefile.correctly">
 				<source>Please, do not link to this page.</source>
 			</trans-unit>
-			<trans-unit id="loadingIndicator" xml:space="preserve">
+			<trans-unit id="loadingIndicator">
 				<source>Loading ...</source>
 			</trans-unit>
-			<trans-unit id="csh_tooltip_loading" xml:space="preserve">
+			<trans-unit id="csh_tooltip_loading">
 				<source>Loading help...</source>
 			</trans-unit>
-			<trans-unit id="error.database_schema_mismatch" xml:space="preserve">
+			<trans-unit id="error.database_schema_mismatch">
 				<source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="error.database_schema_mismatch_title" xml:space="preserve">
+			<trans-unit id="error.database_schema_mismatch_title">
 				<source>Database Error</source>
 			</trans-unit>
-			<trans-unit id="error.items_proc_func_error" xml:space="preserve">
+			<trans-unit id="error.items_proc_func_error">
 				<source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
 			</trans-unit>
-			<trans-unit id="error.invalidEmail" xml:space="preserve">
+			<trans-unit id="error.invalidEmail">
 				<source>"%s" is not a valid e-mail address.</source>
 			</trans-unit>
 		</body>

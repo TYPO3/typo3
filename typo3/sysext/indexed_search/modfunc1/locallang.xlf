@@ -3,7 +3,7 @@
 	<file t3:id="1415814835" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Indexed search</source>
 			</trans-unit>
 		</body>

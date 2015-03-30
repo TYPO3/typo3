@@ -3,43 +3,43 @@
 	<file t3:id="1415814981" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="saltedpasswords">
 		<header/>
 		<body>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass">
 				<source>Portable PHP password hashing (phpass)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5">
 				<source>MD5 salted hashing (secure)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish">
 				<source>Blowfish salted hashing (advanced)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.phpasssalt" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.phpasssalt">
 				<source>Portable PHP password hashing (phpass)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.md5salt" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.md5salt">
 				<source>MD5 salted hashing (secure)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.title.blowfishsalt" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.title.blowfishsalt">
 				<source>Blowfish salted hashing (advanced)</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name">
 				<source>Convert user passwords to salted hashes</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.description" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.description">
 				<source>Update all frontend and backend user passwords to salted hashes. This task deactivates itself when completed.</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords">
 				<source>The number of records to process on each run</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords">
 				<source>The number of records to process on each run must be greater than zero and numeric.</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf">
 				<source>Deactivate if all records are converted</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself">
 				<source>Deactivate=</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords" xml:space="preserve">
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords">
 				<source>Number of records=</source>
 			</trans-unit>
 		</body>

@@ -3,40 +3,40 @@
 	<file t3:id="1415814934" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Path" xml:space="preserve">
+			<trans-unit id="Path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="TEXT_MODE" xml:space="preserve">
+			<trans-unit id="TEXT_MODE">
 				<source>You are in TEXT MODE.  Use the [&lt;&gt;] button to switch back to WYSIWYG.</source>
 			</trans-unit>
-			<trans-unit id="ActiveX-required" xml:space="preserve">
+			<trans-unit id="ActiveX-required">
 				<source>Loading the editor in Internet Explorer requires the execution of ActiveX controls to be enabled.</source>
 			</trans-unit>
-			<trans-unit id="HTML-document-not-well-formed" xml:space="preserve">
+			<trans-unit id="HTML-document-not-well-formed">
 				<source>The HTML document is not well-formed.</source>
 			</trans-unit>
-			<trans-unit id="Moz-Clipboard" xml:space="preserve">
+			<trans-unit id="Moz-Clipboard">
 				<source>Unprivileged scripts cannot access Cut/Copy/Paste programatically for security reasons. Click YES to see a technical note at mozilla.org which shows you how to allow a script to access the clipboard.</source>
 			</trans-unit>
-			<trans-unit id="Moz-Extension" xml:space="preserve">
+			<trans-unit id="Moz-Extension">
 				<source>For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable applications from this site to access the clipboard and perform copy, cut and paste operations.</source>
 			</trans-unit>
-			<trans-unit id="Moz-Extension-Success" xml:space="preserve">
+			<trans-unit id="Moz-Extension-Success">
 				<source>The installation was successful. You need to exit and restart your browser for the change to take effect.</source>
 			</trans-unit>
-			<trans-unit id="Moz-Extension-Failure" xml:space="preserve">
+			<trans-unit id="Moz-Extension-Failure">
 				<source>Sorry, Firefox Add-on AllowClipboard Helper could not be installed.</source>
 			</trans-unit>
-			<trans-unit id="Moz-Extension-Install-Not-Enabled" xml:space="preserve">
+			<trans-unit id="Moz-Extension-Install-Not-Enabled">
 				<source>The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from this site.</source>
 			</trans-unit>
-			<trans-unit id="Allow-Clipboard-Helper-Extension" xml:space="preserve">
+			<trans-unit id="Allow-Clipboard-Helper-Extension">
 				<source>For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable you to specify the sites or pages that will be allowed to access the clipboard and perform copy, cut and paste operations.</source>
 			</trans-unit>
-			<trans-unit id="Mozilla-Org-Install-Not-Enabled" xml:space="preserve">
+			<trans-unit id="Mozilla-Org-Install-Not-Enabled">
 				<source>The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from https://addons.mozilla.org.</source>
 			</trans-unit>
-			<trans-unit id="Allow-Clipboard-Helper-Extension-Success" xml:space="preserve">
+			<trans-unit id="Allow-Clipboard-Helper-Extension-Success">
 				<source>The installation was successful. You need to exit and restart your browser for the change to take effect. Afterwards, use the AllowClipboard Helper from the tools menu to allow specific sites to use the clipboard.</source>
 			</trans-unit>
 		</body>

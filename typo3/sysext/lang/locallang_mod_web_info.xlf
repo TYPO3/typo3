@@ -3,28 +3,28 @@
 	<file t3:id="1415814880" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Page information</source>
 			</trans-unit>
-			<trans-unit id="depth_0" xml:space="preserve">
+			<trans-unit id="depth_0">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="depth_1" xml:space="preserve">
+			<trans-unit id="depth_1">
 				<source>1 level</source>
 			</trans-unit>
-			<trans-unit id="depth_2" xml:space="preserve">
+			<trans-unit id="depth_2">
 				<source>2 levels</source>
 			</trans-unit>
-			<trans-unit id="depth_3" xml:space="preserve">
+			<trans-unit id="depth_3">
 				<source>3 levels</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Page related information, eg. hit statistics, change log, record counts</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>The Web&gt;Info module is focused on statistic information about pages. This includes statistics of pagehits and a changelog allowing browsing of page history changes. An overview of the number of records on each page as well as page settings presented in a classic tree structure is provided.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Info</source>
 			</trans-unit>
 		</body>

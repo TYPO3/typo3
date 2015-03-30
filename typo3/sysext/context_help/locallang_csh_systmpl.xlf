@@ -3,7 +3,7 @@
 	<file t3:id="1415814802" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>TypoScript template record.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -25,35 +25,35 @@ EXT:context_help/cshimages/systemplate1.png</source>
 				<source>A Template Record with constants and setup code.
 The Web&gt;Template module contains tools which will help you to edit and validate TypoScript structures.</source>
 			</trans-unit>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>Hiding the template will deactivate the template record.</source>
 			</trans-unit>
-			<trans-unit id="hidden.details" xml:space="preserve">
+			<trans-unit id="hidden.details">
 				<source>If the Template Record was the first record on a page hiding it will expose the second record on the page instead.</source>
 			</trans-unit>
-			<trans-unit id="starttime.description" xml:space="preserve">
+			<trans-unit id="starttime.description">
 				<source>Start time. Use this to enable a template on a certain date.</source>
 			</trans-unit>
-			<trans-unit id="endtime.description" xml:space="preserve">
+			<trans-unit id="endtime.description">
 				<source>End time. Use this to disable a template on a certain date.</source>
 			</trans-unit>
-			<trans-unit id="title.description" xml:space="preserve">
+			<trans-unit id="title.description">
 				<source>The title of the template record is only an internal label and does not have any effect on the output in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="sitetitle.description" xml:space="preserve">
+			<trans-unit id="sitetitle.description">
 				<source>Website title. Typically this will automatically be prefixed all page titles in the &lt;title&gt; tag of the frontend pages.</source>
 			</trans-unit>
-			<trans-unit id="constants.description" xml:space="preserve">
+			<trans-unit id="constants.description">
 				<source>TypoScript Constants.</source>
 			</trans-unit>
-			<trans-unit id="_constants.seeAlso" xml:space="preserve">
+			<trans-unit id="_constants.seeAlso">
 				<source>static_template:constants</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="config.description" xml:space="preserve">
+			<trans-unit id="config.description">
 				<source>TypoScript Setup code</source>
 			</trans-unit>
-			<trans-unit id="config.details" xml:space="preserve">
+			<trans-unit id="config.details">
 				<source>Read more about TypoScript Templates in TSref, TypoScript by Example and Getting Started.</source>
 			</trans-unit>
 			<trans-unit id="_config.seeAlso" xml:space="preserve">
@@ -64,71 +64,71 @@ TypoScript by Example | http://typo3.org/documentation/document-library/doc_core
 TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="resources.description" xml:space="preserve">
+			<trans-unit id="resources.description">
 				<source>Resource files for the template. For example a logo, a TTF-font etc.</source>
 			</trans-unit>
-			<trans-unit id="resources.details" xml:space="preserve">
+			<trans-unit id="resources.details">
 				<source>Resource files can be referenced in TypoScript Template code by [filename]*.[ext] and has the advantage that the reference from TypoScript is not broken if you copy or export a Template Record where the resources ends up with new names.</source>
 			</trans-unit>
-			<trans-unit id="clear.description" xml:space="preserve">
+			<trans-unit id="clear.description">
 				<source>Flags that will clear the inheritance of TypoScript code from former templates in the root line. There is a flag for Constants and one for Setup code.</source>
 			</trans-unit>
-			<trans-unit id="clear.details" xml:space="preserve">
+			<trans-unit id="clear.details">
 				<source>In the Web &gt; Template / Template Analyser module you can see how far back in the template tree that constants and setup code is inherited.</source>
 			</trans-unit>
-			<trans-unit id="_clear.seeAlso" xml:space="preserve">
+			<trans-unit id="_clear.seeAlso">
 				<source>sys_template:root</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_clear.image" xml:space="preserve">
+			<trans-unit id="_clear.image">
 				<source>EXT:context_help/cshimages/systemplate2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="root.description" xml:space="preserve">
+			<trans-unit id="root.description">
 				<source>Defines that the template represents a root of a website.</source>
 			</trans-unit>
-			<trans-unit id="_root.seeAlso" xml:space="preserve">
+			<trans-unit id="_root.seeAlso">
 				<source>sys_template:clear</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="includeStaticAfterBasedOn.description" xml:space="preserve">
+			<trans-unit id="includeStaticAfterBasedOn.description">
 				<source>If set, static templates will be included after "based-on" templates. It basically swaps the order of inclusion of these external TypoScript sources.</source>
 			</trans-unit>
-			<trans-unit id="includeStaticAfterBasedOn.details" xml:space="preserve">
+			<trans-unit id="includeStaticAfterBasedOn.details">
 				<source>The Web &gt; Template / Template Analyser module allows you to view the order of inclusion of all TypoScript sources your template uses.</source>
 			</trans-unit>
-			<trans-unit id="include_static.description" xml:space="preserve">
+			<trans-unit id="include_static.description">
 				<source>Static Template records to include.</source>
 			</trans-unit>
-			<trans-unit id="_include_static.seeAlso" xml:space="preserve">
+			<trans-unit id="_include_static.seeAlso">
 				<source>static_template</source>
 			</trans-unit>
-			<trans-unit id="include_static_file.description" xml:space="preserve">
+			<trans-unit id="include_static_file.description">
 				<source>Static Template files to include.</source>
 			</trans-unit>
-			<trans-unit id="include_static_file.details" xml:space="preserve">
+			<trans-unit id="include_static_file.details">
 				<source>Static template files are registered by extensions contrary to Static Template records which come from the static database table, "static_template".</source>
 			</trans-unit>
-			<trans-unit id="_include_static_file.seeAlso" xml:space="preserve">
+			<trans-unit id="_include_static_file.seeAlso">
 				<source>sys_template:include_static</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="basedOn.description" xml:space="preserve">
+			<trans-unit id="basedOn.description">
 				<source>Other Template Records that are included like "static templates".</source>
 			</trans-unit>
-			<trans-unit id="static_file_mode.description" xml:space="preserve">
+			<trans-unit id="static_file_mode.description">
 				<source>Define the mode of inclusion of static template files.</source>
 			</trans-unit>
-			<trans-unit id="static_file_mode.details" xml:space="preserve">
+			<trans-unit id="static_file_mode.details">
 				<source>If you are in doubt about the inclusion order, make sure to use the Web &gt; Template / Template Analyser to view the order.</source>
 			</trans-unit>
-			<trans-unit id="nextLevel.description" xml:space="preserve">
+			<trans-unit id="nextLevel.description">
 				<source>Defines a template record to make active one level out in the page tree of this branch. This can be used to define another template record for the general website while having a special template for the frontpage.</source>
 			</trans-unit>
-			<trans-unit id="description.description" xml:space="preserve">
+			<trans-unit id="description.description">
 				<source>Enter a description of the template if you like.</source>
 			</trans-unit>
-			<trans-unit id="editorcfg.description" xml:space="preserve">
+			<trans-unit id="editorcfg.description">
 				<source>Editor Configuration for the stylesheet editor extension.</source>
 			</trans-unit>
 		</body>

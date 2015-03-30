@@ -3,10 +3,10 @@
 	<file t3:id="1415814818" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="extensionManager" xml:space="preserve">
+			<trans-unit id="extensionManager">
 				<source>Extension Manager</source>
 			</trans-unit>
-			<trans-unit id="manageExtensions" xml:space="preserve">
+			<trans-unit id="manageExtensions">
 				<source>Manage Extensions</source>
 			</trans-unit>
 			<trans-unit id="installExtension">
@@ -15,211 +15,211 @@
 			<trans-unit id="installedExtensions">
 				<source>Installed Extensions</source>
 			</trans-unit>
-			<trans-unit id="getExtensions" xml:space="preserve">
+			<trans-unit id="getExtensions">
 				<source>Get Extensions</source>
 			</trans-unit>
-			<trans-unit id="showAllVersions" xml:space="preserve">
+			<trans-unit id="showAllVersions">
 				<source>Show all versions of</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.headline" xml:space="preserve">
+			<trans-unit id="extConfTemplate.headline">
 				<source>Configure Extension</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.other" xml:space="preserve">
+			<trans-unit id="extConfTemplate.other">
 				<source>Other</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.int+" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.int+">
 				<source>positive integer</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.int" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.int">
 				<source>integer</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.integer" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.integer">
 				<source>integer</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.color" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.color">
 				<source>color</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.wrap" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.wrap">
 				<source>wrap</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.offset" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.offset">
 				<source>offset</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.options" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.options">
 				<source>options</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.boolean" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.boolean">
 				<source>boolean</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.user" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.user">
 				<source>user</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.small" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.small">
 				<source>small</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.type.string" xml:space="preserve">
+			<trans-unit id="extConfTemplate.type.string">
 				<source>string</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplate.backToList" xml:space="preserve">
+			<trans-unit id="extConfTemplate.backToList">
 				<source>Back to list</source>
 			</trans-unit>
-			<trans-unit id="updateScript.headline" xml:space="preserve">
+			<trans-unit id="updateScript.headline">
 				<source>Update script for %s</source>
 			</trans-unit>
-			<trans-unit id="updateScript.none" xml:space="preserve">
+			<trans-unit id="updateScript.none">
 				<source>No update necessary.</source>
 			</trans-unit>
-			<trans-unit id="button.cancel" xml:space="preserve">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.remove" xml:space="preserve">
+			<trans-unit id="button.remove">
 				<source>Remove extension</source>
 			</trans-unit>
-			<trans-unit id="button.updateExtension" xml:space="preserve">
+			<trans-unit id="button.updateExtension">
 				<source>Update extension</source>
 			</trans-unit>
-			<trans-unit id="button.resolveDependencies" xml:space="preserve">
+			<trans-unit id="button.resolveDependencies">
 				<source>Resolve dependencies</source>
 			</trans-unit>
-			<trans-unit id="button.resolveDependenciesIgnore" xml:space="preserve">
+			<trans-unit id="button.resolveDependenciesIgnore">
 				<source>Continue anyway</source>
 			</trans-unit>
-			<trans-unit id="extensionList.clickToConfigure" xml:space="preserve">
+			<trans-unit id="extensionList.clickToConfigure">
 				<source>(Click to configure)</source>
 			</trans-unit>
-			<trans-unit id="extensionList.configure" xml:space="preserve">
+			<trans-unit id="extensionList.configure">
 				<source>Configure</source>
 			</trans-unit>
-			<trans-unit id="extensionList.update.script" xml:space="preserve">
+			<trans-unit id="extensionList.update.script">
 				<source>Execute the update script</source>
 			</trans-unit>
-			<trans-unit id="extensionList.downloadsql" xml:space="preserve">
+			<trans-unit id="extensionList.downloadsql">
 				<source>Download SQL Dump</source>
 			</trans-unit>
-			<trans-unit id="extensionList.remove" xml:space="preserve">
+			<trans-unit id="extensionList.remove">
 				<source>Remove</source>
 			</trans-unit>
-			<trans-unit id="extensionList.update" xml:space="preserve">
+			<trans-unit id="extensionList.update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateToVersion" xml:space="preserve">
+			<trans-unit id="extensionList.updateToVersion">
 				<source>Update to version %s</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateDisabled" xml:space="preserve">
+			<trans-unit id="extensionList.updateDisabled">
 				<source>An update is available but this operation is currently disabled</source>
 			</trans-unit>
-			<trans-unit id="extensionList.deactivate" xml:space="preserve">
+			<trans-unit id="extensionList.deactivate">
 				<source>Deactivate</source>
 			</trans-unit>
-			<trans-unit id="extensionList.activate" xml:space="preserve">
+			<trans-unit id="extensionList.activate">
 				<source>Activate</source>
 			</trans-unit>
-			<trans-unit id="extensionList.downloadzip" xml:space="preserve">
+			<trans-unit id="extensionList.downloadzip">
 				<source>Download as zip</source>
 			</trans-unit>
-			<trans-unit id="extensionList.uploadExtension" xml:space="preserve">
+			<trans-unit id="extensionList.uploadExtension">
 				<source>Upload Extension .t3x/.zip</source>
 			</trans-unit>
-			<trans-unit id="extensionList.overwriteExtension" xml:space="preserve">
+			<trans-unit id="extensionList.overwriteExtension">
 				<source>Overwrite</source>
 			</trans-unit>
-			<trans-unit id="extensionList.overwritingDisabled" xml:space="preserve">
+			<trans-unit id="extensionList.overwritingDisabled">
 				<source>Extension is already available and overwriting was not enabled</source>
 			</trans-unit>
-			<trans-unit id="extensionList.loading" xml:space="preserve">
+			<trans-unit id="extensionList.loading">
 				<source>Loading form...</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.update" xml:space="preserve">
+			<trans-unit id="extensionList.header.update">
 				<source>Upd.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.title.update" xml:space="preserve">
+			<trans-unit id="extensionList.header.title.update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.activate" xml:space="preserve">
+			<trans-unit id="extensionList.header.activate">
 				<source>A/D</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.title.activate" xml:space="preserve">
+			<trans-unit id="extensionList.header.title.activate">
 				<source>Activate / Deactivate</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.extensionName" xml:space="preserve">
+			<trans-unit id="extensionList.header.extensionName">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.version" xml:space="preserve">
+			<trans-unit id="extensionList.header.version">
 				<source>Version</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.extensionKey" xml:space="preserve">
+			<trans-unit id="extensionList.header.extensionKey">
 				<source>Key</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.extensionVersion" xml:space="preserve">
+			<trans-unit id="extensionList.header.extensionVersion">
 				<source>Version</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.extensionActions" xml:space="preserve">
+			<trans-unit id="extensionList.header.extensionActions">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.extensionState" xml:space="preserve">
+			<trans-unit id="extensionList.header.extensionState">
 				<source>State</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.uploadComment" xml:space="preserve">
+			<trans-unit id="extensionList.header.uploadComment">
 				<source>Upload Comment</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.lastUpdate" xml:space="preserve">
+			<trans-unit id="extensionList.header.lastUpdate">
 				<source>Last Updated</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.description" xml:space="preserve">
+			<trans-unit id="extensionList.header.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="extensionList.header.author" xml:space="preserve">
+			<trans-unit id="extensionList.header.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="searchTemplate.searchExtensions" xml:space="preserve">
+			<trans-unit id="searchTemplate.searchExtensions">
 				<source>Search extensions</source>
 			</trans-unit>
-			<trans-unit id="extensionList.search" xml:space="preserve">
+			<trans-unit id="extensionList.search">
 				<source>Search:</source>
 			</trans-unit>
-			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
+			<trans-unit id="searchTemplate.submitButton">
 				<source>Go</source>
 			</trans-unit>
-			<trans-unit id="searchTemplate.resetSearchButton" xml:space="preserve">
+			<trans-unit id="searchTemplate.resetSearchButton">
 				<source>Reset Search</source>
 			</trans-unit>
-			<trans-unit id="searchTemplate.yourSearch" xml:space="preserve">
+			<trans-unit id="searchTemplate.yourSearch">
 				<source>Your search</source>
 			</trans-unit>
-			<trans-unit id="searchTemplate.searchAgain" xml:space="preserve">
+			<trans-unit id="searchTemplate.searchAgain">
 				<source>Search again</source>
 			</trans-unit>
-			<trans-unit id="uploadTemplate.uploadButton" xml:space="preserve">
+			<trans-unit id="uploadTemplate.uploadButton">
 				<source>Upload!</source>
 			</trans-unit>
-			<trans-unit id="uploadTemplate.extensionLabel" xml:space="preserve">
+			<trans-unit id="uploadTemplate.extensionLabel">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="extensionList.removalConfirmation.title" xml:space="preserve">
+			<trans-unit id="extensionList.removalConfirmation.title">
 				<source>Extension Removal</source>
 			</trans-unit>
-			<trans-unit id="extensionList.removalConfirmation.message" xml:space="preserve">
+			<trans-unit id="extensionList.removalConfirmation.message">
 				<source>The extension is currently installed. Uninstall extension?</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateConfirmation.title" xml:space="preserve">
+			<trans-unit id="extensionList.updateConfirmation.title">
 				<source>Update?</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateConfirmation.message" xml:space="preserve">
+			<trans-unit id="extensionList.updateConfirmation.message">
 				<source>Update Comments:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateConfirmation.questionVersionComments" xml:space="preserve">
+			<trans-unit id="extensionList.updateConfirmation.questionVersionComments">
 				<source>Version Comments</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFlashMessage.title" xml:space="preserve">
+			<trans-unit id="extensionList.updateFlashMessage.title">
 				<source>Extension Update</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFlashMessage.message" xml:space="preserve" deprecated="Unused since CMS 6.2">
+			<trans-unit id="extensionList.updateFlashMessage.message" deprecated="Unused since CMS 6.2">
 				<source>{0} updated!</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFlashMessage.body" xml:space="preserve">
+			<trans-unit id="extensionList.updateFlashMessage.body">
 				<source>%s was updated!</source>
 			</trans-unit>
-			<trans-unit id="extensionList.removalConfirmation.question" xml:space="preserve">
+			<trans-unit id="extensionList.removalConfirmation.question">
 				<source>Are you sure you want to remove the extension?</source>
 			</trans-unit>
 			<trans-unit id="dependencyCheck.unresolvedDependencies.title">
@@ -263,49 +263,49 @@
 
 				</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencies.resolveAutomatically" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencies.resolveAutomatically">
 				<source>Shall these dependencies be resolved automatically?</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencies.errorTitle" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencies.errorTitle">
 				<source>Dependencies could not be resolved</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencies.errorMessage" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencies.errorMessage">
 				<source>The dependencies of the following Extensions could not be resolved:</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencyType.download" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencyType.download">
 				<source>download</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencyType.install" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencyType.install">
 				<source>install</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.dependencyType.update" xml:space="preserve">
+			<trans-unit id="downloadExtension.dependencyType.update">
 				<source>update</source>
 			</trans-unit>
-			<trans-unit id="downloadExtension.updateExtension.error" xml:space="preserve">
+			<trans-unit id="downloadExtension.updateExtension.error">
 				<source>Error while updating extension</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveDownloadError.title" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveDownloadError.title">
 				<source>Download Error</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message">
 				<source>Your installation of {0} was successful.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message.downloadOnly">
 				<source>Your download of {0} was successful.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header">
 				<source>Log</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item">
 				<source>Extensions</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title">
 				<source>{0} installed.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly" xml:space="preserve">
+			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title.downloadOnly">
 				<source>{0} downloaded.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.uploadFlashMessage.title" xml:space="preserve">
+			<trans-unit id="extensionList.uploadFlashMessage.title">
 				<source>Extension Upload</source>
 			</trans-unit>
 			<trans-unit id="extensionList.uploadFlashMessage.message">
@@ -314,226 +314,226 @@
 			<trans-unit id="extensionList.installedFlashMessage.message">
 				<source>%s was installed!</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTerFlashMessage.title" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTerFlashMessage.title">
 				<source>Update Extension List</source>
 			</trans-unit>
-			<trans-unit id="extensionList.downloadViewHelper.submit" xml:space="preserve">
+			<trans-unit id="extensionList.downloadViewHelper.submit">
 				<source>Import and Install</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.label" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.label">
 				<source>Show all versions</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.extensionKey" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.extensionKey">
 				<source>Extension key</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.version" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.version">
 				<source>Version</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.lastUploaded" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.lastUploaded">
 				<source>Last uploaded</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.downloads" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.downloads">
 				<source>Downloads</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.category" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.manual" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.manual">
 				<source>Manual</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.author" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="extensionList.showAllVersions.readOnline" xml:space="preserve">
+			<trans-unit id="extensionList.showAllVersions.readOnline">
 				<source>Read online</source>
 			</trans-unit>
 			<trans-unit id="extensionList.remove.message">
 				<source>Extension "%s" was removed successfully!</source>
 			</trans-unit>
-			<trans-unit id="extensionList.distribution.key" xml:space="preserve">
+			<trans-unit id="extensionList.distribution.key">
 				<source>Key:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.distribution.author" xml:space="preserve">
+			<trans-unit id="extensionList.distribution.author">
 				<source>Author:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.distribution.title" xml:space="preserve">
+			<trans-unit id="extensionList.distribution.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.distribution.version" xml:space="preserve">
+			<trans-unit id="extensionList.distribution.version">
 				<source>Version:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.distribution.downloads" xml:space="preserve">
+			<trans-unit id="extensionList.distribution.downloads">
 				<source>Downloads</source>
 			</trans-unit>
-			<trans-unit id="extensionList.distribution.lastUpdated" xml:space="preserve">
+			<trans-unit id="extensionList.distribution.lastUpdated">
 				<source>Last Update:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.officialDistribution" xml:space="preserve">
+			<trans-unit id="extensionList.officialDistribution">
 				<source>Official distribution</source>
 			</trans-unit>
-			<trans-unit id="distributions" xml:space="preserve">
+			<trans-unit id="distributions">
 				<source>Get preconfigured distribution</source>
 			</trans-unit>
-			<trans-unit id="extensionList.installDistribution" xml:space="preserve">
+			<trans-unit id="extensionList.installDistribution">
 				<source>Install</source>
 			</trans-unit>
-			<trans-unit id="extensionList.installImpexp" xml:space="preserve">
+			<trans-unit id="extensionList.installImpexp">
 				<source>Please install the Import/Export (impexp) extension to enable distribution support.</source>
 			</trans-unit>
-			<trans-unit id="distribution.installImpexp" xml:space="preserve">
+			<trans-unit id="distribution.installImpexp">
 				<source>Install impexp</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.label">
 				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.buttonLabel" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.buttonLabel">
 				<source>Update now</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.label" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.label">
 				<source>Last update:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeSinceLastUpdateLabel">
 				<source>Time since last update:</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.noInfo">
 				<source>unknown</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.fullTimeFormat">
 				<source>Y-m-d H:i:s</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.timeOfLastUpdate">
 				<source>Time of last update: </source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.lastUpdate.noTimeOfLastUpdate">
 				<source>No last update time known.</source>
 			</trans-unit>
-			<trans-unit id="extensionList.updateFromTer.never" xml:space="preserve">
+			<trans-unit id="extensionList.updateFromTer.never">
 				<source>Never</source>
 			</trans-unit>
-			<trans-unit id="extensionList.uninstall.dependencyError" xml:space="preserve">
+			<trans-unit id="extensionList.uninstall.dependencyError">
 				<source>Cannot deactivate extension '%s' - The extension(s) '%s' depend on it.</source>
 			</trans-unit>
-			<trans-unit id="distribution.error.headline" xml:space="preserve">
+			<trans-unit id="distribution.error.headline">
 				<source>Could not install distribution '%s'</source>
 			</trans-unit>
-			<trans-unit id="distribution.welcome.headline" xml:space="preserve">
+			<trans-unit id="distribution.welcome.headline">
 				<source>Congratulations...</source>
 			</trans-unit>
-			<trans-unit id="distribution.welcome.message" xml:space="preserve">
+			<trans-unit id="distribution.welcome.message">
 				<source>You successfully installed the distribution:</source>
 			</trans-unit>
-			<trans-unit id="distribution.welcome.nextSteps" xml:space="preserve">
+			<trans-unit id="distribution.welcome.nextSteps">
 				<source>Now you can:</source>
 			</trans-unit>
-			<trans-unit id="distribution.welcome.openViewModule" xml:space="preserve">
+			<trans-unit id="distribution.welcome.openViewModule">
 				<source>View your website</source>
 			</trans-unit>
-			<trans-unit id="distribution.welcome.openPageModule" xml:space="preserve">
+			<trans-unit id="distribution.welcome.openPageModule">
 				<source>Start editing your website</source>
 			</trans-unit>
-			<trans-unit id="distribution.dependency.headline" xml:space="preserve">
+			<trans-unit id="distribution.dependency.headline">
 				<source>Dependencies, conflics and suggestions</source>
 			</trans-unit>
-			<trans-unit id="distribution.dependency.identifier" xml:space="preserve">
+			<trans-unit id="distribution.dependency.identifier">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="distribution.dependency.type" xml:space="preserve">
+			<trans-unit id="distribution.dependency.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="distribution.dependency.version" xml:space="preserve">
+			<trans-unit id="distribution.dependency.version">
 				<source>Version</source>
 			</trans-unit>
-			<trans-unit id="task.updateExtensionListTask.name" xml:space="preserve">
+			<trans-unit id="task.updateExtensionListTask.name">
 				<source>Update extension list</source>
 			</trans-unit>
-			<trans-unit id="task.updateExtensionListTask.description" xml:space="preserve">
+			<trans-unit id="task.updateExtensionListTask.description">
 				<source>Update TER extension list on a regular basis. Once a day is a good interval.</source>
 			</trans-unit>
-			<trans-unit id="report.status.mainRepository.title" xml:space="preserve">
+			<trans-unit id="report.status.mainRepository.title">
 				<source>Update status of typo3.org main repository extension list</source>
 			</trans-unit>
-			<trans-unit id="report.status.mainRepository.notFound.value" xml:space="preserve">
+			<trans-unit id="report.status.mainRepository.notFound.value">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="report.status.mainRepository.notFound.message" xml:space="preserve">
+			<trans-unit id="report.status.mainRepository.notFound.message">
 				<source>The typo3.org extension repository was not found. Please import the main typo3.org extension repository in the install tool wizard.</source>
 			</trans-unit>
-			<trans-unit id="report.status.mainRepository.notUpToDate.value" xml:space="preserve">
+			<trans-unit id="report.status.mainRepository.notUpToDate.value">
 				<source>Extension list is not up to date!</source>
 			</trans-unit>
-			<trans-unit id="report.status.mainRepository.notUpToDate.message" xml:space="preserve">
+			<trans-unit id="report.status.mainRepository.notUpToDate.message">
 				<source>The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="report.status.mainRepository.upToDate.value" xml:space="preserve">
+			<trans-unit id="report.status.mainRepository.upToDate.value">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedExtensions.title" xml:space="preserve">
+			<trans-unit id="report.status.loadedExtensions.title">
 				<source>Security status of loaded extensions</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value" xml:space="preserve">
+			<trans-unit id="report.status.loadedExtensions.noInsecureExtensionLoaded.value">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value" xml:space="preserve">
+			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.value">
 				<source>%s insecure extension(s) found</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message" xml:space="preserve">
+			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message">
 				<source>The following extensions are insecure and usage might damage your system. Please update these extensions as soon as possible or remove them from your system:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension" xml:space="preserve">
+			<trans-unit id="report.status.loadedExtensions.insecureExtensionLoaded.message.extension">
 				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingExtensions.title" xml:space="preserve">
+			<trans-unit id="report.status.existingExtensions.title">
 				<source>Security status of existing, but not loaded extensions</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value" xml:space="preserve">
+			<trans-unit id="report.status.existingExtensions.noInsecureExtensionExists.value">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.value" xml:space="preserve">
+			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.value">
 				<source>%s insecure extension(s) found</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message" xml:space="preserve">
+			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message">
 				<source>The following extensions were found on your system, but are currently not installed. Please delete the extensions using the extension manager:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension" xml:space="preserve">
+			<trans-unit id="report.status.existingExtensions.insecureExtensionExists.message.extension">
 				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedOutdatedExtensions.title" xml:space="preserve">
+			<trans-unit id="report.status.loadedOutdatedExtensions.title">
 				<source>Outdated status of loaded extensions</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value" xml:space="preserve">
+			<trans-unit id="report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value" xml:space="preserve">
+			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value">
 				<source>%s outdated extension(s) found</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message" xml:space="preserve">
+			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message">
 				<source>The following extensions are outdated and may not be compatible with your installation. Please make sure these extensions are compatible and ask the extension author to publish updates:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
-			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension" xml:space="preserve">
+			<trans-unit id="report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message.extension">
 				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingOutdatedExtensions.title" xml:space="preserve">
+			<trans-unit id="report.status.existingOutdatedExtensions.title">
 				<source>Outdated status of existing, but not loaded extensions</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value" xml:space="preserve">
+			<trans-unit id="report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value" xml:space="preserve">
+			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.value">
 				<source>%s outdated extension(s) found</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message" xml:space="preserve">
+			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message">
 				<source>The following extensions were found on your system, but are currently not installed. Please make sure they are compatible with your system before installing them:&lt;br&gt;&lt;br&gt;%s</source>
 			</trans-unit>
-			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension" xml:space="preserve">
+			<trans-unit id="report.status.existingOutdatedExtensions.outdatedExtensionExists.message.extension">
 				<source>&lt;strong&gt;%1$s&lt;/strong&gt; (version %2$s)&lt;br&gt;</source>
 			</trans-unit>
-			<trans-unit id="fileHandling.couldNotRemoveDirectory" xml:space="preserve">
+			<trans-unit id="fileHandling.couldNotRemoveDirectory">
 				<source>ERROR: Could not remove extension directory "%s". Reasons:</source>
 			</trans-unit>
-			<trans-unit id="fileHandling.couldNotCreateDirectory" xml:space="preserve">
+			<trans-unit id="fileHandling.couldNotCreateDirectory">
 				<source>ERROR: Could not create extension directory "%s"!</source>
 			</trans-unit>
-			<trans-unit id="fileHandling.installPathWasNoDirectory" xml:space="preserve">
+			<trans-unit id="fileHandling.installPathWasNoDirectory">
 				<source>ERROR: The extension install path "%s" was no directory!</source>
 			</trans-unit>
 			<trans-unit id="config.automaticInstallation">

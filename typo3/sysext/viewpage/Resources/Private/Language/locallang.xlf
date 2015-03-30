@@ -3,22 +3,22 @@
 	<file t3:id="1415815011" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="viewpage">
 		<header/>
 		<body>
-			<trans-unit id="width" xml:space="preserve">
+			<trans-unit id="width">
 				<source>Width</source>
 			</trans-unit>
-			<trans-unit id="tablet" xml:space="preserve">
+			<trans-unit id="tablet">
 				<source>Tablet</source>
 			</trans-unit>
-			<trans-unit id="mobile" xml:space="preserve">
+			<trans-unit id="mobile">
 				<source>Mobile</source>
 			</trans-unit>
-			<trans-unit id="computer" xml:space="preserve">
+			<trans-unit id="computer">
 				<source>Computer</source>
 			</trans-unit>
-			<trans-unit id="customWidth" xml:space="preserve">
+			<trans-unit id="customWidth">
 				<source>Custom Size</source>
 			</trans-unit>
-			<trans-unit id="autoSize" xml:space="preserve">
+			<trans-unit id="autoSize">
 				<source>Auto Size</source>
 			</trans-unit>
 		</body>

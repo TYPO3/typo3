@@ -3,11 +3,11 @@
 	<file t3:id="1415814805" source-language="en" datatype="plaintext" original="messages" date="2011-12-21T11:57:33Z" product-name="tests" target-language="fr">
 		<header/>
 		<body>
-			<trans-unit id="label1" xml:space="preserve">
+			<trans-unit id="label1">
 				<source>This is label #1</source>
 				<target>Ceci est mon 1er libellé</target>
 			</trans-unit>
-			<trans-unit id="label3" xml:space="preserve">
+			<trans-unit id="label3">
 				<source>This is label #3</source>
 				<target>Ceci est mon 3e libellé</target>
 			</trans-unit>

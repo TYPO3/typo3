@@ -3,112 +3,112 @@
 	<file t3:id="1415814883" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Show record history</source>
 			</trans-unit>
-			<trans-unit id="time" xml:space="preserve">
+			<trans-unit id="time">
 				<source>Time</source>
 			</trans-unit>
-			<trans-unit id="age" xml:space="preserve">
+			<trans-unit id="age">
 				<source>Age</source>
 			</trans-unit>
-			<trans-unit id="user" xml:space="preserve">
+			<trans-unit id="user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="tableUid" xml:space="preserve">
+			<trans-unit id="tableUid">
 				<source>Table:uid</source>
 			</trans-unit>
-			<trans-unit id="differences" xml:space="preserve">
+			<trans-unit id="differences">
 				<source>Differences</source>
 			</trans-unit>
-			<trans-unit id="changes" xml:space="preserve">
+			<trans-unit id="changes">
 				<source>Changelog</source>
 			</trans-unit>
-			<trans-unit id="return" xml:space="preserve">
+			<trans-unit id="return">
 				<source>Return</source>
 			</trans-unit>
-			<trans-unit id="returnLink" xml:space="preserve">
+			<trans-unit id="returnLink">
 				<source>Click here to go back</source>
 			</trans-unit>
-			<trans-unit id="revertAll" xml:space="preserve">
+			<trans-unit id="revertAll">
 				<source>Rollback all changes shown</source>
 			</trans-unit>
-			<trans-unit id="revertRecord" xml:space="preserve">
+			<trans-unit id="revertRecord">
 				<source>Rollback single record</source>
 			</trans-unit>
-			<trans-unit id="revertField" xml:space="preserve">
+			<trans-unit id="revertField">
 				<source>Rollback single field</source>
 			</trans-unit>
-			<trans-unit id="externalChange" xml:space="preserve">
+			<trans-unit id="externalChange">
 				<source>Intermediate external change!</source>
 			</trans-unit>
-			<trans-unit id="sumUpChanges" xml:space="preserve">
+			<trans-unit id="sumUpChanges">
 				<source>Rollback (Preview)</source>
 			</trans-unit>
-			<trans-unit id="markState" xml:space="preserve">
+			<trans-unit id="markState">
 				<source>mark this change</source>
 			</trans-unit>
-			<trans-unit id="unmarkState" xml:space="preserve">
+			<trans-unit id="unmarkState">
 				<source>unMark this change</source>
 			</trans-unit>
-			<trans-unit id="elementHistory" xml:space="preserve">
+			<trans-unit id="elementHistory">
 				<source>You are currently seeing the history for an element.</source>
 			</trans-unit>
-			<trans-unit id="elementHistory_link" xml:space="preserve">
+			<trans-unit id="elementHistory_link">
 				<source>Show the full page history!</source>
 			</trans-unit>
-			<trans-unit id="linkRecordHistory" xml:space="preserve">
+			<trans-unit id="linkRecordHistory">
 				<source>Limit history to this record</source>
 			</trans-unit>
-			<trans-unit id="differenceMsg" xml:space="preserve">
+			<trans-unit id="differenceMsg">
 				<source>In the Difference column you can see the changes at every modification of records. New changes are displayed in &lt;span class="diff-g"&gt;green colored text&lt;/span&gt; and the &lt;span class="diff-r"&gt;red colored text&lt;/span&gt; are the old values which were removed.</source>
 			</trans-unit>
-			<trans-unit id="fullView" xml:space="preserve">
+			<trans-unit id="fullView">
 				<source>Return to full view</source>
 			</trans-unit>
-			<trans-unit id="insert" xml:space="preserve">
+			<trans-unit id="insert">
 				<source>insert</source>
 			</trans-unit>
-			<trans-unit id="delete" xml:space="preserve">
+			<trans-unit id="delete">
 				<source>delete</source>
 			</trans-unit>
-			<trans-unit id="mergedDifferences" xml:space="preserve">
+			<trans-unit id="mergedDifferences">
 				<source>Preview for Rollback</source>
 			</trans-unit>
-			<trans-unit id="settings" xml:space="preserve">
+			<trans-unit id="settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="maxSteps" xml:space="preserve">
+			<trans-unit id="maxSteps">
 				<source>Show entries:</source>
 			</trans-unit>
-			<trans-unit id="maxSteps_all" xml:space="preserve">
+			<trans-unit id="maxSteps_all">
 				<source>ALL</source>
 			</trans-unit>
-			<trans-unit id="maxSteps_marked" xml:space="preserve">
+			<trans-unit id="maxSteps_marked">
 				<source>marked</source>
 			</trans-unit>
-			<trans-unit id="showDiff" xml:space="preserve">
+			<trans-unit id="showDiff">
 				<source>Show differences:</source>
 			</trans-unit>
-			<trans-unit id="showDiff_no" xml:space="preserve">
+			<trans-unit id="showDiff_no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="showDiff_inline" xml:space="preserve">
+			<trans-unit id="showDiff_inline">
 				<source>Inline</source>
 			</trans-unit>
-			<trans-unit id="showSubElements" xml:space="preserve">
+			<trans-unit id="showSubElements">
 				<source>Show sub elements:</source>
 			</trans-unit>
-			<trans-unit id="no" xml:space="preserve">
+			<trans-unit id="no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="yes" xml:space="preserve">
+			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="showInsertDelete" xml:space="preserve">
+			<trans-unit id="showInsertDelete">
 				<source>Show inserts/deletes of records:</source>
 			</trans-unit>
-			<trans-unit id="noDifferences" xml:space="preserve">
+			<trans-unit id="noDifferences">
 				<source>There are no differences to the current page!</source>
 			</trans-unit>
 		</body>

@@ -3,73 +3,73 @@
 	<file t3:id="1415814995" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_action">
 		<header/>
 		<body>
-			<trans-unit id="sys_action" xml:space="preserve">
+			<trans-unit id="sys_action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="tx_sys_action" xml:space="preserve">
+			<trans-unit id="tx_sys_action">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="sys_action.hidden" xml:space="preserve">
+			<trans-unit id="sys_action.hidden">
 				<source>Deactivated:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.assign_to_groups" xml:space="preserve">
+			<trans-unit id="sys_action.assign_to_groups">
 				<source>Assign action to groups:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_userprefix" xml:space="preserve">
+			<trans-unit id="sys_action.t1_userprefix">
 				<source>User prefix:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_allowed_groups" xml:space="preserve">
+			<trans-unit id="sys_action.t1_allowed_groups">
 				<source>Groups which may be assigned through the action:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_create_user_dir" xml:space="preserve">
+			<trans-unit id="sys_action.t1_create_user_dir">
 				<source>Create User Home Directory:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t1_copy_of_user" xml:space="preserve">
+			<trans-unit id="sys_action.t1_copy_of_user">
 				<source>Template user:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t3_listPid" xml:space="preserve">
+			<trans-unit id="sys_action.t3_listPid">
 				<source>List pid:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t3_tables" xml:space="preserve">
+			<trans-unit id="sys_action.t3_tables">
 				<source>List only table:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.t4_recordsToEdit" xml:space="preserve">
+			<trans-unit id="sys_action.t4_recordsToEdit">
 				<source>Records to edit:</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.1" xml:space="preserve">
+			<trans-unit id="sys_action.type.1">
 				<source>Create Backend User</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.2" xml:space="preserve">
+			<trans-unit id="sys_action.type.2">
 				<source>SQL query</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.3" xml:space="preserve">
+			<trans-unit id="sys_action.type.3">
 				<source>Record list</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.4" xml:space="preserve">
+			<trans-unit id="sys_action.type.4">
 				<source>Edit records</source>
 			</trans-unit>
-			<trans-unit id="sys_action.type.5" xml:space="preserve">
+			<trans-unit id="sys_action.type.5">
 				<source>New Record</source>
 			</trans-unit>
-			<trans-unit id="sys_action.tab.access" xml:space="preserve">
+			<trans-unit id="sys_action.tab.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="sys_action.tab.create_user.settings" xml:space="preserve">
+			<trans-unit id="sys_action.tab.create_user.settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="sys_action.tab.record_list.settings" xml:space="preserve">
+			<trans-unit id="sys_action.tab.record_list.settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="sys_action.tab.edit_records.settings" xml:space="preserve">
+			<trans-unit id="sys_action.tab.edit_records.settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="sys_action.tab.new_record.settings" xml:space="preserve">
+			<trans-unit id="sys_action.tab.new_record.settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="sys_action.new_record.pid" xml:space="preserve">
+			<trans-unit id="sys_action.new_record.pid">
 				<source>Select the page for the new record to be stored</source>
 			</trans-unit>
-			<trans-unit id="sys_action.new_record.tablename" xml:space="preserve">
+			<trans-unit id="sys_action.new_record.tablename">
 				<source>Record type</source>
 			</trans-unit>
 		</body>

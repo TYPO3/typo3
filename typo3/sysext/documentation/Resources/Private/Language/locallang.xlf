@@ -72,25 +72,25 @@
 				<source>Show documentation as %s</source>
 			</trans-unit>
 
-			<trans-unit id="showDocumentation" xml:space="preserve">
+			<trans-unit id="showDocumentation">
 				<source>Show Documentation</source>
 			</trans-unit>
-			<trans-unit id="downloadDocumentation" xml:space="preserve">
+			<trans-unit id="downloadDocumentation">
 				<source>Download Documentation</source>
 			</trans-unit>
-			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
+			<trans-unit id="searchTemplate.submitButton">
 				<source>Go</source>
 			</trans-unit>
-			<trans-unit id="downloadSucceeded" xml:space="preserve">
+			<trans-unit id="downloadSucceeded">
 				<source>The rendered documentation was downloaded successfully.</source>
 			</trans-unit>
-			<trans-unit id="downloadFailed" xml:space="preserve">
+			<trans-unit id="downloadFailed">
 				<source>Download failed</source>
 			</trans-unit>
-			<trans-unit id="downloadFailedNoArchive" xml:space="preserve">
+			<trans-unit id="downloadFailedNoArchive">
 				<source>No rendered documentation archive could be found on docs.typo3.org.</source>
 			</trans-unit>
-			<trans-unit id="downloadFailedDetails" xml:space="preserve">
+			<trans-unit id="downloadFailedDetails">
 				<source>The documentation for "%s" could not be downloaded, because of the following error: %s (%d).</source>
 			</trans-unit>
 		</body>

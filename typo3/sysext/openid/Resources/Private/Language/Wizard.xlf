@@ -3,45 +3,45 @@
 	<file t3:id="1415814905" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="openid">
 		<header/>
 		<body>
-			<trans-unit id="title.error" xml:space="preserve">
+			<trans-unit id="title.error">
 				<source>Error during OpenID authentication</source>
 			</trans-unit>
-			<trans-unit id="title.success" xml:space="preserve">
+			<trans-unit id="title.success">
 				<source>OpenID authentication successful</source>
 			</trans-unit>
-			<trans-unit id="error.cancelled" xml:space="preserve">
+			<trans-unit id="error.cancelled">
 				<source>OpenID authentication has been cancelled.</source>
 			</trans-unit>
-			<trans-unit id="error.general" xml:space="preserve">
+			<trans-unit id="error.general">
 				<source><![CDATA[Status: %s<br/>Message: %s]]></source>
 			</trans-unit>
-			<trans-unit id="error.no-response" xml:space="preserve">
+			<trans-unit id="error.no-response">
 				<source>We got no OpenID response.</source>
 			</trans-unit>
-			<trans-unit id="error.setup" xml:space="preserve">
+			<trans-unit id="error.setup">
 				<source>Error setting up OpenID authentication for "%s".</source>
 			</trans-unit>
-			<trans-unit id="youropenid" xml:space="preserve">
+			<trans-unit id="youropenid">
 				<source><![CDATA[OpenID is: <tt>%s</tt>]]></source>
 			</trans-unit>
 
-			<trans-unit id="addopenid" xml:space="preserve">
+			<trans-unit id="addopenid">
 				<source>Add OpenID</source>
 			</trans-unit>
 
-			<trans-unit id="html.title" xml:space="preserve">
+			<trans-unit id="html.title">
 				<source>OpenID registration</source>
 			</trans-unit>
-			<trans-unit id="html.description" xml:space="preserve">
+			<trans-unit id="html.description">
 				<source>Add an OpenID to your backend user. This OpenID can then be used to log in the TYPO3 backend.</source>
 			</trans-unit>
-			<trans-unit id="html.openid_url" xml:space="preserve">
+			<trans-unit id="html.openid_url">
 				<source>OpenID identifier</source>
 			</trans-unit>
-			<trans-unit id="html.search" xml:space="preserve">
+			<trans-unit id="html.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="html.submit" xml:space="preserve">
+			<trans-unit id="html.submit">
 				<source>Login</source>
 			</trans-unit>
 		</body>

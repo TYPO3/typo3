@@ -3,7 +3,7 @@
 	<file t3:id="1415814856" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>A 'Page' record usually represents a webpage in TYPO3. All pages have an id-number by which they can be linked and referenced. The 'Page' record does not itself contain the content of the page - for this purpose you should create 'Page content' records (Content Elements).</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -33,7 +33,7 @@ EXT:lang/cshimages/pages_2.png,</source>
 				<source>The most basic fields of a page is the hidden flag, the type of page ("doktype") and the page title. Other fields are also available but typically added by extensions in TYPO3.
 Pages are arranged in a page tree in TYPO3. The page from the editing form in the previous screenshot was the "Intro" page from this page tree. As you can see it belongs in the root of the page tree and has a number of "child" pages under it.</source>
 			</trans-unit>
-			<trans-unit id="title.description" xml:space="preserve">
+			<trans-unit id="title.description">
 				<source>Enter the title of the page or folder. You must enter a page title. The field is required.</source>
 			</trans-unit>
 			<trans-unit id="title.details" xml:space="preserve">
@@ -41,14 +41,14 @@ Pages are arranged in a page tree in TYPO3. The page from the editing form in th
 You can always change a page title without affecting links to a page. This is because pages are always referenced by their "uid" number, not their title.
 You can use any characters in the page title.</source>
 			</trans-unit>
-			<trans-unit id="_title.image" xml:space="preserve">
+			<trans-unit id="_title.image">
 				<source>EXT:lang/cshimages/pages_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="title.image_descr" xml:space="preserve">
+			<trans-unit id="title.image_descr">
 				<source>The field for the page title has a little "required" icon next to it; You must supply a page title and you cannot save the new page unless you enter a title for it.</source>
 			</trans-unit>
-			<trans-unit id="doktype.description" xml:space="preserve">
+			<trans-unit id="doktype.description">
 				<source>Select the page type. This affects whether the page represents a visible webpage or is used for other purposes.</source>
 			</trans-unit>
 			<trans-unit id="doktype.details" xml:space="preserve">
@@ -66,14 +66,14 @@ The restrictions that apply to each page type is defined in the global array $PA
 About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_doktype.image" xml:space="preserve">
+			<trans-unit id="_doktype.image">
 				<source>EXT:lang/cshimages/pages_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="doktype.image_descr" xml:space="preserve">
+			<trans-unit id="doktype.image_descr">
 				<source>This snippet of the page tree shows regular pages which usually have the yellow icons in top of this screenshot. You also see a Garbage bin page. Any records stored in a garbage bin should be regarded as waste and therefore not shown on the website etc. Finally the gray folders are "SysFolders". They cannot be viewed as regular webpages but serve as storage pages for database records of some kind.</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.description" xml:space="preserve">
+			<trans-unit id="TSconfig.description">
 				<source>Page TypoScript configuration.</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.details" xml:space="preserve">
@@ -91,14 +91,14 @@ It's recommended that only admin-users are allowed access to this field!</source
 More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_TSconfig.image" xml:space="preserve">
+			<trans-unit id="_TSconfig.image">
 				<source>EXT:lang/cshimages/pages_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="TSconfig.image_descr" xml:space="preserve">
+			<trans-unit id="TSconfig.image_descr">
 				<source>Page TSconfig customizing the Rich Text Editors behaviour in this branch of the page tree. The cool thing about Page TSconfig is that the configuration is specific for that page and subpages since the configuration settings are inherited down the page tree.</source>
 			</trans-unit>
-			<trans-unit id="php_tree_stop.description" xml:space="preserve">
+			<trans-unit id="php_tree_stop.description">
 				<source>Stops backend rendering of the page tree in navigation and lists.</source>
 			</trans-unit>
 			<trans-unit id="php_tree_stop.details" xml:space="preserve">
@@ -108,7 +108,7 @@ The point with this flag is to prevent descendence into a branch that might have
 
 You can click the red "+" and the page will become a temporary mount point in the navigation frame.</source>
 			</trans-unit>
-			<trans-unit id="_php_tree_stop.seeAlso" xml:space="preserve">
+			<trans-unit id="_php_tree_stop.seeAlso">
 				<source>_MOD_web_info:pagetree_overview</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -123,7 +123,7 @@ EXT:lang/cshimages/pages_7.png</source>
 In the pagetree the setting is reflected with the red "+" and it is not possible to expand that branch of the tree.
 If you click the red "+" you will get the page mounted temporarily in the navigation frame.</source>
 			</trans-unit>
-			<trans-unit id="storage_pid.description" xml:space="preserve">
+			<trans-unit id="storage_pid.description">
 				<source>A General Storage Folder is meant to be a global page for storage of general database elements of a website. That could be for templates, frontend users etc. which does not really relate to a single page but more to the whole site.</source>
 			</trans-unit>
 			<trans-unit id="storage_pid.details" xml:space="preserve">
@@ -131,13 +131,13 @@ If you click the red "+" you will get the page mounted temporarily in the naviga
 
 A General Record Storage Page is typically a page of the "SysFolder" type.</source>
 			</trans-unit>
-			<trans-unit id="_storage_pid.seeAlso" xml:space="preserve">
+			<trans-unit id="_storage_pid.seeAlso">
 				<source>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</source>
 			</trans-unit>
-			<trans-unit id="editlock.description" xml:space="preserve">
+			<trans-unit id="editlock.description">
 				<source>If set, non-Admin users cannot edit the page properties or any records on the page (except subpages). They cannot create new records or pages on the page either.</source>
 			</trans-unit>
-			<trans-unit id="fe_login_mode.description" xml:space="preserve">
+			<trans-unit id="fe_login_mode.description">
 				<source>The Login Mode disables the ability to "be logged in" at this page.</source>
 			</trans-unit>
 			<trans-unit id="fe_login_mode.details" xml:space="preserve">

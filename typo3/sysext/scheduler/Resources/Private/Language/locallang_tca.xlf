@@ -3,13 +3,13 @@
 	<file t3:id="1415814988" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id="tx_scheduler_task_group" xml:space="preserve">
+			<trans-unit id="tx_scheduler_task_group">
 				<source>Scheduler task group</source>
 			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.groupName" xml:space="preserve">
+			<trans-unit id="tx_scheduler_task_group.groupName">
 				<source>Group name</source>
 			</trans-unit>
-			<trans-unit id="tx_scheduler_task_group.description" xml:space="preserve">
+			<trans-unit id="tx_scheduler_task_group.description">
 				<source>Description</source>
 			</trans-unit>
 		</body>

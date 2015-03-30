@@ -3,10 +3,10 @@
 	<file t3:id="1415814841" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig">
 		<header/>
 		<body>
-			<trans-unit id="tsconfig_hierarchy.alttitle" xml:space="preserve">
+			<trans-unit id="tsconfig_hierarchy.alttitle">
 				<source>Page TSconfig hierarchy viewer</source>
 			</trans-unit>
-			<trans-unit id="tsconfig_hierarchy.description" xml:space="preserve">
+			<trans-unit id="tsconfig_hierarchy.description">
 				<source>Allows the user to view the compiled Page TSconfig structure for a branch of the pagetree.</source>
 			</trans-unit>
 			<trans-unit id="tsconfig_hierarchy.details" xml:space="preserve">
@@ -30,17 +30,17 @@ EXT:info_pagetsconfig/cshimages/img_2.png,</source>
 				<source>This is how the parsed Page TSconfig tree can look. It contains the "sum" of all the configuration code from the root line and any default settings. This shows the whole tree but you can also select other top level objects (TLO) in the selector box in the top if you want to limit the view to a single branch
 One of the branches in Page TSconfig has the special property that it is overridden with any User TSconfig in the same object path given for the current backend user. When you view only the "mod" TLO any user settings for the current backend user are applied as well. Here it is evident that some additional settings must apply for the user since only "mod.SHARED.colPos_list" was actually found in Page TSconfig (according to the "All" view in the first image).</source>
 			</trans-unit>
-			<trans-unit id="tsconfig_edit.alttitle" xml:space="preserve">
+			<trans-unit id="tsconfig_edit.alttitle">
 				<source>Page TSconfig content viewer</source>
 			</trans-unit>
-			<trans-unit id="tsconfig_edit.description" xml:space="preserve">
+			<trans-unit id="tsconfig_edit.description">
 				<source>Displays the raw TSconfig code of all pages in the current root line including any default code.</source>
 			</trans-unit>
 			<trans-unit id="tsconfig_edit.details" xml:space="preserve">
 				<source>The parsed Page TSconfig tree you see in the default view is actually compiled from this TSconfig code in the order it appears here. This view lets you see how the parsed version came to be.
 You can also click the edit-icons of the various pages to go directly to the TSconfig fields of the pages.</source>
 			</trans-unit>
-			<trans-unit id="_tsconfig_edit.seeAlso" xml:space="preserve">
+			<trans-unit id="_tsconfig_edit.seeAlso">
 				<source>_MOD_web_info:tsconfig_hierarchy</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

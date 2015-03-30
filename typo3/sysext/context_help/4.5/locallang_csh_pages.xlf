@@ -3,13 +3,13 @@
 	<file t3:id="1415814793" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id="layout.description" xml:space="preserve">
+			<trans-unit id="layout.description">
 				<source>The Frontend Layout can change the way a page design appears.</source>
 			</trans-unit>
-			<trans-unit id="layout.details" xml:space="preserve">
+			<trans-unit id="layout.details">
 				<source>This option may not have any impact on the Frontend page design since it depends on whether the Frontend template uses it. Most templates do not use it.</source>
 			</trans-unit>
-			<trans-unit id="doktype.description" xml:space="preserve">
+			<trans-unit id="doktype.description">
 				<source>Page Type determines whether the page is normal webpage, a shortcut to another webpage, or used in other internal ways.</source>
 			</trans-unit>
 			<trans-unit id="doktype.details" xml:space="preserve">
@@ -33,7 +33,7 @@
 pages:url</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>If this is checked, the page will be disabled on the website.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" xml:space="preserve">
@@ -41,7 +41,7 @@ pages:url</source>
 Notice, these options are related &lt;em&gt;only&lt;/em&gt; to the page for which they are set. If you want their effect to cover the subpages as well, you must enable the 'Extend to Subpages' option.
 When you're logged in as a Backend user you can preview disabled pages if you have read access to them.</source>
 			</trans-unit>
-			<trans-unit id="_hidden.seeAlso" xml:space="preserve">
+			<trans-unit id="_hidden.seeAlso">
 				<source>pages:starttime,pages:endtime,pages:fe_group,pages:extendToSubpages</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -54,41 +54,41 @@ EXT:context_help/cshimages/pages_1.png</source>
 				<source>The page icon of a disabled page is dimmed and a red X is added.
 If you view a page that is hidden and you are logged in into the Backend you will still be able to see the page. The red "Preview" box will tell you that this page is visible to you because of this special circumstance.</source>
 			</trans-unit>
-			<trans-unit id="starttime.description" xml:space="preserve">
+			<trans-unit id="starttime.description">
 				<source>The Publish Date determines when the page will be visible online. If the Publish Date is not set, the page will be available immediately.</source>
 			</trans-unit>
 			<trans-unit id="starttime.syntax" xml:space="preserve">
 				<source>The Publish Date Format is either DD-MM-YYYY or MM-DD-YYYY depending on how TYPO3 is configured. There are also several shortcuts you can use when entering the date.
 If you insert a 'd' the current date will be inserted. You can also append any value in the field with a number such as '+10' which will add 10 days to the current value. For example, entering 'd+10' would result in a date 10 days from now.</source>
 			</trans-unit>
-			<trans-unit id="_starttime.seeAlso" xml:space="preserve">
+			<trans-unit id="_starttime.seeAlso">
 				<source>pages:endtime,pages:hidden</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_.seeAlso" xml:space="preserve">
+			<trans-unit id="_.seeAlso">
 				<source>tt_content</source>
 			</trans-unit>
-			<trans-unit id="endtime.description" xml:space="preserve">
+			<trans-unit id="endtime.description">
 				<source>The Expiration Date specifies when the page will no longer be visible online.</source>
 			</trans-unit>
-			<trans-unit id="endtime.syntax" xml:space="preserve">
+			<trans-unit id="endtime.syntax">
 				<source>See Page / Publication Date (click below)</source>
 			</trans-unit>
-			<trans-unit id="_endtime.seeAlso" xml:space="preserve">
+			<trans-unit id="_endtime.seeAlso">
 				<source>pages:starttime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="fe_group.description" xml:space="preserve">
+			<trans-unit id="fe_group.description">
 				<source>If Usergroup Access Rights is set to a usergroup name, only website users who are members of the selected usergroup will be able to view the page. The special option 'Hide at Login' means the page will &lt;em&gt;not&lt;/em&gt; be visible for any website users that are logged in. Likewise "Show at Any Login" will make the page visible for any logged in Frontend user.</source>
 			</trans-unit>
-			<trans-unit id="_fe_group.seeAlso" xml:space="preserve">
+			<trans-unit id="_fe_group.seeAlso">
 				<source>fe_groups</source>
 			</trans-unit>
-			<trans-unit id="_fe_group.image" xml:space="preserve">
+			<trans-unit id="_fe_group.image">
 				<source>EXT:context_help/cshimages/fegroups_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="extendToSubpages.description" xml:space="preserve">
+			<trans-unit id="extendToSubpages.description">
 				<source>By default the Publication Date, Expiration Date, Usergroup Access Rights, and Page Visibility options &lt;em&gt;only&lt;/em&gt; affect the page where they are set. If the option 'Extend to Subpages' is checked for the page, then all subpages are affected as well.</source>
 			</trans-unit>
 			<trans-unit id="extendToSubpages.details" xml:space="preserve">
@@ -102,14 +102,14 @@ pages:endtime,
 pages:fe_group</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_extendToSubpages.image" xml:space="preserve">
+			<trans-unit id="_extendToSubpages.image">
 				<source>EXT:context_help/cshimages/pages_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="extendToSubpages.image_descr" xml:space="preserve">
+			<trans-unit id="extendToSubpages.image_descr">
 				<source>This page has access restricted to a certain group and has "Extend to Subpages" set as well. This is reflected in the way the page icon has changed.</source>
 			</trans-unit>
-			<trans-unit id="alias.description" xml:space="preserve">
+			<trans-unit id="alias.description">
 				<source>A URL Alias is a unique identification string for a page. You can use this string instead of the ID number to refer to the page.</source>
 			</trans-unit>
 			<trans-unit id="alias.details" xml:space="preserve">
@@ -121,7 +121,7 @@ Another use is if you need to change which page a commonly used link points to. 
 				<source>A URL Alias can contain only lowercase alphanumeric characters and must be unique.
 Please note: If the URL Alias already exists in the site, it will have a number added to the end of it.</source>
 			</trans-unit>
-			<trans-unit id="target.description" xml:space="preserve">
+			<trans-unit id="target.description">
 				<source>This sets the default Link Target for menu items linking to this page. Can also used to open the page as a popup window.</source>
 			</trans-unit>
 			<trans-unit id="target.details" xml:space="preserve">
@@ -139,7 +139,7 @@ Combined:
 100 600x350 - Opens the page in a 600x350 popup with type=100
 2 _blank - Opens the page with target "_blank" and type=2</source>
 			</trans-unit>
-			<trans-unit id="no_cache.description" xml:space="preserve">
+			<trans-unit id="no_cache.description">
 				<source>This option disables server caching of the page.</source>
 			</trans-unit>
 			<trans-unit id="no_cache.details" xml:space="preserve">
@@ -147,25 +147,25 @@ Combined:
 For most pages this presents no problems; indeed, it boosts the performance of the website.
 However you may need to disable caching for a page if it contains dynamic content which must not be cached under any circumstances. Normally the PHP-code rendering such content is programmed to disable the caching automatically. But with this option you can force the page not to be cached.</source>
 			</trans-unit>
-			<trans-unit id="_no_cache.seeAlso" xml:space="preserve">
+			<trans-unit id="_no_cache.seeAlso">
 				<source>pages:cache_timeout</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="cache_timeout.description" xml:space="preserve">
+			<trans-unit id="cache_timeout.description">
 				<source>Sets the Cache Lifetime for the page.</source>
 			</trans-unit>
 			<trans-unit id="cache_timeout.details" xml:space="preserve">
 				<source>By default, pages are cached for 24 hours. After 24 hours, the page is constructed again and rewritten to the cache. Depending on your configuration, the cache may be cleared at midnight.
 When specific pages need a longer or shorter cache lifetime than the default, this option can be used.</source>
 			</trans-unit>
-			<trans-unit id="_cache_timeout.seeAlso" xml:space="preserve">
+			<trans-unit id="_cache_timeout.seeAlso">
 				<source>pages:no_cache</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="no_search.description" xml:space="preserve">
+			<trans-unit id="no_search.description">
 				<source>If enabled, this option excludes the page from searching operations on the website.</source>
 			</trans-unit>
-			<trans-unit id="author.description" xml:space="preserve">
+			<trans-unit id="author.description">
 				<source>Enter the page author's name.</source>
 			</trans-unit>
 			<trans-unit id="author.details" xml:space="preserve">
@@ -174,18 +174,18 @@ When specific pages need a longer or shorter cache lifetime than the default, th
 - You may use it in a meta-tag.
 - If you're using TYPO3 pages as 'articles' then you could use this field to display the name of the page (article) author.</source>
 			</trans-unit>
-			<trans-unit id="_author.seeAlso" xml:space="preserve">
+			<trans-unit id="_author.seeAlso">
 				<source>pages:author_email</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="author_email.description" xml:space="preserve">
+			<trans-unit id="author_email.description">
 				<source>Enter the page author's email address.</source>
 			</trans-unit>
-			<trans-unit id="_author_email.seeAlso" xml:space="preserve">
+			<trans-unit id="_author_email.seeAlso">
 				<source>pages:author</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="module.description" xml:space="preserve">
+			<trans-unit id="module.description">
 				<source>Define the page as containing a Frontend plugin.</source>
 			</trans-unit>
 			<trans-unit id="module.details" xml:space="preserve">
@@ -196,20 +196,20 @@ For additional details on this option, refer to the administration documentation
 
 It's recommended that only admin-users have access to this field!</source>
 			</trans-unit>
-			<trans-unit id="media.description" xml:space="preserve">
+			<trans-unit id="media.description">
 				<source>Attach media files related to the page.</source>
 			</trans-unit>
 			<trans-unit id="media.details" xml:space="preserve">
 				<source>This field allows you to attach various files to the page, but how these files are used depends on your template.
 As an example the template could be use this field to allow a logo to be attached to the page or it might expect the first file to be an image used as a link in the navigation menu. Remember, this totally depends on how the template is programmed.</source>
 			</trans-unit>
-			<trans-unit id="subtitle.description" xml:space="preserve">
+			<trans-unit id="subtitle.description">
 				<source>Enter a subtitle if needed.</source>
 			</trans-unit>
-			<trans-unit id="subtitle.details" xml:space="preserve">
+			<trans-unit id="subtitle.details">
 				<source>Whether this field is used or not depends on the template. In most cases it's not used.</source>
 			</trans-unit>
-			<trans-unit id="url.description" xml:space="preserve">
+			<trans-unit id="url.description">
 				<source>Enter the URL this page redirects to.</source>
 			</trans-unit>
 			<trans-unit id="url.details" xml:space="preserve">
@@ -218,11 +218,11 @@ Use the 'Protocol' selector to select a prefix for the URL.
 
 This option is used only if the page 'Type' is set to 'Link to External URL.'</source>
 			</trans-unit>
-			<trans-unit id="_url.seeAlso" xml:space="preserve">
+			<trans-unit id="_url.seeAlso">
 				<source>pages:urltype</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="shortcut.description" xml:space="preserve">
+			<trans-unit id="shortcut.description">
 				<source>Select a page to act as the Shortcut Target. When the current page is requested in the Frontend, it will be redirected to the Shortcut Target.</source>
 			</trans-unit>
 			<trans-unit id="shortcut.details" xml:space="preserve">
@@ -235,14 +235,14 @@ This option is used only if the page 'Type' is set to 'Shortcut.'</source>
 pages:shortcut_mode</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_shortcut.image" xml:space="preserve">
+			<trans-unit id="_shortcut.image">
 				<source>EXT:context_help/cshimages/page_shortcut.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="shortcut.image_descr" xml:space="preserve">
+			<trans-unit id="shortcut.image_descr">
 				<source>Select a Shortcut Target page with the Element Browser.</source>
 			</trans-unit>
-			<trans-unit id="keywords.description" xml:space="preserve">
+			<trans-unit id="keywords.description">
 				<source>Enter keywords for the page separated by commas. You may also use short phrases.</source>
 			</trans-unit>
 			<trans-unit id="keywords.details" xml:space="preserve">
@@ -254,11 +254,11 @@ Note that search engine extensions for TYPO3 such as Indexed Search can also be 
 
 The keywords can also be used to create a menu of related pages. Create a Content Element of type 'Sitemap' and then choose the menu type &lt;i&gt;Related pages (based on keywords)&lt;/i&gt;.</source>
 			</trans-unit>
-			<trans-unit id="_keywords.seeAlso" xml:space="preserve">
+			<trans-unit id="_keywords.seeAlso">
 				<source>pages:description</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="description.description" xml:space="preserve">
+			<trans-unit id="description.description">
 				<source>Enter a short description of the page. It will be displayed in the result lists of most search engines.</source>
 			</trans-unit>
 			<trans-unit id="description.details" xml:space="preserve">
@@ -274,7 +274,7 @@ In addition, the description will be displayed if you create a Content Element o
 				<source>pages:keywords
 pages:abstract</source>
 			</trans-unit>
-			<trans-unit id="abstract.description" xml:space="preserve">
+			<trans-unit id="abstract.description">
 				<source>Enter an abstract of the contents. It may be displayed in an overview of articles.</source>
 			</trans-unit>
 			<trans-unit id="abstract.details" xml:space="preserve">
@@ -288,25 +288,25 @@ If you create a Content Element of type &lt;i&gt;Sitemap&lt;/i&gt; and then choo
 
 Admins can also make custom use of this field via their TypoScript templates.</source>
 			</trans-unit>
-			<trans-unit id="_abstract.seeAlso" xml:space="preserve">
+			<trans-unit id="_abstract.seeAlso">
 				<source>pages:description</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="newUntil.description" xml:space="preserve">
+			<trans-unit id="newUntil.description">
 				<source>Enter the date at which this page is no longer considered new.</source>
 			</trans-unit>
 			<trans-unit id="newUntil.details" xml:space="preserve">
 				<source>The 'New Until' date of the page has no effect on the display of the webpage. This value is instead for internal use as a reminder of the date when the content of this page should be revised. If the content of the page will become outdated on a certain day, you could set this value to that approximate date.
 To get an overview of when pages will be outdated, use the 'Pagetree overview' in the 'Web&gt;Info' Module.</source>
 			</trans-unit>
-			<trans-unit id="newUntil.syntax" xml:space="preserve">
+			<trans-unit id="newUntil.syntax">
 				<source>See Page / Publication Date (click below)</source>
 			</trans-unit>
-			<trans-unit id="_newUntil.seeAlso" xml:space="preserve">
+			<trans-unit id="_newUntil.seeAlso">
 				<source>pages:starttime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lastUpdated.description" xml:space="preserve">
+			<trans-unit id="lastUpdated.description">
 				<source>Enter the date and time of the most recent update to this page.</source>
 			</trans-unit>
 			<trans-unit id="lastUpdated.details" xml:space="preserve">
@@ -317,44 +317,44 @@ The most common use is to display the date from the automatically updated 'tstam
 				<source>The format is HH:MM DD-MM-YYYY or HH:MM MM-DD-YYYY depending on your TYPO3 configuration.
 If you insert a 'd' the current time and date is inserted. You can also append any value in the field with a number lie '+10' which will add 10 days to the current value.</source>
 			</trans-unit>
-			<trans-unit id="nav_hide.description" xml:space="preserve">
+			<trans-unit id="nav_hide.description">
 				<source>With this option the page will be not appear in menus in the Frontend. The page can still be viewed if linked by going directly to its URL.</source>
 			</trans-unit>
-			<trans-unit id="_nav_hide.seeAlso" xml:space="preserve">
+			<trans-unit id="_nav_hide.seeAlso">
 				<source>pages:nav_title</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="nav_title.description" xml:space="preserve">
+			<trans-unit id="nav_title.description">
 				<source>Alternative Navigation Title for menu items in the Frontend. When set, this value is used instead of the Page Title.</source>
 			</trans-unit>
 			<trans-unit id="content_from_pid.description" xml:space="preserve">
 				<source>If set, this is an alternative page to select Content Elements from.
 Whether this field is used depends on the website's TypoScript template.</source>
 			</trans-unit>
-			<trans-unit id="urltype.description" xml:space="preserve">
+			<trans-unit id="urltype.description">
 				<source>Set the Protocol for the URL.</source>
 			</trans-unit>
-			<trans-unit id="shortcut_mode.description" xml:space="preserve">
+			<trans-unit id="shortcut_mode.description">
 				<source>Select a Shortcut Mode. By default the shortcut page must have a Shortcut Target to jump to. Other options are to go to the first subpage, to a random subpage, or back up to the parent page.</source>
 			</trans-unit>
-			<trans-unit id="mount_pid.description" xml:space="preserve">
+			<trans-unit id="mount_pid.description">
 				<source>Mount this page. If set, subpages of this page come from the Mounted Page instead.</source>
 			</trans-unit>
-			<trans-unit id="mount_pid.details" xml:space="preserve">
+			<trans-unit id="mount_pid.details">
 				<source>In the Frontend this is done by adding a new variable, &amp;MP, to the URL. This links the mounted branch to the main branch by pairing page ids.</source>
 			</trans-unit>
-			<trans-unit id="_mount_pid.seeAlso" xml:space="preserve">
+			<trans-unit id="_mount_pid.seeAlso">
 				<source>pages:mount_pid_ol</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="mount_pid_ol.description" xml:space="preserve">
+			<trans-unit id="mount_pid_ol.description">
 				<source>Show content for the current page or replace it completely with the Mounted Page.</source>
 			</trans-unit>
-			<trans-unit id="_mount_pid_ol.seeAlso" xml:space="preserve">
+			<trans-unit id="_mount_pid_ol.seeAlso">
 				<source>pages:mount_pid</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="title.description.+" xml:space="preserve">
+			<trans-unit id="title.description.+">
 				<source>This is normally shown in the website navigation.</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.details.+" xml:space="preserve">
@@ -366,7 +366,7 @@ If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will 
 
 (Must be entered in a single line!)</source>
 			</trans-unit>
-			<trans-unit id="l18n_cfg.description" xml:space="preserve">
+			<trans-unit id="l18n_cfg.description">
 				<source>Affect availability of pages in the various languages.</source>
 			</trans-unit>
 			<trans-unit id="l18n_cfg.details" xml:space="preserve">

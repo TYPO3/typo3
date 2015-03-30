@@ -3,7 +3,7 @@
 	<file t3:id="1415814906" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="recycler">
 		<header/>
 		<body>
-			<trans-unit id="moduleFunction.tx_recycler_modfunc1" xml:space="preserve">
+			<trans-unit id="moduleFunction.tx_recycler_modfunc1">
 				<source>Recycler</source>
 			</trans-unit>
 		</body>

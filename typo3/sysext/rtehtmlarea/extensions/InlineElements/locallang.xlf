@@ -3,76 +3,76 @@
 	<file t3:id="1415814920" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="No markup" xml:space="preserve">
+			<trans-unit id="No markup">
 				<source>No text format</source>
 			</trans-unit>
-			<trans-unit id="Bold" xml:space="preserve">
+			<trans-unit id="Bold">
 				<source>Bold</source>
 			</trans-unit>
-			<trans-unit id="BiDi override" xml:space="preserve">
+			<trans-unit id="BiDi override">
 				<source>BiDi override</source>
 			</trans-unit>
-			<trans-unit id="Large text" xml:space="preserve">
+			<trans-unit id="Large text">
 				<source>Large text</source>
 			</trans-unit>
-			<trans-unit id="Citation" xml:space="preserve">
+			<trans-unit id="Citation">
 				<source>Citation</source>
 			</trans-unit>
-			<trans-unit id="Code" xml:space="preserve">
+			<trans-unit id="Code">
 				<source>Code</source>
 			</trans-unit>
-			<trans-unit id="Definition" xml:space="preserve">
+			<trans-unit id="Definition">
 				<source>Definition</source>
 			</trans-unit>
-			<trans-unit id="Deleted text" xml:space="preserve">
+			<trans-unit id="Deleted text">
 				<source>Deleted text</source>
 			</trans-unit>
-			<trans-unit id="Emphasis" xml:space="preserve">
+			<trans-unit id="Emphasis">
 				<source>Emphasis</source>
 			</trans-unit>
-			<trans-unit id="Inserted text" xml:space="preserve">
+			<trans-unit id="Inserted text">
 				<source>Inserted text</source>
 			</trans-unit>
-			<trans-unit id="Italic" xml:space="preserve">
+			<trans-unit id="Italic">
 				<source>Italic</source>
 			</trans-unit>
-			<trans-unit id="Keyboard" xml:space="preserve">
+			<trans-unit id="Keyboard">
 				<source>Keyboard</source>
 			</trans-unit>
-			<trans-unit id="Label" xml:space="preserve">
+			<trans-unit id="Label">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="Monospaced text" xml:space="preserve">
+			<trans-unit id="Monospaced text">
 				<source>Monospaced text</source>
 			</trans-unit>
-			<trans-unit id="Quotation" xml:space="preserve">
+			<trans-unit id="Quotation">
 				<source>Quotation</source>
 			</trans-unit>
-			<trans-unit id="Sample" xml:space="preserve">
+			<trans-unit id="Sample">
 				<source>Sample</source>
 			</trans-unit>
-			<trans-unit id="Small text" xml:space="preserve">
+			<trans-unit id="Small text">
 				<source>Small text</source>
 			</trans-unit>
-			<trans-unit id="Style container" xml:space="preserve">
+			<trans-unit id="Style container">
 				<source>Style container</source>
 			</trans-unit>
-			<trans-unit id="Strike-through" xml:space="preserve">
+			<trans-unit id="Strike-through">
 				<source>Strike-through</source>
 			</trans-unit>
-			<trans-unit id="Strong emphasis" xml:space="preserve">
+			<trans-unit id="Strong emphasis">
 				<source>Strong emphasis</source>
 			</trans-unit>
-			<trans-unit id="Subscript" xml:space="preserve">
+			<trans-unit id="Subscript">
 				<source>Subscript</source>
 			</trans-unit>
-			<trans-unit id="Superscript" xml:space="preserve">
+			<trans-unit id="Superscript">
 				<source>Superscript</source>
 			</trans-unit>
-			<trans-unit id="Underline" xml:space="preserve">
+			<trans-unit id="Underline">
 				<source>Underline</source>
 			</trans-unit>
-			<trans-unit id="Variable" xml:space="preserve">
+			<trans-unit id="Variable">
 				<source>Variable</source>
 			</trans-unit>
 		</body>

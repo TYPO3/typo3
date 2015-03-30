@@ -3,10 +3,10 @@
 	<file t3:id="1415815016" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="wizard_sortpages">
 		<header/>
 		<body>
-			<trans-unit id="tx_wizardsortpages.alttitle" xml:space="preserve">
+			<trans-unit id="tx_wizardsortpages.alttitle">
 				<source>Sort Pages wizard</source>
 			</trans-unit>
-			<trans-unit id="tx_wizardsortpages.description" xml:space="preserve">
+			<trans-unit id="tx_wizardsortpages.description">
 				<source>Enables you to sort pages alphabetically by title, sub-title or by creation time etc. You can also reverse the order of pages in the page tree.</source>
 			</trans-unit>
 			<trans-unit id="tx_wizardsortpages.details" xml:space="preserve">
@@ -29,7 +29,7 @@ Will sort pages by their creation date.
 &lt;b&gt;Reverse current order&lt;/b&gt;
 Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
 			</trans-unit>
-			<trans-unit id="_tx_wizardsortpages.image" xml:space="preserve">
+			<trans-unit id="_tx_wizardsortpages.image">
 				<source>EXT:wizard_sortpages/cshimages/wizards_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

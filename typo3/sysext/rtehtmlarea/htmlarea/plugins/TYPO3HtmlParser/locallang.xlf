@@ -3,7 +3,7 @@
 	<file t3:id="1415814967" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="CleanWord-Tooltip" xml:space="preserve">
+			<trans-unit id="CleanWord-Tooltip">
 				<source>Clean up HTML content</source>
 			</trans-unit>
 		</body>

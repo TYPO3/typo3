@@ -3,7 +3,7 @@
 	<file t3:id="1415814844" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="new_regular.image_descr" xml:space="preserve">
+			<trans-unit id="new_regular.image_descr">
 				<source>The selection of records a user can create on this particular page. The selection depends on the user's permissions and the page type. For example a Folder page type can contain any kind of record while regular pages can contain only some types (like Content Elements).</source>
 			</trans-unit>
 		</body>

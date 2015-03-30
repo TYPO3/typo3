@@ -3,16 +3,16 @@
 	<file t3:id="1415814932" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Conflicting extensions installed</source>
 			</trans-unit>
-			<trans-unit id="none" xml:space="preserve">
+			<trans-unit id="none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="keys" xml:space="preserve">
+			<trans-unit id="keys">
 				<source>Extension keys:</source>
 			</trans-unit>
-			<trans-unit id="uninstall" xml:space="preserve">
+			<trans-unit id="uninstall">
 				<source>Conflicting extensions should be uninstalled for htmlArea RTE to function correctly.</source>
 			</trans-unit>
 		</body>

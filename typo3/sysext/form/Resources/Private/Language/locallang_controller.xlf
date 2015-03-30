@@ -3,205 +3,205 @@
 	<file t3:id="1415814824" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="form">
 		<header/>
 		<body>
-			<trans-unit id="tx_form_domain_model_element_button.value" xml:space="preserve">
+			<trans-unit id="tx_form_domain_model_element_button.value">
 				<source>Push this button</source>
 			</trans-unit>
-			<trans-unit id="tx_form_domain_model_element_submit.value" xml:space="preserve">
+			<trans-unit id="tx_form_domain_model_element_submit.value">
 				<source>Submit form</source>
 			</trans-unit>
-			<trans-unit id="tx_form_domain_model_element_reset.value" xml:space="preserve">
+			<trans-unit id="tx_form_domain_model_element_reset.value">
 				<source>Clear form</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphabetic.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_alphabetic.message">
 				<source>Use alphabetic characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphabetic.message2" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_alphabetic.message2">
 				<source>whitespace allowed</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphabetic.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_alphabetic.error">
 				<source>The value contains not only alphabetic characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphanumeric.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_alphanumeric.message">
 				<source>Use alphanumeric characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphanumeric.message2" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_alphanumeric.message2">
 				<source>whitespace allowed</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_alphanumeric.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_alphanumeric.error">
 				<source>The value contains not only alphanumeric characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_between.message">
 				<source>The value must be between %minimum and %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.message2" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_between.message2">
 				<source>inclusively</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_between.error">
 				<source>The value is not between %minimum and %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_between.error2" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_between.error2">
 				<source>inclusively</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.message">
 				<source>(%format)</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.A" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.A">
 				<source>dddd</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.a" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.a">
 				<source>ddd</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.d" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.d">
 				<source>dd</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.e" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.e">
 				<source>d</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.B" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.B">
 				<source>mmmm</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.b" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.b">
 				<source>mmm</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.m" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.m">
 				<source>mm</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.Y" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.Y">
 				<source>yyyy</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.y" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.y">
 				<source>yy</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.H" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.H">
 				<source>HH</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.I" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.I">
 				<source>hh</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.M" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.M">
 				<source>mm</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.strftime.S" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.strftime.S">
 				<source>ss</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_date.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_date.error">
 				<source>The value does not appear to be a valid date</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_digit.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_digit.message">
 				<source>Use digit characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_digit.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_digit.error">
 				<source>The value contains not only digit characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_email.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_email.message">
 				<source>(john.doe@domain.com)</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_email.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_email.error">
 				<source>This is not a valid email address</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_equals.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_equals.message">
 				<source>This field must be equal to '%field'</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_equals.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_equals.error">
 				<source>The value does not equal the value in field '%field'</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileallowedtypes.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_fileallowedtypes.message">
 				<source>(%allowedTypes)</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileallowedtypes.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_fileallowedtypes.error">
 				<source>The file type is not allowed</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_filemaximumsize.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_filemaximumsize.message">
 				<source>The filesize must be smaller than %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_filemaximumsize.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_filemaximumsize.error">
 				<source>The filesize is too big</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileminimumsize.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_fileminimumsize.message">
 				<source>The filesize must be bigger than %minimum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_fileminimumsize.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_fileminimumsize.error">
 				<source>The filesize is too small</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_float.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_float.message">
 				<source>Enter a float</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_float.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_float.error">
 				<source>The value does not appear to be a float</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_greaterthan.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_greaterthan.message">
 				<source>The value must be greater than %minimum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_greaterthan.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_greaterthan.error">
 				<source>The value does not appear to be greater than %minimum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_inarray.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_inarray.message">
 				<source>Only a few values are possible</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_inarray.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_inarray.error">
 				<source>The value does not appear to be valid</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_integer.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_integer.message">
 				<source>Use a integer</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_integer.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_integer.error">
 				<source>The value does not appear to be an integer</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_ip.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_ip.message">
 				<source>(123.123.123.123)</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_ip.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_ip.error">
 				<source>The value does not appear to be a valid IP address</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_length.message">
 				<source>The length of the value must have a minimum of %minimum characters</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.message2" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_length.message2">
 				<source>and a maximum of %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_length.error">
 				<source>The value is less than %minimum characters long</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_length.error2" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_length.error2">
 				<source>or longer than %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_lessthan.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_lessthan.message">
 				<source>The value must be less than %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_lessthan.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_lessthan.error">
 				<source>The value does not appear to be less than %maximum</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_regexp.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_regexp.message">
 				<source>Use the right pattern</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_regexp.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_regexp.error">
 				<source>The value does not match against pattern</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_required.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_required.message">
 				<source>Required</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_required.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_required.error">
 				<source>This field is required</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_uri.message" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_uri.message">
 				<source>The value must be a URI</source>
 			</trans-unit>
-			<trans-unit id="tx_form_system_validate_uri.error" xml:space="preserve">
+			<trans-unit id="tx_form_system_validate_uri.error">
 				<source>The value does not appear to be a URI</source>
 			</trans-unit>
-			<trans-unit id="tx_form_view_confirmation.message" xml:space="preserve">
+			<trans-unit id="tx_form_view_confirmation.message">
 				<source>Please check your input and confirm by using the appropriate button</source>
 			</trans-unit>
-			<trans-unit id="tx_form_view_confirmation.confirm" xml:space="preserve">
+			<trans-unit id="tx_form_view_confirmation.confirm">
 				<source>Confirm</source>
 			</trans-unit>
-			<trans-unit id="tx_form_view_confirmation.donotconfirm" xml:space="preserve">
+			<trans-unit id="tx_form_view_confirmation.donotconfirm">
 				<source>Go back to the form</source>
 			</trans-unit>
-			<trans-unit id="tx_form_view_mail.success" xml:space="preserve">
+			<trans-unit id="tx_form_view_mail.success">
 				<source>The form has been sent successfully by mail</source>
 			</trans-unit>
-			<trans-unit id="tx_form_view_mail.error" xml:space="preserve">
+			<trans-unit id="tx_form_view_mail.error">
 				<source>There was an error when sending the form by mail</source>
 			</trans-unit>
 		</body>

@@ -3,139 +3,139 @@
 	<file t3:id="1415814786" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="sel1" xml:space="preserve">
+			<trans-unit id="sel1">
 				<source>Please select the type of page content you wish to create:</source>
 			</trans-unit>
-			<trans-unit id="sel2" xml:space="preserve">
+			<trans-unit id="sel2">
 				<source>Now, click the position where you wish to place the element on the page:</source>
 			</trans-unit>
-			<trans-unit id="common" xml:space="preserve">
+			<trans-unit id="common">
 				<source>Typical page content</source>
 			</trans-unit>
-			<trans-unit id="common_headerOnly_title" xml:space="preserve">
+			<trans-unit id="common_headerOnly_title">
 				<source>Header Only</source>
 			</trans-unit>
-			<trans-unit id="common_headerOnly_description" xml:space="preserve">
+			<trans-unit id="common_headerOnly_description">
 				<source>Adds a header only.</source>
 			</trans-unit>
-			<trans-unit id="common_regularText_title" xml:space="preserve">
+			<trans-unit id="common_regularText_title">
 				<source>Regular Text Element</source>
 			</trans-unit>
-			<trans-unit id="common_regularText_description" xml:space="preserve">
+			<trans-unit id="common_regularText_description">
 				<source>A regular text element with header and bodytext fields.</source>
 			</trans-unit>
-			<trans-unit id="common_textImage_title" xml:space="preserve">
+			<trans-unit id="common_textImage_title">
 				<source>Text &amp; Images</source>
 			</trans-unit>
-			<trans-unit id="common_textImage_description" xml:space="preserve">
+			<trans-unit id="common_textImage_description">
 				<source>Any number of images wrapped right around a regular text element.</source>
 			</trans-unit>
-			<trans-unit id="common_imagesOnly_title" xml:space="preserve">
+			<trans-unit id="common_imagesOnly_title">
 				<source>Images Only</source>
 			</trans-unit>
-			<trans-unit id="common_imagesOnly_description" xml:space="preserve">
+			<trans-unit id="common_imagesOnly_description">
 				<source>Any number of images aligned in columns and rows with a caption.</source>
 			</trans-unit>
-			<trans-unit id="common_bulletList_title" xml:space="preserve">
+			<trans-unit id="common_bulletList_title">
 				<source>Bullet List</source>
 			</trans-unit>
-			<trans-unit id="common_bulletList_description" xml:space="preserve">
+			<trans-unit id="common_bulletList_description">
 				<source>A single bullet list.</source>
 			</trans-unit>
-			<trans-unit id="common_table_title" xml:space="preserve">
+			<trans-unit id="common_table_title">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="common_table_description" xml:space="preserve">
+			<trans-unit id="common_table_description">
 				<source>A simple table.</source>
 			</trans-unit>
-			<trans-unit id="special" xml:space="preserve">
+			<trans-unit id="special">
 				<source>Special elements</source>
 			</trans-unit>
-			<trans-unit id="special_filelinks_title" xml:space="preserve">
+			<trans-unit id="special_filelinks_title">
 				<source>File Links</source>
 			</trans-unit>
-			<trans-unit id="special_filelinks_description" xml:space="preserve">
+			<trans-unit id="special_filelinks_description">
 				<source>Makes a list of files for download.</source>
 			</trans-unit>
-			<trans-unit id="special_multimedia_title" xml:space="preserve">
+			<trans-unit id="special_multimedia_title">
 				<source>Multimedia</source>
 			</trans-unit>
-			<trans-unit id="special_multimedia_description" xml:space="preserve">
+			<trans-unit id="special_multimedia_description">
 				<source>Inserts a media element like a Flash animation, audio file or video clip.</source>
 			</trans-unit>
-			<trans-unit id="special_media_title" xml:space="preserve">
+			<trans-unit id="special_media_title">
 				<source>Media</source>
 			</trans-unit>
-			<trans-unit id="special_media_description" xml:space="preserve">
+			<trans-unit id="special_media_description">
 				<source>Inserts a media element like a Flash animation, audio file or video clip.</source>
 			</trans-unit>
-			<trans-unit id="special_swfobject_title" xml:space="preserve">
+			<trans-unit id="special_swfobject_title">
 				<source>Inserts a Flash media element.</source>
 			</trans-unit>
-			<trans-unit id="special_swfobject_description" xml:space="preserve">
+			<trans-unit id="special_swfobject_description">
 				<source>Inserts Flash media element, audio file or video clip.</source>
 			</trans-unit>
-			<trans-unit id="special_qtobject_title" xml:space="preserve">
+			<trans-unit id="special_qtobject_title">
 				<source>Inserts a Quicktime element.</source>
 			</trans-unit>
-			<trans-unit id="special_qtobject_description" xml:space="preserve">
+			<trans-unit id="special_qtobject_description">
 				<source>Inserts a Quicktime element like a Quicktime audio file or video clip (*.mov).</source>
 			</trans-unit>
-			<trans-unit id="special_sitemap_title" xml:space="preserve">
+			<trans-unit id="special_sitemap_title">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="special_menus_title" xml:space="preserve">
+			<trans-unit id="special_menus_title">
 				<source>Special Menus</source>
 			</trans-unit>
-			<trans-unit id="special_menus_description" xml:space="preserve">
+			<trans-unit id="special_menus_description">
 				<source>Creates a menu of pages, sitemap or other special menus.</source>
 			</trans-unit>
-			<trans-unit id="special_plainHTML_title" xml:space="preserve">
+			<trans-unit id="special_plainHTML_title">
 				<source>Plain HTML</source>
 			</trans-unit>
-			<trans-unit id="special_plainHTML_description" xml:space="preserve">
+			<trans-unit id="special_plainHTML_description">
 				<source>With this element you can insert raw HTML code on the page.</source>
 			</trans-unit>
-			<trans-unit id="special_divider_title" xml:space="preserve">
+			<trans-unit id="special_divider_title">
 				<source>Divider</source>
 			</trans-unit>
-			<trans-unit id="special_divider_description" xml:space="preserve">
+			<trans-unit id="special_divider_description">
 				<source>This element inserts a visual divider, which is by default a horizontal line.</source>
 			</trans-unit>
-			<trans-unit id="special_shortcut_title" xml:space="preserve">
+			<trans-unit id="special_shortcut_title">
 				<source>Insert records</source>
 			</trans-unit>
-			<trans-unit id="special_shortcut_description" xml:space="preserve">
+			<trans-unit id="special_shortcut_description">
 				<source>With this element you can embed other content elements.</source>
 			</trans-unit>
-			<trans-unit id="forms" xml:space="preserve">
+			<trans-unit id="forms">
 				<source>Form elements</source>
 			</trans-unit>
-			<trans-unit id="forms_mail_title" xml:space="preserve">
+			<trans-unit id="forms_mail_title">
 				<source>Mail Form</source>
 			</trans-unit>
-			<trans-unit id="forms_mail_description" xml:space="preserve">
+			<trans-unit id="forms_mail_description">
 				<source>A mail form allowing website users to submit responses.</source>
 			</trans-unit>
-			<trans-unit id="forms_search_title" xml:space="preserve">
+			<trans-unit id="forms_search_title">
 				<source>Search Form</source>
 			</trans-unit>
-			<trans-unit id="forms_search_description" xml:space="preserve">
+			<trans-unit id="forms_search_description">
 				<source>Draws a search form and the search result if a search is performed.</source>
 			</trans-unit>
-			<trans-unit id="forms_login_title" xml:space="preserve">
+			<trans-unit id="forms_login_title">
 				<source>Login Form</source>
 			</trans-unit>
-			<trans-unit id="forms_login_description" xml:space="preserve">
+			<trans-unit id="forms_login_description">
 				<source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
 			</trans-unit>
-			<trans-unit id="plugins" xml:space="preserve">
+			<trans-unit id="plugins">
 				<source>Plugins</source>
 			</trans-unit>
-			<trans-unit id="plugins_general_title" xml:space="preserve">
+			<trans-unit id="plugins_general_title">
 				<source>General Plugin</source>
 			</trans-unit>
-			<trans-unit id="plugins_general_description" xml:space="preserve">
+			<trans-unit id="plugins_general_description">
 				<source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
 			</trans-unit>
 		</body>

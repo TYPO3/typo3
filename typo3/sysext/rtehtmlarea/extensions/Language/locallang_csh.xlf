@@ -3,10 +3,10 @@
 	<file t3:id="1415814922" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle" xml:space="preserve">
+			<trans-unit id=".alttitle">
 				<source>htmlArea RTE &gt; Language</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>The Language feature allows to edit the language and text direction attributes of an element in the RTE editing area.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -32,10 +32,10 @@ EXT:rtehtmlarea/Resources/Public/Images/Plugins/Language/show-language-marks.gif
 xEXT_rtehtmlarea_Language:directionCombo</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="languageCombo.alttitle" xml:space="preserve">
+			<trans-unit id="languageCombo.alttitle">
 				<source>Language of contents</source>
 			</trans-unit>
-			<trans-unit id="languageCombo.description" xml:space="preserve">
+			<trans-unit id="languageCombo.description">
 				<source>Select the language of the contents of the element.</source>
 			</trans-unit>
 			<trans-unit id="languageCombo.details" xml:space="preserve">
@@ -44,10 +44,10 @@ The selector shows the language currently assigned to the current element, if an
 Selecting a language assigns it to the element. If a language was already assigned to the element, it is replaced by the newly selected language.
 Any currently assigned language may be removed by selecting the "Remove language mark" item at the top of the list of the selector box.</source>
 			</trans-unit>
-			<trans-unit id="directionCombo.alttitle" xml:space="preserve">
+			<trans-unit id="directionCombo.alttitle">
 				<source>Direction of text</source>
 			</trans-unit>
-			<trans-unit id="directionCombo.description" xml:space="preserve">
+			<trans-unit id="directionCombo.description">
 				<source>Select the direction of text within the contents of the element.</source>
 			</trans-unit>
 			<trans-unit id="directionCombo.details" xml:space="preserve">

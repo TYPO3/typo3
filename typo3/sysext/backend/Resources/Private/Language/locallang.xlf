@@ -3,10 +3,10 @@
 	<file t3:id="1420197366" source-language="en" datatype="plaintext" original="messages" date="2015-01-02T11:16:11Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="no_modules_registered" xml:space="preserve">
+			<trans-unit id="no_modules_registered">
 				<source>No modules have been registered. Please contact your system administrator.</source>
 			</trans-unit>
-			<trans-unit id="show_references" xml:space="preserve">
+			<trans-unit id="show_references">
 				<source>Show references</source>
 			</trans-unit>
 		</body>

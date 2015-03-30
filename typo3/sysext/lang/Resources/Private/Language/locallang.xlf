@@ -3,136 +3,136 @@
 	<file t3:id="1415814891" source-language="en" datatype="plaintext" original="messages" date="2012-08-31T17:54:12Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="state.error" xml:space="preserve">
+			<trans-unit id="state.error">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="state.notAvailable" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.notAvailable" deprecated="Unused since CMS 7">
 				<source>Not available</source>
 			</trans-unit>
-			<trans-unit id="state.failed" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.failed" deprecated="Unused since CMS 7">
 				<source>Failed</source>
 			</trans-unit>
-			<trans-unit id="state.upToDate" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.upToDate" deprecated="Unused since CMS 7">
 				<source>Up to date</source>
 			</trans-unit>
-			<trans-unit id="state.invalid" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.invalid" deprecated="Unused since CMS 7">
 				<source>Invalid</source>
 			</trans-unit>
-			<trans-unit id="state.updated" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.updated" deprecated="Unused since CMS 7">
 				<source>Updated</source>
 			</trans-unit>
-			<trans-unit id="state.checking" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.checking" deprecated="Unused since CMS 7">
 				<source>Checking...</source>
 			</trans-unit>
-			<trans-unit id="state.notChecked" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="state.notChecked" deprecated="Unused since CMS 7">
 				<source>Not checked</source>
 			</trans-unit>
-			<trans-unit id="button.update" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="button.update" deprecated="Unused since CMS 7">
 				<source>Update from repository</source>
 			</trans-unit>
-			<trans-unit id="button.downloadAll" xml:space="preserve">
+			<trans-unit id="button.downloadAll">
 				<source>Download all</source>
 			</trans-unit>
-			<trans-unit id="button.download" xml:space="preserve">
+			<trans-unit id="button.download">
 				<source>Download</source>
 			</trans-unit>
-			<trans-unit id="button.cancel" xml:space="preserve">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.activate" xml:space="preserve">
+			<trans-unit id="button.activate">
 				<source>Activate</source>
 			</trans-unit>
-			<trans-unit id="button.deactivate" xml:space="preserve">
+			<trans-unit id="button.deactivate">
 				<source>Deactivate</source>
 			</trans-unit>
-			<trans-unit id="button.complete" xml:space="preserve">
+			<trans-unit id="button.complete">
 				<source>Complete</source>
 			</trans-unit>
-			<trans-unit id="button.loading" xml:space="preserve">
+			<trans-unit id="button.loading">
 				<source>Loading</source>
 			</trans-unit>
 
-			<trans-unit id="header.module" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="header.module" deprecated="Unused since CMS 7">
 				<source>Language Administration</source>
 			</trans-unit>
-			<trans-unit id="header.languageSelectionList" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="header.languageSelectionList" deprecated="Unused since CMS 7">
 				<source>Languages</source>
 			</trans-unit>
-			<trans-unit id="header.translationUpdateList" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="header.translationUpdateList" deprecated="Unused since CMS 7">
 				<source>Translations</source>
 			</trans-unit>
-			<trans-unit id="header.languages" xml:space="preserve">
+			<trans-unit id="header.languages">
 				<source>Installed Languages</source>
 			</trans-unit>
-			<trans-unit id="header.translations" xml:space="preserve">
+			<trans-unit id="header.translations">
 				<source>Translation Overview</source>
 			</trans-unit>
 
-			<trans-unit id="flashmessage.error" xml:space="preserve">
+			<trans-unit id="flashmessage.error">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.information" xml:space="preserve">
+			<trans-unit id="flashmessage.information">
 				<source>Information</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.success" xml:space="preserve">
+			<trans-unit id="flashmessage.success">
 				<source>Success</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.multipleErrors" xml:space="preserve">
+			<trans-unit id="flashmessage.multipleErrors">
 				<source>Several requests have been failed. Please check your internet connection!</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.updateComplete" xml:space="preserve">
+			<trans-unit id="flashmessage.updateComplete">
 				<source>The translation update has been successfully completed.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.canceled" xml:space="preserve">
+			<trans-unit id="flashmessage.canceled">
 				<source>The process has been canceled.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.languageActivated" xml:space="preserve">
+			<trans-unit id="flashmessage.languageActivated">
 				<source>Language was successfully activated.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.languageDeactivated" xml:space="preserve">
+			<trans-unit id="flashmessage.languageDeactivated">
 				<source>Language was successfully deactivated.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.errorOccurred" xml:space="preserve">
+			<trans-unit id="flashmessage.errorOccurred">
 				<source>The request has been failed.</source>
 			</trans-unit>
 
-			<trans-unit id="table.ad" xml:space="preserve">
+			<trans-unit id="table.ad">
 				<source>A/D</source>
 			</trans-unit>
-			<trans-unit id="table.ad.title" xml:space="preserve">
+			<trans-unit id="table.ad.title">
 				<source>Activate / Deactivate</source>
 			</trans-unit>
-			<trans-unit id="table.language" xml:space="preserve">
+			<trans-unit id="table.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="table.locale" xml:space="preserve">
+			<trans-unit id="table.locale">
 				<source>Locale</source>
 			</trans-unit>
-			<trans-unit id="table.extension" xml:space="preserve">
+			<trans-unit id="table.extension">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="table.actions" xml:space="preserve">
+			<trans-unit id="table.actions">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="table.date" xml:space="preserve">
+			<trans-unit id="table.date">
 				<source>Last update</source>
 			</trans-unit>
-			<trans-unit id="table.processing" xml:space="preserve">
+			<trans-unit id="table.processing">
 				<source>Processing...</source>
 			</trans-unit>
-			<trans-unit id="table.search" xml:space="preserve">
+			<trans-unit id="table.search">
 				<source>Search:</source>
 			</trans-unit>
-			<trans-unit id="table.loadingRecords" xml:space="preserve">
+			<trans-unit id="table.loadingRecords">
 				<source>Loading...</source>
 			</trans-unit>
-			<trans-unit id="table.zeroRecords" xml:space="preserve">
+			<trans-unit id="table.zeroRecords">
 				<source>No matching records found</source>
 			</trans-unit>
-			<trans-unit id="table.emptyTable" xml:space="preserve">
+			<trans-unit id="table.emptyTable">
 				<source>No data available in table</source>
 			</trans-unit>
-			<trans-unit id="table.dateFormat" xml:space="preserve">
+			<trans-unit id="table.dateFormat">
 				<source>YYYY-MM-DD HH:mm</source>
 			</trans-unit>
 		</body>

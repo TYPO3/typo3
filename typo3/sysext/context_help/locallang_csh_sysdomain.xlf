@@ -3,7 +3,7 @@
 	<file t3:id="1415814800" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>Determines the entrypoint of a certain host name.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -16,7 +16,7 @@ This is like "Virtual hosts" in Apache servers.
 				<source>sys_language
 sys_template</source>
 			</trans-unit>
-			<trans-unit id="domainName.description" xml:space="preserve">
+			<trans-unit id="domainName.description">
 				<source>Enter the host name, eg. "www.my-domain.com".</source>
 			</trans-unit>
 			<trans-unit id="domainName.details" xml:space="preserve">
@@ -25,7 +25,7 @@ When you create a domain record and the host name in it (be it a real domain nam
 
 &lt;strong&gt;Notice, &lt;/strong&gt;if you run TYPO3 from a subdirectory of the domain name, you must include the subdirectory as well, eg. "www.my-domain.org/typo3_subdir/"</source>
 			</trans-unit>
-			<trans-unit id="redirectTo.description" xml:space="preserve">
+			<trans-unit id="redirectTo.description">
 				<source>All requests to the domain will be redirected to this URL, if any value is entered.</source>
 			</trans-unit>
 			<trans-unit id="redirectTo.details" xml:space="preserve">
@@ -48,10 +48,10 @@ This will go into an eternal loop because the domain name has in fact not change
 Virtual directories:
 If you're using TYPO3 on a unix computer you can make 'virtual subdirectories' to a website, still within the same database. See document list for more information. In that case you should enter the hostname with the subdirectory appended, like this: "my-domain.org/subdir/". If the combination of host name and current subdirectory matches the value, the domain record will be correctly detected and limit page access to the page tree below the Domain record.</source>
 			</trans-unit>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>Use this option to temporarily disable the Domain record.</source>
 			</trans-unit>
-			<trans-unit id="prepend_params.description" xml:space="preserve">
+			<trans-unit id="prepend_params.description">
 				<source>If set, any GET parameters in the calling URL will be transferred to the redirect URL.</source>
 			</trans-unit>
 		</body>

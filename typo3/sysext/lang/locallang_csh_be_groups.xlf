@@ -3,7 +3,7 @@
 	<file t3:id="1415814852" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>This is the Backend administration user groups available for the Backend users. These determine the access credentials for the Backend users.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -25,20 +25,20 @@ EXT:lang/cshimages/be_groups_1.png</source>
 				<source>Backend Usergroups are found in the root of the page tree where only "admin" users can edit them. The usergroups with red icons in this image are the ones with Access Lists enabled. The blue are just plain usergroups.
 This usergroup has Access Lists enabled. In the Access Lists you specify which modules, tables, database fields etc. the group members can access in TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="title.description" xml:space="preserve">
+			<trans-unit id="title.description">
 				<source>Name of the Backend usergroup. The name should be descriptive and can always be changed later.</source>
 			</trans-unit>
-			<trans-unit id="title.details" xml:space="preserve">
+			<trans-unit id="title.details">
 				<source>Backend Usergroups are identified by their "uid" field value (integer) and therefore the title can always be changed. The "uid" can never be changed for a user group.</source>
 			</trans-unit>
-			<trans-unit id="_title.image" xml:space="preserve">
+			<trans-unit id="_title.image">
 				<source>EXT:lang/cshimages/be_groups_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="title.image_descr" xml:space="preserve">
+			<trans-unit id="title.image_descr">
 				<source>The usergroup title is shown in the record lists.</source>
 			</trans-unit>
-			<trans-unit id="db_mountpoints.description" xml:space="preserve">
+			<trans-unit id="db_mountpoints.description">
 				<source>Define page tree root points for the group members.</source>
 			</trans-unit>
 			<trans-unit id="db_mountpoints.details" xml:space="preserve">
@@ -62,7 +62,7 @@ EXT:lang/cshimages/be_groups_4.png</source>
 				<source>Here a page is added as a "DB mount"...
 ... and in the page tree of member users this will become the starting point for the page tree.</source>
 			</trans-unit>
-			<trans-unit id="file_mountpoints.description" xml:space="preserve">
+			<trans-unit id="file_mountpoints.description">
 				<source>Define startpoints for the file folder tree.</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints.details" xml:space="preserve">
@@ -95,7 +95,7 @@ This is the page tree of the "admin" user. Notice the folder "user_upload" which
 This shows the mounted folder as seen by a user who was member of the group.
 Filemount records are also created in the page tree root.</source>
 			</trans-unit>
-			<trans-unit id="file_permissions.description" xml:space="preserve">
+			<trans-unit id="file_permissions.description">
 				<source>Select file operation permissions for the group members.</source>
 			</trans-unit>
 			<trans-unit id="file_permissions.details" xml:space="preserve">
@@ -109,7 +109,7 @@ be_users:file_mountpoints,
 be_users:file_permissions</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="fileoper_perms.description" xml:space="preserve">
+			<trans-unit id="fileoper_perms.description">
 				<source>Select file operation permissions for the group members.</source>
 			</trans-unit>
 			<trans-unit id="fileoper_perms.details" xml:space="preserve">
@@ -123,7 +123,7 @@ be_users:file_mountpoints,
 be_users:file_permissions</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pagetypes_select.description" xml:space="preserve">
+			<trans-unit id="pagetypes_select.description">
 				<source>Select which 'Types' of Pages the members may set.</source>
 			</trans-unit>
 			<trans-unit id="pagetypes_select.details" xml:space="preserve">
@@ -135,14 +135,14 @@ Choice of Page types (doktype) for a page is associated with a) a special icon f
 be_groups:inc_access_lists</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_pagetypes_select.image" xml:space="preserve">
+			<trans-unit id="_pagetypes_select.image">
 				<source>EXT:lang/cshimages/be_groups_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pagetypes_select.image_descr" xml:space="preserve">
+			<trans-unit id="pagetypes_select.image_descr">
 				<source>The list of typical page types available in a CMS context. Selecting Page types for a usergroup defines which of these options can be selected by member users.</source>
 			</trans-unit>
-			<trans-unit id="tables_modify.description" xml:space="preserve">
+			<trans-unit id="tables_modify.description">
 				<source>Select which tables the members may modify.</source>
 			</trans-unit>
 			<trans-unit id="tables_modify.details" xml:space="preserve">
@@ -168,7 +168,7 @@ EXT:lang/cshimages/be_groups_11.png</source>
 The two tables are simply added to the list of "Tables (modify)" in the group Access Lists.
 This is (an example of) the full amount of elements that can be created on the page by the "admin" user for whom there are no restrictions.</source>
 			</trans-unit>
-			<trans-unit id="tables_select.description" xml:space="preserve">
+			<trans-unit id="tables_select.description">
 				<source>Select which tables the members may see in record lists ('modify' tables does not need to be re-entered here!).</source>
 			</trans-unit>
 			<trans-unit id="tables_select.details" xml:space="preserve">
@@ -180,7 +180,7 @@ This list is not very important. It's a pretty rare situation that a user may se
 be_groups:inc_access_lists</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="non_exclude_fields.description" xml:space="preserve">
+			<trans-unit id="non_exclude_fields.description">
 				<source>Certain table fields are not available by default. Those fields can be explicitly enabled for the group members here.</source>
 			</trans-unit>
 			<trans-unit id="non_exclude_fields.details" xml:space="preserve">
@@ -193,17 +193,17 @@ Of course it does not make any sense to add fields from tables which are not inc
 Examples from "Getting Started" | http://typo3.org/documentation/document-library/doc_tut_quickstart/Groups/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_non_exclude_fields.image" xml:space="preserve">
+			<trans-unit id="_non_exclude_fields.image">
 				<source>EXT:lang/cshimages/be_groups_14.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>Disables a user group.</source>
 			</trans-unit>
-			<trans-unit id="hidden.details" xml:space="preserve">
+			<trans-unit id="hidden.details">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description" xml:space="preserve">
+			<trans-unit id="lockToDomain.description">
 				<source>Enter the host name from which the user is forced to login.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.details" xml:space="preserve">
@@ -216,7 +216,7 @@ fe_users:lockToDomain,
 fe_groups:lockToDomain</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="groupMods.description" xml:space="preserve">
+			<trans-unit id="groupMods.description">
 				<source>Select available backend modules for the group members.</source>
 			</trans-unit>
 			<trans-unit id="groupMods.details" xml:space="preserve">
@@ -238,7 +238,7 @@ EXT:lang/cshimages/be_groups_13.png</source>
 				<source>The Backend Modules available for a user is reflected in the menu items of the backend. For most regular users only modules in the Web and File main modules are enabled. Typically "Web &gt; Page" is used for editing of page content.
 This is the assignment of Backend Modules to the user from the screenshot above. All four Web sub-modules and the two User sub-modules are configured here. However the File &gt; Filelist module must have been configured for another member group of this user (or inside the user profile itself which is also possible). The Help modules are all accessible by default and does not require explicit access.</source>
 			</trans-unit>
-			<trans-unit id="inc_access_lists.description" xml:space="preserve">
+			<trans-unit id="inc_access_lists.description">
 				<source>Select whether the Access Lists for Page type, Tables, Module and Allowed excludefield are enabled for this group.</source>
 			</trans-unit>
 			<trans-unit id="inc_access_lists.details" xml:space="preserve">
@@ -253,20 +253,20 @@ be_groups:groupMods,
 be_groups:non_exclude_fields</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="description.description" xml:space="preserve">
+			<trans-unit id="description.description">
 				<source>Enter a short description of the user group, what it is for and who should be members. This is for internal use only.</source>
 			</trans-unit>
-			<trans-unit id="_description.seeAlso" xml:space="preserve">
+			<trans-unit id="_description.seeAlso">
 				<source>fe_groups:description</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="TSconfig.description" xml:space="preserve">
+			<trans-unit id="TSconfig.description">
 				<source>User TSconfig: Additional configuration through TypoScript style values (Advanced).</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.details" xml:space="preserve">
+			<trans-unit id="TSconfig.details">
 				<source>User TSconfig can be set for each backend user and group. Configuration set for backend groups is inherited by the user who is a member of those groups. The available options typically cover user settings like those found in the User&gt;Setup module (in fact options from that module can be forcibly overridden from User TSconfig!), configuration of the "Admin Panel" (frontend), various backend tweaks (lock user to IP, may user clear all cache?, width of the navigation frame etc.) and backend module configuration (overriding any configuration set for backend modules in Page TSconfig).</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.syntax" xml:space="preserve">
+			<trans-unit id="TSconfig.syntax">
 				<source>TypoScript syntax without conditions and constants.</source>
 			</trans-unit>
 			<trans-unit id="_TSconfig.seeAlso" xml:space="preserve">
@@ -287,21 +287,21 @@ EXT:lang/cshimages/be_groups_17.png</source>
 				<source>In the TSconfig field help is right at hand - just click the TS wizard icon, then a window will pop up.
 In the pop-up window you will see a tree of possible configuration values. These are extracted from the TSconfig manual. You can click around to find the options you need to set through this wizard.</source>
 			</trans-unit>
-			<trans-unit id="hide_in_lists.description" xml:space="preserve">
+			<trans-unit id="hide_in_lists.description">
 				<source>This option will prevent the user group from showing up in lists, where user groups are selected.</source>
 			</trans-unit>
 			<trans-unit id="hide_in_lists.details" xml:space="preserve">
 				<source>This will affect the list of user groups in the Task Center To-Do and Messages parts as well as the Web&gt;Access module.
 The option is extremely useful if you have general user groups defining some global properties which all your users are members of. Then you would probably not like all those users to 'see' each other through the membership of this group, for instance sending messages or To-Dos to each other. And this is what is option will prevent.</source>
 			</trans-unit>
-			<trans-unit id="subgroup.description" xml:space="preserve">
+			<trans-unit id="subgroup.description">
 				<source>All settings from the selected groups will be merged with the properties from this group, for example DB mounts, permissions, TSconfig, etc.</source>
 			</trans-unit>
 			<trans-unit id="subgroup.details" xml:space="preserve">
 				<source>The properties of subgroups are added to the properties of this group and basically they will simply be added to the list of member groups of any user which is a member of this group.
 This feature provides a great way to create 'Supervisor' user groups.</source>
 			</trans-unit>
-			<trans-unit id="explicit_allowdeny.description" xml:space="preserve">
+			<trans-unit id="explicit_allowdeny.description">
 				<source>Select field values to explicitly deny or allow for user group members.</source>
 			</trans-unit>
 			<trans-unit id="explicit_allowdeny.details" xml:space="preserve">
@@ -310,39 +310,39 @@ Each value can be configured to require either explicit access (Allow) or explic
 If a value has the prefix "Deny" (red icon) it means that by default users can set this value unless they are member of a user group which explicitly denies it (by setting this checkbox).
 The list is organized so values from the same selector box is listed together. If values from a selectorbox is not present in the allow/deny list it simply means they are not evaluated and hence they can be set by anyone having access to the field in general.</source>
 			</trans-unit>
-			<trans-unit id="_explicit_allowdeny.image" xml:space="preserve">
+			<trans-unit id="_explicit_allowdeny.image">
 				<source>EXT:lang/cshimages/be_groups_19.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="allowed_languages.description" xml:space="preserve">
+			<trans-unit id="allowed_languages.description">
 				<source>Select which record languages the group members are limited to edit.</source>
 			</trans-unit>
 			<trans-unit id="allowed_languages.details" xml:space="preserve">
 				<source>Records in TYPO3 can be configured to carry information about their language. If that is the case access to these elements will also be evaluated based on whether the user has the language in question included from this list.
 If a user has no languages listed all together it simply means that he can edit &lt;em&gt;all&lt;/em&gt; languages!</source>
 			</trans-unit>
-			<trans-unit id="_allowed_languages.seeAlso" xml:space="preserve">
+			<trans-unit id="_allowed_languages.seeAlso">
 				<source>be_users:allowed_languages</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_allowed_languages.image" xml:space="preserve">
+			<trans-unit id="_allowed_languages.image">
 				<source>EXT:lang/cshimages/be_groups_18.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="allowed_languages.image_descr" xml:space="preserve">
+			<trans-unit id="allowed_languages.image_descr">
 				<source>This example shows a situation where two languages, Danish and German, are created in addition to the default language.</source>
 			</trans-unit>
-			<trans-unit id="custom_options.description" xml:space="preserve">
+			<trans-unit id="custom_options.description">
 				<source>Select custom permission options.</source>
 			</trans-unit>
-			<trans-unit id="custom_options.details" xml:space="preserve">
+			<trans-unit id="custom_options.details">
 				<source>This list represents custom permissions introduced by various backend modules (from extensions). The significance of each option depends on the backend module that evaluates it.</source>
 			</trans-unit>
-			<trans-unit id="_custom_options.image" xml:space="preserve">
+			<trans-unit id="_custom_options.image">
 				<source>EXT:lang/cshimages/be_groups_20.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="custom_options.image_descr" xml:space="preserve">
+			<trans-unit id="custom_options.image_descr">
 				<source>This is just an example from an internal test application. It shows how checkboxes are added by a custom module under its own header. You can also show a description text with each checkbox to explain its function.</source>
 			</trans-unit>
 		</body>

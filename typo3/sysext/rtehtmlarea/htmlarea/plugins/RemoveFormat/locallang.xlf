@@ -3,49 +3,49 @@
 	<file t3:id="1415814960" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="RemoveFormatTooltip" xml:space="preserve">
+			<trans-unit id="RemoveFormatTooltip">
 				<source>Remove format</source>
 			</trans-unit>
-			<trans-unit id="Cleaning Area" xml:space="preserve">
+			<trans-unit id="Cleaning Area">
 				<source>Cleaning Area</source>
 			</trans-unit>
-			<trans-unit id="Selection" xml:space="preserve">
+			<trans-unit id="Selection">
 				<source>Selected text</source>
 			</trans-unit>
-			<trans-unit id="All" xml:space="preserve">
+			<trans-unit id="All">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="Remove formatting" xml:space="preserve">
+			<trans-unit id="Remove formatting">
 				<source>Remove format</source>
 			</trans-unit>
-			<trans-unit id="Cleaning options" xml:space="preserve">
+			<trans-unit id="Cleaning options">
 				<source>Type(s) of format to remove</source>
 			</trans-unit>
-			<trans-unit id="Formatting:" xml:space="preserve">
+			<trans-unit id="Formatting:">
 				<source>HTML Format:</source>
 			</trans-unit>
-			<trans-unit id="MS Word Formatting:" xml:space="preserve">
+			<trans-unit id="MS Word Formatting:">
 				<source>MS Word Format:</source>
 			</trans-unit>
-			<trans-unit id="Typographical punctuation:" xml:space="preserve">
+			<trans-unit id="Typographical punctuation:">
 				<source>Typographical punctuation:</source>
 			</trans-unit>
-			<trans-unit id="Spaces" xml:space="preserve">
+			<trans-unit id="Spaces">
 				<source>Non-breaking spaces:</source>
 			</trans-unit>
-			<trans-unit id="Images:" xml:space="preserve">
+			<trans-unit id="Images:">
 				<source>Images:</source>
 			</trans-unit>
-			<trans-unit id="All HTML:" xml:space="preserve">
+			<trans-unit id="All HTML:">
 				<source>All HTML tags:</source>
 			</trans-unit>
-			<trans-unit id="Select the type of formatting you wish to remove." xml:space="preserve">
+			<trans-unit id="Select the type of formatting you wish to remove.">
 				<source>Select the type(s) of format to remove.</source>
 			</trans-unit>
-			<trans-unit id="OK" xml:space="preserve">
+			<trans-unit id="OK">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="Cancel" xml:space="preserve">
+			<trans-unit id="Cancel">
 				<source>Cancel</source>
 			</trans-unit>
 		</body>

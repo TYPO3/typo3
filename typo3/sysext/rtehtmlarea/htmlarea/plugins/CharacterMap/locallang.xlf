@@ -3,748 +3,748 @@
 	<file t3:id="1415814939" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="CharacterMapTooltip" xml:space="preserve">
+			<trans-unit id="CharacterMapTooltip">
 				<source>Insert special character</source>
 			</trans-unit>
-			<trans-unit id="InsertCharacter-Tooltip" xml:space="preserve">
+			<trans-unit id="InsertCharacter-Tooltip">
 				<source>Insert special character</source>
 			</trans-unit>
-			<trans-unit id="Insert special character" xml:space="preserve">
+			<trans-unit id="Insert special character">
 				<source>Insert special character</source>
 			</trans-unit>
-			<trans-unit id="InsertSoftHyphen-Tooltip" xml:space="preserve">
+			<trans-unit id="InsertSoftHyphen-Tooltip">
 				<source>Insert soft hyphen</source>
 			</trans-unit>
-			<trans-unit id="general" xml:space="preserve">
+			<trans-unit id="general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="mathematical" xml:space="preserve">
+			<trans-unit id="mathematical">
 				<source>Mathematical</source>
 			</trans-unit>
-			<trans-unit id="graphical" xml:space="preserve">
+			<trans-unit id="graphical">
 				<source>Shapes and arrows</source>
 			</trans-unit>
-			<trans-unit id="HTML value:" xml:space="preserve">
+			<trans-unit id="HTML value:">
 				<source>HTML value:</source>
 			</trans-unit>
-			<trans-unit id="Close" xml:space="preserve">
+			<trans-unit id="Close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="nbsp" xml:space="preserve">
+			<trans-unit id="nbsp">
 				<source>Non-breaking space</source>
 			</trans-unit>
-			<trans-unit id="Agrave" xml:space="preserve">
+			<trans-unit id="Agrave">
 				<source>Capital a with grave accent</source>
 			</trans-unit>
-			<trans-unit id="agrave" xml:space="preserve">
+			<trans-unit id="agrave">
 				<source>Small a with grave accent</source>
 			</trans-unit>
-			<trans-unit id="Aacute" xml:space="preserve">
+			<trans-unit id="Aacute">
 				<source>Capital a with acute accent</source>
 			</trans-unit>
-			<trans-unit id="aacute" xml:space="preserve">
+			<trans-unit id="aacute">
 				<source>Small a with acute accent</source>
 			</trans-unit>
-			<trans-unit id="Acirc" xml:space="preserve">
+			<trans-unit id="Acirc">
 				<source>Capital a with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="acirc" xml:space="preserve">
+			<trans-unit id="acirc">
 				<source>Small a with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="Atilde" xml:space="preserve">
+			<trans-unit id="Atilde">
 				<source>Capital a with tilde</source>
 			</trans-unit>
-			<trans-unit id="atilde" xml:space="preserve">
+			<trans-unit id="atilde">
 				<source>Small a with tilde</source>
 			</trans-unit>
-			<trans-unit id="Auml" xml:space="preserve">
+			<trans-unit id="Auml">
 				<source>Capital a with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="auml" xml:space="preserve">
+			<trans-unit id="auml">
 				<source>Small a with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="Aring" xml:space="preserve">
+			<trans-unit id="Aring">
 				<source>Capital a with ring</source>
 			</trans-unit>
-			<trans-unit id="aring" xml:space="preserve">
+			<trans-unit id="aring">
 				<source>Small a with ring</source>
 			</trans-unit>
-			<trans-unit id="AElig" xml:space="preserve">
+			<trans-unit id="AElig">
 				<source>Capital ligature ae</source>
 			</trans-unit>
-			<trans-unit id="aelig" xml:space="preserve">
+			<trans-unit id="aelig">
 				<source>Small ligature ae</source>
 			</trans-unit>
-			<trans-unit id="ordf" xml:space="preserve">
+			<trans-unit id="ordf">
 				<source>Feminine ordinal indicator</source>
 			</trans-unit>
-			<trans-unit id="Ccedil" xml:space="preserve">
+			<trans-unit id="Ccedil">
 				<source>Capital c with cedilla</source>
 			</trans-unit>
-			<trans-unit id="ccedil" xml:space="preserve">
+			<trans-unit id="ccedil">
 				<source>Small c with cedilla</source>
 			</trans-unit>
-			<trans-unit id="ETH" xml:space="preserve">
+			<trans-unit id="ETH">
 				<source>Capital eth, Icelandic</source>
 			</trans-unit>
-			<trans-unit id="eth" xml:space="preserve">
+			<trans-unit id="eth">
 				<source>Small eth, Icelandic</source>
 			</trans-unit>
-			<trans-unit id="Egrave" xml:space="preserve">
+			<trans-unit id="Egrave">
 				<source>Capital e with grave accent</source>
 			</trans-unit>
-			<trans-unit id="egrave" xml:space="preserve">
+			<trans-unit id="egrave">
 				<source>Small e with grave accent</source>
 			</trans-unit>
-			<trans-unit id="Eacute" xml:space="preserve">
+			<trans-unit id="Eacute">
 				<source>Capital e with acute accent</source>
 			</trans-unit>
-			<trans-unit id="eacute" xml:space="preserve">
+			<trans-unit id="eacute">
 				<source>Small e with acute accent</source>
 			</trans-unit>
-			<trans-unit id="Ecirc" xml:space="preserve">
+			<trans-unit id="Ecirc">
 				<source>Capital e with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="ecirc" xml:space="preserve">
+			<trans-unit id="ecirc">
 				<source>Small e with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="Euml" xml:space="preserve">
+			<trans-unit id="Euml">
 				<source>Capital e with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="euml" xml:space="preserve">
+			<trans-unit id="euml">
 				<source>Small e with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="Igrave" xml:space="preserve">
+			<trans-unit id="Igrave">
 				<source>Capital i with grave accent</source>
 			</trans-unit>
-			<trans-unit id="igrave" xml:space="preserve">
+			<trans-unit id="igrave">
 				<source>Small i with grave accent</source>
 			</trans-unit>
-			<trans-unit id="Iacute" xml:space="preserve">
+			<trans-unit id="Iacute">
 				<source>Capital i with acute accent</source>
 			</trans-unit>
-			<trans-unit id="iacute" xml:space="preserve">
+			<trans-unit id="iacute">
 				<source>Small i with acute accent</source>
 			</trans-unit>
-			<trans-unit id="Icirc" xml:space="preserve">
+			<trans-unit id="Icirc">
 				<source>Capital i with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="icirc" xml:space="preserve">
+			<trans-unit id="icirc">
 				<source>Small i with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="Iuml" xml:space="preserve">
+			<trans-unit id="Iuml">
 				<source>Capital i with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="iuml" xml:space="preserve">
+			<trans-unit id="iuml">
 				<source>Small i with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="Ntilde" xml:space="preserve">
+			<trans-unit id="Ntilde">
 				<source>Capital n with tilde</source>
 			</trans-unit>
-			<trans-unit id="ntilde" xml:space="preserve">
+			<trans-unit id="ntilde">
 				<source>Small n with tilde</source>
 			</trans-unit>
-			<trans-unit id="Ograve" xml:space="preserve">
+			<trans-unit id="Ograve">
 				<source>Capital o with grave accent</source>
 			</trans-unit>
-			<trans-unit id="ograve" xml:space="preserve">
+			<trans-unit id="ograve">
 				<source>Small o with grave accent</source>
 			</trans-unit>
-			<trans-unit id="Oacute" xml:space="preserve">
+			<trans-unit id="Oacute">
 				<source>Capital o with acute accent</source>
 			</trans-unit>
-			<trans-unit id="oacute" xml:space="preserve">
+			<trans-unit id="oacute">
 				<source>Small o with acute accent</source>
 			</trans-unit>
-			<trans-unit id="Ocirc" xml:space="preserve">
+			<trans-unit id="Ocirc">
 				<source>Capital o with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="ocirc" xml:space="preserve">
+			<trans-unit id="ocirc">
 				<source>Small o with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="Otilde" xml:space="preserve">
+			<trans-unit id="Otilde">
 				<source>Capital o with tilde</source>
 			</trans-unit>
-			<trans-unit id="otilde" xml:space="preserve">
+			<trans-unit id="otilde">
 				<source>Small o with tilde</source>
 			</trans-unit>
-			<trans-unit id="Ouml" xml:space="preserve">
+			<trans-unit id="Ouml">
 				<source>Capital o with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="ouml" xml:space="preserve">
+			<trans-unit id="ouml">
 				<source>Small o with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="Oslash" xml:space="preserve">
+			<trans-unit id="Oslash">
 				<source>Capital o with slash</source>
 			</trans-unit>
-			<trans-unit id="oslash" xml:space="preserve">
+			<trans-unit id="oslash">
 				<source>Small o with slash</source>
 			</trans-unit>
-			<trans-unit id="OElig" xml:space="preserve">
+			<trans-unit id="OElig">
 				<source>Capital ligature OE</source>
 			</trans-unit>
-			<trans-unit id="oelig" xml:space="preserve">
+			<trans-unit id="oelig">
 				<source>Small ligature OE</source>
 			</trans-unit>
-			<trans-unit id="ordm" xml:space="preserve">
+			<trans-unit id="ordm">
 				<source>Masculine ordinal indicator</source>
 			</trans-unit>
-			<trans-unit id="Scaron" xml:space="preserve">
+			<trans-unit id="Scaron">
 				<source>Capital s with caron</source>
 			</trans-unit>
-			<trans-unit id="scaron" xml:space="preserve">
+			<trans-unit id="scaron">
 				<source>Small s with caron</source>
 			</trans-unit>
-			<trans-unit id="szlig" xml:space="preserve">
+			<trans-unit id="szlig">
 				<source>Small sharp s, German</source>
 			</trans-unit>
-			<trans-unit id="THORN" xml:space="preserve">
+			<trans-unit id="THORN">
 				<source>Capital THORN, Icelandic</source>
 			</trans-unit>
-			<trans-unit id="thorn" xml:space="preserve">
+			<trans-unit id="thorn">
 				<source>Small thorn, Icelandic</source>
 			</trans-unit>
-			<trans-unit id="Ugrave" xml:space="preserve">
+			<trans-unit id="Ugrave">
 				<source>Capital u with grave accent</source>
 			</trans-unit>
-			<trans-unit id="ugrave" xml:space="preserve">
+			<trans-unit id="ugrave">
 				<source>Small u with grave accent</source>
 			</trans-unit>
-			<trans-unit id="Uacute" xml:space="preserve">
+			<trans-unit id="Uacute">
 				<source>Capital u with acute accent</source>
 			</trans-unit>
-			<trans-unit id="uacute" xml:space="preserve">
+			<trans-unit id="uacute">
 				<source>Small u with acute accent</source>
 			</trans-unit>
-			<trans-unit id="Ucirc" xml:space="preserve">
+			<trans-unit id="Ucirc">
 				<source>Capital u with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="ucirc" xml:space="preserve">
+			<trans-unit id="ucirc">
 				<source>Small u with circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="Uuml" xml:space="preserve">
+			<trans-unit id="Uuml">
 				<source>Capital u with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="uuml" xml:space="preserve">
+			<trans-unit id="uuml">
 				<source>Small u with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="Yacute" xml:space="preserve">
+			<trans-unit id="Yacute">
 				<source>Capital y with acute accent</source>
 			</trans-unit>
-			<trans-unit id="yacute" xml:space="preserve">
+			<trans-unit id="yacute">
 				<source>Small y with acute accent</source>
 			</trans-unit>
-			<trans-unit id="Yuml" xml:space="preserve">
+			<trans-unit id="Yuml">
 				<source>Capital y with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="yuml" xml:space="preserve">
+			<trans-unit id="yuml">
 				<source>Small y with umlaut/diaeresis</source>
 			</trans-unit>
-			<trans-unit id="acute" xml:space="preserve">
+			<trans-unit id="acute">
 				<source>Spacing acute</source>
 			</trans-unit>
-			<trans-unit id="circ" xml:space="preserve">
+			<trans-unit id="circ">
 				<source>Modifier letter circumflex accent</source>
 			</trans-unit>
-			<trans-unit id="tilde" xml:space="preserve">
+			<trans-unit id="tilde">
 				<source>Small tilde</source>
 			</trans-unit>
-			<trans-unit id="uml" xml:space="preserve">
+			<trans-unit id="uml">
 				<source>Spacing diaeresis</source>
 			</trans-unit>
-			<trans-unit id="cedil" xml:space="preserve">
+			<trans-unit id="cedil">
 				<source>Spacing cedilla</source>
 			</trans-unit>
-			<trans-unit id="shy" xml:space="preserve">
+			<trans-unit id="shy">
 				<source>Soft hyphen</source>
 			</trans-unit>
-			<trans-unit id="ndash" xml:space="preserve">
+			<trans-unit id="ndash">
 				<source>En dash</source>
 			</trans-unit>
-			<trans-unit id="mdash" xml:space="preserve">
+			<trans-unit id="mdash">
 				<source>Em dash</source>
 			</trans-unit>
-			<trans-unit id="lsquo" xml:space="preserve">
+			<trans-unit id="lsquo">
 				<source>Left single quotation mark</source>
 			</trans-unit>
-			<trans-unit id="rsquo" xml:space="preserve">
+			<trans-unit id="rsquo">
 				<source>Right single quotation mark</source>
 			</trans-unit>
-			<trans-unit id="sbquo" xml:space="preserve">
+			<trans-unit id="sbquo">
 				<source>Single low-9 quotation mark</source>
 			</trans-unit>
-			<trans-unit id="ldquo" xml:space="preserve">
+			<trans-unit id="ldquo">
 				<source>Left double quotation mark</source>
 			</trans-unit>
-			<trans-unit id="rdquo" xml:space="preserve">
+			<trans-unit id="rdquo">
 				<source>Right double quotation mark</source>
 			</trans-unit>
-			<trans-unit id="bdquo" xml:space="preserve">
+			<trans-unit id="bdquo">
 				<source>Double low-9 quotation mark</source>
 			</trans-unit>
-			<trans-unit id="lsaquo" xml:space="preserve">
+			<trans-unit id="lsaquo">
 				<source>Single left angle quotation</source>
 			</trans-unit>
-			<trans-unit id="rsaquo" xml:space="preserve">
+			<trans-unit id="rsaquo">
 				<source>Single right angle quotation</source>
 			</trans-unit>
-			<trans-unit id="laquo" xml:space="preserve">
+			<trans-unit id="laquo">
 				<source>Left angle quotation mark</source>
 			</trans-unit>
-			<trans-unit id="raquo" xml:space="preserve">
+			<trans-unit id="raquo">
 				<source>Right angle quotation mark</source>
 			</trans-unit>
-			<trans-unit id="quot" xml:space="preserve">
+			<trans-unit id="quot">
 				<source>Quotation mark</source>
 			</trans-unit>
-			<trans-unit id="hellip" xml:space="preserve">
+			<trans-unit id="hellip">
 				<source>Horizontal ellipsis</source>
 			</trans-unit>
-			<trans-unit id="iquest" xml:space="preserve">
+			<trans-unit id="iquest">
 				<source>Inverted question mark</source>
 			</trans-unit>
-			<trans-unit id="iexcl" xml:space="preserve">
+			<trans-unit id="iexcl">
 				<source>Inverted exclamation mark</source>
 			</trans-unit>
-			<trans-unit id="bull" xml:space="preserve">
+			<trans-unit id="bull">
 				<source>Bullet</source>
 			</trans-unit>
-			<trans-unit id="dagger" xml:space="preserve">
+			<trans-unit id="dagger">
 				<source>Dagger</source>
 			</trans-unit>
-			<trans-unit id="Dagger" xml:space="preserve">
+			<trans-unit id="Dagger">
 				<source>Double dagger</source>
 			</trans-unit>
-			<trans-unit id="brvbar" xml:space="preserve">
+			<trans-unit id="brvbar">
 				<source>Broken vertical bar</source>
 			</trans-unit>
-			<trans-unit id="para" xml:space="preserve">
+			<trans-unit id="para">
 				<source>Paragraph</source>
 			</trans-unit>
-			<trans-unit id="sect" xml:space="preserve">
+			<trans-unit id="sect">
 				<source>Section</source>
 			</trans-unit>
-			<trans-unit id="loz" xml:space="preserve">
+			<trans-unit id="loz">
 				<source>Lozenge</source>
 			</trans-unit>
-			<trans-unit id="#064" xml:space="preserve">
+			<trans-unit id="#064">
 				<source>At</source>
 			</trans-unit>
-			<trans-unit id="copy" xml:space="preserve">
+			<trans-unit id="copy">
 				<source>Copyright</source>
 			</trans-unit>
-			<trans-unit id="reg" xml:space="preserve">
+			<trans-unit id="reg">
 				<source>Registered trademark</source>
 			</trans-unit>
-			<trans-unit id="trade" xml:space="preserve">
+			<trans-unit id="trade">
 				<source>Trademark</source>
 			</trans-unit>
-			<trans-unit id="curren" xml:space="preserve">
+			<trans-unit id="curren">
 				<source>Currency</source>
 			</trans-unit>
-			<trans-unit id="cent" xml:space="preserve">
+			<trans-unit id="cent">
 				<source>Cent</source>
 			</trans-unit>
-			<trans-unit id="euro" xml:space="preserve">
+			<trans-unit id="euro">
 				<source>Euro</source>
 			</trans-unit>
-			<trans-unit id="pound" xml:space="preserve">
+			<trans-unit id="pound">
 				<source>Pound</source>
 			</trans-unit>
-			<trans-unit id="yen" xml:space="preserve">
+			<trans-unit id="yen">
 				<source>Yen</source>
 			</trans-unit>
-			<trans-unit id="emsp" xml:space="preserve">
+			<trans-unit id="emsp">
 				<source>Em space</source>
 			</trans-unit>
-			<trans-unit id="ensp" xml:space="preserve">
+			<trans-unit id="ensp">
 				<source>En space</source>
 			</trans-unit>
-			<trans-unit id="thinsp" xml:space="preserve">
+			<trans-unit id="thinsp">
 				<source>Thin space</source>
 			</trans-unit>
-			<trans-unit id="zwj" xml:space="preserve">
+			<trans-unit id="zwj">
 				<source>Zero width joiner</source>
 			</trans-unit>
-			<trans-unit id="zwnj" xml:space="preserve">
+			<trans-unit id="zwnj">
 				<source>Zero width non-joiner</source>
 			</trans-unit>
-			<trans-unit id="minus" xml:space="preserve">
+			<trans-unit id="minus">
 				<source>Minus sign</source>
 			</trans-unit>
-			<trans-unit id="plusmn" xml:space="preserve">
+			<trans-unit id="plusmn">
 				<source>Plus-or-minus sign</source>
 			</trans-unit>
-			<trans-unit id="times" xml:space="preserve">
+			<trans-unit id="times">
 				<source>Multiplication</source>
 			</trans-unit>
-			<trans-unit id="divide" xml:space="preserve">
+			<trans-unit id="divide">
 				<source>Division</source>
 			</trans-unit>
-			<trans-unit id="radic" xml:space="preserve">
+			<trans-unit id="radic">
 				<source>Square root</source>
 			</trans-unit>
-			<trans-unit id="sdot" xml:space="preserve">
+			<trans-unit id="sdot">
 				<source>Dot operator</source>
 			</trans-unit>
-			<trans-unit id="otimes" xml:space="preserve">
+			<trans-unit id="otimes">
 				<source>Vector product</source>
 			</trans-unit>
-			<trans-unit id="lowast" xml:space="preserve">
+			<trans-unit id="lowast">
 				<source>Asterisk operator</source>
 			</trans-unit>
-			<trans-unit id="ge" xml:space="preserve">
+			<trans-unit id="ge">
 				<source>Greater than or equal to</source>
 			</trans-unit>
-			<trans-unit id="le" xml:space="preserve">
+			<trans-unit id="le">
 				<source>Less than or equal to</source>
 			</trans-unit>
-			<trans-unit id="ne" xml:space="preserve">
+			<trans-unit id="ne">
 				<source>Not equal to</source>
 			</trans-unit>
-			<trans-unit id="asymp" xml:space="preserve">
+			<trans-unit id="asymp">
 				<source>Almost equal to, asymptotic to</source>
 			</trans-unit>
-			<trans-unit id="sim" xml:space="preserve">
+			<trans-unit id="sim">
 				<source>Varies with, similar to</source>
 			</trans-unit>
-			<trans-unit id="prop" xml:space="preserve">
+			<trans-unit id="prop">
 				<source>Proportional to</source>
 			</trans-unit>
-			<trans-unit id="deg" xml:space="preserve">
+			<trans-unit id="deg">
 				<source>Degree</source>
 			</trans-unit>
-			<trans-unit id="prime" xml:space="preserve">
+			<trans-unit id="prime">
 				<source>Prime, minutes, feet</source>
 			</trans-unit>
-			<trans-unit id="Prime" xml:space="preserve">
+			<trans-unit id="Prime">
 				<source>Double prime, seconds, inches</source>
 			</trans-unit>
-			<trans-unit id="micro" xml:space="preserve">
+			<trans-unit id="micro">
 				<source>Micro</source>
 			</trans-unit>
-			<trans-unit id="ang" xml:space="preserve">
+			<trans-unit id="ang">
 				<source>Angle</source>
 			</trans-unit>
-			<trans-unit id="perp" xml:space="preserve">
+			<trans-unit id="perp">
 				<source>Orthogonal to, perpendicular to</source>
 			</trans-unit>
-			<trans-unit id="permil" xml:space="preserve">
+			<trans-unit id="permil">
 				<source>Per mille</source>
 			</trans-unit>
-			<trans-unit id="frasl" xml:space="preserve">
+			<trans-unit id="frasl">
 				<source>Fraction slash</source>
 			</trans-unit>
-			<trans-unit id="frac14" xml:space="preserve">
+			<trans-unit id="frac14">
 				<source>Fraction 1/4</source>
 			</trans-unit>
-			<trans-unit id="frac12" xml:space="preserve">
+			<trans-unit id="frac12">
 				<source>Fraction 1/2</source>
 			</trans-unit>
-			<trans-unit id="frac34" xml:space="preserve">
+			<trans-unit id="frac34">
 				<source>Fraction 3/4</source>
 			</trans-unit>
-			<trans-unit id="sup1" xml:space="preserve">
+			<trans-unit id="sup1">
 				<source>Superscript 1</source>
 			</trans-unit>
-			<trans-unit id="sup2" xml:space="preserve">
+			<trans-unit id="sup2">
 				<source>Superscript 2</source>
 			</trans-unit>
-			<trans-unit id="sup3" xml:space="preserve">
+			<trans-unit id="sup3">
 				<source>Superscript 3</source>
 			</trans-unit>
-			<trans-unit id="not" xml:space="preserve">
+			<trans-unit id="not">
 				<source>Negation</source>
 			</trans-unit>
-			<trans-unit id="and" xml:space="preserve">
+			<trans-unit id="and">
 				<source>Logical and</source>
 			</trans-unit>
-			<trans-unit id="or" xml:space="preserve">
+			<trans-unit id="or">
 				<source>Logical or</source>
 			</trans-unit>
-			<trans-unit id="there4" xml:space="preserve">
+			<trans-unit id="there4">
 				<source>Therefore</source>
 			</trans-unit>
-			<trans-unit id="cong" xml:space="preserve">
+			<trans-unit id="cong">
 				<source>Congruent to</source>
 			</trans-unit>
-			<trans-unit id="isin" xml:space="preserve">
+			<trans-unit id="isin">
 				<source>Is element of</source>
 			</trans-unit>
-			<trans-unit id="ni" xml:space="preserve">
+			<trans-unit id="ni">
 				<source>Contains as member</source>
 			</trans-unit>
-			<trans-unit id="notin" xml:space="preserve">
+			<trans-unit id="notin">
 				<source>Is not an element of</source>
 			</trans-unit>
-			<trans-unit id="sub" xml:space="preserve">
+			<trans-unit id="sub">
 				<source>Proper subset of</source>
 			</trans-unit>
-			<trans-unit id="sube" xml:space="preserve">
+			<trans-unit id="sube">
 				<source>Subset of or equal to</source>
 			</trans-unit>
-			<trans-unit id="nsub" xml:space="preserve">
+			<trans-unit id="nsub">
 				<source>Not subset of</source>
 			</trans-unit>
-			<trans-unit id="sup" xml:space="preserve">
+			<trans-unit id="sup">
 				<source>Proper superset of</source>
 			</trans-unit>
-			<trans-unit id="supe" xml:space="preserve">
+			<trans-unit id="supe">
 				<source>Superset of or equal to</source>
 			</trans-unit>
-			<trans-unit id="cap" xml:space="preserve">
+			<trans-unit id="cap">
 				<source>Intersection</source>
 			</trans-unit>
-			<trans-unit id="cup" xml:space="preserve">
+			<trans-unit id="cup">
 				<source>Union</source>
 			</trans-unit>
-			<trans-unit id="oplus" xml:space="preserve">
+			<trans-unit id="oplus">
 				<source>Direct sum</source>
 			</trans-unit>
-			<trans-unit id="nabla" xml:space="preserve">
+			<trans-unit id="nabla">
 				<source>Gradient</source>
 			</trans-unit>
-			<trans-unit id="empty" xml:space="preserve">
+			<trans-unit id="empty">
 				<source>Empty set</source>
 			</trans-unit>
-			<trans-unit id="equiv" xml:space="preserve">
+			<trans-unit id="equiv">
 				<source>Equivalent</source>
 			</trans-unit>
-			<trans-unit id="sum" xml:space="preserve">
+			<trans-unit id="sum">
 				<source>Sum</source>
 			</trans-unit>
-			<trans-unit id="prod" xml:space="preserve">
+			<trans-unit id="prod">
 				<source>Product</source>
 			</trans-unit>
-			<trans-unit id="weierp" xml:space="preserve">
+			<trans-unit id="weierp">
 				<source>Power set (Weierstrass p)</source>
 			</trans-unit>
-			<trans-unit id="exist" xml:space="preserve">
+			<trans-unit id="exist">
 				<source>There exists</source>
 			</trans-unit>
-			<trans-unit id="forall" xml:space="preserve">
+			<trans-unit id="forall">
 				<source>For all</source>
 			</trans-unit>
-			<trans-unit id="infin" xml:space="preserve">
+			<trans-unit id="infin">
 				<source>Infinity</source>
 			</trans-unit>
-			<trans-unit id="alefsym" xml:space="preserve">
+			<trans-unit id="alefsym">
 				<source>Alef (first transfinite cardinal)</source>
 			</trans-unit>
-			<trans-unit id="real" xml:space="preserve">
+			<trans-unit id="real">
 				<source>Real part of complex number</source>
 			</trans-unit>
-			<trans-unit id="image" xml:space="preserve">
+			<trans-unit id="image">
 				<source>Imaginary part of complex number</source>
 			</trans-unit>
-			<trans-unit id="fnof" xml:space="preserve">
+			<trans-unit id="fnof">
 				<source>Function</source>
 			</trans-unit>
-			<trans-unit id="int" xml:space="preserve">
+			<trans-unit id="int">
 				<source>Integral</source>
 			</trans-unit>
-			<trans-unit id="part" xml:space="preserve">
+			<trans-unit id="part">
 				<source>Partial differential</source>
 			</trans-unit>
-			<trans-unit id="Alpha" xml:space="preserve">
+			<trans-unit id="Alpha">
 				<source>Greek capital letter alpha</source>
 			</trans-unit>
-			<trans-unit id="alpha" xml:space="preserve">
+			<trans-unit id="alpha">
 				<source>Greek small letter alpha</source>
 			</trans-unit>
-			<trans-unit id="Beta" xml:space="preserve">
+			<trans-unit id="Beta">
 				<source>Greek capital letter beta</source>
 			</trans-unit>
-			<trans-unit id="beta" xml:space="preserve">
+			<trans-unit id="beta">
 				<source>Greek small letter beta</source>
 			</trans-unit>
-			<trans-unit id="Gamma" xml:space="preserve">
+			<trans-unit id="Gamma">
 				<source>Greek capital letter gamma</source>
 			</trans-unit>
-			<trans-unit id="gamma" xml:space="preserve">
+			<trans-unit id="gamma">
 				<source>Greek small letter gamma</source>
 			</trans-unit>
-			<trans-unit id="Delta" xml:space="preserve">
+			<trans-unit id="Delta">
 				<source>Greek capital letter delta</source>
 			</trans-unit>
-			<trans-unit id="delta" xml:space="preserve">
+			<trans-unit id="delta">
 				<source>Greek small letter delta</source>
 			</trans-unit>
-			<trans-unit id="Epsilon" xml:space="preserve">
+			<trans-unit id="Epsilon">
 				<source>Greek capital letter epsilon</source>
 			</trans-unit>
-			<trans-unit id="epsilon" xml:space="preserve">
+			<trans-unit id="epsilon">
 				<source>Greek small letter epsilon</source>
 			</trans-unit>
-			<trans-unit id="Zeta" xml:space="preserve">
+			<trans-unit id="Zeta">
 				<source>Greek capital letter zeta</source>
 			</trans-unit>
-			<trans-unit id="zeta" xml:space="preserve">
+			<trans-unit id="zeta">
 				<source>Greek small letter zeta</source>
 			</trans-unit>
-			<trans-unit id="Eta" xml:space="preserve">
+			<trans-unit id="Eta">
 				<source>Greek capital letter eta</source>
 			</trans-unit>
-			<trans-unit id="eta" xml:space="preserve">
+			<trans-unit id="eta">
 				<source>Greek small letter eta</source>
 			</trans-unit>
-			<trans-unit id="Theta" xml:space="preserve">
+			<trans-unit id="Theta">
 				<source>Greek capital letter theta</source>
 			</trans-unit>
-			<trans-unit id="theta" xml:space="preserve">
+			<trans-unit id="theta">
 				<source>Greek small letter theta</source>
 			</trans-unit>
-			<trans-unit id="thetasym" xml:space="preserve">
+			<trans-unit id="thetasym">
 				<source>Greek small letter theta symbol</source>
 			</trans-unit>
-			<trans-unit id="Iota" xml:space="preserve">
+			<trans-unit id="Iota">
 				<source>Greek capital letter iota</source>
 			</trans-unit>
-			<trans-unit id="iota" xml:space="preserve">
+			<trans-unit id="iota">
 				<source>Greek small letter iota</source>
 			</trans-unit>
-			<trans-unit id="Kappa" xml:space="preserve">
+			<trans-unit id="Kappa">
 				<source>Greek capital letter kappa</source>
 			</trans-unit>
-			<trans-unit id="kappa" xml:space="preserve">
+			<trans-unit id="kappa">
 				<source>Greek small letter kappa</source>
 			</trans-unit>
-			<trans-unit id="Lambda" xml:space="preserve">
+			<trans-unit id="Lambda">
 				<source>Greek capital letter lambda</source>
 			</trans-unit>
-			<trans-unit id="lambda" xml:space="preserve">
+			<trans-unit id="lambda">
 				<source>Greek small letter lambda</source>
 			</trans-unit>
-			<trans-unit id="Mu" xml:space="preserve">
+			<trans-unit id="Mu">
 				<source>Greek capital letter mu</source>
 			</trans-unit>
-			<trans-unit id="mu" xml:space="preserve">
+			<trans-unit id="mu">
 				<source>Greek small letter mu</source>
 			</trans-unit>
-			<trans-unit id="Nu" xml:space="preserve">
+			<trans-unit id="Nu">
 				<source>Greek capital letter nu</source>
 			</trans-unit>
-			<trans-unit id="nu" xml:space="preserve">
+			<trans-unit id="nu">
 				<source>Greek small letter nu</source>
 			</trans-unit>
-			<trans-unit id="Xi" xml:space="preserve">
+			<trans-unit id="Xi">
 				<source>Greek capital letter xi</source>
 			</trans-unit>
-			<trans-unit id="xi" xml:space="preserve">
+			<trans-unit id="xi">
 				<source>Greek small letter xi</source>
 			</trans-unit>
-			<trans-unit id="Omicron" xml:space="preserve">
+			<trans-unit id="Omicron">
 				<source>Greek capital letter omicron</source>
 			</trans-unit>
-			<trans-unit id="omicron" xml:space="preserve">
+			<trans-unit id="omicron">
 				<source>Greek small letter omicron</source>
 			</trans-unit>
-			<trans-unit id="Pi" xml:space="preserve">
+			<trans-unit id="Pi">
 				<source>Greek capital letter pi</source>
 			</trans-unit>
-			<trans-unit id="pi" xml:space="preserve">
+			<trans-unit id="pi">
 				<source>Greek small letter pi</source>
 			</trans-unit>
-			<trans-unit id="piv" xml:space="preserve">
+			<trans-unit id="piv">
 				<source>Greek pi symbol</source>
 			</trans-unit>
-			<trans-unit id="Rho" xml:space="preserve">
+			<trans-unit id="Rho">
 				<source>Greek capital letter rho</source>
 			</trans-unit>
-			<trans-unit id="rho" xml:space="preserve">
+			<trans-unit id="rho">
 				<source>Greek small letter rho</source>
 			</trans-unit>
-			<trans-unit id="Sigma" xml:space="preserve">
+			<trans-unit id="Sigma">
 				<source>Greek capital letter sigma</source>
 			</trans-unit>
-			<trans-unit id="sigma" xml:space="preserve">
+			<trans-unit id="sigma">
 				<source>Greek small letter sigma</source>
 			</trans-unit>
-			<trans-unit id="sigmaf" xml:space="preserve">
+			<trans-unit id="sigmaf">
 				<source>Greek small letter final sigma</source>
 			</trans-unit>
-			<trans-unit id="Tau" xml:space="preserve">
+			<trans-unit id="Tau">
 				<source>Greek capital letter tau</source>
 			</trans-unit>
-			<trans-unit id="tau" xml:space="preserve">
+			<trans-unit id="tau">
 				<source>Greek small letter tau</source>
 			</trans-unit>
-			<trans-unit id="Upsilon" xml:space="preserve">
+			<trans-unit id="Upsilon">
 				<source>Greek capital letter upsilon</source>
 			</trans-unit>
-			<trans-unit id="upsih" xml:space="preserve">
+			<trans-unit id="upsih">
 				<source>Greek upsilon with hook symbol</source>
 			</trans-unit>
-			<trans-unit id="upsilon" xml:space="preserve">
+			<trans-unit id="upsilon">
 				<source>Greek small letter upsilon</source>
 			</trans-unit>
-			<trans-unit id="Phi" xml:space="preserve">
+			<trans-unit id="Phi">
 				<source>Greek capital letter phi</source>
 			</trans-unit>
-			<trans-unit id="phi" xml:space="preserve">
+			<trans-unit id="phi">
 				<source>Greek small letter phi</source>
 			</trans-unit>
-			<trans-unit id="Chi" xml:space="preserve">
+			<trans-unit id="Chi">
 				<source>Greek capital letter chi</source>
 			</trans-unit>
-			<trans-unit id="chi" xml:space="preserve">
+			<trans-unit id="chi">
 				<source>Greek small letter chi</source>
 			</trans-unit>
-			<trans-unit id="Psi" xml:space="preserve">
+			<trans-unit id="Psi">
 				<source>Greek capital letter psi</source>
 			</trans-unit>
-			<trans-unit id="psi" xml:space="preserve">
+			<trans-unit id="psi">
 				<source>Greek small letter psi</source>
 			</trans-unit>
-			<trans-unit id="Omega" xml:space="preserve">
+			<trans-unit id="Omega">
 				<source>Greek capital letter omega</source>
 			</trans-unit>
-			<trans-unit id="omega" xml:space="preserve">
+			<trans-unit id="omega">
 				<source>Greek small letter omega</source>
 			</trans-unit>
-			<trans-unit id="crarr" xml:space="preserve">
+			<trans-unit id="crarr">
 				<source>Carriage return arrow</source>
 			</trans-unit>
-			<trans-unit id="uarr" xml:space="preserve">
+			<trans-unit id="uarr">
 				<source>Upwards arrow</source>
 			</trans-unit>
-			<trans-unit id="darr" xml:space="preserve">
+			<trans-unit id="darr">
 				<source>Downwards arrow</source>
 			</trans-unit>
-			<trans-unit id="larr" xml:space="preserve">
+			<trans-unit id="larr">
 				<source>Leftwards arrow</source>
 			</trans-unit>
-			<trans-unit id="rarr" xml:space="preserve">
+			<trans-unit id="rarr">
 				<source>Rightwards arrow</source>
 			</trans-unit>
-			<trans-unit id="harr" xml:space="preserve">
+			<trans-unit id="harr">
 				<source>Left right arrow</source>
 			</trans-unit>
-			<trans-unit id="uArr" xml:space="preserve">
+			<trans-unit id="uArr">
 				<source>Upwards double arrow</source>
 			</trans-unit>
-			<trans-unit id="dArr" xml:space="preserve">
+			<trans-unit id="dArr">
 				<source>Downwards double arrow</source>
 			</trans-unit>
-			<trans-unit id="lArr" xml:space="preserve">
+			<trans-unit id="lArr">
 				<source>Leftwards double arrow</source>
 			</trans-unit>
-			<trans-unit id="rArr" xml:space="preserve">
+			<trans-unit id="rArr">
 				<source>Rightwards double arrow</source>
 			</trans-unit>
-			<trans-unit id="hArr" xml:space="preserve">
+			<trans-unit id="hArr">
 				<source>Left right double arrow</source>
 			</trans-unit>
-			<trans-unit id="clubs" xml:space="preserve">
+			<trans-unit id="clubs">
 				<source>Club</source>
 			</trans-unit>
-			<trans-unit id="diams" xml:space="preserve">
+			<trans-unit id="diams">
 				<source>Diamond</source>
 			</trans-unit>
-			<trans-unit id="hearts" xml:space="preserve">
+			<trans-unit id="hearts">
 				<source>Heart</source>
 			</trans-unit>
-			<trans-unit id="spades" xml:space="preserve">
+			<trans-unit id="spades">
 				<source>Spade</source>
 			</trans-unit>
 		</body>

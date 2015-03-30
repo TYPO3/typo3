@@ -3,7 +3,7 @@
 	<file t3:id="1415815014" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="wizard_crpages">
 		<header/>
 		<body>
-			<trans-unit id="tx_wizardcrpages.alttitle" xml:space="preserve">
+			<trans-unit id="tx_wizardcrpages.alttitle">
 				<source>Create Pages wizard</source>
 			</trans-unit>
 			<trans-unit id="tx_wizardcrpages.description" xml:space="preserve">
@@ -23,7 +23,7 @@ Select this if the new pages should be hidden by default. This option may be for
 &lt;b&gt;Lorem Ipsum...&lt;/b&gt;
 The Create new page wizard supports the Lorem Ipsum extension providing dummy content for the fields.</source>
 			</trans-unit>
-			<trans-unit id="_tx_wizardcrpages.seeAlso" xml:space="preserve">
+			<trans-unit id="_tx_wizardcrpages.seeAlso">
 				<source>xEXT_loremipsum</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>

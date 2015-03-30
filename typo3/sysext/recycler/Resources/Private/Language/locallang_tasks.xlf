@@ -3,22 +3,22 @@
 	<file t3:id="1424776442" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="recycler">
 		<header />
 		<body>
-			<trans-unit id="cleanerTaskTitle" xml:space="preserve">
+			<trans-unit id="cleanerTaskTitle">
 				<source>Remove deleted records</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskDescription" xml:space="preserve">
+			<trans-unit id="cleanerTaskDescription">
 				<source>Deletes rows from the database which are flagged "deleted"</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskPeriod" xml:space="preserve">
+			<trans-unit id="cleanerTaskPeriod">
 				<source>Delete entries older than (in days)</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskTCA" xml:space="preserve">
+			<trans-unit id="cleanerTaskTCA">
 				<source>Tables</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskDescriptionTables" xml:space="preserve">
+			<trans-unit id="cleanerTaskDescriptionTables">
 				<source>Tables: %s</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskDescriptionDays" xml:space="preserve">
+			<trans-unit id="cleanerTaskDescriptionDays">
 				<source>Older than %d days(s)</source>
 			</trans-unit>
 			<trans-unit id="cleanerTaskErrorPeriod" xml:space="preserver">

@@ -3,55 +3,55 @@
 	<file t3:id="1415814847" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="deleteItem" xml:space="preserve">
+			<trans-unit id="deleteItem">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning" xml:space="preserve">
+			<trans-unit id="deleteWarning">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="undoLastChange" xml:space="preserve">
+			<trans-unit id="undoLastChange">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="recordHistory" xml:space="preserve">
+			<trans-unit id="recordHistory">
 				<source>View record change history</source>
 			</trans-unit>
-			<trans-unit id="editWholeRecord" xml:space="preserve">
+			<trans-unit id="editWholeRecord">
 				<source>Edit whole record</source>
 			</trans-unit>
-			<trans-unit id="openDocs" xml:space="preserve">
+			<trans-unit id="openDocs">
 				<source>OPEN DOCUMENTS</source>
 			</trans-unit>
-			<trans-unit id="noDocuments" xml:space="preserve">
+			<trans-unit id="noDocuments">
 				<source>No open documents</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg" xml:space="preserve">
+			<trans-unit id="noDocuments_msg">
 				<source>There are no open documents available to edit.</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg2" xml:space="preserve">
+			<trans-unit id="noDocuments_msg2">
 				<source>You can go to %s to find the page or the record you wish to edit.</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg3" xml:space="preserve">
+			<trans-unit id="noDocuments_msg3">
 				<source>You can select one of your most recently edited records from this list:</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_pagemodule" xml:space="preserve">
+			<trans-unit id="noDocuments_pagemodule">
 				<source>the Web&gt;Page module</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_OR" xml:space="preserve">
+			<trans-unit id="noDocuments_OR">
 				<source>or</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_listmodule" xml:space="preserve">
+			<trans-unit id="noDocuments_listmodule">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.close_without_save.yes" xml:space="preserve">
+			<trans-unit id="buttons.confirm.close_without_save.yes">
 				<source>Yes, discard my changes</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.close_without_save.no" xml:space="preserve">
+			<trans-unit id="buttons.confirm.close_without_save.no">
 				<source>No, I will continue editing</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.close_without_save.title" xml:space="preserve">
+			<trans-unit id="label.confirm.close_without_save.title">
 				<source>Do you want to quit without saving?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.close_without_save.content" xml:space="preserve">
+			<trans-unit id="label.confirm.close_without_save.content">
 				<source>You have currently unsaved changes. Are you sure that you want to discard all changes?</source>
 			</trans-unit>
 		</body>

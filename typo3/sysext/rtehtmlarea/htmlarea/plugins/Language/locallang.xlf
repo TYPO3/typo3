@@ -3,19 +3,19 @@
 	<file t3:id="1415814956" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="LeftToRight-Tooltip" xml:space="preserve">
+			<trans-unit id="LeftToRight-Tooltip">
 				<source>Direction left to right</source>
 			</trans-unit>
-			<trans-unit id="RightToLeft-Tooltip" xml:space="preserve">
+			<trans-unit id="RightToLeft-Tooltip">
 				<source>Direction right to left</source>
 			</trans-unit>
-			<trans-unit id="Language-Tooltip" xml:space="preserve">
+			<trans-unit id="Language-Tooltip">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="ShowLanguageMarks-Tooltip" xml:space="preserve">
+			<trans-unit id="ShowLanguageMarks-Tooltip">
 				<source>Show language marks</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
+			<trans-unit id="Technische Universitat Ilmenau">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

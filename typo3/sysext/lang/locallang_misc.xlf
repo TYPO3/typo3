@@ -3,439 +3,439 @@
 	<file t3:id="1415814865" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="shortcutDescription" xml:space="preserve">
+			<trans-unit id="shortcutDescription">
 				<source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
 			</trans-unit>
-			<trans-unit id="shortcut_edit" xml:space="preserve">
+			<trans-unit id="shortcut_edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="shortcut_create" xml:space="preserve">
+			<trans-unit id="shortcut_create">
 				<source>Create</source>
 			</trans-unit>
-			<trans-unit id="shortcut_editID" xml:space="preserve">
+			<trans-unit id="shortcut_editID">
 				<source>Edit/Search</source>
 			</trans-unit>
-			<trans-unit id="shortcut_save" xml:space="preserve">
+			<trans-unit id="shortcut_save">
 				<source>Update shortcut title</source>
 			</trans-unit>
-			<trans-unit id="shortcut_saveClose" xml:space="preserve">
+			<trans-unit id="shortcut_saveClose">
 				<source>Update and close editor</source>
 			</trans-unit>
-			<trans-unit id="shortcut_close" xml:space="preserve">
+			<trans-unit id="shortcut_close">
 				<source>Close shortcut editor</source>
 			</trans-unit>
-			<trans-unit id="shortcut_delete" xml:space="preserve">
+			<trans-unit id="shortcut_delete">
 				<source>Remove shortcut</source>
 			</trans-unit>
-			<trans-unit id="shortcut_loadEdit" xml:space="preserve">
+			<trans-unit id="shortcut_loadEdit">
 				<source>Loading page</source>
 			</trans-unit>
-			<trans-unit id="shortcut_searchFor" xml:space="preserve">
+			<trans-unit id="shortcut_searchFor">
 				<source>Search for:</source>
 			</trans-unit>
-			<trans-unit id="shortcut_notEditable" xml:space="preserve">
+			<trans-unit id="shortcut_notEditable">
 				<source>No editable page found!</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group" xml:space="preserve">
+			<trans-unit id="shortcut_group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_1" xml:space="preserve">
+			<trans-unit id="shortcut_group_1">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_2" xml:space="preserve">
+			<trans-unit id="shortcut_group_2">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_3" xml:space="preserve">
+			<trans-unit id="shortcut_group_3">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_4" xml:space="preserve">
+			<trans-unit id="shortcut_group_4">
 				<source>Tools</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_5" xml:space="preserve">
+			<trans-unit id="shortcut_group_5">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="shortcut_global" xml:space="preserve">
+			<trans-unit id="shortcut_global">
 				<source>Global</source>
 			</trans-unit>
-			<trans-unit id="shortcut_all" xml:space="preserve">
+			<trans-unit id="shortcut_all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="shortcut_onlyAdmin" xml:space="preserve">
+			<trans-unit id="shortcut_onlyAdmin">
 				<source>You cannot edit a shared shortcut!</source>
 			</trans-unit>
-			<trans-unit id="shortcut_selSC" xml:space="preserve">
+			<trans-unit id="shortcut_selSC">
 				<source>Select shortcut</source>
 			</trans-unit>
-			<trans-unit id="shortcut_delAllInCat" xml:space="preserve">
+			<trans-unit id="shortcut_delAllInCat">
 				<source>Delete all shortcuts in this group?</source>
 			</trans-unit>
-			<trans-unit id="shortcut_onlineWS" xml:space="preserve">
+			<trans-unit id="shortcut_onlineWS">
 				<source>LIVE workspace</source>
 			</trans-unit>
-			<trans-unit id="shortcut_offlineWS" xml:space="preserve">
+			<trans-unit id="shortcut_offlineWS">
 				<source>Draft workspace</source>
 			</trans-unit>
-			<trans-unit id="shortcut_active" xml:space="preserve">
+			<trans-unit id="shortcut_active">
 				<source>active</source>
 			</trans-unit>
-			<trans-unit id="shortcut_inactive" xml:space="preserve">
+			<trans-unit id="shortcut_inactive">
 				<source>inactive</source>
 			</trans-unit>
-			<trans-unit id="shortcut_noWSfound" xml:space="preserve">
+			<trans-unit id="shortcut_noWSfound">
 				<source>ERROR: No workspaces found!</source>
 			</trans-unit>
-			<trans-unit id="shortcut_FEPreview" xml:space="preserve">
+			<trans-unit id="shortcut_FEPreview">
 				<source>Enable Frontend Preview</source>
 			</trans-unit>
-			<trans-unit id="shortcut_workspace" xml:space="preserve">
+			<trans-unit id="shortcut_workspace">
 				<source>Go to Workspace Module</source>
 			</trans-unit>
-			<trans-unit id="bookmarkDescription" xml:space="preserve">
+			<trans-unit id="bookmarkDescription">
 				<source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %icon%, which you can find on each page in the backend.</source>
 			</trans-unit>
-			<trans-unit id="bookmark_edit" xml:space="preserve">
+			<trans-unit id="bookmark_edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="bookmark_create" xml:space="preserve">
+			<trans-unit id="bookmark_create">
 				<source>Create</source>
 			</trans-unit>
-			<trans-unit id="bookmark_editID" xml:space="preserve">
+			<trans-unit id="bookmark_editID">
 				<source>Edit/Search</source>
 			</trans-unit>
-			<trans-unit id="bookmark_save" xml:space="preserve">
+			<trans-unit id="bookmark_save">
 				<source>Update bookmark title</source>
 			</trans-unit>
-			<trans-unit id="bookmark_saveClose" xml:space="preserve">
+			<trans-unit id="bookmark_saveClose">
 				<source>Update and close editor</source>
 			</trans-unit>
-			<trans-unit id="bookmark_close" xml:space="preserve">
+			<trans-unit id="bookmark_close">
 				<source>Close bookmark editor</source>
 			</trans-unit>
-			<trans-unit id="bookmark_delete" xml:space="preserve">
+			<trans-unit id="bookmark_delete">
 				<source>Remove bookmark</source>
 			</trans-unit>
-			<trans-unit id="bookmark_loadEdit" xml:space="preserve">
+			<trans-unit id="bookmark_loadEdit">
 				<source>Loading page</source>
 			</trans-unit>
-			<trans-unit id="bookmark_searchFor" xml:space="preserve">
+			<trans-unit id="bookmark_searchFor">
 				<source>Search for:</source>
 			</trans-unit>
-			<trans-unit id="bookmark_notEditable" xml:space="preserve">
+			<trans-unit id="bookmark_notEditable">
 				<source>No editable page found!</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group" xml:space="preserve">
+			<trans-unit id="bookmark_group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_1" xml:space="preserve">
+			<trans-unit id="bookmark_group_1">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_2" xml:space="preserve">
+			<trans-unit id="bookmark_group_2">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_3" xml:space="preserve">
+			<trans-unit id="bookmark_group_3">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_4" xml:space="preserve">
+			<trans-unit id="bookmark_group_4">
 				<source>Tools</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_5" xml:space="preserve">
+			<trans-unit id="bookmark_group_5">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="bookmark_global" xml:space="preserve">
+			<trans-unit id="bookmark_global">
 				<source>Global</source>
 			</trans-unit>
-			<trans-unit id="bookmark_all" xml:space="preserve">
+			<trans-unit id="bookmark_all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="bookmark_onlyAdmin" xml:space="preserve">
+			<trans-unit id="bookmark_onlyAdmin">
 				<source>You cannot edit a shared bookmark!</source>
 			</trans-unit>
-			<trans-unit id="bookmark_selSC" xml:space="preserve">
+			<trans-unit id="bookmark_selSC">
 				<source>Select bookmark</source>
 			</trans-unit>
-			<trans-unit id="bookmark_delAllInCat" xml:space="preserve">
+			<trans-unit id="bookmark_delAllInCat">
 				<source>Delete all bookmarks in this group</source>
 			</trans-unit>
-			<trans-unit id="bookmark_onlineWS" xml:space="preserve">
+			<trans-unit id="bookmark_onlineWS">
 				<source>LIVE workspace</source>
 			</trans-unit>
-			<trans-unit id="bookmark_offlineWS" xml:space="preserve">
+			<trans-unit id="bookmark_offlineWS">
 				<source>Draft workspace</source>
 			</trans-unit>
-			<trans-unit id="bookmark_active" xml:space="preserve">
+			<trans-unit id="bookmark_active">
 				<source>active</source>
 			</trans-unit>
-			<trans-unit id="bookmark_inactive" xml:space="preserve">
+			<trans-unit id="bookmark_inactive">
 				<source>inactive</source>
 			</trans-unit>
-			<trans-unit id="bookmark_noWSfound" xml:space="preserve">
+			<trans-unit id="bookmark_noWSfound">
 				<source>ERROR: No workspaces found!</source>
 			</trans-unit>
-			<trans-unit id="bookmark_FEPreview" xml:space="preserve">
+			<trans-unit id="bookmark_FEPreview">
 				<source>Enable Frontend Preview</source>
 			</trans-unit>
-			<trans-unit id="bookmark_workspaceComparisonView" xml:space="preserve">
+			<trans-unit id="bookmark_workspaceComparisonView">
 				<source>Enable comparison view</source>
 			</trans-unit>
-			<trans-unit id="bookmark_workspace" xml:space="preserve">
+			<trans-unit id="bookmark_workspace">
 				<source>Go to Workspace Module</source>
 			</trans-unit>
-			<trans-unit id="overwriteExistingFiles" xml:space="preserve">
+			<trans-unit id="overwriteExistingFiles">
 				<source>Overwrite existing files</source>
 			</trans-unit>
-			<trans-unit id="uploadMultipleFilesInfo" xml:space="preserve">
+			<trans-unit id="uploadMultipleFilesInfo">
 				<source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
 			</trans-unit>
-			<trans-unit id="fileMetaDataLocation" xml:space="preserve">
+			<trans-unit id="fileMetaDataLocation">
 				<source>Location</source>
 			</trans-unit>
-			<trans-unit id="fileMetaErrorInvalidRecord" xml:space="preserve">
+			<trans-unit id="fileMetaErrorInvalidRecord">
 				<source>File meta data not found</source>
 			</trans-unit>
-			<trans-unit id="selectPosition" xml:space="preserve">
+			<trans-unit id="selectPosition">
 				<source>Select a position for the new page</source>
 			</trans-unit>
-			<trans-unit id="pageSelectPosition" xml:space="preserve">
+			<trans-unit id="pageSelectPosition">
 				<source>Page (select position)</source>
 			</trans-unit>
-			<trans-unit id="goBack" xml:space="preserve">
+			<trans-unit id="goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="createNewPage" xml:space="preserve">
+			<trans-unit id="createNewPage">
 				<source>Create a new page</source>
 			</trans-unit>
-			<trans-unit id="createNewContent" xml:space="preserve">
+			<trans-unit id="createNewContent">
 				<source>Create a new content element</source>
 			</trans-unit>
-			<trans-unit id="clickForWizard" xml:space="preserve">
+			<trans-unit id="clickForWizard">
 				<source>Click here for wizard!</source>
 			</trans-unit>
-			<trans-unit id="insertNewPageHere" xml:space="preserve">
+			<trans-unit id="insertNewPageHere">
 				<source>Insert the new page here</source>
 			</trans-unit>
-			<trans-unit id="insertNewRecordHere" xml:space="preserve">
+			<trans-unit id="insertNewRecordHere">
 				<source>Insert new record here</source>
 			</trans-unit>
-			<trans-unit id="movePageToHere" xml:space="preserve">
+			<trans-unit id="movePageToHere">
 				<source>Move page to this position</source>
 			</trans-unit>
-			<trans-unit id="moveElement" xml:space="preserve">
+			<trans-unit id="moveElement">
 				<source>Move element</source>
 			</trans-unit>
-			<trans-unit id="moveElements" xml:space="preserve">
+			<trans-unit id="moveElements">
 				<source>Move elements</source>
 			</trans-unit>
-			<trans-unit id="copyElements" xml:space="preserve">
+			<trans-unit id="copyElements">
 				<source>Copy elements</source>
 			</trans-unit>
-			<trans-unit id="selectPositionOfElement" xml:space="preserve">
+			<trans-unit id="selectPositionOfElement">
 				<source>Select position of the element</source>
 			</trans-unit>
-			<trans-unit id="movingElement" xml:space="preserve">
+			<trans-unit id="movingElement">
 				<source>Move element</source>
 			</trans-unit>
-			<trans-unit id="makeCopy" xml:space="preserve">
+			<trans-unit id="makeCopy">
 				<source>Make copy instead of moving element</source>
 			</trans-unit>
-			<trans-unit id="newContentElement" xml:space="preserve">
+			<trans-unit id="newContentElement">
 				<source>New content element</source>
 			</trans-unit>
-			<trans-unit id="system_records" xml:space="preserve">
+			<trans-unit id="system_records">
 				<source>System Records</source>
 			</trans-unit>
-			<trans-unit id="1_selectType" xml:space="preserve">
+			<trans-unit id="1_selectType">
 				<source>1: Select type of content element:</source>
 			</trans-unit>
-			<trans-unit id="2_selectPosition" xml:space="preserve">
+			<trans-unit id="2_selectPosition">
 				<source>2: Select position:</source>
 			</trans-unit>
-			<trans-unit id="CM_editAccess" xml:space="preserve">
+			<trans-unit id="CM_editAccess">
 				<source>Visibility settings</source>
 			</trans-unit>
-			<trans-unit id="CM_history" xml:space="preserve">
+			<trans-unit id="CM_history">
 				<source>History/Undo</source>
 			</trans-unit>
-			<trans-unit id="CM_perms" xml:space="preserve">
+			<trans-unit id="CM_perms">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="CM_moveWizard" xml:space="preserve">
+			<trans-unit id="CM_moveWizard">
 				<source>Move element</source>
 			</trans-unit>
-			<trans-unit id="CM_moveWizard_page" xml:space="preserve">
+			<trans-unit id="CM_moveWizard_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="CM_newWizard" xml:space="preserve">
+			<trans-unit id="CM_newWizard">
 				<source>'Create New' wizard</source>
 			</trans-unit>
-			<trans-unit id="CM_editPageProperties" xml:space="preserve">
+			<trans-unit id="CM_editPageProperties">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="CM_db_list" xml:space="preserve">
+			<trans-unit id="CM_db_list">
 				<source>Web&gt;List module</source>
 			</trans-unit>
-			<trans-unit id="noEditPage" xml:space="preserve">
+			<trans-unit id="noEditPage">
 				<source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
 			</trans-unit>
-			<trans-unit id="localize" xml:space="preserve">
+			<trans-unit id="localize">
 				<source>Localize</source>
 			</trans-unit>
-			<trans-unit id="localize.isLocalizable" xml:space="preserve">
+			<trans-unit id="localize.isLocalizable">
 				<source>Record can be localized</source>
 			</trans-unit>
-			<trans-unit id="localize.wasRemovedInOriginal" xml:space="preserve">
+			<trans-unit id="localize.wasRemovedInOriginal">
 				<source>Record was removed in original language</source>
 			</trans-unit>
-			<trans-unit id="localizeAllRecords" xml:space="preserve">
+			<trans-unit id="localizeAllRecords">
 				<source>Localize all records</source>
 			</trans-unit>
-			<trans-unit id="localizeMergeIfNotBlank" xml:space="preserve">
+			<trans-unit id="localizeMergeIfNotBlank">
 				<source>The value of the default language will be used if this field is left empty in the translation.</source>
 			</trans-unit>
-			<trans-unit id="synchronizeWithOriginalLanguage" xml:space="preserve">
+			<trans-unit id="synchronizeWithOriginalLanguage">
 				<source>Synchronize with original language</source>
 			</trans-unit>
-			<trans-unit id="pageTree_filter" xml:space="preserve">
+			<trans-unit id="pageTree_filter">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="switchtouser" xml:space="preserve">
+			<trans-unit id="switchtouser">
 				<source>Switch to User</source>
 			</trans-unit>
-			<trans-unit id="switchtousershort" xml:space="preserve">
+			<trans-unit id="switchtousershort">
 				<source>SU:</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_windowTitle" xml:space="preserve">
+			<trans-unit id="fileUpload_windowTitle">
 				<source>File Upload Progress</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_buttonSelectFiles" xml:space="preserve">
+			<trans-unit id="fileUpload_buttonSelectFiles">
 				<source>Select Files</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_buttonCancelAll" xml:space="preserve">
+			<trans-unit id="fileUpload_buttonCancelAll">
 				<source>Cancel All Uploads</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentMaxFileSize" xml:space="preserve">
+			<trans-unit id="fileUpload_infoComponentMaxFileSize">
 				<source>You can upload files with a maximum size of {0}.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentFileUploadLimit" xml:space="preserve">
+			<trans-unit id="fileUpload_infoComponentFileUploadLimit">
 				<source>You can upload a total of {0}.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentFileTypeLimit" xml:space="preserve">
+			<trans-unit id="fileUpload_infoComponentFileTypeLimit">
 				<source>You can upload the following file types {0}.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentOverrideFiles" xml:space="preserve">
+			<trans-unit id="fileUpload_infoComponentOverrideFiles">
 				<source>Overwrite existing files</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_processRunning" xml:space="preserve">
+			<trans-unit id="fileUpload_processRunning">
 				<source>Another process is already uploading</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadWait" xml:space="preserve">
+			<trans-unit id="fileUpload_uploadWait">
 				<source>Waiting to start upload of {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadStarting" xml:space="preserve">
+			<trans-unit id="fileUpload_uploadStarting">
 				<source>Starting upload of {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadProgress" xml:space="preserve">
+			<trans-unit id="fileUpload_uploadProgress">
 				<source>{0}% of {1} uploaded</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadSuccess" xml:space="preserve">
+			<trans-unit id="fileUpload_uploadSuccess">
 				<source>{0} was successfully uploaded!</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueLimitExceeded" xml:space="preserve">
+			<trans-unit id="fileUpload_errorQueueLimitExceeded">
 				<source>Too many files selected</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueFileSizeLimit" xml:space="preserve">
+			<trans-unit id="fileUpload_errorQueueFileSizeLimit">
 				<source>{0} is too big</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueZeroByteFile" xml:space="preserve">
+			<trans-unit id="fileUpload_errorQueueZeroByteFile">
 				<source>{0} is empty</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueInvalidFiletype" xml:space="preserve">
+			<trans-unit id="fileUpload_errorQueueInvalidFiletype">
 				<source>Filetype not allowed for {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadHttp" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadHttp">
 				<source>Too many files selected</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadHttpError" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadHttpError">
 				<source>A HTTP error occurred: {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadMissingUrl" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadMissingUrl">
 				<source>Internal error: No Upload URL set</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadIO" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadIO">
 				<source>Internal error: Problems while reading/writing the file</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadSecurityError" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadSecurityError">
 				<source>Internal error: {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadLimit" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadLimit">
 				<source>Upload limit exceeded</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFailed" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadFailed">
 				<source>Upload failed</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileIDNotFound" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadFileIDNotFound">
 				<source>Internal error: File ID not found</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileValidation" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadFileValidation">
 				<source>Internal error while validating the file</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileCancelled" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadFileCancelled">
 				<source>Upload of {0} canceled</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadStopped" xml:space="preserve">
+			<trans-unit id="fileUpload_errorUploadStopped">
 				<source>Upload of {0} stopped</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allErrorMessageTitle" xml:space="preserve">
+			<trans-unit id="fileUpload_allErrorMessageTitle">
 				<source>All uploads failed</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allErrorMessageText" xml:space="preserve">
+			<trans-unit id="fileUpload_allErrorMessageText">
 				<source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allError401" xml:space="preserve">
+			<trans-unit id="fileUpload_allError401">
 				<source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allError2038" xml:space="preserve">
+			<trans-unit id="fileUpload_allError2038">
 				<source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_title" xml:space="preserve">
+			<trans-unit id="liveSearch_title">
 				<source>Short result list</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_emptyText" xml:space="preserve">
+			<trans-unit id="liveSearch_emptyText">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_loadingText" xml:space="preserve">
+			<trans-unit id="liveSearch_loadingText">
 				<source>Searching...</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_listEmptyText" xml:space="preserve">
+			<trans-unit id="liveSearch_listEmptyText">
 				<source>No results found.</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_showAllResults" xml:space="preserve">
+			<trans-unit id="liveSearch_showAllResults">
 				<source>Show All</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpTitle" xml:space="preserve">
+			<trans-unit id="liveSearch_helpTitle">
 				<source>How to use advanced search tags</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpDescription" xml:space="preserve">
+			<trans-unit id="liveSearch_helpDescription">
 				<source>Search in certain tables:</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpDescriptionPages" xml:space="preserve">
+			<trans-unit id="liveSearch_helpDescriptionPages">
 				<source>#page:Home will search for all pages with the title "Home"</source>
 			</trans-unit>
-			<trans-unit id="extDirect_timeoutHeader" xml:space="preserve">
+			<trans-unit id="extDirect_timeoutHeader">
 				<source>Connection Problem</source>
 			</trans-unit>
-			<trans-unit id="extDirect_timeoutMessage" xml:space="preserve">
+			<trans-unit id="extDirect_timeoutMessage">
 				<source>Sorry, but an error occurred while connecting to the server. Please check your network connection.</source>
 			</trans-unit>
-			<trans-unit id="viewPort_tooltipModuleMenuSplit" xml:space="preserve">
+			<trans-unit id="viewPort_tooltipModuleMenuSplit">
 				<source>Drag to resize the Modules Menu</source>
 			</trans-unit>
-			<trans-unit id="viewPort_tooltipNavigationContainerSplitDrag" xml:space="preserve">
+			<trans-unit id="viewPort_tooltipNavigationContainerSplitDrag">
 				<source>Drag to resize or double click to collapse the page tree area</source>
 			</trans-unit>
-			<trans-unit id="viewPort_tooltipNavigationContainerSplitClick" xml:space="preserve">
+			<trans-unit id="viewPort_tooltipNavigationContainerSplitClick">
 				<source>Click to toggle the page tree area</source>
 			</trans-unit>
-			<trans-unit id="viewPort_tooltipDebugPanelSplitDrag" xml:space="preserve">
+			<trans-unit id="viewPort_tooltipDebugPanelSplitDrag">
 				<source>Drag to resize or click to collapse the Debug Panel.</source>
 			</trans-unit>
 		</body>

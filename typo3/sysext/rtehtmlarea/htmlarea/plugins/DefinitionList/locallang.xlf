@@ -3,37 +3,37 @@
 	<file t3:id="1415814948" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Indent-Tooltip" xml:space="preserve">
+			<trans-unit id="Indent-Tooltip">
 				<source>Increase indent</source>
 			</trans-unit>
-			<trans-unit id="Indent-helpText" xml:space="preserve">
+			<trans-unit id="Indent-helpText">
 				<source>Increases text indentation</source>
 			</trans-unit>
-			<trans-unit id="Outdent-Tooltip" xml:space="preserve">
+			<trans-unit id="Outdent-Tooltip">
 				<source>Reduce indent</source>
 			</trans-unit>
-			<trans-unit id="Outdent-helpText" xml:space="preserve">
+			<trans-unit id="Outdent-helpText">
 				<source>Reduces text indentation</source>
 			</trans-unit>
-			<trans-unit id="DefinitionList-Tooltip" xml:space="preserve">
+			<trans-unit id="DefinitionList-Tooltip">
 				<source>Definition list</source>
 			</trans-unit>
-			<trans-unit id="DefinitionList-helpText" xml:space="preserve">
+			<trans-unit id="DefinitionList-helpText">
 				<source>Makes a definition list from the current selection</source>
 			</trans-unit>
-			<trans-unit id="DefinitionItem-Tooltip" xml:space="preserve">
+			<trans-unit id="DefinitionItem-Tooltip">
 				<source>Toggle term and definition</source>
 			</trans-unit>
-			<trans-unit id="DefinitionItem-helpText" xml:space="preserve">
+			<trans-unit id="DefinitionItem-helpText">
 				<source>Toggles term and definition elements</source>
 			</trans-unit>
-			<trans-unit id="No block" xml:space="preserve">
+			<trans-unit id="No block">
 				<source>No block format</source>
 			</trans-unit>
-			<trans-unit id="Remove block" xml:space="preserve">
+			<trans-unit id="Remove block">
 				<source>Remove block format</source>
 			</trans-unit>
-			<trans-unit id="Technische Universitat Ilmenau" xml:space="preserve">
+			<trans-unit id="Technische Universitat Ilmenau">
 				<source>Technische Universität Ilmenau</source>
 			</trans-unit>
 		</body>

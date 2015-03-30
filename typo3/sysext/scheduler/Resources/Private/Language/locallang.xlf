@@ -3,403 +3,403 @@
 	<file t3:id="1415814984" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id="action.add" xml:space="preserve">
+			<trans-unit id="action.add">
 				<source>Add task</source>
 			</trans-unit>
-			<trans-unit id="action.edit" xml:space="preserve">
+			<trans-unit id="action.edit">
 				<source>Edit task</source>
 			</trans-unit>
-			<trans-unit id="button.cancel" xml:space="preserve">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="function.scheduler" xml:space="preserve">
+			<trans-unit id="function.scheduler">
 				<source>Scheduled tasks</source>
 			</trans-unit>
-			<trans-unit id="function.check" xml:space="preserve">
+			<trans-unit id="function.check">
 				<source>Setup check</source>
 			</trans-unit>
-			<trans-unit id="function.info" xml:space="preserve">
+			<trans-unit id="function.info">
 				<source>Information</source>
 			</trans-unit>
-			<trans-unit id="hdg.cliScript" xml:space="preserve">
+			<trans-unit id="hdg.cliScript">
 				<source>CLI script</source>
 			</trans-unit>
-			<trans-unit id="hdg.lastRun" xml:space="preserve">
+			<trans-unit id="hdg.lastRun">
 				<source>Last run</source>
 			</trans-unit>
-			<trans-unit id="hdg.schedulerUser" xml:space="preserve">
+			<trans-unit id="hdg.schedulerUser">
 				<source>TYPO3 Scheduler backend user</source>
 			</trans-unit>
-			<trans-unit id="label.automatically" xml:space="preserve">
+			<trans-unit id="label.automatically">
 				<source>automatically</source>
 			</trans-unit>
-			<trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" xml:space="preserve">
+			<trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends">
 				<source>Backend types</source>
 			</trans-unit>
-			<trans-unit id="label.recyclerGarbageCollection.numberOfDays" xml:space="preserve">
+			<trans-unit id="label.recyclerGarbageCollection.numberOfDays">
 				<source>Number of days until removing files</source>
 			</trans-unit>
-			<trans-unit id="label.checkAll" xml:space="preserve">
+			<trans-unit id="label.checkAll">
 				<source>Check/uncheck all</source>
 			</trans-unit>
-			<trans-unit id="label.class" xml:space="preserve">
+			<trans-unit id="label.class">
 				<source>Class</source>
 			</trans-unit>
-			<trans-unit id="label.cron" xml:space="preserve">
+			<trans-unit id="label.cron">
 				<source>Cron</source>
 			</trans-unit>
-			<trans-unit id="label.defType" xml:space="preserve">
+			<trans-unit id="label.defType">
 				<source>Definition type</source>
 			</trans-unit>
-			<trans-unit id="label.defType.interval" xml:space="preserve">
+			<trans-unit id="label.defType.interval">
 				<source>Interval</source>
 			</trans-unit>
-			<trans-unit id="label.defType.cron" xml:space="preserve">
+			<trans-unit id="label.defType.cron">
 				<source>Cron command</source>
 			</trans-unit>
-			<trans-unit id="label.description" xml:space="preserve">
+			<trans-unit id="label.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="label.email" xml:space="preserve">
+			<trans-unit id="label.email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="label.end" xml:space="preserve">
+			<trans-unit id="label.end">
 				<source>End (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
-			<trans-unit id="label.executeSelected" xml:space="preserve">
+			<trans-unit id="label.executeSelected">
 				<source>Execute selected tasks</source>
 			</trans-unit>
-			<trans-unit id="label.extension" xml:space="preserve">
+			<trans-unit id="label.extension">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="label.frequency" xml:space="preserve">
+			<trans-unit id="label.frequency">
 				<source>Frequency</source>
 			</trans-unit>
-			<trans-unit id="label.frequency.long" xml:space="preserve">
+			<trans-unit id="label.frequency.long">
 				<source>Frequency (seconds or cron command)</source>
 			</trans-unit>
-			<trans-unit id="label.id" xml:space="preserve">
+			<trans-unit id="label.id">
 				<source>ID</source>
 			</trans-unit>
-			<trans-unit id="label.lastExecution" xml:space="preserve">
+			<trans-unit id="label.lastExecution">
 				<source>Last Execution</source>
 			</trans-unit>
-			<trans-unit id="label.manual" xml:space="preserve">
+			<trans-unit id="label.manual">
 				<source>Manual</source>
 			</trans-unit>
-			<trans-unit id="label.manually" xml:space="preserve">
+			<trans-unit id="label.manually">
 				<source>manually</source>
 			</trans-unit>
-			<trans-unit id="label.name" xml:space="preserve">
+			<trans-unit id="label.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="label.nextExecution" xml:space="preserve">
+			<trans-unit id="label.nextExecution">
 				<source>Next Execution</source>
 			</trans-unit>
-			<trans-unit id="label.parallel" xml:space="preserve">
+			<trans-unit id="label.parallel">
 				<source>Parallel Execution</source>
 			</trans-unit>
-			<trans-unit id="label.parallel.long" xml:space="preserve">
+			<trans-unit id="label.parallel.long">
 				<source>Allow Parallel Execution</source>
 			</trans-unit>
-			<trans-unit id="label.serverTime" xml:space="preserve">
+			<trans-unit id="label.serverTime">
 				<source>Server time</source>
 			</trans-unit>
-			<trans-unit id="label.sleepTime" xml:space="preserve">
+			<trans-unit id="label.sleepTime">
 				<source>Sleep time</source>
 			</trans-unit>
-			<trans-unit id="label.start" xml:space="preserve">
+			<trans-unit id="label.start">
 				<source>Start (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageIndexing.storage" xml:space="preserve">
+			<trans-unit id="label.fileStorageIndexing.storage">
 				<source>Storage to index</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageExtraction.fileCount" xml:space="preserve">
+			<trans-unit id="label.fileStorageExtraction.fileCount">
 				<source>Number of files per run</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.allTables" xml:space="preserve">
+			<trans-unit id="label.tableGarbageCollection.allTables">
 				<source>Clean all available tables</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.table" xml:space="preserve">
+			<trans-unit id="label.tableGarbageCollection.table">
 				<source>Table to clean up</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.additionalInformationTable" xml:space="preserve">
+			<trans-unit id="label.tableGarbageCollection.additionalInformationTable">
 				<source>Table: %s</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" xml:space="preserve">
+			<trans-unit id="label.tableGarbageCollection.additionalInformationAllTables">
 				<source>All tables</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.numberOfDays" xml:space="preserve">
+			<trans-unit id="label.tableGarbageCollection.numberOfDays">
 				<source>Delete entries older than given number of days</source>
 			</trans-unit>
-			<trans-unit id="label.type" xml:space="preserve">
+			<trans-unit id="label.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="label.type.recurring" xml:space="preserve">
+			<trans-unit id="label.type.recurring">
 				<source>Recurring</source>
 			</trans-unit>
-			<trans-unit id="label.type.single" xml:space="preserve">
+			<trans-unit id="label.type.single">
 				<source>Single</source>
 			</trans-unit>
-			<trans-unit id="label.group" xml:space="preserve">
+			<trans-unit id="label.group">
 				<source>Task group</source>
 			</trans-unit>
-			<trans-unit id="msg.addError" xml:space="preserve">
+			<trans-unit id="msg.addError">
 				<source>The task could not be added.</source>
 			</trans-unit>
-			<trans-unit id="msg.addSuccess" xml:space="preserve">
+			<trans-unit id="msg.addSuccess">
 				<source>The task was added successfully.</source>
 			</trans-unit>
-			<trans-unit id="msg.cliScript" xml:space="preserve">
+			<trans-unit id="msg.cliScript">
 				<source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</source>
 			</trans-unit>
-			<trans-unit id="msg.cliScriptExecutable" xml:space="preserve">
+			<trans-unit id="msg.cliScriptExecutable">
 				<source>The webserver user is allowed execute this script.</source>
 			</trans-unit>
-			<trans-unit id="msg.cliScriptNotExecutable" xml:space="preserve">
+			<trans-unit id="msg.cliScriptNotExecutable">
 				<source>The webserver user is not allowed to execute this script.</source>
 			</trans-unit>
-			<trans-unit id="msg.delete" xml:space="preserve">
+			<trans-unit id="msg.delete">
 				<source>Are you sure you want to delete this task?</source>
 			</trans-unit>
-			<trans-unit id="msg.deleteError" xml:space="preserve">
+			<trans-unit id="msg.deleteError">
 				<source>The task could not be deleted.</source>
 			</trans-unit>
-			<trans-unit id="msg.deleteSuccess" xml:space="preserve">
+			<trans-unit id="msg.deleteSuccess">
 				<source>The task was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="msg.endDateSmallerThanStartDate" xml:space="preserve">
+			<trans-unit id="msg.endDateSmallerThanStartDate">
 				<source>The end date is before the start date.</source>
 			</trans-unit>
-			<trans-unit id="msg.executed" xml:space="preserve">
+			<trans-unit id="msg.executed">
 				<source>Executed: %s</source>
 			</trans-unit>
-			<trans-unit id="msg.frequencyError" xml:space="preserve">
+			<trans-unit id="msg.frequencyError">
 				<source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
 			</trans-unit>
-			<trans-unit id="msg.incompleteLastRun" xml:space="preserve">
+			<trans-unit id="msg.incompleteLastRun">
 				<source>The information about the last execution of the Scheduler is incomplete.</source>
 			</trans-unit>
-			<trans-unit id="msg.infoScreenIntro" xml:space="preserve">
+			<trans-unit id="msg.infoScreenIntro">
 				<source>This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidFrequency" xml:space="preserve">
+			<trans-unit id="msg.invalidFrequency">
 				<source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidSleepTime" xml:space="preserve">
+			<trans-unit id="msg.invalidSleepTime">
 				<source>Please enter a sleep time greater or equal to 0 (zero).</source>
 			</trans-unit>
-			<trans-unit id="msg.lastRun" xml:space="preserve">
+			<trans-unit id="msg.lastRun">
 				<source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotDeleteRunningTask" xml:space="preserve">
+			<trans-unit id="msg.maynotDeleteRunningTask">
 				<source>A running task may not be deleted.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotEditRunningTask" xml:space="preserve">
+			<trans-unit id="msg.maynotEditRunningTask">
 				<source>A running task may not be edited.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotStopNonRunningTask" xml:space="preserve">
+			<trans-unit id="msg.maynotStopNonRunningTask">
 				<source>The task is not running. There are no executions to unmark.</source>
 			</trans-unit>
-			<trans-unit id="msg.noEmail" xml:space="preserve">
+			<trans-unit id="msg.noEmail">
 				<source>Please enter an email address.</source>
 			</trans-unit>
-			<trans-unit id="msg.noFrequency" xml:space="preserve">
+			<trans-unit id="msg.noFrequency">
 				<source>No frequency was defined, either as an interval or as a cron command.</source>
 			</trans-unit>
-			<trans-unit id="msg.noLastRun" xml:space="preserve">
+			<trans-unit id="msg.noLastRun">
 				<source>The Scheduler has never yet run or the information about the last run has been lost.</source>
 			</trans-unit>
-			<trans-unit id="msg.noTasksDefined" xml:space="preserve">
+			<trans-unit id="msg.noTasksDefined">
 				<source>There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="msg.noTaskClassFound" xml:space="preserve">
+			<trans-unit id="msg.noTaskClassFound">
 				<source>The selected task class could not be found. You should probably contact the task's developers.</source>
 			</trans-unit>
-			<trans-unit id="msg.noTasks" xml:space="preserve">
+			<trans-unit id="msg.noTasks">
 				<source>No tasks defined yet.</source>
 			</trans-unit>
-			<trans-unit id="msg.notExecuted" xml:space="preserve">
+			<trans-unit id="msg.notExecuted">
 				<source>Not executed: %s</source>
 			</trans-unit>
-			<trans-unit id="msg.executionFailed" xml:space="preserve">
+			<trans-unit id="msg.executionFailed">
 				<source>Execution of task "%1$s" failed with the following message: %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.executionFailureDefault" xml:space="preserve">
+			<trans-unit id="msg.executionFailureDefault">
 				<source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
 			</trans-unit>
-			<trans-unit id="msg.executionFailureReport" xml:space="preserve">
+			<trans-unit id="msg.executionFailureReport">
 				<source>Execution failed: %1$d, %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.noStartDate" xml:space="preserve">
+			<trans-unit id="msg.noStartDate">
 				<source>Please define a start date.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidStartDate" xml:space="preserve">
+			<trans-unit id="msg.invalidStartDate">
 				<source>Start date is invalid.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidEndDate" xml:space="preserve">
+			<trans-unit id="msg.invalidEndDate">
 				<source>End date is invalid.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidNumberOfDays" xml:space="preserve">
+			<trans-unit id="msg.invalidNumberOfDays">
 				<source>Number of days is invalid.</source>
 			</trans-unit>
-			<trans-unit id="msg.selectionOfNonExistingCacheBackends" xml:space="preserve">
+			<trans-unit id="msg.selectionOfNonExistingCacheBackends">
 				<source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
 			</trans-unit>
-			<trans-unit id="msg.noCacheBackendSelected" xml:space="preserve">
+			<trans-unit id="msg.noCacheBackendSelected">
 				<source>Please select at least one cache backend.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClass" xml:space="preserve">
+			<trans-unit id="msg.invalidTaskClass">
 				<source>Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClassEdit" xml:space="preserve">
+			<trans-unit id="msg.invalidTaskClassEdit">
 				<source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerSetupCheck" xml:space="preserve">
+			<trans-unit id="msg.schedulerSetupCheck">
 				<source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerUser" xml:space="preserve">
+			<trans-unit id="msg.schedulerUser">
 				<source>The backend user "_cli_scheduler" is used by the CLI-script to log into TYPO3. This user may not have administrator privileges. The user's password is not important but should be set to a secure value for security reasons.</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerUserFound" xml:space="preserve">
+			<trans-unit id="msg.schedulerUserFound">
 				<source>The backend user "_cli_scheduler" was found.</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerUserFoundButDisabled" xml:space="preserve">
+			<trans-unit id="msg.schedulerUserFoundButDisabled">
 				<source>The backend user "_cli_scheduler" exists but is currently disabled.</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerUserMissing" xml:space="preserve">
+			<trans-unit id="msg.schedulerUserMissing">
 				<source>The backend user "_cli_scheduler" was not found.&lt;br/&gt;&lt;br/&gt; &lt;a href="%s" class="btn btn-danger" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;</source>
 			</trans-unit>
-			<trans-unit id="msg.serverTime" xml:space="preserve">
+			<trans-unit id="msg.serverTime">
 				<source>Current server time is %s.</source>
 			</trans-unit>
-			<trans-unit id="msg.serverTimeHelp" xml:space="preserve">
+			<trans-unit id="msg.serverTimeHelp">
 				<source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
 			</trans-unit>
-			<trans-unit id="msg.stop" xml:space="preserve">
+			<trans-unit id="msg.stop">
 				<source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
 			</trans-unit>
-			<trans-unit id="msg.stopError" xml:space="preserve">
+			<trans-unit id="msg.stopError">
 				<source>The task could not be marked as non-running.</source>
 			</trans-unit>
-			<trans-unit id="msg.stopSuccess" xml:space="preserve">
+			<trans-unit id="msg.stopSuccess">
 				<source>The task was successfully marked as non-running.</source>
 			</trans-unit>
-			<trans-unit id="msg.taskNotFound" xml:space="preserve">
+			<trans-unit id="msg.taskNotFound">
 				<source>The requested task (UID: %d) was not found.</source>
 			</trans-unit>
-			<trans-unit id="msg.updateSuccess" xml:space="preserve">
+			<trans-unit id="msg.updateSuccess">
 				<source>The task was updated successfully.</source>
 			</trans-unit>
-			<trans-unit id="msg.updateError" xml:space="preserve">
+			<trans-unit id="msg.updateError">
 				<source>The task could not be updated.</source>
 			</trans-unit>
-			<trans-unit id="msg.userCreated" xml:space="preserve">
+			<trans-unit id="msg.userCreated">
 				<source>The "_cli_scheduler" user was created successfully.</source>
 			</trans-unit>
-			<trans-unit id="msg.userExists" xml:space="preserve">
+			<trans-unit id="msg.userExists">
 				<source>The "_cli_scheduler" user already exists. It was not created.</source>
 			</trans-unit>
-			<trans-unit id="msg.userNotCreated" xml:space="preserve">
+			<trans-unit id="msg.userNotCreated">
 				<source>The creation of the "_cli_scheduler" user failed.</source>
 			</trans-unit>
-			<trans-unit id="none" xml:space="preserve">
+			<trans-unit id="none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="status" xml:space="preserve">
+			<trans-unit id="status">
 				<source>Status</source>
 			</trans-unit>
-			<trans-unit id="status.progress" xml:space="preserve">
+			<trans-unit id="status.progress">
 				<source>Progress</source>
 			</trans-unit>
-			<trans-unit id="status.legend" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="status.legend" deprecated="Unused since CMS 7">
 				<source>Status Legend</source>
 			</trans-unit>
-			<trans-unit id="status.legend.disabled" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="status.legend.disabled" deprecated="Unused since CMS 7">
 				<source>Disabled, will not be executed, except manually</source>
 			</trans-unit>
-			<trans-unit id="status.legend.failure" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="status.legend.failure" deprecated="Unused since CMS 7">
 				<source>Failure! An error occurred during the last execution (move over bullet for more details)</source>
 			</trans-unit>
-			<trans-unit id="status.legend.late" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="status.legend.late" deprecated="Unused since CMS 7">
 				<source>Late, will run with next execution</source>
 			</trans-unit>
-			<trans-unit id="status.legend.running" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="status.legend.running" deprecated="Unused since CMS 7">
 				<source>Currently running</source>
 			</trans-unit>
-			<trans-unit id="status.legend.scheduled" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="status.legend.scheduled" deprecated="Unused since CMS 7">
 				<source>Scheduled, will run on next possible execution</source>
 			</trans-unit>
-			<trans-unit id="status.disabled" xml:space="preserve">
+			<trans-unit id="status.disabled">
 				<source>disabled</source>
 			</trans-unit>
-			<trans-unit id="status.failure" xml:space="preserve">
+			<trans-unit id="status.failure">
 				<source>failure</source>
 			</trans-unit>
-			<trans-unit id="status.late" xml:space="preserve">
+			<trans-unit id="status.late">
 				<source>late</source>
 			</trans-unit>
-			<trans-unit id="status.running" xml:space="preserve">
+			<trans-unit id="status.running">
 				<source>running</source>
 			</trans-unit>
-			<trans-unit id="status.scheduled" xml:space="preserve">
+			<trans-unit id="status.scheduled">
 				<source>scheduled</source>
 			</trans-unit>
-			<trans-unit id="task" xml:space="preserve">
+			<trans-unit id="task">
 				<source>Task</source>
 			</trans-unit>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>TYPO3 Scheduler administration module</source>
 			</trans-unit>
-			<trans-unit id="action.run_task" xml:space="preserve">
+			<trans-unit id="action.run_task">
 				<source>Run task</source>
 			</trans-unit>
-			<trans-unit id="testTask.name" xml:space="preserve">
+			<trans-unit id="testTask.name">
 				<source>Scheduler test task</source>
 			</trans-unit>
-			<trans-unit id="testTask.description" xml:space="preserve">
+			<trans-unit id="testTask.description">
 				<source>The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</source>
 			</trans-unit>
-			<trans-unit id="sleepTask.name" xml:space="preserve">
+			<trans-unit id="sleepTask.name">
 				<source>Scheduler sleep task</source>
 			</trans-unit>
-			<trans-unit id="sleepTask.description" xml:space="preserve">
+			<trans-unit id="sleepTask.description">
 				<source>This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</source>
 			</trans-unit>
-			<trans-unit id="cachingFrameworkGarbageCollection.name" xml:space="preserve">
+			<trans-unit id="cachingFrameworkGarbageCollection.name">
 				<source>Caching framework garbage collection</source>
 			</trans-unit>
-			<trans-unit id="cachingFrameworkGarbageCollection.description" xml:space="preserve">
+			<trans-unit id="cachingFrameworkGarbageCollection.description">
 				<source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
 			</trans-unit>
-			<trans-unit id="fileIndexing.name" xml:space="preserve">
+			<trans-unit id="fileIndexing.name">
 				<source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
 			</trans-unit>
-			<trans-unit id="fileIndexing.description" xml:space="preserve">
+			<trans-unit id="fileIndexing.description">
 				<source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
 			</trans-unit>
-			<trans-unit id="fileStorageIndexing.name" xml:space="preserve">
+			<trans-unit id="fileStorageIndexing.name">
 				<source>File Abstraction Layer: Update storage index</source>
 			</trans-unit>
-			<trans-unit id="fileStorageIndexing.description" xml:space="preserve">
+			<trans-unit id="fileStorageIndexing.description">
 				<source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
 			</trans-unit>
-			<trans-unit id="fileStorageExtraction.name" xml:space="preserve">
+			<trans-unit id="fileStorageExtraction.name">
 				<source>File Abstraction Layer: Extract metadata in storage</source>
 			</trans-unit>
-			<trans-unit id="fileStorageExtraction.description" xml:space="preserve">
+			<trans-unit id="fileStorageExtraction.description">
 				<source>Extracts metadata for all files in storage which have been changed since last run.</source>
 			</trans-unit>
-			<trans-unit id="tableGarbageCollection.name" xml:space="preserve">
+			<trans-unit id="tableGarbageCollection.name">
 				<source>Table garbage collection</source>
 			</trans-unit>
-			<trans-unit id="tableGarbageCollection.description" xml:space="preserve">
+			<trans-unit id="tableGarbageCollection.description">
 				<source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
 			</trans-unit>
-			<trans-unit id="recyclerGarbageCollection.name" xml:space="preserve">
+			<trans-unit id="recyclerGarbageCollection.name">
 				<source>Fileadmin garbage collection</source>
 			</trans-unit>
-			<trans-unit id="recyclerGarbageCollection.description" xml:space="preserve">
+			<trans-unit id="recyclerGarbageCollection.description">
 				<source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
 			</trans-unit>
 		</body>

@@ -3,10 +3,10 @@
 	<file t3:id="1415814925" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle" xml:space="preserve">
+			<trans-unit id=".alttitle">
 				<source>htmlArea RTE &gt; Clean Paste</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>The Clean Paste feature offers options for cleaning content copied from external source before it gets pasted into the editing area.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -25,14 +25,14 @@ EXT:rtehtmlarea/Resources/Public/Images/Plugins/PlainText/paste-behaviour.gif</s
 				<source>"Clean paste" toggle icon in the editor tool bar. Clicking on it changes the behaviour of subsequent paste operations.
 "Clean Paste Behaviour" icon in the editor tool bar. Clicking on it opens a dialogue that allows to select an alternate paste behaviour.</source>
 			</trans-unit>
-			<trans-unit id=".seeAlso" xml:space="preserve">
+			<trans-unit id=".seeAlso">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="behaviour.alttitle" xml:space="preserve">
+			<trans-unit id="behaviour.alttitle">
 				<source>Select a paste behaviour</source>
 			</trans-unit>
-			<trans-unit id="behaviour.description" xml:space="preserve">
+			<trans-unit id="behaviour.description">
 				<source>Select one of the three alternate paste behaviours.</source>
 			</trans-unit>
 			<trans-unit id="behaviour.details" xml:space="preserve">
@@ -44,24 +44,24 @@ EXT:rtehtmlarea/Resources/Public/Images/Plugins/PlainText/paste-behaviour.gif</s
 Which behaviour is activated when clicking the toggle button may be set either in the TYPO3 BE User Settings or in the "Clean Paste Behaviour" dialogue. If not set, it defaults to "Paste as plain text".
 The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Paste Behaviour" button in the toolbar of the RTE.</source>
 			</trans-unit>
-			<trans-unit id="behaviour.seeAlso" xml:space="preserve">
+			<trans-unit id="behaviour.seeAlso">
 				<source>xEXT_rtehtmlarea_PlainText:plainText,xEXT_rtehtmlarea_PlainText:pasteStructure,xEXT_rtehtmlarea_PlainText:pasteFormat,_MOD_user_setup</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="plainText.alttitle" xml:space="preserve">
+			<trans-unit id="plainText.alttitle">
 				<source>Paste as plain text</source>
 			</trans-unit>
-			<trans-unit id="plainText.description" xml:space="preserve">
+			<trans-unit id="plainText.description">
 				<source>When this paste behaviour is enabled, all HTML markup is removed before content is pasted in the editing area.</source>
 			</trans-unit>
-			<trans-unit id="plainText.seeAlso" xml:space="preserve">
+			<trans-unit id="plainText.seeAlso">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pasteStructure.alttitle" xml:space="preserve">
+			<trans-unit id="pasteStructure.alttitle">
 				<source>Paste structure only</source>
 			</trans-unit>
-			<trans-unit id="pasteStructure.description" xml:space="preserve">
+			<trans-unit id="pasteStructure.description">
 				<source>When this paste behaviour is enabled and content is pasted in the editing area, only structural HTML markup is retained, all format is removed.</source>
 			</trans-unit>
 			<trans-unit id="pasteStructure.details" xml:space="preserve">
@@ -71,14 +71,14 @@ The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Past
 
 These defaults may be modified in Page TSConfig.</source>
 			</trans-unit>
-			<trans-unit id="pasteStructure.seeAlso" xml:space="preserve">
+			<trans-unit id="pasteStructure.seeAlso">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pasteFormat.alttitle" xml:space="preserve">
+			<trans-unit id="pasteFormat.alttitle">
 				<source>Paste structure and basic format</source>
 			</trans-unit>
-			<trans-unit id="pasteFormat.description" xml:space="preserve">
+			<trans-unit id="pasteFormat.description">
 				<source>When this paste behaviour is enabled and content is pasted in the editing area, structural HTML markup is preserved as well as basic format provided by inline HTML elements.</source>
 			</trans-unit>
 			<trans-unit id="pasteFormat.details" xml:space="preserve">
@@ -89,14 +89,14 @@ These defaults may be modified in Page TSConfig.</source>
 
 These defaults may be modified in Page TSConfig.</source>
 			</trans-unit>
-			<trans-unit id="pasteFormat.seeAlso" xml:space="preserve">
+			<trans-unit id="pasteFormat.seeAlso">
 				<source>xEXT_rtehtmlarea_PlainText:behaviour</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="pasteInPastingPad.description" xml:space="preserve">
+			<trans-unit id="pasteInPastingPad.description">
 				<source>Contents pasted into this pasting pad will be cleaned. Click OK to insert the cleaned contents into the RTE editing area.</source>
 			</trans-unit>
-			<trans-unit id="pasteInPastingPad.details" xml:space="preserve">
+			<trans-unit id="pasteInPastingPad.details">
 				<source>When using Internet Explorer and when pasting behaviour "Paste structure only" or "Paste structure and format" is enabled, contents must first be pasted into this pasting pad so that they can be cleaned before being inserted into the RTE editing area.</source>
 			</trans-unit>
 		</body>

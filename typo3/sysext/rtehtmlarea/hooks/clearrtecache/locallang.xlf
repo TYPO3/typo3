@@ -3,7 +3,7 @@
 	<file t3:id="1415814931" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Clear RTE Cache</source>
 			</trans-unit>
 		</body>

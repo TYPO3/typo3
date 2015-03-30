@@ -3,22 +3,22 @@
 	<file t3:id="1415814946" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="Bold-Tooltip" xml:space="preserve">
+			<trans-unit id="Bold-Tooltip">
 				<source>Bold</source>
 			</trans-unit>
-			<trans-unit id="Italic-Tooltip" xml:space="preserve">
+			<trans-unit id="Italic-Tooltip">
 				<source>Italic</source>
 			</trans-unit>
-			<trans-unit id="StrikeThrough-Tooltip" xml:space="preserve">
+			<trans-unit id="StrikeThrough-Tooltip">
 				<source>Strike-through</source>
 			</trans-unit>
-			<trans-unit id="Subscript-Tooltip" xml:space="preserve">
+			<trans-unit id="Subscript-Tooltip">
 				<source>Subscript</source>
 			</trans-unit>
-			<trans-unit id="Superscript-Tooltip" xml:space="preserve">
+			<trans-unit id="Superscript-Tooltip">
 				<source>Superscript</source>
 			</trans-unit>
-			<trans-unit id="Underline-Tooltip" xml:space="preserve">
+			<trans-unit id="Underline-Tooltip">
 				<source>Underline</source>
 			</trans-unit>
 		</body>

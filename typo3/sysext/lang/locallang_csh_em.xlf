@@ -3,10 +3,10 @@
 	<file t3:id="1415814855" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle" xml:space="preserve">
+			<trans-unit id=".alttitle">
 				<source>Tools &gt; Extension Manager (EM)</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>The Extension Manager controls import, installation and upgrading of Extensions in TYPO3.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -24,7 +24,7 @@ Core / Extension Architecture | http://typo3.org/documentation/document-library/
 Managing Extensions | http://typo3.org/documentation/document-library/doc_core_inside/Backend_user_setup/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="loaded.alttitle" xml:space="preserve">
+			<trans-unit id="loaded.alttitle">
 				<source>Loaded Extensions</source>
 			</trans-unit>
 			<trans-unit id="loaded.description" xml:space="preserve">
@@ -36,14 +36,14 @@ Managing Extensions | http://typo3.org/documentation/document-library/doc_core_i
 To de-install an extension you simply click the green "-" icon. If there are no dependencies requiring the extension it will be removed from the list of installed extensions.
 The "Rq" extensions in the loaded extensions list are "required extensions". These are related so deeply to the system that you cannot disable them from the Extension Manager.</source>
 			</trans-unit>
-			<trans-unit id="_loaded.image" xml:space="preserve">
+			<trans-unit id="_loaded.image">
 				<source>EXT:lang/cshimages/em_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="loaded.image_descr" xml:space="preserve">
+			<trans-unit id="loaded.image_descr">
 				<source>The list of loaded extensions shown in the loading order.</source>
 			</trans-unit>
-			<trans-unit id="avail.alttitle" xml:space="preserve">
+			<trans-unit id="avail.alttitle">
 				<source>Available Extensions</source>
 			</trans-unit>
 			<trans-unit id="avail.description" xml:space="preserve">
@@ -63,10 +63,10 @@ EXT:lang/cshimages/em_12.png</source>
 				<source>The list of available extension on the server. The list is compiled from extensions found in the "local", "global" and "system" extension folders.
 If you click the install icon ("+") of an extension you might end in a dialog like this. In this case a new database table is required. The Extension Manager will automatically detect that it does not exist yet and suggest that you create it. The creation automatically takes place as well, simply by accepting the changes when pressing "Make updates".</source>
 			</trans-unit>
-			<trans-unit id="import.alttitle" xml:space="preserve">
+			<trans-unit id="import.alttitle">
 				<source>Importing Extensions</source>
 			</trans-unit>
-			<trans-unit id="import.description" xml:space="preserve">
+			<trans-unit id="import.description">
 				<source>This is the process of bringing the files of an extension to the servers filesystem. You can do this either by importing from a repository at a URL (usually from TER; TYPO3 Extension Repository at typo3.org) or by uploading a "t3x" file which someone else created from the Extension Manager on another server.</source>
 			</trans-unit>
 			<trans-unit id="import.details" xml:space="preserve">
@@ -82,14 +82,14 @@ For private projects the exchange of extensions is easily done by sending "t3x" 
 _MOD_tools_em:settings</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_import.image" xml:space="preserve">
+			<trans-unit id="_import.image">
 				<source>EXT:lang/cshimages/em_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="import.image_descr" xml:space="preserve">
+			<trans-unit id="import.image_descr">
 				<source>The "Import" screen. Before you connect to the online repository you might like to configure typo3.org username and password since that will be used to also select "Member" extensions in TER, if any. You can also enable "Get own/member/selected extensions only" if you want to limit the list further.</source>
 			</trans-unit>
-			<trans-unit id="import_ter.alttitle" xml:space="preserve">
+			<trans-unit id="import_ter.alttitle">
 				<source>Extensions in TER</source>
 			</trans-unit>
 			<trans-unit id="import_ter.description" xml:space="preserve">
@@ -117,10 +117,10 @@ EXT:lang/cshimages/em_11.png</source>
 				<source>List of extensions from TER. The red arrow icon is the "Import" link (for new extensions), the green arrow icon is the "Update" link (for an extension that is already on your server). If an extension is already available in the most recent version you will not see any icon at all to the left of the extension.
 If you clicked the title of an extension you will request the repository for details about the extension. This also allows you to select a specific version for import. You can also select the install location (global/local) and you can request to have the most recent translations merged into the extension upon retrieval.</source>
 			</trans-unit>
-			<trans-unit id="info.alttitle" xml:space="preserve">
+			<trans-unit id="info.alttitle">
 				<source>Extension Details</source>
 			</trans-unit>
-			<trans-unit id="info.description" xml:space="preserve">
+			<trans-unit id="info.description">
 				<source>Shows details about the extension.</source>
 			</trans-unit>
 			<trans-unit id="info.details" xml:space="preserve">
@@ -128,34 +128,34 @@ If you clicked the title of an extension you will request the repository for det
 
 The Extension Manager will also go a bit further and perform some analysis of the scripts in the extension. The list will include the findings of this analysis and if any errors were found they will be displayed. Usually these errors will not prevent the extension from working but more likely point out some theoretical problems that the extension developer should address.</source>
 			</trans-unit>
-			<trans-unit id="_info.image" xml:space="preserve">
+			<trans-unit id="_info.image">
 				<source>EXT:lang/cshimages/em_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="info.image_descr" xml:space="preserve">
+			<trans-unit id="info.image_descr">
 				<source>The details view of an extension displays live statistics from analysis as well as static data from the "ext_emconf.php" file.</source>
 			</trans-unit>
-			<trans-unit id="backup_delete.alttitle" xml:space="preserve">
+			<trans-unit id="backup_delete.alttitle">
 				<source>Backup Extension as a file</source>
 			</trans-unit>
-			<trans-unit id="backup_delete.description" xml:space="preserve">
+			<trans-unit id="backup_delete.description">
 				<source>Click the "Download" link here and you will download the extension as a file containing a serialized PHP array, a hash and everything possibly compressed if the server supports it. Save the file with a filename ending on "t3x".</source>
 			</trans-unit>
-			<trans-unit id="_backup_delete.seeAlso" xml:space="preserve">
+			<trans-unit id="_backup_delete.seeAlso">
 				<source>_MOD_tools_em:import</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_backup_delete.image" xml:space="preserve">
+			<trans-unit id="_backup_delete.image">
 				<source>EXT:lang/cshimages/em_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="backup_delete.image_descr" xml:space="preserve">
+			<trans-unit id="backup_delete.image_descr">
 				<source>"Backup" of extensions - also very useful for exchange of extensions between members of a workgroup.</source>
 			</trans-unit>
-			<trans-unit id="upload.alttitle" xml:space="preserve">
+			<trans-unit id="upload.alttitle">
 				<source>Upload an Extension to the repository (TER)</source>
 			</trans-unit>
-			<trans-unit id="upload.description" xml:space="preserve">
+			<trans-unit id="upload.description">
 				<source>Here you can upload an extension to TER. In order to do so you must enter your TYPO3.org username and password in the form. In addition each extension has an upload password you need to add as well. You should also make sure you registered / own the extension key!</source>
 			</trans-unit>
 			<trans-unit id="upload.details" xml:space="preserve">
@@ -170,51 +170,51 @@ Select a method for incrementation of the version number. For new "versions" of 
 Register Extension Keys | http://typo3.org/extensions/register-extension-keys/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="_upload.image" xml:space="preserve">
+			<trans-unit id="_upload.image">
 				<source>EXT:lang/cshimages/em_6.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="upload.image_descr" xml:space="preserve">
+			<trans-unit id="upload.image_descr">
 				<source>The upload form for extensions. The extension is submitted to the selected repository, usually TYPO3.org (default).</source>
 			</trans-unit>
-			<trans-unit id="editfiles.alttitle" xml:space="preserve">
+			<trans-unit id="editfiles.alttitle">
 				<source>Editing scripts in an extension</source>
 			</trans-unit>
-			<trans-unit id="editfiles.description" xml:space="preserve">
+			<trans-unit id="editfiles.description">
 				<source>The Extension Manager can be used for editing scripts in extensions. This feature is mostly for emergencies since a webbrowser is not the ideal tool for programming.</source>
 			</trans-unit>
 			<trans-unit id="editfiles.details" xml:space="preserve">
 				<source>&lt;b&gt;Notice:&lt;/b&gt;
 Before editing of extension scripts can be performed you have to disable the configuration option "TYPO3_CONF_VARS[EXT][noEdit]" in "localconf.php".</source>
 			</trans-unit>
-			<trans-unit id="_editfiles.image" xml:space="preserve">
+			<trans-unit id="_editfiles.image">
 				<source>EXT:lang/cshimages/em_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="editfiles.image_descr" xml:space="preserve">
+			<trans-unit id="editfiles.image_descr">
 				<source>Some file types - like PHP scripts - can be edited by a textarea field inside the Extension Manager.</source>
 			</trans-unit>
-			<trans-unit id="settings.alttitle" xml:space="preserve">
+			<trans-unit id="settings.alttitle">
 				<source>Extension Manager Settings</source>
 			</trans-unit>
-			<trans-unit id="settings.description" xml:space="preserve">
+			<trans-unit id="settings.description">
 				<source>Enter settings for the Extension Manager. The username and password is for connections to the repository (usually TYPO3.org) and the upload password is that you would normally use for upload of your extensions.</source>
 			</trans-unit>
 			<trans-unit id="settings.details" xml:space="preserve">
 				<source>&lt;b&gt;Notice:&lt;/b&gt;
 This information is not very well protected! It is send and stored in clear-text!</source>
 			</trans-unit>
-			<trans-unit id="_settings.image" xml:space="preserve">
+			<trans-unit id="_settings.image">
 				<source>EXT:lang/cshimages/em_8.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="settings.image_descr" xml:space="preserve">
+			<trans-unit id="settings.image_descr">
 				<source>Settings for TER connections.</source>
 			</trans-unit>
-			<trans-unit id="makenew.alttitle" xml:space="preserve">
+			<trans-unit id="makenew.alttitle">
 				<source>Kickstarting new extensions</source>
 			</trans-unit>
-			<trans-unit id="makenew.description" xml:space="preserve">
+			<trans-unit id="makenew.description">
 				<source>The "Kickstarter" is an application which allows you to start up new extension work very quickly. Through an interface you can create a basic framework for your extension where all the boring stuff is configured from the beginning and you can concentrate directly on coding your application.</source>
 			</trans-unit>
 			<trans-unit id="makenew.details" xml:space="preserve">
@@ -228,17 +228,17 @@ The Kickstarter is NOT an editor! When a new extension is started you cannot - a
 Extension API | http://typo3.org/documentation/document-library/doc_core_api/Introduction-f289e83016/
 Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</source>
 			</trans-unit>
-			<trans-unit id="_makenew.image" xml:space="preserve">
+			<trans-unit id="_makenew.image">
 				<source>EXT:lang/cshimages/em_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="makenew.image_descr" xml:space="preserve">
+			<trans-unit id="makenew.image_descr">
 				<source>When the "Extension Repository Kickstarter" is enabled it adds itself in the menu of the Extension Manager. From here you will be able to start your new extensions. Before you do so you should register an extension key and enter a title and description as base data. From that point it is just clicking the "+" icons to add the various types of functionality you want. Finally you click "View result" to write the extension to the server.</source>
 			</trans-unit>
-			<trans-unit id="emconf_shy.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_shy.alttitle">
 				<source>Shy</source>
 			</trans-unit>
-			<trans-unit id="emconf_shy.description" xml:space="preserve">
+			<trans-unit id="emconf_shy.description">
 				<source>If set, the extension will normally be hidden in the EM because it might be a default extension or otherwise something which is not so important.</source>
 			</trans-unit>
 			<trans-unit id="emconf_shy.details" xml:space="preserve">
@@ -246,10 +246,10 @@ Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</
 It does not affect whether or not it's enabled. Only display in EM.
 Normally "shy" is set for all extensions loaded by default according to TYPO3_CONF_VARS.</source>
 			</trans-unit>
-			<trans-unit id="emconf_category.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_category.alttitle">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="emconf_category.description" xml:space="preserve">
+			<trans-unit id="emconf_category.description">
 				<source>Which category the extension belongs to.</source>
 			</trans-unit>
 			<trans-unit id="emconf_category.details" xml:space="preserve">
@@ -271,46 +271,46 @@ Normally "shy" is set for all extensions loaded by default according to TYPO3_CO
 
 &lt;b&gt;example:&lt;/b&gt; Example extension (Which serves as examples etc.)</source>
 			</trans-unit>
-			<trans-unit id="emconf_dependencies.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_dependencies.alttitle">
 				<source>Dependencies of other extensions?</source>
 			</trans-unit>
-			<trans-unit id="emconf_dependencies.description" xml:space="preserve">
+			<trans-unit id="emconf_dependencies.description">
 				<source>This is a list of other extension keys which this extension depends on being loaded BEFORE it self.</source>
 			</trans-unit>
-			<trans-unit id="emconf_dependencies.details" xml:space="preserve">
+			<trans-unit id="emconf_dependencies.details">
 				<source>The EM will manage that dependency while writing the extension list  to localconf.php. You cannot install an extension unless its dependencies has been installed already.</source>
 			</trans-unit>
-			<trans-unit id="emconf_conflicts.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_conflicts.alttitle">
 				<source>Conflicts with other extensions?</source>
 			</trans-unit>
-			<trans-unit id="emconf_conflicts.description" xml:space="preserve">
+			<trans-unit id="emconf_conflicts.description">
 				<source>List of extension keys of extensions with which this extension does not work (and so cannot be enabled before those other extensions are un-installed)</source>
 			</trans-unit>
-			<trans-unit id="emconf_suggests.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_suggests.alttitle">
 				<source>Suggested extensions</source>
 			</trans-unit>
-			<trans-unit id="emconf_suggests.description" xml:space="preserve">
+			<trans-unit id="emconf_suggests.description">
 				<source>List of extension keys of extensions which you may want to try in conjunction with this extension because they bring added benefits when working together.</source>
 			</trans-unit>
-			<trans-unit id="emconf_priority.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_priority.alttitle">
 				<source>Requested Loading priority</source>
 			</trans-unit>
-			<trans-unit id="emconf_priority.description" xml:space="preserve">
+			<trans-unit id="emconf_priority.description">
 				<source>This tells the EM to try to put the extensions as the very first in the list. Default is last.</source>
 			</trans-unit>
-			<trans-unit id="emconf_module.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_module.alttitle">
 				<source>Backend modules included</source>
 			</trans-unit>
-			<trans-unit id="emconf_module.description" xml:space="preserve">
+			<trans-unit id="emconf_module.description">
 				<source>If any subfolders to an extension contains backend modules, those foldernames should be listed here.</source>
 			</trans-unit>
-			<trans-unit id="emconf_module.details" xml:space="preserve">
+			<trans-unit id="emconf_module.details">
 				<source>It allows the EM to know about the existence of the module, which is important because the EM has to update the conf.php file of the module in order to set the correct TYPO3_MOD_PATH  constant.</source>
 			</trans-unit>
-			<trans-unit id="emconf_state.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_state.alttitle">
 				<source>Development state</source>
 			</trans-unit>
-			<trans-unit id="emconf_state.description" xml:space="preserve">
+			<trans-unit id="emconf_state.description">
 				<source>Which development state the extension is in.</source>
 			</trans-unit>
 			<trans-unit id="emconf_state.details" xml:space="preserve">
@@ -329,10 +329,10 @@ Nobody knows if this is going anywhere yet... Maybe still just an idea.
 &lt;b&gt;test&lt;/b&gt;
 Test extension, demonstrates concepts etc.</source>
 			</trans-unit>
-			<trans-unit id="emconf_internal.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_internal.alttitle">
 				<source>Internally supported in core</source>
 			</trans-unit>
-			<trans-unit id="emconf_internal.description" xml:space="preserve">
+			<trans-unit id="emconf_internal.description">
 				<source>This flag indicates that the core source code is specifically aware of the extension.</source>
 			</trans-unit>
 			<trans-unit id="emconf_internal.details" xml:space="preserve">
@@ -341,34 +341,34 @@ Test extension, demonstrates concepts etc.</source>
 An extension is not internal just because it uses TYPO3 general classes eg. those from t3lib/.
 True non-internal extensions are characterized by the fact that they could be written without making core source code changes, but relies only on existing classes  in TYPO3 and/or other extensions, plus its own scripts in the extension folder.</source>
 			</trans-unit>
-			<trans-unit id="emconf_clearCacheOnLoad.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_clearCacheOnLoad.alttitle">
 				<source>Clear cache when installed</source>
 			</trans-unit>
-			<trans-unit id="emconf_clearCacheOnLoad.description" xml:space="preserve">
+			<trans-unit id="emconf_clearCacheOnLoad.description">
 				<source>If set, the EM will request the cache to be cleared when this extension is installed.</source>
 			</trans-unit>
-			<trans-unit id="emconf_modify_tables.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_modify_tables.alttitle">
 				<source>Existing tables modified</source>
 			</trans-unit>
-			<trans-unit id="emconf_modify_tables.description" xml:space="preserve">
+			<trans-unit id="emconf_modify_tables.description">
 				<source>List of tablenames which are only modified - not fully created - by this extension.</source>
 			</trans-unit>
-			<trans-unit id="emconf_modify_tables.details" xml:space="preserve">
+			<trans-unit id="emconf_modify_tables.details">
 				<source>Tables from this list found in the ext_tables.sql file of the extension</source>
 			</trans-unit>
-			<trans-unit id="emconf_doNotLoadInFE.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_doNotLoadInFE.alttitle">
 				<source>Load in frontend</source>
 			</trans-unit>
-			<trans-unit id="emconf_doNotLoadInFE.description" xml:space="preserve">
+			<trans-unit id="emconf_doNotLoadInFE.description">
 				<source>"Yes" (default) will load the extension in the frontend and the backend. "No": the extension is loaded only in the backend.</source>
 			</trans-unit>
-			<trans-unit id="emconf_doNotLoadInFE.details" xml:space="preserve">
+			<trans-unit id="emconf_doNotLoadInFE.details">
 				<source>Some extensions are only required in the backend. With this flag set, this extension is not loaded in the frontend context, thus speeding up the site.</source>
 			</trans-unit>
-			<trans-unit id="emconf_private.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_private.alttitle">
 				<source>Private</source>
 			</trans-unit>
-			<trans-unit id="emconf_private.description" xml:space="preserve">
+			<trans-unit id="emconf_private.description">
 				<source>If set, this version is not shown in the public list in the online repository.</source>
 			</trans-unit>
 			<trans-unit id="emconf_private.details" xml:space="preserve">
@@ -376,27 +376,27 @@ True non-internal extensions are characterized by the fact that they could be wr
 This is nice when you are working on something internally which you do not want others to look at.
 You can set and clear the private flag every time you upload your extension.</source>
 			</trans-unit>
-			<trans-unit id="_emconf_private.seeAlso" xml:space="preserve">
+			<trans-unit id="_emconf_private.seeAlso">
 				<source>_MOD_tools_em:emconf_download_password</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="emconf_download_password.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_download_password.alttitle">
 				<source>Download password</source>
 			</trans-unit>
-			<trans-unit id="emconf_download_password.description" xml:space="preserve">
+			<trans-unit id="emconf_download_password.description">
 				<source>Additional password required for download of private extensions.</source>
 			</trans-unit>
-			<trans-unit id="emconf_download_password.details" xml:space="preserve">
+			<trans-unit id="emconf_download_password.details">
 				<source>Anybody who knows the "special key" assigned to the private upload will be able to import it. Specifying an import password allows you to give away the download key for private uploads and also require a password given in addition. The password can be changed later on.</source>
 			</trans-unit>
-			<trans-unit id="_emconf_download_password.seeAlso" xml:space="preserve">
+			<trans-unit id="_emconf_download_password.seeAlso">
 				<source>_MOD_tools_em:emconf_private</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="emconf_type.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_type.alttitle">
 				<source>Installation type</source>
 			</trans-unit>
-			<trans-unit id="emconf_type.description" xml:space="preserve">
+			<trans-unit id="emconf_type.description">
 				<source>The type of the installation</source>
 			</trans-unit>
 			<trans-unit id="emconf_type.details" xml:space="preserve">
@@ -415,43 +415,43 @@ This is a "per-server" way to install an extension.
 Local extensions take precedence which means that if an extension exists both in typo3conf/ext/ and typo3/ext/ the one in typo3conf/ext/ is loaded. Likewise global extension takes predence over system extensions. This means that extensions are loaded in the order of priority local-global-system.
 In effect you can therefore have, say, a "stable" version of an extension installed in the global dir (typo3/ext/) which is used by all your projects on a server sharing source code, but on a single experimental project you can import the same extension in a newer "experimental" version and for that particular project the locally available extension will be used instead.</source>
 			</trans-unit>
-			<trans-unit id="emconf_doubleInstall.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_doubleInstall.alttitle">
 				<source>Installed twice or more?</source>
 			</trans-unit>
-			<trans-unit id="emconf_doubleInstall.description" xml:space="preserve">
+			<trans-unit id="emconf_doubleInstall.description">
 				<source>Tells you if the extensions is installed in more than one of the System, Global or Local locations.</source>
 			</trans-unit>
-			<trans-unit id="emconf_doubleInstall.details" xml:space="preserve">
+			<trans-unit id="emconf_doubleInstall.details">
 				<source>Because an extension can reside at three locations, System, Global and Local, this indicates if the extension is found in other locations than the current. In that case you should be aware which one of the extensions is loaded!</source>
 			</trans-unit>
-			<trans-unit id="emconf_rootfiles.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_rootfiles.alttitle">
 				<source>Root files</source>
 			</trans-unit>
-			<trans-unit id="emconf_rootfiles.description" xml:space="preserve">
+			<trans-unit id="emconf_rootfiles.description">
 				<source>List of the files in the extension folder. Does not list files in subfolders.</source>
 			</trans-unit>
-			<trans-unit id="emconf_dbReq.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_dbReq.alttitle">
 				<source>Database requirements</source>
 			</trans-unit>
-			<trans-unit id="emconf_dbReq.description" xml:space="preserve">
+			<trans-unit id="emconf_dbReq.description">
 				<source>Shows you the requirements to the database tables and fields, if any.</source>
 			</trans-unit>
-			<trans-unit id="emconf_dbReq.details" xml:space="preserve">
+			<trans-unit id="emconf_dbReq.details">
 				<source>This will read from the files ext_tables.sql and ext_tables_static+adt.sql and show you which tables, fields and static tables are required with this extension.</source>
 			</trans-unit>
-			<trans-unit id="emconf_dbStatus.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_dbStatus.alttitle">
 				<source>Database requirements status</source>
 			</trans-unit>
-			<trans-unit id="emconf_dbStatus.description" xml:space="preserve">
+			<trans-unit id="emconf_dbStatus.description">
 				<source>Displays the current status of the database compared to the extension requirements.</source>
 			</trans-unit>
-			<trans-unit id="emconf_dbStatus.details" xml:space="preserve">
+			<trans-unit id="emconf_dbStatus.details">
 				<source>If the extension is loaded which will display and error message if some tables or fields are not present in the database as they should be!</source>
 			</trans-unit>
-			<trans-unit id="emconf_flags.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_flags.alttitle">
 				<source>Flags</source>
 			</trans-unit>
-			<trans-unit id="emconf_flags.description" xml:space="preserve">
+			<trans-unit id="emconf_flags.description">
 				<source>A list of special codes which tells you something about what parts of TYPO3 the extension touches.</source>
 			</trans-unit>
 			<trans-unit id="emconf_flags.details" xml:space="preserve">
@@ -475,49 +475,49 @@ In effect you can therefore have, say, a "stable" version of an extension instal
 
 &lt;b&gt;TS/Constants:&lt;/b&gt; Default TypoScript Constants is added.</source>
 			</trans-unit>
-			<trans-unit id="emconf_conf.description" xml:space="preserve">
+			<trans-unit id="emconf_conf.description">
 				<source>Shows if the extension has a template for further lowlevel configuration.</source>
 			</trans-unit>
-			<trans-unit id="emconf_TSfiles.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_TSfiles.alttitle">
 				<source>Static TypoScript files</source>
 			</trans-unit>
-			<trans-unit id="emconf_TSfiles.description" xml:space="preserve">
+			<trans-unit id="emconf_TSfiles.description">
 				<source>Shows which TypoScript static files may be present</source>
 			</trans-unit>
-			<trans-unit id="emconf_TSfiles.details" xml:space="preserve">
+			<trans-unit id="emconf_TSfiles.details">
 				<source>If the files ext_typoscript_constants.txt and/or ext_typoscript_setup.txt is found in the extension folder they are included in the hierarchy of all TypoScript templates in TYPO3 right after the inclusion of other static templates.</source>
 			</trans-unit>
-			<trans-unit id="emconf_locallang.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_locallang.alttitle">
 				<source>locallang-files</source>
 			</trans-unit>
-			<trans-unit id="emconf_locallang.description" xml:space="preserve">
+			<trans-unit id="emconf_locallang.description">
 				<source>Shows which files named "locallang.xlf" are present in the extension folder (recursive search). Such files are usually used to present an array $LOCAL_LANG with labels for the application in the system languages.</source>
 			</trans-unit>
-			<trans-unit id="emconf_moduleNames.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_moduleNames.alttitle">
 				<source>Backend Module names</source>
 			</trans-unit>
-			<trans-unit id="emconf_moduleNames.description" xml:space="preserve">
+			<trans-unit id="emconf_moduleNames.description">
 				<source>Shows which module names were found inside the extension.</source>
 			</trans-unit>
-			<trans-unit id="emconf_classNames.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_classNames.alttitle">
 				<source>PHP Class names</source>
 			</trans-unit>
-			<trans-unit id="emconf_classNames.description" xml:space="preserve">
+			<trans-unit id="emconf_classNames.description">
 				<source>Shows which PHP-classes were found in .php and .inc files.</source>
 			</trans-unit>
-			<trans-unit id="emconf_errors.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_errors.alttitle">
 				<source>Errors</source>
 			</trans-unit>
-			<trans-unit id="emconf_errors.description" xml:space="preserve">
+			<trans-unit id="emconf_errors.description">
 				<source>Displays if any errors with the extension were discovered.</source>
 			</trans-unit>
-			<trans-unit id="emconf_NSerrors.alttitle" xml:space="preserve">
+			<trans-unit id="emconf_NSerrors.alttitle">
 				<source>Namespace errors</source>
 			</trans-unit>
-			<trans-unit id="emconf_NSerrors.description" xml:space="preserve">
+			<trans-unit id="emconf_NSerrors.description">
 				<source>Certain naming convensions apply to extensions. This displays any violations found.</source>
 			</trans-unit>
-			<trans-unit id="emconf_NSerrors.details" xml:space="preserve">
+			<trans-unit id="emconf_NSerrors.details">
 				<source>The naming convensions are defined in the "Inside TYPO3" document. To make naming as simple as possible, try to avoid underscores in your extension keys.</source>
 			</trans-unit>
 		</body>

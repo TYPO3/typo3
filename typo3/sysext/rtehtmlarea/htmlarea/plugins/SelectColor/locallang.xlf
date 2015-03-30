@@ -3,22 +3,22 @@
 	<file t3:id="1415814961" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="CO-forecolor" xml:space="preserve">
+			<trans-unit id="CO-forecolor">
 				<source>Text Color</source>
 			</trans-unit>
-			<trans-unit id="CO-hilitecolor" xml:space="preserve">
+			<trans-unit id="CO-hilitecolor">
 				<source>Background Color</source>
 			</trans-unit>
-			<trans-unit id="CO-forecolor_title" xml:space="preserve">
+			<trans-unit id="CO-forecolor_title">
 				<source>Set the text color</source>
 			</trans-unit>
-			<trans-unit id="CO-hilitecolor_title" xml:space="preserve">
+			<trans-unit id="CO-hilitecolor_title">
 				<source>Set the background color</source>
 			</trans-unit>
-			<trans-unit id="color_title" xml:space="preserve">
+			<trans-unit id="color_title">
 				<source>Choose a color</source>
 			</trans-unit>
-			<trans-unit id="no_color" xml:space="preserve">
+			<trans-unit id="no_color">
 				<source>No color</source>
 			</trans-unit>
 		</body>

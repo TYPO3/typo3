@@ -3,55 +3,55 @@
 	<file t3:id="1415814950" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="editElement" xml:space="preserve">
+			<trans-unit id="editElement">
 				<source>Edit element</source>
 			</trans-unit>
-			<trans-unit id="general" xml:space="preserve">
+			<trans-unit id="general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="identification" xml:space="preserve">
+			<trans-unit id="identification">
 				<source>Identification</source>
 			</trans-unit>
-			<trans-unit id="id" xml:space="preserve">
+			<trans-unit id="id">
 				<source>Id</source>
 			</trans-unit>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="className" xml:space="preserve">
+			<trans-unit id="className">
 				<source>Class</source>
 			</trans-unit>
-			<trans-unit id="events" xml:space="preserve">
+			<trans-unit id="events">
 				<source>Events</source>
 			</trans-unit>
-			<trans-unit id="onkeydown" xml:space="preserve">
+			<trans-unit id="onkeydown">
 				<source>Onkeydown</source>
 			</trans-unit>
-			<trans-unit id="onkeypress" xml:space="preserve">
+			<trans-unit id="onkeypress">
 				<source>Onkeypress</source>
 			</trans-unit>
-			<trans-unit id="onkeyup" xml:space="preserve">
+			<trans-unit id="onkeyup">
 				<source>Onkeyup</source>
 			</trans-unit>
-			<trans-unit id="onclick" xml:space="preserve">
+			<trans-unit id="onclick">
 				<source>Onclick</source>
 			</trans-unit>
-			<trans-unit id="ondblclick" xml:space="preserve">
+			<trans-unit id="ondblclick">
 				<source>Ondblclick</source>
 			</trans-unit>
-			<trans-unit id="onmousedown" xml:space="preserve">
+			<trans-unit id="onmousedown">
 				<source>Onmousedown</source>
 			</trans-unit>
-			<trans-unit id="onmousemove" xml:space="preserve">
+			<trans-unit id="onmousemove">
 				<source>Onmousemove</source>
 			</trans-unit>
-			<trans-unit id="onmouseout" xml:space="preserve">
+			<trans-unit id="onmouseout">
 				<source>Onmouseout</source>
 			</trans-unit>
-			<trans-unit id="onmouseover" xml:space="preserve">
+			<trans-unit id="onmouseover">
 				<source>Onmouseover</source>
 			</trans-unit>
-			<trans-unit id="onmouseup" xml:space="preserve">
+			<trans-unit id="onmouseup">
 				<source>Onmouseup</source>
 			</trans-unit>
 		</body>

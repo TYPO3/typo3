@@ -3,25 +3,25 @@
 	<file t3:id="1415814973" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:36Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id="tx_rtehtmlarea_acronym" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym">
 				<source>Abbreviation</source>
 			</trans-unit>
-			<trans-unit id="tx_rtehtmlarea_acronym.type" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="tx_rtehtmlarea_acronym.type.I.0" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym.type.I.0">
 				<source>Acronym</source>
 			</trans-unit>
-			<trans-unit id="tx_rtehtmlarea_acronym.type.I.1" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym.type.I.1">
 				<source>Abbreviation</source>
 			</trans-unit>
-			<trans-unit id="tx_rtehtmlarea_acronym.term" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym.term">
 				<source>Term</source>
 			</trans-unit>
-			<trans-unit id="tx_rtehtmlarea_acronym.acronym" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym.acronym">
 				<source>Abbreviation</source>
 			</trans-unit>
-			<trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode" xml:space="preserve">
+			<trans-unit id="tx_rtehtmlarea_acronym.static_lang_isocode">
 				<source>Language of the abbreviation</source>
 			</trans-unit>
 		</body>

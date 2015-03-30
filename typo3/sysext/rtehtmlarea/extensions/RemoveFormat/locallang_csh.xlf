@@ -3,10 +3,10 @@
 	<file t3:id="1415814926" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="rtehtmlarea">
 		<header/>
 		<body>
-			<trans-unit id=".alttitle" xml:space="preserve">
+			<trans-unit id=".alttitle">
 				<source>htmlArea RTE &gt; Remove Format</source>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>The Remove Format feature offers options for cleaning up the HTML markup of the text being edited.</source>
 			</trans-unit>
 			<trans-unit id=".details" xml:space="preserve">
@@ -19,63 +19,63 @@ In the dialogue window that opens when the button is clicked:
 - Second, choose the format removal options that you wish to be applied to the selected area;
 - Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.</source>
 			</trans-unit>
-			<trans-unit id=".image" xml:space="preserve">
+			<trans-unit id=".image">
 				<source>EXT:rtehtmlarea/Resources/Public/Images/Plugins/RemoveFormat/remove-format.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr" xml:space="preserve">
+			<trans-unit id=".image_descr">
 				<source>Remove format icon in the editor tool bar.</source>
 			</trans-unit>
-			<trans-unit id=".seeAlso" xml:space="preserve">
+			<trans-unit id=".seeAlso">
 				<source>xEXT_rtehtmlarea_RemoveFormat:area,xEXT_rtehtmlarea_RemoveFormat:options</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="area.alttitle" xml:space="preserve">
+			<trans-unit id="area.alttitle">
 				<source>Select the area to be cleaned</source>
 			</trans-unit>
-			<trans-unit id="area.description" xml:space="preserve">
+			<trans-unit id="area.description">
 				<source>The format removal operation may be applied either to the currently highlighted text or to the whole contents of the editing area.</source>
 			</trans-unit>
-			<trans-unit id="area.details" xml:space="preserve">
+			<trans-unit id="area.details">
 				<source>Use one of these two radio buttons to select the area to which you wish to apply the format removal operation.</source>
 			</trans-unit>
-			<trans-unit id="selection.alttitle" xml:space="preserve">
+			<trans-unit id="selection.alttitle">
 				<source>Remove format on selected text only</source>
 			</trans-unit>
-			<trans-unit id="selection.description" xml:space="preserve">
+			<trans-unit id="selection.description">
 				<source>Select this option to perform the format removal operation on the currently selected text only.</source>
 			</trans-unit>
-			<trans-unit id="_selection.seeAlso" xml:space="preserve">
+			<trans-unit id="_selection.seeAlso">
 				<source>xEXT_rtehtmlarea_RemoveFormat:area</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="all.alttitle" xml:space="preserve">
+			<trans-unit id="all.alttitle">
 				<source>Remove format on all contents</source>
 			</trans-unit>
-			<trans-unit id="all.description" xml:space="preserve">
+			<trans-unit id="all.description">
 				<source>Select this option to perform the format removal operation on the whole contents of the editing area.</source>
 			</trans-unit>
-			<trans-unit id="_all.seeAlso" xml:space="preserve">
+			<trans-unit id="_all.seeAlso">
 				<source>xEXT_rtehtmlarea_RemoveFormat:area</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="options.alttitle" xml:space="preserve">
+			<trans-unit id="options.alttitle">
 				<source>Select the types of format to be removed</source>
 			</trans-unit>
-			<trans-unit id="options.description" xml:space="preserve">
+			<trans-unit id="options.description">
 				<source>The format removal operation may remove various types of format.</source>
 			</trans-unit>
-			<trans-unit id="options.details" xml:space="preserve">
+			<trans-unit id="options.details">
 				<source>Check one or more of these check boxes to select the type(s) of format you wish to be removed.</source>
 			</trans-unit>
-			<trans-unit id="options.seeAlso" xml:space="preserve">
+			<trans-unit id="options.seeAlso">
 				<source>xEXT_rtehtmlarea_RemoveFormat:htmlFormat,xEXT_rtehtmlarea_RemoveFormat:msWordFormat,xEXT_rtehtmlarea_RemoveFormat:typographicalPunctuation,xEXT_rtehtmlarea_RemoveFormat:nonBreakingSpace,xEXT_rtehtmlarea_RemoveFormat:images,xEXT_rtehtmlarea_RemoveFormat:allHtml</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="htmlFormat.alttitle" xml:space="preserve">
+			<trans-unit id="htmlFormat.alttitle">
 				<source>Remove all HTML inline markup and style</source>
 			</trans-unit>
-			<trans-unit id="htmlFormat.description" xml:space="preserve">
+			<trans-unit id="htmlFormat.description">
 				<source>Check this option if you wish to remove all HTML inline markup and style.</source>
 			</trans-unit>
 			<trans-unit id="htmlFormat.details" xml:space="preserve">
@@ -83,10 +83,10 @@ In the dialogue window that opens when the button is clicked:
 - the following HTML elements, but keeps their textual contents: abbr, acronym, b, big, cite, code, em, font, i, q, s, samp, small, span, strike, strong, sub, sup, tt, u, var;
 - the following attributes on all HTML elements: align, bgcolor, cellpadding, cellspacing, class, frame, style.</source>
 			</trans-unit>
-			<trans-unit id="msWordFormat.alttitle" xml:space="preserve">
+			<trans-unit id="msWordFormat.alttitle">
 				<source>Remove all MS Word markup and style</source>
 			</trans-unit>
-			<trans-unit id="msWordFormat.description" xml:space="preserve">
+			<trans-unit id="msWordFormat.description">
 				<source>Check this option if you wish to remove all MS Word markup and style.</source>
 			</trans-unit>
 			<trans-unit id="msWordFormat.details" xml:space="preserve">
@@ -102,10 +102,10 @@ In the dialogue window that opens when the button is clicked:
 - double opening and double closing tags;
 - multiples spaces, replacing them by single spaces.</source>
 			</trans-unit>
-			<trans-unit id="typographicalPunctuation.alttitle" xml:space="preserve">
+			<trans-unit id="typographicalPunctuation.alttitle">
 				<source>Replace typographical punctuation</source>
 			</trans-unit>
-			<trans-unit id="typographicalPunctuation.description" xml:space="preserve">
+			<trans-unit id="typographicalPunctuation.description">
 				<source>Check this option if you wish to replace typographical punctuation with ASCII character codes.</source>
 			</trans-unit>
 			<trans-unit id="typographicalPunctuation.details" xml:space="preserve">
@@ -118,31 +118,31 @@ In the dialogue window that opens when the button is clicked:
 - replace left/right-pointing double angle quotation mark (also known as left/right pointing guillemet) with double quote;
 - replace grave accent (spacing grave) and acute accent (spacing acute) with single quote.</source>
 			</trans-unit>
-			<trans-unit id="nonBreakingSpace.alttitle" xml:space="preserve">
+			<trans-unit id="nonBreakingSpace.alttitle">
 				<source>Replace non-breaking spaces</source>
 			</trans-unit>
-			<trans-unit id="nonBreakingSpace.description" xml:space="preserve">
+			<trans-unit id="nonBreakingSpace.description">
 				<source>Check this option if you wish to replace non-breaking spaces with normal spaces.</source>
 			</trans-unit>
-			<trans-unit id="nonBreakingSpace.details" xml:space="preserve">
+			<trans-unit id="nonBreakingSpace.details">
 				<source>This option replaces any non-breaking space with a simple normal space.</source>
 			</trans-unit>
-			<trans-unit id="images.alttitle" xml:space="preserve">
+			<trans-unit id="images.alttitle">
 				<source>Remove images</source>
 			</trans-unit>
-			<trans-unit id="images.description" xml:space="preserve">
+			<trans-unit id="images.description">
 				<source>Check this option if you wish to remove all images.</source>
 			</trans-unit>
-			<trans-unit id="images.details" xml:space="preserve">
+			<trans-unit id="images.details">
 				<source>This option removes all images from the selected text.</source>
 			</trans-unit>
-			<trans-unit id="allHtml.alttitle" xml:space="preserve">
+			<trans-unit id="allHtml.alttitle">
 				<source>Remove all HTML format</source>
 			</trans-unit>
-			<trans-unit id="allHtml.description" xml:space="preserve">
+			<trans-unit id="allHtml.description">
 				<source>Check this option if you wish to remove all HTML format.</source>
 			</trans-unit>
-			<trans-unit id="allHtml.details" xml:space="preserve">
+			<trans-unit id="allHtml.details">
 				<source>This option removes all HTML markup from the selected text.</source>
 			</trans-unit>
 		</body>

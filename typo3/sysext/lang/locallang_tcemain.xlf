@@ -3,10 +3,10 @@
 	<file t3:id="1415814886" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="version_swap.online_record_updated" xml:space="preserve">
+			<trans-unit id="version_swap.online_record_updated">
 				<source>Record '%s' (%s) was updated. (Online version)</source>
 			</trans-unit>
-			<trans-unit id="version_swap.offline_record_updated" xml:space="preserve">
+			<trans-unit id="version_swap.offline_record_updated">
 				<source>Record '%s' (%s) was updated. (Offline version)</source>
 			</trans-unit>
 		</body>

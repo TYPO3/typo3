@@ -3,24 +3,24 @@
 	<file t3:id="1415814795" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id="hidden.description" xml:space="preserve">
+			<trans-unit id="hidden.description">
 				<source>This option disables the user group.</source>
 			</trans-unit>
 			<trans-unit id="hidden.details" xml:space="preserve">
 				<source>If you disable a user group all users which are members of the group will in effect not inherit any properties this group may have given them.
 For instance if a page or content element was assigned access only by this group and you disable the group, no one would gain access to that page or content element.</source>
 			</trans-unit>
-			<trans-unit id="_hidden.seeAlso" xml:space="preserve">
+			<trans-unit id="_hidden.seeAlso">
 				<source>fe_users:disable</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="title.description" xml:space="preserve">
+			<trans-unit id="title.description">
 				<source>Name of the group.</source>
 			</trans-unit>
-			<trans-unit id="title.details" xml:space="preserve">
+			<trans-unit id="title.details">
 				<source>This title will appear as the group name in the 'Access'-list in other records.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description" xml:space="preserve">
+			<trans-unit id="lockToDomain.description">
 				<source>Enter the host name from which the group will be available only.</source>
 			</trans-unit>
 			<trans-unit id="lockToDomain.details" xml:space="preserve">
@@ -28,41 +28,41 @@ For instance if a page or content element was assigned access only by this group
 
 &lt;b&gt;Notice:&lt;/b&gt; The use for this option is not critical if you have multiple Website user storages, namely one for each site.</source>
 			</trans-unit>
-			<trans-unit id="_lockToDomain.seeAlso" xml:space="preserve">
+			<trans-unit id="_lockToDomain.seeAlso">
 				<source>fe_users:lockToDomain</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="subgroup.description" xml:space="preserve">
+			<trans-unit id="subgroup.description">
 				<source>Member of other groups.</source>
 			</trans-unit>
-			<trans-unit id="subgroup.details" xml:space="preserve">
+			<trans-unit id="subgroup.details">
 				<source>List of other groups that this group is a member of.</source>
 			</trans-unit>
-			<trans-unit id="description.description" xml:space="preserve">
+			<trans-unit id="description.description">
 				<source>Enter a description of the group.</source>
 			</trans-unit>
 			<trans-unit id="description.details" xml:space="preserve">
 				<source>This is for internal use and is just a way to put a note on what the group is for, why you created it and who should be members.
 Use it as you like.</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.description" xml:space="preserve">
+			<trans-unit id="TSconfig.description">
 				<source>TSconfig for the group (advanced).</source>
 			</trans-unit>
 			<trans-unit id="TSconfig.details" xml:space="preserve">
 				<source>This is the user TSconfig for the group. The values are inherited by any Website user who is a member of this group.
 The configuration is subject to being overridden in other groups and by the TSconfig of the user himself.</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.syntax" xml:space="preserve">
+			<trans-unit id="TSconfig.syntax">
 				<source>TypoScript syntax, without conditions and constants.</source>
 			</trans-unit>
-			<trans-unit id="_TSconfig.seeAlso" xml:space="preserve">
+			<trans-unit id="_TSconfig.seeAlso">
 				<source>fe_users:TSconfig</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".description" xml:space="preserve">
+			<trans-unit id=".description">
 				<source>Usergroups for Website users.</source>
 			</trans-unit>
-			<trans-unit id=".details" xml:space="preserve">
+			<trans-unit id=".details">
 				<source>The access restriction in TYPO3 is assigned to these usergroups. When a page or other element is access restricted to a group, only Website users which are members or that group will be able to view the element on the website.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">

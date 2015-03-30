@@ -3,220 +3,220 @@
 	<file t3:id="1415814907" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="recycler">
 		<header/>
 		<body>
-			<trans-unit id="title" xml:space="preserve">
+			<trans-unit id="title">
 				<source>Recycler</source>
 			</trans-unit>
-			<trans-unit id="description" xml:space="preserve">
+			<trans-unit id="description">
 				<source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
 			</trans-unit>
-			<trans-unit id="label_alltables" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="label_alltables" deprecated="Unused since CMS 7">
 				<source>All tables</source>
 			</trans-unit>
-			<trans-unit id="label_allrecordtypes" xml:space="preserve">
+			<trans-unit id="label_allrecordtypes">
 				<source>All Record Types</source>
 			</trans-unit>
-			<trans-unit id="button.cancel" xml:space="preserve">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.delete" xml:space="preserve">
+			<trans-unit id="button.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="button.deleteselected" xml:space="preserve">
+			<trans-unit id="button.deleteselected">
 				<source>Delete {0} records</source>
 			</trans-unit>
-			<trans-unit id="button.undo" xml:space="preserve">
+			<trans-unit id="button.undo">
 				<source>Recover</source>
 			</trans-unit>
-			<trans-unit id="button.expand" xml:space="preserve">
+			<trans-unit id="button.expand">
 				<source>Expand record</source>
 			</trans-unit>
-			<trans-unit id="button.undoselected" xml:space="preserve">
+			<trans-unit id="button.undoselected">
 				<source>Recover {0} records</source>
 			</trans-unit>
-			<trans-unit id="button.reload" xml:space="preserve">
+			<trans-unit id="button.reload">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="modal.delete.header" xml:space="preserve">
+			<trans-unit id="modal.delete.header">
 				<source>Confirm deletion</source>
 			</trans-unit>
-			<trans-unit id="modal.undo.header" xml:space="preserve">
+			<trans-unit id="modal.undo.header">
 				<source>Recover records</source>
 			</trans-unit>
-			<trans-unit id="modal.undo.recursive" xml:space="preserve">
+			<trans-unit id="modal.undo.recursive">
 				<source>Recover recursively</source>
 			</trans-unit>
-			<trans-unit id="modal.deletecontent.text" xml:space="preserve">
+			<trans-unit id="modal.deletecontent.text">
 				<source>Do you really want to delete the record "{0}" {1} permanently? You cannot revert this action!</source>
 			</trans-unit>
-			<trans-unit id="modal.massdelete.text" xml:space="preserve">
+			<trans-unit id="modal.massdelete.text">
 				<source>Do you really want to delete all selected records and potential subpages? You cannot revert this action!</source>
 			</trans-unit>
-			<trans-unit id="modal.deletepage.text" xml:space="preserve">
+			<trans-unit id="modal.deletepage.text">
 				<source>Do you really want to delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot revert this action!</source>
 			</trans-unit>
-			<trans-unit id="modal.undocontent.text" xml:space="preserve">
+			<trans-unit id="modal.undocontent.text">
 				<source>Do you really want to recover the record "{0}" {1}?</source>
 			</trans-unit>
-			<trans-unit id="modal.undopage.text" xml:space="preserve">
+			<trans-unit id="modal.undopage.text">
 				<source>Do you really want to recover the page "{0}" {1}, its contents and optionally all of its subpages?</source>
 			</trans-unit>
-			<trans-unit id="modal.massundo.text" xml:space="preserve">
+			<trans-unit id="modal.massundo.text">
 				<source>Do you really want to recover all selected records and optionally potential subpages?</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.norecordsselected" xml:space="preserve">
+			<trans-unit id="flashmessage.delete.norecordsselected">
 				<source>No records set to delete.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.success.singular" xml:space="preserve">
+			<trans-unit id="flashmessage.delete.success.singular">
 				<source>One record was deleted.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.success.plural" xml:space="preserve">
+			<trans-unit id="flashmessage.delete.success.plural">
 				<source>%d records were deleted.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.failure.singular" xml:space="preserve">
+			<trans-unit id="flashmessage.delete.failure.singular">
 				<source>Could not delete one record.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.failure.plural" xml:space="preserve">
+			<trans-unit id="flashmessage.delete.failure.plural">
 				<source>Could not delete %d records.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.norecordsselected" xml:space="preserve">
+			<trans-unit id="flashmessage.undo.norecordsselected">
 				<source>No records set to recover.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.success.singular" xml:space="preserve">
+			<trans-unit id="flashmessage.undo.success.singular">
 				<source>One record was recovered.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.success.plural" xml:space="preserve">
+			<trans-unit id="flashmessage.undo.success.plural">
 				<source>%d records were recovered.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.failure.singular" xml:space="preserve">
+			<trans-unit id="flashmessage.undo.failure.singular">
 				<source>Could not recover one record.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.failure.plural" xml:space="preserve">
+			<trans-unit id="flashmessage.undo.failure.plural">
 				<source>Could not recover %d records.</source>
 			</trans-unit>
-			<trans-unit id="table.header.uid" xml:space="preserve">
+			<trans-unit id="table.header.uid">
 				<source>UID</source>
 			</trans-unit>
-			<trans-unit id="table.header.pid" xml:space="preserve">
+			<trans-unit id="table.header.pid">
 				<source>PID</source>
 			</trans-unit>
-			<trans-unit id="table.header.record" xml:space="preserve">
+			<trans-unit id="table.header.record">
 				<source>Record</source>
 			</trans-unit>
-			<trans-unit id="table.header.actions" xml:space="preserve">
+			<trans-unit id="table.header.actions">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="table.header.recordtype" xml:space="preserve">
+			<trans-unit id="table.header.recordtype">
 				<source>Record Type</source>
 			</trans-unit>
-			<trans-unit id="table.header.tstamp" xml:space="preserve">
+			<trans-unit id="table.header.tstamp">
 				<source>Last edit</source>
 			</trans-unit>
-			<trans-unit id="table.header.actions" xml:space="preserve">
+			<trans-unit id="table.header.actions">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="table.header.crdate" xml:space="preserve">
+			<trans-unit id="table.header.crdate">
 				<source>Created on</source>
 			</trans-unit>
-			<trans-unit id="table.header.owner" xml:space="preserve">
+			<trans-unit id="table.header.owner">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="table.header.path" xml:space="preserve">
+			<trans-unit id="table.header.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="js.label_lostandfound" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_lostandfound" deprecated="Unused since CMS 7">
 				<source>Lost and found</source>
 			</trans-unit>
-			<trans-unit id="js.label_deletedTab" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_deletedTab" deprecated="Unused since CMS 7">
 				<source>Deleted data</source>
 			</trans-unit>
-			<trans-unit id="js.label_loadMessage" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_loadMessage" deprecated="Unused since CMS 7">
 				<source>Please wait...&lt;br/&gt;Records would be loaded!</source>
 			</trans-unit>
-			<trans-unit id="js.label_doDelete_confirmText" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_doDelete_confirmText" deprecated="Unused since CMS 7">
 				<source>Delete this record AND if page ALL subrecords ? &lt;br/&gt;ATTENTION: Data will be finally deleted from the database</source>
 			</trans-unit>
-			<trans-unit id="js.label_deleteButton_text" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_deleteButton_text" deprecated="Unused since CMS 7">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="js.label_deleteButton_tooltip" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_deleteButton_tooltip" deprecated="Unused since CMS 7">
 				<source>Delete selected items</source>
 			</trans-unit>
-			<trans-unit id="js.label_undeleteButton_text" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_undeleteButton_text" deprecated="Unused since CMS 7">
 				<source>Undelete</source>
 			</trans-unit>
-			<trans-unit id="js.label_undeleteButton_tooltip" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_undeleteButton_tooltip" deprecated="Unused since CMS 7">
 				<source>Undelete selected items</source>
 			</trans-unit>
-			<trans-unit id="js.label_error_NoSelectedRows_title" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_error_NoSelectedRows_title" deprecated="Unused since CMS 7">
 				<source>No row selected</source>
 			</trans-unit>
-			<trans-unit id="js.label_error_NoSelectedRows_msg" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_error_NoSelectedRows_msg" deprecated="Unused since CMS 7">
 				<source>You must select a row!</source>
 			</trans-unit>
-			<trans-unit id="js.label_yes" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_yes" deprecated="Unused since CMS 7">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="js.label_no" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_no" deprecated="Unused since CMS 7">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="js.label_sure" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_sure" deprecated="Unused since CMS 7">
 				<source>Are you Sure?</source>
 			</trans-unit>
-			<trans-unit id="js.label_crdate" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_crdate" deprecated="Unused since CMS 7">
 				<source>Created</source>
 			</trans-unit>
-			<trans-unit id="js.label_owner" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_owner" deprecated="Unused since CMS 7">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="js.label_tstamp" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_tstamp" deprecated="Unused since CMS 7">
 				<source>Last edit</source>
 			</trans-unit>
-			<trans-unit id="js.label_clear" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_clear" deprecated="Unused since CMS 7">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="js.label_filter" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_filter" deprecated="Unused since CMS 7">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="js.label_title_undelete" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_title_undelete" deprecated="Unused since CMS 7">
 				<source>Undelete?</source>
 			</trans-unit>
-			<trans-unit id="js.label_text_undelete" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_text_undelete" deprecated="Unused since CMS 7">
 				<source>Undelete records from tables: </source>
 			</trans-unit>
-			<trans-unit id="js.label_title_delete" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_title_delete" deprecated="Unused since CMS 7">
 				<source>Delete?</source>
 			</trans-unit>
-			<trans-unit id="js.label_text_delete" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_text_delete" deprecated="Unused since CMS 7">
 				<source>Delete records from tables: </source>
 			</trans-unit>
-			<trans-unit id="js.label_boxLabel_undelete_recursive" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_boxLabel_undelete_recursive" deprecated="Unused since CMS 7">
 				<source>Undelete recursively</source>
 			</trans-unit>
-			<trans-unit id="js.label_tableMenu_label" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_tableMenu_label" deprecated="Unused since CMS 7">
 				<source>Table:</source>
 			</trans-unit>
-			<trans-unit id="js.label_tableMenu_emptyText" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_tableMenu_emptyText" deprecated="Unused since CMS 7">
 				<source>Choose a table...</source>
 			</trans-unit>
-			<trans-unit id="js.label_filter_emptyText" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_filter_emptyText" deprecated="Unused since CMS 7">
 				<source>Keyword</source>
 			</trans-unit>
-			<trans-unit id="js.label_search" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_search" deprecated="Unused since CMS 7">
 				<source>Search:</source>
 			</trans-unit>
-			<trans-unit id="js.label_pagingMessage" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_pagingMessage" deprecated="Unused since CMS 7">
 				<source>Displaying records {0} - {1} of {2}</source>
 			</trans-unit>
-			<trans-unit id="js.label_pagingEmpty" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_pagingEmpty" deprecated="Unused since CMS 7">
 				<source>No records to display</source>
 			</trans-unit>
-			<trans-unit id="js.label_noValueFound" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_noValueFound" deprecated="Unused since CMS 7">
 				<source>No records for {0}</source>
 			</trans-unit>
-			<trans-unit id="js.label_records" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_records" deprecated="Unused since CMS 7">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="js.label_table" xml:space="preserve" deprecated="Unused since CMS 7">
+			<trans-unit id="js.label_table" deprecated="Unused since CMS 7">
 				<source>Table</source>
 			</trans-unit>
 		</body>
