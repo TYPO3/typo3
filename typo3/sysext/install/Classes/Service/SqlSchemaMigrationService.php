@@ -103,8 +103,8 @@ class SqlSchemaMigrationService {
 					// Strip trailing commas
 					$lineV = preg_replace('/,$/', '', $value);
 					$lineV = str_replace('`', '', $lineV);
-					// Reduce muliple blanks and tabs except newline
-					$lineV = preg_replace('/\h+/', ' ', $lineV);
+					// Reduce muliple blanks and tabs
+					$lineV = preg_replace('/[ \t]+/', ' ', $lineV);
 					$parts = explode(' ', $lineV, 2);
 					// Field definition
 					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|INDEX|KEY)/', $parts[0])) {
