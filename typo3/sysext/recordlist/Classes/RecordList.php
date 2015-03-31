@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -263,16 +264,21 @@ class RecordList {
 	public function main() {
 		$backendUser = $this->getBackendUserAuthentication();
 		$lang = $this->getLanguageService();
+		// Loading current page record and checking access:
+		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+		$access = is_array($this->pageinfo) ? 1 : 0;
 		// Start document template object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
+		$calcPerms = $backendUser->calcPerms($this->pageinfo);
+		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
+			PageActions.setPageId(' . (int)$this->id . ');
+			PageActions.setCanEditPage(' . ($calcPerms & Permission::PAGE_EDIT && !empty($this->id) ? 'true' : 'false') . ');
+			PageActions.initializePageTitleRenaming();
+		}');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
-		// Loading current page record and checking access:
-		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
-		$access = is_array($this->pageinfo) ? 1 : 0;
-
 		// Apply predefined values for hidden checkboxes
 		// Set predefined value for DisplayBigControlPanel:
 		if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'activated') {
@@ -302,7 +308,7 @@ class RecordList {
 		$dblist = GeneralUtility::makeInstance(RecordList\DatabaseRecordList::class);
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->script = BackendUtility::getModuleUrl('web_list');
-		$dblist->calcPerms = $backendUser->calcPerms($this->pageinfo);
+		$dblist->calcPerms = $calcPerms;
 		$dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
 		$dblist->returnUrl = $this->returnUrl;
 		$dblist->allFields = $this->MOD_SETTINGS['bigControlPanel'] || $this->table ? 1 : 0;

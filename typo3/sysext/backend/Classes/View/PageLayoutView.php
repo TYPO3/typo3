@@ -396,6 +396,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getPageLayoutController()->doc->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
+		$userCanEditPage = $this->ext_CALC_PERMS & Permission::PAGE_EDIT && !empty($this->id);
+		if ($this->tt_contentConfig['languageColsPointer'] > 0) {
+			$userCanEditPage = $this->getBackendUser()->check('tables_modify', 'pages_language_overlay');
+		}
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
+			PageActions.setPageId(' . (int)$this->id . ');
+			PageActions.setCanEditPage(' . ($userCanEditPage ? 'true' : 'false') . ');
+			PageActions.setLanguageOverlayId(' . $this->tt_contentConfig['languageColsPointer'] . ');
+			PageActions.initializePageTitleRenaming();
+		}');
 		// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels = array();
 		foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
