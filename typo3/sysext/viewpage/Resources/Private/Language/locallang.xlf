@@ -21,6 +21,9 @@
 			<trans-unit id="autoSize">
 				<source>Auto Size</source>
 			</trans-unit>
+			<trans-unit id="refreshPage">
+				<source>Refresh page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
