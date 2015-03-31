@@ -8,6 +8,12 @@ if (TYPO3_MODE === 'BE') {
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
 	);
 
+	// Register openid return module
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'openid_return',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/OpenidReturn/'
+	);
+
 	// Add field to setup module
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 		'type' => 'user',

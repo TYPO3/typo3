@@ -11,15 +11,12 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 // Fix _GET/_POST values for authentication
 if (isset($_GET['login_status'])) {
 	$_POST['login_status'] = $_GET['login_status'];
 }
-define('TYPO3_MOD_PATH', 'sysext/openid/');
-require_once '../../init.php';
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'The entry point to the openid return window was moved to an own module. Please use BackendUtility::getModuleUrl(\'openid_return\') to link to class.tx_openid_return.php. This script will be removed in TYPO3 CMS 8.'
-);
+
 $module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidReturn::class);
-/* @var \TYPO3\CMS\Openid\OpenidReturn $module */
+/** @var \TYPO3\CMS\Openid\OpenidReturn $module */
 $module->main();
