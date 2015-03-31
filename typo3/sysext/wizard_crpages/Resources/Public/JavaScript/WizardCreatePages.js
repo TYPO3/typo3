@@ -26,10 +26,13 @@ define('TYPO3/CMS/WizardCrpages/WizardCreatePages', ['jquery'], function($) {
 	WizardCreatePages.createNewFormFields = function() {
 		for (i = 0; i < 5; i++) {
 			var label = this.lineCounter + i + 1;
-			var line = String.format(tpl, (this.lineCounter + i), label);
+			var line = tpl
+				.replace(/\{0\}/g, (this.lineCounter + i))
+				.replace(/\{1\}/g, label);
+
 			$(line).appendTo(this.containerSelector);
 		}
-		this.lineCounter += 5;
+		WizardCreatePages.lineCounter += 5;
 	};
 
 	WizardCreatePages.actOnTypeSelectChange = function($selectElement) {
