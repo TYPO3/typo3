@@ -2380,7 +2380,7 @@ class ElementBrowser {
 			if (count($specialParts) == 2) {
 				$info['value'] = '#_SPECIAL' . $specialParts[1];
 				$info['act'] = 'spec';
-			} elseif (StringUtility::beginsWith($href, 'file:') && !StringUtility::beginsWith($href, 'file://')) {
+			} elseif (!StringUtility::beginsWith($href, 'file://') && strpos($href, 'file:') !== FALSE) {
 				$rel = substr($href, strpos($href, 'file:') + 5);
 				$rel = rawurldecode($rel);
 				// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
