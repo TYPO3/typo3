@@ -441,7 +441,7 @@ class EditDocumentController {
 			$this->defVals = $this->overrideVals;
 		}
 		// Setting return URL
-		$this->retUrl = $this->returnUrl ?: 'dummy.php';
+		$this->retUrl = $this->returnUrl ?: BackendUtility::getModuleUrl('dummy');
 		// Fix $this->editconf if versioning applies to any of the records
 		$this->fixWSversioningInEditConf();
 		// Make R_URL (request url) based on input GETvars:
@@ -565,7 +565,7 @@ class EditDocumentController {
 								$newEditConf[$tableName][$editId] = 'edit';
 							}
 							// Traverse all new records and forge the content of ->editconf so we can continue to EDIT these records!
-							if ($tableName == 'pages' && $this->retUrl != 'dummy.php' && $this->returnNewPageId) {
+							if ($tableName == 'pages' && $this->retUrl != BackendUtility::getModuleUrl('dummy') && $this->returnNewPageId) {
 								$this->retUrl .= '&id=' . $tce->substNEWwithIDs[$key];
 							}
 						}
@@ -1482,7 +1482,7 @@ class EditDocumentController {
 			BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
 		}
 		// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
-		if ($this->returnEditConf && $this->retUrl != 'dummy.php') {
+		if ($this->returnEditConf && $this->retUrl != BackendUtility::getModuleUrl('dummy')) {
 			$this->retUrl .= '&returnEditConf=' . rawurlencode(json_encode($this->editconf));
 		}
 		// If code is NOT set OR set to 1, then make a header location redirect to $this->retUrl
@@ -1502,8 +1502,8 @@ class EditDocumentController {
 	 * @param string $retUrl Alternative/Default retUrl
 	 * @return void
 	 */
-	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'dummy.php') {
-		if ($retUrl === 'dummy.php') {
+	public function setDocument($currentDocFromHandlerMD5 = '', $retUrl = '') {
+		if ($retUrl === '') {
 			return;
 		}
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {

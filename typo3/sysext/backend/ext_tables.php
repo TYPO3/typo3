@@ -158,4 +158,10 @@ if (TYPO3_MODE === 'BE') {
 		'browser',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Browser/'
 	);
+
+	// Register dummy window
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
+		'dummy',
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Dummy/'
+	);
 }

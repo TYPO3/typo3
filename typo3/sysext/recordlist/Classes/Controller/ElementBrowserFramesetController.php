@@ -70,7 +70,7 @@ class ElementBrowserFramesetController {
 		$this->content = $documentTemplate->getPageRenderer()->render(PageRenderer::PART_HEADER) .
 			'<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="' . htmlspecialchars($url) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
-				<frame name="menu" src="' . $GLOBALS['BACK_PATH'] . 'dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
+				<frame name="menu" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		</html>
 		';

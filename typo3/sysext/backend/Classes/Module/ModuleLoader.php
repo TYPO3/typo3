@@ -310,7 +310,7 @@ class ModuleLoader {
 		} elseif ($setupInformation['configuration']['script'] && file_exists($setupInformation['path'] . '/' . $setupInformation['configuration']['script'])) {
 			$finalModuleConfiguration['script'] = $this->getRelativePath(PATH_typo3, $fullPath . '/' . $setupInformation['configuration']['script']);
 		} else {
-			$finalModuleConfiguration['script'] = 'dummy.php';
+			$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('dummy');
 		}
 
 		// Navigation Frame Script (GET params could be added)

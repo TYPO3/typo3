@@ -295,7 +295,7 @@ class ColorpickerController extends AbstractWizardController {
 		$this->content = $this->getDocumentTemplate()->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="' . htmlspecialchars($url) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
-				<frame name="menu" src="dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
+				<frame name="menu" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		</html>';
 	}

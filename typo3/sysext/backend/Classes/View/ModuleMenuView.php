@@ -102,10 +102,11 @@ class ModuleMenuView {
 		$data = array('success' => TRUE, 'root' => array());
 		$rawModuleData = $this->getRawModuleData();
 		$index = 0;
+		$dummyLink = BackendUtility::getModuleUrl('dummy');
 		foreach ($rawModuleData as $moduleKey => $moduleData) {
 			$key = substr($moduleKey, 8);
 			$num = count($data['root']);
-			if ($moduleData['link'] != 'dummy.php' || $moduleData['link'] == 'dummy.php' && is_array($moduleData['subitems'])) {
+			if ($moduleData['link'] != $dummyLink || $moduleData['link'] == $dummyLink && is_array($moduleData['subitems'])) {
 				$data['root'][$num]['key'] = $key;
 				$data['root'][$num]['menuState'] = $GLOBALS['BE_USER']->uc['moduleData']['menuState'][$moduleKey];
 				$data['root'][$num]['label'] = $moduleData['title'];
@@ -201,7 +202,7 @@ class ModuleMenuView {
 
 		// Unset modules that are meant to be hidden from the menu.
 		$this->unsetHiddenModules();
-
+		$dummyScript = BackendUtility::getModuleUrl('dummy');
 		foreach ($this->loadedModules as $moduleName => $moduleData) {
 			$moduleLink = '';
 			if (!is_array($moduleData['sub'])) {
@@ -218,7 +219,7 @@ class ModuleMenuView {
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
 			);
-			if (!is_array($moduleData['sub']) && $moduleData['script'] != 'dummy.php') {
+			if (!is_array($moduleData['sub']) && $moduleData['script'] != $dummyScript) {
 				// Work around for modules with own main entry, but being self the only submodule
 				$modules[$moduleKey]['subitems'][$moduleKey] = array(
 					'name' => $moduleName,

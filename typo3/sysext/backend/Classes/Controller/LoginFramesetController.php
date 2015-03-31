@@ -40,7 +40,7 @@ class LoginFramesetController {
 		$this->content = $GLOBALS['TBE_TEMPLATE']->getPageRenderer()->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
-				<frame name="dummy" src="dummy.php" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
+				<frame name="dummy" src="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
 			</frameset>
 		</html>';
 	}

@@ -230,7 +230,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
 		// Unset modules that are meant to be hidden from the menu.
 		$loadedModules = $this->removeHiddenModules($loadedModules);
-
+		$dummyScript = BackendUtility::getModuleUrl('dummy');
 		foreach ($loadedModules as $moduleName => $moduleData) {
 			$moduleLink = '';
 			if (!is_array($moduleData['sub'])) {
@@ -247,7 +247,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
 			);
-			if (!is_array($moduleData['sub']) && $moduleData['script'] !== 'dummy.php') {
+			if (!is_array($moduleData['sub']) && $moduleData['script'] !== $dummyScript) {
 				// Work around for modules with own main entry, but being self the only submodule
 				$modules[$moduleKey]['subitems'][$moduleKey] = array(
 					'name' => $moduleName,
