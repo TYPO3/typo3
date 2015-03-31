@@ -2924,4 +2924,215 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expected, $this->subject->_call('forceAbsoluteUrl', $url, $configuration));
 	}
 
+	/**
+	 * @return array
+	 */
+	protected function getLibParseFunc_RTE() {
+		return array(
+			'parseFunc' => '',
+			'parseFunc.' => array(
+				'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
+				'constants' => '1',
+				'denyTags' => '*',
+				'externalBlocks' => 'article, aside, blockquote, div, dd, dl, footer, header, nav, ol, section, table, ul',
+				'externalBlocks.' => array(
+					'article.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'aside.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'blockquote.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'dd.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'div.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'dl.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'footer.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'header.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'nav.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'ol.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'section.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+					'table.' => array(
+						'HTMLtableCells' => '1',
+						'HTMLtableCells.' => array(
+							'addChr10BetweenParagraphs' => '1',
+							'default.' => array(
+								'stdWrap.' => array(
+									'parseFunc' => '=< lib.parseFunc_RTE',
+									'parseFunc.' => array(
+										'nonTypoTagStdWrap.' => array(
+											'encapsLines.' => array(
+												'nonWrappedTag' => '',
+											),
+										),
+									),
+								),
+							),
+						),
+						'stdWrap.' => array(
+							'HTMLparser' => '1',
+							'HTMLparser.' => array(
+								'keepNonMatchedTags' => '1',
+								'tags.' => array(
+									'table.' => array(
+										'fixAttrib.' => array(
+											'class.' => array(
+												'always' => '1',
+												'default' => 'contenttable',
+												'list' => 'contenttable',
+											),
+										),
+									),
+								),
+							),
+						),
+						'stripNL' => '1',
+					),
+					'ul.' => array(
+						'callRecursive' => '1',
+						'stripNL' => '1',
+					),
+				),
+				'makelinks' => '1',
+				'makelinks.' => array(
+					'http.' => array(
+						'extTarget.' =>  array(
+							'override' => '_blank',
+							'override.' => array(
+								'if.' => array(
+									'isTrue.' => array(
+										'data' => 'TSFE:dtdAllowsFrames',
+									),
+								),
+							),
+						),
+						'keep' => 'path',
+					),
+				),
+				'nonTypoTagStdWrap.' => array(
+					'encapsLines.' => array(
+						'addAttributes.' => array(
+							'P.' => array(
+								'class' => 'bodytext',
+								'class.' => array(
+									'setOnly' => 'blank',
+								),
+							),
+						),
+						'encapsTagList' => 'p,pre,h1,h2,h3,h4,h5,h6,hr,dt,li',
+						'innerStdWrap_all.' => array(
+							'ifBlank' => '&nbsp;',
+						),
+						'nonWrappedTag' => 'P',
+						'remapTag.' => array(
+							'DIV' => 'P',
+						),
+					),
+					'HTMLparser' => '1',
+					'HTMLparser.' => array(
+						'htmlSpecialChars' => '2',
+						'keepNonMatchedTags' => '1',
+					),
+				),
+				'sword' => '<span class="csc-sword">|</span>',
+				'tags.' => array(
+					'link' => 'TEXT',
+					'link.' => array(
+						'current' => '1',
+						'parseFunc.' => array(
+							'constants' => '1',
+						),
+						'typolink.' => array(
+							'extTarget.' =>  array(
+								'override' => '',
+								'override.' => array(
+									'if.' => array(
+										'isTrue.' => array(
+											'data' => 'TSFE:dtdAllowsFrames',
+										),
+									),
+								),
+							),
+							'parameter.' => array(
+								'data' => 'parameters : allParams',
+							),
+							'target.' =>  array(
+								'override' => '',
+								'override.' => array(
+									'if.' => array(
+										'isTrue.' => array(
+											'data' => 'TSFE:dtdAllowsFrames',
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function _parseFuncReturnsCorrectHtmlDataProvider() {
+		return array(
+			'Text without tag is wrapped with <p> tag' => array(
+				'Text without tag',
+				$this->getLibParseFunc_RTE(),
+				'<p class="bodytext">Text without tag</p>',
+			),
+			'Text wrapped with <p> tag remains the same' => array(
+				'<p class="myclass">Text with &lt;p&gt; tag</p>',
+				$this->getLibParseFunc_RTE(),
+				'<p class="myclass">Text with &lt;p&gt; tag</p>',
+			),
+			'Text with absolute external link' => array(
+				'Text with <link http://example.com/foo/>external link</link>',
+				$this->getLibParseFunc_RTE(),
+				'<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
+	 * @param string $value
+	 * @param array $configuration
+	 * @param string $expectedResult
+	 */
+	public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult) {
+		$this->assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+	}
+
 }

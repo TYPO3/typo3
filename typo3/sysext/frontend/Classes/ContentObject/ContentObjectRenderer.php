@@ -5071,7 +5071,7 @@ class ContentObjectRenderer {
 				// tags
 				$len = strcspn(substr($theValue, $pointer), '>') + 1;
 				$data = substr($theValue, $pointer, $len);
-				if (substr($data, -2) === '/>') {
+				if (StringUtility::endsWith($data, '/>') && !StringUtility::beginsWith($data, '<link ')) {
 					$tagContent = substr($data, 1, -2);
 				} else {
 					$tagContent = substr($data, 1, -1);
