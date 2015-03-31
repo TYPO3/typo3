@@ -32,7 +32,6 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 		// Add event to width selector so the container is resized
 		$(document).on('change', me.widthSelectorIdentifier, function() {
 			var value = me.$widthSelector.val();
-			console.debug(value);
 			if (value) {
 				value = value.split('|');
 				me.$resizableContainer.animate({
