@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
@@ -4883,7 +4884,7 @@ class ContentObjectRenderer {
 				// tags
 				$len = strcspn(substr($theValue, $pointer), '>') + 1;
 				$data = substr($theValue, $pointer, $len);
-				if (substr($data, -2) === '/>') {
+				if (StringUtility::isLastPartOfString($data, '/>') && !GeneralUtility::isFirstPartOfStr($data, '<link ')) {
 					$tagContent = substr($data, 1, -2);
 				} else {
 					$tagContent = substr($data, 1, -1);
