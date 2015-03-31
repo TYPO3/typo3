@@ -1387,7 +1387,7 @@ class InlineElement {
 				$selectorConfiguration['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'],
 				TRUE
 			);
-			if (!in_array($fileRecord['extension'], $allowedFileExtensions, TRUE)) {
+			if (!in_array(strtolower($fileRecord['extension']), $allowedFileExtensions, TRUE)) {
 				return FALSE;
 			}
 		}
