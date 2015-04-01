@@ -3188,15 +3188,10 @@ class BackendUtility {
 	 * @param array $urlParameters URL parameters that should be added as key value pairs
 	 * @param string $linkTitle title for the link tag
 	 * @param string $linkText optional link text after the icon
-	 * @return string A complete link tag or empty string
+	 * @return string A complete <a href=""> tag
 	 */
 	static public function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '') {
-		$url = self::getModuleUrl('web_list', $urlParameters);
-		if ($url === FALSE) {
-			return '';
-		} else {
-			return '<a href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($linkTitle) . '">' . IconUtility::getSpriteIcon('actions-system-list-open') . htmlspecialchars($linkText) . '</a>';
-		}
+		return '<a href="' . htmlspecialchars(self::getModuleUrl('web_list', $urlParameters)) . '" title="' . htmlspecialchars($linkTitle) . '">' . IconUtility::getSpriteIcon('actions-system-list-open') . htmlspecialchars($linkText) . '</a>';
 	}
 
 	/**
