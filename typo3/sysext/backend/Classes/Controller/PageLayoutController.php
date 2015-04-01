@@ -883,7 +883,7 @@ class PageLayoutController {
 		$content .= $this->doc->spacer(10);
 		// Select element matrix:
 		if ($this->eRParts[0] == 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
-			$posMap = GeneralUtility::makeInstance(\ext_posMap::class);
+			$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentLayoutPagePositionMap::class);
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			$posMap->cur_sys_language = $this->current_sys_language;
 			$HTMLcode = '';
