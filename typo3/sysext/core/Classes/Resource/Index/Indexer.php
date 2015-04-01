@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Resource\Index;
 
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Type\File\ImageInfo;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The New FAL Indexer
@@ -214,8 +216,11 @@ class Indexer {
 		// prevent doing this for remote storages, remote storages must provide the data with extractors
 		if ($fileObject->getType() == File::FILETYPE_IMAGE && $this->storage->getDriverType() === 'Local') {
 			$rawFileLocation = $fileObject->getForLocalProcessing(FALSE);
-			$metaData = array();
-			list($metaData['width'], $metaData['height']) = getimagesize($rawFileLocation);
+			$imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $rawFileLocation);
+			$metaData = array(
+				'width' => $imageInfo->getWidth(),
+				'height' => $imageInfo->getHeight(),
+			);
 			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
 			$fileObject->_updateMetaDataProperties($metaData);
 		}
