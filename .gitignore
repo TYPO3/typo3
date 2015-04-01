@@ -1,37 +1,47 @@
-#########################
-# TYPO3v4/Core.git
+########################
+# TYPO3 CMS
 # global ignore file
 ########################
-# ignoring temporary files (left by e.g. vim)
-# ignoring by common IDE's used directories/files
-# dont ignore .rej and .orig as we want to see/clean files after conflict resolution
 #
-# if you feel this file needs adaption please report on http://forge.typo3.org/issues/13627
+# Don't ignore .rej and .orig as we want to see/clean files after conflict resolution.
 #
-# for local exclude patterns please edit .git/info/exclude
+# If you feel this file needs adaption please report on http://forge.typo3.org/issues/13627.
 #
+# For local exclude patterns please edit .git/info/exclude.
+#
+########################
+#
+# Ignore temporary files (left by editors)
 *~
 *.bak
+*.swp
+#
+# Ignore by common IDEs used directories/files
+nbproject
 *.idea
 *.project
-*.swp
 .buildpath
-.cache
-.htaccess
 .project
-.sass-cache
-.session
 .settings
 .TemporaryItems
 .webprj
-bin/*
+#
+# Ignore build stuff
 Build/bower_components/*
 Build/node_modules/*
-nbproject
+.cache
+.sass-cache
+.session
+#
+# Ignore composer stuff
+bin/*
 Packages/*
 typo3/contrib/vendor/*
+composer.lock
+#
+# Ignore common TYPO3 CMS directories
 typo3temp/*
 typo3conf/*
 fileadmin/*
 uploads/*
-composer.lock
+/.htaccess
