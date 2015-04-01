@@ -137,7 +137,7 @@ class NewContentElementController {
 	public function main() {
 		if ($this->id && $this->access) {
 			// Init position map object:
-			$posMap = GeneralUtility::makeInstance(\ext_posMap::class);
+			$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class);
 			$posMap->cur_sys_language = $this->sys_language;
 			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			// If a column is pre-set:
