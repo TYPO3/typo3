@@ -16,7 +16,11 @@ namespace TYPO3\CMS\Openid;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * OpenID selection wizard for the backend
@@ -60,30 +64,26 @@ class Wizard extends OpenidService {
 			$this->parentFormFieldChangeFunc = $p['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
 
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') === 'finish'
-			&& $this->openIDResponse === NULL
-		) {
+		if (GeneralUtility::_GP('tx_openid_mode') === 'finish' && $this->openIDResponse === NULL) {
 			$this->includePHPOpenIDLibrary();
 			$openIdConsumer = $this->getOpenIDConsumer();
 			$this->openIDResponse = $openIdConsumer->complete($this->getReturnUrl());
 			$this->handleResponse();
-			$this->renderHtml();
-			return;
 		} elseif (GeneralUtility::_POST('openid_url') != '') {
 			$openIDIdentifier = GeneralUtility::_POST('openid_url');
 			$this->sendOpenIDRequest($openIDIdentifier);
 
 			// When sendOpenIDRequest() returns, there was an error
 			$flashMessageService = GeneralUtility::makeInstance(
-				\TYPO3\CMS\Core\Messaging\FlashMessageService::class
+				FlashMessageService::class
 			);
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.setup'),
+					$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.setup'),
 					htmlspecialchars($openIDIdentifier)
 				),
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 			$flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
@@ -92,43 +92,35 @@ class Wizard extends OpenidService {
 	}
 
 	/**
-	 * Return URL to this wizard
-	 *
-	 * @return string Full URL with protocol and hostname
-	 */
-	protected function getSelfUrl() {
-		return BackendUtility::getModuleUrl('wizard_openid');
-	}
-
-	/**
 	 * Return URL that shall be called by the OpenID server
 	 *
 	 * @return string Full URL with protocol and hostname
 	 */
 	protected function getReturnUrl() {
-		return $this->getSelfURL() .
-			'&tx_openid_mode=finish' .
-			'&P[itemName]=' . urlencode($this->parentFormItemName) .
-			'&P[fieldChangeFunc][TBE_EDITOR_fieldChanged]]=' . urlencode($this->parentFormFieldChangeFunc);
+		$parameters = [
+			'tx_openid_mode' => 'finish',
+			'P[itemName]' => $this->parentFormItemName,
+			'P[fieldChangeFunc][TBE_EDITOR_fieldChanged]' => $this->parentFormFieldChangeFunc
+		];
+		return BackendUtility::getModuleUrl('wizard_openid', $parameters, FALSE, TRUE);
 	}
 
 	/**
 	 * Check OpenID response and set flash messages depending on its state
 	 *
 	 * @return void
-	 *
-	 * @uses $openIDResponse
 	 */
 	protected function handleResponse() {
-		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+		/** @var $flashMessageService FlashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 
+		$lang = $this->getLanguageService();
 		if (!$this->openIDResponse instanceof \Auth_OpenID_ConsumerResponse) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.no-response'),
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.no-response'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 		} elseif ($this->openIDResponse->status == Auth_OpenID_SUCCESS) {
@@ -137,17 +129,17 @@ class Wizard extends OpenidService {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:youropenid'),
+					$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:youropenid'),
 					htmlspecialchars($this->claimedId)
 				),
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.success'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.success'),
 				FlashMessage::OK
 			);
 		} elseif ($this->openIDResponse->status == Auth_OpenID_CANCEL) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.cancelled'),
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.cancelled'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 		} else {
@@ -155,11 +147,11 @@ class Wizard extends OpenidService {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.general'),
+					$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.general'),
 					htmlspecialchars($this->openIDResponse->status),
-					htmlspecialchars($this->openIDResponse->message)
+					''
 				),
-				$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 		}
@@ -168,20 +160,20 @@ class Wizard extends OpenidService {
 	}
 
 	/**
-	 * Render HTML with messagse and OpenID form and output it
+	 * Render HTML with message and OpenID form and output it
 	 *
 	 * @return void
 	 */
 	protected function renderHtml() {
 		// use FLUID standalone view for wizard content
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		$view = GeneralUtility::makeInstance(StandaloneView::class);
 		$view->setTemplatePathAndFilename(
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') .
+			ExtensionManagementUtility::extPath('openid') .
 			'Resources/Private/Templates/Wizard/Content.html'
 		);
 
-		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+		/** @var $flashMessageService FlashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 
 		$messages = array();
@@ -189,7 +181,7 @@ class Wizard extends OpenidService {
 			$messages[] = $message->render();
 		}
 		$view->assign('messages', $messages);
-		$view->assign('formAction', $this->getSelfURL());
+		$view->assign('formAction', BackendUtility::getModuleUrl('wizard_openid', [], FALSE, TRUE));
 		$view->assign('claimedId', $this->claimedId);
 		$view->assign('parentFormItemName', $this->parentFormItemName);
 		$view->assign('parentFormItemNameNoHr', strtr($this->parentFormItemName, array('_hr' => '')));
@@ -201,6 +193,13 @@ class Wizard extends OpenidService {
 
 		header('HTTP/1.0 200 OK');
 		echo $view->render();
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
