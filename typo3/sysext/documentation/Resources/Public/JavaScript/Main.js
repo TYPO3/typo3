@@ -36,7 +36,6 @@ define('TYPO3/CMS/Documentation/Main', ['jquery', 'datatables', 'jquery/jquery.c
 	Documentation.documentationListView = function(getVars) {
 		Documentation.datatable = $('#typo3-documentation-list').DataTable({
 			'paging': false,
-			'jQueryUI': true,
 			'lengthChange': false,
 			'pageLength': 15,
 			'stateSave': true
@@ -52,7 +51,6 @@ define('TYPO3/CMS/Documentation/Main', ['jquery', 'datatables', 'jquery/jquery.c
 	Documentation.documentationDownloadView = function(getVars) {
 		Documentation.datatable = $('#typo3-documentation-download').DataTable({
 			'paging': false,
-			'jQueryUI': true,
 			'lengthChange': false,
 			'pageLength': 15,
 			'stateSave': true,
