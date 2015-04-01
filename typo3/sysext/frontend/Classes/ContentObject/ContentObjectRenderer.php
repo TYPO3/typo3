@@ -4473,6 +4473,7 @@ class ContentObjectRenderer {
 						$icon = $this->cObjGetSingle($conf['iconCObject'], $conf['iconCObject.'], 'iconCObject');
 					} else {
 						$notFoundThumb = TYPO3_mainDir . 'gfx/fileicons/notfound_thumb.gif';
+						$sizeParts = array(64, 64);
 						if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']) {
 							// using the File Abstraction Layer to generate a preview image
 							try {
@@ -4486,8 +4487,6 @@ class ContentObjectRenderer {
 										if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.']) {
 											$thumbSize = (isset($conf['icon_thumbSize.']) ? $this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']) : $conf['icon_thumbSize']);
 											$sizeParts = explode('x', $thumbSize);
-										} else {
-											$sizeParts = array(64, 64);
 										}
 										$icon = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array(
 											'width' => $sizeParts[0],
@@ -4501,7 +4500,9 @@ class ContentObjectRenderer {
 						} else {
 							$icon = $notFoundThumb;
 						}
-						$icon = '<img src="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $icon) . '"' . $this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
+						$icon = '<img src="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $icon) . '"' .
+								'width="' . $sizeParts[0] . '" height="' . $sizeParts[1] . '" ' .
+								$this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
 					}
 				} else {
 					$conf['icon.']['widthAttribute'] = isset($conf['icon.']['widthAttribute.']) ? $this->stdWrap($conf['icon.']['widthAttribute'], $conf['icon.']['widthAttribute.']) : $conf['icon.']['widthAttribute'];

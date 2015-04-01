@@ -1984,16 +1984,20 @@ class ElementBrowser {
 			// Thumbnail/size generation:
 			$imgInfo = array();
 			if (GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
-				$imageUrl = $fileObject->process(
+				$processedFile = $fileObject->process(
 					ProcessedFile::CONTEXT_IMAGEPREVIEW,
 					array('width' => 64, 'height' => 64)
-				)->getPublicUrl(TRUE);
+				);
+				$imageUrl = $processedFile->getPublicUrl(TRUE);
 				$imgInfo = array(
 					$fileObject->getProperty('width'),
 					$fileObject->getProperty('height')
 				);
 				$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
-				$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1" />';
+				$clickIcon = '<img src="' . $imageUrl . '" ' .
+							'width="' . $processedFile->getProperty('width') . '" ' .
+							'height="' . $processedFile->getProperty('height') . '" ' .
+							'hspace="5" vspace="5" border="1" />';
 			} else {
 				$clickIcon = '';
 				$pDim = '';

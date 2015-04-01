@@ -71,8 +71,17 @@ class LocalImageProcessor implements ProcessorInterface {
 					array('width' => $imageDimensions[0], 'height' => $imageDimensions[1], 'size' => filesize($result['filePath']), 'checksum' => $task->getConfigurationChecksum())
 				);
 				$task->getTargetFile()->updateWithLocalFile($result['filePath']);
+
+			// New dimensions + no new file (for instance svg)
+			} elseif (!empty($result['width']) && !empty($result['height'])) {
+				$task->setExecuted(TRUE);
+				$task->getTargetFile()->setUsesOriginalFile();
+				$task->getTargetFile()->updateProperties(
+					array('width' => $result['width'], 'height' => $result['height'], 'size' => $task->getSourceFile()->getSize(), 'checksum' => $task->getConfigurationChecksum())
+				);
+
+			// Seems we have no valid processing result
 			} else {
-				// Seems we have no valid processing result
 				$task->setExecuted(FALSE);
 			}
 		} catch (\Exception $e) {

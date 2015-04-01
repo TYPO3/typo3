@@ -75,7 +75,10 @@ class FileInfoHook {
 				$content .= $flashMessage->render();
 			}
 			if ($previewImage) {
-				$content .= '<img src="' . htmlspecialchars($previewImage) . '" alt="" class="t3-tceforms-sysfile-imagepreview" />';
+				$content .= '<img src="' . htmlspecialchars($previewImage) . '" ' .
+							'width="' . $processedFile->getProperty('width') . '" ' .
+							'height="' . $processedFile->getProperty('height') . '" ' .
+							'alt="" class="t3-tceforms-sysfile-imagepreview" />';
 			}
 			$content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
 			$content .= '(' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';

@@ -98,7 +98,7 @@ EOF;
 	/**
 	 * @var string
 	 */
-	protected $imageTag = '<img src="###publicUrl###" alt="###alt###" title="###title###" />';
+	protected $imageTag = '<img src="###publicUrl###" alt="###alt###" title="###title###" width="###width###" height="###height###" />';
 
 	/**
 	 * Init function, setting the input vars in the global space.
@@ -155,7 +155,9 @@ EOF;
 		$imageTagMarkers = array(
 			'###publicUrl###' => htmlspecialchars($processedImage->getPublicUrl()),
 			'###alt###' => htmlspecialchars($this->file->getProperty('alternative') ?: $this->title),
-			'###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title)
+			'###title###' => htmlspecialchars($this->file->getProperty('title') ?: $this->title),
+			'###width###' => $processedImage->getProperty('width'),
+			'###height###' => $processedImage->getProperty('height')
 		);
 		$this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
 		if ($this->wrap !== '|') {

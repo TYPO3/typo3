@@ -1624,12 +1624,16 @@ class BackendUtility {
 
 				// Web image
 				if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
-					$imageUrl = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, array(
-						'width' => $sizeParts[0],
-						'height' => $sizeParts[1] . 'c',
-						'crop' => $fileReferenceObject->getProperty('crop')
-					))->getPublicUrl(TRUE);
-					$imgTag = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
+					$processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, array(
+										'width' => $sizeParts[0],
+										'height' => $sizeParts[1] . 'c',
+										'crop' => $fileReferenceObject->getProperty('crop')
+									));
+					$imageUrl = $processedImage->getPublicUrl(TRUE);
+					$imgTag = '<img src="' . $imageUrl . '" ' .
+							'width="' . $processedImage->getProperty('width') . '" ' .
+							'height="' . $processedImage->getProperty('height') . '" ' .
+							'alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
 				} else {
 					// Icon
 					$imgTag = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName()));

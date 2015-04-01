@@ -336,8 +336,10 @@ class ProcessedFile extends AbstractFile {
 			unset($properties['pid']);
 			unset($properties['identifier']);
 			unset($properties['name']);
-			unset($properties['width']);
-			unset($properties['height']);
+
+			// Use width + height set in processed file
+			$properties['width'] = $this->properties['width'];
+			$properties['height'] = $this->properties['height'];
 		} else {
 			$properties = $this->properties;
 			$properties['identifier'] = $this->getIdentifier();
@@ -362,7 +364,7 @@ class ProcessedFile extends AbstractFile {
 	 * @return bool
 	 */
 	protected function isUnchanged() {
-		return $this->identifier == NULL || $this->identifier === $this->originalFile->getIdentifier();
+		return !$this->properties['width'] && $this->usesOriginalFile();
 	}
 
 	/**
@@ -379,7 +381,7 @@ class ProcessedFile extends AbstractFile {
 	 * @return bool
 	 */
 	public function usesOriginalFile() {
-		return $this->isUnchanged();
+		return $this->identifier == NULL || $this->identifier === $this->originalFile->getIdentifier();
 	}
 
 	/**

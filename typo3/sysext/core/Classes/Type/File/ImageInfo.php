@@ -60,6 +60,11 @@ class ImageInfo extends FileInfo {
 				$this->imageSizes = $this->getGraphicalFunctions()->imageMagickIdentify($this->getPathname());
 			}
 
+			// Extra fallback for SVG
+			if (empty($this->imageSizes) && $this->getMimeType() === 'image/svg+xml') {
+				$this->imageSizes = $this->extractSvgImageSizes();
+			}
+
 			// In case the image size could not be retrieved, log the incident as a warning.
 			if (empty($this->imageSizes)) {
 				$this->getLogger()->warning('I could not retrieve the image size for file ' . $this->getPathname());
@@ -67,6 +72,31 @@ class ImageInfo extends FileInfo {
 			}
 		}
 		return $this->imageSizes;
+	}
+
+	/**
+	 * Try to read SVG as XML file and
+	 * find width and height
+	 *
+	 * @return FALSE|array
+	 */
+	protected function extractSvgImageSizes() {
+		$imagesSizes = array();
+
+		$xml = simplexml_load_file($this->getPathname());
+		$xmlAttributes = $xml->attributes();
+
+		// First check if width+height are set
+		if (!empty($xmlAttributes['width']) && !empty($xmlAttributes['height'])) {
+			$imagesSizes = array((int)$xmlAttributes['width'], (int)$xmlAttributes['height']);
+
+		// Fallback to viewBox
+		} elseif (!empty($xmlAttributes['viewBox'])) {
+			$viewBox = explode(' ', $xmlAttributes['viewBox']);
+			$imagesSizes = array((int)$viewBox[2], (int)$viewBox[3]);
+		}
+
+		return $imagesSizes !== array() ? $imagesSizes : FALSE;
 	}
 
 	/**

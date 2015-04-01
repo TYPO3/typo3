@@ -616,10 +616,14 @@ class InlineElement {
 					}
 					$imageSetup = array_merge(array('width' => '45', 'height' => '45c'), $imageSetup);
 					$processedImage = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
-					// Only use a thumbnail if the processing was successful.
-					if (!$processedImage->usesOriginalFile()) {
+					// Only use a thumbnail if the processing process was successful by checking if image width is set
+					if ($processedImage->getProperty('width')) {
 						$imageUrl = $processedImage->getPublicUrl(TRUE);
-						$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($altText) . '" title="' . htmlspecialchars($altText) . '">';
+						$thumbnail = '<img src="' . $imageUrl . '" ' .
+									 'width="' . $processedImage->getProperty('width') . '" ' .
+									 'height="' . $processedImage->getProperty('height') . '" ' .
+									 'alt="' . htmlspecialchars($altText) . '" ' .
+									 'title="' . htmlspecialchars($altText) . '">';
 					}
 				}
 			}

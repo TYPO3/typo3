@@ -44,6 +44,14 @@ class LocalPreviewHelper {
 	 * copies the typo3temp/ file to the processing folder of the target storage
 	 * removes the typo3temp/ file
 	 *
+	 * The returned array has the following structure:
+	 *   width => 100
+	 *   height => 200
+	 *   filePath => /some/path
+	 *
+	 * If filePath isn't set but width and height are the original file is used as ProcessedFile
+	 * with the returned width and height. This is for example useful for SVG images.
+	 *
 	 * @param TaskInterface $task
 	 * @return array|NULL
 	 */
@@ -76,6 +84,21 @@ class LocalPreviewHelper {
 				'No ext!',
 				$sourceFile->getName()
 			);
+			$result = array(
+				'filePath' => $temporaryFileName,
+			);
+		} elseif ($sourceFile->getExtension() === 'svg') {
+			/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
+			$gifBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
+			$gifBuilder->init();
+			$gifBuilder->absPrefix = PATH_site;
+			$info = $gifBuilder->getImageDimensions($originalFileName);
+			$newInfo = $gifBuilder->getImageScale($info, $configuration['width'], $configuration['height'], array());
+			$result = array(
+				'width' => $newInfo[0],
+				'height' => $newInfo[1],
+				'filePath' => '' // no file = use original
+			);
 		} else {
 				// Create the temporary file
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
@@ -96,11 +119,12 @@ class LocalPreviewHelper {
 					);
 				}
 			}
+			$result = array(
+				'filePath' => $temporaryFileName,
+			);
 		}
 
-		return array(
-			'filePath' => $temporaryFileName,
-		);
+		return $result;
 	}
 
 }

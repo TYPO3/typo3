@@ -719,7 +719,10 @@ class FileList extends AbstractRecordList {
 							$processedFile = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 							if ($processedFile) {
 								$thumbUrl = $processedFile->getPublicUrl(TRUE);
-								$theData[$field] .= '<br /><img src="' . $thumbUrl . '" title="' . htmlspecialchars($fileName) . '" alt="" />';
+								$theData[$field] .= '<br /><img src="' . $thumbUrl . '" ' .
+									'width="' . $processedFile->getProperty('width') . '" ' .
+									'height="' . $processedFile->getProperty('height') . '" ' .
+									'title="' . htmlspecialchars($fileName) . '" alt="" />';
 							}
 						}
 						break;

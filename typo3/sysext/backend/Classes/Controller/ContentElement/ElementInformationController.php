@@ -279,17 +279,19 @@ class ElementInformationController {
 
 			// else check if we can create an Image preview
 			} elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
-				$thumbUrl = $this->fileObject->process(
+				$processedFile = $this->fileObject->process(
 					ProcessedFile::CONTEXT_IMAGEPREVIEW,
 					array(
 						'width' => '590m',
 						'height' => '400m'
 					)
-				)->getPublicUrl(TRUE);
-
+				);
 				// Create thumbnail image?
-				if ($thumbUrl) {
+				if ($processedFile) {
+					$thumbUrl = $processedFile->getPublicUrl(TRUE);
 					$previewTag .= '<img class="img-responsive img-thumbnail" src="' . $thumbUrl . '" ' .
+						'width="' . $processedFile->getProperty('width') . '" ' .
+						'height="' . $processedFile->getProperty('height') . '" ' .
 						'alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" ' .
 						'title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" />';
 				}
