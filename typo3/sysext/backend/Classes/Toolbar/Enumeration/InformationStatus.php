@@ -22,7 +22,12 @@ class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration {
 	/**
 	 * @var string
 	 */
-	const STATUS_DEFAULT = '';
+	const STATUS_NOTICE = '';
+
+	/**
+	 * @var string
+	 */
+	const STATUS_INFO = 'info';
 
 	/**
 	 * @var string
@@ -43,7 +48,8 @@ class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration {
 	 * @var int[]
 	 */
 	static protected $statusIntegerMap = array(
-		self::STATUS_DEFAULT => -1,
+		self::STATUS_NOTICE => -2,
+		self::STATUS_INFO => -1,
 		self::STATUS_OK => 0,
 		self::STATUS_WARNING => 1,
 		self::STATUS_ERROR => 2

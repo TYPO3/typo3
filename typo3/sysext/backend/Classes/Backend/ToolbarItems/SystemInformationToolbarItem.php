@@ -86,6 +86,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 	/**
 	 * Gets the PHP version
+	 *
+	 * @return void
 	 */
 	protected function getPhpVersion() {
 		$this->systemInformation[] = array(
@@ -97,6 +99,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 	/**
 	 * Get the database info
+	 *
+	 * @return void
 	 */
 	protected function getDatabase() {
 		$this->systemInformation[] = array(
@@ -108,29 +112,33 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 	/**
 	 * Gets the application context
+	 *
+	 * @return void
 	 */
 	protected function getApplicationContext() {
 		$applicationContext = GeneralUtility::getApplicationContext();
 		$this->systemInformation[] = array(
 			'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext', TRUE),
 			'value' => (string)$applicationContext,
-			'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_ERROR,
+			'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
 			'icon' => '<span class="fa fa-tasks"></span>'
 		);
 	}
 
 	/**
 	 * Gets the current GIT revision and branch
+	 *
+	 * @return void
 	 */
 	protected function getGitRevision() {
 		if (!StringUtility::endsWith(TYPO3_version, '-dev') || \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::isFunctionDisabled('exec')) {
-			return '';
+			return;
 		}
 		// check if git exists
 		CommandUtility::exec('git --version', $_, $returnCode);
 		if ((int)$returnCode !== 0) {
 			// git is not available
-			return '';
+			return;
 		}
 
 		$revision = trim(CommandUtility::exec('git rev-parse --short HEAD'));
@@ -146,6 +154,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 	/**
 	 * Gets the system kernel and version
+	 *
+	 * @return void
 	 */
 	protected function getOperatingSystem() {
 		$kernelName = php_uname('s');
@@ -168,6 +178,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 	/**
 	 * Emits the "getSystemInformation" signal
+	 *
+	 * @return void
 	 */
 	protected function emitGetSystemInformation() {
 		list($systemInformation) = $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'getSystemInformation', array(array()));
@@ -178,6 +190,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 	/**
 	 * Emits the "loadMessages" signal
+	 *
+	 * @return void
 	 */
 	protected function emitLoadMessages() {
 		list($message) = $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'loadMessages', array(array()));
@@ -217,7 +231,7 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 		$item = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $title));
 
 		if ($this->totalCount > 0) {
-			$severityBadge = $this->highestSeverity !== InformationStatus::STATUS_DEFAULT ? 'badge-' . $this->highestSeverity : '';
+			$severityBadge = $this->highestSeverity !== InformationStatus::STATUS_NOTICE ? 'badge-' . $this->highestSeverity : '';
 			$item .= '<span id="t3js-systeminformation-counter" class="badge ' . $severityBadge . '">' . $this->totalCount . '</span>';
 		}
 		return $item;

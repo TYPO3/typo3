@@ -9920,17 +9920,23 @@ table#typo3-tree tr:hover {
 .label-block {
   display: block;
 }
+.badge-info {
+  background-color: #6daae0;
+}
+a.badge-info:hover {
+  background-color: #4392d7;
+}
 .badge-success {
-  background-color: #1eb941;
+  background-color: #79a548;
 }
 a.badge-success:hover {
-  background-color: #178d32;
+  background-color: #5f8139;
 }
 .badge-warning {
-  background-color: #f07814;
+  background-color: #e8a33d;
 }
 a.badge-warning:hover {
-  background-color: #c4600d;
+  background-color: #d88b1a;
 }
 .badge-danger {
   background-color: #c83c3c;
