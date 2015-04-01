@@ -6669,24 +6669,26 @@ class DataHandler {
 	 * @return void
 	 */
 	public function fixUniqueInPid($table, $uid) {
-		if ($GLOBALS['TCA'][$table]) {
-			$curData = $this->recordInfo($table, $uid, '*');
-			$newData = array();
-			foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-				if ($conf['config']['type'] == 'input') {
-					$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], TRUE);
-					if (in_array('uniqueInPid', $evalCodesArray, TRUE)) {
-						$newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
-						if ((string)$newV !== (string)$curData[$field]) {
-							$newData[$field] = $newV;
-						}
+		if (empty($GLOBALS['TCA'][$table])) {
+			return;
+		}
+
+		$curData = $this->recordInfo($table, $uid, '*');
+		$newData = array();
+		foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
+			if ($conf['config']['type'] === 'input' && (string)$curData[$field] !== '') {
+				$evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'], TRUE);
+				if (in_array('uniqueInPid', $evalCodesArray, TRUE)) {
+					$newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);
+					if ((string)$newV !== (string)$curData[$field]) {
+						$newData[$field] = $newV;
 					}
 				}
 			}
-			// IF there are changed fields, then update the database
-			if (count($newData)) {
-				$this->updateDB($table, $uid, $newData);
-			}
+		}
+		// IF there are changed fields, then update the database
+		if (!empty($newData)) {
+			$this->updateDB($table, $uid, $newData);
 		}
 	}
 
