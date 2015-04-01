@@ -310,6 +310,7 @@ function jumpToUrl(URL) {
 	 * Set this to FALSE when releasing TYPO3. Only for dev.
 	 *
 	 * @var bool
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $parseTimeFlag = FALSE;
 
@@ -733,8 +734,10 @@ function jumpToUrl(URL) {
 	 * Automatically outputted in page end
 	 *
 	 * @return string HTML formated with <p>-tags
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function parseTime() {
+		GeneralUtility::logDeprecatedFunction();
 		if ($this->parseTimeFlag && $GLOBALS['BE_USER']->isAdmin()) {
 			return '<p>(ParseTime: ' . (GeneralUtility::milliseconds() - $GLOBALS['PARSETIME_START']) . ' ms</p>
 					<p>REQUEST_URI-length: ' . strlen(GeneralUtility::getIndpEnv('REQUEST_URI')) . ')</p>';
@@ -898,7 +901,7 @@ function jumpToUrl(URL) {
 	 * @see startPage()
 	 */
 	public function endPage() {
-		$str = $this->sectionEnd() . $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . $this->parseTime() . ($this->form ? '
+		$str = $this->sectionEnd() . $this->postCode . $this->wrapScriptTags(BackendUtility::getUpdateSignalCode()) . ($this->form ? '
 </form>' : '');
 		// If something is in buffer like debug, put it to end of page
 		if (ob_get_contents()) {
