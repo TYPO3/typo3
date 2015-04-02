@@ -15,17 +15,22 @@ namespace TYPO3\CMS\Openid;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Service\AbstractService;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'lib/php-openid/Auth/OpenID/Interface.php';
+require_once ExtensionManagementUtility::extPath('openid') . 'lib/php-openid/Auth/OpenID/Interface.php';
 
 /**
  * Service "OpenID Authentication" for the "openid" extension.
  *
  * @author Dmitry Dulepov <dmitry@typo3.org>
  */
-class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
+class OpenidService extends AbstractService {
 
 	/**
 	 * The extension key
@@ -65,7 +70,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	protected $parentObject;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 * @var DatabaseConnection
 	 */
 	protected $databaseConnection;
 
@@ -92,15 +97,15 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection
+	 * @param DatabaseConnection $databaseConnection
 	 */
-	protected function injectDatabaseConnection(\TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection = NULL) {
+	protected function injectDatabaseConnection(DatabaseConnection $databaseConnection = NULL) {
 		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
 	 * Checks if service is available,. In case of this service we check that
-	 * prerequesties for "PHP OpenID" libraries are fulfilled:
+	 * prerequisites for "PHP OpenID" libraries are fulfilled:
 	 * - GMP or BCMATH PHP extensions are installed and functional
 	 * - set_include_path() PHP function is available
 	 *
@@ -133,11 +138,11 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return void
 	 */
 	public function initAuth($subType, array $loginData, array $authenticationInformation, AbstractUserAuthentication &$parentObject) {
-		// Store login and authetication data
+		// Store login and authentication data
 		$this->loginData = $loginData;
 		$this->authenticationInformation = $authenticationInformation;
 		// If we are here after authentication by the OpenID server, get its response.
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') === 'finish' && $this->openIDResponse === NULL) {
+		if (GeneralUtility::_GP('tx_openid_mode') === 'finish' && $this->openIDResponse === NULL) {
 			$this->includePHPOpenIDLibrary();
 			$openIDConsumer = $this->getOpenIDConsumer();
 			$this->openIDResponse = $openIDConsumer->complete($this->getReturnURL(GeneralUtility::_GP('tx_openid_claimed')));
@@ -249,37 +254,38 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return void
 	 */
 	protected function includePHPOpenIDLibrary() {
-		if (!self::$openIDLibrariesIncluded) {
-			// Prevent further calls
-			self::$openIDLibrariesIncluded = TRUE;
-			// PHP OpenID libraries requires adjustments of path settings
-			$oldIncludePath = get_include_path();
-			$phpOpenIDLibPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'lib/php-openid';
-			@set_include_path(($phpOpenIDLibPath . PATH_SEPARATOR . $phpOpenIDLibPath . PATH_SEPARATOR . 'Auth' . PATH_SEPARATOR . $oldIncludePath));
-			// Make sure that random generator is properly set up. Constant could be
-			// defined by the previous inclusion of the file
-			if (!defined('Auth_OpenID_RAND_SOURCE')) {
-				if (TYPO3_OS === 'WIN') {
-					// No random generator on Windows!
+		if (self::$openIDLibrariesIncluded) {
+			return;
+		}
+		// Prevent further calls
+		self::$openIDLibrariesIncluded = TRUE;
+		// PHP OpenID libraries requires adjustments of path settings
+		$oldIncludePath = get_include_path();
+		$phpOpenIDLibPath = ExtensionManagementUtility::extPath('openid') . 'lib/php-openid';
+		@set_include_path(($phpOpenIDLibPath . PATH_SEPARATOR . $phpOpenIDLibPath . PATH_SEPARATOR . 'Auth' . PATH_SEPARATOR . $oldIncludePath));
+		// Make sure that random generator is properly set up. Constant could be
+		// defined by the previous inclusion of the file
+		if (!defined('Auth_OpenID_RAND_SOURCE')) {
+			if (TYPO3_OS === 'WIN') {
+				// No random generator on Windows!
+				define('Auth_OpenID_RAND_SOURCE', NULL);
+			} elseif (!is_readable('/dev/urandom')) {
+				if (is_readable('/dev/random')) {
+					define('Auth_OpenID_RAND_SOURCE', '/dev/random');
+				} else {
 					define('Auth_OpenID_RAND_SOURCE', NULL);
-				} elseif (!is_readable('/dev/urandom')) {
-					if (is_readable('/dev/random')) {
-						define('Auth_OpenID_RAND_SOURCE', '/dev/random');
-					} else {
-						define('Auth_OpenID_RAND_SOURCE', NULL);
-					}
 				}
 			}
-			// Include files
-			require_once $phpOpenIDLibPath . '/Auth/OpenID/Consumer.php';
-			// Restore path
-			@set_include_path($oldIncludePath);
-			if (!is_array($_SESSION)) {
-				// Yadis requires session but session is not initialized when
-				// processing Backend authentication
-				@session_start();
-				$this->writeLog('Session is initialized');
-			}
+		}
+		// Include files
+		require_once $phpOpenIDLibPath . '/Auth/OpenID/Consumer.php';
+		// Restore path
+		@set_include_path($oldIncludePath);
+		if (!is_array($_SESSION)) {
+			// Yadis requires session but session is not initialized when
+			// processing Backend authentication
+			@session_start();
+			$this->writeLog('Session is initialized');
 		}
 	}
 
@@ -325,7 +331,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 */
 	protected function getOpenIDConsumer() {
 		/* @var $openIDStore OpenidStore */
-		$openIDStore = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidStore::class);
+		$openIDStore = GeneralUtility::makeInstance(OpenidStore::class);
 		$openIDStore->cleanup();
 		return new \Auth_OpenID_Consumer($openIDStore);
 	}
@@ -375,7 +381,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			// requests without resending the form. This is exactly what we need here.
 			// See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.4
 			@ob_end_clean();
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectURL, \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_303);
+			HttpUtility::redirect($redirectURL, HttpUtility::HTTP_STATUS_303);
 		} else {
 			$formHtml = $authenticationRequest->htmlMarkup($trustedRoot, $returnURL, FALSE, array('id' => 'openid_message'));
 			// Display an error if the form markup couldn't be generated;
@@ -487,7 +493,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return string
 	 */
 	protected function getBackPath() {
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('openid');
+		$extPath = ExtensionManagementUtility::siteRelPath('openid');
 		$segmentCount = count(explode('/', $extPath));
 		$path = str_pad('', $segmentCount * 3, '../') . TYPO3_mainDir;
 		return $path;
@@ -563,7 +569,9 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		if (TYPO3_MODE === 'BE') {
 			GeneralUtility::sysLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);
 		} else {
-			$GLOBALS['TT']->setTSlogMessage($message);
+			/** @var TimeTracker $tt */
+			$tt = $GLOBALS['TT'];
+			$tt->setTSlogMessage($message);
 		}
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
 			GeneralUtility::devLog($message, $this->extKey, GeneralUtility::SYSLOG_SEVERITY_NOTICE);

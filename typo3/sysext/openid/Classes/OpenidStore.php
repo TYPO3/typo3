@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Openid;
  * The TYPO3 project - inspiring people to share!
  */
 
+
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+
 require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid') . 'lib/php-openid/Auth/OpenID/Interface.php';
 
 /**
@@ -31,14 +34,14 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	const NONCE_STORAGE_TIME = 864000;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 * @var DatabaseConnection
 	 */
 	protected $databaseConnection;
 
 	/**
-	 * @param null|\TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection
+	 * @param null|DatabaseConnection $databaseConnection
 	 */
-	public function __construct($databaseConnection = NULL) {
+	public function __construct(DatabaseConnection $databaseConnection = NULL) {
 		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
 	}
 
@@ -52,7 +55,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	public function storeAssociation($serverUrl, $association) {
 		/* @var $association \Auth_OpenID_Association */
 		$this->databaseConnection->sql_query('START TRANSACTION');
-		if ($this->doesAssociationExist($serverUrl, $association->handle)) {
+		if ($this->doesAssociationExist($serverUrl, $association)) {
 			$this->updateExistingAssociation($serverUrl, $association);
 		} else {
 			$this->storeNewAssociation($serverUrl, $association);
@@ -166,7 +169,12 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	 * @return bool
 	 */
 	protected function doesAssociationExist($serverUrl, $association) {
-		$where = sprintf('server_url=%s AND assoc_handle=%s AND expires>%d', $this->databaseConnection->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME), $this->databaseConnection->fullQuoteStr($association->handle, self::ASSOCIATION_TABLE_NAME), time());
+		$where = sprintf(
+			'server_url=%s AND assoc_handle=%s AND expires>%d',
+			$this->databaseConnection->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME),
+			$this->databaseConnection->fullQuoteStr($association->handle, self::ASSOCIATION_TABLE_NAME),
+			time()
+		);
 		$row = $this->databaseConnection->exec_SELECTgetSingleRow('COUNT(*) as assocCount', self::ASSOCIATION_TABLE_NAME, $where);
 		return $row['assocCount'] > 0;
 	}
@@ -179,7 +187,12 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 	 * @return void
 	 */
 	protected function updateExistingAssociation($serverUrl, \Auth_OpenID_Association $association) {
-		$where = sprintf('server_url=%s AND assoc_handle=%s AND expires>%d', $this->databaseConnection->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME), $this->databaseConnection->fullQuoteStr($association->handle, self::ASSOCIATION_TABLE_NAME), time());
+		$where = sprintf(
+			'server_url=%s AND assoc_handle=%s AND expires>%d',
+			$this->databaseConnection->fullQuoteStr($serverUrl, self::ASSOCIATION_TABLE_NAME),
+			$this->databaseConnection->fullQuoteStr($association->handle, self::ASSOCIATION_TABLE_NAME),
+			time()
+		);
 		$serializedAssociation = serialize($association);
 		$values = array(
 			'content' => base64_encode($serializedAssociation),

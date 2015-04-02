@@ -80,10 +80,10 @@ class Wizard extends OpenidService {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.setup'),
+					$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:error.setup'),
 					htmlspecialchars($openIDIdentifier)
 				),
-				$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 			$flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
@@ -119,8 +119,8 @@ class Wizard extends OpenidService {
 		if (!$this->openIDResponse instanceof \Auth_OpenID_ConsumerResponse) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.no-response'),
-				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:error.no-response'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 		} elseif ($this->openIDResponse->status == Auth_OpenID_SUCCESS) {
@@ -129,17 +129,17 @@ class Wizard extends OpenidService {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:youropenid'),
+					$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:youropenid'),
 					htmlspecialchars($this->claimedId)
 				),
-				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.success'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:title.success'),
 				FlashMessage::OK
 			);
 		} elseif ($this->openIDResponse->status == Auth_OpenID_CANCEL) {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.cancelled'),
-				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:error.cancelled'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 		} else {
@@ -147,11 +147,11 @@ class Wizard extends OpenidService {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:error.general'),
+					$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:error.general'),
 					htmlspecialchars($this->openIDResponse->status),
 					''
 				),
-				$lang->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:title.error'),
+				$lang->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 		}
@@ -167,6 +167,7 @@ class Wizard extends OpenidService {
 	protected function renderHtml() {
 		// use FLUID standalone view for wizard content
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
+		$view->getRequest()->setControllerExtensionName('openid');
 		$view->setTemplatePathAndFilename(
 			ExtensionManagementUtility::extPath('openid') .
 			'Resources/Private/Templates/Wizard/Content.html'

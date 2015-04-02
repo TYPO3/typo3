@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Openid;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**
  * This class is the OpenID return script for the TYPO3 Frontend.
@@ -37,22 +38,15 @@ class OpenidEid {
 		// the user.
 		$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['FE_fetchUserIfNoSession'] = TRUE;
 		// Initialize Frontend user
-		\TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
+		EidUtility::initFeUser();
 		// Redirect to the original location in any case (authenticated or not)
 		@ob_end_clean();
-		if ($this->getSignature(GeneralUtility::_GP('tx_openid_location')) === GeneralUtility::_GP('tx_openid_location_signature')) {
-			HttpUtility::redirect(GeneralUtility::_GP('tx_openid_location'), HttpUtility::HTTP_STATUS_303);
-		}
-	}
 
-	/**
-	 * Signs a GET parameter.
-	 *
-	 * @param string $parameter
-	 * @return string
-	 */
-	protected function getSignature($parameter) {
-		return GeneralUtility::hmac($parameter, 'openid');
+		$location = GeneralUtility::_GP('tx_openid_location');
+		$signature = GeneralUtility::hmac($location, 'openid');
+		if ($signature === GeneralUtility::_GP('tx_openid_location_signature')) {
+			HttpUtility::redirect($location, HttpUtility::HTTP_STATUS_303);
+		}
 	}
 
 }

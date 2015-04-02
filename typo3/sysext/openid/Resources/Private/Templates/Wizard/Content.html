@@ -1,11 +1,11 @@
-<f:be.container pageTitle="{f:translate(key:'LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.title')}"
+<f:be.container pageTitle="{f:translate(key:'html.title')}"
 	includeCssFiles="{
 		0:'{f:uri.resource(extensionName:\'openid\', path:\'StyleSheets/Wizard.css\')}'
 	}"
 >
-	<h1><f:translate key="LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.title" /></h1>
+	<h1><f:translate key="html.title" /></h1>
 
-	<p><f:translate key="LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.description" /></p>
+	<p><f:translate key="html.description" /></p>
 
 	<f:if condition="{messages->f:count()} > 0">
 		<f:for each="{messages}" as="message">
@@ -39,12 +39,12 @@
 			<input type="hidden" name="P[fieldChangeFunc][TBE_EDITOR_fieldChanged]" value="{parentFormFieldChangeFunc}"/>
 
 			<div class="form-group">
-				<label for="openid_url"><f:translate key="LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.openid_url" /></label>
+				<label for="openid_url"><f:translate key="html.openid_url" /></label>
 				<input type="text" name="openid_url" class="form-control" id="openid_url" value="{openid_url}"/>
 
 			</div>
-			<button type="submit" class="btn btn-default" name="search" title="{f:translate(key:'LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.search')}">
-				<i class="fa fa-openid"></i> {f:translate(key:'LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:html.submit')}
+			<button type="submit" class="btn btn-default" name="search" title="{f:translate(key:'html.search')}">
+				<i class="fa fa-openid"></i> {f:translate(key:'html.submit')}
 			</button>
 		</form>
 		</div>

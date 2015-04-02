@@ -17,6 +17,6 @@ if (isset($_GET['login_status'])) {
 	$_POST['login_status'] = $_GET['login_status'];
 }
 
-$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidReturn::class);
 /** @var \TYPO3\CMS\Openid\OpenidReturn $module */
+$module = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\OpenidReturn::class);
 $module->main();

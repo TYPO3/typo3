@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Openid;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * This class is the OpenID return script for the TYPO3 Backend.
@@ -27,10 +30,12 @@ class OpenidReturn {
 	 * @return void
 	 */
 	public function main() {
-		if ($GLOBALS['BE_USER']->user['uid']) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::cleanOutputBuffers();
-			$backendURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($backendURL);
+		/** @var BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		if ($beUser->user['uid']) {
+			GeneralUtility::cleanOutputBuffers();
+			$backendURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
+			HttpUtility::redirect($backendURL);
 		}
 	}
 

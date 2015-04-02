@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Openid;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class is the OpenID return script for the TYPO3 Backend (used in the user-settings module).
@@ -27,30 +29,26 @@ class OpenidModuleSetup {
 	/**
 	 * Checks weather BE user has access to change its OpenID identifier
 	 *
-	 * @param array $config: Configuration of the field
 	 * @return bool Whether it is allowed to modify the given field
 	 */
-	public function accessLevelCheck(array $config) {
-		$setupConfig = $GLOBALS['BE_USER']->getTSConfigProp('setup.fields');
-		if (isset($setupConfig['tx_openid_openid.']['disabled']) && $setupConfig['tx_openid_openid.']['disabled']) {
-			return FALSE;
-		}
-		return TRUE;
+	public function accessLevelCheck() {
+		$setupConfig = $this->getBackendUser()->getTSConfigProp('setup.fields');
+		return empty($setupConfig['tx_openid_openid.']['disabled']);
 	}
 
 	/**
 	 * Render OpenID identifier field for user setup
 	 *
-	 * @param array $parameters Configuration of the field
-	 * @param \TYPO3\CMS\Setup\Controller\SetupModuleController $parent: The calling parent object
 	 * @return string HTML input field to change the OpenId
 	 */
-	public function renderOpenID(array $parameters, \TYPO3\CMS\Setup\Controller\SetupModuleController $parent) {
-		$openid = $GLOBALS['BE_USER']->user['tx_openid_openid'];
+	public function renderOpenID() {
+		$openid = $this->getBackendUser()->user['tx_openid_openid'];
 		$add = htmlspecialchars(
-			$GLOBALS['LANG']->sL('LLL:EXT:openid/Resources/Private/Language/Wizard.xlf:addopenid')
+			$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:addopenid')
 		);
 
+		$parameters = ['P[itemName]' => 'data[be_users][tx_openid_openid]'];
+		$popUpUrl = GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_openid', $parameters));
 		return '<div class="input-group">' .
 			'<input id="field_tx_openid_openid"' .
 			' class="form-control"' .
@@ -58,8 +56,7 @@ class OpenidModuleSetup {
 			' value="' . htmlspecialchars($openid) . '" />' .
 			'<div class="input-group-addon">' .
 				'<a href="#" onclick="' .
-				'vHWin=window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_openid') . '&P[itemName]=data%5Bbe_users%5D%5Btx_openid_openid%5D') .
-				',null,\'width=600,height=400,status=0,menubar=0,scrollbars=0\');' .
+				'vHWin=window.open(' . $popUpUrl . ',null,\'width=800,height=400,status=0,menubar=0,scrollbars=0\');' .
 				'vHWin.focus();return false;' .
 				'">' .
 					'<img src="../typo3/sysext/openid/ext_icon_small.png" alt="' . $add . '" title="' . $add . '"/>' .
@@ -68,4 +65,17 @@ class OpenidModuleSetup {
 			'</div>';
 	}
 
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }
