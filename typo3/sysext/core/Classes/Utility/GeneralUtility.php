@@ -3042,7 +3042,7 @@ Connection: close
 		$phpPostLimit = self::getBytesFromSizeMeasurement(ini_get('post_max_size'));
 		// If the total amount of post data is smaller (!) than the upload_max_filesize directive,
 		// then this is the real limit in PHP
-		$phpUploadLimit = $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
+		$phpUploadLimit = $phpPostLimit > 0 && $phpPostLimit < $phpUploadLimit ? $phpPostLimit : $phpUploadLimit;
 		// Is the allowed PHP limit (upload_max_filesize) lower than the TYPO3 limit?, also: revert back to KB
 		return floor(($phpUploadLimit < $t3Limit ? $phpUploadLimit : $t3Limit)) / 1024;
 	}

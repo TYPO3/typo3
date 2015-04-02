@@ -204,7 +204,7 @@ class Check {
 	protected function checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize() {
 		$maximumUploadFilesize = $this->getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
 		$maximumPostSize = $this->getBytesFromSizeMeasurement(ini_get('post_max_size'));
-		if ($maximumPostSize < $maximumUploadFilesize) {
+		if ($maximumPostSize > 0 && $maximumPostSize < $maximumUploadFilesize) {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('Maximum size for POST requests is smaller than maximum upload filesize in PHP');
 			$status->setMessage(
