@@ -259,6 +259,7 @@ CREATE TABLE sys_file_storage (
 	is_public tinyint(4) DEFAULT '0' NOT NULL,
 	is_writable tinyint(4) DEFAULT '0' NOT NULL,
 	is_online tinyint(4) DEFAULT '1' NOT NULL,
+	auto_extract_metadata tinyint(4) DEFAULT '1' NOT NULL,
 	processingfolder tinytext,
 
 	PRIMARY KEY (uid),

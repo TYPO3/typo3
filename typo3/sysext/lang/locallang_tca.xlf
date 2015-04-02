@@ -429,6 +429,9 @@
 			<trans-unit id="sys_file_storage.is_writable">
 				<source>Is writable?</source>
 			</trans-unit>
+			<trans-unit id="sys_file_storage.auto_extract_metadata">
+				<source>Automatically extract metadata after upload</source>
+			</trans-unit>
 			<trans-unit id="sys_file_storage.capabilities">
 				<source>Capabilities</source>
 			</trans-unit>

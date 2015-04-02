@@ -40,6 +40,11 @@ class Indexer {
 	protected $storage = NULL;
 
 	/**
+	 * @var ExtractorInterface[]
+	 */
+	protected $extractionServices = NULL;
+
+	/**
 	 * @param ResourceStorage $storage
 	 */
 	public function __construct(ResourceStorage $storage) {
@@ -95,28 +100,46 @@ class Indexer {
 	 */
 	public function runMetaDataExtraction($maximumFileCount = -1) {
 		$fileIndexRecords = $this->getFileIndexRepository()->findInStorageWithIndexOutstanding($this->storage, $maximumFileCount);
-
-		$extractionServices = $this->getExtractorRegistry()->getExtractorsWithDriverSupport($this->storage->getDriverType());
 		foreach ($fileIndexRecords as $indexRecord) {
 			$fileObject = $this->getResourceFactory()->getFileObject($indexRecord['uid'], $indexRecord);
-
-			$newMetaData = array(
-				0 => $fileObject->_getMetaData()
-			);
-			foreach ($extractionServices as $service) {
-				if ($service->canProcess($fileObject)) {
-					$newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
-				}
-			}
-			ksort($newMetaData);
-			$metaData = array();
-			foreach ($newMetaData as $data) {
-				$metaData = array_merge($metaData, $data);
-			}
-			$fileObject->_updateMetaDataProperties($metaData);
-			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
-			$this->getFileIndexRepository()->updateIndexingTime($fileObject->getUid());
+			$this->extractMetaData($fileObject);
 		}
+	}
+
+	/**
+	 * Extract metadata for given fileObject
+	 *
+	 * @param File $fileObject
+	 */
+	public function extractMetaData(File $fileObject) {
+		$newMetaData = array(
+			0 => $fileObject->_getMetaData()
+		);
+		foreach ($this->getExtractionServices() as $service) {
+			if ($service->canProcess($fileObject)) {
+				$newMetaData[$service->getPriority()] = $service->extractMetaData($fileObject, $newMetaData);
+			}
+		}
+		ksort($newMetaData);
+		$metaData = array();
+		foreach ($newMetaData as $data) {
+			$metaData = array_merge($metaData, $data);
+		}
+		$fileObject->_updateMetaDataProperties($metaData);
+		$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
+		$this->getFileIndexRepository()->updateIndexingTime($fileObject->getUid());
+	}
+
+	/**
+	 * Get available extraction services
+	 *
+	 * @return ExtractorInterface[]
+	 */
+	protected function getExtractionServices() {
+		if ($this->extractionServices === NULL) {
+			$this->extractionServices = $this->getExtractorRegistry()->getExtractorsWithDriverSupport($this->storage->getDriverType());
+		}
+		return $this->extractionServices;
 	}
 
 	/**

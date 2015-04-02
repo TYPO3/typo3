@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
+use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -347,6 +348,15 @@ class ResourceStorage implements ResourceStorageInterface {
 			}
 		}
 		return $this->isOnline;
+	}
+
+	/**
+	 * Returns TRUE if auto extracting of metadata is enabled
+	 *
+	 * @return bool
+	 */
+	public function autoExtractMetadataEnabled() {
+		return !empty($this->storageRecord['auto_extract_metadata']);
 	}
 
 	/**
@@ -1116,6 +1126,11 @@ class ResourceStorage implements ResourceStorageInterface {
 		$fileIdentifier = $this->driver->addFile($localFilePath, $targetFolder->getIdentifier(), $targetFileName);
 		$file = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($this->getUid(), $fileIdentifier);
 
+		if ($this->autoExtractMetadataEnabled()) {
+			$indexer = GeneralUtility::makeInstance(Indexer::class, $this);
+			$indexer->extractMetaData($file);
+		}
+
 		$this->emitPostFileAddSignal($file, $targetFolder);
 
 		return $file;
@@ -1199,6 +1214,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($this->isOnline()) {
 			// Pre-process the public URL by an accordant slot
 			$this->emitPreGeneratePublicUrlSignal($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
+
 			// If slot did not handle the signal, use the default way to determine public URL
 			if ($publicUrl === NULL) {
 
@@ -1792,7 +1808,12 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($file instanceof File) {
 			$this->getIndexer()->updateIndexEntry($file);
 		}
+		if ($this->autoExtractMetadataEnabled()) {
+			$indexer = GeneralUtility::makeInstance(Indexer::class, $this);
+			$indexer->extractMetaData($file);
+		}
 		$this->emitPostFileReplaceSignal($file, $localFilePath);
+
 		return $file;
 	}
 
