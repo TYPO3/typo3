@@ -57,6 +57,15 @@
 .fa-arrows:before {
   content: "\f047";
 }
+.fa-exclamation-circle:before {
+    content: "\f06a";
+}
+.fa-exclamation-triangle:before {
+    content: "\f071";
+}
+.fa-info-circle:before {
+    content: "\f05a";
+}
 .t3-icon {
 	display: inline-block;
 	position: relative;

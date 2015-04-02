@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Frontend Timetracking functions
@@ -127,9 +128,9 @@ class TimeTracker {
 		);
 		$this->wrapIcon = array(
 			0 => '',
-			1 => '<img src="' . TYPO3_mainDir . 'gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
-			2 => '<img src="' . TYPO3_mainDir . 'gfx/icon_warning2.gif" width="18" height="16" align="absmiddle" alt="" />',
-			3 => '<img src="' . TYPO3_mainDir . 'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
+			1 => 'actions-document-info',
+			2 => 'status-dialog-warning',
+			3 => 'status-dialog-error'
 		);
 		$this->starttime = $this->getMilliseconds();
 	}
@@ -189,7 +190,7 @@ class TimeTracker {
 		if (strlen($content) > 30) {
 			$placeholder = '<br /><img src="' . TYPO3_mainDir . 'clear.gif" width="300" height="1" alt="" />';
 		}
-		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num] . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
+		$this->tsStackLog[$k]['message'][] = IconUtility::getSpriteIcon($this->wrapIcon[$num]) . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
 	}
 
 	/**
