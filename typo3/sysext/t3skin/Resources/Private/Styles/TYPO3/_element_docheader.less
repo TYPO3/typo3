@@ -3,11 +3,10 @@
 //
 
 @docheader-text: rgb(45, 45, 45);
-@docheader-bg: linear-gradient(to bottom, rgb(235, 235, 235) 0%, rgb(205, 205, 205) 100%);
+@docheader-bg: #eee;
 @docheader-border: rgb(195, 195, 195);
 
 #typo3-docheader {
-	background-color: @docheader-bg;
 	background: @docheader-bg;
 
 	img,
@@ -58,7 +57,6 @@
 	.typo3-docheader-functions,
 	.typo3-docheader-buttons {
 		color: @docheader-text;
-		border-bottom: 1px solid @docheader-border;
 		overflow: hidden;
 		padding: 0 24px;
 	}
@@ -79,6 +77,7 @@
 		height: 22px;
 		padding-top: 3px;
 		padding-bottom: 3px;
+		border-bottom: 1px solid #C3C3C3;
 	}
 }
 
@@ -192,14 +191,17 @@
 // ExtJS theme for PageTree
 //
 #typo3-pagetree-topPanelItems {
-	background-color: @docheader-bg;
 	background: @docheader-bg;
 
 	#typo3-pagetree-topPanel {
+
+		.x-panel-body-noborder {
+			border-bottom: 1px solid @docheader-border;
+		}
+
 		// Functions
 		.x-panel-tbar {
 			color: @docheader-text;
-			border-bottom: 1px solid @docheader-border;
 			a {
 				color: @docheader-text;
 				&:hover {
@@ -211,7 +213,6 @@
 		// Buttons
 		.x-panel-body {
 			color: @docheader-text;
-			border-bottom: 1px solid @docheader-border;
 			.typo3-pagetree-topPanel-button {
 				margin-top: 0;
 			}

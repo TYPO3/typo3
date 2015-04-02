@@ -8056,8 +8056,7 @@ div#contentMenu1 {
   z-index: 20;
 }
 #typo3-docheader {
-  background-color: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
-  background: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
+  background: #eeeeee;
 }
 #typo3-docheader img,
 #typo3-docheader input {
@@ -8091,7 +8090,6 @@ div#contentMenu1 {
 #typo3-docheader .typo3-docheader-functions,
 #typo3-docheader .typo3-docheader-buttons {
   color: #2d2d2d;
-  border-bottom: 1px solid #c3c3c3;
   overflow: hidden;
   padding: 0 24px;
 }
@@ -8106,6 +8104,7 @@ div#contentMenu1 {
   height: 22px;
   padding-top: 3px;
   padding-bottom: 3px;
+  border-bottom: 1px solid #C3C3C3;
 }
 #typo3-navigationContainer-xsplit,
 #typo3-navigationContainer-xcollapsed,
@@ -8186,12 +8185,13 @@ div#contentMenu1 {
   content: "\f0da";
 }
 #typo3-pagetree-topPanelItems {
-  background-color: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
-  background: linear-gradient(to bottom, #ebebeb 0%, #cdcdcd 100%);
+  background: #eeeeee;
+}
+#typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body-noborder {
+  border-bottom: 1px solid #c3c3c3;
 }
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar {
   color: #2d2d2d;
-  border-bottom: 1px solid #c3c3c3;
 }
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-tbar a {
   color: #2d2d2d;
@@ -8201,7 +8201,6 @@ div#contentMenu1 {
 }
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body {
   color: #2d2d2d;
-  border-bottom: 1px solid #c3c3c3;
 }
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body .typo3-pagetree-topPanel-button {
   margin-top: 0;
