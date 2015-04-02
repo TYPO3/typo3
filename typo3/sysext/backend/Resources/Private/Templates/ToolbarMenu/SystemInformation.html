@@ -1,4 +1,4 @@
-<ul class="dropdown-list">
+<ul class="dropdown-list" data-count="{count}" data-severityclass="{severityBadgeClass}">
 	<li class="dropdown-header"><f:translate key="systemmessage.header" /></li>
 	<li id="systeminformation_installtool" class="dropdown-intro typo3-module-menu-item submodule mod-system_InstallInstall" data-modulename="system_InstallInstall">
 		<f:translate key="systemmessage.intro" arguments="{0: '{installToolUrl}'}" />
@@ -22,7 +22,7 @@
 	<f:if condition="{messages -> f:count()} > 0">
 		<f:then>
 			<f:for each="{messages}" as="message">
-				<li><span class="text-{message.status}">{message.text}</span></li>
+				<li><span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span></li>
 			</f:for>
 		</f:then>
 		<f:else>

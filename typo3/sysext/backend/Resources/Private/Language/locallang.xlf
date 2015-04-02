@@ -13,7 +13,7 @@
 				<source>Application Information</source>
 			</trans-unit>
 			<trans-unit id="systemmessage.intro">
-				<source><![CDATA[This is a short system overview, for advanced information please head to the <a href="%s">Install Tool</a>.]]></source>
+				<source><![CDATA[This is a short system overview. For advanced information please head to the <a href="%s">Install Tool</a>.]]></source>
 			</trans-unit>
 			<trans-unit id="systemmessage.allgood" xml:space="preserve">
 				<source>Your system is fully operational.

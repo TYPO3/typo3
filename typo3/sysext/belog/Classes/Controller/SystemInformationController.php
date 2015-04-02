@@ -24,8 +24,7 @@ class SystemInformationController extends AbstractController {
 	/**
 	 * Modifies the SystemInformation array
 	 *
-	 * @param array $systemMessages Array of system messages
-	 * @return
+	 * @return NULL|array
 	 */
 	public function appendMessage() {
 		$constraint = $this->getConstraintFromBeUserData();
@@ -35,7 +34,7 @@ class SystemInformationController extends AbstractController {
 
 		$this->setStartAndEndTimeFromTimeSelector($constraint);
 		// we can't use the extbase repository here as the required TypoScript may not be parsed yet
-		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $constraint->getStartTimestamp() . ' AND tstamp <= ' . $constraint->getEndTimestamp() . ' AND error IN(-1,1,2,3)');
+		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $constraint->getStartTimestamp() . ' AND tstamp <= ' . $constraint->getEndTimestamp() . ' AND error IN(-1,1,2)');
 
 		if ($count > 0) {
 			return array(

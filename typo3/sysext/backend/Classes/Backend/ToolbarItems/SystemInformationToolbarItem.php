@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -47,6 +48,13 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 	protected $highestSeverity = '';
 
 	/**
+	 * The CSS class for the badge
+	 *
+	 * @var string
+	 */
+	protected $severityBadgeClass = '';
+
+	/**
 	 * @var array
 	 */
 	protected $systemInformation = array();
@@ -73,7 +81,12 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
+	}
 
+	/**
+	 * Collect the information for the menu
+	 */
+	protected function collectInformation() {
 		$this->getWebServer();
 		$this->getPhpVersion();
 		$this->getDatabase();
@@ -83,6 +96,19 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 
 		$this->emitGetSystemInformation();
 		$this->emitLoadMessages();
+
+		$this->severityBadgeClass = $this->highestSeverity !== InformationStatus::STATUS_NOTICE ? 'badge-' . $this->highestSeverity : '';
+	}
+
+	/**
+	 * Renders the menu for AJAX calls
+	 *
+	 * @param array $params
+	 * @param AjaxRequestHandler $ajaxObj
+	 */
+	public function renderAjax($params = array(), $ajaxObj) {
+		$this->collectInformation();
+		$ajaxObj->addContent('systemInformationMenu', $this->getDropDown());
 	}
 
 	/**
@@ -240,13 +266,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 	 */
 	public function getItem() {
 		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo', TRUE);
-		$item = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $title));
-
-		if ($this->totalCount > 0) {
-			$severityBadge = $this->highestSeverity !== InformationStatus::STATUS_NOTICE ? 'badge-' . $this->highestSeverity : '';
-			$item .= '<span id="t3js-systeminformation-counter" class="badge ' . $severityBadge . '">' . $this->totalCount . '</span>';
-		}
-		return $item;
+		return IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $title))
+				. '<span id="t3js-systeminformation-counter" class="badge"></span>';
 	}
 
 	/**
@@ -262,6 +283,8 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 		$this->getStandaloneView('backend')->assignMultiple(array(
 			'installToolUrl' => BackendUtility::getModuleUrl('system_InstallInstall'),
 			'messages' => $this->systemMessages,
+			'count' => $this->totalCount,
+			'severityBadgeClass' => $this->severityBadgeClass,
 			'systemInformation' => $this->systemInformation
 		));
 		return $this->getStandaloneView()->render();

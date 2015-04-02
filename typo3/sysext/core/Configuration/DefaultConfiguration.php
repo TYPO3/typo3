@@ -677,6 +677,10 @@ return array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem::class . '->createAjaxShortcut',
 				'csrfTokenCheck' => TRUE
 			),
+			'SystemInformationMenu::load' => array(
+				'callbackMethod' => \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::class . '->renderAjax',
+				'csrfTokenCheck' => TRUE
+			),
 			'ModuleMenu::reload' => array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Controller\BackendController::class . '->getModuleMenuForReload',
 				'csrfTokenCheck' => TRUE

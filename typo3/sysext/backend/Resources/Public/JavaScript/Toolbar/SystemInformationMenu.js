@@ -17,24 +17,60 @@
 define('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu', ['jquery'], function($) {
 
 	var SystemInformationMenu = {
+		identifier: {
+			containerSelector: '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
+			toolbarIconSelector: '.dropdown-toggle span.t3-icon',
+			menuContainerSelector: '.dropdown-menu'
+		},
 		elements: {
-			$counter: $('#t3js-systeminformation-counter')
+			$counter: $('#t3js-systeminformation-counter'),
+			$spinnerElement: $('<span>', {
+				'class': 't3-icon fa fa-circle-o-notch spinner fa-spin'
+			})
 		}
 	};
 
 	/**
-	 * register event handlers
+	 * Updates the menu
 	 */
-	SystemInformationMenu.initializeEvents = function() {
-		var count = parseInt(SystemInformationMenu.elements.$counter.text());
-		SystemInformationMenu.elements.$counter.toggle(count > 0);
+	SystemInformationMenu.updateMenu = function() {
+		var $toolbarItemIcon = $(SystemInformationMenu.identifier.toolbarIconSelector, SystemInformationMenu.identifier.containerSelector),
+			$spinnerIcon = SystemInformationMenu.elements.$spinnerElement.clone(),
+			$existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
+
+		$.ajax({
+			url: TYPO3.settings.ajaxUrls['SystemInformationMenu::load'],
+			type: 'post',
+			cache: false,
+			success: function(data) {
+				$(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector).html(data);
+				SystemInformationMenu.updateCounter();
+				$spinnerIcon.replaceWith($existingIcon);
+			}
+		})
 	};
 
 	/**
-	 * initialize and return the Opendocs object
+	 * Updates the counter
+	 */
+	SystemInformationMenu.updateCounter = function() {
+		var $ul = $(SystemInformationMenu.identifier.containerSelector).find(SystemInformationMenu.identifier.menuContainerSelector).find('ul'),
+			count = $ul.data('count'),
+			badgeClass = $ul.data('severityclass');
+
+		SystemInformationMenu.elements.$counter.text(count).toggle(count > 0);
+		SystemInformationMenu.elements.$counter.removeClass();
+
+		if (badgeClass !== '') {
+			SystemInformationMenu.elements.$counter.addClass('badge ' + badgeClass);
+		}
+	};
+
+	/**
+	 * Initialize and return the SystemInformationMenu object
 	 */
 	$(document).ready(function() {
-		SystemInformationMenu.initializeEvents();
+		SystemInformationMenu.updateMenu();
 	});
 
 	TYPO3.SystemInformationMenu = SystemInformationMenu;
