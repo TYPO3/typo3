@@ -159,7 +159,7 @@ class DebugUtility {
 		if ($returnHTML !== FALSE) {
 			GeneralUtility::deprecationLog('Setting the parameter $returnHTML is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8.');
 		}
-		self::debug(DebuggerUtility::var_dump($rows, $header, 8, FALSE, TRUE, TRUE), $header);
+		self::debug('<pre>' . DebuggerUtility::var_dump($rows, $header, 8, TRUE, FALSE, TRUE), $header . '</pre>');
 	}
 
 	/**
@@ -189,7 +189,7 @@ class DebugUtility {
 	 * @return string HTML output
 	 */
 	static public function viewArray($array_in) {
-		return DebuggerUtility::var_dump($array_in, '', 8, FALSE, TRUE, TRUE);
+		return '<pre>' . DebuggerUtility::var_dump($array_in, '', 8, TRUE, FALSE, TRUE) . '</pre>';
 	}
 
 	/**

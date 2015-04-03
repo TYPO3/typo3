@@ -2053,7 +2053,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			1 => array('uid' => 2, 'title' => 'title2'),
 			2 => array('uid' => 3, 'title' => ''),
 		);
-		$expectedResult = '0uid1titletitle11uid2titletitle22uid3title';
+		$expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
 		$GLOBALS['TSFE']->tmpl->rootLine = $rootline;
 
 		$result = $this->subject->getData('debug:rootLine');
@@ -2077,7 +2077,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			1 => array('uid' => 2, 'title' => 'title2'),
 			2 => array('uid' => 3, 'title' => ''),
 		);
-		$expectedResult = '0uid1titletitle11uid2titletitle22uid3title';
+		$expectedResult = 'array(3items)0=>array(2items)uid=>1(integer)title=>"title1"(6chars)1=>array(2items)uid=>2(integer)title=>"title2"(6chars)2=>array(2items)uid=>3(integer)title=>""(0chars)';
 		$GLOBALS['TSFE']->rootLine = $rootline;
 
 		$result = $this->subject->getData('debug:fullRootLine');
@@ -2100,7 +2100,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$value = $this->getUniqueId('someValue');
 		$this->subject->data = array($key => $value);
 
-		$expectedResult = $key . $value;
+		$expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
 
 		$result = $this->subject->getData('debug:data');
 		$cleanedResult = strip_tags($result);
@@ -2122,7 +2122,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$value = $this->getUniqueId('someValue');
 		$GLOBALS['TSFE']->register = array($key => $value);
 
-		$expectedResult = $key . $value;
+		$expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
 
 		$result = $this->subject->getData('debug:register');
 		$cleanedResult = strip_tags($result);
@@ -2143,7 +2143,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$uid = rand();
 		$GLOBALS['TSFE']->page = array('uid' => $uid);
 
-		$expectedResult = 'uid' . $uid;
+		$expectedResult = 'array(1item)uid=>' . $uid . '(integer)';
 
 		$result = $this->subject->getData('debug:page');
 		$cleanedResult = strip_tags($result);

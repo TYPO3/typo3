@@ -127,7 +127,7 @@ define('TYPO3/CMS/Backend/DebugConsole', ['jquery'], function ($) {
 			$line.prepend($('<strong />').text(header));
 		}
 
-		if (typeof group === 'undefined') {
+		if (typeof group === 'undefined' || group.length === 0) {
 			group = 'Debug';
 		}
 
