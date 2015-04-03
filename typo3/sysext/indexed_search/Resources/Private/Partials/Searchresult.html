@@ -1,5 +1,5 @@
 <div class="tx-indexedsearch-res">
-	<f:format.html><h3><span class="tx-indexedsearch-icon">{row.icon}</span> <f:if condition="{settings.displayResultNumber}"><span class="tx-indexedsearch-result-number">{row.result_number}</span></f:if> <span class="tx-indexedsearch-title">{row.title}</span> <span class="tx-indexedsearch-percent">{row.rating}</span></h3></f:format.html>
+	<f:format.html><h3><span class="tx-indexedsearch-icon">{row.icon}</span> <f:if condition="{settings.displayResultNumber}"><span class="tx-indexedsearch-result-number">{row.result_number}</span></f:if> <span class="tx-indexedsearch-title{row.CSSsuffix}">{row.title}</span> <span class="tx-indexedsearch-percent">{row.rating}</span></h3></f:format.html>
 
 	<f:if condition="{row.headerOnly} == 0">
 	<p class="tx-indexedsearch-description">{row.description}</p>
