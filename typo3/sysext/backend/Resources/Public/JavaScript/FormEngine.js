@@ -579,7 +579,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		var $maxlengthElements = $('[maxlength]');
 		$maxlengthElements.on('focus', function(e) {
 			var $field = $(this),
-				$parent = $field.parents('.t3js-formengine-field-item'),
+				$parent = $field.parents('.t3js-formengine-field-item:first'),
 				maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
 
 			// append the counter only at focus to avoid cluttering the DOM
@@ -588,11 +588,11 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			));
 		}).on('blur', function() {
 			var $field = $(this),
-				$parent = $field.parents('.t3js-formengine-field-item');
+				$parent = $field.parents('.t3js-formengine-field-item:first');
 			$parent.find('.t3js-charcounter').remove();
 		}).on('keyup', function() {
 			var $field = $(this),
-				$parent = $field.parents('.t3js-formengine-field-item'),
+				$parent = $field.parents('.t3js-formengine-field-item:first'),
 				maxlengthProperties = FormEngine.getCharacterCounterProperties($field);
 
 			// change class and value
