@@ -206,7 +206,16 @@ class FrontendEditPanel {
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
 		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : '<img  ' . IconUtility::skinImg(TYPO3_mainDir, 'gfx/edit_fe.gif', 'width="11" height="12" border="0" align="top" ') . ' title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', FALSE) . '"' . $style . ' class="frontEndEditIcons" alt="" />';
 		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
-		$icon = $this->editPanelLinkWrap_doWrap($iconImg, BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][' . $editUid . ']' => 'edit', 'columnsOnly' => $fieldList, 'noView' => $nV)) . $addUrlParamStr);
+
+		$url = BackendUtility::getModuleUrl(
+			'record_edit',
+			array(
+				'edit[' . $table . '][' . $editUid . ']' => 'edit',
+				'columnsOnly' => $fieldList,
+				'noView' => $nV
+			)
+		) . $addUrlParamStr;
+		$icon = $this->editPanelLinkWrap_doWrap($iconImg, $url);
 		if ($conf['beforeLastTag'] < 0) {
 			$content = $icon . $content;
 		} elseif ($conf['beforeLastTag'] > 0) {
@@ -237,19 +246,18 @@ class FrontendEditPanel {
 	 */
 	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '') {
 		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
-		$adminURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
 		if ($cmd == 'edit') {
 			$rParts = explode(':', $currentRecord);
-			$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . BackendUtility::getModuleUrl('record_edit', array('edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView=' . $nV)), $currentRecord);
+			$out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', array('edit[' . $rParts[0] . '][' . $rParts[1] . ']' => 'edit', 'noView=' . $nV)), $currentRecord);
 		} elseif ($cmd == 'new') {
 			$rParts = explode(':', $currentRecord);
 			if ($rParts[0] == 'pages') {
-				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . BackendUtility::getModuleUrl('db_new', ['id' => $rParts[1], 'pagesOnly' => 1]), $currentRecord);
+				$out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('db_new', ['id' => $rParts[1], 'pagesOnly' => 1]), $currentRecord);
 			} else {
 				if (!(int)$nPid) {
 					$nPid = MathUtility::canBeInterpretedAsInteger($rParts[1]) ? -$rParts[1] : $this->frontendController->id;
 				}
-				$out = $this->editPanelLinkWrap_doWrap($string, $adminURL . BackendUtility::getModuleUrl('record_edit', array('edit[' . $rParts[0] . '][' . $nPid . ']' => 'new', 'noView' => $nV)), $currentRecord);
+				$out = $this->editPanelLinkWrap_doWrap($string, BackendUtility::getModuleUrl('record_edit', array('edit[' . $rParts[0] . '][' . $nPid . ']' => 'new', 'noView' => $nV)), $currentRecord);
 			}
 		} else {
 			if ($confirm && $this->backendUser->jsConfirmation(JsConfirmation::FE_EDIT)) {
