@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * Contains COA_INT class object.
  */
@@ -26,20 +29,34 @@ class ContentObjectArrayInternalContentObject extends AbstractContentObject {
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		if (is_array($conf)) {
-			$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-			$includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
-			$content = '<!--' . $substKey . '-->';
-			$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
-				'file' => $includeLibs,
-				'conf' => $conf,
-				'cObj' => serialize($this->cObj),
-				'type' => 'COA'
-			);
-			return $content;
-		} else {
-			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COA_INT).', 2);
+		if (!is_array($conf)) {
+			$this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COA_INT).', 2);
+			return '';
 		}
+		$substKey = 'INT_SCRIPT.' . $this->getTypoScriptFrontendController()->uniqueHash();
+		$includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
+		$content = '<!--' . $substKey . '-->';
+		$this->getTypoScriptFrontendController()->config['INTincScript'][$substKey] = array(
+			'file' => $includeLibs,
+			'conf' => $conf,
+			'cObj' => serialize($this->cObj),
+			'type' => 'COA'
+		);
+		return $content;
+	}
+
+	/**
+	 * @return TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
+	}
+
+	/**
+	 * @return TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
 	}
 
 }

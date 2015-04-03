@@ -29,9 +29,8 @@ class FrontendHooks {
 	 */
 	public function hook_previewInfo($params, $pObj) {
 		if ($pObj->fePreview !== 1) {
-			return;
+			return '';
 		}
-		$message = '';
 		if ($pObj->config['config']['message_preview']) {
 			$message = $pObj->config['config']['message_preview'];
 		} else {

@@ -68,6 +68,11 @@ class PageRepository {
 	public $versioningPreview = FALSE;
 
 	/**
+	 * @var string
+	 */
+	public $versioningPreview_where_hid_del = '';
+
+	/**
 	 * Workspace ID for preview
 	 *
 	 * @var int
@@ -231,8 +236,9 @@ class PageRepository {
 			return $this->cache_getPage[$uid][$cacheKey];
 		}
 		$workspaceVersion = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $uid);
+		$db = $this->getDatabaseConnection();
 		if (is_array($workspaceVersion)) {
-			$workspaceVersionAccess = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			$workspaceVersionAccess = $db->exec_SELECTgetSingleRow(
 				'uid',
 				'pages',
 				'uid=' . intval($workspaceVersion['uid']) . $this->where_hid_del . $accessCheck
@@ -242,9 +248,7 @@ class PageRepository {
 			}
 		}
 		$result = array();
-		$res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'pages', 'uid=' . (int)$uid . $this->where_hid_del . $accessCheck);
-		$row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
-		$this->getDatabaseConnection()->sql_free_result($res);
+		$row = $db->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . (int)$uid . $this->where_hid_del . $accessCheck);
 		if ($row) {
 			$this->versionOL('pages', $row);
 			if (is_array($row)) {
@@ -314,10 +318,9 @@ class PageRepository {
 		if ($this->cache_getPageIdFromAlias[$alias]) {
 			return $this->cache_getPageIdFromAlias[$alias];
 		}
-		$res = $this->getDatabaseConnection()->exec_SELECTquery('uid', 'pages', 'alias=' . $this->getDatabaseConnection()->fullQuoteStr($alias, 'pages') . ' AND pid>=0 AND pages.deleted=0');
+		$db = $this->getDatabaseConnection();
+		$row = $db->exec_SELECTgetSingleRow('uid', 'pages', 'alias=' . $db->fullQuoteStr($alias, 'pages') . ' AND pid>=0 AND pages.deleted=0');
 		// "AND pid>=0" because of versioning (means that aliases sent MUST be online!)
-		$row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
-		$this->getDatabaseConnection()->sql_free_result($res);
 		if ($row) {
 			$this->cache_getPageIdFromAlias[$alias] = $row['uid'];
 			return $row['uid'];
@@ -401,14 +404,15 @@ class PageRepository {
 				// However you may argue that the showHiddenField flag should
 				// determine this. But that's not how it's done right now.
 				// Selecting overlay record:
-				$res = $this->getDatabaseConnection()->exec_SELECTquery(
+				$db = $this->getDatabaseConnection();
+				$res = $db->exec_SELECTquery(
 					implode(',', $fieldArr),
 					'pages_language_overlay',
-					'pid IN(' . implode(',', $this->getDatabaseConnection()->cleanIntArray($page_ids)) . ')'
+					'pid IN(' . implode(',', $db->cleanIntArray($page_ids)) . ')'
 					. ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay')
 				);
 				$overlays = array();
-				while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
+				while ($row = $db->sql_fetch_assoc($res)) {
 					$this->versionOL('pages_language_overlay', $row);
 					if (is_array($row)) {
 						$row['_PAGES_OVERLAY'] = TRUE;
@@ -421,7 +425,7 @@ class PageRepository {
 						$overlays[$origUid] = $row;
 					}
 				}
-				$this->getDatabaseConnection()->sql_free_result($res);
+				$db->sql_free_result($res);
 			}
 		}
 		// Create output:
@@ -756,18 +760,19 @@ class PageRepository {
 				// No shortcut_mode set, so target is directly set in $page['shortcut']
 				$searchField = 'uid';
 				$searchUid = (int)$page['shortcut'];
-
 			} elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
 				// Check subpages - first subpage or random subpage
 				$searchField = 'pid';
 				// If a shortcut mode is set and no valid page is given to select subpags
 				// from use the actual page.
 				$searchUid = (int)$page['shortcut'] ?: $page['uid'];
-
 			} elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
 				// Shortcut to parent page
 				$searchField = 'uid';
 				$searchUid = $page['pid'];
+			} else {
+				$searchField = '';
+				$searchUid = 0;
 			}
 
 			$whereStatement = $searchField . '=' . $searchUid
@@ -833,6 +838,7 @@ class PageRepository {
 				return $row['uid'];
 			}
 		}
+		return '';
 	}
 
 	/**
@@ -884,16 +890,16 @@ class PageRepository {
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getConfigArray()
 	 */
 	public function getPathFromRootline($rl, $len = 20) {
+		$path = '';
 		if (is_array($rl)) {
 			$c = count($rl);
-			$path = '';
 			for ($a = 0; $a < $c; $a++) {
 				if ($rl[$a]['uid']) {
 					$path .= '/' . GeneralUtility::fixed_lgd_cs(strip_tags($rl[$a]['title']), $len);
 				}
 			}
-			return $path;
 		}
+		return $path;
 	}
 
 	/**
@@ -902,7 +908,7 @@ class PageRepository {
 	 *
 	 * @param array $pagerow The page row to return URL type for
 	 * @param bool $disable A flag to simply disable any output from here. - deprecated - don't use anymore.
-	 * @return string The URL type from $this->urltypes array. False if not found or disabled.
+	 * @return string|bool The URL type from $this->urltypes array. False if not found or disabled.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()
 	 */
 	public function getExtURL($pagerow, $disable = FALSE) {
@@ -920,6 +926,7 @@ class PageRepository {
 			}
 			return $redirectTo;
 		}
+		return FALSE;
 	}
 
 	/**
@@ -929,7 +936,7 @@ class PageRepository {
 	 * has a run-away break so it can't go into infinite loops.
 	 *
 	 * @param int $pageId Page id for which to look for a mount pid. Will be returned only if mount pages are enabled, the correct doktype (7) is set for page and there IS a mount_pid (which has a valid record that is not deleted...)
-	 * @param array $pageRec Optional page record for the page id. If not supplied it will be looked up by the system. Must contain at least uid,pid,doktype,mount_pid,mount_pid_ol
+	 * @param array|bool $pageRec Optional page record for the page id. If not supplied it will be looked up by the system. Must contain at least uid,pid,doktype,mount_pid,mount_pid_ol
 	 * @param array $prevMountPids Array accumulating formerly tested page ids for mount points. Used for recursivity brake.
 	 * @param int $firstPageUid The first page id.
 	 * @return mixed Returns FALSE if no mount point was found, "-1" if there should have been one, but no connection to it, otherwise an array with information about mount pid and modes.
@@ -996,8 +1003,8 @@ class PageRepository {
 	 *
 	 * @param string $table The table name to search
 	 * @param int $uid The uid to look up in $table
-	 * @param bool $checkPage If checkPage is set, it's also required that the page on which the record resides is accessible
-	 * @return mixed Returns array (the record) if OK, otherwise blank/0 (zero)
+	 * @param bool|int $checkPage If checkPage is set, it's also required that the page on which the record resides is accessible
+	 * @return array|int Returns array (the record) if OK, otherwise blank/0 (zero)
 	 */
 	public function checkRecord($table, $uid, $checkPage = 0) {
 		$uid = (int)$uid;
@@ -1023,6 +1030,7 @@ class PageRepository {
 				}
 			}
 		}
+		return 0;
 	}
 
 	/**
@@ -1050,6 +1058,7 @@ class PageRepository {
 				}
 			}
 		}
+		return 0;
 	}
 
 	/**
@@ -1078,6 +1087,7 @@ class PageRepository {
 				return $rows;
 			}
 		}
+		return NULL;
 	}
 
 	/********************************
@@ -1094,12 +1104,12 @@ class PageRepository {
 	 * like PageRepository::getHash()
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
-	 * @param int $expTime The expiration time (not used anymore)
 	 * @return mixed The "data" from the cache
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */
-	static public function getHash($hash, $expTime = 0) {
+	static public function getHash($hash) {
 		$hashContent = NULL;
+		/** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $contentHashCache */
 		$contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_hash');
 		$cacheEntry = $contentHashCache->get($hash);
 		if ($cacheEntry) {
@@ -1286,6 +1296,8 @@ class PageRepository {
 	 */
 	public function fixVersioningPid($table, &$rr) {
 		if ($this->versioningPreview && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+			$oid = 0;
+			$wsid = 0;
 			// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 			// Check values for t3ver_oid and t3ver_wsid:
 			if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
@@ -1398,7 +1410,9 @@ class PageRepository {
 					// Notice, that unless $bypassEnableFieldsCheck is TRUE, the $row is unset if
 					// enablefields for BOTH the version AND the online record deselects it. See
 					// note for $bypassEnableFieldsCheck
-					if ($wsAlt <= -1 || VersionState::cast($row['t3ver_state'])->indicatesPlaceholder()) {
+					/** @var \TYPO3\CMS\Core\Versioning\VersionState $versionState */
+					$versionState = VersionState::cast($row['t3ver_state']);
+					if ($wsAlt <= -1 || $versionState->indicatesPlaceholder()) {
 						// Unset record if it turned out to be "hidden"
 						$row = FALSE;
 					}
@@ -1526,7 +1540,7 @@ class PageRepository {
 	 * @return bool <code>TRUE</code> if has access
 	 */
 	public function checkWorkspaceAccess($wsid) {
-		if (!$GLOBALS['BE_USER'] || !ExtensionManagementUtility::isLoaded('workspaces')) {
+		if (!$this->getBackendUser() || !ExtensionManagementUtility::isLoaded('workspaces')) {
 			return FALSE;
 		}
 		if (isset($this->workspaceCache[$wsid])) {
@@ -1541,7 +1555,7 @@ class PageRepository {
 			} else {
 				$ws = $wsid;
 			}
-			$ws = $GLOBALS['BE_USER']->checkWorkspace($ws);
+			$ws = $this->getBackendUser()->checkWorkspace($ws);
 			$this->workspaceCache[$wsid] = $ws;
 		}
 		return (string)$ws['_ACCESS'] !== '';
@@ -1652,6 +1666,15 @@ class PageRepository {
 	 */
 	protected function getTypoScriptFrontendController() {
 		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

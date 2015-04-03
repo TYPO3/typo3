@@ -1721,6 +1721,7 @@ abstract class AbstractMenuContentObject {
 		if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
 			try {
 				$menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
+				/** @var $submenu AbstractMenuContentObject */
 				$submenu = $menuObjectFactory->getMenuObjectByType($menuType);
 				$submenu->entryLevel = $this->entryLevel + 1;
 				$submenu->rL_uidRegister = $this->rL_uidRegister;

@@ -27,10 +27,11 @@ class UserInternalContentObject extends AbstractContentObject {
 	 */
 	public function render($conf = array()) {
 		$this->cObj->setUserObjectType(ContentObjectRenderer::OBJECTTYPE_USER_INT);
-		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+		$tsfe = $this->getTypoScriptFrontendController();
+		$substKey = 'INT_SCRIPT.' . $tsfe->uniqueHash();
 		$content = '<!--' . $substKey . '-->';
 		$includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
-		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
+		$tsfe->config['INTincScript'][$substKey] = array(
 			'file' => $includeLibs,
 			'conf' => $conf,
 			'cObj' => serialize($this->cObj),
@@ -40,4 +41,10 @@ class UserInternalContentObject extends AbstractContentObject {
 		return $content;
 	}
 
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
 }

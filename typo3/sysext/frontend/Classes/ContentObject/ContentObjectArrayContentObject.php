@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+
 /**
  * Contains COA class object.
  */
@@ -27,7 +29,7 @@ class ContentObjectArrayContentObject extends AbstractContentObject {
 	 */
 	public function render($conf = array()) {
 		if (empty($conf)) {
-			$GLOBALS['TT']->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', 2);
+			$this->getTimeTracker()->setTSlogMessage('No elements in this content object array (COBJ_ARRAY, COA).', 2);
 			return '';
 		}
 		if (!empty($conf['if.']) && !$this->cObj->checkIf($conf['if.'])) {
@@ -44,6 +46,13 @@ class ContentObjectArrayContentObject extends AbstractContentObject {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}
 		return $content;
+	}
+
+	/**
+	 * @return TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
 	}
 
 }

@@ -53,6 +53,7 @@ class FramesetRenderer {
 			}
 			return '<frameset' . $this->framesetParams($setup) . '>' . LF . $content . '</frameset>';
 		}
+		return '';
 	}
 
 	/**

@@ -3369,6 +3369,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
 		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+		$this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
 		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}
@@ -3475,6 +3476,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$typoScriptFrontendControllerMockObject->sys_page = $pageRepositoryMockObject;
 		$typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
 		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+		$this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
 		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}
@@ -3546,6 +3548,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 		$typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
 		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+		$this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
 		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}

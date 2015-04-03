@@ -60,10 +60,10 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */
 	static public function load($id, $fillItems = FALSE, $tableName = '', $fieldName = '') {
-		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+		$collectionRecord = self::getDatabaseConnection()->exec_SELECTgetSingleRow(
 			'*',
 			static::$storageTableName,
-			'uid = ' . (int)$id . self::getFrontendObject()->sys_page->enableFields(static::$storageTableName)
+			'uid = ' . (int)$id . self::getTypoScriptFrontendController()->sys_page->enableFields(static::$storageTableName)
 		);
 		$collectionRecord['table_name'] = $tableName;
 		$collectionRecord['field_name'] = $fieldName;
@@ -81,30 +81,33 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 * @return array
 	 */
 	protected function getCollectedRecords() {
+		$db = self::getDatabaseConnection();
+
 		$relatedRecords = array();
 		// Assemble where clause
 		$where = 'AND ' . self::$storageTableName . '.uid = ' . (int)$this->getIdentifier();
 		// Add condition on tablenames fields
-		$where .= ' AND sys_category_record_mm.tablenames = ' . $this->getDatabaseConnection()->fullQuoteStr(
+		$where .= ' AND sys_category_record_mm.tablenames = ' . $db->fullQuoteStr(
 			$this->getItemTableName(),
 			'sys_category_record_mm'
 		);
 		// Add condition on fieldname field
-		$where .= ' AND sys_category_record_mm.fieldname = ' . $this->getDatabaseConnection()->fullQuoteStr(
+		$where .= ' AND sys_category_record_mm.fieldname = ' . $db->fullQuoteStr(
 			$this->getRelationFieldName(),
 			'sys_category_record_mm'
 		);
 		// Add enable fields for item table
-		$where .= self::getFrontendObject()->sys_page->enableFields($this->getItemTableName());
+		$tsfe = self::getTypoScriptFrontendController();
+		$where .= $tsfe->sys_page->enableFields($this->getItemTableName());
 		// If language handling is defined for item table, add language condition
 		if (isset($GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField'])) {
 			// Consider default or "all" language
 			$languageField = $this->getItemTableName() . '.' . $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField'];
 			$languageCondition = $languageField . ' IN (0, -1)';
 			// If not in default language, also consider items in current language with no original
-			if ($this->getFrontendObject()->sys_language_content > 0) {
+			if ($tsfe->sys_language_content > 0) {
 				$languageCondition .= '
-					OR (' . $languageField . ' = ' . (int)$this->getFrontendObject()->sys_language_content . '
+					OR (' . $languageField . ' = ' . (int)$tsfe->sys_language_content . '
 					AND ' . $this->getItemTableName() . '.' .
 					$GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['transOrigPointerField'] . ' = 0)
 				';
@@ -112,7 +115,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 			$where .= ' AND (' . $languageCondition . ')';
 		}
 		// Get the related records from the database
-		$resource = $this->getDatabaseConnection()->exec_SELECT_mm_query(
+		$resource = $db->exec_SELECT_mm_query(
 			$this->getItemTableName() . '.*',
 			self::$storageTableName,
 			'sys_category_record_mm',
@@ -121,22 +124,22 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 		);
 
 		if ($resource) {
-			while ($record = $this->getDatabaseConnection()->sql_fetch_assoc($resource)) {
+			while ($record = $db->sql_fetch_assoc($resource)) {
 				// Overlay the record for workspaces
-				$this->getFrontendObject()->sys_page->versionOL(
+				$tsfe->sys_page->versionOL(
 					$this->getItemTableName(),
 					$record
 				);
 				// Overlay the record for translations
-				if (is_array($record) && $this->getFrontendObject()->sys_language_contentOL) {
+				if (is_array($record) && $tsfe->sys_language_contentOL) {
 					if ($this->getItemTableName() === 'pages') {
-						$record = $this->getFrontendObject()->sys_page->getPageOverlay($record);
+						$record = $tsfe->sys_page->getPageOverlay($record);
 					} else {
-						$record = $this->getFrontendObject()->sys_page->getRecordOverlay(
+						$record = $tsfe->sys_page->getRecordOverlay(
 							$this->getItemTableName(),
 							$record,
-							$this->getFrontendObject()->sys_language_content,
-							$this->getFrontendObject()->sys_language_contentOL
+							$tsfe->sys_language_content,
+							$tsfe->sys_language_contentOL
 						);
 					}
 				}
@@ -145,7 +148,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 					$relatedRecords[] = $record;
 				}
 			}
-			$this->getDatabaseConnection()->sql_free_result($resource);
+			$db->sql_free_result($resource);
 		}
 		return $relatedRecords;
 	}
@@ -155,8 +158,17 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
 	 *
 	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
-	static protected function getFrontendObject() {
+	static protected function getTypoScriptFrontendController() {
 		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	static protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

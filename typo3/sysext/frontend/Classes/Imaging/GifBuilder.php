@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 
 /**
  * GIFBUILDER
@@ -43,7 +45,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * }
  * return $gifCreator->getImageDimensions($theImage);
  */
-class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
+class GifBuilder extends GraphicalFunctions {
 
 	/**
 	 * the main image
@@ -125,6 +127,21 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 * @var int[]
 	 */
 	public $XY = array();
+
+	/**
+	 * @var array
+	 */
+	public $OFFSET = array();
+
+	/**
+	 * @var ContentObjectRenderer
+	 */
+	public $cObj;
+
+	/**
+	 * @var array
+	 */
+	public $defaultWorkArea = array();
 
 	/**
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
@@ -225,7 +242,9 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 									$this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(FALSE);
 								} elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof File) {
 									// Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
-									$this->setup[$theKey . '.']['file'] = $fileInfo['originalFile']->getForLocalProcessing(FALSE);
+									/** @var $originalFile File */
+									$originalFile = $fileInfo['originalFile'];
+									$this->setup[$theKey . '.']['file'] = $originalFile->getForLocalProcessing(FALSE);
 								} else {
 									// Use normal path from fileInfo if it is a non-FAL file (even non-FAL files have originalFile set, but only non-FAL files have origFile set)
 									$this->setup[$theKey . '.']['file'] = $fileInfo[3];
@@ -239,7 +258,9 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 										if ($maskInfo['processedFile'] instanceof ProcessedFile) {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(FALSE);
 										} elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
-											$this->setup[$theKey . '.']['mask'] = $maskInfo['originalFile']->getForLocalProcessing(FALSE);
+											/** @var $originalFile File */
+											$originalFile = $maskInfo['originalFile'];
+											$this->setup[$theKey . '.']['mask'] = $originalFile->getForLocalProcessing(FALSE);
 										} else {
 											$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
 										}
@@ -377,6 +398,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			}
 			return $gifFileName;
 		}
+		return '';
 	}
 
 	/**
@@ -409,6 +431,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$this->saveAlphaLayer = TRUE;
 			// Force PNG in case no format is set
 			$this->setup['format'] = 'png';
+			$BGcols = array();
 		} else {
 			// Fill the background with the given color
 			$BGcols = $this->convertColor($this->setup['backColor']);
@@ -646,6 +669,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			}
 			return $conf;
 		}
+		return NULL;
 	}
 
 	/**
@@ -716,7 +740,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	public function fileName($pre) {
 		/** @var $basicFileFunctions \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
-		$basicFileFunctions = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\BasicFileUtility::class);
+		$basicFileFunctions = GeneralUtility::makeInstance(BasicFileUtility::class);
 		$filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
 		$filePrefix = $basicFileFunctions->cleanFileName($filePrefix);
 

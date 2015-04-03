@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 
 /**
  * Test case
  */
-class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ConditionMatcherTest extends UnitTestCase {
 
 	/**
 	 * @var string Name of a key in $GLOBALS for this test
@@ -42,7 +44,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			1 => array('uid' => 111, 'pid' => 101),
 			0 => array('uid' => 101, 'pid' => 0)
 		);
-		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
+		$this->matchCondition = GeneralUtility::makeInstance(ConditionMatcher::class);
 	}
 
 	/**
@@ -699,7 +701,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithNamespaceIENV() {
-		$_SERVER['HTTP_HOST'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
+		$_SERVER['HTTP_HOST'] = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
 		$this->assertTrue($this->matchCondition->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
 	}
 

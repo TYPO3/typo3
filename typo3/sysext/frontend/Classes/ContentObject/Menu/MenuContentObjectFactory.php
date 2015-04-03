@@ -15,13 +15,14 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Factory for menu content objects. Allows overriding the default
  * types like 'GMENU' with an own implementation (only one possible)
  * and new types can be registered.
  */
-class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
+class MenuContentObjectFactory implements SingletonInterface {
 
 	/**
 	 * Register of TypoScript keys to according render class
@@ -43,9 +44,9 @@ class MenuContentObjectFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws Exception\NoSuchMenuTypeException
 	 */
 	public function getMenuObjectByType($type = '') {
-		$uppercasedClassName = strtoupper($type);
-		if (array_key_exists($uppercasedClassName, $this->menuTypeToClassMapping)) {
-			$object = GeneralUtility::makeInstance($this->menuTypeToClassMapping[$uppercasedClassName]);
+		$upperCasedClassName = strtoupper($type);
+		if (array_key_exists($upperCasedClassName, $this->menuTypeToClassMapping)) {
+			$object = GeneralUtility::makeInstance($this->menuTypeToClassMapping[$upperCasedClassName]);
 		} else {
 			throw new Exception\NoSuchMenuTypeException(
 				'Menu type ' . (string)$type . ' has no implementing class.',

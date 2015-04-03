@@ -14,17 +14,20 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+
 /**
  * Testcase
  */
-class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MenuContentObjectFactoryTest extends UnitTestCase {
 
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException
 	 */
 	public function getMenuObjectByTypeThrowsExceptionForUnknownType() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$factory->getMenuObjectByType($this->getUniqueId('foo_'));
 	}
 
@@ -32,7 +35,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$this->assertInternalType('object', $factory->getMenuObjectByType('GMENU'));
 	}
 
@@ -40,7 +43,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$this->assertInternalType('object', $factory->getMenuObjectByType('gmenu'));
 	}
 
@@ -48,7 +51,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getMenuObjectByTypeReturnsInstanceOfOwnRegisteredTypeInsteadOfInternalType() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$selfClassName = get_class($this);
 		$factory->registerMenuType('GMENU', $selfClassName);
 		$this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType('GMENU'));
@@ -58,7 +61,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getMenuObjectByTypeReturnsInstanceOfNewRegisteredType() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$selfClassName = get_class($this);
 		$uniqueMenuType = $this->getUniqueId('foo_');
 		$factory->registerMenuType($uniqueMenuType, $selfClassName);
@@ -70,7 +73,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function registerMenuTypeThrowsExceptionIfTypeIsNotOfTypeString() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$factory->registerMenuType(array(), 'foo');
 	}
 
@@ -79,7 +82,7 @@ class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function registerMenuTypeThrowsExceptionIfClassNameIsNotOfTypeString() {
-		$factory = new \TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
+		$factory = new MenuContentObjectFactory;
 		$factory->registerMenuType('foo', array());
 	}
 

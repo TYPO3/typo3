@@ -27,7 +27,7 @@ class UserContentObject extends AbstractContentObject {
 	 */
 	public function render($conf = array()) {
 		if (!is_array($conf) || empty($conf)) {
-			$GLOBALS['TT']->setTSlogMessage('USER without configuration.', 2);
+			$this->getTimeTracker()->setTSlogMessage('USER without configuration.', 2);
 			return '';
 		}
 		$content = '';
@@ -50,4 +50,10 @@ class UserContentObject extends AbstractContentObject {
 		return $content;
 	}
 
+	/**
+	 * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
+	}
 }

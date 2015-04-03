@@ -27,9 +27,18 @@ class TableColumnHooks {
 		usort(
 			$parameters['items'],
 			function ($item1, $item2) {
-				return strcasecmp($GLOBALS['LANG']->sL($item1[0]), $GLOBALS['LANG']->sL($item2[0]));
+				return strcasecmp($this->getLanguageService()->sL($item1[0]), $this->getLanguageService()->sL($item2[0]));
 			}
 		);
+	}
+
+	/**
+	 * Returns LanguageService
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
