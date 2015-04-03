@@ -45,7 +45,7 @@ class LocalPreviewHelper {
 	 * removes the typo3temp/ file
 	 *
 	 * @param TaskInterface $task
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function process(TaskInterface $task) {
 		$sourceFile = $task->getSourceFile();
@@ -54,6 +54,12 @@ class LocalPreviewHelper {
 		$configuration = array_merge(array('width' => 64, 'height' => 64), $task->getConfiguration());
 		$configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1);
 		$configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1);
+
+		// Only scale down when new dimensions are smaller then existing image
+		if ($configuration['width'] > $sourceFile->getProperty('width')
+			&& $configuration['height'] > $sourceFile->getProperty('height')) {
+			return NULL;
+		}
 
 		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 
