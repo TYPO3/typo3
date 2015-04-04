@@ -622,15 +622,11 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
 		$uriBuilder = $this->getObjectManager()->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
-		// This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
-		// has /index.php as fixed value here and dealing with the backPath is very error-prone
-		// @todo make sure this would work in local extension installation too
-		$backPath = '/' . TYPO3_mainDir;
-		$redirect = $backPath . 'index.php?redirect_url=';
+		$redirect = 'index.php?redirect_url=';
 		// @todo this should maybe be changed so that the extbase URI Builder can deal with module names directly
 		$originalM = GeneralUtility::_GET('M');
 		GeneralUtility::_GETset('web_WorkspacesWorkspaces', 'M');
-		$viewScript = $backPath . $uriBuilder->uriFor('index', array(), 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
+		$viewScript = $uriBuilder->uriFor('index', array(), 'Preview', 'workspaces', 'web_workspacesworkspaces') . '&id=';
 		GeneralUtility::_GETset($originalM, 'M');
 		if ($addDomain === TRUE) {
 			return BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
