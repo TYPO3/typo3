@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility to find and execute class.ext_update.php scripts of extensions
@@ -87,13 +88,37 @@ class UpdateScriptUtility {
 	 *
 	 * @param string $extensionKey Extension key
 	 * @return bool True, if there is some update script
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	public function checkUpdateScriptExists($extensionKey) {
-		$updateScriptFileExists = FALSE;
-		if (file_exists($this->getUpdateFileLocation($extensionKey))) {
-			$updateScriptFileExists = TRUE;
+		$updateScriptCanBeCalled = FALSE;
+		$updateScript = $this->getUpdateFileLocation($extensionKey);
+		if (file_exists($updateScript)) {
+			// get script contents
+			$scriptSourceCode = GeneralUtility::getUrl($updateScript);
+			// check if it has a namespace
+			if (!preg_match('/<\?php.*namespace\s+([^;]+);.*class/is', $scriptSourceCode, $matches)) {
+				// if no, rename the class with a unique name
+				$className = uniqid('ext_update');
+				$scriptSourceCode = preg_replace('/^\s*class\s+ext_update\s+/m', 'class ' . $className . ' ', $scriptSourceCode);
+			} else {
+				$className = $matches[1] . '\ext_update';
+			}
+			// load class and call access function
+			if (!preg_match('/\?>$/is', $scriptSourceCode)) {
+				$scriptSourceCode .= '?>';
+			}
+			eval('?>' . $scriptSourceCode . '<?php ');
+			if (!class_exists($className)) {
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
+					sprintf('class.ext_update.php of extension "%s" did not declare ext_update class', $extensionKey),
+					1428176468
+				);
+			}
+			$updater = GeneralUtility::makeInstance($className);
+			$updateScriptCanBeCalled = $updater->access();
 		}
-		return $updateScriptFileExists;
+		return $updateScriptCanBeCalled;
 	}
 
 	/**
