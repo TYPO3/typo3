@@ -150,6 +150,19 @@ abstract class AbstractSpecifics {
 	}
 
 	/**
+	 * Adjust query parts for DBMS
+	 *
+	 * @param string $select_fields
+	 * @param string $from_table
+	 * @param string $where_clause
+	 * @param string $groupBy
+	 * @param string $orderBy
+	 * @param string $limit
+	 * @return void
+	 */
+	public function transformQueryParts(&$select_fields, &$from_table, &$where_clause, &$groupBy = '', &$orderBy = '', &$limit = '') {}
+
+	/**
 	 * Transforms a database specific representation of field information and translates it
 	 * as close as possible to the MySQL standard.
 	 *

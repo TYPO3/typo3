@@ -1252,6 +1252,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$where_clause = $this->quoteWhereClause($where_clause);
 		$groupBy = $this->quoteGroupBy($groupBy);
 		$orderBy = $this->quoteOrderBy($orderBy);
+		$this->dbmsSpecifics->transformQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		// Call parent method to build actual query
 		$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -1285,6 +1286,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		}
 		// Compile the SELECT parameters
 		list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($params);
+		$this->dbmsSpecifics->transformQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 		// Call parent method to build actual query
 		$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -1509,6 +1511,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 				break;
 			case 'adodb':
+				$this->dbmsSpecifics->transformQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 				$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 				$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 				$precompiledParts['LIMIT'] = $limit;

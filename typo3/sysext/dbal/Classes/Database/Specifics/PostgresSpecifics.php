@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Dbal\Database\Specifics;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This class contains the specifics for PostgreSQL DBMS.
  * Any logic is in AbstractSpecifics.
@@ -130,6 +132,40 @@ class PostgresSpecifics extends AbstractSpecifics {
 			return 'auto_increment';
 		}
 		return '';
+	}
+
+	/**
+	 * Adjust query parts for various DBMS
+	 *
+	 * @param string $select_fields
+	 * @param string $from_table
+	 * @param string $where_clause
+	 * @param string $groupBy
+	 * @param string $orderBy
+	 * @param string $limit
+	 * @return void
+	 */
+	public function transformQueryParts(&$select_fields, &$from_table, &$where_clause, &$groupBy = '', &$orderBy = '', &$limit = '') {
+		// Strip orderBy part if select statement is a count
+		if (preg_match_all('/count\(([^)]*)\)/i', $select_fields, $matches)) {
+			$orderByFields = GeneralUtility::trimExplode(',', $orderBy);
+			$groupByFields = GeneralUtility::trimExplode(',', $groupBy);
+			foreach ($matches[1] as $matchedField) {
+				$field = $matchedField;
+				// Lookup if the field in COUNT() statement is used in GROUP BY statement
+				$index = array_search($field, $groupByFields, TRUE);
+				if ($index !== FALSE) {
+					// field is used in GROUP BY, continue with next field
+					continue;
+				}
+				// If that field isn't used in GROUP BY statement, drop the ordering for compatibility reason
+				$index = array_search($field, $orderByFields, TRUE);
+				if ($index !== FALSE) {
+					unset($orderByFields[$index]);
+				}
+			}
+			$orderBy = implode(', ', $orderByFields);
+		}
 	}
 
 }

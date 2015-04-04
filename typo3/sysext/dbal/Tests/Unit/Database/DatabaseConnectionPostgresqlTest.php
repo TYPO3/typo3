@@ -172,4 +172,53 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase {
 		$this->assertSame($expected, $this->cleanSql($result));
 	}
 
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/43262
+	 */
+	public function countFieldInOrderByIsInGroupBy() {
+		$result = $this->subject->SELECTquery('COUNT(title)', 'pages', '', 'title', 'title');
+		$expected = 'SELECT COUNT("title") FROM "pages" GROUP BY "title" ORDER BY "title"';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/43262
+	 */
+	public function multipleCountFieldsInOrderByAreInGroupBy() {
+		$result = $this->subject->SELECTquery('COUNT(title), COUNT(pid)', 'pages', '', 'title, pid', 'title, pid');
+		$expected = 'SELECT COUNT("title"), COUNT("pid") FROM "pages" GROUP BY "title", "pid" ORDER BY "title", "pid"';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/43262
+	 */
+	public function countFieldInOrderByIsNotInGroupBy() {
+		$result = $this->subject->SELECTquery('COUNT(title)', 'pages', '', '', 'title');
+		$expected = 'SELECT COUNT("title") FROM "pages"';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/43262
+	 */
+	public function multipleCountFieldsInOrderByAreNotInGroupBy() {
+		$result = $this->subject->SELECTquery('COUNT(title), COUNT(pid)', 'pages', '', '', 'title, pid');
+		$expected = 'SELECT COUNT("title"), COUNT("pid") FROM "pages"';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/43262
+	 */
+	public function someCountFieldsInOrderByAreNotInGroupBy() {
+		$result = $this->subject->SELECTquery('COUNT(title), COUNT(pid)', 'pages', '', 'title', 'title, pid');
+		$expected = 'SELECT COUNT("title"), COUNT("pid") FROM "pages" GROUP BY "title" ORDER BY "title"';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
 }

@@ -49,6 +49,9 @@ class DatabaseConnectionTest extends AbstractTestCase {
 		$installerSqlMock->expects($this->any())->method('getFieldDefinitions_fileContent')->will($this->returnValue(array()));
 		$subject->_set('installerSql', $installerSqlMock);
 
+		// Inject DBMS specifics
+		$subject->_set('dbmsSpecifics', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\NullSpecifics::class));
+
 		$subject->initialize();
 		$subject->lastHandlerKey = '_DEFAULT';
 
