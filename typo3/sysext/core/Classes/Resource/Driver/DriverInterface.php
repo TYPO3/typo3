@@ -395,6 +395,15 @@ interface DriverInterface {
 	public function getFolderInfoByIdentifier($folderIdentifier);
 
 	/**
+	 * Returns the identifier of a file inside the folder
+	 *
+	 * @param string $fileName
+	 * @param string $folderIdentifier
+	 * @return string file identifier
+	 */
+	public function getFileInFolder($fileName, $folderIdentifier);
+
+	/**
 	 * Returns a list of files inside the specified path
 	 *
 	 * @param string $folderIdentifier
@@ -411,6 +420,15 @@ interface DriverInterface {
 	 * @return array of FileIdentifiers
 	 */
 	public function getFilesInFolder($folderIdentifier, $start = 0, $numberOfItems = 0, $recursive = FALSE, array $filenameFilterCallbacks = array(), $sort = '', $sortRev = FALSE);
+
+	/**
+	 * Returns the identifier of a folder inside the folder
+	 *
+	 * @param string $folderName The name of the target folder
+	 * @param string $folderIdentifier
+	 * @return string folder identifier
+	 */
+	public function getFolderInFolder($folderName, $folderIdentifier);
 
 	/**
 	 * Returns a list of folders inside the specified path

@@ -1313,6 +1313,18 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
+	 * Get file from folder
+	 *
+	 * @param string $fileName
+	 * @param Folder $folder
+	 * @return NULL|File|ProcessedFile
+	 */
+	public function getFileInFolder($fileName, Folder $folder) {
+		$identifier = $this->driver->getFileInFolder($fileName, $folder->getIdentifier());
+		return $this->getFileFactory()->getFileObjectByStorageAndIdentifier($this->getUid(), $identifier);
+	}
+
+	/**
 	 * @param Folder $folder
 	 * @param int $start
 	 * @param int $maxNumberOfItems
@@ -1983,6 +1995,21 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
+	 * Returns the Identifier for a folder within a given folder.
+	 *
+	 * @param string $folderName The name of the target folder
+	 * @param string $folder
+	 * @param bool $returnInaccessibleFolderObject
+	 * @return Folder|InaccessibleFolder
+	 * @throws \Exception
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
+	 */
+	public function getFolderInFolder($folderName, $folder, $returnInaccessibleFolderObject = FALSE) {
+		$folderIdentifier = $this->driver->getFolderInFolder($folderName, $folder);
+		return $this->getFolder($folderIdentifier, $returnInaccessibleFolderObject);
+	}
+
+	/**
 	 * @param Folder $folder
 	 * @param int $start
 	 * @param int $maxNumberOfItems
@@ -2096,7 +2123,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param string $identifier
 	 * @param bool $returnInaccessibleFolderObject
 	 *
-	 * @return Folder
+	 * @return Folder|InaccessibleFolder
 	 * @throws \Exception
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */

@@ -425,6 +425,17 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	}
 
 	/**
+	 * Returns a file inside the specified path
+	 *
+	 * @param string $fileName
+	 * @param string $folderIdentifier
+	 * @return string File Identifier
+	 */
+	public function getFileInFolder($fileName, $folderIdentifier) {
+		return $this->canonicalizeAndCheckFileIdentifier($folderIdentifier . '/' . $fileName);
+	}
+
+	/**
 	 * Returns a list of files inside the specified path
 	 *
 	 * @param string $folderIdentifier

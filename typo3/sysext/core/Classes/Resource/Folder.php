@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -238,10 +239,7 @@ class Folder implements FolderInterface {
 		if (!$this->storage->hasFolderInFolder($name, $this)) {
 			throw new \InvalidArgumentException('Folder "' . $name . '" does not exist in "' . $this->identifier . '"', 1329836110);
 		}
-		/** @var $factory ResourceFactory */
-		$factory = ResourceFactory::getInstance();
-		$folderObject = $factory->createFolderObject($this->storage, $this->identifier . $name . '/', $name);
-		return $folderObject;
+		return $this->storage->getFolderInFolder($name, $this);
 	}
 
 	/**
