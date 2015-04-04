@@ -1084,6 +1084,9 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="toolbarItems.sysinfo.operatingsystem">
 				<source>Operating System</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.webserver">
+				<source>Webserver</source>
+			</trans-unit>
 			<trans-unit id="tabs.closeAll">
 				<source>Close All Tabs</source>
 			</trans-unit>

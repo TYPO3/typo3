@@ -74,6 +74,7 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
 
+		$this->getWebServer();
 		$this->getPhpVersion();
 		$this->getDatabase();
 		$this->getApplicationContext();
@@ -173,6 +174,17 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 			'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem', TRUE),
 			'value' => $kernelName . ' ' . php_uname('r'),
 			'icon' => '<span class="fa fa-' . htmlspecialchars($icon) . '"></span>'
+		);
+	}
+
+	/**
+	 * Gets the webserver software
+	 */
+	protected function getWebServer() {
+		$this->systemInformation[] = array(
+			'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo.webserver', TRUE),
+			'value' => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
+			'icon' => '<span class="fa fa-server"></span>'
 		);
 	}
 
