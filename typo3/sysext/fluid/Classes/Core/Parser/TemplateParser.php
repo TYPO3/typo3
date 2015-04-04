@@ -83,6 +83,26 @@ class TemplateParser {
 	static public $SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG = '/^<\\/(?P<NamespaceIdentifier>NAMESPACE):(?P<MethodIdentifier>[a-zA-Z0-9\\.]+)\\s*>$/';
 
 	/**
+	 * This regular expression scans for HTML tags that have the attribute
+	 * data-namespace-typo3-fluid="true".
+	 * If this attribute is added to the HTML tag, the HTML tag will be removed
+	 * from the rendered output.
+	 */
+	static public $SCAN_PATTERN_NAMESPACE_FLUID_HTML_TAG = '/<html\\s++[^>]*data-namespace-typo3-fluid="true"[^>]*>/m';
+
+	/**
+	 * This regular expression is used to remove xmlns attributes that are used
+	 * to register ViewHelper namespaces.
+	 *
+	 * Replaces trailing empty spaces to avoid additional new lines that might be in the the tag.
+	 * It is therefore necessary to replace the pattern with space instead of empty string.
+	 *
+	 * Searches for multiple xmlns declarations after one another to only replace them with one space,
+	 * instead of one per xmlns definition.
+	 */
+	static public $SCAN_PATTERN_REMOVE_VIEWHELPERS_XMLNSDECLARATIONS = '/(?:\\s*+xmlns:(?:%1$s)="[^"]*"\\s*+)++/m';
+
+	/**
 	 * This regular expression splits the tag arguments into its parts
 	 */
 	static public $SPLIT_PATTERN_TAGARGUMENTS = '/
@@ -370,10 +390,12 @@ class TemplateParser {
 	 */
 	protected function extractNamespaceDefinitions($templateString) {
 		$matches = array();
+		$foundIdentifiers = array();
 		preg_match_all(self::$SCAN_PATTERN_XMLNSDECLARATION, $templateString, $matches, PREG_SET_ORDER);
 		foreach ($matches as $match) {
 				// skip reserved "f" namespace identifier
 			if ($match['identifier'] === 'f') {
+				$foundIdentifiers[] = 'f';
 				continue;
 			}
 			if (array_key_exists($match['identifier'], $this->namespaces)) {
@@ -388,8 +410,12 @@ class TemplateParser {
 				}
 				$phpNamespace = str_replace('/', '\\', $matchedPhpNamespace['PhpNamespace']);
 			}
+			$foundIdentifiers[] = $match['identifier'];
 			$this->namespaces[$match['identifier']] = $phpNamespace;
 		}
+
+		$templateString = $this->removeXmlnsViewHelperNamespaceDeclarations($templateString, $foundIdentifiers);
+
 		$matches = array();
 		preg_match_all(self::$SCAN_PATTERN_NAMESPACEDECLARATION, $templateString, $matches, PREG_SET_ORDER);
 		foreach ($matches as $match) {
@@ -400,6 +426,38 @@ class TemplateParser {
 		}
 		if ($matches !== array()) {
 			$templateString = preg_replace(self::$SCAN_PATTERN_NAMESPACEDECLARATION, '', $templateString);
+		}
+
+		return $templateString;
+	}
+
+	/**
+	 * Removes html-tag (opening & closing) that is only used for xmlns definition
+	 * and xmlns attributes that register ViewHelpers on any tags
+	 *
+	 * @param string $templateString
+	 * @param array $foundIdentifiers
+	 * @return string
+	 */
+	protected function removeXmlnsViewHelperNamespaceDeclarations($templateString, array $foundIdentifiers) {
+		$foundHtmlTags = 0;
+		$templateString = preg_replace(self::$SCAN_PATTERN_NAMESPACE_FLUID_HTML_TAG, '', $templateString, 1, $foundHtmlTags);
+		if ($foundHtmlTags > 0) {
+			$templateString = str_replace('</html>', '', $templateString);
+		}
+
+		if (!empty($foundIdentifiers)) {
+			$foundIdentifiers = array_map(function($foundIdentifier) {
+				return preg_quote($foundIdentifier, '/');
+			}, $foundIdentifiers);
+			$foundIdentifiers = implode('|', $foundIdentifiers);
+
+			// replaces the pattern with space because the pattern includes trailing spaces and consecutive xmlns ViewHelper defintions
+			$templateString = preg_replace(
+				sprintf(self::$SCAN_PATTERN_REMOVE_VIEWHELPERS_XMLNSDECLARATIONS, $foundIdentifiers),
+				' ',
+				$templateString
+			);
 		}
 
 		return $templateString;

@@ -10,6 +10,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Parser\TemplateParser;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 
 /**
  * Testcase for TemplateParser.
@@ -145,6 +147,413 @@ class TemplateParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$templateParser = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Parser\TemplateParser::class, array('dummy'));
 		$templateParser->injectSettings($mockSettings);
 		$templateParser->_call('extractNamespaceDefinitions', '{namespace typo3=TYPO3\CMS\Fluid\Blablubb} <foo xmlns="http://www.w3.org/1999/xhtml" xmlns:typo3="http://domain.tld/ns/my/viewhelpers" />');
+	}
+
+	/**
+	 * @param array $expectedFoundIdentifiers
+	 * @param string $templateString
+	 * @param array $namespaces
+	 * @test
+	 * @dataProvider extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiersDataProvider
+	 */
+	public function extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiers(array $expectedFoundIdentifiers, $templateString, array $namespaces) {
+		$mockSettings = array(
+			'namespaces' => $namespaces
+		);
+
+		/** @var TemplateParser|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $templateParser */
+		$templateParser = $this->getAccessibleMock(TemplateParser::class, array('removeXmlnsViewHelperNamespaceDeclarations'));
+		$templateParser->injectSettings($mockSettings);
+
+		// this verifies that the method is called with the correct found identifiers
+		// and also that the templateString was not modified before calling removeXmlnsViewHelperNamespaceDeclarations
+		$templateParser
+			->expects($this->once())
+			->method('removeXmlnsViewHelperNamespaceDeclarations')
+			->with($templateString, $expectedFoundIdentifiers)
+			->willReturnArgument(0);
+		$templateParser->_call('extractNamespaceDefinitions', $templateString);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiersDataProvider() {
+		return [
+			'bothViewHelperNamespacesDefinitionsOnlyProvideXmlnsViewHelpersUsingNonDefaultPatternViewHelpers' => array(
+				['foo'],
+				'{namespace typo3=TYPO3\\CMS\\Fluid\\Blablubb} <div xmlns:foo="http://domain.tld/ns/foo/viewhelpers">Content</div>',
+				['http://domain.tld/ns/foo/viewhelpers' => 'My\\Namespace']
+			),
+			'bothViewHelperNamespacesDefinitionsOnlyProvideXmlnsViewHelpersUsingDefaultPatternViewHelpers' => array(
+				['xyz'],
+				'{namespace typo3=TYPO3\\CMS\\Fluid\\Blablubb} <div xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers">Content</div>',
+				[]
+			),
+			'xmlnsIdentifiersWithWhitespaces' => array(
+				[' ', 'foo bar', '"x y z"'],
+				'
+					<div xmlns: ="http://typo3.org/ns/Some/Package/ViewHelpers"
+							xmlns:foo bar="http://domain.tld/ns/foobar/viewhelpers"
+							xmlns:"x y z"="http://typo3.org/ns/My/Xyz/ViewHelpers">
+
+						Content
+					</div>
+				',
+				['http://domain.tld/ns/foobar/viewhelpers' => 'My\\Namespace']
+			),
+			'xmlnsWithEqualsSign' => array(
+				['=', 'foo=bar', '"x=y=z"'],
+				'
+					<div xmlns:=="http://typo3.org/ns/Some/Package/ViewHelpers"
+							xmlns:foo=bar="http://domain.tld/ns/foobar/viewhelpers"
+							xmlns:"x=y=z"="http://typo3.org/ns/My/Xyz/ViewHelpers">
+
+						Content
+					</div>
+				',
+				['http://domain.tld/ns/foobar/viewhelpers' => 'My\\Namespace']
+			),
+			'nonViewHelpersXmlnsAreNotIncludedButDefaultPatternAndNonDefaultAreIncluded' => array(
+				['xyz', 'foo'],
+				'<div xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers"
+						xmlns:foo="http://domain.tld/ns/foo/viewhelpers"
+						xmlns:bar="http://typo3.org/foo/bar">
+
+					Content
+				</div>',
+				['http://domain.tld/ns/foo/viewhelpers' => 'My\\Namespace']
+			),
+			'nonViewHelpersInBetweenViewHelperXmlnsAreNotIncludedButDefaultPatternAndNonDefaultAreIncluded' => array(
+				['xyz', 'foo'],
+				'<div xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers"
+							xmlns:bar="http://typo3.org/foo/bar"
+							xmlns:foo="http://domain.tld/ns/foo/viewhelpers">
+
+					Content
+				</div>',
+				['http://domain.tld/ns/foo/viewhelpers' => 'My\\Namespace']
+			),
+			'fluidNamespaceIsFound' => array(
+				['f'],
+				'<div xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">Content</div>',
+				[]
+			),
+			'xmlnsWithoutIdentifierIsIgnored' => array(
+				[],
+				'<div xmlns="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">Content</div>',
+				[]
+			),
+			'htmlTagAlsoFindsIdentifiers' => array(
+				['f', 'xyz'],
+				'<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+								xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers">
+
+					Content
+				</html>',
+				[]
+			),
+			'htmlTagWithNamespaceTypo3FluidAttributeTagAlsoFindsIdentifiers' => array(
+				['f', 'xyz'],
+				'<html data-namespace-typo3-fluid="true"
+					xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+					xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers">
+
+					Content
+				</html>',
+				[]
+			),
+			'nonHtmlTagAlsoFindsIdentifiers' => array(
+				['f', 'xyz'],
+				'<typo3-root
+					xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+					xmlns:xyz="http://typo3.org/ns/Some/Package/ViewHelpers">
+
+					Content
+				</typo3-root>',
+				[]
+			),
+		];
+	}
+
+	/**
+	 * @param string $expectedOut
+	 * @param string $templateString
+	 * @param array $foundIdentifiers
+	 * @test
+	 * @dataProvider removeXmlnsViewHelperNamespaceDeclarationsDataProvider
+	 */
+	public function removeXmlnsViewHelperNamespaceDeclarationsWorks($expectedOut, array $foundIdentifiers, $templateString) {
+		$templateParser = $this->getAccessibleMock(TemplateParser::class, array('dummy'));
+		$templateString = $templateParser->_call('removeXmlnsViewHelperNamespaceDeclarations', $templateString, $foundIdentifiers);
+
+		// remove tabs and trim because expected result and given have a different tab count in dataProvider which is not relevant for the parser (xml and html)
+		$this->assertSame(trim(str_replace("\t", '', $expectedOut)), trim(str_replace("\t", '', $templateString)));
+	}
+
+	/**
+	 * DataProvider for removeXmlnsViewHelperNamespaceDeclarationsWorks test
+	 *
+	 * @return array
+	 */
+	public function removeXmlnsViewHelperNamespaceDeclarationsDataProvider() {
+		return [
+			'onlyViewHelperXmlns' => array(
+				'
+					<div >
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'fe'],
+				'<div xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers">
+					<f:if condition="{demo}">Hello World</f:if>
+				</div>'
+			),
+			'xmlnsViewHelpersFoundWithNonViewHelperXmlnsAtBeginning' => array(
+				'
+					<div xmlns:z="http://www.typo3.org/foo" >
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'fe'],
+				'
+					<div xmlns:z="http://www.typo3.org/foo"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'xmlnsViewHelpersFoundWithNonViewHelperXmlnsAtEnd' => array(
+				'
+					<div xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'fe'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'xmlnsViewHelpersFoundWithMultipleNonViewHelperXmlns' => array(
+				'
+					<div xmlns:y="http://www.typo3.org/bar" xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'fe'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:y="http://www.typo3.org/bar"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'xmlnsViewHelpersFoundWithNonViewHelperXmlnsBetween' => array(
+				'
+					<div xmlns:z="http://www.typo3.org/foo" >
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['fe', 'f'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'removeHtmlTagWithAttributeButNoXmlnsViewHelpersFound' => array(
+				'<f:if condition="{demo}">Hello World</f:if>',
+				[],
+				'
+					<html data-namespace-typo3-fluid="true">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				'
+			),
+			'doNotRemoveHtmlTagBecauseHtmlTagNotMarkedAsFluidNamespaceDefinitionTag' => array(
+				'
+					<html xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				',
+				['fe', 'f'],
+				'
+					<html xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				'
+			),
+			'doNotModifyHtmlTagBecauseViewHelperXmlnsNotFoundInTagAndNotMarkedForRemoval' => array(
+				'
+					<html xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				',
+				['f'], // required because without any found namespaces the method will not do any replacements
+				'
+					<html xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				'
+			),
+			'removeHtmlTagBecauseXmlnsFoundInTagAndMarkedAsFluidViewHelperDefinitionTag' => array(
+				'<f:if condition="{demo}">Hello World</f:if>',
+				['fe'],
+				'
+					<html data-namespace-typo3-fluid="true"
+							xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				'
+			),
+			'removeHtmlTagBecauseXmlnsFoundInDifferentTagAndMarkedAsFluidViewHelperDefinitionTag' => array(
+				'<f:if condition="{demo}">Hello World</f:if>',
+				['f'],
+				'
+					<html data-namespace-typo3-fluid="true" xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</html>
+				'
+			),
+			'producesExcpedtedOutputIfFouundIdentifiersAreWrongButContainNoExistingNonViewHelperXmlns' => array(
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers" xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'i'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			// this test verifies that the expected output can be wrong if the foundNameSpaces are incorrect
+			// which is why extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiers
+			// tests if the correct identifiers are found
+			'removesNonViewHelperNamespaceIfFoundIdentifiersAreWrong' => array(
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers" >
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'z'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			// this verifies that the scan pattern was correctly quoted for the regular expression
+			// because if the regular expression delimiter were to be modified in the pattern,
+			// the corresponding preg_quote will fail without adaptions
+			'xmlnsWithScanPatternAsIdentifier' => array(
+				'
+					<div >
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				[TemplateParser::$SCAN_PATTERN_REMOVE_VIEWHELPERS_XMLNSDECLARATIONS],
+				'
+					<div xmlns:' . TemplateParser::$SCAN_PATTERN_REMOVE_VIEWHELPERS_XMLNSDECLARATIONS . '="http://typo3.org/ns/TYPO3/CMS\Demo/ViewHelpers">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			// these scenarios also need to because even if the foundIdentifiers are
+			// invalid the method should still work as expected,
+			// Furthermore, currently these patterns are allowed for foundIdentifiers
+			// see also test extractNamespaceDefinitionsCallsRemoveXmlnsViewHelperNamespaceDeclarationsWithCorrectFoundIdentifiers
+			'xmlnsIdentifiersWithWhitespaces' => array(
+				'
+					<div xmlns:none xyz="http://domain.tld/ns/NoneXyz/viewhelpers" >
+
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				[' ', 'foo bar', '"x y z"'],
+				'
+					<div xmlns: ="http://typo3.org/ns/Some/Package/ViewHelpers"
+							xmlns:foo bar="http://domain.tld/ns/foobar/viewhelpers"
+							xmlns:none xyz="http://domain.tld/ns/NoneXyz/viewhelpers"
+							xmlns:"x y z"="http://typo3.org/ns/My/Xyz/ViewHelpers">
+
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'xmlnsWithRegularExpressionAsIdentifier' => array(
+				'
+					<div xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'fe', '.*.?\\s'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:.*.?\\s="http://typo3.org/ns/TYPO3/CMS\Demo/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'xmlnsWithRegularExpressionDelimiterAsIdentifier' => array(
+				'
+					<div xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['f', 'fe', '/'],
+				'
+					<div xmlns:fe="http://typo3.org/ns/TYPO3/CMS/Frontend/ViewHelpers"
+							xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+							xmlns:/="http://typo3.org/ns/TYPO3/CMS\Demo/ViewHelpers"
+							xmlns:z="http://www.typo3.org/foo">
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			),
+			'xmlnsWithEqualsSign' => array(
+				'
+					<div xmlns:none=xyz="http://domain.tld/ns/NoneXyz/viewhelpers" >
+
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				',
+				['=', 'foo=bar', '"x=y=z"'],
+				'
+					<div xmlns:=="http://typo3.org/ns/Some/Package/ViewHelpers"
+							xmlns:foo=bar="http://domain.tld/ns/foobar/viewhelpers"
+							xmlns:none=xyz="http://domain.tld/ns/NoneXyz/viewhelpers"
+							xmlns:"x=y=z"="http://typo3.org/ns/My/Xyz/ViewHelpers">
+
+						<f:if condition="{demo}">Hello World</f:if>
+					</div>
+				'
+			)
+		];
 	}
 
 	/**
