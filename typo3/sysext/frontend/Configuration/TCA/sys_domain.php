@@ -77,7 +77,7 @@ return array(
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
-				'default' => '1'
+				'default' => '0'
 			)
 		)
 	),
