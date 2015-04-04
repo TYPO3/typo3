@@ -123,12 +123,14 @@ class BackendController {
 			'iframepanel' => 'sysext/backend/Resources/Public/JavaScript/iframepanel.js',
 			'backendcontentiframe' => 'sysext/backend/Resources/Public/JavaScript/extjs/backendcontentiframe.js',
 			'viewportConfiguration' => 'sysext/backend/Resources/Public/JavaScript/extjs/viewportConfiguration.js',
-			'util' => 'sysext/backend/Resources/Public/JavaScript/util.js'
 		);
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('login_frameset')) . ');
 			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('logout')) . ');
 		}');
+
+		// load Utility class
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Utility');
 
 		// load Notification functionality
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
