@@ -113,7 +113,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 				});
 			}),
 			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + LoginRefresh.logoutUrl;
+				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
 			})
 		);
 
@@ -204,7 +204,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 		LoginRefresh.$loginForm.find('.modal-footer').append(
 			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button),
 			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + LoginRefresh.logoutUrl;
+				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
 			})
 		);
 
