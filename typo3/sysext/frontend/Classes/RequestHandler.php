@@ -336,7 +336,11 @@ class RequestHandler implements RequestHandlerInterface {
 			$this->timeTracker = new NullTimeTracker();
 		}
 
-		$GLOBALS['TT'] = $this->timeTracker;
+		// We have to define this as reference here, because there is code around
+		// which exchanges the TT object in the global variable. The reference ensures
+		// that the $timeTracker member always works on the same object as the global variable.
+		// This is a dirty workaround and bypasses the protected access modifier of the $timeTracker member.
+		$GLOBALS['TT'] = &$this->timeTracker;
 		$this->timeTracker->start();
 	}
 
@@ -358,6 +362,10 @@ class RequestHandler implements RequestHandlerInterface {
 			GeneralUtility::_GP('RDCT')
 		);
 		// setting the global variable for the controller
-		$GLOBALS['TSFE'] = $this->controller;
+		// We have to define this as reference here, because there is code around
+		// which exchanges the TSFE object in the global variable. The reference ensures
+		// that the $controller member always works on the same object as the global variable.
+		// This is a dirty workaround and bypasses the protected access modifier of the controller member.
+		$GLOBALS['TSFE'] = &$this->controller;
 	}
 }
