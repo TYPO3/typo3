@@ -37,8 +37,18 @@ indent_size = 4
 indent_style = tab
 indent_size = 4
 
+# JSON-Files
+[*.json]
+indent_style = tab
+indent_size = 4
+
 # PHP-Files
 [*.php]
+indent_style = tab
+indent_size = 4
+
+# ReST-Files
+[*.rst]
 indent_style = tab
 indent_size = 4
 
