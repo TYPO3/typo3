@@ -1,0 +1,34 @@
+{namespace sg = TYPO3\CMS\Styleguide\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="headline">
+	<f:translate key="debug" />
+</f:section>
+
+<f:section name="content">
+	<script>
+		var messages = [
+			'E = mc²',
+			'The mass of a body is a measure of its energy content.',
+			'If A is success in life, then A = x + y + z. Work is x, play is y and z is keeping your mouth shut.',
+			'Life is like riding a bicycle. To keep your balance you must keep moving.',
+			'Everything should be made as simple as possible, but no simpler.',
+			'The eternal mystery of the world is its comprehensibility.',
+			'Do not worry about your difficulties in Mathematics. I can assure you mine are still greater.',
+			'Why is it nobody understands me and everybody likes me?'
+		];
+		function styleguideRandomDebug() {
+			var index = Math.floor(Math.random() * messages.length);
+			top.TYPO3.DebugConsole.add(messages[index], 'Styleguide Message #' + (index + 1), 'Styleguide');
+		}
+	</script>
+
+	<p><a href="javascript:styleguideRandomDebug();" class="btn btn-default">
+		<i class="fa fa-bomb"></i>
+		Send debug message
+	</a></p>
+</f:section>

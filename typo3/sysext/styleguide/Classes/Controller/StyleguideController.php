@@ -65,6 +65,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * Debug
+	 */
+	public function debugAction() {
+	}
+
+	/**
 	 * Icons
 	 */
 	public function iconsAction() {
