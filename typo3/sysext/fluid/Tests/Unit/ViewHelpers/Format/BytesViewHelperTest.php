@@ -11,6 +11,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
@@ -25,6 +26,13 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase {
 
 	protected function setUp() {
 		parent::setUp();
+
+		// XXX: This is bad from a testing POV but the only option right now
+		$reflectionClass = new \ReflectionClass(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::class);
+		$property = $reflectionClass->getProperty('configurationManager');
+		$property->setAccessible(TRUE);
+		$property->setValue($this->getMock(ConfigurationManagerInterface::class));
+
 		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\BytesViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();

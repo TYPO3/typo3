@@ -11,6 +11,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -43,7 +45,7 @@ class BytesViewHelper extends AbstractViewHelper implements CompilableInterface 
 	/**
 	 * @var array
 	 */
-	static protected $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+	static protected $units = array();
 
 	/**
 	 * Render the supplied byte count as a human readable string.
@@ -82,6 +84,9 @@ class BytesViewHelper extends AbstractViewHelper implements CompilableInterface 
 			$value = $renderChildrenClosure();
 		}
 
+		if (empty(self::$units)) {
+			self::$units = GeneralUtility::trimExplode(',', LocalizationUtility::translate('viewhelper.format.bytes.units', 'fluid'));
+		}
 		if (!is_integer($value) && !is_float($value)) {
 			if (is_numeric($value)) {
 				$value = (float)$value;

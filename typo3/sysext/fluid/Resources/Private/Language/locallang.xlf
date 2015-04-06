@@ -24,6 +24,9 @@
 			<trans-unit id="widget.pagination.refresh">
 				<source>Refresh</source>
 			</trans-unit>
+			<trans-unit id="viewhelper.format.bytes.units">
+				<source>B,KB,MB,GB,TB,PB,EB,ZB,YB</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
