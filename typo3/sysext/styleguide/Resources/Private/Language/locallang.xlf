@@ -40,7 +40,7 @@
 				<source>Tables</source>
 			</trans-unit>
 			<trans-unit id="flashMessages" xml:space="preserve">
-				<source>Flash Messages / Notification API</source>
+				<source>Flash Messages and Notifications</source>
 			</trans-unit>
 			<trans-unit id="debug" xml:space="preserve">
 				<source>Debug</source>
