@@ -56,7 +56,9 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$modules = new \SplObjectStorage();
 		foreach ($this->moduleStorage->getEntries() as $moduleGroup) {
 			if (!in_array($moduleGroup->getName(), $excludeGroupNames, TRUE)) {
-				$modules->attach($moduleGroup);
+				if ($moduleGroup->getChildren()->count() > 0) {
+					$modules->attach($moduleGroup);
+				}
 			}
 		}
 
