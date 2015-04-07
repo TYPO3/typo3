@@ -55,6 +55,7 @@ module.exports = function(grunt) {
 					'<%= paths.core %>Public/JavaScript/Contrib/autosize.js': '/autosize/dest/autosize.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/placeholders.jquery.min.js': '/Placeholders.js/dist/placeholders.jquery.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/taboverride.min.js': '/taboverride/build/output/taboverride.min.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-slider.min.js': '/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
 
 					/**
 					 * copy needed files of scriptaculous

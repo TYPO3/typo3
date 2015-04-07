@@ -9593,6 +9593,195 @@ body#ext-rte-app-rte-select-image-php a {
 body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
   text-decoration: underline;
 }
+.slider {
+  display: inline-block;
+  position: relative;
+}
+.slider input {
+  display: none;
+}
+.slider .tooltip.top {
+  margin-top: -36px;
+}
+.slider .tooltip-inner {
+  white-space: nowrap;
+}
+.slider .hide {
+  display: none;
+}
+.form-wizards-items > .slider.slider-horizontal {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.slider-track {
+  position: absolute;
+  cursor: pointer;
+  background-color: #dddddd;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.25);
+}
+.slider-track-low,
+.slider-track-high {
+  position: absolute;
+  background: transparent;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+.slider-handle {
+  position: absolute;
+  background-color: #eeeeee;
+  border: 1px solid #959595;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.15);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.slider-handle:hover,
+.slider-handle:focus,
+.slider-handle:active {
+  background-color: #d5d5d5;
+  border-color: #767676;
+}
+.slider-handle:before,
+.slider-handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #333333;
+}
+.slider-selection {
+  position: absolute;
+  background-color: #999999;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.25);
+}
+.slider-tick {
+  position: absolute;
+  background-color: #c4c4c4;
+}
+.slider-tick.in-selection {
+  background-color: #808080;
+}
+.slider-horizontal {
+  width: 210px;
+  height: 32px;
+}
+.slider-horizontal .slider-selection,
+.slider-horizontal .slider-track-low,
+.slider-horizontal .slider-track-high {
+  height: 100%;
+  top: 0;
+  bottom: 0;
+}
+.slider-horizontal .slider-track {
+  top: 50%;
+  left: 0;
+  margin-top: -8px;
+  height: 16px;
+  width: 100%;
+}
+.slider-horizontal .slider-tick {
+  height: 16px;
+  width: 1px;
+}
+.slider-horizontal .slider-tick[style="left: 0%;"],
+.slider-horizontal .slider-tick[style="left: 100%;"] {
+  display: none;
+}
+.slider-horizontal .slider-handle {
+  top: 50%;
+  height: 20px;
+  width: 16px;
+  margin-top: -10px;
+  margin-left: -8px;
+}
+.slider-horizontal .slider-handle:before,
+.slider-horizontal .slider-handle:after {
+  height: 50%;
+  width: 2px;
+  top: 25%;
+}
+.slider-horizontal .slider-handle:before {
+  left: 4px;
+}
+.slider-horizontal .slider-handle:after {
+  right: 4px;
+}
+.slider-vertical {
+  width: 32px;
+  height: 210px;
+}
+.slider-vertical .slider-selection,
+.slider-vertical .slider-track-low,
+.slider-vertical .slider-track-high {
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+.slider-vertical .slider-selection {
+  bottom: 0;
+}
+.slider-vertical .slider-track {
+  top: 0;
+  left: 50%;
+  margin-left: -8px;
+  height: 100%;
+  width: 16px;
+}
+.slider-vertical .slider-tick {
+  height: 1px;
+  width: 16px;
+}
+.slider-vertical .slider-tick[style="top: 0%;"],
+.slider-vertical .slider-tick[style="top: 100%;"] {
+  display: none;
+}
+.slider-vertical .slider-handle {
+  left: 50%;
+  height: 16px;
+  width: 20px;
+  margin-top: -8px;
+  margin-left: -10px;
+}
+.slider-vertical .slider-handle:before,
+.slider-vertical .slider-handle:after {
+  height: 2px;
+  width: 50%;
+  left: 25%;
+}
+.slider-vertical .slider-handle:before {
+  top: 4px;
+}
+.slider-vertical .slider-handle:after {
+  bottom: 4px;
+}
+.slider-vertical .slider-selection {
+  left: 0;
+  right: 0;
+}
+.slider-disabled .slider-handle {
+  background-color: #c83c3c;
+  border: 1px solid #7b2323;
+}
+.slider-disabled .slider-handle:hover,
+.slider-disabled .slider-handle:focus,
+.slider-disabled .slider-handle:active {
+  background-color: #a32e2e;
+  border-color: #4c1515;
+}
+.slider-disabled .slider-handle:before,
+.slider-disabled .slider-handle:after {
+  background-color: #ffffff;
+}
+.slider-disabled .slider-track {
+  cursor: not-allowed;
+}
 span.spinner {
   display: inline-block;
   width: 16px;

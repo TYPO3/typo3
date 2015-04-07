@@ -55,44 +55,49 @@ class ValueSliderWizard {
 		$type = 'null';
 		if (isset($params['fieldConfig']['eval'])) {
 			$eval = GeneralUtility::trimExplode(',', $params['fieldConfig']['eval'], TRUE);
-			if (in_array('time', $eval)) {
-				$type = 'time';
-				$value = (int)$value;
-			} elseif (in_array('int', $eval)) {
+			if (in_array('int', $eval, TRUE)) {
 				$type = 'int';
 				$value = (int)$value;
-			} elseif (in_array('double2', $eval)) {
+			} elseif (in_array('double2', $eval, TRUE)) {
 				$type = 'double';
-				$value = (double) $value;
+				$value = (double)$value;
 			}
 		}
 		if (isset($params['fieldConfig']['items'])) {
 			$type = 'array';
-			$value = (int)$value;
+			$index = 0;
+			$itemAmount = count($params['fieldConfig']['items']);
+			for (; $index < $itemAmount; ++$index) {
+				$item = $params['fieldConfig']['items'][$index];
+				if ((string)$item[1] === $value) {
+					break;
+				}
+			}
+			$min = 0;
+			$max = $itemAmount -1;
+			$step = 1;
+			$value = $index;
 		}
 		$callback = $params['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		$getField = $params['fieldChangeFunc']['typo3form.fieldGet'];
 		$id = 'slider-' . $params['md5ID'];
-		$contents = '<div id="' . $id . '"></div>';
-		$js = '
-		new TYPO3.Components.TcaValueSlider({
-			minValue: ' . $min . ',
-			maxValue: ' . $max . ',
-			value: ' . $value . ',
-			increment: ' . $step . ',
-			renderTo: "' . $id . '",
-			itemName: "' . $itemName . '",
-			changeCallback: "' . $callback . '",
-			getField: "' . $getField . '",
-			width: "' . $width . '",
-			type: "' . $type . '",
-			elementType: "' . $elementType . '"
-		});
-		';
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
-		$pageRenderer->addExtOnReadyCode($js);
-		return $contents;
+		$content =
+			'<div'
+				. ' id="' . $id . '"'
+				. ' data-slider-id="' . $id . '"'
+				. ' data-slider-min="' . $min . '"'
+				. ' data-slider-max="' . $max . '"'
+				. ' data-slider-step="' . htmlspecialchars($step) . '"'
+				. ' data-slider-value="' . htmlspecialchars($value) . '"'
+				. ' data-slider-value-type="' . htmlspecialchars($type) . '"'
+				. ' data-slider-item-name="' . htmlspecialchars($itemName) . '"'
+				. ' data-slider-element-type="' . htmlspecialchars($elementType) . '"'
+				. ' data-slider-field="' . htmlspecialchars($getField) . '"'
+				. ' data-slider-callback="' . htmlspecialchars($callback) . '"'
+				. ' style="width: ' . $width . 'px;"'
+			. '></div>';
+
+		return $content;
 	}
 
 }

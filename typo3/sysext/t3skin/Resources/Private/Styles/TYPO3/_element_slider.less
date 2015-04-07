@@ -1,0 +1,264 @@
+//
+// Boostrap Slider
+//
+// This is a custom less implementation for the value slider in the backend
+// based on https://github.com/seiyria/bootstrap-slider
+//
+// Please be careful on lib updates.
+//
+
+//
+// Slider Variables
+//
+@slider-track-bg: #dddddd;
+@slider-selection-bg: #999999;
+
+@slider-handle-color: @btn-default-color;
+@slider-handle-bg: @btn-default-bg;
+@slider-handle-border: darken(@btn-default-border, 15%);
+@slider-handle-border-radius: @slider-border-radius;
+@slider-disabled-handle-color: @btn-danger-color;
+@slider-disabled-handle-bg: @btn-danger-bg;
+@slider-disabled-handle-border: darken(@btn-danger-border, 15%);
+
+@slider-border-radius: @border-radius-base;
+
+@slider-horizontal-width: 210px;
+@slider-horizontal-height: @input-height-base;
+@slider-horizontal-handle-height: ceil(@slider-horizontal-height * 0.6);
+@slider-horizontal-handle-width: ceil(@slider-horizontal-height * 0.5);
+
+@slider-vertical-width: @input-height-base;
+@slider-vertical-height: 210px;
+@slider-vertical-handle-height: ceil(@slider-vertical-width * 0.5);
+@slider-vertical-handle-width: ceil(@slider-vertical-width * 0.6);
+
+
+//
+// Slider
+//
+.slider {
+	display: inline-block;
+	position: relative;
+	input {
+		display: none;
+	}
+	.tooltip {
+		&.top {
+			margin-top: -36px;
+		}
+	}
+	.tooltip-inner {
+		white-space: nowrap;
+	}
+	.hide {
+		display: none;
+	}
+}
+.form-wizards-items {
+	> .slider {
+		&.slider-horizontal {
+			margin-left: @slider-horizontal-height * 0.5 / 2;
+			margin-right: @slider-horizontal-height * 0.5 / 2;
+		}
+	}
+}
+
+
+//
+// Slider track
+//
+.slider-track {
+	position: absolute;
+	cursor: pointer;
+	background-color: @slider-track-bg;
+	border-radius: @slider-border-radius;
+	.box-shadow(inset 0 0 2px rgba(0,0,0,0.25));
+}
+.slider-track-low,
+.slider-track-high {
+	position: absolute;
+	background: transparent;
+	.box-sizing(border-box);
+	border-radius: @slider-border-radius;
+}
+
+
+//
+// Slider handle
+//
+.slider-handle {
+	position: absolute;
+	background-color: @slider-handle-bg;
+	border: 1px solid @slider-handle-border;
+	border-radius: @slider-handle-border-radius;
+	.box-shadow(0px 1px 0px rgba(0, 0, 0, 0.15));
+	.box-sizing(border-box);
+	&:hover,
+	&:focus,
+	&:active {
+		background-color: darken(@slider-handle-bg, 10%);
+		border-color: darken(@slider-handle-border, 12%);
+	}
+	&:before,
+	&:after {
+		content: "";
+		display: block;
+		position: absolute;
+		background-color: @slider-handle-color;
+	}
+}
+
+
+//
+// Slider selection
+//
+.slider-selection {
+	position: absolute;
+	background-color: @slider-selection-bg;
+	border-radius: @slider-border-radius;
+	.box-shadow(inset 0 0 2px rgba(0,0,0,0.25));
+}
+
+
+//
+// Slider tick
+//
+.slider-tick {
+	position: absolute;
+	background-color: darken(@slider-track-bg, 10%);
+	&.in-selection {
+		background-color: darken(@slider-selection-bg, 10%);
+	}
+}
+
+
+//
+// Slider horizontal
+//
+.slider-horizontal {
+	width: @slider-horizontal-width;
+	height: @slider-horizontal-height;
+	.slider-selection,
+	.slider-track-low,
+	.slider-track-high {
+		height: 100%;
+		top: 0;
+		bottom: 0;
+	}
+	.slider-track {
+		top: 50%;
+		left: 0;
+		margin-top: -@slider-horizontal-height / 4;
+		height: @slider-horizontal-height / 2;
+		width: 100%;
+	}
+	.slider-tick {
+		height: @slider-horizontal-height / 2;
+		width: 1px;
+		&[style="left: 0%;"],
+		&[style="left: 100%;"]{
+			display: none;
+		}
+	}
+	.slider-handle {
+		top: 50%;
+		height: @slider-horizontal-handle-height;
+		width: @slider-horizontal-handle-width;
+		margin-top: -@slider-horizontal-handle-height / 2;
+		margin-left: -@slider-horizontal-handle-width / 2;
+		&:before,
+		&:after {
+			height: 50%;
+			width: 2px;
+			top: 25%;
+		}
+		&:before {
+			left: @slider-horizontal-handle-width / 4;
+		}
+		&:after {
+			right: @slider-horizontal-handle-width / 4;
+		}
+	}
+}
+
+
+//
+// Slider vertical
+//
+.slider-vertical {
+	width: @slider-vertical-width;
+	height: @slider-vertical-height;
+	.slider-selection,
+	.slider-track-low,
+	.slider-track-high {
+		width: 100%;
+		left: 0;
+		right: 0;
+	}
+	.slider-selection {
+		bottom: 0;
+	}
+	.slider-track {
+		top: 0;
+		left: 50%;
+		margin-left: -@slider-vertical-width / 4;
+		height: 100%;
+		width: @slider-vertical-width / 2;
+	}
+	.slider-tick {
+		height: 1px;
+		width: @slider-vertical-width / 2;
+		&[style="top: 0%;"],
+		&[style="top: 100%;"]{
+			display: none;
+		}
+	}
+	.slider-handle {
+		left: 50%;
+		height: @slider-vertical-handle-height;
+		width: @slider-vertical-handle-width;
+		margin-top: -@slider-vertical-handle-height / 2;
+		margin-left: -@slider-vertical-handle-width / 2;
+		&:before,
+		&:after {
+			height: 2px;
+			width: 50%;
+			left: 25%;
+		}
+		&:before {
+			top: @slider-vertical-handle-height / 4;
+		}
+		&:after {
+			bottom: @slider-vertical-handle-height / 4;
+		}
+	}
+	.slider-selection {
+		left: 0;
+		right: 0;
+	}
+}
+
+
+//
+// Slider disabled
+//
+.slider-disabled {
+	.slider-handle {
+		background-color: @slider-disabled-handle-bg;
+		border: 1px solid @slider-disabled-handle-border;
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: darken(@slider-disabled-handle-bg, 10%);
+			border-color: darken(@slider-disabled-handle-border, 12%);
+		}
+		&:before,
+		&:after {
+			background-color: @slider-disabled-handle-color;
+		}
+	}
+	.slider-track {
+		cursor: not-allowed;
+	}
+}

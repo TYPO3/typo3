@@ -11,123 +11,91 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-Ext.ns('TYPO3.Components');
-
-TYPO3.Components.TcaValueSlider = Ext.extend(Ext.slider.SingleSlider, {
-	itemName: null,
-	getField: null,
-	changeCallback: null,
-	valueItems: null,
-	itemElement: null,
-	elementType: null,
-
-	initComponent: function() {
-		var items, step, n;
-		var step = this.increment || 1;
-		if (step < 1) {
-			this.type = 'float';
-			this.increment = 1;
-			this.floatValue = 1 / step;
-			this.maxValue *= this.floatValue;
-		}
-
-		Ext.apply(this, {
-			minValue: this.minValue || 0,
-			maxValue: this.maxValue || 10000,
-			keyIncrement: step,
-			increment: step,
-			type: this.type,
-			plugins: new Ext.slider.Tip({
-				getText: function(thumb) {
-					return thumb.slider.renderValue(thumb.value);
-				}
-			}),
-			listeners: {
-				beforerender: function(slider) {
-					var items = Ext.query(this.elementType);
-					items.each(function(item) {
-						var n = item.getAttribute('name');
-						if (n == this.itemName) {
-							this.itemElement = item;
-						}
-					}, this);
-
-					if (this.elementType == 'select') {
-						this.minValue = 0;
-						this.maxValue = this.itemElement.options.length - 1;
-						step = 1;
-					}
-				},
-				changecomplete: function(slider, newValue, thumb) {
-					if (slider.itemName) {
-						if (slider.elementType == 'input') {
-							slider.itemElement.value = slider.renderValue(thumb.value);
-						}
-						if (slider.elementType == 'select') {
-							slider.itemElement.options[thumb.value].selected = '1';
-						}
-					}
-					if (slider.getField) {
-						eval(slider.getField);
-					}
-					if (slider.changeCallback) {
-						eval(slider.changeCallback);
-					}
-				},
-				scope: this
-			}
-		});
-		TYPO3.Components.TcaValueSlider.superclass.initComponent.call(this);
-	},
+/**
+ * ValueSlider
+ */
+define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], function($) {
+	/**
+	 * ValueSlider object
+	 *
+	 * @type {{selector: string}}
+	 */
+	var ValueSlider = {
+		selector: '[data-slider-id]'
+	};
 
 	/**
-	* Render value for tooltip
-	*
-	* @param {string} value
-	* @return string
-	*/
-	renderValue: function(value) {
-		switch (this.type) {
+	 * initialize all slider elements
+	 */
+	ValueSlider.initializeSlider = function() {
+		var $sliders = $(ValueSlider.selector);
+		if ($sliders.length > 0) {
+			$sliders.slider({
+				formatter: ValueSlider.renderTooltipValue
+			});
+			$sliders.on('slide', ValueSlider.updateValue);
+		}
+	};
+
+	/**
+	 * update value of slider element
+	 *
+	 * @param {Event} e
+	 */
+	ValueSlider.updateValue = function(e) {
+		var $slider = $(e.currentTarget),
+			$foreignField = $('[name="' + $slider.data('sliderItemName') + '"]'),
+			elementType = $slider.data('sliderElementType'),
+			sliderField = $slider.data('sliderField'),
+			sliderCallback = $slider.data('sliderCallback');
+
+		switch (elementType) {
+			case 'input':
+				$foreignField.val(e.value);
+				break;
+			case 'select':
+				$foreignField.find('option').eq(e.value).prop('selected', true);
+				break;
+		}
+
+		if (sliderField) {
+			eval(sliderField);
+		}
+
+		if (sliderCallback) {
+			eval(sliderCallback);
+		}
+	};
+
+	/**
+	 *
+	 * @param {Number} value
+	 * @returns {*}
+	 */
+	ValueSlider.renderTooltipValue = function(value) {
+		var renderedValue,
+			data = $(this).data();
+
+		switch (data.sliderValueType) {
 			case 'array':
-				return this.itemElement.options[value].text;
-			break;
-			case 'time':
-				return this.renderValueFromTime(value);
-			break;
-			case 'float':
-				return this.renderValueFromFloat(value);
-			break;
+				var $foreignField = $('[name="' + data.sliderItemName + '"]');
+				renderedValue = $foreignField.find('option').eq(value).text();
+				break;
+			case 'double':
+				renderedValue = parseFloat(value).toFixed(2);
+				break;
 			case 'int':
 			default:
-				return value;
+				renderedValue = parseInt(value);
 		}
-	},
 
-	/**
-	* Render value for tooltip as float
-	*
-	* @param {string} value
-	* @return string
-	*/
-	renderValueFromFloat: function(value) {
-		var v = value / this.floatValue;
-		return v;
-	},
+		return renderedValue;
+	};
 
-	/**
-	* Render value for tooltip as time
-	*
-	* @param {string} value
-	* @return string
-	*/
-	renderValueFromTime: function(value) {
-		var hours = Math.floor(value / 3600);
-		var rest = value - (hours * 3600);
-		var minutes = Math.round(rest / 60);
-		minutes = minutes < 10 ? '0' + minutes : minutes;
-		return hours + ':' + minutes;
-	}
+	// init if document is ready
+	$(function() {
+		ValueSlider.initializeSlider();
+	});
 
+	return ValueSlider;
 });
-
-Ext.reg('TYPO3.Components.TcaValueSlider', TYPO3.Components.TcaValueSlider);

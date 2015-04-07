@@ -1305,7 +1305,7 @@ class FormEngine {
 
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
-			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/ValueSlider.js');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
 			// Needed for FormEngine manipulation (date picker)
 			$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
 			$pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
@@ -1321,7 +1321,6 @@ class FormEngine {
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 
-			$pageRenderer->loadRequireJs();
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineFlexForm');
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
