@@ -17,7 +17,7 @@
  * ExtensionManager.Update => Various AJAX functions to display updates
  * ExtensionManager.uploadForm => helper to show the upload form
  */
-define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
+define(['jquery', 'nprogress', 'datatables', 'jquery/jquery.clearable'], function($, NProgress) {
 	var ExtensionManager = {
 		identifier: {
 			extensionlist: '#typo3-extension-list',
@@ -103,11 +103,17 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 		$extManager.mask();
 		$.ajax({
 			url: $extension.data('href'),
+			beforeSend: function() {
+				NProgress.start();
+			},
 			success: function() {
 				location.reload();
 			},
 			error: function() {
 				$extManager.unmask();
+			},
+			complete: function() {
+				NProgress.done();
 			}
 		});
 	};
@@ -180,6 +186,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 		message += '</form>';
 
 		var $extManager = $(ExtensionManager.identifier.extensionManager);
+		NProgress.done();
 		$extManager.unmask();
 
 		top.TYPO3.Modal.confirm(
@@ -207,6 +214,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 							dataType: 'json',
 							beforeSend: function() {
 								$extManager.mask();
+								NProgress.start();
 							},
 							complete: function() {
 								location.reload();
@@ -300,6 +308,8 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 	};
 
 	Repository.initDom = function() {
+		NProgress.configure({parent: '#typo3-docheader', showSpinner: false});
+
 		$('#terTable').DataTable({
 			lengthChange: false,
 			pageLength: 15,
@@ -360,6 +370,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 				dataType: 'json',
 				beforeSend: function() {
 					$(Repository.identifier.extensionManager).mask();
+					NProgress.start();
 				},
 				success: Repository.getDependencies
 			});
@@ -368,6 +379,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 
 	Repository.getDependencies = function(data) {
 		var $extManager = $(Repository.identifier.extensionManager);
+		NProgress.done();
 		$extManager.unmask();
 		if (data.hasDependencies) {
 			top.TYPO3.Modal.confirm(data.title, data.message, top.TYPO3.Severity.info, [
@@ -403,9 +415,9 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			dataType: 'json',
 			beforeSend: function() {
 				$extManager.mask();
+				NProgress.start();
 			},
 			success: function (data) {
-				$extManager.unmask();
 				if (data.errorCount > 0) {
 					top.TYPO3.Modal.confirm(data.errorTitle, data.errorMessage, top.TYPO3.Severity.error, [
 						{
@@ -442,6 +454,10 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 					top.TYPO3.Notification.info(TYPO3.lang['extensionList.dependenciesResolveFlashMessage.title' + data.installationTypeLanguageKey].replace(/\{0\}/g, data.extension), successMessage, 15);
 					top.TYPO3.ModuleMenu.App.refreshMenu();
 				}
+			},
+			complete: function() {
+				NProgress.done();
+				$extManager.unmask();
 			}
 		});
 	};
@@ -512,6 +528,9 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			url: url,
 			dataType: 'json',
 			cache: false,
+			beforeSend: function() {
+				NProgress.start();
+			},
 			success: function(data) {
 				// Something went wrong, show message
 				if (data.errorMessage.length) {
@@ -548,6 +567,8 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 				);
 			},
 			complete: function() {
+				NProgress.done();
+
 				// Hide loaders
 				$(ExtensionManager.Update.identifier.splashscreen).removeClass('is-shown');
 				$(ExtensionManager.Update.identifier.terTableDataTableWrapper).removeClass('is-loading');
@@ -567,13 +588,17 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 			$me.click(function() {
 				var $terTableWrapper = $(ExtensionManager.Update.identifier.terTableWrapper);
 				$terTableWrapper.mask();
+				NProgress.start();
 				$.ajax({
 					url: $(this).data('href'),
 					dataType: 'json',
 					success: function(data) {
 						$terTableWrapper.html(data);
-						$terTableWrapper.unmask();
 						ExtensionManager.Update.transformPaginatorToAjax();
+					},
+					complete: function() {
+						NProgress.done();
+						$terTableWrapper.unmask();
 					}
 				});
 			});
@@ -618,6 +643,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 
 			$(document).on('click', '.onClickMaskExtensionManager', function() {
 				$(ExtensionManager.identifier.extensionManager).mask();
+				NProgress.start();
 			}).on('click', 'a[data-action=update-extension]', function(e) {
 				e.preventDefault();
 				$.ajax({
@@ -625,6 +651,7 @@ define(['jquery', 'datatables', 'jquery/jquery.clearable'], function($) {
 					dataType: 'json',
 					beforeSend: function() {
 						$(ExtensionManager.identifier.extensionManager).mask();
+						NProgress.start();
 					},
 					success: ExtensionManager.updateExtension
 				});
