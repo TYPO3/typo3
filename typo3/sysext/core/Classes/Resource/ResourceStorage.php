@@ -1770,9 +1770,14 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($targetFileName === NULL) {
 			$targetFileName = $uploadedFileData['name'];
 		}
-		// Handling $conflictMode is delegated to addFile()
+
 		$this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileData['size']);
-		$resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
+		if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode === 'replace') {
+			$file = $this->getFileInFolder($targetFileName, $targetFolder);
+			$resultObject = $this->replaceFile($file, $localFilePath);
+		} else {
+			$resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
+		}
 		return $resultObject;
 	}
 
