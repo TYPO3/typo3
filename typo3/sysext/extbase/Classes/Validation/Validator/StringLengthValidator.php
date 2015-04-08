@@ -74,7 +74,7 @@ class StringLengthValidator extends AbstractValidator {
 							$this->options['minimum'],
 							$this->options['maximum']
 						)
-					), 1238108067, array($this->options['minimum'], $this->options['maximum']));
+					), 1428504122, array($this->options['minimum'], $this->options['maximum']));
 			} elseif ($this->options['minimum'] > 0) {
 				$this->addError(
 					$this->translateErrorMessage(
