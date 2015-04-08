@@ -1212,97 +1212,234 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	//////////////////////////////////
 	/**
 	 * @test
+	 * @dataProvider trimExplodeReturnsCorrectResultDataProvider
+	 *
+	 * @param string $delimiter
+	 * @param string $testString
+	 * @param bool $removeEmpty
+	 * @param int $limit
+	 * @param array $expectedResult
 	 */
-	public function checkTrimExplodeTrimsSpacesAtElementStartAndEnd() {
-		$testString = ' a , b , c ,d ,,  e,f,';
-		$expectedArray = array('a', 'b', 'c', 'd', '', 'e', 'f', '');
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString);
-		$this->assertEquals($expectedArray, $actualArray);
+	public function trimExplodeReturnsCorrectResult($delimiter, $testString, $removeEmpty, $limit, $expectedResult) {
+		$this->assertSame($expectedResult, Utility\GeneralUtility::trimExplode($delimiter, $testString, $removeEmpty, $limit));
 	}
 
 	/**
-	 * @test
+	 * @return array
 	 */
-	public function checkTrimExplodeRemovesNewLines() {
-		$testString = ' a , b , ' . LF . ' ,d ,,  e,f,';
-		$expectedArray = array('a', 'b', 'd', 'e', 'f');
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeRemovesEmptyElements() {
-		$testString = 'a , b , c , ,d ,, ,e,f,';
-		$expectedArray = array('a', 'b', 'c', 'd', 'e', 'f');
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeKeepsRemainingResultsWithEmptyItemsAfterReachingLimitWithPositiveParameter() {
-		$testString = ' a , b , c , , d,, ,e ';
-		$expectedArray = array('a', 'b', 'c,,d,,,e');
-		// Limiting returns the rest of the string as the last element
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, FALSE, 3);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeKeepsRemainingResultsWithoutEmptyItemsAfterReachingLimitWithPositiveParameter() {
-		$testString = ' a , b , c , , d,, ,e ';
-		$expectedArray = array('a', 'b', 'c,d,e');
-		// Limiting returns the rest of the string as the last element
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE, 3);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeKeepsRamainingResultsWithEmptyItemsAfterReachingLimitWithNegativeParameter() {
-		$testString = ' a , b , c , d, ,e, f , , ';
-		$expectedArray = array('a', 'b', 'c', 'd', '', 'e');
-		// limiting returns the rest of the string as the last element
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, FALSE, -3);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeKeepsRamainingResultsWithoutEmptyItemsAfterReachingLimitWithNegativeParameter() {
-		$testString = ' a , b , c , d, ,e, f , , ';
-		$expectedArray = array('a', 'b', 'c');
-		// Limiting returns the rest of the string as the last element
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE, -3);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeReturnsExactResultsWithoutReachingLimitWithPositiveParameter() {
-		$testString = ' a , b , , c , , , ';
-		$expectedArray = array('a', 'b', 'c');
-		// Limiting returns the rest of the string as the last element
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE, 4);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeKeepsZeroAsString() {
-		$testString = 'a , b , c , ,d ,, ,e,f, 0 ,';
-		$expectedArray = array('a', 'b', 'c', 'd', 'e', 'f', '0');
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE);
-		$this->assertEquals($expectedArray, $actualArray);
+	public function trimExplodeReturnsCorrectResultDataProvider() {
+		return [
+			'spaces at element start and end' => [
+				',',
+				' a , b , c ,d ,,  e,f,',
+				FALSE,
+				0,
+				['a', 'b', 'c', 'd', '', 'e', 'f', '']
+			],
+			'removes newline' => [
+				',',
+				' a , b , ' . LF . ' ,d ,,  e,f,',
+				TRUE,
+				0,
+				['a', 'b', 'd', 'e', 'f']
+			],
+			'removes empty elements' => [
+				',',
+				'a , b , c , ,d ,, ,e,f,',
+				TRUE,
+				0,
+				['a', 'b', 'c', 'd', 'e', 'f']
+			],
+			'keeps remaining results with empty items after reaching limit with positive parameter' => [
+				',',
+				' a , b , c , , d,, ,e ',
+				FALSE,
+				3,
+				['a', 'b', 'c,,d,,,e']
+			],
+			'keeps remaining Results without empty items after reaching limit with positive parameter' => [
+				',',
+				' a , b , c , , d,, ,e ',
+				TRUE,
+				3,
+				['a', 'b', 'c,d,e']
+			],
+			'keeps remaining results with empty items after reaching limit with negative parameter' => [
+				',',
+				' a , b , c , d, ,e, f , , ',
+				FALSE,
+				-3,
+				['a', 'b', 'c', 'd', '', 'e']
+			],
+			'keeps remaining results without empty items after reaching limit with negative parameter' => [
+				',',
+				' a , b , c , d, ,e, f , , ',
+				TRUE,
+				-3,
+				['a', 'b', 'c']
+			],
+			'returns exact results without reaching limit with positive parameter' => [
+				',',
+				' a , b , , c , , , ',
+				TRUE,
+				4,
+				['a', 'b', 'c']
+			],
+			'keeps zero as string' => [
+				',',
+				'a , b , c , ,d ,, ,e,f, 0 ,',
+				TRUE,
+				0,
+				['a', 'b', 'c', 'd', 'e', 'f', '0']
+			],
+			'keeps whitespace inside elements' => [
+				',',
+				'a , b , c , ,d ,, ,e,f, g h ,',
+				TRUE,
+				0,
+				['a', 'b', 'c', 'd', 'e', 'f', 'g h']
+			],
+			'can use internal regex delimiter as explode delimiter' => [
+				'/',
+				'a / b / c / /d // /e/f/ g h /',
+				TRUE,
+				0,
+				['a', 'b', 'c', 'd', 'e', 'f', 'g h']
+			],
+			'can use whitespaces as delimiter' => [
+				' ',
+				'* * * * *',
+				TRUE,
+				0,
+				['*', '*', '*', '*', '*']
+			],
+			'can use words as delimiter' => [
+				'All',
+				'HelloAllTogether',
+				TRUE,
+				0,
+				['Hello', 'Together']
+			],
+			'can use word with appended and prepended spaces as delimiter' => [
+				' all   ',
+				'Hello all   together',
+				TRUE,
+				0,
+				['Hello', 'together']
+			],
+			'can use word with appended and prepended spaces as delimiter and do not remove empty' => [
+				' all   ',
+				'Hello all   together     all      there all       all   are  all    none',
+				FALSE,
+				0,
+				['Hello', 'together', 'there', '', 'are', 'none']
+			],
+			'can use word with appended and prepended spaces as delimiter, do not remove empty and limit' => [
+				' all   ',
+				'Hello all   together     all      there all       all   are  all    none',
+				FALSE,
+				5,
+				['Hello', 'together', 'there', '', 'are all   none']
+			],
+			'can use word with appended and prepended spaces as delimiter, do not remove empty, limit and multiple delimiter in last' => [
+				' all   ',
+				'Hello all   together     all      there all       all   are  all    none',
+				FALSE,
+				4,
+				['Hello', 'together', 'there', ' all   are all   none']
+			],
+			'can use word with appended and prepended spaces as delimiter, remove empty and limit' => [
+				' all   ',
+				'Hello all   together     all      there all       all   are  all    none',
+				TRUE,
+				4,
+				['Hello', 'together', 'there', 'are all   none']
+			],
+			'can use word with appended and prepended spaces as delimiter, remove empty and limit and multiple delimiter in last' => [
+				' all   ',
+				'Hello all   together     all      there all       all   are  all    none',
+				TRUE,
+				5,
+				['Hello', 'together', 'there', 'are' ,'none']
+			],
+			'can use words as delimiter and do not remove empty' => [
+				'all  there',
+				'Helloall  theretogether  all  there    all  there   are   all  there     none',
+				FALSE,
+				0,
+				['Hello', 'together', '', 'are', 'none']
+			],
+			'can use words as delimiter, do not remove empty and limit' => [
+				'all  there',
+				'Helloall  theretogether  all  there    all  there    are   all  there     none',
+				FALSE,
+				4,
+				['Hello', 'together', '', 'areall  therenone']
+			],
+			'can use words as delimiter, do not remove empty, limit and multiple delimiter in last' => [
+				'all  there',
+				'Helloall  theretogether  all  there    all  there    are   all  there     none',
+				FALSE,
+				3,
+				['Hello', 'together', 'all  thereareall  therenone']
+			],
+			'can use words as delimiter, remove empty' => [
+				'all  there',
+				'Helloall  theretogether  all  there    all  there    are   all  there     none',
+				TRUE,
+				0,
+				['Hello', 'together', 'are', 'none']
+			],
+			'can use words as delimiter, remove empty and limit' => [
+				'all  there',
+				'Helloall  theretogether  all  there    all  there    are   all  there     none',
+				TRUE,
+				3,
+				['Hello', 'together', 'areall  therenone']
+			],
+			'can use words as delimiter, remove empty and limit and multiple delimiter in last' => [
+				'all  there',
+				'Helloall  theretogether  all  there    all  there    are   all  there     none',
+				TRUE,
+				4,
+				['Hello', 'together', 'are' , 'none']
+			],
+			'can use new line as delimiter' => [
+				LF,
+				"Hello\nall\ntogether",
+				TRUE,
+				0,
+				['Hello', 'all', 'together']
+			],
+			'works with whitespace separator' => [
+				"\t",
+				" a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
+				FALSE,
+				0,
+				['a  b', 'c', '', 'd', 'e', 'u j', 's']
+			],
+			'works with whitespace separator and limit' => [
+				"\t",
+				" a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
+				FALSE,
+				4,
+				['a  b', 'c', '', "d\te\tu j\ts"]
+			],
+			'works with whitespace separator and remove empty' => [
+				"\t",
+				" a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
+				TRUE,
+				0,
+				['a  b', 'c', 'd', 'e', 'u j', 's']
+			],
+			'works with whitespace separator remove empty and limit' => [
+				"\t",
+				" a  b \t c  \t  \t    d  \t  e     \t u j   \t s",
+				TRUE,
+				3,
+				['a  b', 'c', "d\te\tu j\ts"]
+			],
+		];
 	}
 
 	//////////////////////////////////
