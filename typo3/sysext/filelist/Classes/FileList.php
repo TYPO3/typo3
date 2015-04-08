@@ -306,8 +306,8 @@ class FileList extends AbstractRecordList {
 
 		// Only render the contents of a browsable storage
 		if ($this->folderObject->getStorage()->isBrowsable()) {
-			$foldersCount = $storage->getFoldersInFolderCount($this->folderObject);
-			$filesCount = $storage->getFilesInFolderCount($this->folderObject);
+			$foldersCount = $storage->countFoldersInFolder($this->folderObject);
+			$filesCount = $storage->countFilesInFolder($this->folderObject);
 
 			if ($foldersCount <= $this->firstElementNumber) {
 				$foldersFrom = FALSE;

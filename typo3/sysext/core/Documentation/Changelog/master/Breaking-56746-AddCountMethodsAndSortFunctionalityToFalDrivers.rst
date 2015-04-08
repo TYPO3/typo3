@@ -30,8 +30,8 @@ The custom FAL drivers need to be updated to be in line with the updated DriverI
 
 2 new functions need to be added:
 
- - ``getFoldersInFolderCount()``
- - ``getFilesInFolderCount()``
+ - ``countFoldersInFolder()``
+ - ``countFilesInFolder()``
 
 2 functions need to be extended with the parameters $sort and $sortRev:
 

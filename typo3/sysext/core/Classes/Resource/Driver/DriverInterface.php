@@ -438,7 +438,7 @@ interface DriverInterface {
 	 * @param array   $filenameFilterCallbacks callbacks for filtering the items
 	 * @return integer Number of files in folder
 	 */
-	public function getFilesInFolderCount($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array());
+	public function countFilesInFolder($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array());
 
 	/**
 	 * Returns the number of folders inside the specified path
@@ -448,6 +448,6 @@ interface DriverInterface {
 	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
 	 * @return integer Number of folders in folder
 	 */
-	public function getFoldersInFolderCount($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array());
+	public function countFoldersInFolder($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array());
 
 }

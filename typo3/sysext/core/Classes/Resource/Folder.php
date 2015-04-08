@@ -202,7 +202,7 @@ class Folder implements FolderInterface {
 	 * @return int
 	 */
 	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
-		return $this->storage->getFilesInFolderCount($this, TRUE, $recursive);
+		return $this->storage->countFilesInFolder($this, TRUE, $recursive);
 	}
 
 	/**

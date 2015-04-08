@@ -1357,10 +1357,10 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param bool $recursive
 	 * @return int Number of files in folder
 	 */
-	public function getFilesInFolderCount(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
+	public function countFilesInFolder(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
 		$this->assureFolderReadPermission($folder);
 		$filters = $useFilters ? $this->fileAndFolderNameFilters : array();
-		return $this->driver->getFilesInFolderCount($folder->getIdentifier(), $recursive, $filters);
+		return $this->driver->countFilesInFolder($folder->getIdentifier(), $recursive, $filters);
 	}
 
 	/**
@@ -1990,10 +1990,10 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param bool $recursive
 	 * @return integer Number of subfolders
 	 */
-	public function getFoldersInFolderCount(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
+	public function countFoldersInFolder(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
 		$this->assureFolderReadPermission($folder);
 		$filters = $useFilters ? $this->fileAndFolderNameFilters : array();
-		return $this->driver->getFoldersInFolderCount($folder->getIdentifier(), $recursive, $filters);
+		return $this->driver->countFoldersInFolder($folder->getIdentifier(), $recursive, $filters);
 	}
 
 	/**

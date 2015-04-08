@@ -452,7 +452,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param array $filenameFilterCallbacks callbacks for filtering the items
 	 * @return int Number of files in folder
 	 */
-	public function getFilesInFolderCount($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array()) {
+	public function countFilesInFolder($folderIdentifier, $recursive = FALSE, array $filenameFilterCallbacks = array()) {
 		return count($this->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filenameFilterCallbacks));
 	}
 
@@ -484,7 +484,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
 	 * @return integer Number of folders in folder
 	 */
-	public function getFoldersInFolderCount($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array()) {
+	public function countFoldersInFolder($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array()) {
 		return count($this->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $folderNameFilterCallbacks));
 	}
 
