@@ -1471,9 +1471,19 @@ class GeneralUtility {
 	 * @return array Exploded values
 	 */
 	static public function trimExplode($delim, $string, $removeEmptyValues = FALSE, $limit = 0) {
-		$result = preg_split('/\s*+' . preg_quote($delim, '/') . '\s*+/', trim($string), NULL, $removeEmptyValues ? PREG_SPLIT_NO_EMPTY : NULL);
+		$result = array_map('trim', explode($delim, $string));
+		if ($removeEmptyValues) {
+			$temp = array();
+			foreach ($result as $value) {
+				if ($value !== '') {
+					$temp[] = $value;
+				}
+			}
+			$result = $temp;
+		}
 		if ($limit > 0 && count($result) > $limit) {
-			$result = explode($delim, implode($delim, $result), $limit);
+			$lastElements = array_splice($result, $limit - 1);
+			$result[] = implode($delim, $lastElements);
 		} elseif ($limit < 0) {
 			$result = array_slice($result, 0, $limit);
 		}

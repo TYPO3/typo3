@@ -1305,26 +1305,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedArray, $actualArray);
 	}
 
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeKeepsWhitespaceInsideElements() {
-		$testString = 'a , b , c , ,d ,, ,e,f, g h ,';
-		$expectedArray = array('a', 'b', 'c', 'd', 'e', 'f', 'g h');
-		$actualArray = Utility\GeneralUtility::trimExplode(',', $testString, TRUE);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
-	/**
-	 * @test
-	 */
-	public function checkTrimExplodeCanUseInternalRegexDelimiterAsExplodeDelimiter() {
-		$testString = 'a / b / c / /d // /e/f/ g h /';
-		$expectedArray = array('a', 'b', 'c', 'd', 'e', 'f', 'g h');
-		$actualArray = Utility\GeneralUtility::trimExplode('/', $testString, TRUE);
-		$this->assertEquals($expectedArray, $actualArray);
-	}
-
 	//////////////////////////////////
 	// Tests concerning getBytesFromSizeMeasurement
 	//////////////////////////////////
