@@ -494,6 +494,16 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 				'field_a, field_b, --linebreak--, field_c',
 				'--linebreak--, field_d, --linebreak--'
 			),
+			'with configuration in list' => array(
+				'field_b, field_d, field_c;;;4-4-4',
+				'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3',
+				'field_d',
+			),
+			'with configuration in list and insertion list' => array(
+				'field_b, field_d;;;3-3-3, field_c;;;4-4-4',
+				'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3',
+				'field_d;;;3-3-3',
+			),
 		);
 	}
 

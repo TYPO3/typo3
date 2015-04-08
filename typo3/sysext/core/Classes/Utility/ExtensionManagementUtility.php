@@ -658,7 +658,15 @@ class ExtensionManagementUtility {
 
 		$cleanInsertionListParts = array();
 		foreach ($insertionListParts as $fieldName) {
-			if ($fieldName == '--linebreak--' || (!in_array($fieldName, $cleanInsertionListParts) && !in_array($fieldName, $listMatches))) {
+			$fieldNameParts = explode(';', $fieldName, 2);
+			$cleanFieldName = $fieldNameParts[0];
+			if (
+				$cleanFieldName === '--linebreak--'
+				|| (
+					!in_array($cleanFieldName, $cleanInsertionListParts, TRUE)
+					&& !in_array($cleanFieldName, $listMatches, TRUE)
+				)
+			) {
 				$cleanInsertionListParts[] = $fieldName;
 			}
 		}
