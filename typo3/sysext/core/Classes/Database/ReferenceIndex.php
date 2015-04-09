@@ -1086,6 +1086,9 @@ class ReferenceIndex {
 		}
 		// Traverse all tables:
 		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
+			if (isset(static::$nonRelationTables[$tableName])) {
+				continue;
+			}
 			// Traverse all records in tables, including deleted records:
 			$fieldNames = (BackendUtility::isTableWorkspaceEnabled($tableName) ? 'uid,t3ver_wsid' : 'uid');
 			$allRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fieldNames, $tableName, '1=1');
