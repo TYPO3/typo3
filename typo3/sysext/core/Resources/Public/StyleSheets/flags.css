@@ -1,4 +1,5 @@
-.t3-icon-flags {
+.t3-icon-flags,
+.t3-icon.t3-icon-flags {
 	background-image: url('../Images/Sprites/flags.png?1295987454');
 	height: 11px;
 	width: 16px;
