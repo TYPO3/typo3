@@ -1121,8 +1121,8 @@ class ReferenceIndex {
 			}
 			// Traverse all records in tables, including deleted records:
 			$fieldNames = (BackendUtility::isTableWorkspaceEnabled($tableName) ? 'uid,t3ver_wsid' : 'uid');
-			$allRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fieldNames, $tableName, '1=1');
-			if (!is_array($allRecs)) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldNames, $tableName, '1=1');
+			if ($GLOBALS['TYPO3_DB']->sql_error()) {
 				// Table exists in $TCA but does not exist in the database
 				GeneralUtility::sysLog(sprintf('Table "%s" exists in $TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', $tableName), 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				continue;
@@ -1130,7 +1130,7 @@ class ReferenceIndex {
 			$tableNames[] = $tableName;
 			$tableCount++;
 			$uidList = array(0);
-			foreach ($allRecs as $recdat) {
+			while ($recdat = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				/** @var $refIndexObj ReferenceIndex */
 				$refIndexObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 				if (isset($recdat['t3ver_wsid'])) {
@@ -1147,6 +1147,8 @@ class ReferenceIndex {
 					}
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+
 			// Searching lost indexes for this table:
 			$where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') . ' AND recuid NOT IN (' . implode(',', $uidList) . ')';
 			$lostIndexes = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
