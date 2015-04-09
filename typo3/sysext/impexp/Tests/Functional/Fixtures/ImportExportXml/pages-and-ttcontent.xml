@@ -31,10 +31,6 @@
 					<title>Test content</title>
 					<size>197</size>
 					<relations index="rels" type="array">
-						<element index="sys_file:2" type="array">
-							<table>sys_file</table>
-							<id>2</id>
-						</element>
 					</relations>
 					<softrefs type="array">
 						<softref_element index="header_link:typolink:2487ce518ed56d22f20f259928ff43f1:0" type="array">
@@ -56,10 +52,6 @@
 					<title>Test content 2</title>
 					<size>199</size>
 					<relations index="rels" type="array">
-						<element index="sys_file:4" type="array">
-							<table>sys_file</table>
-							<id>4</id>
-						</element>
 					</relations>
 					<softrefs type="array">
 						<softref_element index="header_link:typolink:81b8b33df54ef433f1cbc7c3e513e6c4:0" type="array">
@@ -188,13 +180,6 @@
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="header_link" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<table>sys_file</table>
-							<id>2</id>
-						</element>
-					</relations>
 					<softrefs type="array">
 						<keys type="array">
 							<softref_key index="typolink" type="array">
@@ -227,13 +212,6 @@
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="header_link" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<table>sys_file</table>
-							<id>4</id>
-						</element>
-					</relations>
 					<softrefs type="array">
 						<keys type="array">
 							<softref_key index="typolink" type="array">

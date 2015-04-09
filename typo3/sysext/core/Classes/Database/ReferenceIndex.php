@@ -447,10 +447,7 @@ class ReferenceIndex {
 							switch ((string) $el['subst']['type']) {
 								case 'db':
 									list($tableName, $recordId) = explode(':', $el['subst']['recordRef']);
-									// Prevent double references for files and file relations
-									if ($tableName !== 'sys_file' && $tableName !== 'sys_file_reference') {
-										$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
-									}
+									$this->relations[] = $this->createEntryData($table, $uid, $fieldname, $flexpointer, $deleted, $tableName, $recordId, '', -1, $spKey, $subKey);
 									break;
 								case 'file_reference':
 									// not used (see getRelations()), but fallback to file
@@ -521,6 +518,10 @@ class ReferenceIndex {
 							'itemArray' => $dbResultsFromFiles
 						);
 					}
+				}
+				// Add a softref definition for link fields if the TCA does not specify one already
+				if ($conf['type'] === 'input' && isset($conf['wizards']['link']) && empty($conf['softref'])) {
+					$conf['softref'] = 'typolink';
 				}
 				// Add DB:
 				$resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table, $field);
@@ -621,6 +622,10 @@ class ReferenceIndex {
 			if (!empty($dbResultsFromFiles)) {
 				$this->temp_flexRelations['db'][$structurePath] = $dbResultsFromFiles;
 			}
+		}
+		// Add a softref definition for link fields if the TCA does not specify one already
+		if ($dsConf['type'] === 'input' && isset($dsConf['wizards']['link']) && empty($dsConf['softref'])) {
+			$dsConf['softref'] = 'typolink';
 		}
 		// Add DB:
 		$resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $table, $field);
@@ -750,20 +755,6 @@ class ReferenceIndex {
 				);
 			}
 			return $fileArray;
-		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && $value !== NULL && GeneralUtility::isFirstPartOfStr($value, 'file:')) {
-			try {
-				$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($value);
-			} catch (\Exception $e) {
-
-			}
-			if ($file instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-				return array(
-					0 => array(
-						'table' => 'sys_file',
-						'id' => $file->getUid()
-					)
-				);
-			}
 		}
 	}
 
