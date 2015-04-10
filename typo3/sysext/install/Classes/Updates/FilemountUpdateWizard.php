@@ -85,7 +85,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 	}
 
 	/**
-	 * Performs the database update.
+	 * Performs the database and folder update.
 	 *
 	 * @param array &$dbQueries Queries done in this update
 	 * @param mixed &$customMessages Custom messages
@@ -98,6 +98,12 @@ class FilemountUpdateWizard extends AbstractUpdate {
 		if (is_array($this->sqlQueries) && is_array($dbQueries)) {
 			$dbQueries = array_merge($dbQueries, $this->sqlQueries);
 		}
+
+		// Initialize processing folders for all storages
+		foreach ($this->storageRepository->findAll() as $storage) {
+			$storage->getProcessingFolders();
+		}
+
 		$this->markWizardAsDone();
 		return TRUE;
 	}
