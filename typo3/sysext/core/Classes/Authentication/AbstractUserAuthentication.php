@@ -609,9 +609,9 @@ abstract class AbstractUserAuthentication {
 			if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
 				$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
 				if (!$this->getMethodEnabled && ($httpHost != $authInfo['refInfo']['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer'])) {
-					throw new \RuntimeException('TYPO3 Fatal Error: Error: This host address ("' . $httpHost . '") and the referer host ("' . $authInfo['refInfo']['host'] . '") mismatches!<br />
-						It\'s possible that the environment variable HTTP_REFERER is not passed to the script because of a proxy.<br />
-						The site administrator can disable this check in the "All Configuration" section of the Install Tool (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).', 1270853930);
+					throw new \RuntimeException('TYPO3 Fatal Error: Error: This host address ("' . $httpHost . '") and the referer host ("' . $authInfo['refInfo']['host'] . '") mismatches! ' .
+						'It is possible that the environment variable HTTP_REFERER is not passed to the script because of a proxy. ' .
+						'The site administrator can disable this check in the "All Configuration" section of the Install Tool (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).', 1270853930);
 				}
 				// Delete old user session if any
 				$this->logoff();

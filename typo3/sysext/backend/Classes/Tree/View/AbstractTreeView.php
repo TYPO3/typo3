@@ -756,7 +756,7 @@ abstract class AbstractTreeView {
 			$crazyRecursionLimiter--;
 			$newID = $row['uid'];
 			if ($newID == 0) {
-				throw new \RuntimeException('Endless recursion detected: TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of ' . $this->table . ':0 to a new value.<br /><br />See <a href="http://forge.typo3.org/issues/16150" target="_blank">forge.typo3.org/issues/16150</a> to get more information about a possible cause.', 1294586383);
+				throw new \RuntimeException('Endless recursion detected: TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of ' . $this->table . ':0 to a new value. See http://forge.typo3.org/issues/16150 to get more information about a possible cause.', 1294586383);
 			}
 			// Reserve space.
 			$this->tree[] = array();

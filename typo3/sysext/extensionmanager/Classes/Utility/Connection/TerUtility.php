@@ -53,7 +53,7 @@ class TerUtility {
 			// Fetch and return:
 			$extensionData = $this->decodeExchangeData($t3x);
 		} else {
-			throw new ExtensionManagerException('Error: MD5 hash of downloaded file not as expected:<br />' . $md5 . ' != ' . $expectedMd5, 1334426098);
+			throw new ExtensionManagerException('Error: MD5 hash of downloaded file not as expected: ' . $md5 . ' != ' . $expectedMd5, 1334426098);
 		}
 		return $extensionData;
 	}
