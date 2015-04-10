@@ -2514,13 +2514,18 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	 */
 	scrollToCaret: function () {
 		if (!Ext.isIE) {
-			var e = this.getSelection().getParentElement(),
-				w = this.iframe.getEl().dom.contentWindow ? this.iframe.getEl().dom.contentWindow : window,
-				h = w.innerHeight || w.height,
-				d = this.document,
-				t = d.documentElement.scrollTop || d.body.scrollTop;
-			if (e.offsetTop > h+t || e.offsetTop < t) {
-				this.getSelection().getParentElement().scrollIntoView();
+			var contentWindow = this.iframe.getEl().dom.contentWindow;
+			if (contentWindow) {
+				var windowHeight = contentWindow.innerHeight,
+					element = this.getSelection().getParentElement(),
+					elementOffset = element.offsetTop,
+					elementHeight = Math.max(element.offsetHeight, element.clientHeight) || 0,
+					bodyScrollTop = contentWindow.document.body.scrollTop;
+				// If the current selection is out of view
+				if (elementOffset > windowHeight + bodyScrollTop || elementOffset < bodyScrollTop) {
+					// Scroll the iframe contentWindow
+					contentWindow.scrollTo(0, elementOffset - windowHeight + elementHeight);
+				}
 			}
 		}
 	},
