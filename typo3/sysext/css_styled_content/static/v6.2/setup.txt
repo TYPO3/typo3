@@ -1245,6 +1245,11 @@ tt_content.uploads {
 						fileTarget.override.override.field = target
 						removePrependedNumbers = 1
 
+						title {
+							data = file:current:title
+							htmlSpecialChars = 1
+						}
+
 						/*
 						jumpurl = {$styles.content.uploads.jumpurl}
 						jumpurl {
@@ -1281,7 +1286,7 @@ tt_content.uploads {
 			# filename
 			20 = TEXT
 			20 {
-				data = file:current:name
+				data = file:current:title // file:current:name
 				htmlSpecialChars = 1
 				required = 1
 
@@ -2228,7 +2233,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* File Links */
 	ul.csc-uploads { padding: 0; }
 	ul.csc-uploads li { list-style: none outside none; margin: 1em 0; }
-	ul.csc-uploads img { float: left; padding-right: 1em; vertical-align: top; }
+	ul.csc-uploads img { float: left; margin-right: 1em; vertical-align: top; }
 	ul.csc-uploads span { display: block; }
 	ul.csc-uploads span.csc-uploads-fileName { text-decoration: underline; }
 
