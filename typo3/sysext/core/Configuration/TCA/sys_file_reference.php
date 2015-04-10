@@ -226,7 +226,15 @@ return array(
 			'config' => array(
 				'type' => 'imageManipulation'
 			)
-		)
+		),
+		'autoplay' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.autoplay',
+			'config' => array(
+				'type' => 'check',
+				'default' => 0
+			)
+		),
 	),
 	'types' => array(
 		// Note that at the moment we define the same fields for every media type.
@@ -273,6 +281,20 @@ return array(
 				title,alternative,--linebreak--,
 				link,description,--linebreak--,crop
 				',
+		),
+		// Used for everything that is a video
+		'videoOverlayPalette' => array(
+			'showitem' => '
+				title,description,--linebreak--,autoplay
+				',
+			'canNotCollapse' => TRUE
+		),
+		// Used for everything that is a audio file
+		'audioOverlayPalette' => array(
+			'showitem' => '
+				title,description,--linebreak--,autoplay
+				',
+			'canNotCollapse' => TRUE
 		),
 		// File palette, hidden but needs to be included all the time
 		'filePalette' => array(

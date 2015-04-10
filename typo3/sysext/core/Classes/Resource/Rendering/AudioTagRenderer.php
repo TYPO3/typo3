@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Resource\Rendering;
  */
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 
 /**
  * Class AudioTagRenderer
@@ -62,6 +63,15 @@ class AudioTagRenderer implements FileRendererInterface {
 	 * @return string
 	 */
 	public function render(FileInterface $file, $width, $height, array $options = array(), $usedPathsRelativeToCurrentScript = FALSE) {
+
+		// If autoplay isn't set manually check if $file is a FileReference take autoplay from there
+		if (!isset($options['autoplay']) && $file instanceof FileReference) {
+			$autoplay = $file->getProperty('autoplay');
+			if ($autoplay !== NULL) {
+				$options['autoplay'] = $autoplay;
+			}
+		}
+
 		$additionalAttributes = array();
 		if (!isset($options['controls']) || !empty($options['controls'])) {
 			$additionalAttributes[] = 'controls';
