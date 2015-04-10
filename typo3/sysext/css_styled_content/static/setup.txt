@@ -1246,7 +1246,7 @@ tt_content.uploads {
 						removePrependedNumbers = 1
 
 						title {
-							data = file:current:alternative
+							data = file:current:title
 							htmlSpecialChars = 1
 						}
 
