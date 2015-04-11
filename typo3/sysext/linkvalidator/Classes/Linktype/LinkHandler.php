@@ -36,15 +36,6 @@ class LinkHandler extends AbstractLinktype {
 	const DISABLED = 'disabled';
 
 	/**
-	 * If this is TRUE an error will also be reported if the linked record
-	 * is disabled. Otherwise the error will only be reported if the
-	 * record is deleted or does not exist.
-	 *
-	 * @var bool
-	 */
-	protected $reportHiddenRecords;
-
-	/**
 	 * Checks a given URL for validity
 	 *
 	 * @param string $url Url to check
@@ -61,8 +52,9 @@ class LinkHandler extends AbstractLinktype {
 			return $response;
 		}
 
-		$tableName = htmlspecialchars($parts[1]);
-		$rowid = (int)$parts[2];
+		list(, $tableName, $rowid) = $parts;
+		$rowid = (int)$rowid;
+
 		$row = NULL;
 		$tsConfig = $reference->getTSConfig();
 		$reportHiddenRecords = (bool)$tsConfig['linkhandler.']['reportHiddenRecords'];
@@ -132,33 +124,38 @@ class LinkHandler extends AbstractLinktype {
 		$errorType = $errorParams['errorType'];
 		$tableName = $errorParams['tablename'];
 		if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['title'])) {
-			$title = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'], TRUE);
+			$title = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']);
 		} else {
 			$title = $tableName;
 		}
 		switch ($errorType) {
 			case self::DISABLED:
-				$response = $this->getLanguageService()->getLL('list.report.rownotvisible');
-				$response = str_replace('###title###', $title, $response);
-				$response = str_replace('###uid###', $errorParams['uid'], $response);
+				$response = $this->getTranslatedErrorMessage('list.report.rownotvisible', $errorParams['uid'], $title);
 				break;
 			case self::DELETED:
-				$response = str_replace(
-					array(
-						'###title###',
-						'###uid###'
-					),
-					array(
-						$title,
-						$errorParams['uid']
-					),
-					$this->getLanguageService()->getLL('list.report.rowdeleted')
-				);
+				$response = $this->getTranslatedErrorMessage('list.report.rowdeleted', $errorParams['uid'], $title);
 				break;
 			default:
-				$response = str_replace('###uid###', $errorParams['uid'], $this->getLanguageService()->getLL('list.report.rownotexisting'));
+				$response = $this->getTranslatedErrorMessage('list.report.rownotexisting', $errorParams['uid']);
 		}
 		return $response;
+	}
+
+	/**
+	 * Fetches the translation with the given key and replaces the ###uid### and ###title### markers
+	 *
+	 * @param string $translationKey
+	 * @param int $uid
+	 * @param string $title
+	 * @return string
+	 */
+	protected function getTranslatedErrorMessage($translationKey, $uid, $title = NULL) {
+		$message = $this->getLanguageService()->getLL($translationKey);
+		$message = str_replace('###uid###', (int)$uid, $message);
+		if (isset($title)) {
+			$message = str_replace('###title###', htmlspecialchars($title), $message);
+		}
+		return $message;
 	}
 
 	/**
@@ -171,7 +168,7 @@ class LinkHandler extends AbstractLinktype {
 	 * If nothing is specified all records will be returned (including deleted).
 	 *
 	 * @param string $tableName The name of the table from which the record should be fetched.
-	 * @param string $uid The UID of the record that should be fetched.
+	 * @param int $uid The UID of the record that should be fetched.
 	 * @param string $filter A filter setting, can be empty or "disabled" or "deleted".
 	 * @return array|NULL The result row as associative array or NULL if nothing is found.
 	 */
@@ -180,10 +177,10 @@ class LinkHandler extends AbstractLinktype {
 		$whereStatement = 'uid = ' . (int)$uid;
 
 		switch ($filter) {
-			case 'disabled':
+			case self::DISABLED:
 				$whereStatement .= BackendUtility::BEenableFields($tableName) . BackendUtility::deleteClause($tableName);
 				break;
-			case 'deleted':
+			case self::DELETED:
 				$whereStatement .= BackendUtility::deleteClause($tableName);
 				break;
 		}
