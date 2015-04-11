@@ -323,9 +323,8 @@ if (!Prototype.Browser.MobileSafari) {
 							TYPO3.settings.ajaxUrls['T3Editor::saveCode'], {
 								parameters: params,
 								onComplete: function(ajaxrequest) {
-									var wasSuccessful = ajaxrequest.status == 200
-									&& ajaxrequest.headerJSON.result == true;
-									event.memo.t3editor.saveFunctionComplete(wasSuccessful,ajaxrequest.headerJSON);
+									var wasSuccessful = ajaxrequest.status === 200 && ajaxrequest.responseJSON.result === true;
+									event.memo.t3editor.saveFunctionComplete(wasSuccessful,ajaxrequest.responseJSON);
 								}
 							}
 						);
