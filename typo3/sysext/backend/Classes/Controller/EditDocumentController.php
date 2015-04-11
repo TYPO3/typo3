@@ -634,7 +634,7 @@ class EditDocumentController {
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// Set other internal variables:
 		$this->R_URL_getvars['returnUrl'] = $this->retUrl;
-		$this->R_URI = $this->R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars);
+		$this->R_URI = $this->R_URL_parts['path'] . '?' . ltrim(GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars), '&');
 		// MENU-ITEMS:
 		// If array, then it's a selector box menu
 		// If empty string it's just a variable, that'll be saved.
