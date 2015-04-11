@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Script Class: Drawing the editing form for editing records in TYPO3.
@@ -387,6 +388,13 @@ class EditDocumentController {
 	protected $signalSlotDispatcher;
 
 	/**
+	 * Stores information needed to preview the currently saved record
+	 *
+	 * @var array
+	 */
+	protected $previewData = [];
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -609,6 +617,18 @@ class EditDocumentController {
 				// Re-compile the store* values since editconf changed...
 				$this->compileStoreDat();
 			}
+			// If a preview is requested
+			if (isset($_POST['_savedokview_x'])) {
+				// Get the first table and id of the data array from DataHandler
+				$table = reset(array_keys($this->data));
+				$id = reset(array_keys($this->data[$table]));
+				if (!MathUtility::canBeInterpretedAsInteger($id)) {
+					$id = $tce->substNEWwithIDs[$id];
+				}
+				// Store this information for later use
+				$this->previewData['table'] = $table;
+				$this->previewData['id'] = $id;
+			}
 			$tce->printLogErrorMessages(isset($_POST['_saveandclosedok_x']) || isset($_POST['_translation_savedok_x']) ? $this->retUrl : $this->R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars));
 		}
 		//  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED
@@ -676,11 +696,11 @@ class EditDocumentController {
 				'height' => $popupWindowHeight
 			),
 		);
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-				TYPO3.configuration = ' . json_encode($t3Configuration) . ';
-				// Object: TS:
-				// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
-				// TS object overwrites the object declared in tbe_editor.js
+		$javascript = '
+			TYPO3.configuration = ' . json_encode($t3Configuration) . ';
+			// Object: TS:
+			// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
+			// TS object overwrites the object declared in tbe_editor.js
 			function typoSetup() {	//
 				this.uniqueID = "";
 				this.passwordDummy = "********";
@@ -706,12 +726,113 @@ class EditDocumentController {
 				}
 				return false;
 			}
-		' . (isset($_POST['_savedokview_x']) && $this->popViewId ? 'if (window.opener) { ' . BackendUtility::viewOnClick($this->popViewId, '', BackendUtility::BEgetRootLine($this->popViewId), '', $this->viewUrl, $this->popViewId_addParams, FALSE) . ' } else { ' . BackendUtility::viewOnClick($this->popViewId, '', BackendUtility::BEgetRootLine($this->popViewId), '', $this->viewUrl, $this->popViewId_addParams) . ' } ' : ''));
+		';
+
+		$previewCode = isset($_POST['_savedokview_x']) && $this->popViewId ? $this->generatePreviewCode() : '';
+
+		$this->doc->JScode = $this->doc->wrapScriptTags($javascript . $previewCode);
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		$this->doc->bodyTagAdditions = 'onload="window.scrollTo(0,' . MathUtility::forceIntegerInRange(GeneralUtility::_GP('_scrollPosition'), 0, 10000) . ');"';
 
 		$this->emitFunctionAfterSignal(__FUNCTION__);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function generatePreviewCode() {
+		$currentPageId = MathUtility::convertToPositiveInteger($this->popViewId);
+		$table = $this->previewData['table'];
+		$recordId = $this->previewData['id'];
+
+		$pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
+		$previewConfiguration = isset($pageTsConfig['TCEMAIN.']['preview.'][$table . '.'])
+			? $pageTsConfig['TCEMAIN.']['preview.'][$table . '.']
+			: array();
+
+		$recordArray = BackendUtility::getRecord($table, $recordId);
+
+		// find the right preview page id
+		$previewPageId = 0;
+		if (isset($previewConfiguration['previewPageId'])) {
+			$previewPageId = $previewConfiguration['previewPageId'];
+		}
+		// if no preview page was configured
+		if (!$previewPageId) {
+			$rootPageData = NULL;
+			$rootLine = BackendUtility::BEgetRootLine($currentPageId);
+			$currentPage = reset($rootLine);
+			if ((int)$currentPage['doktype'] === PageRepository::DOKTYPE_DEFAULT) {
+				// try the current page
+				$previewPageId = $currentPageId;
+			} else {
+				// or search for the root page
+				foreach ($rootLine as $page) {
+					if ($page['is_siteroot']) {
+						$rootPageData = $page;
+						break;
+					}
+				}
+				$previewPageId = isset($rootPageData)
+					? (int)$rootPageData['uid']
+					: $currentPageId;
+			}
+		}
+
+		$linkParameters = [
+			'no_cache' => 1,
+		];
+
+		// language handling
+		$languageField = isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+			? $GLOBALS['TCA'][$table]['ctrl']['languageField']
+			: '';
+		if ($languageField && !empty($recordArray[$languageField])) {
+			$l18nPointer = isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+				? $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+				: '';
+			if (
+				$l18nPointer && !empty($recordArray[$l18nPointer])
+				&& isset($previewConfiguration['useDefaultLanguageRecord'])
+				&& !$previewConfiguration['useDefaultLanguageRecord']
+			) {
+				// use parent record
+				$recordId = $recordArray[$l18nPointer];
+			}
+			$linkParameters['L'] = $recordArray[$languageField];
+		}
+
+		// map record data to GET parameters
+		if (isset($previewConfiguration['fieldToParameterMap.'])) {
+			foreach ($previewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
+				$value = $recordArray[$field];
+				if ($field === 'uid') {
+					$value = $recordId;
+				}
+				$linkParameters[$parameterName] = $value;
+			}
+		}
+
+		// add/override parameters by configuration
+		if (isset($previewConfiguration['additionalGetParameters.'])) {
+			$linkParameters = array_replace($linkParameters, $previewConfiguration['additionalGetParameters.']);
+		}
+
+		$this->popViewId = $previewPageId;
+		$this->popViewId_addParams = GeneralUtility::implodeArrayForUrl('', $linkParameters, '', FALSE, TRUE);
+
+		$previewPageRootline = BackendUtility::BEgetRootLine($this->popViewId);
+		return '
+				if (window.opener) {
+				'
+			. BackendUtility::viewOnClick($this->popViewId, '', $previewPageRootline, '', $this->viewUrl, $this->popViewId_addParams, FALSE)
+			. '
+				} else {
+				'
+			. BackendUtility::viewOnClick($this->popViewId, '', $previewPageRootline, '', $this->viewUrl, $this->popViewId_addParams)
+			. '
+				}';
 	}
 
 	/**

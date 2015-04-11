@@ -349,6 +349,7 @@ class BackendUtility {
 					'uid' => $val['uid'],
 					'pid' => $val['pid'],
 					'title' => $val['title'],
+					'doktype' => $val['doktype'],
 					'TSconfig' => $val['TSconfig'],
 					'is_siteroot' => $val['is_siteroot'],
 					'storage_pid' => $val['storage_pid'],
@@ -383,7 +384,7 @@ class BackendUtility {
 			$row = $getPageForRootline_cache[$ident];
 		} else {
 			$db = static::getDatabaseConnection();
-			$res = $db->exec_SELECTquery('pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
+			$res = $db->exec_SELECTquery('pid,uid,title,doktype,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
 			$row = $db->sql_fetch_assoc($res);
 			if ($row) {
 				$newLocation = FALSE;
