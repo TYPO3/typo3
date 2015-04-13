@@ -3753,7 +3753,7 @@ class BackendUtility {
 	 */
 	static public function explodeSoftRefParserList($parserList) {
 		$runtimeCache = self::getRuntimeCache();
-		$cacheId = 'backend-softRefList-' . $parserList;
+		$cacheId = 'backend-softRefList-' . md5($parserList);
 		if ($runtimeCache->has($cacheId)) {
 			return $runtimeCache->get($cacheId);
 		}
