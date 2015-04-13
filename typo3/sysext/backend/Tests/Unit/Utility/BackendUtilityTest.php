@@ -263,7 +263,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getProcessedValueForSelectWithMMRelation() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
 			->will($this->returnCallback(
 				function($quoteStr, $table) {
