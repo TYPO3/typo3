@@ -232,10 +232,12 @@ class SetupModuleController {
 			if (count($storeRec) && $this->saveData) {
 				// Make instance of TCE for storing the changes.
 				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-				$tce->stripslashes_values = 0;
-				$tce->start($storeRec, array(), $GLOBALS['BE_USER']);
+				$tce->stripslashes_values = FALSE;
 				// This is so the user can actually update his user record.
-				$tce->admin = 1;
+				$beUser = $GLOBALS['BE_USER'];
+				$isAdmin = $beUser->user['admin'];
+				$beUser->user['admin'] = 1;
+				$tce->start($storeRec, array(), $beUser);
 				// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
 				$tce->bypassWorkspaceRestrictions = TRUE;
 				$tce->process_datamap();
@@ -243,6 +245,8 @@ class SetupModuleController {
 				if (!$this->passwordIsUpdated || count($storeRec['be_users'][$beUserId]) > 1) {
 					$this->setupIsUpdated = TRUE;
 				}
+				// Restore admin status after processing
+				$beUser->user['admin'] = $isAdmin;
 			}
 		}
 	}
