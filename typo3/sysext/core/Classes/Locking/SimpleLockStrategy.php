@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
+use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -47,7 +49,7 @@ class SimpleLockStrategy implements LockingStrategyInterface {
 
 	/**
 	 * @param string $subject ID to identify this lock in the system
-	 * @throws \RuntimeException
+	 * @throws LockCreateException if the lock could not be created
 	 */
 	public function __construct($subject) {
 		// Tests if the directory for simple locks is available.
@@ -59,11 +61,11 @@ class SimpleLockStrategy implements LockingStrategyInterface {
 			// does not exist, this issue should be solved on a different
 			// level of the application.
 			if (!GeneralUtility::mkdir($path)) {
-				throw new \RuntimeException('Cannot create directory ' . $path, 1395140007);
+				throw new LockCreateException('Cannot create directory ' . $path, 1395140007);
 			}
 		}
 		if (!is_writable($path)) {
-			throw new \RuntimeException('Cannot write to directory ' . $path, 1396278700);
+			throw new LockCreateException('Cannot write to directory ' . $path, 1396278700);
 		}
 		$this->filePath = $path . md5((string)$subject);
 	}
@@ -165,7 +167,7 @@ class SimpleLockStrategy implements LockingStrategyInterface {
 		}
 
 		if ($mode & self::LOCK_CAPABILITY_NOBLOCK && !$this->isAcquired && $wouldBlock) {
-			throw new \RuntimeException('Failed to acquire lock because the request would block.', 1428700748);
+			throw new LockAcquireWouldBlockException('Failed to acquire lock because the request would block.', 1428700748);
 		}
 
 		return $this->isAcquired;

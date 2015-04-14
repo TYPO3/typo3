@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -62,7 +63,7 @@ class LockFactory implements SingletonInterface {
 	 * @param string $id ID to identify this lock in the system
 	 * @param int $capabilities LockingStrategyInterface::LOCK_CAPABILITY_* elements combined with bit-wise OR
 	 * @return LockingStrategyInterface Class name for a locking method
-	 * @throws \InvalidArgumentException
+	 * @throws LockCreateException if no locker could be created with the requested capabilities
 	 */
 	public function createLocker($id, $capabilities = LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE) {
 		$queue = new \SplPriorityQueue();
@@ -79,7 +80,7 @@ class LockFactory implements SingletonInterface {
 			// Locking might be used very early in the bootstrap process, where makeInstance() does not work
 			return new $className($id);
 		}
-		throw new \InvalidArgumentException('Could not find a matching locking method with requested capabilities.', 1425990190);
+		throw new LockCreateException('Could not find a matching locking method with requested capabilities.', 1425990190);
 	}
 
 }

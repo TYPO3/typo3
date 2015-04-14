@@ -77,8 +77,7 @@ class LockFactoryTest extends UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionCode 1425990190
+	 * @expectedException \TYPO3\CMS\Core\Locking\Exception\LockCreateException
 	 */
 	public function getLockerThrowsExceptionIfNoMatchFound() {
 		$this->mockFactory->createLocker('id', 32);

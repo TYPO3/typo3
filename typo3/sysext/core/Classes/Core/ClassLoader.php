@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Cache;
+use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Locking\LockFactory;
+use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Cache;
 
 /**
  * Class Loader implementation which loads .php files found in the classes
@@ -805,8 +806,8 @@ class ClassLoader {
 
 			try {
 				$this->lockObject = (new LockFactory())->createLocker('ClassLoader-cache-classes');
-			} catch (\RuntimeException $e) {
-				// The RuntimeException in constructor happens if directory typo3temp/locks could not be created.
+			} catch (LockCreateException $e) {
+				// The LockCreateException in constructor happens if directory typo3temp/locks could not be created.
 				// This usually happens during installation step 1 where typo3temp itself does not exist yet. In
 				// this case we proceed without locking, otherwise a missing typo3temp directory indicates a
 				// hard problem of the instance and we throw up.

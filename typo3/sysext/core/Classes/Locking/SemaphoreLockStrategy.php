@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Locking;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
+
 /**
  * Semaphore locking
  *
@@ -90,7 +92,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface {
 	 *
 	 * @param int $mode LOCK_CAPABILITY_EXCLUSIVE
 	 * @return bool Returns TRUE if the lock was acquired successfully
-	 * @throws \RuntimeException
+	 * @throws LockAcquireException if a semaphore could not be retrieved
 	 */
 	public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE) {
 		if ($this->isAcquired) {
@@ -99,7 +101,7 @@ class SemaphoreLockStrategy implements LockingStrategyInterface {
 
 		$this->resource = sem_get($this->id, 1);
 		if ($this->resource === FALSE) {
-			throw new \RuntimeException('Unable to get semaphore with id ' . $this->id, 1313828196);
+			throw new LockAcquireException('Unable to get semaphore with id ' . $this->id, 1313828196);
 		}
 
 		$this->isAcquired = (bool)sem_acquire($this->resource);

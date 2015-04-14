@@ -42,10 +42,8 @@ Some methods also support non-blocking locks:
 	);
 	try {
 		$result = $locker->acquire(LockingStrategyInterface::LOCK_CAPABILITY_SHARED | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK);
-	catch (\RuntimeException $e) {
-		if ($e->getCode() === 1428700748) {
-			// some process owns the lock, let's do something else meanwhile
-		}
+	catch (LockAcquireWouldBlockException $e) {
+		// some process owns the lock, let's do something else meanwhile
 	}
 	if ($result) {
 		$locker->release();
