@@ -653,7 +653,7 @@ class UriBuilder {
 		if ($this->targetPageType !== 0) {
 			$typolinkConfiguration['parameter'] .= ',' . $this->targetPageType;
 		} elseif ($this->format !== '') {
-			$targetPageType = $this->extensionService->getTargetPageTypeByFormat($this->request->getControllerExtensionKey(), $this->format);
+			$targetPageType = $this->extensionService->getTargetPageTypeByFormat($this->request->getControllerExtensionName(), $this->format);
 			$typolinkConfiguration['parameter'] .= ',' . $targetPageType;
 		}
 		if (count($this->arguments) > 0) {
