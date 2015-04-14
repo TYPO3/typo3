@@ -617,6 +617,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function buildTypolinkConfigurationResolvesPageTypeFromFormat() {
 		$this->uriBuilder->setTargetPageUid(123);
 		$this->uriBuilder->setFormat('txt');
+		$this->mockRequest->expects($this->once())->method('getControllerExtensionName')->will($this->returnValue('SomeExtensionNameFromRequest'));
 
 		$mockConfigurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
 		$mockConfigurationManager->expects($this->any())->method('getConfiguration')
@@ -624,7 +625,7 @@ class UriBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
 		$this->mockExtensionService->expects($this->any())->method('getTargetPageTypeByFormat')
-			->with(NULL, 'txt')
+			->with('SomeExtensionNameFromRequest', 'txt')
 			->will($this->returnValue(2));
 
 		$expectedConfiguration = array('parameter' => '123,2', 'useCacheHash' => 1);
