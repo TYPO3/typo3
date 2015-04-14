@@ -257,7 +257,9 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($extensionIsAvailable === TRUE) {
 				$isAvailableVersionCompatible = $this->isAvailableVersionCompatible($dependency);
 				if ($isAvailableVersionCompatible) {
+					$unresolvedDependencyErrors = $this->dependencyErrors;
 					$this->managementService->markExtensionForInstallation($extensionKey);
+					$this->dependencyErrors = array_merge($unresolvedDependencyErrors, $this->dependencyErrors);
 				} else {
 					$this->getExtensionFromRepository($extensionKey, $dependency);
 				}
