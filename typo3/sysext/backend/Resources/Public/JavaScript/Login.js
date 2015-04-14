@@ -61,9 +61,8 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 		$('#t3-login-interface-section').hide();
 
 		$(options.openIdField).trigger('focus');
-		if ($(options.usernameField).val() == '') {
-			$(options.usernameField).val('openid_url');
-		}
+		$(options.usernameField).val('openid_url');
+		$(options.passwordField).val('');
 
 		BackendLogin.setLogintypeCookie('openid');
 	};
@@ -74,9 +73,9 @@ define('TYPO3/CMS/Backend/Login', ['jquery'], function($) {
 	BackendLogin.switchToDefault = function() {
 		$('#t3-login-openIdLogo').hide();
 
-		if ($(options.usernameField).val() == 'openid_url') {
-			$(options.usernameField).val('');
-		}
+		$(options.openIdField).val('');
+		$(options.usernameField).val('');
+
 
 		$('#t3-login-form-footer-default').show();
 		$('#t3-login-form-footer-openId').hide();
