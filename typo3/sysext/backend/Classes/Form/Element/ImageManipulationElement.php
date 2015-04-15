@@ -191,7 +191,7 @@ class ImageManipulationElement extends AbstractFormElement {
 			if ($processedImage->getProperty('width')) {
 				$imageUrl = $processedImage->getPublicUrl(TRUE);
 				$preview = '<img src="' . $imageUrl . '" ' .
-					'class="media-object thumbnail" ' .
+					'class="media-object thumbnail thumbnail-status" ' .
 					'width="' . $processedImage->getProperty('width') . '" ' .
 					'height="' . $processedImage->getProperty('height') . '" >';
 			}

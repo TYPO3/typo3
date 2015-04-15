@@ -10729,6 +10729,9 @@ span.typo3-moduleHeader img {
 .has-change .form-control-feedback {
   color: #6daae0;
 }
+.has-change .thumbnail-status {
+  border: 1px solid #6daae0;
+}
 .input-group-icon {
   width: 32px;
   vertical-align: middle;
