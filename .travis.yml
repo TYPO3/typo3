@@ -53,12 +53,7 @@ script:
   - >
     echo;
     echo "Running php lint";
-    /bin/bash -c "
-        if ! find typo3/ -name \*.php | parallel --gnu 'php -l {}' > /tmp/errors 2>&1; then
-            grep -v \"No syntax errors detected in\" /tmp/errors;
-            exit 99;
-        fi
-    "
+    find typo3/ -name \*.php -not -path "typo3/contrib/vendor/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
   - >
     echo;
     echo "Running XLF checker";
