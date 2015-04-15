@@ -85,7 +85,7 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 
 				// Determine available height
 				var height = top.TYPO3.jQuery(window).height()
-						- (ImageManipulation.margin * 2);
+						- (ImageManipulation.margin * 4);
 				$image.css({maxHeight: height});
 
 				// Wait a few microseconds before calculating available width (DOM isn't always updated direct)
@@ -97,7 +97,7 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 						var minWidth = Math.max(500, $image.outerWidth() + $modalPanelSidebar.outerWidth() + (ImageManipulation.margin * 2));
 						var width = $modal.width() > minWidth ? minWidth : $modal.width();
 						$modal.width(width);
-						$modalPanelBody.width(width - $modalPanelSidebar.outerWidth() - (ImageManipulation.margin * 2));
+						$modalPanelBody.width(width - $modalPanelSidebar.outerWidth() - (ImageManipulation.margin * 4));
 
 						var modalBodyMinHeight = $modalContent.height() -
 							($modalPanelSidebar.find('.modal-header').outerHeight() + $modalPanelSidebar.find('.modal-body-footer').outerHeight());
@@ -135,8 +135,6 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 			cropData = $.parseJSON(jsonString);
 		}
 
-		// Calculate current resize factor
-		var factor = $image.width() / $image.prop('naturalWidth');
 		var $infoX = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-x');
 		var $infoY = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-y');
 		var $infoWidth = ImageManipulation.currentModal.find('.t3js-image-manipulation-info-crop-width');
@@ -148,19 +146,22 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 			zoomable: ImageManipulation.currentModal.find('.t3js-setting-zoom').length > 0,
 			built: function() {
 				if (cropData) {
+					// Dimensions CropBox need to be the real visible dimensions
+					var ratio = $image.cropper('getImageData').width / $image.data('original-width');
 					var cropBox = {};
-					cropBox.left = cropData.x * factor;
-					cropBox.top = cropData.y * factor;
-					cropBox.width = cropData.width * factor;
-					cropBox.height = cropData.height * factor;
+					cropBox.left = cropData.x * ratio;
+					cropBox.top = cropData.y * ratio;
+					cropBox.width = cropData.width * ratio;
+					cropBox.height = cropData.height * ratio;
 					$image.cropper('setCropBoxData', cropBox);
 				}
 			},
 			crop: function (data) {
-				$infoX.text(Math.round(data.x) + 'px');
-				$infoY.text(Math.round(data.y) + 'px');
-				$infoWidth.text(Math.round(data.height) + 'px');
-				$infoHeight.text(Math.round(data.width) + 'px');
+				var ratio = $image.cropper('getImageData').naturalWidth / $image.data('original-width');
+				$infoX.text(Math.round(data.x / ratio) + 'px');
+				$infoY.text(Math.round(data.y / ratio) + 'px');
+				$infoWidth.text(Math.round(data.width / ratio) + 'px');
+				$infoHeight.text(Math.round(data.height / ratio) + 'px');
 			}
 		});
 
@@ -231,6 +232,11 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 		var newValue = '';
 		$formGroup.addClass('has-change');
 		if (cropData.width > 0 && cropData.height > 0) {
+			var ratio = $image.cropper('getImageData').naturalWidth / $image.data('original-width');
+			cropData.x = cropData.x / ratio;
+			cropData.y = cropData.y / ratio;
+			cropData.width = cropData.width / ratio;
+			cropData.height = cropData.height / ratio;
 			newValue = JSON.stringify(cropData);
 			$formGroup.find('.t3js-image-manipulation-info').removeClass('hide');
 			$formGroup.find('.t3js-image-manipulation-info-crop-x').text(Math.round(cropData.x) + 'px');
