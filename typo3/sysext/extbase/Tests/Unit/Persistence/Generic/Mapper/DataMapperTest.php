@@ -41,14 +41,14 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function mapSingleRowReturnsObjectFromIdentityMapIfAvailable() {
+	public function mapSingleRowReturnsObjectFromPersistenceSessionIfAvailable() {
 		$row = array('uid' => '1234');
 		$object = new \stdClass();
-		$identityMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap::class);
-		$identityMap->expects($this->once())->method('hasIdentifier')->with('1234')->will($this->returnValue(TRUE));
-		$identityMap->expects($this->once())->method('getObjectByIdentifier')->with('1234')->will($this->returnValue($object));
+		$persistenceSession = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
+		$persistenceSession->expects($this->once())->method('hasIdentifier')->with('1234')->will($this->returnValue(TRUE));
+		$persistenceSession->expects($this->once())->method('getObjectByIdentifier')->with('1234')->will($this->returnValue($object));
 		$dataMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class, array('dummy'));
-		$dataMapper->_set('identityMap', $identityMap);
+		$dataMapper->_set('persistenceSession', $persistenceSession);
 		$dataMapper->_call('mapSingleRow', get_class($object), $row);
 	}
 

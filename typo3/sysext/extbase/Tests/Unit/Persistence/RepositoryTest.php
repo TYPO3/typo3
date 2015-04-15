@@ -30,11 +30,6 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockObjectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
-	 */
-	protected $mockIdentityMap;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory
 	 */
 	protected $mockQueryFactory;
@@ -70,7 +65,6 @@ class RepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockConfigurationManager;
 
 	protected function setUp() {
-		$this->mockIdentityMap = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap::class);
 		$this->mockQueryFactory = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory::class);
 		$this->mockQuery = $this->getMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
 		$this->mockQuerySettings = $this->getMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);

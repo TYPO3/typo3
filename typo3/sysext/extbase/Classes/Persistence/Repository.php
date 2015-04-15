@@ -24,13 +24,6 @@ use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
-	 * @deprecated since 6.1 will be removed two versions later, use the persistence session instead
-	 * @inject
-	 */
-	protected $identityMap;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 * @deprecated since 6.1 will be removed two versions later, use the persistence manager instead
 	 * @inject

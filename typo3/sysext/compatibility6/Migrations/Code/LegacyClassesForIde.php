@@ -2109,11 +2109,6 @@ class Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings extends
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class Tx_Extbase_Persistence_IdentityMap extends \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class Tx_Extbase_Persistence_LazyLoadingProxy extends \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy {}
 
 /**

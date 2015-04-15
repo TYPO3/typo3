@@ -26,12 +26,6 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap
-	 * @inject
-	 */
-	protected $identityMap;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
 	 * @inject
 	 */
@@ -133,13 +127,13 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return object An object of the given class
 	 */
 	protected function mapSingleRow($className, array $row) {
-		if ($this->identityMap->hasIdentifier($row['uid'], $className)) {
-			$object = $this->identityMap->getObjectByIdentifier($row['uid'], $className);
+		if ($this->persistenceSession->hasIdentifier($row['uid'], $className)) {
+			$object = $this->persistenceSession->getObjectByIdentifier($row['uid'], $className);
 		} else {
 			$object = $this->createEmptyObject($className);
-			$this->identityMap->registerObject($object, $row['uid']);
 			$this->thawProperties($object, $row);
 			$object->_memorizeCleanState();
+			$this->persistenceSession->registerObject($object, $row['uid']);
 			$this->persistenceSession->registerReconstitutedEntity($object);
 		}
 		return $object;
@@ -418,7 +412,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * mapResultToPropertyValue()
 	 *
 	 * If the field value is empty and the column map has no parent key field name,
-	 * the relation will be empty. If the identityMap has a registered object of
+	 * the relation will be empty. If the persistence session has a registered object of
 	 * the correct type and identity (fieldValue), this function returns that object.
 	 * Otherwise, it proceeds with mapResultToPropertyValue().
 	 *

@@ -419,7 +419,6 @@ return array(
 	'Tx_Extbase_Persistence_Exception_UnsupportedOrder' => \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException::class,
 	'Tx_Extbase_Persistence_Exception_UnsupportedRelation' => \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException::class,
 	'Tx_Extbase_Persistence_Generic_Exception_InconsistentQuerySettings' => \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException::class,
-	'Tx_Extbase_Persistence_IdentityMap' => \TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap::class,
 	'Tx_Extbase_Persistence_LazyLoadingProxy' => \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class,
 	'Tx_Extbase_Persistence_LazyObjectStorage' => \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
 	'Tx_Extbase_Persistence_LoadingStrategyInterface' => \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface::class,
