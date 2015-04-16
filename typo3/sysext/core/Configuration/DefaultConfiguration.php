@@ -268,6 +268,14 @@ return array(
 				'category' => \TYPO3\CMS\Core\Resource\Collection\CategoryBasedFileCollection::class,
 			)
 		),
+		'FileInfo' => array(
+			// Static mapping for file extensions to mime types.
+			// In special cases the mime type is not detected correctly.
+			// Use this array only if the automatic detection does not work correct!
+			'fileExtensionToMimeType' => array(
+				'svg' => 'image/svg+xml'
+			)
+		),
 		'isInitialInstallationInProgress' => FALSE,		// Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
 		'clearCacheSystem' => FALSE,		// Boolean: If set, the toolbar menu entry for clearing system caches (core cache, class cache, etc.) is visible for admin users.
 	),

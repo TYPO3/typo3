@@ -29,11 +29,17 @@ class FileInfo extends \SplFileInfo implements TypeInterface {
 	public function getMimeType() {
 		$mimeType = FALSE;
 		if ($this->isFile()) {
-			if (function_exists('finfo_file')) {
-				$fileInfo = new \finfo();
-				$mimeType = $fileInfo->file($this->getPathname(), FILEINFO_MIME_TYPE);
-			} elseif (function_exists('mime_content_type')) {
-				$mimeType = mime_content_type($this->getPathname());
+			$fileExtensionToMimeTypeMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'];
+			$lowercaseFileExtension = strtolower($this->getExtension());
+			if (!empty($fileExtensionToMimeTypeMapping[$lowercaseFileExtension])) {
+				$mimeType = $fileExtensionToMimeTypeMapping[$lowercaseFileExtension];
+			} else {
+				if (function_exists('finfo_file')) {
+					$fileInfo = new \finfo();
+					$mimeType = $fileInfo->file($this->getPathname(), FILEINFO_MIME_TYPE);
+				} elseif (function_exists('mime_content_type')) {
+					$mimeType = mime_content_type($this->getPathname());
+				}
 			}
 		}
 
