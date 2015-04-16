@@ -37,6 +37,7 @@ class TableColumnType extends \TYPO3\CMS\Core\Type\Enumeration {
 	const USER = 'USER';
 	const FLEX = 'FLEX';
 	const INLINE = 'INLINE';
+	const IMAGE_MANIPULATION = 'IMAGE_MANIPULATION';
 
 	/**
 	 * @param mixed $type
