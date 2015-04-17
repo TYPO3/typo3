@@ -97,6 +97,24 @@ class Folder implements FolderInterface {
 	}
 
 	/**
+	 * Returns the full path of this folder, from the root.
+	 *
+	 * @param string $rootId ID of the root folder, NULL to auto-detect
+	 *
+	 * @return string
+	 */
+	public function getReadablePath($rootId = NULL) {
+		if ($rootId === NULL) {
+			$rootId = $this->storage->getRootLevelFolder()->getIdentifier();
+		}
+		$readablePath = '';
+		if ($this->identifier !== $rootId) {
+			$readablePath = $this->getParentFolder()->getReadablePath($rootId);
+		}
+		return $readablePath . $this->name . '/';
+	}
+
+	/**
 	 * Sets a new name of the folder
 	 * currently this does not trigger the "renaming process"
 	 * as the name is more seen as a label

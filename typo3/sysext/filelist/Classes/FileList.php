@@ -194,7 +194,7 @@ class FileList extends AbstractRecordList {
 		$this->totalbytes = 0;
 		$this->JScode = '';
 		$this->HTMLcode = '';
-		$this->path = $folderObject->getIdentifier();
+		$this->path = $folderObject->getReadablePath();
 		$this->sort = $sort;
 		$this->sortRev = $sortRev;
 		$this->firstElementNumber = $pointer;
@@ -235,7 +235,7 @@ class FileList extends AbstractRecordList {
 		);
 		// Makes the code for the folder icon in the top
 		if ($folderObject) {
-			$title = htmlspecialchars($folderObject->getIdentifier());
+			$title = htmlspecialchars($folderObject->getReadablePath());
 			// Start compiling the HTML
 			// If this is some subFolder under the mount root....
 			if ($folderObject->getStorage()->isWithinFileMountBoundaries($folderObject)) {
