@@ -35,6 +35,7 @@
 		"ext-session": "*",
 		"ext-xml": "*",
 		"helhum/class-alias-loader": "1.1.5",
+		"doctrine/instantiator": "1.0.5",
 		"typo3/cms-composer-installers": "1.1.4"
 	},
 	"require-dev": {

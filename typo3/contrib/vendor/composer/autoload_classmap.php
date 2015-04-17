@@ -6,6 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname(dirname($vendorDir)));
 
 return array(
+    'doctrine\\instantiator\\exception\\exceptioninterface' => $vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator/Exception/ExceptionInterface.php',
+    'doctrine\\instantiator\\exception\\invalidargumentexception' => $vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator/Exception/InvalidArgumentException.php',
+    'doctrine\\instantiator\\exception\\unexpectedvalueexception' => $vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator/Exception/UnexpectedValueException.php',
+    'doctrine\\instantiator\\instantiator' => $vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator/Instantiator.php',
+    'doctrine\\instantiator\\instantiatorinterface' => $vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator/InstantiatorInterface.php',
     'helhum\\classaliasloader\\composer\\classaliasgenerator' => $vendorDir . '/helhum/class-alias-loader/Classes/Composer/ClassAliasGenerator.php',
     'helhum\\classaliasloader\\composer\\classaliasloader' => $vendorDir . '/helhum/class-alias-loader/Classes/Composer/ClassAliasLoader.php',
     'helhum\\classaliasloader\\composer\\plugin' => $vendorDir . '/helhum/class-alias-loader/Classes/Composer/Plugin.php',

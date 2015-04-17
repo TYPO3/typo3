@@ -65,7 +65,6 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * @return void
 	 */
 	public function __wakeup() {
-		$this->initializeObject();
 	}
 
 	public function initializeObject() {

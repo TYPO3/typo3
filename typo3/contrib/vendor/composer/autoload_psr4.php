@@ -20,4 +20,5 @@ return array(
     'TYPO3\\CMS\\Backend\\' => array($baseDir . '/typo3/sysext/backend/Classes'),
     'Psr\\Log\\' => array($baseDir . '/typo3/contrib/Psr/Log'),
     'Helhum\\ClassAliasLoader\\' => array($vendorDir . '/helhum/class-alias-loader/Classes'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
 );
