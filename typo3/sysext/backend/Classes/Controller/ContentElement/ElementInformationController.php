@@ -324,7 +324,7 @@ class ElementInformationController {
 				if ($name === 'storage') {
 					$rowValue = $resourceObject->getStorage()->getName();
 				} elseif ($name === 'folder') {
-					$rowValue = $resourceObject->getParentFolder()->getIdentifier();
+					$rowValue = $resourceObject->getParentFolder()->getReadablePath();
 				}
 			} elseif (in_array($name, array('creation_date', 'modification_date'), TRUE)) {
 				$rowValue = BackendUtility::datetime($this->row[$name]);
