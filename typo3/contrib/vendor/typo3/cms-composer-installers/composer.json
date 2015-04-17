@@ -1,0 +1,40 @@
+{
+    "name": "typo3/cms-composer-installers",
+    "type": "composer-plugin",
+    "license": "GPL-2.0+",
+    "description": "TYPO3 CMS Installers",
+    "keywords": [
+        "installer", "typo3", "cms", "core", "extension"
+    ],
+    "homepage": "http://forge.typo3.org/projects/team-composer",
+    "authors": [
+        {
+            "name": "Christian Opitz",
+            "email": "christian.opitz@netresearch.de"
+        },
+        {
+            "name": "Lars Peipmann",
+            "email": "lars@peipmann.de"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "Classes/"}
+    },
+    "minimum-stability": "dev",
+    "replace": {
+        "lw/typo3cms-installers": "*",
+        "netresearch/composer-installers": "*"
+    },
+    "require": {
+        "composer-plugin-api": "1.0.0"
+    },
+    "require-dev": {
+        "composer/composer": "1.*"
+    },
+    "extra": {
+        "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
+        "branch-alias": {
+            "dev-master": "1.1.x-dev"
+        }
+    }
+}
