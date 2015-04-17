@@ -49,6 +49,11 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	private $classInfoFactory = NULL;
 
 	/**
+	 * @var \Doctrine\Instantiator\InstantiatorInterface
+	 */
+	protected $instantiator = NULL;
+
+	/**
 	 * holds references of singletons
 	 *
 	 * @var array
@@ -96,6 +101,18 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Internal method to create the class instantiator, extracted to be mockable
+	 *
+	 * @return \Doctrine\Instantiator\InstantiatorInterface
+	 */
+	protected function getInstantiator() {
+		if ($this->instantiator == NULL) {
+			$this->instantiator = new \Doctrine\Instantiator\Instantiator();
+		}
+		return $this->instantiator;
+	}
+
+	/**
 	 * Main method which should be used to get an instance of the wished class
 	 * specified by $className.
 	 *
@@ -117,8 +134,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getEmptyObject($className) {
 		$className = $this->getImplementationClassName($className);
 		$classInfo = $this->getClassInfo($className);
-		// get an object and avoid calling __construct()
-		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
+		$object = $this->getInstantiator()->instantiate($className);
 		$this->injectDependencies($object, $classInfo);
 		return $object;
 	}

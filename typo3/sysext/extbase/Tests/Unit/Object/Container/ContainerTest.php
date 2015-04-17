@@ -202,6 +202,14 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getEmptyObjectReturnsInstanceOfClassImplementingSerializable() {
+		$object = $this->container->getEmptyObject('t3lib_object_tests_serializable');
+		$this->assertInstanceOf('t3lib_object_tests_serializable', $object);
+	}
+
+	/**
+	 * @test
+	 */
 	public function test_canGetChildClass() {
 		$object = $this->container->getInstance('t3lib_object_tests_b_child');
 		$this->assertInstanceOf('t3lib_object_tests_b_child', $object);
