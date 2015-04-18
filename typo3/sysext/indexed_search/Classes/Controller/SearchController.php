@@ -157,7 +157,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		if ($searchData['_freeIndexUid'] !== '' && $searchData['_freeIndexUid'] !== '_') {
 			$searchData['freeIndexUid'] = $searchData['_freeIndexUid'];
 		}
-		$searchData['results'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($searchData['results'], 1, 100000, $this->defaultResultNumber);
+		$searchData['numberOfResults'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($searchData['numberOfResults'], 1, 100000, $this->defaultResultNumber);
 		// This gets the search-words into the $searchWordArray
 		$this->sword = $searchData['sword'];
 		// Add previous search words to current
@@ -1147,7 +1147,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			);
 		}
 		// disable single entries by TypoScript
-		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['numberOfResults.']);
+		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['numberOfResults']);
 		return $allOptions;
 	}
 

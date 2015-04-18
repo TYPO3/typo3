@@ -27,7 +27,7 @@
 		<f:then>
 			<div class="tx-indexedsearch-browsebox">
 				<p>
-					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
+					<is:pageBrowsingResults numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.numberOfResults}" />
 					{result.sectionText}
 				</p>
 				<!-- render the anchor-links to the sections inside the displayed result rows -->
@@ -50,7 +50,7 @@
 						</table>
 					</div>
 				</f:if>
-				<is:pageBrowsing maximumNumberOfResultPages="{settings.search.page_links}" numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
+				<is:pageBrowsing maximumNumberOfResultPages="{settings.page_links}" numberOfResults="{result.count}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.numberOfResults}" />
 			</div>
 			<f:for each="{result.rows}" as="row">
 				<f:if condition="{row.isSectionHeader}">
@@ -65,7 +65,7 @@
 				</f:if>
 			</f:for>
 			<div class="tx-indexedsearch-browsebox">
-				<is:pageBrowsing numberOfResults="{result.count}" maximumNumberOfResultPages="{settings.search.page_links}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.results}" />
+				<is:pageBrowsing numberOfResults="{result.count}" maximumNumberOfResultPages="{settings.page_links}" currentPage="{searchParams.pointer}" resultsPerPage="{searchParams.numberOfResults}" />
 			</div>
 		</f:then>
 		<f:else>
