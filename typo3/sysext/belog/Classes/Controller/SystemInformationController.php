@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Belog\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Count newest exceptions for the system information menu
@@ -32,16 +35,26 @@ class SystemInformationController extends AbstractController {
 			$constraint = $this->objectManager->get(Constraint::class);
 		}
 
+		$timestamp = $constraint->getStartTimestamp();
+		$backendUser = $this->getBackendUserAuthentication();
+		if (isset($backendUser->uc['systeminformation'])) {
+			$systemInformationUc = json_decode($backendUser->uc['systeminformation'], TRUE);
+			if (isset($systemInformationUc['system_BelogLog']['lastAccess'])) {
+				$timestamp = $systemInformationUc['system_BelogLog']['lastAccess'];
+			}
+		}
+
 		$this->setStartAndEndTimeFromTimeSelector($constraint);
 		// we can't use the extbase repository here as the required TypoScript may not be parsed yet
-		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $constraint->getStartTimestamp() . ' AND tstamp <= ' . $constraint->getEndTimestamp() . ' AND error IN(-1,1,2)');
+		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('error', 'sys_log', 'tstamp >= ' . $timestamp . ' AND error IN(-1,1,2)');
 
 		if ($count > 0) {
 			return array(
 				array(
+					'module' => 'system_BelogLog',
 					'count' => $count,
-					'status' => \TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus::STATUS_ERROR,
-					'text' => sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count)
+					'status' => InformationStatus::STATUS_ERROR,
+					'text' => sprintf(LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog'), $count, BackendUtility::getModuleUrl('system_BelogLog'))
 				)
 			);
 		}
@@ -54,11 +67,18 @@ class SystemInformationController extends AbstractController {
 	 * @return \TYPO3\CMS\Belog\Domain\Model\Constraint|NULL
 	 */
 	protected function getConstraintFromBeUserData() {
-		$serializedConstraint = $GLOBALS['BE_USER']->getModuleData(ToolsController::class);
+		$serializedConstraint = $this->getBackendUserAuthentication()->getModuleData(ToolsController::class);
 		if (!is_string($serializedConstraint) || empty($serializedConstraint)) {
 			return NULL;
 		}
 		return @unserialize($serializedConstraint);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 	/**

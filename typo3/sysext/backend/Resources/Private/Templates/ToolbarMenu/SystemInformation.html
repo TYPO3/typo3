@@ -22,7 +22,18 @@
 	<f:if condition="{messages -> f:count()} > 0">
 		<f:then>
 			<f:for each="{messages}" as="message">
-				<li><span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span></li>
+				<f:if condition="{message.module}">
+					<f:then>
+						<li id="systeminformation_{message.module}" class="t3js-systeminformation-module dropdown-intro typo3-module-menu-item submodule mod-{message.module}" data-modulename="{message.module}">
+							<span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
+						</li>
+					</f:then>
+					<f:else>
+						<li>
+							<span class="text-{message.status}"><f:format.raw>{message.text}</f:format.raw></span>
+						</li>
+					</f:else>
+				</f:if>
 			</f:for>
 		</f:then>
 		<f:else>
