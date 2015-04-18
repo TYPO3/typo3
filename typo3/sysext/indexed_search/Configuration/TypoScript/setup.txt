@@ -47,7 +47,7 @@ plugin.tx_indexedsearch {
 			group = 0
 			languageUid = 0
 			desc = 0
-			results = 0
+			numberOfResults = 0
 			# defaultOperand.1 = 1
 			# extResume=1
 		}

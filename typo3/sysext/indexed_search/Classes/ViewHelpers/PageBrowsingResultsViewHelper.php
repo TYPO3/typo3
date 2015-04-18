@@ -26,7 +26,7 @@ class PageBrowsingResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @param integer $numberOfResults
 	 * @param integer $resultsPerPage
 	 * @param integer $currentPage
-	 * @return the content
+	 * @return string the content
 	 */
 	public function render($numberOfResults, $resultsPerPage, $currentPage = 1) {
 		$firstResultOnPage = $currentPage * $resultsPerPage + 1;

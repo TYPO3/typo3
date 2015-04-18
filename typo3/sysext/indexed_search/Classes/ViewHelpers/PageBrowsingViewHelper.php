@@ -39,6 +39,9 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @return string The content
 	 */
 	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 0, $freeIndexUid = NULL) {
+		if ($resultsPerPage <= 0) {
+			$resultsPerPage = 10;
+		}
 		$pageCount = (int)ceil($numberOfResults / $resultsPerPage);
 		// only show the result browser if more than one page is needed
 		if ($pageCount === 1) {
