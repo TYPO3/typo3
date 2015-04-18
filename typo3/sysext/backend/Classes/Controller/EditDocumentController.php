@@ -1136,7 +1136,7 @@ class EditDocumentController {
 			if ($this->firstEl['cmd'] != 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
 				// Delete:
 				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')) {
-					$aOnClick = 'return deleteRecord(\'' . $this->firstEl['table'] . '\',\'' . $this->firstEl['uid'] . '\', unescape(\'' . rawurlencode($this->retUrl) . '\'));';
+					$aOnClick = 'return deleteRecord(\'' . $this->firstEl['table'] . '\',\'' . $this->firstEl['uid'] . '\', ' . GeneralUtility::quoteJSvalue($this->retUrl) . ');';
 					$buttons['delete'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				}
 				// Undo:
@@ -1356,15 +1356,15 @@ class EditDocumentController {
 							// Create url for creating a localized record
 							if ($newTranslation) {
 								$redirectUrl = BackendUtility::getModuleUrl('record_edit', array(
-									'justLocalized' => rawurlencode(($table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'])),
-									'returnUrl' => rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord')
-								));
+									'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
+									'returnUrl' => $this->retUrl
+								)) . BackendUtility::getUrlToken('editRecord');
 								$href = $this->doc->issueCommand('&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'], $redirectUrl);
 							} else {
 								$href = BackendUtility::getModuleUrl('record_edit', array(
 									'edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']' => 'edit',
-									'returnUrl' => rawurlencode($this->retUrl) . BackendUtility::getUrlToken('editRecord')
-								));
+									'returnUrl' => $this->retUrl
+								)) . BackendUtility::getUrlToken('editRecord');
 							}
 							$langSelItems[$lang['uid']] = '
 								<option value="' . htmlspecialchars($href) . '"' . ($currentLanguage == $lang['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($lang['title'] . $newTranslation)) . '</option>';
@@ -1397,7 +1397,7 @@ class EditDocumentController {
 				// Create parameters and finally run the classic page module for creating a new page translation
 				$location = BackendUtility::getModuleUrl('record_edit', array(
 					'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
-					'returnUrl' => rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl')))
+					'returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))
 				));
 				HttpUtility::redirect($location . BackendUtility::getUrlToken('editRecord'));
 			}
@@ -1608,8 +1608,7 @@ class EditDocumentController {
 		}
 		// If code is NOT set OR set to 1, then make a header location redirect to $this->retUrl
 		if (!$code || $code == 1) {
-			// @todo: find out why we need rawurldecode here!
-			HttpUtility::redirect(rawurldecode($this->retUrl));
+			HttpUtility::redirect($this->retUrl);
 		} else {
 			$this->setDocument('', $this->retUrl);
 		}
