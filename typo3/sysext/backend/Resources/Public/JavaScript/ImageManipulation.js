@@ -243,7 +243,8 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 			$formGroup.find('.t3js-image-manipulation-info-crop-y').text(Math.round(cropData.y) + 'px');
 			$formGroup.find('.t3js-image-manipulation-info-crop-width').text(Math.round(cropData.width) + 'px');
 			$formGroup.find('.t3js-image-manipulation-info-crop-height').text(Math.round(cropData.height) + 'px');
-
+			$formGroup.find('.t3js-image-manipulation-preview').removeClass('hide');
+			ImageManipulation.setPreviewImage();
 		} else {
 			$formGroup.find('.t3js-image-manipulation-info').addClass('hide');
 			$formGroup.find('.t3js-image-manipulation-preview').addClass('hide');
@@ -268,6 +269,49 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 			ImageManipulation.currentModal.modal('hide').remove();
 			ImageManipulation.currentModal = null;
 		}
+	};
+
+	/**
+	 * Set preview image
+	 */
+	ImageManipulation.setPreviewImage = function() {
+		var $preview = ImageManipulation.$trigger.closest('.form-group').find('.t3js-image-manipulation-preview');
+		if ($preview.length === 0) {
+			return;
+		}
+		var $image = ImageManipulation.getCropper();
+		var imageData = $image.cropper('getImageData');
+		var cropData = $image.cropper('getData');
+		var previewWidth = $preview.data('preview-width');
+		var previewHeight = $preview.data('preview-height');
+
+		// Adjust aspect ratio of preview width/height
+		var aspectRatio = cropData.width / cropData.height;
+		var tmpHeight = previewWidth / aspectRatio;
+		if (tmpHeight > previewHeight) {
+			previewWidth = previewHeight * aspectRatio;
+		} else {
+			previewHeight = tmpHeight;
+		}
+		// preview should never be up-scaled
+		if (previewWidth > cropData.width) {
+			previewWidth = cropData.width;
+			previewHeight = cropData.height;
+		}
+
+		var ratio = previewWidth / cropData.width;
+
+		var $viewBox = $('<div />').html('<img src="' + $image.attr('src') + '">');
+		$viewBox.addClass('cropper-preview-container');
+		$preview.empty().append($viewBox);
+		$viewBox.wrap('<span class="thumbnail thumbnail-status"></span>');
+
+		$viewBox.width(previewWidth).height(previewHeight).find('img').css({
+			width: imageData.naturalWidth * ratio,
+			height: imageData.naturalHeight * ratio,
+			left: -cropData.x * ratio,
+			top: -cropData.y * ratio
+		});
 	};
 
 	return function() {

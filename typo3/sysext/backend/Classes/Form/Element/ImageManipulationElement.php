@@ -183,20 +183,30 @@ class ImageManipulationElement extends AbstractFormElement {
 	 * @return string
 	 */
 	public function getPreview(File $file, $crop) {
-		$preview = '';
+		$thumbnail = '';
+		$maxWidth = 150;
+		$maxHeight = 200;
 		if ($crop) {
-			$imageSetup = array('width' => '150m', 'height' => '200m', 'crop' => $crop);
+			$imageSetup = array('maxWidth' => $maxWidth, 'maxHeight' => $maxHeight, 'crop' => $crop);
 			$processedImage = $file->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $imageSetup);
 			// Only use a thumbnail if the processing process was successful by checking if image width is set
 			if ($processedImage->getProperty('width')) {
 				$imageUrl = $processedImage->getPublicUrl(TRUE);
-				$preview = '<img src="' . $imageUrl . '" ' .
-					'class="media-object thumbnail thumbnail-status" ' .
+				$thumbnail = '<img src="' . $imageUrl . '" ' .
+					'class="thumbnail thumbnail-status" ' .
 					'width="' . $processedImage->getProperty('width') . '" ' .
 					'height="' . $processedImage->getProperty('height') . '" >';
 			}
 		}
-		return '<div class="media-left t3js-image-manipulation-preview' . ($preview ? '' : ' hide'). '">' . $preview . '</div>';
+
+		$preview = '<div class="media-left">';
+		$preview .= '<div class="t3js-image-manipulation-preview media-object' . ($thumbnail ? '' : ' hide'). '" ';
+		// Set preview width/height needed by cropper
+		$preview .= 'data-preview-width="' . $maxWidth . '" data-preview-height="' . $maxHeight . '">';
+		$preview .= $thumbnail;
+		$preview .= '</div></div>';
+
+		return $preview;
 	}
 
 	/**

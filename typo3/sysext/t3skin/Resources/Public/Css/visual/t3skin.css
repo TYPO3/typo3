@@ -8281,6 +8281,19 @@ table#typo3-clipboard tr.bgColor5 td img {
 .cropper-bg {
   background-image: url("../../Images/cropper-background.png");
 }
+.cropper-preview-container {
+  overflow: hidden;
+  position: relative;
+}
+.cropper-preview-container img {
+  display: block;
+  position: absolute;
+  width: 100%;
+  min-width: 0!important;
+  min-height: 0!important;
+  max-width: none!important;
+  max-height: none!important;
+}
 .t3-help-link {
   display: inline!important;
 }
