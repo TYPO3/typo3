@@ -42,7 +42,7 @@ class TextpicPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDr
 			}
 
 			if ($row['image']) {
-				$itemContent .= $parentObject->thumbCode($row, 'tt_content', 'image') . '<br />';
+				$itemContent .= $parentObject->thumbCode($row, 'tt_content', 'image');
 
 				$fileReferences = \TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences('tt_content', 'image', $row);
 
@@ -50,7 +50,10 @@ class TextpicPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDr
 					$linkedContent = '';
 
 					foreach ($fileReferences as $fileReference) {
-						$linkedContent .= htmlspecialchars($fileReference->getDescription()) . '<br />';
+						$description = $fileReference->getDescription();
+						if ($description !== NULL && $description !== '') {
+							$linkedContent .= htmlspecialchars($description) . '<br />';
+						}
 					}
 
 					$itemContent .= $parentObject->linkEditContent($linkedContent, $row);
