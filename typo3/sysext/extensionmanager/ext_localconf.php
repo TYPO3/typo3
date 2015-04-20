@@ -20,12 +20,6 @@ if (TYPO3_MODE === 'BE') {
 			'scanAvailablePackages'
 		);
 		$signalSlotDispatcher->connect(
-			\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
-			'hasInstalledExtensions',
-			\TYPO3\CMS\Core\Package\PackageManager::class,
-			'updatePackagesForClassLoader'
-		);
-		$signalSlotDispatcher->connect(
 			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			'tablesDefinitionIsBeingBuilt',
 			\TYPO3\CMS\Core\Cache\Cache::class,
