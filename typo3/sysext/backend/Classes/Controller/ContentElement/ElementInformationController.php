@@ -125,6 +125,7 @@ class ElementInformationController {
 
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc->divClass = 'container';
 
 		if (isset($GLOBALS['TCA'][$this->table])) {
 			$this->initDatabaseRecord();
