@@ -2359,11 +2359,17 @@ This is a dump of the failures:
 		}
 		// Setting defaults if uc is empty
 		$updated = FALSE;
+		$originalUc = array();
+		if (is_array($this->uc) && isset($this->uc['ucSetByInstallTool'])) {
+			$originalUc = $this->uc;
+			unset($originalUc['ucSetByInstallTool'], $this->uc);
+		}
 		if (!is_array($this->uc)) {
 			$this->uc = array_merge(
 				$this->uc_default,
 				(array)$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC'],
-				GeneralUtility::removeDotsFromTS((array)$this->getTSConfigProp('setup.default'))
+				GeneralUtility::removeDotsFromTS((array)$this->getTSConfigProp('setup.default')),
+				$originalUc
 			);
 			$this->overrideUC();
 			$updated = TRUE;
