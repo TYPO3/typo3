@@ -267,7 +267,6 @@ class BackendController {
 				console = TYPO3.Backend.DebugConsole;
 			}';
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
-		$this->pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_cshmanual'));
 		// Set document title:
 		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
 		// Renders the module page

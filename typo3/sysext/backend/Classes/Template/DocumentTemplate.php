@@ -1512,6 +1512,7 @@ function jumpToUrl(URL) {
 	 */
 	protected function loadCshJavascript() {
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
+		$this->pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_cshmanual'));
 	}
 
 	/**
