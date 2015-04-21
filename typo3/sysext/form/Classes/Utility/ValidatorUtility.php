@@ -112,21 +112,23 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$prefix = $this->getPrefix();
 		$this->errors[$prefix] = array();
 		$result = TRUE;
-		foreach ($this->rules[$prefix] as $key => $element) {
-			$rule = $element['instance'];
-			$fieldName = $element['fieldName'];
-			if ($rule->isValid()) {
-				continue;
-			}
-			$result = FALSE;
-			if (!isset($this->errors[$prefix][$fieldName])) {
-				$this->errors[$prefix][$fieldName] = array();
-			}
-			$error = $rule->getError();
-			$this->errors[$prefix][$fieldName][$key][$key + 1] = $error['cObj'];
-			$this->errors[$prefix][$fieldName][$key][($key + 1) . '.'] = $error['cObj.'];
-			if ($element['breakOnError']) {
-				break;
+		if (is_array($this->rules[$prefix])) {
+			foreach ($this->rules[$prefix] as $key => $element) {
+				$rule = $element['instance'];
+				$fieldName = $element['fieldName'];
+				if ($rule->isValid()) {
+					continue;
+				}
+				$result = FALSE;
+				if (!isset($this->errors[$prefix][$fieldName])) {
+					$this->errors[$prefix][$fieldName] = array();
+				}
+				$error = $rule->getError();
+				$this->errors[$prefix][$fieldName][$key][$key + 1] = $error['cObj'];
+				$this->errors[$prefix][$fieldName][$key][($key + 1) . '.'] = $error['cObj.'];
+				if ($element['breakOnError']) {
+					break;
+				}
 			}
 		}
 		return $result;
