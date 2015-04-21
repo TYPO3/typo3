@@ -30,7 +30,7 @@ class LockFactory implements SingletonInterface {
 	protected $lockingStrategy = array(
 		SemaphoreLockStrategy::class => TRUE,
 		FileLockStrategy::class => TRUE,
-		SemaphoreLockStrategy::class => TRUE
+		SimpleLockStrategy::class => TRUE
 	);
 
 	/**
@@ -70,7 +70,8 @@ class LockFactory implements SingletonInterface {
 
 		/** @var LockingStrategyInterface $method */
 		foreach ($this->lockingStrategy as $method => $_) {
-			if ($capabilities & $method::getCapabilities()) {
+			$supportedCapabilities = $capabilities & $method::getCapabilities();
+			if ($supportedCapabilities === $capabilities) {
 				$queue->insert($method, $method::getPriority());
 			}
 		}

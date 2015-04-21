@@ -61,7 +61,7 @@ class LockFactoryTest extends UnitTestCase {
 	 * @test
 	 */
 	public function getLockerReturnsExpectedClass() {
-		$this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => TRUE]);
+		$this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => TRUE, DummyLock::class => TRUE]);
 		$locker = $this->mockFactory->createLocker('id', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED);
 		$this->assertInstanceOf(FileLockStrategy::class, $locker);
 	}

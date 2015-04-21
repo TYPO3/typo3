@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Locker;
 use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -786,18 +787,9 @@ class TypoScriptFrontendController {
 	protected $languageDependencies = array();
 
 	/**
-	 * Locking object for accessing "cache_pagesection"
-	 *
-	 * @var LockingStrategyInterface
+	 * @var LockingStrategyInterface[][]
 	 */
-	public $pagesection_lockObj;
-
-	/**
-	 * Locking object for accessing "cache_pages"
-	 *
-	 * @var LockingStrategyInterface
-	 */
-	public $pages_lockObj;
+	protected $locks = [];
 
 	/**
 	 * @var PageRenderer
@@ -2260,25 +2252,26 @@ class TypoScriptFrontendController {
 			return;
 		}
 
-		$this->pagesection_lockObj = NULL;
 		$pageSectionCacheContent = $this->tmpl->getCurrentPageData();
 		if (!is_array($pageSectionCacheContent)) {
-			// nothing in the cache, we acquire an exclusive lock now
-			$key = $this->id . '::' . $this->MP;
-			$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
-			$this->pagesection_lockObj = $lockFactory->createLocker($key);
-			if (!$this->pagesection_lockObj->acquire()) {
-				throw new \RuntimeException('Could not acquire lock for page section generation.', 1294586098);
-			}
-			// query the cache again to see if the data are there meanwhile
+			// Nothing in the cache, we acquire an "exclusive lock" for the key now.
+			// We use the Registry to store this lock centrally,
+			// but we protect the access again with a global exclusive lock to avoid race conditions
+
+			$this->acquireLock('pagesection', $this->id . '::' . $this->MP);
+			//
+			// from this point on we're the only one working on that page ($key)
+			//
+
+			// query the cache again to see if the page data are there meanwhile
 			$pageSectionCacheContent = $this->tmpl->getCurrentPageData();
 			if (is_array($pageSectionCacheContent)) {
-				// we have the content, nice that some other process did the work for us
-				$this->pagesection_lockObj->release();
-				$this->pagesection_lockObj = NULL;
+				// we have the content, nice that some other process did the work for us already
+				$this->releaseLock('pagesection');
 			} else {
-				// we keep the lock set, because we are the ones generating the page now and filling the cache
-				// the lock will be released in releaseLocks()
+				// We keep the lock set, because we are the ones generating the page now
+				// and filling the cache.
+				// This indicates that we have to release the lock in the Registry later in releaseLocks()
 			}
 		}
 
@@ -2293,7 +2286,6 @@ class TypoScriptFrontendController {
 		unset($pageSectionCacheContent);
 
 		// Look for page in cache only if a shift-reload is not sent to the server.
-		$this->pages_lockObj = NULL;
 		$lockHash = $this->getLockHash();
 		if (!$this->headerNoCache()) {
 			if ($this->all) {
@@ -2303,20 +2295,21 @@ class TypoScriptFrontendController {
 				$row = $this->getFromCache_queryRow();
 				if (!is_array($row)) {
 					// nothing in the cache, we acquire an exclusive lock now
-					$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
-					$this->pages_lockObj = $lockFactory->createLocker($lockHash);
-					if (!$this->pages_lockObj->acquire()) {
-						throw new \RuntimeException('Could not acquire lock for page content generation.', 1294586099);
-					}
+
+					$this->acquireLock('pages', $lockHash);
+					//
+					// from this point on we're the only one working on that page ($lockHash)
+					//
+
 					// query the cache again to see if the data are there meanwhile
 					$row = $this->getFromCache_queryRow();
 					if (is_array($row)) {
 						// we have the content, nice that some other process did the work for us
-						$this->pages_lockObj->release();
-						$this->pages_lockObj = NULL;
+						$this->releaseLock('pages');
 					} else {
-						// we keep the lock set, because we are the ones generating the page now and filling the cache
-						// the lock will be released in releaseLocks()
+						// We keep the lock set, because we are the ones generating the page now
+						// and filling the cache.
+						// This indicates that we have to release the lock in the Registry later in releaseLocks()
 					}
 				}
 				if (is_array($row)) {
@@ -2363,11 +2356,7 @@ class TypoScriptFrontendController {
 		}
 		// the user forced rebuilding the page cache or there was no pagesection information
 		// get a lock for the page content so other processes will not interrupt the regeneration
-		$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
-		$this->pages_lockObj = $lockFactory->createLocker($lockHash);
-		if (!$this->pages_lockObj->acquire()) {
-			throw new \RuntimeException('Could not acquire lock for page content generation.', 1294586100);
-		}
+		$this->acquireLock('pages', $lockHash);
 	}
 
 	/**
@@ -3271,14 +3260,8 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	public function releaseLocks() {
-		if ($this->pagesection_lockObj) {
-			$this->pagesection_lockObj->release();
-			$this->pagesection_lockObj = NULL;
-		}
-		if ($this->pages_lockObj) {
-			$this->pages_lockObj->release();
-			$this->pages_lockObj = NULL;
-		}
+		$this->releaseLock('pagesection');
+		$this->releaseLock('pages');
 	}
 
 	/**
@@ -3308,18 +3291,15 @@ class TypoScriptFrontendController {
 		$this->newHash = $this->getHash();
 
 		// If the pages_lock is set, we are in charge of generating the page.
-		if (is_object($this->pages_lockObj)) {
+		if (is_object($this->locks['pages']['accessLock'])) {
 			// Here we put some temporary stuff in the cache in order to let the first hit generate the page.
 			// The temporary cache will expire after a few seconds (typ. 30) or will be cleared by the rendered page,
 			// which will also clear and rewrite the cache.
 			$this->tempPageCacheContent();
 		}
 		// At this point we have a valid pagesection_cache and also some temporary page_cache content,
-		// so let all other processes proceed now. (They are blocked at the pagessection_lock in getFromCaceh())
-		if ($this->pagesection_lockObj) {
-			$this->pagesection_lockObj->release();
-			$this->pagesection_lockObj = NULL;
-		}
+		// so let all other processes proceed now. (They are blocked at the pagessection_lock in getFromCache())
+		$this->releaseLock('pagesection');
 
 		// Setting cache_timeout_default. May be overridden by PHP include scripts.
 		$this->cacheTimeOutDefault = (int)$this->config['config']['cache_period'];
@@ -4732,4 +4712,74 @@ class TypoScriptFrontendController {
 	public function getRequestedId() {
 		return $this->requestedId ?: $this->id;
 	}
+
+	/**
+	 * Acquire a page specific lock
+	 *
+	 * @param string $type
+	 * @param string $key
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+	 */
+	protected function acquireLock($type, $key) {
+		$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+		$this->locks[$type]['accessLock'] = $lockFactory->createLocker($type);
+
+		$this->locks[$type]['pageLock'] = $lockFactory->createLocker(
+			$key,
+			LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+		);
+
+		do {
+			if (!$this->locks[$type]['accessLock']->acquire()) {
+				throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1294586098);
+			}
+
+			try {
+				$locked = $this->locks[$type]['pageLock']->acquire(
+					LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK
+				);
+			} catch (LockAcquireWouldBlockException $e) {
+				// somebody else has the lock, we keep waiting
+
+				// first release the access lock
+				$this->locks[$type]['accessLock']->release();
+				// now lets make a short break (100ms) until we try again, since
+				// the page generation by the lock owner will take a while anyways
+				usleep(100000);
+				continue;
+			}
+			$this->locks[$type]['accessLock']->release();
+			if ($locked) {
+				break;
+			} else {
+				throw new \RuntimeException('Could not acquire page lock for ' . $key . '.', 1294586098);
+			}
+		} while (TRUE);
+	}
+
+	/**
+	 * Release a page specific lock
+	 *
+	 * @param string $type
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+	 */
+	protected function releaseLock($type) {
+		if ($this->locks[$type]['accessLock']) {
+			if (!$this->locks[$type]['accessLock']->acquire()) {
+				throw new \RuntimeException('Could not acquire access lock for "' . $type . '"".', 1294586098);
+			}
+
+			$this->locks[$type]['pageLock']->release();
+			$this->locks[$type]['pageLock']->destroy();
+			$this->locks[$type]['pageLock'] = NULL;
+
+			$this->locks[$type]['accessLock']->release();
+			$this->locks[$type]['accessLock'] = NULL;
+		}
+	}
+
 }

@@ -39,7 +39,7 @@ class SimpleLockStrategyTest extends UnitTestCase {
 	 */
 	public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking() {
 		$lock = $this->getAccessibleMock(SimpleLockStrategy::class, ['dummy'], ['999999999']);
-		$this->assertSame(PATH_site . SimpleLockStrategy::FILE_LOCK_FOLDER . md5('999999999'), $lock->_get('filePath'));
+		$this->assertSame(PATH_site . SimpleLockStrategy::FILE_LOCK_FOLDER  . 'simple_' . md5('999999999'), $lock->_get('filePath'));
 	}
 
 	/**

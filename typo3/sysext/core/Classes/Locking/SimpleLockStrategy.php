@@ -67,7 +67,7 @@ class SimpleLockStrategy implements LockingStrategyInterface {
 		if (!is_writable($path)) {
 			throw new LockCreateException('Cannot write to directory ' . $path, 1396278700);
 		}
-		$this->filePath = $path . md5((string)$subject);
+		$this->filePath = $path . 'simple_' . md5((string)$subject);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class SimpleLockStrategy implements LockingStrategyInterface {
 	 *
 	 * @param int $mode LOCK_CAPABILITY_EXCLUSIVE or self::LOCK_CAPABILITY_NOBLOCK
 	 * @return bool Returns TRUE if the lock was acquired successfully
-	 * @throws \RuntimeException with code 1428700748 if the acquire would have blocked and NOBLOCK was set
+	 * @throws LockAcquireWouldBlockException
 	 */
 	public function acquire($mode = self::LOCK_CAPABILITY_EXCLUSIVE) {
 		if ($this->isAcquired) {
@@ -177,7 +177,15 @@ class SimpleLockStrategy implements LockingStrategyInterface {
 	 * @return int Returns a priority for the method. 0 to 100, 100 is highest
 	 */
 	static public function getPriority() {
-		return 25;
+		return 50;
 	}
 
+	/**
+	 * Destroys the resource associated with the lock
+	 *
+	 * @return void
+	 */
+	public function destroy() {
+		@unlink($this->filePath);
+	}
 }

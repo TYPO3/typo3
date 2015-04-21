@@ -80,7 +80,7 @@ class MboxTransport implements \Swift_Transport {
 		$messageStr .= $message->toString();
 		$messageStr .= LF . LF;
 		$lockFactory = GeneralUtility::makeInstance(LockFactory::class);
-		$lockObject = $lockFactory->createLocker($this->debugFile);
+		$lockObject = $lockFactory->createLocker('mbox');
 		$lockObject->acquire();
 		// Write the mbox file
 		$file = @fopen($this->debugFile, 'a');
@@ -92,7 +92,7 @@ class MboxTransport implements \Swift_Transport {
 		@fclose($file);
 		GeneralUtility::fixPermissions($this->debugFile);
 		$lockObject->release();
-		// Return every receipient as "delivered"
+		// Return every recipient as "delivered"
 		$count = count((array)$message->getTo()) + count((array)$message->getCc()) + count((array)$message->getBcc());
 		return $count;
 	}

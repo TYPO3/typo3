@@ -34,4 +34,12 @@ class FileLockStrategyTest extends UnitTestCase {
 		$this->assertTrue(is_dir(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER));
 	}
 
+	/**
+	 * @test
+	 */
+	public function constructorSetsFilePathToExpectedValue() {
+		$lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
+		$this->assertSame(PATH_site . FileLockStrategy::FILE_LOCK_FOLDER  . 'flock_' . md5('999999999'), $lock->_get('filePath'));
+	}
+
 }

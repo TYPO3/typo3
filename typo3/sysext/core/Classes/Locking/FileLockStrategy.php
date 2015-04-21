@@ -65,7 +65,7 @@ class FileLockStrategy implements LockingStrategyInterface {
 		if (!is_writable($path)) {
 			throw new LockCreateException('Cannot write to directory ' . $path, 1396278700);
 		}
-		$this->filePath = $path . md5((string)$subject);
+		$this->filePath = $path . 'flock_' . md5((string)$subject);
 	}
 
 	/**
@@ -142,7 +142,7 @@ class FileLockStrategy implements LockingStrategyInterface {
 	 * @return int Returns a priority for the method. 0 to 100, 100 is highest
 	 */
 	static public function getPriority() {
-		return 50;
+		return 75;
 	}
 
 	/**
@@ -150,7 +150,7 @@ class FileLockStrategy implements LockingStrategyInterface {
 	 */
 	static public function getCapabilities() {
 		if (PHP_SAPI === 'isapi') {
-			// From php docs: When using a multithreaded server API like ISAPI you may not be able to rely on flock()
+			// From php docs: When using a multi-threaded server API like ISAPI you may not be able to rely on flock()
 			// to protect files against other PHP scripts running in parallel threads of the same server instance!
 			return 0;
 		}
@@ -158,4 +158,12 @@ class FileLockStrategy implements LockingStrategyInterface {
 		return $capabilities;
 	}
 
+	/**
+	 * Destroys the resource associated with the lock
+	 *
+	 * @return void
+	 */
+	public function destroy() {
+		@unlink($this->filePath);
+	}
 }

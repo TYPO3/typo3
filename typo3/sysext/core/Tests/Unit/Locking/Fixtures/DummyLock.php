@@ -71,4 +71,11 @@ class DummyLock implements LockingStrategyInterface {
 		return FALSE;
 	}
 
+	/**
+	 * Destroys the resource associated with the lock
+	 *
+	 * @return void
+	 */
+	public function destroy() {
+	}
 }

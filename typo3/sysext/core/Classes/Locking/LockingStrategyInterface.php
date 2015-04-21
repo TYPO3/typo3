@@ -74,6 +74,13 @@ interface LockingStrategyInterface {
 	public function release();
 
 	/**
+	 * Destroys the resource associated with the lock
+	 *
+	 * @return void
+	 */
+	public function destroy();
+
+	/**
 	 * Get status of this lock
 	 *
 	 * @return bool Returns TRUE if lock is acquired by this locker, FALSE otherwise
