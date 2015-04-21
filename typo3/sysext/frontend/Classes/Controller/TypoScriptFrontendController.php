@@ -2339,6 +2339,12 @@ class TypoScriptFrontendController {
 					$this->cacheContentFlag = TRUE;
 					$this->cacheExpires = $row['expires'];
 
+					// Restore page title information, this is needed to generate the page title for
+					// partially cached pages.
+					$this->page['title'] = $row['pageTitleInfo']['title'];
+					$this->altPageTitle = $row['pageTitleInfo']['altPageTitle'];
+					$this->indexedDocTitle = $row['pageTitleInfo']['indexedDocTitle'];
+
 					if (isset($this->config['config']['debug'])) {
 						$debugCacheTime = (bool)$this->config['config']['debug'];
 					} else {
@@ -3142,7 +3148,12 @@ class TypoScriptFrontendController {
 			'temp_content' => $this->tempContent,
 			'cache_data' => $data,
 			'expires' => $expirationTstamp,
-			'tstamp' => $GLOBALS['EXEC_TIME']
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'pageTitleInfo' => array(
+				'title' => $this->page['title'],
+				'altPageTitle' => $this->altPageTitle,
+				'indexedDocTitle' => $this->indexedDocTitle
+			)
 		);
 		$this->cacheExpires = $expirationTstamp;
 		$this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
@@ -3403,13 +3414,13 @@ class TypoScriptFrontendController {
 			/** @var PageRenderer $pageRenderer */
 			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
 			$this->setPageRenderer($pageRenderer);
-			// restore current page title in this class to prevent overwriting custom titles of USER plugin coming from the cache
-			$this->indexedDocTitle = $this->altPageTitle = $this->page['title'] = $pageRenderer->getTitle();
 		}
+
 		$this->recursivelyReplaceIntPlaceholdersInContent();
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
 		$this->regeneratePageTitle();
+
 		$this->content = str_replace(
 			array(
 				'<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
