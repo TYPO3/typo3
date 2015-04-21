@@ -116,7 +116,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->errors[$prefix] = array();
 		$result = TRUE;
 		if (is_array($this->rules[$prefix])) {
-				foreach ($this->rules[$prefix] as $key => $element) {
+			foreach ($this->rules[$prefix] as $key => $element) {
 				/* @var $rule AbstractValidator */
 				$rule = $element['instance'];
 				$fieldName = $element['fieldName'];
