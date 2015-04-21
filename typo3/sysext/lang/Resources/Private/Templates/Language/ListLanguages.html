@@ -35,8 +35,8 @@
 			<f:for each="{languages}" as="language" iteration="iterator">
 				<tr id="language-{language.locale}" data-locale="{language.locale}" class="{f:if(condition: language.selected, then: 'enabled', else: 'disabled')} {f:if(condition: iterator.isEven, then: 'even', else: 'odd')}" role="row">
 					<td>
-						<a class="deactivateLanguageLink" data-action="deactivateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span title="Deactivate" class="t3-icon fa fa-minus-square"> </span></a>
-						<a class="activateLanguageLink" data-action="activateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span title="Activate" class="t3-icon fa fa-plus-circle"> </span></a>
+						<a class="btn btn-default deactivateLanguageLink" data-action="deactivateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span title="Deactivate" class="t3-icon fa fa-minus-square"> </span></a>
+						<a class="btn btn-default activateLanguageLink" data-action="activateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="{f:if(condition: language.selected, then: 'true', else: 'false')}"><span title="Activate" class="t3-icon fa fa-plus-circle"> </span></a>
 					</td>
 					<td class="sorting_1">{language.label}</td>
 					<td>{language.locale}</td>
@@ -44,7 +44,7 @@
 						<f:format.date date="{language.lastUpdate}" format="Y-m-d H:i" />
 					</td>
 					<td class="actions">
-						<a class="updateLanguageLink" data-action="updateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="true"><span title="Download" class="t3-icon fa fa-download"> </span></a>
+						<a class="btn btn-default updateLanguageLink" data-action="updateLanguage" data-locale="{language.locale}" data-language="{language.label}" data-selected="true"><span title="Download" class="t3-icon fa fa-download"> </span></a>
 						<div class="progressBar">
 							<div class="progress">
 								<div class="progress-text"></div>
