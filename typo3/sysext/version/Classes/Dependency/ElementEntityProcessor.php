@@ -164,6 +164,11 @@ class ElementEntityProcessor {
 	 * @return void
 	 */
 	public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName) {
+		if (!BackendUtility::isTableWorkspaceEnabled($caller->getTable())) {
+			$caller->setInvalid(TRUE);
+			return;
+		}
+
 		$versionRecord = $caller->getRecord();
 		// If version record does not exist, it probably has been deleted (cleared from workspace), this means,
 		// that the reference index still has an old reference pointer, which is "fine" for deleted parents
