@@ -1083,7 +1083,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						if (!empty($schedulerRecord['lastexecution_failure'])) {
 							// Try to get the stored exception object
 							/** @var $exception \Exception */
-							$exception = unserialize($schedulerRecord['lastexecution_failure']);
+							$exception = @unserialize($schedulerRecord['lastexecution_failure']);
 							// If the exception could not be unserialized, issue a default error message
 							if ($exception === FALSE || $exception instanceof \__PHP_Incomplete_Class) {
 								$labelDescription = $this->getLanguageService()->getLL('msg.executionFailureDefault');
