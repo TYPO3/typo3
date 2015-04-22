@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Openid;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Service\AbstractService;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -419,7 +418,7 @@ class OpenidService extends AbstractService {
 			// It is much easier for the Backend to manage users.
 			// Notice: 'login_status' parameter name cannot be changed!
 			// It is essential for BE user authentication.
-			$returnURL = BackendUtility::getModuleUrl('openid_return', array('login_status' => 'login'));
+			$returnURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'sysext/' . $this->extKey . '/class.tx_openid_return.php?login_status=login';
 		}
 		if (GeneralUtility::_GP('tx_openid_mode') === 'finish') {
 			$requestURL = GeneralUtility::_GP('tx_openid_location');

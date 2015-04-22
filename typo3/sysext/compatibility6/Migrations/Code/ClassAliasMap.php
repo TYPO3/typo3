@@ -1080,7 +1080,6 @@ return array(
 	'SC_mod_tools_dbint_index' => \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView::class,
 	'tx_openid_eID' => \TYPO3\CMS\Openid\OpenidEid::class,
 	'tx_openid_mod_setup' => \TYPO3\CMS\Openid\OpenidModuleSetup::class,
-	'tx_openid_return' => \TYPO3\CMS\Openid\OpenidReturn::class,
 	'tx_openid_sv1' => \TYPO3\CMS\Openid\OpenidService::class,
 	'tx_openid_store' => \TYPO3\CMS\Openid\OpenidStore::class,
 	'SC_mod_web_perm_ajax' => \TYPO3\CMS\Beuser\Controller\PermissionAjaxController::class,

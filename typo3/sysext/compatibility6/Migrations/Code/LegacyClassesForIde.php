@@ -5369,11 +5369,6 @@ class tx_openid_mod_setup extends \TYPO3\CMS\Openid\OpenidModuleSetup {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_openid_return extends \TYPO3\CMS\Openid\OpenidReturn {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tx_openid_sv1 extends \TYPO3\CMS\Openid\OpenidService {}
 
 /**
