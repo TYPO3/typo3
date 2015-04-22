@@ -1,11 +1,11 @@
-=================================================
-Feature - #65585: Add TCA type image_manipulation
-=================================================
+================================================
+Feature - #65585: Add TCA type imageManipulation
+================================================
 
 Description
 ===========
 
-TCA type `image_manipulation` brings a image manipulation wizard to the core.
+TCA type `imageManipulation` brings a image manipulation wizard to the core.
 
 This first version brings image cropping with the possibility to
 set a certain aspect ratio for the cropped area. The
@@ -19,7 +19,7 @@ to create adjusted images is also adjusted to handle the new format.
 Impact
 ======
 
-There is an new TCA type column type `image_manipulation` it supports the following config:
+There is an new TCA type column type `imageManipulation` it supports the following config:
 
 - file_field: string, default `uid_local`
 - enableZoom: bool, default `FALSE`

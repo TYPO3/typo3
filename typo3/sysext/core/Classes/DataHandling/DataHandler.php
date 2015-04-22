@@ -1598,7 +1598,7 @@ class DataHandler {
 				$res = $this->checkValue_text($res, $value, $tcaFieldConf, $PP, $field);
 				break;
 			case 'passthrough':
-			case 'image_manipulation':
+			case 'imageManipulation':
 			case 'user':
 				$res['value'] = $value;
 				break;
