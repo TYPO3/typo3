@@ -346,7 +346,7 @@ class PageRepository {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
 			foreach ($pagesInput as $origPage) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
-					$hookObject = GeneralUtility::makeInstance($classRef);
+					$hookObject = GeneralUtility::getUserObj($classRef);
 					if (!$hookObject instanceof PageRepositoryGetPageOverlayHookInterface) {
 						throw new \UnexpectedValueException('$hookObject must implement interface ' . PageRepositoryGetPageOverlayHookInterface::class, 1269878881);
 					}
