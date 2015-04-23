@@ -44,8 +44,8 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 
 	onRender : function() {
 		TYPO3.iframePanel.superclass.onRender.apply(this, arguments);
-		this.iframe = Ext.isIE ? this.body.dom.contentWindow : window.frames[this.name];
-		this.body.dom[Ext.isIE ? 'onreadystatechange' : 'onload'] = this.loadHandler.createDelegate(this);
+		this.iframe = window.frames[this.name];
+		this.body.dom['onload'] = this.loadHandler.createDelegate(this);
 	},
 
 	loadHandler: function() {
