@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Locker;
 use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -3953,17 +3954,25 @@ class TypoScriptFrontendController {
 			'"typo3conf/ext/',
 			'"' . TYPO3_mainDir . 'contrib/',
 			'"' . TYPO3_mainDir . 'ext/',
-			'"' . TYPO3_mainDir . 'sysext/',
-			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+			'"' . TYPO3_mainDir . 'sysext/'
 		);
 		$replace = array(
 			'"' . $this->absRefPrefix . 'typo3temp/',
 			'"' . $this->absRefPrefix . 'typo3conf/ext/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'contrib/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
-			'"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/',
-			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+			'"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/'
 		);
+		/** @var $storageRepository StorageRepository */
+		$storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
+		$storages = $storageRepository->findAll();
+		foreach ($storages as $storage) {
+			if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
+				$folder = $storage->getPublicUrl($storage->getRootLevelFolder(), TRUE);
+				$search[] = '"' . $folder;
+				$replace[] = '"' . $this->absRefPrefix . $folder;
+			}
+		}
 		// Process additional directories
 		$directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], TRUE);
 		foreach ($directories as $directory) {
