@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -4255,7 +4256,6 @@ if (version == "n3") {
 			'"' . TYPO3_mainDir . 'contrib/',
 			'"' . TYPO3_mainDir . 'ext/',
 			'"' . TYPO3_mainDir . 'sysext/',
-			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
 			'"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
 		);
 		$replace = array(
@@ -4264,9 +4264,18 @@ if (version == "n3") {
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'contrib/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/',
-			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
 			'"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir']
 		);
+		/** @var $storageRepository StorageRepository */
+		$storageRepository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+		$storages = $storageRepository->findAll();
+		foreach ($storages as $storage) {
+			if ($storage->getDriverType() === 'Local' && $storage->isPublic() && $storage->isOnline()) {
+				$folder = $storage->getPublicUrl($storage->getRootLevelFolder(), TRUE);
+				$search[] = '"' . $folder;
+				$replace[] = '"' . $this->absRefPrefix . $folder;
+			}
+		}
 		// Process additional directories
 		$directories = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], TRUE);
 		foreach ($directories as $directory) {
