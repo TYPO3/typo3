@@ -419,6 +419,7 @@ tt_content.stdWrap {
 					space = before
 					constant = {$content.spaceBefore}
 					classStdWrap {
+						required = 1
 						noTrimWrap = |csc-space-before-| |
 					}
 				}
@@ -429,6 +430,7 @@ tt_content.stdWrap {
 					space = after
 					constant = {$content.spaceAfter}
 					classStdWrap {
+						required = 1
 						noTrimWrap = |csc-space-after-| |
 					}
 				}
@@ -504,6 +506,7 @@ tt_content.stdWrap {
 					space = before
 					constant = {$content.spaceBefore}
 					classStdWrap {
+						required = 1
 						wrap = csc-space-before-|
 					}
 				}
