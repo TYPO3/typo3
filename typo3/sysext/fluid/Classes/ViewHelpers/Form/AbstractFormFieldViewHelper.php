@@ -110,7 +110,20 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 			$this->addAdditionalIdentityPropertiesIfNeeded();
 			$value = $this->getPropertyValue();
 		}
-		if ($convertObjects === TRUE && is_object($value)) {
+		if ($convertObjects) {
+			$value = $this->convertToPlainValue($value);
+		}
+		return $value;
+	}
+
+	/**
+	 * Converts an arbitrary value to a plain value
+	 *
+	 * @param mixed $value The value to convert
+	 * @return mixed
+	 */
+	protected function convertToPlainValue($value) {
+		if (is_object($value)) {
 			$identifier = $this->persistenceManager->getIdentifierByObject($value);
 			if ($identifier !== NULL) {
 				$value = $identifier;

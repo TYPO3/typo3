@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper
+	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $viewHelper;
 
@@ -181,6 +181,38 @@ class CheckboxViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelper->expects($this->any())->method('getPropertyValue')->will($this->returnValue(new \stdClass()));
 		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 */
+	public function renderSetsCheckedAttributeForListOfObjects() {
+		$mockTagBuilder = $this->getMock('TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder', array('setTagName', 'addAttribute'));
+		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'checkbox');
+		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo[]');
+		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 2);
+		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
+
+		$object1 = new \stdClass();
+		$object2 = new \stdClass();
+		$object3 = new \stdClass();
+
+		$this->viewHelper->expects($this->any())->method('getName')->willReturn('foo');
+		$this->viewHelper->expects($this->any())->method('getValue')->willReturn(2);
+		$this->viewHelper->expects($this->any())->method('isObjectAccessorMode')->willReturn(TRUE);
+		$this->viewHelper->expects($this->any())->method('getPropertyValue')->willReturn(array($object1, $object2, $object3));
+		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$mockPersistenceManager = $this->getMock('TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface');
+		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValueMap(array(
+			array($object1, 1),
+			array($object2, 2),
+			array($object3, 3),
+		)));
+		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
