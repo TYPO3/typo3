@@ -8076,7 +8076,10 @@ class ContentObjectRenderer {
 				$languageQuery = $conf['languageField'] . ' IN (0,-1)';
 				// Use this option to include records that don't have a default translation
 				// (originalpointerfield is 0 and the language field contains the requested language)
-				if (!empty($conf['includeRecordsWithoutDefaultTranslation'])) {
+				$includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.']) ?
+					$this->stdWrap($conf['includeRecordsWithoutDefaultTranslation'], $conf['includeRecordsWithoutDefaultTranslation.']) :
+					$conf['includeRecordsWithoutDefaultTranslation'];
+				if (!empty(trim($includeRecordsWithoutDefaultTranslation))) {
 					$languageQuery .= ' OR (' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ' = 0 AND ' .
 						$conf['languageField'] . ' = ' . $sys_language_content . ')';
 				}
