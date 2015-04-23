@@ -248,9 +248,9 @@ lib.stdheader {
 	# HTML5 subheader
 	20 = CASE
 	20 {
-		key {
-			field = header_layout
-		}
+		key.field = header_layout
+		key.ifEmpty = {$content.defaultHeaderType}
+		key.ifEmpty.override.data = register: defaultHeaderType
 
 		default = TEXT
 		default {
