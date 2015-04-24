@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Setup\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * Script class for the Setup module
@@ -362,22 +363,22 @@ class SetupModuleController {
 		$this->content .= $this->doc->header($this->getLanguageService()->getLL('UserSettings'));
 		// Show if setup was saved
 		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('setupWasUpdated'), $this->getLanguageService()->getLL('UserSettings'));
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('setupWasUpdated'), $this->getLanguageService()->getLL('UserSettings'));
 			$this->content .= $flashMessage->render();
 		}
 		// Show if temporary data was cleared
 		if ($this->tempDataIsCleared) {
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('tempDataClearedFlashMessage'), $this->getLanguageService()->getLL('tempDataCleared'));
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('tempDataClearedFlashMessage'), $this->getLanguageService()->getLL('tempDataCleared'));
 			$this->content .= $flashMessage->render();
 		}
 		// Show if temporary data was cleared
 		if ($this->settingsAreResetToDefault) {
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('settingsAreReset'), $this->getLanguageService()->getLL('resetConfiguration'));
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('settingsAreReset'), $this->getLanguageService()->getLL('resetConfiguration'));
 			$this->content .= $flashMessage->render();
 		}
 		// Notice
 		if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('activateChanges'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('activateChanges'), '', FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		// If password is updated, output whether it failed or was OK.
@@ -385,13 +386,13 @@ class SetupModuleController {
 			$flashMessage = NULL;
 			switch ($this->passwordIsUpdated) {
 				case self::PASSWORD_OLD_WRONG:
-					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('oldPassword_failed'), $this->getLanguageService()->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('oldPassword_failed'), $this->getLanguageService()->getLL('newPassword'), FlashMessage::ERROR);
 					break;
 				case self::PASSWORD_NOT_THE_SAME:
-					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('newPassword_failed'), $this->getLanguageService()->getLL('newPassword'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('newPassword_failed'), $this->getLanguageService()->getLL('newPassword'), FlashMessage::ERROR);
 					break;
 				case self::PASSWORD_UPDATED:
-					$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('newPassword_ok'), $this->getLanguageService()->getLL('newPassword'));
+					$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $this->getLanguageService()->getLL('newPassword_ok'), $this->getLanguageService()->getLL('newPassword'));
 					break;
 			}
 			if ($flashMessage) {
@@ -652,7 +653,7 @@ class SetupModuleController {
 				</select>';
 		if ($this->getBackendUser()->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $this->getBackendUser()->uc['lang']))) {
 			$languageUnavailableWarning = 'The selected language "' . $this->getLanguageService()->getLL(('lang_' . $this->getBackendUser()->uc['lang']), TRUE) . '" is not available before the language files are installed.<br />' . ($this->getBackendUser()->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
-			$languageUnavailableMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $languageUnavailableWarning, '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+			$languageUnavailableMessage = GeneralUtility::makeInstance(FlashMessage::class, $languageUnavailableWarning, '', FlashMessage::WARNING);
 			$languageCode = $languageUnavailableMessage->render() . $languageCode;
 		}
 		return $languageCode;
