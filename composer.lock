@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c09697f76edc6e21f5e7ba1157a9fabc",
+    "hash": "6caf13fd33cb4b362af8e5742039110e",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -114,20 +114,20 @@
         },
         {
             "name": "pear/http_request2",
-            "version": "v2.2.1",
+            "version": "dev-trunk",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/HTTP_Request2.git",
-                "reference": "d6c81670c504045248c1afdf896bb9a3288158de"
+                "reference": "674ca38c44e0da062799bde776751424f754d0bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/HTTP_Request2/zipball/d6c81670c504045248c1afdf896bb9a3288158de",
-                "reference": "d6c81670c504045248c1afdf896bb9a3288158de",
+                "url": "https://api.github.com/repos/pear/HTTP_Request2/zipball/f36670a10bb9586d0e5f9d291f979cb6c8f94bfc",
+                "reference": "674ca38c44e0da062799bde776751424f754d0bc",
                 "shasum": ""
             },
             "require": {
-                "pear/net_url2": ">=2.0.0",
+                "pear/net_url2": "~2.2.0",
                 "pear/pear_exception": "*",
                 "php": ">=5.2.0"
             },
@@ -144,14 +144,16 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "./"
+            ],
             "license": [
                 "BSD-3-Clause"
             ],
             "authors": [
                 {
                     "name": "Alexey Borzov",
-                    "email": "avb@php.net",
-                    "role": "Developer HTML_Common2"
+                    "email": "avb@php.net"
                 }
             ],
             "description": "Provides an easy way to perform HTTP requests.",
@@ -162,7 +164,7 @@
                 "http",
                 "request"
             ],
-            "time": "2014-01-16 17:27:21"
+            "time": "2015-06-20 11:45:01"
         },
         {
             "name": "pear/net_url2",
@@ -2097,6 +2099,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "psr/log": 20,
+        "pear/http_request2": 20,
         "mikey179/vfsstream": 20
     },
     "prefer-stable": false,
