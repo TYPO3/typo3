@@ -345,7 +345,6 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function getButtons() {
 		$buttons = array(
-			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', ''),
 			'shortcut' => '',
 			'open_new_window' => $this->openInNewWindow()
 		);
