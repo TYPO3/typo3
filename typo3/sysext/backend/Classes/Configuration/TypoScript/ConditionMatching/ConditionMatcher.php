@@ -41,7 +41,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function evaluateCondition($string) {
 		list($key, $value) = GeneralUtility::trimExplode('=', $string, FALSE, 2);
-		$result = parent::evaluateConditionCommon($key, $value);
+		$result = $this->evaluateConditionCommon($key, $value);
 		if (is_bool($result)) {
 			return $result;
 		} else {
@@ -102,7 +102,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function getVariable($var) {
 		$vars = explode(':', $var, 2);
-		return parent::getVariableCommon($vars);
+		return $this->getVariableCommon($vars);
 	}
 
 	/**

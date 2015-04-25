@@ -32,7 +32,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function evaluateCondition($string) {
 		list($key, $value) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $string, FALSE, 2);
-		$result = parent::evaluateConditionCommon($key, $value);
+		$result = $this->evaluateConditionCommon($key, $value);
 		if (is_bool($result)) {
 			return $result;
 		} else {
@@ -85,7 +85,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 	 */
 	protected function getVariable($var) {
 		$vars = explode(':', $var, 2);
-		$val = parent::getVariableCommon($vars);
+		$val = $this->getVariableCommon($vars);
 		if (is_null($val)) {
 			$splitAgain = explode('|', $vars[1], 2);
 			$k = trim($splitAgain[0]);
