@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -229,9 +230,13 @@ class LoginController {
 
 		// Background Image
 		if (!empty($extConf['loginBackgroundImage'])) {
+			$backgroundImage = $this->getUriForFileName($extConf['loginBackgroundImage']);
 			$this->getDocumentTemplate()->inDocStylesArray[] = '
 				@media (min-width: 768px){
-					.typo3-login { background-image: url("' . $extConf['loginBackgroundImage'] . '"); }
+					.typo3-login-carousel-control.right,
+					.typo3-login-carousel-control.left,
+					.panel-login { border: 0; }
+					.typo3-login { background-image: url("' . $backgroundImage . '"); }
 				}
 			';
 		}
@@ -266,7 +271,11 @@ class LoginController {
 			} else {
 				$logo = 'EXT:backend/Resources/Public/Images/typo3_orange.svg';
 			}
+			$this->getDocumentTemplate()->inDocStylesArray[] = '
+				.typo3-login-logo .typo3-login-image { max-width: 150px; }
+			';
 		}
+		$logo = $this->getUriForFileName($logo);
 
 		// Start form
 		$formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'loginForm' : 'logoutForm';
@@ -280,6 +289,10 @@ class LoginController {
 			'presetOpenId' => $this->openIdUrl,
 			'formType' => $formType,
 			'logo' => $logo,
+			'images' => array(
+				'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
+				'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
+			),
 			'isOpenIdLoaded' => ExtensionManagementUtility::isLoaded('openid'),
 			'copyright' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
 			'loginNewsItems' => $this->getSystemNews()
@@ -481,6 +494,31 @@ class LoginController {
 			'<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' .
 			$this->interfaceSelector_hidden . $this->addFields_hidden;
 		return $output;
+	}
+
+	/**
+	 * Returns the uri of a relative reference, resolves the "EXT:" prefix
+	 * (way of referring to files inside extensions) and checks that the file is inside
+	 * the PATH_site of the TYPO3 installation
+	 *
+	 * @param string $filename The input filename/filepath to evaluate
+	 * @return string Returns the filename of $filename if valid, otherwise blank string.
+	 * @internal
+	 */
+	private function getUriForFileName($filename) {
+		$urlPrefix = '';
+		if (strpos($filename, '://')) {
+			$urlPrefix = '';
+		} elseif (strpos($filename, 'EXT:') === 0) {
+			$absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
+			$filename = '';
+			if ($absoluteFilename !== '') {
+				$filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
+			}
+		} elseif (strpos($filename, '/') !== 0) {
+			$urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+		}
+		return $urlPrefix . $filename;
 	}
 
 	/**

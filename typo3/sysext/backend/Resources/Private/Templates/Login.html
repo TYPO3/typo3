@@ -4,7 +4,7 @@
 			<div class="panel panel-lg panel-login">
 				<div class="panel-body">
 					<div class="typo3-login-logo">
-						<f:image src="{logo}" class="typo3-login-image" />
+						<img src="{logo}" class="typo3-login-image" />
 					</div>
 					<f:render section="{formType}" arguments="{_all}" />
 				</div>
@@ -13,7 +13,7 @@
 					<div class="login-copyright-wrap">
 						<a href="#loginCopyright" class="typo3-login-copyright-link collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="loginCopyright">
 							<span><f:translate key="{labelPrefixPath}copyright.link" /></span>
-							<f:image src="EXT:backend/Resources/Public/Images/typo3_orange.svg" alt="{f:translate(key: '{labelPrefixPath}typo3.logo')}" width="70" height="20" />
+							<img src="{images.typo3}" alt="{f:translate(key: '{labelPrefixPath}typo3.logo')}" width="70" height="20" />
 						</a>
 						<div id="loginCopyright" class="collapse">
 							<div class="typo3-login-copyright-text">
@@ -63,7 +63,7 @@
 					<div class="form-control-holder">
 						<input type="text" id="t3-username" name="username" value="{presetUsername}" placeholder="{f:translate(key: '{labelPrefixPath}labels.username')}" class="form-control input-login t3js-clearable t3js-login-username-field" autofocus="autofocus" required="required">
 						<div class="form-notice-capslock hidden t3js-login-alert-capslock">
-							<f:image src="EXT:backend/Resources/Public/Images/icon_capslock.svg" width="14" height="14" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
+							<img src="{images.capslock}" width="14" height="14" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
 						</div>
 					</div>
 				</div>
@@ -73,7 +73,7 @@
 					<div class="form-control-holder">
 						<input type="password" id="t3-password" name="p_field" value="{presetPassword}" placeholder="{f:translate(key: '{labelPrefixPath}labels.password')}" class="form-control input-login t3js-clearable t3js-login-password-field" required="required">
 						<div class="form-notice-capslock hidden t3js-login-alert-capslock">
-							<f:image src="EXT:backend/Resources/Public/Images/icon_capslock.svg" width="14" height="14" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
+							<img src="{images.capslock}" width="14" height="14" alt="{f:translate(key: '{labelPrefixPath}error.capslock')}" title="{f:translate(key: '{labelPrefixPath}error.capslock')}" />
 						</div>
 					</div>
 				</div>

@@ -13,6 +13,7 @@
 
 @login-width:				360px;
 @login-bg:					#eee;
+@login-border-radius:		5px;
 
 @login-highlight:			#ff8800;
 @login-btn-text:			#fff;
@@ -98,8 +99,15 @@
 //
 .panel-login {
 	border-color: darken(@login-bg, 10%);
+	border-radius: @login-border-radius;
+	.panel-heading {
+		.border-top-radius((@login-border-radius - 1));
+	}
 	.panel-body {
 		border-bottom: 3px solid @login-highlight;
+	}
+	.panel-footer {
+		.border-bottom-radius((@login-border-radius - 1));
 	}
 	a {
 		font-weight: bold;
