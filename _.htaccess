@@ -106,9 +106,11 @@ RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
 # For httpd.conf, use these lines instead of the next ones:
 # RewriteRule ^/TYPO3root/fileadmin/(.*/)?_recycler_/ - [F]
 # RewriteRule ^/TYPO3root/fileadmin/templates/.*(\.txt|\.ts)$ - [F]
+# RewriteRule ^/TYPO3root/typo3conf/ext/[^/]+/Configuration/ - [F]
 # RewriteRule ^/TYPO3root/typo3conf/ext/[^/]+/Resources/Private/ - [F]
 RewriteRule ^fileadmin/(.*/)?_recycler_/ - [F]
 RewriteRule ^fileadmin/templates/.*(\.txt|\.ts)$ - [F]
+RewriteRule ^typo3conf/ext/[^/]+/Configuration/ - [F]
 RewriteRule ^typo3conf/ext/[^/]+/Resources/Private/ - [F]
 
 # Stop rewrite processing, if we are in the typo3/ directory.
