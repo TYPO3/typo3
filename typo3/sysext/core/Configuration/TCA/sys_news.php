@@ -37,7 +37,6 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
-				'max' => '20',
 				'eval' => 'datetime',
 				'default' => '0'
 			)
@@ -48,7 +47,6 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '13',
-				'max' => '20',
 				'eval' => 'datetime',
 				'default' => '0'
 			)
