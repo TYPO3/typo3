@@ -34,6 +34,7 @@ an extension's ext_localconf.php
 This requires the class `Item` and its method `getItem()` in EXT:extension\Classes\SystemInformation\Item.php:
 
 .. code-block:: php
+
 	class Item {
 		public function getItem() {
 			return array(array(
@@ -51,6 +52,7 @@ Due to the SignalSlot internals, the data array must be encapsulated with anothe
 The icon `extensions-example-information-icon` must be registered in ext_localconf.php:
 
 .. code-block:: php
+
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
 		array(
 			'information-icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/Icons/information-icon.png'
@@ -81,6 +83,7 @@ Messages are shown at the bottom og the dropdown. An extension can provide its o
 This requires the class `Message` and its method `getMessage()` in EXT:extension\Classes\SystemInformation\Message.php:
 
 .. code-block:: php
+
 	class Message {
 		public function getMessage() {
 			return array(array(

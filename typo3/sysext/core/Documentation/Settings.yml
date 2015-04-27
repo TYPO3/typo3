@@ -8,4 +8,11 @@ conf.py:
   project: Core ChangeLog
   version: 7
   release: 7
+  intersphinx_mapping:
+    t3tsref:
+    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - null
+    t3api:
+    - http://docs.typo3.org/typo3cms/CoreApiReference/
+    - null
 ...

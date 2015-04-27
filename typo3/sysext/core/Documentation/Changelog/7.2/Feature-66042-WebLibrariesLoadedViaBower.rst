@@ -16,7 +16,7 @@ on a local machine) installs all needed dependencies defined in bower.json. The 
 where the files are put. To set up the third-party libraries and their dependencies, execute the following
 command.
 
-.. code-block::
+.. code-block:: text
 
 	bower install
 

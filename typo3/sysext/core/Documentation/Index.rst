@@ -50,6 +50,7 @@ Old changes
 
 	Changelog/7.0/Index
 	Changelog/7.1/Index
+	Changelog/7.2/Index
 
 How to contribute
 =================

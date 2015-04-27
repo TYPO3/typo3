@@ -8,7 +8,7 @@ Description
 As a fix for wrong mimeType detection for SVG files without XML prologue we added a new setting to map known file extensions to mimeTypes.
 The new setting is ``$GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']`` which contains an array:
 
-.. code-block::
+.. code-block:: php
 
 	array(
 		'svg' => 'image/svg+xml'

@@ -7,8 +7,8 @@ Description
 
 A new functionality is introduced in the HtmlParser that allows the stripping of empty HTML tags.
 
-It can be used in the Frontend by using the :ref:`HTMLparser<t3tsref:htmlparser>` TypoScript
-configuration of :ref:`stdWrap<t3tsref:stdwrap-htmlparser>`:
+It can be used in the Frontend by using the :ref:`HTMLparser <t3tsref:htmlparser>` TypoScript
+configuration of :ref:`stdWrap <t3tsref:stdwrap-htmlparser>`:
 
 .. code-block:: typoscript
 
@@ -22,7 +22,7 @@ configuration of :ref:`stdWrap<t3tsref:stdwrap-htmlparser>`:
 	}
 
 It is also possible to use it in the
-:ref:`HTMLparser_rte or HTMLparser_db<transformations-tsconfig-processing-htmlparser>`
+:ref:`HTMLparser_rte or HTMLparser_db <t3api:transformations-tsconfig-processing-htmlparser>`
 in Page TSconfig:
 
 .. code-block:: typoscript
