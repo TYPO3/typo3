@@ -174,11 +174,7 @@ class Bootstrap {
 				->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
 		} elseif (!$this->checkIfEssentialConfigurationExists() && !defined('TYPO3_cliMode')) {
 			// Redirect to install tool if base configuration is not found
-			$backPathToSiteRoot = '';
-			$pathParts = explode('/', $relativePathPart);
-			for ($i = 1; $i <= count($pathParts); $i++) {
-				$backPathToSiteRoot .= '../';
-			}
+			$backPathToSiteRoot = str_repeat('../', count(explode('/', $relativePathPart)) - 1);
 			$this->redirectToInstallTool($backPathToSiteRoot);
 		} else {
 			// Regular request (Frontend, AJAX, Backend, CLI)
