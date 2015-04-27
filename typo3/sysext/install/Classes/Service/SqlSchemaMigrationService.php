@@ -107,7 +107,7 @@ class SqlSchemaMigrationService {
 					$lineV = preg_replace('/\h+/', ' ', $lineV);
 					$parts = explode(' ', $lineV, 2);
 					// Field definition
-					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|INDEX|KEY)/', $parts[0])) {
+					if (!preg_match('/(PRIMARY|UNIQUE|FULLTEXT|SPATIAL|INDEX|KEY)/', $parts[0])) {
 						// Make sure there is no default value when auto_increment is set
 						if (stristr($parts[1], 'auto_increment')) {
 							$parts[1] = preg_replace('/ default \'0\'/i', '', $parts[1]);
@@ -123,10 +123,10 @@ class SqlSchemaMigrationService {
 						$total[$table]['fields'][$key] = $parts[1];
 					} else {
 						// Key definition
-						$search = array('/UNIQUE (INDEX|KEY)/', '/FULLTEXT (INDEX|KEY)/', '/INDEX/');
-						$replace = array('UNIQUE', 'FULLTEXT', 'KEY');
+						$search = array('/UNIQUE (INDEX|KEY)/', '/FULLTEXT (INDEX|KEY)/', '/SPATIAL (INDEX|KEY)/', '/INDEX/');
+						$replace = array('UNIQUE', 'FULLTEXT', 'SPATIAL', 'KEY');
 						$lineV = preg_replace($search, $replace, $lineV);
-						if (preg_match('/PRIMARY|UNIQUE|FULLTEXT/', $parts[0])) {
+						if (preg_match('/PRIMARY|UNIQUE|FULLTEXT|SPATIAL/', $parts[0])) {
 							$parts[1] = preg_replace('/^(KEY|INDEX) /', '', $parts[1]);
 						}
 						$newParts = explode(' ', $parts[1], 2);
@@ -190,15 +190,17 @@ class SqlSchemaMigrationService {
 			foreach ($keyInformation as $keyRow) {
 				$keyName = $keyRow['Key_name'];
 				$colName = $keyRow['Column_name'];
-				if ($keyRow['Sub_part']) {
+				if ($keyRow['Sub_part'] && $keyRow['Index_type'] !== 'SPATIAL') {
 					$colName .= '(' . $keyRow['Sub_part'] . ')';
 				}
 				$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
 				if ($keyName == 'PRIMARY') {
 					$prefix = 'PRIMARY KEY';
 				} else {
-					if ($keyRow['Index_type'] == 'FULLTEXT') {
+					if ($keyRow['Index_type'] === 'FULLTEXT') {
 						$prefix = 'FULLTEXT';
+					} elseif ($keyRow['Index_type'] === 'SPATIAL') {
+						$prefix = 'SPATIAL';
 					} elseif ($keyRow['Non_unique']) {
 						$prefix = 'KEY';
 					} else {

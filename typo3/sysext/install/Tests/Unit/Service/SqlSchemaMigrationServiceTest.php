@@ -249,6 +249,42 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getDatabaseExtraFindsNewSpatialKeys() {
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'keys' => array(
+						'foo' => 'SPATIAL foo (foo)'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'keys' => array()
+				)
+			)
+		);
+
+		$this->assertEquals(
+			$differenceArray,
+			array(
+				'extra' => array(
+					'tx_foo' => array(
+						'keys' => array(
+							'foo' => 'SPATIAL foo (foo)'
+						)
+					)
+				),
+				'diff' => array(),
+				'diff_currentValues' => NULL
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function checkColumnDefinitionIfCommentIsSupplied() {
 		$subject = new SqlSchemaMigrationService();
 		$fieldDefinition = $subject->assembleFieldDefinition(
