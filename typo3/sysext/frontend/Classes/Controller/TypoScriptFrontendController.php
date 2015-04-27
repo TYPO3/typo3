@@ -2493,9 +2493,12 @@ class TypoScriptFrontendController {
 						throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
 					}
 				} else {
-					$this->config['config'] = array();
+					if (!isset($this->config['config'])) {
+						$this->config['config'] = array();
+					}
 					// Filling the config-array, first with the main "config." part
 					if (is_array($this->tmpl->setup['config.'])) {
+						ArrayUtility::mergeRecursiveWithOverrule($this->tmpl->setup['config.'], $this->config['config']);
 						$this->config['config'] = $this->tmpl->setup['config.'];
 					}
 					// override it with the page/type-specific "config."
