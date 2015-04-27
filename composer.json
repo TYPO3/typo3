@@ -27,16 +27,13 @@
 		"vendor-dir": "Packages/Libraries",
 		"bin-dir": "bin"
 	},
-	"scripts": {
-		"post-autoload-dump": "Helhum\\ClassAliasLoader\\Composer\\ClassAliasGenerator::generateAliasMap"
-	},
 	"require": {
 		"php": ">=5.3.7",
 		"ext-fileinfo": "*",
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
-		"helhum/class-alias-loader": "1.1.*@dev",
+		"helhum/class-alias-loader": "~1.1",
 		"typo3/cms-composer-installers": "1.1.*@dev"
 	},
 	"require-dev": {
