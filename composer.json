@@ -27,9 +27,6 @@
 		"vendor-dir": "typo3/contrib/vendor",
 		"bin-dir": "bin"
 	},
-	"scripts": {
-		"post-autoload-dump": "Helhum\\ClassAliasLoader\\Composer\\ClassAliasGenerator::generateAliasMap"
-	},
 	"require": {
 		"php": ">=5.5.0",
 		"ext-fileinfo": "*",
@@ -40,7 +37,7 @@
 		"pear/http_request2": "2.2.1",
 		"phpwhois/idna-convert": "0.8.2",
 		"swiftmailer/swiftmailer": "5.2.1",
-		"helhum/class-alias-loader": "1.1.*@dev",
+		"helhum/class-alias-loader": "~1.1",
 		"typo3/cms-composer-installers": "1.1.*@dev"
 	},
 	"require-dev": {
