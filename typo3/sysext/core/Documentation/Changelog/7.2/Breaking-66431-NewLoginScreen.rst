@@ -1,5 +1,5 @@
 ===================================
-Breaking - #66431: New Login Screen
+Breaking: #66431 - New Login Screen
 ===================================
 
 Description

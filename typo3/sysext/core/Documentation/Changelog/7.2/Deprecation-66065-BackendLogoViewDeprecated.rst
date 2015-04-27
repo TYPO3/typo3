@@ -1,5 +1,5 @@
 ==================================================
-Deprecation - #66065: Backend Logo View Deprecated
+Deprecation: #66065 - Backend Logo View Deprecated
 ==================================================
 
 Description

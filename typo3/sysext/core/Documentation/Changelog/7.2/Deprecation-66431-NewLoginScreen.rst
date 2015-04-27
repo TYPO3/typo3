@@ -1,5 +1,5 @@
 ======================================
-Deprecation - #66431: New Login Screen
+Deprecation: #66431 - New Login Screen
 ======================================
 
 Description

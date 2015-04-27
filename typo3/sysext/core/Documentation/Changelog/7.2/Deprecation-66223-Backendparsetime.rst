@@ -1,5 +1,5 @@
 ==================================================
-Deprecation - #66223: Backend parseTime deprecated
+Deprecation: #66223 - Backend parseTime deprecated
 ==================================================
 
 Description

@@ -1,5 +1,5 @@
 ==============================================================
-Feature - #66077: Introduce callouts to replace content alerts
+Feature: #66077 - Introduce callouts to replace content alerts
 ==============================================================
 
 Description
@@ -25,5 +25,7 @@ Simple infobox with a title
 	<f:be.infobox title="Message title">your box content</f:be.infobox>
 
 All options
+
+.. code-block:: html
 
 	<f:be.infobox title="Message title" message="your box content" state="-2" iconName="check" disableIcon="TRUE" />

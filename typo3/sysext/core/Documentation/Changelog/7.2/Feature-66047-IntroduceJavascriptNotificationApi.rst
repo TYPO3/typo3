@@ -1,5 +1,5 @@
 =======================================================
-Feature - #66047: Introduce JavaScript notification API
+Feature: #66047 - Introduce JavaScript notification API
 =======================================================
 
 Description
@@ -27,11 +27,11 @@ Examples:
 
 .. code-block:: javascript
 
-    // Old and deprecated:
-    top.TYPO3.Flashmessages.display(TYPO3.Severity.notice)
+	// Old and deprecated:
+	top.TYPO3.Flashmessages.display(TYPO3.Severity.notice)
 
-    // New and the only correct way:
-    top.TYPO3.Notification.notice(title, message)
+	// New and the only correct way:
+	top.TYPO3.Notification.notice(title, message)
 
 
 2) Notice notification
@@ -39,7 +39,7 @@ Examples:
 .. code-block:: javascript
 
 	// duration is optional, default is 5 seconds
-    top.TYPO3.Notification.notice(title, message, duration)
+	top.TYPO3.Notification.notice(title, message, duration)
 
 
 3) Info notification
@@ -47,7 +47,7 @@ Examples:
 .. code-block:: javascript
 
 	// duration is optional, default is 5 seconds
-    top.TYPO3.Notification.info(title, message, duration)
+	top.TYPO3.Notification.info(title, message, duration)
 
 
 4) Success notification
@@ -55,7 +55,7 @@ Examples:
 .. code-block:: javascript
 
 	// duration is optional, default is 5 seconds
-    top.TYPO3.Notification.success(title, message, duration)
+	top.TYPO3.Notification.success(title, message, duration)
 
 
 5) Warning notification
@@ -63,7 +63,7 @@ Examples:
 .. code-block:: javascript
 
 	// duration is optional, default is 5 seconds
-    top.TYPO3.Notification.warning(title, message, duration)
+	top.TYPO3.Notification.warning(title, message, duration)
 
 
 6) Error notification
@@ -71,4 +71,4 @@ Examples:
 .. code-block:: javascript
 
 	// duration is optional, default is 0 seconds which means sticky!
-    top.TYPO3.Notification.error(title, message, duration)
+	top.TYPO3.Notification.error(title, message, duration)

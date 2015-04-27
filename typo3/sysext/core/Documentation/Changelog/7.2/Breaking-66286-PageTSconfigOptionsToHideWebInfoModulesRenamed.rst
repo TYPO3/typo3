@@ -1,5 +1,5 @@
 =========================================================================
-Breaking - #66286: Page TSconfig options to hide Web Info modules renamed
+Breaking: #66286 - Page TSconfig options to hide Web Info modules renamed
 =========================================================================
 
 Description

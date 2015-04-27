@@ -1,5 +1,5 @@
 =================================
-Feature - #50136: Add SVG support
+Feature: #50136 - Add SVG support
 =================================
 
 Description
