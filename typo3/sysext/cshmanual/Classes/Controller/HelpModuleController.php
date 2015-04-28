@@ -141,7 +141,7 @@ class HelpModuleController {
 		// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
 		$showAllToUser = BackendUtility::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules', 'txllxmltranslateM1');
 		$this->limitAccess = isset($GLOBALS['TCA'][$this->table]) ? !$showAllToUser : FALSE;
-		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_view_help.xlf', 1);
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_view_help.xlf');
 	}
 
 	/**
