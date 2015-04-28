@@ -501,18 +501,15 @@ return array(
 				'readOnly' => 1,
 			),
 		),
-		/**
-		 * @TODO: This throws a warning
 		'text_11' => array(
 			'exclude' => 1,
-			'label' => '10 readOnly with format datetime',
+			'label' => 'TEXT: 11 readOnly with format datetime',
 			'config' => array(
 				'type' => 'text',
 				'readOnly' => 1,
 				'format' => 'datetime',
 			),
 		),
-		 */
 		'text_12' => array(
 			'exclude' => 1,
 			'label' => 'TEXT: 12 placeholder value from input_1',
