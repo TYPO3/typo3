@@ -21,16 +21,17 @@ Styleguide extension currently brings own css definitions that need to be integr
 # Table of content
 
 1. Typography
-2. Bootstrap
-3. TCA / Records
-4. Trees
-5. Tab
-6. Tables
-7. Forms
-8. Buttons
-9. FlashMessages
+2. TCA / Records
+3. Trees
+4. Tab
+5. Tables
+6. Forms
+7. Buttons
+8. Callout
+9. FlashMessages / Notification
 10. Icons
-11. Helpers
+11. Debug
+12. Helpers
 
 # Legal
 
