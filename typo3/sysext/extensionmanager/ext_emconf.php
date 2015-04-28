@@ -10,11 +10,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => '',
 	'author_email' => '',
 	'author_company' => '',
-	'version' => '7.2.0',
+	'version' => '7.3.0',
 	'_md5_values_when_last_written' => '',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.2.0-7.2.99',
+			'typo3' => '7.3.0-7.3.99',
 		),
 		'conflicts' => array(),
 		'suggests' => array(),

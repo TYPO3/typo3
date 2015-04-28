@@ -4,7 +4,7 @@
 	"description": "TYPO3 Core",
 	"homepage": "http://typo3.org",
 	"license": ["GPL-2.0+"],
-	"version": "7.2.0",
+	"version": "7.3.0",
 
 	"require": {
 		"typo3/cms-core": "*"
