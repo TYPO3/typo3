@@ -45,6 +45,7 @@ return array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
 				'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) AND fe_groups.hidden=0 ORDER BY fe_groups.title',
+				'enableMultiSelectFilterTextfield' => TRUE,
 				'size' => 6,
 				'autoSizeMax' => 10,
 				'minitems' => 0,

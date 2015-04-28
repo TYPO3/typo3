@@ -62,6 +62,7 @@ return array(
 				'size' => '5',
 				'maxitems' => '20',
 				'iconsInOptionTags' => 1,
+				'enableMultiSelectFilterTextfield' => TRUE,
 				'wizards' => array(
 					'_VERTICAL' => 1,
 					'edit' => array(

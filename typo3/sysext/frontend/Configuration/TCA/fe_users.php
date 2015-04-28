@@ -48,6 +48,7 @@ return array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
 				'foreign_table_where' => 'ORDER BY fe_groups.title',
+				'enableMultiSelectFilterTextfield' => TRUE,
 				'size' => '6',
 				'minitems' => '1',
 				'maxitems' => '50'
