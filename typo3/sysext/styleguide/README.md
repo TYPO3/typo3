@@ -9,10 +9,8 @@ TYPO3 CMS Backend Styleguide
 
 [![Build Status](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide.svg)](https://travis-ci.org/7elix/TYPO3.CMS.Styleguide)
 
-Presents all supported styles for TYPO3 backend modules.
-
-This styleguide is work in progress. It is not part of and does not represent the official documentation, yet.
-Styleguide extension currently brings own css definitions that need to be integrated into TYPO3 CMS step by step.
+Welcome to the living styleguide for TYPO3 CMS backend.
+Presents many supported styles for TYPO3 backend modules.
 
 ![](Documentation/Index.png)
 
