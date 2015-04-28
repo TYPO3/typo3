@@ -75,7 +75,7 @@ class FlexFormElementContainer extends AbstractContainer {
 
 				$options = $this->globalOptions;
 				$options['flexFormDataStructureArray'] = $flexFormFieldArray['el'];
-				$options['flexFormRowData'] = $flexFormRowData[$flexFormFieldName]['el'];
+				$options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
 				$options['flexFormSectionType'] = $flexFormFieldName;
 				$options['flexFormSectionTitle'] = $sectionTitle;
 				/** @var FlexFormSectionContainer $sectionContainer */
