@@ -82,15 +82,15 @@ class GroupElement extends AbstractFormElement {
 		// If maxitems==1 then automatically replace the current item (in list and file selector)
 		if ($maxitems === 1) {
 			$resultArray['additionalJavaScriptPost'][] =
-				'TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[\'' . $parameterArray['itemFormElName'] . '\'] = {
+				'TBE_EDITOR.clearBeforeSettingFormValueFromBrowseWin[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . '] = {
 					itemFormElID_file: ' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElID_file']) . '
 				}';
-			$parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(\'' . $parameterArray['itemFormElName']
-				. '\', \'Remove\'); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+			$parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
+				. ', \'Remove\'); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		} elseif ($noList) {
 			// If the list controls have been removed and the maximum number is reached, remove the first entry to avoid "write once" field
-			$parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(\'' . $parameterArray['itemFormElName']
-				. '\', \'RemoveFirstIfFull\', \'' . $maxitems . '\'); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
+			$parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'setFormValueManipulate(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
+				. ', \'RemoveFirstIfFull\', ' . GeneralUtility::quoteJSvalue($maxitems) . '); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
 
 		$html = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
@@ -269,7 +269,7 @@ class GroupElement extends AbstractFormElement {
 						$allowedTables[] = array(
 							'name' => htmlspecialchars($languageService->sL($GLOBALS['TCA'][$allowedTable]['ctrl']['title'])),
 							'icon' => IconUtility::getSpriteIconForRecord($allowedTable, array()),
-							'onClick' => 'setFormValueOpenBrowser(\'db\', \'' . ($parameterArray['itemFormElName'] . '|||' . $allowedTable) . '\'); return false;'
+							'onClick' => 'setFormValueOpenBrowser(\'db\', ' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'] . '|||' . $allowedTable) . '); return false;'
 						);
 					}
 				}

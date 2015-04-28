@@ -152,7 +152,7 @@ class SingleFieldContainer extends AbstractContainer {
 						$row['uid']
 					)
 				);
-				$parameterArray['fieldChangeFunc']['inline'] = 'inline.handleChangedField(\'' . $parameterArray['itemFormElName'] . '\',\'' . $inlineObjectId . '\');';
+				$parameterArray['fieldChangeFunc']['inline'] = 'inline.handleChangedField(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ',' . GeneralUtility::quoteJSvalue($inlineObjectId) . ');';
 			}
 
 			// Based on the type of the item, call a render function on a child element

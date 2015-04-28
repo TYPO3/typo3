@@ -187,7 +187,7 @@ class SelectSingleElement extends AbstractFormElement {
 				if ($icon && !$suppressIcons && (!$onlySelectedIconShown || $selected)) {
 					$onClick = 'document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . '].selectedIndex=' . $selectItemCounter . ';';
 					if ($config['iconsInOptionTags']) {
-						$onClick .= 'document.getElementById(\'' . $selectId . '_icon\').innerHTML = '
+						$onClick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue($selectId . '_icon') . ').innerHTML = '
 							. 'document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ']'
 							. '.options[' . $selectItemCounter . '].getAttribute(\'data-icon\'); ';
 					}
@@ -230,7 +230,7 @@ class SelectSingleElement extends AbstractFormElement {
 		// Create item form fields:
 		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=' . $selectedIndex . ';} ';
 		if ($config['iconsInOptionTags']) {
-			$sOnChange .= 'document.getElementById(\'' . $selectId . '_icon\').innerHTML = this.options[this.selectedIndex].getAttribute(\'data-icon\'); ';
+			$sOnChange .= 'document.getElementById(' . GeneralUtility::quoteJSvalue($selectId . '_icon') . ').innerHTML = this.options[this.selectedIndex].getAttribute(\'data-icon\'); ';
 		}
 		$sOnChange .= implode('', $parameterArray['fieldChangeFunc']);
 
