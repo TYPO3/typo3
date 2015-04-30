@@ -725,7 +725,17 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function assureFolderReadPermission(Folder $folder = NULL) {
 		if (!$this->checkFolderActionPermission('read', $folder)) {
-			throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access the given folder', 1375955684);
+			if ($folder === NULL) {
+				throw new Exception\InsufficientFolderAccessPermissionsException(
+					'You are not allowed to read folders',
+					1430657869
+				);
+			} else {
+				throw new Exception\InsufficientFolderAccessPermissionsException(
+					'You are not allowed to access the given folder: "' . $folder->getName() . '"',
+					1375955684
+				);
+			}
 		}
 	}
 

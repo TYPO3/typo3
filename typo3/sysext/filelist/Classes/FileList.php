@@ -506,7 +506,11 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 					foreach ($this->fieldArray as $field) {
 						switch ($field) {
 							case 'size':
-								$numFiles = $folderObject->getFileCount();
+								try {
+									$numFiles = $folderObject->getFileCount();
+								} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
+									$numFiles = 0;
+								}
 								$theData[$field] = $numFiles . ' ' . $GLOBALS['LANG']->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
 								break;
 							case 'rw':

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Filelist\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\Exception;
 
@@ -164,31 +166,58 @@ class FileListController {
 				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
 				$fileStorage = reset($fileStorages);
 				if ($fileStorage) {
-					// Validating the input "id" (the path, directory!) and
-					// checking it against the mounts of the user. - now done in the controller
 					$this->folderObject = $fileStorage->getRootLevelFolder();
 				} else {
 					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
 				}
 			}
-		} catch (\TYPO3\CMS\Core\Resource\Exception $fileException) {
+
+			if ($this->folderObject && !$this->folderObject->getStorage()->isWithinFileMountBoundaries($this->folderObject)) {
+				throw new \RuntimeException('Folder not accessible.', 1430409089);
+			}
+		} catch (Exception\InsufficientFolderAccessPermissionsException $permissionException) {
+			$this->folderObject = NULL;
+			$this->errorMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				sprintf(
+					$GLOBALS['LANG']->getLL('missingFolderPermissionsMessage', TRUE),
+					htmlspecialchars($this->id)
+				),
+				$GLOBALS['LANG']->getLL('missingFolderPermissionsTitle', TRUE),
+				FlashMessage::NOTICE
+			);
+		} catch (Exception $fileException) {
+			// Set folder object to null and throw a message later on
+			$this->folderObject = NULL;
 			// Take the first object of the first storage
 			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
 			$fileStorage = reset($fileStorages);
-			if ($fileStorage) {
-				// Set folder object to null and throw a message later on
+			if ($fileStorage instanceof \TYPO3\CMS\Core\Resource\ResourceStorage) {
 				$this->folderObject = $fileStorage->getRootLevelFolder();
-			} else {
-				$this->folderObject = NULL;
+				if (!$fileStorage->isWithinFileMountBoundaries($this->folderObject)) {
+					$this->folderObject = NULL;
+				}
 			}
 			$this->errorMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
-						htmlspecialchars($this->id)
+				sprintf(
+					$GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
+					htmlspecialchars($this->id)
 				),
 				$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
-				\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+				FlashMessage::NOTICE
+			);
+		} catch (\RuntimeException $e) {
+			$this->folderObject = NULL;
+			$this->errorMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$e->getMessage() . ' (' . $e->getCode() . ')',
+				$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
+				FlashMessage::NOTICE
 			);
 		}
+
+		if ($this->folderObject && !$this->folderObject->getStorage()->checkFolderActionPermission('read', $this->folderObject)) {
+			$this->folderObject = NULL;
+		}
+
 		// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
 		$this->menuConfig();
 	}
