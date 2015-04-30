@@ -98,9 +98,9 @@ class FlexFormSectionContainer extends AbstractContainer {
 			$options['flexFormRowData'] = array();
 			$options['flexFormDataStructureArray'] = $flexFormFieldDefinition['el'];
 			$options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
-			// @todo: something wrong here ... where is it used - needed for the templates??
-			$flexFormContainerCounter = 0;
-			$options['flexFormContainerCounter'] = $flexFormContainerCounter;
+			$options['flexFormFormPrefix'] = $this->globalOptions['flexFormFormPrefix'] . '[' . $flexFormSectionType . ']' . '[el]';
+			$options['flexFormContainerName'] = $flexFormContainerName;
+			$options['flexFormContainerCounter'] = $flexFormFieldIdentifierPrefix . '-form';
 			$options['flexFormContainerTitle'] = $sectionTitle;
 			$options['flexFormContainerElementCollapsed'] = FALSE;
 			/** @var FlexFormContainerContainer $flexFormContainerContainer */
