@@ -323,7 +323,7 @@ class FileIndexRepository implements SingletonInterface {
 			$where = 'uid=' . (int)$file->getUid();
 		} else {
 			$where = sprintf(
-				'storage=%u AND identifier=%s',
+				'storage=%u AND identifier LIKE %s',
 				(int)$file->getStorage()->getUid(),
 				$this->getDatabaseConnection()->fullQuoteStr($file->_getPropertyRaw('identifier'), $this->table)
 			);
