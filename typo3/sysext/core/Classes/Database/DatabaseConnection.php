@@ -431,7 +431,7 @@ class DatabaseConnection {
 	 * @param string $where (optional) WHERE statement of the query
 	 * @return mixed Number of rows counter (int) or FALSE if something went wrong (bool)
 	 */
-	public function exec_SELECTcountRows($field, $table, $where = '') {
+	public function exec_SELECTcountRows($field, $table, $where = '1=1') {
 		$count = FALSE;
 		$resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
 		if ($resultSet !== FALSE) {
