@@ -193,16 +193,29 @@ index 81fb016..5ff76b9 100644
 @@ -67,13 +67,13 @@ class ADODB2_sqlite extends ADODB_DataDict {
  		return $suffix;
  	}
- 
+
 -	function AlterColumnSQL($tabname, $flds)
 +	function AlterColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
  	{
  		if ($this->debug) ADOConnection::outp("AlterColumnSQL not supported natively by SQLite");
  		return array();
  	}
- 
+
 -	function DropColumnSQL($tabname, $flds)
 +	function DropColumnSQL($tabname, $flds, $tableflds='', $tableoptions='')
  	{
  		if ($this->debug) ADOConnection::outp("DropColumnSQL not supported natively by SQLite");
  		return array();
+diff --git a/drivers/adodb-mssqlnative.inc.php b/drivers/adodb-mssqlnative.inc.php
+index b10d555..21cfc69 100644
+--- a/drivers/adodb-mssqlnative.inc.php
++++ b/drivers/adodb-mssqlnative.inc.php
+@@ -459,7 +459,7 @@ class ADODB_mssqlnative extends ADOConnection {
+ 				$this->_errorMsg .= "Message: ".$arrError[ 'message']."\n";
+ 			}
+ 		} else {
+-			$this->_errorMsg = "No errors found";
++			$this->_errorMsg = '';
+ 		}
+ 		return $this->_errorMsg;
+ 	}
