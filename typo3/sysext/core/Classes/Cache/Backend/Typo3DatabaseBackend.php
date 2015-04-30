@@ -242,8 +242,10 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 			$this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable) . ' AND ' . $this->tableJoin . ' AND ' . $this->notExpiredStatement,
 			$this->identifierField
 		);
-		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
-			$cacheEntryIdentifiers[$cacheEntryIdentifierRow['identifier']] = $cacheEntryIdentifierRow['identifier'];
+		if (is_array($cacheEntryIdentifierRows)) {
+			foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
+				$cacheEntryIdentifiers[$cacheEntryIdentifierRow['identifier']] = $cacheEntryIdentifierRow['identifier'];
+			}
 		}
 		return $cacheEntryIdentifiers;
 	}
