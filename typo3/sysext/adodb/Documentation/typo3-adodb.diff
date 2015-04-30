@@ -210,6 +210,52 @@ diff --git a/drivers/adodb-mssqlnative.inc.php b/drivers/adodb-mssqlnative.inc.p
 index b10d555..21cfc69 100644
 --- a/drivers/adodb-mssqlnative.inc.php
 +++ b/drivers/adodb-mssqlnative.inc.php
+@@ -209,10 +209,10 @@ class ADODB_mssqlnative extends ADOConnection {
+ 		switch($this->mssql_version){
+ 		case 9:
+ 		case 10:
+-			return $this->GenID2008();
++			return $this->GenID2008($seq, $start);
+ 			break;
+ 		case 11:
+-			return $this->GenID2012();
++			return $this->GenID2012($seq, $start);
+ 			break;
+ 		}
+ 	}
+@@ -225,10 +225,10 @@ class ADODB_mssqlnative extends ADOConnection {
+ 		switch($this->mssql_version){
+ 		case 9:
+ 		case 10:
+-			return $this->CreateSequence2008();
++			return $this->CreateSequence2008($seq, $start);
+ 			break;
+ 		case 11:
+-			return $this->CreateSequence2012();
++			return $this->CreateSequence2012($seq, $start);
+ 			break;
+ 		}
+ 
+@@ -287,7 +287,7 @@ class ADODB_mssqlnative extends ADOConnection {
+ 		}
+ 		$num = $this->GetOne("select id from $seq");
+ 		sqlsrv_commit($this->_connectionID);
+-		return true;
++		return $num;
+ 	}
+ 	/**
+ 	 * Only available to Server 2012 and up
+
+@@ -311,7 +311,7 @@ class ADODB_mssqlnative extends ADOConnection {
+ 		}
+ 		if (!is_array($this->sequences)
+ 		|| is_array($this->sequences) && !in_array($seq,$this->sequences)){
+-			$this->CreateSequence2012($seq='adodbseq',$start=1);
++			$this->CreateSequence2012($seq, $start);
+ 
+ 		}
+ 		$num = $this->GetOne("SELECT NEXT VALUE FOR $seq");
+
 @@ -459,7 +459,7 @@ class ADODB_mssqlnative extends ADOConnection {
  				$this->_errorMsg .= "Message: ".$arrError[ 'message']."\n";
  			}
@@ -219,3 +265,4 @@ index b10d555..21cfc69 100644
  		}
  		return $this->_errorMsg;
  	}
+
