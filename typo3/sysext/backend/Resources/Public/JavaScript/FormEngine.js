@@ -576,7 +576,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	 */
 	FormEngine.initializeRemainingCharacterViews = function() {
 		// all fields with a "maxlength" attribute
-		var $maxlengthElements = $('[maxlength]');
+		var $maxlengthElements = $('[maxlength]').not('.t3js-datetimepicker');
 		$maxlengthElements.on('focus', function(e) {
 			var $field = $(this),
 				$parent = $field.parents('.t3js-formengine-field-item:first'),
