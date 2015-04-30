@@ -151,15 +151,15 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param int Relative id of the RTE editing area in the form
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
+	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$registerRTEinJavascriptString = '';
 		if (in_array('formattext', $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formattext.'])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.formattext = new Object();';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.formattext = new Object();';
 			}
 			// Default inline elements
 			$hideItems = array();
@@ -215,7 +215,7 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$GLOBALS['TSFE']->csConvObj->convArray($JSInlineElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.formattext.options = ' . json_encode($JSInlineElements) . ';';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.formattext.options = ' . json_encode($JSInlineElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

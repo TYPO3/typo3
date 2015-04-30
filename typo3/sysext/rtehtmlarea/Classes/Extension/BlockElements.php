@@ -109,15 +109,15 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param int Relative id of the RTE editing area in the form
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
+	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$registerRTEinJavascriptString = '';
 		if (in_array('formatblock', $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.'])) {
 				$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.formatblock = new Object();';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.formatblock = new Object();';
 			}
 			// Default block elements
 			$hideItems = array();
@@ -200,7 +200,7 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$GLOBALS['TSFE']->csConvObj->convArray($JSBlockElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

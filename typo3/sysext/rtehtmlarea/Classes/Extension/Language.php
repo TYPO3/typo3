@@ -84,15 +84,15 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param int Relative id of the RTE editing area in the form
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
+	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$button = 'language';
 		$registerRTEinJavascriptString = '';
 		if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
 		}
 		if ($this->htmlAreaRTE->is_FE()) {
 			$first = $GLOBALS['TSFE']->getLLL('No language mark', $this->LOCAL_LANG);
@@ -107,7 +107,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		}
 		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
 		$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($button . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $languagesJSArray) . '";';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($button . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $languagesJSArray) . '";';
 		return $registerRTEinJavascriptString;
 	}
 

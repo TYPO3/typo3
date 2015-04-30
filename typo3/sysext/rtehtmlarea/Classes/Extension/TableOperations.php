@@ -109,10 +109,10 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param int Relative id of the RTE editing area in the form
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
+	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$registerRTEinJavascriptString = '';
 		if (in_array('table', $this->toolbar)) {
 			// Combining fieldset disablers as a list
@@ -130,20 +130,20 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 					if (in_array($dialogue, $this->toolbar)) {
 						if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($dialogue . '.')])) {
 							$registerRTEinJavascriptString .= '
-					RTEarea[' . $RTEcounter . '].buttons.' . $dialogue . ' = new Object();
-					RTEarea[' . $RTEcounter . '].buttons.' . $dialogue . '.removeFieldsets = "' . $disabledFieldsets . '";';
+					RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $dialogue . ' = new Object();
+					RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $dialogue . '.removeFieldsets = "' . $disabledFieldsets . '";';
 						} elseif ($this->thisConfig['buttons.'][$dialogue . '.']['removeFieldsets']) {
 							$registerRTEinJavascriptString .= '
-					RTEarea[' . $RTEcounter . '].buttons.' . $dialogue . '.removeFieldsets += ",' . $disabledFieldsets . '";';
+					RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $dialogue . '.removeFieldsets += ",' . $disabledFieldsets . '";';
 						} else {
 							$registerRTEinJavascriptString .= '
-					RTEarea[' . $RTEcounter . '].buttons.' . $dialogue . '.removeFieldsets = ",' . $disabledFieldsets . '";';
+					RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $dialogue . '.removeFieldsets = ",' . $disabledFieldsets . '";';
 						}
 					}
 				}
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].hideTableOperationsInToolbar = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';';
+			RTEarea[' . $rteNumberPlaceholder . '].hideTableOperationsInToolbar = ' . (trim($this->thisConfig['hideTableOperationsInToolbar']) ? 'true' : 'false') . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

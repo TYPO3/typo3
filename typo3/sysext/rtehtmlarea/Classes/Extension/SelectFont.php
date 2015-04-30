@@ -110,16 +110,16 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param int Relative id of the RTE editing area in the form
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
+	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$registerRTEinJavascriptString = '';
 		$pluginButtonsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons);
 		// Process Page TSConfig configuration for each button
 		foreach ($pluginButtonsArray as $buttonId) {
 			if (in_array($buttonId, $this->toolbar)) {
-				$registerRTEinJavascriptString .= $this->buildJSFontItemsConfig($RTEcounter, $buttonId);
+				$registerRTEinJavascriptString .= $this->buildJSFontItemsConfig($rteNumberPlaceholder, $buttonId);
 			}
 		}
 		return $registerRTEinJavascriptString;
@@ -128,11 +128,11 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return Javascript configuration of font faces
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @param string $buttonId: button id
 	 * @return string Javascript configuration of font faces
 	 */
-	protected function buildJSFontItemsConfig($RTEcounter, $buttonId) {
+	protected function buildJSFontItemsConfig($rteNumberPlaceholder, $buttonId) {
 		$configureRTEInJavascriptString = '';
 		$hideItems = '';
 		$addItems = array();
@@ -197,10 +197,10 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		// Adding to button JS configuration
 		if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($buttonId . '.')])) {
 			$configureRTEInJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $buttonId . ' = new Object();';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . ' = new Object();';
 		}
 		$configureRTEInJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].buttons.' . $buttonId . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($buttonId . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $itemsJSArray) . '";';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($buttonId . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $itemsJSArray) . '";';
 		return $configureRTEInJavascriptString;
 	}
 

@@ -168,14 +168,6 @@ class FormEngine {
 	public $perms_clause_set = FALSE;
 
 	/**
-	 * Counter that is incremented before an RTE is created. Can be used for unique ids etc.
-	 * @todo: Free the code from using this global state keeping counter.
-	 *
-	 * @var int
-	 */
-	static public $RTEcounter = 0;
-
-	/**
 	 * Total wrapping for the table rows
 	 *
 	 * @var string
@@ -502,10 +494,8 @@ class FormEngine {
 			// @todo: ajaxArguments[2] is "returnUrl" in the first 3 calls - still needed?
 			switch ($ajaxMethod) {
 				case 'synchronizeLocalizeRecords':
-					// Set $this->RTEcounter to the current situation on client-side
-					$this->RTEcounter = $ajaxArguments[0];
-					$domObjectId = $ajaxArguments[1];
-					$type = $ajaxArguments[2];
+					$domObjectId = $ajaxArguments[0];
+					$type = $ajaxArguments[1];
 					// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
 					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
 					$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
@@ -513,12 +503,10 @@ class FormEngine {
 					$ajaxObj->setContent($this->renderInlineSynchronizeLocalizeRecords($type, $inlineFirstPid));
 					break;
 				case 'createNewRecord':
-					// Set $this->RTEcounter to the current situation on client-side
-					$this->RTEcounter = $ajaxArguments[0];
-					$domObjectId = $ajaxArguments[1];
+					$domObjectId = $ajaxArguments[0];
 					$createAfterUid = 0;
-					if (isset($ajaxArguments[2])) {
-						$createAfterUid = $ajaxArguments[2];
+					if (isset($ajaxArguments[1])) {
+						$createAfterUid = $ajaxArguments[1];
 					}
 					// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
 					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
@@ -526,9 +514,7 @@ class FormEngine {
 					$ajaxObj->setContent($this->renderInlineNewChildRecord($domObjectId, $createAfterUid));
 					break;
 				case 'getRecordDetails':
-					// Set $this->RTEcounter to the current situation on client-side
-					$this->RTEcounter = $ajaxArguments[0];
-					$domObjectId = $ajaxArguments[1];
+					$domObjectId = $ajaxArguments[0];
 					// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
 					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
 					$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);

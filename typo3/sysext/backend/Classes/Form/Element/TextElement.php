@@ -124,7 +124,6 @@ class TextElement extends AbstractFormElement {
 					$rteTcaTypeValue = BackendUtility::getTCAtypeValue($table, $row);
 					$rteSetupConfiguration = BackendUtility::RTEsetup($rteSetup['properties'], $table, $fieldName, $rteTcaTypeValue);
 					if (!$rteSetupConfiguration['disabled']) {
-						FormEngine::$RTEcounter = FormEngine::$RTEcounter + 1;
 						// Get RTE object, draw form and set flag:
 						$rteObject = BackendUtility::RTEgetObj();
 						$dummyFormEngine = new FormEngine();

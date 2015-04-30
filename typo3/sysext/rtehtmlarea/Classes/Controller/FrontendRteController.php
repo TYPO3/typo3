@@ -141,7 +141,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
 		$textAreaId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $PA['itemFormElName']);
-		$textAreaId = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId)) . '_' . strval($this->TCEform->RTEcounter);
+		$textAreaId = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId));
 		/* =======================================
 		 * LANGUAGES & CHARACTER SETS
 		 * =======================================
@@ -210,9 +210,9 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		 */
 		$this->getPageRenderer();
 		// Register RTE in JS
-		$this->TCEform->additionalJS_post[] = $this->wrapCDATA($this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '', $textAreaId));
+		$this->TCEform->additionalJS_post[] = $this->wrapCDATA($this->registerRTEinJS('', '', '', $textAreaId));
 		// Set the save option for the RTE:
-		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, 'editform', $textAreaId);
+		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE('editform', $textAreaId);
 		$this->pageRenderer->loadRequireJs();
 		// Loading ExtJs JavaScript files and inline code, if not configured in TS setup
 		if (!is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {
@@ -227,8 +227,8 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		$this->addSkin();
 		// Add RTE JavaScript
 		$this->pageRenderer->loadJquery();
-		$this->addRteJsFiles($this->TCEform->RTEcounter);
-		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
+		$this->addRteJsFiles();
+		$this->pageRenderer->addJsFile($this->buildJSMainLangFile());
 		$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -268,12 +268,11 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
 	 * This is for submit function from the form.
 	 *
-	 * @param int $RTEcounter: The index number of the RTE editing area.
 	 * @param string $form: the name of the form
 	 * @param string $textareaId: the id of the textarea
 	 * @return string the JS-Code
 	 */
-	public function setSaveRTE($RTEcounter, $form, $textareaId) {
+	public function setSaveRTE($form, $textareaId) {
 		return '
 		if (RTEarea[\'' . $textareaId . '\'] && !RTEarea[\'' . $textareaId . '\'].deleted) {
 			var field = document.getElementById(\'RTEarea' . $textareaId . '\');

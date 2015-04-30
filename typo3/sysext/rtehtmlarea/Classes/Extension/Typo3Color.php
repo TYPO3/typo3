@@ -79,22 +79,22 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param int Relative id of the RTE editing area in the form
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($RTEcounter) {
+	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		// Process colors configuration
-		$registerRTEinJavascriptString = $this->buildJSColorsConfig($RTEcounter);
+		$registerRTEinJavascriptString = $this->buildJSColorsConfig($rteNumberPlaceholder);
 		return $registerRTEinJavascriptString;
 	}
 
 	/**
 	 * Return Javascript configuration of colors
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string Javascript configuration of colors
 	 */
-	public function buildJSColorsConfig($RTEcounter) {
+	public function buildJSColorsConfig($rteNumberPlaceholder) {
 		if ($this->htmlAreaRTE->is_FE()) {
 			$RTEProperties = $this->htmlAreaRTE->RTEsetup;
 		} else {
@@ -102,7 +102,7 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		}
 		$configureRTEInJavascriptString = '';
 		$configureRTEInJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].disableColorPicker = ' . (trim($this->thisConfig['disableColorPicker']) ? 'true' : 'false') . ';';
+			RTEarea[' . $rteNumberPlaceholder . '].disableColorPicker = ' . (trim($this->thisConfig['disableColorPicker']) ? 'true' : 'false') . ';';
 		// Building the array of configured colors
 		if (is_array($RTEProperties['colors.'])) {
 			$HTMLAreaColorname = array();
@@ -125,7 +125,7 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$GLOBALS['TSFE']->csConvObj->convArray($HTMLAreaJSColors, $this->htmlAreaRTE->OutputCharset, 'utf-8');
 			}
 			$configureRTEInJavascriptString .= '
-			RTEarea[' . $RTEcounter . '].colors = ' . json_encode($HTMLAreaJSColors) . ';';
+			RTEarea[' . $rteNumberPlaceholder . '].colors = ' . json_encode($HTMLAreaJSColors) . ';';
 		}
 		return $configureRTEInJavascriptString;
 	}

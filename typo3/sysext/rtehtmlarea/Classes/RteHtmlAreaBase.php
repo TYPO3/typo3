@@ -468,16 +468,16 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$resultArray = $this->addPageStyle($resultArray);
 		$resultArray = $this->addSkin($resultArray);
 		// Register RTE in JS
-		$resultArray['additionalJavaScriptPost'][] = $this->registerRTEinJS(FormEngine::$RTEcounter, $table, $row['uid'], $field, $textAreaId);
+		$resultArray['additionalJavaScriptPost'][] = $this->registerRTEinJS(NULL, $table, $row['uid'], $field, $textAreaId);
 		// Set the save option for the RTE
-		$resultArray['additionalJavaScriptSubmit'][] = $this->setSaveRTE(FormEngine::$RTEcounter, 'editform', $textAreaId, $PA['itemFormElName']);
+		$resultArray['additionalJavaScriptSubmit'][] = $this->setSaveRTE(NULL, 'editform', $textAreaId, $PA['itemFormElName']);
 		// Loading ExtJs inline code
 		$this->pageRenderer->enableExtJSQuickTips();
 		// Add TYPO3 notifications JavaScript
 		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 		// Add RTE JavaScript
-		$this->addRteJsFiles(FormEngine::$RTEcounter);
-		$this->pageRenderer->addJsFile($this->buildJSMainLangFile(FormEngine::$RTEcounter));
+		$this->addRteJsFiles();
+		$this->pageRenderer->addJsFile($this->buildJSMainLangFile());
 		$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -562,7 +562,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Main skin
 		$resultArray = $this->addStyleSheet('rtehtmlarea-skin', $this->editorCSS, '', 'stylesheet', $resultArray);
 		// Additional icons from registered plugins
-		foreach ($this->pluginEnabledCumulativeArray[FormEngine::$RTEcounter] as $pluginId) {
+		foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
 			if (is_object($this->registeredPlugins[$pluginId])) {
 				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
 				if ($pathToSkin) {
@@ -606,7 +606,6 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return void
 	 */
 	protected function initializeToolbarConfiguration() {
-		$rteCounter = FormEngine::$RTEcounter;
 		// Enable registred plugins
 		$this->enableRegisteredPlugins();
 		// Configure toolbar
@@ -614,10 +613,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		// Check if some plugins need to be disabled
 		$this->setPlugins();
 		// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
-		$this->pluginEnabledCumulativeArray[$rteCounter] = $this->pluginEnabledArray;
-		if ($rteCounter > 1 && isset($this->pluginEnabledCumulativeArray[$rteCounter - 1]) && is_array($this->pluginEnabledCumulativeArray[$rteCounter - 1])) {
-			$this->pluginEnabledCumulativeArray[$rteCounter] = array_unique(array_values(array_merge($this->pluginEnabledArray, $this->pluginEnabledCumulativeArray[$rteCounter - 1])));
-		}
+		$this->pluginEnabledCumulativeArray = $this->pluginEnabledArray;
 	}
 
 	/**
@@ -817,10 +813,14 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Add RTE main scripts and plugin scripts
 	 *
-	 * @param string $RTEcounter:  The index number of the current RTE editing area within the form.
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form. @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @return void
 	 */
-	protected function addRteJsFiles($RTEcounter) {
+	protected function addRteJsFiles($RTEcounter = NULL) {
+		if ($RTEcounter !== NULL) {
+			GeneralUtility::deprecationLog('$RTEcounter parameter is deprecated and ignored');
+		}
+
 		// Component files. Order is important.
 		$components = array(
 			'Util/Wrap.open',
@@ -863,7 +863,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		foreach ($components as $component) {
 			$this->pageRenderer->addJsFile($this->getFullFileName('EXT:' . $this->ID . '/Resources/Public/JavaScript/HTMLArea/' . $component . '.js'));
 		}
-		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
+		foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$fileName = 'EXT:' . $extensionKey . '/Resources/Public/JavaScript/Plugins/' . $pluginId . '.js';
 			$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
@@ -928,14 +928,17 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return the Javascript code for configuring the RTE
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form. @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @param string $table: The table that includes this RTE (optional, necessary for IRRE).
 	 * @param string $uid: The uid of that table that includes this RTE (optional, necessary for IRRE).
 	 * @param string $field: The field of that record that includes this RTE (optional).
 	 * @param string $textAreaId ID of the textarea, to have a unigue number for the editor
 	 * @return string the Javascript code for configuring the RTE
 	 */
-	public function registerRTEinJS($RTEcounter, $table = '', $uid = '', $field = '', $textAreaId = '') {
+	public function registerRTEinJS($RTEcounter = NULL, $table = '', $uid = '', $field = '', $textAreaId = '') {
+		if ($RTEcounter !== NULL) {
+			GeneralUtility::deprecationLog('$RTEcounter parameter is deprecated and ignored');
+		}
 		$configureRTEInJavascriptString = '
 			if (typeof configureEditorInstance === "undefined") {
 				configureEditorInstance = new Object();
@@ -1046,7 +1049,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			}
 		}
 		if ($classesConfigurationRequired) {
-			$configureRTEInJavascriptString .= $this->buildJSClassesConfig($RTEcounter);
+			$configureRTEInJavascriptString .= $this->buildJSClassesConfig();
 		}
 		// Add Javascript configuration for registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
@@ -1078,10 +1081,13 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return Javascript configuration of classes
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form. @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @return string Javascript configuration of classes
 	 */
-	public function buildJSClassesConfig($RTEcounter) {
+	public function buildJSClassesConfig($RTEcounter = NULL) {
+		if ($RTEcounter !== NULL) {
+			GeneralUtility::deprecationLog('$RTEcounter parameter is deprecated and ignored');
+		}
 		// Include JS arrays of configured classes
 		$configureRTEInJavascriptString = '
 			RTEarea[editornumber].classesUrl = "' . ($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->writeTemporaryFile('', ('classes_' . $this->language), 'js', $this->buildJSClassesArray(), TRUE) . '";';
@@ -1276,12 +1282,15 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	/**
 	 * Return a file name containing the main JS language array for HTMLArea
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form. @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @return string filename
 	 */
-	public function buildJSMainLangFile($RTEcounter) {
+	public function buildJSMainLangFile($RTEcounter = NULL) {
+		if ($RTEcounter !== NULL) {
+			GeneralUtility::deprecationLog('$RTEcounter parameter is deprecated and ignored');
+		}
 		$contents = $this->buildJSMainLangArray() . LF;
-		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
+		foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
 			$contents .= $this->buildJSLangArray($pluginId) . LF;
 		}
 		return $this->writeTemporaryFile('', $this->language . '_' . $this->OutputCharset, 'js', $contents, TRUE);
@@ -1440,13 +1449,16 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * Return the Javascript code for copying the HTML code from the editor into the hidden input field.
 	 * This is for submit function of the form.
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form.
+	 * @param int $RTEcounter: The index number of the current RTE editing area within the form. @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @param string $formName: the name of the form
 	 * @param string $textareaId: the id of the textarea
 	 * @param string $textareaName: the name of the textarea
 	 * @return string Javascript code
 	 */
 	public function setSaveRTE($RTEcounter, $formName, $textareaId, $textareaName) {
+		if ($RTEcounter !== NULL) {
+			GeneralUtility::deprecationLog('$RTEcounter parameter is deprecated and ignored');
+		}
 		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaName . '"].value = RTEarea["' . $textareaId . '"].editor.getHTML(); } else { OK = 0; };';
 	}
 

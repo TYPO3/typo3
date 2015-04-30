@@ -155,7 +155,7 @@ var inline = {
 
 	getRecordDetails: function (objectId, returnURL) {
 		var context = this.getContext(this.parseObjectId('full', objectId, 0, 1));
-		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true, context);
+		inline.makeAjaxCall('getRecordDetails', [objectId, returnURL], true, context);
 		return false;
 	},
 
@@ -165,7 +165,7 @@ var inline = {
 			if (recordUid) {
 				objectId += this.structureSeparator + recordUid;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true, context);
+			this.makeAjaxCall('createNewRecord', [objectId], true, context);
 		} else {
 			var message = TBE_EDITOR.labels.maxItemsAllowed.replace('{0}', this.data.config[objectId].max);
 			var matches = objectId.match(/^(data-\d+-.*?-\d+-.*?)-(.*?)$/);
@@ -180,7 +180,7 @@ var inline = {
 
 	synchronizeLocalizeRecords: function (objectId, type) {
 		var context = this.getContext(objectId);
-		var parameters = [this.getNumberOfRTE(), objectId, type];
+		var parameters = [objectId, type];
 		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true, context);
 	},
 
@@ -340,7 +340,7 @@ var inline = {
 			if (!this.data.unique || !this.data.unique[objectId]) {
 				$selector.find('option').eq(selectedIndex).prop('selected', false);
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true, context);
+			this.makeAjaxCall('createNewRecord', [objectId, selectedValue], true, context);
 		}
 		return false;
 	},
@@ -348,7 +348,7 @@ var inline = {
 	// foreign_selector: used by element browser (type='group/db')
 	importElement: function (objectId, table, uid, type) {
 		var context = this.getContext(objectId);
-		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true, context);
+		inline.makeAjaxCall('createNewRecord', [objectId, uid], true, context);
 	},
 
 	importElementMultiple: function (objectId, table, uidArray, type) {
@@ -1259,14 +1259,6 @@ var inline = {
 		} else {
 			return nested;
 		}
-	},
-
-	getNumberOfRTE: function () {
-		var number = 0;
-		if (typeof RTEarea != 'undefined' && RTEarea.length > 0) {
-			number = RTEarea.length - 1;
-		}
-		return number;
 	},
 
 	getObjectMD5: function (objectPrefix) {
