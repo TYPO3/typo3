@@ -210,7 +210,7 @@ class InputElement extends AbstractFormElement {
 		foreach ($evalList as $evalData) {
 			$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData] . ':&' . $evalData);
 			if (is_object($evalObj) && method_exists($evalObj, 'returnFieldJS')) {
-				$resultArray['extJSCODE'] .= LF . 'TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {' . $evalObj->returnFieldJS() . '}';
+				$resultArray['extJSCODE'] .= LF . 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($evalData) . '] = function(value) {' . $evalObj->returnFieldJS() . '}';
 			}
 		}
 
