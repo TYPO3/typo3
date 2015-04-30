@@ -108,6 +108,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$this->cacheManager->flushCachesInGroup('system');
 		}
+		// Reload class aliases defined in Migrations/Code/ClassAliasMap.php
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class)
+			->setPackages($this->packageManager->getActivePackages());
 		$this->reloadCaches();
 
 		$this->importInitialFiles($extension['siteRelPath'], $extensionKey);
