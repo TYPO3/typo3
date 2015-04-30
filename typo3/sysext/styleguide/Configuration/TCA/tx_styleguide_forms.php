@@ -1773,7 +1773,7 @@ return array(
 				'maxitems' => 9999,
 				'appearance' => array(
 					'newRecordLinkAddTitle' => 1,
-					'useCombination' => TRUE, /** @TODO: The "Create new relation" button throws a JS error */
+					'useCombination' => TRUE,
 					'collapseAll' => FALSE,
 					'levelLinksPosition' => 'top',
 					'showSynchronizationLink' => 1,
