@@ -218,7 +218,7 @@ class FilePermissionUpdate extends AbstractUpdate {
 	 * @return string
 	 */
 	protected function getWhereClause() {
-		return 'fileoper_perms>0 AND ISNULL(file_permissions)';
+		return 'fileoper_perms>0 AND file_permissions IS NULL';
 	}
 
 }
