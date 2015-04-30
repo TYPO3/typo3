@@ -19,12 +19,14 @@ updated to upstream.
 - ADOdb: Set charset properly (61738_)
 - EXT:adodb: Table names in ALTER TABLE broken (63659_)
 - MSSQL native driver for ADOdb returns erroneous message (66674_)
+- ADOdb: mssqlnative driver fails to create sequences (66678_)
 
 .. [2] https://github.com/ADOdb/ADOdb/commit/85f05a98974ea85ecae943faf230a27afdbaa746
 .. _48034: https://forge.typo3.org/issues/48034
 .. _61738: https://forge.typo3.org/issues/61738
 .. _63659: https://forge.typo3.org/issues/63659
 .. _66674: https://forge.typo3.org/issues/66674
+.. _66678: https://forge.typo3.org/issues/66678
 
 
 Diff
