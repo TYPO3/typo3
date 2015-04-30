@@ -221,6 +221,7 @@ class Folder implements FolderInterface {
 	 * @param array $filterMethods
 	 * @param bool $recursive
 	 * @return int
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	public function getFileCount(array $filterMethods = array(), $recursive = FALSE) {
 		return $this->storage->countFilesInFolder($this, TRUE, $recursive);

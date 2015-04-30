@@ -108,6 +108,12 @@
 			<trans-unit id="storageNotBrowsableMessage">
 				<source>You are trying to access a folder in a storage that is not browsable.</source>
 			</trans-unit>
+			<trans-unit id="missingFolderPermissionsTitle">
+				<source>Missing folder permissions</source>
+			</trans-unit>
+			<trans-unit id="missingFolderPermissionsMessage">
+				<source>You have no access to the folder "%s".</source>
+			</trans-unit>
 			<trans-unit id="folderNotFoundTitle">
 				<source>Folder not found.</source>
 			</trans-unit>

@@ -309,8 +309,13 @@ class FileList extends AbstractRecordList {
 
 		// Only render the contents of a browsable storage
 		if ($this->folderObject->getStorage()->isBrowsable()) {
-			$foldersCount = $storage->countFoldersInFolder($this->folderObject);
-			$filesCount = $storage->countFilesInFolder($this->folderObject);
+			try {
+				$foldersCount = $storage->countFoldersInFolder($this->folderObject);
+				$filesCount = $storage->countFilesInFolder($this->folderObject);
+			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
+				$foldersCount = 0;
+				$filesCount = 0;
+			}
 
 			if ($foldersCount <= $this->firstElementNumber) {
 				$foldersFrom = FALSE;
@@ -522,7 +527,11 @@ class FileList extends AbstractRecordList {
 				foreach ($this->fieldArray as $field) {
 					switch ($field) {
 						case 'size':
-							$numFiles = $folderObject->getFileCount();
+							try {
+								$numFiles = $folderObject->getFileCount();
+							} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
+								$numFiles = 0;
+							}
 							$theData[$field] = $numFiles . ' ' . $this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
 							break;
 						case 'rw':

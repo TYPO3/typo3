@@ -173,31 +173,58 @@ class FileListController {
 				$fileStorages = $this->getBackendUser()->getFileStorages();
 				$fileStorage = reset($fileStorages);
 				if ($fileStorage) {
-					// Validating the input "id" (the path, directory!) and
-					// checking it against the mounts of the user. - now done in the controller
 					$this->folderObject = $fileStorage->getRootLevelFolder();
 				} else {
 					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
 				}
 			}
+
+			if ($this->folderObject && !$this->folderObject->getStorage()->isWithinFileMountBoundaries($this->folderObject)) {
+				throw new \RuntimeException('Folder not accessible.', 1430409089);
+			}
+		} catch (Exception\InsufficientFolderAccessPermissionsException $permissionException) {
+			$this->folderObject = NULL;
+			$this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
+				sprintf(
+					$this->getLanguageService()->getLL('missingFolderPermissionsMessage', TRUE),
+					htmlspecialchars($this->id)
+				),
+				$this->getLanguageService()->getLL('missingFolderPermissionsTitle', TRUE),
+				FlashMessage::NOTICE
+			);
 		} catch (Exception $fileException) {
+			// Set folder object to null and throw a message later on
+			$this->folderObject = NULL;
 			// Take the first object of the first storage
 			$fileStorages = $this->getBackendUser()->getFileStorages();
 			$fileStorage = reset($fileStorages);
-			if ($fileStorage) {
-				// Set folder object to null and throw a message later on
+			if ($fileStorage instanceof \TYPO3\CMS\Core\Resource\ResourceStorage) {
 				$this->folderObject = $fileStorage->getRootLevelFolder();
-			} else {
-				$this->folderObject = NULL;
+				if (!$fileStorage->isWithinFileMountBoundaries($this->folderObject)) {
+					$this->folderObject = NULL;
+				}
 			}
 			$this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
-				sprintf($this->getLanguageService()->getLL('folderNotFoundMessage', TRUE),
-						htmlspecialchars($this->id)
+				sprintf(
+					$this->getLanguageService()->getLL('folderNotFoundMessage', TRUE),
+					htmlspecialchars($this->id)
 				),
 				$this->getLanguageService()->getLL('folderNotFoundTitle', TRUE),
 				FlashMessage::NOTICE
 			);
+		} catch (\RuntimeException $e) {
+			$this->folderObject = NULL;
+			$this->errorMessage = GeneralUtility::makeInstance(FlashMessage::class,
+				$e->getMessage() . ' (' . $e->getCode() . ')',
+				$this->getLanguageService()->getLL('folderNotFoundTitle', TRUE),
+				FlashMessage::NOTICE
+			);
 		}
+
+		if ($this->folderObject && !$this->folderObject->getStorage()->checkFolderActionPermission('read', $this->folderObject)) {
+			$this->folderObject = NULL;
+		}
+
 		// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
 		$this->menuConfig();
 	}

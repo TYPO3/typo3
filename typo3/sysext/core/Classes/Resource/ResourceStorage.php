@@ -697,10 +697,17 @@ class ResourceStorage implements ResourceStorageInterface {
 	 */
 	protected function assureFolderReadPermission(Folder $folder = NULL) {
 		if (!$this->checkFolderActionPermission('read', $folder)) {
-			throw new Exception\InsufficientFolderAccessPermissionsException(
-				'You are not allowed to access the given folder: "' . $folder->getName() . '"',
-				1375955684
-			);
+			if ($folder === NULL) {
+				throw new Exception\InsufficientFolderAccessPermissionsException(
+					'You are not allowed to read folders',
+					1430657869
+				);
+			} else {
+				throw new Exception\InsufficientFolderAccessPermissionsException(
+					'You are not allowed to access the given folder: "' . $folder->getName() . '"',
+					1375955684
+				);
+			}
 		}
 	}
 
@@ -1363,6 +1370,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param bool $useFilters
 	 * @param bool $recursive
 	 * @return int Number of files in folder
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	public function countFilesInFolder(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
 		$this->assureFolderReadPermission($folder);
@@ -2010,6 +2018,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param bool $useFilters
 	 * @param bool $recursive
 	 * @return integer Number of subfolders
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	public function countFoldersInFolder(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {
 		$this->assureFolderReadPermission($folder);
