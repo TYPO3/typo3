@@ -481,18 +481,14 @@ return array(
 				'eval' => 'trim',
 			),
 		),
-		/**
-		 * @TODO: Add evaluation with a userfunc
 		'text_9' => array(
 			'exclude' => 1,
-			'label' => '9 eval userfunc',
+			'label' => 'TEXT: 9 eval with user function',
 			'config' => array(
 				'type' => 'text',
-				'eval' => 'trim',
-				// 'is_in' => 'abc123',
+				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeText9Eval',
 			),
 		),
-		 */
 		'text_10' => array(
 			'exclude' => 1,
 			'label' => 'TEXT: 10 readOnly',
