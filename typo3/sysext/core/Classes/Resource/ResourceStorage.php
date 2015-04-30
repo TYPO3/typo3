@@ -126,6 +126,13 @@ class ResourceStorage implements ResourceStorageInterface {
 	protected $processingFolder;
 
 	/**
+	 * All processing folders of this storage used in any storage
+	 *
+	 * @var Folder[]
+	 */
+	protected $processingFolders;
+
+	/**
 	 * whether this storage is online or offline in this request
 	 *
 	 * @var bool
@@ -1394,17 +1401,27 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return Folder[]
 	 */
 	public function getProcessingFolders() {
-		$processingFolders = array();
-
-		/** @var $storageRepository StorageRepository */
-		$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
-		$allStorages = $storageRepository->findAll();
-		foreach ($allStorages as $storage) {
-			if ($storage->getProcessingFolder()->getStorage() === $this) {
-				$processingFolders[] = $storage->getProcessingFolder();
+		if ($this->processingFolders === NULL) {
+			$this->processingFolders = array();
+			$this->processingFolders[] = $this->getProcessingFolder();
+			/** @var $storageRepository StorageRepository */
+			$storageRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
+			$allStorages = $storageRepository->findAll();
+			foreach ($allStorages as $storage) {
+				// To circumvent the permission check of the folder, we use the factory to create it "manually" instead of directly using $storage->getProcessingFolder()
+				// See #66695 for details
+				list($storageUid, $processingFolderIdentifier) = GeneralUtility::trimExplode(':', $storage->getStorageRecord()['processingfolder']);
+				if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
+					continue;
+				}
+				$potentialProcessingFolder = ResourceFactory::getInstance()->getInstance()->createFolderObject($this, $processingFolderIdentifier, $processingFolderIdentifier);
+				if ($potentialProcessingFolder->getStorage() === $this && $potentialProcessingFolder->getIdentifier() !== $this->getProcessingFolder()->getIdentifier()) {
+					$this->processingFolders[] = $potentialProcessingFolder;
+				}
 			}
 		}
-		return $processingFolders;
+
+		return $this->processingFolders;
 	}
 
 	/**
