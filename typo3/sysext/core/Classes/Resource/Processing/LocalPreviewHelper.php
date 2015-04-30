@@ -58,36 +58,57 @@ class LocalPreviewHelper {
 	public function process(TaskInterface $task) {
 		$sourceFile = $task->getSourceFile();
 
-			// Merge custom configuration with default configuration
+		// Merge custom configuration with default configuration
 		$configuration = array_merge(array('width' => 64, 'height' => 64), $task->getConfiguration());
 		$configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1);
 		$configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1);
 
-		// Only scale down when new dimensions are smaller then existing image
-		if ($configuration['width'] > $sourceFile->getProperty('width')
+		// Do not scale up if the source file has a size and the target size is larger
+		if ($sourceFile->getProperty('width') > 0 && $sourceFile->getProperty('height') > 0
+			&& $configuration['width'] > $sourceFile->getProperty('width')
 			&& $configuration['height'] > $sourceFile->getProperty('height')) {
 			return NULL;
 		}
 
-		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
+		return $this->generatePreviewFromFile($sourceFile, $configuration, $this->getTemporaryFilePath($task));
+	}
 
-			// Create a temporaryFile
-		$temporaryFileName = GeneralUtility::tempnam('preview_', '.' . $task->getTargetFileExtension());
-			// Check file extension
-		if ($sourceFile->getType() != File::FILETYPE_IMAGE &&
-			!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $sourceFile->getExtension())) {
-				// Create a default image
+	/**
+	 * Returns the path to a temporary file for processing
+	 *
+	 * @param TaskInterface $task
+	 * @return string
+	 */
+	protected function getTemporaryFilePath(TaskInterface $task) {
+		return GeneralUtility::tempnam('preview_', '.' . $task->getTargetFileExtension());
+	}
+
+	/**
+	 * Generates a preview for a file
+	 *
+	 * @param File $file The source file
+	 * @param array $configuration Processing configuration
+	 * @param string $targetFilePath Output file path
+	 * @return array|NULL
+	 */
+	protected function generatePreviewFromFile(File $file, array $configuration, $targetFilePath) {
+		$originalFileName = $file->getForLocalProcessing(FALSE);
+
+		// Check file extension
+		if ($file->getType() != File::FILETYPE_IMAGE &&
+			!GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
+			// Create a default image
 			$graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
 			$graphicalFunctions->getTemporaryImageWithText(
-				$temporaryFileName,
+				$targetFilePath,
 				'Not imagefile!',
 				'No ext!',
-				$sourceFile->getName()
+				$file->getName()
 			);
 			$result = array(
-				'filePath' => $temporaryFileName,
+				'filePath' => $targetFilePath,
 			);
-		} elseif ($sourceFile->getExtension() === 'svg') {
+		} elseif ($file->getExtension() === 'svg') {
 			/** @var $gifBuilder \TYPO3\CMS\Frontend\Imaging\GifBuilder */
 			$gifBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class);
 			$gifBuilder->init();
@@ -103,28 +124,27 @@ class LocalPreviewHelper {
 				// Create the temporary file
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 				$parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' '
-					. CommandUtility::escapeShellArgument($originalFileName) . '[0] ' . CommandUtility::escapeShellArgument($temporaryFileName);
+					. CommandUtility::escapeShellArgument($originalFileName) . '[0] ' . CommandUtility::escapeShellArgument($targetFilePath);
 
 				$cmd = GeneralUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
 				CommandUtility::exec($cmd);
 
-				if (!file_exists($temporaryFileName)) {
+				if (!file_exists($targetFilePath)) {
 					// Create a error gif
 					$graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
 					$graphicalFunctions->getTemporaryImageWithText(
-						$temporaryFileName,
+						$targetFilePath,
 						'No thumb',
 						'generated!',
-						$sourceFile->getName()
+						$file->getName()
 					);
 				}
 			}
 			$result = array(
-				'filePath' => $temporaryFileName,
+				'filePath' => $targetFilePath,
 			);
 		}
 
 		return $result;
 	}
-
 }
