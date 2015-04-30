@@ -15,8 +15,10 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Generate a folder tree,
@@ -57,7 +59,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function __construct() {
 		parent::init();
-		$this->storages = $GLOBALS['BE_USER']->getFileStorages();
+		$this->storages = $this->BE_USER->getFileStorages();
 		$this->treeName = 'folder';
 		// Don't apply any title
 		$this->titleAttrib = '';
@@ -249,7 +251,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 					'name' => $fileMountInfo['title']
 				);
 			}
-		} else {
+		} elseif ($this->BE_USER->isAdmin()) {
 			$rootLevelFolders[] = array(
 				'folder' => $storageObject->getRootLevelFolder(),
 				'name' => $storageObject->getName()
@@ -288,7 +290,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			// Mark a storage which is not online, as offline
 			// maybe someday there will be a special icon for this
 			if ($storageObject->isOnline() === FALSE) {
-				$rootLevelFolderName .= ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
+				$rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
 			}
 			// Preparing rootRec for the mount
 			$firstHtml .= $this->wrapIcon(IconUtility::getSpriteIconForResource($rootLevelFolder, array('mount-root' => TRUE)), $rootLevelFolder);
@@ -408,6 +410,17 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		if (!is_array($treeItems)) {
 			$treeItems = $this->tree;
 		}
+
+		if (empty($treeItems)) {
+			$message = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.message'),
+				$this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:foldertreeview.noFolders.title'),
+				FlashMessage::INFO
+			);
+			return $message->render();
+		}
+
 		$out = '
 			<!-- TYPO3 folder tree structure. -->
 			<ul class="tree" id="treeRoot">
@@ -632,6 +645,13 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function getAjaxStatus() {
 		return $this->ajaxStatus;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
