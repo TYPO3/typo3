@@ -280,6 +280,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function reloadCaches() {
+		// Reload class aliases defined in Migrations/Code/ClassAliasMap.php
+		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance('TYPO3\\CMS\\Core\\Core\\ClassLoader')
+			->setPackages($this->packageManager->getActivePackages());
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(FALSE);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
 	}
