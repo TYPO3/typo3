@@ -510,7 +510,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						if ($table != 'tx_dbal_debuglog') {
 							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
 						}
-					} else {
+					} elseif (!$this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
+						// The table does not support auto-incremented fields, fall back to
+						// using a sequence table to simulate the auto-increment
 						$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID($table . '_' . $this->cache_autoIncFields[$table], $this->handlerInstance[$this->lastHandlerKey]->sequenceStart);
 						$fields_values[$this->cache_autoIncFields[$table]] = $new_id;
 						if ($table != 'tx_dbal_debuglog') {
@@ -525,6 +527,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
 					if (strlen($this->lastQuery[0])) {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
+						if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
+							// The table is able to retrieve the ID of the last insert, use it to update the blob below
+							$new_id = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
+						}
 					}
 					if (is_array($this->lastQuery[1])) {
 						foreach ($this->lastQuery[1] as $field => $content) {
