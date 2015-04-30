@@ -623,21 +623,19 @@ return array(
 				'showIfRTE' => 1,
 			),
 		),
-		/**
-		 * @TODO Add a itemsProcFunc
-		 *
 		'checkbox_8' => array(
-			'label' => '8 itemsProcFunc',
+			// @todo: Checking a checkbox that is added by itemsProcFunc is not persisted correctly.
+			// @todo: HTML looks good, so this is probably an issue in DataHandler?
+			'label' => 'CHECKBOX: 8 itemsProcFunc',
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
 					array('foo', ''),
 					array('bar', ''),
 				),
-				'itemsProcFunc' => '',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
 			),
 		),
-		 */
 		'checkbox_9' => array(
 			'exclude' => 1,
 			'label' => 'CHECKBOX: 9 eval maximumRecordsChecked = 1 - table wide',
@@ -848,21 +846,20 @@ return array(
 				),
 			),
 		),
-		/**
-		 * @TODO Add a itemsProcFunc
 		'radio_5' => array(
+			// @todo: Radio elements added by itemsProcFunc are not persisted correctly.
+			// @todo: HTML looks good, so this is probably an issue in DataHandler?
 			'exclude' => 1,
-			'label' => '5 itemsProcFunc',
+			'label' => 'RADIO: 5 itemsProcFunc',
 			'config' => array(
 				'type' => 'radio',
 				'items' => array(
-					array('foo', ''),
-					array('bar', ''),
+					array('foo', 1),
+					array('bar', 2),
 				),
-				'itemsProcFunc' => '',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeRadio5ItemsProcFunc->itemsProcFunc',
 			),
 		),
-		 */
 		'radio_6' => array(
 			'exclude' => 1,
 			'label' => 'RADIO: 6 readonly',
@@ -897,7 +894,7 @@ return array(
 					array('foo', 1),
 					array('bar', 'bar'),
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeSelect2->itemsProcFunc',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeSelect2ItemsProcFunc->itemsProcFunc',
 			),
 		),
 		'select_3' => array(

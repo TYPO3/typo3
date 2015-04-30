@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Styleguide\UserFunctions;
  */
 
 /**
- * A user function used in select_2
+ * A user function used in checkbox_8
  */
-class TypeSelect2 {
+class TypeCheckbox8ItemsProcFunc {
 
 	/**
 	 * Add two items to existing ones
@@ -25,7 +25,7 @@ class TypeSelect2 {
 	 * @param $params
 	 */
 	public function itemsProcFunc(&$params) {
-		$params['items'][] = array('item 1 from itemProcFunc()', 'val1');
-		$params['items'][] = array('item 2 from itemProcFunc()', 'val2');
+		$params['items'][] = array('item 1 from itemProcFunc()', '');
+		$params['items'][] = array('item 2 from itemProcFunc()', '');
 	}
 }
