@@ -7009,6 +7009,12 @@ class ContentObjectRenderer {
 			case 'lcfirst':
 				$theValue = $GLOBALS['TSFE']->csConvObj->convCaseFirst($GLOBALS['TSFE']->renderCharset, $theValue, 'toLower');
 				break;
+			case 'uppercamelcase':
+				$theValue = GeneralUtility::underscoredToUpperCamelCase($theValue);
+				break;
+			case 'lowercamelcase':
+				$theValue = GeneralUtility::underscoredToLowerCamelCase($theValue);
+				break;
 		}
 		return $theValue;
 	}
