@@ -16,15 +16,18 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Displays 'Delete user' link with sprite icon to remove user
  *
  * @internal
  */
-class RemoveUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class RemoveUserViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Render link with sprite icon to remove user
@@ -33,23 +36,24 @@ class RemoveUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * @return string
 	 */
 	public function render(BackendUser $backendUser) {
-		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid']) {
+		/** @var BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		if ($backendUser->getUid() === (int)$beUser->user['uid']) {
 			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
 
-		$redirectUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
-		$redirect = '&redirect=' . ($redirectUrl == '' ? '\' + T3_THIS_LOCATION + \'' : rawurlencode($redirectUrl));
 		$urlParameters = [
 			'cmd[be_users][' . $backendUser->getUid() . '][delete]' => 1,
-			'vC' => $GLOBALS['BE_USER']->veriCode(),
+			'vC' => $beUser->veriCode(),
 			'prErr' => 1,
-			'uPT' => 1
+			'uPT' => 1,
+			'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
 		];
-		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $redirect . BackendUtility::getUrlToken('tceAction');
+		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
 
-		return '<a class="btn btn-default" href="' . $url . '"  onclick="return confirm(' .
+		return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '"  onclick="return confirm(' .
 			GeneralUtility::quoteJSvalue(LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) .
-			')">' . IconUtility::getSpriteIcon(('actions-edit-delete')) . '</a>';
+			')">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 	}
 
 }

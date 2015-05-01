@@ -1278,7 +1278,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					// Up
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
 					$moveUpAction = '<a class="btn btn-default" href="#" onclick="'
-						. htmlspecialchars('return jumpToUrl(\'' . $module->doc->issueCommand($params, -1) . '\');')
+						. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 						. '" title="' . $this->getLanguageService()->getLL('moveUp', TRUE) . '">'
 						. IconUtility::getSpriteIcon('actions-move-up') . '</a>';
 				} else {
@@ -1290,7 +1290,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					// Down
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
 					$moveDownAction = '<a class="btn btn-default" href="#" onclick="'
-						. htmlspecialchars('return jumpToUrl(\'' . $module->doc->issueCommand($params, -1) . '\');')
+						. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 						. '" title="' . $this->getLanguageService()->getLL('moveDown', TRUE) . '">'
 						. IconUtility::getSpriteIcon('actions-move-down') . '</a>';
 				} else {
@@ -1365,7 +1365,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				if ($this->calcPerms & Permission::PAGE_NEW) {
 					$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
 					$moveLeftAction = '<a class="btn btn-default" href="#" onclick="'
-						. htmlspecialchars('return jumpToUrl(\'' . $module->doc->issueCommand($params, -1) . '\');')
+						. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 						. '" title="' . $this->getLanguageService()->getLL('prevLevel', TRUE) . '">'
 						. IconUtility::getSpriteIcon('actions-move-left') . '</a>';
 					$this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
@@ -1376,7 +1376,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					if ($localCalcPerms & Permission::PAGE_NEW) {
 						$params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
 						$moveRightAction = '<a class="btn btn-default" href="#" onclick="'
-							. htmlspecialchars('return jumpToUrl(\'' . $module->doc->issueCommand($params, -1) . '\');')
+							. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 							. '" title="' . $this->getLanguageService()->getLL('nextLevel', TRUE) . '">'
 							. IconUtility::getSpriteIcon('actions-move-right') . '</a>';
 					} else {
@@ -1590,8 +1590,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
 				if (!isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
 					$url = substr($this->listURL(), strlen($this->backPath));
-					$href = $this->getModule()->doc->issueCommand('&cmd[' . $table . '][' . $row['uid'] . '][localize]='
-						. $lUid_OnPage, $url . '&justLocalized=' . rawurlencode($table . ':' . $row['uid'] . ':' . $lUid_OnPage));
+					$href = $this->getModule()->doc->issueCommand(
+						'&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
+						$url . '&justLocalized=' . rawurlencode($table . ':' . $row['uid'] . ':' . $lUid_OnPage)
+					);
 					$language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
 					if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
 						$lC = IconUtility::getSpriteIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon']);

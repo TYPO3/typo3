@@ -15,13 +15,15 @@ namespace TYPO3\CMS\SysNote\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to create a link to delete a note
  *
  * @internal
  */
-class DeleteLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DeleteLinkViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Create link to delete a note
@@ -30,9 +32,11 @@ class DeleteLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * @return string link
 	 */
 	public function render($id) {
-		$redirectUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
-		$urlParameters = ['cmd[sys_note][' . $id . '][delete]' => 1];
-		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . '&redirect=' . ($redirectUrl == '' ? '\' + T3_THIS_LOCATION + \'' : rawurlencode($redirectUrl)) . BackendUtility::getUrlToken('tceAction');
+		$urlParameters = [
+			'cmd[sys_note][' . $id . '][delete]' => 1,
+			'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
+		];
+		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
 		return htmlspecialchars($url);
 	}
 

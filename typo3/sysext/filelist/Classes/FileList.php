@@ -678,10 +678,14 @@ class FileList extends AbstractRecordList {
 									$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
 									$languageCode .= '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '">' . $flagButtonIcon . '</a>';
 								} else {
+									$parameters = [
+										'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
+										'returnUrl' => $this->listURL()
+									];
+									$returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters, $this->backPath) . BackendUtility::getUrlToken('editRecord');
 									$href = $GLOBALS['SOBE']->doc->issueCommand(
 										'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
-										$this->backPath . 'alt_doc.php?justLocalized=' . rawurlencode(('sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId)) .
-										'&returnUrl=' . rawurlencode($this->listURL()) . BackendUtility::getUrlToken('editRecord')
+										$returnUrl
 									);
 									$flagButtonIcon = IconUtility::getSpriteIcon(
 										$flagIcon,

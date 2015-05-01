@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Template;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -540,14 +541,25 @@ function jumpToUrl(URL) {
 	 * See description of the API elsewhere.
 	 *
 	 * @param string $params is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
-	 * @param string $redirectUrl Redirect URL if any other that \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') is wished
+	 * @param string|int $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate an URL for JavaScript using T3_THIS_LOCATION
 	 * @return string URL to tce_db.php + parameters (backpath is taken from $this->backPath)
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
-		$redirectUrl = $redirectUrl ? $redirectUrl : GeneralUtility::getIndpEnv('REQUEST_URI');
-		$commandUrl = BackendUtility::getModuleUrl('tce_db') . '&' . $params . '&redirect=' . ($redirectUrl == -1 ? '\'+T3_THIS_LOCATION+\'' : rawurlencode($redirectUrl)) . '&vC=' . rawurlencode($GLOBALS['BE_USER']->veriCode()) . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1';
-		return $commandUrl;
+		/** @var BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		$urlParameters = [
+			'prErr' => 1,
+			'uPT' => 1,
+			'vC' => $beUser->veriCode()
+		];
+		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $params . BackendUtility::getUrlToken('tceAction') . '&redirect=';
+		if ((int)$redirectUrl === -1) {
+			$url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
+		} else {
+			$url .= rawurlencode($redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
+		}
+		return $url;
 	}
 
 	/**

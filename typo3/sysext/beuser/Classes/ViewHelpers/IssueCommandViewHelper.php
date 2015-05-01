@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
@@ -22,7 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class IssueCommandViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class IssueCommandViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
@@ -35,14 +38,15 @@ class IssueCommandViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
 	 */
 	public function render($parameters, $redirectUrl = '') {
-		$redirectUrl = $redirectUrl ?: \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
-		$redirect = '&redirect=' . ($redirectUrl === '' ? '\' + T3_THIS_LOCATION + \'' : rawurlencode($redirectUrl));
+		/** @var BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
 		$urlParameters = [
-			'vC' => $GLOBALS['BE_USER']->veriCode(),
+			'vC' => $beUser->veriCode(),
 			'prErr' => 1,
-			'uPT' => 1
+			'uPT' => 1,
+			'redirect' => $redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI')
 		];
-		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters) . '&' . $parameters . $redirect  . BackendUtility::getUrlToken('tceAction'));
+		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters) . $parameters . BackendUtility::getUrlToken('tceAction'));
 	}
 
 }

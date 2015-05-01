@@ -838,7 +838,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 
 					return list ? list : idList;
 				}
-				T3_THIS_LOCATION = "' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
+				T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';
 
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 			');

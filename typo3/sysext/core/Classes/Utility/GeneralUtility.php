@@ -3174,7 +3174,7 @@ Connection: close
 			}
 		}
 		$pString = self::implodeArrayForUrl('', $params);
-		return $pString ? $parts . '?' . preg_replace('/^&/', '', $pString) : $parts;
+		return $pString ? $parts . '?' . ltrim($pString, '&') : $parts;
 	}
 
 	/**
