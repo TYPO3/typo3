@@ -13,6 +13,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * This ViewHelper generates a HTML dump of the tagged variable.
  *
@@ -32,7 +37,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * [A HTML view of the var_dump]
  * </output>
  */
-class DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class DebugViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
@@ -47,7 +52,29 @@ class DebugViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * @return string
 	 */
 	public function render($title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = FALSE, $inline = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
-		return \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->renderChildren(), $title, $maxDepth, (bool)$plainText, (bool)$ansiColors, (bool)$inline, $blacklistedClassNames, $blacklistedPropertyNames);
+		return self::renderStatic(
+			array(
+				'title' => $title,
+				'maxDepth' => $maxDepth,
+				'plainText' => $plainText,
+				'ansiColors' => $ansiColors,
+				'inline' => $inline,
+				'blacklistedClassNames' => $blacklistedClassNames,
+				'blacklistedPropertyNames' => $blacklistedPropertyNames
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return DebuggerUtility::var_dump($renderChildrenClosure(), $arguments['title'], $arguments['maxDepth'], (bool)$arguments['plainText'], (bool)$arguments['ansiColors'], (bool)$arguments['inline'], $arguments['blacklistedClassNames'], $arguments['blacklistedPropertyNames']);
+	}
 }
