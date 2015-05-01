@@ -250,14 +250,14 @@
 					</select_3>
 					<select_4>
 						<TCEforms>
-							<label>select_4 multi, minitems 1, enableMultiSelectFilterTextfield, multiSelectFilterItems, wizards</label>
+							<label>select_4 multi, enableMultiSelectFilterTextfield, multiSelectFilterItems, wizards</label>
 							<config>
 								<type>select</type>
 								<foreign_table>tx_styleguide_forms_staticdata</foreign_table>
 								<rootLevel>1</rootLevel>
 								<size>5</size>
 								<autoSizeMax>5</autoSizeMax>
-								<minitems>1</minitems>
+								<minitems>0</minitems>
 								<maxitems>999</maxitems>
 								<enableMultiSelectFilterTextfield>1</enableMultiSelectFilterTextfield>
 								<multiSelectFilterItems>

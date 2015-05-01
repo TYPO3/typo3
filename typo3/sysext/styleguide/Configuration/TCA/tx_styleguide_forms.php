@@ -197,14 +197,6 @@ return array(
 				'eval' => 'password',
 			),
 		),
-		'input_17' => array(
-			'exclude' => 1,
-			'label' => 'INPUT: 17 eval required',
-			'config' => array(
-				'type' => 'input',
-				'eval' => 'required',
-			),
-		),
 		'input_18' => array(
 			'exclude' => 1,
 			'label' => 'INPUT: 18 eval time',
@@ -463,14 +455,6 @@ return array(
 				'type' => 'text',
 				'wrap' => 'virtual',
 				'default' => 'This textbox has wrap set to "virtual", so these long paragraphs should appear in multiple lines (wrapped at the end of the textbox): Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean non luctus elit. In sed nunc velit. Donec gravida eros sollicitudin ligula mollis id eleifend mauris laoreet. Donec turpis magna, pulvinar id pretium eu, blandit et nisi. Nulla facilisi. Vivamus pharetra orci sed nunc auctor condimentum. Aenean volutpat posuere scelerisque. Nullam sed dolor justo. Pellentesque id tellus nunc, id sodales diam. Sed rhoncus risus a enim lacinia tincidunt. Aliquam ut neque augue.',
-			),
-		),
-		'text_7' => array(
-			'exclude' => 1,
-			'label' => 'TEXT: 7 eval required',
-			'config' => array(
-				'type' => 'text',
-				'eval' => 'required',
 			),
 		),
 		'text_8' => array(
@@ -1021,7 +1005,7 @@ return array(
 		),
 		'select_12' => array(
 			'exclude' => 1,
-			'label' => 'SELECT: 12 multiple, maxitems=5, minitems=2, autoSizeMax=4, size=3',
+			'label' => 'SELECT: 12 multiple, autoSizeMax=4, size=3',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
@@ -1036,7 +1020,7 @@ return array(
 				'size' => 3,
 				'autoSizeMax' => 5,
 				'maxitems' => 5,
-				'minitems' => 2,
+				'minitems' => 0,
 				'multiple' => TRUE, // @TODO: multiple does not seem to have any effect at all? Can be commented without change.
 			),
 		),
@@ -2004,16 +1988,83 @@ return array(
 				),
 			),
 		),
+
+
+		'required_1' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 1 type input, eval required',
+			'config' => array(
+				'type' => 'input',
+				'eval' => 'required',
+			),
+		),
+		'required_2' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 2 type text, eval required',
+			'config' => array(
+				'type' => 'text',
+				'eval' => 'required',
+			),
+		),
+		'required_3' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 3 type select, multiple, maxitems=5, minitems=2',
+			'config' => array(
+				'type' => 'select',
+				'size' => 3,
+				'maxitems' => 5,
+				'minitems' => 2,
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('foo3', 3),
+					array('foo4', 4),
+					array('foo5', 5),
+					array('foo6', 6),
+				),
+			),
+		),
+		'required_4' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 4 type flex, group minitems 1',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<ROOT>
+								<type>array</type>
+								<el>
+									<select_4>
+										<TCEforms>
+											<label>minitems 1</label>
+											<config>
+												<type>select</type>
+												<foreign_table>tx_styleguide_forms_staticdata</foreign_table>
+												<rootLevel>1</rootLevel>
+												<size>5</size>
+												<minitems>1</minitems>
+												<maxitems>999</maxitems>
+											</config>
+										</TCEforms>
+									</select_4>
+								</el>
+							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
 	),
 
 
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,endtime,
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
-			input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18, input_19, input_20,
+			input_11, input_12, input_13, input_14, input_15, input_16, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
 			input_32, input_33, input_34, input_35,
-			text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9, text_10,
+			text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
 			checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
@@ -2029,6 +2080,7 @@ return array(
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
+			required_1, required_2, required_3, required_4,
 			',
 	),
 
@@ -2037,16 +2089,15 @@ return array(
 			'showitem' => '
 				--div--;Input,
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
-					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_17, input_18,
+					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30,
 					input_32, input_33, input_34, input_35,
 				--div--;Text,
-					text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_8, text_9,
+					text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
 				--div--;Check,
 					checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9,
 					checkbox_10, checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
-
 				--div--;Radio,
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
@@ -2075,6 +2126,8 @@ return array(
 					palette_6_1;Field with palette below;palettes_6,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
+				--div--;Required,
+					required_1, required_2, required_3, required_4,
 			',
 		),
 	),

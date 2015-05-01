@@ -53,7 +53,6 @@ CREATE TABLE tx_styleguide_forms (
 	input_14 tinytext,
 	input_15 tinytext NOT NULL,
 	input_16 tinytext NOT NULL,
-	input_17 tinytext NOT NULL,
 	input_18 tinytext NOT NULL,
 	input_19 tinytext NOT NULL,
 	input_20 tinytext NOT NULL,
@@ -79,7 +78,6 @@ CREATE TABLE tx_styleguide_forms (
 	text_4 text,
 	text_5 text,
 	text_6 text,
-	text_7 text,
 	text_8 text,
 	text_9 text,
 	text_10 text,
@@ -199,6 +197,11 @@ CREATE TABLE tx_styleguide_forms (
 	wizard_3 tinytext NOT NULL,
 	wizard_4 tinytext NOT NULL,
 	wizard_5 tinytext NOT NULL,
+
+	required_1 tinytext NOT NULL,
+	required_2 text,
+	required_3 tinytext NOT NULL,
+	required_4 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
