@@ -158,8 +158,9 @@ class UnitTestsBootstrap {
 		if (is_dir($directory)) {
 			return;
 		}
-
-		if (!mkdir($directory, 0777, TRUE)) {
+		@mkdir($directory, 0777, TRUE);
+		clearstatcache();
+		if (!is_dir($directory)) {
 			throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1423043755);
 		}
 	}
