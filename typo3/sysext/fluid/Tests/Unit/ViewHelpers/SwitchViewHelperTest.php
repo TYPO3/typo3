@@ -33,7 +33,14 @@ class SwitchViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 	 */
 	public function renderSetsSwitchExpressionInViewHelperVariableContainer() {
 		$switchExpression = new \stdClass();
-		$this->viewHelperVariableContainer->expects($this->at(2))->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression', $switchExpression);
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', array(array(
+			'break' => FALSE,
+			'expression' => $switchExpression
+		)));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->will($this->returnValue(array(array(
+			'break' => TRUE,
+			'expression' => $switchExpression
+		))));
 		$this->viewHelper->render($switchExpression);
 	}
 
@@ -41,7 +48,15 @@ class SwitchViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewH
 	 * @test
 	 */
 	public function renderRemovesSwitchExpressionFromViewHelperVariableContainerAfterInvocation() {
-		$this->viewHelperVariableContainer->expects($this->at(4))->method('remove')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', array(array(
+			'break' => FALSE,
+			'expression' => 'switchExpression'
+		)));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->will($this->returnValue(array(array(
+			'break' => TRUE,
+			'expression' => 'switchExpression'
+		))));
+		$this->viewHelperVariableContainer->expects($this->at(3))->method('addOrUpdate')->with(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'stateStack', array());
 		$this->viewHelper->render('switchExpression');
 	}
 

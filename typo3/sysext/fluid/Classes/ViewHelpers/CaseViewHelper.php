@@ -55,19 +55,27 @@ class CaseViewHelper extends AbstractViewHelper implements CompilableInterface {
 		$value = $arguments['value'];
 		$default = $arguments['default'];
 		$viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
-		if (!$viewHelperVariableContainer->exists(SwitchViewHelper::class, 'switchExpression')) {
+		if (!$viewHelperVariableContainer->exists(SwitchViewHelper::class, 'stateStack')) {
 			throw new Exception('The case View helper can only be used within a switch View helper', 1368112037);
 		}
 		if (is_null($value) && $default === FALSE) {
 			throw new Exception('The case View helper must have either value or default argument', 1382867521);
 		}
-		$switchExpression = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'switchExpression');
+		$stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+		$currentState = array_pop($stateStack);
+
+		if ($currentState['break'] === TRUE) {
+			return '';
+		}
 
 		// non-type-safe comparison by intention
-		if ($default === TRUE || $switchExpression == $value) {
-			$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'break', TRUE);
+		if ($default === TRUE || $currentState['expression'] == $value) {
+			$currentState['break'] = TRUE;
+			$stateStack[] = $currentState;
+			$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
 			return $renderChildrenClosure();
 		}
+
 		return '';
 	}
 }

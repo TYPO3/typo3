@@ -10,6 +10,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Switch view helper which can be used to render content depending on a value or expression.
@@ -36,7 +42,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *
  * @api
  */
-class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\ChildNodeAccessInterface {
+class SwitchViewHelper extends AbstractViewHelper implements ChildNodeAccessInterface, CompilableInterface {
 
 	/**
 	 * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
@@ -70,63 +76,47 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @api
 	 */
 	public function render($expression) {
-		$content = '';
-		$this->backupSwitchState();
-		$templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
-
-		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression', $expression);
-		$templateVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', FALSE);
-
-		foreach ($this->childNodes as $childNode) {
-			if (
-				!$childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
-				|| $childNode->getViewHelperClassName() !== \TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper::class
-			) {
-				continue;
-			}
-			$content = $childNode->evaluate($this->renderingContext);
-			if ($templateVariableContainer->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break') === TRUE) {
-				break;
-			}
-		}
-
-		$templateVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
-		$templateVariableContainer->remove(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break');
-
-		$this->restoreSwitchState();
-		return $content;
+		return self::renderStatic(
+			array(
+				'expression' => $expression
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**
-	 * Backups "switch expression" and "break" state of a possible parent switch ViewHelper to support nesting
+	 * Default implementation for CompilableInterface. See CompilableInterface
+	 * for a detailed description of this method.
 	 *
-	 * @return void
+	 * @param array $arguments
+	 * @param \Closure $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed
+	 * @see \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface
 	 */
-	protected function backupSwitchState() {
-		if ($this->renderingContext->getViewHelperVariableContainer()->exists(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression')) {
-			$this->backupSwitchExpression = $this->renderingContext->getViewHelperVariableContainer()->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'switchExpression');
-		}
-		if ($this->renderingContext->getViewHelperVariableContainer()->exists(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break')) {
-			$this->backupBreakState = $this->renderingContext->getViewHelperVariableContainer()->get(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break');
-		}
-	}
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$viewHelperVariableContainer = $renderingContext->getViewHelperVariableContainer();
 
-	/**
-	 * Restores "switch expression" and "break" states that might have been backed up in backupSwitchState() before
-	 *
-	 * @return void
-	 */
-	protected function restoreSwitchState() {
-		if ($this->backupSwitchExpression !== NULL) {
-			$this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(
-				\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class,
-				'switchExpression',
-				$this->backupSwitchExpression
-			);
-		}
-		if ($this->backupBreakState !== FALSE) {
-			$this->renderingContext->getViewHelperVariableContainer()->addOrUpdate(\TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper::class, 'break', TRUE);
-		}
-	}
+		$stackValue = array(
+			'expression' => $arguments['expression'],
+			'break' => FALSE
+		);
 
+		if ($viewHelperVariableContainer->exists(SwitchViewHelper::class, 'stateStack')) {
+			$stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+		} else {
+			$stateStack = array();
+		}
+		$stateStack[] = $stackValue;
+		$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
+
+		$result = $renderChildrenClosure();
+
+		$stateStack = $viewHelperVariableContainer->get(SwitchViewHelper::class, 'stateStack');
+		array_pop($stateStack);
+		$viewHelperVariableContainer->addOrUpdate(SwitchViewHelper::class, 'stateStack', $stateStack);
+
+		return $result;
+	}
 }
