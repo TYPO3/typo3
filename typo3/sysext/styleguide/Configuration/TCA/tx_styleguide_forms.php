@@ -1644,7 +1644,6 @@ return array(
 		),
 
 
-
 		'inline_1' => array(
 			'exclude' => 1,
 			'label' => 'IRRE: 1 typical FAL field',
@@ -1766,8 +1765,6 @@ return array(
 				),
 			),
 		),
-
-
 
 
 		'palette_1_1' => array(
@@ -2000,15 +1997,31 @@ return array(
 		),
 		'required_2' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 2 type text, eval required',
+			'label' => 'REQUIRED: 2 type input, eval required',
 			'config' => array(
-				'type' => 'text',
+				'type' => 'input',
 				'eval' => 'required',
 			),
 		),
 		'required_3' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 3 type select, multiple, maxitems=5, minitems=2',
+			'label' => 'REQUIRED: 3 type input, eval required',
+			'config' => array(
+				'type' => 'input',
+				'eval' => 'required',
+			),
+		),
+		'required_4' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 4 type text, eval required',
+			'config' => array(
+				'type' => 'text',
+				'eval' => 'required',
+			),
+		),
+		'required_5' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 5 type select, multiple, maxitems=5, minitems=2',
 			'config' => array(
 				'type' => 'select',
 				'size' => 3,
@@ -2024,9 +2037,9 @@ return array(
 				),
 			),
 		),
-		'required_4' => array(
+		'required_6' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 4 type flex, group minitems 1',
+			'label' => 'REQUIRED: 6 type flex, group minitems 1',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -2035,7 +2048,7 @@ return array(
 							<ROOT>
 								<type>array</type>
 								<el>
-									<select_4>
+									<select_1>
 										<TCEforms>
 											<label>minitems 1</label>
 											<config>
@@ -2047,9 +2060,96 @@ return array(
 												<maxitems>999</maxitems>
 											</config>
 										</TCEforms>
-									</select_4>
+									</select_1>
 								</el>
 							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
+		'required_7' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 7 type flex, tab, section container, inline',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<sheets>
+								<sGeneral>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>Single required element</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<input_1>
+												<TCEforms>
+													<label>input, required</label>
+													<config>
+														<type>input</type>
+														<eval>required</eval>
+													</config>
+												</TCEforms>
+											</input_1>
+										</el>
+									</ROOT>
+								</sGeneral>
+								<sSections>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>Section</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<section_1>
+												<title>section_1</title>
+												<type>array</type>
+												<section>1</section>
+												<el>
+													<container_1>
+														<type>array</type>
+														<title>1 required field</title>
+														<el>
+															<input_1>
+																<TCEforms>
+																	<label>input, required</label>
+																	<config>
+																		<type>input</type>
+																		<eval>required</eval>
+																	</config>
+																</TCEforms>
+															</input_1>
+														</el>
+													</container_1>
+												</el>
+											</section_1>
+										</el>
+									</ROOT>
+								</sSections>
+								<sInline>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>Inline</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<inline_1>
+												<TCEforms>
+													<label>inline_1 to one required field</label>
+													<config>
+														<type>inline</type>
+														<foreign_table>tx_styleguide_forms_required_7_flex_inline_1_child1</foreign_table>
+														<foreign_field>parentid</foreign_field>
+														<foreign_table_field>parenttable</foreign_table_field>
+													</config>
+												</TCEforms>
+											</inline_1>
+										</el>
+									</ROOT>
+								</sInline>
+							</sheets>
 						</T3DataStructure>
 					',
 				),
@@ -2080,7 +2180,7 @@ return array(
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
-			required_1, required_2, required_3, required_4,
+			required_1, required_2, required_3, required_4, required_5, required_6, required_7,
 			',
 	),
 
@@ -2127,7 +2227,7 @@ return array(
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 				--div--;Required,
-					required_1, required_2, required_3, required_4,
+					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_7,
 			',
 		),
 	),
@@ -2152,6 +2252,9 @@ return array(
 		),
 		'palettes_6' => array(
 			'showitem' => 'palette_6_2, palette_6_3',
+		),
+		'required_2_palette' => array(
+			'showitem' => 'required_2, required_3',
 		),
 		'visibility' => array(
 			'showitem' => 'hidden;Shown in frontend',

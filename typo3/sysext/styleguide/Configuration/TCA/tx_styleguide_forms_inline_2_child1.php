@@ -63,11 +63,10 @@ return array(
 		),
 		'input_1' => array(
 			'l10n_mode' => 'prefixLangTitle',
-			'label' => 'input_1 eval=required',
+			'label' => 'input_1',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'eval' => 'required',
 			),
 		),
 		'inline_1' => array(
