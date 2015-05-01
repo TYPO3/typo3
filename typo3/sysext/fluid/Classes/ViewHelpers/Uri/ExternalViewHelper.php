@@ -10,6 +10,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * A view helper for creating URIs to external targets.
@@ -33,7 +36,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *
  * @api
  */
-class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ExternalViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param string $uri target URI
@@ -42,11 +45,31 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @api
 	 */
 	public function render($uri, $defaultScheme = 'http') {
+		return self::renderStatic(
+			array(
+				'uri' => $uri,
+				'defaultScheme' => $defaultScheme
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$uri = $arguments['uri'];
+		$defaultScheme = $arguments['defaultScheme'];
+
 		$scheme = parse_url($uri, PHP_URL_SCHEME);
 		if ($scheme === NULL && $defaultScheme !== '') {
 			$uri = $defaultScheme . '://' . $uri;
 		}
 		return $uri;
 	}
-
 }

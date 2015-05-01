@@ -10,11 +10,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper;
 
 /**
  * Testcase for the external uri view helper
  */
-class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class ExternalViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper
@@ -23,7 +25,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 
 	protected function setUp() {
 		parent::setUp();
-		$this->viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper();
+		$this->viewHelper = new ExternalViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
