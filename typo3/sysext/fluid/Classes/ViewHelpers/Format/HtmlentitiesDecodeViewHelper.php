@@ -10,6 +10,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Applies html_entity_decode() to a value
@@ -33,7 +35,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class HtmlentitiesDecodeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\AbstractEncodingViewHelper {
+class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper implements CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -54,14 +56,37 @@ class HtmlentitiesDecodeViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\A
 	 * @api
 	 */
 	public function render($value = NULL, $keepQuotes = FALSE, $encoding = NULL) {
+		return self::renderStatic(
+			array(
+				'value' => $value,
+				'keepQuotes' => $keepQuotes,
+				'encoding' => $encoding
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
+		$encoding = $arguments['encoding'];
+		$keepQuotes = $arguments['keepQuotes'];
+
 		if ($value === NULL) {
-			$value = $this->renderChildren();
+			$value = $renderChildrenClosure();
 		}
 		if (!is_string($value)) {
 			return $value;
 		}
 		if ($encoding === NULL) {
-			$encoding = $this->resolveDefaultEncoding();
+			$encoding = self::resolveDefaultEncoding();
 		}
 		$flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
 		return html_entity_decode($value, $flags, $encoding);

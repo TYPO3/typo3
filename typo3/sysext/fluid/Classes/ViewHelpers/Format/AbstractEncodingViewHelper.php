@@ -29,7 +29,7 @@ abstract class AbstractEncodingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 	 *
 	 * @return string the encoding
 	 */
-	protected function resolveDefaultEncoding() {
+	static protected function resolveDefaultEncoding() {
 		if (self::$defaultEncoding === NULL) {
 			self::$defaultEncoding = 'UTF-8';
 		}

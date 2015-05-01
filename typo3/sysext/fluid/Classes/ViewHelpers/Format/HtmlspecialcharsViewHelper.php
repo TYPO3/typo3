@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Applies htmlspecialchars() escaping to a value
@@ -33,7 +34,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\AbstractEncodingViewHelper implements \TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface {
+class HtmlspecialcharsViewHelper extends AbstractEncodingViewHelper implements CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -62,7 +63,7 @@ class HtmlspecialcharsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Format\Abs
 			return $value;
 		}
 		if ($encoding === NULL) {
-			$encoding = $this->resolveDefaultEncoding();
+			$encoding = self::resolveDefaultEncoding();
 		}
 		$flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
 		return htmlspecialchars($value, $flags, $encoding, $doubleEncode);
