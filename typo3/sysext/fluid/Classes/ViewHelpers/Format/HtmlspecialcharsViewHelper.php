@@ -11,6 +11,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+
 
 /**
  * Applies htmlspecialchars() escaping to a value
@@ -56,8 +58,31 @@ class HtmlspecialcharsViewHelper extends AbstractEncodingViewHelper implements C
 	 * @api
 	 */
 	public function render($value = NULL, $keepQuotes = FALSE, $encoding = NULL, $doubleEncode = TRUE) {
+		return self::renderStatic(
+			array(
+				'value' => $value,
+				'keepQuotes' => $keepQuotes,
+				'encoding' => $encoding,
+				'doubleEncode' => $doubleEncode
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
+		$keepQuotes = $arguments['keepQuotes'];
+		$encoding = $arguments['encoding'];
+		$doubleEncode = $arguments['doubleEncode'];
 		if ($value === NULL) {
-			$value = $this->renderChildren();
+			$value = $renderChildrenClosure();
 		}
 		if (!is_string($value)) {
 			return $value;

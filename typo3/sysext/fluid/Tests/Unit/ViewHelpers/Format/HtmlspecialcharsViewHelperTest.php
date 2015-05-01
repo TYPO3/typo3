@@ -10,19 +10,25 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlspecialcharsViewHelper;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
  */
-class HtmlspecialcharsViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class HtmlspecialcharsViewHelperTest extends UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlspecialcharsViewHelper
+	 * @var HtmlspecialcharsViewHelper
 	 */
 	protected $viewHelper;
 
 	protected function setUp() {
-		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\HtmlspecialcharsViewHelper::class, array('renderChildren'));
+		$this->viewHelper = $this->getMock(HtmlspecialcharsViewHelper::class, array('renderChildren'));
+		/** @var RenderingContext $renderingContext */
+		$renderingContext = $this->getMock(RenderingContext::class);
+		$this->viewHelper->setRenderingContext($renderingContext);
 	}
 
 	/**
