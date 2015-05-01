@@ -311,6 +311,8 @@ class CategoryRegistry implements SingletonInterface {
 	 *              + fieldConfiguration: TCA field config array to override defaults
 	 *              + label: backend label of the categories field
 	 *              + interface: boolean if the category should be included in the "interface" section of the TCA table
+	 *              + l10n_mode
+	 *              + l10n_display
 	 * @return void
 	 */
 	protected function addTcaColumn($tableName, $fieldName, array $options) {
@@ -337,6 +339,13 @@ class CategoryRegistry implements SingletonInterface {
 					'config' =>  static::getTcaFieldConfiguration($tableName, $fieldName, $fieldConfiguration),
 				),
 			);
+
+			if (isset($options['l10n_mode'])) {
+				$columns[$fieldName]['l10n_mode'] = $options['l10n_mode'];
+			}
+			if (isset($options['l10n_display'])) {
+				$columns[$fieldName]['l10n_display'] = $options['l10n_display'];
+			}
 
 			// Register opposite references for the foreign side of a relation
 			if (empty($GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName])) {
