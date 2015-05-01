@@ -323,7 +323,7 @@ class NewRecordController {
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {
 			// No pages yet, no need to prompt for position, redirect to page creation.
-			$javascript = BackendUtility::editOnClick('&edit[pages][0]=new&returnNewPageId=1', '', BackendUtility::getModuleUrl('db_new', array('id' => $this->id, 'pagesOnly' => '1')));
+			$javascript = stripslashes(BackendUtility::editOnClick('&edit[pages][0]=new&returnNewPageId=1', '', BackendUtility::getModuleUrl('db_new', array('id' => $this->id, 'pagesOnly' => '1'))));
 			$startPos = strpos($javascript, 'href=\'') + 6;
 			$endPos = strpos($javascript, '\';');
 			$url = substr($javascript, $startPos, $endPos - $startPos);

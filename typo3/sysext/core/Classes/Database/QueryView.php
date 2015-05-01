@@ -543,7 +543,7 @@ class QueryView {
 		$out .= '<td><div class="btn-group">';
 		if (!$row['deleted']) {
 			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
-			$out .= '<a class="btn btn-default" href="#" onClick="' . BackendUtility::editOnClick($params, '', (GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',

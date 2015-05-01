@@ -65,7 +65,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 		} else {
 			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
 			$editOnClick = BackendUtility::editOnClick($params);
-			$startAnchor = '<a href="#" onclick="' . $editOnClick . '">';
+			$startAnchor = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '">';
 		}
 		$icon = IconUtility::getSpriteIcon(
 			'actions-document-open',
@@ -275,9 +275,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$outCode = '<div class="table-fit"><table class="table table-striped table-hover">' . $outCode . '</table></div>';
 
 			// Edit all icon:
-			$editOnClick = BackendUtility::editOnClick(rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit');
+			$editOnClick = BackendUtility::editOnClick('&createExtension=0&edit[sys_template][' . $tplRow['uid'] . ']=edit');
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $lang->getLL('editTemplateRecord'))) . $lang->getLL('editTemplateRecord');
-			$outCode .= '<br /><a href="#" onclick="' . $editOnClick . '"><strong>' . $icon . '</strong></a>';
+			$outCode .= '<br /><a href="#" onclick="' . htmlspecialchars($editOnClick) . '"><strong>' . $icon . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);
 
 				// hook	after compiling the output

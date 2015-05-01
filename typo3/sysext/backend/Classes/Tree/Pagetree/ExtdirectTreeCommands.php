@@ -321,7 +321,7 @@ class ExtdirectTreeCommands {
 	static public function getViewLink($nodeData) {
 		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
 		$node = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode::class, (array)$nodeData);
-		$javascriptLink = BackendUtility::viewOnClick($node->getId());
+		$javascriptLink = stripslashes(BackendUtility::viewOnClick($node->getId()));
 		preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match);
 		return $match[1];
 	}

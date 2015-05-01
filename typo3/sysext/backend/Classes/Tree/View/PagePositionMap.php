@@ -197,7 +197,7 @@ class PagePositionMap {
 		$prev_dat = end($t3lib_pageTree->tree);
 		if ($prev_dat['row']['uid'] == $id) {
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
-				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . $this->onClickEvent($id, $id, 4) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgSubpage' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
+				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 4)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgSubpage' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
 			}
 		}
 		for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
