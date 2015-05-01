@@ -18,8 +18,6 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Karsten Dambekalns <karsten@typo3.org>
  */
-$LANG->includeLLFile('EXT:dbal/mod1/locallang.xlf');
-$BE_USER->modAccess($MCONF, 1);
 
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Controller\ModuleController::class);
 $GLOBALS['SOBE']->init();

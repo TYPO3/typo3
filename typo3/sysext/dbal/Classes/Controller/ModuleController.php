@@ -30,16 +30,27 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $thisScript;
 
 	/**
+	 * Initializes this module.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		$this->getLanguageService()->includeLLFile('EXT:dbal/mod1/locallang.xlf');
+		parent::init();
+	}
+
+	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
 	 * @return void
 	 */
 	public function menuConfig() {
+		$languageService = $this->getLanguageService();
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => $GLOBALS['LANG']->getLL('Debug_log'),
-				'info' => $GLOBALS['LANG']->getLL('Cached_info'),
-				'sqlcheck' => $GLOBALS['LANG']->getLL('SQL_check')
+				0 => $languageService->getLL('Debug_log'),
+				'info' => $languageService->getLL('Cached_info'),
+				'sqlcheck' => $languageService->getLL('SQL_check')
 			)
 		);
 		parent::menuConfig();
@@ -51,6 +62,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
+		$languageService = $this->getLanguageService();
 		$this->thisScript = BackendUtility::getModuleUrl($this->MCONF['name']);
 		// Clean up settings:
 		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
@@ -59,20 +71,20 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="" method="post">';
 		// DBAL page title:
-		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
-		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
+		$this->content .= $this->doc->startPage($languageService->getLL('title'));
+		$this->content .= $this->doc->header($languageService->getLL('title'));
 		$this->content .= $this->doc->spacer(5);
 		$this->content .= $this->doc->section('', $this->doc->funcMenu('', BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 		// Debug log:
 		switch ($this->MOD_SETTINGS['function']) {
 			case 'info':
-				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Cached_info'), $this->printCachedInfo());
+				$this->content .= $this->doc->section($languageService->getLL('Cached_info'), $this->printCachedInfo());
 				break;
 			case 'sqlcheck':
-				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('SQL_check'), $this->printSqlCheck());
+				$this->content .= $this->doc->section($languageService->getLL('SQL_check'), $this->printSqlCheck());
 				break;
 			case 0:
-				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Debug_log'), $this->printLogMgm());
+				$this->content .= $this->doc->section($languageService->getLL('Debug_log'), $this->printLogMgm());
 				break;
 		}
 		// ShortCut
@@ -531,6 +543,15 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 					<hr />
 		';
 		return $menu . $outStr;
+	}
+
+	/**
+	 * Returns the language service.
+	 *
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
