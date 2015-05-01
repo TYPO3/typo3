@@ -684,7 +684,8 @@ class PageGenerator {
 							$jsFileConfig['allWrap'],
 							$jsFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
 							$jsFileConfig['allWrap.']['splitChar'],
-							$jsFileConfig['async'] ? TRUE : FALSE
+							$jsFileConfig['async'] ? TRUE : FALSE,
+							$jsFileConfig['integrity']
 						);
 						unset($jsFileConfig);
 					}
@@ -713,7 +714,8 @@ class PageGenerator {
 							$jsFileConfig['allWrap'],
 							$jsFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
 							$jsFileConfig['allWrap.']['splitChar'],
-							$jsFileConfig['async'] ? TRUE : FALSE
+							$jsFileConfig['async'] ? TRUE : FALSE,
+							$jsFileConfig['integrity']
 						);
 						unset($jsFileConfig);
 					}
@@ -742,7 +744,8 @@ class PageGenerator {
 							$jsConfig['allWrap'],
 							$jsConfig['excludeFromConcatenation'] ? TRUE : FALSE,
 							$jsConfig['allWrap.']['splitChar'],
-							$jsConfig['async'] ? TRUE : FALSE
+							$jsConfig['async'] ? TRUE : FALSE,
+							$jsConfig['integrity']
 						);
 						unset($jsConfig);
 					}
@@ -770,7 +773,8 @@ class PageGenerator {
 							$jsConfig['allWrap'],
 							$jsConfig['excludeFromConcatenation'] ? TRUE : FALSE,
 							$jsConfig['allWrap.']['splitChar'],
-							$jsConfig['async'] ? TRUE : FALSE
+							$jsConfig['async'] ? TRUE : FALSE,
+							$jsConfig['integrity']
 						);
 						unset($jsConfig);
 					}
