@@ -92,4 +92,68 @@ class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Abstrac
 		}
 		return $subject;
 	}
+
+	/**
+	 * get property accessors for a given property path.
+	 *
+	 * @param mixed $subject
+	 * @param array $propertyPathSegments
+	 * @return null|string
+	 */
+	static public function getPropertyAccessors($subject, $propertyPathSegments) {
+		$accessors = array();
+		foreach ($propertyPathSegments as $pathSegment) {
+			if ($subject === NULL || is_scalar($subject)) {
+				return NULL;
+			}
+
+			if (is_array($subject)) {
+				$accessors[] = array('t' => 'a', 'c' => $pathSegment);
+			}
+
+			if (is_object($subject)) {
+				$getterMethodName = 'get' . ucfirst($pathSegment);
+				if (!is_callable(array($subject, $getterMethodName))) {
+					$getterMethodName = 'is' . ucfirst($pathSegment);
+				}
+				if (!is_callable(array($subject, $getterMethodName))) {
+					$getterMethodName = 'has' . ucfirst($pathSegment);
+				}
+				if (!is_callable(array($subject, $getterMethodName))) {
+					return NULL;
+				}
+
+				$accessors[] = array('t' => 'o', 'c' => $getterMethodName);
+			}
+
+			$subject = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyInternal($subject, $pathSegment, FALSE, $exists);
+		}
+
+		return $accessors;
+	}
+
+	/**
+	 * Resolves property accessors from compiled templates.
+	 *
+	 * @param mixed $subject
+	 * @param array $accessors
+	 * @return mixed
+	 */
+	static public function resolvePropertyAccessors($subject, array $accessors) {
+		foreach ($accessors as $accessor) {
+			if ($subject === NULL) {
+				return NULL;
+			}
+
+			if ($accessor['t'] === 'a') {
+				$subject = $subject[$accessor['c']];
+			}
+
+			if ($accessor['t'] === 'o') {
+				$subject = $subject->{$accessor['c']}();
+			}
+		}
+
+		return $subject;
+	}
 }
