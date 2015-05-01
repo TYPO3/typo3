@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * View helper which returns the current page path as known from TYPO3 backend modules
  * Note: This view helper is experimental!
@@ -33,7 +38,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * Current page path, prefixed with "Path:" and wrapped in a span with the class "typo3-docheader-pagePath"
  * </output>
  */
-class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class PagePathViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders the current page path
@@ -42,8 +47,23 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPagePath() Note: can't call this method as it's protected!
 	 */
 	public function render() {
-		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-		$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		return self::renderStatic(
+			array(),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$id = GeneralUtility::_GP('id');
+		$pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		// Is this a real page
 		if ($pageRecord['uid']) {
 			$title = $pageRecord['_thePathFull'];
@@ -54,7 +74,7 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		$pagePath = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.path', TRUE) . ': <span class="typo3-docheader-pagePath">';
 		// crop the title to title limit (or 50, if not defined)
 		$cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
-		$croppedTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, -$cropLength);
+		$croppedTitle = GeneralUtility::fixed_lgd_cs($title, -$cropLength);
 		if ($croppedTitle !== $title) {
 			$pagePath .= '<abbr title="' . htmlspecialchars($title) . '">' . htmlspecialchars($croppedTitle) . '</abbr>';
 		} else {
@@ -63,5 +83,4 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		$pagePath .= '</span>';
 		return $pagePath;
 	}
-
 }
