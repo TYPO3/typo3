@@ -275,6 +275,8 @@ class PaletteAndSingleContainer extends AbstractContainer {
 					);
 					$singleFieldContentArray['html'] = '';
 					$this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
+				} else {
+					$this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
 				}
 			}
 		}

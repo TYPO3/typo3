@@ -136,7 +136,7 @@ class SingleFieldContainer extends AbstractContainer {
 			// @todo: This is an ugly concept ... search for overrideVals and defVals for a full picture of this madness
 			$resultArray = $this->initializeResultArray();
 			// This hidden field can not just be returned as casual html since upper containers will then render a label and wrapping stuff - this is not wanted here
-			$resultArray['additionalHiddenFields'] = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
+			$resultArray['additionalHiddenFields'][] = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 		} else {
 			// JavaScript code for event handlers:
 			$parameterArray['fieldChangeFunc'] = array();

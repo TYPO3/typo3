@@ -102,6 +102,12 @@ abstract class AbstractNode {
 		foreach ($childReturn['additionalJavaScriptSubmit'] as $value) {
 			$existing['additionalJavaScriptSubmit'][] = $value;
 		}
+		foreach ($childReturn['additionalHiddenFields'] as $value) {
+			$existing['additionalHiddenFields'][] = $value;
+		}
+		foreach ($childReturn['additionalHeadTags'] as $value) {
+			$existing['additionalHeadTags'][] = $value;
+		}
 		if (!empty($childReturn['inlineData'])) {
 			$existingInlineData = $existing['inlineData'];
 			$childInlineData = $childReturn['inlineData'];
