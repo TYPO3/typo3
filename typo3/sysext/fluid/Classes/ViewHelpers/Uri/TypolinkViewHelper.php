@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *                                                                        */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -43,7 +45,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render
@@ -54,8 +56,29 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render($parameter, $additionalParams = '') {
+		return self::renderStatic(
+			array(
+				'parameter' => $parameter,
+				'additionalParams' => $additionalParams
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$parameter = $arguments['parameter'];
+		$additionalParams = $arguments['additionalParams'];
+
 		// Merge the $parameter with other arguments
-		$typolinkParameter = $this->createTypolinkParameterArrayFromArguments($parameter, $additionalParams);
+		$typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams);
 
 		$content = '';
 
@@ -79,7 +102,7 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 *
 	 * @return array Final merged typolink.parameter as array to be imploded with empty string later
 	 */
-	protected function createTypolinkParameterArrayFromArguments($parameter, $additionalParameters = '') {
+	static protected function createTypolinkParameterArrayFromArguments($parameter, $additionalParameters = '') {
 		// Explode $parameter by whitespace and remove any " around resulting array values
 		$parameterArray = GeneralUtility::unQuoteFilenames($parameter, TRUE);
 
