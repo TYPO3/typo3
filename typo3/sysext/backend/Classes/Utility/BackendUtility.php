@@ -2734,11 +2734,12 @@ class BackendUtility {
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
 	 */
 	static public function editOnClick($params, $backPath = '', $requestUri = '') {
-		$returnUrl = $requestUri == -1
-			? '\'+T3_THIS_LOCATION+\''
-			: rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI'));
-		$retUrlParam = 'returnUrl=' . $returnUrl;
-		return 'window.location.href=' . GeneralUtility::quoteJSvalue(self::getModuleUrl('record_edit') . '&' . $retUrlParam . $params) . '; return false;';
+		if ($requestUri == -1) {
+			$returnUrl = 'T3_THIS_LOCATION';
+		} else {
+			$returnUrl = GeneralUtility::quoteJSvalue(rawurlencode($requestUri ?: GeneralUtility::getIndpEnv('REQUEST_URI')));
+		}
+		return 'window.location.href=' . GeneralUtility::quoteJSvalue(self::getModuleUrl('record_edit') . $params . '&returnUrl=') . '+' . $returnUrl . '; return false;';
 	}
 
 	/**
