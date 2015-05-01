@@ -778,4 +778,161 @@ class StandaloneViewTest extends UnitTestCase {
 		$this->assertEquals(PATH_site . 'some/Default/Directory/Default', $this->view->_call('getLayoutPathAndFilename'));
 	}
 
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
+	 */
+	public function setTemplateThrowsExceptionIfNoTemplateRootPathsAreSet() {
+		$this->view->setTemplate('TemplateName');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException
+	 */
+	public function setTemplateThrowsExceptionIfSpecifiedTemplateNameDoesNotExist() {
+		$this->view->setTemplateRootPaths(array(
+			'Some/Template/Path'
+		));
+		$this->view->setTemplate('NonExistingTemplateName');
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateRespectsCasingOfTemplateName() {
+		$this->view->setTemplateRootPaths(array('some/Default/Directory'));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/TemplateName.html')->willReturn(FALSE);
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/TemplateName')->willReturn(FALSE);
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/templateName.html')->willReturn(TRUE);
+		$this->view->setTemplate('templateName');
+
+		$this->assertSame(PATH_site . 'some/Default/Directory/templateName.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateSetsUpperCasedTemplateName() {
+		$this->view->setTemplateRootPaths(array('some/Default/Directory'));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/TemplateName.html')->willReturn(TRUE);
+		$this->view->setTemplate('templateName');
+		$this->assertSame(PATH_site . 'some/Default/Directory/TemplateName.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateResolvesTheSpecificTemplateFile() {
+		$this->view->setTemplateRootPaths(array(
+			'default' => 'some/Default/Directory',
+			'specific' => 'specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template.html')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Template');
+		$this->assertEquals(PATH_site . 'specific/Templates/Template.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateResolvesTheDefaultTemplateFile() {
+		$this->view->setTemplateRootPaths(array(
+			'default' => 'some/Default/Directory',
+			'specific' => 'specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template.html')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Template');
+
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Template.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateResolvesTemplateNameWithPath() {
+		$this->view->setTemplateRootPaths(array(
+			'default' => 'some/Default/Directory',
+			'specific' => 'specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Email/Template.html')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Email/Template');
+		$this->assertEquals(PATH_site . 'specific/Templates/Email/Template.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateResolvesTheSpecificFileWithNumericIndices() {
+		$this->view->setTemplateRootPaths(array(
+			'10' => 'some/Default/Directory',
+			'25' => 'evenMore/Specific/Templates',
+			'17' => 'specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template.html')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Template');
+		$this->assertEquals(PATH_site . 'specific/Templates/Template.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateResolvesTheDefaultFileWithNumericIndices() {
+		$this->view->setTemplateRootPaths(array(
+			'10' => 'some/Default/Directory',
+			'25' => 'evenMore/Specific/Templates',
+			'17' => 'specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template.html')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Template');
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Template.html', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateWalksNumericalIndicesInDescendingOrder() {
+		$this->view->setTemplateRootPaths(array(
+			'10' => 'some/Default/Directory',
+			'25' => 'evenMore/Specific/Templates',
+			'17' => 'specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(3))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(5))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Template');
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Template', $this->view->getTemplatePathAndFilename());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setTemplateWalksStringKeysInReversedOrder() {
+		$this->view->setTemplateRootPaths(array(
+			'default' => 'some/Default/Directory',
+			'specific' => 'specific/Templates',
+			'verySpecific' => 'evenMore/Specific/Templates',
+		));
+		$this->mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue('html'));
+		$this->view->expects($this->at(0))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(1))->method('testFileExistence')->with(PATH_site . 'evenMore/Specific/Templates/Template')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(2))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(3))->method('testFileExistence')->with(PATH_site . 'specific/Templates/Template')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(4))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template.html')->will($this->returnValue(FALSE));
+		$this->view->expects($this->at(5))->method('testFileExistence')->with(PATH_site . 'some/Default/Directory/Template')->will($this->returnValue(TRUE));
+		$this->view->setTemplate('Template');
+		$this->assertEquals(PATH_site . 'some/Default/Directory/Template', $this->view->getTemplatePathAndFilename());
+	}
+
 }

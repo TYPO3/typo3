@@ -57,16 +57,23 @@ class StandaloneView extends AbstractTemplateView {
 	protected $templatePathAndFilename = NULL;
 
 	/**
+	 * Path(s) to the template root
+	 *
+	 * @var string[]
+	 */
+	protected $templateRootPaths = NULL;
+
+	/**
 	 * Path(s) to the partial root
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	protected $partialRootPaths = NULL;
 
 	/**
 	 * Path(s) to the layout root
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	protected $layoutRootPaths = NULL;
 
@@ -169,6 +176,46 @@ class StandaloneView extends AbstractTemplateView {
 	}
 
 	/**
+	 * Set the root path(s) to the templates.
+	 *
+	 * @param string[] $templateRootPaths Root paths to the templates.
+	 * @return void
+	 * @api
+	 */
+	public function setTemplateRootPaths(array $templateRootPaths) {
+		$this->templateRootPaths = $templateRootPaths;
+	}
+
+	/**
+	 * Set template by name
+	 * All set templateRootPaths are checked to find template by given name
+	 *
+	 * @param string $templateName Name of the template
+	 * @param bool $throwException
+	 * @throws InvalidTemplateResourceException
+	 * @api
+	 */
+	public function setTemplate($templateName, $throwException = TRUE) {
+		if ($this->templateRootPaths === NULL) {
+			throw new InvalidTemplateResourceException('No template root path has been specified. Use setTemplateRootPaths().', 1430635895);
+		}
+		$format = $this->getRequest()->getFormat();
+		$templatePathAndFilename = NULL;
+		$possibleTemplatePaths = $this->buildListOfTemplateCandidates($templateName, $this->templateRootPaths, $format);
+		foreach ($possibleTemplatePaths as $possibleTemplatePath) {
+			if ($this->testFileExistence($possibleTemplatePath)) {
+				$templatePathAndFilename = $possibleTemplatePath;
+				break;
+			}
+		}
+		if ($templatePathAndFilename !== NULL) {
+			$this->setTemplatePathAndFilename($templatePathAndFilename);
+		} elseif ($throwException) {
+			throw new InvalidTemplateResourceException('Could not load template file. Tried following paths: "' . implode('", "', $possibleTemplatePaths) . '".', 1430635896);
+		}
+	}
+
+	/**
 	 * Set the root path to the layouts.
 	 *
 	 * @param string $layoutRootPath Root path to the layouts.
@@ -185,7 +232,7 @@ class StandaloneView extends AbstractTemplateView {
 	/**
 	 * Set the root path(s) to the layouts.
 	 *
-	 * @param array $layoutRootPaths Root path to the layouts
+	 * @param string[] $layoutRootPaths Root path to the layouts
 	 * @return void
 	 * @api
 	 */
@@ -257,7 +304,7 @@ class StandaloneView extends AbstractTemplateView {
 	 * Set the root path(s) to the partials.
 	 * If set, overrides the one determined from $this->partialRootPathPattern
 	 *
-	 * @param array $partialRootPaths Root paths to the partials. If set, overrides the one determined from $this->partialRootPathPattern
+	 * @param string[] $partialRootPaths Root paths to the partials. If set, overrides the one determined from $this->partialRootPathPattern
 	 * @return void
 	 * @api
 	 */
