@@ -20,11 +20,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Testcase for the email uri view helper
  */
-class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class EmailViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper
@@ -34,8 +37,8 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	protected function setUp() {
 		parent::setUp();
 		$GLOBALS['TSFE'] = new \stdClass();
-		$GLOBALS['TSFE']->cObj = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array(), array(), '', FALSE);
-		$this->viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper();
+		$GLOBALS['TSFE']->cObj = $this->getMock(ContentObjectRenderer::class, array(), array(), '', FALSE);
+		$this->viewHelper = new EmailViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}

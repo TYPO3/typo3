@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Email URI view helper.
  * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
@@ -27,13 +31,32 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * (depending on your spamProtectEmailAddresses-settings)
  * </output>
  */
-class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class EmailViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param string $email The email address to be turned into a URI
 	 * @return string Rendered email link
 	 */
 	public function render($email) {
+		return self::renderStatic(
+			array(
+				'email' => $email
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$email = $arguments['email'];
+
 		if (TYPO3_MODE === 'FE') {
 			$emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
 			return reset($emailParts);
@@ -41,5 +64,4 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 			return 'mailto:' . $email;
 		}
 	}
-
 }
