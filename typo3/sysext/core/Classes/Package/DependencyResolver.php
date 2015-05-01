@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Package;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Core\Bootstrap;
 
 /**
  * This class takes care about dependencies between packages.
@@ -204,8 +205,8 @@ class DependencyResolver {
 				$rootPackageKeys[] = $packageKey;
 			}
 		}
-		$extensionPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, '', array(self::SYSEXT_FOLDER));
-		$frameworkPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, self::SYSEXT_FOLDER);
+		$frameworkPackageKeys = $this->findFrameworkPackages($packageStateConfiguration);
+		$extensionPackageKeys = array_diff(array_keys($packageStateConfiguration), $frameworkPackageKeys);
 		foreach ($extensionPackageKeys as $packageKey) {
 			// Remove framework packages from list
 			$packageKeysWithoutFramework = array_diff(
@@ -231,7 +232,7 @@ class DependencyResolver {
 	 * @return array
 	 */
 	protected function buildDependencyGraph(array $packageStateConfiguration) {
-		$frameworkPackageKeys = $this->getPackageKeysInBasePath($packageStateConfiguration, self::SYSEXT_FOLDER);
+		$frameworkPackageKeys = $this->findFrameworkPackages($packageStateConfiguration);
 		$dependencyGraph = $this->buildDependencyGraphForPackages($packageStateConfiguration, $frameworkPackageKeys);
 		$packageStateConfiguration = $this->addDependencyToFrameworkToAllExtensions($packageStateConfiguration, $dependencyGraph);
 
@@ -240,7 +241,25 @@ class DependencyResolver {
 		return $dependencyGraph;
 	}
 
+	/**
+	 * @param array $packageStateConfiguration
+	 * @return array
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	protected function findFrameworkPackages(array $packageStateConfiguration) {
+		$frameworkPackageKeys = array();
+		/** @var PackageManager $packageManager */
+		$packageManager = Bootstrap::getInstance()->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
+		foreach ($packageStateConfiguration as $packageKey => $packageConfiguration) {
+			/** @var Package $package */
+			$package = $packageManager->getPackage($packageKey);
+			if ($package->isPartOfFactoryDefault() || $package->isPartOfMinimalUsableSystem() || strpos($packageConfiguration['packagePath'], self::SYSEXT_FOLDER) === 0) {
+				$frameworkPackageKeys[] = $packageKey;
+			}
+		}
 
+		return $frameworkPackageKeys;
+	}
 
 	/**
 	 * Get the number of incoming edges in the dependency graph
@@ -258,33 +277,6 @@ class DependencyResolver {
 			}
 		}
 		return $incomingEdgeCount;
-	}
-
-	/**
-	 * Get packages of specific type
-	 *
-	 * @param array $packageStateConfiguration
-	 * @param string $basePath Base path of package. Empty string for all types
-	 * @param array $excludedPaths Array of package base paths to exclude
-	 * @return array List of packages
-	 */
-	protected function getPackageKeysInBasePath(array $packageStateConfiguration, $basePath, array $excludedPaths = array()) {
-		$packageKeys = array();
-		foreach ($packageStateConfiguration as $packageKey => $package) {
-			if (($basePath === '' || strpos($package['packagePath'], $basePath) === 0)) {
-				$isExcluded = FALSE;
-				foreach ($excludedPaths as $excludedPath) {
-					if (strpos($package['packagePath'], $excludedPath) === 0) {
-						$isExcluded = TRUE;
-						break;
-					}
-				}
-				if (!$isExcluded) {
-					$packageKeys[] = $packageKey;
-				}
-			}
-		}
-		return $packageKeys;
 	}
 
 }

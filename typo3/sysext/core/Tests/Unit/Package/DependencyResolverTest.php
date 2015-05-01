@@ -31,15 +31,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider buildDependencyGraphBuildsCorrectGraphDataProvider
 	 */
 	public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph) {
-		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
-
-		$basePathAssignment = array(
-			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), array_diff($packageKeys, $frameworkPackageKeys)),
-			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
-		);
-
-		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('getPackageKeysInBasePath'));
-		$dependencyResolver->expects($this->any())->method('getPackageKeysInBasePath')->will($this->returnValueMap($basePathAssignment));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+		$dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 		$dependencyGraph = $dependencyResolver->_call('buildDependencyGraph', $unsortedPackageStatesConfiguration);
 
 		$this->assertEquals($expectedGraph, $dependencyGraph);
@@ -50,15 +43,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider packageSortingDataProvider
 	 */
 	public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageStatesConfiguration) {
-		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
-
-		$basePathAssignment = array(
-			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), array_diff($packageKeys, $frameworkPackageKeys)),
-			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), $frameworkPackageKeys),
-		);
-
-		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('getPackageKeysInBasePath'));
-		$dependencyResolver->expects($this->any())->method('getPackageKeysInBasePath')->will($this->returnValueMap($basePathAssignment));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+		$dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 		$sortedPackageStatesConfiguration = $dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 
 		$this->assertEquals($expectedSortedPackageStatesConfiguration, $sortedPackageStatesConfiguration, 'The package states configurations have not been ordered according to their dependencies!');
@@ -69,7 +55,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider buildDependencyGraphForPackagesBuildsCorrectGraphDataProvider
 	 */
 	public function buildDependencyGraphForPackagesBuildsCorrectGraph($packages, $expectedGraph) {
-		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('dummy'));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+		$dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn(array());
 		$dependencyGraph = $dependencyResolver->_call('buildDependencyGraphForPackages', $packages, array_keys($packages));
 
 		$this->assertEquals($expectedGraph, $dependencyGraph);
@@ -91,15 +78,8 @@ class DependencyResolverTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$packageKeys = array_keys($unsortedPackageStatesConfiguration);
-
-		$basePathAssignment = array(
-			array($unsortedPackageStatesConfiguration, '', array(DependencyResolver::SYSEXT_FOLDER), $packageKeys),
-			array($unsortedPackageStatesConfiguration, DependencyResolver::SYSEXT_FOLDER, array(), array()),
-		);
-
-		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('getActivePackageKeysOfType'));
-		$dependencyResolver->expects($this->any())->method('getActivePackageKeysOfType')->will($this->returnValueMap($basePathAssignment));
+		$dependencyResolver = $this->getAccessibleMock(DependencyResolver::class, array('findFrameworkPackages'));
+		$dependencyResolver->expects($this->any())->method('findFrameworkPackages')->willReturn(array());
 		$dependencyResolver->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 	}
 

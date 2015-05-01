@@ -82,6 +82,8 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * Constructor
 	 */
 	public function __construct() {
+		// The order of paths is crucial for allowing overriding of system extension by local extensions.
+		// Pay attention if you change order of the paths here.
 		$this->packagesBasePaths = array(
 			'local'     => PATH_typo3conf . 'ext',
 			'global'    => PATH_typo3 . 'ext',
@@ -338,7 +340,8 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			$this->scanPackagesInPath($packagesBasePath, $packagePaths);
 		}
 
-		foreach ($packagePaths as $packagePath => $composerManifestPath) {
+		foreach ($packagePaths as $composerManifestPath) {
+			$packagePath = $composerManifestPath;
 			$packagesBasePath = PATH_site;
 			foreach ($this->packagesBasePaths as $basePath) {
 				if (strpos($packagePath, $basePath) === 0) {
@@ -396,8 +399,11 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				$filename = $fileInfo->getFilename();
 				if ($filename[0] !== '.') {
 					$currentPath = \TYPO3\Flow\Utility\Files::getUnixStylePath($fileInfo->getPathName()) . '/';
-					if (file_exists($currentPath . 'ext_emconf.php')) {
-						$collectedExtensionPaths[$currentPath] = $currentPath;
+					// Only add the extension if we have an EMCONF and the extension is not yet registered.
+					// This is crucial in order to allow overriding of system extension by local extensions
+					// and strongly depends on the order of paths defined in $this->packagesBasePaths.
+					if (file_exists($currentPath . 'ext_emconf.php') && !isset($collectedExtensionPaths[$filename])) {
+						$collectedExtensionPaths[$filename] = $currentPath;
 					}
 				}
 			}
