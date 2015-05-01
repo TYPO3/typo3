@@ -449,7 +449,7 @@ class Package implements PackageInterface {
 	 * @return array
 	 */
 	public function __sleep() {
-		$properties = get_class_vars(__CLASS__);
+		$properties = get_class_vars(get_class($this));
 		unset($properties['packageManager']);
 		return array_keys($properties);
 	}
