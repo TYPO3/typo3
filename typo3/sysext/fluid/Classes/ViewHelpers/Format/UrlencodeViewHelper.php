@@ -10,6 +10,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html (applying PHPs rawurlencode() function)
@@ -33,7 +36,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class UrlencodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class UrlencodeViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -52,13 +55,31 @@ class UrlencodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 	 * @api
 	 */
 	public function render($value = NULL) {
+		return self::renderStatic(
+			array(
+				'value' => $value
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$value = $arguments['value'];
+
 		if ($value === NULL) {
-			$value = $this->renderChildren();
+			$value = $renderChildrenClosure();
 		}
 		if (!is_string($value)) {
 			return $value;
 		}
 		return rawurlencode($value);
 	}
-
 }

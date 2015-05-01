@@ -10,11 +10,14 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper;
 
 /**
  * Test case
  */
-class UrlencodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class UrlencodeViewHelperTest extends UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper
@@ -22,7 +25,11 @@ class UrlencodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $viewHelper;
 
 	protected function setUp() {
-		$this->viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\UrlencodeViewHelper::class, array('renderChildren'));
+		$this->viewHelper = $this->getMock(UrlencodeViewHelper::class, array('renderChildren'));
+
+		/** @var RenderingContext $renderingContext */
+		$renderingContext = $this->getMock(RenderingContext::class);
+		$this->viewHelper->setRenderingContext($renderingContext);
 	}
 
 	/**
