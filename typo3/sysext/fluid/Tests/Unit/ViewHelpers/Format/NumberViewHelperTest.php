@@ -10,30 +10,39 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * Test case
  */
-class NumberViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class NumberViewHelperTest extends UnitTestCase {
+
+	/**
+	 * @var \PHPUnit_Framework_MockObject_MockObject|NumberViewHelper
+	 */
+	protected $fixture;
+
+	public function setUp() {
+		$this->fixture = $this->getMock(NumberViewHelper::class, array('renderChildren'));
+		$this->fixture->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
+		$renderingContext = $this->getMock(RenderingContext::class);
+		$this->fixture->setRenderingContext($renderingContext);
+	}
 
 	/**
 	 * @test
 	 */
 	public function formatNumberDefaultsToEnglishNotationWithTwoDecimals() {
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
-		$actualResult = $viewHelper->render();
-		$this->assertEquals('3,333.33', $actualResult);
+		$this->assertEquals('3,333.33', $this->fixture->render());
 	}
 
 	/**
 	 * @test
 	 */
 	public function formatNumberWithDecimalsDecimalPointAndSeparator() {
-		$viewHelper = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Format\NumberViewHelper::class, array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(10000.0 / 3.0));
-		$actualResult = $viewHelper->render(3, ',', '.');
-		$this->assertEquals('3.333,333', $actualResult);
+		$this->assertEquals('3.333,333', $this->fixture->render(3, ',', '.'));
 	}
 
 }

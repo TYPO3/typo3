@@ -11,8 +11,13 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Formats a number with custom precision, decimal point and grouped thousands.
+ *
  * @see http://www.php.net/manual/en/function.number-format.php
  *
  * = Examples =
@@ -33,7 +38,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @api
  */
-class NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class NumberViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Format the numeric value as a number with grouped thousands, decimal point and
@@ -42,12 +47,36 @@ class NumberViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @param int $decimals The number of digits after the decimal point
 	 * @param string $decimalSeparator The decimal point character
 	 * @param string $thousandsSeparator The character for grouping the thousand digits
+	 *
 	 * @return string The formatted number
 	 * @api
 	 */
 	public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',') {
-		$stringToFormat = $this->renderChildren();
-		return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
+		return self::renderStatic(
+			array(
+				'decimals' => $decimals,
+				'decimalSeparator' => $decimalSeparator,
+				'thousandsSeparator' => $thousandsSeparator,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+
+		$decimals = $arguments['decimals'];
+		$decimalSeparator = $arguments['decimalSeparator'];
+		$thousandsSeparator = $arguments['thousandsSeparator'];
+
+		$stringToFormat = $renderChildrenClosure();
+		return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
+	}
 }
