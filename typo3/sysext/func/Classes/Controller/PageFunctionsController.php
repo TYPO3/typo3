@@ -104,9 +104,15 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$message = $this->getLanguageService()->getLL('clickAPage_content');
 			// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
 			// A complete refactoring is necessary at this point
-			$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-			$viewHelper = $objectManager->get(InfoboxViewHelper::class);
-			$this->content = $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
+			$arguments = array(
+				'title' => $title,
+				'message' => $message,
+				'state' => InfoboxViewHelper::STATE_INFO,
+				'iconName' => NULL,
+				'disableIcon' => FALSE,
+			);
+			$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+			$this->content = InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
 
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();

@@ -360,9 +360,15 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 		$message = '<p>' . $lang->getLL('noTemplateDescription') . '<br />' . $lang->getLL('createTemplateToEditConfiguration') . '</p>';
 		// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
 		// A complete refactoring is necessary at this point
-		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-		$viewHelper = $objectManager->get(InfoboxViewHelper::class);
-		$theOutput = $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
+		$arguments = array(
+			'title' => $title,
+			'message' => $message,
+			'state' => InfoboxViewHelper::STATE_INFO,
+			'iconName' => NULL,
+			'disableIcon' => FALSE,
+		);
+		$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+		$theOutput = InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
 
 		// New standard?
 		if ($newStandardTemplate) {

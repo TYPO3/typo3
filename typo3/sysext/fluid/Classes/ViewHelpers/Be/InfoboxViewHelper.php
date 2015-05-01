@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 
 /**
@@ -47,7 +49,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @api
  */
-class InfoboxViewHelper extends AbstractViewHelper {
+class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	const STATE_NOTICE = -2;
 	const STATE_INFO = -1;
@@ -65,8 +67,36 @@ class InfoboxViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render($title = NULL, $message = NULL, $state = self::STATE_NOTICE, $iconName = NULL, $disableIcon = FALSE) {
+		return self::renderStatic(
+			array(
+				'title' => $title,
+				'message' => $message,
+				'state' => $state,
+				'iconName' => $iconName,
+				'disableIcon' => $disableIcon
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$title = $arguments['title'];
+		$message = $arguments['message'];
+		$state = $arguments['state'];
+		$iconName = $arguments['iconName'];
+		$disableIcon = $arguments['disableIcon'];
+
 		if ($message === NULL) {
-			$message = $this->renderChildren();
+			$message = $renderChildrenClosure();
 		}
 		switch ($state) {
 			case self::STATE_NOTICE:
@@ -105,14 +135,12 @@ class InfoboxViewHelper extends AbstractViewHelper {
 						'<i class="fa fa-' . $icon . ' fa-stack-1x"></i>' .
 					'</span>' .
 				'</div>';
-
 		}
 		$titleTemplate = '';
 		if ($title !== NULL) {
 			$titleTemplate = '<h4 class="callout-title">' . $title . '</h4>';
 		}
-		$template = '' .
-			'<div class="callout callout-' . $stateClass . '">' .
+		return '<div class="callout callout-' . $stateClass . '">' .
 				'<div class="media">' .
 					$iconTemplate .
 					'<div class="media-body">' .
@@ -121,8 +149,5 @@ class InfoboxViewHelper extends AbstractViewHelper {
 					'</div>' .
 				'</div>' .
 			'</div>';
-
-		return $template;
 	}
-
 }

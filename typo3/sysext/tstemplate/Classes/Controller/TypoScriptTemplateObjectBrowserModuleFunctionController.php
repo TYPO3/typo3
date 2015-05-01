@@ -440,9 +440,15 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				$message = '<p>' . implode($errMsg, '<br />') . '</p>';
 				// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
 				// A complete refactoring is necessary at this point
-				$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-				$viewHelper = $objectManager->get(InfoboxViewHelper::class);
-				$theOutput .= $viewHelper->render($title, $message, InfoboxViewHelper::STATE_WARNING);
+				$arguments = array(
+					'title' => $title,
+					'message' => $message,
+					'state' => InfoboxViewHelper::STATE_WARNING,
+					'iconName' => NULL,
+					'disableIcon' => FALSE,
+				);
+				$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+				$theOutput .= InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
 			}
 
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {

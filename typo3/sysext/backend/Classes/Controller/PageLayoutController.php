@@ -401,9 +401,15 @@ class PageLayoutController {
 				$message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '</a>';
 				// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
 				// A complete refactoring is necessary at this point
-				$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-				$viewHelper = $objectManager->get(InfoboxViewHelper::class);
-				$content .= $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
+				$arguments = array(
+					'title' => $title,
+					'message' => $message,
+					'state' => InfoboxViewHelper::STATE_INFO,
+					'iconName' => NULL,
+					'disableIcon' => FALSE,
+				);
+				$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+				$content .= InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
 			}
 		}
 		// If content from different pid is displayed
@@ -620,9 +626,16 @@ class PageLayoutController {
 			$message = $GLOBALS['LANG']->getLL('clickAPage_content');
 			// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
 			// A complete refactoring is necessary at this point
-			$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-			$viewHelper = $objectManager->get(InfoboxViewHelper::class);
-			$body .= $viewHelper->render($title, $message, InfoboxViewHelper::STATE_INFO);
+			$arguments = array(
+				'title' => $title,
+				'message' => $message,
+				'state' => InfoboxViewHelper::STATE_INFO,
+				'iconName' => NULL,
+				'disableIcon' => FALSE,
+			);
+			$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
+			$body .= InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
+
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = array(
 				'view' => '',
