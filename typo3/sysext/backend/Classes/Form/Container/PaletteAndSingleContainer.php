@@ -274,10 +274,8 @@ class PaletteAndSingleContainer extends AbstractContainer {
 						'fieldHtml' => $singleFieldContentArray['html'],
 					);
 					$singleFieldContentArray['html'] = '';
-					$this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
-				} else {
-					$this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
 				}
+				$this->resultArray = $this->mergeChildReturnIntoExistingResult($this->resultArray, $singleFieldContentArray);
 			}
 		}
 
