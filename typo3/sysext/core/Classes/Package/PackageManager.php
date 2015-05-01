@@ -427,6 +427,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
 	 */
 	protected function registerPackagesFromConfiguration($registerOnlyNewPackages = FALSE) {
+		$packageStatesHasChanged = FALSE;
 		foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $stateConfiguration) {
 
 			if ($registerOnlyNewPackages && $this->isPackageAvailable($packageKey)) {
@@ -441,9 +442,11 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				$package = $this->getPackageFactory()->create($this->packagesBasePath, $packagePath, $packageKey, $classesPath, $manifestPath);
 			} catch (\TYPO3\Flow\Package\Exception\InvalidPackagePathException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
+				$packageStatesHasChanged = TRUE;
 				continue;
 			} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
+				$packageStatesHasChanged = TRUE;
 				continue;
 			}
 
@@ -457,6 +460,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			if ($stateConfiguration['state'] === 'active') {
 				$this->activePackages[$packageKey] = $this->packages[$packageKey];
 			}
+		}
+		if ($packageStatesHasChanged) {
+			$this->sortAndSavePackageStates();
 		}
 	}
 
@@ -495,7 +501,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			}
 		} catch (\TYPO3\Flow\Package\Exception\UnknownPackageException $e) {
 		}
-		parent::unregisterPackageByPackageKey($packageKey);
+		unset($this->packages[$packageKey]);
+		unset($this->packageKeys[strtolower($packageKey)]);
+		unset($this->packageStatesConfiguration['packages'][$packageKey]);
 	}
 
 	/**
