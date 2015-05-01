@@ -58,31 +58,8 @@ class HtmlspecialcharsViewHelper extends AbstractEncodingViewHelper implements C
 	 * @api
 	 */
 	public function render($value = NULL, $keepQuotes = FALSE, $encoding = NULL, $doubleEncode = TRUE) {
-		return self::renderStatic(
-			array(
-				'value' => $value,
-				'keepQuotes' => $keepQuotes,
-				'encoding' => $encoding,
-				'doubleEncode' => $doubleEncode
-			),
-			$this->buildRenderChildrenClosure(),
-			$this->renderingContext
-		);
-	}
-
-	/**
-	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		$value = $arguments['value'];
-		$keepQuotes = $arguments['keepQuotes'];
-		$encoding = $arguments['encoding'];
-		$doubleEncode = $arguments['doubleEncode'];
 		if ($value === NULL) {
-			$value = $renderChildrenClosure();
+			$value = $this->renderChildren();
 		}
 		if (!is_string($value)) {
 			return $value;

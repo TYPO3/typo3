@@ -62,17 +62,6 @@ class CommentViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @api
 	 */
 	public function render() {
-	}
-
-	/**
-	 * Does not render children
-	 *
-	 * @param array $arguments
-	 * @param \Closure $renderChildrenClosure
-	 * @param RenderingContextInterface $renderingContext
-	 * @return string
-	 */
-	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		return '';
 	}
 
