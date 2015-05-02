@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
@@ -74,11 +75,7 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 	 */
 	public function render($uri = '', $icon = 'actions-document-close', $title = '') {
 		return self::renderStatic(
-			array(
-				'uri' => $uri,
-				'icon' => $icon,
-				'title' => $title
-			),
+			$this->arguments,
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext
 		);
@@ -95,16 +92,13 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 		$icon = $arguments['icon'];
 		$title = $arguments['title'];
 
-		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments */
-		$arguments = $renderingContext->getControllerContext()->getArguments();
-
 		$additionalAttributes = '';
-		if ($arguments->hasArgument('additionalAttributes') && is_array($arguments->arguments['additionalAttributes'])) {
-			foreach ($arguments->arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
+		if (isset($arguments['additionalAttributes']) && is_array($arguments['additionalAttributes'])) {
+			foreach ($arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
 				$additionalAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
 			}
 		}
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => $title));
+		$icon = IconUtility::getSpriteIcon($icon, array('title' => $title));
 		if (empty($uri)) {
 			return $icon;
 		} else {
