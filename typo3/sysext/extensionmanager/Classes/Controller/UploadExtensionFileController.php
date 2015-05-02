@@ -97,13 +97,14 @@ class UploadExtensionFileController extends AbstractController {
 				);
 			}
 			$extensionData = $this->extractExtensionFromFile($tempFile, $fileName, $overwrite);
-			$this->addFlashMessage(
-				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey']))),
-				htmlspecialchars($this->translate('extensionList.uploadFlashMessage.title')),
-				FlashMessage::OK
-			);
 			$emConfiguration = $this->configurationUtility->getCurrentConfiguration('extensionmanager');
-			if ($emConfiguration['automaticInstallation']['value']) {
+			if (!$emConfiguration['automaticInstallation']['value']) {
+				$this->addFlashMessage(
+					htmlspecialchars($this->translate('extensionList.uploadFlashMessage.message', array($extensionData['extKey']))),
+					htmlspecialchars($this->translate('extensionList.uploadFlashMessage.title')),
+					FlashMessage::OK
+				);
+			} else {
 				$this->activateExtension($extensionData['extKey']);
 				$this->addFlashMessage(
 					htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
