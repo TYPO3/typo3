@@ -20,6 +20,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+
 /**
  * View helper which returns CSH (context sensitive help) button with icon
  * Note: The CSH button will only work, if the current BE user has
@@ -43,7 +49,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  * CSH button as known from the TYPO3 backend with some custom settings.
  * </output>
  */
-class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class CshViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Render context sensitive help (CSH) for the given table
@@ -55,13 +61,31 @@ class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewH
 	 * @return string the rendered CSH icon
 	 */
 	public function render($table = NULL, $field = '', $iconOnly = FALSE, $styleAttributes = '') {
+		return self::renderStatic(
+			array(
+				'table' => $table,
+				'field' => $field,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$table = $arguments['table'];
+		$field = $arguments['field'];
+
 		if ($table === NULL) {
-			$currentRequest = $this->controllerContext->getRequest();
+			$currentRequest = $renderingContext->getControllerContext()->getRequest();
 			$moduleName = $currentRequest->getPluginName();
 			$table = '_MOD_' . $moduleName;
 		}
-		$cshButton = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($table, $field);
-		return '<div class="docheader-csh">' . $cshButton . '</div>';
+		return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field) . '</div>';
 	}
-
 }
