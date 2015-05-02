@@ -53,16 +53,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 class IconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
-	 * Initialize arguments
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function initializeArguments() {
-		$this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', FALSE);
-	}
-
-	/**
 	 * Renders a linked icon as known from the TYPO3 backend.
 	 *
 	 * If the URI is left empty, the icon is rendered without link.
@@ -71,11 +61,18 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 	 *     "javascript:". Leave empty to render just an icon.
 	 * @param string $icon Icon to be used.
 	 * @param string $title Title attribute of the icon construct
+	 * @param array $additionalAttributes Additional tag attributes. They will be added directly to the resulting HTML tag.
+	 *
 	 * @return string The rendered icon with or without link
 	 */
-	public function render($uri = '', $icon = 'actions-document-close', $title = '') {
+	public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = array()) {
 		return self::renderStatic(
-			$this->arguments,
+			array(
+				'uri' => $uri,
+				'icon' => $icon,
+				'title' => $title,
+				'additionalAttributes' => $additionalAttributes
+			),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext
 		);
@@ -91,18 +88,18 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 		$uri = $arguments['uri'];
 		$icon = $arguments['icon'];
 		$title = $arguments['title'];
-
-		$additionalAttributes = '';
-		if (isset($arguments['additionalAttributes']) && is_array($arguments['additionalAttributes'])) {
-			foreach ($arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
-				$additionalAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
-			}
-		}
+		$additionalAttributes = $arguments['additionalAttributes'];
+		$additionalTagAttributes = '';
 		$icon = IconUtility::getSpriteIcon($icon, array('title' => $title));
 		if (empty($uri)) {
 			return $icon;
-		} else {
-			return '<a href="' . $uri . '"' . $additionalAttributes . '>' . $icon . '</a>';
 		}
+
+		if ($additionalAttributes) {
+			foreach ($additionalAttributes as $argumentKey => $argumentValue) {
+				$additionalTagAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
+			}
+		}
+		return '<a href="' . $uri . '"' . $additionalTagAttributes . '>' . $icon . '</a>';
 	}
 }
