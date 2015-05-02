@@ -103,6 +103,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @access public
 	 * @return void
+	 * @throws ExtensionManagerException
 	 * @see fetchFile()
 	 */
 	public function fetchExtListFile() {
@@ -116,6 +117,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @access public
 	 * @return void
+	 * @throws ExtensionManagerException
 	 * @see fetchFile()
 	 */
 	public function fetchMirrorListFile() {
@@ -217,6 +219,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @access public
 	 * @param bool $forcedUpdateFromRemote if boolean TRUE, mirror configuration will always retrieved from remote server
 	 * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors instance of repository mirrors class
+	 * @throws ExtensionManagerException
 	 */
 	public function getMirrors($forcedUpdateFromRemote = TRUE) {
 		$assignedMirror = $this->repository->getMirrors();

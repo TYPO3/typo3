@@ -79,7 +79,9 @@ class DownloadController extends AbstractController {
 				foreach ($dependencyTypes as $dependencyType => $dependencies) {
 					$extensions = '';
 					foreach ($dependencies as $extensionKey => $dependency) {
-						$extensions .= htmlspecialchars($extensionKey) . '<br />';
+						$extensions .= $this->translate('downloadExtension.dependencies.extensionWithVersion', array(
+								$extensionKey, $dependency->getVersion()
+							)) . '<br />';
 					}
 					$message .= $this->translate('downloadExtension.dependencies.typeHeadline',
 						array(

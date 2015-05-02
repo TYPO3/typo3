@@ -104,7 +104,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		// We have to check for dependencies of the extension first, before marking it for download
 		// because this extension might have dependencies, which need to be downloaded and installed first
 		$this->dependencyUtility->checkDependencies($extension);
-		$this->downloadQueue->addExtensionToQueue($extension);
+		if (!$this->dependencyUtility->hasDependencyErrors()) {
+			$this->downloadQueue->addExtensionToQueue($extension);
+		}
 	}
 
 	/**

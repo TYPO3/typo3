@@ -260,6 +260,9 @@
 
 				</source>
 			</trans-unit>
+			<trans-unit id="downloadExtension.dependencies.extensionWithVersion">
+				<source>%1$s (new version %2$s)</source>
+			</trans-unit>
 			<trans-unit id="downloadExtension.dependencies.typeHeadline" xml:space="preserve">
 				<source>&lt;h3&gt;Extensions marked for %s:&lt;/h3&gt;
 %s

@@ -242,15 +242,25 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$isLoadedVersionCompatible = $this->isLoadedVersionCompatible($dependency);
 			if ($isLoadedVersionCompatible === TRUE) {
 				return TRUE;
-			} else {
+			}
+			$extension = $this->listUtility->getExtension($extensionKey);
+			$loadedVersion = $extension->getPackageMetaData()->getVersion();
+			if (version_compare($loadedVersion, $dependency->getHighestVersion()) === -1) {
 				try {
 					$this->getExtensionFromRepository($extensionKey, $dependency);
 				} catch (Exception\UnresolvedDependencyException $e) {
 					throw new Exception\MissingVersionDependencyException(
-						'The extension ' . $dependency->getIdentifier() . ' is needed in version ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion() . ', but could not be fetched from TER',
+						'The extension ' . $extensionKey . ' is installed in version ' . $loadedVersion
+							. ' but needed in version ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion() . ' and could not be fetched from TER',
 						1396302624
 					);
 				}
+			} else {
+				throw new Exception\MissingVersionDependencyException(
+					'The extension ' . $extensionKey . ' is installed in version ' . $loadedVersion .
+					' but needed in version ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
+					1430561927
+				);
 			}
 		} else {
 			$extensionIsAvailable = $this->isDependentExtensionAvailable($extensionKey);
@@ -261,10 +271,30 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 					$this->managementService->markExtensionForInstallation($extensionKey);
 					$this->dependencyErrors = array_merge($unresolvedDependencyErrors, $this->dependencyErrors);
 				} else {
-					$this->getExtensionFromRepository($extensionKey, $dependency);
+					$extension = $this->listUtility->getExtension($extensionKey);
+					$availableVersion = $extension->getPackageMetaData()->getVersion();
+					if (version_compare($availableVersion, $dependency->getHighestVersion()) === -1) {
+						try {
+							$this->getExtensionFromRepository($extensionKey, $dependency);
+						} catch (Exception\MissingExtensionDependencyException $e) {
+							throw new Exception\MissingVersionDependencyException(
+								'The extension ' . $extensionKey . ' is available in version ' . $availableVersion
+									. ' but is needed in version ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion() . ' and could not be fetched from TER',
+								1430560390
+							);
+						}
+					} else {
+						throw new Exception\MissingVersionDependencyException(
+							'The extension ' . $extensionKey . ' is available in version ' . $availableVersion
+								. ' but is needed in version ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion(),
+							1430562374
+						);
+					}
 				}
 			} else {
+				$unresolvedDependencyErrors = $this->dependencyErrors;
 				$this->getExtensionFromRepository($extensionKey, $dependency);
+				$this->dependencyErrors = array_merge($unresolvedDependencyErrors, $this->dependencyErrors);
 			}
 		}
 		return FALSE;
@@ -277,6 +307,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $extensionKey
 	 * @param Dependency $dependency
 	 * @return void
+	 * @throws Exception\UnresolvedDependencyException
 	 */
 	protected function getExtensionFromRepository($extensionKey, Dependency $dependency) {
 		if (!$this->getExtensionFromInExtensionRepository($extensionKey, $dependency)) {
@@ -315,10 +346,17 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$isExtensionDownloadableFromTer = $this->isExtensionDownloadableFromTer($extensionKey);
 		if (!$isExtensionDownloadableFromTer) {
 			if (!$this->skipSystemDependencyCheck) {
-				throw new Exception\MissingExtensionDependencyException(
-					'The extension ' . $extensionKey . ' is not available from TER.',
-					1399161266
-				);
+				if ($this->extensionRepository->countAll() > 0) {
+					throw new Exception\MissingExtensionDependencyException(
+						'The extension ' . $extensionKey . ' is not available from TER.',
+						1399161266
+					);
+				} else {
+					throw new Exception\MissingExtensionDependencyException(
+						'The extension ' . $extensionKey . ' could not be checked. Please update your Extension-List from TYPO3 Extension Repository (TER).',
+						1430580308
+					);
+				}
 			}
 			return;
 		}
