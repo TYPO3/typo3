@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Documentation\Slots;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Documentation\ViewHelpers\FormatsViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
 /**
  * This slot listens to a signal in Extension Manager to add links to
@@ -54,11 +56,14 @@ class ExtensionManager {
 		if (isset(static::$documents[$documentKey])) {
 			$document = static::$documents[$documentKey];
 
-			/** @var \TYPO3\CMS\Documentation\ViewHelpers\FormatsViewHelper $formatsViewHelper */
-			$formatsViewHelper = $this->objectManager->get(\TYPO3\CMS\Documentation\ViewHelpers\FormatsViewHelper::class);
-
 			foreach ($document->getTranslations() as $documentTranslation) {
-				$actions[] = $formatsViewHelper->render($documentTranslation);
+				$actions[] = FormatsViewHelper::renderStatic(
+					array(
+						'documentTranslation' => $documentTranslation,
+					),
+					function() {},
+					new RenderingContext()
+				);
 			}
 		} else {
 			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
