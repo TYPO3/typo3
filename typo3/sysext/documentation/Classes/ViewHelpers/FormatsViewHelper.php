@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Documentation\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * ViewHelper to display all download links for a document
@@ -23,7 +26,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  *
  * @internal
  */
-class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FormatsViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders all format download links.
@@ -32,6 +35,25 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @return string
 	 */
 	public function render(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation) {
+		return self::renderStatic(
+			array(
+				'documentTranslation' => $documentTranslation,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$documentTranslation = $arguments['documentTranslation'];
+
 		$icons = array(
 			'html' => '<a class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>',
 			'pdf' => '<a class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</a>',
@@ -54,7 +76,7 @@ class FormatsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 				if ($extension === 'json') {
 					$extension = 'js';
 				}
-				$output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')" class="btn btn-default"';
+				$output .= 'href="#" onclick="top.TYPO3.Backend.ContentContainer.setUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($uri) . ')" class="btn btn-default"';
 			}
 
 			$xliff = 'LLL:EXT:documentation/Resources/Private/Language/locallang.xlf';
