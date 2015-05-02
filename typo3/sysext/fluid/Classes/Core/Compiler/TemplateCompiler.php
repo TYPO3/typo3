@@ -135,7 +135,10 @@ EOD;
  */
 public function %s(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface \$renderingContext) {
 \$self = \$this;
+\$currentVariableContainer = \$renderingContext->getTemplateVariableContainer();
+
 %s
+
 return %s;
 }
 
@@ -265,10 +268,20 @@ EOD;
 	 * @see convert()
 	 */
 	protected function convertObjectAccessorNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode $node) {
-		return array(
-			'initialization' => '',
-			'execution' => sprintf(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class . '::getPropertyPath($renderingContext->getTemplateVariableContainer(), \'%s\', $renderingContext)', $node->getObjectPath())
-		);
+		$objectPathSegments = explode('.', $node->getObjectPath());
+		$firstPathElement = array_shift($objectPathSegments);
+		if ($objectPathSegments === array()) {
+			return array(
+				'initialization' => '',
+				'execution' => sprintf('$currentVariableContainer->getOrNull(\'%s\')', $firstPathElement)
+			);
+		} else {
+			$executionCode = '\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::getPropertyPath($currentVariableContainer->getOrNull(\'%s\'), \'%s\', $renderingContext)';
+			return array(
+				'initialization' => '',
+				'execution' => sprintf($executionCode, $firstPathElement, implode('.', $objectPathSegments))
+			);
+		}
 	}
 
 	/**
@@ -373,9 +386,14 @@ EOD;
 	 * @return string
 	 */
 	public function wrapChildNodesInClosure(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode $node) {
+		$convertedSubNodes = $this->convertListOfSubNodes($node);
+		if ($convertedSubNodes['execution'] === 'NULL') {
+			return 'function() {return NULL;}';
+		}
+
 		$closure = '';
 		$closure .= 'function() use ($renderingContext, $self) {' . LF;
-		$convertedSubNodes = $this->convertListOfSubNodes($node);
+		$closure .= '$currentVariableContainer = $renderingContext->getTemplateVariableContainer();' . LF;
 		$closure .= $convertedSubNodes['initialization'];
 		$closure .= sprintf('return %s;', $convertedSubNodes['execution']) . LF;
 		$closure .= '}';
