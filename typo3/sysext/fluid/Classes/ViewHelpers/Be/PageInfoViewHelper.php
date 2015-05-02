@@ -21,8 +21,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * View helper which return page info icon as known from TYPO3 backend modules
@@ -37,7 +40,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  * Page info icon with context menu
  * </output>
  */
-class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class PageInfoViewHelper extends AbstractBackendViewHelper {
 
 	/**
 	 * Render javascript in header
@@ -46,8 +49,23 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPageInfo() Note: can't call this method as it's protected!
 	 */
 	public function render() {
-		$doc = $this->getDocInstance();
-		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		return self::renderStatic(
+			array(),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+		$id = GeneralUtility::_GP('id');
 		$pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		// Add icon with clickmenu, etc:
 		if ($pageRecord['uid']) {
@@ -67,8 +85,6 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 			}
 		}
 		// Setting icon with clickmenu + uid
-		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
-		return $pageInfo;
+		return $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 	}
-
 }
