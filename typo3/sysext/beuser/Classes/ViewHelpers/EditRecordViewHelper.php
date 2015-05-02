@@ -15,13 +15,17 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Edit Record ViewHelper, see FormEngine logic
  *
  * @internal
  */
-class EditRecordViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class EditRecordViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Returns a URL to link to FormEngine
@@ -31,8 +35,24 @@ class EditRecordViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()
 	 */
 	public function render($parameters) {
-		$parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($parameters);
-		return BackendUtility::getModuleUrl('record_edit', $parameters);
+		return self::renderStatic(
+			array(
+				'parameters' => $parameters
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$parameters = GeneralUtility::explodeUrl2Array($arguments['parameters']);
+		return BackendUtility::getModuleUrl('record_edit', $parameters);
+	}
 }
