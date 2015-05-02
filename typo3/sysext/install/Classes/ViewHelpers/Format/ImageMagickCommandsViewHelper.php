@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Display image magick commands
  *
  * @internal
  */
-class ImageMagickCommandsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ImageMagickCommandsViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Display image magick commands
@@ -28,6 +32,25 @@ class ImageMagickCommandsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string Formatted commands
 	 */
 	public function render(array $commands = array()) {
+		return self::renderStatic(
+			array(
+				'commands' => $commands,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$commands = $arguments['commands'];
+
 		$result = array();
 		foreach ($commands as $commandGroup) {
 			$result[] = 'Command: ' . $commandGroup[1];

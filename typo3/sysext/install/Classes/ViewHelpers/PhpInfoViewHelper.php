@@ -14,13 +14,17 @@ namespace TYPO3\CMS\Install\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Utility class for phpinfo()
  *
  * @author Patrick Broens <patrick@patrickbroens.nl>
  * @internal
  */
-class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class PhpInfoViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Disable the escaping interceptor because otherwise the child nodes would be escaped before this view helper
@@ -36,9 +40,24 @@ class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @return string
 	 */
 	public function render() {
-		return $this->removeAllHtmlOutsideBody(
-			$this->changeHtmlToHtml5(
-				$this->getPhpInfo()
+		return self::renderStatic(
+			array(),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return self::removeAllHtmlOutsideBody(
+			self::changeHtmlToHtml5(
+				self::getPhpInfo()
 			)
 		);
 	}
@@ -48,7 +67,7 @@ class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 *
 	 * @return string HTML page with the configuration options
 	 */
-	public function getPhpInfo() {
+	static protected function getPhpInfo() {
 		ob_start();
 		phpinfo();
 
@@ -61,7 +80,7 @@ class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @param string $html Complete HTML markup for page
 	 * @return string Content of the body tag
 	 */
-	protected function removeAllHtmlOutsideBody($html) {
+	static protected function removeAllHtmlOutsideBody($html) {
 		// Delete anything outside of the body tag and the body tag itself
 		$html = preg_replace('/^.*?<body.*?>/is', '', $html);
 		$html = preg_replace('/<\/body>.*?$/is', '', $html);
@@ -75,7 +94,7 @@ class PhpInfoViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @param string $html HTML markup to be cleaned
 	 * @return string
 	 */
-	protected function changeHtmlToHtml5($html) {
+	static protected function changeHtmlToHtml5($html) {
 		// Delete obsolete attributes
 		$html = preg_replace('#\s(cellpadding|border|width)="[^"]+"#', '', $html);
 

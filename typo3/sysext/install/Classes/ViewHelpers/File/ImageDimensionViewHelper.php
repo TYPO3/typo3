@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+
 /**
  * Get width or height from image file
  *
@@ -28,7 +33,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  *
  * @internal
  */
-class ImageDimensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ImageDimensionViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Get width / height from image file
@@ -38,6 +43,24 @@ class ImageDimensionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 * @return int width or height
 	 */
 	public function render($dimension = 'width') {
+		return self::renderStatic(
+			array(
+				'dimension' => $dimension,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$dimension = $arguments['dimension'];
 		if ($dimension !== 'width' && $dimension !== 'height') {
 			throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
 				'Dimension must be either \'width\' or \'height\'',

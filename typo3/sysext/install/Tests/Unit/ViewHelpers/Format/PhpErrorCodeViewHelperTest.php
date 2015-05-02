@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
+
 /**
  * Test case
  */
@@ -29,6 +31,9 @@ class PhpErrorCodeViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function setUp() {
 		$this->viewHelper = $this->getMock(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class, array('dummy'));
+		/** @var RenderingContext $renderingContext */
+		$renderingContext = $this->getMock(RenderingContext::class);
+		$this->viewHelper->setRenderingContext($renderingContext);
 	}
 
 	/**

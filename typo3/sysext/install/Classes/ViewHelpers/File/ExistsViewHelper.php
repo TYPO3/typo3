@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Simple view helper to check if given file is a regular file
  *
@@ -29,7 +33,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
  *
  * @internal
  */
-class ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ExistsViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Check if given file is a regular file
@@ -38,6 +42,25 @@ class ExistsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @return bool
 	 */
 	public function render($file) {
+		return self::renderStatic(
+			array(
+				'file' => $file,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return bool
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$file = $arguments['file'];
+
 		$result = FALSE;
 		if (file_exists($file) && is_file($file)) {
 			$result = TRUE;

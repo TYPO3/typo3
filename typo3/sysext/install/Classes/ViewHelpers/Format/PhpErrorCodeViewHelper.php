@@ -14,17 +14,21 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
 /**
  * Transform PHP error code to readable text
  *
  * @internal
  */
-class PhpErrorCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class PhpErrorCodeViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var array
 	 */
-	protected $levelNames = array(
+	static protected $levelNames = array(
 		E_ERROR => 'E_ERROR',
 		E_WARNING => 'E_WARNING',
 		E_PARSE => 'E_PARSE',
@@ -49,12 +53,30 @@ class PhpErrorCodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @return string
 	 */
 	public function render($phpErrorCode) {
+		return self::renderStatic(
+			array(
+				'phpErrorCode' => $phpErrorCode,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$phpErrorCode = $arguments['phpErrorCode'];
 		$levels = array();
 		if (($phpErrorCode & E_ALL) == E_ALL) {
 			$levels[] = 'E_ALL';
 			$phpErrorCode &= ~E_ALL;
 		}
-		foreach ($this->levelNames as $level => $name) {
+		foreach (self::$levelNames as $level => $name) {
 			if (($phpErrorCode & $level) == $level) {
 				$levels[] = $name;
 			}
