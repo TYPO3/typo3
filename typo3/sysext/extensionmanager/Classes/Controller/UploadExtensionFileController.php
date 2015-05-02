@@ -45,10 +45,10 @@ class UploadExtensionFileController extends AbstractController {
 	protected $terUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
 	 * @inject
 	 */
-	protected $installUtility;
+	protected $managementService;
 
 	/**
 	 * @var string
@@ -79,7 +79,7 @@ class UploadExtensionFileController extends AbstractController {
 	 * Extract an uploaded file and install the matching extension
 	 *
 	 * @param bool $overwrite Overwrite existing extension if TRUE
-	 * @throws ExtensionManagerException
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @return void
 	 */
 	public function extractAction($overwrite = FALSE) {
@@ -105,13 +105,18 @@ class UploadExtensionFileController extends AbstractController {
 					FlashMessage::OK
 				);
 			} else {
-				$this->activateExtension($extensionData['extKey']);
-				$this->addFlashMessage(
-					htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
-					'',
-					FlashMessage::OK
-				);
+				if ($this->activateExtension($extensionData['extKey'])) {
+					$this->addFlashMessage(
+						htmlspecialchars($this->translate('extensionList.installedFlashMessage.message', array($extensionData['extKey']))),
+						'',
+						FlashMessage::OK
+					);
+				} else {
+					$this->redirect('unresolvedDependencies', 'List', NULL, array('extensionKey' => $extensionData['extKey']));
+				}
 			}
+		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $exception) {
+			throw $exception;
 		} catch (\Exception $exception) {
 			$this->removeExtensionAndRestoreFromBackup($fileName);
 			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);
@@ -158,10 +163,11 @@ class UploadExtensionFileController extends AbstractController {
 
 	/**
 	 * @param string $extensionKey
-	 * @return void
+	 * @return bool
 	 */
 	public function activateExtension($extensionKey) {
-		$this->installUtility->install($extensionKey);
+		$extension = $this->managementService->getExtension($extensionKey);
+		return is_array($this->managementService->installExtension($extension));
 	}
 
 	/**
@@ -181,7 +187,7 @@ class UploadExtensionFileController extends AbstractController {
 		if (empty($extensionData['extKey'])) {
 			throw new ExtensionManagerException('Decoding the file went wrong. No extension key found', 1342864309);
 		}
-		$isExtensionAvailable = $this->installUtility->isAvailable($extensionData['extKey']);
+		$isExtensionAvailable = $this->managementService->isAvailable($extensionData['extKey']);
 		if (!$overwrite && $isExtensionAvailable) {
 			throw new ExtensionManagerException($this->translate('extensionList.overwritingDisabled'), 1342864310);
 		}
@@ -209,7 +215,7 @@ class UploadExtensionFileController extends AbstractController {
 	protected function getExtensionFromZipFile($file, $fileName, $overwrite = FALSE) {
 		// Remove version and extension from filename to determine the extension key
 		$extensionKey = $this->getExtensionKeyFromFileName($fileName);
-		$isExtensionAvailable = $this->installUtility->isAvailable($extensionKey);
+		$isExtensionAvailable = $this->managementService->isAvailable($extensionKey);
 		if (!$overwrite && $isExtensionAvailable) {
 			throw new ExtensionManagerException('Extension is already available and overwriting is disabled.', 1342864311);
 		}

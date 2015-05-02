@@ -79,11 +79,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function markExtensionForInstallation($extensionKey) {
 		// We have to check for dependencies of the extension first, before marking it for installation
 		// because this extension might have dependencies, which need to be installed first
-		$this->dependencyUtility->checkDependencies(
-			$this->extensionModelUtility->mapExtensionArrayToModel(
-				$this->installUtility->enrichExtensionWithDetails($extensionKey)
-			)
-		);
+		$this->dependencyUtility->checkDependencies($this->getExtension($extensionKey));
 		$this->downloadQueue->addExtensionToInstallQueue($extensionKey);
 	}
 
@@ -184,6 +180,27 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getDependencyErrors() {
 		return $this->dependencyUtility->getDependencyErrors();
+	}
+
+	/**
+	 * @param string $extensionKey
+	 * @return Extension
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 */
+	public function getExtension($extensionKey) {
+		return $this->extensionModelUtility->mapExtensionArrayToModel(
+			$this->installUtility->enrichExtensionWithDetails($extensionKey)
+		);
+	}
+
+	/**
+	 * Checks if an extension is available in the system
+	 *
+	 * @param string $extensionKey
+	 * @return bool
+	 */
+	public function isAvailable($extensionKey) {
+		return $this->installUtility->isAvailable($extensionKey);
 	}
 
 	/**

@@ -194,7 +194,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Checks if an extension is available in the system
 	 *
-	 * @param $extensionKey
+	 * @param string $extensionKey
 	 * @return bool
 	 */
 	public function isAvailable($extensionKey) {
