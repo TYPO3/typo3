@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -438,17 +439,14 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 
 				$title = $lang->getLL('errorsWarnings');
 				$message = '<p>' . implode($errMsg, '<br />') . '</p>';
-				// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
-				// A complete refactoring is necessary at this point
-				$arguments = array(
+				$view = GeneralUtility::makeInstance(StandaloneView::class);
+				$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:tstemplate/Resources/Private/Templates/InfoBox.html'));
+				$view->assignMultiple(array(
 					'title' => $title,
 					'message' => $message,
-					'state' => InfoboxViewHelper::STATE_WARNING,
-					'iconName' => NULL,
-					'disableIcon' => FALSE,
-				);
-				$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
-				$theOutput .= InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
+					'state' => InfoboxViewHelper::STATE_WARNING
+				));
+				$theOutput .= $view->render();
 			}
 
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {

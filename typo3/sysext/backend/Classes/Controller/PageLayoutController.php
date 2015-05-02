@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
@@ -399,17 +400,15 @@ class PageLayoutController {
 				$title = $GLOBALS['LANG']->getLL('goToListModule');
 				$message = '<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>';
 				$message .= '<a class="btn btn-info" href="javascript:top.goToModule(\'web_list\',1);">' . $GLOBALS['LANG']->getLL('goToListModule') . '</a>';
-				// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
-				// A complete refactoring is necessary at this point
-				$arguments = array(
+
+				$view = GeneralUtility::makeInstance(StandaloneView::class);
+				$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+				$view->assignMultiple(array(
 					'title' => $title,
 					'message' => $message,
-					'state' => InfoboxViewHelper::STATE_INFO,
-					'iconName' => NULL,
-					'disableIcon' => FALSE,
-				);
-				$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
-				$content .= InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
+					'state' => InfoboxViewHelper::STATE_INFO
+				));
+				$content .= $view->render();
 			}
 		}
 		// If content from different pid is displayed
@@ -624,17 +623,15 @@ class PageLayoutController {
 
 			$title = $GLOBALS['LANG']->getLL('clickAPage_header');
 			$message = $GLOBALS['LANG']->getLL('clickAPage_content');
-			// @todo Usage of InfoboxViewHelper this way is pretty ugly, but the best way at the moment
-			// A complete refactoring is necessary at this point
-			$arguments = array(
+
+			$view = GeneralUtility::makeInstance(StandaloneView::class);
+			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+			$view->assignMultiple(array(
 				'title' => $title,
 				'message' => $message,
-				'state' => InfoboxViewHelper::STATE_INFO,
-				'iconName' => NULL,
-				'disableIcon' => FALSE,
-			);
-			$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
-			$body .= InfoboxViewHelper::renderStatic($arguments, function() {}, $renderingContext);
+				'state' => InfoboxViewHelper::STATE_INFO
+			));
+			$body .= $view->render();
 
 			// Setting up the buttons and markers for docheader
 			$docHeaderButtons = array(
