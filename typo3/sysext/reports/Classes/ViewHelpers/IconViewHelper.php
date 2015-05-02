@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Reports\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+
 /**
  * Render the icon of a report
  *
  * @internal
  */
-class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class IconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders the icon
@@ -29,6 +33,27 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 	 * @return string Content rendered image
 	 */
 	public function render($icon, $title = '') {
+		return self::renderStatic(
+			array(
+				'icon' => $icon,
+				'title' => $title,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$icon = $arguments['icon'];
+		$title = $arguments['title'];
+
 		if (!empty($icon)) {
 			$absIconPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($icon);
 			if (file_exists($absIconPath)) {
@@ -37,8 +62,7 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 		} else {
 			$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('reports') . 'ext_icon.png';
 		}
-		$content = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" />';
-		return $content;
+		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" />';
 	}
 
 }
