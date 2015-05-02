@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
@@ -25,7 +27,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class IssueCommandViewHelper extends AbstractViewHelper {
+class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInterface{
 
 	/**
 	 * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)
@@ -38,15 +40,32 @@ class IssueCommandViewHelper extends AbstractViewHelper {
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
 	 */
 	public function render($parameters, $redirectUrl = '') {
+		return self::renderStatic(
+			array(
+				'parameters' => $parameters,
+				'redirectUrl' => $redirectUrl
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		/** @var BackendUserAuthentication $beUser */
 		$beUser = $GLOBALS['BE_USER'];
 		$urlParameters = [
 			'vC' => $beUser->veriCode(),
 			'prErr' => 1,
 			'uPT' => 1,
-			'redirect' => $redirectUrl ?: GeneralUtility::getIndpEnv('REQUEST_URI')
+			'redirect' => $arguments['redirectUrl'] ?: GeneralUtility::getIndpEnv('REQUEST_URI')
 		];
-		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters) . $parameters . BackendUtility::getUrlToken('tceAction'));
+		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters) . $arguments['parameters'] . BackendUtility::getUrlToken('tceAction'));
 	}
-
 }
