@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Central utility class for repository handling.
  *
@@ -128,17 +130,17 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $localResource local resource (absolute file path) to store retrieved contents to
 	 * @return void
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(), \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 */
 	protected function fetchFile($remoteResource, $localResource) {
 		if (is_string($remoteResource) && is_string($localResource) && !empty($remoteResource) && !empty($localResource)) {
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource, 0, array(TYPO3_user_agent));
 			if ($fileContent !== FALSE) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($localResource, $fileContent) === FALSE) {
-					throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Could not write to file %s.', htmlspecialchars($localResource)), 1342635378);
+					throw new ExtensionManagerException(sprintf('Could not write to file %s.', htmlspecialchars($localResource)), 1342635378);
 				}
 			} else {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('Could not access remote resource %s.', htmlspecialchars($remoteResource)), 1342635425);
+				throw new ExtensionManagerException(sprintf('Could not access remote resource %s.', htmlspecialchars($remoteResource)), 1342635425);
 			}
 		}
 	}
@@ -235,7 +237,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @access public
 	 * @see Tx_Extensionmanager_Utility_Repository_Helper::PROBLEM_NO_VERSIONS_IN_DATABASE,
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return int "0" if everything is perfect, otherwise bitmask with problems
 	 */
 	public function isExtListUpdateNecessary() {
@@ -253,7 +255,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 					$updateNecessity |= self::PROBLEM_EXTENSION_HASH_CHANGED;
 				}
 			} else {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not retrieve extension hash file from remote server.', 1342635016);
+				throw new ExtensionManagerException('Could not retrieve extension hash file from remote server.', 1342635016);
 			}
 		}
 		return $updateNecessity;
@@ -264,6 +266,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * extension version records.
 	 *
 	 * @return bool TRUE if the extension list was successfully update, FALSE if no update necessary
+	 * @throws ExtensionManagerException
 	 * @see isExtListUpdateNecessary()
 	 */
 	public function updateExtList() {

@@ -14,6 +14,12 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
+use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
+
 /**
  * Controller for extension listings (TER or local extensions)
  *
@@ -67,7 +73,7 @@ class ListController extends AbstractController {
 	 * Shows a list of unresolved dependency errors with the possibility to bypass the dependency check
 	 *
 	 * @param string $extensionKey
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
 	 * @return void
 	 */
 	public function unresolvedDependenciesAction($extensionKey) {
@@ -78,11 +84,11 @@ class ListController extends AbstractController {
 					$extensionKey => $availableExtensions[$extensionKey]
 				)
 			);
-			/** @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility */
-			$extensionModelUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
+			/** @var ExtensionModelUtility $extensionModelUtility */
+			$extensionModelUtility = $this->objectManager->get(ExtensionModelUtility::class);
 			$extension = $extensionModelUtility->mapExtensionArrayToModel($extensionArray[$extensionKey]);
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
+			throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
 		}
 		$this->dependencyUtility->checkDependencies($extension);
 		$this->view->assign('extension', $extension);
@@ -114,15 +120,19 @@ class ListController extends AbstractController {
 	 * @return void
 	 */
 	public function distributionsAction() {
-		$importExportInstalled = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp');
+		$importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
 		if ($importExportInstalled) {
-			// check if a TER update has been done at all, if not, fetch it directly
-			/** @var $repositoryHelper \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper */
-			$repositoryHelper = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::class);
-			// repository needs an update, but not because of the extension hash has changed
-			if ($repositoryHelper->isExtListUpdateNecessary() > 0 && ($repositoryHelper->isExtListUpdateNecessary() & $repositoryHelper::PROBLEM_EXTENSION_HASH_CHANGED) === 0) {
-				$repositoryHelper->fetchExtListFile();
-				$repositoryHelper->updateExtList();
+			try {
+				/** @var $repositoryHelper Helper */
+				$repositoryHelper = $this->objectManager->get(Helper::class);
+				// Check if a TER update has been done at all, if not, fetch it directly
+				// Repository needs an update, but not because of the extension hash has changed
+				$isExtListUpdateNecessary = $repositoryHelper->isExtListUpdateNecessary();
+				if ($isExtListUpdateNecessary > 0 && ($isExtListUpdateNecessary & $repositoryHelper::PROBLEM_EXTENSION_HASH_CHANGED) === 0) {
+					$repositoryHelper->updateExtList();
+				}
+			} catch (ExtensionManagerException $e) {
+				$this->addFlashMessage(htmlspecialchars($e->getMessage()), $e->getCode(), FlashMessage::ERROR);
 			}
 
 			$officialDistributions = $this->extensionRepository->findAllOfficialDistributions();
