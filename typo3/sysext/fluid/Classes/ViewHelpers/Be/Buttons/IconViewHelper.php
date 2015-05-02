@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+
 /**
  * View helper which returns a button icon
  *
@@ -44,7 +49,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  * Here the "actions-document-new" icon is returned, but without link.
  * </output>
  */
-class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class IconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Initialize arguments
@@ -61,15 +66,41 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 	 *
 	 * If the URI is left empty, the icon is rendered without link.
 	 *
-	 * @param string $uri The target URI for the link. If you want to execute JavaScript here, prefix the URI with "javascript:". Leave empty to render just an icon.
+	 * @param string $uri The target URI for the link. If you want to execute JavaScript here, prefix the URI with
+	 *     "javascript:". Leave empty to render just an icon.
 	 * @param string $icon Icon to be used.
 	 * @param string $title Title attribute of the icon construct
 	 * @return string The rendered icon with or without link
 	 */
 	public function render($uri = '', $icon = 'actions-document-close', $title = '') {
+		return self::renderStatic(
+			array(
+				'uri' => $uri,
+				'icon' => $icon,
+				'title' => $title
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$uri = $arguments['uri'];
+		$icon = $arguments['icon'];
+		$title = $arguments['title'];
+
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $arguments */
+		$arguments = $renderingContext->getControllerContext()->getArguments();
+
 		$additionalAttributes = '';
-		if ($this->hasArgument('additionalAttributes') && is_array($this->arguments['additionalAttributes'])) {
-			foreach ($this->arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
+		if ($arguments->hasArgument('additionalAttributes') && is_array($arguments->arguments['additionalAttributes'])) {
+			foreach ($arguments->arguments['additionalAttributes'] as $argumentKey => $argumentValue) {
 				$additionalAttributes .= ' ' . $argumentKey . '="' . htmlspecialchars($argumentValue) . '"';
 			}
 		}
@@ -80,5 +111,4 @@ class IconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendView
 			return '<a href="' . $uri . '"' . $additionalAttributes . '>' . $icon . '</a>';
 		}
 	}
-
 }
