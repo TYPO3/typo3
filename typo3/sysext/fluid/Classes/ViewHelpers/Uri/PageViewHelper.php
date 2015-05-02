@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+
 /**
  * A view helper for creating URIs to TYPO3 pages.
  *
@@ -59,7 +61,45 @@ class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @return string Rendered page URI
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $addQueryStringMethod = NULL) {
-		$uriBuilder = $this->controllerContext->getUriBuilder();
+		return self::renderStatic(
+			array(
+				'pageUid' => $pageUid,
+				'additionalParams' => $additionalParams,
+				'pageType' => $pageType,
+				'noCache' => $noCache,
+				'noCacheHash' => $noCacheHash,
+				'section' => $section,
+				'linkAccessRestrictedPages' => $linkAccessRestrictedPages,
+				'absolute' => $absolute,
+				'addQueryString' => $addQueryString,
+				'argumentsToBeExcludedFromQueryString' => $argumentsToBeExcludedFromQueryString,
+				'addQueryStringMethod' => $addQueryStringMethod
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$pageUid = $arguments['pageUid'];
+		$additionalParams = $arguments['additionalParams'];
+		$pageType = $arguments['pageType'];
+		$noCache = $arguments['noCache'];
+		$noCacheHash = $arguments['noCacheHash'];
+		$section = $arguments['section'];
+		$linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'];
+		$absolute = $arguments['absolute'];
+		$addQueryString = $arguments['addQueryString'];
+		$argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'];
+		$addQueryStringMethod = $arguments['addQueryStringMethod'];
+
+		$uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
 		$uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setUseCacheHash(!$noCacheHash)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->setAddQueryStringMethod($addQueryStringMethod)->build();
 		return $uri;
 	}
