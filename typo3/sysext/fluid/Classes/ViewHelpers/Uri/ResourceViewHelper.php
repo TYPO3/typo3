@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * A view helper for creating URIs to resources.
  *
@@ -26,7 +30,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * (depending on current package)
  * </output>
  */
-class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render the URI to the resource. The filename is used from child content.
@@ -38,17 +42,39 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @api
 	 */
 	public function render($path, $extensionName = NULL, $absolute = FALSE) {
+		return self::renderStatic(
+			array(
+				'path' => $path,
+				'extensionName' => $extensionName,
+				'absolute' => $absolute
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$path = $arguments['path'];
+		$extensionName = $arguments['extensionName'];
+		$absolute = $arguments['absolute'];
+
 		if ($extensionName === NULL) {
-			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
+			$extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
 		}
-		$uri = 'EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
-		$uri = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($uri);
+		$uri = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
+		$uri = GeneralUtility::getFileAbsFileName($uri);
 		$uri = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($uri);
 		if (TYPO3_MODE === 'BE' && $absolute === FALSE && $uri !== FALSE) {
 			$uri = '../' . $uri;
 		}
 		if ($absolute === TRUE) {
-			$uri = $this->controllerContext->getRequest()->getBaseURI() . $uri;
+			$uri = $renderingContext->getControllerContext()->getRequest()->getBaseUri() . $uri;
 		}
 		return $uri;
 	}
