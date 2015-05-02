@@ -13,8 +13,16 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Belog\Domain\Model\HistoryEntry;
+use TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get history entry from for log entry
@@ -22,13 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
-class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
-	/**
-	 * @var \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository
-	 * @inject
-	 */
-	protected $historyEntryRepository;
+class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Get system history record
@@ -37,29 +39,52 @@ class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @return string Formatted history entry if one exists, else empty string
 	 */
 	public function render($uid) {
-		/** @var $historyEntry \TYPO3\CMS\Belog\Domain\Model\HistoryEntry */
-		$historyEntry = $this->historyEntryRepository->findOneBySysLogUid($uid);
-		if (!$historyEntry instanceof \TYPO3\CMS\Belog\Domain\Model\HistoryEntry) {
+		return self::renderStatic(
+			array(
+				'uid' => $uid
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		/** @var \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository $historyEntryRepository */
+		$historyEntryRepository = $objectManager->get(HistoryEntryRepository::class);
+		/** @var \TYPO3\CMS\Belog\Domain\Model\HistoryEntry $historyEntry */
+		$historyEntry = $historyEntryRepository->findOneBySysLogUid($arguments['uid']);
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
+		$controllerContext = $renderingContext->getControllerContext();
+
+		if (!$historyEntry instanceof HistoryEntry) {
 			return '';
 		}
-		$historyLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+		$historyLabel = LocalizationUtility::translate(
 			'changesInFields',
-			$this->controllerContext->getRequest()->getControllerExtensionName(),
+			$controllerContext->getRequest()->getControllerExtensionName(),
 			array($historyEntry->getFieldlist())
 		);
-		$historyIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array(
-			'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('showHistory', $this->controllerContext->getRequest()->getControllerExtensionName())
+		$historyIcon = IconUtility::getSpriteIcon('actions-document-history-open', array(
+			'title' => LocalizationUtility::translate('showHistory', $controllerContext->getRequest()->getControllerExtensionName())
 		));
-		$historyHref = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/' .
-			\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+		$historyHref = BackendUtility::getModuleUrl(
 				'record_history',
 				array(
 					'sh_uid' => $historyEntry->getUid(),
-					'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'),
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
 				)
 			);
 		$historyLink = '<a href="' . htmlspecialchars($historyHref) . '">' . $historyIcon . '</a>';
 		return $historyLabel . '&nbsp;' . $historyLink;
 	}
-
 }
+
