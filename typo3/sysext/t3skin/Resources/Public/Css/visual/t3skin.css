@@ -8284,14 +8284,6 @@ a.typo3-csh-link:hover span.typo3-csh-inline {
 .t3-help-link:hover span.t3-help-inline {
   display: block;
 }
-iframe {
-  width: 100%;
-}
-#typo3-side-menu,
-iframe {
-  height: 100%;
-  overflow: auto;
-}
 @media print {
   div#typo3-docbody {
     overflow: visible;
@@ -8330,6 +8322,20 @@ a img {
   .dl-horizontal-wide dd {
     margin-left: 135px;
   }
+}
+[id=typo3-side-menu],
+[id=typo3-docbody],
+[id=typo3-navigationContainer] .x-panel-body,
+[id=typo3-pagetree-tree] .x-panel-body,
+[id=typo3-module-menu] .x-panel-body,
+[id=typo3-pagetree-filteringTree] .x-panel-body,
+[id=typo3-debug-console] .messages,
+iframe,
+.x-viewport,
+.x-viewport body,
+.table-fit {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 .collapse-horizontal {
   height: auto;
