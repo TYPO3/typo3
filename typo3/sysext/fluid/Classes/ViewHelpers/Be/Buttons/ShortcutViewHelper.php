@@ -20,6 +20,13 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+
 /**
  * View helper which returns shortcut button with icon
  * Note: This view helper is experimental!
@@ -44,23 +51,47 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  * Normally you won't need to set getVars & setVars parameters in Extbase modules
  * </output>
  */
-class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class ShortcutViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders a shortcut button as known from the TYPO3 backend
 	 *
-	 * @param array $getVars list of GET variables to store. By default the current id, module and all module arguments will be stored
-	 * @param array $setVars list of SET[] variables to store. See \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon(). Normally won't be used by Extbase modules
+	 * @param array $getVars list of GET variables to store. By default the current id, module and all module arguments
+	 *     will be stored
+	 * @param array $setVars list of SET[] variables to store. See
+	 *     \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon(). Normally won't be used by Extbase modules
 	 *
 	 * @return string the rendered shortcut button
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
 	 */
+
 	public function render(array $getVars = array(), array $setVars = array()) {
+		return self::renderStatic(
+			array(
+				'getVars' => $getVars,
+				'setVars' => $setVars
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$getVars = $arguments['getVars'];
+		$setVars = $arguments['setVars'];
+
 		$mayMakeShortcut = $GLOBALS['BE_USER']->mayMakeShortcut();
 
+
 		if ($mayMakeShortcut) {
-			$doc = $this->getDocInstance();
-			$currentRequest = $this->controllerContext->getRequest();
+			$doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+			$currentRequest = $renderingContext->getControllerContext()->getRequest();
 			$extensionName = $currentRequest->getControllerExtensionName();
 			$moduleName = $currentRequest->getPluginName();
 			if (count($getVars) === 0) {
@@ -72,7 +103,5 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 			return $doc->makeShortcutIcon($getList, $setList, $moduleName);
 		}
 		return '';
-
 	}
-
 }
