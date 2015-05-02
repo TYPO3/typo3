@@ -2155,6 +2155,18 @@ return array(
 				),
 			),
 		),
+		'required_8' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 7: Inline, minitems 1, maxitems 3',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_forms_required_8_child1',
+				'foreign_field' => 'parentid',
+				'foreign_table_field' => 'parenttable',
+				'minitems' => 1,
+				'maxitems' => 3,
+			),
+		),
 
 
 		'rte_1' => array(
@@ -2297,7 +2309,7 @@ return array(
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
-			required_1, required_2, required_3, required_4, required_5, required_6, required_7,
+			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
 			',
 	),
@@ -2345,7 +2357,7 @@ return array(
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 				--div--;Required,
-					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_7,
+					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 			',
