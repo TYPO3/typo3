@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Returns true, if a specific extension is loaded
@@ -20,7 +23,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
-class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class IsExtensionLoadedViewHelper extends AbstractViewHelper {
 
 	/**
 	 * Checks whether an extension is loaded.
@@ -29,7 +32,23 @@ class IsExtensionLoadedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 * @return bool TRUE if extension is loaded, FALSE otherwise
 	 */
 	public function render($extensionKey) {
-		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey);
+		return self::renderStatic(
+			array(
+				'extensionKey' => $extensionKey
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return ExtensionManagementUtility::isLoaded($arguments['extensionKey']);
+	}
 }
