@@ -1,0 +1,18 @@
+/*
+ * Chrome repaint fix
+ * http://blog.getpostman.com/2015/01/23/ui-repaint-issue-on-chrome/
+ */
+[id=typo3-side-menu],
+[id=typo3-docbody],
+[id=typo3-navigationContainer] .x-panel-body,
+[id=typo3-pagetree-tree] .x-panel-body,
+[id=typo3-module-menu] .x-panel-body,
+[id=typo3-pagetree-filteringTree] .x-panel-body,
+[id=typo3-debug-console] .x-tab-panel-body,
+[id=typo3-mod-help-about-index-php-outer] .donation-button,
+[id=workspace-selector-menu] .items,
+.typo3-TCEforms table.typo3-TCEforms-select-checkbox tbody,
+iframe {
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
