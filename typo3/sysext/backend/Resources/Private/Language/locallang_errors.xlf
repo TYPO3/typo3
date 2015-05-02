@@ -3,8 +3,14 @@
 	<file t3:id="1420197366" source-language="en" datatype="plaintext" original="messages" date="2015-01-02T11:16:11Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="no_modules_registered" xml:space="preserve">
+			<trans-unit id="no_modules_registered">
 				<source>No modules have been registered. Please contact your system administrator.</source>
+			</trans-unit>
+			<trans-unit id="foldertreeview.noFolders.title">
+				<source>No folders available</source>
+			</trans-unit>
+			<trans-unit id="foldertreeview.noFolders.message">
+				<source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
 			</trans-unit>
 		</body>
 	</file>
