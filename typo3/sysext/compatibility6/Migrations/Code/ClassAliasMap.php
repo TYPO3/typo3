@@ -605,7 +605,6 @@ return array(
 	'Tx_Fluid_Core_Parser_SyntaxTree_BooleanNode' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\BooleanNode::class,
 	'Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\NodeInterface::class,
 	'Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::class,
-	'Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RenderingContextAwareInterface::class,
 	'Tx_Fluid_Core_Parser_SyntaxTree_RootNode' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode::class,
 	'Tx_Fluid_Core_Parser_SyntaxTree_TextNode' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode::class,
 	'Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode' => \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode::class,

@@ -3014,11 +3014,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends \TYPO3\CMS\Flui
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RenderingContextAwareInterface {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class Tx_Fluid_Core_Parser_SyntaxTree_RootNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RootNode {}
 
 /**

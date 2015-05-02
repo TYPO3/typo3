@@ -89,10 +89,6 @@ class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Abstrac
 			} else {
 				$subject = $propertyValue;
 			}
-
-			if ($subject instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\RenderingContextAwareInterface) {
-				$subject->setRenderingContext($renderingContext);
-			}
 		}
 		return $subject;
 	}
