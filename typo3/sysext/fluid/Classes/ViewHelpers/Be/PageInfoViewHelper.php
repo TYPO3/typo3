@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * View helper which return page info icon as known from TYPO3 backend modules
@@ -40,7 +41,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  * Page info icon with context menu
  * </output>
  */
-class PageInfoViewHelper extends AbstractBackendViewHelper {
+class PageInfoViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Render javascript in header
