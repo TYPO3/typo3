@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Create detail string from log entry
@@ -20,7 +24,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
-class FormatDetailsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FormatDetailsViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Create formatted detail string from log row.
@@ -31,15 +35,34 @@ class FormatDetailsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 	 * Furthermore, possible files in logData are stripped to their basename if
 	 * the action logged was a file action
 	 *
-	 * @param \TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry
+	 * @param LogEntry $logEntry
 	 * @return string Formatted details
 	 */
-	public function render(\TYPO3\CMS\Belog\Domain\Model\LogEntry $logEntry) {
+	public function render(LogEntry $logEntry) {
+		return self::renderStatic(
+			array(
+				'logEntry' => $logEntry
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$logEntry = $arguments['logEntry'];
 		$detailString = $logEntry->getDetails();
 		$substitutes = $logEntry->getLogData();
 		// Strip paths from file names if the log was a file action
 		if ($logEntry->getType() === 2) {
-			$substitutes = $this->stripPathFromFilenames($substitutes);
+			$substitutes = self::stripPathFromFilenames($substitutes);
 		}
 		// Substitute
 		$detailString = vsprintf($detailString, $substitutes);
@@ -54,7 +77,7 @@ class FormatDetailsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 	 * @param array $files
 	 * @return array
 	 */
-	protected function stripPathFromFilenames(array $files = array()) {
+	static protected function stripPathFromFilenames(array $files = array()) {
 		foreach ($files as $key => $file) {
 			$files[$key] = basename($file);
 		}
