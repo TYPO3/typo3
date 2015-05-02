@@ -81,7 +81,6 @@ class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function renderThenChildReturnsValueOfThenArgumentIfConditionIsTrue() {
-		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
 		$this->arguments['then'] = 'ThenArgument';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 
@@ -111,7 +110,6 @@ class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 
 		$this->viewHelper->setChildNodes(array($mockThenViewHelperNode));
 
-		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('then')->will($this->returnValue(TRUE));
 		$this->arguments['then'] = 'ThenArgument';
 
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -124,7 +122,6 @@ class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function renderReturnsValueOfElseArgumentIfConditionIsFalse() {
-		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
 		$this->arguments['else'] = 'ElseArgument';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 
@@ -142,7 +139,6 @@ class AbstractConditionViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 
 		$this->viewHelper->setChildNodes(array($mockElseViewHelperNode));
 
-		$this->viewHelper->expects($this->atLeastOnce())->method('hasArgument')->with('else')->will($this->returnValue(TRUE));
 		$this->arguments['else'] = 'ElseArgument';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 

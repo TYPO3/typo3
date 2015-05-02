@@ -37,6 +37,9 @@ class IfViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelpe
 	 * @test
 	 */
 	public function viewHelperRendersThenChildIfConditionIsTrue() {
+		$this->arguments['condition'] = TRUE;
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+
 		$this->viewHelper->expects($this->at(0))->method('renderThenChild')->will($this->returnValue('foo'));
 
 		$actualResult = $this->viewHelper->render(TRUE);

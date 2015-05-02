@@ -48,18 +48,12 @@ namespace TYPO3\CMS\Documentation\ViewHelpers\Be\Security;
 class IfAdminViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
-	 * Renders <f:then> child if the current logged in BE user is an admin,
-	 * otherwise renders <f:else> child.
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @return string the rendered string
-	 * @api
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	public function render() {
-		if ($GLOBALS['BE_USER']->isAdmin()) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+	static protected function evaluateCondition($arguments = NULL) {
+		return $GLOBALS['BE_USER']->isAdmin();
 	}
-
 }

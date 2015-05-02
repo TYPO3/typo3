@@ -54,16 +54,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
 class IfAuthenticatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
-	 * Renders <f:then> child if any BE user is currently authenticated, otherwise renders <f:else> child.
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @return string the rendered string
-	 * @api
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	public function render() {
-		if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->user['uid'] > 0) {
-			return $this->renderThenChild();
-		}
-		return $this->renderElseChild();
+	static protected function evaluateCondition($arguments = NULL) {
+		return (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->user['uid'] > 0);
 	}
-
 }

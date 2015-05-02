@@ -91,11 +91,6 @@ class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionVie
 	 * @api
 	 */
 	public function render($condition) {
-		if ($condition) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return parent::render();
 	}
-
 }
