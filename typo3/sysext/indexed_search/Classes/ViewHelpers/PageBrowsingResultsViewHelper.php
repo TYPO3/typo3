@@ -14,13 +14,17 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * renders the header of the results page
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @internal
  */
-class PageBrowsingResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class PageBrowsingResultsViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * main render function
@@ -31,11 +35,33 @@ class PageBrowsingResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string the content
 	 */
 	public function render($numberOfResults, $resultsPerPage, $currentPage = 1) {
+		return self::renderStatic(
+			array(
+				'numberOfResults' => $numberOfResults,
+				'resultsPerPage' => $resultsPerPage,
+				'currentPage' => $currentPage,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$numberOfResults = $arguments['numberOfResults'];
+		$resultsPerPage = $arguments['resultsPerPage'];
+		$currentPage = $arguments['currentPage'];
+
 		$firstResultOnPage = $currentPage * $resultsPerPage + 1;
 		$lastResultOnPage = $currentPage * $resultsPerPage + $resultsPerPage;
 		$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults', 'indexed_search');
-		$content = sprintf($label, $firstResultOnPage, min(array($numberOfResults, $lastResultOnPage)), $numberOfResults);
-		return $content;
+		return sprintf($label, $firstResultOnPage, min(array($numberOfResults, $lastResultOnPage)), $numberOfResults);
 	}
 
 }

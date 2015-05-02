@@ -14,6 +14,13 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Page browser for indexed search, and only useful here, as the
  * regular pagebrowser
@@ -23,12 +30,12 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers;
  * @author Benjamin Mack <benni@typo3.org>
  * @internal
  */
-class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class PageBrowsingViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var string
 	 */
-	protected $prefixId = 'tx_indexedsearch';
+	static protected $prefixId = 'tx_indexedsearch';
 
 	/**
 	 * Main render function
@@ -41,6 +48,33 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @return string The content
 	 */
 	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 0, $freeIndexUid = NULL) {
+		return self::renderStatic(
+			array(
+				'maximumNumberOfResultPages' => $maximumNumberOfResultPages,
+				'numberOfResults' => $numberOfResults,
+				'resultsPerPage' => $resultsPerPage,
+				'currentPage' => $currentPage,
+				'freeIndexUid' => $freeIndexUid,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$maximumNumberOfResultPages = $arguments['maximumNumberOfResultPages'];
+		$numberOfResults = $arguments['numberOfResults'];
+		$resultsPerPage = $arguments['resultsPerPage'];
+		$currentPage = $arguments['currentPage'];
+		$freeIndexUid = $arguments['freeIndexUid'];
+
 		if ($resultsPerPage <= 0) {
 			$resultsPerPage = 10;
 		}
@@ -51,17 +85,17 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		}
 
 		// Check if $currentPage is in range
-		$currentPage = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($currentPage, 0, $pageCount - 1);
+		$currentPage = MathUtility::forceIntegerInRange($currentPage, 0, $pageCount - 1);
 
 		$content = '';
 		// prev page
 		// show on all pages after the 1st one
 		if ($currentPage > 0) {
-			$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.previous', 'IndexedSearch');
-			$content .= '<li>' . $this->makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
+			$label = LocalizationUtility::translate('displayResults.previous', 'IndexedSearch');
+			$content .= '<li>' . self::makecurrentPageSelector_link($label, $currentPage - 1, $freeIndexUid) . '</li>';
 		}
 		// Check if $maximumNumberOfResultPages is in range
-		$maximumNumberOfResultPages = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, $pageCount, 10);
+		$maximumNumberOfResultPages = MathUtility::forceIntegerInRange($maximumNumberOfResultPages, 1, $pageCount, 10);
 		// Assume $currentPage is in the middle and calculate the index limits of the result page listing
 		$minPage = $currentPage - (int)floor($maximumNumberOfResultPages / 2);
 		$maxPage = $minPage + $maximumNumberOfResultPages - 1;
@@ -73,10 +107,10 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 			$minPage -= $maxPage - $pageCount + 1;
 			$maxPage = $pageCount - 1;
 		}
-		$pageLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.page', 'IndexedSearch');
+		$pageLabel = LocalizationUtility::translate('displayResults.page', 'IndexedSearch');
 		for ($a = $minPage; $a <= $maxPage; $a++) {
 			$label = trim($pageLabel . ' ' . ($a + 1));
-			$label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid);
+			$label = self::makecurrentPageSelector_link($label, $a, $freeIndexUid);
 			if ($a === $currentPage) {
 				$content .= '<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label . '</strong></li>';
 			} else {
@@ -85,8 +119,8 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		}
 		// next link
 		if ($currentPage < $pageCount - 1) {
-			$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.next', 'IndexedSearch');
-			$content .= '<li>' . $this->makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid) . '</li>';
+			$label = LocalizationUtility::translate('displayResults.next', 'IndexedSearch');
+			$content .= '<li>' . self::makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid) . '</li>';
 		}
 		return '<ul class="tx-indexedsearch-browsebox">' . $content . '</ul>';
 	}
@@ -100,12 +134,13 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return string Input string wrapped in <a> tag with onclick event attribute set.
 	 */
-	public function makecurrentPageSelector_link($str, $p, $freeIndexUid) {
-		$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';';
+	static protected function makecurrentPageSelector_link($str, $p, $freeIndexUid) {
+		$quotedPrefixId = GeneralUtility::quoteJSvalue(self::$prefixId);
+		$onclick = 'document.getElementById(' . $quotedPrefixId . '_pointer).value=' . GeneralUtility::quoteJSvalue($p) . ';';
 		if ($freeIndexUid !== NULL) {
-			$onclick .= 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';';
+			$onclick .= 'document.getElementById(' . $quotedPrefixId . '_freeIndexUid).value=' . GeneralUtility::quoteJSvalue(rawurlencode($freeIndexUid)) . ';';
 		}
-		$onclick .= 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
+		$onclick .= 'document.getElementById(' . $quotedPrefixId . ').submit();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
 	}
 

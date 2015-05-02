@@ -16,11 +16,13 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * DateTime viewhelper
  */
-class DateTimeViewHelper extends AbstractViewHelper {
+class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 
 	/**
@@ -29,7 +31,22 @@ class DateTimeViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render() {
-		return htmlspecialchars(BackendUtility::datetime($this->renderChildren()));
+		return self::renderStatic(
+			array(),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return htmlspecialchars(BackendUtility::datetime($renderChildrenClosure()));
 	}
 
 }

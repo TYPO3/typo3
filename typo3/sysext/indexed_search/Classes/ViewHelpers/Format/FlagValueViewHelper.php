@@ -14,10 +14,14 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * FlagValue viewhelper
  */
-class FlagValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FlagValueViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render additional flag information
@@ -26,7 +30,25 @@ class FlagValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 	 * @return string
 	 */
 	public function render($flags) {
-		$flags = (int)$flags;
+		return self::renderStatic(
+			array(
+				'flags' => $flags,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$flags = (int)$arguments['flags'];
+
 		if ($flags > 0) {
 			$content = ($flags & 128 ? '<title>' : '')
 				. ($flags & 64 ? '<meta/keywords>' : '')
