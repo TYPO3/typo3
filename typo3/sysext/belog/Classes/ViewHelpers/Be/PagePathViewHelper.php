@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Get page path string from page id
@@ -20,7 +23,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
-class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class PagePathViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Resolve page id to page path string (with automatic cropping to maximum given length).
@@ -30,7 +33,25 @@ class PagePathViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	 * @return string Page path string
 	 */
 	public function render($pid, $titleLimit = 20) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($pid, '', $titleLimit);
+		return self::renderStatic(
+			array(
+				'pid' => $pid,
+				'titleLimit' => $titleLimit
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($arguments['pid'], '', $arguments['titleLimit']);
 	}
 
 }
