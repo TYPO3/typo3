@@ -13,6 +13,11 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Display error icon from error integer value
@@ -20,7 +25,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
-class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class ErrorIconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders an error icon link as known from the TYPO3 backend.
@@ -30,13 +35,32 @@ class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @return string the rendered error icon link
 	 */
 	public function render($errorNumber = 0) {
+
+		return self::renderStatic(
+			array(
+				'errorNumber' => $errorNumber
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		$errorSymbols = array(
 			'0' => '',
-			'1' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING,
-			'2' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR,
-			'3' => \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
+			'1' => DocumentTemplate::STATUS_ICON_WARNING,
+			'2' => DocumentTemplate::STATUS_ICON_ERROR,
+			'3' => DocumentTemplate::STATUS_ICON_ERROR
 		);
-		return $this->getDocInstance()->icons($errorSymbols[$errorNumber]);
+		$doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+		return $doc->icons($errorSymbols[$arguments['errorNumber']]);
 	}
 
 }
