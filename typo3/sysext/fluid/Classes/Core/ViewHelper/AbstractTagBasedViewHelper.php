@@ -122,4 +122,13 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 		$this->registerTagAttribute('onclick', 'string', 'JavaScript evaluated for the onclick event');
 	}
 
+	/**
+	 * Get the TagBuilder for renderStatic function
+	 *
+	 * @return TagBuilder
+	 */
+	protected static function getTagBuilder(){
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TagBuilder::class);
+	}
+
 }

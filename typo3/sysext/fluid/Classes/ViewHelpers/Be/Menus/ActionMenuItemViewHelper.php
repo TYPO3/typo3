@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * View helper which returns a option tag.
  * This view helper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
@@ -48,12 +53,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * localized selectbox
  * <output>
  */
-class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
-
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'option';
+class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper implements CompilableInterface {
 
 	/**
 	 * Renders an ActionMenu option tag
@@ -61,22 +61,53 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 	 * @param string $label label of the option tag
 	 * @param string $controller controller to be associated with this ActionMenuItem
 	 * @param string $action the action to be associated with this ActionMenuItem
-	 * @param array $arguments additional controller arguments to be passed to the action when this ActionMenuItem is selected
+	 * @param array $arguments additional controller arguments to be passed to the action when this ActionMenuItem is
+	 *     selected
 	 * @return string the rendered option tag
 	 * @see \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
 	 */
 	public function render($label, $controller, $action, array $arguments = array()) {
-		$uriBuilder = $this->controllerContext->getUriBuilder();
+		return self::renderStatic(
+			array(
+				'label' => $label,
+				'controller' => $controller,
+				'action' => $action,
+				'arguments' => $arguments
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * Render static for more speed in fluid
+	 *
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$label = $arguments['label'];
+		$controller = $arguments['controller'];
+		$action = $arguments['action'];
+		$arguments = $arguments['arguments'];
+
+		$tag = static::getTagBuilder();
+		$tag->setTagName('option');
+		$uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
 		$uri = $uriBuilder->reset()->uriFor($action, $arguments, $controller);
-		$this->tag->addAttribute('value', $uri);
-		$currentRequest = $this->controllerContext->getRequest();
+
+		$tag->addAttribute('value', $uri);
+		$currentRequest = $renderingContext->getControllerContext()->getRequest();
 		$currentController = $currentRequest->getControllerName();
 		$currentAction = $currentRequest->getControllerActionName();
 		if ($action === $currentAction && $controller === $currentController) {
-			$this->tag->addAttribute('selected', 'selected');
+			$tag->addAttribute('selected', 'selected');
 		}
-		$this->tag->setContent($label);
-		return $this->tag->render();
+		$tag->setContent($label);
+		return $tag->render();
 	}
+
 
 }
