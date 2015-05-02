@@ -1,8 +1,8 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'Form engine tests - inline_2 child 2',
-		'label' => 'input_1',
+		'title' => 'Form engine tests - rte_4 inline_1 child 1',
+		'label' => 'text_1',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
 
 		'tstamp' => 'tstamp',
@@ -61,30 +61,20 @@ return array(
 				'type' => 'passthrough',
 			)
 		),
-		'input_1' => array(
-			'l10n_mode' => 'prefixLangTitle',
-			'label' => 'input_1',
-			'config' => array(
-				'type' => 'input',
-				'size' => '30',
-			),
-		),
-		'text_2' => array(
-			'label' => 'text_2 fixed font & tabs enabled',
+		'text_1' => array(
+			'label' => 'RTE 1',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 30,
-				'rows' => 6,
 			),
-			'defaultExtras' => 'fixed-font : enable-tab'
+			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable, input_1, text_2',
+		'showRecordFieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable, text_1',
 	),
 	'types' => array(
 		'0' => array(
-			'showitem' => 'input_1, text_2',
+			'showitem' => 'text_1',
 		),
 	),
 );

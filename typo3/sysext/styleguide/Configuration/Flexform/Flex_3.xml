@@ -113,28 +113,6 @@
 							</config>
 						</TCEforms>
 					</text_1>
-					<text_2>
-						<TCEforms>
-							<label>text_2 RTE</label>
-							<config>
-								<type>text</type>
-								<cols>48</cols>
-								<rows>5</rows>
-							</config>
-							<defaultExtras>richtext[*]:rte_transform[mode=ts_css]</defaultExtras>
-						</TCEforms>
-					</text_2>
-					<text_3>
-						<TCEforms>
-							<label>text_3 RTE</label>
-							<config>
-								<type>text</type>
-								<cols>48</cols>
-								<rows>5</rows>
-							</config>
-							<defaultExtras>richtext[*]:rte_transform[mode=ts_css]</defaultExtras>
-						</TCEforms>
-					</text_3>
 
 
 					<check_1>
