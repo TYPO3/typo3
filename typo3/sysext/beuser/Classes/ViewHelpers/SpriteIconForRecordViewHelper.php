@@ -13,6 +13,11 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Views sprite icon for a record (object)
@@ -20,7 +25,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
 	/**
 	 * Displays spriteIcon for database table and object
@@ -31,6 +36,28 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 	 * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
 	 */
 	public function render($table, $object) {
+		return self::renderStatic(
+			array(
+				'table' => $table,
+				'object' => $object
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$object = $arguments['object'];
+		$table = $arguments['table'];
+
 		if (!is_object($object) || !method_exists($object, 'getUid')) {
 			return '';
 		}
@@ -45,7 +72,7 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 		if (method_exists($object, 'getHidden')) {
 			$row['hidden'] = $object->getHidden();
 		}
-		if ($table === 'be_users' && $object instanceof \TYPO3\CMS\Beuser\Domain\Model\BackendUser) {
+		if ($table === 'be_users' && $object instanceof BackendUser) {
 			$row['admin'] = $object->getIsAdministrator();
 		}
 		if (method_exists($object, 'getStartDateAndTime')) {
@@ -54,7 +81,7 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 		if (method_exists($object, 'getEndDateAndTime')) {
 			$row['endTime'] = $object->getEndDateAndTime();
 		}
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row);
+		return IconUtility::getSpriteIconForRecord($table, $row);
 	}
 
 }
