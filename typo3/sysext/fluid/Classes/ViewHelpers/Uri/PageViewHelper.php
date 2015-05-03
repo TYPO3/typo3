@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * Public License for more details.                                       *
  *                                                                        */
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * A view helper for creating URIs to TYPO3 pages.
@@ -44,7 +45,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
  * (depending on your TS configuration)
  * </output>
  */
-class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class PageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param int|NULL $pageUid target PID
