@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 
 /**
  * Class TypolinkViewHelperTest
@@ -23,69 +25,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TypolinkViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
-	 * @test
+	 * @var TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject $subject
 	 */
-	public function renderCallsRenderChildrenOnce() {
-		/** @var \TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper::class, array('renderChildren'));
-		$subject->expects($this->once())->method('renderChildren');
-		$subject->render('');
-	}
+	protected $subject;
 
-	/**
-	 * @test
-	 */
-	public function renderReturnsContentOfRenderChildrenIfNoLinkParameterIsGiven() {
-		/** @var \TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper::class, array('renderChildren'));
-		$subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
-		$this->assertEquals('innerContent', $subject->render(''));
-	}
-
-	/**
-	 * @test
-	 */
-	public function renderGivesMergedParametersToContentObjectRenderer() {
-		/** @var \TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper::class, array('renderChildren'));
-		$subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
-		$contentObjectRendererMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array(), array(), '', FALSE);
-
-		$params = '19 _blank css-class "testtitle with whitespace" &X=y';
-		$target = '-';
-		$class = 'fluid_class';
-		$title = 'a new title';
-		$additionalParams = '&a=b';
-		$additionalAttributes = array(
-			'value1' => 'param1',
-			'value2' => 'par&am2', // Check htmlspecialchars is applied
-		);
-
-		$expectedParametersToStdWrap = array(
-			'typolink.' => array(
-				'parameter' => '"19" - "css-class fluid_class" "a new title" "&X=y&a=b"',
-				'ATagParams' => 'value1="param1" value2="par&amp;am2"',
-			),
-		);
-
-		$contentObjectRendererMock->expects($this->once())->method('stdWrap')->with('innerContent', $expectedParametersToStdWrap);
-
-		GeneralUtility::addInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, $contentObjectRendererMock);
-
-		$subject->render($params, $target, $class, $title, $additionalParams, $additionalAttributes);
+	public function setUp() {
+		$this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, array('renderChildren'));
+		/** @var RenderingContext  $renderingContext */
+		$renderingContext = $this->getMock(RenderingContext::class);
+		$this->subject->setRenderingContext($renderingContext);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renderReturnsResultOfContentObjectRenderer() {
-		/** @var \TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject $subject */
-		$subject = $this->getMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper::class, array('renderChildren'));
-		$subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
+		$this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
 		$contentObjectRendererMock = $this->getMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, array(), array(), '', FALSE);
 		$contentObjectRendererMock->expects($this->once())->method('stdWrap')->will($this->returnValue('foo'));
 		GeneralUtility::addInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class, $contentObjectRendererMock);
-		$this->assertEquals('foo', $subject->render('42'));
+		$this->assertEquals('foo', $this->subject->render('42'));
 	}
 
 	/**
@@ -246,9 +205,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase {
 	 * @dataProvider typoScriptConfigurationData
 	 */
 	public function createTypolinkParameterArrayFromArgumentsReturnsExpectedArray($input, $targetFromFluid, $classFromFluid, $titleFromFluid, $additionalParametersFromFluid, $expected) {
-		/** @var \TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$subject = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper::class, array('dummy'));
-		$result = $subject->_call('createTypolinkParameterArrayFromArguments', $input, $targetFromFluid, $classFromFluid, $titleFromFluid, $additionalParametersFromFluid);
+		$result = $this->subject->_call('createTypolinkParameterArrayFromArguments', $input, $targetFromFluid, $classFromFluid, $titleFromFluid, $additionalParametersFromFluid);
 		$this->assertSame($expected, $result);
 	}
 

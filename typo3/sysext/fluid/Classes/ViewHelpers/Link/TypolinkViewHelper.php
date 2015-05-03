@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  *                                                                        */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -48,7 +50,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * </output>
  *
  */
-class TypolinkViewHelper extends AbstractViewHelper {
+class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render
@@ -63,8 +65,38 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render($parameter, $target = '', $class = '', $title = '', $additionalParams = '', $additionalAttributes = array()) {
+		return self::renderStatic(
+			array(
+				'parameter' => $parameter,
+				'target' => $target,
+				'class' => $class,
+				'title' => $title,
+				'additionalParams' => $additionalParams,
+				'additionalAttributes' => $additionalAttributes
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return mixed|string
+	 * @throws \InvalidArgumentException
+	 * @throws \UnexpectedValueException
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$parameter = $arguments['parameter'];
+		$target = $arguments['target'];
+		$class = $arguments['class'];
+		$title = $arguments['title'];
+		$additionalParams = $arguments['additionalParams'];
+		$additionalAttributes = $arguments['additionalAttributes'];
+
 		// Merge the $parameter with other arguments
-		$typolinkParameter = $this->createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
+		$typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $target, $class, $title, $additionalParams);
 
 		// array(param1 -> value1, param2 -> value2) --> "param1=value1 param2=>value2" for typolink.ATagParams
 		$extraAttributes = array();
@@ -74,11 +106,11 @@ class TypolinkViewHelper extends AbstractViewHelper {
 		$aTagParams = implode(' ', $extraAttributes);
 
 		// If no link has to be rendered, the inner content will be returned as such
-		$content = $this->renderChildren();
+		$content = $renderChildrenClosure();
 
 		if ($parameter) {
 			/** @var ContentObjectRenderer $contentObject */
-			$contentObject = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+			$contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 			$contentObject->start(array(), '');
 			$content = $contentObject->stdWrap(
 				$content,
@@ -105,7 +137,7 @@ class TypolinkViewHelper extends AbstractViewHelper {
 	 *
 	 * @return array Final merged typolink.parameter as array to be imploded with empty string later
 	 */
-	protected function createTypolinkParameterArrayFromArguments($parameter, $target = '', $class = '', $title = '', $additionalParams = '') {
+	static protected function createTypolinkParameterArrayFromArguments($parameter, $target = '', $class = '', $title = '', $additionalParams = '') {
 		// Explode $parameter by whitespace and remove any " around resulting array values
 		$parameterArray = GeneralUtility::unQuoteFilenames($parameter, TRUE);
 
