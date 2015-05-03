@@ -18,6 +18,9 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
@@ -25,7 +28,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
-class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class SwitchUserViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render link with sprite icon to change current backend user to target
@@ -34,6 +37,24 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * @return string
 	 */
 	public function render(BackendUser $backendUser) {
+		return self::renderStatic(
+			array(
+				'backendUser' => $backendUser
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$backendUser = $arguments['backendUser'];
+
 		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive()) {
 			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
@@ -43,5 +64,4 @@ class SwitchUserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 			'" target="_top" title="' . htmlspecialchars($title) . '">' .
 			IconUtility::getSpriteIcon(('actions-system-backend-user-switch')) . '</a>';
 	}
-
 }
