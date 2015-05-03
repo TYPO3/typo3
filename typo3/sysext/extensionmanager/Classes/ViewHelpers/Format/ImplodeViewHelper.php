@@ -14,13 +14,17 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * View Helper for imploding arrays
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  * @internal
  */
-class ImplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Implodes a string
@@ -31,7 +35,25 @@ class ImplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 	 * @api
 	 */
 	public function render(array $implode, $delimiter = ', ') {
-		return implode($delimiter, $implode);
+		return self::renderStatic(
+			array(
+				'implode' => $implode,
+				'delimiter' => $delimiter,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return implode($arguments['delimiter'], $arguments['implode']);
 	}
 
 }

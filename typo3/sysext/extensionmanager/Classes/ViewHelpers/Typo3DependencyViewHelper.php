@@ -18,13 +18,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Shows the version numbers of the TYPO3 dependency, if any
  *
  * @internal
  */
-class Typo3DependencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class Typo3DependencyViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Finds and returns the suitable TYPO3 versions of an extension
@@ -33,12 +36,30 @@ class Typo3DependencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 	 * @return string
 	 */
 	public function render(Extension $extension) {
+		return self::renderStatic(
+			array(
+				'extension' => $extension,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$extension = $arguments['extension'];
 		/** @var Dependency $dependency */
 		foreach ($extension->getDependencies() as $dependency) {
 			if ($dependency->getIdentifier() === 'typo3') {
 				$lowestVersion = $dependency->getLowestVersion();
 				$highestVersion = $dependency->getHighestVersion();
-				$cssClass = $this->isVersionSuitable($lowestVersion, $highestVersion) ? 'success' : 'default';
+				$cssClass = self::isVersionSuitable($lowestVersion, $highestVersion) ? 'success' : 'default';
 				return
 					'<span class="label label-' . $cssClass . '">'
 						. htmlspecialchars($lowestVersion) . ' - ' . htmlspecialchars($highestVersion)
@@ -55,7 +76,7 @@ class Typo3DependencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 	 * @param string $highestVersion
 	 * @return bool
 	 */
-	protected function isVersionSuitable($lowestVersion, $highestVersion) {
+	static protected function isVersionSuitable($lowestVersion, $highestVersion) {
 		$numericTypo3Version = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
 		$numericLowestVersion = VersionNumberUtility::convertVersionNumberToInteger($lowestVersion);
 		$numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($highestVersion);

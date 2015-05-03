@@ -14,13 +14,17 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Shows the elapsed time since the last update of the extension repository
  * from TER in a readable manner.
  *
  * @internal
  */
-class TimeSinceLastUpdateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TimeSinceLastUpdateViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render method
@@ -29,6 +33,24 @@ class TimeSinceLastUpdateViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	public function render($lastUpdateTime) {
+		return self::renderStatic(
+			array(
+				'lastUpdateTime' => $lastUpdateTime,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$lastUpdateTime = $arguments['lastUpdateTime'];
 		if (NULL === $lastUpdateTime) {
 			return $GLOBALS['LANG']->sL(
 				'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.never'
