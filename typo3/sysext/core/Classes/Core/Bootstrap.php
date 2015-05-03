@@ -342,7 +342,7 @@ class Bootstrap {
 	 * @return Bootstrap
 	 */
 	protected function initializeRuntimeActivatedPackagesFromConfiguration() {
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
 			/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
 			$packageManager = $this->getEarlyInstance('TYPO3\\Flow\\Package\\PackageManager');
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] as $runtimeAddedPackageKey) {
