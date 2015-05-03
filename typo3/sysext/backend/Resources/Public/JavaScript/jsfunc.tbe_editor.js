@@ -18,7 +18,6 @@
  * @coauthor	Oliver Hader <oh@inpublica.de>
  */
 
-
 var TBE_EDITOR = {
 	/* Example:
 		elements: {
@@ -36,7 +35,6 @@ var TBE_EDITOR = {
 	elements: {},
 	nested: {'field':{}, 'level':{}},
 	ignoreElements: [],
-	recentUpdatedElements: {},
 	actionChecks: { submit:	[] },
 
 	formname: '',
@@ -59,51 +57,8 @@ var TBE_EDITOR = {
 	clearBeforeSettingFormValueFromBrowseWin: [],
 
 	// Handling of data structures:
-	addElements: function(elements) {
-		TBE_EDITOR.recentUpdatedElements = elements;
-		TBE_EDITOR.elements = $H(TBE_EDITOR.elements).merge(elements).toObject();
-	},
-	addNested: function(elements) {
-		// Merge data structures:
-		if (elements) {
-			$H(elements).each(function(element) {
-				var levelMax, i, currentLevel, subLevel;
-				var nested = element.value;
-				if (nested.level && nested.level.length) {
-						// If the first level is of type 'inline', it could be created by a AJAX request to IRRE.
-						// So, try to get the upper levels this dynamic level is nested in:
-					if (typeof inline!='undefined' && nested.level[0][0]=='inline') {
-						nested.level = inline.findContinuedNestedLevel(nested.level, nested.level[0][1]);
-					}
-					levelMax = nested.level.length-1;
-					for (i=0; i<=levelMax; i++) {
-						currentLevel = TBE_EDITOR.getNestedLevelIdent(nested.level[i]);
-						if (typeof TBE_EDITOR.nested.level[currentLevel] == 'undefined') {
-							TBE_EDITOR.nested.level[currentLevel] = { 'clean': true, 'item': {}, 'sub': {} };
-						}
-							// Add next sub level to the current level:
-						if (i<levelMax) {
-							subLevel = TBE_EDITOR.getNestedLevelIdent(nested.level[i+1]);
-							TBE_EDITOR.nested.level[currentLevel].sub[subLevel] = true;
-							// Add the current item to the last level in nesting:
-						} else {
-							TBE_EDITOR.nested.level[currentLevel].item[element.key] = nested.parts;
-						}
-					}
-				}
-			});
-				// Merge the nested fields:
-			TBE_EDITOR.nested.field = $H(TBE_EDITOR.nested.field).merge(elements).toObject();
-		}
-	},
 	removeElement: function(record) {
 		if (TBE_EDITOR.elements && TBE_EDITOR.elements[record]) {
-				// Inform envolved levels the this record is removed and the missing requirements are resolved:
-			$H(TBE_EDITOR.elements[record]).each(
-				function(pair) {
-					TBE_EDITOR.notifyNested(record+'['+pair.key+']', true);
-				}
-			);
 			delete(TBE_EDITOR.elements[record]);
 		}
 	},
@@ -132,138 +87,7 @@ var TBE_EDITOR = {
 		return result;
 	},
 	checkElements: function(type, recentUpdated, record, field) {
-		var result = 1;
-		var elementName, elementData, elementRecord, elementField;
-		var source = (recentUpdated ? TBE_EDITOR.recentUpdatedElements : TBE_EDITOR.elements);
-
-		if (TBE_EDITOR.ignoreElements.length && TBE_EDITOR.ignoreElements.indexOf(record)!=-1) {
-			return result;
-		}
-
-		if (type) {
-			if (record && field) {
-				elementName = record+'['+field+']';
-				elementData = TBE_EDITOR.getElement(record, field, type);
-				if (elementData) {
-					if (!TBE_EDITOR.checkElementByType(type, elementName, elementData, recentUpdated)) {
-						result = 0;
-					}
-				}
-
-			} else {
-				var elementFieldList, elRecIndex, elRecCnt, elFldIndex, elFldCnt;
-				var elementRecordList = $H(source).keys();
-				for (elRecIndex=0, elRecCnt=elementRecordList.length; elRecIndex<elRecCnt; elRecIndex++) {
-					elementRecord = elementRecordList[elRecIndex];
-					elementFieldList = $H(source[elementRecord]).keys();
-					for (elFldIndex=0, elFldCnt=elementFieldList.length; elFldIndex<elFldCnt; elFldIndex++) {
-						elementField = elementFieldList[elFldIndex];
-						elementData = TBE_EDITOR.getElement(elementRecord, elementField, type);
-						if (elementData) {
-							elementName = elementRecord+'['+elementField+']';
-							if (!TBE_EDITOR.checkElementByType(type, elementName, elementData, recentUpdated)) {
-								result = 0;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return result;
-	},
-	checkElementByType: function(type, elementName, elementData, autoNotify) {
-		var form, result = 1;
-
-		if (type) {
-			if (type == 'required') {
-				form = document[TBE_EDITOR.formname][elementName];
-				if (form) {
-						// Check if we are within a deleted inline element
-					var testNode = $(form.parentNode);
-					while(testNode) {
-						if (testNode.hasClassName && testNode.hasClassName('inlineIsDeletedRecord')) {
-							return result;
-						}
-						testNode = $(testNode.parentNode);
-					}
-
-					var value = form.value;
-					if (!value || elementData.additional && elementData.additional.isPositiveNumber && (isNaN(value) || Number(value) <= 0)) {
-						result = 0;
-						if (autoNotify) {
-							TBE_EDITOR.setImage('req_'+elementData.requiredImg, TBE_EDITOR.images.req);
-							TBE_EDITOR.notifyNested(elementName, false);
-						}
-					}
-				}
-			} else if (type == 'range' && elementData.range) {
-				var numberOfElements = 0;
-				form = document[TBE_EDITOR.formname][elementName+'_list'];
-				if (!form) {
-						// special treatment for IRRE fields:
-					var tempObj = document[TBE_EDITOR.formname][elementName];
-					if (tempObj && (Element.hasClassName(tempObj, 'inlineRecord') || Element.hasClassName(tempObj, 'treeRecord'))) {
-						form = tempObj.value ? tempObj.value.split(',') : [];
-						numberOfElements = form.length;
-					}
-
-				} else {
-						// special treatment for file uploads
-					var tempObj = document[TBE_EDITOR.formname][elementName.replace(/^data/, 'data_files') + '[]'];
-					numberOfElements = form.length;
-
-					if (tempObj && tempObj.type == 'file' && tempObj.value) {
-						numberOfElements++; // Add new uploaded file to the number of elements
-					}
-				}
-
-				if (!TBE_EDITOR.checkRange(numberOfElements, elementData.range[0], elementData.range[1])) {
-					result = 0;
-					if (autoNotify) {
-						TBE_EDITOR.setImage('req_'+elementData.rangeImg, TBE_EDITOR.images.req);
-						TBE_EDITOR.notifyNested(elementName, false);
-					}
-				}
-			}
-		}
-
-		return result;
-	},
-	// Notify tabs and inline levels with nested requiredFields/requiredElements:
-	notifyNested: function(elementName, resolved) {
-		if (TBE_EDITOR.nested.field[elementName]) {
-			var i, nested, element, fieldLevels, fieldLevelIdent, nestedLevelType, nestedLevelName;
-			fieldLevels = TBE_EDITOR.nested.field[elementName].level;
-			TBE_EDITOR.nestedCache = {};
-
-			for (i=fieldLevels.length-1; i>=0; i--) {
-				nestedLevelType = fieldLevels[i][0];
-				nestedLevelName = fieldLevels[i][1];
-				fieldLevelIdent = TBE_EDITOR.getNestedLevelIdent(fieldLevels[i]);
-					// Construct the CSS id strings of the image/icon tags showing the notification:
-				if (nestedLevelType == 'tab') {
-					element = nestedLevelName+'-REQ';
-				} else if (nestedLevelType == 'inline') {
-					element = nestedLevelName+'_req';
-				} else {
-					continue;
-				}
-					// Set the icons:
-				if (resolved) {
-					if (TBE_EDITOR.checkNested(fieldLevelIdent)) {
-						TBE_EDITOR.setImage(element, TBE_EDITOR.images.clear);
-					} else {
-						break;
-					}
-				} else {
-					if (TBE_EDITOR.nested.level && TBE_EDITOR.nested.level[fieldLevelIdent]) {
-						TBE_EDITOR.nested.level[fieldLevelIdent].clean = false;
-					}
-					TBE_EDITOR.setImage(element, TBE_EDITOR.images.req);
-				}
-			}
-		}
+		return (document.getElementsByClassName('has-error').length == 0);
 	},
 	// Check all the input fields on a given level of nesting - if only on is unfilled, the whole level is marked as required:
 	checkNested: function(nestedLevelIdent) {
@@ -304,9 +128,6 @@ var TBE_EDITOR = {
 		}
 		return true;
 	},
-	getNestedLevelIdent: function(level) {
-		return level.join('::');
-	},
 	addActionChecks: function(type, checks) {
 		TBE_EDITOR.actionChecks[type].push(checks);
 	},
@@ -337,22 +158,17 @@ var TBE_EDITOR = {
 		if (TBE_EDITOR.getElement(theRecord,field,'required') && document[TBE_EDITOR.formname][theField]) {
 			if (TBE_EDITOR.checkElements('required', false, theRecord, field)) {
 				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.clear);
-				TBE_EDITOR.notifyNested(theField, true);
 			} else {
 				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.req);
-				TBE_EDITOR.notifyNested(theField, false);
 			}
 		}
 		if (TBE_EDITOR.getElement(theRecord,field,'range') && document[TBE_EDITOR.formname][theField]) {
 			if (TBE_EDITOR.checkElements('range', false, theRecord, field)) {
 				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.clear);
-				TBE_EDITOR.notifyNested(theField, true);
 			} else {
 				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.req);
-				TBE_EDITOR.notifyNested(theField, false);
 			}
 		}
-
 		if (TBE_EDITOR.isPalettedoc) { TBE_EDITOR.setOriginalFormFieldValue(theField) };
 	},
 	setOriginalFormFieldValue: function(theField) {
@@ -418,13 +234,6 @@ var TBE_EDITOR = {
 		} else {
 			return false;
 		}
-	},
-	initRequired: function() {
-		// $reqLinesCheck
-		TBE_EDITOR.checkElements('required', true);
-
-		// $reqRangeCheck
-		TBE_EDITOR.checkElements('range', true);
 	},
 	setImage: function(name,image) {
 		var object;
@@ -551,7 +360,6 @@ var TBE_EDITOR_isFormChanged = TBE_EDITOR.isFormChanged;
 var TBE_EDITOR_checkAndDoSubmit = TBE_EDITOR.checkAndDoSubmit;
 var TBE_EDITOR_checkSubmit = TBE_EDITOR.checkSubmit;
 var TBE_EDITOR_checkRange = TBE_EDITOR.checkRange;
-var TBE_EDITOR_initRequired = TBE_EDITOR.initRequired;
 var TBE_EDITOR_setImage = TBE_EDITOR.setImage;
 var TBE_EDITOR_submitForm = TBE_EDITOR.submitForm;
 var TBE_EDITOR_split = TBE_EDITOR.split;

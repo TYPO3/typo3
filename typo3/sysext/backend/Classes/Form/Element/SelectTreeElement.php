@@ -58,25 +58,7 @@ class SelectTreeElement extends AbstractFormElement {
 		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
 
-		$maxitems = (int)$config['maxitems'];
-
 		$html = $this->renderField($table, $field, $row, $parameterArray, $config, $selItems);
-
-		// Register the required number of elements
-		$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
-		$resultArray['requiredElements'][$parameterArray['itemFormElName']] = array(
-			$minitems,
-			$maxitems,
-			'imgName' => $table . '_' . $row['uid'] . '_' . $field
-		);
-		$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
-		if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
-			array_shift($match);
-			$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
-				'parts' => $match,
-				'level' => $tabAndInlineStack,
-			);
-		}
 
 		// Wizards:
 		if (!$disabled) {

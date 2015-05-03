@@ -41,18 +41,7 @@ class RichTextElement extends AbstractFormElement {
 		$resultArray = $this->initializeResultArray();
 		$backendUser = $this->getBackendUserAuthentication();
 
-		$evalList = GeneralUtility::trimExplode(',', $parameterArray['fieldConf']['config']['eval'], TRUE);
-		if (in_array('required', $evalList, TRUE)) {
-			$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
-			$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
-			if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
-				array_shift($match);
-				$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
-					'parts' => $match,
-					'level' => $tabAndInlineStack,
-				);
-			}
-		}
+		$validationConfig = array();
 
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
 		$specialConfiguration = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
@@ -82,7 +71,8 @@ class RichTextElement extends AbstractFormElement {
 			'',
 			$tsConfigPid,
 			$this->globalOptions,
-			$this->initializeResultArray()
+			$this->initializeResultArray(),
+			$this->getValidationDataAsDataAttribute($validationConfig)
 		);
 		// This is a compat layer for "other" RTE's: If the result is not an array, it is the html string,
 		// otherwise it is a structure similar to our casual return array

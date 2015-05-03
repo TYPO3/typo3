@@ -56,10 +56,6 @@ abstract class AbstractNode implements NodeInterface {
 	 */
 	protected function initializeResultArray() {
 		return array(
-			'requiredElements' => array(), // name => value
-			'requiredFields' => array(), // value => name
-			'requiredAdditional' => array(), // name => array
-			'requiredNested' => array(),
 			'additionalJavaScriptPost' => array(),
 			'additionalJavaScriptSubmit' => array(),
 			'additionalHiddenFields' => array(),
@@ -83,18 +79,6 @@ abstract class AbstractNode implements NodeInterface {
 		}
 		if (!empty($childReturn['extJSCODE'])) {
 			$existing['extJSCODE'] .= LF . $childReturn['extJSCODE'];
-		}
-		foreach ($childReturn['requiredElements'] as $name => $value) {
-			$existing['requiredElements'][$name] = $value;
-		}
-		foreach ($childReturn['requiredFields'] as $value => $name) { // Params swapped ?!
-			$existing['requiredFields'][$value] = $name;
-		}
-		foreach ($childReturn['requiredAdditional'] as $name => $subArray) {
-			$existing['requiredAdditional'][$name] = $subArray;
-		}
-		foreach ($childReturn['requiredNested'] as $value => $name) {
-			$existing['requiredNested'][$value] = $name;
 		}
 		foreach ($childReturn['additionalJavaScriptPost'] as $value) {
 			$existing['additionalJavaScriptPost'][] = $value;
@@ -141,6 +125,49 @@ abstract class AbstractNode implements NodeInterface {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Build JSON string for validations rules and return it
+	 * as data attribute for HTML elements.
+	 *
+	 * @param array $config
+	 * @return string
+	 */
+	protected function getValidationDataAsDataAttribute(array $config) {
+		return sprintf(' data-formengine-validation-rules="%s" ', htmlspecialchars($this->getValidationDataAsJsonString($config)));
+	}
+
+	/**
+	 * Build JSON string for validations rules.
+	 *
+	 * @param array $config
+	 * @return string
+	 */
+	protected function getValidationDataAsJsonString(array $config) {
+		$validationRules = array();
+		if (!empty($config['maxitems']) || !empty($config['minitems'])) {
+			$minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
+			$maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;
+			$type = ($config['type']) ?: 'range';
+			if ($config['renderMode'] !== 'tree' && $maxItems <= 1 && $minItems > 0) {
+				$validationRules[] = array(
+					'type' => $type,
+					'minItems' => 1,
+					'maxItems' => 100000
+				);
+			} else {
+				$validationRules[] = array(
+					'type' => $type,
+					'minItems' => $minItems,
+					'maxItems' => $maxItems
+				);
+			}
+		}
+		if (!empty($config['required'])) {
+			$validationRules[] = array('type' => 'required');
+		}
+		return json_encode($validationRules);
 	}
 
 }

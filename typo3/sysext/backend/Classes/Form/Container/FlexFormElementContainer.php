@@ -200,7 +200,7 @@ class FlexFormElementContainer extends AbstractContainer {
 				// @todo: Similar to the processing within SingleElementContainer ... use it from there?!
 				$html = array();
 				$html[] = '<div class="form-section">';
-				$html[] = 	'<div class="form-group t3js-formengine-palette-field">';
+				$html[] = 	'<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
 				$html[] = 		'<label class="t3js-formengine-label">';
 				$html[] = 			$languageIcon;
 				$html[] = 			BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);

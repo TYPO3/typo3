@@ -171,6 +171,9 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			// Change the selected value
 			$fieldEl.val(value);
 		}
+		if (typeof FormEngine.Validation !== 'undefinied' && typeof FormEngine.Validation.validate === 'function') {
+			FormEngine.Validation.validate();
+		}
 	};
 
 	/**
@@ -768,6 +771,30 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		} else {
 			FormEngine.closeDocument()
 		}
+	};
+
+	/**
+	 * Show modal to confirm closing the document without saving
+	 */
+	FormEngine.preventSaveIfHasErrors = function() {
+		if ($('.has-error').length > 0) {
+			var title = TYPO3.lang['label.alert.save_with_error.title'] || 'You have errors in your form!';
+			var content = TYPO3.lang['label.alert.save_with_error.content'] || 'Please check the form, there is at least one error in your form.';
+			$modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.error, [
+				{
+					text: TYPO3.lang['buttons.alert.save_with_error.ok'] || 'OK',
+					btnClass: 'btn-danger',
+					name: 'ok'
+				}
+			]);
+			$modal.on('button.clicked', function(e) {
+				if (e.target.name === 'ok') {
+					top.TYPO3.Modal.dismiss();
+				}
+			});
+			return false;
+		}
+		return true;
 	};
 
 	/**

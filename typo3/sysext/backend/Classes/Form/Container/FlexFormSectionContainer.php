@@ -87,7 +87,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 
 		// "New container" handling: Creates a "template" of each possible container and stuffs it
 		// somewhere into DOM to be handled with JS magic.
-		// Fun part: Handle the fact that requiredElements and such may be set for children
+		// Fun part: Handle the fact that such things may be set for children
 		$containerTemplatesHtml = array();
 		foreach ($flexFormFieldsArray as $flexFormContainerName => $flexFormFieldDefinition) {
 			$containerTemplateHtml = array();

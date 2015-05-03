@@ -90,17 +90,6 @@ class TextElement extends AbstractFormElement {
 		}
 
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
-		if (in_array('required', $evalList, TRUE)) {
-			$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
-			$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
-			if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
-				array_shift($match);
-				$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
-					'parts' => $match,
-					'level' => $tabAndInlineStack,
-				);
-			}
-		}
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
 		$specialConfiguration = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 		// Setting up the altItem form field, which is a hidden field containing the value
@@ -111,10 +100,11 @@ class TextElement extends AbstractFormElement {
 		if ($specialConfiguration['rte_only']) {
 			$html = '<p><em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRTEfound')) . '</em></p>';
 		} else {
+			$attributes = array();
 			// validation
 			foreach ($evalList as $func) {
 				if ($func === 'required') {
-					$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
+					$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => TRUE));
 				} else {
 					// @todo: This is ugly: The code should find out on it's own whether a eval definition is a
 					// @todo: keyword like "date", or a class reference. The global registration could be dropped then
@@ -154,7 +144,6 @@ class TextElement extends AbstractFormElement {
 			}
 
 			// calculate attributes
-			$attributes = array();
 			$attributes['id'] = str_replace('.', '', uniqid('formengine-textarea-', TRUE));
 			$attributes['name'] = $parameterArray['itemFormElName'];
 			if (!empty($styles)) {

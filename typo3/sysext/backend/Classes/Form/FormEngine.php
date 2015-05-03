@@ -146,38 +146,6 @@ class FormEngine {
 	 */
 	public $hiddenFieldListArr = array();
 
-	/**
-	 * Used to register input-field names, which are required. (Done during rendering of the fields).
-	 * This information is then used later when the JavaScript is made.
-	 *
-	 * @var array
-	 */
-	protected $requiredFields = array();
-
-	/**
-	 * Used to register input-field names, which are required an have additional requirements.
-	 * (e.g. like a date/time must be positive integer)
-	 * The information of this array is merged with $this->requiredFields later.
-	 *
-	 * @var array
-	 */
-	protected $requiredAdditional = array();
-
-	/**
-	 * Used to register the min and max number of elements
-	 * for selector boxes where that apply (in the "group" type for instance)
-	 *
-	 * @var array
-	 */
-	protected $requiredElements = array();
-
-	/**
-	 * Used to determine where $requiredFields or $requiredElements are nested (in Tabs or IRRE)
-	 *
-	 * @var array
-	 */
-	public $requiredNested = array();
-
 	// Internal, registers for user defined functions etc.
 	/**
 	 * Additional HTML code, printed before the form
@@ -332,10 +300,6 @@ class FormEngine {
 		$resultArray = $this->nodeFactory->create($options)->render();
 		$html = $resultArray['html'];
 
-		$this->requiredElements = $resultArray['requiredElements'];
-		$this->requiredFields = $resultArray['requiredFields'];
-		$this->requiredAdditional = $resultArray['requiredAdditional'];
-		$this->requiredNested = $resultArray['requiredNested'];
 		$this->additionalJS_post = $resultArray['additionalJavaScriptPost'];
 		$this->additionalJS_submit = $resultArray['additionalJavaScriptSubmit'];
 		$this->extJSCODE = $resultArray['extJSCODE'];
@@ -382,18 +346,6 @@ class FormEngine {
 	 * @return void
 	 */
 	protected function mergeResult(array $resultArray) {
-		foreach ($resultArray['requiredElements'] as $name => $element) {
-			$this->requiredElements[$name] = $element;
-		}
-		foreach ($resultArray['requiredFields'] as $value => $name) {
-			$this->requiredFields[$value] = $name;
-		}
-		foreach ($resultArray['requiredAdditional'] as $name => $subArray) {
-			$this->requiredAdditional[$name] = $subArray;
-		}
-		foreach ($resultArray['requiredNested'] as $value => $name) {
-			$this->requiredNested[$value] = $name;
-		}
 		foreach ($resultArray['additionalJavaScriptPost'] as $element) {
 			$this->additionalJS_post[] = $element;
 		}
@@ -553,10 +505,6 @@ class FormEngine {
 		}
 
 		// @todo: Refactor this mess ... see other methods like getMainFields, too
-		$this->requiredElements = $childArray['requiredElements'];
-		$this->requiredFields = $childArray['requiredFields'];
-		$this->requiredAdditional = $childArray['requiredAdditional'];
-		$this->requiredNested = $childArray['requiredNested'];
 		$this->additionalJS_post = $childArray['additionalJavaScriptPost'];
 		$this->additionalJS_submit = $childArray['additionalJavaScriptSubmit'];
 		$this->extJSCODE = $childArray['extJSCODE'];
@@ -685,10 +633,6 @@ class FormEngine {
 		}
 
 		// @todo: Refactor this mess ... see other methods like getMainFields, too
-		$this->requiredElements = $childArray['requiredElements'];
-		$this->requiredFields = $childArray['requiredFields'];
-		$this->requiredAdditional = $childArray['requiredAdditional'];
-		$this->requiredNested = $childArray['requiredNested'];
 		$this->additionalJS_post = $childArray['additionalJavaScriptPost'];
 		$this->additionalJS_submit = $childArray['additionalJavaScriptSubmit'];
 		$this->extJSCODE = $childArray['extJSCODE'];
@@ -798,18 +742,6 @@ class FormEngine {
 					if (!empty($childArray['extJSCODE'])) {
 						$resultArray['extJSCODE'] .= LF . $childArray['extJSCODE'];
 					}
-					foreach ($childArray['requiredElements'] as $name => $value) {
-						$resultArray['requiredElements'][$name] = $value;
-					}
-					foreach ($childArray['requiredFields'] as $value => $name) { // Params swapped ?!
-						$resultArray['requiredFields'][$value] = $name;
-					}
-					foreach ($childArray['requiredAdditional'] as $name => $subArray) {
-						$resultArray['requiredAdditional'][$name] = $subArray;
-					}
-					foreach ($childArray['requiredNested'] as $value => $name) {
-						$resultArray['requiredNested'][$value] = $name;
-					}
 					foreach ($childArray['additionalJavaScriptPost'] as $value) {
 						$resultArray['additionalJavaScriptPost'][] = $value;
 					}
@@ -836,10 +768,6 @@ class FormEngine {
 			}
 
 			// @todo: Refactor this mess ... see other methods like getMainFields, too
-			$this->requiredElements = $resultArray['requiredElements'];
-			$this->requiredFields = $resultArray['requiredFields'];
-			$this->requiredAdditional = $resultArray['requiredAdditional'];
-			$this->requiredNested = $resultArray['requiredNested'];
 			$this->additionalJS_post = $resultArray['additionalJavaScriptPost'];
 			$this->additionalJS_submit = $resultArray['additionalJavaScriptSubmit'];
 			$this->extJSCODE = $resultArray['extJSCODE'];
@@ -1255,30 +1183,7 @@ class FormEngine {
 	public function JSbottom($formname = 'forms[0]', $update = FALSE) {
 		$languageService = $this->getLanguageService();
 		$jsFile = array();
-		$elements = array();
 		$out = '';
-		// Required:
-		foreach ($this->requiredFields as $itemImgName => $itemName) {
-			$match = array();
-			if (preg_match('/^(.+)\\[((\\w|\\d|_)+)\\]$/', $itemName, $match)) {
-				$record = $match[1];
-				$field = $match[2];
-				$elements[$record][$field]['required'] = 1;
-				$elements[$record][$field]['requiredImg'] = $itemImgName;
-				if (isset($this->requiredAdditional[$itemName]) && is_array($this->requiredAdditional[$itemName])) {
-					$elements[$record][$field]['additional'] = $this->requiredAdditional[$itemName];
-				}
-			}
-		}
-		// Range:
-		foreach ($this->requiredElements as $itemName => $range) {
-			if (preg_match('/^(.+)\\[((\\w|\\d|_)+)\\]$/', $itemName, $match)) {
-				$record = $match[1];
-				$field = $match[2];
-				$elements[$record][$field]['range'] = array($range[0], $range[1]);
-				$elements[$record][$field]['rangeImg'] = $range['imgName'];
-			}
-		}
 		$this->TBE_EDITOR_fieldChanged_func = 'TBE_EDITOR.fieldChanged_fName(fName,formObj[fName+"_list"]);';
 		if (!$update) {
 			if ($this->loadMD5_JS) {
@@ -1289,6 +1194,7 @@ class FormEngine {
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine', 'function(FormEngine) {
 				FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('browser')) . ');
 			}');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
@@ -1357,19 +1263,6 @@ class FormEngine {
 		if (!empty($this->inlineData)) {
 			$out .= '
 			inline.addToDataArray(' . json_encode($this->inlineData) . ');
-			';
-		}
-		// Registered nested elements for tabs or inline levels:
-		if (count($this->requiredNested)) {
-			$out .= '
-			TBE_EDITOR.addNested(' . json_encode($this->requiredNested) . ');
-			';
-		}
-		// Elements which are required or have a range definition:
-		if (count($elements)) {
-			$out .= '
-			TBE_EDITOR.addElements(' . json_encode($elements) . ');
-			TBE_EDITOR.initRequired();
 			';
 		}
 		// $this->additionalJS_submit:

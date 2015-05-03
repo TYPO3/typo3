@@ -287,6 +287,7 @@ var inline = {
 				});
 			}
 			TYPO3.FormEngine.reinitialize();
+			TYPO3.FormEngine.Validation.validate();
 		}
 	},
 
@@ -1000,6 +1001,7 @@ var inline = {
 			this.showElementsWithClassName('.inlineNewFileUploadButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineForeignSelector' + (md5 ? '.'+md5 : ''), 't3-form-field-item');
 		}
+		TYPO3.FormEngine.Validation.validate();
 		return false;
 	},
 

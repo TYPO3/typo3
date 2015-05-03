@@ -35,9 +35,13 @@ span.typo3-moduleHeader img {
 //
 .has-change {
 	.form-control-validation(@state-info-text; @state-info-text; @state-info-bg);
-
 	.thumbnail-status {
 		border: 1px solid @state-info-text;
+	}
+	// A loading order issue prevents .has-change to be overridden with .has-error
+	// this is a workaround needs to be cleaned up in a less file restructuring
+	&.has-error {
+		.has-error;
 	}
 }
 
@@ -79,6 +83,41 @@ span.typo3-moduleHeader img {
 		}
 	}
 }
+
+
+//
+// Form group validation states
+//
+.form-group.has-error {
+	label:before {
+		font-family: FontAwesome;
+		font-size: 12px;
+		margin-right: 5px;
+		text-align: center;
+		content: @fa-var-warning;
+		color: @brand-danger;
+		display: inline-block;
+	}
+
+	.input-group-btn {
+		label {
+			border-color: @brand-danger;
+			.t3-icon {
+				color: @brand-danger;
+			}
+		}
+		label:before {
+			font-family: inherit;
+			font-size: inherit;
+			margin-right: inherit;
+			text-align: inherit;
+			content: '';
+			color: inherit;
+			display: block;
+		}
+	}
+}
+
 
 //
 // Select

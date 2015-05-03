@@ -140,7 +140,7 @@ class SelectSingleBoxElement extends AbstractFormElement {
 		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '[]" '
 			. 'class="form-control ' . $cssPrefix . '"' . ($size ? ' size="' . $size . '" ' : '')
 			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $parameterArray['onFocus']
-			. ' ' . $selector_itemListStyle . $disabled . '>
+			. ' ' . $this->getValidationDataAsDataAttribute($config) . $selector_itemListStyle . $disabled . '>
 						' . implode('
 						', $opt) . '
 					</select>';

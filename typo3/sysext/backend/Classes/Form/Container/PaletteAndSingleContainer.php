@@ -361,6 +361,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 
 		$paletteFieldClasses = array(
 			'form-group',
+			't3js-formengine-validation-marker',
 			't3js-formengine-palette-field',
 		);
 		foreach ($additionalPaletteClasses as $class) {

@@ -64,20 +64,15 @@ class GroupElement extends AbstractFormElement {
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
 		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 
-		// Register properties in requiredElements
-		$resultArray['requiredElements'][$parameterArray['itemFormElName']] = array(
-			$minitems,
-			$maxitems,
-			'imgName' => $table . '_' . $row['uid'] . '_' . $fieldName
+		// Register properties in required elements / validation
+		$attributes['data-formengine-validation-rules'] = htmlspecialchars(
+			$this->getValidationDataAsJsonString(
+				array(
+					'minitems' => $minitems,
+					'maxitems' => $maxitems
+				)
+			)
 		);
-		$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
-		if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
-			array_shift($match);
-			$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
-				'parts' => $match,
-				'level' => $tabAndInlineStack,
-			);
-		}
 
 		// If maxitems==1 then automatically replace the current item (in list and file selector)
 		if ($maxitems === 1) {
@@ -93,7 +88,7 @@ class GroupElement extends AbstractFormElement {
 				. ', \'RemoveFirstIfFull\', ' . GeneralUtility::quoteJSvalue($maxitems) . '); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
 
-		$html = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
+		$html = '<input type="hidden" class="t3js-group-hidden-field" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
 
 		// Acting according to either "file" or "db" type:
 		switch ((string)$config['internal_type']) {

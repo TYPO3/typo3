@@ -134,21 +134,7 @@ class InputElement extends AbstractFormElement {
 		foreach ($evalList as $func) {
 			switch ($func) {
 				case 'required':
-					$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
-					$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
-					if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
-						array_shift($match);
-						$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
-							'parts' => $match,
-							'level' => $tabAndInlineStack,
-						);
-					}
-					// Mark this field for date/time disposal:
-					if (array_intersect($evalList, array('date', 'datetime', 'time', 'timesec'))) {
-						$resultArray['requiredAdditional'][$parameterArray['itemFormElName']] = array(
-							'isPositiveNumber' => TRUE,
-						);
-					}
+					$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => TRUE));
 					break;
 				default:
 					// @todo: This is ugly: The code should find out on it's own whether a eval definition is a

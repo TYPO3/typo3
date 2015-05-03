@@ -325,9 +325,10 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @param int $thePidValue PID value of record (true parent page id)
 	 * @param array $globalOptions Global options like 'readonly' for all elements. This is a hack until RTE is an own type
 	 * @param array $resultArray Initialized final result array that is returned later filled with content. This is a hack until RTE is an own type
+	 * @param string $validatationDataAttribute the validation data attribute.
 	 * @return string HTML code for RTE!
 	 */
-	public function drawRTE($_, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue, $globalOptions, $resultArray) {
+	public function drawRTE($_, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue, $globalOptions, $resultArray, $validatationDataAttribute = '') {
 		$languageService = $this->getLanguageService();
 		$backendUser = $this->getBackendUserAuthentication();
 		$database = $this->getDatabaseConnection();
@@ -492,7 +493,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$item = $this->triggerField($PA['itemFormElName']) . '
 			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $languageService->getLL('Please wait') . '</div>
 			<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
-			<textarea id="RTEarea' . $textAreaId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . htmlspecialchars($this->RTEdivStyle, ENT_COMPAT, 'UTF-8', FALSE) . '">' . GeneralUtility::formatForTextarea($value) . '</textarea>
+			<textarea id="RTEarea' . $textAreaId . '" ' . $validatationDataAttribute . ' name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . htmlspecialchars($this->RTEdivStyle, ENT_COMPAT, 'UTF-8', FALSE) . '">' . GeneralUtility::formatForTextarea($value) . '</textarea>
 			</div>' . LF;
 
 		$resultArray['html'] = $item;

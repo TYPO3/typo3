@@ -560,7 +560,7 @@ abstract class AbstractFormElement extends AbstractNode {
 			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
 				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="form-control tceforms-multiselect"')
 				. ($isMultiple ? ' multiple="multiple"' : '')
-				. ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
+				. ' name="' . $fName . '_list" ' . $this->getValidationDataAsDataAttribute($config) . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
 				. '</select>';
 		}
 		$icons = array(

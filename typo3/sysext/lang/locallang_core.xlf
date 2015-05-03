@@ -70,7 +70,7 @@
 				<source>Sorry, you didn't have proper permissions to perform this change.</source>
 			</trans-unit>
 			<trans-unit id="labels.fieldsMissing">
-				<source>The fields marked with a yellow exclamation mark are not yet correctly filled in. Please complete them properly.</source>
+				<source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
 			</trans-unit>
 			<trans-unit id="labels.fieldsChanged" xml:space="preserve">
 				<source>There are unsaved changes in the form!

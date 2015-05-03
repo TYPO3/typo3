@@ -96,11 +96,6 @@ class InlineControlContainer extends AbstractContainer {
 		if (!$maxItems) {
 			$maxItems = 100000;
 		}
-		$resultArray['requiredElements'][$parameterArray['itemFormElName']] = array(
-			$minItems,
-			$maxItems,
-			'imgName' => $table . '_' . $row['uid'] . '_' . $field
-		);
 
 		// Add the current inline job to the structure stack
 		$newStructureItem = array(
@@ -201,10 +196,9 @@ class InlineControlContainer extends AbstractContainer {
 
 		// Wrap all inline fields of a record with a <div> (like a container)
 		$html .= '<div class="form-group" id="' . $nameObject . '">';
-
 		// Add the level links before all child records:
 		if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
-			$html .= '<div class="form-group">' . $levelLinks . $localizationLinks . '</div>';
+			$html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelLinks . $localizationLinks . '</div>';
 		}
 		// If it's required to select from possible child records (reusable children), add a selector box
 		if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== FALSE) {
@@ -264,7 +258,7 @@ class InlineControlContainer extends AbstractContainer {
 			$resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records' . '");';
 		}
 		// Publish the uids of the child records in the given order to the browser
-		$html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $relationList) . '" class="inlineRecord" />';
+		$html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $relationList) . '" ' . $this->getValidationDataAsDataAttribute(array('type' => 'inline', 'minitems' => $minItems, 'maxitems' => $maxItems)) . ' class="inlineRecord" />';
 		// Close the wrap for all inline fields (container)
 		$html .= '</div>';
 
@@ -578,7 +572,7 @@ class InlineControlContainer extends AbstractContainer {
 		if (!empty($allowedList)) {
 			$item .= '<div class="help-block">' . $allowedLabel . '<br>' . $allowedList . '</div>';
 		}
-		$item = '<div class="form-group">' . $item . '</div>';
+		$item = '<div class="form-group t3js-formengine-validation-marker">' . $item . '</div>';
 		return $item;
 	}
 
@@ -648,7 +642,7 @@ class InlineControlContainer extends AbstractContainer {
 
 			// Wrap the selector and add a spacer to the bottom
 
-			$item = '<div class="input-group form-group ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
+			$item = '<div class="input-group form-group t3js-formengine-validation-marker ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
 		}
 		return $item;
 	}
