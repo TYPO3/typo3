@@ -1112,7 +1112,6 @@ return array(
 	'tx_rsaauth_php_backend' => \TYPO3\CMS\Rsaauth\Backend\PhpBackend::class,
 	'tx_rsaauth_backendwarnings' => \TYPO3\CMS\Rsaauth\BackendWarnings::class,
 	'tx_rsaauth_feloginhook' => \TYPO3\CMS\Rsaauth\Hook\FrontendLoginHook::class,
-	'tx_rsaauth_loginformhook' => \TYPO3\CMS\Rsaauth\Hook\LoginFormHook::class,
 	'tx_rsaauth_usersetuphook' => \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class,
 	'tx_rsaauth_keypair' => \TYPO3\CMS\Rsaauth\Keypair::class,
 	'tx_rsaauth_sv1' => \TYPO3\CMS\Rsaauth\RsaAuthService::class,

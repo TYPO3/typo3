@@ -17,8 +17,6 @@ defined('TYPO3_MODE') or die();
 	'className' => \TYPO3\CMS\Rsaauth\RsaAuthService::class
 ));
 
-// Add a hook to the BE login form
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\LoginFormHook::class . '->getLoginFormJS';
 // Add hook for user setup module
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['setupScriptHook']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->getLoginScripts';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/setup/mod/index.php']['modifyUserDataBeforeSave']['rsaauth'] = \TYPO3\CMS\Rsaauth\Hook\UserSetupHook::class . '->decryptPassword';
@@ -37,3 +35,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displ
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['FrontendLoginRsaPublicKey'] = 'EXT:rsaauth/Resources/PHP/FrontendLoginRsaPublicKey.php';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess'][] = \TYPO3\CMS\Rsaauth\Hook\BackendHookForAjaxLogin::class . '->addRsaJsLibraries';
+
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
+	\TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider::class,
+	\TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider::SIGNAL_getPageRenderer,
+	\TYPO3\CMS\Rsaauth\Slot\UsernamePasswordProviderSlot::class,
+	'getPageRenderer'
+);

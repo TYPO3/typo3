@@ -45,3 +45,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][\TYPO3\CM
 
 // Use popup window to refresh login instead of the AJAX relogin:
 $GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] = 1;
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1433416748] = array(
+	'provider' => \TYPO3\CMS\Openid\LoginProvider\OpenIdLoginProvider::class,
+	'sorting' => 25,
+	'icon-class' => 'fa-openid',
+	'label' => 'LLL:EXT:openid/Resources/Private/Language/locallang.xlf:login.link'
+);

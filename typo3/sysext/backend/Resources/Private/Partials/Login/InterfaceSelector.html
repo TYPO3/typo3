@@ -1,0 +1,17 @@
+<f:if condition="{showInterfaceSelector}">
+	<f:then>
+		<div class="form-group t3js-login-interface-section" id="t3-login-interface-section">
+			<div class="form-control-wrap">
+				<div class="form-control-holder">
+					<label for="t3-interfaces"><f:translate key="login.interface" /></label>
+					<f:form.select id="t3-interfaces" class="form-control" name="interface" options="{interfaces}" optionValueField="interface" optionLabelField="label" />
+				</div>
+			</div>
+		</div>
+	</f:then>
+	<f:else>
+		<f:if condition="{interface}">
+			<f:form.hidden name="interface" value="{interface}" />
+		</f:if>
+	</f:else>
+</f:if>

@@ -1,0 +1,24 @@
+<f:layout name="Login" />
+
+<f:section name="loginFormFields">
+	<div class="form-group t3js-login-username-section" id="t3-login-username-section">
+		<div class="form-control-wrap">
+			<div class="form-control-holder">
+				<input type="text" id="t3-username" name="username" value="{presetUsername}" placeholder="{f:translate(key: 'login.username')}" class="form-control input-login t3js-clearable t3js-login-username-field" autofocus="autofocus" required="required">
+				<div class="form-notice-capslock hidden t3js-login-alert-capslock">
+					<img src="{images.capslock}" width="14" height="14" alt="{f:translate(key: 'login.error.capslock')}" title="{f:translate(key: 'login.error.capslock')}" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group t3js-login-password-section" id="t3-login-password-section">
+		<div class="form-control-wrap">
+			<div class="form-control-holder">
+				<input type="password" id="t3-password" name="p_field" value="{presetPassword}" placeholder="{f:translate(key: 'login.password')}" class="form-control input-login t3js-clearable t3js-login-password-field" required="required">
+				<div class="form-notice-capslock hidden t3js-login-alert-capslock">
+					<img src="{images.capslock}" width="14" height="14" alt="{f:translate(key: 'login.error.capslock')}" title="{f:translate(key: 'login.error.capslock')}" />
+				</div>
+			</div>
+		</div>
+	</div>
+</f:section>

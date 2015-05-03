@@ -34,6 +34,54 @@ Have a nice day.</source>
 			<trans-unit id="foldertreeview.noFolders.message">
 				<source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
 			</trans-unit>
+			<trans-unit id="login.link">
+				<source>Login with username and password</source>
+			</trans-unit>
+			<trans-unit id="login.username">
+				<source>Username</source>
+			</trans-unit>
+			<trans-unit id="login.password">
+				<source>Password</source>
+			</trans-unit>
+			<trans-unit id="login.error.capslock">
+				<source>Attention: Caps lock enabled!</source>
+			</trans-unit>
+			<trans-unit id="login.interface">
+				<source>Interface</source>
+			</trans-unit>
+			<trans-unit id="login.news.previous">
+				<source>Previous</source>
+			</trans-unit>
+			<trans-unit id="login.news.next">
+				<source>Next</source>
+			</trans-unit>
+			<trans-unit id="login.error.message">
+				<source>Your login attempt did not succeed</source>
+			</trans-unit>
+			<trans-unit id="login.error.description">
+				<source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
+			</trans-unit>
+			<trans-unit id="login.error.javascript">
+				<source>Please activate JavaScript!</source>
+			</trans-unit>
+			<trans-unit id="login.error.cookies">
+				<source>Please activate Cookies!</source>
+			</trans-unit>
+			<trans-unit id="login.process">
+				<source>Verifying Login Data ...</source>
+			</trans-unit>
+			<trans-unit id="login.submit">
+				<source>Login</source>
+			</trans-unit>
+			<trans-unit id="login.copyrightLink">
+				<source>More about TYPO3</source>
+			</trans-unit>
+			<trans-unit id="login.typo3Logo">
+				<source>TYPO3 logo</source>
+			</trans-unit>
+			<trans-unit id="login.donate">
+				<source>Donate</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -44,6 +44,12 @@
 			<trans-unit id="html.submit">
 				<source>Login</source>
 			</trans-unit>
+			<trans-unit id="login.link">
+				<source>Login with OpenID</source>
+			</trans-unit>
+			<trans-unit id="openId">
+				<source>OpenID</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

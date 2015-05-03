@@ -5529,11 +5529,6 @@ class tx_rsaauth_feloginhook extends \TYPO3\CMS\Rsaauth\Hook\FrontendLoginHook {
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_rsaauth_loginformhook extends \TYPO3\CMS\Rsaauth\Hook\LoginFormHook {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tx_rsaauth_usersetuphook extends \TYPO3\CMS\Rsaauth\Hook\UserSetupHook {}
 
 /**

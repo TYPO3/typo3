@@ -22,4 +22,3 @@ require __DIR__ . '/init.php';
 
 $loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginController::class);
 $loginController->main();
-$loginController->printContent();

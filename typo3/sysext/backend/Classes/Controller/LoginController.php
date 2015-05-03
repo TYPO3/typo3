@@ -14,15 +14,16 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Exception;
+use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -30,195 +31,113 @@ use TYPO3\CMS\Lang\LanguageService;
  * Script Class for rendering the login form
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Frank Nägler <typo3@naegler.net>
  */
 class LoginController {
+
 	/**
 	 * The URL to redirect to after login.
 	 *
 	 * @var string
 	 */
-	public $redirect_url;
-
-	/**
-	 * Defines which interface to load (from interface selector)
-	 *
-	 * @var string
-	 */
-	public $GPinterface;
-
-	/**
-	 * preset username
-	 *
-	 * @var string
-	 */
-	public $u;
-
-	/**
-	 * preset password
-	 *
-	 * @var string
-	 */
-	public $p;
-
-	/**
-	 * OpenID URL submitted by form
-	 *
-	 * @var string
-	 */
-	protected $openIdUrl;
-
-	/**
-	 * If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-	 *
-	 * @var string
-	 */
-	public $L;
-
-	/**
-	 * Login-refresh boolean; The backend will call this script
-	 * with this value set when the login is close to being expired
-	 * and the form needs to be redrawn.
-	 *
-	 * @var bool
-	 */
-	public $loginRefresh;
-
-	/**
-	 * Value of forms submit button for login.
-	 *
-	 * @var string
-	 */
-	public $commandLI;
+	protected $redirectUrl;
 
 	/**
 	 * Set to the redirect URL of the form (may be redirect_url or "backend.php")
 	 *
 	 * @var string
 	 */
-	public $redirectToURL;
+	protected $redirectToURL;
 
 	/**
-	 * Content accumulation
+	 * the active login provider identifier
 	 *
 	 * @var string
 	 */
-	public $content;
+	protected $loginProviderIdentifier = NULL;
 
 	/**
-	 * A selector box for selecting value for "interface" may be rendered into this variable
+	 * List of registered and sorted login providers
+	 *
+	 * @var array
+	 */
+	protected $loginProviders = [];
+
+	/**
+	 * Login-refresh bool; The backend will call this script
+	 * with this value set when the login is close to being expired
+	 * and the form needs to be redrawn.
+	 *
+	 * @var bool
+	 */
+	protected $loginRefresh;
+
+	/**
+	 * Value of forms submit button for login.
 	 *
 	 * @var string
 	 */
-	public $interfaceSelector;
+	protected $submitValue;
 
 	/**
-	 * A selector box for selecting value for "interface" may be rendered into this variable
-	 * this will have an onchange action which will redirect the user to the selected interface right away
-	 *
-	 * @var string
+	 * @var StandaloneView
 	 */
-	public $interfaceSelector_jump;
-
-	/**
-	 * A hidden field, if the interface is not set.
-	 *
-	 * @var string
-	 */
-	public $interfaceSelector_hidden;
-
-	/**
-	 * Additional hidden fields to be placed at the login form
-	 *
-	 * @var string
-	 */
-	public $addFields_hidden = '';
-
-	/**
-	 * Sets the level of security
-	 *
-	 * 'normal' = clear-text
-	 * password/username from form in $formfield_uident.
-	 *
-	 * @var string
-	 */
-	public $loginSecurityLevel = 'normal';
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->init();
-	}
+	protected $view;
 
 	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
-	 *
-	 * @return void
 	 */
-	public function init() {
+	public function __construct() {
+		$this->validateAndSortLoginProviders();
+
 		// We need a PHP session session for most login levels
 		session_start();
-		$this->redirect_url = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect_url'));
-		$this->GPinterface = GeneralUtility::_GP('interface');
-		// Grabbing preset username and password, for security reasons this feature only works if SSL is used
-		if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-			$this->u = GeneralUtility::_GP('u');
-			$this->p = GeneralUtility::_GP('p');
-			$this->openIdUrl = GeneralUtility::_GP('openid_url');
-		}
-		// If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
-		$this->L = GeneralUtility::_GP('L');
-		// Login
-		$this->loginRefresh = GeneralUtility::_GP('loginRefresh');
+		$this->redirectUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect_url'));
+		$this->loginProviderIdentifier = $this->detectLoginProvider();
+
+		$this->loginRefresh = (bool)GeneralUtility::_GP('loginRefresh');
 		// Value of "Login" button. If set, the login button was pressed.
-		$this->commandLI = GeneralUtility::_GP('commandLI');
-		// Sets the level of security from conf vars
-		$this->loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal';
+		$this->submitValue = GeneralUtility::_GP('commandLI');
+
 		// Try to get the preferred browser language
-		$preferredBrowserLanguage = $this->getLanguageService()->csConvObj->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+		$preferredBrowserLanguage = $this->getLanguageService()->csConvObj
+			->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
+
 		// If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
 		// initialize $this->getLanguageService() again with $preferredBrowserLanguage
 		if ($preferredBrowserLanguage !== 'default' && empty($this->getBackendUserAuthentication()->user['uid'])) {
 			$this->getLanguageService()->init($preferredBrowserLanguage);
 		}
+
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_login.xlf');
+
 		// Setting the redirect URL to "backend.php" if no alternative input is given
-		$this->redirectToURL = $this->redirect_url ?: 'backend.php';
-		// Do a logout if the command is set
-		if ($this->L == 'OUT' && is_object($this->getBackendUserAuthentication())) {
+		$this->redirectToURL = $this->redirectUrl ?: 'backend.php';
+
+		// If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
+		if (GeneralUtility::_GP('L') === 'OUT' && is_object($this->getBackendUserAuthentication())) {
 			$this->getBackendUserAuthentication()->logoff();
-			HttpUtility::redirect($this->redirect_url);
+			HttpUtility::redirect($this->redirectUrl);
 		}
+
+		$this->view = $this->getFluidTemplateObject();
 	}
 
 	/**
 	 * Main function - creating the login/logout form
 	 *
+	 * @throws Exception
 	 * @return void
 	 */
 	public function main() {
-		// Initialize template object:
-		$view = $this->getFluidTemplateObject('EXT:backend/Resources/Private/Templates/Login.html');
-
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getDocumentTemplate()->getPageRenderer();
-		$pageRenderer->loadJquery();
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
 
 		// support placeholders for IE9 and lower
 		$clientInfo = GeneralUtility::clientInfo();
-		if ($clientInfo['BROWSER'] == 'msie' && $clientInfo['VERSION'] <= 9) {
+		if ($clientInfo['BROWSER'] === 'msie' && $clientInfo['VERSION'] <= 9) {
 			$pageRenderer->addJsLibrary('placeholders', 'sysext/core/Resources/Public/JavaScript/Contrib/placeholders.jquery.min.js');
-		}
-
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'] as $function) {
-				$params = array();
-				$javaScriptCode = GeneralUtility::callUserFunction($function, $params, $this);
-				if ($javaScriptCode) {
-					$this->getDocumentTemplate()->JScode .= $javaScriptCode;
-					break;
-				}
-			}
 		}
 
 		// Checking, if we should make a redirect.
@@ -262,7 +181,7 @@ class LoginController {
 		} elseif (!empty($GLOBALS['TBE_STYLES']['logo_login'])) {
 			// Fallback to old TBE_STYLES login logo
 			$logo = $GLOBALS['TBE_STYLES']['logo_login'];
-			GeneralUtility::deprecationLog('$GLOBALS["TBE_STYLES"]["logo_login"] is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8, please head to the backend extension configuration instead.');
+			GeneralUtility::deprecationLog('$GLOBALS["TBE_STYLES"]["logo_login"] is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8, please use the backend extension\'s configuration instead.');
 		} else {
 			// Use TYPO3 logo depending on highlight color
 			if (!empty($extConf['loginHighlightColor'])) {
@@ -277,127 +196,115 @@ class LoginController {
 		$logo = $this->getUriForFileName($logo);
 
 		// Start form
-		$formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'loginForm' : 'logoutForm';
-		$view->assignMultiple(array(
-			'formTag' => $this->startForm(),
-			'labelPrefixPath' => 'LLL:EXT:lang/locallang_login.xlf:',
+		$formType = empty($this->getBackendUserAuthentication()->user['uid']) ? 'LoginForm' : 'LogoutForm';
+		$this->view->assignMultiple(array(
 			'backendUser' => $this->getBackendUserAuthentication()->user,
 			'hasLoginError' => $this->isLoginInProgress(),
-			'presetUsername' => $this->u,
-			'presetPassword' => $this->p,
-			'presetOpenId' => $this->openIdUrl,
 			'formType' => $formType,
 			'logo' => $logo,
 			'images' => array(
 				'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
 				'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
 			),
-			'isOpenIdLoaded' => ExtensionManagementUtility::isLoaded('openid'),
 			'copyright' => BackendUtility::TYPO3_copyRightNotice(),
-			'loginNewsItems' => $this->getSystemNews()
+			'loginNewsItems' => $this->getSystemNews(),
+			'loginProviderIdentifier' => $this->loginProviderIdentifier,
+			'loginProviders' => $this->loginProviders
 		));
 
 		// Initialize interface selectors:
 		$this->makeInterfaceSelectorBox();
-		$view->assignMultiple(array(
-			'interfaceSelector' => $this->interfaceSelector,
-			'interfaceSelectorJump' => $this->interfaceSelector_jump
-		));
 
-		// Starting page:
-		$this->content .= $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
-		// Add Content:
-		$this->content .= $view->render();
-		$this->content .= $this->getDocumentTemplate()->endPage();
+		/** @var LoginProviderInterface $loginProvider */
+		$loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
+		$loginProvider->render($this->view, $pageRenderer, $this);
+
+		$content = $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
+		$content .= $this->view->render();
+		$content .= $this->getDocumentTemplate()->endPage();
+
+		echo $content;
 	}
 
-	/**
-	 * Outputting the accumulated content to screen
-	 *
-	 * @return void
-	 */
-	public function printContent() {
-		echo $this->content;
-	}
-
-	/*****************************
-	 *
-	 * Various functions
-	 *
-	 ******************************/
 	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
+	 *
+	 * Do redirect:
+	 *
+	 * If a user is logged in AND
+	 *   a) if either the login is just done (isLoginInProgress) or
+	 *   b) a loginRefresh is done
 	 *
 	 * @throws \RuntimeException
 	 * @throws \UnexpectedValueException
 	 */
-	public function checkRedirect() {
-		/*
-		 * Do redirect:
-		 *
-		 * If a user is logged in AND
-		 *   a) if either the login is just done (isLoginInProgress) or
-		 *   b) a loginRefresh is done or c) the interface-selector is NOT enabled
-		 *      (If it is on the other hand, it should not just load an interface,
-		 *      because people has to choose then...)
-		 */
-		if (!empty($this->getBackendUserAuthentication()->user['uid'])
-			&& ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector)) {
-			/*
-			 * If no cookie has been set previously we tell people that this is a problem.
-			 * This assumes that a cookie-setting script (like this one) has been hit at
-			 * least once prior to this instance.
-			 */
-			if (!$_COOKIE[BackendUserAuthentication::getCookieName()]) {
-				if ($this->commandLI == 'setCookie') {
-					/*
-					 * we tried it a second time but still no cookie
-					 * 26/4 2005: This does not work anymore, because the saving of challenge values
-					 * in $_SESSION means the system will act as if the password was wrong.
-					 */
-					throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3. ' .
-						'Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
-				} else {
-					// try it once again - that might be needed for auto login
-					$this->redirectToURL = 'index.php?commandLI=setCookie';
-				}
-			}
-			$redirectToUrl = (string)$this->getBackendUserAuthentication()->getTSConfigVal('auth.BE.redirectToURL');
-			if (!empty($redirectToUrl)) {
-				$this->redirectToURL = $redirectToUrl;
-				$this->GPinterface = '';
-			}
-			// store interface
-			$this->getBackendUserAuthentication()->uc['interfaceSetup'] = $this->GPinterface;
-			$this->getBackendUserAuthentication()->writeUC();
-			// Based on specific setting of interface we set the redirect script:
-			switch ($this->GPinterface) {
-				case 'backend':
-					$this->redirectToURL = 'backend.php';
-					break;
-				case 'frontend':
-					$this->redirectToURL = '../';
-					break;
-			}
-			/** @var $formProtection \TYPO3\CMS\Core\FormProtection\BackendFormProtection */
-			$formProtection = FormProtectionFactory::get();
-			// If there is a redirect URL AND if loginRefresh is not set...
-			if (!$this->loginRefresh) {
-				$formProtection->storeSessionTokenInRegistry();
-				HttpUtility::redirect($this->redirectToURL);
-			} else {
-				$formProtection->setSessionTokenFromRegistry();
-				$formProtection->persistSessionToken();
-				$this->getDocumentTemplate()->JScode .= $this->getDocumentTemplate()->wrapScriptTags('
-					if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.LoginRefresh) {
-						parent.opener.TYPO3.LoginRefresh.startTask();
-						parent.close();
-					}
-				');
-			}
-		} elseif (empty($this->getBackendUserAuthentication()->user['uid']) && $this->isLoginInProgress()) {
+	protected function checkRedirect() {
+		if (empty($this->getBackendUserAuthentication()->user['uid']) && $this->isLoginInProgress()) {
 			// Wrong password, wait for 5 seconds
 			sleep(5);
+			return;
+		}
+		if (!$this->isLoginInProgress() && !$this->loginRefresh) {
+			return;
+		}
+		/*
+		 * If no cookie has been set previously, we tell people that this is a problem.
+		 * This assumes that a cookie-setting script (like this one) has been hit at
+		 * least once prior to this instance.
+		 */
+		if (!$_COOKIE[BackendUserAuthentication::getCookieName()]) {
+			if ($this->submitValue === 'setCookie') {
+				/*
+				 * we tried it a second time but still no cookie
+				 * 26/4 2005: This does not work anymore, because the saving of challenge values
+				 * in $_SESSION means the system will act as if the password was wrong.
+				 */
+				throw new \RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3. ' .
+					'Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
+			} else {
+				// try it once again - that might be needed for auto login
+				$this->redirectToURL = 'index.php?commandLI=setCookie';
+			}
+		}
+		$redirectToUrl = (string)$this->getBackendUserAuthentication()->getTSConfigVal('auth.BE.redirectToURL');
+		if (empty($redirectToUrl)) {
+			// Based on the interface we set the redirect script
+			switch (GeneralUtility::_GP('interface')) {
+				case 'frontend':
+					$interface = 'frontend';
+					$this->redirectToURL = '../';
+					break;
+				case 'backend':
+					$interface = 'backend';
+					$this->redirectToURL = 'backend.php';
+					break;
+				default:
+					$interface = '';
+			}
+		} else {
+			$this->redirectToURL = $redirectToUrl;
+			$interface = '';
+		}
+		// store interface
+		$this->getBackendUserAuthentication()->uc['interfaceSetup'] = $interface;
+		$this->getBackendUserAuthentication()->writeUC();
+
+		$formProtection = FormProtectionFactory::get();
+		if (!$formProtection instanceof BackendFormProtection) {
+			throw new \RuntimeException('The Form Protection retrieved does not match the expected one.', 1432080411);
+		}
+		if ($this->loginRefresh) {
+			$formProtection->setSessionTokenFromRegistry();
+			$formProtection->persistSessionToken();
+			$this->getDocumentTemplate()->JScode .= $this->getDocumentTemplate()->wrapScriptTags('
+				if (parent.opener && parent.opener.TYPO3 && parent.opener.TYPO3.LoginRefresh) {
+					parent.opener.TYPO3.LoginRefresh.startTask();
+					parent.close();
+				}
+			');
+		} else {
+			$formProtection->storeSessionTokenInRegistry();
+			HttpUtility::redirect($this->redirectToURL);
 		}
 	}
 
@@ -407,40 +314,30 @@ class LoginController {
 	 * @return void
 	 */
 	public function makeInterfaceSelectorBox() {
-		// Reset variables:
-		$this->interfaceSelector = '';
-		$this->interfaceSelector_hidden = '';
-		$this->interfaceSelector_jump = '';
 		// If interfaces are defined AND no input redirect URL in GET vars:
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirect_url)) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirectUrl)) {
 			$parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
-			// Only if more than one interface is defined will we show the selector:
 			if (count($parts) > 1) {
-				// Initialize:
-				$labels = array(
-					'backend' => $this->getLanguageService()->getLL('interface.backend'),
-					'frontend' => $this->getLanguageService()->getLL('interface.frontend')
+				// Only if more than one interface is defined we will show the selector
+				$interfaces = array(
+					'backend' => array(
+						'label' => $this->getLanguageService()->getLL('interface.backend'),
+						'jumpScript' => 'backend.php',
+						'interface' => 'backend'
+					),
+					'frontend' => array(
+						'label' => $this->getLanguageService()->getLL('interface.frontend'),
+						'jumpScript' => '../',
+						'interface' => 'frontend'
+					)
 				);
-				$jumpScript = array(
-					'backend' => 'backend.php',
-					'frontend' => '../'
-				);
-				// Traverse the interface keys:
-				foreach ($parts as $valueStr) {
-					$this->interfaceSelector .= '
-							<option value="' . htmlspecialchars($valueStr) . '"' . (GeneralUtility::_GP('interface') == htmlspecialchars($valueStr) ? ' selected="selected"' : '') . '>' . htmlspecialchars($labels[$valueStr]) . '</option>';
-					$this->interfaceSelector_jump .= '
-							<option value="' . htmlspecialchars($jumpScript[$valueStr]) . '">' . htmlspecialchars($labels[$valueStr]) . '</option>';
-				}
-				$this->interfaceSelector = '
-						<select id="t3-interfaceselector" name="interface" class="form-control input-login t3js-login-interface-field" tabindex="3">' . $this->interfaceSelector . '
-						</select>';
-				$this->interfaceSelector_jump = '
-						<select id="t3-interfaceselector" name="interface" class="form-control input-login t3js-login-interface-field" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">' . $this->interfaceSelector_jump . '
-						</select>';
-			} elseif (!$this->redirect_url) {
-				// If there is only ONE interface value set and no redirect_url is present:
-				$this->interfaceSelector_hidden = '<input type="hidden" name="interface" value="' . trim($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']) . '" />';
+
+				$this->view->assign('showInterfaceSelector', TRUE);
+				$this->view->assign('interfaces', $interfaces);
+			} elseif (!$this->redirectUrl) {
+				// If there is only ONE interface value set and no redirect_url is present
+				$this->view->assign('showInterfaceSelector', FALSE);
+				$this->view->assign('interface', $parts[0]);
 			}
 		}
 	}
@@ -466,30 +363,6 @@ class LoginController {
 	}
 
 	/**
-	 * Returns the form tag
-	 *
-	 * @return string Opening form tag string
-	 */
-	public function startForm() {
-		$form = '<form action="index.php" id="typo3-login-form" method="post" name="loginform">';
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {
-				$params = array();
-				$formCode = GeneralUtility::callUserFunction($function, $params, $this);
-				if ($formCode) {
-					$form = $formCode;
-					break;
-				}
-			}
-		}
-		return $form . '<input type="hidden" name="login_status" value="login" />' .
-			'<input type="hidden" id="t3-field-userident" class="t3js-login-userident-field" name="userident" value="" />' .
-			'<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' .
-			'<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' .
-			$this->interfaceSelector_hidden . $this->addFields_hidden;
-	}
-
-	/**
 	 * Returns the uri of a relative reference, resolves the "EXT:" prefix
 	 * (way of referring to files inside extensions) and checks that the file is inside
 	 * the PATH_site of the TYPO3 installation
@@ -499,10 +372,11 @@ class LoginController {
 	 * @internal
 	 */
 	private function getUriForFileName($filename) {
-		$urlPrefix = '';
 		if (strpos($filename, '://')) {
-			$urlPrefix = '';
-		} elseif (strpos($filename, 'EXT:') === 0) {
+			return $filename;
+		}
+		$urlPrefix = '';
+		if (strpos($filename, 'EXT:') === 0) {
 			$absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
 			$filename = '';
 			if ($absoluteFilename !== '') {
@@ -521,35 +395,87 @@ class LoginController {
 	 */
 	protected function isLoginInProgress() {
 		$username = GeneralUtility::_GP('username');
-		return !empty($username) || !empty($this->commandLI);
-	}
-
-	/**
-	 * Get the ObjectManager
-	 *
-	 * @return ObjectManager
-	 */
-	protected function getObjectManager() {
-		return GeneralUtility::makeInstance(ObjectManager::class);
+		return !empty($username) || !empty($this->submitValue);
 	}
 
 	/**
 	 * returns a new standalone view, shorthand function
 	 *
-	 * @param string $templatePathAndFileName optional the path to set the template path and filename
-	 *
 	 * @return StandaloneView
 	 */
-	protected function getFluidTemplateObject($templatePathAndFileName = NULL) {
-		$this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang.xlf');
-		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_login.xlf');
-
+	protected function getFluidTemplateObject() {
+		/** @var StandaloneView $view */
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
-		if ($templatePathAndFileName) {
-			$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
-		}
-		$view->getRequest()->setControllerExtensionName('backend');
+		$view->setLayoutRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')));
+		$view->setPartialRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')));
+		$view->setTemplateRootPaths(array(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')));
+
+		$view->getRequest()->setControllerExtensionName('Backend');
 		return $view;
+	}
+
+	/**
+	 * Validates the registered login providers
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function validateAndSortLoginProviders() {
+		if (
+			!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'])
+			|| empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'])
+		) {
+			throw new \RuntimeException('No login providers are registered in $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'backend\'][\'loginProviders\'].', 1433417281);
+		}
+		$providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'];
+		foreach ($providers as $identifier => $configuration) {
+			if (empty($configuration) || !is_array($configuration)) {
+				throw new \RuntimeException('Missing configuration for login provider "' . $identifier . '".', 1433416043);
+			}
+			if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of($configuration['provider'], LoginProviderInterface::class)) {
+				throw new \RuntimeException('The login provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . LoginProviderInterface::class . '".', 1433416043);
+			}
+			if (empty($configuration['label'])) {
+				throw new \RuntimeException('Missing label definition for login provider "' . $identifier . '".', 1433416044);
+			}
+			if (empty($configuration['icon-class'])) {
+				throw new \RuntimeException('Missing icon definition for login provider "' . $identifier . '".', 1433416045);
+			}
+			if (!isset($configuration['sorting'])) {
+				throw new \RuntimeException('Missing sorting definition for login provider "' . $identifier . '".', 1433416046);
+			}
+		}
+		// sort providers
+		uasort($providers, function($a, $b) {
+			return $b['sorting'] - $a['sorting'];
+		});
+		$this->loginProviders = $providers;
+	}
+
+	/**
+	 * Detect the login provider, get from request or choose the
+	 * first one as default
+	 *
+	 * @return string
+	 */
+	protected function detectLoginProvider() {
+		$loginProvider = GeneralUtility::_GP('loginProvider');
+		if ((empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) && !empty($_COOKIE['be_lastLoginProvider'])) {
+			$loginProvider = $_COOKIE['be_lastLoginProvider'];
+		}
+		if (empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) {
+			reset($this->loginProviders);
+			$loginProvider = key($this->loginProviders);
+		}
+		setcookie('be_lastLoginProvider', $loginProvider);
+		return $loginProvider;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLoginProviderIdentifier() {
+		return $this->loginProviderIdentifier;
 	}
 
 	/**

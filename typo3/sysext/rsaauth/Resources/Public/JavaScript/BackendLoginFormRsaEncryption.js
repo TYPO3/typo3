@@ -14,7 +14,10 @@
 /**
  * Object that handles RSA encryption and submission of the form
  */
-define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/Backend/Login'], function($, BackendLogin) {
+define(
+	'TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption',
+	['jquery', 'TYPO3/CMS/Backend/Login', 'TYPO3/CMS/Backend/UserPassLogin'],
+	function($, Login, UserPassLogin) {
 
 	var RsaBackendLogin = {
 
@@ -37,11 +40,11 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 		 * Replace event handler of submit button
 		 */
 		initialize: function() {
-			this.userPasswordField = BackendLogin.options.passwordField;
-			this.typo3PasswordField = BackendLogin.options.useridentField;
-			this.loginForm = BackendLogin.options.loginForm;
+			this.userPasswordField = UserPassLogin.options.passwordField;
+			this.typo3PasswordField = Login.options.useridentField;
+			this.loginForm = Login.options.loginForm;
 
-			BackendLogin.options.submitHandler = this.handleFormSubmitRequest;
+			Login.options.submitHandler = this.handleFormSubmitRequest;
 		},
 
 		/**
@@ -54,8 +57,6 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 				RsaBackendLogin.fetchedRsaKey = true;
 
 				event.preventDefault();
-
-				BackendLogin.showLoginProcess();
 
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['BackendLogin::getRsaPublicKey'],
