@@ -20,14 +20,16 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays 'Delete user' link with sprite icon to remove user
  *
  * @internal
  */
-class RemoveUserViewHelper extends AbstractViewHelper {
+class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Render link with sprite icon to remove user
@@ -36,6 +38,25 @@ class RemoveUserViewHelper extends AbstractViewHelper {
 	 * @return string
 	 */
 	public function render(BackendUser $backendUser) {
+		return self::renderStatic(
+			array(
+				'backendUser' => $backendUser
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		/** @var \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser */
+		$backendUser = $arguments['backendUser'];
 		/** @var BackendUserAuthentication $beUser */
 		$beUser = $GLOBALS['BE_USER'];
 		if ($backendUser->getUid() === (int)$beUser->user['uid']) {
