@@ -301,6 +301,7 @@ return array(
 				),
 			)),
 		),
+		'runtimeActivatedPackages' => array(),
 	),
 	'BE' => array(
 		// Backend Configuration.
