@@ -191,11 +191,10 @@ class StandaloneView extends AbstractTemplateView {
 	 * All set templateRootPaths are checked to find template by given name
 	 *
 	 * @param string $templateName Name of the template
-	 * @param bool $throwException
 	 * @throws InvalidTemplateResourceException
 	 * @api
 	 */
-	public function setTemplate($templateName, $throwException = TRUE) {
+	public function setTemplate($templateName) {
 		if ($this->templateRootPaths === NULL) {
 			throw new InvalidTemplateResourceException('No template root path has been specified. Use setTemplateRootPaths().', 1430635895);
 		}
@@ -210,7 +209,7 @@ class StandaloneView extends AbstractTemplateView {
 		}
 		if ($templatePathAndFilename !== NULL) {
 			$this->setTemplatePathAndFilename($templatePathAndFilename);
-		} elseif ($throwException) {
+		} else {
 			throw new InvalidTemplateResourceException('Could not load template file. Tried following paths: "' . implode('", "', $possibleTemplatePaths) . '".', 1430635896);
 		}
 	}
