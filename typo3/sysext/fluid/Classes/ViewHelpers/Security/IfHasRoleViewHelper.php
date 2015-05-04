@@ -71,20 +71,17 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 	 * @api
 	 */
 	public function render($role) {
-		if ($this->frontendUserHasRole($role)) {
-			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
-		}
+		return parent::render();
 	}
 
 	/**
-	 * Determines whether the currently logged in FE user belongs to the specified usergroup
+	 * This method decides if the condition is TRUE or FALSE. It can be overriden in extending viewhelpers to adjust functionality.
 	 *
-	 * @param string $role The usergroup (either the usergroup uid or its title)
-	 * @return bool TRUE if the currently logged in FE user belongs to $role
+	 * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+	 * @return bool
 	 */
-	protected function frontendUserHasRole($role) {
+	static protected function evaluateCondition($arguments = NULL) {
+		$role = $arguments['role'];
 		if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE']->loginUser) {
 			return FALSE;
 		}
