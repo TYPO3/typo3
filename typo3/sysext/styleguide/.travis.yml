@@ -14,7 +14,7 @@ before_script:
   - cp TYPO3.CMS.Styleguide/Build/composer-travis.json composer.json
   - composer install
   - mkdir -p typo3conf/ext
-  - mv TYPO3.CMS.Styleguide typo3conf/ext styleguide
+  - mv TYPO3.CMS.Styleguide typo3conf/ext/styleguide
 
 script:
   - >
