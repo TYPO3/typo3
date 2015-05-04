@@ -202,7 +202,20 @@ class FileWriter extends AbstractWriter {
 	protected function createHtaccessFile($htaccessFile) {
 		// write .htaccess file to protect the log file
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) && !file_exists($htaccessFile)) {
-			GeneralUtility::writeFile($htaccessFile, 'Deny From All');
+			$htaccessContent = '
+# Apache < 2.3
+<IfModule !mod_authz_core.c>
+	Order allow,deny
+	Deny from all
+	Satisfy All
+</IfModule>
+
+# Apache ≥ 2.3
+<IfModule mod_authz_core.c>
+	Require all denied
+</IfModule>
+			';
+			GeneralUtility::writeFile($htaccessFile, $htaccessContent);
 		}
 	}
 

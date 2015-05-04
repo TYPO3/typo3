@@ -4,42 +4,33 @@
 #
 # This file includes settings for the following configuration options:
 #
-# - Compression via TYPO3
-# - Settings for mod_rewrite (URL-Rewriting)
-# - PHP optimisation
+# - Compression
+# - Caching
+# - MIME types
+# - Cross Origin requests
+# - Rewriting and Access
 # - Miscellaneous
+# - PHP optimisation
 #
 # If you want to use it, you have to copy it to the root folder of your TYPO3 installation (if its
 # not there already) and rename it to '.htaccess'. To make .htaccess files work, you might need to
 # adjust the 'AllowOverride' directive in your Apache configuration file.
 #
 # IMPORTANT: You may need to change this file depending on your TYPO3 installation!
+#            Consider adding this file's content to your webserver's configuration directly for speed improvement
 #
-# Lines starting with a # are treated as comment and ignored by the web server.
-#
-# You should change every occurance of TYPO3root/ to the location where you have your website in.
-# For example:
-# If you have your website located at http://mysite.com/
-# then your TYPO3root/ is just empty (remove 'TYPO3root/')
-# If you have your website located at http://mysite.com/some/path/
-# then your TYPO3root/ is some/path/ (search and replace)
-#
-# You can also use this configuration in your httpd.conf, but then you have to modify some lines,
-# see the comments (search for 'httpd.conf')
-#
-# Questions about this file go to the matching Install mailing list, see
-# http://typo3.org/documentation/mailing-lists/
+# Lots of the options are taken from https://github.com/h5bp/html5-boilerplate/blob/master/dist/.htaccess
 #
 ####
 
 
-### Begin: Compression via TYPO3 ###
+### Begin: Compression ###
 
 # Compressing resource files will save bandwidth and so improve loading speed especially for users
 # with slower internet connections. TYPO3 can compress the .js and .css files for you.
 # *) Uncomment the following lines and
-# *) Set $TYPO3_CONF_VARS['BE']['compressionLevel'] = '9' for the Backend
-# *) Set $TYPO3_CONF_VARS['FE']['compressionLevel'] = '9' together with the TypoScript properties
+# *) Set $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = 9 for the Backend
+# *) Set $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = 9 together with the TypoScript properties
 #    config.compressJs and config.compressCss for GZIP compression of Frontend JS and CSS files.
 
 #<FilesMatch "\.js\.gzip$">
@@ -50,109 +41,313 @@
 #</FilesMatch>
 #AddEncoding gzip .gzip
 
+<IfModule mod_deflate.c>
+	# Force compression for mangled `Accept-Encoding` request headers
+	<IfModule mod_setenvif.c>
+		<IfModule mod_headers.c>
+			SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+			RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+		</IfModule>
+	</IfModule>
+
+	# Compress all output labeled with one of the following media types
+	<IfModule mod_filter.c>
+		AddOutputFilterByType DEFLATE "application/atom+xml" \
+			"application/javascript" \
+			"application/json" \
+			"application/ld+json" \
+			"application/manifest+json" \
+			"application/rdf+xml" \
+			"application/rss+xml" \
+			"application/schema+json" \
+			"application/vnd.geo+json" \
+			"application/vnd.ms-fontobject" \
+			"application/x-font-ttf" \
+			"application/x-javascript" \
+			"application/x-web-app-manifest+json" \
+			"application/xhtml+xml" \
+			"application/xml" \
+			"font/eot" \
+			"font/opentype" \
+			"image/bmp" \
+			"image/svg+xml" \
+			"image/vnd.microsoft.icon" \
+			"image/x-icon" \
+			"text/cache-manifest" \
+			"text/css" \
+			"text/html" \
+			"text/javascript" \
+			"text/plain" \
+			"text/vcard" \
+			"text/vnd.rim.location.xloc" \
+			"text/vtt" \
+			"text/x-component" \
+			"text/x-cross-domain-policy" \
+			"text/xml"
+	</IfModule>
+
+	<IfModule mod_mime.c>
+		AddEncoding gzip              svgz
+	</IfModule>
+</IfModule>
+
 ### End: Compression via TYPO3 ###
 
 
-### Begin: Browser caching of ressource files ###
 
-# Enable long browser caching for JavaScript and CSS files.
+### Begin: Browser caching of resource files ###
 
 # This affects Frontend and Backend and increases performance.
-# You can also add other file extensions (like gif, png, jpg), if you want them to be longer cached, too.
+<IfModule mod_expires.c>
 
-<FilesMatch "\.(js|css)$">
-  <IfModule mod_expires.c>
-    ExpiresActive on
-    ExpiresDefault "access plus 7 days"
-  </IfModule>
-  FileETag MTime Size
-</FilesMatch>
+	ExpiresActive on
+	ExpiresDefault                                      "access plus 1 month"
+
+	ExpiresByType text/css                              "access plus 1 year"
+
+	ExpiresByType application/json                      "access plus 0 seconds"
+	ExpiresByType application/ld+json                   "access plus 0 seconds"
+	ExpiresByType application/schema+json               "access plus 0 seconds"
+	ExpiresByType application/vnd.geo+json              "access plus 0 seconds"
+	ExpiresByType application/xml                       "access plus 0 seconds"
+	ExpiresByType text/xml                              "access plus 0 seconds"
+
+	ExpiresByType image/vnd.microsoft.icon              "access plus 1 week"
+	ExpiresByType image/x-icon                          "access plus 1 week"
+
+	ExpiresByType text/x-component                      "access plus 1 month"
+
+	ExpiresByType text/html                             "access plus 0 seconds"
+
+	ExpiresByType application/javascript                "access plus 1 year"
+	ExpiresByType application/x-javascript              "access plus 1 year"
+	ExpiresByType text/javascript                       "access plus 1 year"
+
+	ExpiresByType application/manifest+json             "access plus 1 week"
+	ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
+	ExpiresByType text/cache-manifest                   "access plus 0 seconds"
+
+	ExpiresByType audio/ogg                             "access plus 1 month"
+	ExpiresByType image/bmp                             "access plus 1 month"
+	ExpiresByType image/gif                             "access plus 1 month"
+	ExpiresByType image/jpeg                            "access plus 1 month"
+	ExpiresByType image/png                             "access plus 1 month"
+	ExpiresByType image/svg+xml                         "access plus 1 month"
+	ExpiresByType image/webp                            "access plus 1 month"
+	ExpiresByType video/mp4                             "access plus 1 month"
+	ExpiresByType video/ogg                             "access plus 1 month"
+	ExpiresByType video/webm                            "access plus 1 month"
+
+	ExpiresByType application/atom+xml                  "access plus 1 hour"
+	ExpiresByType application/rdf+xml                   "access plus 1 hour"
+	ExpiresByType application/rss+xml                   "access plus 1 hour"
+
+	ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
+	ExpiresByType font/eot                              "access plus 1 month"
+	ExpiresByType font/opentype                         "access plus 1 month"
+	ExpiresByType application/x-font-ttf                "access plus 1 month"
+	ExpiresByType application/font-woff                 "access plus 1 month"
+	ExpiresByType application/x-font-woff               "access plus 1 month"
+	ExpiresByType font/woff                             "access plus 1 month"
+	ExpiresByType application/font-woff2                "access plus 1 month"
+
+	ExpiresByType text/x-cross-domain-policy            "access plus 1 week"
+
+</IfModule>
 
 ### End: Browser caching of ressource files ###
 
 
-### Begin: Settings for mod_rewrite ###
+### Begin: MIME types ###
+
+# Proper MIME types for all files
+<IfModule mod_mime.c>
+
+	# Data interchange
+	AddType application/atom+xml                        atom
+	AddType application/json                            json map topojson
+	AddType application/ld+json                         jsonld
+	AddType application/rss+xml                         rss
+	AddType application/vnd.geo+json                    geojson
+	AddType application/xml                             rdf xml
+
+	# JavaScript
+	AddType application/javascript                      js
+
+	# Manifest files
+	AddType application/manifest+json                   webmanifest
+	AddType application/x-web-app-manifest+json         webapp
+	AddType text/cache-manifest                         appcache
+
+	# Media files
+
+	AddType audio/mp4                                   f4a f4b m4a
+	AddType audio/ogg                                   oga ogg opus
+	AddType image/bmp                                   bmp
+	AddType image/svg+xml                               svg svgz
+	AddType image/webp                                  webp
+	AddType video/mp4                                   f4v f4p m4v mp4
+	AddType video/ogg                                   ogv
+	AddType video/webm                                  webm
+	AddType video/x-flv                                 flv
+	AddType image/x-icon                                cur ico
+
+	# Web fonts
+	AddType application/font-woff                       woff
+	AddType application/font-woff2                      woff2
+	AddType application/vnd.ms-fontobject               eot
+	AddType application/x-font-ttf                      ttc ttf
+	AddType font/opentype                               otf
+
+	# Other
+	AddType application/octet-stream                    safariextz
+	AddType application/x-bb-appworld                   bbaw
+	AddType application/x-chrome-extension              crx
+	AddType application/x-opera-extension               oex
+	AddType application/x-xpinstall                     xpi
+	AddType text/vcard                                  vcard vcf
+	AddType text/vnd.rim.location.xloc                  xloc
+	AddType text/vtt                                    vtt
+	AddType text/x-component                            htc
+
+</IfModule>
+
+# UTF-8 encoding
+AddDefaultCharset utf-8
+<IfModule mod_mime.c>
+	AddCharset utf-8 .atom .css .js .json .manifest .rdf .rss .vtt .webapp .webmanifest .xml
+</IfModule>
+
+### End: MIME types ###
+
+
+
+### Begin: Cross Origin ###
+
+# Send the CORS header for images when browsers request it.
+<IfModule mod_setenvif.c>
+	<IfModule mod_headers.c>
+		<FilesMatch "\.(bmp|cur|gif|ico|jpe?g|png|svgz?|webp)$">
+			SetEnvIf Origin ":" IS_CORS
+			Header set Access-Control-Allow-Origin "*" env=IS_CORS
+		</FilesMatch>
+	</IfModule>
+</IfModule>
+
+# Allow cross-origin access to web fonts.
+<IfModule mod_headers.c>
+	<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
+		Header set Access-Control-Allow-Origin "*"
+	</FilesMatch>
+</IfModule>
+
+### End: Cross Origin ###
+
+
+
+### Begin: Rewriting and Access ###
 
 # You need rewriting, if you use a URL-Rewriting extension (RealURL, CoolUri).
 
 <IfModule mod_rewrite.c>
 
-# Enable URL rewriting
-RewriteEngine On
+	# Enable URL rewriting
+	RewriteEngine On
 
-# Change this path, if your TYPO3 installation is located in a subdirectory of the website root.
-#RewriteBase /
+	# Using mod_rewrite in .htaccess files without knowing the RewriteBase
+	RewriteBase /
 
-# Rules to set ApplicationContext based on hostname
-#RewriteCond %{HTTP_HOST} ^dev\.example\.com$
-#RewriteRule .? - [E=TYPO3_CONTEXT:Development]
-#RewriteCond %{HTTP_HOST} ^staging\.example\.com$
-#RewriteRule .? - [E=TYPO3_CONTEXT:Production/Staging]
-#RewriteCond %{HTTP_HOST} ^www\.example\.com$
-#RewriteRule .? - [E=TYPO3_CONTEXT:Production]
+	# Store the current location in an environment variable CWD
+	RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
+	RewriteRule ^.*$ - [E=CWD:%2]
 
-# Rule for versioned static files, configured through:
-# - $TYPO3_CONF_VARS['BE']['versionNumberInFilename']
-# - $TYPO3_CONF_VARS['FE']['versionNumberInFilename']
-# IMPORTANT: This rule has to be the very first RewriteCond in order to work!
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
+	# Rules to set ApplicationContext based on hostname
+	#RewriteCond %{HTTP_HOST} ^dev\.example\.com$
+	#RewriteRule .? - [E=TYPO3_CONTEXT:Development]
+	#RewriteCond %{HTTP_HOST} ^staging\.example\.com$
+	#RewriteRule .? - [E=TYPO3_CONTEXT:Production/Staging]
+	#RewriteCond %{HTTP_HOST} ^www\.example\.com$
+	RewriteRule .? - [E=TYPO3_CONTEXT:Production]
 
-# Basic security checks
-# - Restrict access to deleted files in Recycler directories
-# - Restrict access to TypoScript files in default templates directories
-# - Restrict access to Private extension directories
-# For httpd.conf, use these lines instead of the next ones:
-# RewriteRule ^/TYPO3root/fileadmin/(.*/)?_recycler_/ - [F]
-# RewriteRule ^/TYPO3root/fileadmin/templates/.*(\.txt|\.ts)$ - [F]
-# RewriteRule ^/TYPO3root/typo3conf/ext/[^/]+/Configuration/ - [F]
-# RewriteRule ^/TYPO3root/typo3conf/ext/[^/]+/Resources/Private/ - [F]
-RewriteRule ^fileadmin/(.*/)?_recycler_/ - [F]
-RewriteRule ^fileadmin/templates/.*(\.txt|\.ts)$ - [F]
-RewriteRule ^typo3conf/ext/[^/]+/Configuration/ - [F]
-RewriteRule ^typo3conf/ext/[^/]+/Resources/Private/ - [F]
+	# Rule for versioned static files, configured through:
+	# - $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename']
+	# - $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename']
+	# IMPORTANT: This rule has to be the very first RewriteCond in order to work!
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
 
-# Stop rewrite processing, if we are in the typo3/ directory.
-# For httpd.conf, use this line instead of the next one:
-# RewriteRule ^/TYPO3root/(typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
-RewriteRule ^(typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
+	# Access block for folders
+	RewriteRule _(?:recycler|temp)_/ - [F]
+	RewriteRule fileadmin/templates/.*\.(?:txt|ts)$ - [F]
+	RewriteRule typo3temp/logs/ - [F]
+	RewriteRule (?:typo3conf/ext|typo3/sysext|typo3/ext|typo3/vendor)/[^/]+/(?:Configuration|Resources/Private|Tests?)/ - [F]
 
-# If the file/symlink/directory does not exist => Redirect to index.php.
-# For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-l
+	# Access block for files or folders starting with a dot
+	RewriteCond %{SCRIPT_FILENAME} -d [OR]
+	RewriteCond %{SCRIPT_FILENAME} -f
+	RewriteRule (?:^|/)\. - [F]
 
-# Main URL rewriting.
-# For httpd.conf, use this line instead of the next one:
-# RewriteRule .* /TYPO3root/index.php [L]
-RewriteRule .* index.php [L]
+	# Stop rewrite processing, if we are in the typo3/ directory or any other known directory
+	# NOTE: Add your additional local storages here
+	RewriteRule (?:typo3/|fileadmin/|typo3conf/|typo3temp/|uploads/|favicon\.ico) - [L]
+
+	# If the file/symlink/directory does not exist => Redirect to index.php.
+	# For httpd.conf, you need to prefix each '%{REQUEST_FILENAME}' with '%{DOCUMENT_ROOT}'.
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-l
+	RewriteRule ^.*$ %{ENV:CWD}index.php [QSA,L]
 
 </IfModule>
 
-### End: Settings for mod_rewrite ###
+# Access block for files
+<FilesMatch "(?i:^\.|^#.*#|^(?:ChangeLog|ToDo|Readme|License)(?:\.md|\.txt)?|^composer\.(?:json|lock)|^ext_conf_template\.txt|^ext_typoscript_constants\.txt|^ext_typoscript_setup\.txt|flexform[^.]*\.xml|locallang[^.]*\.(?:xml|xlf)|\.(?:bak|co?nf|cfg|ya?ml|ts|dist|fla|in[ci]|log|sh|sql(?:\..*)?|sw[op]|git.*)|.*(?:~|rc))$">
+	# Apache < 2.3
+	<IfModule !mod_authz_core.c>
+		Order allow,deny
+		Deny from all
+		Satisfy All
+	</IfModule>
 
+	# Apache ≥ 2.3
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+</FilesMatch>
 
-### Begin: PHP optimisation ###
-
-# If you do not change the following settings, the default values will be used.
-
-# TYPO3 works fine with register_globals turned off.
-# This is highly recommended, if your web server has it turned on.
-#php_flag register_globals off
-
-### End: PHP optimisation ###
+### End: Rewriting and Access ###
 
 
 
 ### Begin: Miscellaneous ###
 
+# 404 error prevention for non-existing redirected folders
+Options -MultiViews
+
 # Make sure that directory listings are disabled.
-#Options -Indexes
+<IfModule mod_autoindex.c>
+	Options -Indexes
+</IfModule>
+
+<IfModule mod_headers.c>
+	# Force IE to render pages in the highest available mode
+	Header set X-UA-Compatible "IE=edge"
+	<FilesMatch "\.(appcache|crx|css|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|otf|pdf|png|safariextz|svgz?|ttf|vcf|webapp|webm|webp|woff2?|xml|xpi)$">
+		Header unset X-UA-Compatible
+	</FilesMatch>
+
+	# Reducing MIME type security risks
+	Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# ETag removal
+<IfModule mod_headers.c>
+	Header unset ETag
+</IfModule>
+FileETag None
 
 ### End: Miscellaneous ###
 
 
 # Add your own rules here.
-# ...
