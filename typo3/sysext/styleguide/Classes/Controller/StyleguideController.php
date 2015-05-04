@@ -124,16 +124,6 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$tabs = $doc->getDynTabMenu($menuItems, 'ident');
 
 		$this->view->assign('tabs', $tabs);
-
-	}
-
-	/**
-	 * Lorem ipsum test with fixed length
-	 *
-	 * @return string
-	 */
-	protected function getLoremIpsum() {
-		return 'Bacon ipsum dolor sit <strong>strong amet capicola</strong> jerky pork chop rump shoulder shank. Shankle strip <a href="#">steak pig salami link</a>. Leberkas shoulder ham hock cow salami bacon <em>em pork pork</em> chop, jerky pork belly drumstick ham. Tri-tip strip steak sirloin prosciutto pastrami. Corned beef venison tenderloin, biltong meatball pork tongue short ribs jowl cow hamburger strip steak. Doner turducken jerky short loin chuck filet mignon.';
 	}
 
 }
