@@ -13,6 +13,14 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Use this view helper to crop the text between its opening and closing tags.
  *
@@ -54,31 +62,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * (depending on the value of {someLongText})
  * </output>
  */
-class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
-	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	protected $contentObject;
+class CropViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
-	protected $tsfeBackup;
-
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
-	}
+	static protected $tsfeBackup;
 
 	/**
 	 * Render the cropped text
@@ -90,36 +79,70 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @return string cropped text
 	 */
 	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE, $respectHtml = TRUE) {
-		$stringToTruncate = $this->renderChildren();
+		return self::renderStatic(
+			array(
+				'maxCharacters' => $maxCharacters,
+				'append' => $append,
+				'respectWordBoundaries' => $respectWordBoundaries,
+				'respectHtml' => $respectHtml,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$maxCharacters = $arguments['maxCharacters'];
+		$append = $arguments['append'];
+		$respectWordBoundaries = $arguments['respectWordBoundaries'];
+		$respectHtml = $arguments['respectHtml'];
+
+		$stringToTruncate = $renderChildrenClosure();
 		if (TYPO3_MODE === 'BE') {
-			$this->simulateFrontendEnvironment();
+			self::simulateFrontendEnvironment();
 		}
+
+		// Even if we are in extbase/fluid context here, we're switching to a casual class of the framework here
+		// that has no dependency injection and other stuff. Therefor it is ok to use makeInstance instead of
+		// the ObjectManager here directly for additional performance
+		// Additionally, it would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
+		// but both crop() and cropHTML() are "nearly" static and do not depend on current content object settings, so
+		// it is safe to use a fresh instance here directly.
+		/** @var ContentObjectRenderer $contentObject */
+		$contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 		if ($respectHtml) {
-			$content = $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			$content = $contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		} else {
-			$content = $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			$content = $contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		}
 		if (TYPO3_MODE === 'BE') {
-			$this->resetFrontendEnvironment();
+			self::resetFrontendEnvironment();
 		}
 		return $content;
 	}
 
 	/**
 	 * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
-	 * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer rely on those variables to be set
+	 * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of
+	 * ContentObjectRenderer rely on those variables to be set
 	 *
 	 * @return void
 	 */
-	protected function simulateFrontendEnvironment() {
-		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+	static protected function simulateFrontendEnvironment() {
+		self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$GLOBALS['TSFE'] = new \stdClass();
 		// preparing csConvObj
 		if (!is_object($GLOBALS['TSFE']->csConvObj)) {
 			if (is_object($GLOBALS['LANG'])) {
 				$GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
 			} else {
-				$GLOBALS['TSFE']->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+				$GLOBALS['TSFE']->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
 			}
 		}
 		// preparing renderCharset
@@ -138,8 +161,8 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @return void
 	 * @see simulateFrontendEnvironment()
 	 */
-	protected function resetFrontendEnvironment() {
-		$GLOBALS['TSFE'] = $this->tsfeBackup;
+	static protected function resetFrontendEnvironment() {
+		$GLOBALS['TSFE'] = self::$tsfeBackup;
 	}
 
 }
