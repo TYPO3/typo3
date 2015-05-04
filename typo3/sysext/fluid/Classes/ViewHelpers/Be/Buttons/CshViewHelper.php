@@ -43,7 +43,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
  * </output>
  *
  * <code title="Full configuration">
- * <f:be.buttons.csh table="xMOD_csh_corebe" field="someCshKey" iconOnly="1" styleAttributes="border: 1px solid red" />
+ * <f:be.buttons.csh table="xMOD_csh_corebe" field="someCshKey" />
  * </code>
  * <output>
  * CSH button as known from the TYPO3 backend with some custom settings.
@@ -56,11 +56,21 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
 	 *
 	 * @param string $table Table name ('_MOD_'+module name). If not set, the current module name will be used
 	 * @param string $field Field name (CSH locallang main key)
-	 * @param bool $iconOnly If set, the full text will never be shown (only icon)
-	 * @param string $styleAttributes Additional style-attribute content for wrapping table (full text mode only)
+	 * @param bool $iconOnly Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+	 * @param string $styleAttributes Deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return string the rendered CSH icon
 	 */
 	public function render($table = NULL, $field = '', $iconOnly = FALSE, $styleAttributes = '') {
+		if ($iconOnly) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+				'The option iconOnly has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
+			);
+		}
+		if ($styleAttributes) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+				'The option styleAttributes has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
+			);
+		}
 		return self::renderStatic(
 			array(
 				'table' => $table,
