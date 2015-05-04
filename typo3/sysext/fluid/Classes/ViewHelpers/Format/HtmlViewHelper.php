@@ -13,6 +13,15 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+
 /**
  * Renders a string by passing it to a TYPO3 parseFunc.
  * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
@@ -44,17 +53,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *
  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
  */
-class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
-	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-	 */
-	protected $contentObject;
+class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
-	protected $tsfeBackup;
+	static protected $tsfeBackup;
 
 	/**
 	 * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
@@ -66,31 +70,36 @@ class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	protected $escapingInterceptorEnabled = FALSE;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 */
-	protected $configurationManager;
-
-	/**
-	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-	 * @return void
-	 */
-	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
-		$this->configurationManager = $configurationManager;
-		$this->contentObject = $this->configurationManager->getContentObject();
-	}
-
-	/**
 	 * @param string $parseFuncTSPath path to TypoScript parseFunc setup.
 	 * @return string the parsed string.
 	 */
 	public function render($parseFuncTSPath = 'lib.parseFunc_RTE') {
+		return self::renderStatic(
+			array(
+				'parseFuncTSPath' => $parseFuncTSPath,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$parseFuncTSPath = $arguments['parseFuncTSPath'];
 		if (TYPO3_MODE === 'BE') {
-			$this->simulateFrontendEnvironment();
+			self::simulateFrontendEnvironment();
 		}
-		$value = $this->renderChildren();
-		$content = $this->contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
+		$value = $renderChildrenClosure();
+		$contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+		$content = $contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
 		if (TYPO3_MODE === 'BE') {
-			$this->resetFrontendEnvironment();
+			self::resetFrontendEnvironment();
 		}
 		return $content;
 	}
@@ -101,11 +110,13 @@ class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 *
 	 * @return void
 	 */
-	protected function simulateFrontendEnvironment() {
-		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+	static protected function simulateFrontendEnvironment() {
+		self::$tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->tmpl = new \stdClass();
-		$GLOBALS['TSFE']->tmpl->setup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		$configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
+		$GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 	}
 
 	/**
@@ -114,8 +125,8 @@ class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @return void
 	 * @see simulateFrontendEnvironment()
 	 */
-	protected function resetFrontendEnvironment() {
-		$GLOBALS['TSFE'] = $this->tsfeBackup;
+	static protected function resetFrontendEnvironment() {
+		$GLOBALS['TSFE'] = self::$tsfeBackup;
 	}
 
 }
