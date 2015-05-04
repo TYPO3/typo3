@@ -1,0 +1,18 @@
+{
+	"name": "typo3/styleguide",
+	"type": "typo3-cms-extension",
+	"description": "TYPO3 CMS styleguide",
+	"homepage": "https://github.com/7elix/TYPO3.CMS.Styleguide",
+	"license": ["GPL-2.0+"],
+	"require": {
+		"typo3/cms": "*"
+	},
+	"config": {
+		"vendor-dir": "Packages/Libraries",
+		"bin-dir": "bin"
+	},
+	"require-dev": {
+		"mikey179/vfsStream": "1.4.*@dev",
+		"phpunit/phpunit": "~4.5.0"
+	}
+}

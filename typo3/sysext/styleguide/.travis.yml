@@ -1,0 +1,27 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+
+env:
+  - DB=mysql
+
+before_script:
+  - sudo apt-get install parallel
+  - composer self-update
+  - cd ..
+  - cp TYPO3.CMS.Styleguide/Build/composer-travis.json composer.json
+  - composer install
+  - mkdir -p typo3conf/ext
+  - mv TYPO3.CMS.Styleguide typo3conf/ext/styleguide
+
+script:
+  - >
+    echo;
+    echo "Running unit tests";
+    ./bin/phpunit --colors -c typo3conf/ext/styleguide/Build/UnitTests.xml
+  - >
+    echo;
+    echo "Running php lint";
+    find typo3conf/ext/styleguide/ -name \*.php | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
