@@ -93,6 +93,7 @@ class FileLockStrategy implements LockingStrategyInterface {
 		if ($this->filePointer === FALSE) {
 			throw new LockAcquireException('Lock file could not be opened', 1294586099);
 		}
+		GeneralUtility::fixPermissions($this->filePath);
 
 		$operation = $mode & self::LOCK_CAPABILITY_EXCLUSIVE ? LOCK_EX : LOCK_SH;
 		if ($mode & self::LOCK_CAPABILITY_NOBLOCK) {
