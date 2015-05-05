@@ -79,8 +79,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function markExtensionForInstallation($extensionKey) {
 		// We have to check for dependencies of the extension first, before marking it for installation
 		// because this extension might have dependencies, which need to be installed first
-		$this->dependencyUtility->checkDependencies($this->getExtension($extensionKey));
-		$this->downloadQueue->addExtensionToInstallQueue($extensionKey);
+		$extension = $this->getExtension($extensionKey);
+		$this->dependencyUtility->checkDependencies($extension);
+		$this->downloadQueue->addExtensionToInstallQueue($extension);
 	}
 
 	/**
@@ -166,7 +167,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 				$updatedDependencies = $this->uninstallDependenciesToBeUpdated($queue['update']);
 			}
 			// add extension at the end of the download queue
-			$this->downloadQueue->addExtensionToInstallQueue($extension->getExtensionKey());
+			$this->downloadQueue->addExtensionToInstallQueue($extension);
 			$installQueue = $this->downloadQueue->getExtensionInstallStorage();
 			if (count($installQueue) > 0) {
 				$installedDependencies = $this->installDependencies($installQueue);
@@ -286,13 +287,13 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->emitWillInstallExtensionsSignal($installQueue);
 		}
 		$resolvedDependencies = array();
-		foreach ($installQueue as $extensionKey => $extensionDetails) {
-			$this->installUtility->install($extensionDetails);
-			$this->emitHasInstalledExtensionSignal($extensionDetails);
+		foreach ($installQueue as $extensionKey => $_) {
+			$this->installUtility->install($extensionKey);
+			$this->emitHasInstalledExtensionSignal($extensionKey);
 			if (!is_array($resolvedDependencies['installed'])) {
 				$resolvedDependencies['installed'] = array();
 			}
-			$resolvedDependencies['installed'][$extensionKey] = $extensionDetails;
+			$resolvedDependencies['installed'][$extensionKey] = $extensionKey;
 		}
 		return $resolvedDependencies;
 	}

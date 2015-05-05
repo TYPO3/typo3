@@ -232,17 +232,14 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
 			array('emitWillInstallExtensionsSignal', 'emitHasInstalledExtensionSignal')
 		);
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock */
+		$extensionMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
+		$extensionMock->setExtensionKey('foobar');
 		$installQueue = array(
-			'foobar' => array(
-				'key' => 'foobar',
-				'siteRelPath' => 'path'
-			)
+			'foobar' => $extensionMock,
 		);
 		$installUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class, array('install','emitWillInstallExtensionsSignal'), array(), '', FALSE);
-		$installUtility->expects($this->once())->method('install')->with(array(
-			'key' => 'foobar',
-			'siteRelPath' => 'path'
-		));
+		$installUtility->expects($this->once())->method('install')->with('foobar');
 		$managementMock->_set('installUtility', $installUtility);
 		$managementMock->_call('installDependencies', $installQueue);
 	}
@@ -256,8 +253,11 @@ class ExtensionManagementServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'emitWillInstallExtensionsSignal',
 			'emitHasInstalledExtensionSignal'
 		));
+		/** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock */
+		$extensionMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, array('dummy'));
+		$extensionMock->setExtensionKey('foobar');
 		$installQueue = array(
-			'foobar' => 'foobar'
+			'foobar' => $extensionMock,
 		);
 		$installUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class, array('install','emitWillInstallExtensionsSignal'), array(), '', FALSE);
 		$installUtility->expects($this->once())->method('install')->with('foobar');

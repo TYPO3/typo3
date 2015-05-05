@@ -108,11 +108,11 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Adds an extension to the install queue for later installation
 	 *
-	 * @param string $extensionKey
+	 * @param Extension $extension
 	 * @return void
 	 */
-	public function addExtensionToInstallQueue($extensionKey) {
-		$this->extensionInstallStorage[$extensionKey] = $extensionKey;
+	public function addExtensionToInstallQueue($extension) {
+		$this->extensionInstallStorage[$extension->getExtensionKey()] = $extension;
 	}
 
 	/**
