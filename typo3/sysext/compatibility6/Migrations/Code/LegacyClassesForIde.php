@@ -649,11 +649,6 @@ class t3lib_extjs_ExtDirectDebug extends \TYPO3\CMS\Core\ExtDirect\ExtDirectDebu
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class extDirect_DataProvider_ContextHelp extends \TYPO3\CMS\ContextHelp\ExtDirect\ContextHelpDataProvider {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 abstract class t3lib_userAuth extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {}
 
 /**

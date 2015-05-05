@@ -127,7 +127,6 @@ return array(
 	't3lib_extjs_ExtDirectRouter' => \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter::class,
 	't3lib_extjs_ExtDirectApi' => \TYPO3\CMS\Core\ExtDirect\ExtDirectApi::class,
 	't3lib_extjs_ExtDirectDebug' => \TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class,
-	'extDirect_DataProvider_ContextHelp' => \TYPO3\CMS\ContextHelp\ExtDirect\ContextHelpDataProvider::class,
 	't3lib_userAuth' => \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class,
 	't3lib_beUserAuth' => \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class,
 	't3lib_autoloader' => \TYPO3\CMS\Core\Core\ClassLoader::class,

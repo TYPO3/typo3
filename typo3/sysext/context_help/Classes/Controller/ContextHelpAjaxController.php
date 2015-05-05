@@ -14,9 +14,10 @@ namespace TYPO3\CMS\ContextHelp\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\ContextHelp\ExtDirect\ContextHelpDataProvider;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Class ContextHelpAjaxController
@@ -49,7 +50,14 @@ class ContextHelpAjaxController {
 	 * @return array complete Help information
 	 */
 	protected function getContextHelp($table, $field) {
-		$dataProvider = GeneralUtility::makeInstance(ContextHelpDataProvider::class);
-		return $dataProvider->getContextHelp($table, $field);
+		$helpTextArray = BackendUtility::helpTextArray($table, $field);
+		$moreIcon = $helpTextArray['moreInfo'] ? IconUtility::getSpriteIcon('actions-view-go-forward') : '';
+		return array(
+			'title' => $helpTextArray['title'],
+			'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
+			'id' => $table . '.' . $field,
+			'moreInfo' => $helpTextArray['moreInfo']
+		);
 	}
+
 }
