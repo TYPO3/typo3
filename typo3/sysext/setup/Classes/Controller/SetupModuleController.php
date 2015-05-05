@@ -700,15 +700,14 @@ class SetupModuleController {
 		if ($this->getBackendUser()->isAdmin()) {
 			$this->simUser = (int)GeneralUtility::_GP('simUser');
 			// Make user-selector:
-			$users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', BackendUtility::BEenableFields('be_users'));
+			$where = 'AND username NOT LIKE "_cli_%" AND uid <> ' . (int)$this->getBackendUser()->user['uid'] . BackendUtility::BEenableFields('be_users');
+			$users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', $where);
 			$opt = array();
 			foreach ($users as $rr) {
-				if ($rr['uid'] != $this->getBackendUser()->user['uid']) {
-					$label = htmlspecialchars(($rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '')));
-					$opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '') . '>' . $label . '</option>';
-				}
+				$label = htmlspecialchars(($rr['username'] . ($rr['realName'] ? ' (' . $rr['realName'] . ')' : '')));
+				$opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '') . '>' . $label . '</option>';
 			}
-			if (count($opt)) {
+			if (!empty($opt)) {
 				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('user_setup') . '&simUser=') . '+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
