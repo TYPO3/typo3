@@ -81,6 +81,7 @@ class ImportantActions extends Action\AbstractAction {
 			->assign('databaseNumberOfTables', count($this->getDatabaseConnection()->admin_get_tables()))
 			->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt')
 			->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTesterErrors.json')
+			->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages())
 			->assign('listOfOpcodeCaches', OpcodeCacheUtility::getAllActive());
 
 		return $this->view->render();

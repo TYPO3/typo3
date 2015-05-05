@@ -6,15 +6,9 @@
 <form method="post">
 	<f:render partial="Action/Common/HiddenFormFields" arguments="{_all}" />
 	<div id="checkExtensions" data-protocolurl="{extensionCompatibilityTesterProtocolFile}" data-errorprotocolurl="{extensionCompatibilityTesterErrorProtocolFile}">
-		<f:render partial="Action/Common/StatusMessage" arguments="{
-			message: {severity:'loading', title:'', message:'Loading...'}
-		}" />
-		<f:render partial="Action/Common/StatusMessage" arguments="{
-			message: {severity:'error', title:'Incompatible extension found!', message:'Something went wrong and no protocol was written.'}
-		}" />
-		<f:render partial="Action/Common/StatusMessage" arguments="{
-			message: {severity:'ok', title:'All local extensions can be loaded!'}
-		}" />
+		<f:for each="{extensionCompatibilityTesterMessages}" as="statusMessage">
+			<f:render partial="Action/Common/StatusMessage" arguments="{message: statusMessage}" />
+		</f:for>
 		<f:render partial="Action/Common/SubmitButton" arguments="{name:'checkExtensions', text:'Check extensions'}"/>
 	</div>
 </form>
