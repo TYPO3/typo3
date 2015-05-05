@@ -86,8 +86,6 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 		$templateCode = <<<EOD
 %s {
 
-public \$propertyAccessorReplacements = array();
-
 public function getVariableContainer() {
 	// @todo
 	return new \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer();
@@ -140,11 +138,6 @@ public function %s(\TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface \$r
 \$currentVariableContainer = \$renderingContext->getTemplateVariableContainer();
 
 %s
-
-	if (\$this->propertyAccessorReplacements !== array()) {
-		\$this->replacePropertyAccessors(\$this->propertyAccessorReplacements, __FILE__);
-		\$this->propertyAccessorReplacements = array();
-	}
 
 return %s;
 }
@@ -277,32 +270,16 @@ EOD;
 	protected function convertObjectAccessorNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode $node) {
 		$objectPathSegments = explode('.', $node->getObjectPath());
 		$firstPathElement = array_shift($objectPathSegments);
-		$nodeIdentifier = md5(spl_object_hash($node) . $node->getObjectPath() . uniqid());
 		if ($objectPathSegments === array()) {
 			return array(
 				'initialization' => '',
 				'execution' => sprintf('$currentVariableContainer->getOrNull(\'%s\')', $firstPathElement)
 			);
 		} else {
-			$executionCode = <<<EOD
-/** ###%s### */ call_user_func(function(\$self) use (\$currentVariableContainer, \$renderingContext) {
-	\$subject = \$currentVariableContainer->getOrNull('%s');
-
-	\$accessors = \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::getPropertyAccessors(\$subject, %s);
-
-	if (\$accessors !== NULL) {
-		\$self->propertyAccessorReplacements['~/\*\* ###%s### \*/ .* /\*\* ###%s### \*/~s'] = '\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::resolvePropertyAccessors(\$currentVariableContainer->getOrNull(\'%s\'), ' . var_export(\$accessors, TRUE) . ')';
-		return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::resolvePropertyAccessors(\$subject, \$accessors);
-	} else {
-		\$self->propertyAccessorReplacements['~/\*\* ###%s### \*/ .* /\*\* ###%s### \*/~s'] = '\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::getPropertyPath(\$currentVariableContainer->getOrNull(\'%s\'), \'%s\', \$renderingContext)';
-		return \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::getPropertyPath(\$subject, '%s', \$renderingContext);
-	}
-}, \$self) /** ###%s### */
-
-EOD;
+			$executionCode = '\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ObjectAccessorNode::getPropertyPath($currentVariableContainer->getOrNull(\'%s\'), \'%s\', $renderingContext)';
 			return array(
 				'initialization' => '',
-				'execution' => sprintf($executionCode, $nodeIdentifier, $firstPathElement, var_export($objectPathSegments, TRUE), $nodeIdentifier, $nodeIdentifier, $firstPathElement, $nodeIdentifier, $nodeIdentifier, $firstPathElement, implode('.', $objectPathSegments), implode('.', $objectPathSegments), $nodeIdentifier)
+				'execution' => sprintf($executionCode, $firstPathElement, implode('.', $objectPathSegments))
 			);
 		}
 	}

@@ -95,17 +95,4 @@ abstract class AbstractCompiledTemplate implements \TYPO3\CMS\Fluid\Core\Parser\
 		return static::$defaultEncoding;
 	}
 
-	/**
-	 * @param array $replacements
-	 */
-	public function replacePropertyAccessors($replacements, $file) {
-		$code = file_get_contents($file);
-
-		foreach ($replacements as $pattern => $replacementCode) {
-			$code = preg_replace($pattern, $replacementCode, $code);
-		}
-
-		file_put_contents($file, $code);
-	}
-
 }
