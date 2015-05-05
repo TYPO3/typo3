@@ -181,7 +181,10 @@ class Bootstrap {
 			$this->startOutputBuffering()
 				->loadConfigurationAndInitialize()
 				->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-				->applyAdditionalConfigurationSettings()
+				->initializeExceptionHandling()
+				->setFinalCachingFrameworkCacheConfiguration()
+				->defineLoggingAndExceptionConstants()
+				->unsetReservedGlobalVariables()
 				->initializeTypo3DbGlobal();
 		}
 
@@ -497,20 +500,6 @@ class Bootstrap {
 	}
 
 	/**
-	 * Sets up additional configuration applied in all scopes
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function applyAdditionalConfigurationSettings() {
-		$this->initializeExceptionHandling()
-			->setFinalCachingFrameworkCacheConfiguration()
-			->defineLoggingAndExceptionConstants()
-			->unsetReservedGlobalVariables();
-		return $this;
-	}
-
-	/**
 	 * Throws an exception if no browser could be identified
 	 *
 	 * @return Bootstrap
@@ -788,8 +777,9 @@ class Bootstrap {
 	 * to change the exception and error handler configuration.
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function initializeExceptionHandling() {
+	public function initializeExceptionHandling() {
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'])) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'])) {
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'] !== $this->activeErrorHandlerClassName) {
@@ -820,8 +810,9 @@ class Bootstrap {
 	 * global cache array to the manager again at this point
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function setFinalCachingFrameworkCacheConfiguration() {
+	public function setFinalCachingFrameworkCacheConfiguration() {
 		$this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 		return $this;
 	}
@@ -830,8 +821,9 @@ class Bootstrap {
 	 * Define logging and exception constants
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function defineLoggingAndExceptionConstants() {
+	public function defineLoggingAndExceptionConstants() {
 		define('TYPO3_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']);
 		define('TYPO3_ERROR_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_errorDLOG']);
 		define('TYPO3_EXCEPTION_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_exceptionDLOG']);
@@ -843,8 +835,9 @@ class Bootstrap {
 	 * Those are set in "ext:core/ext_tables.php" file:
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function unsetReservedGlobalVariables() {
+	public function unsetReservedGlobalVariables() {
 		unset($GLOBALS['PAGES_TYPES']);
 		unset($GLOBALS['TCA']);
 		unset($GLOBALS['TBE_MODULES']);

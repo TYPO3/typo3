@@ -247,7 +247,9 @@ abstract class AbstractAction implements ActionInterface {
 	protected function loadExtLocalconfDatabaseAndExtTables() {
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->loadTypo3LoadedExtAndExtLocalconf(FALSE)
-			->applyAdditionalConfigurationSettings()
+			->initializeExceptionHandling()
+			->defineLoggingAndExceptionConstants()
+			->unsetReservedGlobalVariables()
 			->initializeTypo3DbGlobal()
 			->loadExtensionTables(FALSE);
 	}
