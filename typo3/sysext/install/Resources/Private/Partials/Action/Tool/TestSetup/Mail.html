@@ -9,12 +9,12 @@
 	If no email is received, your setup might be broken. Check the following:
 	<ul>
 		<li>
-			If $TYPO3_CONF_VARS['MAIL']['transport'] is set to mail or sendmail, TYPO3 tries to use PHPs internal
+			If <code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport']</code> is set to mail or sendmail, TYPO3 tries to use PHPs internal
 			mail() function. There might be no such program installed.
 		</li>
 		<li>
-			If $TYPO3_CONF_VARS['MAIL']['transport'] is set to smtp, check if the data given in
-			$TYPO3_CONF_VARS['MAIL'][transport_smtp_*] is valid. Wrong data here results in faulty requests to the
+			If <code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport']</code> is set to smtp, check if the data given in
+			<code>$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_smtp_*']</code> is valid. Wrong data here results in faulty requests to the
 			mail server. You can find the resulting messages in the mail server log.
 		</li>
 	</ul>

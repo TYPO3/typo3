@@ -162,7 +162,7 @@ class Check {
 				' the server - ALL content in the forms are discarded and therefore' .
 				' nothing at all will be editable if you don\'t set this flag!' .
 				' However if you cannot enable fileupload for some reason in PHP, alternatively' .
-				' change the default form encoding value with \\$TYPO3_CONF_VARS[SYS][form_enctype].'
+				' change the default form encoding value with $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'form_enctype\'].'
 			);
 		} else {
 			$status = new Status\OkStatus();
