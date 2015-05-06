@@ -71,7 +71,7 @@ offset_4 =
 ### User ###
 ############
 
-# cat=User/500/10; type=user[TYPO3\CMS\Styleguide\Utility\ExtensionManagerConfigurationUtility->user_1]; label=User - dispaly params
+# cat=User/500/10; type=user[TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration\User1->user_1]; label=User - display params
 user_1 = 0
 
 

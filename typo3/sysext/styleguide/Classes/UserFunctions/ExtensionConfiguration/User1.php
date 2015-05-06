@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Styleguide\Utility;
+namespace TYPO3\CMS\Styleguide\UserFunctions\ExtensionConfiguration;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,14 +15,16 @@ namespace TYPO3\CMS\Styleguide\Utility;
  */
 
 /**
- * @author Benjamin Kott <info@bk2k.info>
+ * User function 1
  */
-class ExtensionManagerConfigurationUtility {
+class User1 {
 
 	/**
-	 * User 1
+	 * Simple user function returning a var_dump of input parameters
 	 *
-	 * @return    string
+	 * @param array $params
+	 * @param mixed $tsObj
+	 * @return string
 	 */
 	public function user_1(&$params, &$tsObj) {
 		$out = '';
