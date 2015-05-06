@@ -24,7 +24,7 @@ class TypeInput21Eval {
 	 *
 	 * @return string
 	 */
-	function returnFieldJS() {
+	public function returnFieldJS() {
 		return '
 			return value + "JSfoo";
 		';
@@ -38,7 +38,7 @@ class TypeInput21Eval {
 	 * @param $set
 	 * @return string
 	 */
-	function evaluateFieldValue($value, $is_in, &$set) {
+	public function evaluateFieldValue($value, $is_in, &$set) {
 		return $value . 'PHPfoo-evaluate';
 	}
 
@@ -48,7 +48,7 @@ class TypeInput21Eval {
 	 * @param array $parameters
 	 * @return string
 	 */
-	function deevaluateFieldValue(array $parameters) {
+	public function deevaluateFieldValue(array $parameters) {
 		$value = $parameters['value'];
 		return $value . 'PHPfoo-deevaluate';
 	}
