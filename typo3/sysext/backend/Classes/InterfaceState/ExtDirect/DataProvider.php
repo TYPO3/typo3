@@ -22,17 +22,17 @@ namespace TYPO3\CMS\Backend\InterfaceState\ExtDirect;
 class DataProvider {
 
 	/**
-	 * @var \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider
+	 * @var \TYPO3\CMS\Backend\Controller\UserSettingsController
 	 */
-	protected $userSettings;
+	protected $userSettingsController;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		// All data is saved in BE_USER->uc
-		$this->userSettings = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-			\TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class
+		$this->userSettingsController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			\TYPO3\CMS\Backend\Controller\UserSettingsController::class
 		);
 	}
 
@@ -44,7 +44,7 @@ class DataProvider {
 	 */
 	public function getState($parameter) {
 		$key = $parameter->params->key;
-		$data = $this->userSettings->get($key);
+		$data = $this->userSettingsController->process('get', $key);
 		return array(
 			'success' => TRUE,
 			'data' => $data
@@ -61,7 +61,7 @@ class DataProvider {
 		$key = $parameter->params->key;
 		$data = json_decode($parameter->params->data);
 		foreach ($data as $setting) {
-			$this->userSettings->set($key . '.' . $setting->name, $setting->value);
+			$this->userSettingsController->process('set', $key . '.' . $setting->name, $setting->value);
 		}
 		return array(
 			'success' => TRUE,

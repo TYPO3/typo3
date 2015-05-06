@@ -343,9 +343,9 @@ class ExtdirectTreeCommands {
 		}
 		$mountPoints[] = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];
 		$mountPoints = array_unique($mountPoints);
-		/** @var $userSettings \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider */
-		$userSettings = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class);
-		$state = $userSettings->get('BackendComponents.States.' . $stateId);
+		/** @var $userSettingsController \TYPO3\CMS\Backend\Controller\UserSettingsController */
+		$userSettingsController = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\UserSettingsController::class);
+		$state = $userSettingsController->process('get', 'BackendComponents.States.' . $stateId);
 		$state->stateHash = (object) $state->stateHash;
 		$rootline = BackendUtility::BEgetRootLine($nodeId, '', $GLOBALS['BE_USER']->workspace != 0);
 		$rootlineIds = array();

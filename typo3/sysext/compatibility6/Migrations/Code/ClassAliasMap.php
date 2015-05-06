@@ -113,7 +113,6 @@ return array(
 	't3lib_folderTree' => \TYPO3\CMS\Backend\Tree\View\FolderTreeView::class,
 	't3lib_positionMap' => \TYPO3\CMS\Backend\Tree\View\PagePositionMap::class,
 	't3lib_pageTree' => \TYPO3\CMS\Backend\Tree\View\PageTreeView::class,
-	'extDirect_DataProvider_BackendUserSettings' => \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class,
 	't3lib_BEfunc' => \TYPO3\CMS\Backend\Utility\BackendUtility::class,
 	't3lib_iconWorks' => \TYPO3\CMS\Backend\Utility\IconUtility::class,
 	'tx_cms_BackendLayout' => \TYPO3\CMS\Backend\View\BackendLayoutView::class,

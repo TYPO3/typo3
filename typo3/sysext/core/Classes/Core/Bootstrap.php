@@ -600,10 +600,6 @@ class Bootstrap {
 				'user,group'
 			);
 			Utility\ExtensionManagementUtility::registerExtDirectComponent(
-				'TYPO3.BackendUserSettings.ExtDirect',
-				\TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class
-			);
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.ExtDirectStateProvider.ExtDirect',
 				\TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider::class
 			);

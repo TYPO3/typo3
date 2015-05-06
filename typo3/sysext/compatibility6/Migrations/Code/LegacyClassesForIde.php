@@ -579,11 +579,6 @@ class t3lib_pageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class extDirect_DataProvider_BackendUserSettings extends \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class t3lib_BEfunc extends \TYPO3\CMS\Backend\Utility\BackendUtility {}
 
 /**

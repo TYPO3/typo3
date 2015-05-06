@@ -1911,9 +1911,9 @@ function jumpToUrl(URL) {
 		$hasSave = $saveStatePointer ? TRUE : FALSE;
 		$collapsedStyle = ($collapsedClass = '');
 		if ($hasSave) {
-			/** @var $settings \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider */
-			$settings = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider::class);
-			$value = $settings->get($saveStatePointer . '.' . $id);
+			/** @var $userSettingsController \TYPO3\CMS\Backend\Controller\UserSettingsController */
+			$userSettingsController = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\UserSettingsController::class);
+			$value = $userSettingsController->process('get', $saveStatePointer . '.' . $id);
 			if ($value) {
 				$collapsedStyle = ' style="display: none"';
 				$collapsedClass = ' collapsed';
@@ -1948,7 +1948,7 @@ function jumpToUrl(URL) {
 					}
 					if (saveKey) {
 						try {
-							top.TYPO3.BackendUserSettings.ExtDirect.set(saveKey + "." + tag.id, state, function(response) {});
+							top.TYPO3.Storage.Persistent.set(saveKey + "." + tag.id, state);
 						} catch(e) {}
 					}
 				});

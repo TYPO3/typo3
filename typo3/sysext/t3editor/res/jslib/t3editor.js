@@ -272,11 +272,10 @@ T3editor.prototype = {
 T3editor.toggleEditor = function(checkbox, index) {
 	if (!Prototype.Browser.MobileSafari) {
 		if (index == undefined) {
-			if (top.TYPO3.BackendUserSettings) {
-				top.TYPO3.BackendUserSettings.ExtDirect.set(
+			if (top.TYPO3.Storage) {
+				top.TYPO3.Storage.Persistent.set(
 					'disableT3Editor',
-					checkbox.checked,
-					function(response) {}
+					checkbox.checked
 				);
 			}
 			$$('textarea.t3editor').each(

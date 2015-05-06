@@ -159,12 +159,12 @@ class TreeElement extends AbstractFormElement {
 					checkchange: TYPO3.Components.Tree.TcaCheckChangeHandler,
 					collapsenode: function(node) {
 						if (node.id !== "root") {
-							top.TYPO3.BackendUserSettings.ExtDirect.removeFromList("tcaTrees." + this.ucId, node.attributes.uid);
+							top.TYPO3.Storage.Persistent.removeFromList("tcaTrees." + this.ucId, node.attributes.uid);
 						}
 					},
 					expandnode: function(node) {
 						if (node.id !== "root") {
-							top.TYPO3.BackendUserSettings.ExtDirect.addToList("tcaTrees." + this.ucId, node.attributes.uid);
+							top.TYPO3.Storage.Persistent.addToList("tcaTrees." + this.ucId, node.attributes.uid);
 						}
 					},
 					beforerender: function(treeCmp) {

@@ -204,7 +204,7 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 					fn: function() {
 						var element = Ext.fly(this.id + '-indicatorBar-temporaryMountPoint-clear');
 						element.on('click', function() {
-							TYPO3.BackendUserSettings.ExtDirect.unsetKey(
+							top.TYPO3.Storage.Persistent.unset(
 								'pageTree_temporaryMountPoint',
 								function() {
 									TYPO3.Components.PageTree.Configuration.temporaryMountPoint = null;

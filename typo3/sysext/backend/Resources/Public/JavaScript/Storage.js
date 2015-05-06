@@ -60,16 +60,37 @@ define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
 			return this._getRecursiveDataByDeepKey(this._data, key.split('.'));
 		}
 	};
+
 	Storage.Persistent.set = function(key, value) {
 		if (this._data !== false) {
 			this._data = this._setRecursiveDataByDeepKey(this._data, key.split('.'), value);
 		}
 		return this._storeOnServer(key, value);
 	};
+
+	Storage.Persistent.addToList = function(key, value) {
+		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'addToList', key: key, value: value}}).done(function(data) {
+			Storage.Persistent._data = data;
+		});
+	};
+
+	Storage.Persistent.removeFromList = function(key, value) {
+		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'removeFromList', key: key, value: value}}).done(function(data) {
+			Storage.Persistent._data = data;
+		});
+	};
+
+	Storage.Persistent.unset = function(key) {
+		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'unset', key: key}}).done(function(data) {
+			Storage.Persistent._data = data;
+		});
+	};
+
 	Storage.Persistent.clear = function() {
 		$.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'clear'}});
 		this._data = false;
 	};
+
 	/**
 	 * checks if a key was set before, useful to not do all the undefined checks all the time
 	 */

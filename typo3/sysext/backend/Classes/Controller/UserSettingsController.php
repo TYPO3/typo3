@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -32,22 +33,42 @@ class UserSettingsController {
 	public function processAjaxRequest($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
 		// do the regular / main logic, depending on the action parameter
 		$action = GeneralUtility::_GP('action');
+		$key = GeneralUtility::_GP('key');
+		$value = GeneralUtility::_GP('value');
+
+		$content = $this->process($action, $key, $value);
+
+		$ajaxRequestHandler->setContentFormat('json');
+		$ajaxRequestHandler->setContent($content);
+	}
+
+	/**
+	 * Process data
+	 *
+	 * @param string $action
+	 * @param string $key
+	 * @param string $value
+	 * @return mixed
+	 */
+	public function process($action, $key = '', $value = '') {
 		switch ($action) {
 			case 'get':
-				$key = GeneralUtility::_GP('key');
 				$content = $this->get($key);
 				break;
 			case 'getAll':
 				$content = $this->getAll();
 				break;
 			case 'set':
-				$key = GeneralUtility::_GP('key');
-				$value = GeneralUtility::_GP('value');
 				$this->set($key, $value);
 				$content = $this->getAll();
 				break;
+			case 'addToList':
+				$this->addToList($key, $value);
+				$content = $this->getAll();
+			case 'removeFromList':
+				$this->removeFromList($key, $value);
+				$content = $this->getAll();
 			case 'unset':
-				$key = GeneralUtility::_GP('key');
 				$this->unsetOption($key);
 				$content = $this->getAll();
 				break;
@@ -59,8 +80,7 @@ class UserSettingsController {
 				$content = array('result' => FALSE);
 		}
 
-		$ajaxRequestHandler->setContentFormat('json');
-		$ajaxRequestHandler->setContent($content);
+		return $content;
 	}
 
 	/**
@@ -70,7 +90,7 @@ class UserSettingsController {
 	 * @return mixed Value associated
 	 */
 	protected function get($key) {
-		return (strpos($key, '.') !== FALSE) ? $this->getFromDottedNotation($key) : $GLOBALS['BE_USER']->uc[$key];
+		return (strpos($key, '.') !== FALSE) ? $this->getFromDottedNotation($key) : $this->getBackendUser()->uc[$key];
 	}
 
 	/**
@@ -79,7 +99,7 @@ class UserSettingsController {
 	 * @return mixed all values, usually a multi-dimensional array
 	 */
 	protected function getAll() {
-		return $GLOBALS['BE_USER']->uc;
+		return $this->getBackendUser()->uc;
 	}
 
 	/**
@@ -90,12 +110,50 @@ class UserSettingsController {
 	 * @return void
 	 */
 	protected function set($key, $value) {
+		$beUser = $this->getBackendUser();
 		if (strpos($key, '.') !== FALSE) {
 			$this->setFromDottedNotation($key, $value);
 		} else {
-			$GLOBALS['BE_USER']->uc[$key] = $value;
+			$beUser->uc[$key] = $value;
 		}
-		$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+		$beUser->writeUC($beUser->uc);
+	}
+
+	/**
+	 * Adds an value to an Comma-separated list
+	 * stored $key  of user settings
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	protected function addToList($key, $value) {
+		$list = $this->get($key);
+		if (!isset($list)) {
+			$list = $value;
+		} else {
+			if (!GeneralUtility::inList($list, $value)) {
+				$list .= ',' . $value;
+			}
+		}
+		$this->set($key, $list);
+	}
+
+	/**
+	 * Removes an value from an Comma-separated list
+	 * stored $key of user settings
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	protected function removeFromList($key, $value) {
+		$list = $this->get($key);
+		if (GeneralUtility::inList($list, $value)) {
+			$list = GeneralUtility::trimExplode(',', $list, TRUE);
+			$list = ArrayUtility::removeArrayEntryByValue($list, $value);
+			$this->set($key, implode(',', $list));
+		}
 	}
 
 	/**
@@ -104,7 +162,7 @@ class UserSettingsController {
 	 * @return void
 	 */
 	protected function clear() {
-		$GLOBALS['BE_USER']->resetUC();
+		$this->getBackendUser()->resetUC();
 	}
 
 	/**
@@ -114,9 +172,10 @@ class UserSettingsController {
 	 * @return void
 	 */
 	protected function unsetOption($key) {
-		if (isset($GLOBALS['BE_USER']->uc[$key])) {
-			unset($GLOBALS['BE_USER']->uc[$key]);
-			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
+		$beUser = $this->getBackendUser();
+		if (isset($beUser->uc[$key])) {
+			unset($beUser->uc[$key]);
+			$beUser->writeUC($beUser->uc);
 		}
 	}
 
@@ -128,7 +187,7 @@ class UserSettingsController {
 	 */
 	protected function getFromDottedNotation($key) {
 		$subkeys = GeneralUtility::trimExplode('.', $key);
-		$array = &$GLOBALS['BE_USER']->uc;
+		$array = &$this->getBackendUser()->uc;
 		foreach ($subkeys as $subkey) {
 			$array = &$array[$subkey];
 		}
@@ -145,7 +204,7 @@ class UserSettingsController {
 	protected function setFromDottedNotation($key, $value) {
 		$subkeys = GeneralUtility::trimExplode('.', $key, TRUE);
 		$lastKey = $subkeys[count($subkeys) - 1];
-		$array = &$GLOBALS['BE_USER']->uc;
+		$array = &$this->getBackendUser()->uc;
 		foreach ($subkeys as $subkey) {
 			if ($subkey === $lastKey) {
 				$array[$subkey] = $value;
@@ -153,5 +212,14 @@ class UserSettingsController {
 				$array = &$array[$subkey];
 			}
 		}
+	}
+
+	/**
+	 * Returns the current BE user.
+	 *
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 }
