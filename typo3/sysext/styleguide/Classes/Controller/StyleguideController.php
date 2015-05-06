@@ -15,12 +15,13 @@ namespace TYPO3\CMS\Styleguide\Controller;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Styleguide\Utility\KauderwelschUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 
 /**
  * Backend module for Styleguide
  */
-class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class StyleguideController extends ActionController {
 
 	/**
 	 * Buttons
@@ -81,11 +82,12 @@ class StyleguideController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * FlashMessages
 	 */
 	public function flashMessagesAction() {
-		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Info - Title for Info message', FlashMessage::INFO, TRUE);
-		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Notice - Title for Notice message', FlashMessage::NOTICE, TRUE);
-		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Error - Title for Error message', FlashMessage::ERROR, TRUE);
-		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Ok - Title for OK message', FlashMessage::OK, TRUE);
-		$this->addFlashMessage(KauderwelschUtility::getLoremIpsum(), 'Warning - Title for Warning message', FlashMessage::WARNING, TRUE);
+		$loremIpsum = $this->objectManager->get(KauderwelschService::class)->getLoremIpsum();
+		$this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, TRUE);
+		$this->addFlashMessage($loremIpsum, 'Notice - Title for Notice message', FlashMessage::NOTICE, TRUE);
+		$this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, TRUE);
+		$this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, TRUE);
+		$this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, TRUE);
 	}
 
 	/**
