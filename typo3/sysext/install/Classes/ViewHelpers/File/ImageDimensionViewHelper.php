@@ -67,7 +67,7 @@ class ImageDimensionViewHelper extends AbstractViewHelper implements CompilableI
 				1369563247
 			);
 		}
-		$absolutePathToFile = $this->renderChildren();
+		$absolutePathToFile = $renderChildrenClosure();
 		if (!is_file($absolutePathToFile)) {
 			throw new \TYPO3\CMS\Install\ViewHelpers\Exception(
 				'File not found',
