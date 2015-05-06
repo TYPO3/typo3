@@ -36,7 +36,7 @@ before_script:
   - chmod a+x typo3/sysext/core/Build/Scripts/*
   - sudo apt-get install parallel
   - composer self-update
-  - composer --dev install
+  - composer install
 
 script:
   - >
