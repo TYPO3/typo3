@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Styleguide\UserFunctions;
+namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Styleguide\UserFunctions;
  */
 
 /**
- * A user function rendering a type=user TCA type used in user_2
+ * A user function rendering a type=user TCA type used in user_1
  */
-class TypeUser2 {
+class TypeUser1 {
 
 	/**
 	 * @param array $parameters

@@ -226,7 +226,7 @@ return array(
 			'label' => 'INPUT: 21 eval with user function',
 			'config' => array(
 				'type' => 'input',
-				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeInput21Eval',
+				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeInput21Eval',
 			),
 		),
 		'input_22' => array(
@@ -354,7 +354,7 @@ return array(
 				'wizards' => array(
 					'userFuncInputWizard' => array(
 						'type' => 'userFunc',
-						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\WizardInput33->render',
+						'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\WizardInput33->render',
 						'params' => array(
 							'color' => 'green',
 						),
@@ -470,7 +470,7 @@ return array(
 			'label' => 'TEXT: 9 eval with user function',
 			'config' => array(
 				'type' => 'text',
-				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeText9Eval',
+				'eval' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeText9Eval',
 			),
 		),
 		'text_10' => array(
@@ -617,7 +617,7 @@ return array(
 					array('foo', ''),
 					array('bar', ''),
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeCheckbox8ItemsProcFunc->itemsProcFunc',
 			),
 		),
 		'checkbox_9' => array(
@@ -841,7 +841,7 @@ return array(
 					array('foo', 1),
 					array('bar', 2),
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeRadio5ItemsProcFunc->itemsProcFunc',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeRadio5ItemsProcFunc->itemsProcFunc',
 			),
 		),
 		'radio_6' => array(
@@ -878,7 +878,7 @@ return array(
 					array('foo', 1),
 					array('bar', 'bar'),
 				),
-				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeSelect2ItemsProcFunc->itemsProcFunc',
+				'itemsProcFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeSelect2ItemsProcFunc->itemsProcFunc',
 			),
 		),
 		'select_3' => array(
@@ -1516,7 +1516,7 @@ return array(
 			'label' => 'USER: 1 parameter color used as border color',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser1->render',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUser1->render',
 				'parameters' => array(
 					'color' => 'green',
 				),
@@ -1527,7 +1527,7 @@ return array(
 			'label' => 'USER: 2 noTableWrapping',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUser2->render',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUser2->render',
 				'parameters' => array(
 					'color' => 'green',
 				),
@@ -1781,7 +1781,7 @@ return array(
 			'config' => array(
 				'default' => TRUE,
 				'type' => 'user',
-				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\TypeUserPalette->render',
+				'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\TypeUserPalette->render',
 			),
 		),
 		'palette_1_3' => array(

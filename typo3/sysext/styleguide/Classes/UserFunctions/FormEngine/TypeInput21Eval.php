@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Styleguide\UserFunctions;
+namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Styleguide\UserFunctions;
  */
 
 /**
- * A "eval" user function used in text_9
+ * A "eval" user function used in input_21
  */
-class TypeText9Eval {
+class TypeInput21Eval {
 
 	/**
 	 * Adds text "JSfoo" at end on mouse out
@@ -25,7 +25,6 @@ class TypeText9Eval {
 	 * @return string
 	 */
 	function returnFieldJS() {
-		// @todo: This call is currently not implemented in TextElement, see forge #66688
 		return '
 			return value + "JSfoo";
 		';
@@ -53,5 +52,4 @@ class TypeText9Eval {
 		$value = $parameters['value'];
 		return $value . 'PHPfoo-deevaluate';
 	}
-
 }

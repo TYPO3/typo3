@@ -2,11 +2,12 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
+
 	/**
-	 * Registers "Styleguide" backend module
+	 * Register "Styleguide" backend module
 	 */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		'TYPO3.CMS.' . $_EXTKEY,
+		'TYPO3.CMS.styleguide',
 		'help',
 		'styleguide',
 		'',
@@ -15,8 +16,8 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'user,group',
-			'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module.png',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_styleguide.xlf',
+			'icon'   => 'EXT:styleguide/Resources/Public/Icons/module.png',
+			'labels' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang_styleguide.xlf',
 		)
 	);
 

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Styleguide\UserFunctions;
+namespace TYPO3\CMS\Styleguide\UserFunctions\FormEngine;
 
 /**
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Styleguide\UserFunctions;
  */
 
 /**
- * A user function rendering a type=user TCA type used in palette_1_1
+ * A user function rendering a type=user TCA type used in user_2
  */
-class TypeUserPalette {
+class TypeUser2 {
 
 	/**
 	 * @param array $parameters
@@ -26,11 +26,15 @@ class TypeUserPalette {
 	 */
 	public function render(array $parameters, $parentObject) {
 		$html = array();
-		$html[] = '
-			<div class="t3-form-field-item">
-				<input name="data[sys_file_storage][{uid}][is_public]" value="0" type="hidden">
-				<input class="checkbox" value="1" name="data[sys_file_storage][{uid}][is_public]_0" type="checkbox" %s>
-			</div>';
+		$html[] = '<div style="border: 1px dashed ' . $parameters['parameters']['color'] . '" >';
+		$html[] = '<h2>Own form field using a parameter</h2>';
+		$html[] = '<input'
+			. ' type="input"'
+			. ' name="' . $parameters['itemFormElName'] . '"'
+			. ' value="'.htmlspecialchars($parameters['itemFormElValue']) . '"'
+			. ' onchange="'.htmlspecialchars(implode('', $parameters['fieldChangeFunc'])).'"' . $parameters['onFocus']
+			. ' />';
+		$html[] = '</div>';
 		return implode(LF, $html);
 	}
 }
