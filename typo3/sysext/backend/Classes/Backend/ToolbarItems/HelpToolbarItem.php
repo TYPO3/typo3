@@ -58,7 +58,7 @@ class HelpToolbarItem implements ToolbarItemInterface {
 	 * @return string Help
 	 */
 	public function getItem() {
-		return '<span class="fa fa-fw fa-question-circle"></span>';
+		return $this->helpModuleMenu->getIcon();
 	}
 
 	/**
@@ -81,7 +81,7 @@ class HelpToolbarItem implements ToolbarItemInterface {
 				. ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
 				. '>';
 			$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
-			$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
+			$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . $moduleIcon . '</span></span></span>';
 			$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
 			$dropdown[] = '</a>';
 			$dropdown[] = '</li>';

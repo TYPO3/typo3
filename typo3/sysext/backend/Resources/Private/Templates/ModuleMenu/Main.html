@@ -5,18 +5,12 @@
 				<span class="typo3-app-icon typo3-module-menu-group-icon">
 					<span>
 						<span>
-							<f:if condition="{mainModule.icon.html}">
+							<f:if condition="{mainModule.icon}">
 								<f:then>
-									<f:format.raw>{mainModule.icon.html}</f:format.raw>
+									<f:format.raw>{mainModule.icon}</f:format.raw>
 								</f:then>
 								<f:else>
-									<f:switch expression="{mainModule.name}">
-										<f:case value="web"><i class="fa fa-file-o"></i></f:case>
-										<f:case value="system"><i class="fa fa-plug"></i></f:case>
-										<f:case value="file"><i class="fa fa-image"></i></f:case>
-										<f:case value="tools"><i class="fa fa-rocket"></i></f:case>
-										<f:case default="TRUE"><i class="fa fa-bars"></i></f:case>
-									</f:switch>
+									<i class="fa fa-bars"></i>
 								</f:else>
 							</f:if>
 						</span>
@@ -33,7 +27,7 @@
 							<span class="typo3-app-icon typo3-module-menu-item-icon">
 								<span>
 									<span>
-										<f:format.raw>{subModule.icon.html}</f:format.raw>
+										<f:format.raw>{subModule.icon}</f:format.raw>
 									</span>
 								</span>
 							</span>

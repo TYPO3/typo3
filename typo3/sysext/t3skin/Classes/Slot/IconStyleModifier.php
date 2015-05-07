@@ -126,7 +126,12 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move sortableHandle' => 'fa-reorder sortableHandle',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-move' => 'fa-reorder',
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-paste-into' => 'fa-clipboard',
-		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-options-view' => 'fa-list-alt'
+		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-options-view' => 'fa-list-alt',
+		't3-icon t3-icon-module t3-icon-module-web t3-icon-web' => 'fa-file-o',
+		't3-icon t3-icon-module t3-icon-module-file t3-icon-file' => 'fa-image',
+		't3-icon t3-icon-module t3-icon-module-tools t3-icon-tools' => 'fa-rocket',
+		't3-icon t3-icon-module t3-icon-module-system t3-icon-system' => 'fa-plug',
+		't3-icon t3-icon-module t3-icon-module-help t3-icon-help' => 'fa-fw fa-question-circle'
 	);
 
 	/**
@@ -138,9 +143,14 @@ class IconStyleModifier {
 	 * @return array
 	 */
 	public function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml, $tagName) {
-		$class = !empty($this->flatSpriteIconName[$tagAttributes['class']]) ? $this->flatSpriteIconName[$tagAttributes['class']] : NULL;
-		if ($class !== NULL) {
-			$tagAttributes['class'] = 't3-icon fa ' . $class;
+		$classNames = $tagAttributes['class'];
+		if (strpos($classNames, 'fa-') !== FALSE) {
+			$tagAttributes['class'] = 't3-icon fa ' . $classNames;
+		} else {
+			$classNames = !empty($this->flatSpriteIconName[$classNames]) ? $this->flatSpriteIconName[$classNames] : NULL;
+			if ($classNames !== NULL) {
+				$tagAttributes['class'] = 't3-icon fa ' . $classNames;
+			}
 		}
 
 		return array($tagAttributes, $innerHtml, $tagName);
@@ -154,7 +164,9 @@ class IconStyleModifier {
 	 * @return string
 	 */
 	public function buildSpriteIconClasses($iconName, &$cssClasses) {
-		if (isset($this->flatSpriteIconName[$cssClasses])) {
+		if (strpos($iconName, 'fa-') !== FALSE) {
+			$cssClasses = 't3-icon fa ' . $iconName;
+		} elseif (isset($this->flatSpriteIconName[$cssClasses])) {
 			$cssClasses = 't3-icon fa ' . $this->flatSpriteIconName[$cssClasses];
 		}
 	}

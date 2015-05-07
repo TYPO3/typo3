@@ -65,43 +65,43 @@ $GLOBALS['TBE_MODULES'] = array(
 	'_configuration' => array(
 		'web' => array(
 			'labels' => array(
-				'tabs_images' => array('tab' => 'website.gif'),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_web.xlf'
 			),
 			'configuration' => array(
 				'name' => 'web',
-				'access' => 'user,group'
+				'access' => 'user,group',
+				'icon' => 'module-web'
 			)
 		),
 		'file' => array(
 			'labels' => array(
-				'tabs_images' => array('tab' => 'file.gif'),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_file.xlf'
 			),
 			'configuration' => array(
 				'name' => 'file',
 				'access' => 'user,group',
-				'workspaces' => 'online,custom'
+				'workspaces' => 'online,custom',
+				'icon' => 'module-file'
 			)
 		),
 		'user' => array(
 			'labels' => array(
-				'tabs_images' => array('tab' => 'user.gif'),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_usertools.xlf'
 			),
 			'configuration' => array(
 				'name' => 'user',
-				'access' => 'user,group'
+				'access' => 'user,group',
+				'icon' => 'status-user-backend'
 			)
 		),
 		'tools' => array(
 			'labels' => array(
-				'tabs_images' => array('tab' => 'tool.gif'),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_admintools.xlf'
 			),
 			'configuration' => array(
 				'name' => 'tools',
-				'access' => 'admin'
+				'access' => 'admin',
+				'icon' => 'module-tools'
 			)
 		),
 		'system' => array(
@@ -110,7 +110,8 @@ $GLOBALS['TBE_MODULES'] = array(
 			),
 			'configuration' => array(
 				'name' => 'system',
-				'access' => 'admin'
+				'access' => 'admin',
+				'icon' => 'module-system'
 			)
 		),
 		'help' => array(
@@ -118,7 +119,8 @@ $GLOBALS['TBE_MODULES'] = array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_help.xlf'
 			),
 			'configuration' => array(
-				'name' => 'help'
+				'name' => 'help',
+				'icon' => 'module-help'
 			)
 		)
 	)
@@ -577,7 +579,13 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'treeline-plus',
 	'treeline-plusbottom',
 	'treeline-plusonly',
-	'treeline-stopper'
+	'treeline-stopper',
+	'module-web',
+	'module-file',
+	'module-system',
+	'module-tools',
+	'module-user',
+	'module-help',
 );
 
 

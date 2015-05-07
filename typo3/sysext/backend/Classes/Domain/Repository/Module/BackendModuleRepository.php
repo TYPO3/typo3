@@ -159,7 +159,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!empty($module['description']) && is_string($module['description'])) {
 			$entry->setDescription($module['description']);
 		}
-		if (!empty($module['icon']) && is_array($module['icon'])) {
+		if (!empty($module['icon'])) {
 			$entry->setIcon($module['icon']);
 		}
 		if (!empty($module['navigationComponentId']) && is_string($module['navigationComponentId'])) {
@@ -240,12 +240,11 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			$moduleLink = GeneralUtility::resolveBackPath($moduleLink);
 			$moduleKey = 'modmenu_' . $moduleName;
-			$moduleIcon = $this->getModuleIcon($moduleKey);
 			$modules[$moduleKey] = array(
 				'name' => $moduleName,
 				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
 				'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
-				'icon' => $moduleIcon,
+				'icon' => $this->getModuleIcon($moduleName, $moduleData),
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
 			);
@@ -255,7 +254,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 					'name' => $moduleName,
 					'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
 					'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
-					'icon' => $this->getModuleIcon($moduleName . '_tab'),
+					'icon' => $this->getModuleIcon($moduleName . '_tab', $moduleData),
 					'link' => $moduleLink,
 					'originalLink' => $moduleLink,
 					'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label'],
@@ -271,7 +270,6 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 						$submoduleLink = BackendUtility::getModuleUrl($submoduleData['name']);
 					}
 					$submoduleKey = $moduleName . '_' . $submoduleName . '_tab';
-					$submoduleIcon = $this->getModuleIcon($submoduleKey);
 					$submoduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$submoduleKey . 'label'];
 					$originalLink = $submoduleLink;
 					if (isset($submoduleData['navigationFrameModule'])) {
@@ -288,7 +286,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 						'name' => $moduleName . '_' . $submoduleName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
 						'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName . '_' . $submoduleName) . ');',
-						'icon' => $submoduleIcon,
+						'icon' => $this->getModuleIcon($submoduleKey, $submoduleData),
 						'link' => $submoduleLink,
 						'originalLink' => $originalLink,
 						'description' => $submoduleDescription,
@@ -342,27 +340,22 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * gets the module icon and its size
 	 *
 	 * @param string $moduleKey Module key
-	 * @return array Icon data array with 'filename', 'size', and 'html'
+	 * @param array $moduleData the compiled data associated with it
+	 * @return string Icon data, either sprite or <img> tag
 	 */
-	protected function getModuleIcon($moduleKey) {
-		$icon = array(
-			'filename' => '',
-			'size' => '',
-			'title' => '',
-			'html' => ''
-		);
+	protected function getModuleIcon($moduleKey, $moduleData) {
+		$icon = '';
 
-		if (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
+		// add as a sprite icon
+		if ($moduleData['configuration']['icon']) {
+			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($moduleData['configuration']['icon'], array('tagName' => 'i'));
+		} elseif (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
 			$imageReference = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey];
 			$iconFileRelative = $this->getModuleIconRelative($imageReference);
 			if (!empty($iconFileRelative)) {
 				$iconTitle = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
-				$iconFileAbsolute = $this->getModuleIconAbsolute($imageReference);
-				$iconSizes = @getimagesize($iconFileAbsolute);
-				$icon['filename'] = $iconFileRelative;
-				$icon['size'] = $iconSizes[3];
-				$icon['title'] = htmlspecialchars($iconTitle);
-				$icon['html'] = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
+				$iconSizes = @getimagesize($this->getModuleIconAbsolute($imageReference));
+				$icon = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
 			}
 		}
 		return $icon;

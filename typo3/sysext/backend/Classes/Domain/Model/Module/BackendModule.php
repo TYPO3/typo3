@@ -32,9 +32,9 @@ class BackendModule {
 	protected $name = '';
 
 	/**
-	 * @var array
+	 * @var string
 	 */
-	protected $icon = array();
+	protected $icon = '';
 
 	/**
 	 * @var string
@@ -110,17 +110,17 @@ class BackendModule {
 	/**
 	 * Set icon
 	 *
-	 * @param array $icon
+	 * @param string $icon
 	 * @return void
 	 */
-	public function setIcon(array $icon) {
+	public function setIcon($icon) {
 		$this->icon = $icon;
 	}
 
 	/**
 	 * Get icon
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function getIcon() {
 		return $this->icon;

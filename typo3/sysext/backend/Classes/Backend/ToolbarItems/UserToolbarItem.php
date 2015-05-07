@@ -84,7 +84,6 @@ class UserToolbarItem implements ToolbarItemInterface {
 		if ($userModuleMenu != FALSE && $userModuleMenu->getChildren()->count() > 0) {
 			foreach ($userModuleMenu->getChildren() as $module) {
 				/** @var BackendModule $module */
-				$moduleIcon = $module->getIcon();
 				$dropdown[] ='<li'
 					. ' id="' . htmlspecialchars($module->getName()) . '"'
 					. ' class="typo3-module-menu-item submodule mod-' . htmlspecialchars($module->getName()) . '" '
@@ -94,7 +93,7 @@ class UserToolbarItem implements ToolbarItemInterface {
 					. ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
 					. '>';
 				$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
-				$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . ($moduleIcon['html'] ?: $moduleIcon['html']) . '</span></span></span>';
+				$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . $module->getIcon() . '</span></span></span>';
 				$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
 				$dropdown[] = '</a>';
 				$dropdown[] = '</li>';
