@@ -969,7 +969,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$table,
 			'ref_table=' . $databaseConnection->fullQuoteStr('sys_file', $table)
 				. ' AND ref_uid=' . (int)$fileOrFolderObject->getUid()
-				. ' AND deleted=0' .
+				. ' AND deleted=0'
 				. ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
 		);
 		return $this->generateReferenceToolTip($rows, '\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileOrFolderObject->getCombinedIdentifier()));
