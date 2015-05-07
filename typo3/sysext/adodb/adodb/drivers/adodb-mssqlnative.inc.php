@@ -476,10 +476,26 @@ class ADODB_mssqlnative extends ADOConnection {
 	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
 		if (!function_exists('sqlsrv_connect')) return null;
+		// Port is always given as part of $argHostname but
+		// 1) should only be set if using an IP/hostname and not a named instance
+		// 2) must use a comma instead of a colon
+		list ($hostname, $port) = explode(':', $argHostname, 2);
+		if (strpos($hostname, '\\') === false) {
+			$argHostname = $hostname . ',' . $port;
+		} else {
+			$argHostname = $hostname;
+		}
 		$connectionInfo = $this->connectionInfo;
-		$connectionInfo["Database"]=$argDatabasename;
-		$connectionInfo["UID"]=$argUsername;
-		$connectionInfo["PWD"]=$argPassword;
+		$connectionInfo['Database'] = $argDatabasename;
+		if (!empty($argUsername)) {
+			$connectionInfo['UID'] = $argUsername;
+		}
+		if (!empty($argPassword)) {
+			$connectionInfo['PWD'] = $argPassword;
+		}
+		if (!empty($this->charSet)) {
+			$connectionInfo['CharacterSet'] = $this->charSet;
+		}
 		if ($this->debug) error_log("<hr>connecting... hostname: $argHostname params: ".var_export($connectionInfo,true));
 		//if ($this->debug) error_log("<hr>_connectionID before: ".serialize($this->_connectionID));
 		if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) {

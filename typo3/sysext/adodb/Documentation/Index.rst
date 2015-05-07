@@ -20,6 +20,8 @@ updated to upstream.
 - EXT:adodb: Table names in ALTER TABLE broken (63659_)
 - MSSQL native driver for ADOdb returns erroneous message (66674_)
 - ADOdb: mssqlnative driver fails to create sequences (66678_)
+- ADOdb: mssqlnative driver is not properly initialized (66830_)
+- ADOdb: mssqlnative driver does not properly define the port (63070_)
 
 .. [2] https://github.com/ADOdb/ADOdb/commit/85f05a98974ea85ecae943faf230a27afdbaa746
 .. _48034: https://forge.typo3.org/issues/48034
@@ -27,6 +29,8 @@ updated to upstream.
 .. _63659: https://forge.typo3.org/issues/63659
 .. _66674: https://forge.typo3.org/issues/66674
 .. _66678: https://forge.typo3.org/issues/66678
+.. _66830: https://forge.typo3.org/issues/66830
+.. _63070: https://forge.typo3.org/issues/63070
 
 
 Diff
