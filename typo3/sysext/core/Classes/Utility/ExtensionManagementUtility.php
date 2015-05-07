@@ -788,10 +788,6 @@ class ExtensionManagementUtility {
 	 * This method is called from \TYPO3\CMS\Backend\Module\ModuleLoader::checkMod
 	 * and it replaces old conf.php.
 	 *
-	 * The original function for is called
-	 * typo3/sysext/extbase/Classes/Utility/ExtensionUtility.php::configureModule
-	 * the referred function can be deprecated now
-	 *
 	 * @param string $moduleSignature The module name
 	 * @param string $modulePath Absolute path to module (not used by Extbase currently)
 	 * @return array Configuration of the module

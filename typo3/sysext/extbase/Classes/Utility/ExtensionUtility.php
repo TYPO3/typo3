@@ -149,29 +149,11 @@ tt_content.' . $pluginSignature . ' {
 	 * @param string $moduleSignature The module name
 	 * @param string $modulePath Absolute path to module (not used by Extbase currently)
 	 * @return array Configuration of the module
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, please use the according method in \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule
 	 */
 	static public function configureModule($moduleSignature, $modulePath) {
-		$moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature];
-		$iconPathAndFilename = $moduleConfiguration['icon'];
-		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
-			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
-			$iconPathAndFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
-		}
-		// @todo skin support
-		$moduleLabels = array(
-			'tabs_images' => array(
-				'tab' => $iconPathAndFilename
-			),
-			'labels' => array(
-				'tablabel' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tablabel'),
-				'tabdescr' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_labels_tabdescr')
-			),
-			'tabs' => array(
-				'tab' => $GLOBALS['LANG']->sL($moduleConfiguration['labels'] . ':mlang_tabs_tab')
-			)
-		);
-		$GLOBALS['LANG']->addModuleLabels($moduleLabels, $moduleSignature . '_');
-		return $moduleConfiguration;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::configureModule($moduleSignature, $modulePath);
 	}
 
 	/**
@@ -226,7 +208,7 @@ tt_content.' . $pluginSignature . ' {
 			$moduleConfiguration['vendorName'] = $vendorName;
 		}
 		$moduleConfiguration['extensionName'] = $extensionName;
-		$moduleConfiguration['configureModuleFunction'] = array(\TYPO3\CMS\Extbase\Utility\ExtensionUtility::class, 'configureModule');
+		$moduleConfiguration['configureModuleFunction'] = array(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class, 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature])) {
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = array();
