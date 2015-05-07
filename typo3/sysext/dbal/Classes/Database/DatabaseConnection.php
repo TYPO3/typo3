@@ -530,6 +530,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
 							// The table is able to retrieve the ID of the last insert, use it to update the blob below
 							$new_id = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
+							if ($table !== 'tx_dbal_debuglog') {
+								$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
+							}
 						}
 					}
 					if (is_array($this->lastQuery[1])) {
