@@ -760,7 +760,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	protected function getTranslationsForMetaData($metaDataRecord) {
 		$where = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'] . '=' . (int)$metaDataRecord['uid'] .
 			' AND ' . $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] . '>0';
-		$translationRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_metadata', $where);
+		$translationRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_file_metadata', $where);
 		$translations = array();
 		foreach ($translationRecords as $record) {
 			$translations[$record[$GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField']]] = $record;
@@ -962,8 +962,26 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 		}
 		// Look up the file in the sys_refindex.
 		// Exclude sys_file_metadata records as these are no use references
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=\'sys_file\' AND ref_uid = ' . (int)$fileOrFolderObject->getUid() . ' AND deleted=0 AND tablename != "sys_file_metadata"');
+		$databaseConnection = $this->getDatabaseConnection();
+		$table = 'sys_refindex';
+		$rows = $databaseConnection->exec_SELECTgetRows(
+			'*',
+			$table,
+			'ref_table=' . $databaseConnection->fullQuoteStr('sys_file', $table)
+				. ' AND ref_uid=' . (int)$fileOrFolderObject->getUid()
+				. ' AND deleted=0' .
+				. ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
+		);
 		return $this->generateReferenceToolTip($rows, '\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileOrFolderObject->getCombinedIdentifier()));
+	}
+
+	/**
+	 * Get database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
