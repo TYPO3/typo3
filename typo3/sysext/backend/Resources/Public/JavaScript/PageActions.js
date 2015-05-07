@@ -35,6 +35,23 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 		if (!(PageActions.settings.pageId > 0 && PageActions.settings.canEditPage)) {
 			return;
 		}
+
+		var $editActionLink = $('<a class="hidden" href="#" data-action="edit"><span class="t3-icon fa fa-pencil"></span></a>');
+		$editActionLink.on('click', function(e) {
+			e.preventDefault();
+			PageActions.editPageTitle();
+		});
+		PageActions.identifier.$pageTitle
+			.on('dblclick', PageActions.editPageTitle)
+			.on('mouseover', function() { $editActionLink.removeClass('hidden'); })
+			.on('mouseout', function() { $editActionLink.addClass('hidden'); })
+			.append($editActionLink);
+	};
+
+	/**
+	 * Changes the h1 to an edit form
+	 */
+	PageActions.editPageTitle = function() {
 		var $inputFieldWrap = $(
 				'<form class="row">' +
 					'<div class="col-lg-4 col-md-6 col-sm-12">' +
@@ -72,21 +89,20 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			return false;
 		});
 
-		PageActions.identifier.$pageTitle.on('dblclick', function() {
-			var $h1 = $(this);
-			$h1.replaceWith($inputFieldWrap);
-			$inputField.val($h1.text()).focus();
+		var $h1 = PageActions.identifier.$pageTitle;
+		$h1.children().last().remove();
+		$h1.replaceWith($inputFieldWrap);
+		$inputField.val($h1.text()).focus();
 
-			$inputField.on('keyup', function(e) {
-				switch (e.which) {
-					case 13: // enter
-						$inputFieldWrap.find('[data-action=submit]').trigger('click');
-						break;
-					case 27: // escape
-						$inputFieldWrap.find('[data-action=cancel]').trigger('click');
-						break;
-				}
-			});
+		$inputField.on('keyup', function(e) {
+			switch (e.which) {
+				case 13: // enter
+					$inputFieldWrap.find('[data-action=submit]').trigger('click');
+					break;
+				case 27: // escape
+					$inputFieldWrap.find('[data-action=cancel]').trigger('click');
+					break;
+			}
 		});
 	};
 
@@ -138,6 +154,7 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			DataHandler.process(parameters).done(function(result) {
 				$inputFieldWrap.find('[data-action=cancel]').trigger('click');
 				PageActions.identifier.$pageTitle.text($field.val());
+				PageActions.initializePageTitleRenaming();
 				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 			}).fail(function() {
 				$inputFieldWrap.find('[data-action=cancel]').trigger('click');
