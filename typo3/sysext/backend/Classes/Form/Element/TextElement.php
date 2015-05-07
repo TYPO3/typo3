@@ -201,7 +201,7 @@ class TextElement extends AbstractFormElement {
 					$classes[] = 'text-monospace';
 				}
 				if ($specialConfiguration['enable-tab']) {
-					$classes[] = 'enable-tab';
+					$classes[] = 't3js-enable-tab';
 				}
 
 				// calculate styles

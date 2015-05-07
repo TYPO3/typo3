@@ -810,11 +810,7 @@ function jumpToUrl(URL) {
 
 		$languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
 		$this->pageRenderer->setHtmlTag('<html lang="' . $languageCode . '">');
-		// This loads the tabulator-in-textarea feature. It automatically modifies
-		// every textarea which is found.
-		if (!$GLOBALS['BE_USER']->uc['disableTabInTextarea']) {
-			$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/tab.js');
-		}
+
 		// Include the JS for the Context Sensitive Help
 		// @todo: right now this is a hard dependency on csh manual, as the whole help system should be moved to
 		// the extension. The core provides a API for adding help, and rendering help, but the rendering

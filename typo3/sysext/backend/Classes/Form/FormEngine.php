@@ -1076,8 +1076,6 @@ class FormEngine {
 		if ($this->extJSCODE) {
 			$jsonArray['scriptCall'][] = $this->extJSCODE;
 		}
-		// activate "enable tabs" for textareas
-		$jsonArray['scriptCall'][] = 'changeTextareaElements();';
 		return $jsonArray;
 	}
 

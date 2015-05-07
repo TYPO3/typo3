@@ -54,6 +54,7 @@ module.exports = function(grunt) {
 					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js': '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/autosize.js': '/autosize/dest/autosize.min.js',
 					'<%= paths.core %>Public/JavaScript/Contrib/placeholders.jquery.min.js': '/Placeholders.js/dist/placeholders.jquery.min.js',
+					'<%= paths.core %>Public/JavaScript/Contrib/taboverride.min.js': '/taboverride/build/output/taboverride.min.js',
 
 					/**
 					 * copy needed files of scriptaculous

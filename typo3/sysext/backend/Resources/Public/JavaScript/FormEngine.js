@@ -701,6 +701,18 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 	};
 
 	/**
+	 * convert all textareas to enable tab
+	 */
+	FormEngine.convertTextareasEnableTab = function() {
+		var $elements = $('.t3js-enable-tab');
+		if ($elements.length) {
+			require(['taboverride'], function(taboverride) {
+				taboverride.set($elements);
+			});
+		}
+	};
+
+	/**
 	 * this is the main function that is called on page load, but also after elements are asynchroniously
 	 * called e.g. after IRRE elements are loaded again, or a new flexform section is added.
 	 * use this function in your extension like this "TYPO3.FormEngine.initialize()"
@@ -719,6 +731,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			DateTimePicker.initialize();
 		});
 		FormEngine.convertTextareasResizable();
+		FormEngine.convertTextareasEnableTab();
 		$(document).on('click', '.t3js-editform-close', function(e) {
 			e.preventDefault();
 			FormEngine.preventExitIfNotSaved();

@@ -177,6 +177,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 			// Include editor-js-lib
 			$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/T3editor');
 
 			$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS(
 				'T3editor = T3editor || {};' .
