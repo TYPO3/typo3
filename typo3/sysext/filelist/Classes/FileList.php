@@ -947,10 +947,15 @@ class FileList extends AbstractRecordList {
 		}
 		// Look up the file in the sys_refindex.
 		// Exclude sys_file_metadata records as these are no use references
-		$referenceCount = $this->getDatabaseConnection()->exec_SELECTcountRows(
+		$databaseConnection = $this->getDatabaseConnection();
+		$table = 'sys_refindex';
+		$referenceCount = $databaseConnection->exec_SELECTcountRows(
 			'*',
-			'sys_refindex',
-			'ref_table=\'sys_file\' AND ref_uid = ' . (int)$fileOrFolderObject->getUid() . ' AND deleted=0 AND tablename != "sys_file_metadata"'
+			$table,
+			'ref_table=' . $databaseConnection->fullQuoteStr('sys_file', $table)
+				. ' AND ref_uid=' . (int)$fileOrFolderObject->getUid()
+				. ' AND deleted=0' .
+				. ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
 		);
 		return $this->generateReferenceToolTip($referenceCount, '\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileOrFolderObject->getCombinedIdentifier()));
 	}

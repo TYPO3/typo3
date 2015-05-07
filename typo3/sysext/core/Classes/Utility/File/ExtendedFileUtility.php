@@ -350,11 +350,14 @@ class ExtendedFileUtility extends BasicFileUtility {
 		if ($fileObject instanceof File) {
 			// check if the file still has references
 			// Exclude sys_file_metadata records as these are no use references
-			$refIndexRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			$databaseConnection = $this->getDatabaseConnection();
+			$table = 'sys_refindex';
+			$refIndexRecords = $databaseConnection->exec_SELECTgetRows(
 				'*',
-				'sys_refindex',
-				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . (int)$fileObject->getUid()
-				. ' AND tablename != "sys_file_metadata"'
+				$table,
+				'deleted=0 AND ref_table=' . $databaseConnection->fullQuoteStr('sys_file', $table)
+					. ' AND ref_uid=' . (int)$fileObject->getUid()
+					. ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
 			);
 			$deleteFile = TRUE;
 			if (count($refIndexRecords) > 0) {
