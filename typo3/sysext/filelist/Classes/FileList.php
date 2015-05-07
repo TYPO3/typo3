@@ -954,7 +954,7 @@ class FileList extends AbstractRecordList {
 			$table,
 			'ref_table=' . $databaseConnection->fullQuoteStr('sys_file', $table)
 				. ' AND ref_uid=' . (int)$fileOrFolderObject->getUid()
-				. ' AND deleted=0' .
+				. ' AND deleted=0'
 				. ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
 		);
 		return $this->generateReferenceToolTip($referenceCount, '\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileOrFolderObject->getCombinedIdentifier()));
