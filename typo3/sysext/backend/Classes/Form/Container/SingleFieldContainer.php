@@ -92,9 +92,6 @@ class SingleFieldContainer extends AbstractContainer {
 		$parameterArray['itemFormElName'] = $this->globalOptions['prependFormFieldNames'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
 		// Form field name, in case of file uploads
 		$parameterArray['itemFormElName_file'] = $this->globalOptions['prependFormFieldNames_file'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
-		// Form field name, to activate elements
-		// If the "eval" list contains "null", elements can be deactivated which results in storing NULL to database
-		$parameterArray['itemFormElNameActive'] = $this->globalOptions['prependFormFieldNamesActive'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
 		$parameterArray['itemFormElID'] = $this->globalOptions['prependFormFieldNames'] . '_' . $table . '_' . $row['uid'] . '_' . $fieldName;
 
 		// The value to show in the form field.
@@ -169,6 +166,10 @@ class SingleFieldContainer extends AbstractContainer {
 			$resultArray = $childElement->setGlobalOptions($options)->render();
 			$html = $resultArray['html'];
 
+			// @todo: the language handling, the null and the placeholder stuff should be embedded in the single
+			// @todo: element classes. Basically, this method should return here and have the element classes
+			// @todo: decide on language stuff and other wraps already.
+
 			// Add language + diff
 			$renderLanguageDiff = TRUE;
 			if (
@@ -182,7 +183,63 @@ class SingleFieldContainer extends AbstractContainer {
 				$html = $this->renderDefaultLanguageDiff($table, $fieldName, $row, $html);
 			}
 
-			if (isset($parameterArray['fieldConf']['config']['mode']) && $parameterArray['fieldConf']['config']['mode'] === 'useOrOverridePlaceholder') {
+			$fieldItemClasses = array(
+				't3js-formengine-field-item'
+			);
+
+			// NULL value and placeholder handling
+			$nullControlNameAttribute = ' name="' . htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']') . '"';
+			if (!empty($parameterArray['fieldConf']['config']['eval']) && GeneralUtility::inList($parameterArray['fieldConf']['config']['eval'], 'null')
+				&& (empty($parameterArray['fieldConf']['config']['mode']) || $parameterArray['fieldConf']['config']['mode'] !== 'useOrOverridePlaceholder')
+			) {
+				// This field has eval=null set, but has no useOverridePlaceholder defined.
+				// Goal is to have a field that can distinct between NULL and empty string in the database.
+				// A checkbox and an additional hidden field will be created, both with the same name
+				// and prefixed with "control[active]". If the checkbox is set (value 1), the value from the casual
+				// input field will be written to the database. If the checkbox is not set, the hidden field
+				// transfers value=0 to DataHandler, the value of the input field will then be reset to NULL by the
+				// DataHandler at an early point in processing, so NULL will be written to DB as field value.
+
+				// If the value of the field *is* NULL at the moment, an additional class is set
+				// @todo: This does not work well at the moment, but is kept for now. see input_14 of ext:styleguide as example
+				$checked = ' checked="checked"';
+				if ($this->globalOptions['databaseRow'][$fieldName] === NULL) {
+					$fieldItemClasses[] = 'disabled';
+					$checked = '';
+				}
+
+				$formElementName = $this->globalOptions['prependFormFieldNames'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
+				$onChange = htmlspecialchars(
+					'typo3form.fieldSetNull(' . GeneralUtility::quoteJSvalue($formElementName) . ', !this.checked)'
+				);
+
+				$nullValueWrap = array();
+				$nullValueWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
+				$nullValueWrap[] = 	'<div class="t3-form-field-disable"></div>';
+				$nullValueWrap[] = 	'<div class="checkbox">';
+				$nullValueWrap[] = 		'<label>';
+				$nullValueWrap[] = 			'<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
+				$nullValueWrap[] = 			'<input type="checkbox"' . $nullControlNameAttribute . ' value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
+				$nullValueWrap[] = 		'</label>';
+				$nullValueWrap[] = 		$html;
+				$nullValueWrap[] = 	'</div>';
+				$nullValueWrap[] = '</div>';
+
+				$html = implode(LF, $nullValueWrap);
+			} elseif (isset($parameterArray['fieldConf']['config']['mode']) && $parameterArray['fieldConf']['config']['mode'] === 'useOrOverridePlaceholder') {
+				// This field has useOverridePlaceholder set.
+				// Here, a value from a deeper DB structure can be "fetched up" as value, and can also be overridden by a
+				// local value. This is used in FAL, where eg. the "title" field can have the default value from sys_file_metadata,
+				// the title field of sys_file_reference is then set to NULL. Or the "override" checkbox is set, and a string
+				// or an empty string is then written to the field of sys_file_reference.
+				// The situation is similar to the NULL handling above, but additionally a "default" value should be shown.
+				// To achieve this, again a hidden control[hidden] field is added together with a checkbox with the same name
+				// to transfer the information whether the default value should be used or not: Checkbox checked transfers 1 as
+				// value in control[active], meaning the overridden value should be used.
+				// Additionally to the casual input field, a second field is added containing the "placeholder" value. This
+				// field has no name attribute and is not transferred at all. Those two are then hidden / shown depending
+				// on the state of the above checkbox in via JS.
+
 				$placeholder = $this->getPlaceholderValue($table, $parameterArray['fieldConf']['config'], $row);
 				$onChange = 'typo3form.fieldTogglePlaceholder(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', !this.checked)';
 				$checked = $parameterArray['itemFormElValue'] === NULL ? '' : ' checked="checked"';
@@ -201,18 +258,34 @@ class SingleFieldContainer extends AbstractContainer {
 				$noneElementResult = $noneElement->setGlobalOptions($options)->render();
 				$noneElementHtml = $noneElementResult['html'];
 
-				$html = '
-				<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElNameActive']) . '" value="0" />
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" name="' . htmlspecialchars($parameterArray['itemFormElNameActive']) . '" value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />
-						' . sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20)) . '
-					</label>
-				</div>
-				<div class="t3js-formengine-placeholder-placeholder">
-					' . $noneElementHtml . '
-				</div>
-				<div class="t3js-formengine-placeholder-formfield">' . $html . '</div>';
+				$placeholderWrap = array();
+				$placeholderWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
+				$placeholderWrap[] = 	'<div class="t3-form-field-disable"></div>';
+				$placeholderWrap[] = 	'<div class="checkbox">';
+				$placeholderWrap[] = 		'<label>';
+				$placeholderWrap[] = 			'<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
+				$placeholderWrap[] = 			'<input type="checkbox"' . $nullControlNameAttribute . ' value="1" id="tce-forms-textfield-use-override-' . $fieldName . '-' . $row['uid'] . '" onchange="' . htmlspecialchars($onChange) . '"' . $checked . ' />';
+				$placeholderWrap[] =		 	sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.placeholder.override'), BackendUtility::getRecordTitlePrep($placeholder, 20));
+				$placeholderWrap[] = 		'</label>';
+				$placeholderWrap[] = 	'</div>';
+				$placeholderWrap[] = 	'<div class="t3js-formengine-placeholder-placeholder">';
+				$placeholderWrap[] = 		$noneElementHtml;
+				$placeholderWrap[] = 	'</div>';
+				$placeholderWrap[] = 	'<div class="t3js-formengine-placeholder-formfield">';
+				$placeholderWrap[] = 		$html;
+				$placeholderWrap[] = 	'</div>';
+				$placeholderWrap[] = '</div>';
+
+				$html = implode(LF, $placeholderWrap);
+			} elseif ($parameterArray['fieldConf']['config']['type'] !== 'user' || empty($parameterArray['fieldConf']['config']['noTableWrapping'])) {
+				// Add a casual wrap if the field is not of type user with no wrap requested.
+				$standardWrap = array();
+				$standardWrap[] = '<div class="' . implode(' ', $fieldItemClasses) . '">';
+				$standardWrap[] = 	'<div class="t3-form-field-disable"></div>';
+				$standardWrap[] = 	$html;
+				$standardWrap[] = '</div>';
+
+				$html = implode(LF, $standardWrap);
 			}
 
 			$resultArray['html'] = $html;

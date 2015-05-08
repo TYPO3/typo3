@@ -137,13 +137,6 @@ class FormEngine {
 	public $prependFormFieldNames_file = 'data_files';
 
 	/**
-	 * The string to prepend form field names that are active (not NULL)
-	 *
-	 * @var string
-	 */
-	protected $prependFormFieldNamesActive = 'control[active]';
-
-	/**
 	 * @var InlineStackProcessor
 	 */
 	protected $inlineStackProcessor;
@@ -461,7 +454,6 @@ class FormEngine {
 			'localizationMode' => $this->localizationMode, // @todo: find out the details, Warning, this overlaps with inline behaviour localizationMode
 			'prependFormFieldNames' => $this->prependFormFieldNames,
 			'prependFormFieldNames_file' => $this->prependFormFieldNames_file,
-			'prependFormFieldNamesActive' => $this->prependFormFieldNamesActive,
 			'prependCmdFieldNames' => $this->prependCmdFieldNames,
 			'tabAndInlineStack' => array(),
 			'inlineFirstPid' => $this->getInlineFirstPid(),
@@ -1284,17 +1276,7 @@ class FormEngine {
 	}
 
 	/**
-	 * JavaScript code used for input-field evaluation.
-	 *
-	 * Example use:
-	 *
-	 * $msg .= 'Distribution time (hh:mm dd-mm-yy):<br /><input type="text" name="send_mail_datetime_hr"'
-	 *         . ' onchange="typo3form.fieldGet(\'send_mail_datetime\', \'datetime\', \'\', 0,0);"'
-	 *         . $this->getTBE()->formWidth(20) . ' /><input type="hidden" value="' . $GLOBALS['EXEC_TIME']
-	 *         . '" name="send_mail_datetime" /><br />';
-	 * $this->extJSCODE .= 'typo3form.fieldSet("send_mail_datetime", "datetime", "", 0,0);';
-	 *
-	 * ... and then include the result of this function after the form
+	 * JavaScript bottom code
 	 *
 	 * @param string $formname The identification of the form on the page.
 	 * @param bool $update Just extend/update existing settings, e.g. for AJAX call

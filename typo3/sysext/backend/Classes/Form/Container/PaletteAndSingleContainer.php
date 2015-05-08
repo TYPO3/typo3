@@ -217,7 +217,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				if ($this->isUserNoTableWrappingField($element)) {
 					$content[] = $element['fieldHtml'];
 				} else {
-					$content[] = $this->fieldSetWrap($this->wrapSingleFieldContent($element));
+					$content[] = $this->fieldSetWrap($this->wrapSingleFieldContentWithLabelAndOuterDiv($element));
 				}
 			}
 		}
@@ -352,7 +352,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 						$result[] = '<div class="clearfix"></div>';
 					}
 				} else {
-					$result[] = $this->wrapSingleFieldContent($element, array($colClass));
+					$result[] = $this->wrapSingleFieldContentWithLabelAndOuterDiv($element, array($colClass));
 
 					// Breakpoints
 					if ($counter + 1 < $numberOfItems && !empty($colClear)) {
@@ -423,7 +423,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 	 * @param array $additionalPaletteClasses Additional classes to be added to HTML
 	 * @return string Wrapped element
 	 */
-	protected function wrapSingleFieldContent(array $element, array $additionalPaletteClasses = array()) {
+	protected function wrapSingleFieldContentWithLabelAndOuterDiv(array $element, array $additionalPaletteClasses = array()) {
 		$fieldName = $element['fieldName'];
 
 		$paletteFieldClasses = array(
@@ -434,14 +434,6 @@ class PaletteAndSingleContainer extends AbstractContainer {
 			$paletteFieldClasses[] = $class;
 		}
 
-		$fieldItemClasses = array(
-			't3js-formengine-field-item'
-		);
-		$isNullValueField = $this->isDisabledNullValueField($fieldName);
-		if ($isNullValueField) {
-			$fieldItemClasses[] = 'disabled';
-		}
-
 		$label = BackendUtility::wrapInHelp($this->globalOptions['table'], $fieldName, htmlspecialchars($element['fieldLabel']));
 
 		$content = array();
@@ -450,11 +442,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 		$content[] = 		$label;
 		$content[] = 		'<img name="req_' . $this->globalOptions['table'] . '_' . $this->globalOptions['databaseRow']['uid'] . '_' . $fieldName . '" src="clear.gif" class="t3js-formengine-field-required" alt="" />';
 		$content[] = 	'</label>';
-		$content[] = 	'<div class="' . implode(' ', $fieldItemClasses) . '">';
-		$content[] = 		'<div class="t3-form-field-disable"></div>';
-		$content[] = 		$this->renderNullValueWidget($fieldName);
-		$content[] = 		$element['fieldHtml'];
-		$content[] = 	'</div>';
+		$content[] = 	$element['fieldHtml'];
 		$content[] = '</div>';
 
 		return implode(LF, $content);
@@ -503,68 +491,6 @@ class PaletteAndSingleContainer extends AbstractContainer {
 			return TRUE;
 		}
 		return FALSE;
-	}
-
-	/**
-	 * Determines whether the current field value is considered as NULL value.
-	 * Using NULL values is enabled by using 'null' in the 'eval' TCA definition.
-	 * If NULL value is possible for a field and additional checkbox next to the element will be rendered.
-	 *
-	 * @param string $fieldName The field to handle
-	 * @return bool
-	 */
-	protected function isDisabledNullValueField($fieldName) {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$config = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-		$result = FALSE;
-		$value = $row[$fieldName];
-		if (
-			$value === NULL
-			&& !empty($config['eval']) && GeneralUtility::inList($config['eval'], 'null')
-			&& (empty($config['mode']) || $config['mode'] !== 'useOrOverridePlaceholder')
-		) {
-			$result = TRUE;
-		}
-		return $result;
-	}
-
-	/**
-	 * Renders a view widget to handle and activate NULL values.
-	 * The widget is enabled by using 'null' in the 'eval' TCA definition.
-	 *
-	 * @param string $fieldName The field to handle
-	 * @return string
-	 */
-	protected function renderNullValueWidget($fieldName) {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$value = $row[$fieldName];
-		$config = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-
-		$widget = array();
-		// Checkbox should be rendered if eval null set and no override stuff is done
-		if (
-			!empty($config['eval']) && GeneralUtility::inList($config['eval'], 'null')
-			&& (empty($config['mode']) || $config['mode'] !== 'useOrOverridePlaceholder')
-		) {
-			$checked = $value === NULL ? '' : ' checked="checked"';
-			$formElementName = $this->globalOptions['prependFormFieldNames'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
-			$formElementNameActive = $this->globalOptions['prependFormFieldNamesActive'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
-			$onChange = htmlspecialchars(
-				'typo3form.fieldSetNull(\'' . $formElementName . '\', !this.checked)'
-			);
-
-			$widget = array();
-			$widget[] = '<div class="checkbox">';
-			$widget[] = 	'<label>';
-			$widget[] = 		'<input type="hidden" name="' . $formElementNameActive . '" value="0" />';
-			$widget[] = 		'<input type="checkbox" name="' . $formElementNameActive . '" value="1" onchange="' . $onChange . '"' . $checked . ' /> &nbsp;';
-			$widget[] = 	'</label>';
-			$widget[] = '</div>';
-		}
-
-		return implode(LF, $widget);
 	}
 
 	/**
