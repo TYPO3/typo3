@@ -79,9 +79,11 @@ class LocalizationUtility {
 	 * @api
 	 * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
 	 */
-	static public function translate($key, $extensionName = '', $arguments = NULL) {
+	static public function translate($key, $extensionName, $arguments = NULL) {
 		$value = NULL;
-		if (!empty($key) && !empty($extensionName)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
+			$value = self::translateFileReference($key);
+		} else {
 			self::initializeLocalization($extensionName);
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (!empty(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'])
@@ -107,18 +109,13 @@ class LocalizationUtility {
 					}
 				}
 			}
-			if (
-				$value === NULL && (!empty(self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'])
+			if ($value === NULL && (!empty(self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'])
 				|| isset(self::$LOCAL_LANG_UNSET[$extensionName]['default'][$key]))
 			) {
 				// Default language translation for key exists
 				// No charset conversion because default is English and thereby ASCII
 				$value = self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'];
 			}
-		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
-			$value = self::translateFileReference($key);
-		} else {
-			return NULL;
 		}
 		if (is_array($arguments) && $value !== NULL) {
 			return vsprintf($value, $arguments);
