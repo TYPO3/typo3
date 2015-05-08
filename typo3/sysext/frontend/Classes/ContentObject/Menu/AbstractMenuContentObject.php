@@ -2108,6 +2108,8 @@ abstract class AbstractMenuContentObject {
 				$result[$uid] = $basePageRow;
 				$result[$uid]['title'] = $row['header'];
 				$result[$uid]['nav_title'] = $row['header'];
+				// Prevent false exclusion in filterMenuPages, thus: Always show tt_content records
+				$result[$uid]['nav_hide'] = 0;
 				$result[$uid]['subtitle'] = $row['subheader'];
 				$result[$uid]['starttime'] = $row['starttime'];
 				$result[$uid]['endtime'] = $row['endtime'];
