@@ -112,7 +112,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$name = '';
 		if ($bMark) {
 			$anchor = '#' . $bMark;
-			$name = ' name="' . $bMark . '"';
+			$name = ' name=' . $bMark;
 		}
 		$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'PM=' . $cmd) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($anchor) . ');';
 		return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
