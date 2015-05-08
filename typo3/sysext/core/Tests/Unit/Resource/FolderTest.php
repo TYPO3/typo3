@@ -140,6 +140,33 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function getSubfolderCallsFactoryWithCorrectArguments()
+    {
+        $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
+        $mockedStorage->expects($this->once())->method('hasFolderInFolder')->with($this->equalTo('someSubfolder'))->will($this->returnValue(true));
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Resource\ResourceFactory $mockedFactory */
+        $mockedFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+        $folderFixture = $this->createFolderFixture(
+            '/somePath/someFolder/',
+            'someFolder',
+            $mockedStorage
+        );
+        $subfolderFixture = $this->createFolderFixture(
+            '/somePath/someSubfolder/',
+            'someSubfolder',
+            $mockedStorage
+        );
+        $mockedStorage->expects($this->once())->method('getFolderInFolder')->will($this->returnValue($subfolderFixture));
+        \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(
+            \TYPO3\CMS\Core\Resource\ResourceFactory::class,
+            $mockedFactory
+        );
+        $this->assertEquals($subfolderFixture, $folderFixture->getSubfolder('someSubfolder'));
+    }
+
+    /**
+     * @test
+     */
     public function getParentFolderGetsParentFolderFromStorage()
     {
         $parentIdentifier = '/parent/';

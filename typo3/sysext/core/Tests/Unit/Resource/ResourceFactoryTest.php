@@ -62,7 +62,7 @@ class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $name = $this->getUniqueId();
         $storageCollection = $this->subject->createFolderObject($mockedMount, $path, $name, 0);
         $this->assertSame($mockedMount, $storageCollection->getStorage());
-        $this->assertEquals($path . '/', $storageCollection->getIdentifier());
+        $this->assertEquals($path, $storageCollection->getIdentifier());
         $this->assertEquals($name, $storageCollection->getName());
     }
 
