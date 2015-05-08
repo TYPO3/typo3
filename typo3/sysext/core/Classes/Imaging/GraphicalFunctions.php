@@ -2245,9 +2245,9 @@ class GraphicalFunctions {
 				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
 				$cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
 				if ($this->alternativeOutputKey) {
-					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
+					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']' . $w . $h . serialize($params) . serialize($options));
 				} else {
-					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
+					$theOutputName = GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']' . $w . $h . serialize($params) . serialize($options));
 				}
 				if ($this->imageMagickConvert_forceFileNameBody) {
 					$theOutputName = $this->imageMagickConvert_forceFileNameBody;
