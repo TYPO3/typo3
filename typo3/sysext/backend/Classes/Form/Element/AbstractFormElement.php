@@ -726,7 +726,11 @@ abstract class AbstractFormElement extends AbstractNode {
 			$allowedTables .= '<div class="help-block">';
 			foreach ($params['allowedTables'] as $key => $item) {
 				if (is_array($item)) {
-					$allowedTables .= '<a href="#" onClick="' . htmlspecialchars($item['onClick']) . '" class="btn btn-default">' . $item['icon'] . ' ' . htmlspecialchars($item['name']) . '</a> ';
+					if (empty($params['readOnly'])) {
+						$allowedTables .= '<a href="#" onClick="' . htmlspecialchars($item['onClick']) . '" class="btn btn-default">' . $item['icon'] . ' ' . htmlspecialchars($item['name']) . '</a> ';
+					} else {
+						$allowedTables .= '<span>' . htmlspecialchars($item['name']) . '</span> ';
+					}
 				} elseif($key === 'name') {
 					$allowedTables .= '<span>' . htmlspecialchars($item) . '</span> ';
 				}
