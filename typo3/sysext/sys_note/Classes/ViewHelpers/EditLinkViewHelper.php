@@ -14,26 +14,50 @@ namespace TYPO3\CMS\SysNote\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * ViewHelper to create a link to edit a note
  *
  * @author Georg Ringer <typo3@ringerge.org>
  * @internal
  */
-class EditLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class EditLinkViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param int $id
 	 * @return string
 	 */
 	public function render($id) {
-		return \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(
+		return self::renderStatic(
+			array(
+				'id' => $id
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		return BackendUtility::getModuleUrl(
 			'record_edit',
 			array(
-				'edit[sys_note][' . $id . ']' => 'edit',
-				'returnUrl' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')
+				'edit[sys_note][' . $arguments['id'] . ']' => 'edit',
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 			)
 		);
+
 	}
 
 }
