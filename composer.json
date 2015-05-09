@@ -33,7 +33,6 @@
 		"ext-pcre": "*",
 		"ext-session": "*",
 		"ext-xml": "*",
-		"doctrine/instantiator": "1.0.4",
 		"helhum/class-alias-loader": "~1.1",
 		"typo3/cms-composer-installers": "1.1.*@dev"
 	},
