@@ -35,7 +35,7 @@ TYPO3.Components.PageTree.TreeEditor = Ext.extend(Ext.tree.TreeEditor, {
 	 *
 	 * @type {int}
 	 */
-	editDelay: 250,
+	editDelay: 0,
 
 	/**
 	 * Indicates if an underlying shadow should be shown
