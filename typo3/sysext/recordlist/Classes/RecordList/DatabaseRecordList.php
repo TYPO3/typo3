@@ -1441,7 +1441,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				}
 				$output .= ' <div class="btn-group">' .
 					'<span id="actions_' . $table . '_' . $row['uid'] . '" class="btn-group collapse collapse-horizontal width">' . $cellOutput . '</span>' .
-					'<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default collapsed" data-toggle="collapse" aria-expanded="false"><span class="t3-icon fa fa-cog"></span></a>' .
+					'<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default collapsed" data-toggle="collapse" aria-expanded="false"><span class="t3-icon fa fa-ellipsis-h"></span></a>' .
 					'</div>';
 			} else {
 				$output .= ' <div class="btn-group" role="group">' . implode('', $actions) . '</div>';
