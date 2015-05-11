@@ -367,7 +367,7 @@ class ExtdirectTreeCommands {
 				}
 			}
 		}
-		$userSettings->set('BackendComponents.States.' . $stateId, $state);
+		$userSettingsController->process('set', 'BackendComponents.States.' . $stateId, $state);
 		return (array)$state->stateHash;
 	}
 
