@@ -628,24 +628,26 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						case 'groupLogin':
 							// taken from dkd_redirect_at_login written by Ingmar Schlecht; database-field changed
 							$groupData = $GLOBALS['TSFE']->fe_user->groupData;
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-								'felogin_redirectPid',
-								$GLOBALS['TSFE']->fe_user->usergroup_table,
-								'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
-							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+							if (!empty($groupData['uid'])) {
 								// take the first group with a redirect page
-								$redirect_url[] = $this->pi_getPageLink($row[0]);
+								$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+									'felogin_redirectPid',
+									$GLOBALS['TSFE']->fe_user->usergroup_table,
+									'felogin_redirectPid<>\'\' AND uid IN (' . implode(',', $groupData['uid']) . ')'
+								);
+								if ($row) {
+									$redirect_url[] = $this->pi_getPageLink($row['felogin_redirectPid']);
+								}
 							}
 							break;
 						case 'userLogin':
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 								'felogin_redirectPid',
 								$GLOBALS['TSFE']->fe_user->user_table,
 								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid<>\'\''
 							);
-							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-								$redirect_url[] = $this->pi_getPageLink($row[0]);
+							if ($row) {
+								$redirect_url[] = $this->pi_getPageLink($row['felogin_redirectPid']);
 							}
 							break;
 						case 'login':

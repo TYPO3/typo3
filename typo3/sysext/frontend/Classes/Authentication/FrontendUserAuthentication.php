@@ -341,7 +341,7 @@ class FrontendUserAuthentication extends \TYPO3\CMS\Core\Authentication\Abstract
 				unset($serviceObj);
 			}
 			unset($serviceObj);
-			if ($validGroup) {
+			if ($validGroup && (string)$groupData['uid'] !== '') {
 				$this->groupData['title'][$groupData['uid']] = $groupData['title'];
 				$this->groupData['uid'][$groupData['uid']] = $groupData['uid'];
 				$this->groupData['pid'][$groupData['uid']] = $groupData['pid'];
