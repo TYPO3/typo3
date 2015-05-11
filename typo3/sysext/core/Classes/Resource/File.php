@@ -55,12 +55,12 @@ class File extends AbstractFile {
 	 * @param ResourceStorage $storage
 	 * @param array $metaData
 	 */
-	public function __construct(array $fileData, ResourceStorage $storage, $metaData = array()) {
+	public function __construct(array $fileData, ResourceStorage $storage, array $metaData = array()) {
 		$this->identifier = $fileData['identifier'];
 		$this->name = $fileData['name'];
 		$this->properties = $fileData;
 		$this->storage = $storage;
-		if ($metaData !== array()) {
+		if (!empty($metaData)) {
 			$this->metaDataLoaded = TRUE;
 			$this->metaDataProperties = $metaData;
 		}
@@ -79,10 +79,8 @@ class File extends AbstractFile {
 		if (parent::hasProperty($key)) {
 			return parent::getProperty($key);
 		} else {
-			if (!$this->metaDataLoaded) {
-				$this->loadMetaData();
-			}
-			return array_key_exists($key, $this->metaDataProperties) ? $this->metaDataProperties[$key] : NULL;
+			$metaData = $this->_getMetaData();
+			return isset($metaData[$key]) ? $metaData[$key] : NULL;
 		}
 	}
 
@@ -95,10 +93,7 @@ class File extends AbstractFile {
 	 */
 	public function hasProperty($key) {
 		if (!parent::hasProperty($key)) {
-			if (!$this->metaDataLoaded) {
-				$this->loadMetaData();
-			}
-			return array_key_exists($key, $this->metaDataProperties);
+			return array_key_exists($key, $this->_getMetaData());
 		}
 		return TRUE;
 	}
@@ -110,16 +105,13 @@ class File extends AbstractFile {
 	 * @return array
 	 */
 	public function getProperties() {
-		if (!$this->metaDataLoaded) {
-			$this->loadMetaData();
-		}
-		return array_merge(parent::getProperties(), array_diff_key((array)$this->metaDataProperties, parent::getProperties()));
+		return array_merge(parent::getProperties(), array_diff_key($this->_getMetaData(), parent::getProperties()));
 	}
 
 	/**
 	 * Returns the MetaData
 	 *
-	 * @return array|null
+	 * @return array
 	 * @internal
 	 */
 	public function _getMetaData() {
@@ -244,11 +236,7 @@ class File extends AbstractFile {
 	 * @return void
 	 */
 	public function _updateMetaDataProperties(array $properties) {
-		if ($this->metaDataProperties !== NULL) {
-			$this->metaDataProperties = array_merge($this->metaDataProperties, $properties);
-		} else {
-			$this->metaDataProperties = $properties;
-		}
+		$this->metaDataProperties = array_merge($this->metaDataProperties, $properties);
 	}
 
 	/**
