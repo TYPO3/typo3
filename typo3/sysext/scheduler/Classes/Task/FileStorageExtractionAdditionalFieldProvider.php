@@ -14,29 +14,37 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
+use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 
 /**
  * Additional BE fields for task which extracts metadata from storage
  *
  */
-class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
+class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldProviderInterface {
 
 	/**
 	 * Add additional fields
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
 	 * @param object $task When editing, reference to the current task object. Null when adding.
-	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+	 * @param SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return array Array containing all the information pertaining to the additional fields
 	 * @throws \InvalidArgumentException
 	 */
-	public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
+	public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $parentObject) {
 		if ($task !== NULL && !$task instanceof FileStorageExtractionTask) {
 			throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275695);
 		}
 		$additionalFields['scheduler_fileStorageIndexing_storage'] = $this->getAllStoragesField($task);
 		$additionalFields['scheduler_fileStorageIndexing_fileCount'] = $this->getFileCountField($task);
+		$additionalFields['scheduler_fileStorageIndexing_registeredExtractors'] = $this->getRegisteredExtractorsField($task);
 		return $additionalFields;
 	}
 
@@ -48,7 +56,7 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	 */
 	protected function getAllStoragesField(FileStorageExtractionTask $task = NULL) {
 		/** @var \TYPO3\CMS\Core\Resource\ResourceStorage[] $storages */
-		$storages = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\StorageRepository')->findAll();
+		$storages = GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\StorageRepository')->findAll();
 		$options = array();
 		foreach ($storages as $storage) {
 			if ($task !== NULL && $task->storageUid === $storage->getUid()) {
@@ -93,17 +101,69 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 	}
 
 	/**
+	 * Returns a field configuration telling about the status of registered extractors.
+	 *
+	 * @param FileStorageExtractionTask $task When editing, reference to the current task object. NULL when adding.
+	 * @return array Array containing all the information pertaining to the additional fields
+	 */
+	protected function getRegisteredExtractorsField(FileStorageExtractionTask $task = NULL) {
+		$extractors = ExtractorRegistry::getInstance()->getExtractors();
+
+		if (empty($extractors)) {
+			$labelKey = 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageExtraction.registeredExtractors.without_extractors';
+			/** @var FlashMessage $flashMessage */
+			$flashMessage = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$this->getLanguageService()->sL($labelKey),
+				'',
+				FlashMessage::WARNING
+			);
+			$content = $flashMessage->render();
+		} else {
+			// Assemble the extractor bullet list first.
+			$labelKey = 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageExtraction.registeredExtractors.extractor';
+			$bullets = array();
+			foreach ($extractors as $extractor) {
+				$bullets[] = sprintf(
+					'<li title="%s">%s</li>',
+					get_class($extractor),
+					sprintf($this->getLanguageService()->sL($labelKey), $this->formatExtractorClassName($extractor), $extractor->getPriority())
+				);
+			}
+
+			// Finalize content assembling.
+			$labelKey = 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageExtraction.registeredExtractors.with_extractors';
+			/** @var FlashMessage $flashMessage */
+			$flashMessage = GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				'<ul>' . implode(LF, $bullets) . '</ul>',
+				$this->getLanguageService()->sL($labelKey),
+				FlashMessage::INFO
+			);
+			$content = $flashMessage->render();
+		}
+
+		$fieldConfiguration = array(
+			'code' => $content,
+			'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.fileStorageExtraction.registeredExtractors',
+			'cshKey' => '_MOD_system_txschedulerM1',
+			'cshLabel' => 'scheduler_fileStorageIndexing_registeredExtractors'
+		);
+		return $fieldConfiguration;
+	}
+
+	/**
 	 * Validate additional fields
 	 *
 	 * @param array $submittedData Reference to the array containing the data submitted by the user
-	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
+	 * @param SchedulerModuleController $parentObject Reference to the calling object (Scheduler's BE module)
 	 * @return boolean True if validation was ok (or selected class is not relevant), false otherwise
 	 */
-	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject) {
+	public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $parentObject) {
 		if (!MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_storage']) ||
 			!MathUtility::canBeInterpretedAsInteger($submittedData['scheduler_fileStorageIndexing_fileCount'])) {
 			return FALSE;
-		} elseif(\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === NULL) {
+		} elseif (ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === NULL) {
 			return FALSE;
 		} elseif (!MathUtility::isIntegerInRange($submittedData['scheduler_fileStorageIndexing_fileCount'], 1, 9999)) {
 			return FALSE;
@@ -127,4 +187,22 @@ class FileStorageExtractionAdditionalFieldProvider implements \TYPO3\CMS\Schedul
 		$task->maxFileCount = (int)$submittedData['scheduler_fileStorageIndexing_fileCount'];
 	}
 
+	/**
+	 * Since the class name can be very long considering the namespace, only take the final
+	 * part for better readability. The FQN of the class will be displayed as tooltip.
+	 *
+	 * @param ExtractorInterface $extractor
+	 * @return string
+	 */
+	protected function formatExtractorClassName(ExtractorInterface $extractor) {
+		$extractorParts = explode('\\', get_class($extractor));
+		return array_pop($extractorParts);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
 }
