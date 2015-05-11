@@ -1446,6 +1446,16 @@ return array(
 				'autoSizeMax' => 40,
 			),
 		),
+		'group_12' => array(
+			'exclude' => 1,
+			'label' => 'GROUP: 12 readonly',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'be_users,be_groups',
+				'readOnly' => 1,
+			)
+		),
 
 
 		'none_1' => array(
@@ -2302,7 +2312,7 @@ return array(
 			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
-			group_11,
+			group_11, group_12,
 			none_1, none_2, none_3, none_4, none_5, none_6,
 			passthrough_1,
 			user_1, user_2,
@@ -2335,7 +2345,7 @@ return array(
 					select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 				--div--;Group,
-					group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
+					group_1, group_12, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 					group_11,
 				--div--;Passthrough,
 					passthrough_1,
