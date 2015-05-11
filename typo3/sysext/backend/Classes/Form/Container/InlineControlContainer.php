@@ -111,7 +111,7 @@ class InlineControlContainer extends AbstractContainer {
 		);
 		// Extract FlexForm parts (if any) from element name, e.g. array('vDEF', 'lDEF', 'FlexField', 'vDEF')
 		if (!empty($parameterArray['itemFormElName'])) {
-			$flexFormParts = FormEngineUtility::extractFlexFormParts($parameterArray['itemFormElName'], $this->globalOptions['prependFormFieldNames']);
+			$flexFormParts = FormEngineUtility::extractFlexFormParts($parameterArray['itemFormElName']);
 			if ($flexFormParts !== NULL) {
 				$newStructureItem['flexform'] = $flexFormParts;
 			}
@@ -119,13 +119,13 @@ class InlineControlContainer extends AbstractContainer {
 		$inlineStackProcessor->pushStableStructureItem($newStructureItem);
 
 		// e.g. data[<table>][<uid>][<field>]
-		$nameForm = $inlineStackProcessor->getCurrentStructureFormPrefix($this->globalOptions['prependFormFieldNames']);
+		$nameForm = $inlineStackProcessor->getCurrentStructureFormPrefix();
 		// e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
 		$nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
 
 		// Get the records related to this inline record
 		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-		$relatedRecords = $inlineRelatedRecordResolver->getRelatedRecords($table, $field, $row, $parameterArray, $config, $this->globalOptions['inlineFirstPid'], $this->globalOptions['prependFormFieldNames']);
+		$relatedRecords = $inlineRelatedRecordResolver->getRelatedRecords($table, $field, $row, $parameterArray, $config, $this->globalOptions['inlineFirstPid']);
 
 		// Set the first and last record to the config array
 		$relatedRecordsUids = array_keys($relatedRecords['records']);

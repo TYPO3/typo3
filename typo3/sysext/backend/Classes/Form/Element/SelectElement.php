@@ -424,7 +424,7 @@ class SelectElement extends AbstractFormElement {
 		$uniqueIds = NULL;
 		if (is_array($inlineParent) && $inlineParent['uid']) {
 			$inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
-			$inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix($this->globalOptions['prependFormFieldNames']);
+			$inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix();
 			if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
 				$uniqueIds = $this->globalOptions['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
 				$PA['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,\'' . $inlineObjectName

@@ -89,10 +89,9 @@ class SingleFieldContainer extends AbstractContainer {
 
 		// Override fieldConf by fieldTSconfig:
 		$parameterArray['fieldConf']['config'] = FormEngineUtility::overrideFieldConf($parameterArray['fieldConf']['config'], $parameterArray['fieldTSConfig']);
-		$parameterArray['itemFormElName'] = $this->globalOptions['prependFormFieldNames'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
-		// Form field name, in case of file uploads
-		$parameterArray['itemFormElName_file'] = $this->globalOptions['prependFormFieldNames_file'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
-		$parameterArray['itemFormElID'] = $this->globalOptions['prependFormFieldNames'] . '_' . $table . '_' . $row['uid'] . '_' . $fieldName;
+		$parameterArray['itemFormElName'] = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
+		$parameterArray['itemFormElID'] = 'data_' . $table . '_' . $row['uid'] . '_' . $fieldName;
+		$newElementBaseName = $this->globalOptions['elementBaseName'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
 
 		// The value to show in the form field.
 		$parameterArray['itemFormElValue'] = $row[$fieldName];
@@ -160,6 +159,7 @@ class SingleFieldContainer extends AbstractContainer {
 			// Based on the type of the item, call a render function on a child element
 			$options = $this->globalOptions;
 			$options['parameterArray'] = $parameterArray;
+			$options['elementBaseName'] = $newElementBaseName;
 			/** @var NodeFactory $childFactory */
 			$childFactory = GeneralUtility::makeInstance(NodeFactory::class);
 			$childElement = $childFactory->create($parameterArray['fieldConf']['config']['type']);
@@ -208,7 +208,7 @@ class SingleFieldContainer extends AbstractContainer {
 					$checked = '';
 				}
 
-				$formElementName = $this->globalOptions['prependFormFieldNames'] . '[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
+				$formElementName = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']';
 				$onChange = htmlspecialchars(
 					'typo3form.fieldSetNull(' . GeneralUtility::quoteJSvalue($formElementName) . ', !this.checked)'
 				);

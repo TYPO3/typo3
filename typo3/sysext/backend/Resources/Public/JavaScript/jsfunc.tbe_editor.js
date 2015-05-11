@@ -44,9 +44,6 @@ var TBE_EDITOR = {
 	isChanged: 0,
 
 	backPath: '',
-	prependFormFieldNames: 'data',
-	prependFormFieldNamesUENC: 'data',
-	prependFormFieldNamesCnt: 0,
 
 	isPalettedoc: null,
 	doSaveFieldName: 0,
@@ -315,7 +312,7 @@ var TBE_EDITOR = {
 	},
 
 	fieldChanged_fName: function(fName,el) {
-		var idx=2+TBE_EDITOR.prependFormFieldNamesCnt;
+		var idx=2;
 		var table = TBE_EDITOR.split(fName, "[", idx);
 		var uid = TBE_EDITOR.split(fName, "[", idx+1);
 		var field = TBE_EDITOR.split(fName, "[", idx+2);
@@ -326,8 +323,8 @@ var TBE_EDITOR = {
 		TBE_EDITOR.fieldChanged(table,uid,field,el);
 	},
 	fieldChanged: function(table,uid,field,el) {
-		var theField = TBE_EDITOR.prependFormFieldNames+'['+table+']['+uid+']['+field+']';
-		var theRecord = TBE_EDITOR.prependFormFieldNames+'['+table+']['+uid+']';
+		var theField = 'data['+table+']['+uid+']['+field+']';
+		var theRecord = 'data['+table+']['+uid+']';
 		TBE_EDITOR.isChanged = 1;
 
 		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)

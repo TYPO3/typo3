@@ -114,28 +114,6 @@ class FormEngine {
 	 */
 	protected $renderReadonly = FALSE;
 
-	// INTERNAL, static
-	/**
-	 * The string to prepend formfield names with.
-	 *
-	 * @var string
-	 */
-	public $prependFormFieldNames = 'data';
-
-	/**
-	 * The string to prepend commands for tcemain::process_cmdmap with
-	 *
-	 * @var string
-	 */
-	public $prependCmdFieldNames = 'cmd';
-
-	/**
-	 * The string to prepend FILE form field names with
-	 *
-	 * @var string
-	 */
-	public $prependFormFieldNames_file = 'data_files';
-
 	/**
 	 * @var InlineStackProcessor
 	 */
@@ -452,9 +430,7 @@ class FormEngine {
 			'databaseRow' => $this->databaseRow,
 			'additionalPreviewLanguages' => $this->additionalPreviewLanguages,
 			'localizationMode' => $this->localizationMode, // @todo: find out the details, Warning, this overlaps with inline behaviour localizationMode
-			'prependFormFieldNames' => $this->prependFormFieldNames,
-			'prependFormFieldNames_file' => $this->prependFormFieldNames_file,
-			'prependCmdFieldNames' => $this->prependCmdFieldNames,
+			'elementBaseName' => '',
 			'tabAndInlineStack' => array(),
 			'inlineFirstPid' => $this->getInlineFirstPid(),
 			'inlineExpandCollapseStateArray' => $this->getInlineExpandCollapseStateArrayForTableUid($this->table, $this->databaseRow['uid']),
@@ -1358,7 +1334,6 @@ class FormEngine {
 			// We want to load jQuery-ui inside our js. Enable this using requirejs.
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
 			$out .= '
-			inline.setPrependFormFieldNames("data");
 			inline.setNoTitleString("' . addslashes(BackendUtility::getNoRecordTitle(TRUE)) . '");
 			';
 
@@ -1369,9 +1344,6 @@ class FormEngine {
 			TBE_EDITOR.formname = "' . $formname . '";
 			TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
 			TBE_EDITOR.backPath = "";
-			TBE_EDITOR.prependFormFieldNames = "' . $this->prependFormFieldNames . '";
-			TBE_EDITOR.prependFormFieldNamesUENC = "' . rawurlencode($this->prependFormFieldNames) . '";
-			TBE_EDITOR.prependFormFieldNamesCnt = ' . substr_count($this->prependFormFieldNames, '[') . ';
 			TBE_EDITOR.isPalettedoc = null;
 			TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";
 			TBE_EDITOR.labels.fieldsChanged = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsChanged')) . ';

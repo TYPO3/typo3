@@ -40,10 +40,9 @@ class InlineRelatedRecordResolver {
 	 * @param array $PA An array with additional configuration options.
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
 	 * @param integer $inlineFirstPid Inline first pid
-	 * @param string $prependFormFieldNames General prefix of forms
 	 * @return array The records related to the parent item as associative array.
 	 */
-	public function getRelatedRecords($table, $field, $row, $PA, $config, $inlineFirstPid, $prependFormFieldNames) {
+	public function getRelatedRecords($table, $field, $row, $PA, $config, $inlineFirstPid) {
 		$language = 0;
 		$elements = $PA['itemFormElValue'];
 		$foreignTable = $config['foreign_table'];
@@ -64,7 +63,7 @@ class InlineRelatedRecordResolver {
 
 					// Checks if it is a flexform field
 					if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex') {
-						$flexFormParts = FormEngineUtility::extractFlexFormParts($PA['itemFormElName'], $prependFormFieldNames);
+						$flexFormParts = FormEngineUtility::extractFlexFormParts($PA['itemFormElName']);
 						$flexData = GeneralUtility::xml2array($fieldValue);
 						/** @var  $flexFormTools  FlexFormTools */
 						$flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);

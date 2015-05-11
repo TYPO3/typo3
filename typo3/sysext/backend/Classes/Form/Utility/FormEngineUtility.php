@@ -546,17 +546,15 @@ class FormEngineUtility {
 	 * Helper method used in inline
 	 *
 	 * @param string $formElementName The form element name
-	 * @param string $prependFormFieldNames Prepended form field name
 	 * @return array|NULL
 	 * @internal
 	 */
-	static public function extractFlexFormParts($formElementName, $prependFormFieldNames) {
+	static public function extractFlexFormParts($formElementName) {
 		$flexFormParts = NULL;
 
 		$matches = array();
-		$prefix = preg_quote($prependFormFieldNames, '#');
 
-		if (preg_match('#^' . $prefix . '(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
+		if (preg_match('#^data(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
 			$flexFormParts = GeneralUtility::trimExplode(
 				'][',
 				trim($matches[1], '[]')

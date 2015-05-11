@@ -89,7 +89,7 @@ class InlineRecordContainer extends AbstractContainer {
 
 		// Send a mapping information to the browser via JSON:
 		// e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
-		$formPrefix = $inlineStackProcessor->getCurrentStructureFormPrefix($this->globalOptions['prependFormFieldNames']);
+		$formPrefix = $inlineStackProcessor->getCurrentStructureFormPrefix();
 		$domObjectId = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
 		$this->inlineData['map'][$formPrefix] = $domObjectId;
 
@@ -151,18 +151,18 @@ class InlineRecordContainer extends AbstractContainer {
 				$top = $this->inlineStackProcessor->getStructureLevel(0);
 				$ucFieldName = 'uc[inlineView][' . $top['table'] . '][' . $top['uid'] . ']' . $appendFormFieldNames;
 				// Set additional fields for processing for saving
-				$html .= '<input type="hidden" name="' . $this->globalOptions['prependFormFieldNames'] . $appendFormFieldNames . '[pid]" value="' . $record['pid'] . '"/>';
+				$html .= '<input type="hidden" name="data' . $appendFormFieldNames . '[pid]" value="' . $record['pid'] . '"/>';
 				$html .= '<input type="hidden" name="' . $ucFieldName . '" value="' . $isExpanded . '" />';
 			} else {
 				// Set additional field for processing for saving
-				$html .= '<input type="hidden" name="' . $this->globalOptions['prependCmdFieldNames'] . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
+				$html .= '<input type="hidden" name="cmd' . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
 				if (!$isExpanded
 					&& !empty($GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'])
 					&& $ajaxLoad
 				) {
 					$checked = !empty($record['hidden']) ? ' checked="checked"' : '';
-					$html .= '<input type="checkbox" name="' . $this->globalOptions['prependFormFieldNames'] . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
-					$html .= '<input type="input" name="' . $this->globalOptions['prependFormFieldNames'] . $appendFormFieldNames . '[hidden]" value="' . $record['hidden'] . '" />';
+					$html .= '<input type="checkbox" name="data' . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
+					$html .= '<input type="input" name="data' . $appendFormFieldNames . '[hidden]" value="' . $record['hidden'] . '" />';
 				}
 			}
 			// If this record should be shown collapsed
@@ -264,12 +264,12 @@ class InlineRecordContainer extends AbstractContainer {
 
 			// If this is a new record, add a pid value to store this record and the pointer value for the intermediate table
 			if ($isNewRecord) {
-				$comboFormFieldName = $this->globalOptions['prependFormFieldNames'] . '[' . $comboConfig['foreign_table'] . '][' . $comboRecord['uid'] . '][pid]';
+				$comboFormFieldName = 'data[' . $comboConfig['foreign_table'] . '][' . $comboRecord['uid'] . '][pid]';
 				$resultArray['html'] .= '<input type="hidden" name="' . $comboFormFieldName . '" value="' . $comboRecord['pid'] . '" />';
 			}
 			// If the foreign_selector field is also responsible for uniqueness, tell the browser the uid of the "other" side of the relation
 			if ($isNewRecord || $config['foreign_unique'] === $foreign_selector) {
-				$parentFormFieldName = $this->globalOptions['prependFormFieldNames'] . $appendFormFieldNames . '[' . $foreign_selector . ']';
+				$parentFormFieldName = 'data' . $appendFormFieldNames . '[' . $foreign_selector . ']';
 				$resultArray['html'] .= '<input type="hidden" name="' . $parentFormFieldName . '" value="' . $comboRecord['uid'] . '" />';
 			}
 		}

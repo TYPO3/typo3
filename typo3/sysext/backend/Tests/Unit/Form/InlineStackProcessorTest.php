@@ -72,7 +72,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
@@ -92,7 +92,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
@@ -113,7 +113,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-parentTable-parentUid-parentField',
 				),
 			),
@@ -137,7 +137,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
@@ -162,7 +162,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
@@ -188,7 +188,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField-parentTable-parentUid-parentField',
 				),
 			),
@@ -216,7 +216,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 					),
 				),
 				array(
-					'form' => 'pageId[parentTable][parentUid][parentField]',
+					'form' => 'data[parentTable][parentUid][parentField]',
 					'object' => 'data-pageId-grandParentTable-grandParentUid-grandParentField---data---sDEF---lDEF---grandParentFlexForm---vDEF-parentTable-parentUid-parentField',
 				),
 			),
@@ -243,7 +243,7 @@ class InlineStackProcessorTest extends UnitTestCase {
 		/** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
 		$subject = new InlineStackProcessor;
 		$subject->initializeByParsingDomObjectIdString($string, FALSE);
-		$this->assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix('pageId'));
+		$this->assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
 	}
 
 	/**

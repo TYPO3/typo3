@@ -136,7 +136,6 @@ class FlexFormElementContainer extends AbstractContainer {
 				$fakeParameterArray['onFocus'] = $parameterArray['onFocus'];
 				$fakeParameterArray['label'] = $parameterArray['label'];
 				$fakeParameterArray['itemFormElName'] = $parameterArray['itemFormElName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
-				$fakeParameterArray['itemFormElName_file'] = $parameterArray['itemFormElName_file'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
 				$fakeParameterArray['itemFormElID'] = $fakeParameterArray['itemFormElName'];
 				if (isset($flexFormRowData[$flexFormFieldName][$vDEFkey])) {
 					$fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName][$vDEFkey];
@@ -146,6 +145,7 @@ class FlexFormElementContainer extends AbstractContainer {
 
 				$options = $this->globalOptions;
 				$options['parameterArray'] = $fakeParameterArray;
+				$options['elementBaseName'] = $this->globalOptions['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 				$child = $nodeFactory->create($flexFormFieldArray['TCEforms']['config']['type']);

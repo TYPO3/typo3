@@ -71,27 +71,18 @@ class FormDataTraverser {
 	protected $inlineFirstPid;
 
 	/**
-	 * General prefix of forms
-	 *
-	 * @var string
-	 */
-	protected $prependFormFieldNames;
-
-	/**
 	 * Traverses the array of given field names by using the TCA.
 	 *
 	 * @param array $fieldNameArray The field names that should be traversed.
 	 * @param string $tableName The starting table name.
 	 * @param array $row The starting record row.
 	 * @param int $inlineFirstPid Inline first pid
-	 * @param string $prependFormFieldNames General prefix of forms
 	 * @return mixed The value of the last field in the chain.
 	 */
-	public function getTraversedFieldValue(array $fieldNameArray, $tableName, array $row, $inlineFirstPid, $prependFormFieldNames) {
+	public function getTraversedFieldValue(array $fieldNameArray, $tableName, array $row, $inlineFirstPid) {
 		$this->currentTable = $tableName;
 		$this->currentRow = $row;
 		$this->inlineFirstPid = $inlineFirstPid;
-		$this->prependFormFieldNames = $prependFormFieldNames;
 		$fieldValue = '';
 		if (count($fieldNameArray) > 0) {
 			$this->initializeOriginalLanguageUid();
@@ -244,7 +235,7 @@ class FormDataTraverser {
 
 		$PA = array('itemFormElValue' => $value);
 		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-		$items = $inlineRelatedRecordResolver->getRelatedRecords($this->currentTable, $fieldName, $this->currentRow, $PA, $fieldConfig, $this->inlineFirstPid, $this->prependFormFieldNames);
+		$items = $inlineRelatedRecordResolver->getRelatedRecords($this->currentTable, $fieldName, $this->currentRow, $PA, $fieldConfig, $this->inlineFirstPid);
 		if ($items['count'] > 0) {
 			$this->currentTable = $fieldConfig['foreign_table'];
 			foreach ($items['records'] as $inlineRecord) {

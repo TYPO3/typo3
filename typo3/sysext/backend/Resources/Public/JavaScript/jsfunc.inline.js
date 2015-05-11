@@ -23,7 +23,6 @@ var inline = {
 	structureSeparator: '-',
 	flexFormSeparator: '---',
 	flexFormSubstitute: ':',
-	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
 	lockedAjaxMethod: {},
 	sourcesLoaded: {},
@@ -37,9 +36,6 @@ var inline = {
 			}
 			TYPO3.jQuery.extend(inline.data[key], value);
 		});
-	},
-	setPrependFormFieldNames: function (value) {
-		this.prependFormFieldNames = value;
 	},
 	setNoTitleString: function (value) {
 		this.noTitleString = value;
@@ -117,7 +113,7 @@ var inline = {
 	},
 	collapseAllRecords: function (objectId, objectPrefix, callingUid) {
 		// get the form field, where all records are stored
-		var objectName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 2, true);
+		var objectName = 'data' + this.parseObjectId('parts', objectId, 3, 2, true);
 		var formObj = document.getElementsByName(objectName);
 		var collapse = [];
 
@@ -431,9 +427,9 @@ var inline = {
 			return;
 		}
 
-		var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
+		var formName = 'data' + this.parseObjectId('parts', objectId, 3, 1, true);
 		var formObj = document.getElementsByName(formName);
-		var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
+		var recordObj = document.getElementsByName('data[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
 		var values = this.getValuesFromHashMap(unique.used);
 		if (recordObj.length) {
 			if (recordObj[0].hasOwnProperty('options')) {
@@ -458,9 +454,9 @@ var inline = {
 		var unique = this.data.unique[objectId];
 		if (unique.type == 'select') {
 			if (!(unique.selector && unique.max == -1)) {
-				var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 1, true);
+				var formName = 'data' + this.parseObjectId('parts', objectId, 3, 1, true);
 				var formObj = document.getElementsByName(formName);
-				var recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
+				var recordObj = document.getElementsByName('data[' + unique.table + '][' + recordUid + '][' + unique.field + ']');
 				var values = this.getValuesFromHashMap(unique.used);
 				if ($selector.length) {
 					// remove all items from the new select-item which are already used in other children
@@ -489,7 +485,7 @@ var inline = {
 				if (formObj.length && selectedValue) {
 					var records = formObj[0].value.split(',');
 					for (var i = 0; i < records.length; i++) {
-						recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
+						recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
 						if (recordObj.length && records[i] != recordUid) {
 							var $recordObject = TYPO3.jQuery(recordObj[0]);
 							this.removeSelectOption($recordObject, selectedValue);
@@ -617,7 +613,7 @@ var inline = {
 	},
 
 	changeSorting: function (objectId, direction) {
-		var objectName = this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 2, true);
+		var objectName = 'data' + this.parseObjectId('parts', objectId, 3, 2, true);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var formObj = document.getElementsByName(objectName);
 
@@ -659,7 +655,7 @@ var inline = {
 
 	dragAndDropSorting: function (element) {
 		var objectId = element.getAttribute('id').replace(/_records$/, '');
-		var objectName = inline.prependFormFieldNames + inline.parseObjectId('parts', objectId, 3, 0, true);
+		var objectName = 'data' + inline.parseObjectId('parts', objectId, 3, 0, true);
 		var formObj = document.getElementsByName(objectName);
 		var $element = TYPO3.jQuery(element);
 
@@ -730,7 +726,7 @@ var inline = {
 		// if no records were passed, fetch them from form field
 		if (typeof records == 'undefined') {
 			records = [];
-			var objectName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
+			var objectName = 'data' + this.parseObjectId('parts', objectPrefix, 3, 1, true);
 			var formObj = document.getElementsByName(objectName);
 			if (formObj.length) {
 				records = formObj[0].value.split(',');
@@ -757,7 +753,7 @@ var inline = {
 
 	memorizeAddRecord: function (objectPrefix, newUid, afterUid, selectedValue) {
 		if (this.isBelowMax(objectPrefix)) {
-			var objectName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
+			var objectName = 'data' + this.parseObjectId('parts', objectPrefix, 3, 1, true);
 			var formObj = document.getElementsByName(objectName);
 
 			if (formObj.length) {
@@ -849,7 +845,7 @@ var inline = {
 		var records = formObj[0].value.split(',');
 		var recordObj;
 		for (var i = 0; i < records.length; i++) {
-			recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
+			recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
 			if (recordObj.length && recordObj[0] != srcElement) {
 				var $recordObject = TYPO3.jQuery(recordObj[0]);
 				this.removeSelectOption($recordObject, srcElement.value);
@@ -887,7 +883,7 @@ var inline = {
 				return;
 			}
 
-			var formName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
+			var formName = 'data' + this.parseObjectId('parts', objectPrefix, 3, 1, true);
 			var formObj = document.getElementsByName(formName);
 			if (!formObj.length) {
 				return;
@@ -897,7 +893,7 @@ var inline = {
 			var recordObj;
 			// walk through all inline records on that level and get the select field
 			for (var i = 0; i < records.length; i++) {
-				recordObj = document.getElementsByName(this.prependFormFieldNames + '[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
+				recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
 				if (recordObj.length) {
 					var $recordObject = TYPO3.jQuery(recordObj[0]);
 					this.readdSelectOption($recordObject, fieldObj[0].value, unique);
@@ -963,11 +959,11 @@ var inline = {
 					childObjectId = this.data.map[inlineRecords.get(i).name];
 					childTable = this.data.config[childObjectId].table;
 					for (j = records.length - 1; j >= 0; j--) {
-						removeStack.push(this.prependFormFieldNames + '[' + childTable + '][' + records[j] + ']');
+						removeStack.push('data[' + childTable + '][' + records[j] + ']');
 					}
 				}
 			}
-			removeStack.push(this.prependFormFieldNames + shortName);
+			removeStack.push('data' + shortName);
 			TBE_EDITOR.removeElementArray(removeStack);
 		}
 
@@ -984,7 +980,7 @@ var inline = {
 		}
 
 		var recordCount = this.memorizeRemoveRecord(
-			this.prependFormFieldNames + this.parseObjectId('parts', objectId, 3, 2, true),
+			'data' + this.parseObjectId('parts', objectId, 3, 2, true),
 			recordUid
 		);
 
@@ -1063,7 +1059,7 @@ var inline = {
 		var elReturn;
 
 		if (wrap == 'full') {
-			elReturn = this.prependFormFieldNames + '[' + parts.join('][') + ']';
+			elReturn = 'data[' + parts.join('][') + ']';
 			elReturn = elReturn.split(this.flexFormSubstitute).join('][');
 		} else if (wrap == 'parts') {
 			elReturn = '[' + parts.join('][') + ']';
@@ -1079,7 +1075,7 @@ var inline = {
 		var elReturn;
 
 		if (wrap == 'full') {
-			elReturn = this.prependFormFieldNames + this.structureSeparator + parts.join(this.structureSeparator);
+			elReturn = 'data' + this.structureSeparator + parts.join(this.structureSeparator);
 			elReturn = elReturn.split(this.flexFormSubstitute).join(this.flexFormSeparator);
 		} else if (wrap == 'parts') {
 			elReturn = this.structureSeparator + parts.join(this.structureSeparator);
@@ -1164,7 +1160,7 @@ var inline = {
 
 	isBelowMax: function (objectPrefix) {
 		var isBelowMax = true;
-		var objectName = this.prependFormFieldNames + this.parseObjectId('parts', objectPrefix, 3, 1, true);
+		var objectName = 'data' + this.parseObjectId('parts', objectPrefix, 3, 1, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (this.data.config && this.data.config[objectPrefix] && formObj.length) {

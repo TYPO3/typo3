@@ -150,15 +150,14 @@ class InlineStackProcessor {
 	/**
 	 * Prefix for inline form fields
 	 *
-	 * @param string $prependFormFieldNames General prefix of forms
 	 * @return string
 	 */
-	public function getCurrentStructureFormPrefix($prependFormFieldNames) {
+	public function getCurrentStructureFormPrefix() {
 		$current = $this->getStructureLevel(-1);
 		$inlineFormName = '';
 		// If there are still more inline levels available
 		if ($current !== FALSE) {
-			$inlineFormName = $prependFormFieldNames . $this->getStructureItemName($current, 'Disposal_AttributeName');
+			$inlineFormName = 'data' . $this->getStructureItemName($current, 'Disposal_AttributeName');
 		}
 		return $inlineFormName;
 	}

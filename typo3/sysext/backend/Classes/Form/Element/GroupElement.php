@@ -218,7 +218,7 @@ class GroupElement extends AbstractFormElement {
 						$html .= '
 							<div id="' . $parameterArray['itemFormElID_file'] . '">
 								<input type="file"' . $multipleAttribute . '
-									name="' . $parameterArray['itemFormElName_file'] . $multipleFilenameSuffix . '"
+									name="data_files' . $this->globalOptions['elementBaseName'] . $multipleFilenameSuffix . '"
 									size="35" onchange="' . implode('', $parameterArray['fieldChangeFunc']) . '"
 								/>
 							</div>';

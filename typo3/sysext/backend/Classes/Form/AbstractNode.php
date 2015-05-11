@@ -137,7 +137,7 @@ abstract class AbstractNode {
 			/** @var FormDataTraverser $traverser */
 			$traverseFields = GeneralUtility::trimExplode('|', substr($value, 6));
 			$traverser = GeneralUtility::makeInstance(FormDataTraverser::class);
-			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row, $this->globalOptions['inlineFirstPid'], $this->globalOptions['prependFormFieldNames']);
+			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row, $this->globalOptions['inlineFirstPid']);
 		}
 
 		return $value;
