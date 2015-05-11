@@ -2828,11 +2828,16 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 			} elseif ($tempFT) {
 				$onlySingleTableAllowed = count($tempFT) == 1;
 				foreach ($tempFT as $theT) {
-					$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT) . '\'); return false;';
-					$info .= '<span class="nobr">
-									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'
-						. IconUtility::getSpriteIconForRecord($theT, array())
-						. htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) . '</a></span><br />';
+					$label = IconUtility::getSpriteIconForRecord($theT, array())
+							. htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title']));
+					if (empty($config['readOnly'])) {
+						$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT) . '\'); return false;';
+						$info .= '<span class="nobr"><a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'
+							. $label . '</a></span>';
+					} else {
+						$info .= '<span class="nobr">' . $label . '</span>';
+					}
+					$info .= '<br />';
 				}
 			}
 			$perms_clause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
