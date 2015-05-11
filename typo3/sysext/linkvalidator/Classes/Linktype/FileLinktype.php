@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+
 /**
  * This class provides Check File Links plugin implementation
  *
@@ -21,6 +24,21 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
+
+	/**
+	 * Type fetching method, based on the type that softRefParserObj returns
+	 *
+	 * @param array $value Reference properties
+	 * @param string $type Current type
+	 * @param string $key Validator hook name
+	 * @return string fetched type
+	 */
+	public function fetchType($value, $type, $key) {
+		if (GeneralUtility::isFirstPartOfStr(strtolower($value['tokenValue']), 'file:')) {
+			$type = 'file';
+		}
+		return $type;
+	}
 
 	/**
 	 * Checks a given URL + /path/filename.ext for validity
@@ -31,10 +49,13 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
-		if (!@file_exists((PATH_site . rawurldecode($url)))) {
+		$resourceFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		try {
+			$file = $resourceFactory->retrieveFileOrFolderObject($url);
+		} catch (FileDoesNotExistException $e) {
 			return FALSE;
 		}
-		return TRUE;
+		return !$file->isMissing();
 	}
 
 	/**
