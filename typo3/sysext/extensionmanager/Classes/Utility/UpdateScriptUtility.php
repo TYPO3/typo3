@@ -99,16 +99,17 @@ class UpdateScriptUtility {
 			// check if it has a namespace
 			if (!preg_match('/<\?php.*namespace\s+([^;]+);.*class/is', $scriptSourceCode, $matches)) {
 				// if no, rename the class with a unique name
-				$className = uniqid('ext_update');
-				$scriptSourceCode = preg_replace('/^\s*class\s+ext_update\s+/m', 'class ' . $className . ' ', $scriptSourceCode);
+				$className = 'ext_update' . md5($extensionKey . $scriptSourceCode);
+				$temporaryFileName = PATH_site . 'typo3temp/ExtensionManager/UpdateScripts/' . $className . '.php';
+				if (!file_exists(GeneralUtility::getFileAbsFileName($temporaryFileName))) {
+					$scriptSourceCode = preg_replace('/^\s*class\s+ext_update\s+/m', 'class ' . $className . ' ', $scriptSourceCode);
+					GeneralUtility::writeFileToTypo3tempDir($temporaryFileName, $scriptSourceCode);
+				}
+				$updateScript = $temporaryFileName;
 			} else {
 				$className = $matches[1] . '\ext_update';
 			}
-			// load class and call access function
-			if (!preg_match('/\?>$/is', $scriptSourceCode)) {
-				$scriptSourceCode .= '?>';
-			}
-			eval('?>' . $scriptSourceCode . '<?php ');
+			@include_once $updateScript;
 			if (!class_exists($className)) {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
 					sprintf('class.ext_update.php of extension "%s" did not declare ext_update class', $extensionKey),
