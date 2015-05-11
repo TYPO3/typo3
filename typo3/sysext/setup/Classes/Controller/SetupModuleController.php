@@ -668,19 +668,18 @@ class SetupModuleController {
 	 * @return string Complete select as HTML string
 	 */
 	public function renderStartModuleSelect($params, $pObj) {
-		// Start module select
-		if (empty($this->getBackendUser()->uc['startModule'])) {
-			$this->getBackendUser()->uc['startModule'] = $this->getBackendUser()->uc_default['startModule'];
-		}
-		$startModuleSelect = '<option value=""></option>';
+		$startModuleSelect = '<option value="">' . $this->getLanguageService()->getLL('startModule.firstInMenu', TRUE) . '</option>';
 		foreach ($pObj->loadModules->modules as $mainMod => $modData) {
-			if (isset($modData['sub']) && is_array($modData['sub'])) {
-				$startModuleSelect .= '<option disabled="disabled">' . $this->getLanguageService()->moduleLabels['tabs'][($mainMod . '_tab')] . '</option>';
-				foreach ($modData['sub'] as $subKey => $subData) {
+			if (!empty($modData['sub']) && is_array($modData['sub'])) {
+				$modules = '';
+				foreach ($modData['sub'] as $subData) {
 					$modName = $subData['name'];
-					$startModuleSelect .= '<option value="' . $modName . '"' . ($this->getBackendUser()->uc['startModule'] == $modName ? ' selected="selected"' : '') . '>';
-					$startModuleSelect .= ' - ' . $this->getLanguageService()->moduleLabels['tabs'][($modName . '_tab')] . '</option>';
+					$modules .= '<option value="' . htmlspecialchars($modName) . '"';
+					$modules .= $this->getBackendUser()->uc['startModule'] === $modName ? ' selected="selected"' : '';
+					$modules .=  '>' . $this->getLanguageService()->moduleLabels['tabs'][$modName . '_tab'] . '</option>';
 				}
+				$groupLabel = $this->getLanguageService()->moduleLabels['tabs'][$mainMod . '_tab'];
+				$startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
 			}
 		}
 		return '<select id="field_startModule" name="data[startModule]" class="form-control">' . $startModuleSelect . '</select>';

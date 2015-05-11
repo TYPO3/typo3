@@ -420,6 +420,9 @@
 			<trans-unit id="debugInWindow">
 				<source>Display debug messages in a new browser window</source>
 			</trans-unit>
+			<trans-unit id="startModule.firstInMenu">
+				<source>- First module in menu -</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
