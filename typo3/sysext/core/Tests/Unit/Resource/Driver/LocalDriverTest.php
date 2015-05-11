@@ -1490,7 +1490,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			$closure,
 		);
 
-		$this->createDriver()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+		$this->createDriverFixture()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
 	}
 
 	/**
@@ -1510,7 +1510,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$filterMethods = array(
 			$method,
 		);
-		$this->createDriver()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
+		$this->createDriverFixture()->_call('applyFilterMethodsToDirectoryItem', $filterMethods, '', '', '');
 	}
 
 }
