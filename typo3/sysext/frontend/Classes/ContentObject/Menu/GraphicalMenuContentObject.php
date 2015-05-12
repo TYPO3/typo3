@@ -257,7 +257,6 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				$gifCreator->output($this->result[$resKey][$key]['output_file']);
 				$gifCreator->destroy();
 			}
-			$this->result[$resKey][$key]['output_file'] = GraphicalFunctions::pngToGifByImagemagick($this->result[$resKey][$key]['output_file']);
 			// counter is increased
 			$Hcounter += $this->result[$resKey][$key]['output_h'];
 			// counter is increased

@@ -175,7 +175,6 @@ class TextMenuContentObject extends AbstractMenuContentObject {
 	public function getBeforeAfter($pref) {
 		$res = '';
 		if ($imgInfo = $this->WMcObj->getImgResource($this->I['val'][$pref . 'Img'], $this->I['val'][$pref . 'Img.'])) {
-			$imgInfo[3] = GraphicalFunctions::pngToGifByImagemagick($imgInfo[3]);
 			$theName = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'] . $pref;
 			$name = ' ' . $this->nameAttribute . '="' . $theName . '"';
 			$GLOBALS['TSFE']->imagesOnPage[] = $imgInfo[3];

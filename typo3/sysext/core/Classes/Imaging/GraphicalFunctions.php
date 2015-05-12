@@ -2623,27 +2623,10 @@ class GraphicalFunctions {
 	 *
 	 * @param string $theFile The filename with path
 	 * @return string New filename or the old file name if no conversion happened
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, as the png_to_gif option has been removed with TYPO3 CMS 7
 	 */
 	static public function pngToGifByImagemagick($theFile) {
-		if (!$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif']
-			|| !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']
-			|| !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']
-			|| strtolower(substr($theFile, -4, 4)) !== '.png'
-			|| !@is_file($theFile)
-		) {
-			return $theFile;
-		}
-
-		$newFile = substr($theFile, 0, -4) . '.gif';
-		$cmd = GeneralUtility::imageMagickCommand(
-			'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']
-		);
-		CommandUtility::exec($cmd);
-		$theFile = $newFile;
-		if (@is_file($newFile)) {
-			GeneralUtility::fixPermissions($newFile);
-		}
-
+		GeneralUtility::logDeprecatedFunction();
 		return $theFile;
 	}
 

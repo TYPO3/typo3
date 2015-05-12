@@ -87,7 +87,9 @@ class SilentConfigurationUpgradeService {
 		// #66902
 		'SYS/loginCopyrightShowVersion',
 		// #66903
-		'BE/RTEenabled'
+		'BE/RTEenabled',
+		// #66906
+		'GFX/png_to_gif',
 	);
 
 	/**

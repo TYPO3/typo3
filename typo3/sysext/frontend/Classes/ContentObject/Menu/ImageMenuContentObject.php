@@ -216,7 +216,6 @@ class ImageMenuContentObject extends AbstractMenuContentObject {
 					$cache->set($imgHash, $imgMap, array('ident_MENUIMAGEMAP'), 0);
 				}
 				$imgMap .= $this->mconf['imgMapExtras'];
-				$gifFileName = GraphicalFunctions::pngToGifByImagemagick($gifFileName);
 				$this->result = array('output_file' => $gifFileName, 'output_w' => $w, 'output_h' => $h, 'imgMap' => $imgMap);
 			}
 		}

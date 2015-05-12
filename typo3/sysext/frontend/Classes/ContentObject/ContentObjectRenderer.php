@@ -1474,8 +1474,7 @@ class ContentObjectRenderer {
 			return '';
 		}
 		if (is_file(PATH_site . $info['3'])) {
-			$source = GeneralUtility::rawUrlEncodeFP(GraphicalFunctions::pngToGifByImagemagick($info[3]));
-			$source = $GLOBALS['TSFE']->absRefPrefix . $source;
+			$source = $GLOBALS['TSFE']->absRefPrefix . GeneralUtility::rawUrlEncodeFP($info['3']);
 		} else {
 			$source = $info[3];
 		}
