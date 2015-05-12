@@ -4,16 +4,14 @@
 			<div class="typo3-module-menu-group-header">
 				<span class="typo3-app-icon typo3-module-menu-group-icon">
 					<span>
-						<span>
-							<f:if condition="{mainModule.icon}">
-								<f:then>
-									<f:format.raw>{mainModule.icon}</f:format.raw>
-								</f:then>
-								<f:else>
-									<i class="fa fa-bars"></i>
-								</f:else>
-							</f:if>
-						</span>
+						<f:if condition="{mainModule.icon}">
+							<f:then>
+								<f:format.raw>{mainModule.icon}</f:format.raw>
+							</f:then>
+							<f:else>
+								<span><i class="fa fa-bars"></i></span>
+							</f:else>
+						</f:if>
 					</span>
 				</span>
 				<span class="typo3-module-menu-group-title">
