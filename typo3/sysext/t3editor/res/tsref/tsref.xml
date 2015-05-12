@@ -783,7 +783,7 @@ The conditions for allowing client caching are:
 page was cachedNo *_INT or *_EXT objects were on the page (eg. USER_INT)No frontend user is logged inNo backend user is logged in
 
 If these conditions are met, the headers sent are:
-Last-Modified [SYS_LASTCHANGED of page id]Expires [expire time of page cache]Etag [md5 of content]Cache-Control: max-age: [seconds til expiretime]Pragma: public
+Last-Modified [SYS_LASTCHANGED of page id]Expires [expire time of page cache]ETag [md5 of content]Cache-Control: max-age: [seconds til expiretime]Pragma: public
 
 In case caching is not allowed, these headers are sent to avoid client caching:
 Cache-Control: private
