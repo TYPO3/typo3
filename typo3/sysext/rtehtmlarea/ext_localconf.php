@@ -1,10 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled'] = 1;
-}
-
 // Registering the RTE object
 $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg']['rtehtmlarea'] = array('objRef' => '&TYPO3\\CMS\\Rtehtmlarea\\RteHtmlAreaBase');
 

@@ -85,7 +85,9 @@ class SilentConfigurationUpgradeService {
 		// #66034
 		'FE/activateContentAdapter',
 		// #66902
-		'SYS/loginCopyrightShowVersion'
+		'SYS/loginCopyrightShowVersion',
+		// #66903
+		'BE/RTEenabled'
 	);
 
 	/**

@@ -570,9 +570,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if (!$this->uc['edit_RTE']) {
 			$this->RTE_errors[] = 'RTE is not enabled for user!';
 		}
-		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
-			$this->RTE_errors[] = 'RTE is not enabled in $TYPO3_CONF_VARS["BE"]["RTEenabled"]';
-		}
 		// Acquire RTE object:
 		$RTE = BackendUtility::RTEgetObj();
 		if (!is_object($RTE)) {

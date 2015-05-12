@@ -816,13 +816,7 @@ class SetupModuleController {
 	 * @return array Array with fieldnames visible in form
 	 */
 	protected function getFieldsFromShowItem() {
-		$fieldList = $GLOBALS['TYPO3_USER_SETTINGS']['showitem'];
-		// Disable fields depended on settings
-		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
-			$fieldList = GeneralUtility::rmFromList('edit_RTE', $fieldList);
-		}
-		$fieldArray = GeneralUtility::trimExplode(',', $fieldList, TRUE);
-		return $fieldArray;
+		return GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], TRUE);
 	}
 
 	/**
