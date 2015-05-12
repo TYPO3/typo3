@@ -2803,7 +2803,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	public function setExternalJumpUrl() {
-		if ($extUrl = $this->sys_page->getExtURL($this->page, $this->config['config']['disablePageExternalUrl'])) {
+		if ((bool)$this->config['config']['disablePageExternalUrl'] === FALSE && $extUrl = $this->sys_page->getExtURL($this->page)) {
 			$this->jumpurl = $extUrl;
 			GeneralUtility::_GETset(GeneralUtility::hmac($this->jumpurl, 'jumpurl'), 'juHash');
 		}

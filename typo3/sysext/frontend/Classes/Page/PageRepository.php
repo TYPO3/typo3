@@ -717,12 +717,16 @@ class PageRepository {
 	 * disabled.
 	 *
 	 * @param array $pagerow The page row to return URL type for
-	 * @param bool $disable A flag to simply disable any output from here.
+	 * @param bool $disable A flag to simply disable any output from here. - deprecated - don't use anymore.
 	 * @return string The URL type from $this->urltypes array. False if not found or disabled.
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()
 	 */
-	public function getExtURL($pagerow, $disable = 0) {
-		if ((int)$pagerow['doktype'] === self::DOKTYPE_LINK && !$disable) {
+	public function getExtURL($pagerow, $disable = FALSE) {
+		if ($disable !== FALSE) {
+			GeneralUtility::deprecationLog('The disable option of PageRepository::getExtUrl() is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+			return FALSE;
+		}
+		if ((int)$pagerow['doktype'] === self::DOKTYPE_LINK) {
 			$redirectTo = $this->urltypes[$pagerow['urltype']] . $pagerow['url'];
 			// If relative path, prefix Site URL:
 			$uI = parse_url($redirectTo);
