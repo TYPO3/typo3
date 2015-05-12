@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+
 /**
  * Parser for PHP locallang array.
  *
@@ -54,10 +58,9 @@ class LocallangArrayParser implements LocalizationParserInterface {
 	 * Initializes the parser.
 	 *
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Use xlf format for parsing translations
-	 * @return void
 	 */
 	public function __construct() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		GeneralUtility::logDeprecatedFunction();
 		$this->createCsConvObject();
 	}
 
@@ -114,7 +117,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 		} elseif (is_object($GLOBALS['TSFE'])) {
 			$this->csConvObj = $GLOBALS['TSFE']->csConvObj;
 		} else {
-			$this->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+			$this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
 		}
 	}
 
@@ -131,7 +134,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 		// Get PHP data
 		include $sourcePath;
 		if (!is_array($LOCAL_LANG)) {
-			$fileName = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($sourcePath);
+			$fileName = PathUtility::stripPathSitePrefix($sourcePath);
 			throw new \RuntimeException('TYPO3 Fatal Error: "' . $fileName . '" is no TYPO3 language file!', 1308898491);
 		}
 		// Converting the default language (English)
@@ -142,7 +145,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 			}
 			unset($labelValue);
 		}
-		if ($languageKey !== 'default' && is_array($LOCAL_LANG[$languageKey]) && $this->sourceCharset != $this->targetCharset) {
+		if ($languageKey !== 'default' && is_array($LOCAL_LANG[$languageKey]) && $this->sourceCharset !== $this->targetCharset) {
 			foreach ($LOCAL_LANG[$languageKey] as &$labelValue) {
 				$labelValue = $this->csConvObj->conv($labelValue, $this->sourceCharset, $this->targetCharset);
 			}
@@ -154,7 +157,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 		} else {
 			$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default']));
 		}
-		$res = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($this->cacheFileName, serialize($serContent));
+		$res = GeneralUtility::writeFileToTypo3tempDir($this->cacheFileName, serialize($serContent));
 		if ($res) {
 			throw new \RuntimeException('TYPO3 Fatal Error: "' . $res, 1308898501);
 		}
@@ -169,8 +172,8 @@ class LocallangArrayParser implements LocalizationParserInterface {
 	 * @return void
 	 */
 	protected function generateCacheFileName($sourcePath, $languageKey) {
-		$this->hashSource = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($sourcePath) . '|' . date('d-m-Y H:i:s', filemtime($sourcePath)) . '|version=2.3';
-		$this->cacheFileName = PATH_site . 'typo3temp/llxml/' . substr(basename($sourcePath), 10, 15) . '_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($this->hashSource) . '.' . $languageKey . '.' . $this->targetCharset . '.cache';
+		$this->hashSource = PathUtility::stripPathSitePrefix($sourcePath) . '|' . date('d-m-Y H:i:s', filemtime($sourcePath)) . '|version=2.3';
+		$this->cacheFileName = PATH_site . 'typo3temp/llxml/' . substr(basename($sourcePath), 10, 15) . '_' . GeneralUtility::shortMD5($this->hashSource) . '.' . $languageKey . '.' . $this->targetCharset . '.cache';
 	}
 
 	/**
@@ -191,7 +194,7 @@ class LocallangArrayParser implements LocalizationParserInterface {
 	 * @return bool
 	 */
 	protected function isWithinWebRoot($fileName) {
-		return (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
+		return (bool)GeneralUtility::getFileAbsFileName($fileName);
 	}
 
 	/**

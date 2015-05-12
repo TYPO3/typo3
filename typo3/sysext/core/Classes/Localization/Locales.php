@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Core\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Locales.
  *
@@ -91,51 +94,35 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	);
 
 	/**
-	 * Mapping with codes used by TYPO3 4.5 and below
+	 * Reversed mapping with codes used by TYPO3 4.5 and below
 	 *
 	 * @var array
 	 */
 	protected $isoReverseMapping = array(
-		'bs' => 'ba',
-		// Bosnian
-		'cs' => 'cz',
-		// Czech
-		'da' => 'dk',
-		// Danish
-		'el' => 'gr',
-		// Greek
-		'fr_CA' => 'qc',
-		// French (Canada)
-		'gl' => 'ga',
-		// Galician
-		'ja' => 'jp',
-		// Japanese
-		'ka' => 'ge',
-		// Georgian
-		'kl' => 'gl',
-		// Greenlandic
-		'ko' => 'kr',
-		// Korean
-		'ms' => 'my',
-		// Malay
-		'pt_BR' => 'br',
-		// Portuguese (Brazil)
-		'sl' => 'si',
-		// Slovenian
-		'sv' => 'se',
-		// Swedish
-		'uk' => 'ua',
-		// Ukrainian
-		'vi' => 'vn',
-		// Vietnamese
-		'zh' => 'hk',
-		// Chinese (China)
-		'zh_CN' => 'ch',
-		// Chinese (Simplified)
+		'bs' => 'ba', // Bosnian
+		'cs' => 'cz', // Czech
+		'da' => 'dk', // Danish
+		'el' => 'gr', // Greek
+		'fr_CA' => 'qc', // French (Canada)
+		'gl' => 'ga', // Galician
+		'ja' => 'jp', // Japanese
+		'ka' => 'ge', // Georgian
+		'kl' => 'gl', // Greenlandic
+		'ko' => 'kr', // Korean
+		'ms' => 'my', // Malay
+		'pt_BR' => 'br', // Portuguese (Brazil)
+		'sl' => 'si', // Slovenian
+		'sv' => 'se', // Swedish
+		'uk' => 'ua', // Ukrainian
+		'vi' => 'vn', // Vietnamese
+		'zh' => 'hk', // Chinese (China)
+		'zh_CN' => 'ch', // Chinese (Simplified)
 		'zh_HK' => 'hk'
 	);
 
 	/**
+	 * Mapping with codes used by TYPO3 4.5 and below
+	 *
 	 * @var array
 	 */
 	protected $isoMapping;
@@ -153,8 +140,8 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	static public function initialize() {
-		/** @var $instance \TYPO3\CMS\Core\Localization\Locales */
-		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+		/** @var $instance Locales */
+		$instance = GeneralUtility::makeInstance(Locales::class);
 		$instance->isoMapping = array_flip($instance->isoReverseMapping);
 		// Allow user-defined locales
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'])) {
@@ -167,13 +154,13 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 		// Initializes the locale dependencies with TYPO3 supported locales
 		$instance->localeDependencies = array();
 		foreach ($instance->languages as $locale => $name) {
-			if (strlen($locale) == 5) {
+			if (strlen($locale) === 5) {
 				$instance->localeDependencies[$locale] = array(substr($locale, 0, 2));
 			}
 		}
 		// Merge user-provided locale dependencies
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'])) {
-			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
+			ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
 		}
 	}
 

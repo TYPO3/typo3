@@ -14,8 +14,9 @@ namespace TYPO3\CMS\Core\Charset;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Notes on UTF-8
@@ -102,8 +103,7 @@ class CharsetConverter {
 	 * @var array
 	 */
 	public $fourByteSets = array(
-		'ucs-4' => 1,
-		// 4-byte Unicode
+		'ucs-4' => 1, // 4-byte Unicode
 		'utf-32' => 1
 	);
 
@@ -113,12 +113,9 @@ class CharsetConverter {
 	 * @var array
 	 */
 	public $eucBasedSets = array(
-		'gb2312' => 1,
-		// Chinese, simplified.
-		'big5' => 1,
-		// Chinese, traditional.
-		'euc-kr' => 1,
-		// Korean
+		'gb2312' => 1, // Chinese, simplified.
+		'big5' => 1, // Chinese, traditional.
+		'euc-kr' => 1, // Korean
 		'shift_jis' => 1
 	);
 
@@ -209,7 +206,6 @@ class CharsetConverter {
 		'utf8' => 'utf-8',
 		'utf16' => 'utf-16',
 		'utf32' => 'utf-32',
-		'utf8' => 'utf-8',
 		'ucs2' => 'ucs-2',
 		'ucs4' => 'ucs-4'
 	);
@@ -221,207 +217,119 @@ class CharsetConverter {
 	 */
 	public $lang_to_script = array(
 		// iso-639-1 language codes, see http://www.loc.gov/standards/iso639-2/php/code_list.php
-		'af' => 'west_european',
-		//Afrikaans
+		'af' => 'west_european', // Afrikaans
 		'ar' => 'arabic',
-		'bg' => 'cyrillic',
-		// Bulgarian
-		'bs' => 'east_european',
-		// Bosnian
-		'cs' => 'east_european',
-		// Czech
-		'da' => 'west_european',
-		// Danish
-		'de' => 'west_european',
-		// German
-		'es' => 'west_european',
-		// Spanish
+		'bg' => 'cyrillic', // Bulgarian
+		'bs' => 'east_european', // Bosnian
+		'cs' => 'east_european', // Czech
+		'da' => 'west_european', // Danish
+		'de' => 'west_european', // German
+		'es' => 'west_european', // Spanish
 		'et' => 'estonian',
-		'eo' => 'unicode',
-		// Esperanto
-		'eu' => 'west_european',
-		// Basque
-		'fa' => 'arabic',
-		// Persian
-		'fi' => 'west_european',
-		// Finish
-		'fo' => 'west_european',
-		// Faroese
-		'fr' => 'west_european',
-		// French
-		'ga' => 'west_european',
-		// Irish
-		'gl' => 'west_european',
-		// Galician
+		'eo' => 'unicode', // Esperanto
+		'eu' => 'west_european', // Basque
+		'fa' => 'arabic', // Persian
+		'fi' => 'west_european', // Finish
+		'fo' => 'west_european', // Faroese
+		'fr' => 'west_european', // French
+		'ga' => 'west_european', // Irish
+		'gl' => 'west_european', // Galician
 		'gr' => 'greek',
-		'he' => 'hebrew',
-		// Hebrew (since 1998)
-		'hi' => 'unicode',
-		// Hindi
-		'hr' => 'east_european',
-		// Croatian
-		'hu' => 'east_european',
-		// Hungarian
-		'iw' => 'hebrew',
-		// Hebrew (til 1998)
-		'is' => 'west_european',
-		// Icelandic
-		'it' => 'west_european',
-		// Italian
+		'he' => 'hebrew', // Hebrew (since 1998)
+		'hi' => 'unicode', // Hindi
+		'hr' => 'east_european', // Croatian
+		'hu' => 'east_european', // Hungarian
+		'iw' => 'hebrew', // Hebrew (til 1998)
+		'is' => 'west_european', // Icelandic
+		'it' => 'west_european', // Italian
 		'ja' => 'japanese',
-		'ka' => 'unicode',
-		// Georgian
-		'kl' => 'west_european',
-		// Greenlandic
-		'km' => 'unicode',
-		// Khmer
+		'ka' => 'unicode', // Georgian
+		'kl' => 'west_european', // Greenlandic
+		'km' => 'unicode', // Khmer
 		'ko' => 'korean',
 		'lt' => 'lithuanian',
-		'lv' => 'west_european',
-		// Latvian/Lettish
-		'nl' => 'west_european',
-		// Dutch
-		'no' => 'west_european',
-		// Norwegian
-		'nb' => 'west_european',
-		// Norwegian Bokmal
-		'nn' => 'west_european',
-		// Norwegian Nynorsk
-		'pl' => 'east_european',
-		// Polish
-		'pt' => 'west_european',
-		// Portuguese
-		'ro' => 'east_european',
-		// Romanian
-		'ru' => 'cyrillic',
-		// Russian
-		'sk' => 'east_european',
-		// Slovak
-		'sl' => 'east_european',
-		// Slovenian
-		'sr' => 'cyrillic',
-		// Serbian
-		'sv' => 'west_european',
-		// Swedish
-		'sq' => 'albanian',
-		// Albanian
+		'lv' => 'west_european', // Latvian/Lettish
+		'nl' => 'west_european', // Dutch
+		'no' => 'west_european', // Norwegian
+		'nb' => 'west_european', // Norwegian Bokmal
+		'nn' => 'west_european', // Norwegian Nynorsk
+		'pl' => 'east_european', // Polish
+		'pt' => 'west_european', // Portuguese
+		'ro' => 'east_european', // Romanian
+		'ru' => 'cyrillic', // Russian
+		'sk' => 'east_european', // Slovak
+		'sl' => 'east_european', // Slovenian
+		'sr' => 'cyrillic', // Serbian
+		'sv' => 'west_european', // Swedish
+		'sq' => 'albanian', // Albanian
 		'th' => 'thai',
-		'uk' => 'cyrillic',
-		// Ukranian
+		'uk' => 'cyrillic', // Ukranian
 		'vi' => 'vietnamese',
 		'zh' => 'chinese',
+
 		// MS language codes, see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_language_strings.asp
 		// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/wceinternational5/html/wce50conLanguageIdentifiersandLocales.asp
-		'afk' => 'west_european',
-		// Afrikaans
+		'afk' => 'west_european', // Afrikaans
 		'ara' => 'arabic',
-		'bgr' => 'cyrillic',
-		// Bulgarian
-		'cat' => 'west_european',
-		// Catalan
+		'bgr' => 'cyrillic', // Bulgarian
+		'cat' => 'west_european', // Catalan
 		'chs' => 'simpl_chinese',
 		'cht' => 'trad_chinese',
-		'csy' => 'east_european',
-		// Czech
-		'dan' => 'west_european',
-		// Danisch
-		'deu' => 'west_european',
-		// German
-		'dea' => 'west_european',
-		// German (Austrian)
-		'des' => 'west_european',
-		// German (Swiss)
-		'ena' => 'west_european',
-		// English (Australian)
-		'enc' => 'west_european',
-		// English (Canadian)
-		'eng' => 'west_european',
-		// English
-		'enz' => 'west_european',
-		// English (New Zealand)
-		'enu' => 'west_european',
-		// English (United States)
-		'euq' => 'west_european',
-		// Basque
-		'fos' => 'west_european',
-		// Faroese
-		'far' => 'arabic',
-		// Persian
-		'fin' => 'west_european',
-		// Finish
-		'fra' => 'west_european',
-		// French
-		'frb' => 'west_european',
-		// French (Belgian)
-		'frc' => 'west_european',
-		// French (Canadian)
-		'frs' => 'west_european',
-		// French (Swiss)
-		'geo' => 'unicode',
-		// Georgian
-		'glg' => 'west_european',
-		// Galician
+		'csy' => 'east_european', // Czech
+		'dan' => 'west_european', // Danish
+		'deu' => 'west_european', // German
+		'dea' => 'west_european', // German (Austrian)
+		'des' => 'west_european', // German (Swiss)
+		'ena' => 'west_european', // English (Australian)
+		'enc' => 'west_european', // English (Canadian)
+		'eng' => 'west_european', // English
+		'enz' => 'west_european', // English (New Zealand)
+		'enu' => 'west_european', // English (United States)
+		'euq' => 'west_european', // Basque
+		'fos' => 'west_european', // Faroese
+		'far' => 'arabic', // Persian
+		'fin' => 'west_european', // Finish
+		'fra' => 'west_european', // French
+		'frb' => 'west_european', // French (Belgian)
+		'frc' => 'west_european', // French (Canadian)
+		'frs' => 'west_european', // French (Swiss)
+		'geo' => 'unicode', // Georgian
+		'glg' => 'west_european', // Galician
 		'ell' => 'greek',
 		'heb' => 'hebrew',
-		'hin' => 'unicode',
-		// Hindi
-		'hun' => 'east_european',
-		// Hungarian
-		'isl' => 'west_european',
-		// Icelandic
-		'ita' => 'west_european',
-		// Italian
-		'its' => 'west_european',
-		// Italian (Swiss)
+		'hin' => 'unicode', // Hindi
+		'hun' => 'east_european', // Hungarian
+		'isl' => 'west_european', // Icelandic
+		'ita' => 'west_european', // Italian
+		'its' => 'west_european', // Italian (Swiss)
 		'jpn' => 'japanese',
-		'khm' => 'unicode',
-		// Khmer
+		'khm' => 'unicode', // Khmer
 		'kor' => 'korean',
 		'lth' => 'lithuanian',
-		'lvi' => 'west_european',
-		// Latvian/Lettish
-		'msl' => 'west_european',
-		// Malay
-		'nlb' => 'west_european',
-		// Dutch (Belgian)
-		'nld' => 'west_european',
-		// Dutch
-		'nor' => 'west_european',
-		// Norwegian (bokmal)
-		'non' => 'west_european',
-		// Norwegian (nynorsk)
-		'plk' => 'east_european',
-		// Polish
-		'ptg' => 'west_european',
-		// Portuguese
-		'ptb' => 'west_european',
-		// Portuguese (Brazil)
-		'rom' => 'east_european',
-		// Romanian
-		'rus' => 'cyrillic',
-		// Russian
-		'slv' => 'east_european',
-		// Slovenian
-		'sky' => 'east_european',
-		// Slovak
-		'srl' => 'east_european',
-		// Serbian (Latin)
-		'srb' => 'cyrillic',
-		// Serbian (Cyrillic)
-		'esp' => 'west_european',
-		// Spanish (trad. sort)
-		'esm' => 'west_european',
-		// Spanish (Mexican)
-		'esn' => 'west_european',
-		// Spanish (internat. sort)
-		'sve' => 'west_european',
-		// Swedish
-		'sqi' => 'albanian',
-		// Albanian
+		'lvi' => 'west_european', // Latvian/Lettish
+		'msl' => 'west_european', // Malay
+		'nlb' => 'west_european', // Dutch (Belgian)
+		'nld' => 'west_european', // Dutch
+		'nor' => 'west_european', // Norwegian (bokmal)
+		'non' => 'west_european', // Norwegian (nynorsk)
+		'plk' => 'east_european', // Polish
+		'ptg' => 'west_european', // Portuguese
+		'ptb' => 'west_european', // Portuguese (Brazil)
+		'rom' => 'east_european', // Romanian
+		'rus' => 'cyrillic', // Russian
+		'slv' => 'east_european', // Slovenian
+		'sky' => 'east_european', // Slovak
+		'srl' => 'east_european', // Serbian (Latin)
+		'srb' => 'cyrillic', // Serbian (Cyrillic)
+		'esp' => 'west_european', // Spanish (trad. sort)
+		'esm' => 'west_european', // Spanish (Mexican)
+		'esn' => 'west_european', // Spanish (internat. sort)
+		'sve' => 'west_european', // Swedish
+		'sqi' => 'albanian', // Albanian
 		'tha' => 'thai',
 		'trk' => 'turkish',
-		'ukr' => 'cyrillic',
-		// Ukrainian
+		'ukr' => 'cyrillic', // Ukrainian
+
 		// English language names
 		'afrikaans' => 'west_european',
 		'albanian' => 'albanian',
@@ -487,11 +395,9 @@ class CharsetConverter {
 		'greek' => 'iso-8859-7',
 		'hebrew' => 'iso-8859-8',
 		'turkish' => 'iso-8859-9',
-		'thai' => 'iso-8859-11',
-		// = TIS-620
+		'thai' => 'iso-8859-11', // = TIS-620
 		'lithuanian' => 'iso-8859-13',
-		'chinese' => 'gb2312',
-		// = euc-cn
+		'chinese' => 'gb2312', // = euc-cn
 		'japanese' => 'euc-jp',
 		'korean' => 'euc-kr',
 		'simpl_chinese' => 'gb2312',
@@ -545,7 +451,7 @@ class CharsetConverter {
 
 	/**
 	 * TYPO3 specific: Array with the system charsets used for each system language in TYPO3:
-	 * Empty values means "iso-8859-1"
+	 * Empty values means "utf-8"
 	 *
 	 * @var array
 	 */
@@ -619,10 +525,10 @@ class CharsetConverter {
 	);
 
 	/**
-	 * Default constructor.
+	 * Constructor
 	 */
 	public function __construct() {
-		$this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+		$this->locales = GeneralUtility::makeInstance(Locales::class);
 	}
 
 	/**
@@ -642,9 +548,9 @@ class CharsetConverter {
 	/**
 	 * Get the charset of a locale.
 	 *
-	 * ln			language
-	 * ln_CN		 language / country
-	 * ln_CN.cs	  language / country / charset
+	 * ln      language
+	 * ln_CN     language / country
+	 * ln_CN.cs    language / country / charset
 	 * ln_CN.cs@mod  language / country / charset / modifier
 	 *
 	 * @param string $locale Locale string
@@ -668,7 +574,7 @@ class CharsetConverter {
 			return 'iso-8859-15';
 		}
 		// Get language
-		list($language, $country) = explode('_', $locale);
+		list($language, ) = explode('_', $locale);
 		if (isset($this->lang_to_script[$language])) {
 			$script = $this->lang_to_script[$language];
 		}
@@ -688,67 +594,67 @@ class CharsetConverter {
 	/**
 	 * Convert from one charset to another charset.
 	 *
-	 * @param string $str Input string
-	 * @param string $fromCS From charset (the current charset of the string)
-	 * @param string $toCS To charset (the output charset wanted)
+	 * @param string $inputString Input string
+	 * @param string $fromCharset From charset (the current charset of the string)
+	 * @param string $toCharset To charset (the output charset wanted)
 	 * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return string Converted string
 	 * @see convArray()
 	 */
-	public function conv($str, $fromCS, $toCS, $useEntityForNoChar = 0) {
-		if ($fromCS == $toCS) {
-			return $str;
+	public function conv($inputString, $fromCharset, $toCharset, $useEntityForNoChar = FALSE) {
+		if ($fromCharset === $toCharset) {
+			return $inputString;
 		}
 		// PHP-libs don't support fallback to SGML entities, but UTF-8 handles everything
-		if ($toCS === 'utf-8' || !$useEntityForNoChar) {
+		if ($toCharset === 'utf-8' || !$useEntityForNoChar) {
 			switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod']) {
 				case 'mbstring':
-					$conv_str = mb_convert_encoding($str, $toCS, $fromCS);
-					if (FALSE !== $conv_str) {
-						return $conv_str;
+					$convertedString = mb_convert_encoding($inputString, $toCharset, $fromCharset);
+					if (FALSE !== $convertedString) {
+						return $convertedString;
 					}
 					// Returns FALSE for unsupported charsets
 					break;
 				case 'iconv':
-					$conv_str = iconv($fromCS, $toCS . '//TRANSLIT', $str);
-					if (FALSE !== $conv_str) {
-						return $conv_str;
+					$convertedString = iconv($fromCharset, $toCharset . '//TRANSLIT', $inputString);
+					if (FALSE !== $convertedString) {
+						return $convertedString;
 					}
 					break;
 				case 'recode':
-					$conv_str = recode_string($fromCS . '..' . $toCS, $str);
-					if (FALSE !== $conv_str) {
-						return $conv_str;
+					$convertedString = recode_string($fromCharset . '..' . $toCharset, $inputString);
+					if (FALSE !== $convertedString) {
+						return $convertedString;
 					}
 					break;
 			}
 		}
-		if ($fromCS !== 'utf-8') {
-			$str = $this->utf8_encode($str, $fromCS);
+		if ($fromCharset !== 'utf-8') {
+			$inputString = $this->utf8_encode($inputString, $fromCharset);
 		}
-		if ($toCS !== 'utf-8') {
-			$str = $this->utf8_decode($str, $toCS, $useEntityForNoChar);
+		if ($toCharset !== 'utf-8') {
+			$inputString = $this->utf8_decode($inputString, $toCharset, $useEntityForNoChar);
 		}
-		return $str;
+		return $inputString;
 	}
 
 	/**
 	 * Convert all elements in ARRAY with type string from one charset to another charset.
 	 * NOTICE: Array is passed by reference!
 	 *
-	 * @param string $array Input array, possibly multidimensional
-	 * @param string $fromCS From charset (the current charset of the string)
-	 * @param string $toCS To charset (the output charset wanted)
+	 * @param array $array Input array, possibly multidimensional
+	 * @param string $fromCharset From charset (the current charset of the string)
+	 * @param string $toCharset To charset (the output charset wanted)
 	 * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return void
 	 * @see conv()
 	 */
-	public function convArray(&$array, $fromCS, $toCS, $useEntityForNoChar = 0) {
+	public function convArray(&$array, $fromCharset, $toCharset, $useEntityForNoChar = FALSE) {
 		foreach ($array as $key => $value) {
 			if (is_array($array[$key])) {
-				$this->convArray($array[$key], $fromCS, $toCS, $useEntityForNoChar);
+				$this->convArray($array[$key], $fromCharset, $toCharset, $useEntityForNoChar);
 			} elseif (is_string($array[$key])) {
-				$array[$key] = $this->conv($array[$key], $fromCS, $toCS, $useEntityForNoChar);
+				$array[$key] = $this->conv($array[$key], $fromCharset, $toCharset, $useEntityForNoChar);
 			}
 		}
 	}
@@ -819,7 +725,7 @@ class CharsetConverter {
 	 * @param bool $useEntityForNoChar If set, then characters that are not available in the destination character set will be encoded as numeric entities
 	 * @return string Output string, converted to local charset
 	 */
-	public function utf8_decode($str, $charset, $useEntityForNoChar = 0) {
+	public function utf8_decode($str, $charset, $useEntityForNoChar = FALSE) {
 		if ($charset === 'utf-8') {
 			return $str;
 		}
@@ -828,7 +734,6 @@ class CharsetConverter {
 		if ($this->initCharset($charset)) {
 			$strLen = strlen($str);
 			$outStr = '';
-			$buf = '';
 			// Traverse each char in UTF-8 string
 			for ($a = 0, $i = 0; $a < $strLen; $a++, $i++) {
 				$chr = substr($str, $a, 1);
@@ -888,7 +793,6 @@ class CharsetConverter {
 	public function utf8_to_entities($str) {
 		$strLen = strlen($str);
 		$outStr = '';
-		$buf = '';
 		// Traverse each char in UTF-8 string.
 		for ($a = 0; $a < $strLen; $a++) {
 			$chr = substr($str, $a, 1);
@@ -971,7 +875,7 @@ class CharsetConverter {
 	 * @param bool $retChar If set, then instead of integer numbers the real UTF-8 char is returned.
 	 * @return array Output array with the char numbers
 	 */
-	public function utf8_to_numberarray($str, $convEntities = 0, $retChar = 0) {
+	public function utf8_to_numberarray($str, $convEntities = FALSE, $retChar = FALSE) {
 		// If entities must be registered as well...:
 		if ($convEntities) {
 			$str = $this->entities_to_utf8($str, 1);
@@ -979,7 +883,6 @@ class CharsetConverter {
 		// Do conversion:
 		$strLen = strlen($str);
 		$outArr = array();
-		$buf = '';
 		// Traverse each char in UTF-8 string.
 		for ($a = 0; $a < $strLen; $a++) {
 			$chr = substr($str, $a, 1);
@@ -1023,59 +926,49 @@ class CharsetConverter {
 	 * and the number of high bits set in the lead byte announces the number of bytes in the multibyte sequence:
 	 *
 	 * bytes | bits | representation
-	 * 1 |	7 | 0vvvvvvv
-	 * 2 |   11 | 110vvvvv 10vvvvvv
-	 * 3 |   16 | 1110vvvv 10vvvvvv 10vvvvvv
-	 * 4 |   21 | 11110vvv 10vvvvvv 10vvvvvv 10vvvvvv
-	 * 5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
-	 * 6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
+	 *     1 |    7 | 0vvvvvvv
+	 *     2 |   11 | 110vvvvv 10vvvvvv
+	 *     3 |   16 | 1110vvvv 10vvvvvv 10vvvvvv
+	 *     4 |   21 | 11110vvv 10vvvvvv 10vvvvvv 10vvvvvv
+	 *     5 |   26 | 111110vv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
+	 *     6 |   31 | 1111110v 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv 10vvvvvv
 	 *
-	 * @param int $cbyte UNICODE integer
+	 * @param int $unicodeInteger UNICODE integer
 	 * @return string UTF-8 multibyte character string
 	 * @see utf8CharToUnumber()
 	 */
-	public function UnumberToChar($cbyte) {
+	public function UnumberToChar($unicodeInteger) {
 		$str = '';
-		if ($cbyte < 128) {
-			$str .= chr($cbyte);
+		if ($unicodeInteger < 128) {
+			$str .= chr($unicodeInteger);
+		} elseif ($unicodeInteger < 2048) {
+			$str .= chr(192 | $unicodeInteger >> 6);
+			$str .= chr(128 | $unicodeInteger & 63);
+		} elseif ($unicodeInteger < 65536) {
+			$str .= chr(224 | $unicodeInteger >> 12);
+			$str .= chr(128 | $unicodeInteger >> 6 & 63);
+			$str .= chr(128 | $unicodeInteger & 63);
+		} elseif ($unicodeInteger < 2097152) {
+			$str .= chr(240 | $unicodeInteger >> 18);
+			$str .= chr(128 | $unicodeInteger >> 12 & 63);
+			$str .= chr(128 | $unicodeInteger >> 6 & 63);
+			$str .= chr(128 | $unicodeInteger & 63);
+		} elseif ($unicodeInteger < 67108864) {
+			$str .= chr(248 | $unicodeInteger >> 24);
+			$str .= chr(128 | $unicodeInteger >> 18 & 63);
+			$str .= chr(128 | $unicodeInteger >> 12 & 63);
+			$str .= chr(128 | $unicodeInteger >> 6 & 63);
+			$str .= chr(128 | $unicodeInteger & 63);
+		} elseif ($unicodeInteger < 2147483648) {
+			$str .= chr(252 | $unicodeInteger >> 30);
+			$str .= chr(128 | $unicodeInteger >> 24 & 63);
+			$str .= chr(128 | $unicodeInteger >> 18 & 63);
+			$str .= chr(128 | $unicodeInteger >> 12 & 63);
+			$str .= chr(128 | $unicodeInteger >> 6 & 63);
+			$str .= chr(128 | $unicodeInteger & 63);
 		} else {
-			if ($cbyte < 2048) {
-				$str .= chr(192 | $cbyte >> 6);
-				$str .= chr(128 | $cbyte & 63);
-			} else {
-				if ($cbyte < 65536) {
-					$str .= chr(224 | $cbyte >> 12);
-					$str .= chr(128 | $cbyte >> 6 & 63);
-					$str .= chr(128 | $cbyte & 63);
-				} else {
-					if ($cbyte < 2097152) {
-						$str .= chr(240 | $cbyte >> 18);
-						$str .= chr(128 | $cbyte >> 12 & 63);
-						$str .= chr(128 | $cbyte >> 6 & 63);
-						$str .= chr(128 | $cbyte & 63);
-					} else {
-						if ($cbyte < 67108864) {
-							$str .= chr(248 | $cbyte >> 24);
-							$str .= chr(128 | $cbyte >> 18 & 63);
-							$str .= chr(128 | $cbyte >> 12 & 63);
-							$str .= chr(128 | $cbyte >> 6 & 63);
-							$str .= chr(128 | $cbyte & 63);
-						} else {
-							if ($cbyte < 2147483648) {
-								$str .= chr(252 | $cbyte >> 30);
-								$str .= chr(128 | $cbyte >> 24 & 63);
-								$str .= chr(128 | $cbyte >> 18 & 63);
-								$str .= chr(128 | $cbyte >> 12 & 63);
-								$str .= chr(128 | $cbyte >> 6 & 63);
-								$str .= chr(128 | $cbyte & 63);
-							} else {
-								// Cannot express a 32-bit character in UTF-8
-								$str .= chr($this->noCharByteVal);
-							}
-						}
-					}
-				}
-			}
+			// Cannot express a 32-bit character in UTF-8
+			$str .= chr($this->noCharByteVal);
 		}
 		return $str;
 	}
@@ -1089,11 +982,11 @@ class CharsetConverter {
 	 * @return int UNICODE integer
 	 * @see UnumberToChar()
 	 */
-	public function utf8CharToUnumber($str, $hex = 0) {
+	public function utf8CharToUnumber($str, $hex = FALSE) {
 		// First char
 		$ord = ord($str[0]);
-		// This verifyes that it IS a multi byte string
-		if (($ord & 192) == 192) {
+		// This verifies that it IS a multi byte string
+		if (($ord & 192) === 192) {
 			$binBuf = '';
 			// For each byte in multibyte string...
 			for ($b = 0; $b < 8; $b++) {
@@ -1125,9 +1018,9 @@ class CharsetConverter {
 	 *
 	 * PLEASE SEE: http://www.unicode.org/Public/MAPPINGS/
 	 *
-	 * @param string The charset to be initialized. Use lowercase charset always (the charset must match exactly with a filename in csconvtbl/ folder ([charset].tbl)
+	 * @param string $charset The charset to be initialized. Use lowercase charset always (the charset must match exactly with a filename in csconvtbl/ folder ([charset].tbl)
 	 * @return int Returns '1' if already loaded. Returns FALSE if charset conversion table was not found. Returns '2' if the charset conversion table was found and parsed.
-	 * @acces private
+	 * @access private
 	 */
 	public function initCharset($charset) {
 		// Only process if the charset is not yet loaded:
@@ -1249,7 +1142,7 @@ class CharsetConverter {
 		while (!feof($fh)) {
 			$line = fgets($fh, 4096);
 			// Has a lot of info
-			list($char, $name, $cat, , , $decomp, , , $num, , , , $upper, $lower, $title, ) = explode(';', rtrim($line));
+			list($char, $name, $cat, , , $decomp, , , $num, , , , $upper, $lower, $title,) = explode(';', rtrim($line));
 			$ord = hexdec($char);
 			if ($ord > 65535) {
 				// Only process the BMP
@@ -1263,7 +1156,7 @@ class CharsetConverter {
 				$utf8CaseFolding['toLower'][$utf8_char] = $this->UnumberToChar(hexdec($lower));
 			}
 			// Store "title" only when different from "upper" (only a few)
-			if ($title && $title != $upper) {
+			if ($title && $title !== $upper) {
 				$utf8CaseFolding['toTitle'][$utf8_char] = $this->UnumberToChar(hexdec($title));
 			}
 			switch ($cat[0]) {
@@ -1273,7 +1166,7 @@ class CharsetConverter {
 					break;
 				case 'N':
 					// numeric value
-					if ($ord > 128 && $num != '') {
+					if ($ord > 128 && $num !== '') {
 						$number['U+' . $char] = $num;
 					}
 			}
@@ -1385,7 +1278,7 @@ class CharsetConverter {
 					array_push($code_decomp, $code_value);
 				}
 			}
-			if (count($code_decomp) || isset($omit[$from])) {
+			if (!empty($code_decomp) || isset($omit[$from])) {
 				$decomposition[$from] = $code_decomp;
 			} else {
 				unset($decomposition[$from]);
@@ -1511,7 +1404,6 @@ class CharsetConverter {
 		if (!$this->initUnicodeData('ascii')) {
 			return FALSE;
 		}
-		$nochar = chr($this->noCharByteVal);
 		foreach ($this->parsedCharsets[$charset]['local'] as $ci => $utf8) {
 			// Reconvert to charset (don't use chr() of numeric value, might be muli-byte)
 			$c = $this->utf8_decode($utf8, $charset);
@@ -1598,7 +1490,7 @@ class CharsetConverter {
 			return mb_strlen($string, $charset);
 		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'iconv') {
 			return iconv_strlen($string, $charset);
-		} elseif ($charset == 'utf-8') {
+		} elseif ($charset === 'utf-8') {
 			return $this->utf8_strlen($string);
 		} elseif ($this->eucBasedSets[$charset]) {
 			return $this->euc_strlen($string, $charset);
@@ -1651,7 +1543,7 @@ class CharsetConverter {
 		if ((int)$len === 0) {
 			return $string;
 		}
-		if ($charset == 'utf-8') {
+		if ($charset === 'utf-8') {
 			$i = $this->utf8_char2byte_pos($string, $len);
 		} elseif ($this->eucBasedSets[$charset]) {
 			$i = $this->euc_char2byte_pos($string, $len, $charset);
@@ -1697,7 +1589,7 @@ class CharsetConverter {
 		}
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] === 'mbstring') {
 			return mb_strcut($string, 0, $len, $charset);
-		} elseif ($charset == 'utf-8') {
+		} elseif ($charset === 'utf-8') {
 			return $this->utf8_strtrunc($string, $len);
 		} elseif ($this->eucBasedSets[$charset]) {
 			return $this->euc_strtrunc($string, $len, $charset);
@@ -1822,7 +1714,7 @@ class CharsetConverter {
 				break;
 			}
 			// Strip the country code from the end
-			list($preferredLanguage, $preferredCountry) = explode('-', $preferredLanguage);
+			list($preferredLanguage, ) = explode('-', $preferredLanguage);
 			if (isset($allLanguageCodes[$preferredLanguage])) {
 				$selectedLanguage = $allLanguageCodes[$preferredLanguage];
 				break;
@@ -1903,8 +1795,6 @@ class CharsetConverter {
 			if ($start > 0) {
 				// $start outside string length
 				return FALSE;
-			} else {
-				$start = 0;
 			}
 		}
 		$str = substr($str, $byte_start);
@@ -1937,7 +1827,7 @@ class CharsetConverter {
 			// Single-byte (0xxxxxx)
 			if (!($c & 128)) {
 				$n++;
-			} elseif (($c & 192) == 192) {
+			} elseif (($c & 192) === 192) {
 				// Multi-byte starting byte (11xxxxxx)
 				$n++;
 			}
@@ -1980,7 +1870,7 @@ class CharsetConverter {
 	 *
 	 * @param string $haystack UTF-8 string to search in
 	 * @param string $needle UTF-8 string to search for
-	 * @param int $offset Positition to start the search
+	 * @param int $offset Position to start the search
 	 * @return int The character position
 	 * @see strpos()
 	 */
@@ -2050,7 +1940,7 @@ class CharsetConverter {
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
 				$n++;
-			} elseif (($c & 192) == 192) {
+			} elseif (($c & 192) === 192) {
 				// Multi-byte starting byte (11xxxxxx)
 				$n++;
 			}
@@ -2087,7 +1977,7 @@ class CharsetConverter {
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
 				$n++;
-			} elseif (($c & 192) == 192) {
+			} elseif (($c & 192) === 192) {
 				// Multi-byte starting byte (11xxxxxx)
 				$n++;
 			}
@@ -2128,7 +2018,7 @@ class CharsetConverter {
 			// single-byte (0xxxxxx)
 			if (!($c & 128)) {
 				$mbc = $str[$i];
-			} elseif (($c & 192) == 192) {
+			} elseif (($c & 192) === 192) {
 				// multi-byte starting byte (11xxxxxx)
 				for ($bc = 0; $c & 128; $c = $c << 1) {
 					$bc++;
@@ -2167,10 +2057,10 @@ class CharsetConverter {
 	 * @see mb_strcut()
 	 */
 	public function euc_strtrunc($str, $len, $charset) {
-		$sjis = $charset === 'shift_jis';
+		$shiftJis = $charset === 'shift_jis';
 		for ($i = 0; isset($str[$i]) && $i < $len; $i++) {
 			$c = ord($str[$i]);
-			if ($sjis) {
+			if ($shiftJis) {
 				if ($c >= 128 && $c < 160 || $c >= 224) {
 					$i++;
 				}

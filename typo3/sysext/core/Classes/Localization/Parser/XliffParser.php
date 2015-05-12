@@ -24,7 +24,7 @@ class XliffParser extends AbstractXmlParser {
 	/**
 	 * Returns array representation of XML data, starting from a root node.
 	 *
-	 * @param SimpleXMLElement $root A root node
+	 * @param \SimpleXMLElement $root A root node
 	 * @return array An array representing the parsed XML file
 	 */
 	protected function doParsingFromRoot(\SimpleXMLElement $root) {
@@ -32,6 +32,7 @@ class XliffParser extends AbstractXmlParser {
 		$bodyOfFileTag = $root->file->body;
 		if ($bodyOfFileTag instanceof \SimpleXMLElement) {
 			foreach ($bodyOfFileTag->children() as $translationElement) {
+				/** @var \SimpleXMLElement $translationElement */
 				if ($translationElement->getName() === 'trans-unit' && !isset($translationElement['restype'])) {
 					// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
 					if ($this->languageKey === 'default') {
@@ -51,6 +52,7 @@ class XliffParser extends AbstractXmlParser {
 					// This is a translation with plural forms
 					$parsedTranslationElement = array();
 					foreach ($translationElement->children() as $translationPluralForm) {
+						/** @var \SimpleXMLElement $translationPluralForm */
 						if ($translationPluralForm->getName() === 'trans-unit') {
 							// When using plural forms, ID looks like this: 1[0], 1[1] etc
 							$formIndex = substr((string)$translationPluralForm['id'], strpos((string)$translationPluralForm['id'], '[') + 1, -1);

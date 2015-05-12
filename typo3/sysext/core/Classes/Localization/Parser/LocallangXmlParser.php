@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
+
 /**
  * Parser for XML locallang file.
  *
@@ -43,23 +47,23 @@ class LocallangXmlParser extends AbstractXmlParser {
 		// Parse source
 		$parsedSource = $this->parseXmlFile();
 		// Parse target
-		$localizedTargetPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
+		$localizedTargetPath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
 		$targetPath = $this->languageKey !== 'default' && @is_file($localizedTargetPath) ? $localizedTargetPath : $this->sourcePath;
 		try {
 			$parsedTarget = $this->getParsedTargetData($targetPath);
-		} catch (\TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException $e) {
+		} catch (InvalidXmlFileException $e) {
 			$parsedTarget = $this->getParsedTargetData($this->sourcePath);
 		}
 		$LOCAL_LANG = array();
 		$LOCAL_LANG[$languageKey] = $parsedSource;
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG[$languageKey], $parsedTarget);
+		ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG[$languageKey], $parsedTarget);
 		return $LOCAL_LANG;
 	}
 
 	/**
 	 * Returns array representation of XLIFF data, starting from a root node.
 	 *
-	 * @param SimpleXMLElement $root XML root element
+	 * @param \SimpleXMLElement $root XML root element
 	 * @param string $element Target or Source
 	 * @return array
 	 */
@@ -94,18 +98,17 @@ class LocallangXmlParser extends AbstractXmlParser {
 	protected function getParsedDataForElement(\SimpleXMLElement $bodyOfFileTag, $element) {
 		$parsedData = array();
 		$children = $bodyOfFileTag->children();
-		if ($children->count() == 0) {
+		if ($children->count() === 0) {
 			// Check for externally-referenced resource:
 			// <languageKey index="fr">EXT:yourext/path/to/localized/locallang.xml</languageKey>
 			$reference = sprintf('%s', $bodyOfFileTag);
 			if (substr($reference, -4) === '.xml') {
-				return $this->getParsedTargetData(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($reference));
+				return $this->getParsedTargetData(GeneralUtility::getFileAbsFileName($reference));
 			}
 		}
 		/** @var \SimpleXMLElement $translationElement */
 		foreach ($children as $translationElement) {
 			if ($translationElement->getName() === 'label') {
-				// If restype would be set, it could be metadata from Gettext to XLIFF conversion (and we don't need this data)
 				$parsedData[(string)$translationElement['index']][0] = array(
 					$element => (string)$translationElement
 				);
@@ -162,7 +165,7 @@ class LocallangXmlParser extends AbstractXmlParser {
 			$rootXmlNode = simplexml_load_file($targetPath, 'SimpleXmlElement', \LIBXML_NOWARNING);
 		}
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);
+			throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);
 		}
 		return $this->doParsingTargetFromRoot($rootXmlNode);
 	}

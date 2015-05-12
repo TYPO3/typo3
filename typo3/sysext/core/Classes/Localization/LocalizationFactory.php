@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Core\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Provides a language parser factory.
  *
@@ -49,7 +54,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function initialize() {
-		$this->store = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class);
+		$this->store = GeneralUtility::makeInstance(LanguageStore::class);
 		$this->initializeCache();
 	}
 
@@ -59,7 +64,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function initializeCache() {
-		$this->cacheInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n');
+		$this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('l10n');
 	}
 
 	/**
@@ -105,7 +110,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->store->setData($fileReference, $languageKey, $LOCAL_LANG[$languageKey]);
 			// Cache processed data
 			$this->cacheInstance->set($hash, $this->store->getDataByLanguage($fileReference, $languageKey));
-		} catch (\TYPO3\CMS\Core\Localization\Exception\FileNotFoundException $exception) {
+		} catch (FileNotFoundException $exception) {
 			// Source localization file not found
 			$this->store->setData($fileReference, $languageKey, array());
 		}
@@ -135,10 +140,10 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$overrides = array_merge($overrides, $locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]);
 			}
 		}
-		if (count($overrides) > 0) {
+		if (!empty($overrides)) {
 			foreach ($overrides as $overrideFile) {
-				$languageOverrideFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($overrideFile);
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode, TRUE));
+				$languageOverrideFileName = GeneralUtility::getFileAbsFileName($overrideFile);
+				ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG, $this->getParsedData($languageOverrideFileName, $languageKey, $charset, $errorMode, TRUE));
 			}
 		}
 	}

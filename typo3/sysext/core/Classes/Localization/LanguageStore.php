@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Core\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Localization\Exception\InvalidParserException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Language store.
  *
@@ -59,7 +63,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function initialize() {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']) && trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']) !== '') {
-			$this->supportedExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']);
+			$this->supportedExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority']);
 		} else {
 			$this->supportedExtensions = array('xlf', 'xml', 'php');
 		}
@@ -145,7 +149,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 			'languageKey' => $languageKey,
 			'charset' => $charset
 		);
-		$fileWithoutExtension = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
+		$fileWithoutExtension = GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
 		foreach ($this->supportedExtensions as $extension) {
 			if (@is_file(($fileWithoutExtension . '.' . $extension))) {
 				$this->configuration[$fileReference]['fileReference'] = $fileWithoutExtension . '.' . $extension;
@@ -154,22 +158,22 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		if ($this->configuration[$fileReference]['fileExtension'] === FALSE) {
-			throw new \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException(sprintf('Source localization file (%s) not found', $fileReference), 1306410755);
+			throw new FileNotFoundException(sprintf('Source localization file (%s) not found', $fileReference), 1306410755);
 		}
 		$extension = $this->configuration[$fileReference]['fileExtension'];
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension]) && trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension]) !== '') {
 			$this->configuration[$fileReference]['parserClass'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension];
 		} else {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException('TYPO3 Fatal Error: l10n parser for file extension "' . $extension . '" is not configured! Please check you configuration.', 1301579637);
+			throw new InvalidParserException('TYPO3 Fatal Error: l10n parser for file extension "' . $extension . '" is not configured! Please check you configuration.', 1301579637);
 		}
 		if (!class_exists($this->configuration[$fileReference]['parserClass']) || trim($this->configuration[$fileReference]['parserClass']) === '') {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException('TYPO3 Fatal Error: l10n parser "' . $this->configuration[$fileReference]['parserClass'] . '" cannot be found or is an empty parser!', 1270853900);
+			throw new InvalidParserException('TYPO3 Fatal Error: l10n parser "' . $this->configuration[$fileReference]['parserClass'] . '" cannot be found or is an empty parser!', 1270853900);
 		}
 		return $this;
 	}
 
 	/**
-	 * Get the filereference without the extension
+	 * Get the fileReference without the extension
 	 *
 	 * @param string $fileReference File reference
 	 * @return string
@@ -190,9 +194,9 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getParserInstance($fileReference) {
 		if (isset($this->configuration[$fileReference]['parserClass']) && trim($this->configuration[$fileReference]['parserClass']) !== '') {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance((string)$this->configuration[$fileReference]['parserClass']);
+			return GeneralUtility::makeInstance((string)$this->configuration[$fileReference]['parserClass']);
 		} else {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException(sprintf('Invalid parser configuration for the current file (%s)', $fileReference), 1307293692);
+			throw new InvalidParserException(sprintf('Invalid parser configuration for the current file (%s)', $fileReference), 1307293692);
 		}
 	}
 

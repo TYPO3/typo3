@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Core\Localization\Parser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
+use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract class for XML based parser.
  *
@@ -50,13 +55,13 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 		$this->languageKey = $languageKey;
 		$this->charset = $this->getCharset($languageKey, $charset);
 		if ($this->languageKey !== 'default') {
-			$this->sourcePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
+			$this->sourcePath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($this->sourcePath, $this->languageKey));
 			if (!@is_file($this->sourcePath)) {
 				// Global localization is not available, try split localization file
-				$this->sourcePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\GeneralUtility::llXmlAutoFileName($sourcePath, $languageKey, TRUE));
+				$this->sourcePath = GeneralUtility::getFileAbsFileName(GeneralUtility::llXmlAutoFileName($sourcePath, $languageKey, TRUE));
 			}
 			if (!@is_file($this->sourcePath)) {
-				throw new \TYPO3\CMS\Core\Localization\Exception\FileNotFoundException('Localization file does not exist', 1306332397);
+				throw new FileNotFoundException('Localization file does not exist', 1306332397);
 			}
 		}
 		$LOCAL_LANG = array();
@@ -72,16 +77,16 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 	 * @return string
 	 */
 	protected function getCharset($languageKey, $charset = '') {
-		/** @var $csConvObj \TYPO3\CMS\Core\Charset\CharsetConverter */
+		/** @var $charsetConverter CharsetConverter */
 		if (is_object($GLOBALS['LANG'])) {
-			$csConvObj = $GLOBALS['LANG']->csConvObj;
+			$charsetConverter = $GLOBALS['LANG']->csConvObj;
 		} elseif (is_object($GLOBALS['TSFE'])) {
-			$csConvObj = $GLOBALS['TSFE']->csConvObj;
+			$charsetConverter = $GLOBALS['TSFE']->csConvObj;
 		} else {
-			$csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
+			$charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
 		}
 		if ($charset !== '') {
-			$targetCharset = $csConvObj->parse_charset($charset);
+			$targetCharset = $charsetConverter->parse_charset($charset);
 		} else {
 			$targetCharset = 'utf-8';
 		}
@@ -97,7 +102,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 	protected function parseXmlFile() {
 		$rootXmlNode = simplexml_load_file($this->sourcePath, 'SimpleXmlElement', \LIBXML_NOWARNING);
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file.', 1278155988);
+			throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file.', 1278155988);
 		}
 		return $this->doParsingFromRoot($rootXmlNode);
 	}
@@ -105,7 +110,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 	/**
 	 * Returns array representation of XML data, starting from a root node.
 	 *
-	 * @param SimpleXMLElement $root A root node
+	 * @param \SimpleXMLElement $root A root node
 	 * @return array An array representing the parsed XML file
 	 */
 	abstract protected function doParsingFromRoot(\SimpleXMLElement $root);
