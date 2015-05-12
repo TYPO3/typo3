@@ -7,7 +7,7 @@ matrix:
 
   include:
     - php: 5.5
-      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes XLF_CHECK=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes XLF_CHECK=yes SUBMODULE_TEST=yes
     - php: 5.6
       env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
     - php: 7
@@ -68,3 +68,14 @@ script:
         echo "Running XLF checker";
         ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
     fi
+  - >
+      if [[ "$SUBMODULE_TEST" == "yes" ]]; then
+          echo;
+          echo "Running git submodule check";
+          /bin/bash -c "
+              if [[ `git submodule status 2>&1 | wc -l` -ne 0 ]]; then
+                  echo \"Found a submodule definition in repository\";
+                  exit 99;
+              fi
+          "
+      fi
