@@ -164,6 +164,7 @@ class EditDocumentController {
 	 * (NORMAL column/default language) from that page into the form!
 	 *
 	 * @var int
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public $editRegularContentFromId;
 
@@ -1513,8 +1514,10 @@ class EditDocumentController {
 	 * Function, which populates the internal editconf array with editing commands for all tt_content elements from the normal column in normal language from the page pointed to by $this->editRegularContentFromId
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function editRegularContentFromId() {
+		GeneralUtility::logDeprecatedFunction();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tt_content', 'pid=' . (int)$this->editRegularContentFromId . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content') . ' AND colPos=0 AND sys_language_uid=0', '', 'sorting');
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			$ecUids = array();

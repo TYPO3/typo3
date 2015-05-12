@@ -689,9 +689,7 @@ class ClickMenu {
 		// If another module was specified, replace the default Page module with the new one
 		$newPageModule = trim($this->backendUser->getTSConfigVal('options.overridePageModule'));
 		$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-		$editOnClick = '';
 		$loc = 'top.content.list_frame';
-		$addParam = '';
 		$theIcon = 'actions-document-open';
 
 		$link = BackendUtility::getModuleUrl('record_edit', array(
@@ -700,15 +698,8 @@ class ClickMenu {
 
 		if ($this->iParts[0] === 'pages' && $this->iParts[1] && $this->backendUser->check('modules', $pageModule)) {
 			$this->editPageIconSet = TRUE;
-			if ($this->backendUser->uc['classicPageEditMode']) {
-				$addParam = '&editRegularContentFromId=' . (int)$this->iParts[1];
-			} else {
-				$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($link . '&returnUrl=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' . GeneralUtility::quoteJSvalue($addParam) . ';}';
-			}
 		}
-		if (!$editOnClick) {
-			$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($link . '&returnUrl=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' . GeneralUtility::quoteJSvalue($addParam) . ';}';
-		}
+		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($link . '&returnUrl=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
 		return $this->linkItem($this->label('edit'), IconUtility::getSpriteIcon($theIcon), $editOnClick . ';');
 	}
 
