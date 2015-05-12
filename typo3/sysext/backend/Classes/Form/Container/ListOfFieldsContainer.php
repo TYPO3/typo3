@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Render a given list of field of a TCA table.
@@ -71,10 +72,10 @@ class ListOfFieldsContainer extends AbstractContainer {
 
 		$options = $this->globalOptions;
 		$options['fieldsArray'] = $finalFieldsConfiguration;
-		/** @var PaletteAndSingleContainer $paletteAndSingleContainer */
-		$paletteAndSingleContainer = GeneralUtility::makeInstance(PaletteAndSingleContainer::class);
-		$paletteAndSingleContainer->setGlobalOptions($options);
-		return $paletteAndSingleContainer->render();
+		$options['type'] = 'paletteAndSingleContainer';
+		/** @var NodeFactory $nodeFactory */
+		$nodeFactory = $this->globalOptions['nodeFactory'];
+		return $nodeFactory->create($options)->render();
 	}
 
 	/**

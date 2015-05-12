@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Inline element entry container.
@@ -222,9 +223,10 @@ class InlineControlContainer extends AbstractContainer {
 				$options['inlineRelatedRecordConfig'] = $config;
 				$options['inlineData'] = $this->inlineData;
 				$options['inlineStructure'] = $inlineStackProcessor->getStructure();
-				/** @var InlineRecordContainer $inlineRecordContainer */
-				$inlineRecordContainer = GeneralUtility::makeInstance(InlineRecordContainer::class);
-				$childArray = $inlineRecordContainer->setGlobalOptions($options)->render();
+				$options['type'] = 'inlineRecordContainer';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$childArray = $nodeFactory->create($options)->render();
 				$html .= $childArray['html'];
 				$childArray['html'] = '';
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);

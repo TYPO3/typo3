@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Form\FlexFormsHelper;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Entry container to a flex form element. This container is created by
@@ -76,9 +77,10 @@ class FlexFormContainer extends AbstractContainer {
 		$options = $this->globalOptions;
 		$options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
 		$options['flexFormRowData'] = $flexFormRowData;
-		/** @var FlexFormLanguageContainer $flexFormLanguageContainer */
-		$flexFormLanguageContainer = GeneralUtility::makeInstance(FlexFormLanguageContainer::class);
-		return $flexFormLanguageContainer->setGlobalOptions($options)->render();
+		$options['type'] = 'flexFormLanguageContainer';
+		/** @var NodeFactory $nodeFactory */
+		$nodeFactory = $this->globalOptions['nodeFactory'];
+		return $nodeFactory->create($options)->render();
 	}
 
 	/**

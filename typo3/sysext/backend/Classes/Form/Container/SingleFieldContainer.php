@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Backend\Form\Element\NoneElement;
 
 /**
  * Container around a "single field".
@@ -160,10 +159,10 @@ class SingleFieldContainer extends AbstractContainer {
 			$options = $this->globalOptions;
 			$options['parameterArray'] = $parameterArray;
 			$options['elementBaseName'] = $newElementBaseName;
-			/** @var NodeFactory $childFactory */
-			$childFactory = GeneralUtility::makeInstance(NodeFactory::class);
-			$childElement = $childFactory->create($parameterArray['fieldConf']['config']['type']);
-			$resultArray = $childElement->setGlobalOptions($options)->render();
+			$options['type'] = $parameterArray['fieldConf']['config']['type'];
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			$resultArray = $nodeFactory->create($options)->render();
 			$html = $resultArray['html'];
 
 			// @todo: the language handling, the null and the placeholder stuff should be embedded in the single
@@ -253,9 +252,10 @@ class SingleFieldContainer extends AbstractContainer {
 				$options['table'] = '';
 				$options['parameterArray'] = $parameterArray;
 				$options['parameterArray']['itemFormElValue'] = GeneralUtility::fixed_lgd_cs($placeholder, 30);
-				/** @var NoneElement $noneElement */
-				$noneElement = GeneralUtility::makeInstance(NoneElement::class);
-				$noneElementResult = $noneElement->setGlobalOptions($options)->render();
+				$options['type'] = 'none';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$noneElementResult = $nodeFactory->create($options)->render();
 				$noneElementHtml = $noneElementResult['html'];
 
 				$placeholderWrap = array();

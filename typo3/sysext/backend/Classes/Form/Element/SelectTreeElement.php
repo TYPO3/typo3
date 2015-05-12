@@ -14,25 +14,81 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Tree\TableConfiguration\ExtJsArrayTreeRenderer;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TableConfigurationTree;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
- * TCEforms wizard for rendering an AJAX selector for records
+ * Render data as a tree.
  *
- * @todo: Refactor - This class is not a "usual" element but just called as a sub class of SelectElement
+ * Typically rendered for config [type=select, renderMode=tree
  */
-class TreeElement extends AbstractFormElement {
+class SelectTreeElement extends AbstractFormElement {
 
 	/**
-	 * Renders the tree as replacement for the selector
+	 * Render tree widget
+	 *
+	 * @return array As defined in initializeResultArray() of AbstractNode
+	 */
+	public function render() {
+		$table = $this->globalOptions['table'];
+		$field = $this->globalOptions['fieldName'];
+		$row = $this->globalOptions['databaseRow'];
+		$parameterArray = $this->globalOptions['parameterArray'];
+
+		// Field configuration from TCA:
+		$config = $parameterArray['fieldConf']['config'];
+		$disabled = '';
+		if ($this->isGlobalReadonly() || $config['readOnly']) {
+			$disabled = ' disabled="disabled"';
+		}
+
+		$resultArray = $this->initializeResultArray();
+
+		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
+		$specConf = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
+		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
+
+		$maxitems = (int)$config['maxitems'];
+
+		$html = $this->renderField($table, $field, $row, $parameterArray, $config, $selItems);
+
+		// Register the required number of elements
+		$minitems = MathUtility::forceIntegerInRange($config['minitems'], 0);
+		$resultArray['requiredElements'][$parameterArray['itemFormElName']] = array(
+			$minitems,
+			$maxitems,
+			'imgName' => $table . '_' . $row['uid'] . '_' . $field
+		);
+		$tabAndInlineStack = $this->globalOptions['tabAndInlineStack'];
+		if (!empty($tabAndInlineStack) && preg_match('/^(.+\\])\\[(\\w+)\\]$/', $parameterArray['itemFormElName'], $match)) {
+			array_shift($match);
+			$resultArray['requiredNested'][$parameterArray['itemFormElName']] = array(
+				'parts' => $match,
+				'level' => $tabAndInlineStack,
+			);
+		}
+
+		// Wizards:
+		if (!$disabled) {
+			$altItem = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
+			$html = $this->renderWizards(array($html, $altItem), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
+		}
+		$resultArray['html'] = $html;
+		return $resultArray;
+	}
+
+	/**
+	 * Renders the tree
 	 *
 	 * @param string $table The table name of the record
 	 * @param string $field The field name which this element is supposed to edit
@@ -42,7 +98,7 @@ class TreeElement extends AbstractFormElement {
 	 * @param array $possibleSelectboxItems Items available for selection
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems) {
+	protected function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems) {
 		$backendUserAuthentication = $this->getBackendUserAuthentication();
 		$valueArray = array();
 		$selectedNodes = array();
@@ -185,11 +241,11 @@ class TreeElement extends AbstractFormElement {
 				selModel: TYPO3.Components.Tree.EmptySelectionModel,
 				disabled: ' . ($PA['fieldConf']['config']['readOnly'] || $this->isGlobalReadonly() ? 'true' : 'false') . '
 			});' . LF .
-				($autoSizeMax
-					? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
-					: 'tree' . $id . '.height = ' . $height . ';'
-				) . LF .
-				'(function() {
+			($autoSizeMax
+				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
+				: 'tree' . $id . '.height = ' . $height . ';'
+			) . LF .
+			'(function() {
 					tree' . $id . '.render("tree_' . $id . '");
 				}).defer(20);
 		');
@@ -201,19 +257,6 @@ class TreeElement extends AbstractFormElement {
 
 			</div>';
 		return $formField;
-	}
-
-	/**
-	 * Dummy method at the moment ...
-	 *
-	 * @throws \RuntimeException
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 */
-	public function render() {
-		throw new \RuntimeException(
-			'This method is not supposed to be called',
-			1427114105
-		);
 	}
 
 	/**

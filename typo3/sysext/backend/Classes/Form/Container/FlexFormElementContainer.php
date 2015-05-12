@@ -78,9 +78,10 @@ class FlexFormElementContainer extends AbstractContainer {
 				$options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
 				$options['flexFormSectionType'] = $flexFormFieldName;
 				$options['flexFormSectionTitle'] = $sectionTitle;
-				/** @var FlexFormSectionContainer $sectionContainer */
-				$sectionContainer = GeneralUtility::makeInstance(FlexFormSectionContainer::class);
-				$sectionContainerResult = $sectionContainer->setGlobalOptions($options)->render();
+				$options['type'] = 'flexFormSectionContainer';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$sectionContainerResult = $nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
 			} else {
 				// Single element
@@ -146,10 +147,10 @@ class FlexFormElementContainer extends AbstractContainer {
 				$options = $this->globalOptions;
 				$options['parameterArray'] = $fakeParameterArray;
 				$options['elementBaseName'] = $this->globalOptions['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
+				$options['type'] = $flexFormFieldArray['TCEforms']['config']['type'];
 				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-				$child = $nodeFactory->create($flexFormFieldArray['TCEforms']['config']['type']);
-				$childResult = $child->setGlobalOptions($options)->render();
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$childResult = $nodeFactory->create($options)->render();
 
 				$theTitle = htmlspecialchars($fakeParameterArray['fieldConf']['label']);
 				$defInfo = array();

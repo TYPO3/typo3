@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle flex form sections.
@@ -75,9 +76,10 @@ class FlexFormSectionContainer extends AbstractContainer {
 					$options['flexFormContainerCounter'] = $flexFormContainerCounter;
 					$options['flexFormContainerTitle'] = $sectionTitle;
 					$options['flexFormContainerElementCollapsed'] = (bool)$existingSectionContainerData['el']['_TOGGLE'];
-					/** @var FlexFormContainerContainer $flexFormContainerContainer */
-					$flexFormContainerContainer = GeneralUtility::makeInstance(FlexFormContainerContainer::class);
-					$flexFormContainerContainerResult = $flexFormContainerContainer->setGlobalOptions($options)->render();
+					$options['type'] = 'flexFormContainerContainer';
+					/** @var NodeFactory $nodeFactory */
+					$nodeFactory = $this->globalOptions['nodeFactory'];
+					$flexFormContainerContainerResult = $nodeFactory->create($options)->render();
 					$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerResult);
 				}
 			}
@@ -103,9 +105,10 @@ class FlexFormSectionContainer extends AbstractContainer {
 			$options['flexFormContainerCounter'] = $flexFormFieldIdentifierPrefix . '-form';
 			$options['flexFormContainerTitle'] = $sectionTitle;
 			$options['flexFormContainerElementCollapsed'] = FALSE;
-			/** @var FlexFormContainerContainer $flexFormContainerContainer */
-			$flexFormContainerContainerTemplate = GeneralUtility::makeInstance(FlexFormContainerContainer::class);
-			$flexFormContainerContainerTemplateResult = $flexFormContainerContainerTemplate->setGlobalOptions($options)->render();
+			$options['type'] = 'flexFormContainerContainer';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			$flexFormContainerContainerTemplateResult = $nodeFactory->create($options)->render();
 
 			$uniqueId = str_replace('.', '', uniqid('idvar', TRUE));
 			$identifierPrefixJs = 'replace(/' . $flexFormFieldIdentifierPrefix . '-/g,"' . $flexFormFieldIdentifierPrefix . '-"+' . $uniqueId . '+"-")';

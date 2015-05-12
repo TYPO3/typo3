@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle flex forms that have tabs (multiple "sheets").
@@ -91,9 +92,10 @@ class FlexFormTabsContainer extends AbstractContainer {
 				'tab',
 				$tabIdString . '-' . $tabCounter,
 			);
-			/** @var FlexFormElementContainer $flexFormElementContainer */
-			$flexFormElementContainer = GeneralUtility::makeInstance(FlexFormElementContainer::class);
-			$childReturn = $flexFormElementContainer->setGlobalOptions($options)->render();
+			$options['type'] = 'flexFormElementContainer';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			$childReturn = $nodeFactory->create($options)->render();
 
 			$tabsContent[] = array(
 				'label' => !empty($sheetDataStructure['ROOT']['TCEforms']['sheetTitle']) ? $languageService->sL($sheetDataStructure['ROOT']['TCEforms']['sheetTitle']) : $sheetName,

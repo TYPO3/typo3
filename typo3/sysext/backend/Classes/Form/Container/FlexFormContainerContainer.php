@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Flex form container implementation
@@ -94,9 +95,10 @@ class FlexFormContainerContainer extends AbstractContainer {
 		$options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
 		// Append container specific stuff to field prefix
 		$options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' .  $this->globalOptions['flexFormContainerName'] . '][el]';
-		/** @var FlexFormElementContainer $containerContent */
-		$containerContent = GeneralUtility::makeInstance(FlexFormElementContainer::class);
-		$containerContentResult = $containerContent->setGlobalOptions($options)->render();
+		$options['type'] = 'flexFormElementContainer';
+		/** @var NodeFactory $nodeFactory */
+		$nodeFactory = $this->globalOptions['nodeFactory'];
+		$containerContentResult = $nodeFactory->create($options)->render();
 
 		$html = array();
 		$html[] = '<div id="' . $flexFormFieldIdentifierPrefix . '" class="t3-form-field-container-flexsections t3-flex-section">';

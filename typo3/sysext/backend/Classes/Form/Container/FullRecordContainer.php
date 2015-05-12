@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * A container rendering a "full record". This is an entry container used as first
@@ -103,15 +104,15 @@ class FullRecordContainer extends AbstractContainer {
 		$options['additionalPreviewLanguageData'] = $this->additionalPreviewLanguageData;
 
 		if ($hasTabs) {
-			/** @var TabsContainer $TabsContainer */
-			$container = GeneralUtility::makeInstance(TabsContainer::class);
-			$container->setGlobalOptions($options);
-			$resultArray = $container->render();
+			$options['type'] = 'tabsContainer';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			$resultArray = $nodeFactory->create($options)->render();
 		} else {
-			/** @var NoTabsContainer $NoTabsContainer */
-			$container = GeneralUtility::makeInstance(NoTabsContainer::class);
-			$container->setGlobalOptions($options);
-			$resultArray = $container->render();
+			$options['type'] = 'noTabsContainer';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			$resultArray = $nodeFactory->create($options)->render();
 		}
 
 		return $resultArray;

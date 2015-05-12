@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Render a single inline record relation.
@@ -216,9 +217,10 @@ class InlineRecordContainer extends AbstractContainer {
 			$domObjectId . '-' . $table . '-' . $row['uid'],
 		);
 		$options['overruleTypesArray'] = $overruleTypesArray;
-		/** @var FullRecordContainer $entryContainer */
-		$entryContainer = GeneralUtility::makeInstance(FullRecordContainer::class);
-		return $entryContainer->setGlobalOptions($options)->render();
+		$options['type'] = 'fullRecordContainer';
+		/** @var NodeFactory $nodeFactory */
+		$nodeFactory = $this->globalOptions['nodeFactory'];
+		return $nodeFactory->create($options)->render();
 	}
 
 	/**

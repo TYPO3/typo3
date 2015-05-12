@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Generation of image manipulation TCEform element
@@ -68,15 +69,17 @@ class ImageManipulationElement extends AbstractFormElement {
 		}
 
 		if ($this->isGlobalReadonly() || $config['readOnly']) {
-			$formEngineDummy = new FormEngine();
-			$noneElement = GeneralUtility::makeInstance(NoneElement::class, $formEngineDummy);
-			$elementConfiguration = array(
+			$options = array();
+			$options['parameterArray'] = array(
 				'fieldConf' => array(
 					'config' => $config,
 				),
 				'itemFormElValue' => $parameterArray['itemFormElValue'],
 			);
-			return $noneElement->render('', '', '', $elementConfiguration);
+			$options['type'] = 'none';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			return $nodeFactory->create($options)->render();
 		}
 
 		$file = $this->getFile($row, $config['file_field']);

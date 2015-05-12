@@ -241,6 +241,11 @@ class FormEngine {
 	protected $databaseRow = array();
 
 	/**
+	 * @var NodeFactory Factory taking care of creating appropriate sub container and elements
+	 */
+	protected $nodeFactory;
+
+	/**
 	 * Constructor function, setting internal variables, loading the styles used.
 	 *
 	 */
@@ -258,6 +263,7 @@ class FormEngine {
 		$template = GeneralUtility::getUrl(PATH_typo3 . $this->templateFile);
 		// Wrapping all table rows for a particular record being edited:
 		$this->totalWrap = HtmlParser::getSubpart($template, '###TOTALWRAP###');
+		$this->nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 	}
 
 	/**
@@ -296,10 +302,10 @@ class FormEngine {
 			}
 		}
 
-		/** @var FullRecordContainer $entryContainer */
-		$entryContainer = GeneralUtility::makeInstance(FullRecordContainer::class);
-		$entryContainer->setGlobalOptions($this->getConfigurationOptionsForChildElements());
-		$resultArray = $entryContainer->render();
+		$options = $this->getConfigurationOptionsForChildElements();
+		$options['type'] = 'fullRecordContainer';
+		$resultArray = $this->nodeFactory->create($options)->render();
+
 		$content = $resultArray['html'];
 		$this->requiredElements = $resultArray['requiredElements'];
 		$this->requiredFields = $resultArray['requiredFields'];
@@ -339,10 +345,8 @@ class FormEngine {
 
 		$options = $this->getConfigurationOptionsForChildElements();
 		$options['singleFieldToRender'] = $theFieldToReturn;
-		/** @var SoloFieldContainer $soloFieldContainer */
-		$soloFieldContainer = GeneralUtility::makeInstance(SoloFieldContainer::class);
-		$soloFieldContainer->setGlobalOptions($options);
-		$resultArray = $soloFieldContainer->render();
+		$options['type'] = 'soloFieldContainer';
+		$resultArray = $this->nodeFactory->create($options)->render();
 		$html = $resultArray['html'];
 
 		$this->requiredElements = $resultArray['requiredElements'];
@@ -379,10 +383,8 @@ class FormEngine {
 
 		$options = $this->getConfigurationOptionsForChildElements();
 		$options['fieldListToRender'] = $list;
-		/** @var ListOfFieldsContainer $listOfFieldsContainer */
-		$listOfFieldsContainer = GeneralUtility::makeInstance(ListOfFieldsContainer::class);
-		$listOfFieldsContainer->setGlobalOptions($options);
-		$resultArray = $listOfFieldsContainer->render();
+		$options['type'] = 'listOfFieldsContainer';
+		$resultArray = $this->nodeFactory->create($options)->render();
 		$html = $resultArray['html'];
 
 		foreach ($resultArray['requiredElements'] as $element) {
@@ -440,6 +442,7 @@ class FormEngine {
 			'hiddenFieldListArray' => $this->hiddenFieldListArr,
 			'isAjaxContext' => FALSE,
 			'flexFormFieldIdentifierPrefix' => 'ID',
+			'nodeFactory' => $this->nodeFactory,
 		);
 	}
 
@@ -542,9 +545,8 @@ class FormEngine {
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 		$options['isAjaxContext'] = TRUE;
 
-		/** @var InlineRecordContainer $inlineRecordContainer */
-		$inlineRecordContainer = GeneralUtility::makeInstance(InlineRecordContainer::class);
-		$childArray = $inlineRecordContainer->setGlobalOptions($options)->render();
+		$options['type'] = 'inlineRecordContainer';
+		$childArray = $this->nodeFactory->create($options)->render();
 
 		if ($childArray === FALSE) {
 			return $this->getErrorMessageForAJAX('Access denied');
@@ -675,9 +677,8 @@ class FormEngine {
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 		$options['isAjaxContext'] = TRUE;
 
-		/** @var InlineRecordContainer $inlineRecordContainer */
-		$inlineRecordContainer = GeneralUtility::makeInstance(InlineRecordContainer::class);
-		$childArray = $inlineRecordContainer->setGlobalOptions($options)->render();
+		$options['type'] = 'inlineRecordContainer';
+		$childArray = $this->nodeFactory->create($options)->render();
 
 		if ($childArray === FALSE) {
 			return $this->getErrorMessageForAJAX('Access denied');
@@ -785,9 +786,8 @@ class FormEngine {
 				$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 				$options['isAjaxContext'] = TRUE;
 
-				/** @var InlineRecordContainer $inlineRecordContainer */
-				$inlineRecordContainer = GeneralUtility::makeInstance(InlineRecordContainer::class);
-				$childArray = $inlineRecordContainer->setGlobalOptions($options)->render();
+				$options['type'] = 'inlineRecordContainer';
+				$childArray = $this->nodeFactory->create($options)->render();
 				$html .= $childArray['html'];
 				$childArray['html'] = '';
 

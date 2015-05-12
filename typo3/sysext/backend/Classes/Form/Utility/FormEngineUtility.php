@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Backend\Form\DataPreprocessor;
 
 /**
  * This is a static, internal and intermediate helper class for various
@@ -315,6 +316,87 @@ class FormEngineUtility {
 	}
 
 	/**
+	 * Collects the items for a select field by reading the configured
+	 * select items from the configuration and / or by collecting them
+	 * from a foreign table.
+	 *
+	 * @param string $table The table name of the record
+	 * @param string $fieldName The select field name
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @return array
+	 */
+	static public function getSelectItems($table, $fieldName, array $row, array $PA) {
+		$config = $PA['fieldConf']['config'];
+
+		// Getting the selector box items from the system
+		$selectItems = FormEngineUtility::addSelectOptionsToItemArray(
+			FormEngineUtility::initItemArray($PA['fieldConf']),
+			$PA['fieldConf'],
+			FormEngineUtility::getTSconfigForTableRow($table, $row),
+			$fieldName
+		);
+
+		// Possibly filter some items:
+		$selectItems = ArrayUtility::keepItemsInArray(
+			$selectItems,
+			$PA['fieldTSConfig']['keepItems'],
+			function ($value) {
+				return $value[1];
+			}
+		);
+
+		// Possibly add some items:
+		$selectItems = FormEngineUtility::addItems($selectItems, $PA['fieldTSConfig']['addItems.']);
+
+		// Process items by a user function:
+		if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
+			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
+			$selectItems = $dataPreprocessor->procItems($selectItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $fieldName);
+		}
+
+		// Possibly remove some items:
+		$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
+		foreach ($selectItems as $selectItemIndex => $selectItem) {
+
+			// Checking languages and authMode:
+			$languageDeny = FALSE;
+			$beUserAuth = static::getBackendUserAuthentication();
+			if (
+				!empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+				&& $GLOBALS['TCA'][$table]['ctrl']['languageField'] === $fieldName
+				&& !$beUserAuth->checkLanguageAccess($selectItem[1])
+			) {
+				$languageDeny = TRUE;
+			}
+
+			$authModeDeny = FALSE;
+			if (
+				($config['type'] === 'select')
+				&& $config['authMode']
+				&& !$beUserAuth->checkAuthMode($table, $fieldName, $selectItem[1], $config['authMode'])
+			) {
+				$authModeDeny = TRUE;
+			}
+
+			if (in_array($selectItem[1], $removeItems) || $languageDeny || $authModeDeny) {
+				unset($selectItems[$selectItemIndex]);
+			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$selectItem[1]])) {
+				$selectItems[$selectItemIndex][0] = htmlspecialchars(static::getLanguageService()->sL($PA['fieldTSConfig']['altLabels.'][$selectItem[1]]));
+			}
+
+			// Removing doktypes with no access:
+			if (($table === 'pages' || $table === 'pages_language_overlay') && $fieldName === 'doktype') {
+				if (!($beUserAuth->isAdmin() || GeneralUtility::inList($beUserAuth->groupData['pagetypes_select'], $selectItem[1]))) {
+					unset($selectItems[$selectItemIndex]);
+				}
+			}
+		}
+
+		return $selectItems;
+	}
+
+	/**
 	 * Add selector box items of more exotic kinds.
 	 *
 	 * @param array $items The array of items (label,value,icon)
@@ -391,6 +473,7 @@ class FormEngineUtility {
 					$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
 					foreach ($theTypes as $theTypeArrays) {
 						// Icon:
+						// @todo: typo here
 						$icon = 'empty-emtpy';
 						if ($theTypeArrays[1] != '--div--') {
 							$icon = IconUtility::mapRecordTypeToSpriteIconName('pages', array('doktype' => $theTypeArrays[1]));

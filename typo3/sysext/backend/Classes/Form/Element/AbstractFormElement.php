@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Base class for form elements of FormEngine. Contains several helper methods used by single elements.
@@ -429,16 +430,17 @@ abstract class AbstractFormElement extends AbstractNode {
 				// Setting the item to a hidden-field.
 				$item = $itemKinds[1];
 				if (is_array($wizardConfiguration['hideParent'])) {
-					/** @var NoneElement $noneElement */
-					$noneElement = GeneralUtility::makeInstance(NoneElement::class);
-					$noneElementOptions = $this->globalOptions;
-					$noneElementOptions['parameterArray'] = array(
+					$options = $this->globalOptions;
+					$options['parameterArray'] = array(
 						'fieldConf' => array(
 							'config' => $wizardConfiguration['hideParent'],
 						),
 						'itemFormElValue' => $PA['itemFormElValue'],
 					);
-					$noneElementResult = $noneElement->setGlobalOptions($noneElementOptions)->render();
+					$options['type'] = 'none';
+					/** @var NodeFactory $nodeFactory */
+					$nodeFactory = $this->globalOptions['nodeFactory'];
+					$noneElementResult = $nodeFactory->create($options)->render();
 					$item .= $noneElementResult['html'];
 				}
 			}

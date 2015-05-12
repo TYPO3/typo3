@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle a record that has no tabs.
@@ -30,10 +31,11 @@ class NoTabsContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		/** @var PaletteAndSingleContainer $paletteAndSingleContainer */
-		$paletteAndSingleContainer = GeneralUtility::makeInstance(PaletteAndSingleContainer::class);
-		$paletteAndSingleContainer->setGlobalOptions($this->globalOptions);
-		$resultArray = $paletteAndSingleContainer->render();
+		$options = $this->globalOptions;
+		$options['type'] = 'paletteAndSingleContainer';
+		/** @var NodeFactory $nodeFactory */
+		$nodeFactory = $this->globalOptions['nodeFactory'];
+		$resultArray = $nodeFactory->create($options)->render();
 		$resultArray['html'] = '<div class="tab-content">' . $resultArray['html'] . '</div>';
 		return $resultArray;
 	}

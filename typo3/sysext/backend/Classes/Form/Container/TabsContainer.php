@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Render all tabs of a record that has tabs.
@@ -86,11 +86,11 @@ class TabsContainer extends AbstractContainer {
 			foreach ($elements as $element) {
 				$options['fieldsArray'][] = implode(';', $element);
 			}
-			/** @var PaletteAndSingleContainer $paletteAndSingleContainer */
-			$paletteAndSingleContainer = GeneralUtility::makeInstance(PaletteAndSingleContainer::class);
-			$paletteAndSingleContainer->setGlobalOptions($options);
+			$options['type'] = 'paletteAndSingleContainer';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			$childArray = $nodeFactory->create($options)->render();
 
-			$childArray = $paletteAndSingleContainer->render();
 			$tabsContent[] = array(
 				'label' => $tabWithLabelAndElements['label'],
 				'content' => $childArray['html'],

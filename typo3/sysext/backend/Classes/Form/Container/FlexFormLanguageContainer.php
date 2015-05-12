@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle flex form language overlays.
@@ -98,14 +99,16 @@ class FlexFormLanguageContainer extends AbstractContainer {
 			$options['flexFormCurrentLanguage'] = $flexFormCurrentLanguage;
 			$options['flexFormNoEditDefaultLanguage'] = $flexFormNoEditDefaultLanguage;
 			if (!$hasTabs) {
-				/** @var FlexFormNoTabsContainer $flexFormNoTabsContainer */
-				$flexFormNoTabsContainer = GeneralUtility::makeInstance(FlexFormNoTabsContainer::class);
-				$flexFormNoTabsResult = $flexFormNoTabsContainer->setGlobalOptions($options)->render();
+				$options['type'] = 'flexFormNoTabsContainer';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$flexFormNoTabsResult = $nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormNoTabsResult);
 			} else {
-				/** @var FlexFormTabsContainer $flexFormTabsContainer */
-				$flexFormTabsContainer = GeneralUtility::makeInstance(FlexFormTabsContainer::class);
-				$flexFormTabsContainerResult = $flexFormTabsContainer->setGlobalOptions($options)->render();
+				$options['type'] = 'flexFormTabsContainer';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$flexFormTabsContainerResult = $nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
 			}
 		}

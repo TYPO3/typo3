@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Base class for container and single elements - their abstracts extend from here.
  */
-abstract class AbstractNode {
+abstract class AbstractNode implements NodeInterface {
 
 	/**
 	 * A list of global options given from parent to child elements

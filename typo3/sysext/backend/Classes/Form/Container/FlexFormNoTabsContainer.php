@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle a flex form that has no tabs.
@@ -77,9 +78,10 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 		$options['flexFormFormPrefix'] = '[data][' . $flexFormSheetNameInRowData . '][' . $flexFormCurrentLanguage . ']';
 		$options['parameterArray'] = $parameterArray;
 
-		/** @var FlexFormElementContainer $flexFormElementContainer */
-		$flexFormElementContainer = GeneralUtility::makeInstance(FlexFormElementContainer::class);
-		return $flexFormElementContainer->setGlobalOptions($options)->render();
+		$options['type'] = 'flexFormElementContainer';
+		/** @var NodeFactory $nodeFactory */
+		$nodeFactory = $this->globalOptions['nodeFactory'];
+		return $nodeFactory->create($options)->render();
 	}
 
 }

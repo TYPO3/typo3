@@ -19,6 +19,7 @@ use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle palettes and single fields.
@@ -136,10 +137,10 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				$options['fieldName'] = $fieldName;
 				$options['fieldExtra'] = $fieldConfiguration['fieldExtra'];
 
-				/** @var SingleFieldContainer $singleFieldContainer */
-				$singleFieldContainer = GeneralUtility::makeInstance(SingleFieldContainer::class);
-				$singleFieldContainer->setGlobalOptions($options);
-				$childResultArray = $singleFieldContainer->render();
+				$options['type'] = 'singleFieldContainer';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$childResultArray = $nodeFactory->create($options)->render();
 
 				if (!empty($childResultArray['html'])) {
 					$mainStructureCounter ++;
@@ -260,10 +261,10 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				$options['fieldName'] = $fieldName;
 				$options['fieldExtra'] = $fieldArray['fieldExtra'];
 
-				/** @var SingleFieldContainer $singleFieldContainer */
-				$singleFieldContainer = GeneralUtility::makeInstance(SingleFieldContainer::class);
-				$singleFieldContainer->setGlobalOptions($options);
-				$singleFieldContentArray = $singleFieldContainer->render();
+				$options['type'] = 'singleFieldContainer';
+				/** @var NodeFactory $nodeFactory */
+				$nodeFactory = $this->globalOptions['nodeFactory'];
+				$singleFieldContentArray = $nodeFactory->create($options)->render();
 
 				if (!empty($singleFieldContentArray['html'])) {
 					$foundRealElement = TRUE;

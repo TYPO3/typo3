@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Generation of TCEform elements of the type "text"
@@ -77,16 +78,17 @@ class TextElement extends AbstractFormElement {
 		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$config['cols'] = $cols;
 			$config['rows'] = $rows;
-			/** @var NoneElement $noneElement */
-			$noneElement = GeneralUtility::makeInstance(NoneElement::class);
-			$noneElementOptions = $this->globalOptions;
-			$noneElementOptions['parameterArray'] = array(
+			$options = $this->globalOptions;
+			$options['parameterArray'] = array(
 				'fieldConf' => array(
 					'config' => $config,
 				),
 				'itemFormElValue' => $parameterArray['itemFormElValue'],
 			);
-			return $noneElement->setGlobalOptions($noneElementOptions)->render();
+			$options['type'] = 'none';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			return $nodeFactory->create($options)->render();
 		}
 
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * An entry container to render just a single field.
@@ -69,10 +70,10 @@ class SoloFieldContainer extends AbstractContainer {
 							$options['fieldName'] = $fieldName;
 							$options['fieldExtra'] = $fieldConfiguration['fieldExtra'];
 
-							/** @var SingleFieldContainer $singleFieldContainer */
-							$singleFieldContainer = GeneralUtility::makeInstance(SingleFieldContainer::class);
-							$singleFieldContainer->setGlobalOptions($options);
-							$resultArray = $singleFieldContainer->render();
+							$options['type'] = 'singleFieldContainer';
+							/** @var NodeFactory $nodeFactory */
+							$nodeFactory = $this->globalOptions['nodeFactory'];
+							$resultArray = $nodeFactory->create($options)->render();
 						}
 					}
 				}

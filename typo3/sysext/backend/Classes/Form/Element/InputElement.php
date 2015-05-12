@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Generation of TCEform elements of the type "input"
@@ -79,16 +80,17 @@ class InputElement extends AbstractFormElement {
 			if (in_array('password', $evalList)) {
 				$itemFormElValue = $itemFormElValue ? '*********' : '';
 			}
-			/** @var NoneElement $noneElement */
-			$noneElement = GeneralUtility::makeInstance(NoneElement::class);
-			$noneElementOptions = $this->globalOptions;
-			$noneElementOptions['parameterArray'] = array(
+			$options = $this->globalOptions;
+			$options['parameterArray'] = array(
 				'fieldConf' => array(
 					'config' => $config,
 				),
 				'itemFormElValue' => $itemFormElValue,
 			);
-			return $noneElement->setGlobalOptions($noneElementOptions)->render();
+			$options['type'] = 'none';
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = $this->globalOptions['nodeFactory'];
+			return $nodeFactory->create($options)->render();
 		}
 
 		if (in_array('datetime', $evalList, TRUE)
