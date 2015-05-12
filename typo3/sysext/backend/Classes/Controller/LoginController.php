@@ -294,7 +294,7 @@ class LoginController {
 				'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
 			),
 			'isOpenIdLoaded' => ExtensionManagementUtility::isLoaded('openid'),
-			'copyright' => BackendUtility::TYPO3_copyRightNotice($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']),
+			'copyright' => BackendUtility::TYPO3_copyRightNotice(),
 			'loginNewsItems' => $this->getSystemNews()
 		));
 

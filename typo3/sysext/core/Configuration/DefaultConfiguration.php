@@ -69,7 +69,6 @@ return array(
 		'USdateFormat' => FALSE,				// Boolean: If TRUE, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy
 		'loginCopyrightWarrantyProvider' => '',	// String: If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
-		'loginCopyrightShowVersion' => FALSE,	// Boolean: If set, the current TYPO3 version is shown.
 		'curlUse' => FALSE,						// Boolean: If set, try to use cURL to fetch external URLs
 		'curlProxyNTLM' => FALSE,					// Boolean: Proxy NTLM authentication support.
 		/**
