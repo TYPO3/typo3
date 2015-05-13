@@ -265,7 +265,7 @@ CREATE TABLE tt_content (
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	cols int(11) unsigned DEFAULT '0' NOT NULL,
 	records text,
-	pages tinytext,
+	pages text,
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 	colPos int(11) unsigned DEFAULT '0' NOT NULL,

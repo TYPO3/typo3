@@ -680,7 +680,7 @@ return array(
 				'internal_type' => 'db',
 				'allowed' => 'pages',
 				'size' => '3',
-				'maxitems' => '22',
+				'maxitems' => '50',
 				'minitems' => '0',
 				'show_thumbs' => '1',
 				'wizards' => array(
