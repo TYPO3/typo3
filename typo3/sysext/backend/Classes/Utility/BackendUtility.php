@@ -2866,7 +2866,11 @@ class BackendUtility {
 			}
 			$previewDomainConfig = static::getBackendUserAuthentication()->getTSConfig('TCEMAIN.previewDomain', self::getPagesTSconfig($pageId));
 			if ($previewDomainConfig['value']) {
-				$domainName = $previewDomainConfig['value'];
+				if (strpos($previewDomainConfig['value'], '://') !== FALSE) {
+					list($protocol, $domainName) = explode('://', $previewDomainConfig['value']);
+				} else {
+					$domainName = $previewDomainConfig['value'];
+				}
 			} else {
 				$domainName = self::firstDomainRecord($rootLine);
 			}
