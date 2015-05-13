@@ -119,9 +119,6 @@
 		"typo3/cms-workspaces": "self.version"
 	},
 	"autoload": {
-		"psr-0": {
-			"TYPO3\\Flow\\": "typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes/"
-		},
 		"psr-4": {
 			"TYPO3\\CMS\\Backend\\": "typo3/sysext/backend/Classes/",
 			"TYPO3\\CMS\\Core\\": "typo3/sysext/core/Classes/",

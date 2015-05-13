@@ -45,7 +45,7 @@ class ExtensionManagementUtility {
 	static protected $extTablesWasReadFromCacheOnce = FALSE;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Package\PackageManager
+	 * @var PackageManager
 	 */
 	static protected $packageManager;
 
@@ -53,7 +53,7 @@ class ExtensionManagementUtility {
 	 * Sets the package manager for all that backwards compatibility stuff,
 	 * so it doesn't have to be fetched through the bootstap.
 	 *
-	 * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
+	 * @param PackageManager $packageManager
 	 * @internal
 	 */
 	static public function setPackageManager(PackageManager $packageManager) {

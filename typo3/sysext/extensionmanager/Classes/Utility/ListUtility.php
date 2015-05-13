@@ -90,8 +90,8 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param string $extensionKey
-	 * @return \TYPO3\Flow\Package\PackageInterface
-	 * @throws \TYPO3\Flow\Package\Exception\UnknownPackageException if the specified package is unknown
+	 * @return \TYPO3\CMS\Core\Package\PackageInterface
+	 * @throws \TYPO3\CMS\Core\Package\Exception\UnknownPackageException if the specified package is unknown
 	 */
 	public function getExtension($extensionKey) {
 		return $this->packageManager->getPackage($extensionKey);

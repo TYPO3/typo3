@@ -117,8 +117,6 @@ class Bootstrap {
 			$composerClassLoader = self::initializeComposerClassLoader();
 			$applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
 			self::$instance = new static($applicationContext);
-			// Establish an alias for Flow/Package interoperability
-			class_alias(get_class(static::$instance), \TYPO3\Flow\Core\Bootstrap::class);
 			self::$instance->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $composerClassLoader);
 		}
 		return static::$instance;
@@ -460,7 +458,7 @@ class Bootstrap {
 	public function initializePackageManagement($packageManagerClassName) {
 		/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
 		$packageManager = new $packageManagerClassName();
-		$this->setEarlyInstance(\TYPO3\Flow\Package\PackageManager::class, $packageManager);
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
 		$packageManager->injectClassLoader($this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class));
 		$packageManager->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
@@ -479,7 +477,7 @@ class Bootstrap {
 	protected function initializeRuntimeActivatedPackagesFromConfiguration() {
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'])) {
 			/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
-			$packageManager = $this->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
+			$packageManager = $this->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages'] as $runtimeAddedPackageKey) {
 				$packageManager->activatePackageDuringRuntime($runtimeAddedPackageKey);
 			}

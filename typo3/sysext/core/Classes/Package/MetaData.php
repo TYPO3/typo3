@@ -1,21 +1,28 @@
 <?php
-namespace TYPO3\Flow\Package;
+namespace TYPO3\CMS\Core\Package;
 
-/*                                                                        *
- * This script belongs to the TYPO3 Flow framework.                       *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- * of the License, or (at your option) any later version.                 *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * The default TYPO3 Package MetaData implementation
- *
+ * Adapted from FLOW for TYPO3 CMS
  */
-class MetaData implements \TYPO3\Flow\Package\MetaDataInterface {
+class MetaData {
+
+	const CONSTRAINT_TYPE_DEPENDS = 'depends';
+	const CONSTRAINT_TYPE_CONFLICTS = 'conflicts';
+	const CONSTRAINT_TYPE_SUGGESTS = 'suggests';
 
 	/**
 	 * @var array
@@ -51,18 +58,6 @@ class MetaData implements \TYPO3\Flow\Package\MetaDataInterface {
 	 * @var string
 	 */
 	protected $description;
-
-	/**
-	 * Package categories as string
-	 * @var array
-	 */
-	protected $categories = array();
-
-	/**
-	 * Package parties (person, company)
-	 * @var array
-	 */
-	protected $parties = array();
 
 	/**
 	 * constraints by constraint type (depends, conflicts, suggests)
@@ -144,40 +139,6 @@ class MetaData implements \TYPO3\Flow\Package\MetaDataInterface {
 	}
 
 	/**
-	 * @return Array of string The package categories
-	 */
-	public function getCategories() {
-		return $this->categories;
-	}
-
-	/**
-	 * Adds a package category
-	 *
-	 * @param string $category
-	 * @return void
-	 */
-	public function addCategory($category) {
-		$this->categories[] = $category;
-	}
-
-	/**
-	 * @return Array of TYPO3\Flow\Package\MetaData\AbstractParty The package parties
-	 */
-	public function getParties() {
-		return $this->parties;
-	}
-
-	/**
-	 * Add a party
-	 *
-	 * @param \TYPO3\Flow\Package\MetaData\AbstractParty $party
-	 * @return void
-	 */
-	public function addParty(\TYPO3\Flow\Package\MetaData\AbstractParty $party) {
-		$this->parties[] = $party;
-	}
-
-	/**
 	 * Get all constraints
 	 *
 	 * @return array Package constraints
@@ -202,11 +163,10 @@ class MetaData implements \TYPO3\Flow\Package\MetaDataInterface {
 	/**
 	 * Add a constraint
 	 *
-	 * @param \TYPO3\Flow\Package\MetaData\AbstractConstraint $constraint The constraint to add
+	 * @param MetaData\PackageConstraint $constraint The constraint to add
 	 * @return void
 	 */
-	public function addConstraint(\TYPO3\Flow\Package\MetaData\AbstractConstraint $constraint) {
+	public function addConstraint(MetaData\PackageConstraint $constraint) {
 		$this->constraints[$constraint->getConstraintType()][] = $constraint;
 	}
 }
-?>

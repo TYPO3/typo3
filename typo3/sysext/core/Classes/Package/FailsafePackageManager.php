@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Package;
  * the required extensions for the install in case the package
  * states are unavailable.
  */
-class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
+class FailsafePackageManager extends PackageManager {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
@@ -48,7 +48,7 @@ class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 	protected function loadPackageStates() {
 		try {
 			parent::loadPackageStates();
-		} catch (\TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException $exception) {
+		} catch (Exception\PackageStatesUnavailableException $exception) {
 			$this->inFailsafeMode = TRUE;
 			$this->packageStatesConfiguration = array();
 			$this->scanAvailablePackages();
@@ -59,7 +59,7 @@ class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 	 * Requires and registers all packages which were defined in packageStatesConfiguration
 	 *
 	 * @return void
-	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
+	 * @throws \TYPO3\CMS\Core\Package\Exception\CorruptPackageException
 	 */
 	protected function registerPackagesFromConfiguration() {
 		$this->packageStatesConfiguration['packages']['install']['state'] = 'active';
@@ -85,5 +85,4 @@ class FailsafePackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
 	public function forceSortAndSavePackageStates() {
 		parent::sortAndSavePackageStates();
 	}
-
 }

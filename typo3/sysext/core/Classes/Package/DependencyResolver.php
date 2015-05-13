@@ -249,7 +249,7 @@ class DependencyResolver {
 	protected function findFrameworkPackages(array $packageStateConfiguration) {
 		$frameworkPackageKeys = array();
 		/** @var PackageManager $packageManager */
-		$packageManager = Bootstrap::getInstance()->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
+		$packageManager = Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 		foreach ($packageStateConfiguration as $packageKey => $packageConfiguration) {
 			/** @var Package $package */
 			$package = $packageManager->getPackage($packageKey);

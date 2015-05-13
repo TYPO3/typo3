@@ -295,7 +295,7 @@ class StepController extends AbstractController {
 
 		try {
 			/** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-			$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\Flow\Package\PackageManager::class);
+			$packageManager = \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 
 			// Activate all packages required for a minimal usable system
 			$packages = $packageManager->getAvailablePackages();
@@ -317,7 +317,7 @@ class StepController extends AbstractController {
 			foreach ($extensionsFromExtListArray as $loadedExtension) {
 				try {
 					$packageManager->activatePackage($loadedExtension);
-				} catch (\TYPO3\Flow\Package\Exception\UnknownPackageException $exception) {
+				} catch (\TYPO3\CMS\Core\Package\Exception\UnknownPackageException $exception) {
 					// Skip unavailable packages silently
 				}
 			}

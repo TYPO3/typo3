@@ -56,7 +56,7 @@ class ClassAliasMap implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $composerClassLoader;
 
 	/**
-	 * @var \TYPO3\Flow\Package\Package[]
+	 * @var \TYPO3\CMS\Core\Package\Package[]
 	 */
 	protected $packages = array();
 

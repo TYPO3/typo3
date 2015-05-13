@@ -1292,7 +1292,7 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		ExtensionManagementUtility::clearExtensionKeyMap();
 		$uniqueSuffix = $this->getUniqueId('test');
 		$extensionKey = 'unloadedextension' . $uniqueSuffix;
-		$packageMetaData = $this->getMock(\TYPO3\Flow\Package\MetaData::class, array('getVersion'), array($extensionKey));
+		$packageMetaData = $this->getMock(\TYPO3\CMS\Core\Package\MetaData::class, array('getVersion'), array($extensionKey));
 		$packageMetaData->expects($this->any())->method('getVersion')->will($this->returnValue('1.2.3'));
 		$packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey, array('getPackagePath', 'getPackageKey', 'getPackageMetaData'));
 		/** @var \PHPUnit_Framework_MockObject_MockObject $package */

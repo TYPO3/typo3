@@ -11,8 +11,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\Flow\Package\Package as FlowPackage;
-use TYPO3\CMS\Core\Package\Package as TYPO3Package;
+use TYPO3\CMS\Core\Package\Package as Package;
 use org\bovigo\vfs\vfsStream;
 
 /**
@@ -29,10 +28,12 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException \TYPO3\Flow\Package\Exception\InvalidPackagePathException
+	 * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException
 	 */
 	public function constructThrowsPackageDoesNotExistException() {
-		new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
+		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
+		new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
 	}
 
 	/**
@@ -40,10 +41,10 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function validPackageKeys() {
 		return array(
 			array('Doctrine.DBAL'),
-			array('TYPO3.Flow'),
-			array('RobertLemke.Flow.Twitter'),
-			array('Sumphonos.Stem'),
-			array('Schalke04.Soccer.MagicTrainer')
+			array('TYPO3.CMS'),
+			array('My.Own.TwitterPackage'),
+			array('GoFor.IT'),
+			array('Symfony.Symfony')
 		);
 	}
 
@@ -55,8 +56,11 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
 		mkdir($packagePath, 0777, TRUE);
 		file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
+		file_put_contents($packagePath . 'ext_emconf.php', '');
 
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), $packageKey, $packagePath);
+		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
+		$package = new Package($packageManagerMock, $packageKey, $packagePath);
 		$this->assertEquals($packageKey, $package->getPackageKey());
 	}
 
@@ -73,12 +77,14 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider invalidPackageKeys
-	 * @expectedException \TYPO3\Flow\Package\Exception\InvalidPackageKeyException
+	 * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException
 	 */
 	public function constructRejectsInvalidPackageKeys($packageKey) {
 		$packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
 		mkdir($packagePath, 0777, TRUE);
-		new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), $packageKey, $packagePath);
+
+		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		new Package($packageManagerMock, $packageKey, $packagePath);
 	}
 
 	/**
@@ -88,27 +94,12 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packagePath = 'vfs://Packages/Application/Acme.MyPackage/';
 		mkdir($packagePath, 0777, TRUE);
 		file_put_contents($packagePath . 'composer.json', '{"name": "acme/mypackage", "type": "flow-test"}');
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'Acme.MyPackage', $packagePath);
+		file_put_contents($packagePath . 'ext_emconf.php', '');
+
+		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
+		$package = new Package($packageManagerMock, 'Acme.MyPackage', $packagePath);
 		$this->assertEquals('Acme\\MyPackage', $package->getNamespace());
-	}
-
-	/**
-	 * @test
-	 */
-	public function getMetaPathReturnsPathToMetaDirectory() {
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'TYPO3.CMS.Core', PATH_typo3 . 'sysext/core/');
-		$packageMetaDataPath = $package->getMetaPath();
-		$this->assertSame($package->getPackagePath() . FlowPackage::DIRECTORY_METADATA, $packageMetaDataPath);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getDocumentationPathReturnsPathToDocumentationDirectory() {
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'TYPO3.CMS.Core', PATH_typo3 . 'sysext/core/');
-		$packageDocumentationPath = $package->getDocumentationPath();
-
-		$this->assertEquals($package->getPackagePath() . FlowPackage::DIRECTORY_DOCUMENTATION, $packageDocumentationPath);
 	}
 
 	/**
@@ -117,41 +108,10 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getClassesPathReturnsPathToClasses() {
 		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		$package = new TYPO3Package($packageManagerMock, 'core', PATH_typo3 . 'sysext/core/', TYPO3Package::DIRECTORY_CLASSES);
+		$package = new Package($packageManagerMock, 'core', PATH_typo3 . 'sysext/core/', Package::DIRECTORY_CLASSES);
 		$packageClassesPath = $package->getClassesPath();
-		$expected = $package->getPackagePath() . TYPO3Package::DIRECTORY_CLASSES;
+		$expected = $package->getPackagePath() . Package::DIRECTORY_CLASSES;
 		$this->assertEquals($expected, $packageClassesPath);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getClassesPathReturnsNormalizedPathToClasses() {
-		$packagePath = 'vfs://Packages/Application/Acme/MyPackage/';
-		mkdir($packagePath, 0777, TRUE);
-		file_put_contents($packagePath . 'composer.json', '{"name": "acme/mypackage", "type": "flow-test"}');
-
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'Acme.MyPackage', $packagePath, 'no/trailing/slash');
-
-		$packageClassesPath = $package->getClassesPath();
-		$expected = $package->getPackagePath() . 'no/trailing/slash/';
-
-		$this->assertEquals($expected, $packageClassesPath);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getPackageDocumentationsReturnsEmptyArrayIfDocumentationDirectoryDoesntExist() {
-		vfsStream::setup('testDirectory');
-
-		$packagePath = vfsStream::url('testDirectory') . '/';
-		file_put_contents($packagePath . 'composer.json', '{"name": "typo3/flow", "type": "flow-test"}');
-
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'TYPO3.Flow', $packagePath);
-		$documentations = $package->getPackageDocumentations();
-
-		$this->assertEquals(array(), $documentations);
 	}
 
 	/**
@@ -161,50 +121,15 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packagePath = 'vfs://Packages/Application/Vendor/Dummy/';
 		mkdir($packagePath, 0700, TRUE);
 		file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'Vendor.Dummy', $packagePath);
+		file_put_contents($packagePath . 'ext_emconf.php', '');
+
+		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
+		$package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
 
 		$this->assertFalse($package->isProtected());
 		$package->setProtected(TRUE);
 		$this->assertTrue($package->isProtected());
-	}
-
-	/**
-	 * @test
-	 */
-	public function isObjectManagementEnabledTellsIfObjectManagementShouldBeEnabledForThePackage() {
-		$packagePath = 'vfs://Packages/Application/Vendor/Dummy/';
-		mkdir($packagePath, 0700, TRUE);
-		file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'Vendor.Dummy', $packagePath);
-
-		$this->assertTrue($package->isObjectManagementEnabled());
-	}
-
-	/**
-	 * @test
-	 */
-	public function getClassFilesReturnsAListOfClassFilesOfThePackage() {
-		$packagePath = 'vfs://Packages/Application/Acme.MyPackage/';
-		mkdir($packagePath, 0777, TRUE);
-		file_put_contents($packagePath . 'composer.json', '{"name": "acme/mypackage", "type": "flow-test"}');
-
-		mkdir($packagePath . 'Classes/Acme/MyPackage/Controller', 0770, TRUE);
-		mkdir($packagePath . 'Classes/Acme/MyPackage/Domain/Model', 0770, TRUE);
-
-		file_put_contents($packagePath . 'Classes/Acme/MyPackage/Controller/FooController.php', '');
-		file_put_contents($packagePath . 'Classes/Acme/MyPackage/Domain/Model/Foo.php', '');
-		file_put_contents($packagePath . 'Classes/Acme/MyPackage/Domain/Model/Bar.php', '');
-
-		$expectedClassFilesArray = array(
-			'Acme\MyPackage\Controller\FooController' => 'Classes/Acme/MyPackage/Controller/FooController.php',
-			'Acme\MyPackage\Domain\Model\Foo' => 'Classes/Acme/MyPackage/Domain/Model/Foo.php',
-			'Acme\MyPackage\Domain\Model\Bar' => 'Classes/Acme/MyPackage/Domain/Model/Bar.php',
-		);
-
-		$package = new FlowPackage($this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class), 'Acme.MyPackage', $packagePath, 'Classes');
-		$actualClassFilesArray = $package->getClassFiles();
-
-		$this->assertEquals($expectedClassFilesArray, $actualClassFilesArray);
 	}
 
 }

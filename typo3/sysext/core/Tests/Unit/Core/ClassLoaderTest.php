@@ -60,11 +60,15 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/', 0770, TRUE);
 		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/composer.json', '{"name": "acme/myapp", "type": "flow-test"}');
-		$package1 = new \TYPO3\Flow\Package\Package($this->getMock(\TYPO3\Flow\Package\PackageManager::class), 'Acme.MyApp', 'vfs://Test/Packages/Application/Acme.MyApp/', 'Classes');
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/ext_emconf.php', '');
+		$packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('isPackageKeyValid'));
+		$packageManager->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
+		$package1 = new \TYPO3\CMS\Core\Package\Package($packageManager, 'Acme.MyApp', 'vfs://Test/Packages/Application/Acme.MyApp/', 'Classes');
 
 		mkdir('vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/', 0770, TRUE);
 		file_put_contents('vfs://Test/Packages/Application/Acme.MyAppAddon/composer.json', '{"name": "acme/myappaddon", "type": "flow-test"}');
-		$package2 = new \TYPO3\Flow\Package\Package($this->getMock(\TYPO3\Flow\Package\PackageManager::class), 'Acme.MyAppAddon', 'vfs://Test/Packages/Application/Acme.MyAppAddon/', 'Classes');
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyAppAddon/ext_emconf.php', '');
+		$package2 = new \TYPO3\CMS\Core\Package\Package($packageManager, 'Acme.MyAppAddon', 'vfs://Test/Packages/Application/Acme.MyAppAddon/', 'Classes');
 
 		$mockClassAliasMap = $this->getMock(\TYPO3\CMS\Core\Core\ClassAliasMap::class, array('setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead', 'buildMappingFiles'), array(), '', FALSE);
 		$mockClassAliasMap->expects($this->any())->method('setPackagesButDontBuildMappingFilesReturnClassNameToAliasMappingInstead')->will($this->returnValue(array()));
@@ -109,8 +113,8 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function classesFromSubDirectoriesAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/SubDirectory', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/SubDirectory/ClassInSubDirectory.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
+		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/SubDirectory', 0770, TRUE);
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/SubDirectory/ClassInSubDirectory.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
 
 		self::$testClassWasLoaded = FALSE;
 		$this->classLoader->loadClass('Acme\MyApp\SubDirectory\ClassInSubDirectory');
@@ -121,8 +125,8 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function classesFromDeeplyNestedSubDirectoriesAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/SubDirectory/A/B/C/D', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/SubDirectory/A/B/C/D/E.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
+		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/SubDirectory/A/B/C/D', 0770, TRUE);
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/SubDirectory/A/B/C/D/E.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
 
 		self::$testClassWasLoaded = FALSE;
 		$this->classLoader->loadClass('Acme\MyApp\SubDirectory\A\B\C\D\E');
@@ -136,25 +140,10 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function classesFromSubMatchingPackagesAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/Acme/MyAppAddon', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/Acme/MyAppAddon/Class.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/Class.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
 
 		self::$testClassWasLoaded = FALSE;
 		$this->classLoader->loadClass('Acme\MyAppAddon\Class');
-		$this->assertTrue(self::$testClassWasLoaded);
-	}
-
-	/**
-	 * Checks if the package autoloader loads classes from subdirectories.
-	 *
-	 * @test
-	 */
-	public function classesWithUnderscoresAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/Foo.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
-
-		self::$testClassWasLoaded = FALSE;
-		$this->classLoader->loadClass('Acme\MyApp_Foo');
 		$this->assertTrue(self::$testClassWasLoaded);
 	}
 
@@ -164,8 +153,8 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function namespaceWithUnderscoresAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/My_Underscore', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/My_Underscore/Foo.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
+		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/My_Underscore', 0770, TRUE);
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/My_Underscore/Foo.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
 
 		self::$testClassWasLoaded = FALSE;
 		$this->classLoader->loadClass('Acme\MyApp\My_Underscore\Foo');
@@ -173,25 +162,10 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Checks if the package autoloader loads classes from subdirectories.
-	 *
-	 * @test
-	 */
-	public function classesWithOnlyUnderscoresAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/UnderscoredOnly.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
-
-		self::$testClassWasLoaded = FALSE;
-		$this->classLoader->loadClass('Acme_MyApp_UnderscoredOnly');
-		$this->assertTrue(self::$testClassWasLoaded);
-	}
-
-	/**
 	 * @test
 	 */
 	public function classesWithLeadingBackslashAreLoaded() {
-		mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp', 0770, TRUE);
-		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/WithLeadingBackslash.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
+		file_put_contents('vfs://Test/Packages/Application/Acme.MyApp/Classes/WithLeadingBackslash.php', '<?php ' . __CLASS__ . '::$testClassWasLoaded = TRUE; ?>');
 
 		self::$testClassWasLoaded = FALSE;
 		$this->classLoader->loadClass('\Acme\MyApp\WithLeadingBackslash');

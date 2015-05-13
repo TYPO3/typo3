@@ -20,15 +20,15 @@ namespace TYPO3\CMS\Core\Package;
  * so that the class loader can find the classes of all tests,
  * whether the according extension is active in the installation itself or not.
  */
-class UnitTestPackageManager extends \TYPO3\CMS\Core\Package\PackageManager {
+class UnitTestPackageManager extends PackageManager {
 
 	/**
 	 * Initializes the package manager
 	 *
-	 * @param \TYPO3\CMS\Core\Core\Bootstrap|\TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap; Flow Bootstrap is here by intention to keep the PackageManager valid to the interface
+	 * @param \TYPO3\CMS\Core\Core\Bootstrap $bootstrap The current bootstrap
 	 * @return void
 	 */
-	public function initialize(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+	public function initialize(\TYPO3\CMS\Core\Core\Bootstrap $bootstrap) {
 		$this->bootstrap = $bootstrap;
 
 		$this->scanAvailablePackages();

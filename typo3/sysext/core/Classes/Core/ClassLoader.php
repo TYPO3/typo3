@@ -60,7 +60,7 @@ class ClassLoader {
 	protected $cacheIdentifier;
 
 	/**
-	 * @var \TYPO3\Flow\Package\Package[]
+	 * @var \TYPO3\CMS\Core\Package\Package[]
 	 */
 	protected $packages = array();
 
@@ -352,21 +352,9 @@ class ClassLoader {
 	protected function buildClassLoadingInformationForClassFromRegisteredPackages($className) {;
 		foreach ($this->packageNamespaces as $packageNamespace => $packageData) {
 			if (substr(str_replace('_', '\\', $className), 0, $packageData['namespaceLength']) === $packageNamespace) {
-				if ($packageData['substituteNamespaceInPath']) {
-					// If it's a TYPO3 package, classes don't comply to PSR-0.
-					// The namespace part is substituted.
-					$classPathAndFilename = '/' . str_replace('\\', '/', ltrim(substr($className, $packageData['namespaceLength']), '\\')) . '.php';
-				} else {
-					// Make the classname PSR-0 compliant by replacing underscores only in the classname not in the namespace
-					$classPathAndFilename  = '';
-					$lastNamespacePosition = strrpos($className, '\\');
-					if ($lastNamespacePosition !== FALSE) {
-						$namespace = substr($className, 0, $lastNamespacePosition);
-						$className = substr($className, $lastNamespacePosition + 1);
-						$classPathAndFilename  = str_replace('\\', '/', $namespace) . '/';
-					}
-					$classPathAndFilename .= str_replace('_', '/', $className) . '.php';
-				}
+				// If it's a TYPO3 package, classes don't comply to PSR-0.
+				// The namespace part is substituted.
+				$classPathAndFilename = '/' . str_replace('\\', '/', ltrim(substr($className, $packageData['namespaceLength']), '\\')) . '.php';
 				if (strtolower(substr($className, $packageData['namespaceLength'], 5)) === 'tests') {
 					$classPathAndFilename = $packageData['packagePath'] . $classPathAndFilename;
 				} else {
@@ -459,7 +447,7 @@ class ClassLoader {
 	/**
 	 * Sets the available packages
 	 *
-	 * @param array $packages An array of \TYPO3\Flow\Package\Package objects
+	 * @param array $packages An array of \TYPO3\CMS\Core\Package\Package objects
 	 * @return ClassLoader
 	 */
 	public function setPackages(array $packages) {
@@ -478,10 +466,10 @@ class ClassLoader {
 	/**
 	 * Add a package to class loader just during runtime, so classes can be loaded without the need for a new request
 	 *
-	 * @param \TYPO3\Flow\Package\PackageInterface $package
+	 * @param PackageInterface $package
 	 * @return ClassLoader
 	 */
-	public function addActivePackage(\TYPO3\Flow\Package\PackageInterface $package) {
+	public function addActivePackage(PackageInterface $package) {
 		$packageKey = $package->getPackageKey();
 		if (!isset($this->packages[$packageKey])) {
 			$this->packages[$packageKey] = $package;
@@ -530,14 +518,12 @@ class ClassLoader {
 	/**
 	 * Builds the namespace and class paths for a single package
 	 *
-	 * @param \TYPO3\Flow\Package\PackageInterface $package
+	 * @param PackageInterface $package
 	 * @return void
 	 */
-	protected function buildPackageNamespaceAndClassesPath(\TYPO3\Flow\Package\PackageInterface $package) {
-		if ($package instanceof \TYPO3\Flow\Package\PackageInterface) {
-			$this->buildPackageNamespace($package);
-		}
+	protected function buildPackageNamespaceAndClassesPath(PackageInterface $package) {
 		if ($package instanceof PackageInterface) {
+			$this->buildPackageNamespace($package);
 			$this->buildPackageClassPathsForLegacyExtension($package);
 		}
 	}
@@ -567,10 +553,10 @@ class ClassLoader {
 	/**
 	 * Extracts the namespace from a package
 	 *
-	 * @param \TYPO3\Flow\Package\PackageInterface $package
+	 * @param PackageInterface $package
 	 * @return void
 	 */
-	protected function buildPackageNamespace(\TYPO3\Flow\Package\PackageInterface $package) {
+	protected function buildPackageNamespace(PackageInterface $package) {
 		$packageNamespace = $package->getNamespace();
 		// Ignore legacy extensions with unknown vendor name
 		if ($packageNamespace[0] !== '*') {
@@ -578,7 +564,6 @@ class ClassLoader {
 				'namespaceLength' => strlen($packageNamespace),
 				'classesPath' => $package->getClassesPath(),
 				'packagePath' => $package->getPackagePath(),
-				'substituteNamespaceInPath' => ($package instanceof PackageInterface)
 			);
 		}
 	}

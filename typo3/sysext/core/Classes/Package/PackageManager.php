@@ -1,26 +1,27 @@
 <?php
 namespace TYPO3\CMS\Core\Package;
 
-/*                                                                        *
- * This script belongs to the TYPO3 Flow framework.                       *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- * of the License, or (at your option) any later version.                 *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
-use TYPO3\Flow\Annotations as Flow;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * The default TYPO3 Package Manager
  * Adapted from FLOW for TYPO3 CMS
- *
- * @api
- * @Flow\Scope("singleton")
  */
-class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
+class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Core\ClassLoader
@@ -79,6 +80,41 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected $packagesBasePath = PATH_site;
 
 	/**
+	 * Array of available packages, indexed by package key
+	 * @var array
+	 */
+	protected $packages = array();
+
+	/**
+	 * A translation table between lower cased and upper camel cased package keys
+	 * @var array
+	 */
+	protected $packageKeys = array();
+
+	/**
+	 * A map between ComposerName and PackageKey, only available when scanAvailablePackages is run
+	 * @var array
+	 */
+	protected $composerNameToPackageKeyMap = array();
+
+	/**
+	 * List of active packages as package key => package object
+	 * @var array
+	 */
+	protected $activePackages = array();
+
+	/**
+	 * @var string
+	 */
+	protected $packageStatesPathAndFilename;
+
+	/**
+	 * Package states configuration as stored in the PackageStates.php file
+	 * @var array
+	 */
+	protected $packageStatesConfiguration = array();
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -91,7 +127,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			'composer'  => PATH_site . 'Packages',
 		);
 		$this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
-		$this->packageFactory = new PackageFactory($this);
 	}
 
 	/**
@@ -118,10 +153,10 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	/**
 	 * Initializes the package manager
 	 *
-	 * @param \TYPO3\CMS\Core\Core\Bootstrap|\TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap; Flow Bootstrap is here by intention to keep the PackageManager valid to the interface
+	 * @param \TYPO3\CMS\Core\Core\Bootstrap $bootstrap The current bootstrap
 	 * @return void
 	 */
-	public function initialize(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+	public function initialize(\TYPO3\CMS\Core\Core\Bootstrap $bootstrap) {
 		$this->bootstrap = $bootstrap;
 
 		$loadedFromCache = FALSE;
@@ -150,16 +185,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		if (!$loadedFromCache) {
 			$this->saveToPackageCache();
 		}
-	}
-
-	/**
-	 * @return PackageFactory
-	 */
-	protected function getPackageFactory() {
-		if (!isset($this->packageFactory)) {
-			$this->packageFactory = new PackageFactory($this);
-		}
-		return $this->packageFactory;
 	}
 
 	/**
@@ -203,22 +228,16 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
 				'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
 			);
-			$packageClassSources = array(
-				'typo3\\flow\\package\\package' => NULL,
-				'typo3\\cms\\core\\package\\package' => NULL,
-			);
-			foreach ($this->packages as $package) {
-				$packageClassName = strtolower(get_class($package));
-				if (!isset($packageClassSources[$packageClassName]) || $packageClassSources[$packageClassName] === NULL) {
-					$reflectionPackageClass = new \ReflectionClass($packageClassName);
-					$packageClassSource = file_get_contents($reflectionPackageClass->getFileName());
-					$packageClassSources[$packageClassName] = preg_replace('/<\?php|\?>/i', '', $packageClassSource);
-				}
-			}
+			// add the reflection of the package class
+			$packageClassName = strtolower(Package::class);
+			$reflectionPackageClass = new \ReflectionClass($packageClassName);
+			$packageClassSource = file_get_contents($reflectionPackageClass->getFileName());
+			$packageClassSource = preg_replace('/<\?php|\?>/i', '', $packageClassSource);
+
 			$this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
 			$this->coreCache->set(
 				$cacheEntryIdentifier,
-				implode(PHP_EOL, $packageClassSources) . PHP_EOL .
+				$packageClassSource . PHP_EOL .
 					'return ' . PHP_EOL . var_export($packageCache, TRUE) . ';'
 			);
 		}
@@ -314,7 +333,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * For each package a Package object is created and stored in $this->packages.
 	 *
 	 * @return void
-	 * @throws \TYPO3\Flow\Package\Exception\DuplicatePackageException
 	 */
 	public function scanAvailablePackages() {
 		$previousPackageStatesConfiguration = $this->packageStatesConfiguration;
@@ -351,17 +369,16 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			}
 			try {
 				$composerManifest = self::getComposerManifest($composerManifestPath);
-				$packageKey = PackageFactory::getPackageKeyFromManifest($composerManifest, $packagePath, $packagesBasePath);
+				$packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath, $packagesBasePath);
 				$this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
-				$this->packageStatesConfiguration['packages'][$packageKey]['manifestPath'] = substr($composerManifestPath, strlen($packagePath)) ? : '';
 				$this->packageStatesConfiguration['packages'][$packageKey]['composerName'] = $composerManifest->name;
-			} catch (\TYPO3\Flow\Package\Exception\MissingPackageManifestException $exception) {
+			} catch (Exception\MissingPackageManifestException $exception) {
 				$relativePackagePath = substr($packagePath, strlen($packagesBasePath));
 				$packageKey = substr($relativePackagePath, strpos($relativePackagePath, '/') + 1, -1);
 				if (!$this->isPackageKeyValid($packageKey)) {
 					continue;
 				}
-			} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
+			} catch (Exception\InvalidPackageKeyException $exception) {
 				continue;
 			}
 			if (!isset($this->packageStatesConfiguration['packages'][$packageKey]['state'])) {
@@ -369,9 +386,6 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			}
 
 			$this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $packagePath);
-
-			// Change this to read the target from Composer or any other source
-			$this->packageStatesConfiguration['packages'][$packageKey]['classesPath'] = Package::DIRECTORY_CLASSES;
 		}
 
 		$registerOnlyNewPackages = !empty($this->packages);
@@ -388,7 +402,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	protected function scanLegacyExtensions(&$collectedExtensionPaths = array()) {
 		$legacyCmsPackageBasePathTypes = array('sysext', 'global', 'local');
 		foreach ($this->packagesBasePaths as $type => $packageBasePath) {
-			if (!in_array($type, $legacyCmsPackageBasePathTypes)) {
+			if (!in_array($type, $legacyCmsPackageBasePathTypes, TRUE)) {
 				continue;
 			}
 			/** @var $fileInfo \SplFileInfo */
@@ -398,7 +412,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				}
 				$filename = $fileInfo->getFilename();
 				if ($filename[0] !== '.') {
-					$currentPath = \TYPO3\Flow\Utility\Files::getUnixStylePath($fileInfo->getPathName()) . '/';
+					// Fix Windows backslashes
+					// we can't use GeneralUtility::fixWindowsFilePath as we have to keep double slashes for Unit Tests (vfs://)
+					$currentPath = str_replace('\\', '/', $fileInfo->getPathName()) . '/';
 					// Only add the extension if we have an EMCONF and the extension is not yet registered.
 					// This is crucial in order to allow overriding of system extension by local extensions
 					// and strongly depends on the order of paths defined in $this->packagesBasePaths.
@@ -412,17 +428,21 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	}
 
 	/**
-	 * Looks for composer.json in the given path and returns a path or NULL.
+	 * Looks for composer.json in the given path and returns TRUE or FALSE if a ext_emconf.php exists
+	 * or no composer.json is found.
 	 *
 	 * @param string $packagePath
-	 * @return array
+	 * @return bool TRUE if a composer.json exists or FALSE if none exists
 	 */
-	protected function findComposerManifestPaths($packagePath) {
+	protected function hasComposerManifestFile($packagePath) {
 		// If an ext_emconf.php file is found, we don't need to look deeper
 		if (file_exists($packagePath . '/ext_emconf.php')) {
-			return array();
+			return FALSE;
 		}
-		return parent::findComposerManifestPaths($packagePath);
+		if (file_exists($packagePath . '/composer.json')) {
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	/**
@@ -430,7 +450,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 *
 	 * @param bool $registerOnlyNewPackages
 	 * @return void
-	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
+	 * @throws Exception\CorruptPackageException
 	 */
 	protected function registerPackagesFromConfiguration($registerOnlyNewPackages = FALSE) {
 		$packageStatesHasChanged = FALSE;
@@ -441,16 +461,14 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			}
 
 			$packagePath = isset($stateConfiguration['packagePath']) ? $stateConfiguration['packagePath'] : NULL;
-			$classesPath = isset($stateConfiguration['classesPath']) ? $stateConfiguration['classesPath'] : NULL;
-			$manifestPath = isset($stateConfiguration['manifestPath']) ? $stateConfiguration['manifestPath'] : NULL;
-
 			try {
-				$package = $this->getPackageFactory()->create($this->packagesBasePath, $packagePath, $packageKey, $classesPath, $manifestPath);
-			} catch (\TYPO3\Flow\Package\Exception\InvalidPackagePathException $exception) {
+				$packagePath = PathUtility::sanitizeTrailingSeparator($this->packagesBasePath . $packagePath);
+				$package = new Package($this, $packageKey, $packagePath);
+			} catch (Exception\InvalidPackagePathException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
 				$packageStatesHasChanged = TRUE;
 				continue;
-			} catch (\TYPO3\Flow\Package\Exception\InvalidPackageKeyException $exception) {
+			} catch (Exception\InvalidPackageKeyException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
 				$packageStatesHasChanged = TRUE;
 				continue;
@@ -458,8 +476,8 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 
 			$this->registerPackage($package, FALSE);
 
-			if (!$this->packages[$packageKey] instanceof \TYPO3\Flow\Package\PackageInterface) {
-				throw new \TYPO3\Flow\Package\Exception\CorruptPackageException(sprintf('The package class in package "%s" does not implement PackageInterface.', $packageKey), 1300782488);
+			if (!$this->packages[$packageKey] instanceof PackageInterface) {
+				throw new Exception\CorruptPackageException(sprintf('The package class in package "%s" does not implement PackageInterface.', $packageKey), 1300782488);
 			}
 
 			$this->packageKeys[strtolower($packageKey)] = $packageKey;
@@ -473,15 +491,26 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	}
 
 	/**
-	 * Register a native Flow package
+	 * Register a native TYPO3 package
 	 *
-	 * @param \TYPO3\Flow\Package\PackageInterface $package The Package to be registered
+	 * @param PackageInterface $package The Package to be registered
 	 * @param bool $sortAndSave allows for not saving packagestates when used in loops etc.
-	 * @return \TYPO3\Flow\Package\PackageInterface
-	 * @throws \TYPO3\Flow\Package\Exception\CorruptPackageException
+	 * @return PackageInterface
+	 * @throws Exception\CorruptPackageException
 	 */
-	public function registerPackage(\TYPO3\Flow\Package\PackageInterface $package, $sortAndSave = TRUE) {
-		$package = parent::registerPackage($package, $sortAndSave);
+	public function registerPackage(PackageInterface $package, $sortAndSave = TRUE) {
+		$packageKey = $package->getPackageKey();
+		if ($this->isPackageAvailable($packageKey)) {
+			throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is already registered.', 1338996122);
+		}
+
+		$this->packages[$packageKey] = $package;
+		$this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $package->getPackagePath());
+
+		if ($sortAndSave === TRUE) {
+			$this->sortAndSavePackageStates();
+		}
+
 		if ($package instanceof PackageInterface) {
 			foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
 				$this->packageAliasMap[strtolower($packageToReplace)] = $package->getPackageKey();
@@ -505,7 +534,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 				}
 				$packageKey = $package->getPackageKey();
 			}
-		} catch (\TYPO3\Flow\Package\Exception\UnknownPackageException $e) {
+		} catch (Exception\UnknownPackageException $e) {
 		}
 		unset($this->packages[$packageKey]);
 		unset($this->packageKeys[strtolower($packageKey)]);
@@ -513,21 +542,25 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	}
 
 	/**
-	 * Resolves a Flow package key from a composer package name.
+	 * Resolves a TYPO3 package key from a composer package name.
 	 *
 	 * @param string $composerName
 	 * @return string
-	 * @throws \TYPO3\Flow\Package\Exception\InvalidPackageStateException
 	 */
 	public function getPackageKeyFromComposerName($composerName) {
 		if (isset($this->packageAliasMap[$composerName])) {
 			return $this->packageAliasMap[$composerName];
 		}
-		try {
-			return parent::getPackageKeyFromComposerName($composerName);
-		} catch (\TYPO3\Flow\Package\Exception\InvalidPackageStateException $exception) {
+		if (empty($this->composerNameToPackageKeyMap)) {
+			foreach ($this->packageStatesConfiguration['packages'] as $packageKey => $packageStateConfiguration) {
+				$this->composerNameToPackageKeyMap[strtolower($packageStateConfiguration['composerName'])] = $packageKey;
+			}
+		}
+		$lowercasedComposerName = strtolower($composerName);
+		if (!isset($this->composerNameToPackageKeyMap[$lowercasedComposerName])) {
 			return $composerName;
 		}
+		return $this->composerNameToPackageKeyMap[$lowercasedComposerName];
 	}
 
 	/**
@@ -555,15 +588,18 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * A package is available, if the package directory contains valid MetaData information.
 	 *
 	 * @param string $packageKey
-	 * @return \TYPO3\Flow\Package\PackageInterface The requested package object
-	 * @throws \TYPO3\Flow\Package\Exception\UnknownPackageException if the specified package is not known
+	 * @return PackageInterface The requested package object
+	 * @throws Exception\UnknownPackageException if the specified package is not known
 	 * @api
 	 */
 	public function getPackage($packageKey) {
 		if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
 			$packageKey = $this->packageAliasMap[$lowercasedPackageKey];
 		}
-		return parent::getPackage($packageKey);
+		if (!$this->isPackageAvailable($packageKey)) {
+			throw new Exception\UnknownPackageException('Package "' . $packageKey . '" is not available. Please check if the package exists and that the package key is correct (package keys are case sensitive).', 1166546734);
+		}
+		return $this->packages[$packageKey];
 	}
 
 	/**
@@ -578,7 +614,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
 			$packageKey = $this->packageAliasMap[$lowercasedPackageKey];
 		}
-		return parent::isPackageAvailable($packageKey);
+		return isset($this->packages[$packageKey]);
 	}
 
 	/**
@@ -589,10 +625,7 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @api
 	 */
 	public function isPackageActive($packageKey) {
-		if (isset($this->packageAliasMap[$lowercasedPackageKey = strtolower($packageKey)])) {
-			$packageKey = $this->packageAliasMap[$lowercasedPackageKey];
-		}
-		return isset($this->runtimeActivatedPackages[$packageKey]) || parent::isPackageActive($packageKey);
+		return isset($this->runtimeActivatedPackages[$packageKey]) || isset($this->activePackages[$packageKey]);
 	}
 
 	/**
@@ -605,13 +638,23 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			if ($packageKey === $packageStateKey || empty($packageStateConfiguration['dependencies']) || $packageStateConfiguration['state'] !== 'active') {
 				continue;
 			}
-			if (in_array($packageKey, $packageStateConfiguration['dependencies'])) {
+			if (in_array($packageKey, $packageStateConfiguration['dependencies'], TRUE)) {
 				$this->deactivatePackage($packageStateKey);
 			}
 		}
 
+		if (!$this->isPackageActive($packageKey)) {
+			return;
+		}
+
 		$package = $this->getPackage($packageKey);
-		parent::deactivatePackage($package->getPackageKey());
+		if ($package->isProtected()) {
+			throw new Exception\ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be deactivated.', 1308662891);
+		}
+
+		unset($this->activePackages[$packageKey]);
+		$this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'inactive';
+		$this->sortAndSavePackageStates();
 		$this->classLoader->setPackages($this->activePackages);
 	}
 
@@ -619,8 +662,17 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @param string $packageKey
 	 */
 	public function activatePackage($packageKey) {
+		if ($this->isPackageActive($packageKey)) {
+			return;
+		}
+
 		$package = $this->getPackage($packageKey);
-		parent::activatePackage($package->getPackageKey());
+		$this->activePackages[$packageKey] = $package;
+		$this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'active';
+		if (!isset($this->packageStatesConfiguration['packages'][$packageKey]['packagePath'])) {
+			$this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $package->getPackagePath());
+		}
+		$this->sortAndSavePackageStates();
 		$this->classLoader->addActivePackage($package);
 	}
 
@@ -640,59 +692,49 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 		}
 	}
 
-
 	/**
+	 * removes a package from the file system.
+	 *
 	 * @param string $packageKey
+	 * @throws Exception
+	 * @throws Exception\InvalidPackageStateException
+	 * @throws Exception\ProtectedPackageKeyException
+	 * @throws Exception\UnknownPackageException
 	 */
 	public function deletePackage($packageKey) {
+		if (!$this->isPackageAvailable($packageKey)) {
+			throw new Exception\UnknownPackageException('Package "' . $packageKey . '" is not available and cannot be removed.', 1166543253);
+		}
+
 		$package = $this->getPackage($packageKey);
-		parent::deletePackage($package->getPackageKey());
+		if ($package->isProtected()) {
+			throw new Exception\ProtectedPackageKeyException('The package "' . $packageKey . '" is protected and cannot be removed.', 1220722120);
+		}
+
+		if ($this->isPackageActive($packageKey)) {
+			$this->deactivatePackage($packageKey);
+		}
+
+		$this->unregisterPackage($package);
+
+		$packagePath = $package->getPackagePath();
+		$deletion = GeneralUtility::rmdir($packagePath, TRUE);
+		if ($deletion === FALSE) {
+			throw new Exception('Please check file permissions. The directory "' . $packagePath . '" for package "' . $packageKey . '" could not be removed.', 1301491089, $exception);
+		}
 	}
 
 
 	/**
-	 * @param string $packageKey
-	 */
-	public function freezePackage($packageKey) {
-		$package = $this->getPackage($packageKey);
-		parent::freezePackage($package->getPackageKey());
-	}
-
-	/**
-	 * @param string $packageKey
-	 * @return bool
-	 */
-	public function isPackageFrozen($packageKey) {
-		$package = $this->getPackage($packageKey);
-		return parent::isPackageFrozen($package->getPackageKey());
-	}
-
-	/**
-	 * @param string $packageKey
-	 */
-	public function unfreezePackage($packageKey) {
-		$package = $this->getPackage($packageKey);
-		parent::unfreezePackage($package->getPackageKey());
-	}
-
-	/**
-	 * @param string $packageKey
-	 */
-	public function refreezePackage($packageKey) {
-		$package = $this->getPackage($packageKey);
-		parent::refreezePackage($package->getPackageKey());
-	}
-
-	/**
-	 * Returns an array of \TYPO3\Flow\Package objects of all active packages.
+	 * Returns an array of \TYPO3\CMS\Core\Package objects of all active packages.
 	 * A package is active, if it is available and has been activated in the package
 	 * manager settings. This method returns runtime activated packages too
 	 *
-	 * @return \TYPO3\Flow\Package\PackageInterface[]
+	 * @return PackageInterface[]
 	 * @api
 	 */
 	public function getActivePackages() {
-		return array_merge(parent::getActivePackages(), $this->runtimeActivatedPackages);
+		return array_merge($this->activePackages, $this->runtimeActivatedPackages);
 	}
 
 	/**
@@ -723,7 +765,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @return void
 	 */
 	protected function resolvePackageDependencies() {
-		parent::resolvePackageDependencies();
+		foreach ($this->packages as $packageKey => $package) {
+			$this->packageStatesConfiguration['packages'][$packageKey]['dependencies'] = $this->getDependencyArrayForPackage($packageKey);
+		}
 		foreach ($this->packages as $packageKey => $package) {
 			$this->packageStatesConfiguration['packages'][$packageKey]['suggestions'] = $this->getSuggestionArrayForPackage($packageKey);
 		}
@@ -740,9 +784,9 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 			return NULL;
 		}
 		$suggestedPackageKeys = array();
-		$suggestedPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(\TYPO3\Flow\Package\MetaDataInterface::CONSTRAINT_TYPE_SUGGESTS);
+		$suggestedPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(MetaData::CONSTRAINT_TYPE_SUGGESTS);
 		foreach ($suggestedPackageConstraints as $constraint) {
-			if ($constraint instanceof \TYPO3\Flow\Package\MetaData\PackageConstraint) {
+			if ($constraint instanceof MetaData\PackageConstraint) {
 				$suggestedPackageKey = $constraint->getValue();
 				if (isset($this->packages[$suggestedPackageKey])) {
 					$suggestedPackageKeys[] = $suggestedPackageKey;
@@ -759,8 +803,35 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @return void
 	 */
 	protected function sortAndSavePackageStates() {
-		parent::sortAndSavePackageStates();
-		\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($this->packageStatesPathAndFilename);
+		$this->sortAvailablePackagesByDependencies();
+
+		$this->packageStatesConfiguration['version'] = 4;
+
+		$fileDescription = "# PackageStates.php\n\n";
+		$fileDescription .= "# This file is maintained by TYPO3's package management. Although you can edit it\n";
+		$fileDescription .= "# manually, you should rather use the extension manager for maintaining packages.\n";
+		$fileDescription .= "# This file will be regenerated automatically if it doesn't exist. Deleting this file\n";
+		$fileDescription .= "# should, however, never become necessary if you use the package commands.\n";
+
+			// we do not need the dependencies on disk...
+		foreach ($this->packageStatesConfiguration['packages'] as &$packageConfiguration) {
+			if (isset($packageConfiguration['dependencies'])) {
+				unset($packageConfiguration['dependencies']);
+			}
+		}
+		if (!@is_writable($this->packageStatesPathAndFilename)) {
+			// If file does not exists try to create it
+			$fileHandle = @fopen($this->packageStatesPathAndFilename, 'x');
+			if (!$fileHandle) {
+				throw new Exception\PackageStatesFileNotWritableException(
+					sprintf('We could not update the list of installed packages because the file %s is not writable. Please, check the file system permissions for this file and make sure that the web server can update it.', $this->packageStatesPathAndFilename),
+					1382449759
+				);
+			}
+			fclose($fileHandle);
+		}
+		$packageStatesCode = "<?php\n$fileDescription\nreturn " . var_export($this->packageStatesConfiguration, TRUE) . "\n ?>";
+		GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, TRUE);
 
 		$this->initializeCompatibilityLoadedExtArray();
 		\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($this->packageStatesPathAndFilename);
@@ -774,7 +845,151 @@ class PackageManager extends \TYPO3\Flow\Package\PackageManager implements \TYPO
 	 * @api
 	 */
 	public function isPackageKeyValid($packageKey) {
-		return parent::isPackageKeyValid($packageKey) || preg_match(\TYPO3\CMS\Core\Package\Package::PATTERN_MATCH_EXTENSIONKEY, $packageKey) === 1;
+		return preg_match(PackageInterface::PATTERN_MATCH_PACKAGEKEY, $packageKey) === 1 || preg_match(PackageInterface::PATTERN_MATCH_EXTENSIONKEY, $packageKey) === 1;
 	}
 
+	/**
+	 * Returns an array of \TYPO3\CMS\Core\Package objects of all available packages.
+	 * A package is available, if the package directory contains valid meta information.
+	 *
+	 * @return array Array of PackageInterface
+	 * @api
+	 */
+	public function getAvailablePackages() {
+		return $this->packages;
+	}
+
+	/**
+	 * Unregisters a package from the list of available packages
+	 *
+	 * @param PackageInterface $package The package to be unregistered
+	 * @return void
+	 * @throws Exception\InvalidPackageStateException
+	 */
+	public function unregisterPackage(PackageInterface $package) {
+		$packageKey = $package->getPackageKey();
+		if (!$this->isPackageAvailable($packageKey)) {
+			throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1338996142);
+		}
+		$this->unregisterPackageByPackageKey($packageKey);
+	}
+
+	/**
+	 * Scans all sub directories of the specified directory and collects the package keys of packages it finds.
+	 *
+	 * The return of the array is to make this method usable in array_merge.
+	 *
+	 * @param string $startPath
+	 * @param array $collectedPackagePaths
+	 * @return array
+	 */
+	protected function scanPackagesInPath($startPath, array &$collectedPackagePaths = array()) {
+		foreach (new \DirectoryIterator($startPath) as $fileInfo) {
+			if (!$fileInfo->isDir()) {
+				continue;
+			}
+			$filename = $fileInfo->getFilename();
+			if ($filename[0] !== '.') {
+				$currentPath = $fileInfo->getPathName();
+				if ($this->hasComposerManifestFile($currentPath)) {
+					$collectedPackagePaths[$currentPath . '/'] = $currentPath . '/';
+				}
+			}
+		}
+		return $collectedPackagePaths;
+	}
+
+	/**
+	 * Returns contents of Composer manifest - or part there of.
+	 *
+	 * @param string $manifestPath
+	 * @param string $key Optional. Only return the part of the manifest indexed by 'key'
+	 * @param object $composerManifest Optional. Manifest to use instead of reading it from file
+	 * @return mixed
+	 * @throws Exception\MissingPackageManifestException
+	 * @see json_decode for return values
+	 */
+	static public function getComposerManifest($manifestPath, $key = NULL, $composerManifest = NULL) {
+		if ($composerManifest === NULL) {
+			if (!file_exists($manifestPath . 'composer.json')) {
+				throw new Exception\MissingPackageManifestException('No composer manifest file found at "' . $manifestPath . '/composer.json".', 1349868540);
+			}
+			$json = file_get_contents($manifestPath . 'composer.json');
+			$composerManifest = json_decode($json);
+		}
+
+		if ($key !== NULL) {
+			if (isset($composerManifest->{$key})) {
+				$value = $composerManifest->{$key};
+			} else {
+				$value = NULL;
+			}
+		} else {
+			$value = $composerManifest;
+		}
+		return $value;
+	}
+
+	/**
+	 * Returns an array of dependent package keys for the given package. It will
+	 * do this recursively, so dependencies of dependant packages will also be
+	 * in the result.
+	 *
+	 * @param string $packageKey The package key to fetch the dependencies for
+	 * @param array $dependentPackageKeys
+	 * @param array $trace An array of already visited package keys, to detect circular dependencies
+	 * @return array|NULL An array of direct or indirect dependant packages
+	 * @throws Exception\InvalidPackageKeyException
+	 */
+	protected function getDependencyArrayForPackage($packageKey, array &$dependentPackageKeys = array(), array $trace = array()) {
+		if (!isset($this->packages[$packageKey])) {
+			return NULL;
+		}
+		if (in_array($packageKey, $trace, TRUE) !== FALSE) {
+			return $dependentPackageKeys;
+		}
+		$trace[] = $packageKey;
+		$dependentPackageConstraints = $this->packages[$packageKey]->getPackageMetaData()->getConstraintsByType(MetaData::CONSTRAINT_TYPE_DEPENDS);
+		foreach ($dependentPackageConstraints as $constraint) {
+			if ($constraint instanceof MetaData\PackageConstraint) {
+				$dependentPackageKey = $constraint->getValue();
+				if (in_array($dependentPackageKey, $dependentPackageKeys, TRUE) === FALSE && in_array($dependentPackageKey, $trace, TRUE) === FALSE) {
+					$dependentPackageKeys[] = $dependentPackageKey;
+				}
+				$this->getDependencyArrayForPackage($dependentPackageKey, $dependentPackageKeys, $trace);
+			}
+		}
+		return array_reverse($dependentPackageKeys);
+	}
+
+
+	/**
+	 * Resolves package key from Composer manifest
+	 *
+	 * If it is a TYPO3 package the name of the containing directory will be used.
+	 *
+	 * Else if the composer name of the package matches the first part of the lowercased namespace of the package, the mixed
+	 * case version of the composer name / namespace will be used, with backslashes replaced by dots.
+	 *
+	 * Else the composer name will be used with the slash replaced by a dot
+	 *
+	 * @param object $manifest
+	 * @param string $packagePath
+	 * @param string $packagesBasePath
+	 * @throws Exception\InvalidPackageManifestException
+	 * @return string
+	 */
+	protected function getPackageKeyFromManifest($manifest, $packagePath, $packagesBasePath) {
+		if (!is_object($manifest)) {
+			throw new Exception\InvalidPackageManifestException('Invalid composer manifest in package path: ' . $packagePath, 1348146451);
+		}
+		if (isset($manifest->type) && substr($manifest->type, 0, 10) === 'typo3-cms-') {
+			$relativePackagePath = substr($packagePath, strlen($packagesBasePath));
+			$packageKey = substr($relativePackagePath, strpos($relativePackagePath, '/') + 1, -1);
+			return preg_replace('/[^A-Za-z0-9._-]/', '', $packageKey);
+		} else {
+			$packageKey = str_replace('/', '.', $manifest->name);
+			return preg_replace('/[^A-Za-z0-9.]/', '', $packageKey);
+		}
+	}
 }

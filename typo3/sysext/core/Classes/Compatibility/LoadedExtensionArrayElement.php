@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Compatibility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Package\PackageInterface;
+
 /**
  * Class to simulate the "old" extension information array element
  *
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Core\Compatibility;
 class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \Serializable, \Countable {
 
 	/**
-	 * @var \TYPO3\Flow\Package\PackageInterface Instance of package manager
+	 * @var PackageInterface Instance of package manager
 	 */
 	protected $package;
 
@@ -46,9 +48,9 @@ class LoadedExtensionArrayElement implements \IteratorAggregate, \ArrayAccess, \
 	/**
 	 * Constructor builds compatibility API
 	 *
-	 * @param \TYPO3\Flow\Package\PackageInterface $package
+	 * @param PackageInterface $package
 	 */
-	public function __construct(\TYPO3\Flow\Package\PackageInterface $package) {
+	public function __construct(PackageInterface $package) {
 		$this->package = $package;
 		$this->initializeBasicExtensionInformation();
 		$this->initializeExtensionFiles();
