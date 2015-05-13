@@ -38,6 +38,12 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $terService;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @inject
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
 	 * @var string
 	 */
 	protected $mirrorUrl = '';
@@ -89,11 +95,31 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface {
 			return static::TRANSLATION_INVALID;
 		}
 		$state = static::TRANSLATION_FAILED;
-		$updateResult = $this->terService->updateTranslation($extensionKey, $locale, $this->mirrorUrl);
+
+		$updateResult = $this->terService->updateTranslation($extensionKey, $locale, $this->getMirrorUrl($extensionKey));
 		if ($updateResult === TRUE) {
 			$state = static::TRANSLATION_UPDATED;
 		}
 		return $state;
+	}
+
+	/**
+	 * Returns the mirror URL for a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @return string
+	 */
+	protected function getMirrorUrl($extensionKey) {
+		$this->signalSlotDispatcher->dispatch(
+			__CLASS__,
+			'postProcessMirrorUrl',
+			array(
+				'extensionKey' => $extensionKey,
+				'mirrorUrl' => &$this->mirrorUrl,
+			)
+		);
+
+		return $this->mirrorUrl;
 	}
 
 }
