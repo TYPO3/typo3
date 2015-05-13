@@ -1045,67 +1045,6 @@ return array(
 				'exclusiveKeys' => '1,2',
 			),
 		),
-		'select_14' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 14 special tables, 12 icons in a row',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'tables',
-				'selicon_cols' => 15,
-				'iconsInOptionTags' => TRUE, // @TODO: Has no effect - intended?
-			),
-		),
-		'select_15' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 15 special=tables, suppress_icons=1',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'tables',
-				'suppress_icons' => '1',
-			),
-		),
-		'select_16' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 16 special=pagetypes',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'pagetypes',
-			),
-		),
-		'select_17' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 17 special=exclude',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'exclude',
-				'size' => 10,
-			),
-		),
-		'select_18' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 18 special=modListGroup',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'modListGroup',
-			),
-		),
-		'select_19' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 19 special=modListUser',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'modListUser',
-			),
-		),
-		'select_20' => array(
-			'exclude' => 1,
-			'label' => 'SELECT: 20 special=languages',
-			'config' => array(
-				'type' => 'select',
-				'special' => 'languages',
-				'size' => 5,
-			),
-		),
 		'select_21' => array(
 			'exclude' => 1,
 			'label' => 'SELECT: 21 itemListStyle: green, 250 width and selectedListStyle: red, width 350',
@@ -2294,6 +2233,134 @@ return array(
 				),
 			),
 		),
+
+
+		'system_1' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 1 type select, special tables, renderMode checkbox, identical to be_groups tables_modify & tables_select',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'tables',
+				'size' => '5',
+				'autoSizeMax' => 50,
+				'maxitems' => 100,
+				'renderMode' => 'checkbox',
+				'iconsInOptionTags' => 1,
+			),
+		),
+		'system_2' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 2 type select, special tables, identical to index_config table2index',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('dummy extra entry', '0')
+				),
+				'special' => 'tables',
+				'size' => 1, // @todo size & maxitems probably obsolete, see example below
+				'maxitems' => 1,
+			),
+		),
+		'system_3' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 3 type select, special tables, identical to sys_collection table_name',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'tables',
+			),
+		),
+		'system_4' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 4 type select, special languages, renderMode checkbox, identical to be_groups allowed_languages',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'languages',
+				'maxitems' => 1000,
+				'renderMode' => 'checkbox',
+			),
+		),
+		'system_5' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 5 type select, special custom, renderMode checkbox, identical to be_groups custom_options',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'custom',
+				'maxitems' => 1000,
+				'renderMode' => 'checkbox',
+			),
+		),
+		'system_6' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 6 type select, special custom, renderMode checkbox, identical to be_groups custom',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'custom',
+				'maxitems' => 1000,
+				'renderMode' => 'checkbox',
+			),
+		),
+		'system_7' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 7 type select, special modListGroup, renderMode checkbox, identical to be_groups groupMods',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'modListGroup',
+				'size' => '5',
+				'autoSizeMax' => 50,
+				'maxitems' => 100,
+				'renderMode' => 'checkbox',
+				'iconsInOptionTags' => 1,
+			),
+		),
+		'system_8' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 8 type select, special modListUser, renderMode checkbox, identical to be_users userMods',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'modListUser',
+				'size' => '5',
+				'autoSizeMax' => 50,
+				'maxitems' => '100',
+				'renderMode' => 'checkbox',
+				'iconsInOptionTags' => 1
+			),
+		),
+		'system_9' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 9 type select, special pagetypes, renderMode checkbox, identical to be_groups pagetypes_select',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'pagetypes',
+				'size' => '5',
+				'autoSizeMax' => 50,
+				'maxitems' => 20,
+				'renderMode' => 'checkbox',
+				'iconsInOptionTags' => 1,
+			),
+		),
+		'system_10' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 10 type select, special explicitValues, renderMode checkbox, identical to be_groups explicit_allowdeny',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'explicitValues',
+				'maxitems' => 1000,
+				'renderMode' => 'checkbox',
+			),
+		),
+		'system_11' => array(
+			'exclude' => 1,
+			'label' => 'SYSTEM: 11 type select, special exclude, renderMode checkbox, identical to be_groups non_exclude_fields',
+			'config' => array(
+				'type' => 'select',
+				'special' => 'exclude',
+				'size' => '25',
+				'maxitems' => 1000,
+				'autoSizeMax' => 50,
+				'renderMode' => 'checkbox'
+			),
+		),
+
 	),
 
 
@@ -2309,7 +2376,7 @@ return array(
 			checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
-			select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
+			select_11, select_12, select_13,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 			group_11, group_12,
@@ -2321,6 +2388,8 @@ return array(
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
+			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
+			system_11,
 			',
 	),
 
@@ -2342,7 +2411,7 @@ return array(
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
-					select_11, select_12, select_13, select_14, select_15, select_16, select_17, select_18, select_19, select_20,
+					select_11, select_12, select_13,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 				--div--;Group,
 					group_1, group_12, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
@@ -2370,6 +2439,9 @@ return array(
 					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
+				--div--;Access Rights,
+					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
+					system_11,
 			',
 		),
 	),
