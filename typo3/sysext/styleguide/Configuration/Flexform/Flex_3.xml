@@ -371,6 +371,18 @@
 											</config>
 										</TCEforms>
 									</element_2>
+									<element_3>
+										<TCEforms>
+											<label>element_3 group,internal_type=file</label>
+											<config>
+												<type>group</type>
+												<internal_type>file</internal_type>
+												<allowed>jpg</allowed>
+												<size>3</size>
+												<uploadfolder>uploads/pics</uploadfolder>
+											</config>
+										</TCEforms>
+									</element_3>
 								</el>
 							</container_1>
 							<container_2>
