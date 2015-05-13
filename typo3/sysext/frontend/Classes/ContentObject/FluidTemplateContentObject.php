@@ -37,6 +37,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 	 * - layoutRootPaths array of filepath+stdWrap Root paths to layouts (fallback)
 	 * - partialRootPaths array of filepath+stdWrap Root paths to partials (fallback)
 	 * - variable array of cObjects, the keys are the variable names in fluid
+	 * - dataProcessing array of data processors which are classes to manipulate $data
 	 * - extbase.pluginName
 	 * - extbase.controllerExtensionName
 	 * - extbase.controllerName
@@ -71,6 +72,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		$this->setExtbaseVariables($conf);
 		$this->assignSettings($conf);
 		$this->assignContentObjectVariables($conf);
+		$this->processData($conf);
 		$this->assignContentObjectDataAndCurrent();
 
 		$content = $this->renderFluidView();
@@ -209,6 +211,45 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		$requestControllerActionName = isset($conf['extbase.']['controllerActionName.']) ? $this->cObj->stdWrap($conf['extbase.']['controllerActionName'], $conf['extbase.']['controllerActionName.']) : $conf['extbase.']['controllerActionName'];
 		if ($requestControllerActionName) {
 			$this->view->getRequest()->setControllerActionName($requestControllerActionName);
+		}
+	}
+
+	/**
+	 * Check for the availability of processors, defined in TypoScript, and use them for data processing
+	 *
+	 * @param array $configuration Configuration array
+	 * @return void
+	 * @throws \UnexpectedValueException
+	 */
+	protected function processData(array $configuration) {
+		if (
+			!empty($configuration['dataProcessing.'])
+			&& is_array($configuration['dataProcessing.'])
+		) {
+			$processors = $configuration['dataProcessing.'];
+
+			foreach ($processors as $key => $className) {
+				if (strpos($key, '.') === FALSE && !empty($className)) {
+					$processor = GeneralUtility::makeInstance($className);
+
+					if (!$processor instanceof FluidTemplateDataProcessorInterface) {
+						throw new \UnexpectedValueException(
+							'$processor with class name "' . $className . '" ' .
+							'must implement interface "' . FluidTemplateDataProcessorInterface::class . '"',
+							1427455377
+						);
+					}
+
+					$processorConfiguration = isset($processors[$key . '.']) ? $processors[$key . '.'] : array();
+
+					$processor->process(
+						$this->cObj->data,
+						$processorConfiguration,
+						$configuration,
+						$this->view
+					);
+				}
+			}
 		}
 	}
 
