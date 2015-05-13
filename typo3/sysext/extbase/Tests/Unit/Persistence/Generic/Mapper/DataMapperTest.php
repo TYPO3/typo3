@@ -229,4 +229,22 @@ class DataMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->assertEquals($expectedValue, $dateTime->format('c'));
 		}
 	}
+
+	/**
+	 * @test
+	 */
+	public function mapDateTimeHandlesSubclassesOfDateTime() {
+		$accessibleClassName = $this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper');
+		$accessibleDataMapFactory = new $accessibleClassName();
+
+		$targetType = 'TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\CustomDateTime';
+		$date = '2013-01-01 01:02:03';
+		$storageFormat = 'datetime';
+
+		/** @var $dateTime NULL|\DateTime */
+		$dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $date, $storageFormat, $targetType);
+
+		$this->assertInstanceOf($targetType, $dateTime);
+	}
+
 }

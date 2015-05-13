@@ -219,7 +219,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 						break;
 					default:
 						if ($propertyData['type'] === 'DateTime' || in_array('DateTime', class_parents($propertyData['type']))) {
-							$propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat());
+							$propertyValue = $this->mapDateTime($row[$columnName], $columnMap->getDateTimeStorageFormat(), $propertyData['type']);
 						} elseif (TypeHandlingUtility::isCoreType($propertyData['type'])) {
 							$propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
 						} else {
@@ -255,20 +255,21 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer|string $value Unix timestamp or date/datetime value
 	 * @param NULL|string $storageFormat Storage format for native date/datetime fields
+	 * @param NULL|string $targetType The object class name to be created
 	 * @return \DateTime
 	 */
-	protected function mapDateTime($value, $storageFormat = NULL) {
+	protected function mapDateTime($value, $storageFormat = NULL, $targetType = 'DateTime') {
 		if (empty($value) || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
 			// 0 -> NULL !!!
 			return NULL;
 		} elseif ($storageFormat === 'date' || $storageFormat === 'datetime') {
 			// native date/datetime values are stored in UTC
 			$utcTimeZone = new \DateTimeZone('UTC');
-			$utcDateTime = new \DateTime($value, $utcTimeZone);
+			$utcDateTime = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, $value, $utcTimeZone);
 			$currentTimeZone = new \DateTimeZone(date_default_timezone_get());
 			return $utcDateTime->setTimezone($currentTimeZone);
 		} else {
-			return new \DateTime(date('c', $value));
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($targetType, date('c', $value));
 		}
 	}
 
