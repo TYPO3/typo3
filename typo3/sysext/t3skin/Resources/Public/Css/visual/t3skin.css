@@ -8083,28 +8083,17 @@ button.close {
  */
 .t3-row-header {
   background-color: #666;
+  padding: 6px;
 }
 .t3-row-header a,
 .t3-row-header a:hover {
   color: #fff;
 }
-.t3-col-header {
-  background-color: #585858;
-  color: #fff;
-}
-.t3-col-header,
-.t3-row-header,
 .tableheader td {
   padding: 6px;
 }
 .typo3-tstemplate-ceditor-control {
-  margin-right: 6px;
-  vertical-align: bottom;
   cursor: pointer;
-}
-#ext-tstemplate-ts-index-php td.bgColor4 {
-  vertical-align: middle;
-  padding: 5px;
 }
 .bgColor-20 {
   background-color: #e3dfdb;
@@ -8272,12 +8261,6 @@ div#typo3-docbody {
   top: 51px;
   width: 100%;
 }
-a.typo3-csh-link span.typo3-csh-inline {
-  display: none;
-}
-a.typo3-csh-link:hover span.typo3-csh-inline {
-  display: block;
-}
 .t3-help-link span.t3-help-inline {
   display: none;
 }
@@ -8288,18 +8271,6 @@ a.typo3-csh-link:hover span.typo3-csh-inline {
   div#typo3-docbody {
     overflow: visible;
   }
-}
-a img {
-  border: none;
-}
-.typo3-newRecord-treeline {
-  padding-right: 20px;
-}
-.typo3-newRecord-treeline img {
-  vertical-align: middle;
-}
-#typo3-newRecord tr {
-  line-height: 13px;
 }
 .text-monospace {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;

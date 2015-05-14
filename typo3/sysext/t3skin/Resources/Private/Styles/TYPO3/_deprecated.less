@@ -1,158 +1,124 @@
 //
 // Deprecated
 //
-
 .t3-row-header {
 	background-color: #666;
+	padding: 6px;
+	a,
+	a:hover {
+		color: #fff;
+	}
 }
-
-.t3-row-header a,
-.t3-row-header a:hover {
-	color: #fff;
-}
-
-.t3-col-header {
-	background-color: #585858;
-	color: #fff;
-}
-
-.t3-col-header,
-.t3-row-header,
 .tableheader td {
 	padding: 6px;
 }
-
 .typo3-tstemplate-ceditor-control {
-	margin-right: 6px;
-	vertical-align: bottom;
 	cursor: pointer;
 }
 
-#ext-tstemplate-ts-index-php td.bgColor4 {
-	vertical-align: middle;
-	padding: 5px;
-}
 
 //
 // Background color classes
 //
-
 .bgColor-20 {
 	background-color: #e3dfdb;
 }
-
 .bgColor2 {
 	background-color: #585858;
 	color: #ffffff;
 }
-
 .bgColor3 {
 	background-color: #f6f2e6;
 }
-
 .bgColor3-20 {
 	background-color: #f7f7f7;
 }
-
 .bgColor4 {
 	background-color: #f1f1f1;
 	color: #212424;
 }
-
 .bgColor4-20 {
 	background-color: #f8f9fa;
 }
-
 .bgColor5 {
 	background-color: #9b9b9b;
 }
-
 .bgColor6 {
 	background-color: #f7f7f7;
 }
 
+
+//
+// Messages
+//
 #typo3-messages {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
-
 .typo3-message {
-  .alert;
-  background-position: 10px 12px;
-  background-repeat: no-repeat;
-  padding: 12px 12px 12px 36px;
-
-  .message-header {
-    font-weight: bold;
-    margin-bottom: floor(@line-height-computed / 2);
-  }
-
-  ul,
-  ol {
-    padding-left: 16px;
-  }
-
-  .message-header {
-    display: block;
-  }
-
-  .t3-icon-actions-message-close {
-    cursor: pointer;
-    float: right;
-  }
-
-  li {
-    margin-bottom: 10px;
-    list-style: disc;
-  }
-
-  a {
-    text-decoration: underline;
-  }
+	.alert;
+	background-position: 10px 12px;
+	background-repeat: no-repeat;
+	padding: 12px 12px 12px 36px;
+	.message-header {
+		font-weight: bold;
+		margin-bottom: floor(@line-height-computed / 2);
+	}
+	ul,
+	ol {
+		padding-left: 16px;
+	}
+	.message-header {
+		display: block;
+	}
+	.t3-icon-actions-message-close {
+		cursor: pointer;
+		float: right;
+	}
+	li {
+		margin-bottom: 10px;
+		list-style: disc;
+	}
+	a {
+		text-decoration: underline;
+	}
 }
-
-
 .message-notice {
-  // Nothing to inherit from Bootstrap - there is no alert-notice
-  color: #777;
-  background-color: #f6f7fa;
-  background-image: url('../../../../icons/gfx/notice.png');
-  border-color: #c2cbcf;
-
-  a {
-    color: #777;
-  }
+	// Nothing to inherit from Bootstrap - there is no alert-notice
+	color: #777;
+	background-color: #f6f7fa;
+	background-image: url('../../../../icons/gfx/notice.png');
+	border-color: #c2cbcf;
+	a {
+		color: #777;
+	}
 }
-
 .message-information {
-  .alert-info;
-  background-image: url('../../../../icons/gfx/information.png');
-  a {
-    color: #4c73a1;
-  }
+	.alert-info;
+	background-image: url('../../../../icons/gfx/information.png');
+	a {
+		color: #4c73a1;
+	}
 }
-
 .message-ok {
-  .alert-success;
-  background-image: url('../../../../icons/gfx/ok.png');
-  a {
-    color: #3b7826;
-  }
+	.alert-success;
+	background-image: url('../../../../icons/gfx/ok.png');
+	a {
+		color: #3b7826;
+	}
 }
-
 .message-warning {
-  .alert-warning;
-  background-image: url("../../../../icons/gfx/warning.png");
-  a {
-    color: #9e7d4a;
-  }
+	.alert-warning;
+	background-image: url("../../../../icons/gfx/warning.png");
+	a {
+		color: #9e7d4a;
+	}
 }
-
 .message-error {
-  .alert-danger;
-  background-image: url('../../../../icons/gfx/error.png');
-  a {
-    color: #aa0225;
-  }
+	.alert-danger;
+	background-image: url('../../../../icons/gfx/error.png');
+	a {
+		color: #aa0225;
+	}
 }
 
 
@@ -171,14 +137,6 @@ div#typo3-docbody {
 //
 // Context Sensitive Help (CSH)
 //
-a.typo3-csh-link {
-	span.typo3-csh-inline {
-		display: none;
-	}
-	&:hover span.typo3-csh-inline {
-		display: block;
-	}
-}
 .t3-help-link {
 	span.t3-help-inline {
 		display: none;
@@ -196,24 +154,4 @@ a.typo3-csh-link {
 	div#typo3-docbody {
 		overflow: visible;
 	}
-}
-
-
-//
-// Basic styles
-//
-a img {
-	border: none;
-}
-
-.typo3-newRecord-treeline {
-	padding-right: 20px;
-}
-
-.typo3-newRecord-treeline img {
-	vertical-align: middle;
-}
-
-#typo3-newRecord tr {
-	line-height: 13px;
 }
