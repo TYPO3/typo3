@@ -32,7 +32,7 @@
     "jquery-ui": "1.11.2",
     "eonasdan-bootstrap-datetimepicker": "4.7.14",
     "moment": "2.10.2",
-    "nprogress": "0.1.6",
+    "nprogress": "0.2.0",
     "datatables": "1.10.5",
     "autosize": "2.0.0",
     "cropper": "0.9.1",
