@@ -27,7 +27,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		me.$body = $('body');
 		me.$element = $(element);
 		me.$trigger = $(me.$element.data('dropzone-trigger'));
-		me.$dropzone = $('<div />').addClass('t3-dropzone').hide();
+		me.$dropzone = $('<div />').addClass('dropzone').hide();
 		if (me.$element.data('file-irre-object') && me.$element.nextAll(me.$element.data('dropzone-target')).length !== 0) {
 			me.dropZoneInsertBefore = true;
 			me.$dropzone.insertBefore(me.$element.data('dropzone-target'));
@@ -35,8 +35,8 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 			me.dropZoneInsertBefore = false;
 			me.$dropzone.insertAfter(me.$element.data('dropzone-target'));
 		}
-		me.$dropzoneMask = $('<div />').addClass('t3-dropzone-mask').appendTo(me.$dropzone);
-		me.$fileInput = $('<input type="file" multiple name="files[]" />').addClass('t3-upload-file-picker').appendTo(me.$body);
+		me.$dropzoneMask = $('<div />').addClass('dropzone-mask').appendTo(me.$dropzone);
+		me.$fileInput = $('<input type="file" multiple name="files[]" />').addClass('upload-file-picker').appendTo(me.$body);
 		me.$fileList = $(me.$element.data('progress-container'));
 		me.fileListColumnCount = $('thead tr:first th', me.$fileList).length;
 		me.filesExtensionsAllowed = me.$element.data('file-allowed');
@@ -64,7 +64,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		me.dragFileIntoDocument = function(event) {
 			event.stopPropagation();
 			event.preventDefault();
-			me.$body.addClass('t3-drop-in-progress');
+			me.$body.addClass('drop-in-progress');
 			me.showDropzone();
 			return false;
 		};
@@ -72,7 +72,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		me.dragAborted = function(event) {
 			event.stopPropagation();
 			event.preventDefault();
-			me.$body.removeClass('t3-drop-in-progress');
+			me.$body.removeClass('drop-in-progress');
 			return false;
 		};
 
@@ -87,7 +87,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		me.handleDrop = function (event) {
 			me.ignoreDrop(event);
 			me.processFiles(event.originalEvent.dataTransfer.files);
-			me.$dropzone.removeClass('t3-dropzone-drop-ok');
+			me.$dropzone.removeClass('drop-status-ok');
 		};
 
 		me.processFiles = function (files) {
@@ -106,11 +106,11 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		};
 
 		me.fileInDropzone = function(event) {
-			me.$dropzone.addClass('t3-dropzone-drop-ok');
+			me.$dropzone.addClass('drop-status-ok');
 		};
 
 		me.fileOutOfDropzone = function(event) {
-			me.$dropzone.removeClass('t3-dropzone-drop-ok');
+			me.$dropzone.removeClass('drop-status-ok');
 		};
 
 		// bind file picker to default upload button
@@ -133,13 +133,26 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 			me.$dropzoneMask.on('dragleave', me.fileOutOfDropzone);
 			me.$dropzoneMask.on('drop', me.handleDrop);
 
-			me.$dropzone.prepend('<h4>' + TYPO3.lang['file_upload.dropzonehint.title'] + '</h4><p>' + TYPO3.lang['file_upload.dropzonehint.message'] + '</p>')
+			me.$dropzone.prepend('' +
+					'<div class="dropzone-hint">' +
+						'<div class="dropzone-hint-media">' +
+							'<div class="dropzone-hint-icon"></div>' +
+						'</div>' +
+						'<div class="dropzone-hint-body">' +
+							'<h3 class="dropzone-hint-title">' +
+								TYPO3.lang['file_upload.dropzonehint.title'] +
+							'</h3>' +
+							'<p class="dropzone-hint-message">' +
+								TYPO3.lang['file_upload.dropzonehint.message'] +
+							'</p>' +
+						'</div>' +
+					'</div>')
 				.click(function(){me.$fileInput.click()});
-			$('<span />').addClass('t3-icon t3-icon-actions t3-icon-actions-close t3-dropzone-close').html('&nbsp;').click(me.hideDropzone).appendTo(me.$dropzone);
+			$('<span />').addClass('dropzone-close').click(me.hideDropzone).appendTo(me.$dropzone);
 
 			// no filelist then create own progress table
 			if (me.$fileList.length === 0) {
-				me.$fileList = $('<table />').attr('id', 'typo3-filelist').addClass('table table-striped table-hover t3-upload-queue').html('<tbody></tbody>').hide();
+				me.$fileList = $('<table />').attr('id', 'typo3-filelist').addClass('table table-striped table-hover upload-queue').html('<tbody></tbody>').hide();
 				if (me.dropZoneInsertBefore) {
 					me.$fileList.insertAfter(me.$dropzone);
 				} else {
@@ -183,15 +196,14 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		me.file = file;
 		me.override = override;
 
-		me.$row = $('<tr />').addClass('t3-upload-queue-item uploading');
+		me.$row = $('<tr />').addClass('upload-queue-item uploading');
 		me.$iconCol = $('<td />').addClass('col-icon').appendTo(me.$row);
 		me.$fileName = $('<td />').text(file.name).appendTo(me.$row);
-		me.$progress = $('<td />').addClass('t3-upload-queue-progress')
-								  .attr('colspan', me.dragUploader.fileListColumnCount-2).appendTo(me.$row);
-		me.$progressContainer = $('<div />').addClass('t3-upload-queue-progress').appendTo(me.$progress);
-		me.$progressBar = $('<div />').addClass('t3-upload-queue-progress-bar').appendTo(me.$progressContainer);
-		me.$progressPercentage = $('<span />').addClass('t3-upload-queue-progress-percentage').appendTo(me.$progressContainer);
-		me.$progressMessage = $('<span />').addClass('t3-upload-queue-progress-message').appendTo(me.$progressContainer);
+		me.$progress = $('<td />').attr('colspan', me.dragUploader.fileListColumnCount-2).appendTo(me.$row);
+		me.$progressContainer = $('<div />').addClass('upload-queue-progress').appendTo(me.$progress);
+		me.$progressBar = $('<div />').addClass('upload-queue-progress-bar').appendTo(me.$progressContainer);
+		me.$progressPercentage = $('<span />').addClass('upload-queue-progress-percentage').appendTo(me.$progressContainer);
+		me.$progressMessage = $('<span />').addClass('upload-queue-progress-message').appendTo(me.$progressContainer);
 
 		me.updateMessage = function(message) {
 			me.$progressMessage.text(message);
@@ -224,7 +236,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 
 		me.updateProgress = function(event) {
 			var percentage = Math.round((event.loaded / event.total) * 100) + '%'
-			me.$progressBar.width(percentage);
+			me.$progressBar.outerWidth(percentage);
 			me.$progressPercentage.text(percentage);
 			me.dragUploader.$trigger.trigger('updateProgress', [me, percentage, event]);
 		};
@@ -236,7 +248,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 				me.$fileName.text(data.result.upload[0].name);
 				me.$progressPercentage.text('');
 				me.$progressMessage.text('100%');
-				me.$progressBar.width('100%');
+				me.$progressBar.outerWidth('100%');
 
 				// replace file icon
 				if (data.result.upload[0].iconClasses) {
@@ -279,10 +291,10 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 			$('<td />').text(me.fileSizeAsString(fileInfo.size)).appendTo(me.$row);
 			var permissions = '';
 			if (fileInfo.permissions.read) {
-				permissions += '<span class="typo3-red"><strong>R</strong></span>';
+				permissions += '<strong class="text-danger">R</strong>';
 			}
 			if (fileInfo.permissions.write) {
-				permissions += '<span class="typo3-red"><strong>W</strong></span>';
+				permissions += '<strong class="text-danger">W</strong>';
 			}
 			$('<td />').html(permissions).appendTo(me.$row);
 			$('<td />').text('-').appendTo(me.$row);
@@ -313,11 +325,11 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		};
 
 		// position queue item in file list
-		if ($('tbody tr.t3-upload-queue-item', me.dragUploader.$fileList).length === 0) {
+		if ($('tbody tr.upload-queue-item', me.dragUploader.$fileList).length === 0) {
 			me.$row.prependTo($('tbody', me.dragUploader.$fileList));
 			me.$row.addClass('last');
 		} else {
-			me.$row.insertBefore($('tbody tr.t3-upload-queue-item:first', me.dragUploader.$fileList));
+			me.$row.insertBefore($('tbody tr.upload-queue-item:first', me.dragUploader.$fileList));
 		}
 
 		// set dummy file icon
@@ -404,7 +416,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 			})
 		};
 
-		$('.t3-drag-uploader').dragUploader();
+		$('.t3js-drag-uploader').dragUploader();
 
 	};
 

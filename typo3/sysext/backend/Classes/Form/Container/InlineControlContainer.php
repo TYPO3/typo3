@@ -541,7 +541,7 @@ class InlineControlContainer extends AbstractContainer {
 				&& $folder->checkActionPermission('add')
 			) {
 				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-				$item .= ' <a href="#" class="btn btn-default t3-drag-uploader"
+				$item .= ' <a href="#" class="btn btn-default t3js-drag-uploader"
 					style="display:none"
 					data-dropzone-target="#' . htmlspecialchars($this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid'])) . '"
 					data-insert-dropzone-before="1"

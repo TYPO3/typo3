@@ -1,0 +1,225 @@
+//
+// Dropzone Variables
+//
+@dropzone-text: #333333;
+@dropzone-border: #cccccc;
+@dropzone-margin: 15px 0;
+@dropzone-hover-border:  #999999;
+
+@dropzone-hint-title-size: 12px;
+@dropzone-hint-title-weight: bold;
+
+@dropzone-close-height: 26px;
+@dropzone-close-width: 26px;
+@dropzone-close-size: 14px;
+@dropzone-close-bg: #eaeaea;
+@dropzone-close-text: @dropzone-text;
+@dropzone-close-hover-bg: @brand-danger;
+@dropzone-close-hover-text: #ffffff;
+
+@dropzone-icon-size: 16px;
+@dropzone-icon-height: 40px;
+@dropzone-icon-width: 40px;
+@dropzone-icon-radius: 50%;
+@dropzone-icon-bg: #eeeeee;
+
+@dropzone-icon-ok-text: #ffffff;
+@dropzone-icon-ok-bg: @brand-success;
+
+
+//
+// Dropzone
+//
+.dropzone {
+	position: relative;
+	cursor: pointer;
+	margin: @dropzone-margin;
+	padding: 1.25em;
+	padding-right: @dropzone-close-width + 20px;
+	color: @dropzone-text;
+	border: 1px dashed @dropzone-border;
+	.transition(all 0.3s ease-in-out);
+	&:hover {
+		border-color: @dropzone-hover-border;
+	}
+}
+.dropzone-mask {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+}
+
+
+//
+// Dropzone Close
+//
+.dropzone-close {
+	cursor: pointer;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	height: @dropzone-close-height;
+	width: @dropzone-close-width;
+	font-family: FontAwesome;
+	font-size: @dropzone-close-size;
+	line-height: @dropzone-close-height;
+	text-align: center;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate(0, 0);
+	overflow: hidden;
+	background-color: @dropzone-close-bg;
+	color: @dropzone-close-text;
+	&:hover {
+		color: @dropzone-close-hover-text;
+		background-color: @dropzone-close-hover-bg;
+	}
+	&:before {
+		content: "\f00d";
+	}
+}
+
+
+//
+// Dropzone Hint
+//
+// Markup:
+// <div class="dropzone-hint">
+//   <div class="dropzone-hint-media">
+//     <span class="dropzone-hint-icon"></span>
+//   </div>
+//   <div class="dropzone-hint-body">
+//     <h3 class="dropzone-hint-title">Title</h3>
+//     <p class="dropzone-hint-message">Message</h3>
+//   </div>
+// </div>
+//
+.dropzone-hint {
+	display: table;
+}
+.dropzone-hint-media,
+.dropzone-hint-body {
+	display: table-cell;
+	vertical-align: middle;
+}
+.dropzone-hint-body {
+	*:first-child {
+		margin-top: 0;
+	}
+	*:last-child {
+		margin-bottom: 0;
+	}
+}
+.dropzone-hint-media {
+	padding-right: 1em;
+}
+.dropzone-hint-icon {
+	height: @dropzone-icon-height;
+	width: @dropzone-icon-width;
+	text-align: center;
+	line-height: @dropzone-icon-height;
+	font-size: @dropzone-icon-size;
+	background-color: @dropzone-icon-bg;
+	border-radius: @dropzone-icon-radius;
+	font-family: FontAwesome;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transform: translate(0, 0);
+	&:before {
+		content: "\f093";
+	}
+}
+.dropzone-hint-title {
+	font-size: @dropzone-hint-title-size;
+	font-weight: @dropzone-hint-title-weight;
+	margin-bottom: 0.25em;
+}
+
+
+//
+// Drop progress
+//
+.drop-status-ok {
+	.dropzone-hint-icon {
+		color: @dropzone-icon-ok-text;
+		background: @dropzone-icon-ok-bg;
+	}
+}
+.drop-in-progress {
+	.dropzone-hint-icon {
+		&:before {
+			content: "\f063";
+		}
+	}
+}
+
+
+//
+// Upload Variables
+//
+@upload-queue-margin: @dropzone-margin;
+@upload-queue-progress-bg: @brand-success;
+@upload-queue-progress-uploading-bg: @brand-info;
+@upload-queue-progress-error-bg: @brand-danger;
+
+
+//
+// Upload queue
+//
+.upload-queue {
+	margin: @upload-queue-margin;
+}
+.upload-queue-progress {
+	position: relative;
+	padding: 5px;
+	color: #ffffff;
+	background-color: #999999;
+	border: 1px solid rgba(0,0,0,0.15);
+	text-align: right;
+}
+.upload-queue-progress-bar {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	background-color: @upload-queue-progress-bg;
+}
+.upload-queue-progress-percentage,
+.upload-queue-progress-message {
+	display: inline;
+	position: relative;
+	z-index: 2;
+}
+
+
+//
+// Upload filepicker
+//
+.upload-file-picker {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	height: 1px;
+	width: 1px;
+	visibility: hidden;
+}
+
+
+//
+// Upload status
+//
+.uploading {
+	.upload-queue-progress-bar {
+		background-color: @upload-queue-progress-uploading-bg;
+	}
+}
+.error {
+	.upload-queue-progress-bar {
+		background-color: @upload-queue-progress-error-bg;
+	}
+}
