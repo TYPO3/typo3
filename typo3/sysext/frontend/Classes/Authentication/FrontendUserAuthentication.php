@@ -141,7 +141,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 		);
 		$this->formfield_uname = 'user';
 		$this->formfield_uident = 'pass';
-		$this->formfield_chalvalue = 'challenge';
 		$this->formfield_status = 'logintype';
 		$this->auth_timeout_field = 6000;
 		$this->sendNoCacheHeaders = FALSE;

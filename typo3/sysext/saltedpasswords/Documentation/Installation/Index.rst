@@ -20,10 +20,7 @@ Installing the extension
 
 Install the extension in the Extension Manager!
 
-As TYPO3 by default uses a superchallenged method for authentication
-but Salted user password hashes requires plain-text passwords on
-server side (outlined in previous chapter), you need to change that.
-So please open the  **TYPO3 install tool** . Depending on which TYPO3
+Please open the  **TYPO3 install tool** . Depending on which TYPO3
 mode (FE or BE) you like to use salted user password hashes for,
 please change the according "**loginSecurityLevel**" configuration
 variable! A valid setting for working salted user password hashes are
@@ -36,12 +33,10 @@ variable! A valid setting for working salted user password hashes are
   channel)
 
 Now return back to the Extension manager and again open the extension
-configuration for system extension "Salted user password
-hashes" (saltedpasswords)!
+configuration for system extension "Salted user password hashes" (saltedpasswords)!
 
 Depending on which TYPO3 mode (FE or BE) you like to use salted user
-password hashes for, activate the according **checkbox** "**Enable
-FE**" or "**Enable BE**"!
+password hashes for, activate the according **checkbox** "**Enable FE**" or "**Enable BE**"!
 
 Additionally, you might want to change the hashing method. See
 previous chapter for an explanation on when to use which method.

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -23,6 +22,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -134,12 +134,14 @@ class LoginController {
 	public $addFields_hidden = '';
 
 	/**
-	 * Sets the level of security. *'normal' = clear-text. 'challenged' = hashed
-	 * password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+	 * Sets the level of security
+	 *
+	 * 'normal' = clear-text
+	 * password/username from form in $formfield_uident.
 	 *
 	 * @var string
 	 */
-	public $loginSecurityLevel = 'superchallenged';
+	public $loginSecurityLevel = 'normal';
 
 	/**
 	 * Constructor
@@ -171,9 +173,7 @@ class LoginController {
 		// Value of "Login" button. If set, the login button was pressed.
 		$this->commandLI = GeneralUtility::_GP('commandLI');
 		// Sets the level of security from conf vars
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
-			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
-		}
+		$this->loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal';
 		// Try to get the preferred browser language
 		$preferredBrowserLanguage = $this->getLanguageService()->csConvObj->getPreferredClientLanguage(GeneralUtility::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
 		// If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
@@ -257,7 +257,6 @@ class LoginController {
 		}
 
 		// Logo
-		$logo = '';
 		if (!empty($extConf['loginLogo'])) {
 			$logo = $extConf['loginLogo'];
 		} elseif (!empty($GLOBALS['TBE_STYLES']['logo_login'])) {
@@ -306,8 +305,7 @@ class LoginController {
 		));
 
 		// Starting page:
-		$this->content .= $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' .
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
+		$this->content .= $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
 		// Add Content:
 		$this->content .= $view->render();
 		$this->content .= $this->getDocumentTemplate()->endPage();
@@ -330,7 +328,8 @@ class LoginController {
 	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
 	 *
-	 * @return void
+	 * @throws \RuntimeException
+	 * @throws \UnexpectedValueException
 	 */
 	public function checkRedirect() {
 		/*
@@ -455,7 +454,7 @@ class LoginController {
 	protected function getSystemNews() {
 		$systemNewsTable = 'sys_news';
 		$systemNews = array();
-		$systemNewsRecords = $this->getDatabaseConntection()->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
+		$systemNewsRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . BackendUtility::BEenableFields($systemNewsTable) . BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
 		foreach ($systemNewsRecords as $systemNewsRecord) {
 			$systemNews[] = array(
 				'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
@@ -472,12 +471,7 @@ class LoginController {
 	 * @return string Opening form tag string
 	 */
 	public function startForm() {
-		$output = '';
-		// The form defaults to 'no login'. This prevents plain
-		// text logins to the Backend. The 'sv' extension changes the form to
-		// use superchallenged method and rsaauth extension makes rsa authentication.
-		$form = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="alert(\'No authentication methods available. Please, contact your TYPO3 administrator.\');return false">';
-		// Call hooks. If they do not return anything, we fail to login
+		$form = '<form action="index.php" id="typo3-login-form" method="post" name="loginform">';
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {
 				$params = array();
@@ -488,12 +482,11 @@ class LoginController {
 				}
 			}
 		}
-		$output .= $form . '<input type="hidden" name="login_status" value="login" />' .
+		return $form . '<input type="hidden" name="login_status" value="login" />' .
 			'<input type="hidden" id="t3-field-userident" class="t3js-login-userident-field" name="userident" value="" />' .
 			'<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' .
 			'<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' .
 			$this->interfaceSelector_hidden . $this->addFields_hidden;
-		return $output;
 	}
 
 	/**
@@ -522,32 +515,22 @@ class LoginController {
 	}
 
 	/**
-	 * Creates JavaScript for the login form
-	 *
-	 * @return string JavaScript code
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function getJScode() {
-		GeneralUtility::logDeprecatedFunction();
-	}
-
-	/**
 	 * Checks if login credentials are currently submitted
 	 *
 	 * @return bool
 	 */
 	protected function isLoginInProgress() {
 		$username = GeneralUtility::_GP('username');
-		return !(empty($username) && empty($this->commandLI));
+		return !empty($username) || !empty($this->commandLI);
 	}
 
 	/**
 	 * Get the ObjectManager
 	 *
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @return ObjectManager
 	 */
 	protected function getObjectManager() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+		return GeneralUtility::makeInstance(ObjectManager::class);
 	}
 
 	/**
@@ -586,7 +569,7 @@ class LoginController {
 	/**
 	 * @return DatabaseConnection
 	 */
-	protected function getDatabaseConntection() {
+	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 

@@ -57,7 +57,6 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 			'BackendLogin::logout',
 			'BackendLogin::refreshLogin',
 			'BackendLogin::isTimedOut',
-			'BackendLogin::getChallenge',
 			'BackendLogin::getRsaPublicKey',
 		);
 

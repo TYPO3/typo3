@@ -41,13 +41,6 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	public $formfield_uident = '';
 
 	/**
-	 * Form field with a unique value which is used to encrypt the password and username.
-	 *
-	 * @var string
-	 */
-	public $formfield_chalvalue = '';
-
-	/**
 	 * Decides if the writelog() function is called at login and logout.
 	 *
 	 * @var bool

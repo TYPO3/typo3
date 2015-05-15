@@ -200,8 +200,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 					$('<input />', {type: 'password', name: 'p_field', autofocus: 'autofocus', class: 'form-control', placeholder: TYPO3.LLL.core.refresh_login_password})
 				),
 				$('<input />', {type: 'hidden', name: 'username', value: TYPO3.configuration.username}),
-				$('<input />', {type: 'hidden', name: 'userident'}),
-				$('<input />', {type: 'hidden', name: 'challenge'})
+				$('<input />', {type: 'hidden', name: 'userident'})
 			)
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
@@ -303,22 +302,6 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 		e.preventDefault();
 
 		switch (TYPO3.configuration.securityLevel) {
-			case 'superchallenged':
-			case 'challenged':
-				$.ajax({
-					url: TYPO3.settings.ajaxUrls['BackendLogin::getChallenge'],
-					method: 'GET',
-					data: {
-						skipSessionUpdate: 1
-					},
-					success: function(response) {
-						if (response.challenge) {
-							LoginRefresh.$loginForm.find('input[name=challenge]').val(response.challenge);
-							LoginRefresh.submitForm();
-						}
-					}
-				});
-				break;
 			case 'rsa':
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['BackendLogin::getRsaPublicKey'],
@@ -344,9 +327,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 	 */
 	LoginRefresh.submitForm = function(parameters) {
 		var $form = LoginRefresh.$loginForm.find('form'),
-			$usernameField = $form.find('input[name=username]'),
 			$passwordField = $form.find('input[name=p_field]'),
-			$challengeField = $form.find('input[name=challenge]'),
 			$useridentField = $form.find('input[name=userident]'),
 			passwordFieldValue = $passwordField.val();
 
@@ -356,14 +337,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			return;
 		}
 
-		if (TYPO3.configuration.securityLevel === 'superchallenged') {
-			$passwordField.val(MD5(passwordFieldValue));
-		}
-
-		if (TYPO3.configuration.securityLevel === 'superchallenged' || TYPO3.configuration.securityLevel === 'challenged') {
-			$challengeField.val(parameters.challenge);
-			$useridentField.val(MD5($usernameField.val() + ':' + passwordFieldValue + ':' + parameters.challenge));
-		} else if (TYPO3.configuration.securityLevel === 'rsa') {
+		if (TYPO3.configuration.securityLevel === 'rsa') {
 			var rsa = new RSAKey();
 			rsa.setPublic(parameters.publicKeyModulus, parameters.exponent);
 			var encryptedPassword = rsa.encrypt(passwordFieldValue);

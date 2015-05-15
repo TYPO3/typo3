@@ -128,12 +128,6 @@ abstract class AbstractUserAuthentication {
 	public $formfield_uident = '';
 
 	/**
-	 * Form field with a unique value which is used to encrypt the password and username
-	 * @var string
-	 */
-	public $formfield_chalvalue = '';
-
-	/**
 	 * Form field with status: *'login', 'logout'. If empty login is not verified.
 	 * @var string
 	 */
@@ -313,13 +307,6 @@ abstract class AbstractUserAuthentication {
 	 * @var bool
 	 */
 	protected $cookieWasSetOnCurrentRequest = FALSE;
-
-	/**
-	 * If set, the challenge value will be stored in a session as well,
-	 * so the server can check that is was not forged.
-	 * @var bool
-	 */
-	public $challengeStoredInCookie = FALSE;
 
 	/**
 	 * Login type, used for services.
@@ -1271,12 +1258,10 @@ abstract class AbstractUserAuthentication {
 			$loginData['status'] = GeneralUtility::_GP($this->formfield_status);
 			$loginData['uname'] = GeneralUtility::_GP($this->formfield_uname);
 			$loginData['uident'] = GeneralUtility::_GP($this->formfield_uident);
-			$loginData['chalvalue'] = GeneralUtility::_GP($this->formfield_chalvalue);
 		} else {
 			$loginData['status'] = GeneralUtility::_POST($this->formfield_status);
 			$loginData['uname'] = GeneralUtility::_POST($this->formfield_uname);
 			$loginData['uident'] = GeneralUtility::_POST($this->formfield_uident);
-			$loginData['chalvalue'] = GeneralUtility::_POST($this->formfield_chalvalue);
 		}
 		// Only process the login data if a login is requested
 		if ($loginData['status'] === 'login') {
@@ -1296,9 +1281,7 @@ abstract class AbstractUserAuthentication {
 	 * @internal
 	 */
 	public function processLoginData($loginData, $passwordTransmissionStrategy = '') {
-		$loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']
-			? trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel'])
-			: 'normal';
+		$loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
 		$passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
 		if ($this->writeDevLog) {
 			GeneralUtility::devLog('Login data before processing: ' . GeneralUtility::arrayToLogString($loginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
@@ -1373,34 +1356,7 @@ abstract class AbstractUserAuthentication {
 	 * @return bool TRUE if login data matched
 	 */
 	public function compareUident($user, $loginData, $passwordCompareStrategy = '') {
-		$OK = FALSE;
-		switch ($passwordCompareStrategy) {
-			case 'superchallenged':
-
-			case 'challenged':
-				// Check challenge stored in cookie:
-				if ($this->challengeStoredInCookie) {
-					session_start();
-					if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
-						if ($this->writeDevLog) {
-							GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
-						}
-						$this->logoff();
-						return FALSE;
-					}
-				}
-				$compareStrategyHash = md5($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']);
-				if ((string)$loginData[('uident_' . $passwordCompareStrategy)] === $compareStrategyHash) {
-					$OK = TRUE;
-				}
-				break;
-			default:
-				// normal
-				if ((string)$loginData['uident_text'] === (string)$user[$this->userident_column]) {
-					$OK = TRUE;
-				}
-		}
-		return $OK;
+		return (string)$loginData['uident_text'] === (string)$user[$this->userident_column];
 	}
 
 	/**

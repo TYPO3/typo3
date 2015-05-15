@@ -32,28 +32,9 @@ class AuthenticationService extends AbstractAuthenticationService {
 	 * @return bool
 	 */
 	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
-		$isProcessed = TRUE;
-		// Processing data according to the state it was submitted in.
-		switch ($passwordTransmissionStrategy) {
-			case 'normal':
-				$loginData['uident_text'] = $loginData['uident'];
-				break;
-			case 'challenged':
-				$loginData['uident_text'] = '';
-				$loginData['uident_challenged'] = $loginData['uident'];
-				$loginData['uident_superchallenged'] = '';
-				break;
-			case 'superchallenged':
-				$loginData['uident_text'] = '';
-				$loginData['uident_challenged'] = '';
-				$loginData['uident_superchallenged'] = $loginData['uident'];
-				break;
-			default:
-				$isProcessed = FALSE;
-		}
-		if (!empty($loginData['uident_text'])) {
-			$loginData['uident_challenged'] = (string)md5(($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']));
-			$loginData['uident_superchallenged'] = (string)md5(($loginData['uname'] . ':' . md5($loginData['uident_text']) . ':' . $loginData['chalvalue']));
+		$isProcessed = FALSE;
+		if ($passwordTransmissionStrategy === 'normal') {
+			$loginData['uident_text'] = $loginData['uident'];
 			$isProcessed = TRUE;
 		}
 		return $isProcessed;
@@ -65,24 +46,27 @@ class AuthenticationService extends AbstractAuthenticationService {
 	 * @return mixed User array or FALSE
 	 */
 	public function getUser() {
-		$user = FALSE;
-		if ($this->login['status'] === 'login') {
-			if ($this->login['uident']) {
-				$user = $this->fetchUserRecord($this->login['uname']);
-				if (!is_array($user)) {
-					// Failed login attempt (no username found)
-					$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-					// Logout written to log
-					GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-				} else {
-					if ($this->writeDevLog) {
-						GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), AuthenticationService::class);
-					}
-				}
-			} else {
-				// Failed Login attempt (no password given)
-				$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-				GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+		if ($this->login['status'] !== 'login') {
+			return FALSE;
+		}
+		if (!$this->login['uident']) {
+			// Failed Login attempt (no password given)
+			$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s) for username \'%s\' with an empty password!', array(
+				$this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']
+			));
+			GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), for username \'%s\' with an empty password!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			return FALSE;
+		}
+
+		$user = $this->fetchUserRecord($this->login['uname']);
+		if (!is_array($user)) {
+			// Failed login attempt (no username found)
+			$this->writelog(255, 3, 3, 2, 'Login-attempt from %s (%s), username \'%s\' not found!!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
+			// Logout written to log
+			GeneralUtility::sysLog(sprintf('Login-attempt from %s (%s), username \'%s\' not found!', $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']), 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+		} else {
+			if ($this->writeDevLog) {
+				GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), AuthenticationService::class);
 			}
 		}
 		return $user;
@@ -93,13 +77,13 @@ class AuthenticationService extends AbstractAuthenticationService {
 	 *
 	 * @param array $user Data of user.
 	 * @return int >= 200: User authenticated successfully.
-	 *                         No more checking is needed by other auth services.
-	 *                 >= 100: User not authenticated; this service is not responsible.
-	 *                         Other auth services will be asked.
-	 *                 > 0:    User authenticated successfully.
-	 *                         Other auth services will still be asked.
-	 *                 <= 0:   Authentication failed, no more checking needed
-	 *                         by other auth services.
+	 *                     No more checking is needed by other auth services.
+	 *             >= 100: User not authenticated; this service is not responsible.
+	 *                     Other auth services will be asked.
+	 *             > 0:    User authenticated successfully.
+	 *                     Other auth services will still be asked.
+	 *             <= 0:   Authentication failed, no more checking needed
+	 *                     by other auth services.
 	 */
 	public function authUser(array $user) {
 		$OK = 100;

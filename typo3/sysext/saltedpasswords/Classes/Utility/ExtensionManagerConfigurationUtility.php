@@ -168,17 +168,15 @@ class ExtensionManagerConfigurationUtility {
 		$this->init();
 		$extConf = $this->extConf['BE'];
 		// The backend is called over SSL
-		$isBackendCalledOverSsl = (
-			(int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0
-			&& $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] !== 'superchallenged'
-		);
+		$isBackendCalledOverSsl = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0;
 		$rsaAuthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
 		// SSL configured?
 		if ($isBackendCalledOverSsl) {
 			$this->setErrorLevel('ok');
 			$problems[] = 'The backend is configured to use SaltedPasswords over SSL.';
 		} elseif ($rsaAuthLoaded) {
-			if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') {
+			$loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal';
+			if ($loginSecurityLevel === 'rsa') {
 				if ($this->isRsaAuthBackendAvailable()) {
 					$this->setErrorLevel('ok');
 					$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentication.';
@@ -293,8 +291,8 @@ class ExtensionManagerConfigurationUtility {
 		$extConf = $this->extConf['FE'];
 		$problems = array();
 		if ($extConf['enabled']) {
-			// Inform the user if securityLevel in FE is challenged or blank --> extension won't work
-			if (!GeneralUtility::inList('normal,rsa', $GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'])) {
+			$loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) ?: 'normal';
+			if (!GeneralUtility::inList('normal,rsa', $loginSecurityLevel)) {
 				$this->setErrorLevel('info');
 				$problems[] = '<strong>IMPORTANT:</strong><br />
 					Frontend requirements for SaltedPasswords are not met, therefore the
@@ -302,16 +300,14 @@ class ExtensionManagerConfigurationUtility {
 					usage:<br />
 					<ul>
 						<li>Install the "rsaauth" extension and use the Install Tool to set the
-							Login Security Level for the frontend to "rsa"
+							Login Security Level for the frontend to "rsa".
 							($TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'])</li>
 
 						<li>Alternatively, use the Install Tool to set the Login Security Level
-							for the frontend to "normal"
+							for the frontend to "normal".
 							($TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'])</li>
-					</ul>
-					<br />
-					Make sure that the Login Security Level is not set to "" or "challenged"!';
-			} elseif (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel']) === 'rsa') {
+					</ul>';
+			} elseif ($loginSecurityLevel === 'rsa') {
 				if (ExtensionManagementUtility::isLoaded('rsaauth')) {
 					if ($this->isRsaAuthBackendAvailable()) {
 						$this->setErrorLevel('ok');

@@ -244,12 +244,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public $formfield_uident = 'userident';
 
 	/**
-	 * Form field with a unique value which is used to encrypt the password and username
-	 * @var string
-	 */
-	public $formfield_chalvalue = 'challenge';
-
-	/**
 	 * Form field with status: *'login', 'logout'
 	 * @var string
 	 */
@@ -274,11 +268,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @var string|int
 	 */
 	public $auth_timeout_field = 6000;
-
-	/**
-	 * @var bool
-	 */
-	public $challengeStoredInCookie = TRUE;
 
 	/**
 	 * @var int

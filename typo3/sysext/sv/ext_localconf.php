@@ -18,6 +18,3 @@ defined('TYPO3_MODE') or die();
 		'className' => \TYPO3\CMS\Sv\AuthenticationService::class
 	)
 );
-// Add hooks to the backend login form
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook']['sv'] = \TYPO3\CMS\Sv\LoginFormHook::class . '->getLoginFormTag';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook']['sv'] = \TYPO3\CMS\Sv\LoginFormHook::class . '->getLoginScripts';

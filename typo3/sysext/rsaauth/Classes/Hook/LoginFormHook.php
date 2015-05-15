@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Controller\LoginController;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * This class provides a hook to the login form to add extra javascript code
@@ -24,34 +27,35 @@ namespace TYPO3\CMS\Rsaauth\Hook;
 class LoginFormHook {
 
 	/**
-	 * Adds RSA-specific JavaScript and returns a form tag
+	 * Adds RSA-specific JavaScript
 	 *
 	 * @param array $params
-	 * @param \TYPO3\CMS\Backend\Controller\LoginController $pObj
-	 * @return string|NULL Form tag or NULL if security level is not rsa
+	 * @param LoginController $pObj
+	 * @return string|NULL Dummy JS or NULL if security level is not rsa
 	 */
-	public function getLoginFormTag(array $params, \TYPO3\CMS\Backend\Controller\LoginController &$pObj) {
-		$form = NULL;
-		if ($pObj->loginSecurityLevel === 'rsa') {
-			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-			$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-			$javascriptPath = '../' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
-			$files = array(
-				'jsbn/jsbn.js',
-				'jsbn/prng4.js',
-				'jsbn/rng.js',
-				'jsbn/rsa.js',
-				'jsbn/base64.js'
-			);
-			foreach ($files as $file) {
-				$pageRenderer->addJsFile($javascriptPath . $file);
-			}
-
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption');
-
-			return '<form action="index.php" id="typo3-login-form" method="post" name="loginform">';
+	public function getLoginFormJS(array $params, LoginController $pObj) {
+		if ($pObj->loginSecurityLevel !== 'rsa') {
+			return NULL;
 		}
-		return $form;
+		$javascriptPath = '../' . ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
+		$files = array(
+			'jsbn/jsbn.js',
+			'jsbn/prng4.js',
+			'jsbn/rng.js',
+			'jsbn/rsa.js',
+			'jsbn/base64.js'
+		);
+
+		/** @var DocumentTemplate $doc */
+		$doc = $GLOBALS['TBE_TEMPLATE'];
+		$pageRenderer = $doc->getPageRenderer();
+		foreach ($files as $file) {
+			$pageRenderer->addJsFile($javascriptPath . $file);
+		}
+
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption');
+
+		return '// no content';
 	}
 
 }

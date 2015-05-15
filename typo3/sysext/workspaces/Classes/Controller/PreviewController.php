@@ -197,19 +197,13 @@ class PreviewController extends AbstractController {
 		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
 			$pageModule = '';
 		}
-		// Determine security level from conf vars and default to super challenged
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
-			$loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
-		} else {
-			$loginSecurityLevel = 'superchallenged';
-		}
 		$t3Configuration = array(
 			'siteUrl' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL'),
 			'PATH_typo3' => $pathTYPO3,
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
 			'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
 			'uniqueID' => GeneralUtility::shortMD5(uniqid('', TRUE)),
-			'securityLevel' => $loginSecurityLevel,
+			'securityLevel' => trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal',
 			'TYPO3_mainDir' => TYPO3_mainDir,
 			'pageModule' => $pageModule,
 			'inWorkspace' => $GLOBALS['BE_USER']->workspace !== 0,

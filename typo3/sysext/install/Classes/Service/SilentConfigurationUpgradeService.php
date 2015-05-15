@@ -134,28 +134,20 @@ class SilentConfigurationUpgradeService {
 	 * @return void
 	 */
 	protected function configureBackendLoginSecurity() {
+		$rsaauthLoaded = ExtensionManagementUtility::isLoaded('rsaauth');
 		try {
 			$currentLoginSecurityLevelValue = $this->configurationManager->getLocalConfigurationValueByPath('BE/loginSecurityLevel');
-			if (ExtensionManagementUtility::isLoaded('rsaauth')
-				&& $currentLoginSecurityLevelValue !== 'rsa'
-			) {
+			if ($rsaauthLoaded && $currentLoginSecurityLevelValue !== 'rsa') {
 				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
 				$this->throwRedirectException();
-			} elseif (!ExtensionManagementUtility::isLoaded('rsaauth')
-				&& $currentLoginSecurityLevelValue !== 'normal'
-			) {
+			} elseif (!$rsaauthLoaded && $currentLoginSecurityLevelValue !== 'normal') {
 				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
 				$this->throwRedirectException();
 			}
 		} catch (\RuntimeException $e) {
 			// If an exception is thrown, the value is not set in LocalConfiguration
-			if (ExtensionManagementUtility::isLoaded('rsaauth')) {
-				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
-				$this->throwRedirectException();
-			} elseif (!ExtensionManagementUtility::isLoaded('rsaauth')) {
-				$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'normal');
-				$this->throwRedirectException();
-			}
+			$this->configurationManager->setLocalConfigurationValueByPath('BE/loginSecurityLevel', $rsaauthLoaded ? 'rsa' : 'normal');
+			$this->throwRedirectException();
 		}
 	}
 

@@ -29,15 +29,19 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 		typo3PasswordField: false,
 
 		/**
+		 * Remember if we fetched the RSA key already
+		 */
+		fetchedRsaKey: false,
+
+		/**
 		 * Replace event handler of submit button
 		 */
 		initialize: function() {
 			this.userPasswordField = BackendLogin.options.passwordField;
 			this.typo3PasswordField = BackendLogin.options.useridentField;
+			this.loginForm = BackendLogin.options.loginForm;
 
-			$(document).off('click', BackendLogin.options.submitButton, BackendLogin.showLoginProcess);
-			$(document).on('click', BackendLogin.options.submitButton, this.handleFormSubmitRequest);
-			return this;
+			BackendLogin.options.submitHandler = this.handleFormSubmitRequest;
 		},
 
 		/**
@@ -46,16 +50,24 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 		 * @param event
 		 */
 		handleFormSubmitRequest: function(event) {
-			event.preventDefault();
+			if (!RsaBackendLogin.fetchedRsaKey) {
+				RsaBackendLogin.fetchedRsaKey = true;
 
-			BackendLogin.showLoginProcess();
+				event.preventDefault();
 
-			$.ajax({
-				url: TYPO3.settings.ajaxUrls['BackendLogin::getRsaPublicKey'],
-				data: {'skipSessionUpdate': 1},
-				success: RsaBackendLogin.handlePublicKeyResponse,
-				dataType: 'json'
-			});
+				BackendLogin.showLoginProcess();
+
+				$.ajax({
+					url: TYPO3.settings.ajaxUrls['BackendLogin::getRsaPublicKey'],
+					data: {'skipSessionUpdate': 1},
+					success: RsaBackendLogin.handlePublicKeyResponse,
+					dataType: 'json'
+				});
+			} else {
+				// we come here again when the submit is triggered below
+				// reset the variable to fetch a new key for next attempt
+				RsaBackendLogin.fetchedRsaKey = false;
+			}
 		},
 
 		/**
@@ -64,19 +76,11 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 		 * @param publicKey Ajax response object
 		 */
 		handlePublicKeyResponse: function(publicKey) {
-			if (publicKey.publicKeyModulus && publicKey.exponent) {
-				RsaBackendLogin.encryptPasswordAndSubmitForm(publicKey);
-			} else {
+			if (!publicKey.publicKeyModulus || !publicKey.exponent) {
 				alert('No public key could be generated. Please inform your TYPO3 administrator to check the OpenSSL settings.');
+				return;
 			}
-		},
 
-		/**
-		 * Uses the public key with the RSA library to encrypt the password.
-		 *
-		 * @param publicKey
-		 */
-		encryptPasswordAndSubmitForm: function(publicKey) {
 			var rsa = new RSAKey();
 			rsa.setPublic(publicKey.publicKeyModulus, publicKey.exponent);
 			var encryptedPassword = rsa.encrypt($(RsaBackendLogin.userPasswordField).val());
@@ -85,7 +89,7 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 			$(RsaBackendLogin.userPasswordField).val('');
 			$(RsaBackendLogin.typo3PasswordField).val('rsa:' + hex2b64(encryptedPassword));
 
-			var $formElement = $('form:first');
+			var $formElement = $(RsaBackendLogin.loginForm);
 
 			// Create a hidden input field to fake pressing the submit button
 			$formElement.append('<input type="hidden" name="commandLI" value="Submit">');
@@ -94,5 +98,6 @@ define('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption', ['jquery', 'TYPO3/CMS/
 			$formElement.trigger('submit');
 		}
 	};
+
 	RsaBackendLogin.initialize();
 });

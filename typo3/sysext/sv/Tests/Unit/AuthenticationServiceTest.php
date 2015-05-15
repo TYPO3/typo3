@@ -33,34 +33,12 @@ class AuthenticationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'status' => 'login',
 					'uname' => 'admin',
 					'uident' => 'password',
-					'chalvalue' => NULL
 				),
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
 					'uident' => 'password',
-					'chalvalue' => NULL,
 					'uident_text' => 'password',
-					'uident_challenged' => '458203772635d38f05ca9e62d8237974',
-					'uident_superchallenged' => '651219fccfbe0c9004c7196515d780ce'
-				)
-			),
-			'Backend login with securityLevel "superchallenged"' => array(
-				'superchallenged',
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => '651219fccfbe0c9004c7196515d780ce',
-					'chalvalue' => NULL
-				),
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => '651219fccfbe0c9004c7196515d780ce',
-					'chalvalue' => NULL,
-					'uident_text' => '',
-					'uident_challenged' => '',
-					'uident_superchallenged' => '651219fccfbe0c9004c7196515d780ce'
 				)
 			),
 			'Frontend login with securityLevel "normal"' => array(
@@ -69,36 +47,14 @@ class AuthenticationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'status' => 'login',
 					'uname' => 'admin',
 					'uident' => 'password',
-					'chalvalue' => NULL
 				),
 				array(
 					'status' => 'login',
 					'uname' => 'admin',
 					'uident' => 'password',
-					'chalvalue' => NULL,
 					'uident_text' => 'password',
-					'uident_challenged' => '458203772635d38f05ca9e62d8237974',
-					'uident_superchallenged' => '651219fccfbe0c9004c7196515d780ce'
 				)
 			),
-			'Frontend login with securityLevel "challenged"' => array(
-				'challenged',
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => '458203772635d38f05ca9e62d8237974',
-					'chalvalue' => NULL
-				),
-				array(
-					'status' => 'login',
-					'uname' => 'admin',
-					'uident' => '458203772635d38f05ca9e62d8237974',
-					'chalvalue' => NULL,
-					'uident_text' => '',
-					'uident_challenged' => '458203772635d38f05ca9e62d8237974',
-					'uident_superchallenged' => ''
-				)
-			)
 		);
 	}
 

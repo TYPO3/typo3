@@ -331,7 +331,7 @@ return array(
 		'lockHashKeyWords' => 'useragent',				// Keyword list (Strings comma separated). Currently only "useragent"; If set, then the BE user session is locked to the value of HTTP_USER_AGENT. This lowers the risk of session hi-jacking. However in some cases (like during development) you might need to switch the user agent while keeping the session. In this case you can disable that feature (e.g. with a blank string).
 		'cookieDomain' => '',							// Same as <a href="#SYS-cookieDomain">$TYPO3_CONF_VARS['SYS']['cookieDomain']</a> but only for BE cookies. If empty, $TYPO3_CONF_VARS['SYS']['cookieDomain'] value will be used.
 		'cookieName' => 'be_typo_user',					// String: Set the name for the cookie used for the back-end user session
-		'loginSecurityLevel' => '',						// String: Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "challenged" means the password is not sent but hashed with some other values, "superchallenged" (default) means the password is first hashed before being hashed with the challenge values again (means the password is stored as a hashed string in the database also), "rsa" uses RSA password encryption (only if the rsaauth extension is installed). DO NOT CHANGE this value manually; without an alternative authentication service it will only prevent logins in TYPO3 since the "superchallenged" method is hardcoded in the default authentication system.
+		'loginSecurityLevel' => '',						// String: Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "rsa" uses RSA password encryption (only if the rsaauth extension is installed).
 		'showRefreshLoginPopup' => FALSE,				// Boolean: If set, the Ajax relogin will show a real popup window for relogin after the count down. Some auth services need this as they add custom validation to the login form. If it's not set, the Ajax relogin will show an inline relogin window.
 		'adminOnly' => 0,								// <p>Integer (-1, 0, 1, 2)</p><dl><dt>-1</dt><dd>total shutdown for maintenance purposes</dd><dt>0</dt><dd>normal operation, everyone can login (default)</dd><dt>1</dt><dd>only admins can login</dd><dt>2</dt><dd>only admins and regular CLI users can login</dd></dl>
 		'disable_exec_function' => FALSE,				// Boolean: Don't use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all fileoperations are done by the default PHP-functions. This is nescessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.
@@ -708,11 +708,6 @@ return array(
 			),
 			'BackendLogin::isTimedOut' => array(
 				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->isTimedOut',
-				// Needs to be unprotected
-				'csrfTokenCheck' => FALSE
-			),
-			'BackendLogin::getChallenge' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\AjaxLoginHandler::class . '->getChallenge',
 				// Needs to be unprotected
 				'csrfTokenCheck' => FALSE
 			),

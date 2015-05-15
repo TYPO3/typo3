@@ -17,6 +17,7 @@
 define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable', 'bootstrap'], function($) {
 	var BackendLogin = {
 		options: {
+			loginForm: '#typo3-login-form',
 			interfaceField: '.t3js-login-interface-field',
 			interfaceSection: '.t3js-login-interface-section',
 			usernameField: '.t3js-login-username-field',
@@ -31,7 +32,8 @@ define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable
 			errorNoCookies: '.t3js-login-error-nocookies',
 			formFields: '.t3js-login-formfields',
 			switchOpenIdSelector: '.t3js-login-switch-to-openid',
-			switchDefaultSelector: '.t3js-login-switch-to-default'
+			switchDefaultSelector: '.t3js-login-switch-to-default',
+			submitHandler: null
 		}
 	},
 	options = BackendLogin.options;
@@ -57,8 +59,8 @@ define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable
 		} else if (ev.modifiers) {
 			shift_status = !!(ev.modifiers & 4);
 		}
-		return (((which >= 65 && which <= 90) && !shift_status) ||
-			((which >= 97 && which <= 122) && shift_status));
+		return (which >= 65 && which <= 90 && !shift_status)
+			|| (which >= 97 && which <= 122 && shift_status);
 	};
 
 	/**
@@ -109,6 +111,32 @@ define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable
 
 		$(options.switchOpenIdSelector).addClass('disabled');
 		$(options.switchDefaultSelector).addClass('disabled');
+	};
+
+	/**
+	 * Pass on to registered submit handler
+	 *
+	 * @param event
+	 */
+	BackendLogin.handleSubmit = function(event) {
+		"use strict";
+
+		BackendLogin.showLoginProcess();
+
+		if (BackendLogin.options.submitHandler) {
+			BackendLogin.options.submitHandler(event);
+		}
+	};
+
+	/**
+	 * Reset user password field to prevent it from being submitted
+	 */
+	BackendLogin.resetPassword = function() {
+		"use strict";
+
+		var $passwordField = $(BackendLogin.options.passwordField);
+		$(BackendLogin.options.useridentField).val($passwordField.val());
+		$passwordField.val('');
 	};
 
 	/**
@@ -164,11 +192,7 @@ define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable
 	 * To prevent its unintented use when typing the password, the user is warned when Capslock is on
 	 */
 	BackendLogin.showCapsLockWarning = function($alertIconElement, event) {
-		if (BackendLogin.isCapslockEnabled(event) === true) {
-			$alertIconElement.removeClass('hidden');
-		} else {
-			$alertIconElement.addClass('hidden');
-		}
+		$alertIconElement.toggleClass('hidden', !BackendLogin.isCapslockEnabled(event));
 	};
 
 	/**
@@ -218,11 +242,14 @@ define('TYPO3/CMS/Backend/Login', ['jquery', 'TYPO3/CMS/Backend/jquery.clearable
 	 * Registers listeners for the Login Interface (e.g. to toggle OpenID and Default login)
 	 */
 	BackendLogin.initializeEvents = function() {
-		$(document).on('click', options.switchOpenIdSelector, BackendLogin.switchToOpenId);
-		$(document).on('click', options.switchDefaultSelector, BackendLogin.switchToDefault);
-		$(document).on('click', options.submitButton, BackendLogin.showLoginProcess);
+		// register default submit handler
+		BackendLogin.options.submitHandler = BackendLogin.resetPassword;
 
-			// The Interface selector is not always present, so this check is needed
+		$(options.switchOpenIdSelector).on('click', BackendLogin.switchToOpenId);
+		$(options.switchDefaultSelector).on('click', BackendLogin.switchToDefault);
+		$(options.loginForm).on('submit', BackendLogin.handleSubmit);
+
+		// The Interface selector is not always present, so this check is needed
 		if ($(options.interfaceField).length > 0) {
 			$(document).on('change blur', options.interfaceField, BackendLogin.interfaceSelectorChanged);
 		}
