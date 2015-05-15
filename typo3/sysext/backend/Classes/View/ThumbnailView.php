@@ -231,10 +231,10 @@ class ThumbnailView {
 				// The thumbnail is read and output to the browser
 				if ($fd = @fopen($this->output, 'rb')) {
 					$fileModificationTime = filemtime($this->output);
-					header('Content-type: image/' . $outext);
+					header('Content-Type: image/' . ($outext === 'jpg' ? 'jpeg' : $outext));
 					header('Last-Modified: ' . date('r', $fileModificationTime));
-					header('Etag: ' . md5($this->output) . '-' . $fileModificationTime);
-					// Expiration time is choosen arbitrary to 1 month
+					header('ETag: ' . md5($this->output) . '-' . $fileModificationTime);
+					// Expiration time is chosen arbitrary to 1 month
 					header('Expires: ' . date('r', ($fileModificationTime + 30 * 24 * 60 * 60)));
 					fpassthru($fd);
 					fclose($fd);
