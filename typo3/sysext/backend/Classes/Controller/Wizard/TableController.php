@@ -312,10 +312,10 @@ class TableController extends AbstractWizardController {
 				// Traverse the columns:
 				foreach ($cellArr as $cellContent) {
 					if ($this->inputStyle) {
-						$cells[] = '<input type="text"' . $this->doc->formWidth(20) . ' name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
+						$cells[] = '<input class="form-control" type="text"' . $this->doc->formWidth(20) . ' name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
 					} else {
 						$cellContent = preg_replace('/<br[ ]?[\\/]?>/i', LF, $cellContent);
-						$cells[] = '<textarea ' . $this->doc->formWidth(20) . ' rows="5" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . GeneralUtility::formatForTextarea($cellContent) . '</textarea>';
+						$cells[] = '<textarea class="form-control" ' . $this->doc->formWidth(20) . ' rows="6" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . GeneralUtility::formatForTextarea($cellContent) . '</textarea>';
 					}
 					// Increment counter:
 					$a++;
@@ -324,22 +324,24 @@ class TableController extends AbstractWizardController {
 				$onClick = 'document.wizardForm.action+=' . GeneralUtility::quoteJSvalue('#ANC_' . (($k + 1) * 2 - 2)) . ';';
 				$onClick = ' onclick="' . htmlspecialchars($onClick) . '"';
 				$ctrl = '';
-				$brTag = $this->inputStyle ? '' : '<br />';
 				if ($k !== 0) {
-					$ctrl .= '<input type="image" name="TABLE[row_up][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '" />' . $brTag;
+					$ctrl .= '<button class="btn btn-default" name="TABLE[row_up][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '"'. $onClick . '><span class="t3-icon fa fa-fw fa-angle-up"></span></button>';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '" />' . $brTag;
+					$ctrl .= '<button class="btn btn-default" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '"'. $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-down"></span></button>';
 				}
-				$ctrl .= '<input type="image" name="TABLE[row_remove][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '" />' . $brTag;
 				if ($k + 1 !== $countLines) {
-					$ctrl .= '<input type="image" name="TABLE[row_down][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '" />' . $brTag;
+					$ctrl .= '<button class="btn btn-default" name="TABLE[row_down][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '"'. $onClick . '><span class="t3-icon fa fa-fw fa-angle-down"></span></button>';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[row_top][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '" />' . $brTag;
+					$ctrl .= '<button class="btn btn-default" name="TABLE[row_top][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '"'. $onClick . '><span class="t3-icon fa fa-fw fa-angle-double-up"></span></button>';
 				}
-				$ctrl .= '<input type="image" name="TABLE[row_add][' . ($k + 1) * 2 . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '" />' . $brTag;
+				$ctrl .= '<button class="btn btn-default" name="TABLE[row_remove][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '"'. $onClick . '><span class="t3-icon fa fa-fw fa-trash"></span></button>';
+				$ctrl .= '<button class="btn btn-default" name="TABLE[row_add][' . ($k + 1) * 2 . ']" title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '"'. $onClick . '><span class="t3-icon fa fa-fw fa-plus"></span></button>';
 				$tRows[] = '
-					<tr class="bgColor4">
-						<td class="bgColor5"><a name="ANC_' . ($k + 1) * 2 . '"></a><span class="c-wizButtonsV">' . $ctrl . '</span></td>
+					<tr>
+						<td>
+							<a name="ANC_' . ($k + 1) * 2 . '"></a>
+							<span class="btn-group' . ($this->inputStyle ? '' : '-vertical') . '">' . $ctrl . '</span>
+						</td>
 						<td>' . implode('</td>
 						<td>', $cells) . '</td>
 					</tr>';
@@ -358,45 +360,48 @@ class TableController extends AbstractWizardController {
 				$b = $a * 2;
 				$ctrl = '';
 				if ($a !== 1) {
-					$ctrl .= '<input type="image" name="TABLE[col_left][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_left', TRUE) . '" />';
+					$ctrl .= '<button class="btn btn-default" name="TABLE[col_left][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_left', TRUE) . '"><span class="t3-icon fa fa-fw fa-angle-left"></span></button>';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[col_end][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_end', TRUE) . '" />';
+					$ctrl .= '<button class="btn btn-default" name="TABLE[col_end][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_end', TRUE) . '"><span class="t3-icon fa fa-fw fa-angle-double-right"></span></button>';
 				}
-				$ctrl .= '<input type="image" name="TABLE[col_remove][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_removeColumn', TRUE) . '" />';
-				if ($a + 1 != $cols) {
-					$ctrl .= '<input type="image" name="TABLE[col_right][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_right', TRUE) . '" />';
+				if ($a != $cols) {
+					$ctrl .= '<button class="btn btn-default" name="TABLE[col_right][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_right', TRUE) . '"><span class="t3-icon fa fa-fw fa-angle-right"></span></button>';
 				} else {
-					$ctrl .= '<input type="image" name="TABLE[col_start][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_start', TRUE) . '" />';
+					$ctrl .= '<button class="btn btn-default" name="TABLE[col_start][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_start', TRUE) . '"><span class="t3-icon fa fa-fw fa-angle-double-left"></span></button>';
 				}
-				$ctrl .= '<input type="image" name="TABLE[col_add][' . $b . ']"' . IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . ' title="' . $this->getLanguageService()->getLL('table_addColumn', TRUE) . '" />';
-				$cells[] = '<span class="c-wizButtonsH">' . $ctrl . '</span>';
+				$ctrl .= '<button class="btn btn-default" name="TABLE[col_remove][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_removeColumn', TRUE) . '"><span class="t3-icon fa fa-fw fa-trash"></span></button>';
+				$ctrl .= '<button class="btn btn-default" name="TABLE[col_add][' . $b . ']" title="' . $this->getLanguageService()->getLL('table_addColumn', TRUE) . '"><span class="t3-icon fa fa-fw fa-plus"></span></button>';
+				$cells[] = '<span class="btn-group">' . $ctrl . '</span>';
 			}
 			$tRows[] = '
-				<tr class="bgColor5">
-					<td align="center">' . implode('</td>
-					<td align="center">', $cells) . '</td>
-				</tr>';
+				<tfoot>
+					<tr>
+						<td>' . implode('</td>
+						<td>', $cells) . '</td>
+					</tr>
+				</tfoot>';
 		}
 		$content = '';
 		// Implode all table rows into a string, wrapped in table tags.
 		$content .= '
 
 			<!-- Table wizard -->
-			<table border="0" cellpadding="0" cellspacing="1" id="typo3-tablewizard">
-				' . implode('', $tRows) . '
-			</table>';
+			<div class="table-fit table-fit-inline-block">
+				<table id="typo3-tablewizard" class="table table-center">
+					' . implode('', $tRows) . '
+				</table>
+			</div>';
 		// Input type checkbox:
 		$content .= '
 
 			<!-- Input mode check box: -->
-			<div id="c-inputMode">
-				' . '<input type="hidden" name="TABLE[textFields]" value="0" />'
-			. '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' />'
-			. '<label for="textFields">' . $this->getLanguageService()->getLL('table_smallFields') . '</label>
-			</div>
-
-			<br /><br />
-			';
+			<div class="checkbox">
+				<input type="hidden" name="TABLE[textFields]" value="0" />
+				<label for="textFields">
+					<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' />
+					' . $this->getLanguageService()->getLL('table_smallFields') . '
+				</label>
+			</div>';
 		return $content;
 	}
 
