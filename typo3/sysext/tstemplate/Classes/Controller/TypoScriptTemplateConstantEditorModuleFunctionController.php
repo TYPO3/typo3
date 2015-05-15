@@ -143,6 +143,8 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
 					$tce->clear_cacheCmd('all');
 					// re-read the template ...
 					$this->initialize_editor($this->pObj->id, $template_uid);
+					// re-read the constants as they have changed
+					$theConstants = $this->getConstants();
 				}
 			}
 			// Resetting the menu (start). I wonder if this in any way is a violation of the menu-system. Haven't checked. But need to do it here, because the menu is dependent on the categories available.
