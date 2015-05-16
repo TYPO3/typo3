@@ -42,6 +42,115 @@
 			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords">
 				<source>Number of records=</source>
 			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.noErrorsFound">
+				<source>No errors were found</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.noErrorsFound">
+				<source>SaltedPasswords has been configured correctly and works as expected.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.errorsFound">
+				<source>Errors found in your configuration</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.errorsFound">
+				<source>SaltedPasswords will not work until these problems have been resolved:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.warningsFound">
+				<source>Warnings about your configuration</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningsFound">
+				<source>SaltedPasswords might behave different than expected:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.additionalInformation">
+				<source>Additional information</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.securityWarning">
+				<source>Note, that a wrong configuration might have impact on the security of your TYPO3 installation and the usability of the backend.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.backendSsl">
+				<source>The backend is configured to use SaltedPasswords over SSL.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.backendRsa">
+				<source>The backend is configured to use SaltedPasswords with RSA authentication.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.openSslMissing">
+				<source>Using the extension "rsaauth" is not possible, as no encryption backend is available. Please install and configure the PHP extension "openssl". See </source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.backendSecurityLevelNotRsa">
+				<source>The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login. Use the Install Tool to set the Login Security Level for the backend to "rsa" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsIntro">
+				<source>SaltedPasswords is used without any transfer encryption, this means your passwords are sent in plain text. Please install rsaauth to secure your passwords submits.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsFirstItem">
+				<source>Install the "rsaauth" extension and use the Install Tool to set the Login Security Level for the backend to "rsa" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsSecondItem" xml:space="preserve">
+				<source>If you have the option to use SSL, you can also configure your backend for SSL usage:
+Use the Install Tool to set the Security-Level for the backend to "normal" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel']) and the SSL-locking option to a value greater than "0" (see description - $TYPO3_CONF_VARS['BE']['lockSSL'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsFootnote">
+				<source>It is also possible to use "lockSSL" and "rsa" Login Security Level at the same time.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSalted">
+				<source>SaltedPasswords has been configured to be the only authentication service for the backend. Additionally, usage of salted passwords is enforced (forceSalted). The result is that there is no chance to login with users not having a salted password hash.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.label.warning">
+				<source>WARNING:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNote">
+				<source>This may lock you out of the backend!</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoOnlyBackendAuthService">
+				<source>SaltedPasswords has been configured to be the only authentication service for the backend. This means that other services like "ipauth", "openid", etc. will be ignored (except "rsauth", which is implicitely used).</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoForceSalted" xml:space="preserve">
+				<source>SaltedPasswords has been configured to enforce salted passwords (forceSalted).
+This means that only passwords in the format of this extension will succeed for login.
+</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.errorForceSaltedAndUpdatePassword" xml:space="preserve">
+				<source>SaltedPasswords is configured wrong and will not work as expected:
+It is not possible to set "updatePasswd" and "forceSalted" at the same time. Please disable either one of them.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.errorHashMethodNotAvailable">
+				<source>The selected method for hashing your salted passwords is not available on this system! Please check your configuration.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.label.important">
+				<source>IMPORTANT:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferent">
+				<source>Frontend requirements for SaltedPasswords are not met, therefore the authentication will not work even if it was explicitly enabled for frontend usage:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentFirstItem">
+				<source>Install the "rsaauth" extension and use the Install Tool to set the Login Security Level for the frontend to "rsa" ($TYPO3_CONF_VARS['FE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentSecondItem">
+				<source>Alternatively, use the Install Tool to set the Login Security Level for the frontend to "normal" ($TYPO3_CONF_VARS['FE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentNote">
+				<source>Make sure that the Login Security Level is not set to "" or "challenged"!</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.okFeRsaauthLoaded">
+				<source>The frontend is configured to use SaltedPasswords with RSA authentication.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured">
+				<source>The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it. Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel] to "normal" in the Install Tool.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured">
+				<source>The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it. Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel] to "normal" in the Install Tool.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNote">
+				<source>Because of this, it is not possible to login with users not having a salted password hash (e.g. existing frontend users).</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoOnlyFrontendAuthService">
+				<source>SaltedPasswords has been configured to be the only authentication service for frontend logins. This means that other services like "ipauth", "openid", etc. will be ignored.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNote2">
+				<source>This has the effect that passwords that were set before SaltedPasswords was used will not work (in fact, they need to be redefined).</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoSaltedpasswordsFrontendDisabled">
+				<source>SaltedPasswords has been disabled for frontend users.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
