@@ -111,7 +111,7 @@ define('TYPO3/CMS/Backend/DebugConsole', ['jquery'], function ($) {
 	 */
 	DebugConsole.attachToViewport = function() {
 		var $viewport = $('#typo3-contentContainer');
-		if (!$.contains(DebugConsole.$consoleDom, $viewport)) {
+		if ($viewport.has(DebugConsole.$consoleDom).length === 0) {
 			$viewport.append(DebugConsole.$consoleDom);
 		}
 	};
@@ -163,16 +163,14 @@ define('TYPO3/CMS/Backend/DebugConsole', ['jquery'], function ($) {
 		}
 
 		DebugConsole.incrementInactiveTabCounter($tab);
-		DebugConsole.incrementUnreadMessagesIfCollapsed()
+		DebugConsole.incrementUnreadMessagesIfCollapsed();
 
-		var $messageBox = $('#' + tabIdentifier + ' .t3js-messages');
+		var $messageBox = $('#' + tabIdentifier + ' .t3js-messages'),
+			isMessageBoxActive = $messageBox.parent().hasClass('active');
+
 		$messageBox.append($line);
-
-		if (DebugConsole.settings.autoscroll) {
-
-			var activeTabIdentifier = $debugTabs.find('.active').data('identifier'),
-				$activeMessageBox = $('#' + activeTabIdentifier + ' .t3js-messages');
-			$activeMessageBox.scrollTop($activeMessageBox[0].scrollHeight);
+		if (DebugConsole.settings.autoscroll && isMessageBoxActive) {
+			$messageBox.scrollTop($messageBox.prop('scrollHeight'));
 		}
 	};
 
@@ -234,7 +232,7 @@ define('TYPO3/CMS/Backend/DebugConsole', ['jquery'], function ($) {
 			$badge = $topbar.find('.badge');
 
 		$badge.text('');
-	}
+	};
 
 	/**
 	 * Reset the console to it's virginity
