@@ -405,7 +405,27 @@ return array(
 				),
 			),
 		),
-
+		'input_36' => array(
+			'exclude' => 1,
+			'label' => 'INPUT: 36 Slider wizard, default=14.5, step=0.5, width=150, eval=trim,double2',
+			'config' => array(
+				'type' => 'input',
+				'size' => 5,
+				'eval' => 'trim,double2',
+				'range' => array(
+					'lower' => -90,
+					'upper' => 90,
+				),
+				'default' => 14.5,
+				'wizards' => array(
+					'angle' => array(
+						'type' => 'slider',
+						'step' => 0.5,
+						'width' => 150,
+					),
+				),
+			),
+		),
 
 		'text_1' => array(
 			'exclude' => 1,
@@ -1233,6 +1253,29 @@ return array(
 							'table' => 'tx_styleguide_forms_staticdata',
 							'pid' => '0',
 						),
+					),
+				),
+			),
+		),
+		'select_30' => array(
+			'exclude' => 1,
+			'label' => 'INPUT: 37 Slider wizard, step=1, width=200, items',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('foo3', 4),
+					array('foo4', 7),
+					array('foo5', 8),
+					array('foo6', 11),
+				),
+				'default' => 4,
+				'wizards' => array(
+					'angle' => array(
+						'type' => 'slider',
+						'step' => 1,
+						'width' => 200,
 					),
 				),
 			),
@@ -2369,7 +2412,7 @@ return array(
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
 			input_11, input_12, input_13, input_14, input_15, input_16, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-			input_32, input_33, input_34, input_35,
+			input_32, input_33, input_34, input_35, input_36,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
@@ -2378,6 +2421,7 @@ return array(
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
+			select_30,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 			group_11, group_12,
 			none_1, none_2, none_3, none_4, none_5, none_6,
@@ -2400,7 +2444,7 @@ return array(
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30,
-					input_32, input_33, input_34, input_35,
+					input_32, input_33, input_34, input_35, input_36,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
@@ -2413,6 +2457,7 @@ return array(
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 					select_11, select_12, select_13,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
+					select_30,
 				--div--;Group,
 					group_1, group_12, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 					group_11,
