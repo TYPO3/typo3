@@ -74,8 +74,8 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 	 */
 	ValueSlider.renderTooltipValue = function(value) {
 		var renderedValue,
-			data = $(this).data();
-
+			$slider = $('[data-slider-id="' + $(this).get(0).id + '"]'),
+			data = $slider.data();
 		switch (data.sliderValueType) {
 			case 'array':
 				var $foreignField = $('[name="' + data.sliderItemName + '"]');
