@@ -27,7 +27,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO
 		icons: {},
 		labels: {},
 		identifiers: {
-			searchField: 'div.dataTables_filter input',
+			searchField: '.t3js-language-searchfield',
 			topMenu: 'div.menuItems',
 			activateIcon: 'span.activateIcon',
 			deactivateIcon: 'span.deactivateIcon',
@@ -244,6 +244,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO
 	 */
 	LanguageModule.buildLanguageTable = function(tableElement) {
 		return $(tableElement).DataTable({
+			dom: 'lrtip',
 			serverSide: false,
 			stateSave: true,
 			paging: false,
@@ -292,6 +293,7 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO
 		}
 
 		return $(tableElement).DataTable({
+			dom: 'lrtip',
 			serverSide: false,
 			stateSave: true,
 			paging: false,
@@ -313,13 +315,23 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO
 	 * Initialize search field
 	 */
 	LanguageModule.initializeSearchField = function() {
-		$(LanguageModule.identifiers.searchField, LanguageModule.context).clearable({
-			onClear: function() {
-				if (LanguageModule.table !== null) {
-					LanguageModule.table.search('').draw();
+		var getVars = LanguageModule.getUrlVars();
+		var currentSearch = (getVars['search'] ? getVars['search'] : LanguageModule.table.search());
+		$(LanguageModule.identifiers.searchField)
+			.val(currentSearch)
+			.on('input', function() {
+				LanguageModule.table.search($(this).val()).draw();
+			})
+			.clearable({
+				onClear: function() {
+					if (LanguageModule.table !== null) {
+						LanguageModule.table.search('').draw();
+					}
 				}
-			}
-		});
+			})
+			.parents('form').on('submit', function() {
+				return false;
+			});
 	};
 
 	/**
@@ -548,6 +560,18 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO
 		$inner.css({width: progress + '%'});
 		$inner.attr('aria-valuenow', progress);
 		$text.text(Math.round(progress) + '%');
+	};
+
+	// Utility method to retrieve query parameters
+	LanguageModule.getUrlVars = function getUrlVars() {
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for (var i = 0; i < hashes.length; i++) {
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
 	};
 
 	return function() {

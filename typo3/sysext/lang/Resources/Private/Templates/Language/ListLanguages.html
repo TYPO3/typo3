@@ -21,6 +21,11 @@
 <f:section name="content">
 	<h1><f:translate key="header.languages" /></h1>
 	<f:flashMessages renderMode="div" />
+	<form class="form-inline">
+		<div class="form-group">
+			<f:form.textfield name="typo3-language-searchfield" placeholder="{f:translate(key:'table.search')}" id="typo3-language-searchfield" value="{search}" class="form-control t3js-language-searchfield" />
+		</div>
+	</form>
 	<table id="typo3-language-list" class="t3-table t3-datatable">
 		<thead>
 			<tr>
