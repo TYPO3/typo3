@@ -1071,14 +1071,14 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('foo 1', 1), // @TODO: An element "INVALID VALUE ("sys_file")" is inserted
+					array('foo 1', 1),
 					array('foo 2', 2),
 					array('foo 3', 3),
 					array('foo 4', 4),
 					array('foo 5', 5),
 					array('foo 6', 6),
 				),
-				'size' => 4, // @TODO: No effect?
+				'size' => 4,
 				'maxitems' => 1,
 			),
 		),
