@@ -1065,6 +1065,23 @@ return array(
 				'exclusiveKeys' => '1,2',
 			),
 		),
+		'select_14' => array(
+			'exclude' => 1,
+			'label' => 'SELECT: 14 maxitems=1, single',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo 1', 1), // @TODO: An element "INVALID VALUE ("sys_file")" is inserted
+					array('foo 2', 2),
+					array('foo 3', 3),
+					array('foo 4', 4),
+					array('foo 5', 5),
+					array('foo 6', 6),
+				),
+				'size' => 4, // @TODO: No effect?
+				'maxitems' => 1,
+			),
+		),
 		'select_21' => array(
 			'exclude' => 1,
 			'label' => 'SELECT: 21 itemListStyle: green, 250 width and selectedListStyle: red, width 350',
@@ -2419,7 +2436,7 @@ return array(
 			checkbox_11, checkbox_12, checkbox_13, checkbox_14, checkbox_15, checkbox_16, checkbox_17, checkbox_18,
 			radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
-			select_11, select_12, select_13,
+			select_11, select_12, select_13, select_14,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 			select_30,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
@@ -2455,7 +2472,7 @@ return array(
 					radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
 				--div--;Select,
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
-					select_11, select_12, select_13,
+					select_11, select_12, select_13, select_14,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
 					select_30,
 				--div--;Group,
