@@ -37,6 +37,8 @@ CREATE TABLE tx_styleguide_forms (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
+	type_field tinytext NOT NULL,
+
 	input_1 tinytext NOT NULL,
 	input_2 tinytext NOT NULL,
 	input_3 tinytext NOT NULL,

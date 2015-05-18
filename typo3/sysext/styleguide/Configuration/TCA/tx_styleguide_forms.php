@@ -23,6 +23,8 @@ return array(
 			'endtime' => 'endtime',
 		),
 
+		'type' => 'type_field',
+
 		'dividers2tabs' => 1,
 	),
 
@@ -67,6 +69,20 @@ return array(
 			'l10n_mode' => 'exclude',
 			'l10n_display' => 'defaultAsReadonly'
 		),
+
+
+		'type_field' => array(
+			'exclude' => 1,
+			'label' => 'TYPE FIELD',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('type standard', 'standard'),
+					array('type test', 'test'),
+				),
+			),
+		),
+
 
 		'input_1' => array(
 			'exclude' => 1,
@@ -2426,6 +2442,7 @@ return array(
 
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,endtime,
+			type_field,
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
 			input_11, input_12, input_13, input_14, input_15, input_16, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
@@ -2455,8 +2472,10 @@ return array(
 	),
 
 	'types' => array(
-		'0' => array(
+		'standard' => array(
 			'showitem' => '
+				--div--;Type,
+					type_field,
 				--div--;Input,
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_18,
@@ -2504,6 +2523,14 @@ return array(
 				--div--;Access Rights,
 					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 					system_11,
+			',
+		),
+		'test' => array(
+			'showitem' => '
+				--div--;Type,
+					type_field,
+				--div--;Input,
+					input_1,
 			',
 		),
 	),
