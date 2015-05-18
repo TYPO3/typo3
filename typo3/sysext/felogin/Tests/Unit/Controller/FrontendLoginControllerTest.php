@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * Test case
  *
@@ -447,6 +449,24 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent($host, $url) {
 		$_SERVER['HTTP_HOST'] = $host;
 		$this->assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $url));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processRedirectReferrerDomainsMatchesDomains() {
+		$conf = array(
+			'redirectMode' => 'refererDomains',
+			'domains' => 'example.com'
+		);
+
+		$this->accessibleFixture->_set('conf', $conf);
+		$this->accessibleFixture->_set('logintype', 'login');
+		$this->accessibleFixture->_set('referer', 'http://www.example.com/snafu');
+		/** @var TypoScriptFrontendController $tsfe */
+		$tsfe = $this->accessibleFixture->_get('frontendController');
+		$tsfe->loginUser = TRUE;
+		$this->assertSame(array('http://www.example.com/snafu'), $this->accessibleFixture->_call('processRedirect'));
 	}
 
 }
