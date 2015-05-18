@@ -1011,7 +1011,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 							$name .= $this->renderTaskProgressBar($progress);
 						}
 						if (!empty($additionalInformation)) {
-							$name .= '<div class="additional-information">[' . htmlspecialchars($additionalInformation) . ']</div>';
+							$name .= '<div class="additional-information"><span title="' . htmlspecialchars($additionalInformation) . '">[' . GeneralUtility::fixed_lgd_cs(htmlspecialchars($additionalInformation), (int)$this->getBackendUser()->uc['titleLen']) . ']</span></div>';
 						}
 						// Check if task currently has a running execution
 						if (!empty($schedulerRecord['serialized_executions'])) {
