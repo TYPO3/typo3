@@ -615,7 +615,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	/**
 	 * Process redirect methods. The function searches for a redirect url using all configured methods.
 	 *
-	 * @return string Redirect url
+	 * @return array Redirect URLs
 	 */
 	protected function processRedirect() {
 		$redirect_url = array();
@@ -677,7 +677,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 									$redirect_domain = $match[1];
 									$found = FALSE;
 									foreach (GeneralUtility::trimExplode(',', $this->conf['domains'], TRUE) as $d) {
-										if (preg_match('/(^|\\.)/' . $d . '$', $redirect_domain)) {
+										if (preg_match('/(?:^|\\.)' . $d . '$/', $redirect_domain)) {
 											$found = TRUE;
 											break;
 										}
