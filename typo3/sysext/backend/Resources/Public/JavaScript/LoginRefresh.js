@@ -136,6 +136,9 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 				body: TYPO3.LLL.core.login_about_to_expire,
 				icon: '/typo3/sysext/backend/Resources/Public/Images/Logo.png'
 			});
+			LoginRefresh.webNotification.onclick = function() {
+				window.focus();
+			};
 		}
 	};
 
