@@ -448,6 +448,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 	 * @return void
 	 */
 	public function removeSessionData() {
+		$this->sessionDataTimestamp = NULL;
 		$this->db->exec_DELETEquery('fe_session_data', 'hash=' . $this->db->fullQuoteStr($this->id, 'fe_session_data'));
 	}
 
