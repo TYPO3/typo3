@@ -473,8 +473,7 @@ class FormEngineUtility {
 					$theTypes = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
 					foreach ($theTypes as $theTypeArrays) {
 						// Icon:
-						// @todo: typo here
-						$icon = 'empty-emtpy';
+						$icon = 'empty-empty';
 						if ($theTypeArrays[1] != '--div--') {
 							$icon = IconUtility::mapRecordTypeToSpriteIconName('pages', array('doktype' => $theTypeArrays[1]));
 						}

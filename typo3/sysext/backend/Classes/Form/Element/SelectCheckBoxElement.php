@@ -105,7 +105,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 				// Non-selectable element:
 				if ($p[1] === '--div--') {
 					$selIcon = '';
-					if (isset($p[2]) && $p[2] != 'empty-emtpy') {
+					if (isset($p[2]) && $p[2] != 'empty-empty') {
 						$selIcon = FormEngineUtility::getIconHtml($p[2]);
 					}
 					$currentGroup++;
@@ -182,10 +182,10 @@ class SelectCheckBoxElement extends AbstractFormElement {
 		$output .= '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="" />';
 
 		// Building the checkboxes
-		foreach($groups as $groupKey => $group){
+		foreach ($groups as $groupKey => $group) {
 			$groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
 			$output .= '<div class="panel panel-default">';
-			if(is_array($group['header'])){
+			if (is_array($group['header'])) {
 				$output .= '
 					<div class="panel-heading">
 						<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="true" aria-controls="' . $groupId . '">
@@ -195,14 +195,14 @@ class SelectCheckBoxElement extends AbstractFormElement {
 					</div>
 					';
 			}
-			if(is_array($group['items']) && count($group['items']) >= 1){
+			if (is_array($group['items']) && !empty($group['items'])) {
 				$tableRows = '';
 				$checkGroup = array();
 				$uncheckGroup = array();
 				$resetGroup = array();
 
 				// Render rows
-				foreach($group['items'] as $item){
+				foreach ($group['items'] as $item) {
 					$tableRows .= '
 						<tr class="' . $item['class'] . '">
 							<td class="col-checkbox">
@@ -231,7 +231,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 
 				// Build toggle group checkbox
 				$toggleGroupCheckbox = '';
-				if(count($resetGroup)){
+				if (!empty($resetGroup)) {
 					$toggleGroupCheckbox = '
 						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $checkGroup) . '} else {' . implode('', $uncheckGroup)) . '}">
 						';
@@ -239,7 +239,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 
 				// Build reset group button
 				$resetGroupBtn = '';
-				if(count($resetGroup)){
+				if (!empty($resetGroup)) {
 					$resetGroupBtn = '
 						<a href="#" class="btn btn-default" onclick="' . implode('', $resetGroup) . ' return false;' . '">
 							' . IconUtility::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')))) . '

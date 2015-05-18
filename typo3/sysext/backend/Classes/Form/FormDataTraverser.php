@@ -343,7 +343,7 @@ class FormDataTraverser {
 		$PA['fieldConf']['config'] = FormEngineUtility::overrideFieldConf($PA['fieldConf']['config'], $PA['fieldTSConfig']);
 		$selectItemArray = FormEngineUtility::getSelectItems($this->currentTable, $fieldName, $this->currentRow, $PA);
 
-		if ($isTraversable && count($selectItemArray)) {
+		if ($isTraversable && !empty($selectItemArray)) {
 			$this->currentTable = $fieldConfig['foreign_table'];
 			$relatedUids = $this->getSelectedValuesFromSelectItemArray($selectItemArray, $value);
 		} else {

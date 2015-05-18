@@ -96,9 +96,10 @@ class SelectSingleElement extends AbstractFormElement {
 			$inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix();
 			if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
 				$uniqueIds = $this->globalOptions['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
-				$parameterArray['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,\'' . $inlineObjectName
-					. '-' . $table . '\',\'' . $inlineFormName
-					. '\',\'' . $row['uid'] . '\');';
+				$parameterArray['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,'
+					. GeneralUtility::quoteJSvalue($inlineObjectName . '-' . $table) . ','
+					. GeneralUtility::quoteJSvalue($inlineFormName) . ','
+					. GeneralUtility::quoteJSvalue($row['uid']) . ');';
 			}
 			// hide uid of parent record for symmetric relations
 			if (
@@ -139,9 +140,9 @@ class SelectSingleElement extends AbstractFormElement {
 		}
 
 		// Icon configuration:
-		if ($config['suppress_icons'] == 'IF_VALUE_FALSE') {
+		if ($config['suppress_icons'] === 'IF_VALUE_FALSE') {
 			$suppressIcons = !$parameterArray['itemFormElValue'] ? 1 : 0;
-		} elseif ($config['suppress_icons'] == 'ONLY_SELECTED') {
+		} elseif ($config['suppress_icons'] === 'ONLY_SELECTED') {
 			$suppressIcons = 0;
 			$onlySelectedIconShown = 1;
 		} elseif ($config['suppress_icons']) {
