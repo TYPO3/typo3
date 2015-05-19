@@ -64,12 +64,21 @@ class BooleanValidator extends AbstractValidator {
 
 		if ($value !== $expectation) {
 			if (!is_bool($value)) {
-				$this->addError('The given subject is not true.', 1361959230);
+				$this->addError($this->translateErrorMessage(
+					'validator.boolean.nottrue',
+					'extbase'
+				), 1361959230);
 			} else {
 				if ($expectation) {
-					$this->addError('The given subject is not true.', 1361959228);
+					$this->addError($this->translateErrorMessage(
+						'validator.boolean.nottrue',
+						'extbase'
+					), 1361959228);
 				} else {
-					$this->addError('The given subject is not false.', 1361959229);
+					$this->addError($this->translateErrorMessage(
+						'validator.boolean.notfalse',
+						'extbase'
+					), 1361959229);
 				}
 			}
 		}

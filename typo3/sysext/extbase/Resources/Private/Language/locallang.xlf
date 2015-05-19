@@ -63,6 +63,12 @@
 			<trans-unit id="validator.integer.notvalid">
 				<source>The given subject was not a valid integer.</source>
 			</trans-unit>
+			<trans-unit id="validator.boolean.nottrue">
+				<source>The given subject was not true.</source>
+			</trans-unit>
+			<trans-unit id="validator.boolean.notfalse">
+				<source>The given subject was not false.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
