@@ -266,7 +266,7 @@ define('TYPO3/CMS/Backend/ImageManipulation', ['jquery', 'TYPO3/CMS/Backend/Moda
 	 */
 	ImageManipulation.dismiss = function() {
 		if (ImageManipulation.currentModal) {
-			ImageManipulation.currentModal.modal('hide').remove();
+			ImageManipulation.currentModal.modal('hide');
 			ImageManipulation.currentModal = null;
 		}
 	};
