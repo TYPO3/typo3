@@ -2472,7 +2472,7 @@ return array(
 	),
 
 	'types' => array(
-		'standard' => array(
+		'0' => array(
 			'showitem' => '
 				--div--;Type,
 					type_field,
