@@ -41,7 +41,7 @@ use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
  * </output>
  *
  * <code title="Inline notation">
- * {f:uri.image(src: 'EXT:myext/Resources/Public/typo3_logo.png' minWidth: 30, maxWidth: 40)}
+ * {f:uri.image(src: 'EXT:myext/Resources/Public/typo3_logo.png', minWidth: 30, maxWidth: 40)}
  * </code>
  * <output>
  * typo3temp/pics/[b4c0e7ed5c].png
