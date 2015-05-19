@@ -3231,99 +3231,105 @@ class DataHandler {
 		if ($GLOBALS['TCA'][$table] && $uid && !$this->isRecordCopied($table, $uid)) {
 			// This checks if the record can be selected which is all that a copy action requires.
 			if ($this->doesRecordExist($table, $uid, 'show')) {
-				$fullLanguageCheckNeeded = $table != 'pages';
-				//Used to check language and general editing rights
-				if ($language > 0 && $this->BE_USER->checkLanguageAccess($language) || $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded)) {
-					$data = array();
-					$nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, TRUE));
-					// So it copies (and localized) content from workspace...
-					$row = BackendUtility::getRecordWSOL($table, $uid);
-					if (is_array($row)) {
-						// Initializing:
-						$theNewID = uniqid('NEW', TRUE);
-						$enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
-						$headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
-						// Getting default data:
-						$defaultData = $this->newFieldArray($table);
-						// Getting "copy-after" fields if applicable:
-						$copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), 0) : array();
-						// Page TSconfig related:
-						// NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
-						$tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
-						$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-						$tE = $this->getTableEntries($table, $TSConfig);
-						// Traverse ALL fields of the selected record:
-						$setDefaultOnCopyArray = array_flip(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy']));
-						foreach ($row as $field => $value) {
-							if (!in_array($field, $nonFields, TRUE)) {
-								// Get TCA configuration for the field:
-								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-								// Preparation/Processing of the value:
-								// "pid" is hardcoded of course:
-								if ($field == 'pid') {
-									$value = $destPid;
-								} elseif (isset($overrideValues[$field])) {
-									// Override value...
-									$value = $overrideValues[$field];
-								} elseif (isset($copyAfterFields[$field])) {
-									// Copy-after value if available:
-									$value = $copyAfterFields[$field];
-								} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && isset($setDefaultOnCopyArray[$field])) {
-									$value = $defaultData[$field];
-								} else {
-									// Hide at copy may override:
-									if ($first && $field == $enableField && $GLOBALS['TCA'][$table]['ctrl']['hideAtCopy'] && !$this->neverHideAtCopy && !$tE['disableHideAtCopy']) {
-										$value = 1;
+				// Check if table is allowed on destination page
+				if ($destPid < 0 || $this->isTableAllowedForThisPage($destPid, $table)) {
+					$fullLanguageCheckNeeded = $table != 'pages';
+					//Used to check language and general editing rights
+					if ($language > 0 && $this->BE_USER->checkLanguageAccess($language) || $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded)) {
+						$data = array();
+						$nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_count,t3ver_stage,t3ver_tstamp,' . $excludeFields, TRUE));
+						// So it copies (and localized) content from workspace...
+						$row = BackendUtility::getRecordWSOL($table, $uid);
+						if (is_array($row)) {
+							// Initializing:
+							$theNewID = uniqid('NEW', TRUE);
+							$enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
+							$headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
+							// Getting default data:
+							$defaultData = $this->newFieldArray($table);
+							// Getting "copy-after" fields if applicable:
+							$copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields($table, $uid, abs($destPid), 0) : array();
+							// Page TSconfig related:
+							// NOT using \TYPO3\CMS\Backend\Utility\BackendUtility::getTSCpid() because we need the real pid - not the ID of a page, if the input is a page...
+							$tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid);
+							$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
+							$tE = $this->getTableEntries($table, $TSConfig);
+							// Traverse ALL fields of the selected record:
+							$setDefaultOnCopyArray = array_flip(GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy']));
+							foreach ($row as $field => $value) {
+								if (!in_array($field, $nonFields, TRUE)) {
+									// Get TCA configuration for the field:
+									$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+									// Preparation/Processing of the value:
+									// "pid" is hardcoded of course:
+									if ($field == 'pid') {
+										$value = $destPid;
+									} elseif (isset($overrideValues[$field])) {
+										// Override value...
+										$value = $overrideValues[$field];
+									} elseif (isset($copyAfterFields[$field])) {
+										// Copy-after value if available:
+										$value = $copyAfterFields[$field];
+									} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && isset($setDefaultOnCopyArray[$field])) {
+										$value = $defaultData[$field];
+									} else {
+										// Hide at copy may override:
+										if ($first && $field == $enableField && $GLOBALS['TCA'][$table]['ctrl']['hideAtCopy'] && !$this->neverHideAtCopy && !$tE['disableHideAtCopy']) {
+											$value = 1;
+										}
+										// Prepend label on copy:
+										if ($first && $field == $headerField && $GLOBALS['TCA'][$table]['ctrl']['prependAtCopy'] && !$tE['disablePrependAtCopy']) {
+											$value = $this->getCopyHeader($table, $this->resolvePid($table, $destPid), $field, $this->clearPrefixFromValue($table, $value), 0);
+										}
+										// Processing based on the TCA config field type (files, references, flexforms...)
+										$value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $language);
 									}
-									// Prepend label on copy:
-									if ($first && $field == $headerField && $GLOBALS['TCA'][$table]['ctrl']['prependAtCopy'] && !$tE['disablePrependAtCopy']) {
-										$value = $this->getCopyHeader($table, $this->resolvePid($table, $destPid), $field, $this->clearPrefixFromValue($table, $value), 0);
-									}
-									// Processing based on the TCA config field type (files, references, flexforms...)
-									$value = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $value, $row, $conf, $tscPID, $language);
+									// Add value to array.
+									$data[$table][$theNewID][$field] = $value;
 								}
-								// Add value to array.
-								$data[$table][$theNewID][$field] = $value;
 							}
-						}
-						// Overriding values:
-						if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
-							$data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
-						}
-						// Setting original UID:
-						if ($GLOBALS['TCA'][$table]['ctrl']['origUid']) {
-							$data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
-						}
-						// Do the copy by simply submitting the array through TCEmain:
-						/** @var $copyTCE DataHandler */
-						$copyTCE = $this->getLocalTCE();
-						$copyTCE->start($data, '', $this->BE_USER);
-						$copyTCE->process_datamap();
-						// Getting the new UID:
-						$theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
-						if ($theNewSQLID) {
-							$this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
-							$this->copyMappingArray[$table][$origUid] = $theNewSQLID;
-							// Keep automatically versionized record information:
-							if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
-								$this->autoVersionIdMap[$table][$theNewSQLID] = $copyTCE->autoVersionIdMap[$table][$theNewSQLID];
+							// Overriding values:
+							if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+								$data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
 							}
+							// Setting original UID:
+							if ($GLOBALS['TCA'][$table]['ctrl']['origUid']) {
+								$data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
+							}
+							// Do the copy by simply submitting the array through TCEmain:
+							/** @var $copyTCE DataHandler */
+							$copyTCE = $this->getLocalTCE();
+							$copyTCE->start($data, '', $this->BE_USER);
+							$copyTCE->process_datamap();
+							// Getting the new UID:
+							$theNewSQLID = $copyTCE->substNEWwithIDs[$theNewID];
+							if ($theNewSQLID) {
+								$this->copyRecord_fixRTEmagicImages($table, BackendUtility::wsMapId($table, $theNewSQLID));
+								$this->copyMappingArray[$table][$origUid] = $theNewSQLID;
+								// Keep automatically versionized record information:
+								if (isset($copyTCE->autoVersionIdMap[$table][$theNewSQLID])) {
+									$this->autoVersionIdMap[$table][$theNewSQLID] = $copyTCE->autoVersionIdMap[$table][$theNewSQLID];
+								}
+							}
+							// Copy back the cached TSconfig
+							$this->cachedTSconfig = $copyTCE->cachedTSconfig;
+							$this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
+							unset($copyTCE);
+							if ($language == 0) {
+								//repointing the new translation records to the parent record we just created
+								$overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
+								$this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
+							}
+
+							return $theNewSQLID;
+						} elseif ($this->enableLogging) {
+							$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record that did not exist!');
 						}
-						// Copy back the cached TSconfig
-						$this->cachedTSconfig = $copyTCE->cachedTSconfig;
-						$this->errorLog = array_merge($this->errorLog, $copyTCE->errorLog);
-						unset($copyTCE);
-						if ($language == 0) {
-							//repointing the new translation records to the parent record we just created
-							$overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
-							$this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
-						}
-						return $theNewSQLID;
 					} elseif ($this->enableLogging) {
-						$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record that did not exist!');
+						$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without having permissions to do so. [' . $this->BE_USER->errorMsg . '].');
 					}
 				} elseif ($this->enableLogging) {
-					$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without having permissions to do so. [' . $this->BE_USER->errorMsg . '].');
+					$this->log($table, $uid, 3, 0, 1, 'Attempt to insert record on a page that can\'t store record type.');
 				}
 			} elseif ($this->enableLogging) {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without permission');
