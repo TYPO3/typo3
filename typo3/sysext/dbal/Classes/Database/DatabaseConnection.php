@@ -524,7 +524,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-					if ($this->lastQuery[0] !== '') {
+					if ((string)$this->lastQuery[0] !== '') {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
 						if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
 							// The table is able to retrieve the ID of the last insert, use it to update the blob below
@@ -684,7 +684,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
-					if ($this->lastQuery[0] !== '') {
+					if ((string)$this->lastQuery[0] !== '') {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
 					}
 					if (is_array($this->lastQuery[1])) {
