@@ -140,6 +140,8 @@ CREATE TABLE tx_styleguide_forms (
 	select_28 tinytext NOT NULL,
 	select_29 tinytext NOT NULL,
 	select_30 tinytext NOT NULL,
+	select_31 tinytext NOT NULL,
+	select_32 tinytext NOT NULL,
 
 	group_1 tinytext NOT NULL,
 	group_2 tinytext NOT NULL,

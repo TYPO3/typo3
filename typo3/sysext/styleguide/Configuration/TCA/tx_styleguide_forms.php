@@ -1313,6 +1313,44 @@ return array(
 				),
 			),
 		),
+		'select_31' => array(
+			'exclude' => 1,
+			'label' => 'SELECT: 31 renderMode=tree of pages with maxLevels=1',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 20,
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => TRUE,
+						'maxLevels' => 1,
+					),
+				),
+			),
+		),
+		'select_32' => array(
+			'exclude' => 1,
+			'label' => 'SELECT: 32 renderMode=tree of pages with maxLevels=2',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 20,
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => TRUE,
+						'maxLevels' => 2,
+					),
+				),
+			),
+		),
 
 
 		'group_1' => array(
@@ -2455,7 +2493,7 @@ return array(
 			select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 			select_11, select_12, select_13, select_14,
 			select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
-			select_30,
+			select_30,select_31,select_32,
 			group_1, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 			group_11, group_12,
 			none_1, none_2, none_3, none_4, none_5, none_6,
@@ -2493,7 +2531,7 @@ return array(
 					select_1, select_2, select_3, select_4, select_5, select_6, select_7, select_8, select_9, select_10,
 					select_11, select_12, select_13, select_14,
 					select_21, select_22, select_23, select_24, select_25, select_26, select_27, select_28, select_29,
-					select_30,
+					select_30,select_31,select_32,
 				--div--;Group,
 					group_1, group_12, group_2, group_3, group_4, group_5, group_6, group_7, group_8, group_9, group_10,
 					group_11,
