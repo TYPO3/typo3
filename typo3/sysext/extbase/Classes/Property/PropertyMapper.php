@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Extbase\Property;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
+
 /**
  * The Property Mapper transforms simple types (arrays, strings, integers, floats, booleans) to objects or other simple types.
  * It is used most prominently to map incoming HTTP arguments to objects.
@@ -206,9 +209,11 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		// This compatibility layer will be removed with 7.0
 		$targetType = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($targetType);
 
+		$targetType = TypeHandlingUtility::normalizeType($targetType);
+
 		$converter = NULL;
 
-		if (\TYPO3\CMS\Extbase\Utility\TypeHandlingUtility::isSimpleType($targetType)) {
+		if (TypeHandlingUtility::isSimpleType($targetType)) {
 			if (isset($this->typeConverters[$sourceType][$targetType])) {
 				$converter = $this->findEligibleConverterWithHighestPriority($this->typeConverters[$sourceType][$targetType], $source, $targetType);
 			}

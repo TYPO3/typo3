@@ -126,27 +126,38 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function dataProviderForFindTypeConverter() {
 		return array(
-			array(
-				'someStringSource',
-				'string',
-				array(
+			array('someStringSource', 'string', array(
+				'string' => array(
 					'string' => array(
-						'string' => array(
-							10 => $this->getMockTypeConverter('string2string,prio10'),
-							1 => $this->getMockTypeConverter('string2string,prio1')
-						)
+						10 => $this->getMockTypeConverter('string2string,prio10'),
+						1 => $this->getMockTypeConverter('string2string,prio1'),
 					)
-				),
-				'string2string,prio10'
+				)), 'string2string,prio10'
 			),
 			array(array('some' => 'array'), 'string', array(
 				'array' => array(
 					'string' => array(
 						10 => $this->getMockTypeConverter('array2string,prio10'),
-						1 => $this->getMockTypeConverter('array2string,prio1')
+						1 => $this->getMockTypeConverter('array2string,prio1'),
 					)
-				)
-			), 'array2string,prio10')
+				)), 'array2string,prio10'
+			),
+			array('someStringSource', 'bool', array(
+				'string' => array(
+					'boolean' => array(
+						10 => $this->getMockTypeConverter('string2boolean,prio10'),
+						1 => $this->getMockTypeConverter('string2boolean,prio1'),
+					)
+				)), 'string2boolean,prio10'
+			),
+			array('someStringSource', 'int', array(
+				'string' => array(
+					'integer' => array(
+						10 => $this->getMockTypeConverter('string2integer,prio10'),
+						1 => $this->getMockTypeConverter('string2integer,prio1'),
+					),
+				)), 'string2integer,prio10'
+			)
 		);
 	}
 
