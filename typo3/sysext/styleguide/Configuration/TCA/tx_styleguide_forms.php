@@ -77,7 +77,7 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('type standard', 'standard'),
+					array('type standard', '0'),
 					array('type test', 'test'),
 				),
 			),
