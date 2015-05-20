@@ -175,7 +175,7 @@ class GroupElement extends AbstractFormElement {
 					'size' => $size,
 					'allowed' => $allowed,
 					'disallowed' => $disallowed,
-					'dontShowMoveIcons' => $maxitems <= 1,
+					'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
 					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle'])
@@ -227,7 +227,7 @@ class GroupElement extends AbstractFormElement {
 				// Creating the element:
 				$params = array(
 					'size' => $size,
-					'dontShowMoveIcons' => $maxitems <= 1,
+					'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
 					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle'])
@@ -295,7 +295,7 @@ class GroupElement extends AbstractFormElement {
 				// Creating the element:
 				$params = array(
 					'size' => $size,
-					'dontShowMoveIcons' => $maxitems <= 1,
+					'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
 					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
 					'maxitems' => $maxitems,
 					'style' => isset($config['selectedListStyle'])
