@@ -317,6 +317,20 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see https://forge.typo3.org/issues/67067
+	 */
+	public function tablesAreUnmappedInAdminGetTables() {
+		$handlerMock = $this->getMock('\ADODB_mock', array('MetaTables'), array(), '', FALSE);
+		$handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(array('cf_cache_hash')));
+		$this->subject->handlerInstance['_DEFAULT'] = $handlerMock;
+
+		$actual = $this->subject->admin_get_tables();
+		$expected = array('cachingframework_cache_hash' => array('Name' => 'cachingframework_cache_hash'));
+		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/17918
 	 */
 	public function fieldWithinSqlFunctionIsRemapped() {
