@@ -132,6 +132,21 @@ class DatabaseConnectionTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see https://forge.typo3.org/issues/67067
+	 */
+	public function adminGetTablesReturnsArrayWithNameKey() {
+		$handlerMock = $this->getMock('\ADODB_mock', array('MetaTables'), array(), '', FALSE);
+		$handlerMock->expects($this->any())->method('MetaTables')->will($this->returnValue(array('cf_cache_hash')));
+		$this->subject->handlerCfg['_DEFAULT']['type'] = 'adodb';
+		$this->subject->handlerInstance['_DEFAULT'] = $handlerMock;
+
+		$actual = $this->subject->admin_get_tables();
+		$expected = array('cf_cache_hash' => array('Name' => 'cf_cache_hash'));
+		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/21502
 	 */
 	public function concatCanBeParsedAfterLikeOperator() {

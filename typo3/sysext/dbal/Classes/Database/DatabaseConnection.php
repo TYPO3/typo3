@@ -2662,7 +2662,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							// Skip tables from the Oracle 10 Recycle Bin
 							continue;
 						}
-						$whichTables[$theTable] = $theTable;
+						$whichTables[$theTable] = array('Name' => $theTable);
 					}
 				}
 				break;
@@ -2684,6 +2684,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			foreach ($whichTables as $tN => $tDefinition) {
 				if (isset($tMap[$tN])) {
 					$tN = $tMap[$tN];
+					$tDefinition = array('Name' => $tN);
 				}
 				$newList[$tN] = $tDefinition;
 			}
@@ -2692,7 +2693,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Adding tables configured to reside in other DBMS (handler by other handlers than the default):
 		if (is_array($this->table2handlerKeys)) {
 			foreach ($this->table2handlerKeys as $key => $handlerKey) {
-				$whichTables[$key] = $key;
+				$whichTables[$key] = array('Name' => $key);
 			}
 		}
 		return $whichTables;
