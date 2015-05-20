@@ -531,7 +531,7 @@ abstract class AbstractMenuContentObject
                 $c_b++;
                 // If the beginning item has been reached.
                 if ($begin <= $c_b) {
-                    $this->menuArr[$c] = $data;
+                    $this->menuArr[$c] = $this->determineOriginalShortcutPage($data);
                     $this->menuArr[$c]['isSpacer'] = $spacer;
                     $c++;
                     if ($maxItems && $c >= $maxItems) {
@@ -1003,7 +1003,7 @@ abstract class AbstractMenuContentObject
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
-        list($specialValue) = GeneralUtility::intExplode(',', $specialValue);
+        [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
             $specialValue = $tsfe->page['uid'];
         }
@@ -1054,7 +1054,7 @@ abstract class AbstractMenuContentObject
         // Which field is for keywords
         $kfield = 'keywords';
         if ($this->conf['special.']['keywordsField']) {
-            list($kfield) = explode(' ', trim($this->conf['special.']['keywordsField']));
+            [$kfield] = explode(' ', trim($this->conf['special.']['keywordsField']));
         }
         // If there are keywords and the startuid is present
         if ($kw && $startUid) {
@@ -1193,7 +1193,7 @@ abstract class AbstractMenuContentObject
     protected function prepareMenuItemsForBrowseMenu($specialValue, $sortingField, $additionalWhere)
     {
         $menuItems = [];
-        list($specialValue) = GeneralUtility::intExplode(',', $specialValue);
+        [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
             $specialValue = $this->getTypoScriptFrontendController()->page['uid'];
         }
@@ -1713,7 +1713,7 @@ abstract class AbstractMenuContentObject
         // Override url if current page is a shortcut
         $shortcut = null;
         if ($this->menuArr[$key]['doktype'] == PageRepository::DOKTYPE_SHORTCUT && $this->menuArr[$key]['shortcut_mode'] != PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-            $menuItem = $this->determineOriginalShortcutPage($this->menuArr[$key]);
+            $menuItem = $this->menuArr[$key];
             try {
                 $shortcut = $tsfe->sys_page->getPageShortcut(
                     $menuItem['shortcut'],
