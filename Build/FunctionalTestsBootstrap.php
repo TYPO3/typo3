@@ -50,7 +50,7 @@ class FunctionalTestsBootstrap {
 	 * @return FunctionalTestsBootstrap fluent interface
 	 */
 	protected function loadClassFiles() {
-		$testsDirectory = __DIR__ . '/../Tests/';
+		$testsDirectory = __DIR__ . '/../typo3/sysext/core/Tests/';
 		require_once($testsDirectory . 'BaseTestCase.php');
 		require_once($testsDirectory . 'FunctionalTestCase.php');
 		require_once($testsDirectory . 'FunctionalTestCaseBootstrapUtility.php');

@@ -24,7 +24,7 @@
 >
 	<testsuites>
 		<testsuite name="Core tests">
-			<directory>../../../../typo3/sysext/*/Tests/Functional/</directory>
+			<directory>../typo3/sysext/*/Tests/Functional/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

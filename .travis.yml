@@ -42,7 +42,7 @@ script:
     if [[ "$UNIT_TESTS" == "yes" ]]; then
       echo;
       echo "Running unit tests";
-      ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml
+      bin/phpunit --colors -c Build/UnitTests.xml
     fi
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
@@ -51,7 +51,7 @@ script:
         export typo3DatabaseHost="localhost";
         export typo3DatabaseUsername="root";
         export typo3DatabasePassword="";
-        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; bin/phpunit --colors -c Build/FunctionalTests.xml {}'
     fi
   - >
     if [[ "$PHP_LINT" == "yes" ]]; then
@@ -63,7 +63,7 @@ script:
     if [[ "$XLF_CHECK" == "yes" ]]; then
         echo;
         echo "Running XLF checker";
-        ./typo3/sysext/core/Build/Scripts/xlfcheck.sh
+        Build/Scripts/xlfcheck.sh
     fi
   - >
       if [[ "$SUBMODULE_TEST" == "yes" ]]; then
