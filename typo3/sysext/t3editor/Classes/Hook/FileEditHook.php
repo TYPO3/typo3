@@ -64,17 +64,17 @@ class FileEditHook {
 	 * called in \TYPO3\CMS\Backend\Template\DocumentTemplate:startPage
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $pObj
+	 * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
 	 */
-	public function preStartPageHook($parameters, $pObj) {
+	public function preStartPageHook($parameters, $documentTemplate) {
 		if (GeneralUtility::_GET('M') === 'file_edit') {
 			$t3editor = $this->getT3editor();
 			if (!$t3editor->isEnabled()) {
 				return;
 			}
-			$pObj->JScode .= $t3editor->getJavascriptCode($pObj);
-			$pObj->loadJavascriptLib(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/jslib/fileedit.js');
+			$documentTemplate->JScode .= $t3editor->getJavascriptCode($documentTemplate);
+			$documentTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
 		}
 	}
 
