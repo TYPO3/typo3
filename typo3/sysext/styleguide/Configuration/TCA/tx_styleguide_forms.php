@@ -2348,6 +2348,56 @@ return array(
 			),
 		),
 
+		't3editor_1' => array(
+			'exclude' => 1,
+			'label' => 'T3EDITOR: 1',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 80,
+				'rows' => 15,
+				'wizards' => array(
+					't3editor' => array(
+						'type' => 'userFunc',
+						'userFunc' => \TYPO3\CMS\T3editor\FormWizard::class . '->main',
+						'title' => 't3editor',
+						'icon' => 'wizard_table.gif',
+						'module' => array(
+							'name' => 'wizard_table'
+						),
+						'params' => array(
+							'format' => 'html',
+							'style' => 'width:98%; height: 60%;'
+						),
+					),
+				),
+			),
+		),
+		't3editor_2' => array(
+			'exclude' => 1,
+			'label' => 'T3EDITOR: 2 Enabled on type 0 only',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 80,
+				'rows' => 15,
+				'wizards' => array(
+					't3editor' => array(
+						'enableByTypeConfig' => 1,
+						'type' => 'userFunc',
+						'userFunc' => \TYPO3\CMS\T3editor\FormWizard::class . '->main',
+						'title' => 't3editor',
+						'icon' => 'wizard_table.gif',
+						'module' => array(
+							'name' => 'wizard_table'
+						),
+						'params' => array(
+							'format' => 'html',
+							'style' => 'width:98%; height: 60%;'
+						),
+					),
+				),
+			),
+		),
+
 
 		'system_1' => array(
 			'exclude' => 1,
@@ -2504,6 +2554,7 @@ return array(
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
+			t3editor_1, t3editor_2,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 			system_11,
 			',
@@ -2558,6 +2609,8 @@ return array(
 					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
+				--div--;t3editor,
+					t3editor_1, t3editor_2;;;nowrap:wizards[t3editor],
 				--div--;Access Rights,
 					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 					system_11,
@@ -2567,8 +2620,8 @@ return array(
 			'showitem' => '
 				--div--;Type,
 					type_field,
-				--div--;Input,
-					input_1,
+				--div--;t3editor,
+					t3editor_1, t3editor_2,
 			',
 		),
 	),
