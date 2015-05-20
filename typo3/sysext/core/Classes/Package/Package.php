@@ -125,9 +125,6 @@ class Package implements PackageInterface {
 		if (substr($packagePath, -1, 1) !== '/') {
 			throw new Exception\InvalidPackagePathException(sprintf('The package path "%s" provided for package "%s" has no trailing forward slash.', $packagePath, $packageKey), 1166633722);
 		}
-		if (!@file_exists($packagePath . 'ext_emconf.php')) {
-			throw new Exception\InvalidPackageManifestException(sprintf('No ext_emconf.php file found for package "%s".".', $packageKey), 1360403545);
-		}
 		$this->packageManager = $packageManager;
 		$this->packageKey = $packageKey;
 		$this->packagePath = PathUtility::sanitizeTrailingSeparator($packagePath);
@@ -135,7 +132,9 @@ class Package implements PackageInterface {
 		try {
 			$this->getComposerManifest();
 		} catch (Exception\MissingPackageManifestException $exception) {
-			$this->getExtensionEmconf();
+			if (!$this->loadExtensionEmconf()) {
+				throw new Exception\InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
+			}
 		}
 		$this->loadFlagsFromComposerManifest();
 	}
@@ -263,15 +262,16 @@ class Package implements PackageInterface {
 	/**
 	 * @return bool
 	 */
-	protected function getExtensionEmconf() {
+	protected function loadExtensionEmconf() {
 		$_EXTKEY = $this->packageKey;
-		$path = $this->packagePath . '/ext_emconf.php';
+		$path = $this->packagePath . 'ext_emconf.php';
 		$EM_CONF = NULL;
 		if (@file_exists($path)) {
 			include $path;
 			if (is_array($EM_CONF[$_EXTKEY])) {
 				$this->extensionManagerConfiguration = $EM_CONF[$_EXTKEY];
 				$this->mapExtensionManagerConfigurationToComposerManifest();
+				return TRUE;
 			}
 		}
 		return FALSE;
