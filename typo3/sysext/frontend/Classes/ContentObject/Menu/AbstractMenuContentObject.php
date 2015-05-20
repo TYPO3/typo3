@@ -399,7 +399,7 @@ abstract class AbstractMenuContentObject
                 $c_b++;
                 // If the beginning item has been reached.
                 if ($begin <= $c_b) {
-                    $this->menuArr[$c] = $data;
+                    $this->menuArr[$c] = $this->determineOriginalShortcutPage($data);
                     $this->menuArr[$c]['isSpacer'] = $isSpacerPage;
                     $c++;
                     if ($maxItems && $c >= $maxItems) {
@@ -1340,7 +1340,7 @@ abstract class AbstractMenuContentObject
         // Override url if current page is a shortcut
         $shortcut = null;
         if ((int)$this->menuArr[$key]['doktype'] === PageRepository::DOKTYPE_SHORTCUT && (int)$this->menuArr[$key]['shortcut_mode'] !== PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-            $menuItem = $this->determineOriginalShortcutPage($this->menuArr[$key]);
+            $menuItem = $this->menuArr[$key];
             try {
                 $shortcut = $tsfe->sys_page->getPageShortcut(
                     $menuItem['shortcut'],
