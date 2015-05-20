@@ -904,7 +904,7 @@ var Editor = (function(){
           event.stop();
         }
         else if (code == 83 && this.options.saveFunction) { // S
-          this.options.saveFunction();
+          this.options.saveFunction(this);
           event.stop();
         }
         else if (code == 86 && !mac) { // V

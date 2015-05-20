@@ -12,58 +12,58 @@
  */
 
 /**
- * @fileoverview contains the CompletionResult class
+ * Contains the CompletionResult class
  */
+define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/CompletionResult', ['jquery'], function ($) {
+	var CompletionResult = {
+		tsRef: null,
+		tsTreeNode: null
+	};
 
-/**
- * @class this class post-processes the result from the codecompletion, so that it can be
- * displayed in the next step.
- * @constructor
- * @param tsRef the TsRef Tree
- * @param tsTreeNode the current Node in the codetree built by the parser
- * @return a new CompletionResult instance
- */
-var CompletionResult = function(tsRef,tsTreeNode) {
-	var currentTsTreeNode = tsTreeNode;
-	var tsRef = tsRef;
+	CompletionResult.init = function(config) {
+		CompletionResult.tsRef = config.tsRef;
+		CompletionResult.tsTreeNode = config.tsTreeNode;
+
+		return CompletionResult;
+	};
 
 	/**
 	 * returns the type of the currentTsTreeNode
 	 */
-	this.getType = function() {
-		var val = currentTsTreeNode.getValue();
-		if (tsRef.isType(val)) {
-			return tsRef.getType(val);
-		} else {
-			return null;
+	CompletionResult.getType = function() {
+		var val = CompletionResult.tsTreeNode.getValue();
+		if (CompletionResult.tsRef.isType(val)) {
+			return CompletionResult.tsRef.getType(val);
 		}
-	}
+		return null;
+	};
 
 	/**
 	 * returns a list of possible path completions (proposals), which is:
 	 * a list of the children of the current TsTreeNode (= userdefined properties)
 	 * and a list of properties allowed for the current object in the TsRef
 	 * remove all words from list that don't start with the string in filter
+	 *
 	 * @param {String} filter beginning of the words contained in the proposal list
-	 * @returns an Array of Proposals
+	 * @return {Array} an Array of Proposals
 	 */
-	this.getFilteredProposals = function(filter) {
+	CompletionResult.getFilteredProposals = function(filter) {
+		var defined = [],
+			propArr = [],
+			childNodes = CompletionResult.tsTreeNode.getChildNodes(),
+			value = CompletionResult.tsTreeNode.getValue();
 
-		var defined = new Array();
-		var propArr = new Array();
-		var childNodes = currentTsTreeNode.getChildNodes();
-		var value = currentTsTreeNode.getValue();
 		// first get the childNodes of the Node (=properties defined by the user)
 		for (key in childNodes) {
-			if (typeof(childNodes[key].value) != "undefined" && childNodes[key].value != null) {
-				propObj = new Object();
+			if (typeof childNodes[key].value !== 'undefined' && childNodes[key].value !== null) {
+				var propObj = {};
 				propObj.word = key;
-				if(tsRef.typeHasProperty(value,childNodes[key].name)){
-					propObj.cssClass = 'definedTSREFProperty';
+				if (CompletionResult.tsRef.typeHasProperty(value, childNodes[key].name)) {
+					CompletionResult.tsRef.cssClass = 'definedTSREFProperty';
 					propObj.type = childNodes[key].value;
 				} else {
 					propObj.cssClass = 'userProperty';
-					if (tsRef.isType(childNodes[key].value)) {
+					if (CompletionResult.tsRef.isType(childNodes[key].value)) {
 						propObj.type = childNodes[key].value;
 					} else {
 						propObj.type = '';
@@ -75,11 +75,11 @@ var CompletionResult = function(tsRef,tsTreeNode) {
 		}
 
 		// then get the tsref properties
-		var props = tsRef.getPropertiesFromTypeId(currentTsTreeNode.getValue());
+		var props = CompletionResult.tsRef.getPropertiesFromTypeId(CompletionResult.tsTreeNode.getValue());
 		for (key in props) {
 			// show just the TSREF properties - no properties of the array-prototype and no properties which have been defined by the user
-			if (props[key].value != null && defined[key]!=true) {
-				propObj = new Object();
+			if (typeof props[key].value !== 'undefined' && defined[key] !== true) {
+				var propObj = {};
 				propObj.word = key;
 				propObj.cssClass = 'undefinedTSREFProperty';
 				propObj.type = props[key].value;
@@ -87,14 +87,21 @@ var CompletionResult = function(tsRef,tsTreeNode) {
 			}
 		}
 
-		var result = [];
-		var wordBeginning = "";
-		for (var i=0; i < propArr.length;i++) {
+		var result = [],
+			wordBeginning = '';
+
+		for (var i = 0; i < propArr.length; i++) {
+			if (filter.length === 0) {
+				result.push(propArr[i]);
+				continue;
+			}
 			wordBeginning = propArr[i].word.substring(0, filter.length);
-			if (filter == "" || filter == null || wordBeginning.toLowerCase() == filter.toLowerCase()) {
+			if (wordBeginning.toLowerCase() === filter.toLowerCase()) {
 				result.push(propArr[i]);
 			}
 		}
 		return result;
-	}
-}
+	};
+
+	return CompletionResult;
+});

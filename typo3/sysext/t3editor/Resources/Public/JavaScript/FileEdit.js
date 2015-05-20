@@ -14,7 +14,7 @@
 /**
  * File edit for ext:t3editor
  */
-define('TYPO3/CMS/T3editor/FileEdit', ['jquery'], function ($) {
+define('TYPO3/CMS/T3editor/FileEdit', ['jquery', 'TYPO3/CMS/T3editor/T3editor'], function ($, T3editor) {
 
 	$(document).ready(function() {
 		$('.t3-icon-document-save, .t3-icon-document-save-close').each(function() {
@@ -29,16 +29,9 @@ define('TYPO3/CMS/T3editor/FileEdit', ['jquery'], function ($) {
 						return false;
 					}
 					if ($(this).children('span').hasClass('t3-icon-document-save')) {
-						if (!T3editor.instances[0].disabled) {
-							T3editor.instances[0].saveFunctionEvent();
-						} else {
-							document.editform.submit();
-						}
+						T3editor.saveFunction(T3editor.instances[0]);
 					} else {
-						if (!T3editor.instances[0].disabled) {
-							T3editor.instances[0].updateTextareaEvent();
-						}
-						document.editform.submit();
+						T3editor.updateTextarea(T3editor.instances[0]);
 					}
 					return false;
 				});

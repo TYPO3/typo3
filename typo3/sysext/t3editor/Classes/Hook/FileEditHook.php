@@ -55,7 +55,6 @@ class FileEditHook {
 		if (!$t3editor->getMode()) {
 			return;
 		}
-		$parameters['content'] = str_replace('<!--###POSTJSMARKER###-->', '<!--###POSTJSMARKER###-->' . $t3editor->getModeSpecificJavascriptCode(), $parameters['content']);
 	}
 
 	/**
