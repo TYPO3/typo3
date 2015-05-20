@@ -282,7 +282,6 @@ class DatabaseConnect extends AbstractStepAction {
 	protected function isConnectSuccessful() {
 		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
 		$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		$databaseConnection->initialize();
 
 		if ($this->isDbalEnabled()) {
 			// Set additional connect information based on dbal driver. postgres for example needs
@@ -298,11 +297,9 @@ class DatabaseConnect extends AbstractStepAction {
 		$databaseConnection->setDatabasePort($this->getConfiguredPort());
 		$databaseConnection->setDatabaseSocket($this->getConfiguredSocket());
 
-		$result = FALSE;
-		if (@$databaseConnection->sql_pconnect()) {
-			$result = TRUE;
-		}
-		return $result;
+		$databaseConnection->initialize();
+
+		return (bool)@$databaseConnection->sql_pconnect();
 	}
 
 	/**

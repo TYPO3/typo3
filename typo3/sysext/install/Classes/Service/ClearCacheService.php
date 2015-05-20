@@ -112,6 +112,7 @@ class ClearCacheService {
 			$database->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['port']);
 			$database->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']);
 			$database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
+			$database->initialize();
 			$database->connectDB();
 		}
 		return $database;
