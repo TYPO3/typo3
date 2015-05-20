@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Core;
 
 /**
  * The interface for a request handler
- * see FrontendRequestHandler
+ * see RequestHandler in EXT:backend/Classes/Http/ and EXT:frontend/Classes/Http
  *
  * @api
  */
@@ -25,18 +25,20 @@ interface RequestHandlerInterface {
 	/**
 	 * Handles a raw request
 	 *
-	 * @return void
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
 	 * @api
 	 */
-	public function handleRequest();
+	public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request);
 
 	/**
-	 * Checks if the request handler can handle the current request.
+	 * Checks if the request handler can handle the given request.
 	 *
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
 	 * @return bool TRUE if it can handle the request, otherwise FALSE
 	 * @api
 	 */
-	public function canHandleRequest();
+	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request);
 
 	/**
 	 * Returns the priority - how eager the handler is to actually handle the
@@ -47,4 +49,5 @@ interface RequestHandlerInterface {
 	 * @api
 	 */
 	public function getPriority();
+
 }

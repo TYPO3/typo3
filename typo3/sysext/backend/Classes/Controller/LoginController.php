@@ -31,7 +31,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Frank Nägler <typo3@naegler.net>
  */
-class LoginController {
+class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * The URL to redirect to after login.
@@ -122,10 +122,26 @@ class LoginController {
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 * This will be split up in an abstract controller once proper routing/dispatcher is in place.
+	 *
+	 * @param \Psr\Http\Message\RequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(\Psr\Http\Message\RequestInterface $request) {
+		$content = $this->main();
+		/** @var \TYPO3\CMS\Core\Http\Response $response */
+		$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+		$response->getBody()->write($content);
+		return $response;
+	}
+
+	/**
 	 * Main function - creating the login/logout form
 	 *
 	 * @throws Exception
-	 * @return void
+	 * @return string The content to output
 	 */
 	public function main() {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
@@ -221,7 +237,7 @@ class LoginController {
 		$content .= $this->view->render();
 		$content .= $this->getDocumentTemplate()->endPage();
 
-		echo $content;
+		return $content;
 	}
 
 	/**

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Http;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Base class for all AJAX-related calls for the TYPO3 Backend run through typo3/ajax.php.
@@ -49,7 +50,7 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 	);
 
 	/**
-	 * Constructor handing over the bootstrap
+	 * Constructor handing over the bootstrap and the original request
 	 *
 	 * @param Bootstrap $bootstrap
 	 */
@@ -60,15 +61,14 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles any AJAX request in the TYPO3 Backend
 	 *
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
 	 */
-	public function handleRequest() {
+	public function handleRequest(ServerRequestInterface $request) {
 		// First get the ajaxID
-		$ajaxID = isset($_POST['ajaxID']) ? $_POST['ajaxID'] : $_GET['ajaxID'];
-		if (isset($ajaxID)) {
-			$ajaxID = (string)stripslashes($ajaxID);
-		}
+		$ajaxID = isset($request->getParsedBody()['ajaxID']) ? $request->getParsedBody()['ajaxID'] : $request->getQueryParams()['ajaxID'];
 
+		// used for backwards-compatibility
 		$GLOBALS['ajaxID'] = $ajaxID;
 		$this->boot($ajaxID);
 
@@ -94,7 +94,8 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 			$success = TRUE;
 			$tokenIsValid = TRUE;
 			if ($csrfTokenCheck) {
-				$tokenIsValid = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken(GeneralUtility::_GP('ajaxToken'), 'ajaxCall', $ajaxID);
+				$ajaxToken = $request->getParsedBody()['ajaxToken'] ?: $request->getQueryParams()['ajaxToken'];
+				$tokenIsValid = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->validateToken($ajaxToken, 'ajaxCall', $ajaxID);
 			}
 			if ($tokenIsValid) {
 				// Cleanup global variable space
@@ -110,14 +111,17 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 
 		// Outputting the content (and setting the X-JSON-Header)
 		$ajaxObj->render();
+
+		return NULL;
 	}
 
 	/**
 	 * This request handler can handle any backend request coming from ajax.php
 	 *
+	 * @param ServerRequestInterface $request
 	 * @return bool If the request is an AJAX backend request, TRUE otherwise FALSE
 	 */
-	public function canHandleRequest() {
+	public function canHandleRequest(ServerRequestInterface $request) {
 		return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX;
 	}
 

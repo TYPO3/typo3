@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Handles the request for backend modules and wizards
@@ -42,7 +43,15 @@ class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandler
 	protected $backendUserAuthentication;
 
 	/**
-	 * @param Bootstrap $bootstrap The TYPO3 core bootstrap
+	 * Instance of the current Http Request
+	 * @var ServerRequestInterface
+	 */
+	protected $request;
+
+	/**
+	 * Constructor handing over the bootstrap and the original request
+	 *
+	 * @param Bootstrap $bootstrap
 	 */
 	public function __construct(Bootstrap $bootstrap) {
 		$this->bootstrap = $bootstrap;
@@ -51,9 +60,12 @@ class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandler
 	/**
 	 * Handles the request, evaluating the configuration and executes the module accordingly
 	 *
+	 * @param ServerRequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
 	 * @throws Exception
 	 */
-	public function handleRequest() {
+	public function handleRequest(ServerRequestInterface $request) {
+		$this->request = $request;
 		$this->boot();
 
 		$this->moduleRegistry = $GLOBALS['TBE_MODULES'];
@@ -67,7 +79,7 @@ class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandler
 
 		$this->backendUserAuthentication = $GLOBALS['BE_USER'];
 
-		$moduleName = (string)GeneralUtility::_GET('M');
+		$moduleName = (string)$this->request->getQueryParams()['M'];
 		if ($this->isDispatchedModule($moduleName)) {
 			$isDispatched = $this->dispatchModule($moduleName);
 		} else {
@@ -107,10 +119,11 @@ class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandler
 	/**
 	 * This request handler can handle any backend request coming from mod.php
 	 *
+	 * @param ServerRequestInterface $request
 	 * @return bool
 	 */
-	public function canHandleRequest() {
-		return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !empty((string)GeneralUtility::_GET('M'));
+	public function canHandleRequest(ServerRequestInterface $request) {
+		return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !empty((string)$request->getQueryParams()['M']);
 	}
 
 	/**
@@ -119,7 +132,7 @@ class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandler
 	 * @return bool
 	 */
 	protected function isValidModuleRequest() {
-		return $this->getFormProtection()->validateToken((string)GeneralUtility::_GP('moduleToken'), 'moduleCall', (string)GeneralUtility::_GET('M'));
+		return $this->getFormProtection()->validateToken((string)$this->request->getQueryParams()['moduleToken'], 'moduleCall', (string)$this->request->getQueryParams()['M']);
 	}
 
 	/**

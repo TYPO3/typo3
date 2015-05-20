@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Http;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests except for CLI
@@ -33,7 +34,7 @@ class RequestHandler implements RequestHandlerInterface {
 	protected $bootstrap;
 
 	/**
-	 * Constructor handing over the bootstrap
+	 * Constructor handing over the bootstrap and the original request
 	 *
 	 * @param Bootstrap $bootstrap
 	 */
@@ -44,9 +45,14 @@ class RequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles any backend request
 	 *
-	 * @return void
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
 	 */
-	public function handleRequest() {
+	public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request) {
+		// enable dispatching via Request/Response logic only for typo3/index.php currently
+		$path = substr($request->getUri()->getPath(), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')));
+		$routingEnabled = ($path === TYPO3_mainDir . 'index.php' || $path === TYPO3_mainDir);
+
 		// Evaluate the constant for skipping the BE user check for the bootstrap
 		if (defined('TYPO3_PROCEED_IF_NO_USER') && TYPO3_PROCEED_IF_NO_USER) {
 			$proceedIfNoUserIsLoggedIn = TRUE;
@@ -68,14 +74,20 @@ class RequestHandler implements RequestHandlerInterface {
 			->endOutputBufferingAndCleanPreviousOutput()
 			->initializeOutputCompression()
 			->sendHttpHeaders();
+
+		if ($routingEnabled) {
+			return $this->dispatch($request);
+		}
+		return NULL;
 	}
 
 	/**
 	 * This request handler can handle any backend request (but not CLI).
 	 *
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
 	 * @return bool If the request is not a CLI script, TRUE otherwise FALSE
 	 */
-	public function canHandleRequest() {
+	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request) {
 		return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI));
 	}
 
@@ -87,5 +99,20 @@ class RequestHandler implements RequestHandlerInterface {
 	 */
 	public function getPriority() {
 		return 50;
+	}
+
+	/**
+	 * Dispatch the request to the appropriate controller, will go to a proper dispatcher/router class in the future
+	 *
+	 * @internal
+	 * @param \Psr\Http\Message\RequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
+	 */
+	protected function dispatch($request) {
+		$controller = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginController::class);
+		if ($controller instanceof \TYPO3\CMS\Core\Http\ControllerInterface) {
+			return $controller->processRequest($request);
+		}
+		return NULL;
 	}
 }

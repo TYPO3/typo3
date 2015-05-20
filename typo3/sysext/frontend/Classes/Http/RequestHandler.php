@@ -58,7 +58,13 @@ class RequestHandler implements RequestHandlerInterface {
 	protected $controller;
 
 	/**
-	 * Constructor handing over the bootstrap
+	 * The request handed over
+	 * @var \Psr\Http\Message\ServerRequestInterface
+	 */
+	protected $request;
+
+	/**
+	 * Constructor handing over the bootstrap and the original request
 	 *
 	 * @param Bootstrap $bootstrap
 	 */
@@ -69,9 +75,12 @@ class RequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles a frontend request
 	 *
-	 * @return void
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
 	 */
-	public function handleRequest() {
+	public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request) {
+		$response = NULL;
+		$this->request = $request;
 		$this->initializeTimeTracker();
 
 		// Hook to preprocess the current request:
@@ -266,7 +275,9 @@ class RequestHandler implements RequestHandlerInterface {
 		}
 
 		if ($sendTSFEContent) {
-			echo $this->controller->content;
+			/** @var \TYPO3\CMS\Core\Http\Response $response */
+			$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+			$response->getBody()->write($this->controller->content);
 		}
 		// Debugging Output
 		if (isset($GLOBALS['error']) && is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debugOutput'))) {
@@ -275,15 +286,17 @@ class RequestHandler implements RequestHandlerInterface {
 		if (TYPO3_DLOG) {
 			GeneralUtility::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
 		}
+		return $response;
 	}
 
 	/**
 	 * This request handler can handle any frontend request.
 	 *
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
 	 * @return bool If the request is not an eID request, TRUE otherwise FALSE
 	 */
-	public function canHandleRequest() {
-		return GeneralUtility::_GP('eID') ? FALSE : TRUE;
+	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request) {
+		return $request->getQueryParams()['eID'] || $request->getParsedBody()['eID'] ? FALSE : TRUE;
 	}
 
 	/**
@@ -319,7 +332,7 @@ class RequestHandler implements RequestHandlerInterface {
 		if (empty($configuredCookieName)) {
 			$configuredCookieName = 'be_typo_user';
 		}
-		if ($_COOKIE[$configuredCookieName]) {
+		if ($this->request->getCookieParams()[$configuredCookieName]) {
 			$this->timeTracker = new TimeTracker();
 		} else {
 			$this->timeTracker = new NullTimeTracker();
@@ -357,4 +370,5 @@ class RequestHandler implements RequestHandlerInterface {
 		// This is a dirty workaround and bypasses the protected access modifier of the controller member.
 		$GLOBALS['TSFE'] = &$this->controller;
 	}
+
 }

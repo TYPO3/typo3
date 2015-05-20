@@ -73,10 +73,17 @@ class Bootstrap {
 	protected $activeErrorHandlerClassName;
 
 	/**
-	 * registered request handlers
+	 * A list of all registered request handlers, see the Application class / entry points for the registration
 	 * @var RequestHandlerInterface[]
 	 */
 	protected $availableRequestHandlers = array();
+
+	/**
+	 * The Response object when using Request/Response logic
+	 * @var \Psr\Http\Message\ResponseInterface
+	 * @see shutdown()
+	 */
+	protected $response;
 
 	/**
 	 * @var bool
@@ -179,19 +186,6 @@ class Bootstrap {
 	}
 
 	/**
-	 * Resolve the request handler that were registered based on the application
-	 * and execute the request
-	 *
-	 * @return Bootstrap
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	public function handleRequest() {
-		$requestHandler = $this->resolveRequestHandler();
-		$requestHandler->handleRequest();
-		return $this;
-	}
-
-	/**
 	 * Run the base setup that checks server environment, determines pathes,
 	 * populates base files and sets common configuration.
 	 *
@@ -265,15 +259,16 @@ class Bootstrap {
 	 * Be sure to always have the constants that are defined in $this->defineTypo3RequestTypes() are set,
 	 * so most RequestHandlers can check if they can handle the request.
 	 *
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
 	 * @return RequestHandlerInterface
 	 * @throws \TYPO3\CMS\Core\Exception
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function resolveRequestHandler() {
+	protected function resolveRequestHandler(\Psr\Http\Message\ServerRequestInterface $request) {
 		$suitableRequestHandlers = array();
 		foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
 			$requestHandler = GeneralUtility::makeInstance($requestHandlerClassName, $this);
-			if ($requestHandler->canHandleRequest()) {
+			if ($requestHandler->canHandleRequest($request)) {
 				$priority = $requestHandler->getPriority();
 				if (isset($suitableRequestHandlers[$priority])) {
 					throw new \TYPO3\CMS\Core\Exception('More than one request handler with the same priority can handle the request, but only one handler may be active at a time!', 1176471352);
@@ -286,6 +281,42 @@ class Bootstrap {
 		}
 		ksort($suitableRequestHandlers);
 		return array_pop($suitableRequestHandlers);
+	}
+
+	/**
+	 * Builds a Request instance from the current process, and then resolves the request
+	 * through the request handlers depending on Frontend, Backend, CLI etc.
+	 *
+	 * @return Bootstrap
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	protected function handleRequest() {
+		// Build the Request object
+		$request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
+
+		// Resolve request handler that were registered based on the Application
+		$requestHandler = $this->resolveRequestHandler($request);
+
+		// Execute the command which returns a Response object or NULL
+		$this->response = $requestHandler->handleRequest($request);
+		return $this;
+	}
+
+	/**
+	 * Outputs content if there is a proper Response object.
+	 *
+	 * @return Bootstrap
+	 */
+	protected function sendResponse() {
+		if ($this->response instanceof \Psr\Http\Message\ResponseInterface) {
+			if (!headers_sent()) {
+				foreach ($this->response->getHeaders() as $name => $values) {
+					header($name . ': ' . implode(', ', $values), FALSE);
+				}
+			}
+			echo $this->response->getBody()->__toString();
+		}
+		return $this;
 	}
 
 	/**
@@ -1140,6 +1171,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function shutdown() {
+		$this->sendResponse();
 		return $this;
 	}
 

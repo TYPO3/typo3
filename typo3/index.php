@@ -19,9 +19,5 @@
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
-	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
-		// currently implemented as a closure as there is no Request/Response implementation or routing in the backend
-		$loginController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginController::class);
-		$loginController->main();
-	});
+	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run();
 });
