@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -211,7 +212,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 *
+	 * Saves the current state of all relevant information to the TYPO3 Core Cache
 	 */
 	protected function saveToPackageCache() {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
@@ -355,7 +356,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 		$packagePaths = $this->scanLegacyExtensions();
 		foreach ($this->packagesBasePaths as $packagesBasePath) {
-			$this->scanPackagesInPath($packagesBasePath, $packagePaths);
+			$packagePaths = $this->scanPackagesInPath($packagesBasePath, $packagePaths);
 		}
 
 		foreach ($packagePaths as $composerManifestPath) {
@@ -368,7 +369,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			try {
-				$composerManifest = self::getComposerManifest($composerManifestPath);
+				$composerManifest = $this->getComposerManifest($composerManifestPath);
 				$packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath, $packagesBasePath);
 				$this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
 				$this->packageStatesConfiguration['packages'][$packageKey]['composerName'] = $composerManifest->name;
@@ -396,6 +397,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Fetches all directories from sysext/global/local locations and checks if the extension contains a ext_emconf.php
+	 *
 	 * @param array $collectedExtensionPaths
 	 * @return array
 	 */
@@ -435,11 +438,11 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool TRUE if a composer.json exists or FALSE if none exists
 	 */
 	protected function hasComposerManifestFile($packagePath) {
-		// If an ext_emconf.php file is found, we don't need to look deeper
-		if (file_exists($packagePath . '/ext_emconf.php')) {
+		// If an ext_emconf.php file is found, we don't need to look further
+		if (file_exists($packagePath . 'ext_emconf.php')) {
 			return FALSE;
 		}
-		if (file_exists($packagePath . '/composer.json')) {
+		if (file_exists($packagePath . 'composer.json')) {
 			return TRUE;
 		}
 		return FALSE;
@@ -496,7 +499,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param PackageInterface $package The Package to be registered
 	 * @param bool $sortAndSave allows for not saving packagestates when used in loops etc.
 	 * @return PackageInterface
-	 * @throws Exception\CorruptPackageException
+	 * @throws Exception\InvalidPackageStateException
+	 * @throws Exception\PackageStatesFileNotWritableException
 	 */
 	public function registerPackage(PackageInterface $package, $sortAndSave = TRUE) {
 		$packageKey = $package->getPackageKey();
@@ -629,7 +633,12 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Deactivates a package and updates the packagestates configuration
+	 *
 	 * @param string $packageKey
+	 * @throws Exception\PackageStatesFileNotWritableException
+	 * @throws Exception\ProtectedPackageKeyException
+	 * @throws Exception\UnknownPackageException
 	 */
 	public function deactivatePackage($packageKey) {
 		$this->sortAvailablePackagesByDependencies();
@@ -687,13 +696,13 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
 		$this->classLoader->addActivePackage($package);
 		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()])) {
-			$loadedExtArrayElement = new \TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement($package);
+			$loadedExtArrayElement = new LoadedExtensionArrayElement($package);
 			$GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()] = $loadedExtArrayElement->toArray();
 		}
 	}
 
 	/**
-	 * removes a package from the file system.
+	 * Removes a package from the file system.
 	 *
 	 * @param string $packageKey
 	 * @throws Exception
@@ -720,7 +729,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$packagePath = $package->getPackagePath();
 		$deletion = GeneralUtility::rmdir($packagePath, TRUE);
 		if ($deletion === FALSE) {
-			throw new Exception('Please check file permissions. The directory "' . $packagePath . '" for package "' . $packageKey . '" could not be removed.', 1301491089, $exception);
+			throw new Exception('Please check file permissions. The directory "' . $packagePath . '" for package "' . $packageKey . '" could not be removed.', 1301491089);
 		}
 	}
 
@@ -800,7 +809,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Saves the current content of $this->packageStatesConfiguration to the
 	 * PackageStates.php file.
 	 *
-	 * @return void
+	 * @throws Exception\PackageStatesFileNotWritableException
 	 */
 	protected function sortAndSavePackageStates() {
 		$this->sortAvailablePackagesByDependencies();
@@ -883,7 +892,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $collectedPackagePaths
 	 * @return array
 	 */
-	protected function scanPackagesInPath($startPath, array &$collectedPackagePaths = array()) {
+	protected function scanPackagesInPath($startPath, array $collectedPackagePaths) {
 		foreach (new \DirectoryIterator($startPath) as $fileInfo) {
 			if (!$fileInfo->isDir()) {
 				continue;
@@ -891,8 +900,9 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			$filename = $fileInfo->getFilename();
 			if ($filename[0] !== '.') {
 				$currentPath = $fileInfo->getPathName();
+				$currentPath = PathUtility::sanitizeTrailingSeparator($currentPath);
 				if ($this->hasComposerManifestFile($currentPath)) {
-					$collectedPackagePaths[$currentPath . '/'] = $currentPath . '/';
+					$collectedPackagePaths[$currentPath] = $currentPath;
 				}
 			}
 		}
@@ -900,34 +910,19 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Returns contents of Composer manifest - or part there of.
+	 * Returns contents of Composer manifest as a stdObject
 	 *
 	 * @param string $manifestPath
-	 * @param string $key Optional. Only return the part of the manifest indexed by 'key'
-	 * @param object $composerManifest Optional. Manifest to use instead of reading it from file
 	 * @return mixed
 	 * @throws Exception\MissingPackageManifestException
 	 * @see json_decode for return values
 	 */
-	static public function getComposerManifest($manifestPath, $key = NULL, $composerManifest = NULL) {
-		if ($composerManifest === NULL) {
-			if (!file_exists($manifestPath . 'composer.json')) {
-				throw new Exception\MissingPackageManifestException('No composer manifest file found at "' . $manifestPath . '/composer.json".', 1349868540);
-			}
-			$json = file_get_contents($manifestPath . 'composer.json');
-			$composerManifest = json_decode($json);
+	public function getComposerManifest($manifestPath) {
+		if (!file_exists($manifestPath . 'composer.json')) {
+			throw new Exception\MissingPackageManifestException('No composer manifest file found at "' . $manifestPath . '/composer.json".', 1349868540);
 		}
-
-		if ($key !== NULL) {
-			if (isset($composerManifest->{$key})) {
-				$value = $composerManifest->{$key};
-			} else {
-				$value = NULL;
-			}
-		} else {
-			$value = $composerManifest;
-		}
-		return $value;
+		$json = file_get_contents($manifestPath . 'composer.json');
+		return json_decode($json);
 	}
 
 	/**

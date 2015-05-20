@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\PathUtility;
-
 /**
  * A Package representing the details of an extension and/or a composer package
  * Adapted from FLOW for TYPO3 CMS
@@ -31,11 +29,6 @@ class Package implements PackageInterface {
 	 * @var array
 	 */
 	protected $classAliases;
-
-	/**
-	 * @var array
-	 */
-	protected $ignoredClassNames = array();
 
 	/**
 	 * If this package is part of factory default, it will be activated
@@ -60,26 +53,14 @@ class Package implements PackageInterface {
 	protected $packageKey;
 
 	/**
-	 * @var string
-	 */
-	protected $manifestPath = '';
-
-	/**
 	 * Full path to this package's main directory
 	 * @var string
 	 */
 	protected $packagePath;
 
 	/**
-	 * Full path to this package's PSR-0 class loader entry point
-	 * @var string
-	 */
-	protected $classesPath;
-
-	/**
 	 * If this package is protected and therefore cannot be deactivated or deleted
 	 * @var bool
-	 * @api
 	 */
 	protected $protected = FALSE;
 
@@ -127,10 +108,9 @@ class Package implements PackageInterface {
 		}
 		$this->packageManager = $packageManager;
 		$this->packageKey = $packageKey;
-		$this->packagePath = PathUtility::sanitizeTrailingSeparator($packagePath);
-		$this->classesPath = PathUtility::sanitizeTrailingSeparator($this->packagePath . self::DIRECTORY_CLASSES);
+		$this->packagePath = $packagePath;
 		try {
-			$this->getComposerManifest();
+			$this->composerManifest = $this->packageManager->getComposerManifest($this->packagePath);
 		} catch (Exception\MissingPackageManifestException $exception) {
 			if (!$this->loadExtensionEmconf()) {
 				throw new Exception\InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
@@ -146,7 +126,7 @@ class Package implements PackageInterface {
 	 * @return void
 	 */
 	protected function loadFlagsFromComposerManifest() {
-		$extraFlags = $this->getComposerManifest('extra');
+		$extraFlags = $this->getValueFromComposerManifest('extra');
 		if ($extraFlags !== NULL && isset($extraFlags->{"typo3/cms"}->{"Package"})) {
 			foreach ($extraFlags->{"typo3/cms"}->{"Package"} as $flagName => $flagValue) {
 				if (property_exists($this, $flagName)) {
@@ -221,22 +201,13 @@ class Package implements PackageInterface {
 	}
 
 	/**
-	 * Returns the full path to the packages Composer manifest
-	 *
-	 * @return string
-	 */
-	public function getManifestPath() {
-		return $this->packagePath . $this->manifestPath;
-	}
-
-	/**
 	 * Returns the full path to this package's Classes directory
 	 *
 	 * @return string Path to this package's Classes directory
 	 * @api
 	 */
 	public function getClassesPath() {
-		return $this->classesPath;
+		return $this->packagePath . self::DIRECTORY_CLASSES;
 	}
 
 	/**
@@ -260,6 +231,7 @@ class Package implements PackageInterface {
 	}
 
 	/**
+	 * Fetches MetaData information from ext_emconf.php, used for resolving dependencies as well
 	 * @return bool
 	 */
 	protected function loadExtensionEmconf() {
@@ -278,7 +250,9 @@ class Package implements PackageInterface {
 	}
 
 	/**
+	 * Fetches information from ext_emconf.php and maps it so it is treated as it would come from composer.json
 	 *
+	 * @return void
 	 */
 	protected function mapExtensionManagerConfigurationToComposerManifest() {
 		if (is_array($this->extensionManagerConfiguration)) {
@@ -329,9 +303,9 @@ class Package implements PackageInterface {
 	public function getPackageMetaData() {
 		if ($this->packageMetaData === NULL) {
 			$this->packageMetaData = new MetaData($this->getPackageKey());
-			$this->packageMetaData->setDescription($this->getComposerManifest('description'));
-			$this->packageMetaData->setVersion($this->getComposerManifest('version'));
-			$requirements = $this->getComposerManifest('require');
+			$this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
+			$this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
+			$requirements = $this->getValueFromComposerManifest('require');
 			if ($requirements !== NULL) {
 				foreach ($requirements as $requirement => $version) {
 					if ($this->packageRequirementIsComposerPackage($requirement) === FALSE) {
@@ -343,7 +317,7 @@ class Package implements PackageInterface {
 					$this->packageMetaData->addConstraint($constraint);
 				}
 			}
-			$suggestions = $this->getComposerManifest('suggest');
+			$suggestions = $this->getValueFromComposerManifest('suggest');
 			if ($suggestions !== NULL) {
 				foreach ($suggestions as $suggestion => $version) {
 					if ($this->packageRequirementIsComposerPackage($suggestion) === FALSE) {
@@ -360,21 +334,23 @@ class Package implements PackageInterface {
 	}
 
 	/**
+	 * Returns an array of packages this package replaces
+	 *
 	 * @return array
 	 */
 	public function getPackageReplacementKeys() {
 		// The cast to array is required since the manifest returns data with type mixed
-		return (array)$this->getComposerManifest('replace') ?: array();
+		return (array)$this->getValueFromComposerManifest('replace') ?: array();
 	}
 
 	/**
-	 * Returns the PHP namespace of classes in this package.
+	 * Returns the PHP namespace of classes in this package, also uses a fallback for extensions without having a "."
+	 * in the package key.
 	 *
 	 * @return string
-	 * @throws Exception\InvalidPackageStateException
 	 */
 	public function getNamespace() {
-		if(!$this->namespace) {
+		if (!$this->namespace) {
 			$packageKey = $this->getPackageKey();
 			if (strpos($packageKey, '.') === FALSE) {
 				// Old school with unknown vendor name
@@ -384,25 +360,6 @@ class Package implements PackageInterface {
 			}
 		}
 		return $this->namespace;
-	}
-
-	/**
-	 * @param array $classFiles
-	 * @return array
-	 */
-	protected function filterClassFiles(array $classFiles) {
-		$classesNotMatchingClassRule = array_filter(array_keys($classFiles), function($className) {
-			return preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\\\x7f-\xff]*$/', $className) !== 1;
-		});
-		foreach ($classesNotMatchingClassRule as $forbiddenClassName) {
-			unset($classFiles[$forbiddenClassName]);
-		}
-		foreach ($this->ignoredClassNames as $ignoredClassName) {
-			if (isset($classFiles[$ignoredClassName])) {
-				unset($classFiles[$ignoredClassName]);
-			}
-		}
-		return $classFiles;
 	}
 
 	/**
@@ -417,12 +374,14 @@ class Package implements PackageInterface {
 	}
 
 	/**
+	 * Fetches class aliases registered via Migrations/Code/ClassAliasMap.php
 	 *
+	 * @return array
 	 */
 	public function getClassAliases() {
 		if (!is_array($this->classAliases)) {
 			try {
-				$extensionClassAliasMapPathAndFilename = $this->getPackagePath() . 'Migrations/Code/ClassAliasMap.php';
+				$extensionClassAliasMapPathAndFilename = $this->packagePath . 'Migrations/Code/ClassAliasMap.php';
 				if (@file_exists($extensionClassAliasMapPathAndFilename)) {
 					$this->classAliases = require $extensionClassAliasMapPathAndFilename;
 				}
@@ -450,65 +409,23 @@ class Package implements PackageInterface {
 	}
 
 	/**
-	 * Returns contents of Composer manifest - or part there of.
+	 * Returns contents of Composer manifest - or part there of if a key is given.
 	 *
 	 * @param string $key Optional. Only return the part of the manifest indexed by 'key'
 	 * @return mixed|NULL
 	 * @see json_decode for return values
 	 */
-	public function getComposerManifest($key = NULL) {
-		if (!isset($this->composerManifest)) {
-			$this->composerManifest = PackageManager::getComposerManifest($this->getManifestPath());
+	public function getValueFromComposerManifest($key = NULL) {
+		if ($key === NULL) {
+			return $this->composerManifest;
 		}
 
-		return PackageManager::getComposerManifest($this->getManifestPath(), $key, $this->composerManifest);
-	}
-
-	/**
-	 * Builds and returns an array of class names => file names of all
-	 * *.php files in the package's Classes directory and its sub-
-	 * directories.
-	 *
-	 * @param string $classesPath Base path acting as the parent directory for potential class files
-	 * @param string $extraNamespaceSegment A PHP class namespace segment which should be inserted like so: \TYPO3\PackageKey\{namespacePrefix\}PathSegment\PathSegment\Filename
-	 * @param string $subDirectory Used internally
-	 * @param int $recursionLevel Used internally
-	 * @return array
-	 * @throws Exception if recursion into directories was too deep or another error occurred
-	 */
-	protected function buildArrayOfClassFiles($classesPath, $extraNamespaceSegment = '', $subDirectory = '', $recursionLevel = 0) {
-		$classFiles = array();
-		$currentPath = $classesPath . $subDirectory;
-		$currentRelativePath = substr($currentPath, strlen($this->packagePath));
-
-		if (!is_dir($currentPath)) {
-			return array();
+		if (isset($this->composerManifest->{$key})) {
+			$value = $this->composerManifest->{$key};
+		} else {
+			$value = NULL;
 		}
-		if ($recursionLevel > 100) {
-			throw new Exception('Recursion too deep.', 1166635495);
-		}
-
-		try {
-			$classesDirectoryIterator = new \DirectoryIterator($currentPath);
-			while ($classesDirectoryIterator->valid()) {
-				$filename = $classesDirectoryIterator->getFilename();
-				if ($filename[0] !== '.') {
-					if (is_dir($currentPath . $filename)) {
-						$classFiles = array_merge($classFiles, $this->buildArrayOfClassFiles($classesPath, $extraNamespaceSegment, $subDirectory . $filename . '/', ($recursionLevel + 1)));
-					} else {
-						if (substr($filename, -4, 4) === '.php') {
-							$className = (str_replace('/', '\\', ($extraNamespaceSegment . substr($currentPath, strlen($classesPath)) . substr($filename, 0, -4))));
-							$classFiles[$className] = $currentRelativePath . $filename;
-						}
-					}
-				}
-				$classesDirectoryIterator->next();
-			}
-
-		} catch (\Exception $exception) {
-			throw new Exception($exception->getMessage(), 1166633721);
-		}
-		return $classFiles;
+		return $value;
 	}
 
 	/**

@@ -108,7 +108,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getClassesPathReturnsPathToClasses() {
 		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		$package = new Package($packageManagerMock, 'core', PATH_typo3 . 'sysext/core/', Package::DIRECTORY_CLASSES);
+		$package = new Package($packageManagerMock, 'core', PATH_typo3 . 'sysext/core/');
 		$packageClassesPath = $package->getClassesPath();
 		$expected = $package->getPackagePath() . Package::DIRECTORY_CLASSES;
 		$this->assertEquals($expected, $packageClassesPath);
