@@ -42,10 +42,11 @@ class ModuleRunner implements ModuleRunnerInterface {
 
 		// Check permissions and exit if the user has no permission for entry
 		$GLOBALS['BE_USER']->modAccess($moduleConfiguration, TRUE);
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id')) {
+		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		if ($id && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)) {
 			// Check page access
 			$permClause = $GLOBALS['BE_USER']->getPagePermsClause(TRUE);
-			$access = is_array(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess((int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'), $permClause));
+			$access = is_array(\TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess((int)$id, $permClause));
 			if (!$access) {
 				throw new \RuntimeException('You don\'t have access to this page', 1289917924);
 			}
