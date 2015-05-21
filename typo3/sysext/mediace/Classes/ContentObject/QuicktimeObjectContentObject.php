@@ -57,7 +57,7 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		$qtObject = 'QTObject' . $replaceElementIdString;
 		// Merge with default parameters
 		$conf['params.'] = array_merge((array)$typeConf['default.']['params.'], (array)$conf['params.']);
-		if (is_array($conf['params.'])) {
+		if (is_array($conf['params.']) && is_array($typeConf['mapping.']['params.'])) {
 			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 			foreach ($conf['params.'] as $key => $value) {
 				$params .= $qtObject . '.addParam("' . $key . '", "' . $value . '");' . LF;

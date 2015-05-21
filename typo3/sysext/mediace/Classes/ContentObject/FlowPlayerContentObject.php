@@ -321,7 +321,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Flowplayer config
 		$flowplayerVideoConfig = array();
 		$flowplayerAudioConfig = array();
-		if (is_array($conf['flashvars.'])) {
+		if (is_array($conf['flashvars.']) && is_array($typeConf['mapping.']['flashvars.'])) {
 			ArrayUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
 		} else {
 			$conf['flashvars.'] = array();
@@ -383,7 +383,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		}
 		$flowplayerAudioJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerAudioConfig));
 		// Assemble param tags (required?)
-		if (is_array($conf['params.'])) {
+		if (is_array($conf['params.']) && is_array($typeConf['mapping.']['params.'])) {
 			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 		}
 		$videoFlashParams = '';
@@ -400,7 +400,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$audioFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerAudioJsonConfig . '\' />' . LF;
 		// Assemble audio/video tag attributes
 		$attributes = '';
-		if (is_array($conf['attributes.'])) {
+		if (is_array($conf['attributes.']) && is_array($typeConf['attributes.']['params.'])) {
 			ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
 		foreach ($this->html5TagAttributes as $attribute) {
