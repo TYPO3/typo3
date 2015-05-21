@@ -307,7 +307,7 @@ class FunctionalTestCaseBootstrapUtility {
 		// Base of final LocalConfiguration is core factory configuration
 		$finalConfigurationArray = require ORIGINAL_ROOT . 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
 
-		$this->mergeRecursiveWithOverrule($finalConfigurationArray, require ORIGINAL_ROOT . 'Build/Configuration/FunctionalTestsConfiguration.php');
+		$this->mergeRecursiveWithOverrule($finalConfigurationArray, require ORIGINAL_ROOT . 'typo3/sysext/core/Build/Configuration/FunctionalTestsConfiguration.php');
 		$this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
 		$finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
 		// Calculate and set new database name

@@ -15,13 +15,13 @@
 >
 	<testsuites>
 		<testsuite name="Core tests">
-			<directory>../typo3/sysext/*/Tests/Unit/</directory>
+			<directory>../../../../typo3/sysext/*/Tests/Unit/</directory>
 		</testsuite>
 		<testsuite name="Core legacy tests">
-			<directory>../typo3/sysext/core/Tests/Legacy/</directory>
+			<directory>../../../../typo3/sysext/core/Tests/Legacy/</directory>
 		</testsuite>
 		<testsuite name="Suite integrity tests">
-			<directory>../typo3/sysext/core/Tests/Integrity/</directory>
+			<directory>../../../../typo3/sysext/core/Tests/Integrity/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

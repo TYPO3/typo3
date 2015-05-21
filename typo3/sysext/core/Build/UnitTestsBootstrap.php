@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Core\Bootstrap;
  *
  *  * Call whole unit test suite, example:
  * - cd /var/www/t3master/foo  # Document root of TYPO3 CMS instance (location of index.php)
- * - bin/phpunit -c Build/UnitTests.xml
+ * - typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
  *
  * Call single test case, example:
  * - cd /var/www/t3master/foo  # Document root of TYPO3 CMS instance (location of index.php)
- * - bin/phpunit \
- *     --bootstrap Build/UnitTestsBootstrap.php \
- *     typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
+ * - typo3conf/ext/phpunit/Composer/vendor/bin/phpunit \
+ *     --bootstrap typo3/sysext/core/Build/UnitTestsBootstrap.php \
+ *     typo3/sysext/core/Tests/Uinit/DataHandling/DataHandlerTest.php
  */
 class UnitTestsBootstrap {
 
@@ -77,7 +77,7 @@ class UnitTestsBootstrap {
 		array_shift($_SERVER['argv']);
 		$flatArguments = implode(' ', $_SERVER['argv']);
 		echo 'Please run the unit tests using the following command:' . chr(10) .
-			sprintf('bin/phpunit %s', $flatArguments) . chr(10) .
+			sprintf('typo3conf/ext/phpunit/Composer/vendor/bin/phpunit %s', $flatArguments) . chr(10) .
 			chr(10);
 
 		exit(1);
