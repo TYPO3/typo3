@@ -17,9 +17,6 @@ namespace TYPO3\CMS\Lowlevel\View;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -37,11 +34,6 @@ class ConfigurationView extends BaseScriptClass {
 	 * @var StandaloneView
 	 */
 	protected $view;
-
-	/**
-	 * @var FlashMessageQueue
-	 */
-	protected $flashMessageQueue;
 
 	/**
 	 * The name of the module
@@ -184,6 +176,7 @@ class ConfigurationView extends BaseScriptClass {
 		if ($update) {
 			$this->getBackendUser()->pushModuleData($this->moduleName, $this->MOD_SETTINGS);
 		}
+		$arrayBrowser->dontLinkVar = TRUE;
 		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']];
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
 		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
@@ -199,62 +192,6 @@ class ConfigurationView extends BaseScriptClass {
 		}
 		$tree = $arrayBrowser->tree($theVar, '', '');
 		$this->view->assign('tree', $tree);
-		// Variable name:
-		if (GeneralUtility::_GP('varname')) {
-			$this->view->assign('varname', TRUE);
-			$line = GeneralUtility::_GP('_') ? GeneralUtility::_GP('_') : GeneralUtility::_GP('varname');
-			// Write the line to extTables.php
-			if (GeneralUtility::_GP('writetoexttables')) {
-				// change value to $GLOBALS
-				$length = strpos($line, '[');
-				$var = substr($line, 0, $length);
-				$changedLine = '$GLOBALS[\'' . substr($line, 1, ($length - 1)) . '\']' . substr($line, $length);
-				// load current extTables.php
-				$extTables = GeneralUtility::getUrl(PATH_typo3conf . TYPO3_extTableDef_script);
-				if ($var === '$TCA') {
-					// check if we are editing the TCA
-					preg_match_all('/\\[\'([^\']+)\'\\]/', $line, $parts);
-				}
-				// insert line in extTables.php
-				$extTables = preg_replace('/<\\?php|\\?>/is', '', $extTables);
-				$extTables = '<?php' . (empty($extTables) ? LF : '') . $extTables . $changedLine . LF . '?>';
-				$success = GeneralUtility::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
-				if ($success) {
-					// show flash message
-					$flashMessage = GeneralUtility::makeInstance(
-						FlashMessage::class,
-						'',
-						sprintf(
-							LocalizationUtility::translate('writeMessage', 'lowlevel'),
-							TYPO3_extTableDef_script,
-							'<br />',
-							'<strong>' . nl2br(htmlspecialchars($changedLine)) . '</strong>'
-						),
-						FlashMessage::OK
-					);
-				} else {
-					// Error: show flash message
-					$flashMessage = GeneralUtility::makeInstance(
-						FlashMessage::class,
-						'',
-						sprintf(LocalizationUtility::translate('writeMessageFailed', 'lowlevel'), TYPO3_extTableDef_script),
-						FlashMessage::ERROR
-					);
-				}
-				$this->getFlashMessageQueue()->enqueue($flashMessage);
-			}
-
-			$this->view->assign('line', trim($line));
-
-			if (TYPO3_extTableDef_script !== '' && ($this->MOD_SETTINGS['function'] === '1' || $this->MOD_SETTINGS['function'] === '4')) {
-				// write only for $TCA and TBE_STYLES if  TYPO3_extTableDef_script is defined
-				$this->view->assign('showSaveButton', TRUE);
-			} else {
-				$this->view->assign('showSaveButton', FALSE);
-			}
-		} else {
-			$this->view->assign('varname', FALSE);
-		}
 
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -303,19 +240,6 @@ class ConfigurationView extends BaseScriptClass {
 	protected function getFuncMenu() {
 		$funcMenu = BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		return $funcMenu;
-	}
-
-	/**
-	 * @return FlashMessageQueue
-	 */
-	protected function getFlashMessageQueue() {
-		if (!$this->flashMessageQueue instanceof FlashMessageQueue) {
-			/** @var $flashMessageService FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-			$this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-		}
-
-		return $this->flashMessageQueue;
 	}
 
 }

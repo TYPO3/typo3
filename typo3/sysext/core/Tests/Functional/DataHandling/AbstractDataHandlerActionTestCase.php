@@ -47,7 +47,6 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 	 */
 	protected $testExtensionsToLoad = array(
 		'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
-		// 'typo3conf/ext/datahandler',
 	);
 
 	/**

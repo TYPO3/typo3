@@ -555,6 +555,7 @@ class Bootstrap {
 		define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
 		define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
 		define('TYPO3_db_host', $GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
+		// Constant TYPO3_extTableDef_script is deprecated since TYPO3 CMS 7 and will be dropped with TYPO3 CMS 8
 		define('TYPO3_extTableDef_script',
 			isset($GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript'])
 			? $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']
@@ -1062,9 +1063,7 @@ class Bootstrap {
 	 * $TBE_MODULES directly, but we can not prohibit
 	 * this without heavily breaking backwards compatibility.
 	 *
-	 * @TODO : We could write a scheduler / reports module or an update checker
-	 * @TODO : It should be defined, which global arrays are ok to be manipulated
-	 *
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return void
 	 */
 	protected function executeExtTablesAdditionalFile() {
@@ -1077,6 +1076,10 @@ class Bootstrap {
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
 		if (file_exists($extTablesFile) && is_file($extTablesFile)) {
+			Utility\GeneralUtility::deprecationLog(
+				'Using typo3conf/' . TYPO3_extTableDef_script . ' is deprecated and will be removed with TYPO3 CMS 8. Please move your TCA overrides'
+				. ' to Configuration/TCA/Overrides of your project specific extension, or slot the signal "tcaIsBeingBuilt" for further processing.'
+			);
 			include $extTablesFile;
 		}
 	}

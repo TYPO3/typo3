@@ -24,27 +24,6 @@
 	</div>
 </div>
 
-<div id="lowlevel-config-var">
-	<f:if condition="{varname}">
-		<div class="form-group">
-			<label for="lowlevel-variable">
-				<f:translate key="variable" />
-			</label>
-			<input id="lowlevel-variable" class="form-control" type="text" name="_" value="{line}" size="120"/>
-			<f:if condition="{showSaveButton}">
-				<f:else>
-					<div class="help-block"><f:translate key="copyPaste" /></div>
-				</f:else>
-			</f:if>
-		</div>
-		<f:if condition="{showSaveButton}">
-			<div class="form-group">
-				<input class="btn btn-default" type="submit" name="writetoexttables" value="{f:translate(key: 'writeValue')}"/>
-			</div>
-		</f:if>
-	</f:if>
-</div>
-
 <div class="nowrap">
 	<f:format.raw>{tree}</f:format.raw>
 </div>

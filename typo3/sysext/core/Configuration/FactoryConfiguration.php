@@ -10,9 +10,6 @@ return array(
 		'explicitADmode' => 'explicitAllow',
 		'loginSecurityLevel' => 'rsa',
 	),
-	'DB' => array(
-		'extTablesDefinitionScript' => 'extTables.php',
-	),
 	'EXT' => array(
 		'extConf' => array(
 			'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',

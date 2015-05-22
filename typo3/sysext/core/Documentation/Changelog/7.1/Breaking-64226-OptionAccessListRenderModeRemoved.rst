@@ -28,7 +28,7 @@ Migration
 =========
 
 Choose between the default value ``checkbox`` (no change required then) or set the following values inside the
-file ``typo3conf/extTables.php`` to the option of your needs.
+``Configuration/TCA/Overrides`` files of your project specific extension to the option of your needs.
 
 .. code-block:: php
 
