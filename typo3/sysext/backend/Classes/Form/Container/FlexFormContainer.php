@@ -38,7 +38,7 @@ class FlexFormContainer extends AbstractContainer {
 
 		$table = $this->globalOptions['table'];
 		$row = $this->globalOptions['databaseRow'];
-		$field = $this->globalOptions['field'];
+		$field = $this->globalOptions['fieldName'];
 		$parameterArray = $this->globalOptions['parameterArray'];
 
 		// Data Structure
