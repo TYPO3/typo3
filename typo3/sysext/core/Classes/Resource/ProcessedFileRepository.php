@@ -14,6 +14,7 @@ use \TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
@@ -195,6 +196,40 @@ class ProcessedFileRepository extends AbstractRepository {
 		return $itemList;
 	}
 
+	/**
+	 * Removes all processed files and also deletes the associated physical files
+	 *
+	 * @param int|NULL $storageUid If not NULL, only the processed files of the given storage are removed
+	 * @return int Number of failed deletions
+	 */
+	public function removeAll($storageUid = NULL) {
+		$res = $this->databaseConnection->exec_SELECTquery('*', $this->table, 'identifier <> \'\'');
+		$logger = $this->getLogger();
+		$errorCount = 0;
+		while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+			if ($storageUid && (int)$storageUid !== (int)$row['storage']) {
+				continue;
+			}
+			try {
+				$file = $this->createDomainObject($row);
+				$file->getStorage()->setEvaluatePermissions(FALSE);
+				$file->delete(TRUE);
+			} catch (\Exception $e) {
+				$logger->error(
+					'Failed to delete file "' . $row['identifier'] . '" in storage uid ' . $row['storage'] . '.',
+					array(
+						'exception' => $e
+					)
+				);
+				++$errorCount;
+			}
+		}
+
+		$this->databaseConnection->exec_TRUNCATEquery($this->table);
+
+		return $errorCount;
+	}
+
 
 	/**
 	 * Removes all array keys which cannot be persisted
@@ -206,4 +241,12 @@ class ProcessedFileRepository extends AbstractRepository {
 	protected function cleanUnavailableColumns(array $data) {
 		return array_intersect_key($data, $this->databaseConnection->admin_get_fields($this->table));
 	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected function getLogger() {
+		return Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
+	}
+
 }

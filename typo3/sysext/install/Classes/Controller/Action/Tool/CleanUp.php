@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Status\ErrorStatus;
+use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Clean up page
@@ -40,6 +43,9 @@ class CleanUp extends Action\AbstractAction {
 		}
 		if (isset($this->postValues['set']['resetBackendUserUc'])) {
 			$this->actionMessages[] = $this->resetBackendUserUc();
+		}
+		if (isset($this->postValues['set']['clearProcessedFiles'])) {
+			$this->actionMessages[] = $this->clearProcessedFiles();
 		}
 
 		$this->view->assign('cleanableTables', $this->getCleanableTableList());
@@ -196,7 +202,7 @@ class CleanUp extends Action\AbstractAction {
 					$ok = FALSE;
 					$fileCounter++;
 					if ($condition) {
-						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($condition)) {
+						if (MathUtility::canBeInterpretedAsInteger($condition)) {
 							if (filesize($absoluteFile) > $condition * 1024) {
 								$ok = TRUE;
 							}
@@ -269,4 +275,31 @@ class CleanUp extends Action\AbstractAction {
 
 		return $data;
 	}
+
+	/**
+	 * Clear processed files
+	 *
+	 * The sys_file_processedfile table is truncated and the physical files of local storages are deleted.
+	 *
+	 * @return \TYPO3\CMS\Install\Status\StatusInterface
+	 */
+	protected function clearProcessedFiles() {
+		// make the DB available
+		$GLOBALS['TYPO3_DB'] = $this->getDatabaseConnection();
+
+		$repository = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+		$failedDeletions = $repository->removeAll();
+		if ($failedDeletions) {
+			/** @var ErrorStatus $message */
+			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\ErrorStatus');
+			$message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/logs/typo3.log)');
+		} else {
+			/** @var OkStatus $message */
+			$message = $this->objectManager->get('TYPO3\\CMS\\Install\\Status\\OkStatus');
+			$message->setTitle('Cleared processed files');
+		}
+
+		return $message;
+	}
+
 }
