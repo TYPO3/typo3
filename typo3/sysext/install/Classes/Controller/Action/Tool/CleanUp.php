@@ -14,8 +14,13 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Status\ErrorStatus;
+use TYPO3\CMS\Install\Status\InfoStatus;
+use TYPO3\CMS\Install\Status\OkStatus;
 
 /**
  * Clean up page
@@ -40,6 +45,9 @@ class CleanUp extends Action\AbstractAction {
 		}
 		if (isset($this->postValues['set']['resetBackendUserUc'])) {
 			$this->actionMessages[] = $this->resetBackendUserUc();
+		}
+		if (isset($this->postValues['set']['clearProcessedFiles'])) {
+			$this->actionMessages[] = $this->clearProcessedFiles();
 		}
 
 		$this->view->assign('cleanableTables', $this->getCleanableTableList());
@@ -126,13 +134,13 @@ class CleanUp extends Action\AbstractAction {
 			}
 		}
 		if (count($clearedTables)) {
-			/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+			/** @var OkStatus $message */
+			$message = $this->objectManager->get(OkStatus::class);
 			$message->setTitle('Cleared tables');
 			$message->setMessage('List of cleared tables: ' . implode(', ', $clearedTables));
 		} else {
-			/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\InfoStatus::class);
+			/** @var InfoStatus $message */
+			$message = $this->objectManager->get(InfoStatus::class);
 			$message->setTitle('No tables selected to clear');
 		}
 		return $message;
@@ -146,8 +154,8 @@ class CleanUp extends Action\AbstractAction {
 	protected function resetBackendUserUc() {
 		$database = $this->getDatabaseConnection();
 		$database->exec_UPDATEquery('be_users', '', array('uc' => ''));
-		/** @var \TYPO3\CMS\Install\Status\OkStatus $message */
-		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+		/** @var OkStatus $message */
+		$message = $this->objectManager->get(OkStatus::class);
 		$message->setTitle('Reset all backend users preferences');
 		return $message;
 	}
@@ -188,7 +196,7 @@ class CleanUp extends Action\AbstractAction {
 					$ok = FALSE;
 					$fileCounter++;
 					if ($condition) {
-						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($condition)) {
+						if (MathUtility::canBeInterpretedAsInteger($condition)) {
 							if (filesize($absoluteFile) > $condition * 1024) {
 								$ok = TRUE;
 							}
@@ -228,7 +236,7 @@ class CleanUp extends Action\AbstractAction {
 		$data['numberOfDeletedFiles'] = $deleteCounter;
 
 		if ($deleteCounter > 0) {
-			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
+			$message = $this->objectManager->get(OkStatus::class);
 			$message->setTitle('Deleted ' . $deleteCounter . ' files from typo3temp/' . $subDirectory . '/');
 			$this->actionMessages[] = $message;
 		}
@@ -260,6 +268,32 @@ class CleanUp extends Action\AbstractAction {
 		$data['numberOfFilesInSelectedDirectory'] = $data['subDirectories'][$data['selectedSubDirectory']]['filesNumber'];
 
 		return $data;
+	}
+
+	/**
+	 * Clear processed files
+	 *
+	 * The sys_file_processedfile table is truncated and the physical files of local storages are deleted.
+	 *
+	 * @return \TYPO3\CMS\Install\Status\StatusInterface
+	 */
+	protected function clearProcessedFiles() {
+		// make the DB available
+		$GLOBALS['TYPO3_DB'] = $this->getDatabaseConnection();
+
+		$repository = GeneralUtility::makeInstance(ProcessedFileRepository::class);
+		$failedDeletions = $repository->removeAll();
+		if ($failedDeletions) {
+			/** @var ErrorStatus $message */
+			$message = $this->objectManager->get(ErrorStatus::class);
+			$message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/logs/typo3.log)');
+		} else {
+			/** @var OkStatus $message */
+			$message = $this->objectManager->get(OkStatus::class);
+			$message->setTitle('Cleared processed files');
+		}
+
+		return $message;
 	}
 
 }
