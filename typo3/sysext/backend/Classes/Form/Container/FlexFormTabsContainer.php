@@ -92,7 +92,7 @@ class FlexFormTabsContainer extends AbstractContainer {
 				'tab',
 				$tabIdString . '-' . $tabCounter,
 			);
-			$options['type'] = 'flexFormElementContainer';
+			$options['renderType'] = 'flexFormElementContainer';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			$childReturn = $nodeFactory->create($options)->render();

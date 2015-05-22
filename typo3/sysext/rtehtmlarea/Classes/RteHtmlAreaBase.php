@@ -306,10 +306,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if (!$rteIsAvailable) {
 			$this->errorLog[] = 'RTE: Browser not supported.';
 		}
-		if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 4000000) {
-			$rteIsAvailable = FALSE;
-			$this->errorLog[] = 'rte: This version of htmlArea RTE cannot run under this version of TYPO3.';
-		}
+
 		return $rteIsAvailable;
 	}
 

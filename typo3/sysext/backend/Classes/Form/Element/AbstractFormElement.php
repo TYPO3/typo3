@@ -435,7 +435,7 @@ abstract class AbstractFormElement extends AbstractNode {
 						),
 						'itemFormElValue' => $PA['itemFormElValue'],
 					);
-					$options['type'] = 'none';
+					$options['renderType'] = 'none';
 					/** @var NodeFactory $nodeFactory */
 					$nodeFactory = $this->globalOptions['nodeFactory'];
 					$noneElementResult = $nodeFactory->create($options)->render();

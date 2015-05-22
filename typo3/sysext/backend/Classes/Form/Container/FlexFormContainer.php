@@ -77,7 +77,7 @@ class FlexFormContainer extends AbstractContainer {
 		$options = $this->globalOptions;
 		$options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
 		$options['flexFormRowData'] = $flexFormRowData;
-		$options['type'] = 'flexFormLanguageContainer';
+		$options['renderType'] = 'flexFormLanguageContainer';
 		/** @var NodeFactory $nodeFactory */
 		$nodeFactory = $this->globalOptions['nodeFactory'];
 		return $nodeFactory->create($options)->render();

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 
@@ -35,8 +34,7 @@ class TextElement extends AbstractFormElement {
 	protected $charactersPerRow = 40;
 
 	/**
-	 * This will render a <textarea> OR RTE area form field,
-	 * possibly with various control/validation features
+	 * This will render a <textarea>
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
@@ -85,7 +83,7 @@ class TextElement extends AbstractFormElement {
 				),
 				'itemFormElValue' => $parameterArray['itemFormElValue'],
 			);
-			$options['type'] = 'none';
+			$options['renderType'] = 'none';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			return $nodeFactory->create($options)->render();
@@ -103,168 +101,102 @@ class TextElement extends AbstractFormElement {
 				);
 			}
 		}
-		// Init RTE vars
-		// Set TRUE, if the RTE is loaded; If not a normal textarea is shown.
-		$rteWasLoaded = FALSE;
-		// Set TRUE, if the RTE would have been loaded if it wasn't for the disable-RTE flag in the bottom of the page...
-		$rteWouldHaveBeenLoaded = FALSE;
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
-		$specialConfiguration = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
+		$specialConfiguration = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 		// Setting up the altItem form field, which is a hidden field containing the value
 		$altItem = '<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 		$html = '';
-		// If RTE is generally enabled (TYPO3_CONF_VARS and user settings)
-		if ($backendUser->isRTE()) {
-			$parameters = BackendUtility::getSpecConfParametersFromArray($specialConfiguration['rte_transform']['parameters']);
-			// If the field is configured for RTE and if any flag-field is not set to disable it.
-			if (isset($specialConfiguration['richtext']) && (!$parameters['flag'] || !$row[$parameters['flag']])) {
-				BackendUtility::fixVersioningPid($table, $row);
-				list($recordPid, $tsConfigPid) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);
-				// If the pid-value is not negative (that is, a pid could NOT be fetched)
-				if ($tsConfigPid >= 0) {
-					$rteSetup = $backendUser->getTSConfig('RTE', BackendUtility::getPagesTSconfig($recordPid));
-					$rteTcaTypeValue = BackendUtility::getTCAtypeValue($table, $row);
-					$rteSetupConfiguration = BackendUtility::RTEsetup($rteSetup['properties'], $table, $fieldName, $rteTcaTypeValue);
-					if (!$rteSetupConfiguration['disabled']) {
-						// Get RTE object, draw form and set flag:
-						$rteObject = BackendUtility::RTEgetObj();
-						$dummyFormEngine = new FormEngine();
-						$rteResult = $rteObject->drawRTE(
-							$dummyFormEngine,
-							$table,
-							$fieldName,
-							$row,
-							$parameterArray,
-							$specialConfiguration,
-							$rteSetupConfiguration,
-							$rteTcaTypeValue,
-							'',
-							$tsConfigPid,
-							$this->globalOptions,
-							$this->initializeResultArray()
-						);
-						// This is a compat layer for "other" RTE's: If the result is not an array, it is the html string,
-						// otherwise it is a structure similar to our casual return array
-						// @todo: This interface needs a full re-definition, RTE should probably be its own type in the
-						// @todo: end, and other RTE implementations could then just override this.
-						if (is_array($rteResult)) {
-							$html = $rteResult['html'];
-							$rteResult['html'] = '';
-							$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $rteResult);
-						} else {
-							$html = $rteResult;
-						}
 
-						// Wizard
-						$html = $this->renderWizards(
-							array($html, $altItem),
-							$config['wizards'],
-							$table,
-							$row,
-							$fieldName,
-							$parameterArray,
-							$parameterArray['itemFormElName'],
-							$specialConfiguration,
-							TRUE
+		// Show message, if no RTE (field can only be edited with RTE!)
+		if ($specialConfiguration['rte_only']) {
+			$html = '<p><em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRTEfound')) . '</em></p>';
+		} else {
+			// validation
+			foreach ($evalList as $func) {
+				if ($func === 'required') {
+					$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
+				} else {
+					// Hint: There is a similar hook for "evaluateFieldValue" in DataHandler
+					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
+					if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
+						$_params = array(
+							'value' => $parameterArray['itemFormElValue']
 						);
-						$rteWasLoaded = TRUE;
+						$parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
 					}
 				}
 			}
-		}
-		// Display ordinary field if RTE was not loaded.
-		if (!$rteWasLoaded) {
-			// Show message, if no RTE (field can only be edited with RTE!)
-			if ($specialConfiguration['rte_only']) {
-				$html = '<p><em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRTEfound')) . '</em></p>';
-			} else {
-				// validation
-				foreach ($evalList as $func) {
-					if ($func === 'required') {
-						$resultArray['requiredFields'][$table . '_' . $row['uid'] . '_' . $fieldName] = $parameterArray['itemFormElName'];
-					} else {
-						// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
-						// and \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_text_Eval()
-						$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
-						if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
-							$_params = array(
-								'value' => $parameterArray['itemFormElValue']
-							);
-							$parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
-						}
-					}
-				}
 
-				// calculate classes
-				$classes = array();
-				$classes[] = 'form-control';
-				$classes[] = 't3js-formengine-textarea';
-				if ($specialConfiguration['fixed-font']) {
-					$classes[] = 'text-monospace';
-				}
-				if ($specialConfiguration['enable-tab']) {
-					$classes[] = 't3js-enable-tab';
-				}
-
-				// calculate styles
-				$styles = array();
-				// add the max-height from the users' preference to it
-				$maximumHeight = (int)$backendUser->uc['resizeTextareas_MaxHeight'];
-				if ($maximumHeight > 0) {
-					$styles[] = 'max-height: ' . $maximumHeight . 'px';
-				}
-
-				// calculate attributes
-				$attributes = array();
-				$attributes['id'] = str_replace('.', '', uniqid('formengine-textarea-', TRUE));
-				$attributes['name'] = $parameterArray['itemFormElName'];
-				if (!empty($styles)) {
-					$attributes['style'] = implode(' ', $styles);
-				}
-				if (!empty($classes)) {
-					$attributes['class'] = implode(' ', $classes);
-				}
-				$attributes['rows'] = $rows;
-				$attributes['wrap'] = $specialConfiguration['nowrap'] ? 'off' : ($config['wrap'] ?: 'virtual');
-				$attributes['onChange'] = implode('', $parameterArray['fieldChangeFunc']);
-				if (isset($config['max']) && (int)$config['max'] > 0) {
-					$attributes['maxlength'] = (int)$config['max'];
-				}
-				$attributeString = '';
-				foreach ($attributes as $attributeName => $attributeValue) {
-					$attributeString .= ' '. $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
-				}
-
-				// Build the textarea
-				$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
-				$placeholderAttribute = '';
-				if (!empty($placeholderValue)) {
-					$placeholderAttribute = ' placeholder="' . htmlspecialchars(trim($languageService->sL($placeholderValue))) . '" ';
-				}
-
-				$html .= '<textarea'
-					. $attributeString
-					. $placeholderAttribute
-					. $parameterArray['onFocus']
-					. '>' . GeneralUtility::formatForTextarea($parameterArray['itemFormElValue']) . '</textarea>';
-
-				// Wrap a wizard around the item?
-				$html = $this->renderWizards(
-					array($html, $altItem),
-					$config['wizards'],
-					$table,
-					$row,
-					$fieldName,
-					$parameterArray,
-					$parameterArray['itemFormElName'],
-					$specialConfiguration,
-					$rteWouldHaveBeenLoaded
-				);
-
-				$maximumWidth = (int)$this->formMaxWidth($cols);
-				$html = '<div class="form-control-wrap"' . ($maximumWidth ? ' style="max-width: ' . $maximumWidth . 'px"' : '') . '>' . $html . '</div>';
+			// calculate classes
+			$classes = array();
+			$classes[] = 'form-control';
+			$classes[] = 't3js-formengine-textarea';
+			if ($specialConfiguration['fixed-font']) {
+				$classes[] = 'text-monospace';
 			}
+			if ($specialConfiguration['enable-tab']) {
+				$classes[] = 't3js-enable-tab';
+			}
+
+			// calculate styles
+			$styles = array();
+			// add the max-height from the users' preference to it
+			$maximumHeight = (int)$backendUser->uc['resizeTextareas_MaxHeight'];
+			if ($maximumHeight > 0) {
+				$styles[] = 'max-height: ' . $maximumHeight . 'px';
+			}
+
+			// calculate attributes
+			$attributes = array();
+			$attributes['id'] = str_replace('.', '', uniqid('formengine-textarea-', TRUE));
+			$attributes['name'] = $parameterArray['itemFormElName'];
+			if (!empty($styles)) {
+				$attributes['style'] = implode(' ', $styles);
+			}
+			if (!empty($classes)) {
+				$attributes['class'] = implode(' ', $classes);
+			}
+			$attributes['rows'] = $rows;
+			$attributes['wrap'] = $specialConfiguration['nowrap'] ? 'off' : ($config['wrap'] ?: 'virtual');
+			$attributes['onChange'] = implode('', $parameterArray['fieldChangeFunc']);
+			if (isset($config['max']) && (int)$config['max'] > 0) {
+				$attributes['maxlength'] = (int)$config['max'];
+			}
+			$attributeString = '';
+			foreach ($attributes as $attributeName => $attributeValue) {
+				$attributeString .= ' '. $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
+			}
+
+			// Build the textarea
+			$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
+			$placeholderAttribute = '';
+			if (!empty($placeholderValue)) {
+				$placeholderAttribute = ' placeholder="' . htmlspecialchars(trim($languageService->sL($placeholderValue))) . '" ';
+			}
+
+			$html .= '<textarea'
+				. $attributeString
+				. $placeholderAttribute
+				. $parameterArray['onFocus']
+				. '>' . GeneralUtility::formatForTextarea($parameterArray['itemFormElValue']) . '</textarea>';
+
+			// Wrap a wizard around the item?
+			$html = $this->renderWizards(
+				array($html, $altItem),
+				$config['wizards'],
+				$table,
+				$row,
+				$fieldName,
+				$parameterArray,
+				$parameterArray['itemFormElName'],
+				$specialConfiguration,
+				FALSE
+			);
+
+			$maximumWidth = (int)$this->formMaxWidth($cols);
+			$html = '<div class="form-control-wrap"' . ($maximumWidth ? ' style="max-width: ' . $maximumWidth . 'px"' : '') . '>' . $html . '</div>';
 		}
+
 		$resultArray['html'] = $html;
 		return $resultArray;
 	}

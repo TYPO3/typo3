@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-if (TYPO3_MODE == 'BE') {
+if (TYPO3_MODE === 'BE') {
 	// Register hooks for tstemplate module
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'][] = \TYPO3\CMS\T3editor\Hook\TypoScriptTemplateInfoHook::class . '->preStartPageHook';
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'][] = \TYPO3\CMS\T3editor\Hook\TypoScriptTemplateInfoHook::class . '->postOutputProcessingHook';
@@ -11,3 +11,9 @@ if (TYPO3_MODE == 'BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'][] = \TYPO3\CMS\T3editor\Hook\FileEditHook::class . '->preOutputProcessingHook';
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'][] = \TYPO3\CMS\T3editor\Hook\FileEditHook::class . '->postOutputProcessingHook';
 }
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1433089350] = array(
+	'nodeName' => 't3editor',
+	'priority' => 40,
+	'class' => \TYPO3\CMS\T3editor\Form\Element\T3editorElement::class,
+);

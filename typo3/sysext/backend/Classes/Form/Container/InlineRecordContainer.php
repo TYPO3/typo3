@@ -217,7 +217,7 @@ class InlineRecordContainer extends AbstractContainer {
 			$domObjectId . '-' . $table . '-' . $row['uid'],
 		);
 		$options['overruleTypesArray'] = $overruleTypesArray;
-		$options['type'] = 'fullRecordContainer';
+		$options['renderType'] = 'fullRecordContainer';
 		/** @var NodeFactory $nodeFactory */
 		$nodeFactory = $this->globalOptions['nodeFactory'];
 		return $nodeFactory->create($options)->render();

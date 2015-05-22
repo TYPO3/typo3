@@ -76,7 +76,7 @@ class ImageManipulationElement extends AbstractFormElement {
 				),
 				'itemFormElValue' => $parameterArray['itemFormElValue'],
 			);
-			$options['type'] = 'none';
+			$options['renderType'] = 'none';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			return $nodeFactory->create($options)->render();

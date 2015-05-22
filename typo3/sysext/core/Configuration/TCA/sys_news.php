@@ -78,12 +78,13 @@ return array(
 						)
 					)
 				)
-			)
+			),
+			'defaultExtras' => 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]',
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => '
-			hidden, title, content;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
-			--div--;LLL:EXT:lang/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime')
-	)
+		'1' => array(
+			'showitem' => 'hidden, title, content, --div--;LLL:EXT:lang/locallang_tca.xlf:sys_news.tabs.access, starttime, endtime',
+		),
+	),
 );

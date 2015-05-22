@@ -78,7 +78,7 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 		$options['flexFormFormPrefix'] = '[data][' . $flexFormSheetNameInRowData . '][' . $flexFormCurrentLanguage . ']';
 		$options['parameterArray'] = $parameterArray;
 
-		$options['type'] = 'flexFormElementContainer';
+		$options['renderType'] = 'flexFormElementContainer';
 		/** @var NodeFactory $nodeFactory */
 		$nodeFactory = $this->globalOptions['nodeFactory'];
 		return $nodeFactory->create($options)->render();

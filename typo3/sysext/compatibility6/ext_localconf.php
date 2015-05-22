@@ -1,6 +1,12 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+// TCA migration if TCA registration still happened in ext_tables.php
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] = array();
+}
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'][] = \TYPO3\CMS\Compatibility6\Hooks\ExtTablesPostProcessing\TcaMigration::class;
+
 if (TYPO3_MODE === 'FE') {
 
 	// Register legacy content objects

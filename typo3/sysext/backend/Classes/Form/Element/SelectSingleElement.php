@@ -53,7 +53,7 @@ class SelectSingleElement extends AbstractFormElement {
 		$this->resultArray = $this->initializeResultArray();
 
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
+		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
 
 		// Creating the label for the "No Matching Value" entry.

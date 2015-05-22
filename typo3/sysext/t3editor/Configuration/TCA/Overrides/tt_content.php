@@ -1,21 +1,18 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// Add the t3editor wizard on the bodytext field of tt_content
-$GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['t3editor'] = array(
-	'enableByTypeConfig' => 1,
-	'type' => 'userFunc',
-	'userFunc' => \TYPO3\CMS\T3editor\FormWizard::class . '->main',
-	'title' => 't3editor',
-	'icon' => 'wizard_table.gif',
-	'module' => array(
-		'name' => 'wizard_table'
-	),
-	'params' => array(
-		'format' => 'html',
-		'style' => 'width:98%; height: 60%;'
-	)
-);
-
-// Activate the t3editor only for type html
-$GLOBALS['TCA']['tt_content']['types']['html']['showitem'] = str_replace('bodytext,', 'bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.html_formlabel;;nowrap:wizards[t3editor],', $GLOBALS['TCA']['tt_content']['types']['html']['showitem']);
+// Activate t3editor for tt_content type HTML if this type exists
+if (is_array($GLOBALS['TCA']['tt_content']['types']['html'])) {
+	if (!is_array($GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides'])) {
+		$GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides'] = array();
+	}
+	if (!is_array($GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext'])) {
+		$GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext'] = array();
+	}
+	$GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap';
+	if (!is_array($GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config'])) {
+		$GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config'] = array();
+	}
+	$GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config']['renderType'] = 't3editor';
+	$GLOBALS['TCA']['tt_content']['types']['html']['columnsOverrides']['bodytext']['config']['format'] = 'html';
+}

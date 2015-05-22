@@ -338,7 +338,7 @@ $GLOBALS['TCA']['tt_content']['types']['mailform'] = array(
 	'showitem' => '
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-		bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.mailform_formlabel;;nowrap:wizards[forms],
+		bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.mailform_formlabel,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
@@ -348,6 +348,18 @@ $GLOBALS['TCA']['tt_content']['types']['mailform'] = array(
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.mailform;mailform,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
 );
+$baseDefaultExtrasOfBodytext = '';
+if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
+	$baseDefaultExtrasOfBodytext = $GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'] . ':';
+}
+if (!is_array($GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides'])) {
+	$GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides'] = array();
+}
+if (!is_array($GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext'])) {
+	$GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext'] = array();
+}
+$GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'nowrap:wizards[forms]';
+
 $GLOBALS['TCA']['tt_content']['palettes']['mailform'] = array(
 	'showitem' => 'pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.mailform, --linebreak--, subheader;LLL:EXT:cms/locallang_ttc.xlf:subheader.ALT.mailform_formlabel',
 	'canNotCollapse' => 1

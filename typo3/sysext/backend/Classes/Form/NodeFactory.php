@@ -20,16 +20,11 @@ use TYPO3\CMS\Backend\Form\Element;
 
 /**
  * Create an element object depending on type.
- *
- * @todo: This is currently just a straight ahead approach. A registry should be added allowing
- * @todo: extensions to overwrite existing implementations and all Element and Container classes
- * @todo: should be created through this factory. The factory itself could be added in the constructor
- * @todo: of AbstractNode to have it always available.
  */
 class NodeFactory {
 
 	/**
-	 * Default registry of node-type to handling class
+	 * Default registry of node name to handling class
 	 *
 	 * @var array
 	 */
@@ -62,54 +57,174 @@ class NodeFactory {
 		'selectTree' => Element\SelectTreeElement::class,
 		'selectSingle' => Element\SelectSingleElement::class,
 		'selectSingleBox' => Element\SelectSingleBoxElement::class,
+		// t3editor is defined with a fallback so extensions can use it even if ext:t3editor is not loaded
+		't3editor' => Element\TextElement::class,
 		'text' => Element\TextElement::class,
 		'unknown' => Element\UnknownElement::class,
 		'user' => Element\UserElement::class,
 	);
 
 	/**
-	 * Set up factory
+	 * Node resolver classes
+	 * Nested array with nodeName as key, (sorted) priority as sub key and class as value
+	 *
+	 * @var array
+	 */
+	protected $nodeResolver = array();
+
+	/**
+	 * Set up factory. Initialize additionally registered nodes.
 	 */
 	public function __construct() {
-		// @todo: Add additional base types and override existing types
+		$this->registerAdditionalNodeTypesFromConfiguration();
+		$this->initializeNodeResolver();
 	}
 
 	/**
-	 * Create an element depending on type
+	 * Create a node depending on type
 	 *
 	 * @param array $globalOptions All information to decide which class should be instantiated and given down to sub nodes
 	 * @return AbstractNode
 	 * @throws Exception
 	 */
 	public function create(array $globalOptions) {
-		if (!is_string($globalOptions['type'])) {
-			throw new Exception('No type definition found', 1431452406);
+		if (empty($globalOptions['renderType'])) {
+			throw new Exception('No renderType definition found', 1431452406);
 		}
-		$type = $globalOptions['type'];
+		$type = $globalOptions['renderType'];
 
 		if ($type === 'select') {
 			$config = $globalOptions['parameterArray']['fieldConf']['config'];
-			$maxitems = (int)$config['maxitems'];
+			$maxItems = (int)$config['maxitems'];
 			if (isset($config['renderMode']) && $config['renderMode'] === 'tree') {
 				$type = 'selectTree';
-			} elseif ($maxitems <= 1) {
+			} elseif ($maxItems <= 1) {
 				$type = 'selectSingle';
 			} elseif (isset($config['renderMode']) && $config['renderMode'] === 'singlebox') {
 				$type = 'selectSingleBox';
 			} elseif (isset($config['renderMode']) && $config['renderMode'] === 'checkbox') {
 				$type = 'selectCheckBox';
 			} else {
+				// @todo: This "catch all" else should be removed to allow registration of own renderTypes for type=select
 				$type = 'selectMultipleSideBySide';
 			}
 		}
 
 		$className = isset($this->nodeTypes[$type]) ? $this->nodeTypes[$type] : $this->nodeTypes['unknown'];
+
+		if (!empty($this->nodeResolver[$type])) {
+			// Resolver with highest priority is called first. If it returns with a new class name,
+			// it will be taken and loop is aborted, otherwise resolver with next lower priority is called.
+			foreach ($this->nodeResolver[$type] as $priority => $resolverClassName) {
+				/** @var NodeResolverInterface $resolver */
+				$resolver = $this->instantiate($resolverClassName);
+				if (!$resolver instanceof NodeResolverInterface) {
+					throw new Exception(
+						'Node resolver for type ' . $type . ' at priority ' . $priority . ' must implement NodeResolverInterface',
+						1433157422
+					);
+				}
+				// Resolver classes do NOT receive the name of the already resolved class. Single
+				// resolvers should not have dependencies to each other or the default implementation,
+				// so they also shouldn't know the output of a different resolving class.
+				// Additionally, the globalOptions array is NOT given by reference here, changing config is a
+				// task of container classes alone and must not be abused here.
+				$newClassName = $resolver->setGlobalOptions($globalOptions)->resolve();
+				if ($newClassName !== NULL) {
+					$className = $newClassName;
+					break;
+				}
+			}
+		}
+
 		/** @var AbstractNode $nodeInstance */
 		$nodeInstance = $this->instantiate($className);
 		if (!$nodeInstance instanceof NodeInterface) {
 			throw new Exception('Node of type ' . get_class($nodeInstance) . ' must implement NodeInterface', 1431872546);
 		}
 		return $nodeInstance->setGlobalOptions($globalOptions);
+	}
+
+	/**
+	 * Add node types from nodeRegistry to $this->nodeTypes.
+	 * This can be used to add new render types or to overwrite existing node types. The registered class must
+	 * implement the NodeInterface and will be called if a node with this renderType is rendered.
+	 *
+	 * @throws Exception if configuration is incomplete or two nodes with identical priorities are registered
+	 */
+	protected function registerAdditionalNodeTypesFromConfiguration() {
+		// List of additional or override nodes
+		$registeredTypeOverrides = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'];
+		// Sanitize input array
+		$registeredPrioritiesForNodeNames = array();
+		foreach ($registeredTypeOverrides as $override) {
+			if (!isset($override['nodeName']) || !isset($override['class']) || !isset($override['priority'])) {
+				throw new Exception(
+					'Key class, nodeName or priority missing for an entry in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'formEngine\'][\'nodeRegistry\']',
+					1432207533
+				);
+			}
+			if ($override['priority'] < 0 || $override['priority'] > 100) {
+				throw new Exception(
+					'Priority of element ' . $override['nodeName'] . ' with class ' . $override['class'] . ' is ' . $override['priority'] . ', but must between 0 and 100',
+					1432223531
+				);
+			}
+			if (isset($registeredPrioritiesForNodeNames[$override['nodeName']][$override['priority']])) {
+				throw new Exception(
+					'Element ' . $override['nodeName'] . ' already has an override registered with priority ' . $override['priority'],
+					1432223893
+				);
+			}
+			$registeredPrioritiesForNodeNames[$override['nodeName']][$override['priority']] = '';
+		}
+		// Add element with highest priority to registry
+		$highestPriority = array();
+		foreach ($registeredTypeOverrides as $override) {
+			if (!isset($highestPriority[$override['nodeName']]) || $override['priority'] > $highestPriority[$override['nodeName']]) {
+				$highestPriority[$override['nodeName']] = $override['priority'];
+				$this->nodeTypes[$override['nodeName']] = $override['class'];
+			}
+		}
+	}
+
+	/**
+	 * Add resolver and add them sorted to a local property.
+	 * This can be used to manipulate the nodeName to class resolution with own code.
+	 *
+	 * @throws Exception if configuration is incomplete or two resolver with identical priorities are registered
+	 */
+	protected function initializeNodeResolver() {
+		// List of node resolver
+		$registeredNodeResolvers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'];
+		$resolversByType = array();
+		foreach ($registeredNodeResolvers as $nodeResolver) {
+			if (!isset($nodeResolver['nodeName']) || !isset($nodeResolver['class']) || !isset($nodeResolver['priority'])) {
+				throw new Exception(
+					'Key class, nodeName or priority missing for an entry in $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'formEngine\'][\'nodeResolver\']',
+					1433155522
+				);
+			}
+			if ($nodeResolver['priority'] < 0 || $nodeResolver['priority'] > 100) {
+				throw new Exception(
+					'Priority of element ' . $nodeResolver['nodeName'] . ' with class ' . $nodeResolver['class'] . ' is ' . $nodeResolver['priority'] . ', but must between 0 and 100',
+					1433155563
+				);
+			}
+			if (isset($resolversByType[$nodeResolver['nodeName']][$nodeResolver['priority']])) {
+				throw new Exception(
+					'Element ' . $nodeResolver['nodeName'] . ' already has a resolver registered with priority ' . $nodeResolver['priority'],
+					1433155705
+				);
+			}
+			$resolversByType[$nodeResolver['nodeName']][$nodeResolver['priority']] = $nodeResolver['class'];
+		}
+		$sortedResolversByType = array();
+		foreach ($resolversByType as $nodeName => $prioritiesAndClasses) {
+			krsort($prioritiesAndClasses);
+			$sortedResolversByType[$nodeName] = $prioritiesAndClasses;
+		}
+		$this->nodeResolver = $sortedResolversByType;
 	}
 
 	/**

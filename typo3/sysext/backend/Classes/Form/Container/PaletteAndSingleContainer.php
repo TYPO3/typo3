@@ -135,9 +135,8 @@ class PaletteAndSingleContainer extends AbstractContainer {
 
 				$options = $this->globalOptions;
 				$options['fieldName'] = $fieldName;
-				$options['fieldExtra'] = $fieldConfiguration['fieldExtra'];
 
-				$options['type'] = 'singleFieldContainer';
+				$options['renderType'] = 'singleFieldContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$childResultArray = $nodeFactory->create($options)->render();
@@ -259,9 +258,8 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				}
 				$options = $this->globalOptions;
 				$options['fieldName'] = $fieldName;
-				$options['fieldExtra'] = $fieldArray['fieldExtra'];
 
-				$options['type'] = 'singleFieldContainer';
+				$options['renderType'] = 'singleFieldContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$singleFieldContentArray = $nodeFactory->create($options)->render();

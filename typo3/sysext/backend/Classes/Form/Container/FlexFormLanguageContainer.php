@@ -99,13 +99,13 @@ class FlexFormLanguageContainer extends AbstractContainer {
 			$options['flexFormCurrentLanguage'] = $flexFormCurrentLanguage;
 			$options['flexFormNoEditDefaultLanguage'] = $flexFormNoEditDefaultLanguage;
 			if (!$hasTabs) {
-				$options['type'] = 'flexFormNoTabsContainer';
+				$options['renderType'] = 'flexFormNoTabsContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$flexFormNoTabsResult = $nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormNoTabsResult);
 			} else {
-				$options['type'] = 'flexFormTabsContainer';
+				$options['renderType'] = 'flexFormTabsContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$flexFormTabsContainerResult = $nodeFactory->create($options)->render();

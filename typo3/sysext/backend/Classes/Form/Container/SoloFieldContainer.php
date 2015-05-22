@@ -68,9 +68,9 @@ class SoloFieldContainer extends AbstractContainer {
 						if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
 							$options = $this->globalOptions;
 							$options['fieldName'] = $fieldName;
-							$options['fieldExtra'] = $fieldConfiguration['fieldExtra'];
+							$options['recordTypeValue'] = $recordTypeValue;
 
-							$options['type'] = 'singleFieldContainer';
+							$options['renderType'] = 'singleFieldContainer';
 							/** @var NodeFactory $nodeFactory */
 							$nodeFactory = $this->globalOptions['nodeFactory'];
 							$resultArray = $nodeFactory->create($options)->render();

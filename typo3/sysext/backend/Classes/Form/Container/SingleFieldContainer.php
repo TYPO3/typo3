@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -56,8 +57,18 @@ class SingleFieldContainer extends AbstractContainer {
 		}
 
 		$parameterArray = array();
-		$parameterArray['extra'] = $this->globalOptions['fieldExtra'];
 		$parameterArray['fieldConf'] = $GLOBALS['TCA'][$table]['columns'][$fieldName];
+
+		// Overlay fieldConf with possible defined columnsOverrides of given record type
+		$recordTypeValue = $this->globalOptions['recordTypeValue'];
+		// Hint: 0 is a valid $recordTypeValue, !empty() does not work here
+		if (trim($recordTypeValue) !== '' && is_array($GLOBALS['TCA'][$table]['types'][$recordTypeValue]['columnsOverrides'][$fieldName])) {
+			// Merge columnsOverrides of this field over existing field configuration
+			ArrayUtility::mergeRecursiveWithOverrule(
+				$parameterArray['fieldConf'],
+				$GLOBALS['TCA'][$table]['types'][$recordTypeValue]['columnsOverrides'][$fieldName]
+			);
+		}
 
 		// A couple of early returns in case the field should not be rendered
 		// Check if this field is configured and editable according to exclude fields and other configuration
@@ -159,7 +170,12 @@ class SingleFieldContainer extends AbstractContainer {
 			$options = $this->globalOptions;
 			$options['parameterArray'] = $parameterArray;
 			$options['elementBaseName'] = $newElementBaseName;
-			$options['type'] = $parameterArray['fieldConf']['config']['type'];
+			if (!empty($parameterArray['fieldConf']['config']['renderType'])) {
+				$options['renderType'] = $parameterArray['fieldConf']['config']['renderType'];
+			} else {
+				// Fallback to type if no renderType is given
+				$options['renderType'] = $parameterArray['fieldConf']['config']['type'];
+			}
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			$resultArray = $nodeFactory->create($options)->render();
@@ -252,7 +268,7 @@ class SingleFieldContainer extends AbstractContainer {
 				$options['table'] = '';
 				$options['parameterArray'] = $parameterArray;
 				$options['parameterArray']['itemFormElValue'] = GeneralUtility::fixed_lgd_cs($placeholder, 30);
-				$options['type'] = 'none';
+				$options['renderType'] = 'none';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$noneElementResult = $nodeFactory->create($options)->render();

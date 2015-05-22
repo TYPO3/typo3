@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
+use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -78,7 +79,7 @@ class FlexFormElementContainer extends AbstractContainer {
 				$options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
 				$options['flexFormSectionType'] = $flexFormFieldName;
 				$options['flexFormSectionTitle'] = $sectionTitle;
-				$options['type'] = 'flexFormSectionContainer';
+				$options['renderType'] = 'flexFormSectionContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$sectionContainerResult = $nodeFactory->create($options)->render();
@@ -98,6 +99,26 @@ class FlexFormElementContainer extends AbstractContainer {
 				if (!$displayConditionResult) {
 					continue;
 				}
+
+				// On-the-fly migration for flex form "TCA"
+				// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
+				$dummyTca = array(
+					'dummyTable' => array(
+						'columns' => array(
+							'dummyField' => $flexFormFieldArray['TCEforms'],
+						),
+					),
+				);
+				$tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
+				$migratedTca = $tcaMigration->migrate($dummyTca);
+				$messages = $tcaMigration->getMessages();
+				if (!empty($messages)) {
+					$context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed'
+						. ' with TYPO3 CMS 8. Merge the following changes into the flex form definition of table ' . $table . ' in field ' . $fieldName . ':';
+					array_unshift($messages, $context);
+					GeneralUtility::deprecationLog(implode(LF, $messages));
+				}
+				$flexFormFieldArray['TCEforms'] = $migratedTca['dummyTable']['columns']['dummyField'];
 
 				// Set up options for single element
 				$fakeParameterArray = array(
@@ -147,7 +168,13 @@ class FlexFormElementContainer extends AbstractContainer {
 				$options = $this->globalOptions;
 				$options['parameterArray'] = $fakeParameterArray;
 				$options['elementBaseName'] = $this->globalOptions['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
-				$options['type'] = $flexFormFieldArray['TCEforms']['config']['type'];
+
+				if (!empty($flexFormFieldArray['TCEforms']['config']['renderType'])) {
+					$options['renderType'] = $flexFormFieldArray['TCEforms']['config']['renderType'];
+				} else {
+					// Fallback to type if no renderType is given
+					$options['renderType'] = $flexFormFieldArray['TCEforms']['config']['type'];
+				}
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$childResult = $nodeFactory->create($options)->render();

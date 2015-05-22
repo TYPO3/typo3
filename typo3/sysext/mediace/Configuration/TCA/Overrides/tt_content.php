@@ -69,14 +69,32 @@ $GLOBALS['TCA']['tt_content']['types']['media'] = array(
 			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
 			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
 		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.behaviour,
-			bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.media_formlabel;;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
+			bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.media_formlabel,
 		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
 );
+$baseDefaultExtrasOfBodytext = '';
+if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
+	$baseDefaultExtrasOfBodytext = $GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'] . ':';
+}
+if (!is_array($GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides'])) {
+	$GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides'] = array();
+}
+if (!is_array($GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext'])) {
+	$GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext'] = array();
+}
+$GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
 
 $GLOBALS['TCA']['tt_content']['palettes']['multimediafiles'] = array(
-	'showitem' => 'multimedia;LLL:EXT:cms/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel;;nowrap',
+	'showitem' => 'multimedia;LLL:EXT:cms/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel',
 	'canNotCollapse' => 1
 );
+if (!is_array($GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides'])) {
+	$GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides'] = array();
+}
+if (!is_array($GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides']['bodytext'])) {
+	$GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides']['bodytext'] = array();
+}
+$GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'nowrap';
 
 
 // Add flexform

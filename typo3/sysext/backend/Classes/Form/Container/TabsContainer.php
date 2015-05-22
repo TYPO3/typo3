@@ -86,7 +86,7 @@ class TabsContainer extends AbstractContainer {
 			foreach ($elements as $element) {
 				$options['fieldsArray'][] = implode(';', $element);
 			}
-			$options['type'] = 'paletteAndSingleContainer';
+			$options['renderType'] = 'paletteAndSingleContainer';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			$childArray = $nodeFactory->create($options)->render();

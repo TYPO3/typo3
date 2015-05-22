@@ -223,7 +223,7 @@ class InlineControlContainer extends AbstractContainer {
 				$options['inlineRelatedRecordConfig'] = $config;
 				$options['inlineData'] = $this->inlineData;
 				$options['inlineStructure'] = $inlineStackProcessor->getStructure();
-				$options['type'] = 'inlineRecordContainer';
+				$options['renderType'] = 'inlineRecordContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
 				$childArray = $nodeFactory->create($options)->render();

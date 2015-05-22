@@ -303,7 +303,7 @@ class FormEngine {
 		}
 
 		$options = $this->getConfigurationOptionsForChildElements();
-		$options['type'] = 'fullRecordContainer';
+		$options['renderType'] = 'fullRecordContainer';
 		$resultArray = $this->nodeFactory->create($options)->render();
 
 		$content = $resultArray['html'];
@@ -345,7 +345,7 @@ class FormEngine {
 
 		$options = $this->getConfigurationOptionsForChildElements();
 		$options['singleFieldToRender'] = $theFieldToReturn;
-		$options['type'] = 'soloFieldContainer';
+		$options['renderType'] = 'soloFieldContainer';
 		$resultArray = $this->nodeFactory->create($options)->render();
 		$html = $resultArray['html'];
 
@@ -383,7 +383,7 @@ class FormEngine {
 
 		$options = $this->getConfigurationOptionsForChildElements();
 		$options['fieldListToRender'] = $list;
-		$options['type'] = 'listOfFieldsContainer';
+		$options['renderType'] = 'listOfFieldsContainer';
 		$resultArray = $this->nodeFactory->create($options)->render();
 		$html = $resultArray['html'];
 
@@ -430,6 +430,7 @@ class FormEngine {
 			'palettesCollapsed' => $this->palettesCollapsed,
 			'table' => $this->table,
 			'databaseRow' => $this->databaseRow,
+			'recordTypeValue' => '',
 			'additionalPreviewLanguages' => $this->additionalPreviewLanguages,
 			'localizationMode' => $this->localizationMode, // @todo: find out the details, Warning, this overlaps with inline behaviour localizationMode
 			'elementBaseName' => '',
@@ -545,7 +546,7 @@ class FormEngine {
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 		$options['isAjaxContext'] = TRUE;
 
-		$options['type'] = 'inlineRecordContainer';
+		$options['renderType'] = 'inlineRecordContainer';
 		$childArray = $this->nodeFactory->create($options)->render();
 
 		if ($childArray === FALSE) {
@@ -677,7 +678,7 @@ class FormEngine {
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 		$options['isAjaxContext'] = TRUE;
 
-		$options['type'] = 'inlineRecordContainer';
+		$options['renderType'] = 'inlineRecordContainer';
 		$childArray = $this->nodeFactory->create($options)->render();
 
 		if ($childArray === FALSE) {
@@ -786,7 +787,7 @@ class FormEngine {
 				$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 				$options['isAjaxContext'] = TRUE;
 
-				$options['type'] = 'inlineRecordContainer';
+				$options['renderType'] = 'inlineRecordContainer';
 				$childArray = $this->nodeFactory->create($options)->render();
 				$html .= $childArray['html'];
 				$childArray['html'] = '';

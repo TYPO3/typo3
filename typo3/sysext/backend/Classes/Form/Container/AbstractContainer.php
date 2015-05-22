@@ -206,20 +206,13 @@ abstract class AbstractContainer extends AbstractNode {
 	 */
 	protected function explodeSingleFieldShowItemConfiguration($field) {
 		$fieldArray = GeneralUtility::trimExplode(';', $field);
-		/**
-		 * @todo: In general, fieldName must always be given, that is why this exception would be useful.
-		 * @todo: But in older versions there was a fifth parameter and settings like ';;;;2-2-2' were used,
-		 * @todo; which is obsolete now. Stuff like that could later be parsed-out on a different level of the
-		 * @todo: system, the exception could then be commented in again.
 		if (empty($fieldArray[0])) {
 			throw new \RuntimeException('Field must not be empty', 1426448465);
 		}
-		 */
 		return array(
-			'fieldName' => $fieldArray[0] ?: '', // This ternary could be removed if above todo is resolved
+			'fieldName' => $fieldArray[0],
 			'fieldLabel' => $fieldArray[1] ?: NULL,
 			'paletteName' => $fieldArray[2] ?: NULL,
-			'fieldExtra' => $fieldArray[3] ?: NULL,
 		);
 	}
 

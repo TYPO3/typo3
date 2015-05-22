@@ -2959,7 +2959,7 @@ class DataHandler {
 										// Calculating/Retrieving some values here:
 										list(, , $recFieldName) = explode(':', $CVrecFID);
 										$theTypeString = BackendUtility::getTCAtypeValue($CVtable, $this->checkValue_currentRecord);
-										$specConf = BackendUtility::getSpecConfParts('', $dsConf['TCEforms']['defaultExtras']);
+										$specConf = BackendUtility::getSpecConfParts($dsConf['TCEforms']['defaultExtras']);
 										// Find, thisConfig:
 										$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($CVtscPID));
 										$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);

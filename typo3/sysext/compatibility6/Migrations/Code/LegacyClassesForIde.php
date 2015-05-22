@@ -5589,11 +5589,6 @@ class tx_rtehtmlarea_pi3 extends \TYPO3\CMS\Rtehtmlarea\Controller\CustomAttribu
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_rtehtmlarea_pi2 extends \TYPO3\CMS\Rtehtmlarea\Controller\FrontendRteController {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tx_rtehtmlarea_SC_select_image extends \TYPO3\CMS\Rtehtmlarea\Controller\SelectImageController {}
 
 /**
@@ -6010,11 +6005,6 @@ class tx_sysaction_task extends \TYPO3\CMS\SysAction\ActionTask {}
  * @deprecated since 6.0, removed since 7.0
  */
 class tx_t3editor_codecompletion extends \TYPO3\CMS\T3editor\CodeCompletion {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_t3editor_tceforms_wizard extends \TYPO3\CMS\T3editor\FormWizard {}
 
 /**
  * @deprecated since 6.0, removed since 7.0

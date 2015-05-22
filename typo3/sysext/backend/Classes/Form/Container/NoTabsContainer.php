@@ -32,7 +32,7 @@ class NoTabsContainer extends AbstractContainer {
 	 */
 	public function render() {
 		$options = $this->globalOptions;
-		$options['type'] = 'paletteAndSingleContainer';
+		$options['renderType'] = 'paletteAndSingleContainer';
 		/** @var NodeFactory $nodeFactory */
 		$nodeFactory = $this->globalOptions['nodeFactory'];
 		$resultArray = $nodeFactory->create($options)->render();

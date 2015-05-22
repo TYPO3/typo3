@@ -99,17 +99,18 @@ class FullRecordContainer extends AbstractContainer {
 		$options['fieldsArray'] = $fieldsArray;
 		// Palettes may contain elements that should be excluded, resolved in PaletteContainer
 		$options['excludeElements'] = $excludeElements;
+		$options['recordTypeValue'] = $recordTypeValue;
 		$options['defaultLanguageData'] = $this->defaultLanguageData;
 		$options['defaultLanguageDataDiff'] = $this->defaultLanguageDataDiff;
 		$options['additionalPreviewLanguageData'] = $this->additionalPreviewLanguageData;
 
 		if ($hasTabs) {
-			$options['type'] = 'tabsContainer';
+			$options['renderType'] = 'tabsContainer';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			$resultArray = $nodeFactory->create($options)->render();
 		} else {
-			$options['type'] = 'noTabsContainer';
+			$options['renderType'] = 'noTabsContainer';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			$resultArray = $nodeFactory->create($options)->render();

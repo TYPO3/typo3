@@ -6,76 +6,76 @@ $tca = array(
 		'type' => 'file:type',
 	),
 	'types' => array(
-		TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => array('showitem' => '
-								fileinfo, title, description, alternative, keywords, caption, download_name,
-
-								--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10;; ,
-									fe_groups,
-
-								--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-									creator, --palette--;;20;;,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40;;'),
-
-		TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array('showitem' => '
-								fileinfo, title, description, alternative, keywords, caption, download_name,
-
-								--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10;; ,
-									fe_groups,
-
-								--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-									creator, --palette--;;20;;,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40;;,
-									language'),
-
-		TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array('showitem' => '
-								fileinfo, title, description, alternative, keywords, caption, download_name,
-
-								--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10;; ,
-									fe_groups,
-
-								--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-									creator, --palette--;;20;;,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40;; ,
-									--palette--;;30;;,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50;;'),
-
-		TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array('showitem' => '
-
-								fileinfo, title, description, alternative, keywords, caption, download_name,
-
-								--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10;; ,
-									fe_groups,
-
-								--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-									duration,
-									creator, --palette--;;20;;, language'),
-
-		TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array('showitem' => '
-								fileinfo, title, description, alternative, keywords, caption, download_name,
-
-								--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10;; ,
-									fe_groups,
-
-								--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-									duration,
-									creator, --palette--;;20;;, language'),
-
-		TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array('showitem' => '
-								fileinfo, title, description, alternative, keywords, caption, download_name,
-
-								--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10;; ,
-									fe_groups,
-
-								--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
-									creator, --palette--;;20;;,
-									--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40;; ,
-									language, --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60;;, pages'),
+		TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => array(
+			'showitem' => '
+				fileinfo, title, description, alternative, keywords, caption, download_name,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
+					fe_groups,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+					creator, --palette--;;20,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40
+			',
+		),
+		TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+			'showitem' => '
+				fileinfo, title, description, alternative, keywords, caption, download_name,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
+					fe_groups,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+					creator, --palette--;;20,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
+					language
+			',
+		),
+		TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+			'showitem' => '
+				fileinfo, title, description, alternative, keywords, caption, download_name,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
+					fe_groups,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+					creator, --palette--;;20,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
+					--palette--;;30,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.metrics;50
+			',
+		),
+		TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+			'showitem' => '
+				fileinfo, title, description, alternative, keywords, caption, download_name,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
+					fe_groups,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+					duration,
+					creator, --palette--;;20, language
+			',
+		),
+		TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+			'showitem' => '
+				fileinfo, title, description, alternative, keywords, caption, download_name,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
+					fe_groups,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+					duration,
+					creator, --palette--;;20, language
+			',
+		),
+		TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+			'showitem' => '
+				fileinfo, title, description, alternative, keywords, caption, download_name,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
+					fe_groups,
+				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
+					creator, --palette--;;20,
+					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.geo_location;40,
+					language, --palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.content_date;60, pages
+			',
+		),
 	),
 	'palettes' => array(
 		'10' => array('showitem' => 'visible, status, ranking', 'canNotCollapse' => '1'),

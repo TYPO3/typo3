@@ -1458,4 +1458,30 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expected, $subject->_call('replaceL10nModeFields', $table, $row));
 	}
 
+	/**
+	 * @test
+	 */
+	public function getSpecConfPartsSplitsDefaultExtras() {
+		$defaultExtras = 'nowrap:wizards[foo|bar]:anotherDefaultExtras:some[other|setting|with|parameters]';
+		$expected = array(
+			'nowrap' => 1,
+			'wizards' => array(
+				'parameters' => array(
+					0 => 'foo',
+					1 => 'bar',
+				),
+			),
+			'anotherDefaultExtras' => 1,
+			'some' => array(
+				'parameters' => array(
+					0 => 'other',
+					1 => 'setting',
+					2 => 'with',
+					3 => 'parameters',
+				),
+			),
+		);
+		$this->assertEquals($expected, BackendUtility::getSpecConfParts($defaultExtras));
+	}
+
 }

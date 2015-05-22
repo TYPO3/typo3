@@ -768,9 +768,16 @@ class BackendUtility {
 			$altFieldList = array();
 			// Traverse fields in types config and parse the configuration into a nice array:
 			foreach ($fieldList as $k => $v) {
-				list($pFieldName, $pAltTitle, $pPalette, $pSpec) = GeneralUtility::trimExplode(';', $v);
-				$defaultExtras = is_array($GLOBALS['TCA'][$table]['columns'][$pFieldName]) ? $GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'] : '';
-				$specConfParts = self::getSpecConfParts($pSpec, $defaultExtras);
+				list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $v);
+				$defaultExtras = '';
+				if (!empty($typesConf['columnsOverrides'][$pFieldName]['config']['defaultExtras'])) {
+					// Use defaultExtras from columnsOverrides if given
+					$defaultExtras = $typesConf['columnsOverrides'][$pFieldName]['config']['defaultExtras'];
+				} elseif (!empty($GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'])) {
+					// Use defaultExtras from columns if given
+					$defaultExtras = $GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'];
+				}
+				$specConfParts = self::getSpecConfParts($defaultExtras);
 				$fieldList[$k] = array(
 					'field' => $pFieldName,
 					'title' => $pAltTitle,
@@ -859,19 +866,24 @@ class BackendUtility {
 	}
 
 	/**
-	 * Parses a part of the field lists in the "types"-section of $GLOBALS['TCA'] arrays, namely the "special configuration" at index 3 (position 4)
+	 * Parses "defaultExtras" of $GLOBALS['TCA'] columns config section to an array.
 	 * Elements are splitted by ":" and within those parts, parameters are splitted by "|".
-	 * Everything is returned in an array and you should rather see it visually than listen to me anymore now...  Check out example in Inside TYPO3
 	 *
-	 * @param string $str Content from the "types" configuration of TCA (the special configuration) - see description of function
-	 * @param string $defaultExtras The ['defaultExtras'] value from field configuration
+	 * See unit tests for details.
+	 *
+	 * @param string $defaultExtrasString "defaultExtras" string from columns config
+	 * @param string $_ @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @return array
 	 */
-	static public function getSpecConfParts($str, $defaultExtras) {
-		// Add defaultExtras:
-		$specConfParts = GeneralUtility::trimExplode(':', $defaultExtras . ':' . $str, TRUE);
+	static public function getSpecConfParts($defaultExtrasString, $_ = '') {
+		if (!empty($_)) {
+			GeneralUtility::deprecationLog('Second parameter of BackendUtility::getSpecConfParts() is deprecated. Will be removed with TYPO3 CMS 8');
+			// Prepend old parameter, can be overwritten by casual defaultExtras string, then.
+			$defaultExtrasString = $_ . ':' . $defaultExtrasString;
+		}
+		$specConfParts = GeneralUtility::trimExplode(':', $defaultExtrasString, TRUE);
 		$reg = array();
-		if (count($specConfParts)) {
+		if (!empty($specConfParts)) {
 			foreach ($specConfParts as $k2 => $v2) {
 				unset($specConfParts[$k2]);
 				if (preg_match('/(.*)\\[(.*)\\]/', $v2, $reg)) {

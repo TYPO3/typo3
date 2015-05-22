@@ -76,7 +76,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 					$options['flexFormContainerCounter'] = $flexFormContainerCounter;
 					$options['flexFormContainerTitle'] = $sectionTitle;
 					$options['flexFormContainerElementCollapsed'] = (bool)$existingSectionContainerData['el']['_TOGGLE'];
-					$options['type'] = 'flexFormContainerContainer';
+					$options['renderType'] = 'flexFormContainerContainer';
 					/** @var NodeFactory $nodeFactory */
 					$nodeFactory = $this->globalOptions['nodeFactory'];
 					$flexFormContainerContainerResult = $nodeFactory->create($options)->render();
@@ -105,7 +105,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 			$options['flexFormContainerCounter'] = $flexFormFieldIdentifierPrefix . '-form';
 			$options['flexFormContainerTitle'] = $sectionTitle;
 			$options['flexFormContainerElementCollapsed'] = FALSE;
-			$options['type'] = 'flexFormContainerContainer';
+			$options['renderType'] = 'flexFormContainerContainer';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			$flexFormContainerContainerTemplateResult = $nodeFactory->create($options)->render();

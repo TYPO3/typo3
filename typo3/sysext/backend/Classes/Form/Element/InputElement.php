@@ -41,7 +41,7 @@ class InputElement extends AbstractFormElement {
 		$isDateField = FALSE;
 
 		$config = $parameterArray['fieldConf']['config'];
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['extra'], $parameterArray['fieldConf']['defaultExtras']);
+		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 		$size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		$classes = array();
@@ -87,7 +87,7 @@ class InputElement extends AbstractFormElement {
 				),
 				'itemFormElValue' => $itemFormElValue,
 			);
-			$options['type'] = 'none';
+			$options['renderType'] = 'none';
 			/** @var NodeFactory $nodeFactory */
 			$nodeFactory = $this->globalOptions['nodeFactory'];
 			return $nodeFactory->create($options)->render();
