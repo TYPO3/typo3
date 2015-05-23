@@ -1454,11 +1454,12 @@ tt_content.' . $key . $prefix . ' {
 
 ' . $content;
 			if ($afterStaticUid) {
-				$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
 				// If 'content (default)' is targeted (static uid 43),
 				// the content is added after typoscript of type contentRendering, eg. css_styled_content, see EXT:frontend/TemplateService for that
 				if ($afterStaticUid == 43 || $afterStaticUid === 'defaultContentRendering') {
 					$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.']['defaultContentRendering'] .= $content;
+				} else {
+					$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type . '.'][$afterStaticUid] .= $content;
 				}
 			} else {
 				$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_' . $type] .= $content;
