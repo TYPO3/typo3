@@ -159,7 +159,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		// Is user logged in?
 		$this->userIsLoggedIn = $this->frontendController->loginUser;
 		// Redirect
-		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect) {
+		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect && !$this->conf['showLogoutFormAfterLogin']) {
 			$redirectUrl = $this->processRedirect();
 			if (count($redirectUrl)) {
 				$this->redirectUrl = $this->conf['redirectFirstMethod'] ? array_shift($redirectUrl) : array_pop($redirectUrl);

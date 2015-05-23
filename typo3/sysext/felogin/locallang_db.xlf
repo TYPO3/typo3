@@ -76,7 +76,7 @@
 				<source>Display Remember Login Option</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.show_logoutFormAfterLogin">
-				<source>Display Logout Form After Successful Login</source>
+				<source>Disable redirect after successful login, but display logout-form</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.groupSelectmode">
 				<source>FE group select mode:</source>
