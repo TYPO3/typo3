@@ -308,7 +308,7 @@ class Package implements PackageInterface {
 					}
 				}
 			}
-			if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
+			if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['suggests'])) {
 				$composerManifest->suggest = new \stdClass();
 				foreach ($extensionManagerConfiguration['constraints']['suggests'] as $suggestedPackageKey => $suggestedPackageVersion) {
 					if (!empty($suggestedPackageKey)) {
