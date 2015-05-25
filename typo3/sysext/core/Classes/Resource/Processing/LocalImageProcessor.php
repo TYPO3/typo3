@@ -57,6 +57,9 @@ class LocalImageProcessor implements ProcessorInterface {
 		if (!$this->canProcessTask($task)) {
 			throw new \InvalidArgumentException('Cannot process task of type "' . $task->getType() . '.' . $task->getName() . '"', 1350570621);
 		}
+		if ($this->checkForExistingTargetFile($task)) {
+			return;
+		}
 		$helper = $this->getHelperByTaskName($task->getName());
 		try {
 			$result = $helper->process($task);
@@ -86,6 +89,44 @@ class LocalImageProcessor implements ProcessorInterface {
 			}
 		} catch (\Exception $e) {
 			$task->setExecuted(FALSE);
+		}
+	}
+
+	/**
+	 * Check if the to be processed target file already exists
+	 * if exist take info from that file and mark task as done
+	 *
+	 * @param TaskInterface $task
+	 * @return bool
+	 */
+	protected function checkForExistingTargetFile(TaskInterface $task) {
+		$processingFolder = $task->getTargetFile()->getStorage()->getProcessingFolder();
+		$storage = $task->getTargetFile()->getStorage();
+		// @todo: make proper use of the FAL API, see https://forge.typo3.org/issues/67126
+		if ($processingFolder->hasFile($task->getTargetFileName()) && $storage->getDriverType() === 'Local') {
+			$processedFileIdentifier = rtrim($processingFolder->getIdentifier(), '/') . '/' . $task->getTargetFileName();
+			$configuration = $storage->getConfiguration();
+			if ($configuration['pathType'] === 'relative') {
+				$absoluteBasePath = PATH_site . $configuration['basePath'];
+			} else {
+				$absoluteBasePath = $configuration['basePath'];
+			}
+			$targetFile = $absoluteBasePath . ltrim($processedFileIdentifier, '/');
+
+			$task->setExecuted(TRUE);
+			$imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($targetFile);
+			$task->getTargetFile()->setName($task->getTargetFileName());
+			$properties = array(
+				'width' => $imageDimensions[0],
+				'height' => $imageDimensions[1],
+				'size' => filesize($targetFile),
+				'checksum' => $task->getConfigurationChecksum()
+			);
+			$task->getTargetFile()->updateProperties($properties);
+
+			return TRUE;
+		} else {
+			return FALSE;
 		}
 	}
 
