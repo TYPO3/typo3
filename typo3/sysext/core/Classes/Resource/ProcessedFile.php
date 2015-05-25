@@ -257,7 +257,7 @@ class ProcessedFile extends AbstractFile {
 	 * @return boolean
 	 */
 	public function isProcessed() {
-		return ($this->isPersisted() && !$this->needsReprocessing()) || $this->updated;
+		return $this->updated || ($this->isPersisted() && !$this->needsReprocessing());
 	}
 
 	/**

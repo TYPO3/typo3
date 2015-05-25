@@ -63,7 +63,7 @@ class LocalImageProcessor implements ProcessorInterface {
 			if ($result === NULL) {
 				$task->setExecuted(TRUE);
 				$task->getTargetFile()->setUsesOriginalFile();
-			} elseif (file_exists($result['filePath'])) {
+			} elseif (!empty($result['filePath']) && file_exists($result['filePath'])) {
 				$task->setExecuted(TRUE);
 				$imageDimensions = $this->getGraphicalFunctionsObject()->getImageDimensions($result['filePath']);
 				$task->getTargetFile()->setName($task->getTargetFileName());
