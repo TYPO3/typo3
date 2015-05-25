@@ -115,7 +115,7 @@ class FileProcessingService {
 			$processor = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor::class);
 			$processor->processTask($task);
 
-			if ($processedFile->isProcessed()) {
+			if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
 				/** @var $processedFileRepository Resource\ProcessedFileRepository */
 				$processedFileRepository = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ProcessedFileRepository::class);
 				$processedFileRepository->add($processedFile);
