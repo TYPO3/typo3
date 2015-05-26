@@ -268,18 +268,12 @@ class PageLayoutController {
 		$this->popView = GeneralUtility::_GP('popView');
 		$this->edit_record = GeneralUtility::_GP('edit_record');
 		$this->new_unique_uid = GeneralUtility::_GP('new_unique_uid');
-		if (!empty(GeneralUtility::_GP('search_field'))) {
-			$this->search_field = GeneralUtility::_GP('search_field');
-			$sessionData['search_field'] = $this->search_field;
-		}
+		$this->search_field = GeneralUtility::_GP('search_field');
 		$this->search_levels = GeneralUtility::_GP('search_levels');
 		$this->showLimit = GeneralUtility::_GP('showLimit');
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		$this->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
-		if (!empty(GeneralUtility::_GP('search')) && empty(GeneralUtility::_GP('search_field'))) {
-			$this->search_field = '';
-			$sessionData['search_field'] = $this->search_field;
-		}
+		$sessionData['search_field'] = $this->search_field;
 		// Store session data
 		$GLOBALS['BE_USER']->setAndSaveSessionData(\TYPO3\CMS\Recordlist\RecordList::class, $sessionData);
 		// Load page info array:

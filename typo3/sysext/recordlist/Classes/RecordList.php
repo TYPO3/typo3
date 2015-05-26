@@ -203,20 +203,14 @@ class RecordList {
 		$this->pointer = GeneralUtility::_GP('pointer');
 		$this->imagemode = GeneralUtility::_GP('imagemode');
 		$this->table = GeneralUtility::_GP('table');
-		if (!empty(GeneralUtility::_GP('search_field'))) {
-			$this->search_field = GeneralUtility::_GP('search_field');
-			$sessionData['search_field'] = $this->search_field;
-		}
+		$this->search_field = GeneralUtility::_GP('search_field');
 		$this->search_levels = (int)GeneralUtility::_GP('search_levels');
 		$this->showLimit = GeneralUtility::_GP('showLimit');
 		$this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		$this->clear_cache = GeneralUtility::_GP('clear_cache');
 		$this->cmd = GeneralUtility::_GP('cmd');
 		$this->cmd_table = GeneralUtility::_GP('cmd_table');
-		if (!empty(GeneralUtility::_GP('search')) && empty(GeneralUtility::_GP('search_field'))) {
-			$this->search_field = '';
-			$sessionData['search_field'] = $this->search_field;
-		}
+		$sessionData['search_field'] = $this->search_field;
 		// Initialize menu
 		$this->menuConfig();
 		// Store session data
