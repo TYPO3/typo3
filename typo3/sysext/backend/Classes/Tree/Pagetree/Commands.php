@@ -345,7 +345,7 @@ class Commands {
 		$subNode->setEditableText($text);
 		$subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);
 		$subNode->setQTip($qtip);
-		if ($record['uid'] !== 0) {
+		if ((int)$record['uid'] !== 0) {
 			$spriteIconCode = IconUtility::getSpriteIconForRecord('pages', $record);
 		} else {
 			$spriteIconCode = IconUtility::getSpriteIcon('apps-pagetree-root');
