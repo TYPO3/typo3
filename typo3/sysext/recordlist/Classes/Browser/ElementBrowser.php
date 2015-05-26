@@ -761,6 +761,7 @@ class ElementBrowser {
 				}
 				return false;
 			}
+			var _hasActionMultipleCode = ' . (!empty($JScodeActionMultiple) ? 'true' : 'false') . ';
 			function insertMultiple(table, uid) {
 				var type = "";
 						' . $JScodeActionMultiple . '

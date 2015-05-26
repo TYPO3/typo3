@@ -49,12 +49,12 @@ BrowseLinks.File = {
 	},
 	insertElementMultiple: function(list) {
 		var uidList = [];
-		list.each(function(index) {
-			if (typeof BrowseLinks.elements[index] !== undefined) {
-				var element = BrowseLinks.elements[index];
+		for (var i = 0, n = list.length; i < n; i++) {
+			if (typeof BrowseLinks.elements[list[i]] !== undefined) {
+				var element = BrowseLinks.elements[list[i]];
 				uidList.push(element.uid);
 			}
-		});
+		}
 		insertMultiple('sys_file', uidList);
 		return true;
 	}
@@ -80,10 +80,17 @@ BrowseLinks.Selector = {
 					selectedItems.push(item.name);
 				}
 			});
-			if (selectedItems.length == 1) {
-				BrowseLinks.File.insertElement(selectedItems[0]);
-			} else {
-				BrowseLinks.File.insertElementMultiple(selectedItems);
+			if (selectedItems.length > 0) {
+				// The variable _hasActionMultipleCode is set in ElementBrowser.php.
+				// This is a workaround to get multiple selection working with
+				// IRRE and groups fields.
+				if (typeof _hasActionMultipleCode !== 'undefined' && _hasActionMultipleCode) {
+					 BrowseLinks.File.insertElementMultiple(selectedItems);
+				} else {
+					for (var i = 0; i < selectedItems.length; i++) {
+						BrowseLinks.File.insertElement(selectedItems[i]);
+					}
+				}
 			}
 			BrowseLinks.focusOpenerAndClose(true);
 		}
