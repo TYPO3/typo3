@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Setup\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
@@ -699,7 +700,9 @@ class SetupModuleController {
 		if ($this->getBackendUser()->isAdmin()) {
 			$this->simUser = (int)GeneralUtility::_GP('simUser');
 			// Make user-selector:
-			$where = 'AND username NOT LIKE "_cli_%" AND uid <> ' . (int)$this->getBackendUser()->user['uid'] . BackendUtility::BEenableFields('be_users');
+			$db = $this->getDatabaseConnection();
+			$where = 'AND username NOT LIKE ' . $db->fullQuoteStr($db->escapeStrForLike('_cli_', 'be_users') . '%', 'be_users');
+			$where .= ' AND uid <> ' . (int)$this->getBackendUser()->user['uid'] . BackendUtility::BEenableFields('be_users');
 			$users = BackendUtility::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', $where);
 			$opt = array();
 			foreach ($users as $rr) {
@@ -834,6 +837,13 @@ class SetupModuleController {
 	 */
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
