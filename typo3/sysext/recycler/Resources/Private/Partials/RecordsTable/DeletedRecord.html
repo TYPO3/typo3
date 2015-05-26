@@ -1,10 +1,11 @@
 <tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}">
-	<td>
+	<td nowrap="nowrap">{record.tableTitle}</td>
+	<td nowrap="nowrap"><f:format.html>{record.icon}</f:format.html> {record.title}</td>
+	<td nowrap="nowrap">{record.tstamp}</td>
+	<td nowrap="nowrap">{record.uid}</td>
+	<td nowrap="nowrap">{record.pageTitle} ({record.pid})</td>
+	<td nowrap="nowrap" class="text-right">
 		<div class="btn-group">
-			<label class="btn btn-default btn-checkbox">
-				<input type="checkbox">
-				<span class="t3-icon fa"></span>
-			</label>
 			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}">
 				<f:be.buttons.icon icon="apps-pagetree-collapse" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}" />
 			</a>
@@ -16,13 +17,12 @@
 					<f:be.buttons.icon icon="actions-edit-delete" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.delete')}" />
 				</a>
 			</f:if>
+			<label class="btn btn-default btn-checkbox">
+				<input type="checkbox">
+				<span class="t3-icon fa"></span>
+			</label>
 		</div>
 	</td>
-	<td>{record.tableTitle}</td>
-	<td><f:format.html>{record.icon}</f:format.html> {record.title}</td>
-	<td>{record.tstamp}</td>
-	<td>{record.uid}</td>
-	<td>{record.pageTitle} ({record.pid})</td>
 </tr>
 <tr class="collapse" id="{record.table}_{record.uid}">
 	<td colspan="6">

@@ -26,7 +26,8 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 			paginator: '#recycler-index nav',
 			reloadAction: 'a[data-action=reload]',
 			massUndo: 'button[data-action=massundo]',
-			massDelete: 'button[data-action=massdelete]'
+			massDelete: 'button[data-action=massdelete]',
+			toggleAll: '.t3js-toggle-all'
 		},
 		elements: {}, // filled in getElements()
 		paging: {
@@ -35,7 +36,8 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 			totalItems: 0,
 			itemsPerPage: 20
 		},
-		markedRecordsForMassAction: []
+		markedRecordsForMassAction: [],
+		allToggled: false
 	};
 
 	/**
@@ -53,7 +55,8 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 			$paginator: $(Recycler.identifiers.paginator),
 			$reloadAction: $(Recycler.identifiers.reloadAction),
 			$massUndo: $(Recycler.identifiers.massUndo),
-			$massDelete: $(Recycler.identifiers.massDelete)
+			$massDelete: $(Recycler.identifiers.massDelete),
+			$toggleAll: $(Recycler.identifiers.toggleAll)
 		};
 	};
 
@@ -170,7 +173,11 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 		});
 
 		// checkboxes in the table
-		Recycler.elements.$recyclerTable.on('click', 'tr input[type=checkbox]', Recycler.handleCheckboxSelects);
+		Recycler.elements.$toggleAll.on('click', function() {
+			Recycler.allToggled = !Recycler.allToggled;
+			$('input[type="checkbox"]').prop('checked', Recycler.allToggled).trigger('change');
+		});
+		Recycler.elements.$recyclerTable.on('change', 'tr input[type=checkbox]', Recycler.handleCheckboxSelects);
 
 		Recycler.elements.$massUndo.on('click', Recycler.undoRecord);
 		Recycler.elements.$massDelete.on('click', Recycler.deleteRecord);

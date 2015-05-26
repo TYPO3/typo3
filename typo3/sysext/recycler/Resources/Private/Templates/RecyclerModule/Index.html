@@ -23,22 +23,22 @@
 			</select>
 			<select name="pages" class="form-control"></select>
 		</form>
-		<div class="table-fit">
-			<table class="table table-hover" id="itemsInRecycler">
-				<thead>
-					<tr>
-						<th><f:translate key="table.header.actions" /></th>
-						<th><f:translate key="table.header.recordtype" /></th>
-						<th><f:translate key="table.header.record" /></th>
-						<th><f:translate key="table.header.tstamp" /></th>
-						<th><f:translate key="table.header.uid" /></th>
-						<th><f:translate key="table.header.pid" /></th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
+		<table class="table table-hover" id="itemsInRecycler">
+			<thead>
+				<tr>
+					<th><f:translate key="table.header.recordtype" /></th>
+					<th><f:translate key="table.header.record" /></th>
+					<th><f:translate key="table.header.tstamp" /></th>
+					<th><f:translate key="table.header.uid" /></th>
+					<th><f:translate key="table.header.pid" /></th>
+					<th class="text-right">
+						<button type="button" class="btn btn-default t3js-toggle-all"><span class="t3-icon fa fa-check-square-o"></span></button>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 		<div class="text-right">
 			<button class="btn btn-success disabled" data-action="massundo"><f:translate key="button.undo" /></button>
 			<f:if condition="{allowDelete}">
