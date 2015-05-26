@@ -10,6 +10,13 @@ button {
 	border-radius: 2px;
 }
 
+input[disabled="disabled"],
+textarea[disabled="disabled"],
+button[disabled="disabled"],
+select[disabled="disabled"] {
+	background-color: #dddddd;
+}
+
 input:focus,
 textarea:focus,
 button:focus {
