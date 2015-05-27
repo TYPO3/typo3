@@ -69,9 +69,6 @@ class TypoScriptTemplateInfoHook {
 	 */
 	public function postOutputProcessingHook($parameters, $pObj) {
 		$t3editor = $this->getT3editor();
-		if (!$t3editor->isEnabled()) {
-			return;
-		}
 		foreach (array('constants', 'config') as $type) {
 			if ($parameters['e'][$type]) {
 				$attributes = 'rows="' . $parameters['numberOfRows'] . '" ' . 'wrap="off" ' . $pObj->pObj->doc->formWidth(48, TRUE, 'width:98%;height:60%');

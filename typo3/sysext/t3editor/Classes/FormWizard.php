@@ -30,9 +30,6 @@ class FormWizard {
 	 */
 	public function main($parameters, $pObj) {
 		$t3editor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\T3editor\T3editor::class);
-		if (!$t3editor->isEnabled()) {
-			return;
-		}
 		if ($parameters['params']['format'] !== '') {
 			$t3editor->setModeByType($parameters['params']['format']);
 		} else {

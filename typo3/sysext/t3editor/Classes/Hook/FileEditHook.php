@@ -53,7 +53,7 @@ class FileEditHook {
 	public function preOutputProcessingHook($parameters, $pObj) {
 		$t3editor = $this->getT3editor();
 		$t3editor->setModeByFile($parameters['target']);
-		if (!$t3editor->isEnabled() || !$t3editor->getMode()) {
+		if (!$t3editor->getMode()) {
 			return;
 		}
 		$parameters['content'] = str_replace('<!--###POSTJSMARKER###-->', '<!--###POSTJSMARKER###-->' . $t3editor->getModeSpecificJavascriptCode(), $parameters['content']);
@@ -70,9 +70,6 @@ class FileEditHook {
 	public function preStartPageHook($parameters, $documentTemplate) {
 		if (GeneralUtility::_GET('M') === 'file_edit') {
 			$t3editor = $this->getT3editor();
-			if (!$t3editor->isEnabled()) {
-				return;
-			}
 			$documentTemplate->JScode .= $t3editor->getJavascriptCode($documentTemplate);
 			$documentTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
 		}
@@ -87,7 +84,7 @@ class FileEditHook {
 	 */
 	public function postOutputProcessingHook($parameters, $pObj) {
 		$t3editor = $this->getT3editor();
-		if (!$t3editor->isEnabled() || !$t3editor->getMode()) {
+		if (!$t3editor->getMode()) {
 			return;
 		}
 		$attributes = 'rows="30" ' . 'wrap="off" ' . $pObj->doc->formWidth(48, TRUE, 'width:98%;height:60%');

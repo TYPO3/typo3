@@ -13,6 +13,7 @@ namespace TYPO3\CMS\T3editor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides a javascript-driven code editor with syntax highlighting for TS, HTML, CSS and more
@@ -47,13 +48,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $editorCounter = 0;
 
 	/**
-	 * Flag to enable the t3editor
-	 *
-	 * @var bool
-	 */
-	protected $_isEnabled = TRUE;
-
-	/**
 	 * sets the type of code to edit (::MODE_TYPOSCRIPT, ::MODE_JAVASCRIPT)
 	 *
 	 * @param $mode	string Expects one of the predefined constants
@@ -82,7 +76,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function setModeByFile($file) {
-		$fileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($file);
+		$fileInfo = GeneralUtility::split_fileref($file);
 		return $this->setModeByType($fileInfo['fileext']);
 	}
 
@@ -142,9 +136,11 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @return bool TRUE if the t3editor is enabled
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function isEnabled() {
-		return $this->_isEnabled;
+		GeneralUtility::logDeprecatedFunction();
+		return TRUE;
 	}
 
 	/**
@@ -164,31 +160,29 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getJavascriptCode($doc) {
 		$content = '';
-		if ($this->isEnabled()) {
-			$path_t3e = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
-			$path_codemirror = 'contrib/codemirror/js/';
-			// Include needed javascript-frameworks
-			$pageRenderer = $doc->getPageRenderer();
-			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-			$pageRenderer->loadPrototype();
-			$pageRenderer->loadScriptaculous();
-			// Include editor-css
-			$content .= '<link href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/css/t3editor.css')) . '" type="text/css" rel="stylesheet" />';
-			// Include editor-js-lib
-			$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
-			$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/T3editor');
+		$path_t3e = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
+		$path_codemirror = 'contrib/codemirror/js/';
+		// Include needed javascript-frameworks
+		$pageRenderer = $doc->getPageRenderer();
+		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer->loadPrototype();
+		$pageRenderer->loadScriptaculous();
+		// Include editor-css
+		$content .= '<link href="' . GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor') . 'res/css/t3editor.css')) . '" type="text/css" rel="stylesheet" />';
+		// Include editor-js-lib
+		$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
+		$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/T3editor');
 
-			$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS(
-				'T3editor = T3editor || {};' .
-				'T3editor.lang = ' . json_encode($GLOBALS['LANG']->getLabelsWithPrefix('js.', 'label_')) . ';' . LF .
-				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . $path_t3e . '"; ' . LF .
-				'T3editor.PATH_codemirror = "' . $GLOBALS['BACK_PATH'] . $path_codemirror . '"; ' . LF .
-				'T3editor.template = ' . $this->getPreparedTemplate() . ';' . LF .
-				'T3editor.ajaxSavetype = "' . $this->ajaxSaveType . '";' . LF
-			);
-			$content .= $this->getModeSpecificJavascriptCode();
-		}
+		$content .= GeneralUtility::wrapJS(
+			'T3editor = T3editor || {};' .
+			'T3editor.lang = ' . json_encode($GLOBALS['LANG']->getLabelsWithPrefix('js.', 'label_')) . ';' . LF .
+			'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . $path_t3e . '"; ' . LF .
+			'T3editor.PATH_codemirror = "' . $GLOBALS['BACK_PATH'] . $path_codemirror . '"; ' . LF .
+			'T3editor.template = ' . $this->getPreparedTemplate() . ';' . LF .
+			'T3editor.ajaxSavetype = "' . $this->ajaxSaveType . '";' . LF
+		);
+		$content .= $this->getModeSpecificJavascriptCode();
 		return $content;
 	}
 
@@ -209,7 +203,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tsparser.js' . '"></script>';
 			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tscodecompletion.js' . '"></script>';
 		}
-		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' . LF . 'T3editor.stylesheet = ' . $this->getStylesheetByMode($this->mode) . ';');
+		$content .= GeneralUtility::wrapJS('T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' . LF . 'T3editor.stylesheet = ' . $this->getStylesheetByMode($this->mode) . ';');
 		return $content;
 	}
 
@@ -219,7 +213,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string The template code, prepared to use in javascript
 	 */
 	protected function getPreparedTemplate() {
-		$T3editor_template = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3editor/res/templates/t3editor.html'));
+		$T3editor_template = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName('EXT:t3editor/res/templates/t3editor.html'));
 		$T3editor_template = addslashes($T3editor_template);
 		$T3editor_template = str_replace(array(CR, LF), array('', '\' + \''), $T3editor_template);
 		return '\'' . $T3editor_template . '\'';
@@ -313,27 +307,19 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getCodeEditor($name, $class = '', $content = '', $additionalParams = '', $alt = '', array $hiddenfields = array()) {
 		$code = '';
-		if ($this->isEnabled()) {
-			$this->editorCounter++;
-			$class .= ' t3editor';
-			$alt = htmlspecialchars($alt);
-			if (!empty($alt)) {
-				$alt = ' alt="' . $alt . '"';
+		$this->editorCounter++;
+		$class .= ' t3editor';
+		$alt = htmlspecialchars($alt);
+		if (!empty($alt)) {
+			$alt = ' alt="' . $alt . '"';
+		}
+		$code .= '<div>' . '<textarea id="t3editor_' . $this->editorCounter . '" ' . 'name="' . $name . '" ' . 'class="' . $class . '" ' . $additionalParams . ' ' . $alt . '>' . htmlspecialchars($content) . '</textarea></div>';
+		$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
+		$code .= '<br /><br />' . '<div class="checkbox"><label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox"><input type="checkbox" class="checkbox t3editor_disableEditor" onclick="T3editor.toggleEditor(this);" name="t3editor_disableEditor" value="true" id="t3editor_disableEditor_' . $this->editorCounter . '_checkbox" ' . $checked . ' />' . $GLOBALS['LANG']->getLL('deactivate') . '</label></div><br /><br />';
+		if (count($hiddenfields)) {
+			foreach ($hiddenfields as $name => $value) {
+				$code .= '<input type="hidden" ' . 'name="' . $name . '" ' . 'value="' . $value . '" />';
 			}
-			$code .= '<div>' . '<textarea id="t3editor_' . $this->editorCounter . '" ' . 'name="' . $name . '" ' . 'class="' . $class . '" ' . $additionalParams . ' ' . $alt . '>' . htmlspecialchars($content) . '</textarea></div>';
-			$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
-			$code .= '<br /><br />' . '<div class="checkbox"><label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox"><input type="checkbox" class="checkbox t3editor_disableEditor" onclick="T3editor.toggleEditor(this);" name="t3editor_disableEditor" value="true" id="t3editor_disableEditor_' . $this->editorCounter . '_checkbox" ' . $checked . ' />' . $GLOBALS['LANG']->getLL('deactivate') . '</label></div><br /><br />';
-			if (count($hiddenfields)) {
-				foreach ($hiddenfields as $name => $value) {
-					$code .= '<input type="hidden" ' . 'name="' . $name . '" ' . 'value="' . $value . '" />';
-				}
-			}
-		} else {
-			// Fallback
-			if (!empty($class)) {
-				$class = 'class="' . $class . '" ';
-			}
-			$code .= '<textarea name="' . $name . '" ' . $class . $additionalParams . '>' . $content . '</textarea>';
 		}
 		return $code;
 	}
@@ -355,7 +341,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 		// cancel if its not an Ajax request
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 			$ajaxObj->setContentFormat('json');
-			$codeType = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('t3editor_savetype');
+			$codeType = GeneralUtility::_GP('t3editor_savetype');
 			$savingsuccess = FALSE;
 			try {
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'])) {
@@ -365,7 +351,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 						'ajaxObj' => &$ajaxObj
 					);
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef) {
-						$savingsuccess = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this) || $savingsuccess;
+						$savingsuccess = GeneralUtility::callUserFunction($_funcRef, $_params, $this) || $savingsuccess;
 					}
 				}
 			} catch (\Exception $e) {
