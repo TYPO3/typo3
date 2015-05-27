@@ -33,6 +33,8 @@ A changelog handles one of these change types:
 
 - Feature: A patch adds new functionality.
 
+- Important: Any other important message.
+
 Casual bug fixes do not need changelog files, but every change that may be of special interest for extension developers
 or documentation writers should receive an entry. The changelog file must be provided as part of the patch that
 introduces the change.
