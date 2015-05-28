@@ -419,7 +419,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 	 * @return integer[] all uids found
 	 */
 	protected function listFieldQuery($fieldName, $queryId) {
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, (int)$queryId, $this->getTableName()) . ((int)$queryId == 0 ? ' OR ' . $fieldName . ' = \'\'' : ''));
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->getTableName(), $GLOBALS['TYPO3_DB']->listQuery($fieldName, (int)$queryId, $this->getTableName()) . ((int)$queryId === 0 ? ' OR CAST(' . $fieldName . ' AS CHAR) = \'\'' : ''));
 		$uidArray = array();
 		foreach ($records as $record) {
 			$uidArray[] = $record['uid'];

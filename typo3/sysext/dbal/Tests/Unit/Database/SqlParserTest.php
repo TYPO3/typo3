@@ -271,6 +271,31 @@ class SqlParserTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see http://forge.typo3.org/issues/67155
+	 */
+	public function canParseCastOperator() {
+		$parseString = 'CAST(parent AS CHAR) != \'\'';
+		$result = $this->subject->parseWhereClause($parseString);
+		$this->assertInternalType('array', $result);
+		$this->assertEmpty($parseString);
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/67155
+	 */
+	public function canCompileCastOperator() {
+		$parseString = 'SELECT * FROM sys_category WHERE CAST(parent AS CHAR) != \'\'';
+		$components = $this->subject->_callRef('parseSELECT', $parseString);
+		$this->assertInternalType('array', $components);
+
+		$result = $this->subject->_callRef('compileSELECT', $components);
+		$expected = 'SELECT * FROM sys_category WHERE CAST(parent AS CHAR) != \'\'';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/22695
 	 */
 	public function canParseAlterEngineStatement() {
