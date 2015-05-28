@@ -22,6 +22,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PostgresSpecifics extends AbstractSpecifics {
 	/**
+	 * Contains the specifics that need to be taken care of for PostgreSQL DBMS.
+	 *
+	 * @var array
+	 */
+	protected $specificProperties = array(
+		self::CAST_FIND_IN_SET => TRUE
+	);
+
+	/**
 	 * Contains the DBMS specific mapping overrides for native MySQL to ADOdb meta field types
 	 */
 	protected $nativeToMetaFieldTypeOverrides = array(

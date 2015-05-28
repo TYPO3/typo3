@@ -237,7 +237,7 @@ class SqlParser {
 				// Get field/value pairs:
 				while ($comma) {
 					if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]*=')) {
-						// Strip of "=" sign.
+						// Strip off "=" sign.
 						$this->nextPart($parseString, '^(=)');
 						$value = $this->getValue($parseString);
 						$result['FIELDS'][$fieldName] = $value;
@@ -739,7 +739,7 @@ class SqlParser {
 					// Looking for a known function (only known functions supported)
 					$func = $this->nextPart($parseString, '^(count|max|min|floor|sum|avg)[[:space:]]*\\(');
 					if ($func) {
-						// Strip of "("
+						// Strip off "("
 						$parseString = trim(substr($parseString, 1));
 						$stack[$pnt]['type'] = 'function';
 						$stack[$pnt]['function'] = $func;
@@ -1037,7 +1037,7 @@ class SqlParser {
 				// See if condition is EXISTS with a subquery
 				if (preg_match('/^EXISTS[[:space:]]*[(]/i', $parseString)) {
 					$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(EXISTS)[[:space:]]*');
-					// Strip of "("
+					// Strip off "("
 					$parseString = trim(substr($parseString, 1));
 					$stack[$level][$pnt[$level]]['func']['subquery'] = $this->parseSELECT($parseString, $parameterReferences);
 					// Seek to new position in parseString after parsing of the subquery
@@ -1050,7 +1050,7 @@ class SqlParser {
 					// See if LOCATE function is found
 					if (preg_match('/^LOCATE[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(LOCATE)[[:space:]]*');
-						// Strip of "("
+						// Strip off "("
 						$parseString = trim(substr($parseString, 1));
 						$stack[$level][$pnt[$level]]['func']['substr'] = $this->getValue($parseString);
 						if (!$this->nextPart($parseString, '^(,)')) {
@@ -1078,7 +1078,7 @@ class SqlParser {
 					} elseif (preg_match('/^IFNULL[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(IFNULL)[[:space:]]*');
 						$parseString = trim(substr($parseString, 1));
-						// Strip of "("
+						// Strip off "("
 						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\\*._]+)[[:space:]]*')) {
 							// Parse field name into field and table:
 							$tableField = explode('.', $fieldName, 2);
@@ -1098,9 +1098,32 @@ class SqlParser {
 						if (!$this->nextPart($parseString, '^([)])')) {
 							return $this->parseError('No ) parenthesis at end of function', $parseString);
 						}
+					} elseif (preg_match('/^CAST[[:space:]]*[(]/i', $parseString)) {
+						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(CAST)[[:space:]]*');
+						$parseString = trim(substr($parseString, 1));
+						// Strip off "("
+						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\\*._]+)[[:space:]]*')) {
+							// Parse field name into field and table:
+							$tableField = explode('.', $fieldName, 2);
+							if (count($tableField) === 2) {
+								$stack[$level][$pnt[$level]]['func']['table'] = $tableField[0];
+								$stack[$level][$pnt[$level]]['func']['field'] = $tableField[1];
+							} else {
+								$stack[$level][$pnt[$level]]['func']['table'] = '';
+								$stack[$level][$pnt[$level]]['func']['field'] = $tableField[0];
+							}
+						} else {
+							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
+						}
+						if ($this->nextPart($parseString, '^([[:space:]]*AS[[:space:]]*)')) {
+							$stack[$level][$pnt[$level]]['func']['datatype'] = $this->getValue($parseString);
+						}
+						if (!$this->nextPart($parseString, '^([)])')) {
+							return $this->parseError('No ) parenthesis at end of function', $parseString);
+						}
 					} elseif (preg_match('/^FIND_IN_SET[[:space:]]*[(]/i', $parseString)) {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(FIND_IN_SET)[[:space:]]*');
-						// Strip of "("
+						// Strip off "("
 						$parseString = trim(substr($parseString, 1));
 						if ($str = $this->getValue($parseString)) {
 							$stack[$level][$pnt[$level]]['func']['str'] = $str;
@@ -1916,6 +1939,11 @@ class SqlParser {
 						$output .= ' ' . trim($v['modifier']) . ' IFNULL(';
 						$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
+						$output .= ')';
+					} elseif (isset($v['func']) && $v['func']['type'] === 'CAST') {
+						$output .= ' ' . trim($v['modifier']) . ' CAST(';
+						$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+						$output .= ' AS ' . $v['func']['datatype'][0];
 						$output .= ')';
 					} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
 						$output .= ' ' . trim($v['modifier']) . ' FIND_IN_SET(';

@@ -26,6 +26,7 @@ abstract class AbstractSpecifics {
 	const FIELD_MAXLENGTH = 'field_maxlength';
 	const LIST_MAXEXPRESSIONS = 'list_maxexpressions';
 	const PARTIAL_STRING_INDEX = 'partial_string_index';
+	const CAST_FIND_IN_SET = 'cast_find_in_set';
 
 	/**
 	 * Contains the specifics of a DBMS.

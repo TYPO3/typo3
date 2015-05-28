@@ -98,6 +98,21 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'field' => 'fe_group'
 				),
 				'comparator' => ''
+			),
+			5 => array(
+				'operator' => 'OR',
+				'modifier' => '',
+				'func' => array(
+					'type' => 'CAST',
+					'table' => 'pages',
+					'field' => 'fe_group',
+					'datatype' => 'CHAR'
+				),
+				'comparator' => '=',
+				'value' => array(
+					0 => '',
+					1 => '\''
+				)
 			)
 		);
 		$output = $this->subject->compileWhereClause($clauses);

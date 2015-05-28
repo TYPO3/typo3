@@ -90,7 +90,7 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase {
 	 */
 	public function findInSetIsProperlyRemapped() {
 		$result = $this->subject->SELECTquery('*', 'fe_users', 'FIND_IN_SET(10, usergroup)');
-		$expected = 'SELECT * FROM "fe_users" WHERE FIND_IN_SET(10, "usergroup") != 0';
+		$expected = 'SELECT * FROM "fe_users" WHERE FIND_IN_SET(10, CAST("usergroup" AS CHAR)) != 0';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
