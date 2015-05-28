@@ -1018,7 +1018,66 @@ return array(
 				'suppress_icons' => 1,
 				'itemsProcFunc' => \TYPO3\CMS\Core\Category\CategoryRegistry::class . '->getCategoryFieldsForTable',
 			)
-		)
+		),
+		'table_caption' => array(
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_caption',
+			'config' => array(
+				'type' => 'input'
+			)
+		),
+		'table_delimiter' => array(
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.124', 124),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.59', 59),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.44', 44),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.58', 58),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.9', 9)
+				),
+				'default' => 124
+			)
+		),
+		'table_enclosure' => array(
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure.0', 0),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure.39', 39),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure.34', 34)
+				),
+				'default' => 0
+			)
+		),
+		'table_header_position' => array(
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position.0', 0),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position.1', 1),
+					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position.2', 2)
+				),
+				'default' => 0
+			)
+		),
+		'table_tfoot' => array(
+			'exclude' => TRUE,
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_tfoot',
+			'config' => array(
+				'type' => 'check',
+				'default' => 0,
+				'items' => array(
+					array('LLL:EXT:lang/locallang_core.xml:labels.enabled', 1)
+				)
+			)
+		),
 	),
 	'types' => array(
 		'1' => array(
@@ -1052,7 +1111,24 @@ return array(
 				'20' => 'layout',
 				'21' => 'layout'
 			)
-		)
+		),
+		'table' => array(
+			'showitem' => '
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
+					bodytext;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:field.table.bodytext;tableconfiguration;nowrap:wizards[table],
+					table_caption,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
+					layout;LLL:EXT:cms/locallang_ttc.xlf:layout_formlabel,
+					behaviour,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.table_layout;tablelayout,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:palette.appearanceLinks;appearanceLinks,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
+					hidden;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:field.default.hidden,
+					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended
+			'
+		),
 	),
 	'palettes' => array(
 		'general' => array(
@@ -1126,6 +1202,12 @@ return array(
 		),
 		'uploadslayout' => array(
 			'showitem' => 'filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel',
+		),
+		'tableconfiguration' => array(
+			'showitem' => 'table_delimiter,table_enclosure'
+		),
+		'tablelayout' => array(
+			'showitem' => 'cols,table_header_position,table_tfoot'
 		)
 	)
 );

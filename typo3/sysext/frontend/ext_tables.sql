@@ -296,6 +296,11 @@ CREATE TABLE tt_content (
 	l18n_diffsource mediumblob,
 	selected_categories text,
 	category_field varchar(64) DEFAULT '' NOT NULL,
+	table_caption varchar(255) DEFAULT NULL,
+	table_delimiter smallint(6) unsigned DEFAULT '0' NOT NULL,
+	table_enclosure smallint(6) unsigned DEFAULT '0' NOT NULL,
+	table_header_position tinyint(3) unsigned DEFAULT '0' NOT NULL,
+	table_tfoot tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),

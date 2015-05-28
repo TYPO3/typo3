@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1427832976" source-language="en" datatype="plaintext" original="messages" date="2014-02-07T20:22:32Z" product-name="frontend">
+		<header/>
+		<body>
+			<trans-unit id="tt_content.table_caption">
+				<source>Table caption</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_delimiter">
+				<source>Field Delimiter</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_delimiter.124">
+				<source>| (Pipe)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_delimiter.59">
+				<source>; (Semicolon)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_delimiter.58">
+				<source>: (Colon)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_delimiter.44">
+				<source>, (Comma)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_delimiter.9">
+				<source>⇥ (Tab)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_enclosure">
+				<source>Text enclosure</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_enclosure.0">
+				<source>None</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_enclosure.39">
+				<source>' (Single quotes)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_enclosure.34">
+				<source>" (Double quotes)</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_header_position">
+				<source>Table header position</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_header_position.0">
+				<source>No header</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_header_position.1">
+				<source>Top</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_header_position.2">
+				<source>Left</source>
+			</trans-unit>
+			<trans-unit id="tt_content.table_tfoot">
+				<source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
