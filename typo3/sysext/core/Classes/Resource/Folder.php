@@ -104,13 +104,16 @@ class Folder implements FolderInterface {
 	 * @return string
 	 */
 	public function getReadablePath($rootId = NULL) {
+		$oldPermissionFlag = $this->getStorage()->getEvaluatePermissions();
+		$this->getStorage()->setEvaluatePermissions(FALSE);
 		if ($rootId === NULL) {
-			$rootId = $this->storage->getRootLevelFolder()->getIdentifier();
+			$rootId = $this->storage->getRootLevelFolder(FALSE)->getIdentifier();
 		}
 		$readablePath = '';
 		if ($this->identifier !== $rootId) {
 			$readablePath = $this->getParentFolder()->getReadablePath($rootId);
 		}
+		$this->getStorage()->setEvaluatePermissions($oldPermissionFlag);
 		return $readablePath . $this->name . '/';
 	}
 
