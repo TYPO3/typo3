@@ -2302,7 +2302,7 @@ return array(
 												<el>
 													<container_1>
 														<type>array</type>
-														<title>1 required field</title>
+														<title>1 RTE field</title>
 														<el>
 															<rte_2>
 																<TCEforms>
@@ -2329,7 +2329,7 @@ return array(
 										<el>
 											<inline_1>
 												<TCEforms>
-													<label>inline_1 to one required field</label>
+													<label>inline_1 to one field</label>
 													<config>
 														<type>inline</type>
 														<foreign_table>tx_styleguide_forms_rte_4_flex_inline_1_child1</foreign_table>
@@ -2421,6 +2421,117 @@ return array(
 				'foreign_table' => 'tx_styleguide_forms_t3editor_5_child1',
 				'foreign_field' => 'parentid',
 				'foreign_table_field' => 'parenttable',
+			),
+		),
+		't3editor_6' => array(
+			'exclude' => 1,
+			'label' => 'T3EDITOR 6: type flex, t3editor in a tab, t3editor in section container, t3editor in inline',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<sheets>
+								<sGeneral>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>t3editor in tab</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<t3editor_1>
+												<TCEforms>
+													<label>T3EDITOR 1: New syntax</label>
+													<config>
+														<type>text</type>
+														<renderType>t3editor</renderType>
+													</config>
+												</TCEforms>
+											</t3editor_1>
+											<t3editor_2>
+												<TCEforms>
+													<label>T3EDITOR 2: Old wizard syntax</label>
+													<config>
+														<type>text</type>
+														<rows>7</rows>
+														<cols>30</cols>
+														<wizards>
+															<t3editor>
+																<type>userFunc</type>
+																<userFunc>TYPO3\CMS\T3editor\FormWizard->main</userFunc>
+																<title>t3editor</title>
+																<icon>wizard_table.gif</icon>
+																<module>
+																	<name>wizard_table</name>
+																</module>
+																<params>
+																	<format>html</format>
+																</params>
+															</t3editor>
+														</wizards>
+													</config>
+												</TCEforms>
+											</t3editor_2>
+										</el>
+									</ROOT>
+								</sGeneral>
+								<sSections>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>T3EDITOR in section</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<section_1>
+												<title>section_1</title>
+												<type>array</type>
+												<section>1</section>
+												<el>
+													<container_1>
+														<type>array</type>
+														<title>1 t3editor field</title>
+														<el>
+															<t3editor_3>
+																<TCEforms>
+																	<label>T3EDITOR 3</label>
+																	<config>
+																		<type>text</type>
+																		<renderType>t3editor</renderType>
+																	</config>
+																</TCEforms>
+															</t3editor_3>
+														</el>
+													</container_1>
+												</el>
+											</section_1>
+										</el>
+									</ROOT>
+								</sSections>
+								<sInline>
+									<ROOT>
+										<TCEforms>
+											<sheetTitle>T3EDITOR in inline</sheetTitle>
+										</TCEforms>
+										<type>array</type>
+										<el>
+											<inline_1>
+												<TCEforms>
+													<label>inline_1 to one field</label>
+													<config>
+														<type>inline</type>
+														<foreign_table>tx_styleguide_forms_t3editor_6_flex_inline_1_child1</foreign_table>
+														<foreign_field>parentid</foreign_field>
+														<foreign_table_field>parenttable</foreign_table_field>
+													</config>
+												</TCEforms>
+											</inline_1>
+										</el>
+									</ROOT>
+								</sInline>
+							</sheets>
+						</T3DataStructure>
+					',
+				),
 			),
 		),
 
@@ -2580,7 +2691,7 @@ return array(
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
-			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5,
+			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5, t3editor_6,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 			system_11,
 			',
@@ -2636,7 +2747,7 @@ return array(
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,
-					t3editor_1, t3editor_2, t3editor_3, t3editor_4;;;nowrap:wizards[t3editor], t3editor_5,
+					t3editor_1, t3editor_2, t3editor_3, t3editor_4;;;nowrap:wizards[t3editor], t3editor_5, t3editor_6,
 				--div--;Access Rights,
 					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 					system_11,
