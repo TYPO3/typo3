@@ -361,36 +361,40 @@ class DatabaseConnection {
 	/**
 	 * Creates and executes a SELECT SQL-statement AND traverse result set and returns array with records in.
 	 *
-	 * @param string $select_fields See exec_SELECTquery()
-	 * @param string $from_table See exec_SELECTquery()
-	 * @param string $where_clause See exec_SELECTquery()
-	 * @param string $groupBy See exec_SELECTquery()
-	 * @param string $orderBy See exec_SELECTquery()
-	 * @param string $limit See exec_SELECTquery()
+	 * @param string $select_fields List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
+	 * @param string $from_table Table(s) from which to select. This is what comes right after "FROM ...". Required value.
+	 * @param string $where_clause Additional WHERE clauses put in the end of the query. NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself! DO NOT PUT IN GROUP BY, ORDER BY or LIMIT!
+	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
+	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
+	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @param string $uidIndexField If set, the result array will carry this field names value as index. Requires that field to be selected of course!
 	 * @return array|NULL Array of rows, or NULL in case of SQL error
+	 * @see exec_SELECTquery()
+	 * @throws \InvalidArgumentException
 	 */
 	public function exec_SELECTgetRows($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $uidIndexField = '') {
 		$res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-		if ($this->debugOutput) {
-			$this->debug('exec_SELECTquery');
-		}
-		if (!$this->sql_error()) {
-			$output = array();
-			if ($uidIndexField) {
-				while ($tempRow = $this->sql_fetch_assoc($res)) {
-					$output[$tempRow[$uidIndexField]] = $tempRow;
-				}
-			} else {
-				while ($output[] = $this->sql_fetch_assoc($res)) {
-
-				}
-				array_pop($output);
-			}
+		if ($this->sql_error()) {
 			$this->sql_free_result($res);
-		} else {
-			$output = NULL;
+			return NULL;
 		}
+		$output = array();
+		$firstRecord = TRUE;
+		while ($record = $this->sql_fetch_assoc($res)) {
+			if ($uidIndexField) {
+				if ($firstRecord) {
+					$firstRecord = FALSE;
+					if (!array_key_exists($uidIndexField, $record)) {
+						$this->sql_free_result($res);
+						throw new \InvalidArgumentException('The given $uidIndexField "' . $uidIndexField . '" is not available in the result.', 1432933855);
+					}
+				}
+				$output[$record[$uidIndexField]] = $record;
+			} else {
+				$output[] = $record;
+			}
+		}
+		$this->sql_free_result($res);
 		return $output;
 	}
 
@@ -408,9 +412,6 @@ class DatabaseConnection {
 	 */
 	public function exec_SELECTgetSingleRow($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $numIndex = FALSE) {
 		$res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, '1');
-		if ($this->debugOutput) {
-			$this->debug('exec_SELECTquery');
-		}
 		$output = NULL;
 		if ($res !== FALSE) {
 			if ($numIndex) {
