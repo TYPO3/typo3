@@ -2413,6 +2413,16 @@ return array(
 				),
 			),
 		),
+		't3editor_5' => array(
+			'exclude' => 1,
+			'label' => 'T3EDITOR: 5 In inline child',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_forms_t3editor_5_child1',
+				'foreign_field' => 'parentid',
+				'foreign_table_field' => 'parenttable',
+			),
+		),
 
 
 		'system_1' => array(
@@ -2570,7 +2580,7 @@ return array(
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
-			t3editor_1, t3editor_2, t3editor_3, t3editor_4,
+			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 			system_11,
 			',
@@ -2626,7 +2636,7 @@ return array(
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,
-					t3editor_1, t3editor_2, t3editor_3, t3editor_4;;;nowrap:wizards[t3editor],
+					t3editor_1, t3editor_2, t3editor_3, t3editor_4;;;nowrap:wizards[t3editor], t3editor_5,
 				--div--;Access Rights,
 					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 					system_11,
