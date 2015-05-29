@@ -139,4 +139,341 @@ class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expected, $result);
 	}
 
+
+	/**
+	 * Data provider for getValueReturnsCorrectValues
+	 *
+	 * @see getValueReturnsCorrectValues
+	 */
+	public function getValueReturnsCorrectValuesDataProvider() {
+		return array(
+			// description => array($parseString, $comparator, $mode, $expected)
+			'key definition without length' => array('(pid,input_1), ', '_LIST', 'INDEX', array('pid', 'input_1')),
+			'key definition with length' => array('(pid,input_1(30)), ', '_LIST', 'INDEX', array('pid', 'input_1(30)')),
+			'key definition without length (no mode)' => array('(pid,input_1), ', '_LIST', '',  array('pid', 'input_1')),
+			'key definition with length (no mode)' => array('(pid,input_1(30)), ', '_LIST', '', array('pid', 'input_1(30)')),
+			'test1' => array('input_1 varchar(255) DEFAULT \'\' NOT NULL,', '', '', array('input_1')),
+			'test2' => array('varchar(255) DEFAULT \'\' NOT NULL,', '', '', array('varchar(255)')),
+			'test3' => array('DEFAULT \'\' NOT NULL,', '', '', array('DEFAULT')),
+			'test4' => array('\'\' NOT NULL,', '', '', array('', '\'')),
+			'test5' => array('NOT NULL,', '', '', array('NOT')),
+			'test6' => array('NULL,', '', '', array('NULL')),
+			'getValueOrParameter' => array('NULL,', '', '', array('NULL')),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getValueReturnsCorrectValuesDataProvider
+	 * @param string $parseString the string to parse
+	 * @param string $comparator The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
+	 * @param string $mode The mode, eg. "INDEX
+	 * @param string $expected
+	 */
+	public function getValueReturnsCorrectValues($parseString, $comparator, $mode, $expected) {
+		$result = $this->subject->_callRef('getValue', $parseString, $comparator, $mode);
+		$this->assertSame($expected, $result);
+	}
+
+	/**
+	 * Data provider for parseSQL
+	 *
+	 * @see parseSQL
+	 */
+	public function parseSQLDataProvider() {
+		$testSql = array();
+		$testSql[] = 'CREATE TABLE tx_demo (';
+		$testSql[] = '	uid int(11) NOT NULL auto_increment,';
+		$testSql[] = '	pid int(11) DEFAULT \'0\' NOT NULL,';
+
+		$testSql[] = '	tstamp int(11) unsigned DEFAULT \'0\' NOT NULL,';
+		$testSql[] = '	crdate int(11) unsigned DEFAULT \'0\' NOT NULL,';
+		$testSql[] = '	cruser_id int(11) unsigned DEFAULT \'0\' NOT NULL,';
+		$testSql[] = '	deleted tinyint(4) unsigned DEFAULT \'0\' NOT NULL,';
+		$testSql[] = '	hidden tinyint(4) unsigned DEFAULT \'0\' NOT NULL,';
+		$testSql[] = '	starttime int(11) unsigned DEFAULT \'0\' NOT NULL,';
+		$testSql[] = '	endtime int(11) unsigned DEFAULT \'0\' NOT NULL,';
+
+		$testSql[] = '	input_1 varchar(255) DEFAULT \'\' NOT NULL,';
+		$testSql[] = '	input_2 varchar(255) DEFAULT \'\' NOT NULL,';
+		$testSql[] = '	select_child int(11) unsigned DEFAULT \'0\' NOT NULL,';
+
+		$testSql[] = '	PRIMARY KEY (uid),';
+		$testSql[] = '	KEY parent (pid,input_1),';
+		$testSql[] = '	KEY bar (tstamp,input_1(200),input_2(100),endtime)';
+		$testSql[] = ');';
+		$testSql = implode("\n", $testSql);
+		$expected = array(
+			'type' => 'CREATETABLE',
+			'TABLE' => 'tx_demo',
+			'FIELDS' => array(
+				'uid' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							),
+							'AUTO_INCREMENT' => array(
+								'keyword' => 'auto_increment'
+							)
+						)
+					)
+				),
+				'pid' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\'',
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'tstamp' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\''
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'crdate' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\''
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'cruser_id' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\'',
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'deleted' => array(
+					'definition' => array(
+						'fieldType' => 'tinyint',
+						'value' => '4',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\''
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'hidden' => array(
+					'definition' => array(
+						'fieldType' => 'tinyint',
+						'value' => '4',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\''
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'starttime' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\''
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'endtime' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\'',
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'input_1' => array(
+					'definition' => array(
+						'fieldType' => 'varchar',
+						'value' => '255',
+						'featureIndex' => array(
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '',
+									1 => '\'',
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'input_2' => array(
+					'definition' => array(
+						'fieldType' => 'varchar',
+						'value' => '255',
+						'featureIndex' => array(
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '',
+									1 => '\'',
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				),
+				'select_child' => array(
+					'definition' => array(
+						'fieldType' => 'int',
+						'value' => '11',
+						'featureIndex' => array(
+							'UNSIGNED' => array(
+								'keyword' => 'unsigned'
+							),
+							'DEFAULT' => array(
+								'keyword' => 'DEFAULT',
+								'value' => array(
+									0 => '0',
+									1 => '\''
+								)
+							),
+							'NOTNULL' => array(
+								'keyword' => 'NOT NULL'
+							)
+						)
+					)
+				)
+			),
+			'KEYS' => array(
+				'PRIMARYKEY' => array(
+					0 => 'uid'
+				),
+				'parent' => array(
+					0 => 'pid',
+					1 => 'input_1',
+				),
+				'bar' => array(
+					0 => 'tstamp',
+					1 => 'input_1(200)',
+					2 => 'input_2(100)',
+					3 => 'endtime',
+				)
+			)
+		);
+
+		return array(
+			'test1' => array($testSql, $expected)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider parseSQLDataProvider
+	 * @param string $sql The SQL to trim
+	 * @param array $expected The expected trimmed SQL with single space at the end
+	 */
+	public function parseSQL($sql, $expected) {
+		$result = $this->subject->_callRef('parseSQL', $sql);
+		$this->assertSame($expected, $result);
+	}
 }

@@ -1381,7 +1381,7 @@ class SqlParser {
 					break;
 				default:
 					$reg = array();
-					if (preg_match('/^([[:alnum:]._-]+)/i', $parseString, $reg)) {
+					if (preg_match('/^([[:alnum:]._-]+(?:\\([0-9]+\\))?)/i', $parseString, $reg)) {
 						$parseString = ltrim(substr($parseString, strlen($reg[0])));
 						$value = array($reg[1]);
 					}
