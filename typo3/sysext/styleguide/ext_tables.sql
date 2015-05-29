@@ -215,6 +215,8 @@ CREATE TABLE tx_styleguide_forms (
 
 	t3editor_1 text,
 	t3editor_2 text,
+	t3editor_3 text,
+	t3editor_4 text,
 
 	system_1 tinytext NOT NULL,
 	system_2 tinytext NOT NULL,

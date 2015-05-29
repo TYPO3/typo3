@@ -2353,8 +2353,26 @@ return array(
 			'label' => 'T3EDITOR: 1',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 80,
-				'rows' => 15,
+				'renderType' => 't3editor',
+				'format' => 'html',
+				'rows' => 7,
+			),
+		),
+		't3editor_2' => array(
+			'exclude' => 1,
+			'label' => 'T3EDITOR: 2 Enabled on type 0 via columnsOverride',
+			'config' => array(
+				'type' => 'text',
+				'rows' => 7,
+			),
+		),
+		't3editor_3' => array(
+			'exclude' => 1,
+			'label' => 'T3EDITOR: 3 old wizard configuration, deprecated',
+			'config' => array(
+				'type' => 'text',
+				'cols' => 20,
+				'rows' => 3,
 				'wizards' => array(
 					't3editor' => array(
 						'type' => 'userFunc',
@@ -2372,13 +2390,11 @@ return array(
 				),
 			),
 		),
-		't3editor_2' => array(
+		't3editor_4' => array(
 			'exclude' => 1,
-			'label' => 'T3EDITOR: 2 Enabled on type 0 only',
+			'label' => 'T3EDITOR: 4 Enabled on type 0 only, old wizard configuration, deprecated',
 			'config' => array(
 				'type' => 'text',
-				'cols' => 80,
-				'rows' => 15,
 				'wizards' => array(
 					't3editor' => array(
 						'enableByTypeConfig' => 1,
@@ -2554,7 +2570,7 @@ return array(
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
-			t3editor_1, t3editor_2,
+			t3editor_1, t3editor_2, t3editor_3, t3editor_4,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 			system_11,
 			',
@@ -2610,18 +2626,26 @@ return array(
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,
-					t3editor_1, t3editor_2;;;nowrap:wizards[t3editor],
+					t3editor_1, t3editor_2, t3editor_3, t3editor_4;;;nowrap:wizards[t3editor],
 				--div--;Access Rights,
 					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 					system_11,
 			',
+			'columnsOverrides' => array(
+				't3editor_2' => array(
+					'config' => array(
+						'renderType' => 't3editor',
+						'format' => 'html',
+					),
+				),
+			),
 		),
 		'test' => array(
 			'showitem' => '
 				--div--;Type,
 					type_field,
 				--div--;t3editor,
-					t3editor_1, t3editor_2,
+					t3editor_2;T3EDITOR: 2 Should be usual text field, t3editor_4;T3EDITOR: 4 Should be usual text field,
 			',
 		),
 	),
