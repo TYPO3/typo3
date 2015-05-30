@@ -39,7 +39,7 @@ class InlineRelatedRecordResolver {
 	 * @param array $row The record data array where the value(s) for the field can be found
 	 * @param array $PA An array with additional configuration options.
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param integer $inlineFirstPid Inline first pid
+	 * @param int $inlineFirstPid Inline first pid
 	 * @return array The records related to the parent item as associative array.
 	 */
 	public function getRelatedRecords($table, $field, $row, $PA, $config, $inlineFirstPid) {

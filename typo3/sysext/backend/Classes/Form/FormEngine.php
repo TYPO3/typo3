@@ -923,7 +923,7 @@ class FormEngine {
 	 * Return expand / collapse state array for a given table / uid combination
 	 *
 	 * @param string $table Handled table
-	 * @param integer $uid Handled uid
+	 * @param int $uid Handled uid
 	 * @return array
 	 */
 	protected function getInlineExpandCollapseStateArrayForTableUid($table, $uid) {
@@ -1031,7 +1031,7 @@ class FormEngine {
 	 *
 	 * @param array &$jsonArray Reference of the array to be used for JSON
 	 * @param array $config The configuration of the IRRE field of the parent record
-	 * @param integer $inlineFirstPid Inline first pid
+	 * @param int $inlineFirstPid Inline first pid
 	 * @return array Modified array
 	 * @todo: Basically, this methods shouldn't be there at all ...
 	 */

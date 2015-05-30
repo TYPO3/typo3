@@ -434,7 +434,7 @@ interface DriverInterface {
 	 * Returns the number of files inside the specified path
 	 *
 	 * @param string  $folderIdentifier
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array   $filenameFilterCallbacks callbacks for filtering the items
 	 * @return integer Number of files in folder
 	 */
@@ -444,7 +444,7 @@ interface DriverInterface {
 	 * Returns the number of folders inside the specified path
 	 *
 	 * @param string  $folderIdentifier
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
 	 * @return integer Number of folders in folder
 	 */

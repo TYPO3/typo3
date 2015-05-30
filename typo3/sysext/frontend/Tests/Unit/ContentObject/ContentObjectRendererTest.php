@@ -1563,7 +1563,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @param string|NULL $content
 	 * @param array $configuration
-	 * @param integer $expected
+	 * @param int $expected
 	 * @dataProvider stdWrap_strtotimeReturnsTimestampDataProvider
 	 * @test
 	 */

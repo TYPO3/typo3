@@ -480,7 +480,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * Returns the number of folders inside the specified path
 	 *
 	 * @param string  $folderIdentifier
-	 * @param boolean $recursive
+	 * @param bool $recursive
 	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
 	 * @return integer Number of folders in folder
 	 */
