@@ -131,7 +131,8 @@
 			"TYPO3\\CMS\\Lang\\": "typo3/sysext/lang/Classes/",
 			"TYPO3\\CMS\\Recordlist\\": "typo3/sysext/recordlist/Classes/",
 			"TYPO3\\CMS\\Saltedpasswords\\": "typo3/sysext/saltedpasswords/Classes/",
-			"TYPO3\\CMS\\Sv\\": "typo3/sysext/sv/Classes/"
+			"TYPO3\\CMS\\Sv\\": "typo3/sysext/sv/Classes/",
+			"TYPO3\\CMS\\T3skin\\": "typo3/sysext/t3skin/Classes/"
 		},
 		"classmap": ["typo3/sysext/core/Resources/PHP/RemoveXSS.php"]
 	},
