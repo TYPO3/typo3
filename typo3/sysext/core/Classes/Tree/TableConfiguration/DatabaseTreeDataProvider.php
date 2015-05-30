@@ -469,7 +469,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 				GeneralUtility::deprecationLog(
 					'Signal "TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\TableConfiguration\\DatabaseTreeDataProvider" ' .
 					'is deprecated but used by "' . $slotClassNameOrObject . '". ' .
-					'Please update signal name to "' . self::class . '".'
+					'Please update signal name to "' . __CLASS__ . '".'
 				);
 			}
 			$this->getSignalSlotDispatcher()->dispatch(

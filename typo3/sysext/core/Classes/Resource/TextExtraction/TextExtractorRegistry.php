@@ -46,7 +46,7 @@ class TextExtractorRegistry implements SingletonInterface {
 	 * @return TextExtractorRegistry
 	 */
 	static public function getInstance() {
-		return GeneralUtility::makeInstance(self::class);
+		return GeneralUtility::makeInstance(__CLASS__);
 	}
 
 	/**
