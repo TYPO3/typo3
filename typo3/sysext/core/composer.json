@@ -25,7 +25,7 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Core\\": "Classes/"
 		},
-		"classmap": ["Resources/PHP/RemoveXSS.php"]
+		"classmap": ["Resources/PHP/"]
 	},
 	"autoload-dev": {
 		"psr-4": {

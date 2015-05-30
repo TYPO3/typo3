@@ -419,8 +419,8 @@ class AbstractController {
 
 		$cacheConfigurationsWithCachesSetToNullBackend = array();
 		foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
-			// cache_core and cache_classes are handled in bootstrap already
-			if (is_array($cacheConfiguration) && $cacheName !== 'cache_core' && $cacheName !== 'cache_classes') {
+			// cache_core is handled in bootstrap already
+			if (is_array($cacheConfiguration) && $cacheName !== 'cache_core') {
 				$cacheConfiguration['backend'] = NullBackend::class;
 				$cacheConfiguration['options'] = array();
 			}

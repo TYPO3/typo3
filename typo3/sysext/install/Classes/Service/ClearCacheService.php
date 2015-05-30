@@ -48,14 +48,11 @@ class ClearCacheService {
 		GeneralUtility::rmdir(PATH_site . 'typo3temp/Cache', TRUE);
 
 		$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-		$bootstrap->unregisterClassLoader();
 
 		\TYPO3\CMS\Core\Cache\Cache::flagCachingFrameworkForReinitialization();
 
 		$bootstrap
-			->initializeClassLoader()
 			->initializeCachingFramework()
-			->initializeClassLoaderCaches()
 			->initializePackageManagement(\TYPO3\CMS\Core\Package\PackageManager::class);
 
 		// Get all table names starting with 'cf_' and truncate them

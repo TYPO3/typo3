@@ -208,7 +208,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		$targetType = $this->parseCompositeType($targetType);
 		// This is needed to correctly convert old class names to new ones
 		// This compatibility layer will be removed with 7.0
-		$targetType = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($targetType);
+		$targetType = \TYPO3\CMS\Core\Core\ClassLoadingInformation::getClassNameForAlias($targetType);
 
 		$targetType = TypeHandlingUtility::normalizeType($targetType);
 

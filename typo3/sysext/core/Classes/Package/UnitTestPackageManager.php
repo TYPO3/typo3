@@ -33,9 +33,6 @@ class UnitTestPackageManager extends PackageManager {
 
 		$this->scanAvailablePackages();
 		$this->activePackages = $this->packages;
-
-		$cacheIdentifier = str_replace('.', '', uniqid('', TRUE));
-		$this->classLoader->setCacheIdentifier($cacheIdentifier)->setPackages($this->activePackages);
 	}
 
 	/**

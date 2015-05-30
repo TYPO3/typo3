@@ -644,7 +644,7 @@ class TemplateParser {
 			}
 			$className .= 'ViewHelper';
 			$name = $this->namespaces[$namespaceIdentifier] . $namespaceSeparator . $className;
-			$name = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($name);
+			$name = \TYPO3\CMS\Core\Core\ClassLoadingInformation::getClassNameForAlias($name);
 			// The name isn't cached in viewHelperNameToImplementationClassNameRuntimeCache here because the
 			// class could be overloaded by extbase object manager. Thus the cache is filled in
 			// initializeViewHelperAndAddItToStack after getting the real object from the object manager.

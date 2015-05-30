@@ -205,7 +205,9 @@ class Bootstrap {
 	 */
 	public function baseSetup($relativePathPart = '') {
 		SystemEnvironmentBuilder::run($relativePathPart);
-		$this->addDynamicClassAliasMapsToComposerClassLoader();
+		if (!self::$usesComposerClassLoading) {
+			ClassLoadingInformation::registerClassLoadingInformation();
+		}
 		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
 	}
@@ -228,26 +230,6 @@ class Bootstrap {
 		}
 
 		throw new \LogicException('No class loading information found for TYPO3 CMS. Please make sure you installed TYPO3 with composer or the typo3/contrib/vendor folder is present.', 1425153762);
-	}
-
-	/**
-	 * Includes an alias mapping file if present.
-	 * The file is generated during extension install.
-	 *
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	protected function addDynamicClassAliasMapsToComposerClassLoader() {
-		if (self::$usesComposerClassLoading) {
-			return;
-		}
-		$dynamicClassAliasMapFile = PATH_site . 'typo3conf/autoload_classaliasmap.php';
-		if (file_exists($dynamicClassAliasMapFile)) {
-			$composerClassLoader = $this->getEarlyInstance(\Composer\Autoload\ClassLoader::class);
-			$classAliasMap = require $dynamicClassAliasMapFile;
-			if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
-				$composerClassLoader->addAliasMap($classAliasMap);
-			}
-		}
 	}
 
 	/**
@@ -377,13 +359,11 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadConfigurationAndInitialize($allowCaching = TRUE, $packageManagerClassName = \TYPO3\CMS\Core\Package\PackageManager::class) {
-		$this->initializeClassLoader()
-			->populateLocalConfiguration();
+		$this->populateLocalConfiguration();
 		if (!$allowCaching) {
-			$this->disableCoreAndClassesCache();
+			$this->disableCoreCache();
 		}
 		$this->initializeCachingFramework()
-			->initializeClassLoaderCaches()
 			->initializePackageManagement($packageManagerClassName)
 			->initializeRuntimeActivatedPackagesFromConfiguration();
 
@@ -400,50 +380,9 @@ class Bootstrap {
 			->initializeExceptionHandling()
 			->setMemoryLimit()
 			->defineTypo3RequestTypes();
-		return $this;
-	}
-
-	/**
-	 * Initializes the Class Loader
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function initializeClassLoader() {
-		$classLoader = new ClassLoader($this->applicationContext);
-		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class, $classLoader);
-		$classAliasMap = new ClassAliasMap();
-		$classAliasMap->injectClassLoader($classLoader);
-		$classAliasMap->injectComposerClassLoader($this->getEarlyInstance(\Composer\Autoload\ClassLoader::class));
-		$this->setEarlyInstance(\TYPO3\CMS\Core\Core\ClassAliasMap::class, $classAliasMap);
-		$classLoader->injectClassAliasMap($classAliasMap);
-		spl_autoload_register(array($classLoader, 'loadClass'), TRUE, FALSE);
-		return $this;
-	}
-
-	/**
-	 * Unregister class loader
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function unregisterClassLoader() {
-		$currentClassLoader = $this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class);
-		spl_autoload_unregister(array($currentClassLoader, 'loadClass'));
-		return $this;
-	}
-
-	/**
-	 * Initialize class loader cache.
-	 *
-	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function initializeClassLoaderCaches() {
-		/** @var $classLoader ClassLoader */
-		$classLoader = $this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class);
-		$classLoader->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
-		$classLoader->injectClassesCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_classes'));
+		if ($allowCaching) {
+			$this->ensureClassLoadingInformationExists();
+		}
 		return $this;
 	}
 
@@ -460,11 +399,24 @@ class Bootstrap {
 		$packageManager = new $packageManagerClassName();
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
-		$packageManager->injectClassLoader($this->getEarlyInstance(\TYPO3\CMS\Core\Core\ClassLoader::class));
 		$packageManager->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
 		$packageManager->injectDependencyResolver(Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class));
 		$packageManager->initialize($this);
 		Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
+		return $this;
+	}
+
+	/**
+	 * Writes class loading information if not yet present
+	 *
+	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
+	 */
+	public function ensureClassLoadingInformationExists() {
+		if (!self::$usesComposerClassLoading && !ClassLoadingInformation::classLoadingInformationExists()) {
+			ClassLoadingInformation::writeClassLoadingInformation();
+			ClassLoadingInformation::registerClassLoadingInformation();
+		}
 		return $this;
 	}
 
@@ -530,18 +482,15 @@ class Bootstrap {
 	}
 
 	/**
-	 * Set cache_core to null backend, effectively disabling eg. the autoloader cache
+	 * Set cache_core to null backend, effectively disabling eg. the cache for ext_localconf and PackageManager etc.
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function disableCoreAndClassesCache() {
+	public function disableCoreCache() {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['backend']
 			= \TYPO3\CMS\Core\Cache\Backend\NullBackend::class;
 		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_core']['options']);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_classes']['backend']
-			= \TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend::class;
-		unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_classes']['options']);
 		return $this;
 	}
 

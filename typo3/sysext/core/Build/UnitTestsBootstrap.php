@@ -173,9 +173,7 @@ class UnitTestsBootstrap {
 	protected function includeAndStartCoreBootstrap() {
 		require_once PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
 
-		Bootstrap::getInstance()
-			->baseSetup()
-			->initializeClassLoader();
+		Bootstrap::getInstance()->baseSetup();
 
 		return $this;
 	}
@@ -202,10 +200,10 @@ class UnitTestsBootstrap {
 	 */
 	protected function finishCoreBootstrap() {
 		Bootstrap::getInstance()
-			->disableCoreAndClassesCache()
+			->disableCoreCache()
 			->initializeCachingFramework()
-			->initializeClassLoaderCaches()
-			->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class);
+			->initializePackageManagement(\TYPO3\CMS\Core\Package\UnitTestPackageManager::class)
+			->ensureClassLoadingInformationExists();
 
 		return $this;
 	}

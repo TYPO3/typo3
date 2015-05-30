@@ -654,11 +654,6 @@ class t3lib_beUserAuth extends \TYPO3\CMS\Core\Authentication\BackendUserAuthent
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_autoloader extends \TYPO3\CMS\Core\Core\ClassLoader {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 abstract class t3lib_cache_backend_AbstractBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend {}
 
 /**

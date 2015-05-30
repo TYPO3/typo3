@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Package;
  */
 
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -23,11 +24,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Adapted from FLOW for TYPO3 CMS
  */
 class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
-
-	/**
-	 * @var \TYPO3\CMS\Core\Core\ClassLoader
-	 */
-	protected $classLoader;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Package\DependencyResolver
@@ -131,13 +127,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Core\Core\ClassLoader $classLoader
-	 */
-	public function injectClassLoader(\TYPO3\CMS\Core\Core\ClassLoader $classLoader) {
-		$this->classLoader = $classLoader;
-	}
-
-	/**
 	 * @param \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache
 	 */
 	public function injectCoreCache(\TYPO3\CMS\Core\Cache\Frontend\PhpFrontend $coreCache) {
@@ -169,14 +158,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->initializePackageObjects();
 			$this->initializeCompatibilityLoadedExtArray();
 		}
-
-		$cacheIdentifier = $this->getCacheIdentifier();
-		if ($cacheIdentifier === NULL) {
-			// Create an artificial cache identifier if the package states file is not available yet
-			// in order that the class loader and class alias map can cache anyways.
-			$cacheIdentifier = md5(implode('###', array_keys($this->activePackages)));
-		}
-		$this->classLoader->setCacheIdentifier($cacheIdentifier)->setPackages($this->activePackages);
 
 		foreach ($this->activePackages as $package) {
 			/** @var $package Package */
@@ -572,26 +553,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @return array
-	 */
-	public function getExtAutoloadRegistry() {
-		if (!isset($this->extAutoloadClassFiles)) {
-			$classRegistry = array();
-			foreach ($this->activePackages as $packageKey => $packageData) {
-				try {
-					$extensionAutoloadFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($packageKey, 'ext_autoload.php');
-					if (@file_exists($extensionAutoloadFile)) {
-						$classRegistry = array_merge($classRegistry, require $extensionAutoloadFile);
-					}
-				} catch (\BadFunctionCallException $e) {
-				}
-			}
-			$this->extAutoloadClassFiles = $classRegistry;
-		}
-		return $this->extAutoloadClassFiles;
-	}
-
-	/**
 	 * Returns a PackageInterface object for the specified package.
 	 * A package is available, if the package directory contains valid MetaData information.
 	 *
@@ -668,7 +629,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		unset($this->activePackages[$packageKey]);
 		$this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'inactive';
 		$this->sortAndSavePackageStates();
-		$this->classLoader->setPackages($this->activePackages);
 	}
 
 	/**
@@ -686,7 +646,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $package->getPackagePath());
 		}
 		$this->sortAndSavePackageStates();
-		$this->classLoader->addActivePackage($package);
+		$this->registerTransientClassLoadingInformationForPackage($package);
 	}
 
 	/**
@@ -698,11 +658,19 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	public function activatePackageDuringRuntime($packageKey) {
 		$package = $this->getPackage($packageKey);
 		$this->runtimeActivatedPackages[$package->getPackageKey()] = $package;
-		$this->classLoader->addActivePackage($package);
 		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()])) {
 			$loadedExtArrayElement = new LoadedExtensionArrayElement($package);
 			$GLOBALS['TYPO3_LOADED_EXT'][$package->getPackageKey()] = $loadedExtArrayElement->toArray();
 		}
+		$this->registerTransientClassLoadingInformationForPackage($package);
+	}
+
+	/**
+	 * @param PackageInterface $package
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	protected function registerTransientClassLoadingInformationForPackage(PackageInterface $package) {
+		ClassLoadingInformation::registerTransientClassLoadingInformationForPackage($package);
 	}
 
 	/**

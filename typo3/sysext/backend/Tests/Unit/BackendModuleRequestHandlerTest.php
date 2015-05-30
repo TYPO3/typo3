@@ -18,6 +18,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 use TYPO3\CMS\Backend\BackendModuleRequestHandler;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
@@ -37,7 +38,7 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 	protected $formProtectionMock;
 
 	public function setUp() {
-		$this->formProtectionMock = $this->getMock('AbstractFormProtection', array('validateToken'));
+		$this->formProtectionMock = $this->getMockForAbstractClass(AbstractFormProtection::class, array(), '', TRUE, TRUE, TRUE, array('validateToken'));
 		$this->subject = $this->getAccessibleMock(BackendModuleRequestHandler::class, array('boot', 'getFormProtection'), array(), '', FALSE);
 	}
 

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\Core\ClassLoader;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -4351,7 +4351,7 @@ Connection: close
 				$className = static::getImplementationForClass($className);
 			}
 		}
-		return ClassLoader::getClassNameForAlias($className);
+		return ClassLoadingInformation::getClassNameForAlias($className);
 	}
 
 	/**

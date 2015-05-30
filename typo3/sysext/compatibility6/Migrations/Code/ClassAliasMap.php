@@ -128,7 +128,6 @@ return array(
 	't3lib_extjs_ExtDirectDebug' => \TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class,
 	't3lib_userAuth' => \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class,
 	't3lib_beUserAuth' => \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class,
-	't3lib_autoloader' => \TYPO3\CMS\Core\Core\ClassLoader::class,
 	't3lib_cache_backend_AbstractBackend' => \TYPO3\CMS\Core\Cache\Backend\AbstractBackend::class,
 	't3lib_cache_backend_ApcBackend' => \TYPO3\CMS\Core\Cache\Backend\ApcBackend::class,
 	't3lib_cache_backend_Backend' => \TYPO3\CMS\Core\Cache\Backend\BackendInterface::class,

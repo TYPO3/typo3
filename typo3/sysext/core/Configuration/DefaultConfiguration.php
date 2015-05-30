@@ -123,14 +123,6 @@ return array(
 					),
 					'groups' => array('system')
 				),
-				'cache_classes' => array(
-					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\StringFrontend::class,
-					'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
-					'options' => array(
-						'defaultLifetime' => 0,
-					),
-					'groups' => array('system')
-				),
 				'cache_hash' => array(
 					'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
 					'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,

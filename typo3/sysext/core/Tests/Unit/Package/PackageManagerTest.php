@@ -38,20 +38,16 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockCache->expects($this->any())->method('set')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
 		$mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
-		$this->packageManager = $this->getAccessibleMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies'));
+		$this->packageManager = $this->getAccessibleMock(\TYPO3\CMS\Core\Package\PackageManager::class, array('sortAndSavePackageStates', 'sortAvailablePackagesByDependencies', 'registerAutoloadInformationInClassLoader'));
 
 		mkdir('vfs://Test/Packages/Application', 0700, TRUE);
 		mkdir('vfs://Test/Configuration');
 		file_put_contents('vfs://Test/Configuration/PackageStates.php', "<?php return array ('packages' => array(), 'version' => 4); ");
 
-		$mockClassLoader = $this->getMock(\TYPO3\CMS\Core\Core\ClassLoader::class, array(), array(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->getApplicationContext()));
-		$mockClassLoader->expects($this->any())->method('setCacheIdentifier')->will($this->returnSelf());
-
 		$composerNameToPackageKeyMap = array(
 			'typo3/flow' => 'TYPO3.Flow'
 		);
 
-		$this->packageManager->injectClassLoader($mockClassLoader);
 		$this->packageManager->injectCoreCache($mockCache);
 		$this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
 		$this->packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
