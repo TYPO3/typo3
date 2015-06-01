@@ -185,7 +185,7 @@ class Locker {
 					$maxAge = time() - ($maxExecutionTime ?: 120);
 					if (@filectime($this->resource) < $maxAge) {
 						@unlink($this->resource);
-						$this->sysLog('Unlinking stale lockfile');
+						$this->sysLog('Unlinking stale lockfile', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 					}
 				}
 				for ($i = 0; $i < $this->loops; $i++) {
@@ -259,7 +259,7 @@ class Locker {
 					$maxAge = time() - ($maxExecutionTime ?: 120);
 					if (@filectime($this->resource) < $maxAge) {
 						@unlink($this->resource);
-						$this->sysLog('Unlinking stale lockfile');
+						$this->sysLog('Unlinking stale lockfile', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 					}
 				}
 				for ($i = 0; $i < $this->loops; $i++) {
@@ -415,7 +415,7 @@ class Locker {
 					$maxAge = time() - ($maxExecutionTime ?: 120);
 					if (@filectime($this->resource) < $maxAge) {
 						@unlink($this->resource);
-						$this->sysLog('Unlinking stale lockfile');
+						$this->sysLog('Unlinking stale lockfile', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 					} else {
 						$result = TRUE;
 					}
