@@ -213,16 +213,24 @@ class ElementEntity {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting');
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
-					$arguments = array('table' => $row['ref_table'], 'id' => $row['ref_uid'], 'field' => $row['field'], 'scope' => self::REFERENCES_ChildOf);
-					$callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateChildReference, $this, $arguments);
-					if ($callbackResponse !== self::RESPONSE_Skip) {
-						$this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
-							$row['ref_table'],
-							$row['ref_uid'],
-							$row['field'],
-							array(),
-							$this->getDependency()
+					if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
+						$arguments = array(
+							'table' => $row['ref_table'],
+							'id' => $row['ref_uid'],
+							'field' => $row['field'],
+							'scope' => self::REFERENCES_ChildOf
 						);
+
+						$callbackResponse = $this->dependency->executeEventCallback(self::EVENT_CreateChildReference, $this, $arguments);
+						if ($callbackResponse !== self::RESPONSE_Skip) {
+							$this->children[] = $this->getDependency()->getFactory()->getReferencedElement(
+								$row['ref_table'],
+								$row['ref_uid'],
+								$row['field'],
+								array(),
+								$this->getDependency()
+							);
+						}
 					}
 				}
 			}
