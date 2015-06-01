@@ -2279,7 +2279,6 @@ return array(
 			'label' => 'REQUIRED: 9: RTE',
 			'config' => array(
 				'type' => 'text',
-				'renderType' => 'richtext',
 			),
 			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
