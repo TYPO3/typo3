@@ -2264,7 +2264,7 @@ return array(
 		),
 		'required_8' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 7: Inline, minitems 1, maxitems 3',
+			'label' => 'REQUIRED: 8: Inline, minitems 1, maxitems 3',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_styleguide_forms_required_8_child1',
@@ -2273,6 +2273,15 @@ return array(
 				'minitems' => 1,
 				'maxitems' => 3,
 			),
+		),
+		'required_9' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED: 9: RTE',
+			'config' => array(
+				'type' => 'text',
+				'renderType' => 'richtext',
+			),
+			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
 
 
@@ -2733,7 +2742,7 @@ return array(
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
-			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
+			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8, required_9,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5, t3editor_6,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
@@ -2787,7 +2796,7 @@ return array(
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 				--div--;Required,
-					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7,
+					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7, required_9,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,

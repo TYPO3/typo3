@@ -208,6 +208,7 @@ CREATE TABLE tx_styleguide_forms (
 	required_6 text,
 	required_7 text,
 	required_8 text,
+	required_9 text,
 
 	rte_1 text,
 	rte_2 text,
