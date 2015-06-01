@@ -198,6 +198,7 @@ CREATE TABLE tx_styleguide_forms (
 	wizard_3 text NOT NULL,
 	wizard_4 text NOT NULL,
 	wizard_5 text NOT NULL,
+	wizard_6 text NOT NULL,
 
 	required_1 text NOT NULL,
 	required_2 text NOT NULL,
