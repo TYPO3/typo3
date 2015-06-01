@@ -1286,7 +1286,18 @@ class TypoScriptFrontendController {
 				}
 			}
 			// The preview flag will be set if a backend user is in an offline workspace
-			if (($GLOBALS['BE_USER']->user['workspace_preview'] || GeneralUtility::_GP('ADMCMD_view') || $this->doWorkspacePreview()) && ($this->whichWorkspace() === -1 || $this->whichWorkspace() > 0) && (!GeneralUtility::_GP('ADMCMD_noBeUser'))) {
+			if (
+					(
+						$GLOBALS['BE_USER']->user['workspace_preview']
+						|| GeneralUtility::_GP('ADMCMD_view')
+						|| $this->doWorkspacePreview()
+					)
+					&& (
+						$this->whichWorkspace() === -1
+						|| $this->whichWorkspace() > 0
+					)
+					&& !GeneralUtility::_GP('ADMCMD_noBeUser')
+			) {
 				// Will show special preview message.
 				$this->fePreview = 2;
 			}
