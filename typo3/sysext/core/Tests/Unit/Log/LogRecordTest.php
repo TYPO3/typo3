@@ -157,7 +157,14 @@ class LogRecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function toStringIncludesExceptionDataAsJson() {
 		$dataArray = array('exception' => new \Exception('foo'));
 		$record = $this->getRecord(array('data' => $dataArray));
-		$this->assertContains('\'Exception\' with message \'foo\'', (string)$record);
+		// Since 7.0.0-dev 17.05.2015 the output of Exception is changed.
+		// https://github.com/php/php-src/commit/3ae995f03c8f60c4a4c9718262545cf5a6a08da3
+		// To check for dev version we need to compare with a version before 7.0.0
+		if (version_compare(PHP_VERSION, '6.99.00') >= 0) {
+			$this->assertContains('Exception: foo', (string)$record);
+		} else {
+			$this->assertContains('\'Exception\' with message \'foo\'', (string)$record);
+		}
 	}
 
 }
