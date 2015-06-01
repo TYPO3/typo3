@@ -44,42 +44,45 @@ module.exports = function(grunt) {
 				srcPrefix: "bower_components/"
 			},
 			all: {
+				options: {
+					destPrefix: "<%= paths.core %>Public/JavaScript/Contrib",
+				},
 				files: {
-					'<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': '/nprogress/nprogress.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery.dataTables.js': '/datatables/media/js/jquery.dataTables.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/require.js': '/requirejs/require.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/moment.js': '/moment/moment.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/cropper.min.js': '/cropper/dist/cropper.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/imagesloaded.pkgd.min.js': '/imagesloaded/imagesloaded.pkgd.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-datetimepicker.js': '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/autosize.js': '/autosize/dest/autosize.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/placeholders.jquery.min.js': '/Placeholders.js/dist/placeholders.jquery.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/taboverride.min.js': '/taboverride/build/output/taboverride.min.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/bootstrap-slider.min.js': '/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
+					'nprogress.js': 'nprogress/nprogress.js',
+					'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
+					'require.js': 'requirejs/require.js',
+					'moment.js': 'moment/moment.js',
+					'cropper.min.js': 'cropper/dist/cropper.min.js',
+					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
+					'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+					'autosize.js': 'autosize/dest/autosize.min.js',
+					'placeholders.jquery.min.js': 'Placeholders.js/dist/placeholders.jquery.min.js',
+					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
+					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
 
 					/**
 					 * copy needed files of scriptaculous
 					 */
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/builder.js': '/scriptaculous-bower/builder.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/controls.js': '/scriptaculous-bower/controls.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/dragdrop.js': '/scriptaculous-bower/dragdrop.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/effects.js': '/scriptaculous-bower/effects.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/scriptaculous.js': '/scriptaculous-bower/scriptaculous.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/slider.js': '/scriptaculous-bower/slider.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/sound.js': '/scriptaculous-bower/sound.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/scriptaculous/unittest.js': '/scriptaculous-bower/unittest.js',
+					'scriptaculous/builder.js': 'scriptaculous-bower/builder.js',
+					'scriptaculous/controls.js': 'scriptaculous-bower/controls.js',
+					'scriptaculous/dragdrop.js': 'scriptaculous-bower/dragdrop.js',
+					'scriptaculous/effects.js': 'scriptaculous-bower/effects.js',
+					'scriptaculous/scriptaculous.js': 'scriptaculous-bower/scriptaculous.js',
+					'scriptaculous/slider.js': 'scriptaculous-bower/slider.js',
+					'scriptaculous/sound.js': 'scriptaculous-bower/sound.js',
+					'scriptaculous/unittest.js': 'scriptaculous-bower/unittest.js',
 					/**
 					 * copy needed parts of jquery-ui
 					 */
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js': '/jquery-ui/ui/core.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js': '/jquery-ui/ui/draggable.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js': '/jquery-ui/ui/droppable.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js': '/jquery-ui/ui/mouse.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js': '/jquery-ui/ui/position.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js': '/jquery-ui/ui/resizable.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js': '/jquery-ui/ui/selectable.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js': '/jquery-ui/ui/sortable.js',
-					'<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js': '/jquery-ui/ui/widget.js'
+					'jquery-ui/core.js': 'jquery-ui/ui/core.js',
+					'jquery-ui/draggable.js': 'jquery-ui/ui/draggable.js',
+					'jquery-ui/droppable.js': 'jquery-ui/ui/droppable.js',
+					'jquery-ui/mouse.js': 'jquery-ui/ui/mouse.js',
+					'jquery-ui/position.js': 'jquery-ui/ui/position.js',
+					'jquery-ui/resizable.js': 'jquery-ui/ui/resizable.js',
+					'jquery-ui/selectable.js': 'jquery-ui/ui/selectable.js',
+					'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
+					'jquery-ui/widget.js': 'jquery-ui/ui/widget.js'
 				}
 			}
 		}
