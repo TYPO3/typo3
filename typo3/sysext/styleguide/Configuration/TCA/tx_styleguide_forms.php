@@ -2048,6 +2048,50 @@ return array(
 				),
 			),
 		),
+		'wizard_6' => array(
+			'exclude' => 1,
+			'label' => 'WIZARD: 6 link wizard, from flex',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => '
+						<T3DataStructure>
+							<meta>
+								<langDisable>1</langDisable>
+							</meta>
+							<ROOT>
+								<type>array</type>
+								<el>
+									<input_1>
+										<TCEforms>
+											<label>input_4 eval=trim, link wizard</label>
+											<config>
+												<type>input</type>
+												<eval>trim</eval>
+												<softref>typolink</softref>
+												<wizards type="array">
+													<_PADDING>2</_PADDING>
+													<link type="array">
+														<type>popup</type>
+														<title>Link</title>
+														<icon>link_popup.gif</icon>
+														<script>browse_links.php?mode=wizard&amp;act=page</script>
+														<params type="array">
+															<blindLinkOptions>mail,folder,spec</blindLinkOptions>
+														</params>
+														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+													</link>
+												</wizards>
+											</config>
+										</TCEforms>
+									</input_1>
+								</el>
+							</ROOT>
+						</T3DataStructure>
+					',
+				),
+			),
+		),
 
 
 		'required_1' => array(
@@ -2688,7 +2732,7 @@ return array(
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
-			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
+			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5, t3editor_6,
@@ -2741,7 +2785,7 @@ return array(
 					--palette--;Palettes 5;palettes_5,
 					palette_6_1;Field with palette below;palettes_6,
 				--div--;Wizards,
-					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5,
+					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 				--div--;Required,
 					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7,
 				--div--;RTE,
