@@ -2064,7 +2064,7 @@ return array(
 								<el>
 									<input_1>
 										<TCEforms>
-											<label>input_4 eval=trim, link wizard</label>
+											<label>WIZARD 6: eval=trim, link wizard</label>
 											<config>
 												<type>input</type>
 												<eval>trim</eval>
