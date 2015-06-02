@@ -296,6 +296,25 @@ class ClassLoader {
 			$classLoadingInformation = $this->buildClassLoadingInformationForClassByNamingConvention($className);
 		}
 
+		if ($classLoadingInformation === FALSE) {
+			// As a last resort try to load the class file from the autoload registry.
+			// If this also fails the class will get cached as "unavailable" anyways
+			// (if TYPO3_CONTEXT is Production) and there will be no performance impact.
+			//
+			// On non-production systems this case will generate an error (if not any later
+			// spl_autoload handler makes the class available) and countermeasures will
+			// have to be taken.
+			//
+			// So there will only be a performance impact for non-production systems, where
+			// a class is requested which is made available by an spl_autoload handler
+			// being run after the TYPO3 autoloader.
+			//
+			// The reason for this whole block is reasoned by not being able to determine
+			// whether the classes cache has been built up properly or not.
+			$this->loadClassFilesFromAutoloadRegistryIntoRuntimeClassInformationCache($this->packages);
+			$classLoadingInformation = $this->fetchClassLoadingInformationFromRuntimeCache($className);
+		}
+
 		return $classLoadingInformation;
 	}
 
