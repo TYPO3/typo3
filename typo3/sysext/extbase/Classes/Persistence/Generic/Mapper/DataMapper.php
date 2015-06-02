@@ -545,13 +545,8 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className
 	 * @return string The selector name
 	 */
-	public function convertClassNameToTableName($className = NULL) {
-		if ($className !== NULL) {
-			$tableName = $this->getDataMap($className)->getTableName();
-		} else {
-			$tableName = strtolower($className);
-		}
-		return $tableName;
+	public function convertClassNameToTableName($className) {
+		return $this->getDataMap($className)->getTableName();
 	}
 
 	/**
