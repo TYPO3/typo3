@@ -4670,7 +4670,7 @@ class ContentObjectRenderer {
 	 * @param array $conf TypoScript properties for "split
 	 * @return string Compiled result
 	 * @access private
-	 * @see stdWrap(), t3lib_menu::procesItemStates()
+	 * @see stdWrap(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::procesItemStates()
 	 */
 	public function splitObj($value, $conf) {
 		$conf['token'] = isset($conf['token.']) ? $this->stdWrap($conf['token'], $conf['token.']) : $conf['token'];

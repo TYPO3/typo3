@@ -98,7 +98,7 @@ parseQuery
 		and match the results. If the parsed and recompiled queries did not
 		match they will enter the log table and can subsequently be addressed.
 		This will help you to spot "TYPO3 incompatible SQL" (as defined by the
-		core parser of ``t3lib_sqlengine``).
+		core parser of ``\TYPO3\CMS\Dbal\Database\SqlParser``).
 
 
 .. _jointables:

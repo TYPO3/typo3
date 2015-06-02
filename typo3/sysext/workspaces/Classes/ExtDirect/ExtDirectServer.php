@@ -110,8 +110,8 @@ class ExtDirectServer extends AbstractHandler {
 	public function getRowDetails($parameter) {
 		$diffReturnArray = array();
 		$liveReturnArray = array();
-		/** @var $t3lib_diff \TYPO3\CMS\Core\Utility\DiffUtility */
-		$t3lib_diff = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+		/** @var $diffUtility \TYPO3\CMS\Core\Utility\DiffUtility */
+		$diffUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 		/** @var $parseObj \TYPO3\CMS\Core\Html\RteHtmlParser */
 		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
 		$liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
@@ -172,7 +172,7 @@ class ExtDirectServer extends AbstractHandler {
 						$diffReturnArray[] = array(
 							'field' => $fieldName,
 							'label' => $fieldTitle,
-							'content' => $t3lib_diff->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
+							'content' => $diffUtility->makeDiffDisplay($liveRecord[$fieldName], $versionRecord[$fieldName])
 						);
 						$liveReturnArray[] = array(
 							'field' => $fieldName,
@@ -188,7 +188,7 @@ class ExtDirectServer extends AbstractHandler {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
 				$hookObject =& GeneralUtility::getUserObj($className);
-				$hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $t3lib_diff);
+				$hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
 			}
 		}
 		$commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);

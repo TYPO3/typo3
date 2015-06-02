@@ -590,7 +590,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 				// Select all entries for the current language
 				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . (int)$querySettings->getLanguageUid() . ',-1)';
 				// If any language is set -> get those entries which are not translated yet
-				// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
+				// They will be removed by \TYPO3\CMS\Frontend\Page\PageRepository::getRecordOverlay if not matching overlay mode
 				if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
 					&& $querySettings->getLanguageUid() > 0
 				) {

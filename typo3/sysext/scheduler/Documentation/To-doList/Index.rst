@@ -14,7 +14,7 @@ To-Do list
 
 Here are a few ideas for possible evolutions:
 
-- check the possibility to use t3lib\_syslock instead of serialized
+- check the possibility to use ``\TYPO3\CMS\Core\Locking\Locker`` instead of serialized
   executions to mark running tasks;
 
 - use TCEform to render the edit form, instead of custom code;

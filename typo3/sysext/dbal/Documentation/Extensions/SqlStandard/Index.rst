@@ -21,7 +21,7 @@ there was a basis for defining a subset of the MySQL features that are
 those officially supported by TYPO3.
 
 Yet, this subset is not defined in a document but there exist a class,
-``t3lib_sqlengine``, which contains parser functions for SQL and
+``\TYPO3\CMS\Dbal\Database\SqlParser``, which contains parser functions for SQL and
 compliance with "TYPO3 sql" is basically defined by whether this class
 can parse your SQL without errors. (The debug-options /DBAL debug
 backend module from this extension can be helpful to spot non-
@@ -45,7 +45,7 @@ the abstraction language:
   occur with *any* abstraction language anyways.
 
 - We are able to parse the SQL and validate conformity with the "TYPO3
-  SQL standard" defined at any time by ``t3lib_sqlengine`` - and we can
+  SQL standard" defined at any time by ``\TYPO3\CMS\Dbal\Database\SqlParser`` - and we can
   always extend it as need arises.
 
 

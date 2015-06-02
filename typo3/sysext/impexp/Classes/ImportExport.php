@@ -4110,7 +4110,7 @@ class ImportExport {
 	public function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = FALSE) {
 		// Initialize:
 		$output = array();
-		$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+		$diffUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 		// Check if both inputs are records:
 		if (is_array($databaseRecord) && is_array($importRecord)) {
 			// Traverse based on database record
@@ -4119,7 +4119,7 @@ class ImportExport {
 					if (isset($importRecord[$fN])) {
 						if (trim($databaseRecord[$fN]) !== trim($importRecord[$fN])) {
 							// Create diff-result:
-							$output[$fN] = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1));
+							$output[$fN] = $diffUtility->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $importRecord[$fN] : $databaseRecord[$fN], 0, 1, 1), BackendUtility::getProcessedValue($table, $fN, !$inverseDiff ? $databaseRecord[$fN] : $importRecord[$fN], 0, 1, 1));
 						}
 						unset($importRecord[$fN]);
 					}

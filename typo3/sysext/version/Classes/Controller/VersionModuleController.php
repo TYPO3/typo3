@@ -286,7 +286,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				$diff_1_record = BackendUtility::getRecord($this->table, $diff_1);
 				$diff_2_record = BackendUtility::getRecord($this->table, $diff_2);
 				if (is_array($diff_1_record) && is_array($diff_2_record)) {
-					$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+					$diffUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 					$tRows = array();
 					$tRows[] = '
 									<tr class="bgColor5 tableheader">
@@ -297,7 +297,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 					foreach ($diff_1_record as $fN => $fV) {
 						if ($GLOBALS['TCA'][$this->table]['columns'][$fN] && $GLOBALS['TCA'][$this->table]['columns'][$fN]['config']['type'] !== 'passthrough' && !GeneralUtility::inList('t3ver_label', $fN)) {
 							if ((string)$diff_1_record[$fN] !== (string)$diff_2_record[$fN]) {
-								$diffres = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($this->table, $fN, $diff_2_record[$fN], 0, 1), BackendUtility::getProcessedValue($this->table, $fN, $diff_1_record[$fN], 0, 1));
+								$diffres = $diffUtility->makeDiffDisplay(BackendUtility::getProcessedValue($this->table, $fN, $diff_2_record[$fN], 0, 1), BackendUtility::getProcessedValue($this->table, $fN, $diff_1_record[$fN], 0, 1));
 								$tRows[] = '
 									<tr class="bgColor4">
 										<td>' . $fN . '</td>

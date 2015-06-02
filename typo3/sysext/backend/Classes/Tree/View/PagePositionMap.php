@@ -136,15 +136,15 @@ class PagePositionMap {
 	public function positionTree($id, $pageinfo, $perms_clause, $R_URI) {
 		$code = '';
 		// Make page tree object:
-		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView localPageTree */
-		$t3lib_pageTree = GeneralUtility::makeInstance($this->pageTreeClassName);
-		$t3lib_pageTree->init(' AND ' . $perms_clause);
-		$t3lib_pageTree->addField('pid');
+		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTree */
+		$pageTree = GeneralUtility::makeInstance($this->pageTreeClassName);
+		$pageTree->init(' AND ' . $perms_clause);
+		$pageTree->addField('pid');
 		// Initialize variables:
 		$this->R_URI = $R_URI;
 		$this->elUid = $id;
 		// Create page tree, in $this->depth levels.
-		$t3lib_pageTree->getTree($pageinfo['pid'], $this->depth);
+		$pageTree->getTree($pageinfo['pid'], $this->depth);
 		if (!$this->dontPrintPageInsertIcons) {
 			$code .= $this->JSimgFunc();
 		}
@@ -153,23 +153,23 @@ class PagePositionMap {
 		$saveLatestUid = array();
 		$latestInvDepth = $this->depth;
 		// Traverse the tree:
-		foreach ($t3lib_pageTree->tree as $cc => $dat) {
+		foreach ($pageTree->tree as $cc => $dat) {
 			// Make link + parameters.
 			$latestInvDepth = $dat['invertedDepth'];
 			$saveLatestUid[$latestInvDepth] = $dat;
-			if (isset($t3lib_pageTree->tree[$cc - 1])) {
-				$prev_dat = $t3lib_pageTree->tree[$cc - 1];
+			if (isset($pageTree->tree[$cc - 1])) {
+				$prev_dat = $pageTree->tree[$cc - 1];
 				// If current page, subpage?
 				if ($prev_dat['row']['uid'] == $id) {
 					// 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
-					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth'])) {
+					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
 						$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgSubpage' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
 					}
 				}
 				// If going down
-				if ($prev_dat['invertedDepth'] > $t3lib_pageTree->tree[$cc]['invertedDepth']) {
-					$prevPid = $t3lib_pageTree->tree[$cc]['row']['pid'];
-				} elseif ($prev_dat['invertedDepth'] < $t3lib_pageTree->tree[$cc]['invertedDepth']) {
+				if ($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth']) {
+					$prevPid = $pageTree->tree[$cc]['row']['pid'];
+				} elseif ($prev_dat['invertedDepth'] < $pageTree->tree[$cc]['invertedDepth']) {
 					// If going up
 					// First of all the previous level should have an icon:
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
@@ -194,7 +194,7 @@ class PagePositionMap {
 			$code .= $t_code;
 		}
 		// If the current page was the last in the tree:
-		$prev_dat = end($t3lib_pageTree->tree);
+		$prev_dat = end($pageTree->tree);
 		if ($prev_dat['row']['uid'] == $id) {
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
 				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 4)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgSubpage' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';

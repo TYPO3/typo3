@@ -517,12 +517,12 @@ class RecordHistory {
 	public function renderDiff($entry, $table, $rollbackUid = 0) {
 		$lines = array();
 		if (is_array($entry['newRecord'])) {
-			$t3lib_diff_Obj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
+			$diffUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\DiffUtility::class);
 			$fieldsToDisplay = array_keys($entry['newRecord']);
 			foreach ($fieldsToDisplay as $fN) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
 					// Create diff-result:
-					$diffres = $t3lib_diff_Obj->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, 1), BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, 1));
+					$diffres = $diffUtility->makeDiffDisplay(BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, 1), BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, 1));
 					$lines[] = '
 						<tr class="bgColor4">
 						' . ($rollbackUid ? '<td style="width:33px">' . $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $GLOBALS['LANG']->getLL('revertField', 1), 2) . '</td>' : '') . '
