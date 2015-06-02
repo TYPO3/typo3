@@ -102,16 +102,18 @@ class Folder implements FolderInterface {
 	 * @return string
 	 */
 	public function getReadablePath($rootId = NULL) {
-		$oldPermissionFlag = $this->getStorage()->getEvaluatePermissions();
-		$this->getStorage()->setEvaluatePermissions(FALSE);
 		if ($rootId === NULL) {
-			$rootId = $this->storage->getRootLevelFolder(FALSE)->getIdentifier();
+			$rootId = $this->storage->getRootLevelFolder()->getIdentifier();
 		}
-		$readablePath = '';
+		$readablePath = '/';
 		if ($this->identifier !== $rootId) {
-			$readablePath = $this->getParentFolder()->getReadablePath($rootId);
+			try {
+				$readablePath = $this->getParentFolder()->getReadablePath($rootId);
+			} catch (Exception\InsufficientFolderAccessPermissionsException $e) {
+				// May no access to parent folder (e.g. because of mount point)
+				$readablePath = '/';
+			}
 		}
-		$this->getStorage()->setEvaluatePermissions($oldPermissionFlag);
 		return $readablePath . $this->name . '/';
 	}
 
