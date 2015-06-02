@@ -2810,14 +2810,16 @@ Connection: close
 	 *
 	 * @param string $directory The directory to be renamed and flushed
 	 * @param bool $keepOriginalDirectory Whether to only empty the directory and not remove it
+	 * @param bool $flushOpcodeCache Also flush the opcode cache right after renaming the directory.
 	 * @return bool Whether the action was successful
 	 */
-	static public function flushDirectory($directory, $keepOriginalDirectory = FALSE) {
+	static public function flushDirectory($directory, $keepOriginalDirectory = FALSE, $flushOpcodeCache = FALSE) {
 		$result = FALSE;
 
 		if (is_dir($directory)) {
 			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove', TRUE) . '/';
 			if (rename($directory, $temporaryDirectory)) {
+				$flushOpcodeCache && OpcodeCacheUtility::clearAllActive($directory);
 				if ($keepOriginalDirectory) {
 					self::mkdir($directory);
 				}
