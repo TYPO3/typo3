@@ -273,7 +273,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$this->JScode();
 		$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$loadDB->start($vars['db_mountpoints'], 'pages');
-		$content .= '<form action="" method="post" enctype="multipart/form-data">
+		$this->t3lib_TCEforms->printNeededJSFunctions();
+		$content .= '<form action="" method="post" enctype="multipart/form-data" name="' . $this->t3lib_TCEforms->formName . '">
 						<fieldset class="fields">
 							<legend>' . $GLOBALS['LANG']->getLL('action_t1_legend_generalFields') . '</legend>
 							<div class="row">
