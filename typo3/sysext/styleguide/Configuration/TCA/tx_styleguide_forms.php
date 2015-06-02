@@ -2070,12 +2070,17 @@ return array(
 												<eval>trim</eval>
 												<softref>typolink</softref>
 												<wizards type="array">
-													<_PADDING>2</_PADDING>
 													<link type="array">
 														<type>popup</type>
 														<title>Link</title>
 														<icon>link_popup.gif</icon>
-														<script>browse_links.php?mode=wizard&amp;act=page</script>
+														<module type="array">
+															<name>wizard_element_browser</name>
+															<urlParameters type="array">
+																<mode>wizard</mode>
+																<act>file|url</act>
+															</urlParameters>
+														</module>
 														<params type="array">
 															<blindLinkOptions>mail,folder,spec</blindLinkOptions>
 														</params>
