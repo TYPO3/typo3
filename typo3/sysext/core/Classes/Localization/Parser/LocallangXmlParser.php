@@ -162,7 +162,7 @@ class LocallangXmlParser extends AbstractXmlParser {
 	protected function parseXmlTargetFile($targetPath) {
 		$rootXmlNode = FALSE;
 		if (file_exists($targetPath)) {
-			$rootXmlNode = simplexml_load_file($targetPath, 'SimpleXmlElement', \LIBXML_NOWARNING);
+			$rootXmlNode = simplexml_load_file($targetPath, 'SimpleXMLElement', LIBXML_NOWARNING);
 		}
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
 			throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);

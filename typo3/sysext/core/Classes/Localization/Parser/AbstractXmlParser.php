@@ -100,7 +100,7 @@ abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\
 	 * @throws \TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException
 	 */
 	protected function parseXmlFile() {
-		$rootXmlNode = simplexml_load_file($this->sourcePath, 'SimpleXmlElement', \LIBXML_NOWARNING);
+		$rootXmlNode = simplexml_load_file($this->sourcePath, 'SimpleXMLElement', LIBXML_NOWARNING);
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
 			throw new InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file.', 1278155988);
 		}
