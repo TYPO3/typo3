@@ -1529,7 +1529,6 @@ class DatabaseConnection {
 	 *
 	 * @throws \RuntimeException
 	 * @throws \UnexpectedValueException
-	 * @internal param string $user Username to connect with.
 	 * @return void
 	 */
 	public function connectDB() {
