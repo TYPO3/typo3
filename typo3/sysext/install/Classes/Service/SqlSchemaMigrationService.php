@@ -176,7 +176,7 @@ class SqlSchemaMigrationService {
 		$total = array();
 		$tempKeys = array();
 		$tempKeysPrefix = array();
-		$GLOBALS['TYPO3_DB']->sql_select_db();
+		$GLOBALS['TYPO3_DB']->connectDB();
 		echo $GLOBALS['TYPO3_DB']->sql_error();
 		$tables = $GLOBALS['TYPO3_DB']->admin_get_tables();
 		foreach ($tables as $tableName => $tableStatus) {

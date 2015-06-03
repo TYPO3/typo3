@@ -1545,7 +1545,6 @@ class DatabaseConnection {
 	 * @param string $db Deprecated since 6.1, will be removed in two versions. Database name to connect to
 	 * @throws \RuntimeException
 	 * @throws \UnexpectedValueException
-	 * @internal param string $user Username to connect with.
 	 * @return void
 	 */
 	public function connectDB($host = NULL, $username = NULL, $password = NULL, $db = NULL) {
