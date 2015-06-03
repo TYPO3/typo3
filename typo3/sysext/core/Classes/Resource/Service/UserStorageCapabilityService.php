@@ -40,10 +40,10 @@ class UserStorageCapabilityService {
 		if ((int)$propertyArray['row']['uid'] > 0) {
 			$storage = ResourceFactory::getInstance()->getStorageObject($fileRecord['uid']);
 			$storageRecord = $storage->getStorageRecord();
-			$isPublic = $storage->isPublic();
+			$isPublic = $storage->isPublic() && $storageRecord['is_public'];
 
 			// Display a warning to the BE User in case settings is not inline with storage capability.
-			if ($storageRecord['is_public'] != $storage->isPublic()) {
+			if ($storageRecord['is_public'] && !$storage->isPublic()) {
 				$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class,
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.message.storage_is_no_public'),
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.header.storage_is_no_public'),
