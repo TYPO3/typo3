@@ -476,3 +476,24 @@ class t3lib_object_prototypeNeedsSingletonInConstructor {
 	}
 
 }
+
+/**
+ * Class that needs initialization after instantiation
+ */
+class t3lib_object_tests_initializable {
+	/**
+	 * @var bool
+	 */
+	protected $initialized = FALSE;
+
+	public function initializeObject() {
+		$this->initialized = TRUE;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isInitialized() {
+		return $this->initialized;
+	}
+}
