@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array (
-		'title' => 'MAIN record: Form engine tests',
+		'title' => 'Form engine tests - Top record',
 		'label' => 'uid',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
