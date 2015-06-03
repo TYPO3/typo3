@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -4618,16 +4617,16 @@ if (version == "n3") {
 		} else {
 			$trace = debug_backtrace();
 			// This is a hack to work around ___FILE___ resolving symbolic links
-			$PATH_site_real = str_replace('t3lib', '', realpath(PATH_site . 't3lib'));
+			$PATH_site_real = dirname(realpath(PATH_site . 'typo3')) . '/';
 			$file = $trace[0]['file'];
-			if (substr($file, 0, strlen($PATH_site_real)) === $PATH_site_real) {
+			if (GeneralUtility::isFirstPartOfStr($file, $PATH_site_real)) {
 				$file = str_replace($PATH_site_real, '', $file);
 			} else {
 				$file = str_replace(PATH_site, '', $file);
 			}
 			$line = $trace[0]['line'];
 			$trigger = $file . ' on line ' . $line;
-			$warning = '$TSFE->set_no_cache() was triggered by ' . $trigger . '.';
+			$warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by ' . $trigger . '.';
 		}
 		if ($this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
 			$warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
