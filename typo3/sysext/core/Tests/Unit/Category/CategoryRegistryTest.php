@@ -48,7 +48,9 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'ctrl' => array(),
 				'columns' => array(),
 				'types' => array(
-					'1' => array()
+					'1' => array(
+						'showitem' => ''
+					)
 				),
 			);
 		}
