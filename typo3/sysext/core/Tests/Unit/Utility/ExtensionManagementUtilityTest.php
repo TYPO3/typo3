@@ -375,10 +375,27 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$this->assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
 		// unchanged because the palette is not used
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-		// unchanged because the palette is not used
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
+		// changed
 		$this->assertEquals('fieldZ, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
 		$this->assertEquals('fieldZ, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addToAllTCAtypesReplacesExistingOnes() {
+		$table = $this->getUniqueId('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+		$typesBefore = $GLOBALS['TCA'][$table]['types'];
+		ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldX;;foo;;', '', 'replace:fieldX');
+		$this->assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
+		// unchanged because the palette is not used
+		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
+		// changed
+		$this->assertEquals('fieldX;;foo;;, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
+		$this->assertEquals('fieldX;;foo;;, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
 	}
 
 	///////////////////////////////////////////////////

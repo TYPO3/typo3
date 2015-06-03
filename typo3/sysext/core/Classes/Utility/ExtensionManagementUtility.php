@@ -274,7 +274,7 @@ class ExtensionManagementUtility {
 	 * @param string $table Table name
 	 * @param string $newFieldsString Field list to add.
 	 * @param string $typeList List of specific types to add the field list to. (If empty, all type entries are affected)
-	 * @param string $position Insert fields before (default) or after one
+	 * @param string $position Insert fields before (default) or after one, or replace a field
 	 * @return void
 	 */
 	static public function addToAllTCAtypes($table, $newFieldsString, $typeList = '', $position = '') {
@@ -297,7 +297,6 @@ class ExtensionManagementUtility {
 
 			$fieldExists = FALSE;
 			$newPosition = '';
-			$paletteNames = array();
 			if (is_array($GLOBALS['TCA'][$table]['palettes'])) {
 				// Get the palette names used in current showitem
 				$paletteCount = preg_match_all('/(?:^|,)                    # Line start or a comma
@@ -307,7 +306,7 @@ class ExtensionManagementUtility {
 					)/x', $typeDetails['showitem'], $paletteMatches);
 				if ($paletteCount > 0) {
 					$paletteNames = array_filter(array_merge($paletteMatches[1], $paletteMatches[2]));
-					if (count($paletteNames)) {
+					if (!empty($paletteNames)) {
 						foreach ($paletteNames as $paletteName) {
 							$palette = $GLOBALS['TCA'][$table]['palettes'][$paletteName];
 							switch ($positionIdentifier) {
@@ -592,7 +591,11 @@ class ExtensionManagementUtility {
 	static protected function executePositionedStringInsertion($list, $insertionList, $insertionPosition = '') {
 		$list = $newList = trim($list, ", \t\n\r\0\x0B");
 
-		$insertionList = self::removeDuplicatesForInsertion($insertionList, $list);
+		list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition);
+
+		if ($location !== 'replace') {
+			$insertionList = self::removeDuplicatesForInsertion($insertionList, $list);
+		}
 
 		if ($insertionList === '') {
 			return $list;
@@ -604,7 +607,6 @@ class ExtensionManagementUtility {
 			return $list . ', ' . $insertionList;
 		}
 
-		list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition);
 		// The $insertPosition may be a palette: after:--palette--;;title
 		// In the $list the palette may contain a LLL string in between the ;;
 		// Adjust the regex to match that
