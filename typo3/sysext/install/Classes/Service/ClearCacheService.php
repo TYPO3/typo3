@@ -65,6 +65,10 @@ class ClearCacheService {
 			$tableName = $table['Name'];
 			if (substr($tableName, 0, 3) === 'cf_') {
 				$database->exec_TRUNCATEquery($tableName);
+			} elseif ($tableName === 'cache_treelist') {
+				// cache_treelist is not implemented in the caching framework.
+				// clear this table manually
+				$database->exec_TRUNCATEquery('cache_treelist');
 			}
 		}
 
