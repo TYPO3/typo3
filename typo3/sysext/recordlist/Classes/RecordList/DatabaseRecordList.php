@@ -1407,17 +1407,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		 *        The order of the icons is depending on the order of those array entries.
 		 */
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'])) {
+			// for compatibility reason, we move all icons to the rootlevel
+			// before calling the hooks
+			foreach ($cells as $section => $actions) {
+				foreach ($actions as $actionKey => $action) {
+					$cells[$actionKey] = $action;
+				}
+			}
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.db_list_extra.inc']['actions'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof RecordListHookInterface) {
 					throw new \UnexpectedValueException('$hookObject must implement interface ' . RecordListHookInterface::class, 1195567840);
-				}
-				// for compatibility reason, we move all icons to the rootlevel
-				// before calling the hook
-				foreach ($cells as $section => $actions) {
-					foreach ($actions as $actionKey => $action) {
-						$cells[$actionKey] = $action;
-					}
 				}
 				$cells = $hookObject->makeControl($table, $row, $cells, $this);
 			}
