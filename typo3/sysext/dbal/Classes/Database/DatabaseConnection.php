@@ -1976,8 +1976,24 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @param int $maxLength
 	 * @throws \RuntimeException
 	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use getMetadata() instead
 	 */
 	public function MetaType($type, $table, $maxLength = -1) {
+		GeneralUtility::logDeprecatedFunction();
+		return $this->getMetadata($type, $table, 'dummyFieldToBypassCache', $maxLength);
+	}
+
+	/**
+	 * Return Metadata for native field type (ADOdb only!)
+	 *
+	 * @param string $type  Native type as reported by admin_get_fields()
+	 * @param string $table Table name for which the type is queried. Important for detection of DBMS handler of the query!
+	 * @param string $field Field name for which the type is queried. Important for accessing the field information cache.
+	 * @param int    $maxLength
+	 * @throws \RuntimeException
+	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 */
+	public function getMetadata($type, $table, $field, $maxLength = -1) {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		$str = '';
 		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
@@ -1985,7 +2001,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$str = $type;
 				break;
 			case 'adodb':
-				if (in_array($table, $this->cache_fieldType)) {
+				if (!empty($this->cache_fieldType[$table][$field])) {
+					$str = $this->cache_fieldType[$table][$field]['metaType'];
+				} else {
 					$rs = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit('SELECT * FROM ' . $this->quoteFromTables($table), 1);
 					$str = $rs->MetaType($type, $maxLength);
 				}
@@ -2640,7 +2658,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				if (is_array($fieldRows)) {
 					foreach ($fieldRows as $k => $fieldRow) {
 						settype($fieldRow, 'array');
-						$metaType = $this->MetaType($fieldRow['type'], $tableName, $fieldRow['name']);
+						$metaType = $this->getMetadata($fieldRow['type'], $tableName, $fieldRow['name']);
 						$output[$fieldRow['name']] = $this->dbmsSpecifics->transformFieldRowToMySQL($fieldRow, $metaType);
 					}
 				}
