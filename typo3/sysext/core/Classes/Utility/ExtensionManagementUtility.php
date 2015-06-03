@@ -285,7 +285,7 @@ class ExtensionManagementUtility {
 				continue;
 			}
 			// skip if fields were already added
-			if (strpos($typeDetails['showitem'], $newFieldsString) !== FALSE) {
+			if (!isset($typeDetails['showitem']) || strpos($typeDetails['showitem'], $newFieldsString) !== FALSE) {
 				continue;
 			}
 
