@@ -244,8 +244,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					if (!is_subclass_of($className, Specifics\AbstractSpecifics::class)) {
 						throw new \InvalidArgumentException($className . ' must inherit from ' . Specifics\AbstractSpecifics::class, 1416919866);
 					}
-					$this->dbmsSpecifics = GeneralUtility::makeInstance($className);
+				} else {
+					$className = Specifics\Null::class;
 				}
+				$this->dbmsSpecifics = GeneralUtility::makeInstance($className);
 			}
 		}
 		$this->cacheFieldInfo();
@@ -383,7 +385,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$fdef = $this->SQLparser->parseFieldDef($fdefString);
 					$fieldType = isset($fdef['fieldType']) ? $fdef['fieldType'] : '';
 					$this->cache_fieldType[$table][$field]['type'] = $fieldType;
-					$this->cache_fieldType[$table][$field]['metaType'] = $this->MySQLMetaType($fieldType);
+					$this->cache_fieldType[$table][$field]['metaType'] = $this->dbmsSpecifics->getMetaFieldType($fieldType);
 					$this->cache_fieldType[$table][$field]['notnull'] = isset($fdef['featureIndex']['NOTNULL']) && !$this->SQLparser->checkEmptyDefaultValue($fdef['featureIndex']) ? 1 : 0;
 					if (isset($fdef['featureIndex']['DEFAULT'])) {
 						$default = $fdef['featureIndex']['DEFAULT']['value'][0];
@@ -2001,66 +2003,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 * @param string $t native type as reported as in mysqldump files
 	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function MySQLMetaType($t) {
-		switch (strtoupper($t)) {
-			case 'STRING':
-
-			case 'CHAR':
-
-			case 'VARCHAR':
-
-			case 'TINYBLOB':
-
-			case 'TINYTEXT':
-
-			case 'ENUM':
-
-			case 'SET':
-				return 'C';
-			case 'TEXT':
-
-			case 'LONGTEXT':
-
-			case 'MEDIUMTEXT':
-				return 'XL';
-			case 'IMAGE':
-
-			case 'LONGBLOB':
-
-			case 'BLOB':
-
-			case 'MEDIUMBLOB':
-				return 'B';
-			case 'YEAR':
-
-			case 'DATE':
-				return 'D';
-			case 'TIME':
-
-			case 'DATETIME':
-
-			case 'TIMESTAMP':
-				return 'T';
-			case 'FLOAT':
-
-			case 'DOUBLE':
-				return 'F';
-			case 'INT':
-
-			case 'INTEGER':
-
-			case 'TINYINT':
-
-			case 'SMALLINT':
-
-			case 'MEDIUMINT':
-
-			case 'BIGINT':
-				return 'I8';
-			default:
-				return 'N';
-		}
+		GeneralUtility::logDeprecatedFunction();
+		return $this->dbmsSpecifics->getMetaFieldType($t);
 	}
 
 	/**
@@ -2068,44 +2015,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 *
 	 * @param string $meta Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
 	 * @return string Native type as reported as in mysqldump files, uppercase
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function MySQLActualType($meta) {
-		switch (strtoupper($meta)) {
-			case 'C':
-				return 'VARCHAR';
-			case 'XL':
-
-			case 'X':
-				return 'LONGTEXT';
-			case 'C2':
-				return 'VARCHAR';
-			case 'X2':
-				return 'LONGTEXT';
-			case 'B':
-				return 'LONGBLOB';
-			case 'D':
-				return 'DATE';
-			case 'T':
-				return 'DATETIME';
-			case 'L':
-				return 'TINYINT';
-			case 'I':
-
-			case 'I1':
-
-			case 'I2':
-
-			case 'I4':
-
-			case 'I8':
-				return 'BIGINT';
-			case 'F':
-				return 'DOUBLE';
-			case 'N':
-				return 'NUMERIC';
-			default:
-				return $meta;
-		}
+		GeneralUtility::logDeprecatedFunction();
+		return $this->dbmsSpecifics->getNativeFieldType($meta);
 	}
 
 	/**************************************
@@ -2725,15 +2639,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				if (is_array($fieldRows)) {
 					foreach ($fieldRows as $k => $fieldRow) {
 						settype($fieldRow, 'array');
-						$fieldRow['Field'] = $fieldRow['name'];
-						$ntype = $this->MySQLActualType($this->MetaType($fieldRow['type'], $tableName));
-						$ntype .= $fieldRow['max_length'] != -1 ? ($ntype == 'INT' ? '(11)' : '(' . $fieldRow['max_length'] . ')') : '';
-						$fieldRow['Type'] = strtolower($ntype);
-						$fieldRow['Null'] = '';
-						$fieldRow['Key'] = '';
-						$fieldRow['Default'] = $fieldRow['default_value'];
-						$fieldRow['Extra'] = '';
-						$output[$fieldRow['name']] = $fieldRow;
+						$metaType = $this->MetaType($fieldRow['type'], $tableName, $fieldRow['name']);
+						$output[$fieldRow['name']] = $this->dbmsSpecifics->transformFieldRowToMySQL($fieldRow, $metaType);
 					}
 				}
 				break;

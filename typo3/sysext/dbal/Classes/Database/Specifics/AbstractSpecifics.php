@@ -69,4 +69,156 @@ abstract class AbstractSpecifics {
 		return array_chunk($expressionList, $this->getSpecific(self::LIST_MAXEXPRESSIONS), $preserveArrayKeys);
 	}
 
+	/**
+	 * Transforms a database specific representation of field information and translates it
+	 * as close as possible to the MySQL standard.
+	 *
+	 * @param array $fieldRow
+	 * @param string $metaType
+	 * @return array
+	 */
+	public function transformFieldRowToMySQL($fieldRow, $metaType) {
+		$mysqlType = $this->getNativeFieldType($metaType);
+		$mysqlType .= $this->getNativeFieldLength($mysqlType, $fieldRow['max_length']);
+
+		$fieldRow['Field'] = $fieldRow['name'];
+		$fieldRow['Type'] = strtolower($mysqlType);
+		$fieldRow['Null'] = '';
+		$fieldRow['Key'] = '';
+		$fieldRow['Default'] = $fieldRow['default_value'];
+		$fieldRow['Extra'] = '';
+
+		return $fieldRow;
+	}
+
+	/**
+	 * Return actual MySQL type for meta field type
+	 *
+	 * @param string $metaType Meta type (currenly ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 * @return string Native type as reported as in mysqldump files, uppercase
+	 */
+	public function getNativeFieldType($metaType) {
+		switch (strtoupper($metaType)) {
+			case 'C':
+				return 'VARCHAR';
+			case 'XL':
+
+			case 'X':
+				return 'LONGTEXT';
+			case 'C2':
+				return 'VARCHAR';
+			case 'X2':
+				return 'LONGTEXT';
+			case 'B':
+				return 'LONGBLOB';
+			case 'D':
+				return 'DATE';
+			case 'T':
+				return 'DATETIME';
+			case 'L':
+				return 'TINYINT';
+			case 'I':
+
+			case 'I1':
+
+			case 'I2':
+
+			case 'I4':
+
+			case 'I8':
+				return 'BIGINT';
+			case 'F':
+				return 'DOUBLE';
+			case 'N':
+				return 'NUMERIC';
+			default:
+				return $metaType;
+		}
+	}
+
+	/**
+	 * Return MetaType for native MySQL field type
+	 *
+	 * @param string $nativeType native type as reported as in mysqldump files
+	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
+	 */
+	public function getMetaFieldType($nativeType) {
+		switch (strtoupper($nativeType)) {
+			case 'STRING':
+
+			case 'CHAR':
+
+			case 'VARCHAR':
+
+			case 'TINYBLOB':
+
+			case 'TINYTEXT':
+
+			case 'ENUM':
+
+			case 'SET':
+				return 'C';
+			case 'TEXT':
+
+			case 'LONGTEXT':
+
+			case 'MEDIUMTEXT':
+				return 'XL';
+			case 'IMAGE':
+
+			case 'LONGBLOB':
+
+			case 'BLOB':
+
+			case 'MEDIUMBLOB':
+				return 'B';
+			case 'YEAR':
+
+			case 'DATE':
+				return 'D';
+			case 'TIME':
+
+			case 'DATETIME':
+
+			case 'TIMESTAMP':
+				return 'T';
+			case 'FLOAT':
+
+			case 'DOUBLE':
+				return 'F';
+			case 'INT':
+
+			case 'INTEGER':
+
+			case 'TINYINT':
+
+			case 'SMALLINT':
+
+			case 'MEDIUMINT':
+
+			case 'BIGINT':
+				return 'I8';
+			default:
+				return 'N';
+		}
+	}
+
+	/**
+	 * Determine the native field length information for a table field.
+	 *
+	 * @param string  $mysqlType
+	 * @param integer $maxLength
+	 * @return string
+	 */
+	public function getNativeFieldLength($mysqlType, $maxLength) {
+		if ($maxLength === -1) {
+			return '';
+		}
+		switch ($mysqlType) {
+			case 'INT':
+				return '(11)';
+			default:
+				return '(' . $maxLength . ')';
+		}
+	}
 }

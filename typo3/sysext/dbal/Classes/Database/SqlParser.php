@@ -364,7 +364,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				break;
 			case 'adodb':
 				// Set type:
-				$type = $this->databaseConnection->MySQLMetaType($fieldCfg['fieldType']);
+				$type = $this->databaseConnection->getSpecifics()->getMetaFieldType($fieldCfg['fieldType']);
 				$cfg = $type;
 				// Add value, if any:
 				if ((string)$fieldCfg['value'] !== '' && in_array($type, array('C', 'C2'))) {
