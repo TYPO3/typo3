@@ -1961,6 +1961,10 @@ class ResourceStorage implements ResourceStorageInterface {
 
 		$this->emitPreFolderDeleteSignal($folderObject);
 
+		foreach ($this->getFilesInFolder($folderObject, 0, 0, FALSE, $deleteRecursively) as $file) {
+			$this->deleteFile($file);
+		}
+
 		$result = $this->driver->deleteFolder($folderObject->getIdentifier(), $deleteRecursively);
 
 		$this->emitPostFolderDeleteSignal($folderObject);
