@@ -361,10 +361,10 @@ class ElementInformationController {
 			// show the backend username who created the issue
 			if ($name === 'cruser_id' && $rowValue) {
 				$userTemp = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('username, realName', 'be_users', 'uid = ' . (int)$rowValue);
-				if ($userTemp[0]['username'] !== '') {
-					$rowValue = $userTemp[0]['username'];
-					if ($userTemp[0]['realName'] !== '') {
-						$rowValue .= ' - ' . $userTemp[0]['realName'];
+				if ($userTemp['username'] !== '') {
+					$rowValue = $userTemp['username'];
+					if ($userTemp['realName'] !== '') {
+						$rowValue .= ' - ' . $userTemp['realName'];
 					}
 				}
 			}
