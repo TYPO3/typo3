@@ -16,20 +16,15 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * TYPO3Link plugin for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class Typo3Link extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -39,13 +34,6 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'TYPO3Link';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = '';
-
-	/**
 	 * Path to the skin file relative to the extension directory
 	 *
 	 * @var string
@@ -53,28 +41,28 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/typo3-link.css';
 
 	/**
-	 * Reference to the invoking object
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 * @var string
 	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'link, unlink';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'link' => 'CreateLink',
 		'unlink' => 'UnLink'
 	);
 
+	/**
+	 * Returns TRUE if the plugin is available and correctly initialized
+	 *
+	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+	 */
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject);
 		// Check if this should be enabled based on Page TSConfig
@@ -129,7 +117,7 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'type : "' . str_replace('"', '', str_replace('\'', '', $conf['type'])) . '"' . LF;
 				}
 				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
-					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'image : "' . $this->htmlAreaRTE->siteURL . \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))))) . '"' . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'image : "' . $this->htmlAreaRTE->siteURL . GeneralUtility::resolveBackPath((TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))))) . '"' . LF;
 				}
 				$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'addIconAfterLink : ' . ($conf['addIconAfterLink'] ? 'true' : 'false') . LF;
 				if (trim($conf['altText'])) {
@@ -159,7 +147,7 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	public function applyToolbarConstraints($show) {
 		// We will not allow unlink if link is not enabled
 		if (!in_array('link', $show)) {
-			return array_diff($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons));
+			return array_diff($show, GeneralUtility::trimExplode(',', $this->pluginButtons));
 		} else {
 			return $show;
 		}

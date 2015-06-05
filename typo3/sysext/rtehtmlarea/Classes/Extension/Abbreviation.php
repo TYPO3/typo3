@@ -15,21 +15,18 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * Abbreviation extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class Abbreviation extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -39,35 +36,11 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'Abbreviation';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = '';
-
-	/**
 	 * Path to the skin file relative to the extension directory
 	 *
 	 * @var string
 	 */
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/abbreviation.css';
-
-	/**
-	 * Reference to the invoking object
-	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
-	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 
 	/**
 	 * Comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
@@ -85,17 +58,27 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'abbreviation' => 'Abbreviation'
 	);
 
+	/**
+	 * Absolute number of acronyms
+	 *
+	 * @var int
+	 */
 	protected $acronymIndex = 0;
 
+	/**
+	 * Absolute number of abbreviations
+	 *
+	 * @var int
+	 */
 	protected $abbreviationIndex = 0;
 
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase Reference to parent object
+	 * @param RteHtmlAreaBase $parentObject Reference to parent object
 	 * @return bool TRUE if this plugin should be made available in the current environment and is correctly initialized
 	 */
-	public function main(\TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase $parentObject) {
+	public function main(RteHtmlAreaBase $parentObject) {
 		// acronym button is deprecated as of TYPO3 CMS 7.0, use abbreviation instead
 		// Convert the acronym button configuration
 		if (isset($this->thisConfig['buttons.']['acronym.']) && is_array($this->thisConfig['buttons.']['acronym.'])) {
@@ -140,7 +123,7 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		}
 		// Remove button if all fieldsets are removed
 		$removedFieldsets = GeneralUtility::trimExplode(',', $this->thisConfig['buttons.']['abbreviation.']['removeFieldsets'], TRUE);
-		return parent::main($parentObject) && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') && count($removedFieldsets) < 4;
+		return parent::main($parentObject) && ExtensionManagementUtility::isLoaded('static_info_tables') && count($removedFieldsets) < 4;
 	}
 
 	/**
@@ -211,7 +194,7 @@ class Abbreviation extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			if ($altMountPoints) {
 				$GLOBALS['BE_USER']->groupData['webmounts'] = $savedGroupDataWebmounts;
 			}
-			$queryGenerator = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\QueryGenerator::class);
+			$queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
 			$pageTree = '';
 			$pageTreePrefix = '';
 			foreach ($pids as $key => $val) {

@@ -14,19 +14,16 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
+
 /**
  * SelectFont extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class SelectFont extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -43,35 +40,27 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToLocallangFile = 'extensions/SelectFont/locallang.xlf';
 
 	/**
-	 * Path to the skin file relative to the extension directory
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
 	 */
-	protected $relativePathToSkin = '';
-
-	/**
-	 * Reference to the invoking object
-	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
-	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'fontstyle,fontsize';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'fontstyle' => 'FontName',
 		'fontsize' => 'FontSize'
 	);
 
+	/**
+	 * List of default fonts
+	 *
+	 * @var array
+	 */
 	protected $defaultFont = array(
 		'fontstyle' => array(
 			'Arial' => 'Arial,sans-serif',
@@ -95,8 +84,19 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		)
 	);
 
+	/**
+	 * RTE properties
+	 *
+	 * @var array
+	 */
 	protected $RTEProperties;
 
+	/**
+	 * Returns TRUE if the plugin is available and correctly initialized
+	 *
+	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+	 */
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['allowStyleAttribute'];
 		if ($this->htmlAreaRTE->is_FE()) {
@@ -115,7 +115,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 */
 	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$registerRTEinJavascriptString = '';
-		$pluginButtonsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons);
+		$pluginButtonsArray = GeneralUtility::trimExplode(',', $this->pluginButtons);
 		// Process Page TSConfig configuration for each button
 		foreach ($pluginButtonsArray as $buttonId) {
 			if (in_array($buttonId, $this->toolbar)) {
@@ -142,7 +142,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$hideItems = $this->thisConfig['buttons.'][$buttonId . '.']['removeItems'];
 			}
 			if ($this->thisConfig['buttons.'][$buttonId . '.']['addItems']) {
-				$addItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), TRUE);
+				$addItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), TRUE);
 			}
 		}
 		// Initializing the items array
@@ -156,7 +156,7 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		if ($hideItems != '*') {
 			$index = 0;
 			foreach ($this->defaultFont[$buttonId] as $name => $value) {
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($hideItems, strval(($index + 1)))) {
+				if (!GeneralUtility::inList($hideItems, strval(($index + 1)))) {
 					if ($this->htmlAreaRTE->is_FE()) {
 						$label = $GLOBALS['TSFE']->getLLL($name, $this->LOCAL_LANG);
 					} else {

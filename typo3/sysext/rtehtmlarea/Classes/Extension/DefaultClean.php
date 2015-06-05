@@ -14,19 +14,16 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
+
 /**
  * Default Clean extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class DefaultClean extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class DefaultClean extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -36,41 +33,27 @@ class DefaultClean extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'DefaultClean';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
 	 */
-	protected $relativePathToLocallangFile = '';
-
-	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = '';
-
-	/**
-	 * Reference to the invoking object
-	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
-	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'cleanword';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'cleanword' => 'CleanWord'
 	);
 
+	/**
+	 * Returns TRUE if the plugin is available and correctly initialized
+	 *
+	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+	 */
 	public function main($parentObject) {
 		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && !is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
 	}
@@ -103,7 +86,7 @@ class DefaultClean extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
-		return array_unique(array_merge($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons)));
+		return array_unique(array_merge($show, GeneralUtility::trimExplode(',', $this->pluginButtons)));
 	}
 
 }

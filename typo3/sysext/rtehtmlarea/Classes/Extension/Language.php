@@ -14,19 +14,17 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
+
 /**
  * Language plugin for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class Language extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -36,13 +34,6 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'Language';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/Language/locallang.xlf';
-
-	/**
 	 * Path to the skin file relative to the extension directory
 	 *
 	 * @var string
@@ -50,23 +41,17 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/language.css';
 
 	/**
-	 * Reference to the invoking object
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 * @var string
 	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'lefttoright,righttoleft,language,showlanguagemarks';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'lefttoright' => 'LeftToRight',
 		'righttoleft' => 'RightToLeft',
@@ -74,9 +59,15 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'showlanguagemarks' => 'ShowLanguageMarks'
 	);
 
+	/**
+	 * Returns TRUE if the plugin is available and correctly initialized
+	 *
+	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+	 */
 	public function main($parentObject) {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
-			$this->pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList('language', $this->pluginButtons);
+		if (!ExtensionManagementUtility::isLoaded('static_info_tables')) {
+			$this->pluginButtons = GeneralUtility::rmFromList('language', $this->pluginButtons);
 		}
 		return parent::main($parentObject);
 	}
@@ -121,7 +112,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 */
 	public function getLanguages() {
 		$nameArray = array();
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+		if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			$where = '1=1';
 			$table = 'static_languages';
 			$lang = \SJBR\StaticInfoTables\Utility\LocalizationUtility::getCurrentLanguage();
@@ -133,7 +124,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$labelFields = implode(',', $prefixedTitleFields);
 			// Restrict to certain languages
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
-				$languageList = implode('\',\'', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
+				$languageList = implode('\',\'', GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
 				$where .= ' AND ' . $table . '.lg_iso_2 IN (' . $languageList . ')';
 			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($table . '.lg_iso_2,' . $table . '.lg_country_iso_2,' . $labelFields, $table, $where . ' AND lg_constructed = 0 ' . ($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table)));
@@ -161,7 +152,7 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	 * @return array toolbar button array, possibly updated
 	 */
 	public function applyToolbarConstraints($show) {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+		if (!ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			return array_diff($show, array('language'));
 		} else {
 			return $show;

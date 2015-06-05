@@ -14,19 +14,16 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Context Menu plugin for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class ContextMenu extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class ContextMenu extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -36,42 +33,13 @@ class ContextMenu extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'ContextMenu';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
+	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @var string
+	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	protected $relativePathToLocallangFile = '';
-
-	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = '';
-
-	/**
-	 * Reference to the invoking object
-	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
-	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
-	protected $pluginButtons;
-
-	protected $convertToolbarForHtmlAreaArray = array();
-
 	public function main($parentObject) {
-		$enabled = parent::main($parentObject) && !($this->htmlAreaRTE->client['browser'] == 'opera' || $this->thisConfig['contextMenu.']['disabled']);
-		return $enabled;
+		return parent::main($parentObject) && !($this->htmlAreaRTE->client['browser'] == 'opera' || $this->thisConfig['contextMenu.']['disabled']);
 	}
 
 	/**
@@ -87,11 +55,11 @@ class ContextMenu extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	RTEarea[' . $rteNumberPlaceholder . '].contextMenu =  ' . $this->htmlAreaRTE->buildNestedJSArray($this->thisConfig['contextMenu.']) . ';';
 			if ($this->thisConfig['contextMenu.']['showButtons']) {
 				$registerRTEinJavascriptString .= '
-	RTEarea[' . $rteNumberPlaceholder . '].contextMenu.showButtons = ' . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['contextMenu.']['showButtons'])), TRUE)) . ';';
+	RTEarea[' . $rteNumberPlaceholder . '].contextMenu.showButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(GeneralUtility::strtolower($this->thisConfig['contextMenu.']['showButtons'])), TRUE)) . ';';
 			}
 			if ($this->thisConfig['contextMenu.']['hideButtons']) {
 				$registerRTEinJavascriptString .= '
-	RTEarea[' . $rteNumberPlaceholder . '].contextMenu.hideButtons = ' . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['contextMenu.']['hideButtons'])), TRUE)) . ';';
+	RTEarea[' . $rteNumberPlaceholder . '].contextMenu.hideButtons = ' . json_encode(GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(GeneralUtility::strtolower($this->thisConfig['contextMenu.']['hideButtons'])), TRUE)) . ';';
 			}
 		}
 		return $registerRTEinJavascriptString;

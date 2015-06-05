@@ -14,19 +14,15 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+
 /**
  * InlineElements plugin for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class InlineElements extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -50,23 +46,17 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/inline-elements.css';
 
 	/**
-	 * Reference to the invoking object
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 * @var string
 	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'formattext, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard, quotation, sample, small, span, strikethrough, strong, subscript, superscript, underline, variable';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'formattext' => 'FormatText',
 		'bidioverride' => 'BiDiOverride',
@@ -93,6 +83,11 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'variable' => 'Variable'
 	);
 
+	/**
+	 * Default list of inline elements
+	 *
+	 * @var array
+	 */
 	protected $defaultInlineElements = array(
 		'none' => 'No markup',
 		'b' => 'Bold',
@@ -119,9 +114,19 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'var' => 'Variable'
 	);
 
+	/**
+	 * Default order of inline elements
+	 *
+	 * @var string
+	 */
 	protected $defaultInlineElementsOrder = 'none, bidioverride, big, bold, citation, code, definition, deletedtext, emphasis, insertedtext, italic, keyboard,
-						monospaced, quotation, sample, small, span, strikethrough, strong, subscript, superscript, underline, variable';
+		monospaced, quotation, sample, small, span, strikethrough, strong, subscript, superscript, underline, variable';
 
+	/**
+	 * Button names to inline elements
+	 *
+	 * @var array
+	 */
 	protected $buttonToInlineElement = array(
 		'none' => 'none',
 		'bidioverride' => 'bdo',
@@ -171,13 +176,13 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formattext.'])) {
 				// Removing elements
 				if ($this->thisConfig['buttons.']['formattext.']['removeItems']) {
-					$hideItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formattext.']['removeItems']), TRUE);
+					$hideItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formattext.']['removeItems']), TRUE);
 				}
 				// Restriction clause
 				if ($this->thisConfig['buttons.']['formattext.']['restrictTo']) {
-					$restrictTo = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . $this->thisConfig['buttons.']['formattext.']['restrictTo']), TRUE);
+					$restrictTo = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . $this->thisConfig['buttons.']['formattext.']['restrictTo']), TRUE);
 				} elseif ($this->thisConfig['buttons.']['formattext.']['restrictToItems']) {
-					$restrictTo = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . $this->thisConfig['buttons.']['formattext.']['restrictToItems']), TRUE);
+					$restrictTo = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . $this->thisConfig['buttons.']['formattext.']['restrictToItems']), TRUE);
 				}
 				// Elements order
 				if ($this->thisConfig['buttons.']['formattext.']['orderItems']) {
@@ -186,7 +191,7 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				$prefixLabelWithTag = $this->thisConfig['buttons.']['formattext.']['prefixLabelWithTag'] ? TRUE : $prefixLabelWithTag;
 				$postfixLabelWithTag = $this->thisConfig['buttons.']['formattext.']['postfixLabelWithTag'] ? TRUE : $postfixLabelWithTag;
 			}
-			$inlineElementsOrder = array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($inlineElementsOrder), TRUE), $hideItems);
+			$inlineElementsOrder = array_diff(GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($inlineElementsOrder), TRUE), $hideItems);
 			if (!in_array('*', $restrictTo)) {
 				$inlineElementsOrder = array_intersect($inlineElementsOrder, $restrictTo);
 			}

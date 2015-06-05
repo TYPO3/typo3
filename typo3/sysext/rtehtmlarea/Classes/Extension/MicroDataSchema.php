@@ -15,20 +15,14 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
  * Microdata Schema extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class MicroDataSchema extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class MicroDataSchema extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -52,23 +46,17 @@ class MicroDataSchema extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/microdata-schema.css';
 
 	/**
-	 * Reference to the invoking object
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 * @var string
 	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'showmicrodata';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'showmicrodata' => 'ShowMicrodata'
 	);

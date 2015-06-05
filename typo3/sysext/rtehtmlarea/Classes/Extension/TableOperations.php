@@ -14,19 +14,16 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
+
 /**
  * Table Operations extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class TableOperations extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -36,13 +33,6 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $pluginName = 'TableOperations';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = '';
-
-	/**
 	 * Path to the skin file relative to the extension directory
 	 *
 	 * @var string
@@ -50,31 +40,33 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/table-operations.css';
 
 	/**
-	 * Reference to the invoking object
+	 * TRUE if the registered plugin requires the PageTSConfig Classes configuration
 	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 * @var bool
 	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $requiresClassesConfiguration = TRUE;
 
-	// TRUE if the registered plugin requires the PageTSConfig Classes configuration
+	/**
+	 * The comma-separated list of names of prerequisite plugins
+	 *
+	 * @var string
+	 */
 	protected $requiredPlugins = 'TYPO3Color,BlockStyle';
 
-	// The comma-separated list of names of prerequisite plugins
+	/**
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+	 *
+	 * @var string
+	 */
 	protected $pluginButtons = 'table, toggleborders, tableproperties, tablerestyle, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
-						columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,
-						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
+		columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,
+		cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'table' => 'InsertTable',
 		'toggleborders' => 'TO-toggle-borders',
@@ -98,6 +90,12 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'cellmerge' => 'TO-cell-merge'
 	);
 
+	/**
+	 * Returns TRUE if the plugin is available and correctly initialized
+	 *
+	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
+	 */
 	public function main($parentObject) {
 		$available = parent::main($parentObject);
 		if ($this->htmlAreaRTE->client['browser'] == 'opera') {
@@ -157,7 +155,7 @@ class TableOperations extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	public function applyToolbarConstraints($show) {
 		// We will not allow any table operations button if the table button is not enabled
 		if (!in_array('table', $show)) {
-			return array_diff($show, \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons));
+			return array_diff($show, GeneralUtility::trimExplode(',', $this->pluginButtons));
 		} else {
 			return $show;
 		}

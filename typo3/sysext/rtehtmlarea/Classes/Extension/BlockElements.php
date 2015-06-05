@@ -14,19 +14,15 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+
 /**
  * BlockElements extension for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class BlockElements extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -50,23 +46,17 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/block-elements.css';
 
 	/**
-	 * Reference to the invoking object
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
+	 * @var string
 	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist, line';
 
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'formatblock' => 'FormatBlock',
 		'indent' => 'Indent',
@@ -83,6 +73,11 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'line' => 'InsertHorizontalRule'
 	);
 
+	/**
+	 * List of default block elements
+	 *
+	 * @var array
+	 */
 	protected $defaultBlockElements = array(
 		'none' => 'No block',
 		'p' => 'Paragraph',
@@ -104,6 +99,11 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		'section' => 'Section'
 	);
 
+	/**
+	 * Default order of block elements
+	 *
+	 * @var string
+	 */
 	protected $defaultBlockElementsOrder = 'none, p, h1, h2, h3, h4, h5, h6, pre, address, article, aside, blockquote, div, footer, header, nav, section';
 
 	/**
@@ -133,26 +133,26 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 					if ($this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formatblock.']['removeItems']) == '*') {
 						$hideItems = array_diff(array_keys($defaultBlockElements), array('none'));
 					} else {
-						$hideItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), TRUE);
+						$hideItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), TRUE);
 					}
 				}
 				// Adding elements
 				if ($this->thisConfig['buttons.']['formatblock.']['addItems']) {
-					$addItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['addItems'])), TRUE);
+					$addItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['addItems'])), TRUE);
 				}
 				// Restriction clause
 				if ($this->thisConfig['buttons.']['formatblock.']['restrictToItems']) {
-					$restrictTo = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['restrictToItems'])), TRUE);
+					$restrictTo = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['restrictToItems'])), TRUE);
 				}
 				// Elements order
 				if ($this->thisConfig['buttons.']['formatblock.']['orderItems']) {
-					$blockElementsOrder = 'none,' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['orderItems']);
+					$blockElementsOrder = 'none,' . GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['orderItems']);
 				}
 				$prefixLabelWithTag = $this->thisConfig['buttons.']['formatblock.']['prefixLabelWithTag'] ? TRUE : $prefixLabelWithTag;
 				$postfixLabelWithTag = $this->thisConfig['buttons.']['formatblock.']['postfixLabelWithTag'] ? TRUE : $postfixLabelWithTag;
 			}
 			// Adding custom items
-			$blockElementsOrder = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), TRUE), $addItems);
+			$blockElementsOrder = array_merge(GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), TRUE), $addItems);
 			// Add div element if indent is configured in the toolbar
 			if (in_array('indent', $this->toolbar) || in_array('outdent', $this->toolbar)) {
 				$blockElementsOrder = array_merge($blockElementsOrder, array('div'));

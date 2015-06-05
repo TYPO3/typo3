@@ -14,19 +14,14 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
+
 /**
  * TextStyle plugin for htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-class TextStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
-
-	/**
-	 * The key of the extension that is extending htmlArea RTE
-	 *
-	 * @var string
-	 */
-	protected $extensionKey = 'rtehtmlarea';
+class TextStyle extends RteHtmlAreaApi {
 
 	/**
 	 * The name of the plugin registered by the extension
@@ -43,40 +38,34 @@ class TextStyle extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	protected $relativePathToLocallangFile = 'extensions/TextStyle/locallang.xlf';
 
 	/**
-	 * Path to the skin file relative to the extension directory
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
 	 */
-	protected $relativePathToSkin = '';
-
-	/**
-	 * Reference to the invoking object
-	 *
-	 * @var \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase
-	 */
-	protected $htmlAreaRTE;
-
-	protected $thisConfig;
-
-	// Reference to RTE PageTSConfig
-	protected $toolbar;
-
-	// Reference to RTE toolbar array
-	protected $LOCAL_LANG;
-
-	// Frontend language array
 	protected $pluginButtons = 'textstyle';
 
-	// The comma separated list of button names that the extension id adding to the htmlArea RTE tollbar
+	/**
+	 * The comma separated list of label names that the extension id adding to the htmlArea RTE tollbar
+	 *
+	 * @var string
+	 */
 	protected $pluginLabels = 'textstylelabel';
 
-	// The comma separated list of label names that the extension id adding to the htmlArea RTE tollbar
-	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array(
 		'textstylelabel' => 'I[text_style]',
 		'textstyle' => 'TextStyle'
 	);
 
+	/**
+	 * TRUE if the registered plugin requires the PageTSConfig Classes configuration
+	 *
+	 * @var bool
+	 */
 	protected $requiresClassesConfiguration = TRUE;
 
 }

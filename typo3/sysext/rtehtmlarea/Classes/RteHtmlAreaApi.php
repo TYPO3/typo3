@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * API for extending htmlArea RTE
  *
@@ -21,57 +24,125 @@ namespace TYPO3\CMS\Rtehtmlarea;
  */
 abstract class RteHtmlAreaApi {
 
-	protected $extensionKey;
+	/**
+	 * The key of the extension that is extending htmlArea RTE
+	 *
+	 * @var string
+	 */
+	protected $extensionKey = 'rtehtmlarea';
 
-	// The key of the extension that is extending htmlArea RTE
+	/**
+	 * The name of the plugin registered by the extension
+	 *
+	 * @var string
+	 */
 	protected $pluginName;
 
-	// The name of the plugin registered by the extension
-	protected $relativePathToLocallangFile;
+	/**
+	 * Path to the localization file for this script, relative to the extension dir
+	 *
+	 * @var string
+	 */
+	protected $relativePathToLocallangFile = '';
 
-	// Path to the localization file for this script, relative to the extension dir
-	protected $relativePathToSkin;
+	/**
+	 * Path to the skin (css) file that should be added to the RTE skin when the registered plugin is enabled, relative to the extension dir
+	 *
+	 * @var string
+	 */
+	protected $relativePathToSkin = '';
 
-	// Path to the skin (css) file that should be added to the RTE skin when the registered plugin is enabled, relative to the extension dir
+	/**
+	 * Path to the directory containing the plugin, relative to the extension dir (should end with slash /)
+	 *
+	 * @var string
+	 */
 	protected $relativePathToPluginDirectory;
 
-	// Path to the directory containing the plugin, relative to the extension dir (should end with slash /)
+	/**
+	 * Reference to the invoking object
+	 *
+	 * @var RteHtmlAreaBase
+	 */
 	protected $htmlAreaRTE;
 
-	// Reference to the invoking object
+	/**
+	 * The extension key of the RTE
+	 *
+	 * @var string
+	 */
 	protected $rteExtensionKey;
 
-	// The extension key of the RTE
+	/**
+	 * Reference to RTE PageTSConfig
+	 *
+	 * @var array
+	 */
 	protected $thisConfig;
 
-	// Reference to RTE PageTSConfig
+	/**
+	 * Reference to RTE toolbar array
+	 *
+	 * @var array
+	 */
 	protected $toolbar;
 
-	// Reference to RTE toolbar array
+	/**
+	 * Frontend language array
+	 *
+	 * @var array
+	 */
 	protected $LOCAL_LANG;
 
-	// Frontend language array
+	/**
+	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+	 *
+	 * @var string
+	 */
 	protected $pluginButtons = '';
 
-	// The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
+	/**
+	 * The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
+	 *
+	 * @var string
+	 */
 	protected $pluginLabels = '';
 
-	// The comma-separated list of label names that the registered plugin is adding to the htmlArea RTE toolbar
+	/**
+	 * Boolean indicating whether the plugin is adding buttons or not
+	 *
+	 * @var bool
+	 */
 	protected $pluginAddsButtons = TRUE;
 
-	// Boolean indicating whether the plugin is adding buttons or not
+	/**
+	 * The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	 *
+	 * @var array
+	 */
 	protected $convertToolbarForHtmlAreaArray = array();
 
-	// The name-converting array, converting the button names used in the RTE PageTSConfing to the button id's used by the JS scripts
+	/**
+	 * TRUE if the registered plugin requires the PageTSConfig Classes configuration
+	 *
+	 * @var bool
+	 */
 	protected $requiresClassesConfiguration = FALSE;
 
-	// TRUE if the registered plugin requires the PageTSConfig Classes configuration
+	/**
+	 * TRUE if the plugin must be loaded synchronously
+	 *
+	 * @var bool
+	 */
 	protected $requiresSynchronousLoad = FALSE;
 
-	// TRUE if the plugin must be loaded synchronously
+	/**
+	 * The comma-separated list of names of prerequisite plugins
+	 *
+	 * @var string
+	 */
 	protected $requiredPlugins = '';
 
-	// The comma-separated list of names of prerequisite plugins
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
@@ -95,7 +166,7 @@ abstract class RteHtmlAreaApi {
 			if ($this->htmlAreaRTE->is_FE()) {
 				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
 					$this->LOCAL_LANG,
-					\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(
+					GeneralUtility::readLLfile(
 						'EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile,
 						$this->htmlAreaRTE->language
 					)
@@ -114,7 +185,7 @@ abstract class RteHtmlAreaApi {
 	 */
 	public function addButtonsToToolbar() {
 		//Add only buttons not yet in the default toolbar order
-		$addButtons = implode(',', array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, TRUE)));
+		$addButtons = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE), GeneralUtility::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, TRUE)));
 		return ($addButtons ? 'bar,' . $addButtons . ',linebreak,' : '') . $this->htmlAreaRTE->defaultToolbarOrder;
 	}
 
@@ -139,7 +210,7 @@ abstract class RteHtmlAreaApi {
 	 */
 	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
 		$registerRTEinJavascriptString = '';
-		$pluginButtons = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE);
+		$pluginButtons = GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE);
 		foreach ($pluginButtons as $button) {
 			if (in_array($button, $this->toolbar)) {
 				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
@@ -166,7 +237,7 @@ abstract class RteHtmlAreaApi {
 	 * @return string the full path to the plugin directory
 	 */
 	public function getPathToPluginDirectory() {
-		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
+		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . ExtensionManagementUtility::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
 	}
 
 	/**
