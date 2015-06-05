@@ -11,6 +11,7 @@ CREATE TABLE sys_file_metadata (
 	creator varchar(255) DEFAULT '' NOT NULL,
 	publisher varchar(45) DEFAULT '' NOT NULL,
 	source varchar(255) DEFAULT '' NOT NULL,
+	copyright varchar(255) DEFAULT '' NOT NULL,
 	location_country varchar(45) DEFAULT '' NOT NULL,
 	location_region varchar(45) DEFAULT '' NOT NULL,
 	location_city varchar(45) DEFAULT '' NOT NULL,
