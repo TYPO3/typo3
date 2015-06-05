@@ -2284,7 +2284,8 @@ class GraphicalFunctions {
 	 */
 	public function cacheImageDimensions(array $identifyResult) {
 		$filePath = $identifyResult[3];
-		$statusHash = $this->generateCacheKeyForImageFile($filePath);
+		$statusHash = $this->generateStatusHashForImageFile($filePath);
+		$identifier = $this->generateCacheKeyForImageFile($filePath);
 
 		/** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
 		$cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
@@ -2293,7 +2294,7 @@ class GraphicalFunctions {
 			'imagewidth'  => $identifyResult[0],
 			'imageheight' => $identifyResult[1],
 		);
-		$cache->set($statusHash, $imageDimensions);
+		$cache->set($identifier, $imageDimensions);
 
 		return TRUE;
 	}
@@ -2301,23 +2302,24 @@ class GraphicalFunctions {
 	/**
 	 * Fetches the cached image dimensions from the cache. Does not check if the image file exists.
 	 *
-	 * @param string $filePath the image file path
+	 * @param string $filePath Image file path, relative to PATH_site
 	 *
 	 * @return array|bool an array where [0]/[1] is w/h, [2] is extension and [3] is the file name,
 	 *                    or FALSE for a cache miss
 	 */
 	public function getCachedImageDimensions($filePath) {
-		$statusHash = $this->generateCacheKeyForImageFile($filePath);
+		$statusHash = $this->generateStatusHashForImageFile($filePath);
+		$identifier = $this->generateCacheKeyForImageFile($filePath);
 		/** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $cache */
 		$cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_imagesizes');
-		$cachedImageDimensions = $cache->get($statusHash);
+		$cachedImageDimensions = $cache->get($identifier);
 		if (!isset($cachedImageDimensions['hash'])) {
 			return FALSE;
 		}
 
 		if ($cachedImageDimensions['hash'] !== $statusHash) {
 			// The file has changed. Delete the cache entry.
-			$cache->remove($filePath);
+			$cache->remove($identifier);
 			$result = FALSE;
 		} else {
 			preg_match('/([^\\.]*)$/', $filePath, $imageExtension);
@@ -2337,11 +2339,22 @@ class GraphicalFunctions {
 	 *
 	 * This method does not check if the image file actually exists.
 	 *
-	 * @param string $filePath
+	 * @param string $filePath Image file path, relative to PATH_site
 	 *
 	 * @return string the hash key (an SHA1 hash), will not be empty
 	 */
 	protected function generateCacheKeyForImageFile($filePath) {
+		return sha1($filePath);
+	}
+
+	/**
+	 * Creates the status hash to check whether a file has been changed.
+	 *
+	 * @param string $filePath Image file path, relative to PATH_site
+	 *
+	 * @return string the status hash (an SHA1 hash)
+	 */
+	protected function generateStatusHashForImageFile($filePath) {
 		$fileStatus = stat($filePath);
 
 		return sha1($fileStatus['mtime'] . $fileStatus['size']);
