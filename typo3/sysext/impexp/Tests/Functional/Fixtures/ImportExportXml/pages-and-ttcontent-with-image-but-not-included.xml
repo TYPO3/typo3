@@ -67,7 +67,7 @@
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
-					<title>1</title>
+					<title>typo3_image2.jpg</title>
 					<size>297</size>
 					<relations index="rels" type="array">
 						<element index="sys_file:1" type="array">

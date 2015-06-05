@@ -2,7 +2,7 @@
 return array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference',
-		'label' => 'uid',
+		'label' => 'uid_local',
 		'formattedLabel_userFunc' => 'EXT:core/Classes/Resource/Service/UserFileInlineLabelService.php:TYPO3\\CMS\\Core\\Resource\\Service\\UserFileInlineLabelService->getInlineLabel',
 		'formattedLabel_userFunc_options' => array(
 			'sys_file' => array(
