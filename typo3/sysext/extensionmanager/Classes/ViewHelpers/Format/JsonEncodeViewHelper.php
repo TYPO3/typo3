@@ -14,13 +14,17 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+
 /**
  * Wrapper for PHPs json_encode function.
  *
  * @see http://www.php.net/manual/en/function.json-encode.php
  * @internal
  */
-class JsonEncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class JsonEncodeViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * Constructor
@@ -38,10 +42,26 @@ class JsonEncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 	 * @api
 	 */
 	public function render() {
-		if ($this->hasArgument('additionalAttributes') && is_array($this->arguments['additionalAttributes'])) {
-			return json_encode($this->arguments['additionalAttributes']);
+		return self::renderStatic(
+			$this->arguments,
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 *
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		if (isset($arguments['additionalAttributes']) && is_array($arguments['additionalAttributes'])) {
+			$content = $arguments['additionalAttributes'];
+		} else {
+			$content = $renderChildrenClosure();
 		}
-		$content = $this->renderChildren();
 		return json_encode($content);
 	}
 
