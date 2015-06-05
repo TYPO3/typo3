@@ -86,6 +86,16 @@ started:
   You should make the time to locate the various documents, and read those
   that apply to the work you want to do.
 
+### Chat with us
+
+The TYPO3 team is using a tool called Slack to openly communicate with each
+other and with the public. Several teams use Slack as a way to communicate
+internally and most channels are a welcome place for you to join and get
+yourself involved.
+
+* Register: https://forger.typo3.org/slack/
+* Slack: https://typo3.slack.com/
+
 ### Exchange information, get help
 
 The community and all TYPO3 teams communicate through newsgroups, which can
@@ -107,13 +117,6 @@ If you want to contribute to the TYPO3 CMS source code, take a look at our
 Contributors Walkthrough:
 
 * http://wiki.typo3.org/CWT
-
-### Chat with us
-
-Several teams use IRC as a way to communicate internally and most channels
-are a welcome place for you to join and get yourself involved.
-
-* IRC: http://typo3.org/support/irc-chat/
 
 Final notes
 -----------
