@@ -1675,7 +1675,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$params .= '&cmd[tt_content][' . $uidVal . '][localize]=' . $lP;
 		}
 		// Copy for language:
-		$onClick = 'window.location.href=' . $this->getPageLayoutController()->doc->issueCommand($params, -1) . '; return false;';
+		$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue($this->getPageLayoutController()->doc->issueCommand($params)) . '; return false;';
 		$theNewButton = '<div class="t3-page-lang-copyce">' .
 			$this->getPageLayoutController()->doc->t3Button(
 				$onClick,
