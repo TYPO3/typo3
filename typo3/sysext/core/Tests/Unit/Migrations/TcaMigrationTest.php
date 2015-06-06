@@ -360,4 +360,25 @@ class TcaMigrationTest extends UnitTestCase {
 		$this->assertEquals($expected, $subject->migrate($input));
 	}
 
+	/**
+	 * @test
+	 */
+	public function migrateSpecialConfigurationAndRemoveShowItemStylePointerConfigDoesNotAddMessageIfOnlySyntaxChanged() {
+		$input = array(
+			'aTable' => array(
+				'columns' => array(
+					'anotherField' => array(
+					),
+				),
+				'types' => array(
+					0 => array(
+						'showitem' => 'aField;;;',
+					),
+				),
+			),
+		);
+		$subject = new TcaMigration();
+		$subject->migrate($input);
+		$this->assertEmpty($subject->getMessages());
+	}
 }

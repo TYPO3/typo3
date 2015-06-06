@@ -125,6 +125,7 @@ class TcaMigration {
 				$itemList = GeneralUtility::trimExplode(',', $typeArray['showitem'], TRUE);
 				$newFieldStrings = array();
 				foreach ($itemList as $fieldString) {
+					$fieldString = rtrim($fieldString, ';');
 					// Unpack the field definition, migrate and remove as much as possible
 					// Keep empty parameters in trimExplode here (third parameter FALSE), so position is not changed
 					$fieldArray = GeneralUtility::trimExplode(';', $fieldString);
@@ -134,6 +135,7 @@ class TcaMigration {
 						'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : NULL,
 						'fieldExtra' => isset($fieldArray[3]) ? $fieldArray[3] : NULL,
 					);
+					$fieldName = $fieldArray['fieldName'];
 					if (!empty($fieldArray['fieldExtra'])) {
 						// Move fieldExtra "specConf" to columnsOverrides "defaultExtras"
 						if (!isset($newTca[$table]['types'][$typeName]['columnsOverrides'])) {
@@ -165,7 +167,7 @@ class TcaMigration {
 					}
 					$newFieldString = implode(';', $fieldArray);
 					if ($newFieldString !== $fieldString) {
-						$this->messages[] = 'Changed showitem string of TCA table ' . $table . ' type ' . $typeName . '.';
+						$this->messages[] = 'Changed showitem string of TCA table "' . $table . '" type "' . $typeName . '" due to changed field "' . $fieldName . '".';
 					}
 					if (!empty($newFieldString)) {
 						$newFieldStrings[] = $newFieldString;
