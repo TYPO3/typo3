@@ -463,9 +463,14 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				continue;
 			}
 
-			$packagePath = isset($stateConfiguration['packagePath']) ? $stateConfiguration['packagePath'] : NULL;
+			if (!isset($stateConfiguration['packagePath'])) {
+				$this->unregisterPackageByPackageKey($packageKey);
+				$packageStatesHasChanged = TRUE;
+				continue;
+			}
+
 			try {
-				$packagePath = PathUtility::sanitizeTrailingSeparator($this->packagesBasePath . $packagePath);
+				$packagePath = PathUtility::sanitizeTrailingSeparator($this->packagesBasePath . $stateConfiguration['packagePath']);
 				$package = new Package($this, $packageKey, $packagePath);
 			} catch (Exception\InvalidPackagePathException $exception) {
 				$this->unregisterPackageByPackageKey($packageKey);
@@ -536,7 +541,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				foreach ($package->getPackageReplacementKeys() as $packageToReplace => $versionConstraint) {
 					unset($this->packageAliasMap[strtolower($packageToReplace)]);
 				}
-				$packageKey = $package->getPackageKey();
 			}
 		} catch (Exception\UnknownPackageException $e) {
 		}
@@ -725,6 +729,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		$this->unregisterPackage($package);
+		$this->sortAndSavePackageStates();
 
 		$packagePath = $package->getPackagePath();
 		$deletion = GeneralUtility::rmdir($packagePath, TRUE);
