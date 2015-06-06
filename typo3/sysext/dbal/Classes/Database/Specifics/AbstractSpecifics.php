@@ -35,6 +35,85 @@ abstract class AbstractSpecifics {
 	protected $specificProperties = array();
 
 	/**
+	 * Contains the DBMS specific mapping information for native MySQL to ADOdb meta field types
+	 *
+	 * @var array
+	 */
+	protected $nativeToMetaFieldTypeMap = array(
+		'STRING' => 'C',
+		'CHAR' => 'C',
+		'VARCHAR' => 'C',
+		'TINYBLOB' => 'C',
+		'TINYTEXT' => 'C',
+		'ENUM' => 'C',
+		'SET' => 'C',
+		'TEXT' => 'XL',
+		'LONGTEXT' => 'XL',
+		'MEDIUMTEXT' => 'XL',
+		'IMAGE' => 'B',
+		'LONGBLOB' => 'B',
+		'BLOB' => 'B',
+		'MEDIUMBLOB' => 'B',
+		'YEAR' => 'D',
+		'DATE' => 'D',
+		'TIME' => 'T',
+		'DATETIME' => 'T',
+		'TIMESTAMP' => 'T',
+		'FLOAT' => 'F',
+		'DOUBLE' => 'F',
+		'INT' => 'I8',
+		'INTEGER' => 'I8',
+		'TINYINT' => 'I8',
+		'SMALLINT' => 'I8',
+		'MEDIUMINT' => 'I8',
+		'BIGINT' => 'I8',
+	);
+
+	/**
+	 * Contains the DBMS specific mapping overrides for native MySQL to ADOdb meta field types
+	 */
+	protected $nativeToMetaFieldTypeOverrides = array();
+
+	/**
+	 * Contains the default mapping information for ADOdb meta to MySQL native field types
+	 *
+	 * @var array
+	 */
+	protected $metaToNativeFieldTypeMap = array(
+		'C' => 'VARCHAR',
+		'C2' => 'VARCHAR',
+		'X' => 'LONGTEXT',
+		'XL' => 'LONGTEXT',
+		'X2' => 'LONGTEXT',
+		'B' => 'LONGBLOB',
+		'D' => 'DATE',
+		'T' => 'DATETIME',
+		'L' => 'TINYINT',
+		'I' => 'BIGINT',
+		'I1' => 'BIGINT',
+		'I2' => 'BIGINT',
+		'I4' => 'BIGINT',
+		'I8' => 'BIGINT',
+		'F' => 'DOUBLE',
+		'N' => 'NUMERIC'
+	);
+
+	/**
+	 * Contains the DBMS specific mapping information for ADOdb meta field types to MySQL native field types
+	 *
+	 * @var array
+	 */
+	protected $metaToNativeFieldTypeOverrides = array();
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->nativeToMetaFieldTypeMap = array_merge($this->nativeToMetaFieldTypeMap, $this->nativeToMetaFieldTypeOverrides);
+		$this->metaToNativeFieldTypeMap = array_merge($this->metaToNativeFieldTypeMap, $this->metaToNativeFieldTypeOverrides);
+	}
+
+	/**
 	 * Checks if a specific is defined for the used DBMS.
 	 *
 	 * @param string $specific
@@ -98,42 +177,8 @@ abstract class AbstractSpecifics {
 	 * @return string Native type as reported as in mysqldump files, uppercase
 	 */
 	public function getNativeFieldType($metaType) {
-		switch (strtoupper($metaType)) {
-			case 'C':
-				return 'VARCHAR';
-			case 'XL':
-
-			case 'X':
-				return 'LONGTEXT';
-			case 'C2':
-				return 'VARCHAR';
-			case 'X2':
-				return 'LONGTEXT';
-			case 'B':
-				return 'LONGBLOB';
-			case 'D':
-				return 'DATE';
-			case 'T':
-				return 'DATETIME';
-			case 'L':
-				return 'TINYINT';
-			case 'I':
-
-			case 'I1':
-
-			case 'I2':
-
-			case 'I4':
-
-			case 'I8':
-				return 'BIGINT';
-			case 'F':
-				return 'DOUBLE';
-			case 'N':
-				return 'NUMERIC';
-			default:
-				return $metaType;
-		}
+		$metaType = strtoupper($metaType);
+		return empty($this->metaToNativeFieldTypeMap[$metaType]) ? $metaType : $this->metaToNativeFieldTypeMap[$metaType];
 	}
 
 	/**
@@ -143,64 +188,8 @@ abstract class AbstractSpecifics {
 	 * @return string Meta type (currently ADOdb syntax only, http://phplens.com/lens/adodb/docs-adodb.htm#metatype)
 	 */
 	public function getMetaFieldType($nativeType) {
-		switch (strtoupper($nativeType)) {
-			case 'STRING':
-
-			case 'CHAR':
-
-			case 'VARCHAR':
-
-			case 'TINYBLOB':
-
-			case 'TINYTEXT':
-
-			case 'ENUM':
-
-			case 'SET':
-				return 'C';
-			case 'TEXT':
-
-			case 'LONGTEXT':
-
-			case 'MEDIUMTEXT':
-				return 'XL';
-			case 'IMAGE':
-
-			case 'LONGBLOB':
-
-			case 'BLOB':
-
-			case 'MEDIUMBLOB':
-				return 'B';
-			case 'YEAR':
-
-			case 'DATE':
-				return 'D';
-			case 'TIME':
-
-			case 'DATETIME':
-
-			case 'TIMESTAMP':
-				return 'T';
-			case 'FLOAT':
-
-			case 'DOUBLE':
-				return 'F';
-			case 'INT':
-
-			case 'INTEGER':
-
-			case 'TINYINT':
-
-			case 'SMALLINT':
-
-			case 'MEDIUMINT':
-
-			case 'BIGINT':
-				return 'I8';
-			default:
-				return 'N';
-		}
+		$nativeType = strtoupper($nativeType);
+		return empty($this->nativeToMetaFieldTypeMap[$nativeType]) ? 'N' : $this->nativeToMetaFieldTypeMap[$nativeType];
 	}
 
 	/**

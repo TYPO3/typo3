@@ -241,7 +241,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			if (isset($this->handlerCfg['_DEFAULT']['config']['driver'])) {
 				// load DBMS specifics
 				$driver = $this->handlerCfg['_DEFAULT']['config']['driver'];
-				$className = 'TYPO3\\CMS\\Dbal\\Database\\Specifics\\' . ucfirst(strtolower($driver));
+				$className = 'TYPO3\\CMS\\Dbal\\Database\\Specifics\\' . ucfirst(strtolower($driver)) . 'Specifics';
 				if (class_exists($className)) {
 					if (!is_subclass_of($className, Specifics\AbstractSpecifics::class)) {
 						throw new \InvalidArgumentException($className . ' must inherit from ' . Specifics\AbstractSpecifics::class, 1416919866);
