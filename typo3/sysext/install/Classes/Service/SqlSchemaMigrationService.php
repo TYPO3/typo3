@@ -261,6 +261,9 @@ class SqlSchemaMigrationService {
 							if (is_array($info[$theKey])) {
 								foreach ($info[$theKey] as $fieldN => $fieldC) {
 									$fieldN = str_replace('`', '', $fieldN);
+									if ($this->isDbalEnabled() && $fieldN === 'ENGINE') {
+										continue;
+									}
 									if ($fieldN == 'COLLATE') {
 										// @todo collation support is currently disabled (needs more testing)
 										continue;
@@ -636,6 +639,15 @@ class SqlSchemaMigrationService {
 		}
 		unset($value);
 		return $whichTables;
+	}
+
+	/**
+	 * Checks if DBAL is enabled for the database connection
+	 *
+	 * @return bool
+	 */
+	protected function isDbalEnabled() {
+		return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('dbal');
 	}
 
 }

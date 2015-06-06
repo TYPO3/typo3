@@ -329,4 +329,80 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraIncludesEngineIfMySQLIsUsed() {
+		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
+		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(FALSE));
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			)
+		);
+
+		$this->assertSame(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(),
+				'diff_currentValues' => NULL,
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraExcludesEngineIfDbalIsUsed() {
+		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
+		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(TRUE));
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'INT(11) DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array()
+				)
+			)
+		);
+
+		$this->assertSame(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(),
+				'diff_currentValues' => NULL,
+			)
+		);
+	}
+
 }
