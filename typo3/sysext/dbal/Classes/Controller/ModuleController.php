@@ -30,11 +30,21 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $thisScript;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'tools_txdbalM1';
+
+	/**
 	 * Initializes this module.
 	 *
 	 * @return void
 	 */
 	public function init() {
+		$this->MCONF = array(
+			'name' => $this->moduleName,
+		);
 		$this->getLanguageService()->includeLLFile('EXT:dbal/mod1/locallang.xlf');
 		parent::init();
 	}
@@ -97,7 +107,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/**
 	 * Prints out the module HTML
 	 *
-	 * @return 	string HTML output
+	 * @return string HTML output
 	 */
 	public function printContent() {
 		$this->content .= $this->doc->endPage();
