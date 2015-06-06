@@ -756,6 +756,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function sortAvailablePackagesByDependencies() {
 		$this->resolvePackageDependencies();
 
+		// sort the packages by key at first, so we get a stable sorting of "equivalent" packages afterwards
+		ksort($this->packageStatesConfiguration['packages']);
 		$this->packageStatesConfiguration['packages'] = $this->dependencyResolver->sortPackageStatesConfigurationByDependency($this->packageStatesConfiguration['packages']);
 
 		// Reorder the packages according to the loading order
