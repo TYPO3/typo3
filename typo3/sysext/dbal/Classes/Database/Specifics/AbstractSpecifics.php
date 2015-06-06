@@ -83,7 +83,7 @@ abstract class AbstractSpecifics {
 
 		$fieldRow['Field'] = $fieldRow['name'];
 		$fieldRow['Type'] = strtolower($mysqlType);
-		$fieldRow['Null'] = '';
+		$fieldRow['Null'] = $this->getNativeNotNull($fieldRow['not_null']);
 		$fieldRow['Key'] = '';
 		$fieldRow['Default'] = $fieldRow['default_value'];
 		$fieldRow['Extra'] = '';
@@ -220,5 +220,15 @@ abstract class AbstractSpecifics {
 			default:
 				return '(' . $maxLength . ')';
 		}
+	}
+
+	/**
+	 * Return the MySQL native representation of the NOT NULL setting
+	 *
+	 * @param mixed $notNull
+	 * @return string
+	 */
+	protected function getNativeNotNull($notNull) {
+		return (bool)$notNull ? 'NO' : 'YES';
 	}
 }
