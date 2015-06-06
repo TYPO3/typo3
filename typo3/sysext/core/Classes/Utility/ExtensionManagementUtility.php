@@ -695,14 +695,12 @@ class ExtensionManagementUtility {
 			if (!isset($items[$key])) {
 				$items[$key] = array(
 					'rawData' => $itemPart,
-					'details' => array(
-						'field' => $itemDetails[0],
-						'label' => $itemDetails[1],
-						'palette' => $itemDetails[2],
-						'special' => $itemDetails[3],
-						'styles' => $itemDetails[4]
-					)
+					'details' => array()
 				);
+				$details = array(0 => 'field', 1 => 'label', 2 => 'palette', 3 => 'special', 4 => 'styles');
+				foreach ($details as $id => $property) {
+					$items[$key]['details'][$property] = isset($itemDetails[$id]) ? $itemDetails[$id] : '';
+				}
 			}
 		}
 		return $items;
@@ -726,7 +724,19 @@ class ExtensionManagementUtility {
 			if ($useRawData) {
 				$itemParts[] = $itemDetails['rawData'];
 			} else {
-				$itemParts[] = count($itemDetails['details']) > 1 ? implode(';', $itemDetails['details']) : $item;
+				if (count($itemDetails['details']) > 1) {
+					$details = array('styles', 'special', 'palette', 'label', 'field');
+					$elements = array();
+					$addEmpty = FALSE;
+					foreach ($details as $property) {
+						if ($itemDetails['details'][$property] !== '' || $addEmpty) {
+							$addEmpty = TRUE;
+							array_unshift($elements, $itemDetails['details'][$property]);
+						}
+					}
+					$item = implode(';', $elements);
+				}
+				$itemParts[] = $item;
 			}
 		}
 		return implode(', ', $itemParts);

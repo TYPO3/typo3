@@ -543,6 +543,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$table = $this->getUniqueId('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldA', 'newA, newA, newB, fieldX');
+		// is palette reference added
+		$this->assertSame('fieldA;;generatedFor-fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
