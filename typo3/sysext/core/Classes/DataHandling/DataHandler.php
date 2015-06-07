@@ -2986,101 +2986,111 @@ class DataHandler {
 	 * @see checkValue_flex_procInData()
 	 */
 	public function checkValue_flex_procInData_travDS(&$dataValues, $dataValues_current, $uploadedFiles, $DSelements, $pParams, $callBackFunc, $structurePath) {
-		if (is_array($DSelements)) {
-			// For each DS element:
-			foreach ($DSelements as $key => $dsConf) {
-				// Array/Section:
-				if ($DSelements[$key]['type'] == 'array') {
-					if (is_array($dataValues[$key]['el'])) {
-						if ($DSelements[$key]['section']) {
-							$newIndexCounter = 0;
-							foreach ($dataValues[$key]['el'] as $ik => $el) {
-								if (is_array($el)) {
-									if (!is_array($dataValues_current[$key]['el'])) {
-										$dataValues_current[$key]['el'] = array();
-									}
-									$theKey = key($el);
-									if (is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
-										$this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : array(), $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/');
-										// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
-										// The fact that the order changes is not important since order is controlled by a separately submitted index.
-										if (substr($ik, 0, 3) == 'ID-') {
-											$newIndexCounter++;
-											// Set mapping index
-											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && !empty($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
-											// Transfer values
-											$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];
-											// Unset original
-											unset($dataValues[$key]['el'][$ik]);
-										}
-									}
-								}
-							}
-						} else {
-							if (!isset($dataValues[$key]['el'])) {
-								$dataValues[$key]['el'] = array();
-							}
-							$this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/');
+		if (!is_array($DSelements)) {
+			return;
+		}
+
+		// For each DS element:
+		foreach ($DSelements as $key => $dsConf) {
+			// Array/Section:
+			if ($DSelements[$key]['type'] == 'array') {
+				if (!is_array($dataValues[$key]['el'])) {
+					continue;
+				}
+
+				if ($DSelements[$key]['section']) {
+					$newIndexCounter = 0;
+					foreach ($dataValues[$key]['el'] as $ik => $el) {
+						if (!is_array($el)) {
+							continue;
+						}
+
+						if (!is_array($dataValues_current[$key]['el'])) {
+							$dataValues_current[$key]['el'] = array();
+						}
+						$theKey = key($el);
+						if (!is_array($dataValues[$key]['el'][$ik][$theKey]['el'])) {
+							continue;
+						}
+
+						$this->checkValue_flex_procInData_travDS($dataValues[$key]['el'][$ik][$theKey]['el'], is_array($dataValues_current[$key]['el'][$ik]) ? $dataValues_current[$key]['el'][$ik][$theKey]['el'] : array(), $uploadedFiles[$key]['el'][$ik][$theKey]['el'], $DSelements[$key]['el'][$theKey]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/' . $ik . '/' . $theKey . '/el/');
+						// If element is added dynamically in the flexform of TCEforms, we map the ID-string to the next numerical index we can have in that particular section of elements:
+						// The fact that the order changes is not important since order is controlled by a separately submitted index.
+						if (substr($ik, 0, 3) == 'ID-') {
+							$newIndexCounter++;
+							// Set mapping index
+							$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && !empty($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
+							// Transfer values
+							$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];
+							// Unset original
+							unset($dataValues[$key]['el'][$ik]);
 						}
 					}
 				} else {
-					if (is_array($dsConf['TCEforms']['config']) && is_array($dataValues[$key])) {
-						foreach ($dataValues[$key] as $vKey => $data) {
-							if ($callBackFunc) {
-								if (is_object($this->callBackObj)) {
-									$res = $this->callBackObj->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/');
-								} else {
-									$res = $this->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/');
-								}
-							} else {
-								// Default
-								list($CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID) = $pParams;
+					if (!isset($dataValues[$key]['el'])) {
+						$dataValues[$key]['el'] = array();
+					}
+					$this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/');
+				}
+			} else {
+				if (!is_array($dsConf['TCEforms']['config']) || !is_array($dataValues[$key])) {
+					continue;
+				}
 
-								$additionalData = array(
-									'flexFormId' => $CVrecFID,
-									'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
-								);
+				foreach ($dataValues[$key] as $vKey => $data) {
+					if ($callBackFunc) {
+						if (is_object($this->callBackObj)) {
+							$res = $this->callBackObj->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/');
+						} else {
+							$res = $this->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/');
+						}
+					} else {
+						// Default
+						list($CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID) = $pParams;
 
-								$res = $this->checkValue_SW(array(), $dataValues[$key][$vKey], $dsConf['TCEforms']['config'], $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
-								// Look for RTE transformation of field:
-								if ($dataValues[$key]['_TRANSFORM_' . $vKey] == 'RTE' && !$this->dontProcessTransformations) {
-									// Unsetting trigger field - we absolutely don't want that into the data storage!
-									unset($dataValues[$key]['_TRANSFORM_' . $vKey]);
-									if (isset($res['value'])) {
-										// Calculating/Retrieving some values here:
-										list(, , $recFieldName) = explode(':', $CVrecFID);
-										$theTypeString = BackendUtility::getTCAtypeValue($CVtable, $this->checkValue_currentRecord);
-										$specConf = BackendUtility::getSpecConfParts($dsConf['TCEforms']['defaultExtras']);
-										// Find, thisConfig:
-										$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($CVtscPID));
-										$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);
-										$res['value'] = $this->transformRichtextContentToDatabase(
-											$res['value'], $CVtable, $recFieldName, $specConf, $thisConfig, $CVrealPid
-										);
-									}
-								}
-							}
-							// Adding the value:
+						$additionalData = array(
+							'flexFormId' => $CVrecFID,
+							'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
+						);
+
+						$res = $this->checkValue_SW(array(), $dataValues[$key][$vKey], $dsConf['TCEforms']['config'], $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
+						// Look for RTE transformation of field:
+						if ($dataValues[$key]['_TRANSFORM_' . $vKey] == 'RTE' && !$this->dontProcessTransformations) {
+							// Unsetting trigger field - we absolutely don't want that into the data storage!
+							unset($dataValues[$key]['_TRANSFORM_' . $vKey]);
 							if (isset($res['value'])) {
-								$dataValues[$key][$vKey] = $res['value'];
+								// Calculating/Retrieving some values here:
+								list(, , $recFieldName) = explode(':', $CVrecFID);
+								$theTypeString = BackendUtility::getTCAtypeValue($CVtable, $this->checkValue_currentRecord);
+								$specConf = BackendUtility::getSpecConfParts($dsConf['TCEforms']['defaultExtras']);
+								// Find, thisConfig:
+								$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($CVtscPID));
+								$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);
+								$res['value'] = $this->transformRichtextContentToDatabase(
+									$res['value'], $CVtable, $recFieldName, $specConf, $thisConfig, $CVrealPid
+								);
 							}
-							// Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
-							// We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
-							if (substr($vKey, -9) != '.vDEFbase') {
-								if ($this->clear_flexFormData_vDEFbase) {
-									$dataValues[$key][$vKey . '.vDEFbase'] = '';
-								} elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][($vKey . '.vDEFbase')]) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
-									// Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
-									if (isset($dataValues[$key]['vDEF'])) {
-										$diffValue = $dataValues[$key]['vDEF'];
-									} else {
-										// If not found (for translators with no access to the default language) we use the one from the current-value data set:
-										$diffValue = $dataValues_current[$key]['vDEF'];
-									}
-									// Setting the reference value for vDEF for this translation. This will be used for translation tools to make a diff between the vDEF and vDEFbase to see if an update would be fitting.
-									$dataValues[$key][$vKey . '.vDEFbase'] = $this->updateModeL10NdiffDataClear ? '' : $diffValue;
-								}
+						}
+					}
+					// Adding the value:
+					if (isset($res['value'])) {
+						$dataValues[$key][$vKey] = $res['value'];
+					}
+					// Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
+					// We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
+					if (substr($vKey, -9) != '.vDEFbase') {
+						if ($this->clear_flexFormData_vDEFbase) {
+							$dataValues[$key][$vKey . '.vDEFbase'] = '';
+						} elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][($vKey . '.vDEFbase')]) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {
+							// Now, check if a vDEF value is submitted in the input data, if so we expect this has been processed prior to this operation (normally the case since those fields are higher in the form) and we can use that:
+							if (isset($dataValues[$key]['vDEF'])) {
+								$diffValue = $dataValues[$key]['vDEF'];
+							} else {
+								// If not found (for translators with no access to the default language) we use the one from the current-value data set:
+								$diffValue = $dataValues_current[$key]['vDEF'];
 							}
+							// Setting the reference value for vDEF for this translation. This will be used for translation tools to make a diff between the vDEF and vDEFbase to see if an update would be fitting.
+							$dataValues[$key][$vKey . '.vDEFbase'] = $this->updateModeL10NdiffDataClear ? '' : $diffValue;
 						}
 					}
 				}
