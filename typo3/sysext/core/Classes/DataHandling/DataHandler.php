@@ -5164,76 +5164,94 @@ class DataHandler {
 		if ($this->isElementToBeDeleted($table, $id)) {
 			return NULL;
 		}
-		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $id > 0) {
-			if ($this->doesRecordExist($table, $id, 'show')) {
-				// Select main record:
-				$row = $this->recordInfo($table, $id, 'pid,t3ver_id,t3ver_state');
-				if (is_array($row)) {
-					// Record must be online record
-					if ($row['pid'] >= 0) {
-						// Record must not be placeholder for moving.
-						if (!VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
-							if (!$delete || !$this->cannotDeleteRecord($table, $id)) {
-								// Look for next version number:
-								$res = $this->databaseConnection->exec_SELECTquery('t3ver_id', $table, '((pid=-1 && t3ver_oid=' . $id . ') OR uid=' . $id . ')' . $this->deleteClause($table), '', 't3ver_id DESC', '1');
-								list($highestVerNumber) = $this->databaseConnection->sql_fetch_row($res);
-								$this->databaseConnection->sql_free_result($res);
-								// Look for version number of the current:
-								$subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
-								// Set up the values to override when making a raw-copy:
-								$overrideArray = array(
-									't3ver_id' => $highestVerNumber + 1,
-									't3ver_oid' => $id,
-									't3ver_label' => $label ?: $subVer . ' / ' . date('d-m-Y H:m:s'),
-									't3ver_wsid' => $this->BE_USER->workspace,
-									't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
-									't3ver_count' => 0,
-									't3ver_stage' => 0,
-									't3ver_tstamp' => 0
-								);
-								if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
-									$overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
-								}
-								// Checking if the record already has a version in the current workspace of the backend user
-								if ($this->BE_USER->workspace !== 0) {
-									// Look for version already in workspace:
-									$versionRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
-								}
-								// Create new version of the record and return the new uid
-								if (empty($versionRecord['uid'])) {
-									// Create raw-copy and return result:
-									// The information of the label to be used for the workspace record
-									// as well as the information whether the record shall be removed
-									// must be forwarded (creating remove placeholders on a workspace are
-									// done by copying the record and override several fields).
-									$workspaceOptions = array(
-										'delete' => $delete,
-										'label' => $label,
-									);
-									return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
-								// Reuse the existing record and return its uid
-								// (prior to TYPO3 CMS 6.2, an error was thrown here, which
-								// did not make much sense since the information is available)
-								} else {
-									return $versionRecord['uid'];
-								}
-							} elseif ($this->enableLogging) {
-								$this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), 1);
-							}
-						} elseif ($this->enableLogging) {
-							$this->newlog('Record cannot be versioned because it is a placeholder for a moving operation', 1);
-						}
-					} elseif ($this->enableLogging) {
-						$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (pid=-1)!', 1);
-					}
-				} elseif ($this->enableLogging) {
-					$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize did not exist!', 1);
-				}
-			} elseif ($this->enableLogging) {
+		if (!$GLOBALS['TCA'][$table] || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] || $id <= 0) {
+			if ($this->enableLogging) {
+				$this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, 1);
+			}
+			return NULL;
+		}
+
+		if (!$this->doesRecordExist($table, $id, 'show')) {
+			if ($this->enableLogging) {
 				$this->newlog('You didn\'t have correct permissions to make a new version (copy) of this record "' . $table . '" / ' . $id, 1);
 			}
-		} elseif ($this->enableLogging) {
-			$this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, 1);
+			return NULL;
+		}
+
+		// Select main record:
+		$row = $this->recordInfo($table, $id, 'pid,t3ver_id,t3ver_state');
+		if (!is_array($row)) {
+			if ($this->enableLogging) {
+				$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize did not exist!', 1);
+			}
+			return NULL;
+		}
+
+		// Record must be online record
+		if ($row['pid'] < 0) {
+			if ($this->enableLogging) {
+				$this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (pid=-1)!', 1);
+			}
+			return NULL;
+		}
+
+		// Record must not be placeholder for moving.
+		if (VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
+			if ($this->enableLogging) {
+				$this->newlog('Record cannot be versioned because it is a placeholder for a moving operation', 1);
+			}
+			return NULL;
+		}
+
+		if ($delete && $this->cannotDeleteRecord($table, $id)) {
+			if ($this->enableLogging) {
+				$this->newlog('Record cannot be deleted: ' . $this->cannotDeleteRecord($table, $id), 1);
+			}
+			return NULL;
+		}
+
+		// Look for next version number:
+		$res = $this->databaseConnection->exec_SELECTquery('t3ver_id', $table, '((pid=-1 && t3ver_oid=' . $id . ') OR uid=' . $id . ')' . $this->deleteClause($table), '', 't3ver_id DESC', '1');
+		list($highestVerNumber) = $this->databaseConnection->sql_fetch_row($res);
+		$this->databaseConnection->sql_free_result($res);
+		// Look for version number of the current:
+		$subVer = $row['t3ver_id'] . '.' . ($highestVerNumber + 1);
+		// Set up the values to override when making a raw-copy:
+		$overrideArray = array(
+			't3ver_id' => $highestVerNumber + 1,
+			't3ver_oid' => $id,
+			't3ver_label' => $label ?: $subVer . ' / ' . date('d-m-Y H:m:s'),
+			't3ver_wsid' => $this->BE_USER->workspace,
+			't3ver_state' => (string)($delete ? new VersionState(VersionState::DELETE_PLACEHOLDER) : new VersionState(VersionState::DEFAULT_STATE)),
+			't3ver_count' => 0,
+			't3ver_stage' => 0,
+			't3ver_tstamp' => 0
+		);
+		if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
+			$overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
+		}
+		// Checking if the record already has a version in the current workspace of the backend user
+		if ($this->BE_USER->workspace !== 0) {
+			// Look for version already in workspace:
+			$versionRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
+		}
+		// Create new version of the record and return the new uid
+		if (empty($versionRecord['uid'])) {
+			// Create raw-copy and return result:
+			// The information of the label to be used for the workspace record
+			// as well as the information whether the record shall be removed
+			// must be forwarded (creating remove placeholders on a workspace are
+			// done by copying the record and override several fields).
+			$workspaceOptions = array(
+				'delete' => $delete,
+				'label' => $label,
+			);
+			return $this->copyRecord_raw($table, $id, -1, $overrideArray, $workspaceOptions);
+		// Reuse the existing record and return its uid
+		// (prior to TYPO3 CMS 6.2, an error was thrown here, which
+		// did not make much sense since the information is available)
+		} else {
+			return $versionRecord['uid'];
 		}
 		return NULL;
 	}
