@@ -5018,46 +5018,46 @@ class DataHandler {
 	 */
 	public function canDeletePage($uid) {
 		// If we may at all delete this page
-		if ($this->doesRecordExist('pages', $uid, 'delete')) {
-			if ($this->deleteTree) {
-				// Returns the branch
-				$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
-				// Checks if we had permissions
-				if ($brExist != -1) {
-					if ($this->noRecordsFromUnallowedTables($brExist . $uid)) {
-						$pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, TRUE);
-						foreach ($pagesInBranch as $pageInBranch) {
-							if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, FALSE, FALSE, TRUE)) {
-								return 'Attempt to delete page which has prohibited localizations.';
-							}
-						}
-						return $pagesInBranch;
-					} else {
-						return 'Attempt to delete records from disallowed tables';
-					}
-				} else {
-					return 'Attempt to delete pages in branch without permissions';
-				}
-			} else {
-				// returns the branch
-				$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
-				// Checks if branch exists
-				if ($brExist == '') {
-					if ($this->noRecordsFromUnallowedTables($uid)) {
-						if ($this->BE_USER->recordEditAccessInternals('pages', $uid, FALSE, FALSE, TRUE)) {
-							return array($uid);
-						} else {
-							return 'Attempt to delete page which has prohibited localizations.';
-						}
-					} else {
-						return 'Attempt to delete records from disallowed tables';
-					}
-				} else {
-					return 'Attempt to delete page which has subpages';
+		if (!$this->doesRecordExist('pages', $uid, 'delete')) {
+			return 'Attempt to delete page without permissions';
+		}
+
+		if ($this->deleteTree) {
+			// Returns the branch
+			$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
+			// Checks if we had permissions
+			if ($brExist == -1) {
+				return 'Attempt to delete pages in branch without permissions';
+			}
+
+			if (!$this->noRecordsFromUnallowedTables($brExist . $uid)) {
+				return 'Attempt to delete records from disallowed tables';
+			}
+
+			$pagesInBranch = GeneralUtility::trimExplode(',', $brExist . $uid, TRUE);
+			foreach ($pagesInBranch as $pageInBranch) {
+				if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, FALSE, FALSE, TRUE)) {
+					return 'Attempt to delete page which has prohibited localizations.';
 				}
 			}
+			return $pagesInBranch;
 		} else {
-			return 'Attempt to delete page without permissions';
+			// returns the branch
+			$brExist = $this->doesBranchExist('', $uid, $this->pMap['delete'], 1);
+			// Checks if branch exists
+			if ($brExist != '') {
+				return 'Attempt to delete page which has subpages';
+			}
+
+			if (!$this->noRecordsFromUnallowedTables($uid)) {
+				return 'Attempt to delete records from disallowed tables';
+			}
+
+			if ($this->BE_USER->recordEditAccessInternals('pages', $uid, FALSE, FALSE, TRUE)) {
+				return array($uid);
+			} else {
+				return 'Attempt to delete page which has prohibited localizations.';
+			}
 		}
 	}
 
