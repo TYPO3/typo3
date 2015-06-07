@@ -4514,94 +4514,102 @@ class DataHandler {
 		$parts = GeneralUtility::trimExplode(',', $command);
 		$field = $parts[0];
 		$type = $parts[1];
-		if ($field && (($type === 'localize' || $type === 'synchronize') || MathUtility::canBeInterpretedAsInteger($type)) && isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
-			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-			$foreignTable = $config['foreign_table'];
-			$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
-			if ($localizationMode == 'select') {
-				$parentRecord = BackendUtility::getRecordWSOL($table, $id);
-				$language = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
-				$transOrigPointer = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
-				$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
-				$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
+		if (!$field || (($type !== 'localize' && $type !== 'synchronize') && !MathUtility::canBeInterpretedAsInteger($type)) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
+			return;
+		}
 
-				if ($parentRecord && is_array($parentRecord) && $language > 0 && $transOrigPointer) {
-					$inlineSubType = $this->getInlineFieldType($config);
-					$transOrigRecord = BackendUtility::getRecordWSOL($transOrigTable, $transOrigPointer);
+		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+		$foreignTable = $config['foreign_table'];
+		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
+		if ($localizationMode != 'select') {
+			return;
+		}
 
-					if ($inlineSubType !== FALSE) {
-						$removeArray = array();
-						$mmTable = $inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
-						// Fetch children from original language parent:
-						/** @var $dbAnalysisOriginal RelationHandler */
-						$dbAnalysisOriginal = $this->createRelationHandlerInstance();
-						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $transOrigTable, $config);
-						$elementsOriginal = array();
-						foreach ($dbAnalysisOriginal->itemArray as $item) {
-							$elementsOriginal[$item['id']] = $item;
-						}
-						unset($dbAnalysisOriginal);
-						// Fetch children from current localized parent:
-						/** @var $dbAnalysisCurrent RelationHandler */
-						$dbAnalysisCurrent = $this->createRelationHandlerInstance();
-						$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
-						// Perform synchronization: Possibly removal of already localized records:
-						if ($type == 'synchronize') {
-							foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
-								$childRecord = BackendUtility::getRecordWSOL($item['table'], $item['id']);
-								if (isset($childRecord[$childTransOrigPointerField]) && $childRecord[$childTransOrigPointerField] > 0) {
-									$childTransOrigPointer = $childRecord[$childTransOrigPointerField];
-									// If synchronization is requested, child record was translated once, but original record does not exist anymore, remove it:
-									if (!isset($elementsOriginal[$childTransOrigPointer])) {
-										unset($dbAnalysisCurrent->itemArray[$index]);
-										$removeArray[$item['table']][$item['id']]['delete'] = 1;
-									}
-								}
-							}
-						}
-						// Perform synchronization/localization: Possibly add unlocalized records for original language:
-						if (MathUtility::canBeInterpretedAsInteger($type) && isset($elementsOriginal[$type])) {
-							$item = $elementsOriginal[$type];
-							$item['id'] = $this->localize($item['table'], $item['id'], $language);
-							$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
-							$dbAnalysisCurrent->itemArray[] = $item;
-						} elseif ($type === 'localize' || $type === 'synchronize') {
-							foreach ($elementsOriginal as $originalId => $item) {
-								$item['id'] = $this->localize($item['table'], $item['id'], $language);
-								$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
-								$dbAnalysisCurrent->itemArray[] = $item;
-							}
-						}
-						// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
-						$value = implode(',', $dbAnalysisCurrent->getValueArray());
-						$this->registerDBList[$table][$id][$field] = $value;
-						// Remove child records (if synchronization requested it):
-						if (is_array($removeArray) && !empty($removeArray)) {
-							/** @var DataHandler $tce */
-							$tce = GeneralUtility::makeInstance(__CLASS__);
-							$tce->stripslashes_values = FALSE;
-							$tce->start(array(), $removeArray);
-							$tce->process_cmdmap();
-							unset($tce);
-						}
-						$updateFields = array();
-						// Handle, reorder and store relations:
-						if ($inlineSubType == 'list') {
-							$updateFields = array($field => $value);
-						} elseif ($inlineSubType == 'field') {
-							$dbAnalysisCurrent->writeForeignField($config, $id);
-							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
-						} elseif ($inlineSubType == 'mm') {
-							$dbAnalysisCurrent->writeMM($config['MM'], $id);
-							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
-						}
-						// Update field referencing to child records of localized parent record:
-						if (!empty($updateFields)) {
-							$this->updateDB($table, $id, $updateFields);
-						}
+		$parentRecord = BackendUtility::getRecordWSOL($table, $id);
+		$language = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+		$transOrigPointer = (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+		$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
+		$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
+
+		if (!$parentRecord || !is_array($parentRecord) || $language <= 0 || !$transOrigPointer) {
+			return;
+		}
+
+		$inlineSubType = $this->getInlineFieldType($config);
+		$transOrigRecord = BackendUtility::getRecordWSOL($transOrigTable, $transOrigPointer);
+
+		if ($inlineSubType === FALSE) {
+			return;
+		}
+
+		$removeArray = array();
+		$mmTable = $inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
+		// Fetch children from original language parent:
+		/** @var $dbAnalysisOriginal RelationHandler */
+		$dbAnalysisOriginal = $this->createRelationHandlerInstance();
+		$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $transOrigTable, $config);
+		$elementsOriginal = array();
+		foreach ($dbAnalysisOriginal->itemArray as $item) {
+			$elementsOriginal[$item['id']] = $item;
+		}
+		unset($dbAnalysisOriginal);
+		// Fetch children from current localized parent:
+		/** @var $dbAnalysisCurrent RelationHandler */
+		$dbAnalysisCurrent = $this->createRelationHandlerInstance();
+		$dbAnalysisCurrent->start($parentRecord[$field], $foreignTable, $mmTable, $id, $table, $config);
+		// Perform synchronization: Possibly removal of already localized records:
+		if ($type == 'synchronize') {
+			foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
+				$childRecord = BackendUtility::getRecordWSOL($item['table'], $item['id']);
+				if (isset($childRecord[$childTransOrigPointerField]) && $childRecord[$childTransOrigPointerField] > 0) {
+					$childTransOrigPointer = $childRecord[$childTransOrigPointerField];
+					// If synchronization is requested, child record was translated once, but original record does not exist anymore, remove it:
+					if (!isset($elementsOriginal[$childTransOrigPointer])) {
+						unset($dbAnalysisCurrent->itemArray[$index]);
+						$removeArray[$item['table']][$item['id']]['delete'] = 1;
 					}
 				}
 			}
+		}
+		// Perform synchronization/localization: Possibly add unlocalized records for original language:
+		if (MathUtility::canBeInterpretedAsInteger($type) && isset($elementsOriginal[$type])) {
+			$item = $elementsOriginal[$type];
+			$item['id'] = $this->localize($item['table'], $item['id'], $language);
+			$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+			$dbAnalysisCurrent->itemArray[] = $item;
+		} elseif ($type === 'localize' || $type === 'synchronize') {
+			foreach ($elementsOriginal as $originalId => $item) {
+				$item['id'] = $this->localize($item['table'], $item['id'], $language);
+				$item['id'] = $this->overlayAutoVersionId($item['table'], $item['id']);
+				$dbAnalysisCurrent->itemArray[] = $item;
+			}
+		}
+		// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
+		$value = implode(',', $dbAnalysisCurrent->getValueArray());
+		$this->registerDBList[$table][$id][$field] = $value;
+		// Remove child records (if synchronization requested it):
+		if (is_array($removeArray) && !empty($removeArray)) {
+			/** @var DataHandler $tce */
+			$tce = GeneralUtility::makeInstance(__CLASS__);
+			$tce->stripslashes_values = FALSE;
+			$tce->start(array(), $removeArray);
+			$tce->process_cmdmap();
+			unset($tce);
+		}
+						$updateFields = array();
+		// Handle, reorder and store relations:
+		if ($inlineSubType == 'list') {
+			$updateFields = array($field => $value);
+		} elseif ($inlineSubType == 'field') {
+			$dbAnalysisCurrent->writeForeignField($config, $id);
+			$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
+		} elseif ($inlineSubType == 'mm') {
+			$dbAnalysisCurrent->writeMM($config['MM'], $id);
+			$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
+		}
+		// Update field referencing to child records of localized parent record:
+		if (!empty($updateFields)) {
+			$this->updateDB($table, $id, $updateFields);
 		}
 	}
 
