@@ -3891,67 +3891,78 @@ class DataHandler {
 	 * @return void
 	 */
 	public function moveRecord($table, $uid, $destPid) {
-		if ($GLOBALS['TCA'][$table]) {
-			// In case the record to be moved turns out to be an offline version,
-			// we have to find the live version and work on that one (this case
-			// happens for pages with "branch" versioning type)
-			// @deprecated note: as "branch" versioning is deprecated since TYPO3 4.2, this
-			// functionality will be removed in TYPO3 4.7 (note by benni: a hook could replace this)
-			if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $uid, 'uid')) {
-				$uid = $lookForLiveVersion['uid'];
-			}
-			// Initialize:
-			$destPid = (int)$destPid;
-			// Get this before we change the pid (for logging)
-			$propArr = $this->getRecordProperties($table, $uid);
-			$moveRec = $this->getRecordProperties($table, $uid, TRUE);
-			// This is the actual pid of the moving to destination
-			$resolvedPid = $this->resolvePid($table, $destPid);
-			// Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
-			// If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
-			if ($table != 'pages' || $resolvedPid == $moveRec['pid']) {
-				// Edit rights for the record...
-				$mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
-			} else {
-				$mayMoveAccess = $this->doesRecordExist($table, $uid, 'delete');
-			}
-			// Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
-			if ($table != 'pages' || $resolvedPid != $moveRec['pid']) {
-				// Insert rights for the record...
-				$mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, 4);
-			} else {
-				$mayInsertAccess = $this->checkRecordUpdateAccess($table, $uid);
-			}
-			// Checking if there is anything else disallowing moving the record by checking if editing is allowed
-			$fullLanguageCheckNeeded = $table != 'pages';
-			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded);
-			// If moving is allowed, begin the processing:
-			if ($mayEditAccess) {
-				if ($mayMoveAccess) {
-					if ($mayInsertAccess) {
-						$recordWasMoved = FALSE;
-						// Move the record via a hook, used e.g. for versioning
-						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
-							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
-								$hookObj = GeneralUtility::getUserObj($classRef);
-								if (method_exists($hookObj, 'moveRecord')) {
-									$hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
-								}
-							}
-						}
-						// Move the record if a hook hasn't moved it yet
-						if (!$recordWasMoved) {
-							$this->moveRecord_raw($table, $uid, $destPid);
-						}
-					} elseif ($this->enableLogging) {
-						$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) without having permissions to insert.', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
-					}
-				} elseif ($this->enableLogging) {
-					$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) without having permissions to do so.', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
-				}
-			} elseif ($this->enableLogging) {
+		if (!$GLOBALS['TCA'][$table]) {
+			return;
+		}
+
+		// In case the record to be moved turns out to be an offline version,
+		// we have to find the live version and work on that one (this case
+		// happens for pages with "branch" versioning type)
+		// @deprecated note: as "branch" versioning is deprecated since TYPO3 4.2, this
+		// functionality will be removed in TYPO3 4.7 (note by benni: a hook could replace this)
+		if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $uid, 'uid')) {
+			$uid = $lookForLiveVersion['uid'];
+		}
+		// Initialize:
+		$destPid = (int)$destPid;
+		// Get this before we change the pid (for logging)
+		$propArr = $this->getRecordProperties($table, $uid);
+		$moveRec = $this->getRecordProperties($table, $uid, TRUE);
+		// This is the actual pid of the moving to destination
+		$resolvedPid = $this->resolvePid($table, $destPid);
+		// Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
+		// If the record is a page, then there are two options: If the page is moved within itself, (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
+		if ($table != 'pages' || $resolvedPid == $moveRec['pid']) {
+			// Edit rights for the record...
+			$mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
+		} else {
+			$mayMoveAccess = $this->doesRecordExist($table, $uid, 'delete');
+		}
+		// Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new), unless the pages are moved on the same pid, then edit-rights are checked
+		if ($table != 'pages' || $resolvedPid != $moveRec['pid']) {
+			// Insert rights for the record...
+			$mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, 4);
+		} else {
+			$mayInsertAccess = $this->checkRecordUpdateAccess($table, $uid);
+		}
+		// Checking if there is anything else disallowing moving the record by checking if editing is allowed
+		$fullLanguageCheckNeeded = $table != 'pages';
+		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded);
+		// If moving is allowed, begin the processing:
+		if (!$mayEditAccess) {
+			if ($this->enableLogging) {
 				$this->log($table, $uid, 4, 0, 1, 'Attempt to move record "%s" (%s) without having permissions to do so. [' . $this->BE_USER->errorMsg . ']', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
 			}
+			return;
+		}
+
+		if (!$mayMoveAccess) {
+			if ($this->enableLogging) {
+				$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) without having permissions to do so.', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
+			}
+			return;
+		}
+
+		if (!$mayInsertAccess) {
+			if ($this->enableLogging) {
+				$this->log($table, $uid, 4, 0, 1, 'Attempt to move record \'%s\' (%s) without having permissions to insert.', 14, array($propArr['header'], $table . ':' . $uid), $propArr['event_pid']);
+			}
+			return;
+		}
+
+		$recordWasMoved = FALSE;
+		// Move the record via a hook, used e.g. for versioning
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
+				$hookObj = GeneralUtility::getUserObj($classRef);
+				if (method_exists($hookObj, 'moveRecord')) {
+					$hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
+				}
+			}
+		}
+		// Move the record if a hook hasn't moved it yet
+		if (!$recordWasMoved) {
+			$this->moveRecord_raw($table, $uid, $destPid);
 		}
 	}
 
