@@ -747,17 +747,23 @@ class DataHandler {
 	 * @return void
 	 */
 	public function setMirror($mirror) {
-		if (is_array($mirror)) {
-			foreach ($mirror as $table => $uid_array) {
-				if (isset($this->datamap[$table])) {
-					foreach ($uid_array as $id => $uidList) {
-						if (isset($this->datamap[$table][$id])) {
-							$theIdsInArray = GeneralUtility::trimExplode(',', $uidList, TRUE);
-							foreach ($theIdsInArray as $copyToUid) {
-								$this->datamap[$table][$copyToUid] = $this->datamap[$table][$id];
-							}
-						}
-					}
+		if (!is_array($mirror)) {
+			return;
+		}
+
+		foreach ($mirror as $table => $uid_array) {
+			if (!isset($this->datamap[$table])) {
+				continue;
+			}
+
+			foreach ($uid_array as $id => $uidList) {
+				if (!isset($this->datamap[$table][$id])) {
+					continue;
+				}
+
+				$theIdsInArray = GeneralUtility::trimExplode(',', $uidList, TRUE);
+				foreach ($theIdsInArray as $copyToUid) {
+					$this->datamap[$table][$copyToUid] = $this->datamap[$table][$id];
 				}
 			}
 		}
@@ -770,16 +776,20 @@ class DataHandler {
 	 * @return void
 	 */
 	public function setDefaultsFromUserTS($userTS) {
-		if (is_array($userTS)) {
-			foreach ($userTS as $k => $v) {
-				$k = substr($k, 0, -1);
-				if ($k && is_array($v) && isset($GLOBALS['TCA'][$k])) {
-					if (is_array($this->defaultValues[$k])) {
-						$this->defaultValues[$k] = array_merge($this->defaultValues[$k], $v);
-					} else {
-						$this->defaultValues[$k] = $v;
-					}
-				}
+		if (!is_array($userTS)) {
+			return;
+		}
+
+		foreach ($userTS as $k => $v) {
+			$k = substr($k, 0, -1);
+			if (!$k || !is_array($v) || !isset($GLOBALS['TCA'][$k])) {
+				continue;
+			}
+
+			if (is_array($this->defaultValues[$k])) {
+				$this->defaultValues[$k] = array_merge($this->defaultValues[$k], $v);
+			} else {
+				$this->defaultValues[$k] = $v;
 			}
 		}
 	}
@@ -792,26 +802,28 @@ class DataHandler {
 	 * @return void
 	 */
 	public function process_uploads($postFiles) {
-		if (is_array($postFiles)) {
-			// Editing frozen:
-			if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
-				if ($this->enableLogging) {
-					$this->newlog('All editing in this workspace has been frozen!', 1);
-				}
-				return FALSE;
+		if (!is_array($postFiles)) {
+			return;
+		}
+
+		// Editing frozen:
+		if ($this->BE_USER->workspace !== 0 && $this->BE_USER->workspaceRec['freeze']) {
+			if ($this->enableLogging) {
+				$this->newlog('All editing in this workspace has been frozen!', 1);
 			}
-			$subA = reset($postFiles);
-			if (is_array($subA)) {
-				if (is_array($subA['name']) && is_array($subA['type']) && is_array($subA['tmp_name']) && is_array($subA['size'])) {
-					// Initialize the uploadedFilesArray:
-					$this->uploadedFileArray = array();
-					// For each entry:
-					foreach ($subA as $key => $values) {
-						$this->process_uploads_traverseArray($this->uploadedFileArray, $values, $key);
-					}
-				} else {
-					$this->uploadedFileArray = $subA;
+			return FALSE;
+		}
+		$subA = reset($postFiles);
+		if (is_array($subA)) {
+			if (is_array($subA['name']) && is_array($subA['type']) && is_array($subA['tmp_name']) && is_array($subA['size'])) {
+				// Initialize the uploadedFilesArray:
+				$this->uploadedFileArray = array();
+				// For each entry:
+				foreach ($subA as $key => $values) {
+					$this->process_uploads_traverseArray($this->uploadedFileArray, $values, $key);
 				}
+			} else {
+				$this->uploadedFileArray = $subA;
 			}
 		}
 	}
@@ -2425,28 +2437,32 @@ class DataHandler {
 	 * @param array $actionCMDs
 	 */
 	protected function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
-		if (is_array($valueArray) && is_array($actionCMDs)) {
-			foreach ($actionCMDs as $key => $value) {
-				if ($key == '_ACTION') {
-					// First, check if there are "commands":
-					if (current($actionCMDs[$key]) !== '') {
-						asort($actionCMDs[$key]);
-						$newValueArray = array();
-						foreach ($actionCMDs[$key] as $idx => $order) {
-							if (substr($idx, 0, 3) == 'ID-') {
-								$idx = $this->newIndexMap[$idx];
-							}
-							// Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
-							if ($order != 'DELETE') {
-								$newValueArray[$idx] = $valueArray[$idx];
-							}
-							unset($valueArray[$idx]);
-						}
-						$valueArray = $valueArray + $newValueArray;
-					}
-				} elseif (is_array($actionCMDs[$key]) && isset($valueArray[$key])) {
-					$this->_ACTION_FLEX_FORMdata($valueArray[$key], $actionCMDs[$key]);
+		if (!is_array($valueArray) || !is_array($actionCMDs)) {
+			return;
+		}
+
+		foreach ($actionCMDs as $key => $value) {
+			if ($key == '_ACTION') {
+				// First, check if there are "commands":
+				if (current($actionCMDs[$key]) === '') {
+					continue;
 				}
+
+				asort($actionCMDs[$key]);
+				$newValueArray = array();
+				foreach ($actionCMDs[$key] as $idx => $order) {
+					if (substr($idx, 0, 3) == 'ID-') {
+						$idx = $this->newIndexMap[$idx];
+					}
+					// Just one reflection here: It is clear that when removing elements from a flexform, then we will get lost files unless we act on this delete operation by traversing and deleting files that were referred to.
+					if ($order != 'DELETE') {
+						$newValueArray[$idx] = $valueArray[$idx];
+					}
+					unset($valueArray[$idx]);
+				}
+				$valueArray = $valueArray + $newValueArray;
+			} elseif (is_array($actionCMDs[$key]) && isset($valueArray[$key])) {
+				$this->_ACTION_FLEX_FORMdata($valueArray[$key], $actionCMDs[$key]);
 			}
 		}
 	}
