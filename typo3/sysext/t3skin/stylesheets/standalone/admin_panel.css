@@ -1,9 +1,68 @@
-@import "../sprites/t3skin.css";
-
+/*!
+ *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+/* FONT PATH
+ * -------------------------- */
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.eot?v=4.3.0');
+  src: url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),
+  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),
+  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.woff?v=4.3.0') format('woff'),
+  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),
+  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+.fa-pencil:before {
+  content: "\f040";
+}
+.fa-angle-up:before {
+  content: "\f106";
+}
+.fa-angle-down:before {
+  content: "\f107";
+}
+.fa-toggle-off:before {
+  content: "\f204";
+}
+.fa-toggle-on:before {
+  content: "\f205";
+}
+.fa-google-plus-square:before {
+  content: "\f0d4";
+}
+.fa-trash:before {
+  content: "\f1f8";
+}
+.fa-history:before {
+  content: "\f1da";
+}
+.fa-list-alt:before {
+  content: "\f022";
+}
+.fa-plus-square:before {
+  content: "\f0fe";
+}
+.fa-arrows:before {
+  content: "\f047";
+}
 .t3-icon {
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
+	color:#000;
+	margin:0 5px;
 }
 
 .typo3-editPanel {
