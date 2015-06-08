@@ -10,7 +10,7 @@ fluidAjaxWidgetResponse {
 	}
 	10 = USER_INT
 	10 {
-		userFunc = tx_fluid_core_widget_bootstrap->run
+		userFunc = TYPO3\CMS\Fluid\Core\Widget\Bootstrap->run
 	}
 }
 
