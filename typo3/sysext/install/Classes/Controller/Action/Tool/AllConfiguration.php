@@ -89,7 +89,7 @@ class AllConfiguration extends Action\AbstractAction {
 					// Don't allow editing stuff which is added by extensions
 					// Make sure we fix potentially duplicated entries from older setups
 					$potentialValue = str_replace(array('\' . LF . \'', '\' . LF . \''), array(LF, LF), $value);
-					while (preg_match('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', '', $potentialValue)) {
+					while (preg_match('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', $potentialValue)) {
 						$potentialValue = preg_replace('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$sectionName][$key], '/') . '$/', '', $potentialValue);
 					}
 					$value = $potentialValue;
