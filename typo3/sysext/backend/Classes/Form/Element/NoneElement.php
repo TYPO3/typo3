@@ -61,8 +61,7 @@ class NoneElement extends AbstractFormElement {
 			$html = '
 				<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
 					<input class="form-control" value="'. $itemValue .'" type="text" disabled>
-				</div>
-				' . ((string)$itemValue !== '' ? '<p class="help-block">' . $itemValue . '</p>' : '');
+				</div>';
 		}
 		$resultArray['html'] = $html;
 		return $resultArray;
