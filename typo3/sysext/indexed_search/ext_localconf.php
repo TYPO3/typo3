@@ -1,8 +1,23 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('indexed_search');
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('indexed_search', 'Pi2', array('Search' => 'form,search'), array('Search' => 'form,search'));
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+	'indexed_search',
+	'setup',
+	trim('
+plugin.tx_indexedsearch = USER_INT
+plugin.tx_indexedsearch.userFunc = ' . \TYPO3\CMS\IndexedSearch\Controller\SearchFormController::class . '->main
+	')
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+	'indexed_search',
+	'setup',
+	'tt_content.list.20.indexed_search =< plugin.tx_indexedsearch',
+	'defaultContentRendering'
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.indexed_search', 'Pi2', array('Search' => 'form,search'), array('Search' => 'form,search'));
 // Attach to hooks:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = \TYPO3\CMS\IndexedSearch\Indexer::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache']['tx_indexedsearch'] = \TYPO3\CMS\IndexedSearch\Hook\TypoScriptFrontendHook::class . '->headerNoCache';

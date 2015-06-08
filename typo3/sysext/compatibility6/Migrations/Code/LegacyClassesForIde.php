@@ -5094,16 +5094,6 @@ class tx_impexp_task extends \TYPO3\CMS\Impexp\Task\ImportExportTask {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class Tx_IndexedSearch_Controller_SearchController extends \TYPO3\CMS\IndexedSearch\Controller\SearchController {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_indexedsearch extends \TYPO3\CMS\IndexedSearch\Controller\SearchFormController {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tx_indexedsearch_files extends \TYPO3\CMS\IndexedSearch\Hook\CrawlerFilesHook {}
 
 /**
