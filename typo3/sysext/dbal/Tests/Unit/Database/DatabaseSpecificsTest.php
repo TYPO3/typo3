@@ -34,7 +34,7 @@ class DatabaseSpecificsTest extends AbstractTestCase {
 		$GLOBALS['TYPO3_LOADED_EXT'] = array();
 
 		/** @var AbstractSpecifics|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$this->subject = GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\Null::class);
+		$this->subject = GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\NullSpecifics::class);
 	}
 
 	/**

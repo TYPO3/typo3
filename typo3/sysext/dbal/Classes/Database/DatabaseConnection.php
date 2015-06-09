@@ -245,7 +245,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						throw new \InvalidArgumentException($className . ' must inherit from ' . Specifics\AbstractSpecifics::class, 1416919866);
 					}
 				} else {
-					$className = Specifics\Null::class;
+					$className = Specifics\NullSpecifics::class;
 				}
 				$this->dbmsSpecifics = GeneralUtility::makeInstance($className);
 			}
