@@ -115,6 +115,21 @@ class TagBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function emptyAttributesAreRenderedAccordingToHtmlDoctype() {
+		$GLOBALS['TSFE']->config['config']['doctype'] = 'html5';
+		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
+		$tagBuilder->addAttribute('attribute1', '');
+		$this->assertEquals('<tag attribute1 />', $tagBuilder->render(), 'Empty attribute syntax is used for HTML5 doctype');
+		$tagBuilder->reset();
+		$GLOBALS['TSFE']->config['config']['doctype'] = 'xhtml_trans';
+		$tagBuilder->setTagName('tag');
+		$tagBuilder->addAttribute('attribute1', '');
+		$this->assertEquals('<tag attribute1="" />', $tagBuilder->render(), 'Key value attribute syntax is used for XHTML doctype');
+	}
+
+	/**
+	 * @test
+	 */
 	public function attributeValuesAreEscapedByDefault() {
 		$tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder('tag');
 		$tagBuilder->addAttribute('foo', '<to be escaped>');

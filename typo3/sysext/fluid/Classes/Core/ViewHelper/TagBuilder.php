@@ -226,7 +226,11 @@ class TagBuilder {
 		}
 		$output = '<' . $this->tagName;
 		foreach ($this->attributes as $attributeName => $attributeValue) {
-			$output .= ' ' . $attributeName . '="' . $attributeValue . '"';
+			if ($attributeValue === '' && $GLOBALS['TSFE']->config['config']['doctype'] === 'html5') {
+				$output .= ' ' . $attributeName;
+			} else {
+				$output .= ' ' . $attributeName . '="' . $attributeValue . '"';
+			}
 		}
 		if ($this->hasContent() || $this->forceClosingTag) {
 			$output .= '>' . $this->content . '</' . $this->tagName . '>';

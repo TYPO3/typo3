@@ -80,7 +80,7 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
 
 		if (isset(self::$tagAttributes[get_class($this)])) {
 			foreach (self::$tagAttributes[get_class($this)] as $attributeName) {
-				if ($this->hasArgument($attributeName) && $this->arguments[$attributeName] !== '') {
+				if ($this->hasArgument($attributeName)) {
 					$this->tag->addAttribute($attributeName, $this->arguments[$attributeName]);
 				}
 			}

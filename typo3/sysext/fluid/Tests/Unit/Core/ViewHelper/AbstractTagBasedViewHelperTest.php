@@ -53,6 +53,20 @@ class AbstractTagBasedViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function emptyTagAttributeCallsTagBuilder() {
+		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', '');
+		$this->viewHelper->_set('tag', $mockTagBuilder);
+
+		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
+		$arguments = array('foo' => '');
+		$this->viewHelper->setArguments($arguments);
+		$this->viewHelper->initialize();
+	}
+
+	/**
+	 * @test
+	 */
 	public function additionalTagAttributesAreRenderedCorrectly() {
 		$mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class, array('addAttribute'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
