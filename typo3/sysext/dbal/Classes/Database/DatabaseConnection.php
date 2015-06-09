@@ -233,6 +233,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		if (isset($this->conf['table2handlerKeys'])) {
 			$this->table2handlerKeys = $this->conf['table2handlerKeys'];
 		}
+
+		$specificsClassName = Specifics\NullSpecifics::class;
 		if (isset($this->conf['handlerCfg'])) {
 			$this->handlerCfg = $this->conf['handlerCfg'];
 
@@ -244,12 +246,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					if (!is_subclass_of($className, Specifics\AbstractSpecifics::class)) {
 						throw new \InvalidArgumentException($className . ' must inherit from ' . Specifics\AbstractSpecifics::class, 1416919866);
 					}
-				} else {
-					$className = Specifics\NullSpecifics::class;
+					$specificsClassName = $className;
 				}
-				$this->dbmsSpecifics = GeneralUtility::makeInstance($className);
 			}
 		}
+		$this->dbmsSpecifics = GeneralUtility::makeInstance($specificsClassName);
 		$this->cacheFieldInfo();
 		// Debugging settings:
 		$this->printErrors = !empty($this->conf['debugOptions']['printErrors']);
