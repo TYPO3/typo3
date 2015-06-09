@@ -284,6 +284,11 @@ class SqlSchemaMigrationService {
 											$fieldC
 										);
 
+										// Ignore nonstandard MySQL numeric field attributes UNSIGNED and ZEROFILL
+										if ($this->isDbalEnabled() && preg_match('/^(TINYINT|SMALLINT|MEDIUMINT|INT|INTEGER|BIGINT|REAL|DOUBLE|FLOAT|DECIMAL|NUMERIC)\([^\)]+\)\s+(UNSIGNED|ZEROFILL)/i', $fieldC)) {
+											$fieldC = str_ireplace(array(' UNSIGNED', ' ZEROFILL'), '', $fieldC);
+											$FDcomp[$table][$theKey][$fieldN] = str_ireplace(array(' UNSIGNED', ' ZEROFILL'), '', $FDcomp[$table][$theKey][$fieldN]);
+										}
 										if ($ignoreNotNullWhenComparing) {
 											$fieldC = str_replace(' NOT NULL', '', $fieldC);
 											$FDcomp[$table][$theKey][$fieldN] = str_replace(' NOT NULL', '', $FDcomp[$table][$theKey][$fieldN]);

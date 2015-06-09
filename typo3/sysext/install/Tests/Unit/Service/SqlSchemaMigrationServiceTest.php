@@ -437,4 +437,93 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		);
 	}
 
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraIncludesUnsignedAttributeIfMySQLIsUsed() {
+		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
+		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(FALSE));
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'INT(11) UNSIGNED DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			)
+		);
+
+		$this->assertSame(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(
+					'tx_foo' => array(
+						'fields' => array(
+							'foo' => 'int(11) UNSIGNED DEFAULT \'0\' NOT NULL',
+						),
+					)
+				),
+				'diff_currentValues' => array(
+					'tx_foo' => array(
+						'fields' => array(
+							'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+						),
+					)
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraExcludesUnsignedAttributeIfDbalIsUsed() {
+		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
+		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(TRUE));
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'INT(11) UNSIGNED DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'foo' => 'int(11) DEFAULT \'0\' NOT NULL',
+					),
+					'extra' => array(
+						'ENGINE' => 'InnoDB'
+					)
+				)
+			)
+		);
+
+		$this->assertSame(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(),
+				'diff_currentValues' => NULL
+			)
+		);
+	}
 }
