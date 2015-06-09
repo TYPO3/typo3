@@ -131,14 +131,6 @@ interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInte
 }
 
 /**
- * Test class D implementing Serializable
- */
-class t3lib_object_tests_serializable implements \Serializable {
-	public function serialize() {}
-	public function unserialize($s) {}
-}
-
-/**
  * class which implements a Interface
  */
 class t3lib_object_tests_someimplementation implements \t3lib_object_tests_someinterface {

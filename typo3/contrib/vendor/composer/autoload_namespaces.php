@@ -7,6 +7,4 @@ $baseDir = dirname(dirname(dirname($vendorDir)));
 
 return array(
     'TYPO3\\Flow\\' => array($baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes'),
-    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src'),
-    '' => array($vendorDir . '/typo3/cms-composer-installers/Classes'),
 );
