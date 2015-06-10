@@ -131,6 +131,14 @@ interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInte
 }
 
 /**
+ * Test class D implementing Serializable
+ */
+class t3lib_object_tests_serializable implements \Serializable {
+	public function serialize() {}
+	public function unserialize($s) {}
+}
+
+/**
  * class which implements a Interface
  */
 class t3lib_object_tests_someimplementation implements \t3lib_object_tests_someinterface {
@@ -466,4 +474,29 @@ class t3lib_object_prototypeNeedsSingletonInConstructor {
 	public function __construct(\t3lib_object_singleton $dependency) {
 		$this->dependency = $dependency;
 	}
+}
+
+/**
+ * Class that needs initialization after instantiation
+ */
+class t3lib_object_tests_initializable extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {
+	/**
+	 * @var bool
+	 */
+	protected $initialized = FALSE;
+
+	public function initializeObject() {
+		if ($this->initialized) {
+			throw new \Exception('initializeObject was called a second time', 1433944932);
+		}
+		$this->initialized = TRUE;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isInitialized() {
+		return $this->initialized;
+	}
+
 }
