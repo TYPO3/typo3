@@ -914,6 +914,8 @@ class SqlParser {
 								$condition['right']['table'] = '';
 								$condition['right']['field'] = $tableField[0];
 							}
+						} elseif ($value = $this->getValue($parseString)) {
+							$condition['right']['value'] = $value;
 						} else {
 							return $this->parseError('No join field found in parseFromTables()!', $parseString);
 						}
@@ -1804,8 +1806,13 @@ class SqlParser {
 							$outputParts[$k] .= $condition['left']['table'] ? $condition['left']['table'] . '.' : '';
 							$outputParts[$k] .= $condition['left']['field'];
 							$outputParts[$k] .= $condition['comparator'];
-							$outputParts[$k] .= $condition['right']['table'] ? $condition['right']['table'] . '.' : '';
-							$outputParts[$k] .= $condition['right']['field'];
+							if (!empty($condition['right']['value'])) {
+								$value = $condition['right']['value'];
+								$outputParts[$k] .= $value[1] . $this->compileAddslashes($value[0]) . $value[1];
+							} else {
+								$outputParts[$k] .= $condition['right']['table'] ? $condition['right']['table'] . '.' : '';
+								$outputParts[$k] .= $condition['right']['field'];
+							}
 						}
 					}
 				}
