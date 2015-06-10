@@ -32,20 +32,6 @@ abstract class AbstractGraphicalTask extends AbstractTask {
 	protected $targetFileExtension;
 
 	/**
-	 * Sets parameters needed in the checksum. Can be overridden to add additional parameters to the checksum.
-	 * This should include all parameters that could possibly vary between different task instances, e.g. the
-	 * TYPO3 image configuration in TYPO3_CONF_VARS[GFX] for graphic processing tasks.
-	 *
-	 * @return array
-	 */
-	protected function getChecksumData() {
-		return array_merge(
-			parent::getChecksumData(),
-			array(serialize($GLOBALS['TYPO3_CONF_VARS']['GFX']))
-		);
-	}
-
-	/**
 	 * Returns the name the processed file should have
 	 * in the filesystem.
 	 *
