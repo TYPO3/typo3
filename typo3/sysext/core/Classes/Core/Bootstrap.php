@@ -156,7 +156,7 @@ class Bootstrap {
 	}
 
 	/**
-	 * Main entry point called at every request usually from Global scope. Checks if everthing is correct,
+	 * Main entry point called at every request usually from Global scope. Checks if everything is correct,
 	 * and sets up the base request information for a regular request, then
 	 * resolves the RequestHandler which handles the request.
 	 *
