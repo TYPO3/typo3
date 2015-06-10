@@ -2614,7 +2614,7 @@ Connection: close
 			$content = @file_get_contents($url, FALSE, $ctx);
 			if ($content === FALSE && isset($report)) {
 				$report['error'] = -1;
-				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
+				$report['message'] = 'Couldn\'t get URL: ' . (isset($http_response_header) ? implode(LF, $http_response_header) : $url);
 			}
 		} else {
 			if (isset($report)) {
@@ -2623,7 +2623,7 @@ Connection: close
 			$content = @file_get_contents($url);
 			if ($content === FALSE && isset($report)) {
 				$report['error'] = -1;
-				$report['message'] = 'Couldn\'t get URL: ' . implode(LF, $http_response_header);
+				$report['message'] = 'Couldn\'t get URL: ' . (isset($http_response_header) ? implode(LF, $http_response_header) : $url);
 			}
 		}
 		return $content;
