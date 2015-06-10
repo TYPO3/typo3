@@ -207,7 +207,7 @@ class PersistentObjectConverter extends ObjectConverter {
 		}
 
 		if ($object === NULL) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException(sprintf('Object of type %s with identity "%s" not found.', $targetType, print_r($identity, TRUE)), 1297933823);
 		}
 
 		return $object;
