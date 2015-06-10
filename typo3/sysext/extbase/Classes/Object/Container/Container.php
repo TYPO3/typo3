@@ -242,7 +242,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Initialize $instance after injecting all dependencies
+	 * Call object initializer if present in object
 	 *
 	 * @param object $instance
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
@@ -358,4 +358,5 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	public function isPrototype($className) {
 		return !$this->isSingleton($className);
 	}
+
 }

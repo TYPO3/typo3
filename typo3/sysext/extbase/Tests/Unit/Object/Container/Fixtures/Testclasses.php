@@ -480,13 +480,16 @@ class t3lib_object_prototypeNeedsSingletonInConstructor {
 /**
  * Class that needs initialization after instantiation
  */
-class t3lib_object_tests_initializable {
+class t3lib_object_tests_initializable extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {
 	/**
 	 * @var bool
 	 */
 	protected $initialized = FALSE;
 
 	public function initializeObject() {
+		if ($this->initialized) {
+			throw new \Exception('initializeObject was called a second time', 1433944932);
+		}
 		$this->initialized = TRUE;
 	}
 
@@ -496,4 +499,5 @@ class t3lib_object_tests_initializable {
 	public function isInitialized() {
 		return $this->initialized;
 	}
+
 }

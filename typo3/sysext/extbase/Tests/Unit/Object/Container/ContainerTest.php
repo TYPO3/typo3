@@ -185,7 +185,7 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getInstanceInitializesObjects() {
 		$instance = $this->container->getInstance('t3lib_object_tests_initializable');
-		$this->assertTrue($instance->isInitialized(), 't3lib_object_tests_initializable was not completely initialized');
+		$this->assertTrue($instance->isInitialized());
 	}
 
 	/**
@@ -220,7 +220,7 @@ class ContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getEmptyObjectInitializesObjects() {
 		$object = $this->container->getEmptyObject('t3lib_object_tests_initializable');
-		$this->assertTrue($object->isInitialized(), 't3lib_object_tests_initializable was not completely initialized');
+		$this->assertTrue($object->isInitialized());
 	}
 
 	/**
