@@ -635,18 +635,19 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $packageKey
 	 */
 	public function activatePackage($packageKey) {
+		$package = $this->getPackage($packageKey);
+		$this->registerTransientClassLoadingInformationForPackage($package);
+
 		if ($this->isPackageActive($packageKey)) {
 			return;
 		}
 
-		$package = $this->getPackage($packageKey);
 		$this->activePackages[$packageKey] = $package;
 		$this->packageStatesConfiguration['packages'][$packageKey]['state'] = 'active';
 		if (!isset($this->packageStatesConfiguration['packages'][$packageKey]['packagePath'])) {
 			$this->packageStatesConfiguration['packages'][$packageKey]['packagePath'] = str_replace($this->packagesBasePath, '', $package->getPackagePath());
 		}
 		$this->sortAndSavePackageStates();
-		$this->registerTransientClassLoadingInformationForPackage($package);
 	}
 
 	/**
