@@ -659,19 +659,21 @@ class TemplateService {
 		if (trim($row['basedOn'])) {
 			// Normal Operation, which is to include the "based-on" sys_templates,
 			// if they are not already included, and maintaining the sorting of the templates
-			$basedOnIds = GeneralUtility::intExplode(',', $row['basedOn']);
+			$basedOnIds = GeneralUtility::intExplode(',', $row['basedOn'], TRUE);
 			// skip template if it's already included
 			foreach ($basedOnIds as $key => $basedOnId) {
 				if (GeneralUtility::inList($idList, 'sys_' . $basedOnId)) {
 					unset($basedOnIds[$key]);
 				}
 			}
-			$subTemplates = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
-			// Traversing list again to ensure the sorting of the templates
-			foreach ($basedOnIds as $id) {
-				if (is_array($subTemplates[$id])) {
-					$this->versionOL($subTemplates[$id]);
-					$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
+			if (!empty($basedOnIds)) {
+				$subTemplates = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
+				// Traversing list again to ensure the sorting of the templates
+				foreach ($basedOnIds as $id) {
+					if (is_array($subTemplates[$id])) {
+						$this->versionOL($subTemplates[$id]);
+						$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
+					}
 				}
 			}
 		}
