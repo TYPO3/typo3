@@ -524,6 +524,9 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function createZipFileFromExtensionGeneratesCorrectArchive() {
+		// 42 second of first day in 1970 - used to have achieve stable file names
+		$GLOBALS['EXEC_TIME'] = 42;
+
 		// Create extension for testing:
 		$extKey = $this->createFakeExtension();
 		$extensionRoot = $this->fakedExtensions[$extKey]['siteAbsPath'];
@@ -551,12 +554,12 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create zip-file from extension
 		$filename = $fileHandlerMock->_call('createZipFileFromExtension', $extKey);
 
-		$expectedFilename = PATH_site . 'typo3temp/' . $extKey . '_0.0.0_' . date('YmdHi') . '.zip';
+		$expectedFilename = PATH_site . 'typo3temp/' . $extKey . '_0.0.0_' . date('YmdHi', 42) . '.zip';
+		$this->testFilesToDelete[] = $filename;
 		$this->assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
 
 		// File was created
 		$this->assertTrue(file_exists($filename), 'Zip file not created');
-		$this->testFilesToDelete[] = $filename;
 
 		// Read archive and check its contents
 		$archive = new \ZipArchive();
