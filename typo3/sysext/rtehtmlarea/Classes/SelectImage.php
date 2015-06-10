@@ -137,7 +137,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
 			SelectImage.editorNo = "' . $this->editorNo . '";
-			SelectImage.act = "' . ($this->act ?: 'plain') . '";
+			SelectImage.act = "' . ($this->act ?: reset($this->allowedItems)) . '";
 			SelectImage.sys_language_content = "' . $this->sys_language_content . '";
 			SelectImage.RTEtsConfigParams = "' . rawurlencode($this->RTEtsConfigParams) . '";
 			SelectImage.bparams = "' . $this->bparams . '";
