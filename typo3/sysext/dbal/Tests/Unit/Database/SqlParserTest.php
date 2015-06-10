@@ -416,6 +416,18 @@ class SqlParserTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see http://forge.typo3.org/issues/67385
+	 */
+	public function canParseMultiJoinConditionsWithStrings() {
+		$sql = 'SELECT * FROM sys_file_processedfile LEFT JOIN sys_registry ON entry_key = sys_file_processedfile.uid AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
+
+		$result = $this->subject->debug_testSQL($sql);
+		$expected = 'SELECT * FROM sys_file_processedfile LEFT JOIN sys_registry ON entry_key=sys_file_processedfile.uid AND entry_namespace=\'ProcessedFileChecksumUpdate\'';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/22501
 	 */
 	public function canParseMultipleJoinConditionsWithLessThanOperator() {
