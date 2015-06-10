@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -395,20 +395,21 @@ class ElementBrowser {
 	 */
 	protected function initCurrentUrl() {
 		// CurrentUrl - the current link url must be passed around if it exists
-		if ($this->mode == 'wizard') {
+		if ($this->mode === 'wizard') {
 			$currentValues = GeneralUtility::trimExplode(LF, trim($this->P['currentValue']));
 			if (count($currentValues) > 0) {
 				$currentValue = array_pop($currentValues);
 			} else {
 				$currentValue = '';
 			}
-			$currentLinkParts = GeneralUtility::unQuoteFilenames($currentValue, TRUE);
+			$currentLinkParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($currentValue);
+
 			$initialCurUrlArray = array(
-				'href' => $currentLinkParts[0],
-				'target' => $currentLinkParts[1],
-				'class' => $currentLinkParts[2],
-				'title' => $currentLinkParts[3],
-				'params' => $currentLinkParts[4]
+				'href' => $currentLinkParts['url'],
+				'target' => $currentLinkParts['target'],
+				'class' => $currentLinkParts['class'],
+				'title' => $currentLinkParts['title'],
+				'params' => $currentLinkParts['additionalParams']
 			);
 			$this->curUrlArray = is_array(GeneralUtility::_GP('curUrl'))
 				? array_merge($initialCurUrlArray, GeneralUtility::_GP('curUrl'))
@@ -420,7 +421,14 @@ class ElementBrowser {
 				$conf = array();
 				$_params = array(
 					'conf' => &$conf,
-					'linkParts' => $currentLinkParts
+					'linkParts' => [
+						// the hook expects old numerical indexes
+						$currentLinkParts['url'],
+						$currentLinkParts['target'],
+						$currentLinkParts['class'],
+						$currentLinkParts['title'],
+						$currentLinkParts['additionalParams']
+					]
 				);
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'] as $objRef) {
 					$processor =& GeneralUtility::getUserObj($objRef);
@@ -433,25 +441,16 @@ class ElementBrowser {
 				// Check if there is the FAL API
 				if (GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], 'file:')) {
 					$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
-					// Remove the "file:" prefix
-					$currentLinkParts[0] = rawurldecode(substr($this->curUrlArray['href'], 5));
 				} elseif (file_exists(PATH_site . rawurldecode($this->curUrlArray['href']))) {
-					if (GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], PATH_site)) {
-						$currentLinkParts[0] = PathUtility::stripPathSitePrefix($this->curUrlArray['href']);
-					}
 					$this->curUrlInfo = $this->parseCurUrl($this->siteURL . $this->curUrlArray['href'], $this->siteURL);
 				} elseif (strstr($this->curUrlArray['href'], '@')) {
-					// check for email link
-					if (GeneralUtility::isFirstPartOfStr($this->curUrlArray['href'], 'mailto:')) {
-						$currentLinkParts[0] = substr($this->curUrlArray['href'], 7);
-					}
 					$this->curUrlInfo = $this->parseCurUrl('mailto:' . $this->curUrlArray['href'], $this->siteURL);
 				} else {
 					// nothing of the above. this is an external link
 					if (strpos($this->curUrlArray['href'], '://') === FALSE) {
-						$currentLinkParts[0] = 'http://' . $this->curUrlArray['href'];
+						$currentLinkParts['url'] = 'http://' . $this->curUrlArray['href'];
 					}
-					$this->curUrlInfo = $this->parseCurUrl($currentLinkParts[0], $this->siteURL);
+					$this->curUrlInfo = $this->parseCurUrl($currentLinkParts['url'], $this->siteURL);
 				}
 			} elseif (!$this->curUrlArray['href']) {
 				$this->curUrlInfo = array();
@@ -600,9 +599,12 @@ class ElementBrowser {
 							cur_class = "\\"" + cur_class + "\\"";
 						}
 						if (cur_title == "" && cur_params != "") {
- 							cur_title = "-";
- 						}
-						cur_title = cur_title.replace(/(^\\")|(\\"$)/g, "");
+							cur_title = "-";
+						}
+						// replace each \ with \\
+						cur_title = cur_title.replace(/\\\\/g, "\\\\\\\\");
+						// replace each " with \"
+						cur_title = cur_title.replace(/\\"/g, "\\\\\\"");
 						if (cur_title.indexOf(" ") != -1) {
 							cur_title = "\\"" + cur_title + "\\"";
 						}

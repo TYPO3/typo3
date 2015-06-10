@@ -19,6 +19,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * A ViewHelper to create links from fields supported by the link wizard
@@ -116,7 +117,7 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 				$content,
 				array(
 					'typolink.' => array(
-						'parameter' => implode(' ', $typolinkParameter),
+						'parameter' => $typolinkParameter,
 						'ATagParams' => $aTagParams,
 					)
 				)
@@ -129,61 +130,45 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 	/**
 	 * Transforms ViewHelper arguments to typo3link.parameters.typoscript option as array.
 	 *
-	 * @param string $parameter Example: 19 _blank - "testtitle with whitespace" &X=y
+	 * @param string $parameter Example: 19 _blank - "testtitle \"with whitespace\"" &X=y
 	 * @param string $target
 	 * @param string $class
 	 * @param string $title
 	 * @param string $additionalParams
 	 *
-	 * @return array Final merged typolink.parameter as array to be imploded with empty string later
+	 * @return string The final TypoLink string
 	 */
 	static protected function createTypolinkParameterArrayFromArguments($parameter, $target = '', $class = '', $title = '', $additionalParams = '') {
-		// Explode $parameter by whitespace and remove any " around resulting array values
-		$parameterArray = GeneralUtility::unQuoteFilenames($parameter, TRUE);
-
-		if (empty($parameterArray)) {
-			return array();
+		$typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+		$typolinkConfiguration = $typoLinkCodec->decode($parameter);
+		if (empty($typolinkConfiguration)) {
+			return $typolinkConfiguration;
 		}
-
-		// Extend to 4 elements
-		$typolinkConfiguration = array_pad($parameterArray, 4, '-');
 
 		// Override target if given in target argument
 		if ($target) {
-			$typolinkConfiguration[1] = $target;
+			$typolinkConfiguration['target'] = $target;
 		}
 
 		// Combine classes if given in both "parameter" string and "class" argument
 		if ($class) {
-			$typolinkConfiguration[2] = $typolinkConfiguration[2] !== '-' ? $typolinkConfiguration[2] . ' ' : '';
-			$typolinkConfiguration[2] .= $class;
+			if ($typolinkConfiguration['class']) {
+				$typolinkConfiguration['class'] .= ' ';
+			}
+			$typolinkConfiguration['class'] .= $class;
 		}
 
 		// Override title if given in title argument
 		if ($title) {
-			$typolinkConfiguration[3] = $title;
+			$typolinkConfiguration['title'] = $title;
 		}
 
 		// Combine additionalParams
 		if ($additionalParams) {
-			$typolinkConfiguration[4] .= $additionalParams;
+			$typolinkConfiguration['additionalParams'] .= $additionalParams;
 		}
 
-		// Unset unused parameters again from the end, wrap all given values with "
-		$reverseSortedParameters = array_reverse($typolinkConfiguration, TRUE);
-		$aValueWasSet = FALSE;
-		foreach ($reverseSortedParameters as $position => $value) {
-			if ($value === '-' && !$aValueWasSet) {
-				unset($typolinkConfiguration[$position]);
-			} else {
-				$aValueWasSet = TRUE;
-				if ($value !== '-') {
-					$typolinkConfiguration[$position] = '"' . $value . '"';
-				}
-			}
-		}
-
-		return $typolinkConfiguration;
+		return $typoLinkCodec->encode($typolinkConfiguration);
 	}
 
 }

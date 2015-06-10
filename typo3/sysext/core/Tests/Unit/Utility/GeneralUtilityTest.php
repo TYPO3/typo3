@@ -3457,6 +3457,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return array(
 			// Some theoretical tests first
 			array(
+				'',
+				array(),
+				array()
+			),
+			array(
 				'aa bb "cc" "dd"',
 				array('aa', 'bb', '"cc"', '"dd"'),
 				array('aa', 'bb', 'cc', 'dd')
@@ -3608,14 +3613,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Tests if the commands are exploded and unquoted correctly
 	 *
-	 * @dataProvider 	imageMagickCommandsDataProvider
+	 * @dataProvider imageMagickCommandsDataProvider
 	 * @test
 	 */
 	public function explodeAndUnquoteImageMagickCommands($source, $expectedQuoted, $expectedUnquoted) {
 		$actualQuoted = Utility\GeneralUtility::unQuoteFilenames($source);
-		$acutalUnquoted = Utility\GeneralUtility::unQuoteFilenames($source, TRUE);
+		$actualUnquoted = Utility\GeneralUtility::unQuoteFilenames($source, TRUE);
 		$this->assertEquals($expectedQuoted, $actualQuoted, 'The exploded command does not match the expected');
-		$this->assertEquals($expectedUnquoted, $acutalUnquoted, 'The exploded and unquoted command does not match the expected');
+		$this->assertEquals($expectedUnquoted, $actualUnquoted, 'The exploded and unquoted command does not match the expected');
 	}
 
 	///////////////////////////////

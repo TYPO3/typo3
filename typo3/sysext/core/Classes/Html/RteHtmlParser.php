@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
@@ -665,9 +666,11 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$external = FALSE;
 			// Block
 			if ($k % 2) {
-				$tagCode = GeneralUtility::unQuoteFilenames(trim(substr($this->getFirstTag($v), 0, -1)), TRUE);
-				$link_param = $tagCode[1];
-				$href = '';
+				// split away the first "<link" part
+				$typolink = explode(' ', substr($this->getFirstTag($v), 0, -1), 2)[1];
+				$tagCode = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($typolink);
+
+				$link_param = $tagCode['url'];
 				// Parsing the typolink data. This parsing is roughly done like in \TYPO3\CMS\Frontend\ContentObject->typolink()
 				// Parse URL:
 				$pU = parse_url($link_param);
@@ -755,7 +758,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					}
 				}
 				// Setting the A-tag:
-				$bTag = '<a href="' . htmlspecialchars($href) . '"' . ($tagCode[2] && $tagCode[2] != '-' ? ' target="' . htmlspecialchars($tagCode[2]) . '"' : '') . ($tagCode[3] && $tagCode[3] != '-' ? ' class="' . htmlspecialchars($tagCode[3]) . '"' : '') . ($tagCode[4] ? ' title="' . htmlspecialchars($tagCode[4]) . '"' : '') . ($external ? ' data-htmlarea-external="1"' : '') . ($error ? ' rteerror="' . htmlspecialchars($error) . '" style="background-color: yellow; border:2px red solid; color: black;"' : '') . '>';
+				$bTag = '<a href="' . htmlspecialchars($href) . '"'
+					. ($tagCode['target'] ? ' target="' . htmlspecialchars($tagCode['target']) . '"' : '')
+					. ($tagCode['class'] ? ' class="' . htmlspecialchars($tagCode['class']) . '"' : '')
+					. ($tagCode['title'] ? ' title="' . htmlspecialchars($tagCode['title']) . '"' : '')
+					. ($external ? ' data-htmlarea-external="1"' : '')
+					. ($error ? ' rteerror="' . htmlspecialchars($error) . '" style="background-color: yellow; border:2px red solid; color: black;"' : '') . '>';
 				$eTag = '</a>';
 				// Modify parameters
 				if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['modifyParams_LinksRte_PostProc'])) {

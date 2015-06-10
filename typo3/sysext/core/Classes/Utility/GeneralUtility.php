@@ -5050,7 +5050,9 @@ Connection: close
 	}
 
 	/**
-	 * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string. This is mostly needed by the imageMagickCommand function above.
+	 * Explode a string (normally a list of filenames) with whitespaces by considering quotes in that string.
+	 *
+	 * This is mostly needed by the imageMagickCommand function above.
 	 *
 	 * @param string $parameters The whole parameters string
 	 * @param bool $unQuote If set, the elements of the resulting array are unquoted.
@@ -5076,8 +5078,8 @@ Connection: close
 		}
 		if ($unQuote) {
 			foreach ($paramsArr as $key => &$val) {
-				$val = preg_replace('/(^"|"$)/', '', $val);
-				$val = preg_replace('/(^\'|\'$)/', '', $val);
+				$val = preg_replace('/(?:^"|"$)/', '', $val);
+				$val = preg_replace('/(?:^\'|\'$)/', '', $val);
 			}
 			unset($val);
 		}

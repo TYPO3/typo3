@@ -46,6 +46,7 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * This class contains all main TypoScript features.
@@ -5964,10 +5965,10 @@ class ContentObjectRenderer {
 		$linkParameter = NULL;
 
 		// Link parameter value = first part
-		$linkParameterParts = GeneralUtility::unQuoteFilenames($mixedLinkParameter, TRUE);
+		$linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($mixedLinkParameter);
 
 		// Check for link-handler keyword:
-		list($linkHandlerKeyword, $linkHandlerValue) = explode(':', trim($linkParameterParts[0]), 2);
+		list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameterParts['url'], 2);
 		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && (string)$linkHandlerValue !== '') {
 			$linkHandlerObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
 			if (method_exists($linkHandlerObj, 'main')) {
@@ -5976,7 +5977,7 @@ class ContentObjectRenderer {
 		}
 
 		// Resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-		if ($linkHandlerKeyword === 'file' && !StringUtility::beginsWith($linkParameterParts[0], 'file://')) {
+		if ($linkHandlerKeyword === 'file' && !StringUtility::beginsWith($linkParameterParts['url'], 'file://')) {
 			try {
 				$fileOrFolderObject = $this->getResourceFactory()->retrieveFileOrFolderObject($linkHandlerValue);
 				// Link to a folder or file
@@ -5993,46 +5994,21 @@ class ContentObjectRenderer {
 				return $linkText;
 			}
 		} else {
-			$linkParameter = trim($linkParameterParts[0]);
-		}
-
-		// Target value = second Part (overriding the default target)
-		$linkTarget = trim($linkParameterParts[1]);
-		// The '-' character means 'no target'. Necessary in order to
-		// specify a class as third parameter without setting the target!
-		if ($linkTarget == '-') {
-			$linkTarget = '';
-		}
-
-		// Link class
-		$linkClass = trim($linkParameterParts[2]);
-
-		// The '-' character means 'no class'. Necessary in order to specify a
-		// title as fourth parameter without setting the target or class!
-		if ($linkClass == '-') {
-			$linkClass = '';
-		}
-
-		// Title value
-		$forceTitle = trim($linkParameterParts[3]);
-		// The '-' character means 'no title'. Necessary in order to specify
-		// further parameters without setting the title!
-		if ($forceTitle == '-') {
-			$forceTitle = '';
+			$linkParameter = $linkParameterParts['url'];
 		}
 
 		// additional parameters that need to be set
-		if (isset($linkParameterParts[4]) && trim($linkParameterParts[4]) !== "") {
-			$forceParams = trim($linkParameterParts[4]);
+		if ($linkParameterParts['additionalParams'] !== '') {
+			$forceParams = $linkParameterParts['additionalParams'];
 			// params value
 			$configuration['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
 		}
 
 		return array(
 			'href'   => $linkParameter,
-			'target' => $linkTarget,
-			'class'  => $linkClass,
-			'title'  => $forceTitle
+			'target' => $linkParameterParts['target'],
+			'class'  => $linkParameterParts['class'],
+			'title'  => $linkParameterParts['title']
 		);
 	}
 
@@ -6492,14 +6468,14 @@ class ContentObjectRenderer {
 					$target = '';
 				}
 				$onClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']), TRUE) . ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSwindowParams) . ');vHWin.focus();return false;';
-				$finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . $target . ' onclick="' . htmlspecialchars($onClick) . '"' . ($title ? ' title="' . $title . '"' : '') . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
+				$finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . $target . ' onclick="' . htmlspecialchars($onClick) . '"' . ($title ? ' title="' . htmlspecialchars($title) . '"' : '') . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 			} else {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $linkType === 'mailto') {
 					$finalAnchorTag = '<a href="' . $finalTagParts['url'] . '"';
 				} else {
 					$finalAnchorTag = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"';
 				}
-				$finalAnchorTag .= ($title ? ' title="' . $title . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
+				$finalAnchorTag .= ($title ? ' title="' . htmlspecialchars($title) . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 			}
 
 			// Call user function:

@@ -19,6 +19,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * A ViewHelper to create uris from fields supported by the link wizard
@@ -77,16 +78,12 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 		$parameter = $arguments['parameter'];
 		$additionalParams = $arguments['additionalParams'];
 
-		// Merge the $parameter with other arguments
-		$typolinkParameter = self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams);
-
 		$content = '';
-
 		if ($parameter) {
 			$contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 			$content = $contentObject->typoLink_URL(
 				array(
-					'parameter' => implode(' ', $typolinkParameter),
+					'parameter' => self::createTypolinkParameterArrayFromArguments($parameter, $additionalParams),
 				)
 			);
 		}
@@ -100,38 +97,21 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @param string $parameter Example: 19 _blank - "testtitle with whitespace" &X=y
 	 * @param string $additionalParameters
 	 *
-	 * @return array Final merged typolink.parameter as array to be imploded with empty string later
+	 * @return string The final TypoLink string
 	 */
 	static protected function createTypolinkParameterArrayFromArguments($parameter, $additionalParameters = '') {
-		// Explode $parameter by whitespace and remove any " around resulting array values
-		$parameterArray = GeneralUtility::unQuoteFilenames($parameter, TRUE);
-
-		if (empty($parameterArray)) {
-			return array();
+		$typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+		$typolinkConfiguration = $typoLinkCodec->decode($parameter);
+		if (empty($typolinkConfiguration)) {
+			return $typolinkConfiguration;
 		}
 
-		// Extend to 4 elements
-		$typolinkConfiguration = array_pad($parameterArray, 4, '-');
-
-		// Combine additionalParameters
+		// Combine additionalParams
 		if ($additionalParameters) {
-			$typolinkConfiguration[4] .= $additionalParameters;
+			$typolinkConfiguration['additionalParams'] .= $additionalParameters;
 		}
 
-		// Unset unused parameters again from the end, wrap all given values with "
-		$reverseSortedParameters = array_reverse($typolinkConfiguration, TRUE);
-		$aValueWasSet = FALSE;
-		foreach ($reverseSortedParameters as $position => $value) {
-			if ($value === '-' && !$aValueWasSet) {
-				unset($typolinkConfiguration[$position]);
-			} else {
-				$aValueWasSet = TRUE;
-				if ($value !== '-') {
-					$typolinkConfiguration[$position] = '"' . $value . '"';
-				}
-			}
-		}
-		return $typolinkConfiguration;
+		return $typoLinkCodec->encode($typolinkConfiguration);
 	}
 
 }
