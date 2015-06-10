@@ -27,7 +27,40 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest {
 		$GLOBALS['TYPO3_LOADED_EXT'] = array();
 
 		/** @var \TYPO3\CMS\Dbal\Database\Specifics\AbstractSpecifics|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-		$this->subject = GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics::class);
+		$this->subject = GeneralUtility::makeInstance($this->buildAccessibleProxy(\TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics::class));
+	}
+
+	/**
+	 * @test
+	 * @param array $fieldDefinition
+	 * @param string $expected
+	 * @dataProvider getNativeDefaultValueProvider
+	 */
+	public function getNativeDefaultValueStripsPostgresqlCharacterClasses($fieldDefinition, $expected) {
+		$actual = $this->subject->_call('getNativeDefaultValue', $fieldDefinition);
+		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @param array $fieldDefinition
+	 * @param string $expected
+	 * @dataProvider getNativeExtraFieldAttributeProvider
+	 */
+	public function getNativeExtraFieldAttributeSetsAutoIncrement($fieldDefinition, $expected) {
+		$actual = $this->subject->_call('getNativeExtraFieldAttributes', $fieldDefinition);
+		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @param array $fieldDefinition
+	 * @param string $expected
+	 * @dataProvider getNativeKeyForFieldProvider
+	 */
+	public function getNativeKeyForFieldProviderIdentifiesIndexes($fieldDefinition, $expected) {
+		$actual = $this->subject->_call('getNativeKeyForField', $fieldDefinition);
+		$this->assertSame($expected, $actual);
 	}
 
 	/**
@@ -103,6 +136,43 @@ class DatabaseSpecificsPostgresqlTest extends DatabaseSpecificsTest {
 			array('VARCHAR', -1, ''),
 			array('VARCHAR', 30, '(30)'),
 			array('DOUBLE', 8, '')
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getNativeDefaultValueProvider() {
+		return array(
+			array(array('type' => 'SERIAL', 'has_default' => 1, 'default_value' => "nextval('tx_extensionmanager_domain_model_repository_uid_seq'::regclass)"), NULL),
+			array(array('type' => 'int4', 'has_default' => TRUE, 'default_value' => 0), 0),
+			array(array('type' => 'int4', 'has_default' => TRUE, 'default_value' => '(-1)'), -1),
+			array(array('type' => 'text', 'has_default' => FALSE, 'default_value' => NULL), NULL),
+			array(array('type' => 'varchar', 'has_default' => TRUE, 'default_value' => "''::character varying"), ""),
+			array(array('type' => 'varchar', 'has_default' => TRUE, 'default_value' => "'something'::character varying"), "something"),
+			array(array('type' => 'varchar', 'has_default' => TRUE, 'default_value' => "'some''thing'::character varying"), "some''thing"),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getNativeExtraFieldAttributeProvider() {
+		return array(
+			array(array('type' => 'SERIAL'), 'auto_increment'),
+			array(array('type' => 'int4', 'default_value' => 'nextval(\'somesequence_seq\''), 'auto_increment'),
+			array(array('type' => 'int4', 'default_value' => 0), '')
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getNativeKeyForFieldProvider() {
+		return array(
+			array(array('primary_key' => TRUE), 'PRI'),
+			array(array('unique' => TRUE), 'UNI'),
+			array(array(), '')
 		);
 	}
 }

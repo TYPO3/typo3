@@ -163,9 +163,9 @@ abstract class AbstractSpecifics {
 		$fieldRow['Field'] = $fieldRow['name'];
 		$fieldRow['Type'] = strtolower($mysqlType);
 		$fieldRow['Null'] = $this->getNativeNotNull($fieldRow['not_null']);
-		$fieldRow['Key'] = '';
-		$fieldRow['Default'] = $fieldRow['default_value'];
-		$fieldRow['Extra'] = '';
+		$fieldRow['Key'] = $this->getNativeKeyForField($fieldRow);
+		$fieldRow['Default'] = $this->getNativeDefaultValue($fieldRow);
+		$fieldRow['Extra'] = $this->getNativeExtraFieldAttributes($fieldRow);
 
 		return $fieldRow;
 	}
@@ -219,5 +219,42 @@ abstract class AbstractSpecifics {
 	 */
 	protected function getNativeNotNull($notNull) {
 		return (bool)$notNull ? 'NO' : 'YES';
+	}
+
+	/**
+	 * Return the default value of a field formatted to match the native MySQL SQL dialect
+	 *
+	 * @param array $fieldDefinition
+	 * @return mixed
+	 */
+	protected function getNativeDefaultValue($fieldDefinition) {
+		return $fieldDefinition['default_value'];
+	}
+
+	/**
+	 * Return the MySQL native key type indicator - https://dev.mysql.com/doc/refman/5.5/en/show-columns.html
+	 * PRI - the column is a PRIMARY KEY or is one of the columns in a multiple-column PRIMARY KEY
+	 * UNI - the column is the first column of a UNIQUE index
+	 * MUL - the column is the first column of a nonunique index
+	 * If more than one of the values applies return the one with the highest priority, in the order PRI, UNI, MUL
+	 * If none applies return empty value.
+	 *
+	 * @param array $fieldRow
+	 * @return string
+	 */
+	protected function getNativeKeyForField($fieldRow) {
+		return '';
+	}
+
+	/**
+	 * Return the MySQL native extra field information - https://dev.mysql.com/doc/refman/5.5/en/show-columns.html
+	 * auto_increment for columns that have the AUTO_INCREMENT attribute
+	 * on update CURRENT_TIMESTAMP for TIMESTAMP columns that have the ON UPDATE CURRENT_TIMESTAMP attribute.
+	 *
+	 * @param array $fieldRow
+	 * @return string
+	 */
+	protected function getNativeExtraFieldAttributes($fieldRow) {
+		return '';
 	}
 }

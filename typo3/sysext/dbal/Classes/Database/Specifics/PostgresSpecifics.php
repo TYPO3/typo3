@@ -72,4 +72,64 @@ class PostgresSpecifics extends AbstractSpecifics {
 				return '(' . $maxLength . ')';
 		}
 	}
+
+	/**
+	 * Return the default value of a field formatted to match the native MySQL SQL dialect
+	 *
+	 * @param array $fieldDefinition
+	 * @return mixed
+	 */
+	protected function getNativeDefaultValue($fieldDefinition) {
+		if (!$fieldDefinition['has_default']) {
+			$returnValue = NULL;
+		} elseif ($fieldDefinition['type'] === 'SERIAL' && substr($fieldDefinition['default_value'], 0, 7) === 'nextval') {
+			$returnValue = NULL;
+		} elseif ($fieldDefinition['type'] === 'varchar') {
+			// Strip character class and unquote string
+			$returnValue = str_replace("\\'", "'", preg_replace('/\'(.*)\'(::(?:character\svarying|varchar|character|char|text)(?:\(\d+\))?)?\z/', '\\1', $fieldDefinition['default_value']));
+		} elseif (substr($fieldDefinition['type'], 0, 3) === 'int') {
+			$returnValue = (int)preg_replace('/^\(?(\-?\d+)\)?$/', '\\1', $fieldDefinition['default_value']);
+		} else {
+			$returnValue = $fieldDefinition['default_value'];
+		}
+		return $returnValue;
+	}
+
+	/**
+	 * Return the MySQL native key type indicator - https://dev.mysql.com/doc/refman/5.5/en/show-columns.html
+	 * PRI - the column is a PRIMARY KEY or is one of the columns in a multiple-column PRIMARY KEY
+	 * UNI - the column is the first column of a UNIQUE index
+	 * MUL - the column is the first column of a nonunique index
+	 * If more than one of the values applies return the one with the highest priority, in the order PRI, UNI, MUL
+	 * If none applies return empty value.
+	 *
+	 * @param array $fieldDefinition
+	 * @return string
+	 */
+	protected function getNativeKeyForField($fieldDefinition) {
+		if (isset($fieldDefinition['primary_key']) && (bool)$fieldDefinition['primary_key']) {
+			$returnValue = 'PRI';
+		} elseif (isset($fieldDefinition['unique']) && (bool)$fieldDefinition['unique']) {
+			$returnValue = 'UNI';
+		} else {
+			$returnValue = '';
+		}
+		return $returnValue;
+	}
+
+	/**
+	 * Return the MySQL native extra field information - https://dev.mysql.com/doc/refman/5.5/en/show-columns.html
+	 * auto_increment for columns that have the AUTO_INCREMENT attribute
+	 * on update CURRENT_TIMESTAMP for TIMESTAMP columns that have the ON UPDATE CURRENT_TIMESTAMP attribute.
+	 *
+	 * @param array $fieldDefinition
+	 * @return string
+	 */
+	protected function getNativeExtraFieldAttributes($fieldDefinition) {
+		if ($fieldDefinition['type'] === 'SERIAL' || substr($fieldDefinition['default_value'], 0, 7) === 'nextval') {
+			return 'auto_increment';
+		}
+		return '';
+	}
+
 }
