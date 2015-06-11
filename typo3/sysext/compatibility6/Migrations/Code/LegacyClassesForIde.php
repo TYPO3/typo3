@@ -854,7 +854,7 @@ class t3lib_softrefproc extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_sqlparser extends \TYPO3\CMS\Core\Database\SqlParser {}
+class t3lib_sqlparser extends \TYPO3\CMS\Dbal\Database\SqlParser {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -1310,11 +1310,6 @@ class t3lib_utility_PhpOptions extends \TYPO3\CMS\Core\Utility\PhpOptionsUtility
  * @deprecated since 6.0, removed since 7.0
  */
 class t3lib_utility_VersionNumber extends \TYPO3\CMS\Core\Utility\VersionNumberUtility {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class SC_view_help extends \TYPO3\CMS\Cshmanual\Controller\HelpModuleController {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4744,11 +4739,6 @@ class tslib_content_Files extends \TYPO3\CMS\Frontend\ContentObject\FilesContent
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_FlowPlayer extends \TYPO3\CMS\Mediace\ContentObject\FlowPlayerContentObject {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tslib_content_FluidTemplate extends \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject {}
 
 /**
@@ -4789,22 +4779,7 @@ class tslib_content_LoadRegister extends \TYPO3\CMS\Frontend\ContentObject\LoadR
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_Media extends \TYPO3\CMS\Mediace\ContentObject\MediaContentObject {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tslib_content_Multimedia extends \TYPO3\CMS\Mediace\ContentObject\MultimediaContentObject {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tslib_content_OffsetTable extends \TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tslib_content_QuicktimeObject extends \TYPO3\CMS\Mediace\ContentObject\QuicktimeObjectContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4825,11 +4800,6 @@ class tslib_content_ScalableVectorGraphics extends \TYPO3\CMS\Frontend\ContentOb
  * @deprecated since 6.0, removed since 7.0
  */
 class tslib_content_SearchResult extends \TYPO3\CMS\Compatibility6\ContentObject\SearchResultContentObject {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tslib_content_ShockwaveFlashObject extends \TYPO3\CMS\Mediace\ContentObject\ShockwaveFlashObjectContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4940,21 +4910,6 @@ class tx_cms_treelistCacheUpdate extends \TYPO3\CMS\Frontend\Hooks\TreelistCache
  * @deprecated since 6.0, removed since 7.0
  */
 class tslib_gifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tslib_mediaWizardCoreProvider extends \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProvider {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-interface tslib_mediaWizardProvider extends \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderInterface {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tslib_mediaWizardManager extends \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderManager {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
