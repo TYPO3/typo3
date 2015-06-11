@@ -8824,6 +8824,9 @@ table#typo3-history img,
 table#typo3-history-item img {
   margin: 1px;
 }
+ul.typo3-messages {
+  padding: 0;
+}
 .alert-notice {
   background-color: #333333;
   border-color: transparent;
