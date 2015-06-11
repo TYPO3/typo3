@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * View Helper for imploding arrays
  * @internal
  */
-class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterface
+class ImplodeViewHelper extends AbstractViewHelper
 {
     /**
      * Implodes a string

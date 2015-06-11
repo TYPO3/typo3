@@ -16,14 +16,13 @@ namespace TYPO3\CMS\Cshmanual\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Format the given content
  *
  * @internal
  */
-class FormatViewHelper extends AbstractViewHelper implements CompilableInterface
+class FormatViewHelper extends AbstractViewHelper
 {
     /**
      * Disable the escaping interceptor

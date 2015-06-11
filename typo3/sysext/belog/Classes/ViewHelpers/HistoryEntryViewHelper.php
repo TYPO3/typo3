@@ -24,13 +24,12 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get history entry from for log entry
  * @internal
  */
-class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInterface
+class HistoryEntryViewHelper extends AbstractViewHelper
 {
     /**
      * Get system history record

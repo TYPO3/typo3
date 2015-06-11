@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Resizes a given image (if required) and returns its relative path.
@@ -64,7 +63,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * Could not get image resource for "NonExistingImage.png".
  * </output>
  */
-class ImageViewHelper extends AbstractViewHelper implements CompilableInterface
+class ImageViewHelper extends AbstractViewHelper
 {
     /**
      * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src

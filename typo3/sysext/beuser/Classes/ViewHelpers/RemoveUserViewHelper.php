@@ -23,14 +23,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays 'Delete user' link with sprite icon to remove user
  *
  * @internal
  */
-class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInterface
+class RemoveUserViewHelper extends AbstractViewHelper
 {
     /**
      * Render link with sprite icon to remove user

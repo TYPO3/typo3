@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Converts comma separated list of sys_language uids to html unordered list (<ul>) with speaking titles
  * @internal
  */
-class SysLanguageViewHelper extends AbstractViewHelper implements CompilableInterface
+class SysLanguageViewHelper extends AbstractViewHelper
 {
     /**
      * Render unordered list for sys_language

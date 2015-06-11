@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get username from backend user id
  * @internal
  */
-class UsernameViewHelper extends AbstractViewHelper implements CompilableInterface
+class UsernameViewHelper extends AbstractViewHelper
 {
     /**
      * First level cache of user names

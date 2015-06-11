@@ -1,25 +1,24 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
-/*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
- *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -53,7 +52,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * @see https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Parsefunc/
  */
-class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
+class HtmlViewHelper extends AbstractViewHelper
 {
     /**
      * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
@@ -61,13 +60,14 @@ class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface
     protected static $tsfeBackup;
 
     /**
-     * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
-     * This is internal and NO part of the API. It is very likely to change.
-     *
      * @var bool
-     * @internal
      */
-    protected $escapingInterceptorEnabled = false;
+    protected $escapeChildren = false;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * @param string $parseFuncTSPath path to TypoScript parseFunc setup.

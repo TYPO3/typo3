@@ -5,7 +5,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 3
+ * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
  *
  * For the full copyright and license information, please read the
@@ -13,8 +13,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 
 /**
  * View helper which groups options of an option tag.
@@ -57,5 +57,20 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
         }
         $this->tag->setContent($options);
         return $this->tag->render();
+    }
+
+    /**
+     * @param string $argumentsName
+     * @param string $closureName
+     * @param string $initializationPhpCode
+     * @param ViewHelperNode $node
+     * @param TemplateCompiler $compiler
+     * @return null
+     */
+    public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
+    {
+        // @TODO: replace with a true compiling method to make compilable!
+        $compiler->disable();
+        return null;
     }
 }

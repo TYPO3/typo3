@@ -16,14 +16,13 @@ namespace TYPO3\CMS\Install\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Render value of a constant
  *
  * @internal
  */
-class ConstantViewHelper extends AbstractViewHelper implements CompilableInterface
+class ConstantViewHelper extends AbstractViewHelper
 {
     /**
      * Render a constant

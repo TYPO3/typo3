@@ -16,14 +16,13 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Returns a string meant to be used as css class stating whether an extension is
  * available or installed
  * @internal
  */
-class InstallationStateCssClassViewHelper extends AbstractViewHelper implements CompilableInterface
+class InstallationStateCssClassViewHelper extends AbstractViewHelper
 {
     /**
      * Returns string meant to be used as css class

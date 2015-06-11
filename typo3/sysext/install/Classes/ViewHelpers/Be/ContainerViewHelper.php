@@ -42,6 +42,16 @@ namespace TYPO3\CMS\Install\ViewHelpers\Be;
 class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
      * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
      *
      * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame

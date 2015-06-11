@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get a value from an array by given key.
  */
-class ArrayElementViewHelper extends AbstractViewHelper implements CompilableInterface
+class ArrayElementViewHelper extends AbstractViewHelper
 {
     /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)

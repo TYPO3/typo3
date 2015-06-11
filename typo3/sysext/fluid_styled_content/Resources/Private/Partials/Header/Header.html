@@ -21,13 +21,13 @@
 	<f:case value="100">
 		<f:comment> -- do not show header -- </f:comment>
 	</f:case>
-	<f:case default="true">
+	<f:defaultCase>
 		<f:if condition="{default}">
 			<f:render partial="Header/Header" arguments="{
 				header: header,
 				layout: default,
 				link: link}" />
 		</f:if>
-	</f:case>
+	</f:defaultCase>
 </f:switch>
 </html>

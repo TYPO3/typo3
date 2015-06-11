@@ -1,26 +1,18 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * View helper which renders the flash messages (if there are any) as an unsorted list.
@@ -85,9 +77,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
-    const RENDER_MODE_UL = 'ul';
-    const RENDER_MODE_DIV = 'div';
-
     /**
      * @var string
      */
@@ -111,31 +100,22 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
      * from being cached.
      *
      * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::no_cache
-     * @param string $renderMode @deprecated since TYPO3 CMS 7.3. If you need custom output, use <f:flashMessages as="messages"><f:for each="messages" as="message">...</f:for></f:flashMessages>
      * @param string $as The name of the current flashMessage variable for rendering inside
      * @return string rendered Flash Messages, if there are any.
      * @api
      */
-    public function render($renderMode = null, $as = null)
+    public function render($as = null)
     {
         $queueIdentifier = isset($this->arguments['queueIdentifier']) ? $this->arguments['queueIdentifier'] : null;
-        $flashMessages = $this->controllerContext->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
+        $flashMessages = $this->renderingContext->getControllerContext()->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
         if ($flashMessages === null || count($flashMessages) === 0) {
             return '';
         }
-        if ($renderMode !== null) {
-            GeneralUtility::deprecationLog('renderMode has been deprecated in TYPO3 CMS 7.3 and will be removed in TYPO3 CMS 8');
-            if ($renderMode === self::RENDER_MODE_DIV) {
-                $content = $this->renderDiv($flashMessages);
-            } else {
-                $content = $this->renderAsList($flashMessages);
-            }
+
+        if ($as === null) {
+            $content = $this->renderAsList($flashMessages);
         } else {
-            if ($as === null) {
-                $content = $this->renderAsList($flashMessages);
-            } else {
-                $content = $this->renderFromTemplate($flashMessages, $as);
-            }
+            $content = $this->renderFromTemplate($flashMessages, $as);
         }
 
         return $content;
@@ -183,28 +163,5 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
         $templateVariableContainer->remove($as);
 
         return $content;
-    }
-
-    /**
-     * Renders the flash messages as nested divs
-     *
-     * @deprecated in 7.3 will be removed in 8.0
-     * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
-     * @return string
-     */
-    protected function renderDiv(array $flashMessages)
-    {
-        $this->tag->setTagName('div');
-        if ($this->hasArgument('class')) {
-            $this->tag->addAttribute('class', $this->arguments['class']);
-        } else {
-            $this->tag->addAttribute('class', 'typo3-messages');
-        }
-        $tagContent = '';
-        foreach ($flashMessages as $singleFlashMessage) {
-            $tagContent .= $singleFlashMessage->render();
-        }
-        $this->tag->setContent($tagContent);
-        return $this->tag->render();
     }
 }

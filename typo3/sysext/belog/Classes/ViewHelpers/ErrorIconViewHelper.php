@@ -17,14 +17,13 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Display error icon from error integer value
  * @internal
  */
-class ErrorIconViewHelper extends AbstractBackendViewHelper implements CompilableInterface
+class ErrorIconViewHelper extends AbstractBackendViewHelper
 {
     /**
      * Renders an error icon link as known from the TYPO3 backend.

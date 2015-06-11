@@ -1,28 +1,19 @@
 <?php
-
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
@@ -105,7 +96,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function getRequest()
     {
-        return $this->controllerContext->getRequest();
+        return $this->renderingContext->getControllerContext()->getRequest();
     }
 
     /**
@@ -139,36 +130,6 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             }
         }
         return $name;
-    }
-
-    /**
-     * Get the value of this form element.
-     * Either returns arguments['value'], or the correct value for Object Access.
-     *
-     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-     * @param bool $convertObjects whether or not to convert objects to identifiers
-     * @return mixed Value
-     */
-    protected function getValue($convertObjects = true)
-    {
-        $value = null;
-        GeneralUtility::logDeprecatedFunction();
-
-        if ($this->hasArgument('value')) {
-            $value = $this->arguments['value'];
-        } elseif ($this->isObjectAccessorMode()) {
-            if ($this->hasMappingErrorOccurred()) {
-                $value = $this->getLastSubmittedFormData();
-            } else {
-                $value = $this->getPropertyValue();
-            }
-            $this->addAdditionalIdentityPropertiesIfNeeded();
-        }
-
-        if ($convertObjects) {
-            $value = $this->convertToPlainValue($value);
-        }
-        return $value;
     }
 
     /**
@@ -251,7 +212,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      */
     protected function hasMappingErrorOccurred()
     {
-        return $this->getRequest()->getOriginalRequest() !== null;
+        return $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest() !== null;
     }
 
     /**
@@ -264,7 +225,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     {
         $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()), '.');
         $value = ObjectAccess::getPropertyPath(
-            $this->controllerContext->getRequest()->getOriginalRequest()->getArguments(), $propertyPath
+            $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequest()->getArguments(), $propertyPath
         );
         return $value;
     }

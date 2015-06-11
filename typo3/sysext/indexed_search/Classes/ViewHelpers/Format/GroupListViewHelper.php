@@ -16,12 +16,11 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Group list viewhelper
  */
-class GroupListViewHelper extends AbstractViewHelper implements CompilableInterface
+class GroupListViewHelper extends AbstractViewHelper
 {
     /**
      * Render the given group information as string

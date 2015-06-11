@@ -19,12 +19,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Class EditFileContentViewHelper
  */
-class EditFileContentViewHelper extends AbstractViewHelper implements CompilableInterface
+class EditFileContentViewHelper extends AbstractViewHelper
 {
     /**
      * Renders a link to edit the file content

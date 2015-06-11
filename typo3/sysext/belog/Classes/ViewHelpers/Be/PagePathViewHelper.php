@@ -15,14 +15,13 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  */
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Get page path string from page id
  * @internal
  */
-class PagePathViewHelper extends AbstractBackendViewHelper implements CompilableInterface
+class PagePathViewHelper extends AbstractBackendViewHelper
 {
     /**
      * Resolve page id to page path string (with automatic cropping to maximum given length).

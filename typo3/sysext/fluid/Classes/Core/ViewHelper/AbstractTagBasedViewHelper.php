@@ -1,15 +1,18 @@
 <?php
 namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * Tag based view helper.
@@ -18,7 +21,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *
  * @api
  */
-abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+abstract class AbstractTagBasedViewHelper extends AbstractViewHelper
 {
     /**
      * Names of all registered tag attributes
@@ -26,15 +29,6 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
      * @var array
      */
     private static $tagAttributes = array();
-
-    /**
-     * Tag builder instance
-     *
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
-     * @inject
-     * @api
-     */
-    protected $tag = null;
 
     /**
      * name of the tag to be created by this view helper
@@ -45,14 +39,33 @@ abstract class AbstractTagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelp
     protected $tagName = 'div';
 
     /**
+     * @var TagBuilder
+     */
+    protected $tag;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tag = new TagBuilder();
+    }
+
+    /**
      * Constructor
      *
      * @api
      */
-    public function __construct()
+    public function initializeArguments()
     {
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', false);
         $this->registerArgument('data', 'array', 'Additional data-* attributes. They will each be added with a "data-" prefix.', false);
+        parent::initializeArguments();
     }
 
     /**

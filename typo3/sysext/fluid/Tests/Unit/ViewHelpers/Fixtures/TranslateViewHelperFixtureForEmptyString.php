@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Fluid\ViewHelpers\TranslateViewHelper;
 
 /**

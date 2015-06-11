@@ -43,7 +43,8 @@
 		"typo3/cms-composer-installers": "^1.2.5",
 		"psr/http-message": "~1.0",
 		"cogpowered/finediff": "~0.3.1",
-		"mso/idna-convert": "^0.9.1"
+		"mso/idna-convert": "^0.9.1",
+		"typo3fluid/fluid": "^1.0.3"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.8.0",
@@ -58,7 +59,10 @@
 	},
 	"extra": {
 		"typo3/class-alias-loader": {
-			"always-add-alias-loader": true
+			"always-add-alias-loader": true,
+			"class-alias-maps": [
+				"typo3/sysext/fluid/Migrations/Code/ClassAliasMap.php"
+			]
 		},
 		"branch-alias": {
 			"dev-master": "7.x-dev"

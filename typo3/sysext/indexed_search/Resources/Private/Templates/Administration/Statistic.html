@@ -38,7 +38,7 @@
 									<f:translate key="field.words" />
 								</th>
 							</f:case>
-							<f:case default="TRUE">
+							<f:defaultCase>
 								<th>
 									<f:translate key="field.wordCount"/>
 								</th>
@@ -48,7 +48,7 @@
 								<th>
 									<f:translate key="field.indexed"/>
 								</th>
-							</f:case>
+							</f:defaultCase>
 						</f:switch>
 					</tr>
 				</thead>
@@ -85,7 +85,7 @@
 														<em>{f:translate(key:'administration.statistics.count')}: {f:count(subject:l.allWords)}</em>
 													</td>
 												</f:case>
-												<f:case default="TRUE">
+												<f:defaultCase>
 													<td>{l.wordCount}</td>
 													<td>
 														<f:format.bytes decimals="1">{l.item_size}</f:format.bytes>
@@ -93,7 +93,7 @@
 													<td>
 														<is:format.dateTime>{l.tstamp}</is:format.dateTime>
 													</td>
-												</f:case>
+												</f:defaultCase>
 											</f:switch>
 										</f:then>
 									</tr>
@@ -108,11 +108,11 @@
 												<f:translate key="administration.notIndexed" />
 											</td>
 										</f:case>
-										<f:case default="TRUE">
+										<f:defaultCase>
 											<td colspan="5">
 												<f:translate key="administration.notIndexed"/>
 											</td>
-										</f:case>
+										</f:defaultCase>
 									</f:switch>
 								</tr>
 							</f:else>

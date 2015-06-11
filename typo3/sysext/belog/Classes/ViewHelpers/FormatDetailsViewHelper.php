@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Create detail string from log entry
  * @internal
  */
-class FormatDetailsViewHelper extends AbstractViewHelper implements CompilableInterface
+class FormatDetailsViewHelper extends AbstractViewHelper
 {
     /**
      * Create formatted detail string from log row.

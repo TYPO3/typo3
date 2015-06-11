@@ -19,13 +19,12 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Render a link to DataHandler command
  * @internal
  */
-class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInterface
+class IssueCommandViewHelper extends AbstractViewHelper
 {
     /**
      * Returns a URL with a command to TYPO3 Core Engine (tce_db.php)

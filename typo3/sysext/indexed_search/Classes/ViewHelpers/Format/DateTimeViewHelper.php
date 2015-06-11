@@ -17,12 +17,11 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * DateTime viewhelper
  */
-class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterface
+class DateTimeViewHelper extends AbstractViewHelper
 {
     /**
      * Render the given timestamp as date & time

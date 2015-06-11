@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "41598b90e8e110bf0f35092212ce802c",
-    "content-hash": "2d42a93c330f37e0f0e74072652d123a",
+    "hash": "b3ee1a2e920605bac9c105764365761e",
+    "content-hash": "d06ab9b6a8fe495278326559effe7788",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -705,6 +705,44 @@
                 "typo3"
             ],
             "time": "2015-11-03 21:19:57"
+        },
+        {
+            "name": "typo3fluid/fluid",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3Fluid/Fluid.git",
+                "reference": "7465b0c8564b34a5cfdadda21d63b91b8596ac76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3Fluid/Fluid/zipball/7465b0c8564b34a5cfdadda21d63b91b8596ac76",
+                "reference": "7465b0c8564b34a5cfdadda21d63b91b8596ac76",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "*",
+                "phpunit/phpunit": "*",
+                "satooshi/php-coveralls": "*"
+            },
+            "bin": [
+                "bin/fluid"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TYPO3Fluid\\Fluid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "description": "The TYPO3 Fluid template rendering engine",
+            "time": "2016-01-28 21:45:24"
         }
     ],
     "packages-dev": [

@@ -181,7 +181,7 @@ return array(
                 ),
                 'fluid_template' => array(
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
-                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend::class,
+                    'frontend' => \TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache::class,
                     'groups' => array('system'),
                 ),
                 'extbase_object' => array(

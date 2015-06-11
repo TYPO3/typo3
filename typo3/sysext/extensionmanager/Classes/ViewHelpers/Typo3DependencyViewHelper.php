@@ -20,14 +20,13 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Shows the version numbers of the TYPO3 dependency, if any
  *
  * @internal
  */
-class Typo3DependencyViewHelper extends AbstractViewHelper implements CompilableInterface
+class Typo3DependencyViewHelper extends AbstractViewHelper
 {
     /**
      * Finds and returns the suitable TYPO3 versions of an extension

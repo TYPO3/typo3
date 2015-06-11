@@ -13,11 +13,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * View helper for rendering a styled content infobox markup.
@@ -49,13 +47,18 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @api
  */
-class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterface
+class InfoboxViewHelper extends AbstractViewHelper
 {
     const STATE_NOTICE = -2;
     const STATE_INFO = -1;
     const STATE_OK = 0;
     const STATE_WARNING = 1;
     const STATE_ERROR = 2;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * @param string $title The title of the info box

@@ -1,17 +1,41 @@
 <?php
 namespace TYPO3\CMS\Fluid\Core\Rendering;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
-class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\Core\Cache\FluidTemplateCache;
+use TYPO3\CMS\Fluid\Core\Parser\PreProcessor\XmlnsNamespaceTemplatePreProcessor;
+use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Expression\LegacyNamespaceExpressionNode;
+use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
+use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
+use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\CastingExpressionNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\MathExpressionNode;
+use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\Expression\TernaryExpressionNode;
+use TYPO3Fluid\Fluid\Core\Parser\TemplateParser;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
+use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
+use TYPO3Fluid\Fluid\View\ViewInterface;
+
+/**
+ * Class RenderingContext
+ */
+class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 {
     /**
      * Template Variable Container. Contains all variables available through object accessors in the template
@@ -39,10 +63,87 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
     /**
      * ViewHelper Variable Container
      *
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer
      * @inject
      */
     protected $viewHelperVariableContainer;
+
+    /**
+     * Use legacy behavior? Can be overridden using setLegacyMode().
+     *
+     * @var bool
+     */
+    protected $legacyMode = false;
+
+    /**
+     * List of class names implementing ExpressionNodeInterface
+     * which will be consulted when an expression does not match
+     * any built-in parser expression types.
+     *
+     * @var string
+     */
+    protected $expressionNodeTypes = [
+        LegacyNamespaceExpressionNode::class,
+        CastingExpressionNode::class,
+        MathExpressionNode::class,
+        TernaryExpressionNode::class
+    ];
+
+    /**
+     * Alternative ExpressionNodeInterface implementers for use
+     * when put into legacy mode.
+     *
+     * @var string
+     */
+    protected $legacyExpressionNodeTypes = [
+        LegacyNamespaceExpressionNode::class
+    ];
+
+    /**
+     * @param ViewInterface $view
+     */
+    public function __construct(ViewInterface $view = null)
+    {
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        if ($view) {
+            $this->view = $view;
+        }
+        $this->setTemplateParser(new TemplateParser());
+        $this->setTemplateCompiler(new TemplateCompiler());
+        $this->setViewHelperInvoker(new ViewHelperInvoker());
+        $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
+        $this->setTemplatePaths($objectManager->get(TemplatePaths::class));
+        $this->setViewHelperResolver($objectManager->get(ViewHelperResolver::class));
+        $this->setVariableProvider($objectManager->get(CmsVariableProvider::class));
+        $this->setTemplateProcessors(array(
+            $objectManager->get(XmlnsNamespaceTemplatePreProcessor::class),
+        ));
+        $cache = $objectManager->get(CacheManager::class)->getCache('fluid_template');
+        if (is_a($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend'], FluidTemplateCache::class, true)) {
+            $this->setCache($cache);
+        }
+    }
+
+    /**
+     * Set legacy compatibility mode on/off by boolean.
+     * If set to FALSE, the ViewHelperResolver will only load a limited sub-set of ExpressionNodes,
+     * making Fluid behave like the legacy version of the CMS core extension.
+     *
+     * @param bool $legacyMode
+     * @return void
+     */
+    public function setLegacyMode($legacyMode)
+    {
+        $this->legacyMode = $legacyMode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpressionNodeTypes()
+    {
+        return $this->legacyMode ? $this->legacyExpressionNodeTypes : $this->expressionNodeTypes;
+    }
 
     /**
      * Returns the object manager. Only the ViewHelperNode should do this.
@@ -55,34 +156,19 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
     }
 
     /**
-     * Injects the template variable container containing all variables available through Object Accessors
-     * in the template
+     * Get the template variable container (DEPRECATED; use getVariableProvider instead)
      *
-     * @param \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer The template variable container to set
-     */
-    public function injectTemplateVariableContainer(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer $templateVariableContainer)
-    {
-        $this->templateVariableContainer = $templateVariableContainer;
-    }
-
-    /**
-     * Get the template variable container
-     *
+     * @deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9 - use getVariableProvider instead
+     * @see getVariableProvider
      * @return \TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer The Template Variable Container
      */
     public function getTemplateVariableContainer()
     {
-        return $this->templateVariableContainer;
-    }
-
-    /**
-     * Set the controller context which will be passed to the ViewHelper
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext The controller context to set
-     */
-    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
-    {
-        $this->controllerContext = $controllerContext;
+        GeneralUtility::deprecationLog(
+            'getTemplateVariableContainer is deprecated since TYPO3 CMS 8, will be removed in TYPO3 CMS 9' .
+            ' - use getVariableProvider instead'
+        );
+        return $this->variableProvider;
     }
 
     /**
@@ -96,9 +182,50 @@ class RenderingContext implements \TYPO3\CMS\Fluid\Core\Rendering\RenderingConte
     }
 
     /**
+     * @param string $action
+     * @return void
+     */
+    public function setControllerAction($action)
+    {
+        $action = lcfirst(pathinfo($action, PATHINFO_FILENAME));
+        parent::setControllerAction($action);
+        $this->controllerContext->getRequest()->setControllerActionName($action);
+    }
+
+    /**
+     * @param string $controllerName
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
+     */
+    public function setControllerName($controllerName)
+    {
+        parent::setControllerName($controllerName);
+        $this->controllerContext->getRequest()->setControllerName($controllerName);
+    }
+
+    /**
+     * Set the controller context which will be passed to the ViewHelper
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext The controller context to set
+     */
+    public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext)
+    {
+        $request = $controllerContext->getRequest();
+        $this->controllerContext = $controllerContext;
+        $this->setControllerAction($request->getControllerActionName());
+        // Check if Request is using a sub-package key; in which case we translate this
+        // for our RenderingContext as an emulated plain old sub-namespace controller.
+        $controllerName = $request->getControllerName();
+        if ($request->getControllerSubpackageKey() && !strpos($controllerName, '\\')) {
+            $this->setControllerName($request->getControllerSubpackageKey() . '\\' . $controllerName);
+        } else {
+            $this->setControllerName($controllerName);
+        }
+    }
+
+    /**
      * Get the ViewHelperVariableContainer
      *
-     * @return \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer
+     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer
      */
     public function getViewHelperVariableContainer()
     {

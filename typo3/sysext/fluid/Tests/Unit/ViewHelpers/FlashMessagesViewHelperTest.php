@@ -1,15 +1,18 @@
 <?php
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * Testcase for FlashMessagesViewHelper
@@ -38,18 +41,18 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
      */
     protected function setUp()
     {
+        parent::setUp();
         /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue */
         $mockFlashMessagingQueue = $this->getMock(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class, array('getAllMessagesAndFlush'), array('foo'));
         $mockFlashMessagingQueue->expects($this->once())->method('getAllMessagesAndFlush')->will($this->returnValue(array()));
         $this->mockFlashMessagingQueue = $mockFlashMessagingQueue;
 
-        $mockControllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
-        $mockControllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($mockFlashMessagingQueue));
+        $this->controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($mockFlashMessagingQueue));
 
         $this->mockTagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FlashMessagesViewHelper::class, array('dummy'));
-        $this->viewHelper->_set('controllerContext', $mockControllerContext);
         $this->viewHelper->_set('tag', $this->mockTagBuilder);
+        $this->viewHelper->setRenderingContext($this->renderingContext);
         $this->viewHelper->initialize();
     }
 
@@ -68,10 +71,8 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
     {
         $queueIdentifier = 'myQueue';
 
-        $mockControllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', false);
-        $mockControllerContext->expects($this->once())->method('getFlashMessageQueue')->with($queueIdentifier)->will($this->returnValue($this->mockFlashMessagingQueue));
+        $this->controllerContext->expects($this->once())->method('getFlashMessageQueue')->with($queueIdentifier)->will($this->returnValue($this->mockFlashMessagingQueue));
 
-        $this->viewHelper->_set('controllerContext', $mockControllerContext);
         $this->viewHelper->setArguments(array('queueIdentifier' => $queueIdentifier));
 
         $this->assertEmpty($this->viewHelper->render());

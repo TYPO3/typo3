@@ -17,13 +17,12 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Returns true, if a specific extension is loaded
  * @internal
  */
-class IsExtensionLoadedViewHelper extends AbstractViewHelper implements CompilableInterface
+class IsExtensionLoadedViewHelper extends AbstractViewHelper
 {
     /**
      * Checks whether an extension is loaded.

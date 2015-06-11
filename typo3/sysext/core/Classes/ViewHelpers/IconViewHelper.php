@@ -20,12 +20,11 @@ use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays icon identified by icon identifier
  */
-class IconViewHelper extends AbstractViewHelper implements CompilableInterface
+class IconViewHelper extends AbstractViewHelper
 {
     /**
      * Prints icon html for $identifier key

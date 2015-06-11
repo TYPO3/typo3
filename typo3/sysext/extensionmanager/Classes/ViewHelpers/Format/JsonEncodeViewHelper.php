@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Wrapper for PHPs json_encode function.
@@ -24,7 +23,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * @see http://www.php.net/manual/en/function.json-encode.php
  * @internal
  */
-class JsonEncodeViewHelper extends AbstractViewHelper implements CompilableInterface
+class JsonEncodeViewHelper extends AbstractViewHelper
 {
     /**
      * Constructor

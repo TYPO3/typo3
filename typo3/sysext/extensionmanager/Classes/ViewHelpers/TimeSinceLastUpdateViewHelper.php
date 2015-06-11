@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Shows the elapsed time since the last update of the extension repository
@@ -24,7 +23,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @internal
  */
-class TimeSinceLastUpdateViewHelper extends AbstractViewHelper implements CompilableInterface
+class TimeSinceLastUpdateViewHelper extends AbstractViewHelper
 {
     /**
      * Render method

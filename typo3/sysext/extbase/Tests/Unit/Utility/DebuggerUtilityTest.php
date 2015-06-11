@@ -56,8 +56,8 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             $parameters[$i] = $argument;
         }
 
-        /** @var $arguments \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments */
-        $arguments = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\Arguments::class, array('dummy'), array('arguments' => $parameters));
+        /** @var $arguments \ArrayAccess */
+        $arguments = $this->getMock('ArrayAccess');
 
         $arguments->expects($this->never())->method('rewind');
         $this->debugger->var_dump($arguments, null, 8, true, false, true);

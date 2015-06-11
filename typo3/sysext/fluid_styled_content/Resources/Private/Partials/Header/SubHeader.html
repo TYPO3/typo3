@@ -15,12 +15,12 @@
 	<f:case value="5">
 		<h6>{subheader}</h6>
 	</f:case>
-	<f:case default="true">
+	<f:defaultCase>
 		<f:if condition="{default}">
 			<f:render partial="Header/SubHeader" arguments="{
 				subheader: subheader,
 				layout: default}" />
 		</f:if>
-	</f:case>
+	</f:defaultCase>
 </f:switch>
 </html>

@@ -1,25 +1,19 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU General Public License as published by the Free   *
- * Software Foundation, either version 3 of the License, or (at your      *
- *                                                                        *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
- *                                                                        *
- * You should have received a copy of the GNU General Public License      *
- * along with the script.                                                 *
- * If not, see http://www.gnu.org/licenses/gpl.html                       *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 /**
  * Form view helper. Generates a <form> Tag.
  *
@@ -168,7 +162,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         if ($this->hasArgument('actionUri')) {
             $formActionUri = $this->arguments['actionUri'];
         } else {
-            $uriBuilder = $this->controllerContext->getUriBuilder();
+            $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
             $formActionUri = $uriBuilder->reset()->setTargetPageUid($this->arguments['pageUid'])->setTargetPageType($this->arguments['pageType'])->setNoCache($this->arguments['noCache'])->setUseCacheHash(!$this->arguments['noCacheHash'])->setSection($this->arguments['section'])->setCreateAbsoluteUri($this->arguments['absolute'])->setArguments((array)$this->arguments['additionalParams'])->setAddQueryString($this->arguments['addQueryString'])->setArgumentsToBeExcludedFromQueryString((array)$this->arguments['argumentsToBeExcludedFromQueryString'])->setFormat($this->arguments['format'])->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
             $this->formActionUriArguments = $uriBuilder->getArguments();
         }
@@ -203,7 +197,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
      */
     protected function renderHiddenReferrerFields()
     {
-        $request = $this->controllerContext->getRequest();
+        $request = $this->renderingContext->getControllerContext()->getRequest();
         $extensionName = $request->getControllerExtensionName();
         $vendorName = $request->getControllerVendorName();
         $controllerName = $request->getControllerName();
@@ -364,15 +358,14 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
      */
     protected function postProcessUriArgumentsForRequestHash($arguments, &$results, $currentPrefix = '', $level = 0)
     {
-        if (!count($arguments)) {
-            return;
-        }
-        foreach ($arguments as $argumentName => $argumentValue) {
-            if (is_array($argumentValue)) {
-                $prefix = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
-                $this->postProcessUriArgumentsForRequestHash($argumentValue, $results, $prefix, $level + 1);
-            } else {
-                $results[] = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
+        if (count($arguments)) {
+            foreach ($arguments as $argumentName => $argumentValue) {
+                if (is_array($argumentValue)) {
+                    $prefix = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
+                    $this->postProcessUriArgumentsForRequestHash($argumentValue, $results, $prefix, $level + 1);
+                } else {
+                    $results[] = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
+                }
             }
         }
     }
@@ -384,7 +377,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
      */
     protected function getDefaultFieldNamePrefix()
     {
-        $request = $this->controllerContext->getRequest();
+        $request = $this->renderingContext->getControllerContext()->getRequest();
         if ($this->hasArgument('extensionName')) {
             $extensionName = $this->arguments['extensionName'];
         } else {

@@ -19,12 +19,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Class ReplaceFileViewHelper
  */
-class ReplaceFileViewHelper extends AbstractViewHelper implements CompilableInterface
+class ReplaceFileViewHelper extends AbstractViewHelper
 {
     /**
      * Renders a link to replace a file

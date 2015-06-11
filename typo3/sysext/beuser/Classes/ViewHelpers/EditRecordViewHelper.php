@@ -18,14 +18,13 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Edit Record ViewHelper, see FormEngine logic
  *
  * @internal
  */
-class EditRecordViewHelper extends AbstractViewHelper implements CompilableInterface
+class EditRecordViewHelper extends AbstractViewHelper
 {
     /**
      * Returns a URL to link to FormEngine

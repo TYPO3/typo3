@@ -10,7 +10,7 @@
 			{error}
 		</f:then>
 		<f:else>
-			<f:format.html parseFuncTSPath="">{content}</f:format.html>
+			<f:format.html parseFuncTSPath="">{content -> f:format.raw()}</f:format.html>
 		</f:else>
 	</f:if>
 </f:section>

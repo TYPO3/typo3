@@ -1,56 +1,31 @@
 <?php
 namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 
-/*                                                                        *
- * This script is backported from the TYPO3 Flow package "TYPO3.Fluid".   *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 /**
  * Argument definition of each view helper argument
+ *
+ * This subclass of ArgumentDefinition from Fluid has
+ * one additional capability: defining that an argument
+ * should be expected as a parameter for the render()
+ * method - which means the ViewHelperInvoker will be
+ * processing it a bit differently. Other than this it
+ * is a normal Fluid ArgumentDefinition.
  */
-class ArgumentDefinition
+class ArgumentDefinition extends \TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition
 {
-    /**
-     * Name of argument
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Type of argument
-     *
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * Description of argument
-     *
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * Is argument required?
-     *
-     * @var bool
-     */
-    protected $required = false;
-
-    /**
-     * Default value for argument
-     *
-     * @var mixed
-     */
-    protected $defaultValue = null;
-
     /**
      * TRUE if it is a method parameter
      *
@@ -76,56 +51,6 @@ class ArgumentDefinition
         $this->required = $required;
         $this->defaultValue = $defaultValue;
         $this->isMethodParameter = $isMethodParameter;
-    }
-
-    /**
-     * Get the name of the argument
-     *
-     * @return string Name of argument
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Get the type of the argument
-     *
-     * @return string Type of argument
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Get the description of the argument
-     *
-     * @return string Description of argument
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Get the optionality of the argument
-     *
-     * @return bool TRUE if argument is optional
-     */
-    public function isRequired()
-    {
-        return $this->required;
-    }
-
-    /**
-     * Get the default value, if set
-     *
-     * @return mixed Default value
-     */
-    public function getDefaultValue()
-    {
-        return $this->defaultValue;
     }
 
     /**

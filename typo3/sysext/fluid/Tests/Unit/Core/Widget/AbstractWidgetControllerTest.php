@@ -1,31 +1,26 @@
 <?php
 namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 
-/*                                                                        *
- * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- *  of the License, or (at your option) any later version.                *
- *                                                                        *
- *                                                                        *
- * This script is distributed in the hope that it will be useful, but     *
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
- * General Public License for more details.                               *
- *                                                                        *
- * You should have received a copy of the GNU Lesser General Public       *
- * License along with the script.                                         *
- * If not, see http://www.gnu.org/licenses/lgpl.html                      *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
-
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
+use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * Test case
@@ -74,29 +69,90 @@ class AbstractWidgetControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
+     * @dataProvider getSetViewConfigurationTestValues
+     * @param array $parent
+     * @param array|NULL $widget
+     * @param array $expected
      */
-    public function viewConfigurationCanBeOverriddenThroughFrameworkConfiguration()
+    public function setViewConfigurationPerformsExpectedInitialization(array $parent, $widget, array $expected)
     {
-        $frameworkConfiguration = array(
+        $configurationManager = $this->getMock(ConfigurationManagerInterface::class);
+        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn(array(
             'view' => array(
                 'widget' => array(
-                    \TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper::class => array(
-                        'templateRootPath' => 'EXT:fluid/Resources/Private/DummyTestTemplates'
-                    )
+                    'foobarClassName' => $widget
                 )
             )
+        ));
+        $parentRequest = $this->getMock(Request::class, array('getControllerExtensionKey'));
+        $parentRequest->expects($this->once())->method('getControllerExtensionKey')->willReturn(null);
+        $controllerContext = $this->getMock(ControllerContext::class, array('getRequest'));
+        $controllerContext->expects($this->once())->method('getRequest')->willReturn($parentRequest);
+        $templatePaths = $this->getMock(TemplatePaths::class, array('fillFromConfigurationArray', 'toArray'));
+        $templatePaths->expects($this->once())->method('fillFromConfigurationArray')->with($expected);
+        $templatePaths->expects($this->any())->method('toArray')->willReturn($parent);
+        $widgetContext = $this->getMock(WidgetContext::class, array('getWidgetViewHelperClassName'));
+        $widgetContext->expects($this->once())->method('getWidgetViewHelperClassName')->willReturn('foobarClassName');
+        $request = $this->getMock(Request::class, array('getWidgetContext'));
+        $request->expects($this->once())->method('getWidgetContext')->willReturn($widgetContext);
+
+        $view = $this->getAccessibleMock(TemplateView::class, array('getTemplatePaths', 'toArray'), array(), '', false);
+        $view->expects($this->exactly(2))->method('getTemplatePaths')->willReturn($templatePaths);
+
+        $mock = $this->getAccessibleMock(AbstractWidgetController::class, array('dummy'));
+        $mock->_set('configurationManager', $configurationManager);
+        $mock->_set('controllerContext', $controllerContext);
+        $mock->_set('request', $request);
+        $method = new \ReflectionMethod(AbstractWidgetController::class, 'setViewConfiguration');
+        $method->setAccessible(true);
+        $method->invokeArgs($mock, array($view));
+    }
+
+    /**
+     * @return array
+     */
+    public function getSetViewConfigurationTestValues()
+    {
+        return array(
+            'Empty path sets cause empty widget paths' => array(
+                array(),
+                null,
+                array(
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array(),
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array(),
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array()
+                )
+            ),
+            'Parent request paths are reused when not overridden' => array(
+                array(
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo'),
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar'),
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz')
+                ),
+                array(),
+                array(
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo'),
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar'),
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz')
+                )
+            ),
+            'Widget paths are added to parent paths' => array(
+                array(
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo1'),
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar1'),
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz1')
+                ),
+                array(
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo2'),
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar2'),
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz2')
+                ),
+                array(
+                    TemplatePaths::CONFIG_TEMPLATEROOTPATHS => array('foo1', 'foo2'),
+                    TemplatePaths::CONFIG_LAYOUTROOTPATHS => array('bar1', 'bar2'),
+                    TemplatePaths::CONFIG_PARTIALROOTPATHS => array('baz1', 'baz2')
+                )
+            ),
         );
-        $widgetContext = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
-        $widgetContext->expects($this->any())->method('getWidgetViewHelperClassName')->will($this->returnValue(\TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper::class));
-        $request = $this->getMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, array(), array(), '', false);
-        $request->expects($this->any())->method('getWidgetContext')->will($this->returnValue($widgetContext));
-        $configurationManager = $this->getMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
-        $configurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($frameworkConfiguration));
-        $view = $this->getAccessibleMock(\TYPO3\CMS\Fluid\View\TemplateView::class, array('dummy'), array(), '', false);
-        $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, array('dummy'));
-        $abstractWidgetController->_set('configurationManager', $configurationManager);
-        $abstractWidgetController->_set('request', $request);
-        $abstractWidgetController->_call('setViewConfiguration', $view);
-        $this->assertSame(array(GeneralUtility::getFileAbsFileName('EXT:fluid/Resources/Private/DummyTestTemplates')), $view->_call('getTemplateRootPaths'));
     }
 }

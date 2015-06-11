@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Install\ViewHelpers\File;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get file size from file
@@ -33,7 +32,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  *
  * @internal
  */
-class SizeViewHelper extends AbstractViewHelper implements CompilableInterface
+class SizeViewHelper extends AbstractViewHelper
 {
     /**
      * Get size from file

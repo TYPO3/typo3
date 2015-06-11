@@ -1,0 +1,58 @@
+{
+    "name": "typo3fluid/fluid-test",
+    "type": "typo3-cms-extension",
+    "description": "Some Fluid rendering tests",
+    "keywords": [
+        "TYPO3",
+        "extension",
+        "fluid"
+    ],
+    "homepage": "http://helhum.io",
+    "authors": [
+        {
+            "name": "Helmut Hummel",
+            "email": "info@helhum.io",
+            "role": "Developer",
+            "homepage": "http://helhum.io"
+        }
+    ],
+    "license": "GPL-2.0+",
+    "repositories": [
+        {"type": "vcs", "url": "/Users/helmut/Developer/TYPO3/master"}
+    ],
+    "autoload": {
+        "psr-4": {
+            "TYPO3Fluid\\FluidTest\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TYPO3Fluid\\FluidTest\\Tests\\": "Tests",
+            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
+        }
+    },
+    "replace": {
+        "fluid_test": "self.version",
+        "typo3-ter/ext-scaffold": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/Web/typo3conf/ext/",
+            "[ -L .Build/Web/typo3conf/ext/fluid_test ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/fluid_test"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
+    }
+}

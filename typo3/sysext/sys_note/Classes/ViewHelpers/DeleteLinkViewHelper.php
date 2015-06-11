@@ -18,14 +18,13 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * ViewHelper to create a link to delete a note
  *
  * @internal
  */
-class DeleteLinkViewHelper extends AbstractViewHelper implements CompilableInterface
+class DeleteLinkViewHelper extends AbstractViewHelper
 {
     /**
      * Create link to delete a note

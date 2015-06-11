@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Install\Controller\Action;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Install\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * General purpose controller action helper methods and bootstrap

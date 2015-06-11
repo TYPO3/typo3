@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
 
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Converts comma separated list of pages uids to html unordered list (<ul>) with speaking titles
  * @internal
  */
-class PagesViewHelper extends AbstractViewHelper implements CompilableInterface
+class PagesViewHelper extends AbstractViewHelper
 {
     /**
      * Render unordered list for pages
