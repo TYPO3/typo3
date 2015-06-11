@@ -90,6 +90,8 @@ class SilentConfigurationUpgradeService {
 		'BE/RTEenabled',
 		// #66906
 		'GFX/png_to_gif',
+		// #67411
+		'SYS/caching/cacheConfigurations/cache_classes',
 	);
 
 	/**
