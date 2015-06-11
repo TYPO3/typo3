@@ -122,6 +122,7 @@ TYPO3.ModuleMenu.App = {
 		}
 
 		this.highlightModuleMenuItem(mod);
+		this.loadedModule = mod;
 		this.openInContentFrame(record.link, params);
 
 		// compatibility
