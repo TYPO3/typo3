@@ -72,7 +72,11 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 	 * @api
 	 */
 	public function render($each, $as, $key = '', $reverse = FALSE, $iteration = NULL) {
-		return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			$this->arguments,
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

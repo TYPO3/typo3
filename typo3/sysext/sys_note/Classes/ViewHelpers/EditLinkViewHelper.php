@@ -33,7 +33,7 @@ class EditLinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @return string
 	 */
 	public function render($id) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'id' => $id
 			),

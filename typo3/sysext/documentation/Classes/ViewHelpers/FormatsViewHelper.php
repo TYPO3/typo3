@@ -35,7 +35,7 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @return string
 	 */
 	public function render(\TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'documentTranslation' => $documentTranslation,
 			),

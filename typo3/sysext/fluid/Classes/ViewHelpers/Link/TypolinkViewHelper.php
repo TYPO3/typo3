@@ -65,7 +65,7 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @return string
 	 */
 	public function render($parameter, $target = '', $class = '', $title = '', $additionalParams = '', $additionalAttributes = array()) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'parameter' => $parameter,
 				'target' => $target,

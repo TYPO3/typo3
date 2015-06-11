@@ -48,7 +48,7 @@ class PageBrowsingViewHelper extends AbstractViewHelper implements CompilableInt
 	 * @return string The content
 	 */
 	public function render($maximumNumberOfResultPages, $numberOfResults, $resultsPerPage, $currentPage = 0, $freeIndexUid = NULL) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'maximumNumberOfResultPages' => $maximumNumberOfResultPages,
 				'numberOfResults' => $numberOfResults,

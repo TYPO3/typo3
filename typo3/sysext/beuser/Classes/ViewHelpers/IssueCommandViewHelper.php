@@ -40,7 +40,7 @@ class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInt
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
 	 */
 	public function render($parameters, $redirectUrl = '') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'parameters' => $parameters,
 				'redirectUrl' => $redirectUrl
@@ -68,4 +68,5 @@ class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInt
 		];
 		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters) . $arguments['parameters'] . BackendUtility::getUrlToken('tceAction'));
 	}
+
 }

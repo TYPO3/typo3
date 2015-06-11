@@ -47,7 +47,13 @@ class Nl2brViewHelper extends AbstractViewHelper implements CompilableInterface 
 	 * @api
 	 */
 	public function render($value = NULL) {
-		return self::renderStatic(array('value' => $value), $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			array(
+				'value' => $value
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

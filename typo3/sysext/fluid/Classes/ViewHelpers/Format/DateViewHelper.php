@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -89,7 +90,7 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @api
 	 */
 	public function render($date = NULL, $format = '') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'date' => $date,
 				'format' => $format
@@ -139,4 +140,5 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 			return $date->format($format);
 		}
 	}
+
 }

@@ -32,7 +32,7 @@ class ImageMagickCommandsViewHelper extends AbstractViewHelper implements Compil
 	 * @return string Formatted commands
 	 */
 	public function render(array $commands = array()) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'commands' => $commands,
 			),

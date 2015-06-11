@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -56,7 +57,7 @@ class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper implements
 	 * @api
 	 */
 	public function render($value = NULL, $keepQuotes = FALSE, $encoding = NULL) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'value' => $value,
 				'keepQuotes' => $keepQuotes,

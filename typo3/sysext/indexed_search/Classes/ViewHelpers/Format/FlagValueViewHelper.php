@@ -30,7 +30,7 @@ class FlagValueViewHelper extends AbstractViewHelper implements CompilableInterf
 	 * @return string
 	 */
 	public function render($flags) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'flags' => $flags,
 			),

@@ -33,7 +33,7 @@ class SysFileMountsViewHelper extends AbstractViewHelper implements CompilableIn
 	 * @return string
 	 */
 	public function render($uids = '') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uids' => $uids,
 			),

@@ -33,7 +33,7 @@ class TimeSinceLastUpdateViewHelper extends AbstractViewHelper implements Compil
 	 * @return string
 	 */
 	public function render($lastUpdateTime) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'lastUpdateTime' => $lastUpdateTime,
 			),

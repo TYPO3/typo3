@@ -40,7 +40,7 @@ class WorkspaceTitleViewHelper extends AbstractViewHelper implements CompilableI
 	 * @return string workspace title or UID
 	 */
 	public function render($uid) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uid' => $uid
 			),

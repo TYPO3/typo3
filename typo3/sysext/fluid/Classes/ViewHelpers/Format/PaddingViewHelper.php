@@ -57,7 +57,16 @@ class PaddingViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @api
 	 */
 	public function render($padLength, $padString = ' ', $padType = 'right', $value = NULL) {
-		return self::renderStatic(array('padLength' => $padLength, 'padString' => $padString, 'padType' => $padType, 'value' => $value), $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			array(
+				'padLength' => $padLength,
+				'padString' => $padString,
+				'padType' => $padType,
+				'value' => $value
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

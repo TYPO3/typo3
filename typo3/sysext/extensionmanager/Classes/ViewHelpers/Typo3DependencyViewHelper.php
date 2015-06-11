@@ -36,7 +36,7 @@ class Typo3DependencyViewHelper extends AbstractViewHelper implements Compilable
 	 * @return string
 	 */
 	public function render(Extension $extension) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'extension' => $extension,
 			),
@@ -82,4 +82,5 @@ class Typo3DependencyViewHelper extends AbstractViewHelper implements Compilable
 		$numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($highestVersion);
 		return MathUtility::isIntegerInRange($numericTypo3Version, $numericLowestVersion, $numericHighestVersion);
 	}
+
 }

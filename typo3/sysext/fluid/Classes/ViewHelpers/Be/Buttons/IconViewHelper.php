@@ -66,7 +66,7 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 	 * @return string The rendered icon with or without link
 	 */
 	public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = array()) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uri' => $uri,
 				'icon' => $icon,
@@ -102,4 +102,5 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 		}
 		return '<a href="' . $uri . '"' . $additionalTagAttributes . '>' . $icon . '</a>';
 	}
+
 }

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Belog\Domain\Model\HistoryEntry;
@@ -39,7 +40,7 @@ class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInt
 	 * @return string Formatted history entry if one exists, else empty string
 	 */
 	public function render($uid) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uid' => $uid
 			),
@@ -86,5 +87,5 @@ class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInt
 		$historyLink = '<a href="' . htmlspecialchars($historyHref) . '">' . $historyIcon . '</a>';
 		return $historyLabel . '&nbsp;' . $historyLink;
 	}
-}
 
+}

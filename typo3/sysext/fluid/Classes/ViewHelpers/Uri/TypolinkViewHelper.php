@@ -56,7 +56,7 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @return string
 	 */
 	public function render($parameter, $additionalParams = '') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'parameter' => $parameter,
 				'additionalParams' => $additionalParams
@@ -133,4 +133,5 @@ class TypolinkViewHelper extends AbstractViewHelper implements CompilableInterfa
 		}
 		return $typolinkConfiguration;
 	}
+
 }

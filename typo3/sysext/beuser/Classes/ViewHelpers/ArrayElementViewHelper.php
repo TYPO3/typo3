@@ -32,7 +32,15 @@ class ArrayElementViewHelper extends AbstractViewHelper implements CompilableInt
 	 * @return string
 	 */
 	public function render(array $array, $key, $subKey = '') {
-		return self::renderStatic(array('array' => $array, 'key' => $key, 'subKey' => $subKey), $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			array(
+				'array' => $array,
+				'key' => $key,
+				'subKey' => $subKey
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

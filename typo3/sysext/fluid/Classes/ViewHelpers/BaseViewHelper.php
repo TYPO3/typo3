@@ -44,7 +44,7 @@ class BaseViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @api
 	 */
 	public function render() {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext

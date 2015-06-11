@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -35,8 +36,7 @@ class ErrorIconViewHelper extends AbstractBackendViewHelper implements Compilabl
 	 * @return string the rendered error icon link
 	 */
 	public function render($errorNumber = 0) {
-
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'errorNumber' => $errorNumber
 			),

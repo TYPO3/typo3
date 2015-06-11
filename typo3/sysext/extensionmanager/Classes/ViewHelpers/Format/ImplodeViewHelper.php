@@ -35,7 +35,7 @@ class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @api
 	 */
 	public function render(array $implode, $delimiter = ', ') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'implode' => $implode,
 				'delimiter' => $delimiter,

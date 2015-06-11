@@ -74,7 +74,7 @@ class HtmlViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @return string the parsed string.
 	 */
 	public function render($parseFuncTSPath = 'lib.parseFunc_RTE') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'parseFuncTSPath' => $parseFuncTSPath,
 			),

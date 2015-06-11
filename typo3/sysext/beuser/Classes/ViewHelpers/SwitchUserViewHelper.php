@@ -37,7 +37,7 @@ class SwitchUserViewHelper extends AbstractViewHelper implements CompilableInter
 	 * @return string
 	 */
 	public function render(BackendUser $backendUser) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'backendUser' => $backendUser
 			),
@@ -64,4 +64,5 @@ class SwitchUserViewHelper extends AbstractViewHelper implements CompilableInter
 			'" target="_top" title="' . htmlspecialchars($title) . '">' .
 			IconUtility::getSpriteIcon(('actions-system-backend-user-switch')) . '</a>';
 	}
+
 }

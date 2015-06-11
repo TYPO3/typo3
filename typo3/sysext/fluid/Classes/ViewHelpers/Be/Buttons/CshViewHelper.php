@@ -71,7 +71,7 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
 				'The option styleAttributes has no effect anymore and can be removed without problems. The parameter will be removed in TYPO3 CMS 8.'
 			);
 		}
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'table' => $table,
 				'field' => $field,
@@ -98,4 +98,5 @@ class CshViewHelper extends AbstractBackendViewHelper implements CompilableInter
 		}
 		return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field) . '</div>';
 	}
+
 }

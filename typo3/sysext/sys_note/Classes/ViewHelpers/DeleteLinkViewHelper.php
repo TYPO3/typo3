@@ -34,7 +34,7 @@ class DeleteLinkViewHelper extends AbstractViewHelper implements CompilableInter
 	 * @return string link
 	 */
 	public function render($id) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'id' => $id
 			),

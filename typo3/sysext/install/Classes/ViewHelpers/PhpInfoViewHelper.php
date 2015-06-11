@@ -40,7 +40,7 @@ class PhpInfoViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @return string
 	 */
 	public function render() {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext

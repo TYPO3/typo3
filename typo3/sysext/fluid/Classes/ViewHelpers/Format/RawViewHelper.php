@@ -62,7 +62,13 @@ class RawViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @return string
 	 */
 	public function render($value = NULL) {
-		return self::renderStatic(array('value' => $value), $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			array(
+				'value' => $value
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

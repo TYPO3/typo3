@@ -30,7 +30,7 @@ class GroupListViewHelper extends AbstractViewHelper implements CompilableInterf
 	 * @return string
 	 */
 	public function render(array $groups = array()) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'groups' => $groups,
 			),

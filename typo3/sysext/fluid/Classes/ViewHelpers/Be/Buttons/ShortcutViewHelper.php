@@ -66,7 +66,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper implements Compilable
 	 */
 
 	public function render(array $getVars = array(), array $setVars = array()) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'getVars' => $getVars,
 				'setVars' => $setVars
@@ -104,4 +104,5 @@ class ShortcutViewHelper extends AbstractBackendViewHelper implements Compilable
 		}
 		return '';
 	}
+
 }

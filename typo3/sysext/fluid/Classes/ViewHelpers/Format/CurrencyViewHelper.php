@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -56,7 +57,7 @@ class CurrencyViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @api
 	 */
 	public function render($currencySign = '', $decimalSeparator = ',', $thousandsSeparator = '.', $prependCurrency = FALSE, $separateCurrency = TRUE, $decimals = 2) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'currencySign' => $currencySign,
 				'decimalSeparator' => $decimalSeparator,

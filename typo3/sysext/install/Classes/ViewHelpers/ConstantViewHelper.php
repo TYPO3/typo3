@@ -32,7 +32,7 @@ class ConstantViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @return string Value of constant
 	 */
 	public function render($name) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'name' => $name,
 			),

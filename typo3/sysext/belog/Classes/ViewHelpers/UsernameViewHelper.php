@@ -40,7 +40,7 @@ class UsernameViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @return string Username or an empty string if there is no user with that UID
 	 */
 	public function render($uid) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uid' => $uid
 			),

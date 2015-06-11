@@ -53,7 +53,7 @@ class AliasViewHelper extends AbstractViewHelper implements CompilableInterface 
 	 * @api
 	 */
 	public function render(array $map) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array('map' => $map),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext

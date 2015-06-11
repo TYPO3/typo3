@@ -33,7 +33,7 @@ class PagesViewHelper extends AbstractViewHelper implements CompilableInterface 
 	 * @return string
 	 */
 	public function render($uids = '') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uids' => $uids,
 			),

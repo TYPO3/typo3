@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -45,7 +46,7 @@ class ExternalViewHelper extends AbstractViewHelper implements CompilableInterfa
 	 * @api
 	 */
 	public function render($uri, $defaultScheme = 'http') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'uri' => $uri,
 				'defaultScheme' => $defaultScheme
@@ -72,4 +73,5 @@ class ExternalViewHelper extends AbstractViewHelper implements CompilableInterfa
 		}
 		return $uri;
 	}
+
 }

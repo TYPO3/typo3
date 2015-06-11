@@ -38,7 +38,7 @@ class InstallationStateCssClassViewHelper extends AbstractViewHelper implements 
 	 * @return string the rendered a tag
 	 */
 	public function render($needle, array $haystack) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'needle' => $needle,
 				'haystack' => $haystack,

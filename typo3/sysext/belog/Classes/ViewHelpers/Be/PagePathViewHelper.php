@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Be;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
@@ -33,7 +34,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper implements Compilable
 	 * @return string Page path string
 	 */
 	public function render($pid, $titleLimit = 20) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'pid' => $pid,
 				'titleLimit' => $titleLimit

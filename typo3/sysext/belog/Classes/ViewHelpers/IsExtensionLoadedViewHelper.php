@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -33,7 +34,7 @@ class IsExtensionLoadedViewHelper extends AbstractViewHelper implements Compilab
 	 * @return bool TRUE if extension is loaded, FALSE otherwise
 	 */
 	public function render($extensionKey) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'extensionKey' => $extensionKey
 			),
@@ -52,4 +53,5 @@ class IsExtensionLoadedViewHelper extends AbstractViewHelper implements Compilab
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		return ExtensionManagementUtility::isLoaded($arguments['extensionKey']);
 	}
+
 }

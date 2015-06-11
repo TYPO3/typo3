@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
@@ -33,7 +34,7 @@ class CaseViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @api
 	 */
 	public function render($value = NULL, $default = FALSE) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'value' => $value,
 				'default' => $default
@@ -78,4 +79,5 @@ class CaseViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 		return '';
 	}
+
 }

@@ -42,7 +42,7 @@ class JsonEncodeViewHelper extends AbstractViewHelper implements CompilableInter
 	 * @api
 	 */
 	public function render() {
-		return self::renderStatic(
+		return static::renderStatic(
 			$this->arguments,
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext

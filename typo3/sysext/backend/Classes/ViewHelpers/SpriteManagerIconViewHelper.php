@@ -35,7 +35,14 @@ class SpriteManagerIconViewHelper extends AbstractViewHelper implements Compilab
 	 * @return string
 	 */
 	public function render($iconName, $options = array()) {
-		return self::renderStatic(array('iconName' => $iconName, 'options' => $options), $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			array(
+				'iconName' => $iconName,
+				'options' => $options
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

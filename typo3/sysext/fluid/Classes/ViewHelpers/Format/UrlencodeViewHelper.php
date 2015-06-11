@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -55,7 +56,7 @@ class UrlencodeViewHelper extends AbstractViewHelper implements CompilableInterf
 	 * @api
 	 */
 	public function render($value = NULL) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'value' => $value
 			),
@@ -82,4 +83,5 @@ class UrlencodeViewHelper extends AbstractViewHelper implements CompilableInterf
 		}
 		return rawurlencode($value);
 	}
+
 }

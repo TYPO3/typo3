@@ -43,7 +43,7 @@ class ArrayValueByKeyViewHelper extends AbstractViewHelper implements Compilable
 	 * @return string
 	 */
 	public function render(array $array, $key) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'array' => $array,
 				'key' => $key,

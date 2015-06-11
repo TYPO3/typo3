@@ -67,7 +67,7 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @return string
 	 */
 	public function render($title = NULL, $message = NULL, $state = self::STATE_NOTICE, $iconName = NULL, $disableIcon = FALSE) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'title' => $title,
 				'message' => $message,
@@ -150,4 +150,5 @@ class InfoboxViewHelper extends AbstractViewHelper implements CompilableInterfac
 				'</div>' .
 			'</div>';
 	}
+
 }

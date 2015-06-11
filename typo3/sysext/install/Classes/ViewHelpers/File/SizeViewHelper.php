@@ -43,7 +43,7 @@ class SizeViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @return int File size
 	 */
 	public function render($format = TRUE) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'format' => $format,
 			),

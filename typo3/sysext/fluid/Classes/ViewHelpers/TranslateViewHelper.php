@@ -85,7 +85,7 @@ class TranslateViewHelper extends AbstractViewHelper implements CompilableInterf
 	 * @return string The translated key or tag body if key doesn't exist
 	 */
 	public function render($key = NULL, $id = NULL, $default = NULL, $htmlEscape = NULL, array $arguments = NULL, $extensionName = NULL) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'key' => $key,
 				'id' => $id,

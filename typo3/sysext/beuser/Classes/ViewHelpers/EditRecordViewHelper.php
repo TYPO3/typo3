@@ -35,7 +35,7 @@ class EditRecordViewHelper extends AbstractViewHelper implements CompilableInter
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl()
 	 */
 	public function render($parameters) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'parameters' => $parameters
 			),
@@ -55,4 +55,5 @@ class EditRecordViewHelper extends AbstractViewHelper implements CompilableInter
 		$parameters = GeneralUtility::explodeUrl2Array($arguments['parameters']);
 		return BackendUtility::getModuleUrl('record_edit', $parameters);
 	}
+
 }

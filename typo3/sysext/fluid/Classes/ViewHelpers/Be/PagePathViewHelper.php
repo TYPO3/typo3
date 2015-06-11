@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -47,7 +48,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper implements Compilable
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPagePath() Note: can't call this method as it's protected!
 	 */
 	public function render() {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext
@@ -83,4 +84,5 @@ class PagePathViewHelper extends AbstractBackendViewHelper implements Compilable
 		$pagePath .= '</span>';
 		return $pagePath;
 	}
+
 }

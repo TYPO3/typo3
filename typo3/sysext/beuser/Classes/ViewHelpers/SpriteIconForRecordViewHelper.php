@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -36,7 +37,7 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper implements
 	 * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
 	 */
 	public function render($table, $object) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'table' => $table,
 				'object' => $object

@@ -51,7 +51,7 @@ class CropViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @return string cropped text
 	 */
 	public function render($maxCharacters) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'maxCharacters' => $maxCharacters,
 			),
@@ -64,7 +64,7 @@ class CropViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @param array $arguments
 	 * @param callable $renderChildrenClosure
 	 * @param RenderingContextInterface $renderingContext
-	 *
+	 * @throws \TYPO3\CMS\Install\ViewHelpers\Exception
 	 * @return string
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {

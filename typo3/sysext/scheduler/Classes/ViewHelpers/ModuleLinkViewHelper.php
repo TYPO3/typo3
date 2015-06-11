@@ -34,7 +34,7 @@ class ModuleLinkViewHelper extends AbstractViewHelper implements CompilableInter
 	 * @return string
 	 */
 	public function render($controller, $action, array $arguments = array()) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'controller' => $controller,
 				'action' => $action,

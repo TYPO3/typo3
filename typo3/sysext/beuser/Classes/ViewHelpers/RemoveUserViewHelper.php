@@ -38,7 +38,7 @@ class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInter
 	 * @return string
 	 */
 	public function render(BackendUser $backendUser) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'backendUser' => $backendUser
 			),

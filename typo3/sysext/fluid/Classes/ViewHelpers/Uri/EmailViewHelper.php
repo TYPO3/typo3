@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -38,7 +39,7 @@ class EmailViewHelper extends AbstractViewHelper implements CompilableInterface 
 	 * @return string Rendered email link
 	 */
 	public function render($email) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'email' => $email
 			),
@@ -64,4 +65,5 @@ class EmailViewHelper extends AbstractViewHelper implements CompilableInterface 
 			return 'mailto:' . $email;
 		}
 	}
+
 }

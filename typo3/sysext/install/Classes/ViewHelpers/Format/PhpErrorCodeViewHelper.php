@@ -53,7 +53,7 @@ class PhpErrorCodeViewHelper extends AbstractViewHelper implements CompilableInt
 	 * @return string
 	 */
 	public function render($phpErrorCode) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'phpErrorCode' => $phpErrorCode,
 			),

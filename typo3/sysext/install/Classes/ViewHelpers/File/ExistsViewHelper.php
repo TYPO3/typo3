@@ -42,7 +42,7 @@ class ExistsViewHelper extends AbstractViewHelper implements CompilableInterface
 	 * @return bool
 	 */
 	public function render($file) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'file' => $file,
 			),

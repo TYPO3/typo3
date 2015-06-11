@@ -50,7 +50,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPageInfo() Note: can't call this method as it's protected!
 	 */
 	public function render() {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext
@@ -88,4 +88,5 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
 		// Setting icon with clickmenu + uid
 		return $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 	}
+
 }

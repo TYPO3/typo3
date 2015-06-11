@@ -10,6 +10,7 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Fluid\ViewHelpers\ThenViewHelper;
 use TYPO3\CMS\Fluid\ViewHelpers\ElseViewHelper;
 use TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
@@ -248,4 +249,5 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	static protected function evaluateCondition($arguments = NULL) {
 		return (isset($arguments['condition']) && $arguments['condition']);
 	}
+
 }

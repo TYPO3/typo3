@@ -35,7 +35,7 @@ class PageBrowsingResultsViewHelper extends AbstractViewHelper implements Compil
 	 * @return string the content
 	 */
 	public function render($numberOfResults, $resultsPerPage, $currentPage = 1) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'numberOfResults' => $numberOfResults,
 				'resultsPerPage' => $resultsPerPage,

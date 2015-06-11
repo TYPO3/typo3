@@ -86,7 +86,7 @@ class RenderViewHelper extends AbstractViewHelper implements CompilableInterface
 	 * @api
 	 */
 	public function render($section = NULL, $partial = NULL, $arguments = array(), $optional = FALSE) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'section' => $section,
 				'partial' => $partial,

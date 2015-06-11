@@ -52,7 +52,7 @@ class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
 	 * @api
 	 */
 	public function render($decimals = 2, $decimalSeparator = '.', $thousandsSeparator = ',') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'decimals' => $decimals,
 				'decimalSeparator' => $decimalSeparator,
@@ -79,4 +79,5 @@ class NumberViewHelper extends AbstractViewHelper implements CompilableInterface
 		$stringToFormat = $renderChildrenClosure();
 		return number_format($stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
 	}
+
 }

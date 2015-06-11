@@ -63,7 +63,14 @@ class PrintfViewHelper extends AbstractViewHelper implements CompilableInterface
 	 * @api
 	 */
 	public function render(array $arguments, $value = NULL) {
-		return self::renderStatic(array('arguments' => $arguments, 'value' => $value), $this->buildRenderChildrenClosure(), $this->renderingContext);
+		return static::renderStatic(
+			array(
+				'arguments' => $arguments,
+				'value' => $value
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
 	}
 
 	/**

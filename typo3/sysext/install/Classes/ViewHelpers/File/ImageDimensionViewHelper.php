@@ -43,7 +43,7 @@ class ImageDimensionViewHelper extends AbstractViewHelper implements CompilableI
 	 * @return int width or height
 	 */
 	public function render($dimension = 'width') {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'dimension' => $dimension,
 			),

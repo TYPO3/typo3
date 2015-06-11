@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -39,7 +40,7 @@ class FormatDetailsViewHelper extends AbstractViewHelper implements CompilableIn
 	 * @return string Formatted details
 	 */
 	public function render(LogEntry $logEntry) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'logEntry' => $logEntry
 			),

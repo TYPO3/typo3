@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -52,7 +53,7 @@ class DebugViewHelper extends AbstractViewHelper implements CompilableInterface 
 	 * @return string
 	 */
 	public function render($title = NULL, $maxDepth = 8, $plainText = FALSE, $ansiColors = FALSE, $inline = FALSE, $blacklistedClassNames = NULL, $blacklistedPropertyNames = NULL) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'title' => $title,
 				'maxDepth' => $maxDepth,
@@ -77,4 +78,5 @@ class DebugViewHelper extends AbstractViewHelper implements CompilableInterface 
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		return DebuggerUtility::var_dump($renderChildrenClosure(), $arguments['title'], $arguments['maxDepth'], (bool)$arguments['plainText'], (bool)$arguments['ansiColors'], (bool)$arguments['inline'], $arguments['blacklistedClassNames'], $arguments['blacklistedPropertyNames']);
 	}
+
 }

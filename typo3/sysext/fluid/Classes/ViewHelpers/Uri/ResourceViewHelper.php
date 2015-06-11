@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -42,7 +43,7 @@ class ResourceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @api
 	 */
 	public function render($path, $extensionName = NULL, $absolute = FALSE) {
-		return self::renderStatic(
+		return static::renderStatic(
 			array(
 				'path' => $path,
 				'extensionName' => $extensionName,
