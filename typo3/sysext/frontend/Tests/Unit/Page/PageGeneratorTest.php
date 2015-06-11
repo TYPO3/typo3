@@ -70,7 +70,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'meta with nested stdWrap' => array(
 				array(
 					'author' => 'Markus ',
-				    'author.' => array('stdWrap.' => array('wrap' => '|Klein'))
+					'author.' => array('stdWrap.' => array('wrap' => '|Klein'))
 				),
 				FALSE,
 				array(
@@ -81,15 +81,15 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'httpEquivalent meta' => array(
 				array(
 					'X-UA-Compatible' => 'IE=edge,chrome=1',
-				    'X-UA-Compatible.' => array('httpEquivalent' => 1)
+					'X-UA-Compatible.' => array('httpEquivalent' => 1)
 				),
 				FALSE,
-			    array(
-				    '<meta name="generator" content="TYPO3 CMS">',
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
 					'<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'
-			    )
+				)
 			),
-		    'httpEquivalent meta xhtml' => array(
+			'httpEquivalent meta xhtml' => array(
 				array(
 					'X-UA-Compatible' => 'IE=edge,chrome=1',
 					'X-UA-Compatible.' => array('httpEquivalent' => 1)
@@ -99,8 +99,19 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'<meta name="generator" content="TYPO3 CMS" />',
 					'<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
 				)
-		    ),
-		    'refresh meta' => array(
+			),
+			'httpEquivalent meta xhtml new notation' => array(
+				array(
+					'X-UA-Compatible' => 'IE=edge,chrome=1',
+					'X-UA-Compatible.' => array('attribute' => 'http-equiv')
+				),
+				TRUE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS" />',
+					'<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'
+				)
+			),
+			'refresh meta' => array(
 				array(
 					'refresh' => '10',
 				),
@@ -110,26 +121,113 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'<meta http-equiv="refresh" content="10">',
 				)
 			),
-		    'meta with dot' => array(
-			    array(
-				    'DC.author' => 'Markus Klein',
-			    ),
-			    FALSE,
-			    array(
-				    '<meta name="generator" content="TYPO3 CMS">',
-				    '<meta name="DC.author" content="Markus Klein">',
-			    )
-		    ),
-		    'meta with colon' => array(
-			    array(
-				    'OG:title' => 'Magic Tests',
-			    ),
-			    FALSE,
-			    array(
-				    '<meta name="generator" content="TYPO3 CMS">',
-				    '<meta name="OG:title" content="Magic Tests">',
-			    )
-		    ),
+			'refresh meta new notation' => array(
+				array(
+					'refresh' => '10',
+					'refresh.' => array('attribute' => 'http-equiv')
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta http-equiv="refresh" content="10">',
+				)
+			),
+			'refresh meta new notation wins form old' => array(
+				array(
+					'refresh' => '10',
+					'refresh.' => array('attribute' => 'http-equiv-new')
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta http-equiv-new="refresh" content="10">',
+				)
+			),
+			'meta with dot' => array(
+				array(
+					'DC.author' => 'Markus Klein',
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta name="DC.author" content="Markus Klein">',
+				)
+			),
+			'meta with colon' => array(
+				array(
+					'OG:title' => 'Magic Tests',
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta name="OG:title" content="Magic Tests">',
+				)
+			),
+			'different attribute name' => array(
+				array(
+					'og:site_title' => 'My TYPO3 site',
+					'og:site_title.' => array('attribute' => 'property'),
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta property="og:site_title" content="My TYPO3 site">',
+				)
+			),
+			'multi value attribute name' => array(
+				array(
+					'og:locale:alternate.' => array(
+						'attribute' => 'property',
+						'value' => array(
+							10 => 'nl_NL',
+							20 => 'de_DE',
+						)
+					),
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta property="og:locale:alternate" content="nl_NL">',
+					'<meta property="og:locale:alternate" content="de_DE">',
+				)
+			),
+			'multi value attribute name (empty values are skipped)' => array(
+				array(
+					'og:locale:alternate.' => array(
+						'attribute' => 'property',
+						'value' => array(
+							10 => 'nl_NL',
+							20 => '',
+							30 => 'de_DE',
+						)
+					),
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta property="og:locale:alternate" content="nl_NL">',
+					'<meta property="og:locale:alternate" content="de_DE">',
+				)
+			),
+			'meta with empty string value' => array(
+				array(
+					'custom:key' => '',
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+				)
+			),
+			'meta with 0 value' => array(
+				array(
+					'custom:key' => '0',
+				),
+				FALSE,
+				array(
+					'<meta name="generator" content="TYPO3 CMS">',
+					'<meta name="custom:key" content="0">',
+				)
+			),
 		);
 	}
 

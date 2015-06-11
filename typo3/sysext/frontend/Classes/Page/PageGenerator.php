@@ -1195,15 +1195,28 @@ class PageGenerator {
 			if (is_array($properties)) {
 				$nodeValue = isset($properties['_typoScriptNodeValue']) ? $properties['_typoScriptNodeValue'] : '';
 				$value = trim($cObj->stdWrap($nodeValue, $metaTagTypoScript[$key . '.']));
+				if ($value === '' && !empty($properties['value'])) {
+					$value = $properties['value'];
+				}
 			} else {
 				$value = $properties;
 			}
-			if ($value !== '') {
-				$attribute = 'name';
-				if ( (is_array($properties) && !empty($properties['httpEquivalent'])) || strtolower($key) === 'refresh') {
-					$attribute = 'http-equiv';
+
+			$attribute = 'name';
+			if ((is_array($properties) && !empty($properties['httpEquivalent'])) || strtolower($key) === 'refresh') {
+				$attribute = 'http-equiv';
+			}
+			if (is_array($properties) && !empty($properties['attribute'])) {
+				$attribute = $properties['attribute'];
+			}
+
+			if (!is_array($value)) {
+				$value = (array)$value;
+			}
+			foreach ($value as $subValue) {
+				if (trim($subValue) !== '') {
+					$metaTags[] = '<meta ' . $attribute . '="' . $key . '" content="' . htmlspecialchars($subValue) . '"' . $endingSlash . '>';
 				}
-				$metaTags[] = '<meta ' . $attribute . '="' . $key . '" content="' . htmlspecialchars($value) . '"' . $endingSlash . '>';
 			}
 		}
 		return $metaTags;
