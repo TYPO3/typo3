@@ -217,6 +217,38 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getDatabaseExtraIgnoresCaseDifferenceButKeepsCaseInSetIntact() {
+		$subject = new SqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'subtype' => 'SET(\'Tx_MyExt_Domain_Model_Xyz\',\'Tx_MyExt_Domain_Model_Abc\',\'\') NOT NULL DEFAULT \'\',',
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'fields' => array(
+						'subtype' => 'set(\'Tx_MyExt_Domain_Model_Xyz\',\'Tx_MyExt_Domain_Model_Abc\',\'\') NOT NULL DEFAULT \'\',',
+					)
+				)
+			)
+		);
+
+		$this->assertEquals(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(),
+				'diff_currentValues' => NULL,
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function getDatabaseExtraDoesNotLowercaseReservedWordsForTheComparison() {
 		$subject = new SqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
