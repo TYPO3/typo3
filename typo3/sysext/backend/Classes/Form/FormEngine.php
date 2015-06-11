@@ -307,16 +307,7 @@ class FormEngine {
 		$resultArray = $this->nodeFactory->create($options)->render();
 
 		$content = $resultArray['html'];
-		$this->requiredElements = $resultArray['requiredElements'];
-		$this->requiredFields = $resultArray['requiredFields'];
-		$this->requiredAdditional = $resultArray['requiredAdditional'];
-		$this->requiredNested = $resultArray['requiredNested'];
-		$this->additionalJS_post = $resultArray['additionalJavaScriptPost'];
-		$this->additionalJS_submit = $resultArray['additionalJavaScriptSubmit'];
-		$this->extJSCODE = $resultArray['extJSCODE'];
-		$this->inlineData = $resultArray['inlineData'];
-		$this->hiddenFieldAccum = $resultArray['additionalHiddenFields'];
-		$this->additionalCode_pre = $resultArray['additionalHeadTags'];
+		$this->mergeResult($resultArray);
 
 		// Hook: getMainFields_postProcess
 		foreach ($this->hookObjectsMainFields as $hookObj) {
@@ -386,7 +377,19 @@ class FormEngine {
 		$options['renderType'] = 'listOfFieldsContainer';
 		$resultArray = $this->nodeFactory->create($options)->render();
 		$html = $resultArray['html'];
+		$this->mergeResult($resultArray);
 
+		return $html;
+	}
+
+
+	/**
+	 * Merge existing data with the given result array
+	 *
+	 * @param array $resultArray Array returned by child
+	 * @return void
+	 */
+	protected function mergeResult(array $resultArray) {
 		foreach ($resultArray['requiredElements'] as $element) {
 			$this->requiredElements[] = $element;
 		}
@@ -413,8 +416,6 @@ class FormEngine {
 		foreach ($resultArray['additionalHeadTags'] as $element) {
 			$this->additionalCode_pre[] = $element;
 		}
-
-		return $html;
 	}
 
 	/**
