@@ -215,6 +215,11 @@ class SelectSingleElement extends AbstractFormElement {
 
 		// Process groups
 		foreach ($selectItemGroups as $selectItemGroup) {
+			// suppress groups without items
+			if (empty($selectItemGroup['items'])) {
+				continue;
+			}
+
 			$optionGroup = is_array($selectItemGroup['header']);
 			$options .= ($optionGroup ? '<optgroup label="' . htmlspecialchars($selectItemGroup['header']['title'], ENT_COMPAT, 'UTF-8', FALSE) . '">' : '');
 			if (is_array($selectItemGroup['items'])) {
