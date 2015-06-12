@@ -10,6 +10,9 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * The abstract base class for all view helpers.
@@ -234,7 +237,7 @@ abstract class AbstractViewHelper {
 	 * Call the render() method and handle errors.
 	 *
 	 * @return string the rendered ViewHelper
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 */
 	protected function callRenderMethod() {
 		$renderMethodParameters = array();
@@ -246,10 +249,21 @@ abstract class AbstractViewHelper {
 
 		try {
 			return call_user_func_array(array($this, 'render'), $renderMethodParameters);
-		} catch (\TYPO3\CMS\Fluid\Core\ViewHelper\Exception $exception) {
-			// @todo [BW] rethrow exception, log, ignore.. depending on the current context
-			return $exception->getMessage();
+		} catch (Exception $exception) {
+			if (GeneralUtility::getApplicationContext()->isProduction()) {
+				$this->getLogger()->error('A Fluid ViewHelper Exception was captured: ' . $exception->getMessage() . ' (' . $exception->getCode() . ')', array('exception' => $exception));
+				return '';
+			} else {
+				throw $exception;
+			}
 		}
+	}
+
+	/**
+	 * @return LoggerInterface
+	 */
+	protected function getLogger() {
+		return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 	}
 
 	/**
