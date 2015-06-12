@@ -73,6 +73,7 @@ class ListOfFieldsContainer extends AbstractContainer {
 		$options = $this->globalOptions;
 		$options['fieldsArray'] = $finalFieldsConfiguration;
 		$options['renderType'] = 'paletteAndSingleContainer';
+		$options['recordTypeValue'] = $this->getRecordTypeValue($table, $row);
 		/** @var NodeFactory $nodeFactory */
 		$nodeFactory = $this->globalOptions['nodeFactory'];
 		return $nodeFactory->create($options)->render();
