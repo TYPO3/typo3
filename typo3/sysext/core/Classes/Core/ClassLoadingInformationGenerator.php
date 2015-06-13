@@ -106,6 +106,9 @@ class ClassLoadingInformationGenerator {
 	 * @internal
 	 */
 	static public function buildAutoloadInformationFiles() {
+		// Ensure that for each re-build, the packages are fetched again from the package manager
+		self::$activePackages = NULL;
+
 		$psr4File = $classMapFile = <<<EOF
 <?php
 
