@@ -22,6 +22,8 @@ class ADODB2_postgres extends ADODB_DataDict {
 	var $quote = '"';
 	var $renameTable = 'ALTER TABLE %s RENAME TO %s'; // at least since 7.1
 	var $dropTable = 'DROP TABLE %s CASCADE';
+	var $blobNotNull = true;
+	var $blobDefaults = true;
 
 	function MetaType($t,$len=-1,$fieldobj=false)
 	{

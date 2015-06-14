@@ -21,6 +21,7 @@ class ADODB2_mysql extends ADODB_DataDict {
 
 	var $dropIndex = 'DROP INDEX %s ON %s';
 	var $renameColumn = 'ALTER TABLE %s CHANGE COLUMN %s %s %s';	// needs column-definition!
+	var $blobNotNull = true;
 
 	function MetaType($t,$len=-1,$fieldobj=false)
 	{

@@ -178,6 +178,8 @@ class ADODB_DataDict {
 	var $autoIncrement = false;
 	var $dataProvider;
 	var $invalidResizeTypes4 = array('CLOB','BLOB','TEXT','DATE','TIME'); // for changetablesql
+	var $blobNotNull = false; // dbms supports NOT NULL for BLOB/TEXT columns
+	var $blobDefaults = false; // dbms supports defaults for BLOB/TEXT columns
 	var $blobSize = 100; 	/// any varchar/char field this size or greater is treated as a blob
 							/// in other words, we use a text area for editting.
 
@@ -717,12 +719,12 @@ class ADODB_DataDict {
 
 			$ftype = $this->_GetSize($ftype, $ty, $fsize, $fprec);
 
-			if ($ty == 'X' || $ty == 'X2' || $ty == 'B') $fnotnull = false; // some blob types do not accept nulls
+			if (($ty == 'X' || $ty == 'X2' || $ty == 'B') && $this->blobNotNull !== true) $fnotnull = false; // some blob types do not accept nulls
 
 			if ($fprimary) $pkey[] = $fname;
 
 			// some databases do not allow blobs to have defaults
-			if ($ty == 'X') $fdefault = false;
+			if ($ty == 'X' && $this->blobDefaults !== true) $fdefault = false;
 
 			// build list of indexes
 			if ($findex != '') {

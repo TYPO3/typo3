@@ -297,3 +297,56 @@ index b10d555..21cfc69 100644
  		//if ($this->debug) error_log("<hr>_connectionID before: ".serialize($this->_connectionID));
  		if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) {
 
+diff --git a/adodb-datadict.inc.php b/adodb-datadict.inc.php
+index b8b881e..f2b17f3 100644
+--- a/adodb-datadict.inc.php
++++ b/adodb-datadict.inc.php
+@@ -178,6 +178,8 @@ class ADODB_DataDict {
+ 	var $autoIncrement = false;
+ 	var $dataProvider;
+ 	var $invalidResizeTypes4 = array('CLOB','BLOB','TEXT','DATE','TIME'); // for changetablesql
++	var $blobNotNull = false; // dbms supports NOT NULL for BLOB/TEXT columns
++	var $blobDefaults = false; // dbms supports defaults for BLOB/TEXT columns
+ 	var $blobSize = 100; 	/// any varchar/char field this size or greater is treated as a blob
+ 							/// in other words, we use a text area for editting.
+ 
+@@ -717,12 +719,12 @@ class ADODB_DataDict {
+ 
+ 			$ftype = $this->_GetSize($ftype, $ty, $fsize, $fprec);
+ 
+-			if ($ty == 'X' || $ty == 'X2' || $ty == 'B') $fnotnull = false; // some blob types do not accept nulls
++			if (($ty == 'X' || $ty == 'X2' || $ty == 'B') && $this->blobNotNull !== true) $fnotnull = false; // some blob types do not accept nulls
+ 
+ 			if ($fprimary) $pkey[] = $fname;
+ 
+ 			// some databases do not allow blobs to have defaults
+-			if ($ty == 'X') $fdefault = false;
++			if ($ty == 'X' && $this->blobDefaults !== true) $fdefault = false;
+ 
+ 			// build list of indexes
+ 			if ($findex != '') {
+diff --git a/datadict/datadict-mysql.inc.php b/datadict/datadict-mysql.inc.php
+index 773aa0c..701fa66 100644
+--- a/datadict/datadict-mysql.inc.php
++++ b/datadict/datadict-mysql.inc.php
+@@ -21,6 +21,7 @@ class ADODB2_mysql extends ADODB_DataDict {
+ 
+ 	var $dropIndex = 'DROP INDEX %s ON %s';
+ 	var $renameColumn = 'ALTER TABLE %s CHANGE COLUMN %s %s %s';	// needs column-definition!
++	var $blobNotNull = true;
+ 
+ 	function MetaType($t,$len=-1,$fieldobj=false)
+ 	{
+diff --git a/datadict/datadict-postgres.inc.php b/datadict/datadict-postgres.inc.php
+index 965314d..3556825 100644
+--- a/datadict/datadict-postgres.inc.php
++++ b/datadict/datadict-postgres.inc.php
+@@ -22,6 +22,8 @@ class ADODB2_postgres extends ADODB_DataDict {
+ 	var $quote = '"';
+ 	var $renameTable = 'ALTER TABLE %s RENAME TO %s'; // at least since 7.1
+ 	var $dropTable = 'DROP TABLE %s CASCADE';
++	var $blobNotNull = true;
++	var $blobDefaults = true;
+ 
+ 	function MetaType($t,$len=-1,$fieldobj=false)
+ 	{

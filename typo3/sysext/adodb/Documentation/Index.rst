@@ -12,7 +12,7 @@ The currently used ADOdb version is 5.19 [1]_.
 Our changes
 ===========
 
-This is a list of changes we made in ADOdb and may must re-applied if EXT:adodb is
+This is a list of changes we made in ADOdb that must re-applied if EXT:adodb is
 updated to upstream.
 
 - ADOdb: Invalid override method signature (48034_) (Solved in 5.20-dev [2]_)
@@ -22,8 +22,10 @@ updated to upstream.
 - ADOdb: mssqlnative driver fails to create sequences (66678_)
 - ADOdb: mssqlnative driver is not properly initialized (66830_)
 - ADOdb: mssqlnative driver does not properly define the port (63070_)
+- ADOdb: Allow setting NOT NULL/DEFAULT on blob and text columns (67442_) (Upstream pull request: [3]_)
 
 .. [2] https://github.com/ADOdb/ADOdb/commit/85f05a98974ea85ecae943faf230a27afdbaa746
+.. [3] https://github.com/ADOdb/ADOdb/pull/118
 .. _48034: https://forge.typo3.org/issues/48034
 .. _61738: https://forge.typo3.org/issues/61738
 .. _63659: https://forge.typo3.org/issues/63659
@@ -31,6 +33,7 @@ updated to upstream.
 .. _66678: https://forge.typo3.org/issues/66678
 .. _66830: https://forge.typo3.org/issues/66830
 .. _63070: https://forge.typo3.org/issues/63070
+.. _67442: https://forge.typo3.org/issues/67442
 
 
 Diff
