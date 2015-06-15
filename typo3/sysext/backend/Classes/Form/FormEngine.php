@@ -390,17 +390,17 @@ class FormEngine {
 	 * @return void
 	 */
 	protected function mergeResult(array $resultArray) {
-		foreach ($resultArray['requiredElements'] as $element) {
-			$this->requiredElements[] = $element;
+		foreach ($resultArray['requiredElements'] as $name => $element) {
+			$this->requiredElements[$name] = $element;
 		}
-		foreach ($resultArray['requiredFields'] as $element) {
-			$this->requiredFields[] = $element;
+		foreach ($resultArray['requiredFields'] as $value => $name) {
+			$this->requiredFields[$value] = $name;
 		}
-		foreach ($resultArray['requiredAdditional'] as $element) {
-			$this->requiredAdditional[] = $element;
+		foreach ($resultArray['requiredAdditional'] as $name => $subArray) {
+			$this->requiredAdditional[$name] = $subArray;
 		}
-		foreach ($resultArray['requiredNested'] as $element) {
-			$this->requiredNested[] = $element;
+		foreach ($resultArray['requiredNested'] as $value => $name) {
+			$this->requiredNested[$value] = $name;
 		}
 		foreach ($resultArray['additionalJavaScriptPost'] as $element) {
 			$this->additionalJS_post[] = $element;
@@ -408,13 +408,20 @@ class FormEngine {
 		foreach ($resultArray['additionalJavaScriptSubmit'] as $element) {
 			$this->additionalJS_submit[] = $element;
 		}
-		$this->extJSCODE = $this->extJSCODE . $resultArray['extJSCODE'];
+		$this->extJSCODE = $this->extJSCODE . LF . $resultArray['extJSCODE'];
 		$this->inlineData = $resultArray['inlineData'];
 		foreach ($resultArray['additionalHiddenFields'] as $element) {
 			$this->hiddenFieldAccum[] = $element;
 		}
 		foreach ($resultArray['additionalHeadTags'] as $element) {
 			$this->additionalCode_pre[] = $element;
+		}
+
+		if (!empty($resultArray['inlineData'])) {
+			$resultArrayInlineData = $this->inlineData;
+			$resultInlineData = $resultArray['inlineData'];
+			ArrayUtility::mergeRecursiveWithOverrule($resultArrayInlineData, $resultInlineData);
+			$this->inlineData = $resultArrayInlineData;
 		}
 	}
 
