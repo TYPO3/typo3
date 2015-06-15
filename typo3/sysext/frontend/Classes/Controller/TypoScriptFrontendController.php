@@ -3615,6 +3615,11 @@ class TypoScriptFrontendController {
 			$headLine = 'Content-Type: ' . $this->contentType . '; charset=' . trim($this->metaCharset);
 			header($headLine);
 		}
+		// Set header for content language unless disabled
+		if (empty($this->config['config']['disableLanguageHeader']) && !empty($this->sys_language_isocode)) {
+			$headLine = 'Content-Language: ' . trim($this->sys_language_isocode);
+			header($headLine);
+		}
 		// Set cache related headers to client (used to enable proxy / client caching!)
 		if (!empty($this->config['config']['sendCacheHeaders'])) {
 			$this->sendCacheHeaders();
