@@ -26,7 +26,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	 * whether the page ID should be shown next to the title, activate through
 	 * userTSconfig (options.pageTree.showPageIdWithTitle)
 	 *
-	 * @boolean
+	 * @var bool
 	 */
 	public $ext_showPageId = FALSE;
 
