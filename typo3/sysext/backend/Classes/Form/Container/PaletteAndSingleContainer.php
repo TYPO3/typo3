@@ -205,7 +205,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				}
 
 				if ($renderUnCollapseButtonWrapper) {
-					$cssId = 'FORMENGINE_' . $this->globalOptions['table'] . '_' . $paletteName . '_' . $this->globalOptions['databaseRow']['uid'];
+					$cssId = str_replace('.', '_', 'FORMENGINE_' . $this->globalOptions['table'] . '_' . $paletteName . '_' . $this->globalOptions['databaseRow']['uid']);
 					$paletteElementsHtml = $this->wrapPaletteWithCollapseButton($paletteElementsHtml, $cssId);
 				} else {
 					$paletteElementsHtml = '<div class="row">' . $paletteElementsHtml . '</div>';
