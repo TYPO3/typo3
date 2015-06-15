@@ -2264,7 +2264,7 @@ This is a dump of the failures:
 	 * access lists of all kind, further check IP, set the ->uc array and send login-notification email if required.
 	 * If no user is logged in the default behaviour is to exit with an error message,
 	 * but this will happen ONLY if the constant TYPO3_PROCEED_IF_NO_USER is set TRUE.
-	 * This function is called right after ->start() in fx. init.php
+	 * This function is called right after ->start() in fx. the TYPO3 CMS bootsrap
 	 *
 	 * @throws \RuntimeException
 	 * @return void

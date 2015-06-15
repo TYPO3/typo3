@@ -17,7 +17,10 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
+define('TYPO3_MODE', 'BE');
+
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 	'The entry point to the file/record browser window was moved to an own module. Please use BackendUtility::getModuleUrl(\'browser\') to link to browser.php. This script will be removed in TYPO3 CMS 8.'

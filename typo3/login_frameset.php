@@ -20,7 +20,10 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
-require __DIR__ . '/init.php';
+define('TYPO3_MODE', 'BE');
+
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 	'Login frameset is moved to an own module. Please use BackendUtility::getModuleUrl(\'login_frameset\') to link to login_frameset.php. This script will be removed in TYPO3 CMS 8.'

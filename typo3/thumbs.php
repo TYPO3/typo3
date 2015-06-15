@@ -19,7 +19,10 @@
  * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
  */
 
-require __DIR__ . '/init.php';
+define('TYPO3_MODE', 'BE');
+
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 	'thumbs.php is no longer in use, please use the corresponding Resource objects to generate a preview functionality for thumbnails.'

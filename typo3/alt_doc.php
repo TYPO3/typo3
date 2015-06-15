@@ -19,7 +19,10 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require_once 'init.php';
+define('TYPO3_MODE', 'BE');
+
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(

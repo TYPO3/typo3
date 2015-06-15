@@ -166,7 +166,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 *
 	 ****************************************************/
 	/**
-	 * Implementing the access checks that the typo3/init.php script does before a user is ever logged in.
+	 * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
 	 * Used in the frontend.
 	 *
 	 * @return bool Returns TRUE if access is OK

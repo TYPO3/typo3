@@ -25,7 +25,10 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
+define('TYPO3_MODE', 'BE');
+
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('alt_clickmenu.php is deprecated as of TYPO3 CMS 7, and will not work anymore, please use the ajax.php functionality.');
 $clickMenuController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ClickMenuController::class);

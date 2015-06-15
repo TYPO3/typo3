@@ -33,8 +33,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * Finally this file includes the language class for TYPO3's backend.
  *
  * After this file $LANG and $TBE_TEMPLATE are global variables / instances of their respective classes.
- * This file is typically included right after the init.php file,
- * if language and layout is needed.
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  *

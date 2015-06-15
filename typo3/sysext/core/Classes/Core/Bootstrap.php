@@ -804,7 +804,6 @@ class Bootstrap {
 		unset($GLOBALS['TBE_MODULES']);
 		unset($GLOBALS['TBE_STYLES']);
 		unset($GLOBALS['FILEICONS']);
-		// Those set in init.php:
 		unset($GLOBALS['BE_USER']);
 		// Those set otherwise:
 		unset($GLOBALS['TBE_MODULES_EXT']);

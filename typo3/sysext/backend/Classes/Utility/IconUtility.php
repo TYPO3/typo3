@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  *
  * Notes:
  * These functions are strongly related to the interface of TYPO3.
- * The class is included in eg. init.php
  * Static class, functions called without making a class instance.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>

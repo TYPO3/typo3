@@ -18,7 +18,8 @@ if (isset($_GET['login_status'])) {
 }
 
 define('TYPO3_MOD_PATH', 'sysext/openid/');
-require_once '../../init.php';
+require '../../sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 
 /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
 $beUser = $GLOBALS['BE_USER'];

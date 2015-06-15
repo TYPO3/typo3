@@ -20,7 +20,10 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require __DIR__ . '/init.php';
+define('TYPO3_MODE', 'BE');
+
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 	'The entry point to data handling via DataHandler was moved to an own module. Please use BackendUtility::getModuleUrl(\'tce_db\') to link to tce_db.php / DataHandler. This script will be removed in TYPO3 CMS 8.'

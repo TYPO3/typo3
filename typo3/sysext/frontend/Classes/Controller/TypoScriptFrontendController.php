@@ -117,10 +117,11 @@ class TypoScriptFrontendController {
 
 	/**
 	 * Gets set when we are processing a page of type shortcut in the early stages
-	 * opf init.php when we do not know about languages yet, used later in init.php
+	 * of the request when we do not know about languages yet, used later in the request
 	 * to determine the correct shortcut in case a translation changes the shortcut
 	 * target
 	 * @var array|NULL
+	 * @see checkTranslatedShortcut()
 	 */
 	protected $originalShortcutPage = NULL;
 

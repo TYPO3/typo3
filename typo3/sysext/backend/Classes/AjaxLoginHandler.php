@@ -24,7 +24,7 @@ class AjaxLoginHandler {
 	/**
 	 * Handles the actual login process, more specifically it defines the response.
 	 * The login details were sent in as part of the ajax request and automatically logged in
-	 * the user inside the init.php part of the ajax call. If that was successful, we have
+	 * the user inside the TYPO3 CMS bootstrap part of the ajax call. If that was successful, we have
 	 * a BE user and reset the timer and hide the login window.
 	 * If it was unsuccessful, we display that and show the login box again.
 	 *

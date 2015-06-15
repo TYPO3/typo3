@@ -15,7 +15,7 @@
 /**
  * TYPO3 Backend initialization
  *
- * This script is called by every backend script.
+ * This script was called by every backend script to set up the bootstrap.
  * The script authenticates the backend user.
  * In addition this script also initializes the database and other depending on LocalConfiguration.php
  *
@@ -44,3 +44,4 @@ define('TYPO3_MODE', 'BE');
 
 require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
+\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Usage of typo3/init.php is deprecated since TYPO3 CMS 7, and will be removed in TYPO3 CMS 8. Initialize the bootstrap call directly in your entry script.');

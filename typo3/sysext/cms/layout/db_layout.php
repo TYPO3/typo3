@@ -21,7 +21,11 @@
  */
 unset($MCONF);
 require __DIR__ . '/conf.php';
-require $BACK_PATH . 'init.php';
+
+define('TYPO3_MODE', 'BE');
+
+require $BACK_PATH . 'sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 $LANG->includeLLFile('EXT:cms/layout/locallang.xlf');
 
 $BE_USER->modAccess($MCONF, 1);
