@@ -189,6 +189,23 @@ class InlineControlContainer extends AbstractContainer {
 				$localizationLinks .= ' ' . $this->getLevelInteractionLink('synchronize', $nameObject . '-' . $foreign_table, $config);
 			}
 		}
+
+		// Define how to show the "Create new record" link - if there are more than maxitems, hide it
+		if ($relatedRecords['count'] >= $maxItems || $uniqueMax > 0 && $relatedRecords['count'] >= $uniqueMax) {
+			$config['inline']['inlineNewButtonStyle'] = 'display: none;';
+			$config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
+		}
+
+		// Render the level links (create new record):
+		$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
+
+		// Wrap all inline fields of a record with a <div> (like a container)
+		$html .= '<div class="form-group" id="' . $nameObject . '">';
+
+		// Add the level links before all child records:
+		if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
+			$html .= '<div class="form-group">' . $levelLinks . $localizationLinks . '</div>';
+		}
 		// If it's required to select from possible child records (reusable children), add a selector box
 		if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== FALSE) {
 			// If not already set by the foreign_unique, set the possibleRecords here and the uniqueIds to an empty array
@@ -198,19 +215,6 @@ class InlineControlContainer extends AbstractContainer {
 			}
 			$selectorBox = $this->renderPossibleRecordsSelector($possibleRecords, $config, $uniqueIds);
 			$html .= $selectorBox . $localizationLinks;
-		}
-		// Render the level links (create new record):
-		$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
-
-		// Wrap all inline fields of a record with a <div> (like a container)
-		$html .= '<div class="form-group" id="' . $nameObject . '">';
-		// Define how to show the "Create new record" link - if there are more than maxitems, hide it
-		if ($relatedRecords['count'] >= $maxItems || $uniqueMax > 0 && $relatedRecords['count'] >= $uniqueMax) {
-			$config['inline']['inlineNewButtonStyle'] = 'display: none;';
-		}
-		// Add the level links before all child records:
-		if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
-			$html .= '<div class="form-group">' . $levelLinks . $localizationLinks . '</div>';
 		}
 		$title = $languageService->sL($parameterArray['fieldConf']['label']);
 		$html .= '<div class="panel-group panel-hover" data-title="' . htmlspecialchars($title) . '" id="' . $nameObject . '_records">';
@@ -505,6 +509,7 @@ class InlineControlContainer extends AbstractContainer {
 		$foreign_table = $config['foreign_table'];
 		$allowed = $config['allowed'];
 		$objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']) . '-' . $foreign_table;
+		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
 		$mode = 'db';
 		$showUpload = FALSE;
 		if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
@@ -529,8 +534,14 @@ class InlineControlContainer extends AbstractContainer {
 		$browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
 		$onClick = 'setFormValueOpenBrowser(' . GeneralUtility::quoteJSvalue($mode) . ', ' . GeneralUtility::quoteJSvalue($browserParams) . '); return false;';
 
+		$buttonStyle = '';
+		if (isset($config['inline']['inlineNewRelationButtonStyle'])) {
+			$buttonStyle = ' style="' . $config['inline']['inlineNewRelationButtonStyle'] . '"';
+		}
+
 		$item = '
-			<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onClick) . '">
+			<a href="#" class="btn btn-default inlineNewRelationButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
+				' . $buttonStyle . ' onclick="' . htmlspecialchars($onClick) . '">
 				' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . '
 				' . $createNewRelationText . '
 			</a>';
@@ -543,8 +554,8 @@ class InlineControlContainer extends AbstractContainer {
 				&& $folder->checkActionPermission('add')
 			) {
 				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-				$item .= ' <a href="#" class="btn btn-default t3js-drag-uploader"
-					style="display:none"
+				$item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
+					' . $buttonStyle . '
 					data-dropzone-target="#' . htmlspecialchars($this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid'])) . '"
 					data-insert-dropzone-before="1"
 					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"

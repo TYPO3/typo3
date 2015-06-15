@@ -123,7 +123,6 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 		};
 
 		if (me.browserCapabilities.DnD) {
-			me.$element.show();
 			me.$body.on('dragover', me.dragFileIntoDocument);
 			me.$body.on('dragend', me.dragAborted);
 			me.$body.on('drop', me.ignoreDrop);
