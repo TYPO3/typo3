@@ -2137,7 +2137,8 @@ class InlineElement {
 					$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
 				}
 				// Check internals regarding access:
-				if ($hasAccess) {
+				$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
+				if ($hasAccess || (int)$calcPRec['pid'] === 0 && $isRootLevelRestrictionIgnored) {
 					$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
 				}
 			}
