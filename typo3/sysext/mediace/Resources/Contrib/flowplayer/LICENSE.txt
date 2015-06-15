@@ -35,7 +35,7 @@ the full screen (and non-fullscreen equivalent, if activated) notice
 should read: "Based on Flowplayer source code"; in the context menu
 (right-click menu), the link to "About Flowplayer free version #.#.#"
 can remain. The copyright notice can remain, but must be supplemented with
-an additional notice, stating that the licensee modified the Flowplayer.
+an additional notice, stating that the licensee modified the Flowplayer. 
 A suitable notice might read "Flowplayer Source code modified by ModOrg 2009";
 for the canvas, the notice should read "Based on Flowplayer source code".
 In addition, licensees that modify the Program must give the modified
