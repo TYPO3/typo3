@@ -1153,13 +1153,12 @@ class GeneralUtility {
 		if (!isset($bytes[($bytesToReturn - 1)])) {
 			if (TYPO3_OS === 'WIN') {
 				// Openssl seems to be deadly slow on Windows, so try to use mcrypt
-				// Windows PHP versions have a bug when using urandom source (see #24410)
-				$bytes .= self::generateRandomBytesMcrypt($bytesToGenerate, MCRYPT_RAND);
+				$bytes .= self::generateRandomBytesMcrypt($bytesToGenerate);
 			} else {
 				// Try to use native PHP functions first, precedence has openssl
 				$bytes .= self::generateRandomBytesOpenSsl($bytesToGenerate);
 				if (!isset($bytes[($bytesToReturn - 1)])) {
-					$bytes .= self::generateRandomBytesMcrypt($bytesToGenerate, MCRYPT_DEV_URANDOM);
+					$bytes .= self::generateRandomBytesMcrypt($bytesToGenerate);
 				}
 				// If openssl and mcrypt failed, try /dev/urandom
 				if (!isset($bytes[($bytesToReturn - 1)])) {
@@ -1195,14 +1194,13 @@ class GeneralUtility {
 	 * Generate random bytes using mcrypt if available
 	 *
 	 * @param $bytesToGenerate
-	 * @param $randomSource
 	 * @return string
 	 */
-	static protected function generateRandomBytesMcrypt($bytesToGenerate, $randomSource) {
+	static protected function generateRandomBytesMcrypt($bytesToGenerate) {
 		if (!function_exists('mcrypt_create_iv')) {
 			return '';
 		}
-		return (string)(@mcrypt_create_iv($bytesToGenerate, $randomSource));
+		return (string)(@mcrypt_create_iv($bytesToGenerate, MCRYPT_DEV_URANDOM));
 	}
 
 	/**
