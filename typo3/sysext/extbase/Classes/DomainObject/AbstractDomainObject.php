@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A generic Domain Object.
  *
@@ -64,12 +66,10 @@ abstract class AbstractDomainObject implements DomainObjectInterface, \TYPO3\CMS
 	 * parent::__wakeup() first!
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Objects are instantiated differently calling parent::__wakeup() is no longer necessary.
 	 */
 	public function __wakeup() {
-		$this->initializeObject();
-	}
-
-	public function initializeObject() {
+		GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
