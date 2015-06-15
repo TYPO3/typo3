@@ -207,7 +207,7 @@ abstract class AbstractSpecifics {
 	 * Determine the native field length information for a table field.
 	 *
 	 * @param string  $mysqlType
-	 * @param integer $maxLength
+	 * @param int $maxLength
 	 * @return string
 	 */
 	public function getNativeFieldLength($mysqlType, $maxLength) {
