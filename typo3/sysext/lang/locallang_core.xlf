@@ -508,6 +508,51 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.overwriteExistingFiles">
 				<source>Shall existing files be overwritten?</source>
 			</trans-unit>
+			<trans-unit id="file_upload.header.originalFile">
+				<source>Original file</source>
+			</trans-unit>
+			<trans-unit id="file_upload.header.uploadedFile">
+				<source>Uploaded file</source>
+			</trans-unit>
+			<trans-unit id="file_upload.header.action">
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="file_upload.existingfiles.title">
+				<source>Some files exist already</source>
+			</trans-unit>
+			<trans-unit id="file_upload.existingfiles.description">
+				<source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.skip">
+				<source>Skip the file</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.rename">
+				<source>Rename</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.override">
+				<source>Overwrite</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.all.label">
+				<source>Alternatively, choose a mass action:</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.all.empty">
+				<source>Please choose</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.all.skip">
+				<source>Skip all files</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.all.rename">
+				<source>Rename all files</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.all.override">
+				<source>Overwrite all files</source>
+			</trans-unit>
+			<trans-unit id="file_upload.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="file_upload.button.continue">
+				<source>Continue with selected actions</source>
+			</trans-unit>
 			<trans-unit id="file_upload.php.number_of_files">
 				<source>Number of files:</source>
 			</trans-unit>

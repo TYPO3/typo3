@@ -9472,35 +9472,27 @@ ul.typo3-messages {
 .x-dd-drop-nodrop .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-place-denied.png);
 }
-
 .x-tree-drop-ok-append.typo3-pagetree-copy .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-new-inside.png);
 }
-
 .x-tree-drop-ok-below.typo3-pagetree-copy .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-copy-below.png);
 }
-
 .x-tree-drop-ok-above.typo3-pagetree-copy .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-copy-above.png);
 }
-
 .x-tree-drop-ok-between.typo3-pagetree-copy .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-new-between.png);
 }
-
 .x-tree-drop-ok-append .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-move-into.png);
 }
-
 .x-tree-drop-ok-between .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-move-between.png);
 }
-
 .x-tree-drop-ok-below .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-move-below.png);
 }
-
 .x-tree-drop-ok-above .x-dd-drop-icon {
   background-image: url(../../../../t3skin/images/icons/apps/pagetree-drag-move-above.png);
 }
@@ -10234,6 +10226,11 @@ fieldset[disabled] .table .btn-default.active {
 }
 .table .col-min {
   min-width: 150px;
+}
+.table-fixed {
+  word-wrap: break-word;
+  word-break: break-all;
+  table-layout: fixed;
 }
 .table-white {
   background-color: #fff;
