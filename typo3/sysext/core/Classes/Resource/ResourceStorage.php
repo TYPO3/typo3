@@ -911,7 +911,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 		// Check if user is allowed to rename
 		if (!$this->checkFileActionPermission('rename', $file)) {
-			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files. File given."' . $file . '"', 1319219351);
+			throw new Exception\InsufficientUserPermissionsException('You are not allowed to rename files. File given: "' . $file->getName() . '"', 1319219351);
 		}
 		// Check if the user is allowed to write to folders
 		// Although it would be good to check, we cannot check here if the folder actually is writable
