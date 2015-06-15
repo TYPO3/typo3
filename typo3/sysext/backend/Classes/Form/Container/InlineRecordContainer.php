@@ -644,8 +644,9 @@ class InlineRecordContainer extends AbstractContainer {
 					$CALC_PERMS = $backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
 					$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
 				}
-				// Check internals regarding access:
-				if ($hasAccess) {
+				// Check internals regarding access
+				$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
+				if ($hasAccess|| (int)$calcPRec['pid'] === 0 && $isRootLevelRestrictionIgnored) {
 					$hasAccess = (bool)$backendUser->recordEditAccessInternals($table, $calcPRec);
 				}
 			}
