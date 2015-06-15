@@ -14,60 +14,16 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeCommandAccessibleProxy;
+use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
+
 /**
  * Test case
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * Create a subclass with protected methods made public
-	 *
-	 * @return string Name of the accessible proxy class
-	 */
-	protected function getAccessibleProxy() {
-		$className = $this->getUniqueId('NormalizeCommand');
-		$fullClassName = __NAMESPACE__ . '\\' . $className;
-		if (!class_exists($className, FALSE)) {
-			eval(
-				'namespace ' . __NAMESPACE__ . ';' .
-				'class ' . $className . ' extends \\TYPO3\\CMS\\Scheduler\\CronCommand\\NormalizeCommand {' .
-				'  public static function convertKeywordsToCronCommand($cronCommand) {' .
-				'    return parent::convertKeywordsToCronCommand($cronCommand);' .
-				'  }' .
-				'  public static function normalizeFields($cronCommand) {' .
-				'    return parent::normalizeFields($cronCommand);' .
-				'  }' .
-				'  public static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {' .
-				'    return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);' .
-				'  }' .
-				'  public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {' .
-				'    return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);' .
-				'  }' .
-				'  public static function splitFields($cronCommand) {' .
-				'    return parent::splitFields($cronCommand);' .
-				'  }' .
-				'  public static function convertRangeToListOfValues($range) {' .
-				'    return parent::convertRangeToListOfValues($range);' .
-				'  }' .
-				'  public static function reduceListOfValuesByStepValue($stepExpression) {' .
-				'    return parent::reduceListOfValuesByStepValue($stepExpression);' .
-				'  }' .
-				'  public static function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {' .
-				'    return parent::normalizeMonthAndWeekday($expression, $isMonth);' .
-				'  }' .
-				'  public static function normalizeMonth($month) {' .
-				'    return parent::normalizeMonth($month);' .
-				'  }' .
-				'  public static function normalizeWeekday($weekday) {' .
-				'    return parent::normalizeWeekday($weekday);' .
-				'  }' .
-				'}'
-			);
-		}
-		return $fullClassName;
-	}
+class NormalizeCommandTest extends UnitTestCase {
 
 	/**
 	 * @return array
@@ -104,7 +60,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected Expected result (normalized cron command syntax)
 	 */
 	public function normalizeConvertsCronCommand($expression, $expected) {
-		$result = \TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand::normalize($expression);
+		$result = NormalizeCommand::normalize($expression);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -130,8 +86,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expectedCronCommand Expected result (normalized cron command syntax)
 	 */
 	public function convertKeywordsToCronCommandConvertsValidKeywords($keyword, $expectedCronCommand) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::convertKeywordsToCronCommand($keyword);
+		$result = NormalizeCommandAccessibleProxy::convertKeywordsToCronCommand($keyword);
 		$this->assertEquals($expectedCronCommand, $result);
 	}
 
@@ -140,8 +95,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function convertKeywordsToCronCommandReturnsUnchangedCommandIfKeywordWasNotFound() {
 		$invalidKeyword = 'foo';
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::convertKeywordsToCronCommand($invalidKeyword);
+		$result = NormalizeCommandAccessibleProxy::convertKeywordsToCronCommand($invalidKeyword);
 		$this->assertEquals($invalidKeyword, $result);
 	}
 
@@ -165,8 +119,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected Expected result (normalized cron command syntax)
 	 */
 	public function normalizeFieldsConvertsField($expression, $expected) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeFields($expression);
+		$result = NormalizeCommandAccessibleProxy::normalizeFields($expression);
 		$this->assertEquals($expected, $result);
 	}
 
@@ -205,8 +158,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected Expected result (normalized months or weekdays)
 	 */
 	public function normalizeMonthAndWeekdayFieldReturnsNormalizedListForValidExpression($expression, $isMonthField, $expected) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonthAndWeekdayField($expression, $isMonthField);
+		$result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
 		$this->assertSame($expected, $result);
 	}
 
@@ -232,8 +184,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param bool $isMonthField Flag to designate month field or not
 	 */
 	public function normalizeMonthAndWeekdayFieldThrowsExceptionForInvalidExpression($expression, $isMonthField) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonthAndWeekdayField($expression, $isMonthField);
+		NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
 	}
 
 	/**
@@ -264,8 +215,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected Expected result (normalized integer or integer list)
 	 */
 	public function normalizeIntegerFieldReturnsNormalizedListForValidExpression($expression, $expected) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeIntegerField($expression);
+		$result = NormalizeCommandAccessibleProxy::normalizeIntegerField($expression);
 		$this->assertSame($expected, $result);
 	}
 
@@ -296,16 +246,14 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param int $upperBound Upper limit
 	 */
 	public function normalizeIntegerFieldThrowsExceptionForInvalidExpressions($expression, $lowerBound, $upperBound) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$accessibleProxyClassName::normalizeIntegerField($expression, $lowerBound, $upperBound);
+		NormalizeCommandAccessibleProxy::normalizeIntegerField($expression, $lowerBound, $upperBound);
 	}
 
 	/**
 	 * @test
 	 */
 	public function splitFieldsReturnsIntegerArrayWithFieldsSplitByWhitespace() {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::splitFields('12,13 * 1-12/2,14 jan fri');
+		$result = NormalizeCommandAccessibleProxy::splitFields('12,13 * 1-12/2,14 jan fri');
 		$expectedResult = array(
 			0 => '12,13',
 			1 => '*',
@@ -336,8 +284,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $cronCommand Invalid cron command
 	 */
 	public function splitFieldsThrowsExceptionIfCronCommandDoesNotContainFiveFields($cronCommand) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$accessibleProxyClassName::splitFields($cronCommand);
+		NormalizeCommandAccessibleProxy::splitFields($cronCommand);
 	}
 
 	/**
@@ -361,8 +308,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected Expected result (normalized range)
 	 */
 	public function convertRangeToListOfValuesReturnsCorrectListForValidRanges($range, $expected) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::convertRangeToListOfValues($range);
+		$result = NormalizeCommandAccessibleProxy::convertRangeToListOfValues($range);
 		$this->assertSame($expected, $result);
 	}
 
@@ -391,8 +337,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $range Cron command range expression (invalid)
 	 */
 	public function convertRangeToListOfValuesThrowsExceptionForInvalidRanges($range) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$accessibleProxyClassName::convertRangeToListOfValues($range);
+		NormalizeCommandAccessibleProxy::convertRangeToListOfValues($range);
 	}
 
 	/**
@@ -414,8 +359,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expected Expected result (normalized range)
 	 */
 	public function reduceListOfValuesByStepValueReturnsCorrectListOfValues($stepExpression, $expected) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::reduceListOfValuesByStepValue($stepExpression);
+		$result = NormalizeCommandAccessibleProxy::reduceListOfValuesByStepValue($stepExpression);
 		$this->assertSame($expected, $result);
 	}
 
@@ -443,16 +387,14 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $stepExpression Cron command step expression (invalid)
 	 */
 	public function reduceListOfValuesByStepValueThrowsExceptionForInvalidStepExpressions($stepExpression) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$accessibleProxyClassName::reduceListOfValuesByStepValue($stepExpression);
+		NormalizeCommandAccessibleProxy::reduceListOfValuesByStepValue($stepExpression);
 	}
 
 	/**
 	 * @test
 	 */
 	public function normalizeMonthAndWeekdayNormalizesAMonth() {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonthAndWeekday('feb', TRUE);
+		$result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekday('feb', TRUE);
 		$this->assertSame('2', $result);
 	}
 
@@ -460,8 +402,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function normalizeMonthAndWeekdayNormalizesAWeekday() {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonthAndWeekday('fri', FALSE);
+		$result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekday('fri', FALSE);
 		$this->assertSame('5', $result);
 	}
 
@@ -469,8 +410,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function normalizeMonthAndWeekdayLeavesValueUnchanged() {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonthAndWeekday('2');
+		$result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekday('2');
 		$this->assertSame('2', $result);
 	}
 
@@ -505,8 +445,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param int $expectedInteger Number of the month
 	 */
 	public function normalizeMonthConvertsName($monthName, $expectedInteger) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonth($monthName);
+		$result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
 		$this->assertEquals($expectedInteger, $result);
 	}
 
@@ -517,8 +456,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param int $expectedInteger Number of the month (not used)
 	 */
 	public function normalizeMonthReturnsInteger($monthName, $expectedInteger) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeMonth($monthName);
+		$result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
 		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $result);
 	}
 
@@ -556,8 +494,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $invalidMonthName Month name (invalid)
 	 */
 	public function normalizeMonthThrowsExceptionForInvalidMonthRepresentation($invalidMonthName) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$accessibleProxyClassName::normalizeMonth($invalidMonthName);
+		NormalizeCommandAccessibleProxy::normalizeMonth($invalidMonthName);
 	}
 
 	/**
@@ -601,8 +538,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param int $expectedInteger Number of weekday
 	 */
 	public function normalizeWeekdayConvertsName($weekday, $expectedInteger) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeWeekday($weekday);
+		$result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
 		$this->assertEquals($expectedInteger, $result);
 	}
 
@@ -613,8 +549,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param int $expectedInteger Number of weekday (not used)
 	 */
 	public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$result = $accessibleProxyClassName::normalizeWeekday($weekday);
+		$result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
 		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $result);
 	}
 
@@ -635,7 +570,6 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'integer -1' => array(-1),
 			'string seven' => array('seven'),
 			'string 8' => array('8'),
-			'string 8' => array('8'),
 			'string 29' => array('29'),
 			'string 2010' => array('2010'),
 			'Jan' => array('Jan'),
@@ -651,8 +585,7 @@ class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $weekday Weekday expression (invalid)
 	 */
 	public function normalizeWeekdayThrowsExceptionForInvalidWeekdayRepresentation($weekday) {
-		$accessibleProxyClassName = $this->getAccessibleProxy();
-		$accessibleProxyClassName::normalizeWeekday($weekday);
+		NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
 	}
 
 }
