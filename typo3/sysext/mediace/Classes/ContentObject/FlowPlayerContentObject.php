@@ -145,13 +145,13 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		'plugins' => array(
 			// The captions plugin
 			'captions' => array(
-				'url' => 'plugins/flowplayer.captions-3.2.9.swf',
+				'url' => 'plugins/flowplayer.captions-3.2.10.swf',
 				// Pointer to a content plugin (see below)
 				'captionTarget' => 'content'
 			),
 			// Configure a content plugin so that it looks good for showing captions
 			'content' => array(
-				'url' => 'plugins/flowplayer.content-3.2.8.swf',
+				'url' => 'plugins/flowplayer.content-3.2.9.swf',
 				'bottom' => 5,
 				'height' => 40,
 				'backgroundColor' => 'transparent',
@@ -179,7 +179,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		'provider' => 'audio',
 		'plugins' => array(
 			'audio' => array(
-				'url' => 'plugins/flowplayer.audio-3.2.10.swf'
+				'url' => 'plugins/flowplayer.audio-3.2.11.swf'
 			),
 			'controls' => array(
 				'autoHide' => FALSE,
@@ -224,7 +224,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
 		$typeConf = $conf[$type . '.'];
 		// Add Flowplayer js-file
-		$pageRenderer->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.12.min.js'));
+		$pageRenderer->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.13.min.js'));
 		// Add Flowpayer css for exprss install
 		$pageRenderer->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
 		// Add videoJS js-file
@@ -237,7 +237,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Build Flash configuration
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		if (!$player) {
-			$player = $prefix . $this->getPathToLibrary('flowplayer/flowplayer-3.2.16.swf');
+			$player = $prefix . $this->getPathToLibrary('flowplayer/flowplayer-3.2.18.swf');
 		} elseif (strpos($player, 'EXT:') === 0) {
 			$player = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($player);
 		}

@@ -1,6 +1,35 @@
 Version history:
 
+3.2.17
+------
+- #75 set the child display list different when a gradient is set.
+- The clip property 'bufferLength' now accepts decimal values, for example bufferLength: 0.2
+- #121 XSS fix: Only load plugins and external config from the same domain as the player swf is loaded from
+- Made it possible to tab out of the player and into the HTML page using the keyboard alone.
+- Change links in the context menu and in the logos to point to http://flash.flowplayer.org
+- Pausing a live stream now leaves the video frame visible #81
+- Audio plugin is not loaded nor used when the the provider is set excplicitly in the clip to a non-audio value, for
+ example to 'http'
+- Allow playing another instream clip while already playing one. Issue #131
+- Fixed memory leaks related to repeatedly starting playback with the play() API method. #163
+
 3.2.16
+------
+- new clip event onMetadataChange, dispatched for example when switching bitrate
+
+Fixes:
+
+- Shows logo in accelerated mode #20
+- mid-rolls freeze if multiple providers are used #42
+- onFire fired twice on replay #52
+- rtmp + hw accel + instream clips lose video, or aspect ratio #44
+- URL name parts containing semi-colons (;) should pass validation through linkUrl usage #53
+- cuepoints fired multiple times with the bitrateselect plugin #50
+- fix for dispatching onBegin in certain situations
+- if onStart has been dispatched already prevent dispatching many onBegin events
+
+
+3.2.15
 ------
 - #15 fixes for #627, handle the display init on startup.
 - #615 dispatch begin if in paused mode too early.
@@ -10,11 +39,11 @@ Version history:
 - #52 when replaying flag start has dispatched on the current clip.
 - #44 fixes for #627 check if the stagevideo dimensions and positioning has changed to update the stage video mask with.
 - unbinding and binding stage video events caused issues with instream playlists therefore has to be kept binded.
-  unbinded stage video events during seeking to prevent the mask repositioning.
+- unbinded stage video events during seeking to prevent the mask repositioning.
 - #53 update url filter to accomodate for pretty urls with semi colons.
 - #50 if we have metadata already set it is being updated during seeks and switching, dispatch metadata change events instead.
 
-3.2.15
+3.2.14
 ------
 - #614 when the clip ends if the next clip in the provider has a different provider close the provider stream.
 - #627 only detach / attach the display on start events which causes issues in buffering events after a seek in stagevideo.
@@ -193,8 +222,8 @@ when it automatically loads the controls plugin.
 -----
 - canvas, controlbar and the content plugin backgound color and border color can be now given with rgb() and rgba() CSS style syntax
 - Added onMouseOver() and onMouseOut() listener registration methods to the Flowplayer API
-- enhancements to RSS playlist. Converted parsing to E4X, yahoo media and flowplayer namespace support.
-- added feature to obtain bitrate and dimension information to a new clip custom property "bitrates" for future support for bitrate choosing.
+- enhancements to RSS playlist. Converted parsing to E4X, yahoo media and flowplayer namespace support. 
+- added feature to obtain bitrate and dimension information to a new clip custom property "bitrates" for future support for bitrate choosing. 
 - added getter for playerSwfName config
 - if clip.url has the string "mp3:" in it, the clip.type will report 'audio'
 - added setKeyboardShortcutsEnabled(), addKeyListener(), removeKeyListener() to FlowplayerBase
@@ -307,7 +336,7 @@ Bug fixes:
   because the server does not send metadata if replaying the same stream.
 - the scrubber is disabled if the clip is not seekable in the first frame: http://flowplayer.org/forum/8/16526
   By default if the clip has one of following extensions (the typical flash video extensions) it is seekable
-  in the first frame: 'f4b', 'f4p', 'f4v', 'flv'. Added new clip property seekableOnBegin that can be used to override the default.
+  in the first frame: 'f4b', 'f4p', 'f4v', 'flv'. Added new clip property seekableOnBegin that can be used to override the default.  
 
 3.0.6
 -----
@@ -327,7 +356,7 @@ Fixes:
   // disable the play button and the buffering animation
   play: null
   // disable the buffering animation
-  buffering: null
+  buffering: null 
 - Added possibility to seek when in the buffering state: http://flowplayer.org/forum/3/13896
 - Added copyright notices and other GPL required entries to the user interface
 
@@ -367,7 +396,7 @@ Fixes:
 - now displays a live feed even when the RTMP server does not send any metadata and the onStart method is not therefore dispatched
 - added onMetaData clip event
 - fixed 'orig' scaling: the player went to 'fit' scaling after coming back from fullscreen. This is now fixed and the original dimensions are preserved in non-fullscreen mode.
-- cuepoint times are now given in milliseconds, the firing precision is 100 ms. All cuepoint times are rounded to the nearest 100 ms value (for example 1120 rounds to 1100)
+- cuepoint times are now given in milliseconds, the firing precision is 100 ms. All cuepoint times are rounded to the nearest 100 ms value (for example 1120 rounds to 1100) 
 - backgroundGradient was drawn over the background image in the canvas and in the content and controlbar plugins. Now it's drawn below the image.
 - added cuepointMultiplier property to clips. This can be used to multiply the time values read from cuepoint metadata embedded into video files.
 - the player's framerate was increased to 24 FPS, makes all animations smoother
@@ -414,7 +443,7 @@ RC4
 - Should not stop playback too early before the clip is really completed
 - The START event is now delayed so that the metadata is available when the event is fired, METADATA event was removed,
   new event BEGIN that is dispatched when the playback has been successfully started. Metadata is not normally
-  available when BEGIN is fired.
+  available when BEGIN is fired. 
 
 RC3
 ---
