@@ -788,8 +788,8 @@ class TemplateService {
 						if (@is_dir($ISF_filePath)) {
 							$mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
 							$subrow = array(
-								'constants' => @file_exists(($ISF_filePath . 'constants.txt')) ? GeneralUtility::getUrl($ISF_filePath . 'constants.txt') : '',
-								'config' => @file_exists(($ISF_filePath . 'setup.txt')) ? GeneralUtility::getUrl($ISF_filePath . 'setup.txt') : '',
+								'constants' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'constants'),
+								'config' => $this->getTypoScriptSourceFileContent($ISF_filePath, 'setup'),
 								'include_static' => @file_exists(($ISF_filePath . 'include_static.txt')) ? implode(',', array_unique(GeneralUtility::intExplode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static.txt')))) : '',
 								'include_static_file' => @file_exists(($ISF_filePath . 'include_static_file.txt')) ? implode(',', array_unique(explode(',', GeneralUtility::getUrl($ISF_filePath . 'include_static_file.txt')))) : '',
 								'title' => $ISF_file,
@@ -819,6 +819,25 @@ class TemplateService {
 				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
+	}
+
+	/**
+	 * Retrieves the content of the first existing file by extension order.
+	 * Returns the empty string if no file is found.
+	 *
+	 * @param string $filePath The location of the file.
+	 * @param string $baseName The base file name. "constants" or "setup".
+	 * @return string
+	 */
+	protected function getTypoScriptSourceFileContent($filePath, $baseName) {
+		$extensions = array('.ts', '.txt');
+		foreach ($extensions as $extension) {
+			$fileName = $filePath . $baseName . $extension;
+			if (@file_exists($fileName)) {
+				return GeneralUtility::getUrl($fileName);
+			}
+		}
+		return '';
 	}
 
 	/**
