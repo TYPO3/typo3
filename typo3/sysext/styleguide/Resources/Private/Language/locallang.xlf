@@ -39,6 +39,9 @@
 			<trans-unit id="tables" xml:space="preserve">
 				<source>Tables</source>
 			</trans-unit>
+			<trans-unit id="callout" xml:space="preserve">
+				<source>Callouts</source>
+			</trans-unit>
 			<trans-unit id="flashMessages" xml:space="preserve">
 				<source>Flash Messages and Notifications</source>
 			</trans-unit>
