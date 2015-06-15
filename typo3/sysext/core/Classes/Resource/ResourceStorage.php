@@ -1560,9 +1560,11 @@ class ResourceStorage implements ResourceStorageInterface {
 
 		$this->emitPreFileDeleteSignal($fileObject);
 
-		$result = $this->driver->deleteFile($fileObject->getIdentifier());
-		if ($result === FALSE) {
-			throw new Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
+		if ($this->driver->fileExists($fileObject->getIdentifier())) {
+			$result = $this->driver->deleteFile($fileObject->getIdentifier());
+			if (!$result) {
+				throw new Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
+			}
 		}
 		// Mark the file object as deleted
 		if ($fileObject instanceof File) {
