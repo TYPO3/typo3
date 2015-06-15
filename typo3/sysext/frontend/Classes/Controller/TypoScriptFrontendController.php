@@ -3188,7 +3188,8 @@ class TypoScriptFrontendController {
 	 * @see ContentObjectRenderer::lastChanged()
 	 */
 	public function setSysLastChanged() {
-		if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
+		// Draft workspaces are always uid 1 or more. We do not update SYS_LASTCHANGED if we are browsing page from one of theses workspaces
+		if ((int)$this->whichWorkspace() < 1 && $this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid=' . (int)$this->id, array('SYS_LASTCHANGED' => (int)$this->register['SYS_LASTCHANGED']));
 		}
 	}
