@@ -130,7 +130,7 @@ class ContentContentObject extends AbstractContentObject {
 				}
 				$again = (string)$conf['select.']['pidInList'] !== '';
 			}
-		} while ($again && $slide && (string)$tmpValue === '' && $slideCollectFuzzy || $slideCollect);
+		} while ($again && $slide && ((string)$tmpValue === '' && $slideCollectFuzzy || $slideCollect));
 
 		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {
