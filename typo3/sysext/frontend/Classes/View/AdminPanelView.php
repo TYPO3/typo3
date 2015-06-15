@@ -598,14 +598,14 @@ class AdminPanelView {
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tsConfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
-		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tsConfig) ? ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php?' : TYPO3_mainDir . BackendUtility::getModuleUrl('new_content_element') . '&';
+		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tsConfig) ? ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
 		$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 		$langAllowed = $GLOBALS['BE_USER']->checkLanguageAccess($GLOBALS['TSFE']->sys_language_uid);
 		$id = $GLOBALS['TSFE']->id;
 		$returnUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
 
 		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_recordHistory', FALSE)));
-		$toolBar = '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl))) . '#latest">' . $icon . '</a>';
+		$toolBar = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl))) . '#latest">' . $icon . '</a>';
 		if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {
@@ -616,11 +616,11 @@ class AdminPanelView {
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
+			$toolBar .= '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_NEW) {
 			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
+			$toolBar .= '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties', FALSE)));
@@ -628,7 +628,7 @@ class AdminPanelView {
 				'edit[pages][' . $id . ']' => 'edit',
 				'noView' => 1,
 				'returnUrl' => $returnUrl
-			), FALSE, TRUE);
+			));
 			$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
@@ -645,7 +645,7 @@ class AdminPanelView {
 						'edit[pages_language_overlay][' . $row['uid'] . ']' => 'edit',
 						'noView' => 1,
 						'returnUrl' => $returnUrl
-					), FALSE, TRUE);
+					));
 					$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 				}
 			}
@@ -656,7 +656,7 @@ class AdminPanelView {
 				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 			);
 			$icon = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $this->extGetLL('edit_db_list', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars((TYPO3_mainDir . BackendUtility::getModuleUrl('web_list', $urlParams))) . '">' . $icon . '</a>';
+			$toolBar .= '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', $urlParams)) . '">' . $icon . '</a>';
 		}
 
 		$toolBar = '<div class="toolbar">' . $toolBar . '</div>';
