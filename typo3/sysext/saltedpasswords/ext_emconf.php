@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Marcus Krause, Steffen Ritter',
 	'author_email' => 'marcus#exp2009@t3sec.info',
 	'author_company' => 'TYPO3 Security Team',
-	'version' => '7.3.0',
+	'version' => '7.4.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.3.0-7.3.99',
+			'typo3' => '7.4.0-7.4.99',
 		),
 		'conflicts' => array(
 			'kb_md5fepw' => '',
