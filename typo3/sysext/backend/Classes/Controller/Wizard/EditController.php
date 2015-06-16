@@ -78,7 +78,7 @@ class EditController extends AbstractWizardController {
 		$fTable = $this->P['currentValue'] < 0 ? $config['neg_foreign_table'] : $config['foreign_table'];
 
 		$urlParameters = array(
-			'returnUrl' => rawurlencode(BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1)))
+			'returnUrl' => BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))
 		);
 
 		// Detecting the various allowed field type setups and acting accordingly.
