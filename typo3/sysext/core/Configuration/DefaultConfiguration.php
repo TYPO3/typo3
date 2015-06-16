@@ -824,7 +824,7 @@ return array(
 		'transport_smtp_encrypt' => '',		// String: <em>only with transport=smtp</em>: Connect to the server using the specified transport protocol. Requires openssl library. Usually available: <em>ssl, sslv2, sslv3, tls</em>. Check <a href="http://www.php.net/stream_get_transports" target="_blank">stream_get_transports()</a>.
 		'transport_smtp_username' => '',		// String: <em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your username here.
 		'transport_smtp_password' => '',		// String: <em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your password here.
-		'transport_sendmail_command' => '/usr/sbin/sendmail -bs',		// String: <em>only with transport=sendmail</em>: The command to call to send a mail locally. The default works on most modern UNIX based mail server (sendmail, postfix, exim)
+		'transport_sendmail_command' => '',		// String: <em>only with transport=sendmail</em>: The command to call to send a mail locally.
 		'transport_mbox_file' => '',		// String: <em>only with transport=mbox</em>: The file where to write the mails into. This file will be conforming the mbox format described in RFC 4155. It is a simple text file with a concatenation of all mails. Path must be absolute.
 		'defaultMailFromAddress' => '',		// String: This default email address is used when no other "from" address is set for a TYPO3-generated email. You can specify an email address only (ex. info@example.org).
 		'defaultMailFromName' => '',		// String: This default name is used when no other "from" name is set for a TYPO3-generated email.

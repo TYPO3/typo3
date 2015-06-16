@@ -39,6 +39,7 @@ class FeatureManager {
 		\TYPO3\CMS\Install\Configuration\Context\ContextFeature::class,
 		\TYPO3\CMS\Install\Configuration\Image\ImageFeature::class,
 		\TYPO3\CMS\Install\Configuration\ExtbaseObjectCache\ExtbaseObjectCacheFeature::class,
+		\TYPO3\CMS\Install\Configuration\Mail\MailFeature::class,
 	);
 
 	/**
