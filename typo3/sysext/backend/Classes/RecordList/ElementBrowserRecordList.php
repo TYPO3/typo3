@@ -89,7 +89,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 			$code = BackendUtility::getRecordTitlePrep($code, $this->fixedL);
 		}
 		$title = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
-		$ficon = IconUtility::getIcon($table, $row);
+		$ficon = IconUtility::getSpriteIconForRecord($table, $row);
 		$aOnClick = 'return insertElement(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($row['uid']) . ', \'db\', ' . GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ');';
 		$ATag = '<a href="#" onclick="' . $aOnClick . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';

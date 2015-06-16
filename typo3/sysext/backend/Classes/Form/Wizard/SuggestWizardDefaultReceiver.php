@@ -334,10 +334,11 @@ class SuggestWizardDefaultReceiver {
 	 *
 	 * @param array $row The record to get the icon for
 	 * @return string The path to the icon
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconUtility::getSpriteIconForRecord() directly
 	 */
 	protected function getIcon($row) {
-		$icon = IconUtility::getIcon($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
-		return IconUtility::skinImg('', $icon, '', 1);
+		GeneralUtility::logDeprecatedFunction();
+		return IconUtility::getSpriteIconForRecord($this->mmForeignTable ?: $this->table, $row);
 	}
 
 	/**
