@@ -3017,7 +3017,7 @@ class BackendUtility {
 	 * @param string $script The script to send the &id to, if empty it's automatically found
 	 * @return string The completes script URL
 	 */
-	protected static function buildScriptUrl($mainParams, $addParams, $script = '') {
+	static protected function buildScriptUrl($mainParams, $addParams, $script = '') {
 		if (!is_array($mainParams)) {
 			$mainParams = array('id' => $mainParams);
 		}

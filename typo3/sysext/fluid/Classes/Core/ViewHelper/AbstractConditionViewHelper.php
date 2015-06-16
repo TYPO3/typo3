@@ -119,7 +119,7 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	 * @param bool $hasEvaluated Can be used to check if the "then" child was actually evaluated by this method.
 	 * @return string
 	 */
-	protected static function renderStaticThenChild($arguments, &$hasEvaluated) {
+	static protected function renderStaticThenChild($arguments, &$hasEvaluated) {
 		if (isset($arguments['then'])) {
 			return $arguments['then'];
 		}
@@ -167,7 +167,7 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	 * @param bool $hasEvaluated Can be used to check if the "else" child was actually evaluated by this method.
 	 * @return string
 	 */
-	protected static function renderStaticElseChild($arguments, &$hasEvaluated) {
+	static protected function renderStaticElseChild($arguments, &$hasEvaluated) {
 		if (isset($arguments['else'])) {
 			return $arguments['else'];
 		}

@@ -72,21 +72,21 @@ class FileStreamWrapper {
 	 *
 	 * @type bool
 	 */
-	protected static $registered = FALSE;
+	static protected $registered = FALSE;
 
 	/**
 	 * Array of paths to overlay
 	 *
 	 * @var array
 	 */
-	protected static $overlayPaths = array();
+	static protected $overlayPaths = array();
 
 	/**
 	 * The first part of each (absolute) path that shall be ignored
 	 *
 	 * @var string
 	 */
-	protected static $rootPath = '';
+	static protected $rootPath = '';
 
 	/**
 	 * Initialize the stream wrapper with a root path and register itself
@@ -94,7 +94,7 @@ class FileStreamWrapper {
 	 * @param $rootPath
 	 * @return void
 	 */
-	public static function init($rootPath) {
+	static public function init($rootPath) {
 		self::$rootPath = rtrim(str_replace('\\', '/', $rootPath), '/') . '/';
 		self::register();
 	}
@@ -103,7 +103,7 @@ class FileStreamWrapper {
 	 * Unregister the stream wrapper and reset all static members to their default values
 	 * @return void
 	 */
-	public static function destroy() {
+	static public function destroy() {
 		self::$overlayPaths = array();
 		self::$rootPath = '';
 		if (self::$registered) {
@@ -119,7 +119,7 @@ class FileStreamWrapper {
 	 * @param bool $createFolder TRUE of the folder should be created (mkdir)
 	 * @return void
 	 */
-	public static function registerOverlayPath($overlay, $replace, $createFolder = TRUE) {
+	static public function registerOverlayPath($overlay, $replace, $createFolder = TRUE) {
 		$overlay = trim(str_replace('\\', '/', $overlay), '/') . '/';
 		$replace = rtrim(str_replace('\\', '/', $replace), '/') . '/';
 		self::$overlayPaths[$overlay] = $replace;
@@ -134,7 +134,7 @@ class FileStreamWrapper {
 	 * @param string $path The path to check
 	 * @return string The potentially overlaid path
 	 */
-	protected static function overlayPath($path) {
+	static protected function overlayPath($path) {
 		$path = str_replace('\\', '/', $path);
 		$hasOverlay = FALSE;
 		if (strpos($path, self::$rootPath) !== 0) {
@@ -163,7 +163,7 @@ class FileStreamWrapper {
 	 * @throws \BadFunctionCallException
 	 * @return void
 	 */
-	protected static function register() {
+	static protected function register() {
 		if (self::$registered) {
 			return;
 		}
@@ -183,7 +183,7 @@ class FileStreamWrapper {
 	 *
 	 * @return void
 	 */
-	protected static function restore() {
+	static protected function restore() {
 		if (!self::$registered) {
 			return;
 		}

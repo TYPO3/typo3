@@ -24,7 +24,7 @@ class GeneralUtilityFixture extends GeneralUtility {
 	/**
 	 * @var int
 	 */
-	public static $isAllowedHostHeaderValueCallCount = 0;
+	static public $isAllowedHostHeaderValueCallCount = 0;
 
 	/**
 	 * Tracks number of calls done to this method

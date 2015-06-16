@@ -36,7 +36,7 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $l10nPriority;
 
-	protected static function getFixtureFilePath($filename) {
+	static protected function getFixtureFilePath($filename) {
 			// We have to take the whole relative path as otherwise this test fails on Windows systems
 		return PATH_site . 'typo3/sysext/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
 	}

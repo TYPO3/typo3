@@ -242,7 +242,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 		$this->assertEquals('/some/folder/path/', $createdFolder);
 	}
 
-	public static function createFolderSanitizesFolderNameBeforeCreationDataProvider() {
+	static public function createFolderSanitizesFolderNameBeforeCreationDataProvider() {
 		return array(
 			'folder name with NULL character' => array(
 				'some' . chr(0) . 'Folder',

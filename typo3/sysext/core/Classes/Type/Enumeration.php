@@ -33,7 +33,7 @@ abstract class Enumeration implements TypeInterface {
 	/**
 	 * @var array
 	 */
-	protected static $enumConstants;
+	static protected $enumConstants;
 
 	/**
 	 * @param mixed $value
@@ -174,7 +174,7 @@ abstract class Enumeration implements TypeInterface {
 	 * @param mixed $value Value that has to be casted
 	 * @return Enumeration
 	 */
-	public static function cast($value) {
+	static public function cast($value) {
 		$currentClass = get_called_class();
 		if (!is_object($value) || get_class($value) !== $currentClass) {
 			$value = new $currentClass($value);

@@ -3761,7 +3761,7 @@ Connection: close
 	 * @param string $source Path to source directory, relative to document root or absolute
 	 * @param string $destination Path to destination directory, relative to document root or absolute
 	 */
-	public static function copyDirectory($source, $destination) {
+	static public function copyDirectory($source, $destination) {
 		if (strpos($source, PATH_site) === FALSE) {
 			$source = PATH_site . $source;
 		}
@@ -4296,7 +4296,7 @@ Connection: close
 	 * @param array $arguments Arguments passed to self::makeInstance() thus the first one with index 0 holds the requested class name
 	 * @return mixed
 	 */
-	protected static function instantiateClass($className, $arguments) {
+	static protected function instantiateClass($className, $arguments) {
 		switch (count($arguments)) {
 			case 1:
 				$instance = new $className();

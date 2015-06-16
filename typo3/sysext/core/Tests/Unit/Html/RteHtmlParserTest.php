@@ -40,7 +40,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for hrTagCorrectlyTransformedOnWayToDataBase
 	 */
-	public static function hrTagCorrectlyTransformedOnWayToDataBaseDataProvider() {
+	static public function hrTagCorrectlyTransformedOnWayToDataBaseDataProvider() {
 		return array(
 			'Single hr' => array(
 				'<hr />',
@@ -113,7 +113,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
 	 */
-	public static function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider() {
+	static public function hrTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider() {
 		return array(
 			'Single hr' => array(
 				'<hr />',
@@ -186,7 +186,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for linkWithAtSignCorrectlyTransformedOnWayToRTE
 	 */
-	public static function linkWithAtSignCorrectlyTransformedOnWayToRTEProvider() {
+	static public function linkWithAtSignCorrectlyTransformedOnWayToRTEProvider() {
 		return array(
 			'external url with @ sign' => array(
 				'<link http://www.example.org/at@sign>link text</link>',
@@ -211,7 +211,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for paragraphCorrectlyTransformedOnWayToDatabase
 	 */
-	public static function paragraphCorrectlyTransformedOnWayToDatabaseProvider() {
+	static public function paragraphCorrectlyTransformedOnWayToDatabaseProvider() {
 		return array(
 			'Empty string' => array(
 				'',
@@ -396,7 +396,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for lineBreakCorrectlyTransformedOnWayToRte
 	 */
-	public static function lineBreakCorrectlyTransformedOnWayToRteProvider() {
+	static public function lineBreakCorrectlyTransformedOnWayToRteProvider() {
 		return array(
 			'Empty string' => array(
 				'',
@@ -493,7 +493,7 @@ class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Data provider for paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRte
 	 */
-	public static function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider() {
+	static public function paragraphCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider() {
 		return array(
 			'Empty string' => array(
 				'',

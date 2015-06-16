@@ -40,7 +40,7 @@ class SqlParser {
 	 *
 	 * @var array
 	 */
-	protected static $comparatorPatterns = array(
+	static protected $comparatorPatterns = array(
 		'<=',
 		'>=',
 		'<>',
@@ -65,7 +65,7 @@ class SqlParser {
 	 *
 	 * @var array
 	 */
-	protected static $interQueryWhitespaces = array(' ', TAB, CR, LF);
+	static protected $interQueryWhitespaces = array(' ', TAB, CR, LF);
 
 	/**
 	 * Default constructor

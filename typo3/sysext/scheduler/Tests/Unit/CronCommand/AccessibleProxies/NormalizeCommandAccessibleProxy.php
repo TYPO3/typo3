@@ -21,43 +21,43 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
  */
 class NormalizeCommandAccessibleProxy extends NormalizeCommand {
 
-	public static function convertKeywordsToCronCommand($cronCommand) {
+	static public function convertKeywordsToCronCommand($cronCommand) {
 		return parent::convertKeywordsToCronCommand($cronCommand);
 	}
 
-	public static function normalizeFields($cronCommand) {
+	static public function normalizeFields($cronCommand) {
 		return parent::normalizeFields($cronCommand);
 	}
 
-	public static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
+	static public function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {
 		return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);
 	}
 
-	public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {
+	static public function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {
 		return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);
 	}
 
-	public static function splitFields($cronCommand) {
+	static public function splitFields($cronCommand) {
 		return parent::splitFields($cronCommand);
 	}
 
-	public static function convertRangeToListOfValues($range) {
+	static public function convertRangeToListOfValues($range) {
 		return parent::convertRangeToListOfValues($range);
 	}
 
-	public static function reduceListOfValuesByStepValue($stepExpression) {
+	static public function reduceListOfValuesByStepValue($stepExpression) {
 		return parent::reduceListOfValuesByStepValue($stepExpression);
 	}
 
-	public static function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {
+	static public function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {
 		return parent::normalizeMonthAndWeekday($expression, $isMonth);
 	}
 
-	public static function normalizeMonth($month) {
+	static public function normalizeMonth($month) {
 		return parent::normalizeMonth($month);
 	}
 
-	public static function normalizeWeekday($weekday) {
+	static public function normalizeWeekday($weekday) {
 		return parent::normalizeWeekday($weekday);
 	}
 }

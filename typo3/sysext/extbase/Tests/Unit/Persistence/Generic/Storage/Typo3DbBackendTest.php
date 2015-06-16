@@ -24,12 +24,12 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var DataMapper
 	 */
-	protected static $dataMapper;
+	static protected $dataMapper;
 
 	/**
 	 * Setup DataMapper
 	 */
-	public static function setUpBeforeClass() {
+	static public function setUpBeforeClass() {
 		self::$dataMapper = new DataMapper();
 	}
 

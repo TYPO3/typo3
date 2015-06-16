@@ -887,7 +887,7 @@ class TypoScriptParser {
 	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @static
 	 */
-	public static function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
+	static public function includeFile($filename, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
 		// Resolve a possible relative paths if a parent file is given
 		if ($parentFilenameOrPath !== '' && $filename[0] === '.') {
 			$absfilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($parentFilenameOrPath, $filename);
@@ -935,7 +935,7 @@ class TypoScriptParser {
 	 * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
 	 * @static
 	 */
-	protected static function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
+	static protected function includeDirectory($dirPath, $cycle_counter = 1, $returnFiles = FALSE, &$newString = '', array &$includedFiles = array(), $optionalProperties = '', $parentFilenameOrPath = '') {
 		// Extract the value of the property extensions="..."
 		$matches = preg_split('#(?i)extensions\s*=\s*"([^"]*)"(\s*|>)#', $optionalProperties, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($matches) > 1) {
@@ -976,7 +976,7 @@ class TypoScriptParser {
 	 * @return string The error message encapsulated in comments
 	 * @static
 	 */
-	protected static function typoscriptIncludeError($error) {
+	static protected function typoscriptIncludeError($error) {
 		GeneralUtility::sysLog($error, 'Core', 2);
 		return "\n###\n### ERROR: " . $error . "\n###\n\n";
 	}

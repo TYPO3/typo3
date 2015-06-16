@@ -52,7 +52,7 @@ class CommandUtility {
 	 *
 	 * @var bool
 	 */
-	protected static $initialized = FALSE;
+	static protected $initialized = FALSE;
 
 	/**
 	 * Contains application list. This is an array with the following structure:
@@ -63,14 +63,14 @@ class CommandUtility {
 	 *
 	 * @var array
 	 */
-	protected static $applications = array();
+	static protected $applications = array();
 
 	/**
 	 * Paths where to search for applications
 	 *
 	 * @var array
 	 */
-	protected static $paths = NULL;
+	static protected $paths = NULL;
 
 	/**
 	 * Wrapper function for php exec function
@@ -152,7 +152,7 @@ class CommandUtility {
 	 * @param string $handler Executer for the command. eg: "perl"
 	 * @return bool FALSE if cmd is not found, or -1 if the handler is not found
 	 */
-	public static function checkCommand($cmd, $handler = '') {
+	static public function checkCommand($cmd, $handler = '') {
 		if (!self::init()) {
 			return FALSE;
 		}
@@ -223,7 +223,7 @@ class CommandUtility {
 	 * @param string $handlerOpt Options for the handler, like '-w' for "perl"
 	 * @return mixed Returns command string, or FALSE if cmd is not found, or -1 if the handler is not found
 	 */
-	public static function getCommand($cmd, $handler = '', $handlerOpt = '') {
+	static public function getCommand($cmd, $handler = '', $handlerOpt = '') {
 		if (!self::init()) {
 			return FALSE;
 		}
@@ -253,7 +253,7 @@ class CommandUtility {
 	 * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 * @return void
 	 */
-	public static function addPaths($paths) {
+	static public function addPaths($paths) {
 		self::initPaths($paths);
 	}
 
@@ -263,7 +263,7 @@ class CommandUtility {
 	 * @param bool $addInvalid If set the array contains invalid path too. Then the key is the path and the value is empty
 	 * @return array Array of search paths (empty if exec is disabled)
 	 */
-	public static function getPaths($addInvalid = FALSE) {
+	static public function getPaths($addInvalid = FALSE) {
 		if (!self::init()) {
 			return array();
 		}
@@ -285,7 +285,7 @@ class CommandUtility {
 	 *
 	 * @return bool
 	 */
-	protected static function init() {
+	static protected function init() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function']) {
 			return FALSE;
 		}
@@ -303,7 +303,7 @@ class CommandUtility {
 	 * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 * @return void
 	 */
-	protected static function initPaths($paths = '') {
+	static protected function initPaths($paths = '') {
 		$doCheck = FALSE;
 
 			// Init global paths array if not already done
@@ -346,7 +346,7 @@ class CommandUtility {
 	 *
 	 * @return array Array of commands and path
 	 */
-	protected static function getConfiguredApps() {
+	static protected function getConfiguredApps() {
 		$cmdArr = array();
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']) {
@@ -371,7 +371,7 @@ class CommandUtility {
 	 *
 	 * @return array Array of absolute paths (keys and values are equal)
 	 */
-	protected static function getPathsInternal() {
+	static protected function getPathsInternal() {
 
 		$pathsArr = array();
 		$sysPathArr = array();
@@ -422,7 +422,7 @@ class CommandUtility {
 	 * @param string $path Input path
 	 * @return string Output path
 	 */
-	protected static function fixPath($path) {
+	static protected function fixPath($path) {
 		return str_replace('//', '/', $path . '/');
 	}
 
@@ -434,7 +434,7 @@ class CommandUtility {
 	 * @param string[] $input Input arguments to be escaped
 	 * @return string[] Escaped shell arguments
 	 */
-	public static function escapeShellArguments(array $input) {
+	static public function escapeShellArguments(array $input) {
 		$isUTF8Filesystem = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']);
 		if ($isUTF8Filesystem) {
 			$currentLocale = setlocale(LC_CTYPE, 0);
@@ -458,7 +458,7 @@ class CommandUtility {
 	 * @param string $input Input-argument to be escaped
 	 * @return string Escaped shell argument
 	 */
-	public static function escapeShellArgument($input) {
+	static public function escapeShellArgument($input) {
 		return self::escapeShellArguments(array($input))[0];
 	}
 }

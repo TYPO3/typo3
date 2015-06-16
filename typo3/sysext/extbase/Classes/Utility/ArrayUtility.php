@@ -310,7 +310,7 @@ class ArrayUtility {
 	 *
 	 * @return array
 	 */
-	public static function sortArrayWithIntegerKeys($array) {
+	static public function sortArrayWithIntegerKeys($array) {
 		$containsNumericalKeysOnly = TRUE;
 		array_walk($array, function($value, $key) use (&$containsNumericalKeysOnly) {
 			if (!is_integer($key)) {

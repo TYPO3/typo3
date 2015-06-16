@@ -31,7 +31,7 @@ class RemoveXSS {
 	 * @param string $replaceString replaceString for inserting in keywords (which destroys the tags)
 	 * @return string Input string with potential XSS code removed
 	 */
-	public static function process($value, $replaceString = '<x>') {
+	static public function process($value, $replaceString = '<x>') {
 		// Don't use empty $replaceString because then no XSS-remove will be done
 		if ($replaceString == '') {
 			$replaceString = '<x>';

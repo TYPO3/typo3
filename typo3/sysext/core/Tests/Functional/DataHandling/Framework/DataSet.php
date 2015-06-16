@@ -30,7 +30,7 @@ class DataSet {
 	 * @param string $fileName
 	 * @return DataSet
 	 */
-	public static function read($fileName) {
+	static public function read($fileName) {
 		$data = self::parseData(self::readData($fileName));
 
 		return GeneralUtility::makeInstance(
@@ -44,7 +44,7 @@ class DataSet {
 	 * @return array
 	 * @throws \RuntimeException
 	 */
-	protected static function readData($fileName) {
+	static protected function readData($fileName) {
 		if (!file_exists($fileName)) {
 			throw new \RuntimeException('File "' . $fileName . '" does not exist');
 		}
@@ -68,7 +68,7 @@ class DataSet {
 	 * @param array $rawData
 	 * @return array
 	 */
-	protected static function parseData(array $rawData) {
+	static protected function parseData(array $rawData) {
 		$data = array();
 		$tableName = NULL;
 		$fieldCount = NULL;

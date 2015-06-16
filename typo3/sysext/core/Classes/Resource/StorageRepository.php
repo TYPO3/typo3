@@ -25,7 +25,7 @@ class StorageRepository extends AbstractRepository {
 	/**
 	 * @var NULL|array‚
 	 */
-	protected static $storageRowCache = NULL;
+	static protected $storageRowCache = NULL;
 
 	/**
 	 * @var string

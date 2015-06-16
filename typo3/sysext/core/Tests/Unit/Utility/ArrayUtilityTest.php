@@ -207,7 +207,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
-			'  public static function getValueByPath() {' .
+			'  static public function getValueByPath() {' .
 			'    return 42;' .
 			'  }' .
 			'}'
@@ -224,7 +224,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
-			'  public static function getValueByPath() {' .
+			'  static public function getValueByPath() {' .
 			'    throw new \RuntimeException(\'foo\', 123);' .
 			'  }' .
 			'}'

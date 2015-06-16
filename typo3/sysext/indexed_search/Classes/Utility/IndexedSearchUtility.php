@@ -56,7 +56,7 @@ class IndexedSearchUtility {
 	 * @param array $operatorTranslateTable
 	 * @return array
 	 */
-	public static function getExplodedSearchString($sword, $defaultOperator, $operatorTranslateTable) {
+	static public function getExplodedSearchString($sword, $defaultOperator, $operatorTranslateTable) {
 		$swordArray = array();
 		$sword = trim($sword);
 		if ($sword) {
@@ -90,7 +90,7 @@ class IndexedSearchUtility {
 	 * @param string $delchars Special chars which are deleted if the append the searchword (+-., is default)
 	 * @return mixed Returns an ARRAY if there were search words, otherwise the return value may be unset.
 	 */
-	protected static function split($origSword, $specchars = '+-', $delchars = '+.,-') {
+	static protected function split($origSword, $specchars = '+-', $delchars = '+.,-') {
 		$value = NULL;
 		$sword = $origSword;
 		$specs = '[' . preg_quote($specchars, '/') . ']';
@@ -145,7 +145,7 @@ class IndexedSearchUtility {
 	 * @return string If found, the SQL operator for the localized input operator.
 	 * @access private
 	 */
-	protected static function getOperator($operator, $operatorTranslateTable) {
+	static protected function getOperator($operator, $operatorTranslateTable) {
 		$operator = trim($operator);
 		// case-conversion is charset insensitive, but it doesn't spoil
 		// anything if input string AND operator table is already converted

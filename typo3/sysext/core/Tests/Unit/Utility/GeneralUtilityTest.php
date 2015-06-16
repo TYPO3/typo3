@@ -2544,7 +2544,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function minifyJavaScriptWritesExceptionMessageToDevLog() {
 		$t3libDivMock = $this->getUniqueId('GeneralUtility');
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  public static function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
+		eval('namespace ' . __NAMESPACE__ . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  static public function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
 		$t3libDivMock = __NAMESPACE__ . '\\' . $t3libDivMock;
 		$hookClassName = $this->getUniqueId('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);

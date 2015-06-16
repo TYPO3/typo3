@@ -425,7 +425,7 @@ class ArrayUtility {
 	 * @param array $mask Array that has the keys which should be kept in the source array
 	 * @return array Keys which are present in both arrays with values of the source array
 	 */
-	public static function intersectRecursive(array $source, array $mask = array()) {
+	static public function intersectRecursive(array $source, array $mask = array()) {
 		$intersection = array();
 		foreach ($source as $key => $_) {
 			if (!array_key_exists($key, $mask)) {

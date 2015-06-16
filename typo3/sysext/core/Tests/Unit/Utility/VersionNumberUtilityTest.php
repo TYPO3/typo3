@@ -131,7 +131,7 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility {' .
-			'  public static function getCurrentTypo3Version() {' .
+			'  static public function getCurrentTypo3Version() {' .
 			'    return \'' . $currentVersion . '\';' .
 			'  }' .
 			'}'

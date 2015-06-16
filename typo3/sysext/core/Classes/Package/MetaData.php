@@ -27,7 +27,7 @@ class MetaData {
 	/**
 	 * @var array
 	 */
-	protected static $CONSTRAINT_TYPES = array(self::CONSTRAINT_TYPE_DEPENDS, self::CONSTRAINT_TYPE_CONFLICTS, self::CONSTRAINT_TYPE_SUGGESTS);
+	static protected $CONSTRAINT_TYPES = array(self::CONSTRAINT_TYPE_DEPENDS, self::CONSTRAINT_TYPE_CONFLICTS, self::CONSTRAINT_TYPE_SUGGESTS);
 
 	/**
 	 * @var string
