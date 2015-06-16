@@ -4623,103 +4623,110 @@ class DataHandler {
 	 * @return void
 	 */
 	public function deleteRecord($table, $uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE, $undeleteRecord = FALSE) {
-		// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-		$deletedRecord = ($forceHardDelete || $undeleteRecord);
-		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $deletedRecord, TRUE);
 		$uid = (int)$uid;
-		if ($GLOBALS['TCA'][$table] && $uid) {
-			if ($mayEditAccess) {
-				if ($noRecordCheck || $this->doesRecordExist($table, $uid, 'delete')) {
-					// Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
-					$this->registerRecordIdForPageCacheClearing($table, $uid);
-					$propArr = $this->getRecordProperties($table, $uid);
-					$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
-					$deleteRow = $GLOBALS['TCA'][$table]['ctrl']['delete'];
-					if ($deleteRow && !$forceHardDelete) {
-						$value = $undeleteRecord ? 0 : 1;
-						$updateFields = array(
-							$deleteRow => $value
-						);
-						if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
-							$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
-						}
-						// If the table is sorted, then the sorting number is set very high
-						if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$undeleteRecord) {
-							$updateFields[$GLOBALS['TCA'][$table]['ctrl']['sortby']] = 1000000000;
-						}
-						// before (un-)deleting this record, check for child records or references
-						$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
-						$this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
-						// Delete all l10n records aswell, impossible during undelete because it might bring too many records back to life
-						if (!$undeleteRecord) {
-							$this->deleteL10nOverlayRecords($table, $uid);
-						}
-					} else {
-						// Fetches all fields with flexforms and look for files to delete:
-						foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $cfg) {
-							$conf = $cfg['config'];
-							switch ($conf['type']) {
-								case 'flex':
-									$flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
-									$flexObj->traverseFlexFormXMLData($table, $fieldName, BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid), $this, 'deleteRecord_flexFormCallBack');
-									break;
-							}
-						}
-						// Fetches all fields that holds references to files
-						$fileFieldArr = $this->extFileFields($table);
-						if (count($fileFieldArr)) {
-							$mres = $this->databaseConnection->exec_SELECTquery(implode(',', $fileFieldArr), $table, 'uid=' . (int)$uid);
-							if ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
-								$fArray = $fileFieldArr;
-								// MISSING: Support for MM file relations!
-								foreach ($fArray as $theField) {
-									// This deletes files that belonged to this record.
-									$this->extFileFunctions($table, $theField, $row[$theField], 'deleteAll');
-								}
-							} elseif ($this->enableLogging) {
-								$this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
-							}
-							$this->databaseConnection->sql_free_result($mres);
-						}
-						// Delete the hard way...:
-						$this->databaseConnection->exec_DELETEquery($table, 'uid=' . (int)$uid);
-						$this->deleteL10nOverlayRecords($table, $uid);
-					}
-					if ($this->enableLogging) {
-						// 1 means insert, 3 means delete
-						$state = $undeleteRecord ? 1 : 3;
-						if (!$this->databaseConnection->sql_error()) {
-							if ($forceHardDelete) {
-								$message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
-							} else {
-								$message = $state == 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
-							}
-							$this->log($table, $uid, $state, 0, 0, $message, 0, array(
-								$propArr['header'],
-								$table . ':' . $uid,
-								$pagePropArr['header'],
-								$propArr['pid']
-							), $propArr['event_pid']);
-						} else {
-							$this->log($table, $uid, $state, 0, 100, $this->databaseConnection->sql_error());
-						}
-					}
-					// Update reference index:
-					$this->updateRefIndex($table, $uid);
-					// If there are entries in the updateRefIndexStack
-					if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
-						while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
-							// $args[0]: table, $args[1]: uid
-							$this->updateRefIndex($args[0], $args[1]);
-						}
-						unset($this->updateRefIndexStack[$table][$uid]);
-					}
-				} elseif ($this->enableLogging) {
-					$this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions');
-				}
-			} elseif ($this->enableLogging) {
+		if (!$GLOBALS['TCA'][$table] || !$uid) {
+			if ($this->enableLogging) {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions. [' . $this->BE_USER->errorMsg . ']');
 			}
+			return;
+		}
+
+		// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
+		$deletedRecord = $forceHardDelete || $undeleteRecord;
+		$hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $deletedRecord, TRUE);
+		if (!$hasEditAccess) {
+			if ($this->enableLogging) {
+				$this->log($table, $uid, 3, 0, 1, 'Attempt to delete record without delete-permissions');
+			}
+			return;
+		}
+		if (!$noRecordCheck && !$this->doesRecordExist($table, $uid, 'delete')) {
+			return;
+		}
+
+		// Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+		$this->registerRecordIdForPageCacheClearing($table, $uid);
+		$deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
+		if ($deleteField && !$forceHardDelete) {
+			$updateFields = array(
+				$deleteField => $undeleteRecord ? 0 : 1
+			);
+			if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+			}
+			// If the table is sorted, then the sorting number is set very high
+			if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$undeleteRecord) {
+				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['sortby']] = 1000000000;
+			}
+			// before (un-)deleting this record, check for child records or references
+			$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
+			$this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateFields);
+			// Delete all l10n records as well, impossible during undelete because it might bring too many records back to life
+			if (!$undeleteRecord) {
+				$this->deleteL10nOverlayRecords($table, $uid);
+			}
+		} else {
+			// Fetches all fields with flexforms and look for files to delete:
+			foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $cfg) {
+				$conf = $cfg['config'];
+				switch ($conf['type']) {
+					case 'flex':
+						$flexObj = GeneralUtility::makeInstance(FlexFormTools::class);
+						$flexObj->traverseFlexFormXMLData($table, $fieldName, BackendUtility::getRecordRaw($table, 'uid=' . (int)$uid), $this, 'deleteRecord_flexFormCallBack');
+						break;
+				}
+			}
+			// Fetches all fields that holds references to files
+			$fileFieldArr = $this->extFileFields($table);
+			if (!empty($fileFieldArr)) {
+				$mres = $this->databaseConnection->exec_SELECTquery(implode(',', $fileFieldArr), $table, 'uid=' . (int)$uid);
+				if ($row = $this->databaseConnection->sql_fetch_assoc($mres)) {
+					$fArray = $fileFieldArr;
+					// MISSING: Support for MM file relations!
+					foreach ($fArray as $theField) {
+						// This deletes files that belonged to this record.
+						$this->extFileFunctions($table, $theField, $row[$theField], 'deleteAll');
+					}
+				} elseif ($this->enableLogging) {
+					$this->log($table, $uid, 3, 0, 100, 'Delete: Zero rows in result when trying to read filenames from record which should be deleted');
+				}
+				$this->databaseConnection->sql_free_result($mres);
+			}
+			// Delete the hard way...:
+			$this->databaseConnection->exec_DELETEquery($table, 'uid=' . (int)$uid);
+			$this->deleteL10nOverlayRecords($table, $uid);
+		}
+		if ($this->enableLogging) {
+			// 1 means insert, 3 means delete
+			$state = $undeleteRecord ? 1 : 3;
+			if (!$this->databaseConnection->sql_error()) {
+				if ($forceHardDelete) {
+					$message = 'Record \'%s\' (%s) was deleted unrecoverable from page \'%s\' (%s)';
+				} else {
+					$message = $state == 1 ? 'Record \'%s\' (%s) was restored on page \'%s\' (%s)' : 'Record \'%s\' (%s) was deleted from page \'%s\' (%s)';
+				}
+				$propArr = $this->getRecordProperties($table, $uid);
+				$pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
+
+				$this->log($table, $uid, $state, 0, 0, $message, 0, array(
+					$propArr['header'],
+					$table . ':' . $uid,
+					$pagePropArr['header'],
+					$propArr['pid']
+				), $propArr['event_pid']);
+			} else {
+				$this->log($table, $uid, $state, 0, 100, $this->databaseConnection->sql_error());
+			}
+		}
+		// Update reference index:
+		$this->updateRefIndex($table, $uid);
+		// If there are entries in the updateRefIndexStack
+		if (is_array($this->updateRefIndexStack[$table]) && is_array($this->updateRefIndexStack[$table][$uid])) {
+			while ($args = array_pop($this->updateRefIndexStack[$table][$uid])) {
+				// $args[0]: table, $args[1]: uid
+				$this->updateRefIndex($args[0], $args[1]);
+			}
+			unset($this->updateRefIndexStack[$table][$uid]);
 		}
 	}
 
