@@ -1417,89 +1417,93 @@ class DataHandler {
 		// - If the field is nothing of the above and the field is configured in TCA, the fieldvalues are evaluated by ->checkValue
 		// If everything is OK, the field is entered into $fieldArray[]
 		foreach ($incomingFieldArray as $field => $fieldValue) {
-			if (!isset($this->excludedTablesAndFields[$table . '-' . $field]) && !$this->data_disableFields[$table][$id][$field]) {
-				// The field must be editable.
-				// Checking if a value for language can be changed:
-				$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field && !$this->BE_USER->checkLanguageAccess($fieldValue);
-				if (!$languageDeny) {
-					// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
-					// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-					if ($this->stripslashes_values) {
-						GeneralUtility::deprecationLog(
-							'The option stripslash_values is typically set to FALSE as data should be properly prepared before sending to DataHandler. Do not rely on DataHandler removing extra slashes. The option will be removed in TYPO3 CMS 8.'
-						);
-						if (is_array($fieldValue)) {
-							GeneralUtility::stripSlashesOnArray($fieldValue);
-						} else {
-							$fieldValue = stripslashes($fieldValue);
+			if (isset($this->excludedTablesAndFields[$table . '-' . $field]) || $this->data_disableFields[$table][$id][$field]) {
+				continue;
+			}
+
+			// The field must be editable.
+			// Checking if a value for language can be changed:
+			$languageDeny = $GLOBALS['TCA'][$table]['ctrl']['languageField'] && (string)$GLOBALS['TCA'][$table]['ctrl']['languageField'] === (string)$field && !$this->BE_USER->checkLanguageAccess($fieldValue);
+			if ($languageDeny) {
+				continue;
+			}
+
+			// Stripping slashes - will probably be removed the day $this->stripslashes_values is removed as an option...
+			// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
+			if ($this->stripslashes_values) {
+				GeneralUtility::deprecationLog(
+					'The option stripslash_values is typically set to FALSE as data should be properly prepared before sending to DataHandler. Do not rely on DataHandler removing extra slashes. The option will be removed in TYPO3 CMS 8.'
+				);
+				if (is_array($fieldValue)) {
+					GeneralUtility::stripSlashesOnArray($fieldValue);
+				} else {
+					$fieldValue = stripslashes($fieldValue);
+				}
+			}
+			switch ($field) {
+				case 'uid':
+				case 'pid':
+					// Nothing happens, already set
+					break;
+				case 'perms_userid':
+				case 'perms_groupid':
+				case 'perms_user':
+				case 'perms_group':
+				case 'perms_everybody':
+					// Permissions can be edited by the owner or the administrator
+					if ($table == 'pages' && ($this->admin || $status == 'new' || $this->pageInfo($id, 'perms_userid') == $this->userid)) {
+						$value = (int)$fieldValue;
+						switch ($field) {
+							case 'perms_userid':
+								$fieldArray[$field] = $value;
+								break;
+							case 'perms_groupid':
+								$fieldArray[$field] = $value;
+								break;
+							default:
+								if ($value >= 0 && $value < pow(2, 5)) {
+									$fieldArray[$field] = $value;
+								}
 						}
 					}
-					switch ($field) {
-						case 'uid':
-						case 'pid':
-							// Nothing happens, already set
-							break;
-						case 'perms_userid':
-						case 'perms_groupid':
-						case 'perms_user':
-						case 'perms_group':
-						case 'perms_everybody':
-							// Permissions can be edited by the owner or the administrator
-							if ($table == 'pages' && ($this->admin || $status == 'new' || $this->pageInfo($id, 'perms_userid') == $this->userid)) {
-								$value = (int)$fieldValue;
-								switch ($field) {
-									case 'perms_userid':
-										$fieldArray[$field] = $value;
-										break;
-									case 'perms_groupid':
-										$fieldArray[$field] = $value;
-										break;
-									default:
-										if ($value >= 0 && $value < pow(2, 5)) {
-											$fieldArray[$field] = $value;
-										}
+					break;
+				case 't3ver_oid':
+				case 't3ver_id':
+				case 't3ver_wsid':
+				case 't3ver_state':
+				case 't3ver_count':
+				case 't3ver_stage':
+				case 't3ver_tstamp':
+					// t3ver_label is not here because it CAN be edited as a regular field!
+					break;
+				default:
+					if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
+						// Evaluating the value
+						$res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID);
+						if (array_key_exists('value', $res)) {
+							$fieldArray[$field] = $res['value'];
+						}
+						// Add the value of the original record to the diff-storage content:
+						if ($this->updateModeL10NdiffData && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
+							$originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
+							$diffStorageFlag = TRUE;
+						}
+						// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
+						// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied.
+						// That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
+						// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
+						// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
+						if ($this->autoVersioningUpdate === TRUE) {
+							if (is_array($this->RTEmagic_copyIndex[$table][$id][$field])) {
+								foreach ($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName) {
+									$fieldArray[$field] = str_replace(' src="' . $oldRTEmagicName . '"', ' src="' . $newRTEmagicName . '"', $fieldArray[$field]);
 								}
 							}
-							break;
-						case 't3ver_oid':
-						case 't3ver_id':
-						case 't3ver_wsid':
-						case 't3ver_state':
-						case 't3ver_count':
-						case 't3ver_stage':
-						case 't3ver_tstamp':
-							// t3ver_label is not here because it CAN be edited as a regular field!
-							break;
-						default:
-							if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
-								// Evaluating the value
-								$res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID);
-								if (array_key_exists('value', $res)) {
-									$fieldArray[$field] = $res['value'];
-								}
-								// Add the value of the original record to the diff-storage content:
-								if ($this->updateModeL10NdiffData && $GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']) {
-									$originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
-									$diffStorageFlag = TRUE;
-								}
-								// If autoversioning is happening we need to perform a nasty hack. The case is parallel to a similar hack inside checkValue_group_select_file().
-								// When a copy or version is made of a record, a search is made for any RTEmagic* images in fields having the "images" soft reference parser applied.
-								// That should be TRUE for RTE fields. If any are found they are duplicated to new names and the file reference in the bodytext is updated accordingly.
-								// However, with auto-versioning the submitted content of the field will just overwrite the corrected values. This leaves a) lost RTEmagic files and b) creates a double reference to the old files.
-								// The only solution I can come up with is detecting when auto versioning happens, then see if any RTEmagic images was copied and if so make a stupid string-replace of the content !
-								if ($this->autoVersioningUpdate === TRUE) {
-									if (is_array($this->RTEmagic_copyIndex[$table][$id][$field])) {
-										foreach ($this->RTEmagic_copyIndex[$table][$id][$field] as $oldRTEmagicName => $newRTEmagicName) {
-											$fieldArray[$field] = str_replace(' src="' . $oldRTEmagicName . '"', ' src="' . $newRTEmagicName . '"', $fieldArray[$field]);
-										}
-									}
-								}
-							} elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
-								// Allow value for original UID to pass by...
-								$fieldArray[$field] = $fieldValue;
-							}
+						}
+					} elseif ($GLOBALS['TCA'][$table]['ctrl']['origUid'] === $field) {
+						// Allow value for original UID to pass by...
+						$fieldArray[$field] = $fieldValue;
 					}
-				}
 			}
 		}
 		// Add diff-storage information:
@@ -1513,25 +1517,23 @@ class DataHandler {
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
 				// RTE transformations:
-				if (!$this->dontProcessTransformations) {
-					if (isset($fieldArray[$vconf['field']])) {
-						// Look for transformation flag:
-						switch ((string)$incomingFieldArray[('_TRANSFORM_' . $vconf['field'])]) {
-							case 'RTE':
-								if ($theTypeString === NULL) {
-									$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
-								}
-								$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
-								$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
-								// Get RTE object, draw form and set flag:
-								$RTEobj = BackendUtility::RTEgetObj();
-								if (is_object($RTEobj)) {
-									$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, '', $currentRecord['pid']);
-								} else {
-									debug('NO RTE OBJECT FOUND!');
-								}
-								break;
-						}
+				if ($this->dontProcessTransformations || !isset($fieldArray[$vconf['field']])) {
+					continue;
+				}
+
+				// Look for transformation flag:
+				if ((string)$incomingFieldArray[('_TRANSFORM_' . $vconf['field'])] === 'RTE') {
+					if ($theTypeString === NULL) {
+						$theTypeString = BackendUtility::getTCAtypeValue($table, $currentRecord);
+					}
+					$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
+					$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
+					// Get RTE object, draw form and set flag:
+					$RTEobj = BackendUtility::RTEgetObj();
+					if (is_object($RTEobj)) {
+						$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, '', $currentRecord['pid']);
+					} else {
+						debug('NO RTE OBJECT FOUND!');
 					}
 				}
 			}
