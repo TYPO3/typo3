@@ -1,0 +1,45 @@
+<f:if condition="{hasEntries}">
+	<f:then>
+		<ul class="dropdown-list">
+			<f:for each="{entries.open}" as="entry" iteration="iteration">
+				<f:if condition="{iteration.isFirst}">
+					<li class="dropdown-header"><f:translate key="open_docs" /></li>
+				</f:if>
+				<li class="opendoc">
+					<a href="#" class="dropdown-list-link dropdown-link-list-add-close" onclick="{entry.onclick}" target="content">
+						<f:format.raw>{entry.icon}</f:format.raw> {entry.label}
+					</a>
+					<a href="#" class="dropdown-list-link-close" data-opendocsidentifier="{entry.md5sum}" title="{entry.title}">
+						<f:format.raw>{entry.closeIcon}</f:format.raw>
+					</a>
+				</li>
+				<f:if condition="isLast">
+					<f:then></f:then>
+					<f:else>
+						<li class="divider"></li>
+					</f:else>
+				</f:if>
+			</f:for>
+
+			<f:for each="{entries.recent}" as="entry" iteration="iteration">
+				<f:if condition="{iteration.isFirst}">
+					<li class="dropdown-header"><f:translate key="recent_docs" /></li>
+				</f:if>
+				<li>
+					<a href="#" class="dropdown-list-link" onclick="{entry.onclick}" target="content">
+						<f:format.raw>{entry.icon}</f:format.raw> {entry.label}
+					</a>
+				</li>
+				<f:if condition="isLast">
+					<f:then></f:then>
+					<f:else>
+						<li class="divider"></li>
+					</f:else>
+				</f:if>
+			</f:for>
+		</ul>
+	</f:then>
+	<f:else>
+		<p><f:translate key="no_docs" /></p>
+	</f:else>
+</f:if>

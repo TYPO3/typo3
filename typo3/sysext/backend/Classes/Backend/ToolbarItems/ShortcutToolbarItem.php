@@ -28,12 +28,27 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class ShortcutToolbarItem implements ToolbarItemInterface {
+class ShortcutToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
 
 	/**
-	 * @const integer Number of super global group
+	 * @const int Number of super global group
 	 */
 	const SUPERGLOBAL_GROUP = -100;
+
+	/**
+	 * @const string Type of shortcut groups
+	 */
+	const TYPE_GROUP = 'group';
+
+	/**
+	 * @const string Type of shortcut items
+	 */
+	const TYPE_ITEM = 'item';
+
+	/**
+	 * @var string Template file for the dropdown menu
+	 */
+	protected $templateFile = 'Shortcut.html';
 
 	/**
 	 * @var string
@@ -75,6 +90,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			$loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
 			$loadModules->load($GLOBALS['TBE_MODULES']);
 		}
+
+		parent::__construct();
 
 		// By default, 5 groups are set
 		$this->shortcutGroups = array(
@@ -126,65 +143,70 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$editIcon = '<a href="#" class="dropdown-list-link-edit shortcut-edit">' . IconUtility::getSpriteIcon('actions-document-open', array('title' => $shortcutEdit)) . '</a>';
 		$deleteIcon = '<a href="#" class="dropdown-list-link-delete shortcut-delete">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $shortcutDelete)) . '</a>';
 
-		$shortcutMenu[] = '<ul class="dropdown-list">';
+		$shortcutMenu = array();
 
 		// Render shortcuts with no group (group id = 0) first
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
 		foreach ($noGroupShortcuts as $shortcut) {
-
-			$shortcutMenu[] = '
-				<li class="shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '">
-					<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">' .
-						$shortcut['icon'] . ' ' .
-						htmlspecialchars($shortcut['label']) .
-					'</a>
-					' . $editIcon . $deleteIcon . '
-				</li>';
+			$shortcutMenu[] = array(
+				'uid' => (int)$shortcut['raw']['uid'],
+				'groupid' => static::SUPERGLOBAL_GROUP,
+				'type' => static::TYPE_ITEM,
+				'action' => $shortcut['action'],
+				'icon' => $shortcut['icon'],
+				'label' => $shortcut['label']
+			);
 		}
 		// Now render groups and the contained shortcuts
 		$groups = $this->getGroupsFromShortcuts();
 		krsort($groups, SORT_NUMERIC);
 		foreach ($groups as $groupId => $groupLabel) {
-			if ($groupId != 0) {
-				$shortcutGroup = '';
-				if (count($shortcutMenu) > 1) {
-					$shortcutGroup .= '<li class="divider"></li>';
-				}
-				$shortcutGroup .= '
-					<li class="dropdown-header" id="shortcut-group-' . (int)$groupId . '">
-						' . $groupLabel . '
-					</li>';
-				$shortcuts = $this->getShortcutsByGroup($groupId);
-				$i = 0;
-				foreach ($shortcuts as $shortcut) {
-					$i++;
-					$shortcutGroup .= '
-					<li class="shortcut" data-shortcutid="' . (int)$shortcut['raw']['uid'] . '" data-shortcutgroup="' . (int)$groupId . '">
-						<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="' . htmlspecialchars($shortcut['action']) . ' return false;">' .
-							$shortcut['icon'] . ' ' .
-							htmlspecialchars($shortcut['label']) .
-						'</a>
-						' . $editIcon . $deleteIcon . '
-					</li>';
-				}
-				$shortcutMenu[] = $shortcutGroup;
+			$groupId = (int)$groupId;
+			if ($groupId === 0) {
+				continue;
+			}
+
+			$shortcutMenu[] = array(
+				'uid' => $groupId,
+				'type' => static::TYPE_GROUP,
+				'label' => $groupLabel
+			);
+
+			$shortcuts = $this->getShortcutsByGroup($groupId);
+			$i = 0;
+			foreach ($shortcuts as $shortcut) {
+				$i++;
+				$shortcutMenu[] = array(
+					'uid' => (int)$shortcut['raw']['uid'],
+					'groupid' => (int)$groupId,
+					'type' => static::TYPE_ITEM,
+					'action' => $shortcut['action'],
+					'icon' => $shortcut['icon'],
+					'label' => $shortcut['label']
+				);
 			}
 		}
-		$shortcutMenu[] = '</ul>';
 
-		if (count($shortcutMenu) == 2) {
+		$standaloneView = $this->getStandaloneView();
+		$standaloneView->assignMultiple(array(
+			'hasEntries' => !empty($shortcutMenu),
+			'shortcutMenu' => $shortcutMenu,
+			'editIcon' => $editIcon,
+			'deleteIcon' => $deleteIcon,
+		));
+
+		if (empty($shortcutMenu)) {
 			// No shortcuts added yet, show a small help message how to add shortcuts
 			$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
 			$icon = IconUtility::getSpriteIcon('actions-system-shortcut-new', array(
 				'title' => $title
 			));
 			$label = str_replace('%icon%', $icon, $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription'));
-			$compiledShortcutMenu = '<p>' . $label . '</p>';
-		} else {
-			$compiledShortcutMenu = implode(LF, $shortcutMenu);
+
+			$standaloneView->assign('introduction', $label);
 		}
 
-		return $compiledShortcutMenu;
+		return $standaloneView->render();
 	}
 
 	/**

@@ -1,0 +1,9 @@
+<ul class="dropdown-list">
+	<f:for each="{items}" as="item">
+		<li>
+			<a class="dropdown-list-link" href="{item.href}" title="{item.title}">
+				<f:format.raw>{item.icon}</f:format.raw> {item.label}
+			</a>
+		</li>
+	</f:for>
+</ul>

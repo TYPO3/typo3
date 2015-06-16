@@ -1,0 +1,30 @@
+<f:if condition="{hasEntries}">
+	<f:then>
+		<ul class="dropdown-list">
+			<f:for each="{shortcutMenu}" as="shortcut" iteration="iteration">
+				<f:if condition="{shortcut.type} == 'group'">
+					<f:if condition="{iteration.isFirst}">
+						<f:then></f:then>
+						<f:else><li class="divider"></li></f:else>
+					</f:if>
+					<li class="dropdown-header" id="shortcut-group-{shortcut.uid}">
+						{shortcut.label}
+					</li>
+				</f:if>
+
+				<f:if condition="{shortcut.type} == 'item'">
+					<li class="shortcut" data-shortcutid="{shortcut.uid}">
+						<a class="dropdown-list-link dropdown-link-list-add-editdelete" href="#" onclick="{shortcut.action} return false;">
+							<f:format.raw>{shortcut.icon}</f:format.raw> {shortcut.label}
+						</a>
+						<f:format.raw>{editIcon}</f:format.raw>
+						<f:format.raw>{deleteIcon}</f:format.raw>
+					</li>
+				</f:if>
+			</f:for>
+		</ul>
+	</f:then>
+	<f:else>
+		<f:format.raw>{introduction}</f:format.raw>
+	</f:else>
+</f:if>

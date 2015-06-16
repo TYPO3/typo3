@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Backend\ToolbarItems\AbstractToolbarItem;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 
@@ -24,7 +25,17 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
+class WorkspaceSelectorToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
+
+	/**
+	 * @var string Extension context
+	 */
+	protected $extension = 'workspaces';
+
+	/**
+	 * @var string Template file for the dropdown menu
+	 */
+	protected $templateFile = 'WorkspaceSelector.html';
 
 	/**
 	 * @var array
@@ -35,7 +46,9 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 	 * Constructor
 	 */
 	public function __construct() {
-		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
+		parent::__construct();
+
+		/** @var WorkspaceService $wsService */
 		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
 		$this->availableWorkspaces = $wsService->getAvailableWorkspaces();
 
@@ -95,36 +108,40 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 		foreach ($this->availableWorkspaces as $workspaceId => $label) {
 			$workspaceId = (int)$workspaceId;
 			$iconState = ($workspaceId === $activeWorkspace ? $stateCheckedIcon : $stateUncheckedIcon);
-			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
+			$classValue = ($workspaceId === $activeWorkspace ? 'selected' : '');
 			$sectionName = ($index++ === 0 ? 'top' : 'items');
-			$workspaceSections[$sectionName][] = '<li' . $classValue . '>'
-				. '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="dropdown-list-link tx-workspaces-switchlink">'
-				. $iconState . ' ' . htmlspecialchars($label)
-				. '</a></li>';
+			$workspaceSections[$sectionName][] = array(
+				'href' => 'backend.php?changeWorkspace=' . $workspaceId,
+				'class' => $classValue,
+				'wsid' => $workspaceId,
+				'icon' => $iconState,
+				'label' => $label
+			);
 		}
 
 		if (!empty($workspaceSections['top'])) {
 			// Add the "Go to workspace module" link
 			// if there is at least one icon on top and if the access rights are there
 			if ($backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
-				$workspaceSections['top'][] = '<li><a target="content" data-module="web_WorkspacesWorkspaces" class="dropdown-list-link tx-workspaces-modulelink">'
-					. $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_workspace', TRUE)
-					. '</a></li>';
+				$workspaceSections['top'][] = array(
+					'module' => 'web_WorkspacesWorkspaces',
+					'icon' => $stateUncheckedIcon,
+					'label' => $languageService->getLL('bookmark_workspace', TRUE)
+				);
 			}
 		} else {
 			// no items on top (= no workspace to work in)
-			$workspaceSections['top'][] = '<li>' . $stateUncheckedIcon . ' ' . $languageService->getLL('bookmark_noWSfound', TRUE) . '</li>';
+			$workspaceSections['top'][] = array(
+				'icon' => $stateUncheckedIcon,
+				'label' => $languageService->getLL('bookmark_noWSfound', TRUE)
+			);
 		}
 
-		$workspaceMenu = array(
-			'<ul class="dropdown-list">' ,
-				implode(LF, $workspaceSections['top']),
-				(!empty($workspaceSections['items']) ? '<li class="divider"></li>' : ''),
-				implode(LF, $workspaceSections['items']),
-			'</ul>'
-		);
-
-		return implode(LF, $workspaceMenu);
+		$standaloneView = $this->getStandaloneView();
+		$standaloneView->assignMultiple(array(
+			'workspaceSections' => $workspaceSections
+		));
+		return $standaloneView->render();
 	}
 
 	/**
