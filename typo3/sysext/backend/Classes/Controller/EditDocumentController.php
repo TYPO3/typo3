@@ -1557,7 +1557,7 @@ class EditDocumentController {
 	/**
 	 * Handling the closing of a document
 	 *
-	 * @param int $code Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and otehr values will call setDocument with ->retUrl
+	 * @param int $code Close code: 0/1 will redirect to $this->retUrl, 3 will clear the docHandler (thus closing all documents) and other values will call setDocument with ->retUrl
 	 * @return void
 	 */
 	public function closeDocument($code = 0) {
