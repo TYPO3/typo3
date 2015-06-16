@@ -727,8 +727,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider formatSizeDataProvider
 	 */
-	public function formatSizeTranslatesBytesToHigherOrderRepresentation($size, $label, $expected) {
-		$this->assertEquals($expected, Utility\GeneralUtility::formatSize($size, $label));
+	public function formatSizeTranslatesBytesToHigherOrderRepresentation($size, $labels, $base, $expected) {
+		$this->assertEquals($expected, Utility\GeneralUtility::formatSize($size, $labels, $base));
 	}
 
 	/**
@@ -738,18 +738,39 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function formatSizeDataProvider() {
 		return array(
-			'Bytes keep beeing bytes (min)' => array(1, '', '1 '),
-			'Bytes keep beeing bytes (max)' => array(899, '', '899 '),
-			'Kilobytes are detected' => array(1024, '', '1.0 K'),
-			'Megabytes are detected' => array(1048576, '', '1.0 M'),
-			'Gigabytes are detected' => array(1073741824, '', '1.0 G'),
-			'Decimal is omitted for large kilobytes' => array(31080, '', '30 K'),
-			'Decimal is omitted for large megabytes' => array(31458000, '', '30 M'),
-			'Decimal is omitted for large gigabytes' => array(32212254720, '', '30 G'),
-			'Label for bytes can be exchanged' => array(1, ' Foo|||', '1 Foo'),
-			'Label for kilobytes can be exchanged' => array(1024, '| Foo||', '1.0 Foo'),
-			'Label for megabyes can be exchanged' => array(1048576, '|| Foo|', '1.0 Foo'),
-			'Label for gigabytes can be exchanged' => array(1073741824, '||| Foo', '1.0 Foo')
+			'IEC Bytes stay bytes (min)' => array(1, '', 0, '1 '),
+			'IEC Bytes stay bytes (max)' => array(921, '', 0, '921 '),
+			'IEC Kilobytes are used (min)' => array(922, '', 0, '0.90 Ki'),
+			'IEC Kilobytes are used (max)' => array(943718, '', 0, '922 Ki'),
+			'IEC Megabytes are used (min)' => array(943719, '', 0, '0.90 Mi'),
+			'IEC Megabytes are used (max)' => array(966367641, '', 0, '922 Mi'),
+			'IEC Gigabytes are used (min)' => array(966367642, '', 0, '0.90 Gi'),
+			'IEC Gigabytes are used (max)' => array(989560464998, '', 0, '922 Gi'),
+			'IEC Decimal is omitted for large kilobytes' => array(31080, '', 0, '30 Ki'),
+			'IEC Decimal is omitted for large megabytes' => array(31458000, '', 0, '30 Mi'),
+			'IEC Decimal is omitted for large gigabytes' => array(32212254720, '', 0, '30 Gi'),
+			'SI Bytes stay bytes (min)' => array(1, 'si', 0, '1 '),
+			'SI Bytes stay bytes (max)' => array(899, 'si', 0, '899 '),
+			'SI Kilobytes are used (min)' => array(901, 'si', 0, '0.90 k'),
+			'SI Kilobytes are used (max)' => array(900000, 'si', 0, '900 k'),
+			'SI Megabytes are used (min)' => array(900001, 'si', 0, '0.90 M'),
+			'SI Megabytes are used (max)' => array(900000000, 'si', 0, '900 M'),
+			'SI Gigabytes are used (min)' => array(900000001, 'si', 0, '0.90 G'),
+			'SI Gigabytes are used (max)' => array(900000000000, 'si', 0, '900 G'),
+			'SI Decimal is omitted for large kilobytes' => array(30000, 'si', 0, '30 k'),
+			'SI Decimal is omitted for large megabytes' => array(30000000, 'si', 0, '30 M'),
+			'SI Decimal is omitted for large gigabytes' => array(30000000000, 'si', 0, '30 G'),
+			'Label for bytes can be exchanged (binary unit)' => array(1, ' Foo|||', 0, '1 Foo'),
+			'Label for kilobytes can be exchanged (binary unit)' => array(1024, '| Foo||', 0, '1.00 Foo'),
+			'Label for megabyes can be exchanged (binary unit)' => array(1048576, '|| Foo|', 0, '1.00 Foo'),
+			'Label for gigabytes can be exchanged (binary unit)' => array(1073741824, '||| Foo', 0, '1.00 Foo'),
+			'Label for bytes can be exchanged (decimal unit)' => array(1, ' Foo|||', 1000, '1 Foo'),
+			'Label for kilobytes can be exchanged (decimal unit)' => array(1000, '| Foo||', 1000, '1.00 Foo'),
+			'Label for megabyes can be exchanged (decimal unit)' => array(1000000, '|| Foo|', 1000, '1.00 Foo'),
+			'Label for gigabytes can be exchanged (decimal unit)' => array(1000000000, '||| Foo', 1000, '1.00 Foo'),
+			'IEC Base is ignored' => array(1024, 'iec', 1000, '1.00 Ki'),
+			'SI Base is ignored' => array(1000, 'si', 1024, '1.00 k'),
+			'Use binary base for unexpected base' => array(2048, '| Bar||', 512, '2.00 Bar')
 		);
 	}
 

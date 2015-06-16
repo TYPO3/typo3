@@ -209,7 +209,7 @@ class NoneElementTest extends UnitTestCase {
 					'format' => 'filesize',
 				),
 				'100000',
-				'98 K'
+				'98 Ki'
 			),
 			'format to filesize with empty value' => array(
 				array(
@@ -226,7 +226,7 @@ class NoneElementTest extends UnitTestCase {
 					),
 				),
 				'100000',
-				'98 K (100000)'
+				'98 Ki (100000)'
 			),
 		);
 	}

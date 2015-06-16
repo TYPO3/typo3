@@ -905,46 +905,48 @@ class GeneralUtility {
 	 * Formats the input integer $sizeInBytes as bytes/kilobytes/megabytes (-/K/M)
 	 *
 	 * @param int $sizeInBytes Number of bytes to format.
-	 * @param string $labels Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
+	 * @param string $labels Binary unit name "iec", decimal unit name "si" or labels for bytes, kilo, mega, giga, and so on separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G". Defaults to "iec".
+	 * @param int $base The unit base if not using a unit name. Defaults to 1024.
 	 * @return string Formatted representation of the byte number, for output.
 	 */
-	static public function formatSize($sizeInBytes, $labels = '') {
-		// Set labels:
-		if ($labels === '') {
-			$labels = ' | K| M| G';
-		} else {
-			$labels = str_replace('"', '', $labels);
+	static public function formatSize($sizeInBytes, $labels = '', $base = 0) {
+		$defaultFormats = array(
+			'iec' => array('base' => 1024, 'labels' => array(' ', ' Ki', ' Mi', ' Gi', ' Ti', ' Pi', ' Ei', ' Zi', ' Yi')),
+			'si' => array('base' => 1000, 'labels' => array(' ', ' k', ' M', ' G', ' T', ' P', ' E', ' Z', ' Y')),
+		);
+		// Set labels and base:
+		if (empty($labels)) {
+			$labels = 'iec';
 		}
-		$labelArr = explode('|', $labels);
-		// Find size:
-		if ($sizeInBytes > 900) {
-			// @todo find out which locale is used for current BE user to cover the BE case as well
-			$locale = is_object($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
-			$oldLocale = setlocale(LC_NUMERIC, 0);
-			if ($locale) {
-				setlocale(LC_NUMERIC, $locale);
-			}
-			$localeInfo = localeconv();
-			if ($locale) {
-				setlocale(LC_NUMERIC, $oldLocale);
-			}
-			// GB
-			if ($sizeInBytes > 900000000) {
-				$val = $sizeInBytes / (1024 * 1024 * 1024);
-				return number_format($val, ($val < 20 ? 1 : 0), $localeInfo['decimal_point'], '') . $labelArr[3];
-			} elseif ($sizeInBytes > 900000) {
-				// MB
-				$val = $sizeInBytes / (1024 * 1024);
-				return number_format($val, ($val < 20 ? 1 : 0), $localeInfo['decimal_point'], '') . $labelArr[2];
-			} else {
-				// KB
-				$val = $sizeInBytes / 1024;
-				return number_format($val, ($val < 20 ? 1 : 0), $localeInfo['decimal_point'], '') . $labelArr[1];
-			}
+		if (isset($defaultFormats[$labels])) {
+			$base = $defaultFormats[$labels]['base'];
+			$labelArr = $defaultFormats[$labels]['labels'];
 		} else {
-			// Bytes
-			return $sizeInBytes . $labelArr[0];
+			$base = (int)$base;
+			if ($base !== 1000 && $base !== 1024) {
+				$base = 1024;
+			}
+			$labelArr = explode('|', str_replace('"', '', $labels));
 		}
+		// @todo find out which locale is used for current BE user to cover the BE case as well
+		$oldLocale = setlocale(LC_NUMERIC, 0);
+		$newLocale = is_object($GLOBALS['TSFE']) ? $GLOBALS['TSFE']->config['config']['locale_all'] : '';
+		if ($newLocale) {
+			setlocale(LC_NUMERIC, $newLocale);
+		}
+		$localeInfo = localeconv();
+		if ($newLocale) {
+			setlocale(LC_NUMERIC, $oldLocale);
+		}
+		$sizeInBytes = max($sizeInBytes, 0);
+		$multiplier = floor(($sizeInBytes ? log($sizeInBytes) : 0) / log($base));
+		$sizeInUnits = $sizeInBytes / pow($base, $multiplier);
+		if ($sizeInUnits > ($base * .9)) {
+			$multiplier++;
+		}
+		$multiplier = min($multiplier, count($labelArr) - 1);
+		$sizeInUnits = $sizeInBytes / pow($base, $multiplier);
+		return number_format($sizeInUnits, (($multiplier > 0) && ($sizeInUnits < 20)) ? 2 : 0, $localeInfo['decimal_point'], '') . $labelArr[$multiplier];
 	}
 
 	/**
