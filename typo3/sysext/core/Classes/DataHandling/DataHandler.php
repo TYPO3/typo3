@@ -3266,7 +3266,7 @@ class DataHandler {
 
 		$fullLanguageCheckNeeded = $table != 'pages';
 		//Used to check language and general editing rights
-		if ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language) && !$this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded)) {
+		if (($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, FALSE, $fullLanguageCheckNeeded)) {
 			if ($this->enableLogging) {
 				$this->log($table, $uid, 3, 0, 1, 'Attempt to copy record without having permissions to do so. [' . $this->BE_USER->errorMsg . '].');
 			}
