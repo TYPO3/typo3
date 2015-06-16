@@ -754,11 +754,15 @@ abstract class AbstractMenuContentObject {
 		if ($specialValue == '') {
 			$specialValue = $this->id;
 		}
+		$skippedEnableFields = array();
+		if (!empty($this->mconf['showAccessRestrictedPages'])) {
+			$skippedEnableFields = array('fe_group' => 1);
+		}
 		/** @var RelationHandler $loadDB*/
 		$loadDB = GeneralUtility::makeInstance(RelationHandler::class);
 		$loadDB->setFetchAllFields(TRUE);
 		$loadDB->start($specialValue, 'pages');
-		$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
+		$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages', FALSE, $skippedEnableFields);
 		$loadDB->getFromDB();
 		foreach ($loadDB->itemArray as $val) {
 			$MP = $this->tmpl->getFromMPmap($val['id']);
