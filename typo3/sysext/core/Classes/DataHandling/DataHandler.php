@@ -3593,113 +3593,9 @@ class DataHandler {
 		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $field);
 		// Register if there are references to take care of or MM is used on an inline field (no change to value):
 		if ($this->isReferenceField($conf) || $inlineSubType == 'mm') {
-			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
-			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
-			$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
-			$localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
-			$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
-			$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
-			/** @var $dbAnalysis RelationHandler */
-			$dbAnalysis = $this->createRelationHandlerInstance();
-			$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
-			// Localize referenced records of select fields:
-			if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
-				foreach ($dbAnalysis->itemArray as $index => $item) {
-					// Since select fields can reference many records, check whether there's already a localization:
-					$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
-					if ($recordLocalization) {
-						$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
-					} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
-						$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
-					}
-				}
-				$dbAnalysis->purgeItemArray();
-				$value = implode(',', $dbAnalysis->getValueArray($prependName));
-			} elseif ($language > 0 && $localizeChildren === FALSE && $localizationMode === 'select' && $inlineSubType === 'mm') {
-				foreach ($dbAnalysis->itemArray as $index => $item) {
-					// Since select fields can reference many records, check whether there's already a localization:
-					$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
-					if ($recordLocalization) {
-						$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
-					} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
-						unset($dbAnalysis->itemArray[$index]);
-					}
-				}
-				$dbAnalysis->purgeItemArray();
-				$value = implode(',', $dbAnalysis->getValueArray($prependName));
-			} elseif ($mmTable) {
-				$dbAnalysis->purgeItemArray();
-				$value = implode(',', $dbAnalysis->getValueArray($prependName));
-			}
-			// Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
-			if ($value) {
-				$this->registerDBList[$table][$uid][$field] = $value;
-			}
+			$value = $this->copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode, $inlineSubType);
 		} elseif ($inlineSubType !== FALSE) {
-			// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
-			if ($language > 0 && $localizationMode == 'keep') {
-				$value = $inlineSubType == 'field' ? 0 : '';
-			} else {
-				// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
-				/** @var $dbAnalysis RelationHandler */
-				$dbAnalysis = $this->createRelationHandlerInstance();
-				$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
-				// Walk through the items, copy them and remember the new id:
-				foreach ($dbAnalysis->itemArray as $k => $v) {
-					// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
-					if ($language > 0 && BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
-						// If children should be localized when the parent gets localized the first time, just do it:
-						if ($localizationMode != FALSE && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
-							$newId = $this->localize($v['table'], $v['id'], $language);
-						}
-					} else {
-						if (!MathUtility::canBeInterpretedAsInteger($realDestPid)) {
-							$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
-						// If the destination page id is a NEW string, keep it on the same page
-						} elseif ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
-							// A filled $workspaceOptions indicated that this call
-							// has it's origin in previous versionizeRecord() processing
-							if (count($workspaceOptions)) {
-								// Versions use live default id, thus the "new"
-								// id is the original live default child record
-								$newId = $v['id'];
-								$this->versionizeRecord(
-									$v['table'], $v['id'],
-									(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
-									(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
-								);
-							// Otherwise just use plain copyRecord() to create placeholders etc.
-							} else {
-								// If a record has been copied already during this request,
-								// prevent superfluous duplication and use the existing copy
-								if (isset($this->copyMappingArray[$v['table']][$v['id']])) {
-									$newId = $this->copyMappingArray[$v['table']][$v['id']];
-								} else {
-									$newId = $this->copyRecord($v['table'], $v['id'], $realDestPid);
-								}
-							}
-						} else {
-							// If a record has been copied already during this request,
-							// prevent superfluous duplication and use the existing copy
-							if (isset($this->copyMappingArray[$v['table']][$v['id']])) {
-								$newId = $this->copyMappingArray[$v['table']][$v['id']];
-							} else {
-								$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid, array(), $workspaceOptions);
-							}
-						}
-					}
-					// If the current field is set on a page record, update the pid of related child records:
-					if ($table == 'pages') {
-						$this->registerDBPids[$v['table']][$v['id']] = $uid;
-					} elseif (isset($this->registerDBPids[$table][$uid])) {
-						$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
-					}
-					$dbAnalysis->itemArray[$k]['id'] = $newId;
-				}
-				// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
-				$value = implode(',', $dbAnalysis->getValueArray());
-				$this->registerDBList[$table][$uid][$field] = $value;
-			}
+			$value = $this->copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language, $workspaceOptions, $localizationMode, $inlineSubType);
 		}
 		// For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
 		if ($conf['type'] == 'flex') {
@@ -3713,6 +3609,153 @@ class DataHandler {
 				$value = $currentValueArray;
 			}
 		}
+		return $value;
+	}
+
+	/**
+	 * Processes the children of an MM relation field when the parent record is copied.
+	 *
+	 * @param string $table
+	 * @param int $uid
+	 * @param string $field
+	 * @param mixed $value
+	 * @param array $conf
+	 * @param string $language
+	 * @param string $localizationMode
+	 * @param string $inlineSubType
+	 * @return mixed
+	 */
+	protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode,
+	                                             $inlineSubType) {
+		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
+		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
+		$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
+		$localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
+		$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
+		$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
+		/** @var $dbAnalysis RelationHandler */
+		$dbAnalysis = $this->createRelationHandlerInstance();
+		$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
+		// Localize referenced records of select fields:
+		if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
+			foreach ($dbAnalysis->itemArray as $index => $item) {
+				// Since select fields can reference many records, check whether there's already a localization:
+				$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
+				if ($recordLocalization) {
+					$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
+				} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
+					$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
+				}
+			}
+			$dbAnalysis->purgeItemArray();
+			$value = implode(',', $dbAnalysis->getValueArray($prependName));
+		} elseif ($language > 0 && $localizeChildren === FALSE && $localizationMode === 'select' && $inlineSubType === 'mm') {
+			foreach ($dbAnalysis->itemArray as $index => $item) {
+				// Since select fields can reference many records, check whether there's already a localization:
+				$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
+				if ($recordLocalization) {
+					$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
+				} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
+					unset($dbAnalysis->itemArray[$index]);
+				}
+			}
+			$dbAnalysis->purgeItemArray();
+			$value = implode(',', $dbAnalysis->getValueArray($prependName));
+		} elseif ($mmTable) {
+			$dbAnalysis->purgeItemArray();
+			$value = implode(',', $dbAnalysis->getValueArray($prependName));
+		}
+		// Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
+		if ($value) {
+			$this->registerDBList[$table][$uid][$field] = $value;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Processes child records in an inline (IRRE) element when the parent record is copied.
+	 *
+	 * @param string $table
+	 * @param int $uid
+	 * @param string $field
+	 * @param mixed $value
+	 * @param array $row
+	 * @param array $conf
+	 * @param int $realDestPid
+	 * @param string $language
+	 * @param array $workspaceOptions
+	 * @param string $localizationMode
+	 * @param string $inlineSubType
+	 * @return mixed
+	 */
+	protected function copyRecord_processInline($table, $uid, $field, $value, $row, $conf, $realDestPid, $language,
+	                                            array $workspaceOptions, $localizationMode, $inlineSubType) {
+		// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
+		if ($language > 0 && $localizationMode == 'keep') {
+			$value = $inlineSubType == 'field' ? 0 : '';
+		} else {
+			// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
+			/** @var $dbAnalysis RelationHandler */
+			$dbAnalysis = $this->createRelationHandlerInstance();
+			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+			// Walk through the items, copy them and remember the new id:
+			foreach ($dbAnalysis->itemArray as $k => $v) {
+				// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
+				if ($language > 0 && BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
+					// If children should be localized when the parent gets localized the first time, just do it:
+					if ($localizationMode != FALSE && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
+						$newId = $this->localize($v['table'], $v['id'], $language);
+					}
+				} else {
+					if (!MathUtility::canBeInterpretedAsInteger($realDestPid)) {
+						$newId = $this->copyRecord($v['table'], $v['id'], -$v['id']);
+						// If the destination page id is a NEW string, keep it on the same page
+					} elseif ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
+						// A filled $workspaceOptions indicated that this call
+						// has it's origin in previous versionizeRecord() processing
+						if (count($workspaceOptions)) {
+							// Versions use live default id, thus the "new"
+							// id is the original live default child record
+							$newId = $v['id'];
+							$this->versionizeRecord(
+								$v['table'], $v['id'],
+								(isset($workspaceOptions['label']) ? $workspaceOptions['label'] : 'Auto-created for WS #' . $this->BE_USER->workspace),
+								(isset($workspaceOptions['delete']) ? $workspaceOptions['delete'] : FALSE)
+							);
+							// Otherwise just use plain copyRecord() to create placeholders etc.
+						} else {
+							// If a record has been copied already during this request,
+							// prevent superfluous duplication and use the existing copy
+							if (isset($this->copyMappingArray[$v['table']][$v['id']])) {
+								$newId = $this->copyMappingArray[$v['table']][$v['id']];
+							} else {
+								$newId = $this->copyRecord($v['table'], $v['id'], $realDestPid);
+							}
+						}
+					} else {
+						// If a record has been copied already during this request,
+						// prevent superfluous duplication and use the existing copy
+						if (isset($this->copyMappingArray[$v['table']][$v['id']])) {
+							$newId = $this->copyMappingArray[$v['table']][$v['id']];
+						} else {
+							$newId = $this->copyRecord_raw($v['table'], $v['id'], $realDestPid, array(), $workspaceOptions);
+						}
+					}
+				}
+				// If the current field is set on a page record, update the pid of related child records:
+				if ($table == 'pages') {
+					$this->registerDBPids[$v['table']][$v['id']] = $uid;
+				} elseif (isset($this->registerDBPids[$table][$uid])) {
+					$this->registerDBPids[$v['table']][$v['id']] = $this->registerDBPids[$table][$uid];
+				}
+				$dbAnalysis->itemArray[$k]['id'] = $newId;
+			}
+			// Store the new values, we will set up the uids for the subtype later on (exception keep localization from original record):
+			$value = implode(',', $dbAnalysis->getValueArray());
+			$this->registerDBList[$table][$uid][$field] = $value;
+		}
+
 		return $value;
 	}
 
