@@ -252,8 +252,8 @@ class Clipboard {
 		$moveLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
 		$copyLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
 		$opt = array();
-		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . IconUtility::skinImg($this->backPath, 'gfx/clip_cut.gif', '', 1) . '\'); background-repeat: no-repeat;" value="" ' . ($this->currentMode() == 'copy' ? '' : 'selected="selected"') . '>' . $moveLabel . '</option>';
-		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . IconUtility::skinImg($this->backPath, 'gfx/clip_copy.gif', '', 1) . '\'); background-repeat: no-repeat;" value="1" ' . ($this->currentMode() == 'copy' ? 'selected="selected"' : '') . '>' . $copyLabel . '</option>';
+		$opt[] = '<option value="" ' . ($this->currentMode() == 'copy' ? '' : 'selected="selected"') . '>' . $moveLabel . '</option>';
+		$opt[] = '<option value="1" ' . ($this->currentMode() == 'copy' ? 'selected="selected"' : '') . '>' . $copyLabel . '</option>';
 		$copymode_selector = ' <select name="CB[setCopyMode]" onchange="this.form.method=\'POST\'; this.form.action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($copymode_url . '&CB[setCopyMode]=')) . '+(this.options[this.selectedIndex].value); this.form.submit(); return true;" >' . implode('', $opt) . '</select>';
 		// Selector menu + clear button
 		$opt = array();
