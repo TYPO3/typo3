@@ -623,9 +623,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$hasMore = $this->totalItems > $this->itemsLimitSingleTable;
 						$colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
 						$rowOutput .= '<tr><td colspan="' . $colspan . '">
-								<a href="' . htmlspecialchars(($this->listURL() . '&table=' . rawurlencode($table))) . '">'
-							. '<img' . IconUtility::skinImg($this->backPath, 'gfx/pildown.gif', 'width="14" height="14"') . ' alt="" />'
-							. ' <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
+								<a href="' . htmlspecialchars(($this->listURL() . '&table=' . rawurlencode($table))) . '" class="btn btn-default">'
+							. '<span class="t3-icon fa fa-ellipsis-h"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
 								</td></tr>';
 					}
 				}
