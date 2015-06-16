@@ -49,7 +49,6 @@ class Clipboard {
 	 * or 'C:/www/htdocs/typo3/32/dummy/fileadmin/sem1_3_examples/alternative_index.php'
 	 *
 	 * 'current' pointer to current tab (among the above...)
-	 * '_setThumb'	boolean: If set, file thumbnails are shown.
 	 *
 	 * The virtual tablename '_FILE' will always indicate files/folders. When checking for elements from eg. 'all tables'
 	 * (by using an empty string) '_FILE' entries are excluded (so in effect only DB elements are counted)
@@ -109,9 +108,8 @@ class Clipboard {
 		for ($a = 1; $a <= $this->numberTabs; $a++) {
 			$this->clipData['tab_' . $a] = is_array($clipData['tab_' . $a]) ? $clipData['tab_' . $a] : array();
 		}
-		// Setting the current pad pointer ($this->current) and _setThumb (which determines whether or not do show file thumbnails)
+		// Setting the current pad pointer ($this->current))
 		$this->clipData['current'] = ($this->current = isset($this->clipData[$clipData['current']]) ? $clipData['current'] : 'normal');
-		$this->clipData['_setThumb'] = $clipData['_setThumb'];
 	}
 
 	/**
@@ -169,11 +167,6 @@ class Clipboard {
 		// Set copy mode of the tab
 		if (isset($cmd['setCopyMode'])) {
 			$this->clipData[$this->current]['mode'] = $this->isElements() ? ($cmd['setCopyMode'] ? 'copy' : '') : '';
-			$this->changed = 1;
-		}
-		// Toggle thumbnail display for files on/off
-		if (isset($cmd['setThumb'])) {
-			$this->clipData['_setThumb'] = $cmd['setThumb'];
 			$this->changed = 1;
 		}
 	}
@@ -245,7 +238,6 @@ class Clipboard {
 		$out = array();
 		$elCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
 		// Button/menu header:
-		$thumb_url = GeneralUtility::linkThisScript(array('CB' => array('setThumb' => $this->clipData['_setThumb'] ? 0 : 1)));
 		$rmall_url = GeneralUtility::linkThisScript(array('CB' => array('removeAll' => $this->current)));
 		// Copymode Selector menu
 		$copymode_url = GeneralUtility::linkThisScript();
@@ -285,14 +277,13 @@ class Clipboard {
 		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">' . implode('', $opt) . '</select>';
 		$out[] = '
 			<tr>
-				<td nowrap="nowrap" class="col-icon">' . '<a href="' . htmlspecialchars($thumb_url) . '#clip_head">' . '<img' . IconUtility::skinImg($this->backPath, ('gfx/thumb_' . ($this->clipData['_setThumb'] ? 's' : 'n') . '.gif'), 'width="21" height="16"') . ' vspace="2" border="0" title="' . $this->clLabel('thumbmode_clip') . '" alt="" />' . '</a>' . '</td>
 				<td nowrap="nowrap" width="95%">' . $copymode_selector . ' ' . $selector_menu . '</td>
 				<td nowrap="nowrap" class="col-control">' . $deleteLink . '</td>
 			</tr>';
 		// Print header and content for the NORMAL tab:
 		$out[] = '
 			<tr>
-				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
+				<td colspan="2"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
 					. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand')))
 					. $this->padTitleWrap($this->clLabel('normal'), 'normal')
 					. '</a></td>
@@ -304,7 +295,7 @@ class Clipboard {
 		for ($a = 1; $a <= $this->numberTabs; $a++) {
 			$out[] = '
 				<tr>
-					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
+					<td colspan="2"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
 						. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand')))
 						. $this->padTitleWrap(sprintf($this->clLabel('cliptabs-name'), $a), ('tab_' . $a))
 						. '</a></td>
@@ -357,12 +348,12 @@ class Clipboard {
 							$thumb = '';
 							$folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
 							$size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
-							$icon = IconUtility::getSpriteIconForResource($fileObject, array('style' => 'margin: 0 20px;', 'title' => $fileObject->getName() . ' ' . $size));
-							if (!$folder && $this->clipData['_setThumb'] && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+							$icon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName() . ' ' . $size));
+							if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {
 									$thumbUrl = $processedFile->getPublicUrl(TRUE);
-									$thumb .= '<br /><img src="' . htmlspecialchars($thumbUrl) . '" ' .
+									$thumb = '<br /><img src="' . htmlspecialchars($thumbUrl) . '" ' .
 											'width="' . $processedFile->getProperty('width') . '" ' .
 											'height="' . $processedFile->getProperty('height') . '" ' .
 											'title="' . htmlspecialchars($fileObject->getName()) . '" alt="" />';
@@ -370,8 +361,7 @@ class Clipboard {
 							}
 							$lines[] = '
 								<tr>
-									<td nowrap="nowrap" class="col-icon">' . $icon . '</td>
-									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $this->getBackendUser()->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
+									<td nowrap="nowrap">' . $icon . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $this->getBackendUser()->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
 											<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($v) . '); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a class="btn btn-default" href="' . htmlspecialchars($this->removeUrl('_FILE', GeneralUtility::shortmd5($v))) . '#clip_head">' . IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>
@@ -389,8 +379,7 @@ class Clipboard {
 						if (is_array($rec)) {
 							$lines[] = '
 								<tr>
-									<td nowrap="nowrap" class="col-icon">' . $this->linkItemText(IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars(BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . '</td>
-									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
+									<td nowrap="nowrap">' . $this->linkItemText(IconUtility::getSpriteIconForRecord($table, $rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
 											<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', \'' . (int)$uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a class="btn btn-default" href="' . htmlspecialchars($this->removeUrl($table, $uid)) . '#clip_head">' . IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>
@@ -412,8 +401,7 @@ class Clipboard {
 		if (!count($lines)) {
 			$lines[] = '
 								<tr>
-									<td class="col-icon"></td>
-									<td colspan="2 nowrap="nowrap" width="95%"><em>(' . $this->clLabel('clipNoEl') . ')</em>&nbsp;</td>
+									<td colspan="2 nowrap="nowrap"><em>(' . $this->clLabel('clipNoEl') . ')</em>&nbsp;</td>
 								</tr>';
 		}
 		$this->endClipboard();
@@ -467,8 +455,7 @@ class Clipboard {
 				foreach ($rows as $rec) {
 					$lines[] = '
 					<tr>
-						<td nowrap="nowrap" class="col-icon">' . IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;')) . '</td>
-						<td nowrap="nowrap" width="95%">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])) . $modeData . '</td>
+						<td nowrap="nowrap">' . IconUtility::getSpriteIconForRecord($table, $rec) . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])) . $modeData . '</td>
 						<td nowrap="nowrap" class="col-control"></td>
 					</tr>';
 				}
