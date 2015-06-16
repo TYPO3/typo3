@@ -16,7 +16,14 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
 
 /**
  * Resizes a given image (if required) and returns its relative path.
@@ -56,12 +63,7 @@ use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
  * Could not get image resource for "NonExistingImage.png".
  * </output>
  */
-class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-	/**
-	 * @var \TYPO3\CMS\Extbase\Service\ImageService
-	 * @inject
-	 */
-	protected $imageService;
+class ImageViewHelper extends AbstractViewHelper  implements CompilableInterface {
 
 	/**
 	 * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src
@@ -77,28 +79,72 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	 * @param int $maxHeight maximum height of the image
 	 * @param bool $treatIdAsReference given src argument is a sys_file_reference record
 	 * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
-	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @throws Exception
 	 * @return string path to the image
 	 */
 	public function render($src = NULL, $image = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $crop = NULL) {
+		return self::renderStatic(
+			array(
+				'src' => $src,
+				'image' => $image,
+				'width' => $width,
+				'height' => $height,
+				'minWidth' => $minWidth,
+				'minHeight' => $minHeight,
+				'maxWidth' => $maxWidth,
+				'maxHeight' => $maxHeight,
+				'treatIdAsReference' => $treatIdAsReference,
+				'crop' => $crop,
+			),
+			$this->buildRenderChildrenClosure(),
+			$this->renderingContext
+		);
+	}
+
+	/**
+	 * @param array $arguments
+	 * @param callable $renderChildrenClosure
+	 * @param RenderingContextInterface $renderingContext
+	 * @return string
+	 */
+	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		$src = $arguments['src'];
+		$image = $arguments['image'];
+		$treatIdAsReference = $arguments['treatIdAsReference'];
+		$crop = $arguments['crop'];
+
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284105);
+			throw new Exception('You must either specify a string src or a File object.', 1382284105);
 		}
 		if ($crop === NULL) {
 			$crop = $image instanceof FileReference ? $image->getProperty('crop') : NULL;
 		}
-		$image = $this->imageService->getImage($src, $image, $treatIdAsReference);
+
+		$imageService = self::getImageService();
+
+		$image = $imageService->getImage($src, $image, $treatIdAsReference);
 		$processingInstructions = array(
-			'width' => $width,
-			'height' => $height,
-			'minWidth' => $minWidth,
-			'minHeight' => $minHeight,
-			'maxWidth' => $maxWidth,
-			'maxHeight' => $maxHeight,
+			'width' => $arguments['width'],
+			'height' => $arguments['height'],
+			'minWidth' => $arguments['minWidth'],
+			'minHeight' => $arguments['minHeight'],
+			'maxWidth' => $arguments['maxWidth'],
+			'maxHeight' => $arguments['maxHeight'],
 			'crop' => $crop,
 		);
-		$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-		return $this->imageService->getImageUri($processedImage);
+		$processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
+		return $imageService->getImageUri($processedImage);
+	}
+
+	/**
+	 * Return an instance of ImageService using object manager
+	 *
+	 * @return ImageService
+	 */
+	static protected function getImageService() {
+		/** @var ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		return $objectManager->get(ImageService::class);
 	}
 
 }
