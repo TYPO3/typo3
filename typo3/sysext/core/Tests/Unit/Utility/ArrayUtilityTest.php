@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
@@ -22,7 +23,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class ArrayUtilityTest extends UnitTestCase {
 
 	///////////////////////
 	// Tests concerning filterByValueRecursive
@@ -203,34 +204,14 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function isValidPathReturnsTrueIfPathExists() {
-		$className = $this->getUniqueId('ArrayUtility');
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
-			'  static public function getValueByPath() {' .
-			'    return 42;' .
-			'  }' .
-			'}'
-		);
-		$className = __NAMESPACE__ . '\\' . $className;
-		$this->assertTrue($className::isValidPath(array('foo'), 'foo'));
+		$this->assertTrue(ArrayUtility::isValidPath(array('foo' => 'bar'), 'foo'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isValidPathReturnsFalseIfPathDoesNotExist() {
-		$className = $this->getUniqueId('ArrayUtility');
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {' .
-			'  static public function getValueByPath() {' .
-			'    throw new \RuntimeException(\'foo\', 123);' .
-			'  }' .
-			'}'
-		);
-		$className = __NAMESPACE__ . '\\' . $className;
-		$this->assertFalse($className::isValidPath(array('foo'), 'foo'));
+		$this->assertFalse(ArrayUtility::isValidPath(array('foo' => 'bar'), 'bar'));
 	}
 
 	///////////////////////
@@ -1742,6 +1723,12 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider
+	 * @param array $input1 Input 1
+	 * @param array $input2 Input 2
+	 * @param bool $addKeys TRUE if should add keys, else FALSE
+	 * @param bool $includeEmptyValues TRUE if should include empty values, else FALSE
+	 * @param bool $enableUnsetFeature TRUE if should enable unset feature, else FALSE
+	 * @param array $expected expected array
 	 */
 	public function mergeRecursiveWithOverruleCalculatesExpectedResult($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature, $expected) {
 		ArrayUtility::mergeRecursiveWithOverrule($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature);
@@ -1754,6 +1741,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider inArrayDataProvider
+	 * @param array $array target array
+	 * @param string $item search string
+	 * @param bool $expected expected value
 	 */
 	public function inArrayChecksStringExistenceWithinArray($array, $item, $expected) {
 		$this->assertEquals($expected, ArrayUtility::inArray($array, $item));
@@ -1843,6 +1833,9 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider keepItemsInArrayWorksWithOneArgumentDataProvider
+	 * @param mixed $search The items which are allowed/kept in the array
+	 * @param array $array target array
+	 * @param array $expected expected array
 	 */
 	public function keepItemsInArrayWorksWithOneArgument($search, $array, $expected) {
 		$this->assertEquals($expected, ArrayUtility::keepItemsInArray($array, $search));
