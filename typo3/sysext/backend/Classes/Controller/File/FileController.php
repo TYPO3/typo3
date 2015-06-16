@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -165,10 +166,10 @@ class FileController {
 	 * actual return value
 	 *
 	 * @param array $params Always empty.
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
+	 * @param AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
 	 * @return void
 	 */
-	public function processAjaxRequest(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
+	public function processAjaxRequest(array $params, AjaxRequestHandler $ajaxObj) {
 		$this->init();
 		$this->main();
 		$errors = $this->fileProcessor->getErrorMessages();
@@ -193,6 +194,26 @@ class FileController {
 			}
 			$ajaxObj->setContentFormat('json');
 		}
+	}
+
+	/**
+	 * Ajax entry point to check if a file exists in a folder
+	 *
+	 * @param array $params Always empty.
+	 * @param AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
+	 * @return void
+	 */
+	public function fileExistsAjaxRequest(array $params, AjaxRequestHandler $ajaxObj) {
+		$fileName = GeneralUtility::_GP('fileName');
+		$fileTarget = GeneralUtility::_GP('fileTarget');
+
+		/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
+		$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+		$fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
+		$processedFileName = $fileTargetObject->getStorage()->processUploadedFileName($fileTargetObject, $fileName);
+
+		$ajaxObj->addContent('result', $fileTargetObject->hasFile($processedFileName));
+		$ajaxObj->setContentFormat('json');
 	}
 
 	/**

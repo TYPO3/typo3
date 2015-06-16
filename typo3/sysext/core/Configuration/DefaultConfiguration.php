@@ -650,6 +650,10 @@ return array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Controller\File\FileController::class . '->processAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
+			'TYPO3_tcefile::fileExists' => array(
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\File\FileController::class . '->fileExistsAjaxRequest',
+				'csrfTokenCheck' => TRUE
+			),
 			't3lib_TCEforms_inline::createNewRecord' => array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE

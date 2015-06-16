@@ -1053,6 +1053,30 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 	}
 
+	/**
+	 * Process uploaded file name
+	 *
+	 * @param Folder $targetFolder The target folder where the file should be added
+	 * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
+	 *
+	 * @throws \InvalidArgumentException
+	 * @throws Exception\ExistingTargetFileNameException
+	 * @return FileInterface
+	 */
+	public function processUploadedFileName(Folder $targetFolder, $targetFileName) {
+
+		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
+		$targetFileName = $this->driver->sanitizeFileName($targetFileName);
+
+		$this->assureFileAddPermissions($targetFolder, $targetFileName);
+
+		// The file name could be changed by an external slot
+		$targetFileName = $this->emitPreFileAddSignal($targetFileName, $targetFolder);
+
+		return $targetFileName;
+	}
+
+
 	/********************
 	 * FILE ACTIONS
 	 ********************/
@@ -2238,7 +2262,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param string $sourceFilePath
 	 * @return string Modified target file name
 	 */
-	protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath) {
+	protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath = '') {
 		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
 		return $targetFileName;
 	}
