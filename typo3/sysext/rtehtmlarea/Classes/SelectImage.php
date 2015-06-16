@@ -136,11 +136,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		}');
 		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
-			SelectImage.editorNo = "' . $this->editorNo . '";
-			SelectImage.act = "' . ($this->act ?: reset($this->allowedItems)) . '";
-			SelectImage.sys_language_content = "' . $this->sys_language_content . '";
-			SelectImage.RTEtsConfigParams = "' . rawurlencode($this->RTEtsConfigParams) . '";
-			SelectImage.bparams = "' . $this->bparams . '";
+			SelectImage.editorNo = ' . GeneralUtility::quoteJSvalue($this->editorNo) . ';
+			SelectImage.act = ' . GeneralUtility::quoteJSvalue(($this->act ?: reset($this->allowedItems))) . ';
+			SelectImage.sys_language_content = ' . GeneralUtility::quoteJSvalue($this->sys_language_content) . ';
+			SelectImage.RTEtsConfigParams = ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
+			SelectImage.bparams = ' . GeneralUtility::quoteJSvalue($this->bparams) . ';
 		}');
 		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
@@ -276,7 +276,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	<title>Untitled</title>
 	<script type="text/javascript">
 	/*<![CDATA[*/
-		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
+		var plugin = window.parent.RTEarea[' . GeneralUtility::quoteJSvalue($this->editorNo) . '].editor.getPlugin("TYPO3Image");
 		var imageTags = [];
 		function insertImage(file,width,height,alt,title,additionalParams) {
 			imageTags.push(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\'' . ($this->defaultClass ? '+\' class="' . $this->defaultClass . '"\'' : '') . '+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
