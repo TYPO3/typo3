@@ -18,7 +18,7 @@ return array(
 		'searchFields' => 'title,path'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'title,hidden,path,base'
+		'showRecordFieldList' => 'title,hidden,path,base,description'
 	),
 	'columns' => array(
 		'title' => array(
@@ -34,6 +34,15 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.disable',
 			'config' => array(
 				'type' => 'check'
+			)
+		),
+		'description' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
+			'config' => array(
+				'type' => 'text',
+				'rows' => 5,
+				'cols' => 30,
+				'max' => '2000',
 			)
 		),
 		'base' => array(
@@ -61,7 +70,7 @@ return array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => '--palette--;;mount, base, path, read_only')
+		'0' => array('showitem' => '--palette--;;mount, description, base, path, read_only')
 	),
 	'palettes' => array(
 		'mount' => array('showitem' => 'title,hidden', 'canNotCollapse' => 1)
