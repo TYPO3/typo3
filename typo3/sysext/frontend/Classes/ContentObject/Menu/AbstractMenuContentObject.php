@@ -480,11 +480,15 @@ class AbstractMenuContentObject {
 						if ($value == '') {
 							$value = $this->id;
 						}
+						$skippedEnableFields = array();
+						if (!empty($this->mconf['showAccessRestrictedPages'])) {
+							$skippedEnableFields = array('fe_group' => 1);
+						}
 						/** @var \TYPO3\CMS\Core\Database\RelationHandler $loadDB*/
 						$loadDB = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 						$loadDB->setFetchAllFields(TRUE);
 						$loadDB->start($value, 'pages');
-						$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages');
+						$loadDB->additionalWhere['pages'] = $this->parent_cObj->enableFields('pages', FALSE, $skippedEnableFields);
 						$loadDB->getFromDB();
 						foreach ($loadDB->itemArray as $val) {
 							$MP = $this->tmpl->getFromMPmap($val['id']);
