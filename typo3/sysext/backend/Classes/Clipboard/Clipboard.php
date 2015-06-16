@@ -277,13 +277,13 @@ class Clipboard {
 		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">' . implode('', $opt) . '</select>';
 		$out[] = '
 			<tr>
-				<td nowrap="nowrap" width="95%">' . $copymode_selector . ' ' . $selector_menu . '</td>
+				<td colspan="2" nowrap="nowrap" width="95%">' . $copymode_selector . ' ' . $selector_menu . '</td>
 				<td nowrap="nowrap" class="col-control">' . $deleteLink . '</td>
 			</tr>';
 		// Print header and content for the NORMAL tab:
 		$out[] = '
 			<tr>
-				<td colspan="2"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
+				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
 					. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand')))
 					. $this->padTitleWrap($this->clLabel('normal'), 'normal')
 					. '</a></td>
@@ -295,7 +295,7 @@ class Clipboard {
 		for ($a = 1; $a <= $this->numberTabs; $a++) {
 			$out[] = '
 				<tr>
-					<td colspan="2"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
+					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
 						. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand')))
 						. $this->padTitleWrap(sprintf($this->clLabel('cliptabs-name'), $a), ('tab_' . $a))
 						. '</a></td>
@@ -361,7 +361,8 @@ class Clipboard {
 							}
 							$lines[] = '
 								<tr>
-									<td nowrap="nowrap">' . $icon . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $this->getBackendUser()->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
+									<td nowrap="nowrap" class="col-icon">' . $icon . '</td>
+									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileObject->getName(), $this->getBackendUser()->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
 											<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($v) . '); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a class="btn btn-default" href="' . htmlspecialchars($this->removeUrl('_FILE', GeneralUtility::shortmd5($v))) . '#clip_head">' . IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>
@@ -379,7 +380,8 @@ class Clipboard {
 						if (is_array($rec)) {
 							$lines[] = '
 								<tr>
-									<td nowrap="nowrap">' . $this->linkItemText(IconUtility::getSpriteIconForRecord($table, $rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
+									<td nowrap="nowrap" class="col-icon">' . $this->linkItemText(IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars(BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . '</td>
+									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
 											<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', \'' . (int)$uid . '\'); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a class="btn btn-default" href="' . htmlspecialchars($this->removeUrl($table, $uid)) . '#clip_head">' . IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>
@@ -401,7 +403,8 @@ class Clipboard {
 		if (!count($lines)) {
 			$lines[] = '
 								<tr>
-									<td colspan="2 nowrap="nowrap"><em>(' . $this->clLabel('clipNoEl') . ')</em>&nbsp;</td>
+									<td class="col-icon"></td>
+									<td colspan="2 nowrap="nowrap" width="95%"><em>(' . $this->clLabel('clipNoEl') . ')</em>&nbsp;</td>
 								</tr>';
 		}
 		$this->endClipboard();
@@ -455,7 +458,8 @@ class Clipboard {
 				foreach ($rows as $rec) {
 					$lines[] = '
 					<tr>
-						<td nowrap="nowrap">' . IconUtility::getSpriteIconForRecord($table, $rec) . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])) . $modeData . '</td>
+						<td nowrap="nowrap" class="col-icon">' . IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;')) . '</td>
+						<td nowrap="nowrap" width="95%">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])) . $modeData . '</td>
 						<td nowrap="nowrap" class="col-control"></td>
 					</tr>';
 				}
