@@ -164,9 +164,16 @@ class FlashMessageQueue extends \SplQueue {
 		$content = '';
 		$flashMessages = $this->getAllMessagesAndFlush();
 		if (!empty($flashMessages)) {
+			$content = '<ul class="typo3-messages">';
 			foreach ($flashMessages as $flashMessage) {
-				$content .= $flashMessage->render();
+				$severityClass = sprintf('alert %s', $flashMessage->getClass());
+				$messageContent = htmlspecialchars($flashMessage->getMessage());
+				if ($flashMessage->getTitle() !== '') {
+					$messageContent = sprintf('<h4>%s</h4>', htmlspecialchars($flashMessage->getTitle())) . $messageContent;
+				}
+				$content .= sprintf('<li class="%s">%s</li>', htmlspecialchars($severityClass), $messageContent);
 			}
+			$content .= '</ul>';
 		}
 		return $content;
 	}

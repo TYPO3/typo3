@@ -1746,11 +1746,7 @@ function jumpToUrl(URL) {
 		$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
 		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-		$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
-		if (!empty($flashMessages)) {
-			$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
-		}
-		return $flashMessages;
+		return $defaultFlashMessageQueue->renderFlashMessages();
 	}
 
 	/**
