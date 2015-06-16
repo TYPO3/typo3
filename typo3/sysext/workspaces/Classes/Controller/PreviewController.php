@@ -264,7 +264,6 @@ class PreviewController extends AbstractController {
 			this.PATH_typo3_enc = TYPO3.configuration.PATH_typo3_enc;
 			this.username = TYPO3.configuration.username;
 			this.uniqueID = TYPO3.configuration.uniqueID;
-			this.navFrameWidth = 0;
 			this.securityLevel = TYPO3.configuration.securityLevel;
 			this.veriCode = TYPO3.configuration.veriCode;
 			this.denyFileTypes = TYPO3.configuration.denyFileTypes;

@@ -143,7 +143,8 @@ $GLOBALS['TBE_STYLES'] = array(
 	),
 	'borderschemes' => array(
 		'0' => array('border:solid 1px black;', 5)
-	)
+	),
+	'skinImg' => array()
 );
 
 
