@@ -446,7 +446,15 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			throw new \Exception($this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.noSubject'), '1295476808');
 		}
 		if (!empty($this->email)) {
-			$emailList = GeneralUtility::trimExplode(',', $this->email);
+			// Check if old input field value is still there and save the value a
+			if (strpos($this->email, ',') !== FALSE) {
+				$emailList = GeneralUtility::trimExplode(',', $this->email, TRUE);
+				$this->email = implode(LF, $emailList);
+				$this->save();
+			} else {
+				$emailList = GeneralUtility::trimExplode(LF, $this->email, TRUE);
+			}
+
 			foreach ($emailList as $emailAdd) {
 				if (!GeneralUtility::validEmail($emailAdd)) {
 					throw new \Exception($this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidToEmail'), '1295476821');

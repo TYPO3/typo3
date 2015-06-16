@@ -137,8 +137,8 @@ class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInt
 			'label' => $label
 		);
 		$fieldId = 'task_email';
-		$fieldCode = '<input type="text" class="form-control" name="tx_scheduler[linkvalidator][email]" id="' . $fieldId . '" value="' .
-					htmlspecialchars($taskInfo['email']) . '">';
+		$fieldCode = '<textarea class="form-control" rows="5" cols="50" name="tx_scheduler[linkvalidator][email]" id="' . $fieldId . '">'.
+					htmlspecialchars($taskInfo['email']) . '</textarea>';
 		$label = $lang->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.validate.email');
 		$label = BackendUtility::wrapInHelp('linkvalidator', $fieldId, $label);
 		$additionalFields[$fieldId] = array(
