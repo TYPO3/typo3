@@ -72,21 +72,21 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
 		if ($pageRecord['uid']) {
 			// If there IS a real page
 			$alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
+			$theIcon = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
 			// Make Icon:
-			$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+			$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
+
+			// Setting icon with clickmenu + uid
+			$theIcon .= ' <em>[PID: ' . $pageRecord['uid'] . ']</em>';
 		} else {
 			// On root-level of page tree
 			// Make Icon
-			$iconImg = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
+			$theIcon = IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
 			if ($GLOBALS['BE_USER']->user['admin']) {
-				$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
-			} else {
-				$theIcon = $iconImg;
+				$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', 0);
 			}
 		}
-		// Setting icon with clickmenu + uid
-		return $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
+		return $theIcon;
 	}
 
 }
