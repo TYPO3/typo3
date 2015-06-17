@@ -1502,7 +1502,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$exportFiles = array();
 
 		$folder = $this->getDefaultImportExportFolder();
-		if ($folder !== FALSE) {
+		if ($folder !== NULL) {
 
 			/** @var $filter \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter */
 			$filter = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter::class);
