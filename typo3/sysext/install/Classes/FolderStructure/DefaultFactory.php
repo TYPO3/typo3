@@ -190,6 +190,11 @@ class DefaultFactory {
 								),
 							),
 						),
+						array(
+							'name' => 'tx_felogin',
+							'type' => 'TYPO3\\CMS\\install\\FolderStructure\\DirectoryNode',
+							'targetPermission' => $directoryPermission,
+						),
 					),
 				),
 				array(
