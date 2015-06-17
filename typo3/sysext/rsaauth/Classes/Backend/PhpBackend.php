@@ -44,7 +44,10 @@ class PhpBackend extends AbstractBackend {
 			openssl_pkey_export($privateKey, $privateKeyStr);
 			// Prepare public key information
 			$exportedData = '';
-			$csr = openssl_csr_new(array(), $privateKey);
+			$csr = openssl_csr_new(array(
+				'localityName' => 'foo',
+				'organizationName' => 'bar',
+			), $privateKey);
 			openssl_csr_export($csr, $exportedData, FALSE);
 			// Get public key (in fact modulus) and exponent
 			$publicKey = $this->extractPublicKeyModulus($exportedData);
