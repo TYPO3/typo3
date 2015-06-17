@@ -47,6 +47,15 @@ class FileMountTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function setDescriptionSetsDescription() {
+		$description = 'This is the foobar mount, used for foo and bar';
+		$this->subject->setDescription($description);
+		$this->assertSame($description, $this->subject->getDescription());
+	}
+
+	/**
+	 * @test
+	 */
 	public function getPathInitiallyReturnsEmptyString() {
 		$this->assertSame('', $this->subject->getPath());
 	}

@@ -30,6 +30,13 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $title = '';
 
 	/**
+	 * Description of the file mount.
+	 *
+	 * @var string
+	 */
+	protected $description;
+
+	/**
 	 * Path of the file mount.
 	 *
 	 * @var string
@@ -72,6 +79,25 @@ class FileMount extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setTitle($value) {
 		$this->title = $value;
+	}
+
+	/**
+	 * Getter for the description of the file mount.
+	 *
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 * Setter for the description of the file mount.
+	 *
+	 * @param string $description
+	 * @return void
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
 	}
 
 	/**
