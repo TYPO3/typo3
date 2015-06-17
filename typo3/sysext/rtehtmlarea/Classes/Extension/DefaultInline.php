@@ -31,13 +31,6 @@ class DefaultInline extends RteHtmlAreaApi {
 	protected $pluginName = 'DefaultInline';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/DefaultInline/locallang.xlf';
-
-	/**
 	 * Path to the skin file relative to the extension directory
 	 *
 	 * @var string

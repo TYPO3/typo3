@@ -31,13 +31,6 @@ class BlockStyle extends RteHtmlAreaApi {
 	protected $pluginName = 'BlockStyle';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/BlockStyle/locallang.xlf';
-
-	/**
 	 * Path to the skin file relative to the extension directory
 	 *
 	 * @var string
