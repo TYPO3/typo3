@@ -3623,7 +3623,7 @@ class DataHandler {
 	}
 
 	/**
-	 * Processes the children of an MM relation field when the parent record is copied.
+	 * Processes the children of an MM relation field (select, group, inline) when the parent record is copied.
 	 *
 	 * @param string $table
 	 * @param int $uid
@@ -3635,8 +3635,7 @@ class DataHandler {
 	 * @param string $inlineSubType
 	 * @return mixed
 	 */
-	protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode,
-	                                             $inlineSubType) {
+	protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode, $inlineSubType) {
 		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 		$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
@@ -3647,31 +3646,27 @@ class DataHandler {
 		$dbAnalysis = $this->createRelationHandlerInstance();
 		$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
 		// Localize referenced records of select fields:
-		if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
+		$localizingNonManyToManyFieldReferences = $localizeReferences && empty($mmTable);
+		$isInlineFieldInSelectMode = $localizationMode === 'select' && $inlineSubType === 'mm';
+		$purgeItems = FALSE;
+		if ($language > 0 && ($localizingNonManyToManyFieldReferences || $isInlineFieldInSelectMode)) {
 			foreach ($dbAnalysis->itemArray as $index => $item) {
 				// Since select fields can reference many records, check whether there's already a localization:
 				$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
 				if ($recordLocalization) {
 					$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
 				} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
-					$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
+					if ($localizingNonManyToManyFieldReferences || $localizeChildren) {
+						$dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
+					} else {
+						unset($dbAnalysis->itemArray[$index]);
+					}
 				}
 			}
-			$dbAnalysis->purgeItemArray();
-			$value = implode(',', $dbAnalysis->getValueArray($prependName));
-		} elseif ($language > 0 && $localizeChildren === FALSE && $localizationMode === 'select' && $inlineSubType === 'mm') {
-			foreach ($dbAnalysis->itemArray as $index => $item) {
-				// Since select fields can reference many records, check whether there's already a localization:
-				$recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
-				if ($recordLocalization) {
-					$dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
-				} elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize') === FALSE) {
-					unset($dbAnalysis->itemArray[$index]);
-				}
-			}
-			$dbAnalysis->purgeItemArray();
-			$value = implode(',', $dbAnalysis->getValueArray($prependName));
-		} elseif ($mmTable) {
+			$purgeItems = TRUE;
+		}
+
+		if ($purgeItems || $mmTable) {
 			$dbAnalysis->purgeItemArray();
 			$value = implode(',', $dbAnalysis->getValueArray($prependName));
 		}
