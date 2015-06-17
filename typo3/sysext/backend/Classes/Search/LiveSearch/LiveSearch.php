@@ -212,9 +212,12 @@ class LiveSearch {
 			$collect[] = array(
 				'id' => $tableName . ':' . $row['uid'],
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
-				'recordTitle' => $isFirst ? $this->getRecordTitlePrep($this->getTitleOfCurrentRecordType($tableName), self::GROUP_TITLE_MAX_LENGTH) : '',
+				'table' => array(
+					'title' => $this->getTitleOfCurrentRecordType($tableName),
+					'name' => $tableName,
+				),
 				'iconHTML' => IconUtility::getSpriteIconForRecord($tableName, $row, array('title' => 'id=' . $row['uid'] . ', pid=' . $row['pid'])),
-				'title' => $this->getRecordTitlePrep(BackendUtility::getRecordTitle($tableName, $row), self::RECORD_TITLE_MAX_LENGTH),
+				'title' => BackendUtility::getRecordTitle($tableName, $row),
 				'editLink' => $this->getEditLink($tableName, $row)
 			);
 			$isFirst = FALSE;
@@ -435,7 +438,6 @@ class LiveSearch {
 	 * @return string Comma separated list of uids
 	 */
 	protected function getAvailablePageIds($id, $depth) {
-		$idList = '';
 		$tree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\PageTreeView::class);
 		$tree->init('AND ' . $this->userPermissions);
 		$tree->makeHTML = 0;

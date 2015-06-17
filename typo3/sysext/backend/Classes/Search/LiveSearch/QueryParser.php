@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 /**
  * Class for parsing query parameters in backend live search.
+ * Detects searches for #pages:23 or #content:mycontent
  */
 class QueryParser {
 
@@ -46,9 +47,7 @@ class QueryParser {
 	 * @return string Command name
 	 */
 	protected function extractKeyFromQuery($query) {
-		$keyAndValue = substr($query, 1);
-		$key = explode(':', $keyAndValue);
-		$this->commandKey = $key[0];
+		list($this->commandKey) = explode(':', substr($query, 1));
 	}
 
 	/**
@@ -71,7 +70,7 @@ class QueryParser {
 	public function getTableNameFromCommand($query) {
 		$tableName = '';
 		$this->extractKeyFromQuery($query);
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']) && array_key_exists($this->commandKey, $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'])) {
+		if (array_key_exists($this->commandKey, $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'])) {
 			$tableName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch'][$this->commandKey];
 		}
 		return $tableName;

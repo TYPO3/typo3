@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -28,25 +29,23 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->getPageRenderer()->addJsFile('sysext/backend/Resources/Public/JavaScript/livesearch.js');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LiveSearch');
 	}
 
 	/**
-	 * Checks whether the user has access to this toolbar item
+	 * Checks whether the user has access to this toolbar item,
+	 * only allowed when the list module is available
 	 *
 	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		$access = FALSE;
-		// Loads the backend modules available for the logged in user.
-		$loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
-		$loadModules->observeWorkspaces = TRUE;
-		$loadModules->load($GLOBALS['TBE_MODULES']);
+		/** @var BackendModuleRepository $backendModuleRepository */
+		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $listModule */
+
 		// Live search is heavily dependent on the list module and only available when that module is.
-		if (is_array($loadModules->modules['web']['sub']['list'])) {
-			$access = TRUE;
-		}
-		return $access;
+		$listModule = $backendModuleRepository->findByModuleName('web_list');
+		return $listModule !== NULL;
 	}
 
 	/**
@@ -56,9 +55,9 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getItem() {
 		return '
-			<form class="typo3-topbar-navigation-search live-search-wrapper" role="search">
+			<form class="typo3-topbar-navigation-search t3js-topbar-navigation-search live-search-wrapper" role="search">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search" id="live-search-box">
+					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="Search" id="live-search-box" autocomplete="off">
 				</div>
 			</form>
 		';

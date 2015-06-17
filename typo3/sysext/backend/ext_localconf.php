@@ -25,3 +25,6 @@ if (TYPO3_MODE === 'BE') {
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController']['default'] = \TYPO3\CMS\Core\FrontendEditing\FrontendEditingController::class;
+
+// Register search key shortcuts
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';

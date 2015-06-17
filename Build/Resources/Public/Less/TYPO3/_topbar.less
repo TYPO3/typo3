@@ -240,7 +240,8 @@
 			margin-right: -@topbar-dropdown-padding;
 			padding: (@topbar-dropdown-padding / 2) @topbar-dropdown-padding;
 		}
-		.dropdown-intro {
+		.dropdown-intro,
+		.dropdown-info {
 			color: darken(@topbar-color, 20%);
 			margin-left: -@topbar-dropdown-padding;
 			margin-right: -@topbar-dropdown-padding;
@@ -329,6 +330,8 @@
 	padding: 0;
 	margin: 0;
 	.form-group {
+		margin-top: 0;
+		margin-bottom: 0;
 		&:before {
 			content: "\f002";
 			font: normal normal normal 14px/1 FontAwesome;
@@ -340,10 +343,10 @@
 		}
 	}
 	.form-control {
-		box-sizing: content-box;
 		background-color: @tobar-navigation-search-bg;
 		color: @topbar-navigation-color;
-		height: @topbar-height - 27px;
+		height: @topbar-height;
+		width: 300px;
 		padding: 14px 30px 13px 35px;
 		border: none;
 		border-left: 1px solid lighten(@topbar-navigation-border-color, 10%);
@@ -354,7 +357,7 @@
 		}
 		&:focus {
 			outline: none;
-			border-left-color: lighten(@topbar-navigation-border-color, 15%);
+			border-left-color: lighten(@topbar-navigation-border-color, 25%);
 			background-color: @tobar-navigation-search-focus-bg;
 			.box-shadow(none);
 		}
@@ -367,81 +370,14 @@
 			margin-top: -8px;
 		}
 	}
-}
-
-// Livesearch
-.live-search-list {
-	.typo3-topbar-navigation-items .dropdown-menu();
-	right: auto;
-	padding: 0;
-	.x-toolbar {
-		padding: 0;
-		border: none;
-		background: transparent;
+	.dropdown-menu {
+		left: auto!important; // Needs to be important to override inline styes of typeahead
+		width: 350px;
 	}
-	.x-combo-list-hd,
-	.x-combo-list-inner,
-	.x-combo-list-ft {
-		border: none;
-		background: transparent;
-		color: @topbar-dropdown-color;
-		padding: @topbar-dropdown-padding;
-	}
-	.x-combo-list-hd {
-		background-color: lighten(@topbar-dropdown-bg,3%);
-		border-top: 0;
-		border-bottom: 1px solid @topbar-navigation-border-color;
-	}
-	.x-combo-list-ft {
-		padding-top: 0;
-		border-bottom: 0;
-	}
-	.x-combo-list-inner {
-		padding-right: 0;
-		border-top: 1px solid lighten(@topbar-navigation-border-color, 10%);
-	}
-	.x-btn {
-		background: none;
-		border: none;
-		color: inherit;
-		.x-btn-tl,
-		.x-btn-tc,
-		.x-btn-tr,
-		.x-btn-ml,
-		.x-btn-mr,
-		.x-btn-bl,
-		.x-btn-bc,
-		.x-btn-br {
-			display: none;
+	.dropdown-list-link {
+		max-width: none;
+		.typeahead-highlight {
+			font-weight: normal;
 		}
-		button {
-			.btn();
-			.btn-sm();
-			.btn-default();
-			height: auto!important;
-		}
-	}
-	.search-item-type {
-		padding: 5px 20px 5px 0;
-		white-space: nowrap;
-	}
-	.search-item-title {
-		border-radius: 2px 0 0 2px;
-		padding: 5px 20px 5px 10px;
-		&.x-combo-selected {
-			border: none!important;
-			background-color: lighten(@topbar-dropdown-bg, 10%);
-		}
-	}
-}
-.search-list-help-content {
-	padding: @topbar-dropdown-padding;
-	strong {
-		display: block;
-		margin-bottom: 0.5em;
-	}
-	p {
-		margin-top: 0.5em;
-		margin-bottom: 0;
 	}
 }

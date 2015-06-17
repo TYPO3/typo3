@@ -1565,6 +1565,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				'autosize' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/autosize',
 				'taboverride' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/taboverride.min',
 				'twbs/bootstrap-slider' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap-slider.min',
+				'typeaheadjs' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/typeahead',
 			);
 			// get all extensions that are loaded
 			$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();

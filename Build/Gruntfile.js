@@ -76,6 +76,7 @@ module.exports = function(grunt) {
 					'placeholders.jquery.min.js': 'Placeholders.js/dist/placeholders.jquery.min.js',
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
 					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
+					'typeahead.js': 'typeahead.js/dist/typeahead.jquery.min.js',
 
 					/**
 					 * copy needed files of scriptaculous

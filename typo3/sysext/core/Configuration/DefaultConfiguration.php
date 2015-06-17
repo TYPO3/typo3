@@ -266,6 +266,7 @@ return array(
 				'svg' => 'image/svg+xml'
 			)
 		),
+		'livesearch' => array(),	// Array: keywords used for commands to search for specific tables
 		'isInitialInstallationInProgress' => FALSE,		// Boolean: If TRUE, the installation is 'in progress'. This value is handled within the install tool step installer internally.
 		'clearCacheSystem' => FALSE,		// Boolean: If set, the toolbar menu entry for clearing system caches (core cache, class cache, etc.) is visible for admin users.
 		'formEngine' => array(
@@ -750,6 +751,10 @@ return array(
 			),
 			'ImageManipulationWizard::getHtmlForImageManipulationWizard' => array(
 				'callbackMethod' => \TYPO3\CMS\Backend\Form\Wizard\ImageManipulationWizard::class . '->getHtmlForImageManipulationWizard',
+				'csrfTokenCheck' => TRUE
+			),
+			'LiveSearch' => array(
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\LiveSearchController::class . '->liveSearchAction',
 				'csrfTokenCheck' => TRUE
 			)
 		),

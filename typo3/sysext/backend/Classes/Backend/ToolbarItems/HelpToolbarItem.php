@@ -35,7 +35,7 @@ class HelpToolbarItem implements ToolbarItemInterface {
 	public function __construct() {
 		/** @var BackendModuleRepository $backendModuleRepository */
 		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
-		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
+		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $helpModuleMenu */
 		$helpModuleMenu = $backendModuleRepository->findByModuleName('help');
 		if ($helpModuleMenu && $helpModuleMenu->getChildren()->count() > 0) {
 			$this->helpModuleMenu = $helpModuleMenu;

@@ -522,12 +522,6 @@ class Bootstrap {
 				\TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class
 			);
 			ExtensionManagementUtility::registerExtDirectComponent(
-				'TYPO3.LiveSearchActions.ExtDirect',
-				\TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect\LiveSearchDataProvider::class,
-				'web_list',
-				'user,group'
-			);
-			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.ExtDirectStateProvider.ExtDirect',
 				\TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider::class
 			);

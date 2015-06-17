@@ -16,4 +16,9 @@ the sources are fetched via bower.
 Twitter Bootstrap 3 is not shipped as an AMD module, and has been adapted to be
 wrapped as an AMD module called "bootstrap".
 
+- typeahead.js
+The typeahead.js AMD still has a bug that the AMD module is called wrongly, thus
+it is changed manually by TYPO3 to be called "typeaheadjs", and used like that in
+the Core.
+
 Benni, March 2015.
