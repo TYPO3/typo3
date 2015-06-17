@@ -320,6 +320,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @return string HTML table with the listing for the record.
 	 */
 	public function getTable($table, $id, $rowList = '') {
+		$rowListArray = GeneralUtility::trimExplode(',', $rowList, TRUE);
+		// if no columns have been specified, show description (if configured)
+		if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && empty($rowListArray)) {
+			array_push($rowListArray, $GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']);
+		}
 		$backendUser = $this->getBackendUserAuthentication();
 		$lang = $this->getLanguageService();
 		$db = $this->getDatabaseConnection();
@@ -365,7 +370,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			)';
 		}
 		// Cleaning up:
-		$this->fieldArray = array_unique(array_merge($this->fieldArray, GeneralUtility::trimExplode(',', $rowList, TRUE)));
+		$this->fieldArray = array_unique(array_merge($this->fieldArray, $rowListArray));
 		if ($this->noControlPanels) {
 			$tempArray = array_flip($this->fieldArray);
 			unset($tempArray['_CONTROL_']);

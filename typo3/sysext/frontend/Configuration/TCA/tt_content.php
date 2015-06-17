@@ -3,6 +3,7 @@ return array(
 	'ctrl' => array(
 		'label' => 'header',
 		'label_alt' => 'subheader,bodytext',
+		'descriptionColumn' => 'rowDescription',
 		'sortby' => 'sorting',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
@@ -61,7 +62,7 @@ return array(
 	),
 	'interface' => array(
 		'always_description' => 0,
-		'showRecordFieldList' => 'CType,header,header_link,bodytext,image,media,imagewidth,imageorient,records,colPos,starttime,endtime,fe_group'
+		'showRecordFieldList' => 'CType,header,rowDescription,header_link,bodytext,image,media,imagewidth,imageorient,records,colPos,starttime,endtime,fe_group'
 	),
 	'columns' => array(
 		'CType' => array(
@@ -306,6 +307,14 @@ return array(
 				'type' => 'input',
 				'size' => '50',
 				'max' => '256'
+			)
+		),
+		'rowDescription' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
+			'config' => array(
+				'type' => 'text',
+				'rows' => 5,
+				'cols' => 30
 			)
 		),
 		'header_link' => array(

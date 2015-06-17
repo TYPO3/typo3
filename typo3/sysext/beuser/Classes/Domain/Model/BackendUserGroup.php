@@ -25,6 +25,11 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $title;
 
 	/**
+	 * @var string
+	 */
+	protected $description;
+
+	/**
 	 * @var bool
 	 */
 	protected $hidden;
@@ -34,11 +39,6 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @lazy
 	 */
 	protected $subGroups;
-
-	/**
-	 * @var string
-	 */
-	protected $description;
 
 	/**
 	 * @param string $title

@@ -1841,9 +1841,10 @@ class BackendUtility {
 		if ($table == 'pages') {
 			$out = self::titleAttribForPages($row, '', 0);
 		} else {
+			$out = !empty(trim($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'])) ? $row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] . ' ' : '';
 			$ctrl = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'];
 			// Uid is added
-			$out = 'id=' . $row['uid'];
+			$out .= '(id=' . $row['uid'] . ')';
 			if ($table == 'pages' && $row['alias']) {
 				$out .= ' / ' . $row['alias'];
 			}

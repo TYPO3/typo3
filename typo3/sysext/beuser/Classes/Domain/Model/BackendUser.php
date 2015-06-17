@@ -35,6 +35,11 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 	/**
 	 * @var string
 	 */
+	protected $description;
+
+	/**
+	 * @var string
+	 */
 	protected $fileMountPoints = '';
 
 	/**
@@ -70,6 +75,20 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 	 */
 	public function getDbMountPoints() {
 		return $this->dbMountPoints;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
 	}
 
 	/**

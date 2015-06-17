@@ -3,7 +3,7 @@
 
 <tr>
 	<td class="col-icon">
-		<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{backendUser.uid}" data-listframe="1" title="id={backendUser.uid}">
+		<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{backendUser.uid}" data-listframe="1" title="{f:if(condition: '{backendUser.description}', then: '{backendUser.description} ')}(id={backendUser.uid})">
 			<bu:spriteIconForRecord table="be_users" object="{backendUser}" />
 		</a>
 	</td>

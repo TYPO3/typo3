@@ -1083,7 +1083,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$info = array();
 		$this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
 
-		// Call drawFooter hooks
+		// Content element annotation
+		if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn'])) {
+			$info[] = htmlspecialchars($row[$GLOBALS['TCA']['tt_content']['ctrl']['descriptionColumn']]);
+		}
+
+			// Call drawFooter hooks
 		$drawFooterHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawFooter'];
 		if (is_array($drawFooterHooks)) {
 			foreach ($drawFooterHooks as $hookClass) {
@@ -1241,6 +1246,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$out = '';
 		$outHeader = '';
 		// Make header:
+
 		if ($row['header']) {
 			$infoArr = array();
 			$this->getProcessedValue('tt_content', 'header_position,header_layout,header_link', $row, $infoArr);

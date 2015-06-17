@@ -375,6 +375,14 @@ return array(
 				'minitems' => 0,
 				'maxitems' => 9999
 			)
+		),
+		'description' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
+			'config' => array(
+				'type' => 'text',
+				'rows' => 5,
+				'cols' => 30
+			)
 		)
 	),
 	'types' => array(

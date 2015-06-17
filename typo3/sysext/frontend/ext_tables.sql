@@ -250,6 +250,7 @@ CREATE TABLE tt_content (
 	sorting int(11) unsigned DEFAULT '0' NOT NULL,
 	CType varchar(255) DEFAULT '' NOT NULL,
 	header varchar(255) DEFAULT '' NOT NULL,
+	rowDescription text,
 	bodytext mediumtext,
 
 	# Even though we're using FAL and an IRRE field for images

@@ -1059,7 +1059,6 @@ class PageLayoutController {
 		// Add the content for each table we have rendered (traversing $tableOutput variable)
 		foreach ($tableOutput as $table => $output) {
 			$content .= $this->doc->section('', $output, TRUE, TRUE, 0, TRUE);
-			$content .= $this->doc->spacer(15);
 			$content .= $this->doc->sectionEnd();
 		}
 		// Making search form:
