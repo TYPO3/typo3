@@ -190,6 +190,11 @@ class DefaultFactory {
 								),
 							),
 						),
+						array(
+							'name' => 'tx_felogin',
+							'type' => DirectoryNode::class,
+							'targetPermission' => $directoryPermission,
+						),
 					),
 				),
 				array(
