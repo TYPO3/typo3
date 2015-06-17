@@ -28,6 +28,11 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $userName = '';
 
 	/**
+	 * @var string
+	 */
+	protected $description = '';
+
+	/**
 	 * @var bool
 	 */
 	protected $isAdministrator = FALSE;
@@ -84,6 +89,20 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setUserName($userName) {
 		$this->userName = $userName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
 	}
 
 	/**

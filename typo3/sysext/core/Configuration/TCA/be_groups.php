@@ -249,7 +249,8 @@ return array(
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
-				'cols' => 30
+				'cols' => 30,
+				'max' => '2000',
 			)
 		),
 		'TSconfig' => array(

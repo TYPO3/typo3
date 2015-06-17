@@ -38,6 +38,11 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $subGroups;
 
 	/**
+	 * @var string
+	 */
+	protected $description;
+
+	/**
 	 * @param string $title
 	 */
 	public function setTitle($title) {
@@ -49,6 +54,20 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getTitle() {
 		return $this->title;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
 	}
 
 	/**

@@ -31,7 +31,7 @@ return array(
 		'searchFields' => 'username,email,realName'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'username,usergroup,db_mountpoints,file_mountpoints,admin,options,file_permissions,userMods,lockToDomain,realName,email,disable,starttime,endtime,lastlogin'
+		'showRecordFieldList' => 'username,description,usergroup,db_mountpoints,file_mountpoints,admin,options,file_permissions,userMods,lockToDomain,realName,email,disable,starttime,endtime,lastlogin'
 	),
 	'columns' => array(
 		'username' => array(
@@ -41,6 +41,15 @@ return array(
 				'size' => '20',
 				'max' => '50',
 				'eval' => 'nospace,trim,lower,unique,required'
+			)
+		),
+		'description' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
+			'config' => array(
+				'type' => 'text',
+				'rows' => 5,
+				'cols' => 30,
+				'max' => '2000',
 			)
 		),
 		'password' => array(
@@ -367,13 +376,13 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'disable, username, password, usergroup, admin, realName, email, lang, lastlogin,
+		'0' => array('showitem' => 'disable, username, password, description, usergroup, admin, realName, email, lang, lastlogin,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.rights, userMods, allowed_languages,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces, workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, lockToDomain, disableIPlock, TSconfig,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended'),
-		'1' => array('showitem' => 'disable, username, password, usergroup, admin, realName, email, lang, lastlogin,
+		'1' => array('showitem' => 'disable, username, password, description, usergroup, admin, realName, email, lang, lastlogin,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, disableIPlock, TSconfig, db_mountpoints, options, file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended')
