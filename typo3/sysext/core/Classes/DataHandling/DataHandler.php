@@ -3868,55 +3868,59 @@ class DataHandler {
 		));
 		$rteFileRecords = $this->databaseConnection->exec_SELECTgetRows('*', 'sys_refindex', $where, '', 'sorting DESC');
 		// Traverse the files found and copy them:
-		if (is_array($rteFileRecords)) {
-			foreach ($rteFileRecords as $rteFileRecord) {
-				$filename = basename($rteFileRecord['ref_string']);
-				$fileInfo = array();
-				if (GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
-					$fileInfo['exists'] = @is_file((PATH_site . $rteFileRecord['ref_string']));
-					$fileInfo['original'] = substr($rteFileRecord['ref_string'], 0, -strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
-					$fileInfo['original_exists'] = @is_file((PATH_site . $fileInfo['original']));
-					// CODE from tx_impexp and class.rte_images.php adapted for use here:
-					if ($fileInfo['exists'] && $fileInfo['original_exists']) {
-						// Initialize; Get directory prefix for file and set the original name:
-						$dirPrefix = dirname($rteFileRecord['ref_string']) . '/';
-						$rteOrigName = basename($fileInfo['original']);
-						// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-						if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir((PATH_site . $dirPrefix))) {
-							// RTE:
-							// From the "original" RTE filename, produce a new "original" destination filename which is unused.
-							$origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
-							// Create copy file name:
-							$pI = pathinfo($rteFileRecord['ref_string']);
-							$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
-							if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
-								// Making copies:
-								GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
-								GeneralUtility::upload_copy_move(PATH_site . $rteFileRecord['ref_string'], $copyDestName);
-								clearstatcache();
-								// Register this:
-								$this->RTEmagic_copyIndex[$rteFileRecord['tablename']][$rteFileRecord['recuid']][$rteFileRecord['field']][$rteFileRecord['ref_string']] = PathUtility::stripPathSitePrefix($copyDestName);
-								// Check and update the record using \TYPO3\CMS\Core\Database\ReferenceIndex
-								if (@is_file($copyDestName)) {
-									/** @var ReferenceIndex $sysRefObj */
-									$sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-									$error = $sysRefObj->setReferenceValue($rteFileRecord['hash'], PathUtility::stripPathSitePrefix($copyDestName), FALSE, TRUE);
-									if ($this->enableLogging && $error) {
-										echo $this->newlog(ReferenceIndex::class . '::setReferenceValue(): ' . $error, 1);
-									}
-								} elseif ($this->enableLogging) {
-									$this->newlog('File "' . $copyDestName . '" was not created!', 1);
-								}
-							} elseif ($this->enableLogging) {
-								$this->newlog('Could not construct new unique names for file!', 1);
-							}
-						} elseif ($this->enableLogging) {
-							$this->newlog('Maybe directory of file was not within "uploads/"?', 1);
+		if (!is_array($rteFileRecords)) {
+			return;
+		}
+		foreach ($rteFileRecords as $rteFileRecord) {
+			$filename = basename($rteFileRecord['ref_string']);
+			if (!GeneralUtility::isFirstPartOfStr($filename, 'RTEmagicC_')) {
+				continue;
+			}
+			$fileInfo = array();
+			$fileInfo['exists'] = @is_file((PATH_site . $rteFileRecord['ref_string']));
+			$fileInfo['original'] = substr($rteFileRecord['ref_string'], 0, -strlen($filename)) . 'RTEmagicP_' . preg_replace('/\\.[[:alnum:]]+$/', '', substr($filename, 10));
+			$fileInfo['original_exists'] = @is_file((PATH_site . $fileInfo['original']));
+			// CODE from tx_impexp and class.rte_images.php adapted for use here:
+			if (!$fileInfo['exists'] || !$fileInfo['original_exists']) {
+				if ($this->enableLogging) {
+					$this->newlog('Trying to copy RTEmagic files (' . $rteFileRecord['ref_string'] . ' / ' . $fileInfo['original'] . ') but one or both were missing', 1);
+				}
+				continue;
+			}
+			// Initialize; Get directory prefix for file and set the original name:
+			$dirPrefix = dirname($rteFileRecord['ref_string']) . '/';
+			$rteOrigName = basename($fileInfo['original']);
+			// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
+			if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir(PATH_site . $dirPrefix)) {
+				// RTE:
+				// From the "original" RTE filename, produce a new "original" destination filename which is unused.
+				$origDestName = $this->fileFunc->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
+				// Create copy file name:
+				$pI = pathinfo($rteFileRecord['ref_string']);
+				$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
+				if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)) {
+					// Making copies:
+					GeneralUtility::upload_copy_move(PATH_site . $fileInfo['original'], $origDestName);
+					GeneralUtility::upload_copy_move(PATH_site . $rteFileRecord['ref_string'], $copyDestName);
+					clearstatcache();
+					// Register this:
+					$this->RTEmagic_copyIndex[$rteFileRecord['tablename']][$rteFileRecord['recuid']][$rteFileRecord['field']][$rteFileRecord['ref_string']] = PathUtility::stripPathSitePrefix($copyDestName);
+					// Check and update the record using \TYPO3\CMS\Core\Database\ReferenceIndex
+					if (@is_file($copyDestName)) {
+						/** @var ReferenceIndex $sysRefObj */
+						$sysRefObj = GeneralUtility::makeInstance(ReferenceIndex::class);
+						$error = $sysRefObj->setReferenceValue($rteFileRecord['hash'], PathUtility::stripPathSitePrefix($copyDestName), FALSE, TRUE);
+						if ($this->enableLogging && $error) {
+							echo $this->newlog(ReferenceIndex::class . '::setReferenceValue(): ' . $error, 1);
 						}
 					} elseif ($this->enableLogging) {
-						$this->newlog('Trying to copy RTEmagic files (' . $rteFileRecord['ref_string'] . ' / ' . $fileInfo['original'] . ') but one or both were missing', 1);
+						$this->newlog('File "' . $copyDestName . '" was not created!', 1);
 					}
+				} elseif ($this->enableLogging) {
+					$this->newlog('Could not construct new unique names for file!', 1);
 				}
+			} elseif ($this->enableLogging) {
+				$this->newlog('Maybe directory of file was not within "uploads/"?', 1);
 			}
 		}
 	}
