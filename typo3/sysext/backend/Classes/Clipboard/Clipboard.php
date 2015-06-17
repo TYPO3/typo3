@@ -236,48 +236,71 @@ class Clipboard {
 	 */
 	public function printClipboard() {
 		$out = array();
-		$elCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
+		$elementCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
 		// Button/menu header:
-		$rmall_url = GeneralUtility::linkThisScript(array('CB' => array('removeAll' => $this->current)));
+		$removeAllUrl = GeneralUtility::linkThisScript(array('CB' => array('removeAll' => $this->current)));
 		// Copymode Selector menu
-		$copymode_url = GeneralUtility::linkThisScript();
+		$copymodeUrl = GeneralUtility::linkThisScript();
 		$moveLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:moveElements'));
 		$copyLabel = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:copyElements'));
-		$opt = array();
-		$opt[] = '<option value="" ' . ($this->currentMode() == 'copy' ? '' : 'selected="selected"') . '>' . $moveLabel . '</option>';
-		$opt[] = '<option value="1" ' . ($this->currentMode() == 'copy' ? 'selected="selected"' : '') . '>' . $copyLabel . '</option>';
-		$copymode_selector = ' <select name="CB[setCopyMode]" onchange="this.form.method=\'POST\'; this.form.action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($copymode_url . '&CB[setCopyMode]=')) . '+(this.options[this.selectedIndex].value); this.form.submit(); return true;" >' . implode('', $opt) . '</select>';
+
+		$copymodeSelector = '
+			<div class="btn-group">
+				<button type="button" class="btn btn-default">' . ($this->currentMode() == 'copy' ? $copyLabel : $moveLabel) . '</button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="#" onclick="document.getElementById(\'clipboard_form\').method=\'POST\'; document.getElementById(\'clipboard_form\').action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($copymodeUrl . '&CB[setCopyMode]=""')) . '; document.getElementById(\'clipboard_form\').submit(); return true;">' . $moveLabel . '</a></li>
+					<li><a href="#" onclick="document.getElementById(\'clipboard_form\').method=\'POST\'; document.getElementById(\'clipboard_form\').action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($copymodeUrl . '&CB[setCopyMode]="1"')) . '; document.getElementById(\'clipboard_form\').submit(); return true;">' . $copyLabel . '</a></li>
+				</ul>
+			</div>
+			';
+
 		// Selector menu + clear button
-		$opt = array();
-		$opt[] = '<option value="" selected="selected">' . $this->clLabel('menu', 'rm') . '</option>';
+		$optionArray = array();
 		// Import / Export link:
-		if ($elCount && ExtensionManagementUtility::isLoaded('impexp')) {
+		if ($elementCount && ExtensionManagementUtility::isLoaded('impexp')) {
 			$url = BackendUtility::getModuleUrl('xMOD_tximpexp', $this->exportClipElementParameters());
-			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($url) . ';')) . '">' . $this->clLabel('export', 'rm') . '</option>';
+			$optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($url) . ';')) . '">' . $this->clLabel('export', 'rm') . '</a></li>';
 		}
 		// Edit:
-		if (!$this->fileMode && $elCount) {
-			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($this->editUrl() . '&returnUrl=') . '+top.rawurlencode(window.location.href);')) . '">' . $this->clLabel('edit', 'rm') . '</option>';
+		if (!$this->fileMode && $elementCount) {
+			$optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($this->editUrl() . '&returnUrl=') . '+top.rawurlencode(window.location.href);')) . '">' . $this->clLabel('edit', 'rm') . '</a></li>';
 		}
 		$deleteLink = '';
 		// Delete:
-		if ($elCount) {
-			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($rmall_url) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a>';
+		if ($elementCount) {
+			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a>';
 			if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
 				$js = '
-			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elCount)) . ')){
+			if (confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.deleteClip'), $elementCount)) . ')){
 				window.location.href=' . GeneralUtility::quoteJSvalue($this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=') . '+top.rawurlencode(window.location.href);
 			}
 					';
 			} else {
 				$js = ' window.location.href=' . GeneralUtility::quoteJSvalue($this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=') . '+top.rawurlencode(window.location.href); ';
 			}
-			$opt[] = '<option value="' . htmlspecialchars($js) . '">' . $this->clLabel('delete', 'rm') . '</option>';
+			$optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars($js) . '">' . $this->clLabel('delete', 'rm') . '</a></li>';
 		}
-		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">' . implode('', $opt) . '</select>';
+
+		$menuSelector = '
+			<div class="btn-group">
+			<button type="button" class="btn btn-default">' . $this->clLabel('menu', 'rm') . '</button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu">
+					' . implode('', $optionArray) . '
+				</ul>
+			</div>
+			';
+
 		$out[] = '
 			<tr>
-				<td colspan="2" nowrap="nowrap" width="95%">' . $copymode_selector . ' ' . $selector_menu . '</td>
+				<td colspan="2" nowrap="nowrap" width="95%">' . $copymodeSelector . ' ' . $menuSelector . '</td>
 				<td nowrap="nowrap" class="col-control">' . $deleteLink . '</td>
 			</tr>';
 		// Print header and content for the NORMAL tab:
@@ -322,7 +345,7 @@ class Clipboard {
 			</div>
 		';
 		// Wrap in form tag:
-		$output = '<form action="">' . $output . '</form>';
+		$output = '<form action="" id="clipboard_form">' . $output . '</form>';
 		// Return the accumulated content:
 		return $output;
 	}
