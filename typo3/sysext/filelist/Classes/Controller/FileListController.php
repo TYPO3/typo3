@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Filelist\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\Exception;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
@@ -126,6 +127,8 @@ class FileListController {
 	 *
 	 * @return void
 	 * @todo Define visibility
+	 * @throws \RuntimeException
+	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	public function init() {
 		// Setting GPvars:
@@ -148,9 +151,12 @@ class FileListController {
 				}
 
 				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($storage->getUid() . ':' . $identifier);
+				// Disallow access to fallback storage 0
+				if ($storage->getUid() === 0) {
+					throw new Exception\InsufficientFolderAccessPermissionsException('You are not allowed to access files outside your storages', 1434539815);
+				}
 				// Disallow the rendering of the processing folder (e.g. could be called manually)
-				// and all folders without any defined storage
-				if ($this->folderObject && ($storage->getUid() === 0 || $storage->isProcessingFolder($this->folderObject))) {
+				if ($this->folderObject && $storage->isProcessingFolder($this->folderObject)) {
 					$this->folderObject = $storage->getRootLevelFolder();
 				}
 			} else {
