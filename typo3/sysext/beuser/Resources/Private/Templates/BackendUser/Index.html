@@ -68,7 +68,7 @@
 				</thead>
 				<tbody>
 					<f:for each="{paginatedBackendUsers}" as="backendUser">
-						<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
+						<f:render partial="BackendUser/IndexListRow" arguments="{demand: demand, backendUser: backendUser, onlineBackendUsers: onlineBackendUsers, dateFormat: dateFormat, timeFormat: timeFormat, returnUrl: returnUrl}" />
 					</f:for>
 					<f:comment>
 						Footer row: no officially defined style yet

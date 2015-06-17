@@ -109,6 +109,17 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			$this->switchUser($switchUser);
 		}
 		$compareUserList = $this->moduleData->getCompareUserList();
+
+		// Create online user list for easy parsing
+		$onlineUsers = $this->backendUserSessionRepository->findAllActive();
+		$onlineBackendUsers = array();
+		if (is_array($onlineUsers)) {
+			foreach ($onlineUsers as $onlineUser) {
+				$onlineBackendUsers[$onlineUser['ses_userid']] = TRUE;
+			}
+		}
+		$this->view->assign('onlineBackendUsers', $onlineBackendUsers);
+
 		$this->view->assign('demand', $demand);
 		$this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser')));
 		$this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);

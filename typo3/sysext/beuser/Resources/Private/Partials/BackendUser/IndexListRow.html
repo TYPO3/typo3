@@ -8,10 +8,12 @@
 		</a>
 	</td>
 	<td class="col-title">
-		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}">
-			<b>{backendUser.userName}</b><br />
-			{backendUser.realName}
-		</a>
+		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><b>{backendUser.userName}</b></a>
+		<f:if condition="{bu:arrayElement(array: onlineBackendUsers, key: backendUser.uid)}">
+			<span class="label label-success"><f:translate key="online" /></span>
+		</f:if>
+		<br />
+		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}">{backendUser.realName}</a>
 	</td>
 	<td>
 		<f:if condition="{backendUser.lastLoginDateAndTime}">

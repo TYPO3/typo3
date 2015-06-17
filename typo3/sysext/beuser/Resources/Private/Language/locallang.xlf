@@ -150,6 +150,9 @@
 			<trans-unit id="backendUserGroupListing">
 				<source>Backend User Group Listing</source>
 			</trans-unit>
+			<trans-unit id="online">
+				<source>online</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
