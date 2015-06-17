@@ -415,9 +415,6 @@ class LoginController {
 					}
 				');
 			}
-		} elseif (empty($GLOBALS['BE_USER']->user['uid']) && $this->isLoginInProgress()) {
-			// Wrong password, wait for 5 seconds
-			sleep(5);
 		}
 	}
 
