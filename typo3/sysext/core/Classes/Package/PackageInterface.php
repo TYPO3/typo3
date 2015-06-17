@@ -24,19 +24,10 @@ interface PackageInterface {
 
 	const PATTERN_MATCH_EXTENSIONKEY = '/^[0-9a-z_-]+$/i';
 
-	const DIRECTORY_CLASSES = 'Classes/';
-	const DIRECTORY_CONFIGURATION = 'Configuration/';
-	const DIRECTORY_RESOURCES = 'Resources/';
-
 	/**
 	 * @return array
 	 */
 	public function getPackageReplacementKeys();
-
-	/**
-	 * @return array
-	 */
-	public function getClassFilesFromAutoloadRegistry();
 
 	/**
 	 * Tells if the package is part of the default factory configuration
@@ -56,12 +47,13 @@ interface PackageInterface {
 	public function isPartOfMinimalUsableSystem();
 
 	/**
-	 * Invokes custom PHP code directly after the package manager has been initialized.
+	 * Returns contents of Composer manifest - or part there of if a key is given.
 	 *
-	 * @param \TYPO3\CMS\Core\Core\Bootstrap $bootstrap The current bootstrap
-	 * @return void
+	 * @param string $key Optional. Only return the part of the manifest indexed by 'key'
+	 * @return mixed|NULL
+	 * @see json_decode for return values
 	 */
-	public function boot(\TYPO3\CMS\Core\Core\Bootstrap $bootstrap);
+	public function getValueFromComposerManifest($key = NULL);
 
 	/**
 	 * Returns the package meta object of this package.
@@ -77,14 +69,6 @@ interface PackageInterface {
 	 * @api
 	 */
 	public function getPackageKey();
-
-	/**
-	 * Returns the PHP namespace of classes in this package.
-	 *
-	 * @return string
-	 * @api
-	 */
-	public function getNamespace();
 
 	/**
 	 * Tells if this package is protected and therefore cannot be deactivated or deleted
@@ -110,28 +94,4 @@ interface PackageInterface {
 	 * @api
 	 */
 	public function getPackagePath();
-
-	/**
-	 * Returns the full path to this package's Classes directory
-	 *
-	 * @return string Path to this package's Classes directory
-	 * @api
-	 */
-	public function getClassesPath();
-
-	/**
-	 * Returns the full path to this package's Resources directory
-	 *
-	 * @return string Path to this package's Resources directory
-	 * @api
-	 */
-	public function getResourcesPath();
-
-	/**
-	 * Returns the full path to this package's Configuration directory
-	 *
-	 * @return string Path to this package's Configuration directory
-	 * @api
-	 */
-	public function getConfigurationPath();
 }

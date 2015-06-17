@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassMapGenerator;
 use TYPO3\CMS\Core\Package\Exception\MissingPackageManifestException;
-use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -28,18 +28,18 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ClassLoadingInformationGenerator {
 
 	/**
-	 * @var Package[]
+	 * @var PackageInterface[]
 	 */
 	static protected $activeExtensionPackages;
 
 	/**
 	 * Returns class loading information for a single package
 	 *
-	 * @param Package $package The package to generate the class loading info for
+	 * @param PackageInterface $package The package to generate the class loading info for
 	 * @param bool $useRelativePaths If set to TRUE, make the path relative to the current TYPO3 instance (PATH_site)
 	 * @return array
 	 */
-	static public function buildClassLoadingInformationForPackage(Package $package, $useRelativePaths = FALSE) {
+	static public function buildClassLoadingInformationForPackage(PackageInterface $package, $useRelativePaths = FALSE) {
 		$classMap = array();
 		$psr4 = array();
 		$packagePath = $package->getPackagePath();
@@ -77,11 +77,11 @@ class ClassLoadingInformationGenerator {
 	/**
 	 * Returns class alias map for given package
 	 *
-	 * @param Package $package The package to generate the class alias info for
+	 * @param PackageInterface $package The package to generate the class alias info for
 	 * @throws \TYPO3\CMS\Core\Error\Exception
 	 * @return array
 	 */
-	static public function buildClassAliasMapForPackage(Package $package) {
+	static public function buildClassAliasMapForPackage(PackageInterface $package) {
 		$aliasToClassNameMapping = array();
 		$classNameToAliasMapping = array();
 		$possibleClassAliasFile = $package->getPackagePath() . 'Migrations/Code/ClassAliasMap.php';
@@ -196,7 +196,7 @@ EOF;
 	/**
 	 * Get all packages except the protected ones, as they are covered already
 	 *
-	 * @return Package[]
+	 * @return PackageInterface[]
 	 */
 	static protected function getActiveExtensionPackages() {
 		if (self::$activeExtensionPackages === NULL) {
@@ -216,10 +216,10 @@ EOF;
 	/**
 	 * Check if the package is a framework package (located in typo3/sysext)
 	 *
-	 * @param Package $package
+	 * @param PackageInterface $package
 	 * @return bool
 	 */
-	static protected function isFrameworkPackage(Package $package) {
+	static protected function isFrameworkPackage(PackageInterface $package) {
 		return $package->getValueFromComposerManifest('type') === 'typo3-cms-framework';
 	}
 

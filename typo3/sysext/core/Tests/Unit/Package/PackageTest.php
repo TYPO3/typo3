@@ -11,8 +11,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Core\Package\Package as Package;
+use TYPO3\CMS\Core\Package\Package;
 use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
  * Testcase for the package class
@@ -31,7 +32,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException
 	 */
 	public function constructThrowsPackageDoesNotExistException() {
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock = $this->getMock(PackageManager::class);
 		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
 		new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
 	}
@@ -58,7 +59,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
 		file_put_contents($packagePath . 'ext_emconf.php', '');
 
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock = $this->getMock(PackageManager::class);
 		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
 		$package = new Package($packageManagerMock, $packageKey, $packagePath);
 		$this->assertEquals($packageKey, $package->getPackageKey());
@@ -83,35 +84,8 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packagePath = 'vfs://Packages/' . str_replace('\\', '/', $packageKey) . '/';
 		mkdir($packagePath, 0777, TRUE);
 
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock = $this->getMock(PackageManager::class);
 		new Package($packageManagerMock, $packageKey, $packagePath);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getNamespaceReturnsThePhpNamespaceCorrespondingToThePackageKey() {
-		$packagePath = 'vfs://Packages/Application/Acme.MyPackage/';
-		mkdir($packagePath, 0777, TRUE);
-		file_put_contents($packagePath . 'composer.json', '{"name": "acme/mypackage", "type": "flow-test"}');
-		file_put_contents($packagePath . 'ext_emconf.php', '');
-
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
-		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		$package = new Package($packageManagerMock, 'Acme.MyPackage', $packagePath);
-		$this->assertEquals('Acme\\MyPackage', $package->getNamespace());
-	}
-
-	/**
-	 * @test
-	 */
-	public function getClassesPathReturnsPathToClasses() {
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
-		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
-		$package = new Package($packageManagerMock, 'core', PATH_typo3 . 'sysext/core/');
-		$packageClassesPath = $package->getClassesPath();
-		$expected = $package->getPackagePath() . Package::DIRECTORY_CLASSES;
-		$this->assertEquals($expected, $packageClassesPath);
 	}
 
 	/**
@@ -123,7 +97,7 @@ class PackageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		file_put_contents($packagePath . 'composer.json', '{"name": "vendor/dummy", "type": "flow-test"}');
 		file_put_contents($packagePath . 'ext_emconf.php', '');
 
-		$packageManagerMock = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$packageManagerMock = $this->getMock(PackageManager::class);
 		$packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(TRUE);
 		$package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
 

@@ -49,11 +49,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var array
 	 */
-	protected $extAutoloadClassFiles;
-
-	/**
-	 * @var array
-	 */
 	protected $packagesBasePaths = array();
 
 	/**
@@ -79,7 +74,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Array of available packages, indexed by package key
-	 * @var array
+	 * @var PackageInterface[]
 	 */
 	protected $packages = array();
 
@@ -122,7 +117,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			'local'     => PATH_typo3conf . 'ext',
 			'global'    => PATH_typo3 . 'ext',
 			'sysext'    => PATH_typo3 . 'sysext',
-			'composer'  => PATH_site . 'Packages',
 		);
 		$this->packageStatesPathAndFilename = PATH_typo3conf . 'PackageStates.php';
 	}
@@ -158,11 +152,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->loadPackageStates();
 			$this->initializePackageObjects();
 			$this->initializeCompatibilityLoadedExtArray();
-		}
-
-		foreach ($this->activePackages as $package) {
-			/** @var $package Package */
-			$package->boot($bootstrap);
 		}
 
 		if (!$loadedFromCache) {
@@ -211,7 +200,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
 				'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
 			);
-			// add the reflection of the package class
+			// Add the reflection of the package class
 			$packageClassName = strtolower(Package::class);
 			$reflectionPackageClass = new \ReflectionClass($packageClassName);
 			$packageClassSource = file_get_contents($reflectionPackageClass->getFileName());
@@ -280,19 +269,18 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function initializePackageObjects() {
 		$requiredPackages = array();
 		foreach ($this->packages as $packageKey => $package) {
-			$protected = $package->isProtected();
-			if ($protected) {
+			if ($package->isProtected()) {
 				$requiredPackages[$packageKey] = $package;
 			}
 			if (isset($this->packageStatesConfiguration['packages'][$packageKey]['state']) && $this->packageStatesConfiguration['packages'][$packageKey]['state'] === 'active') {
 				$this->activePackages[$packageKey] = $package;
 			}
 		}
-		$previousActivePackage = $this->activePackages;
+		$previousActivePackages = $this->activePackages;
 		$this->activePackages = array_merge($requiredPackages, $this->activePackages);
 		$this->requiredPackageKeys = array_keys($requiredPackages);
 
-		if ($this->activePackages != $previousActivePackage) {
+		if ($this->activePackages != $previousActivePackages) {
 			foreach ($this->requiredPackageKeys as $requiredPackageKey) {
 				$this->packageStatesConfiguration['packages'][$requiredPackageKey]['state'] = 'active';
 			}
@@ -341,9 +329,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			$packagePaths = $this->scanPackagesInPath($packagesBasePath, $packagePaths);
 		}
 
-		foreach ($packagePaths as $composerManifestPath) {
-			$packagePath = $composerManifestPath;
-			$packagesBasePath = PATH_site;
+		foreach ($packagePaths as $packagePath) {
+			$packagesBasePath = $this->packagesBasePath;
 			foreach ($this->packagesBasePaths as $basePath) {
 				if (strpos($packagePath, $basePath) === 0) {
 					$packagesBasePath = $basePath;
@@ -351,7 +338,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 			try {
-				$composerManifest = $this->getComposerManifest($composerManifestPath);
+				$composerManifest = $this->getComposerManifest($packagePath);
 				$packageKey = $this->getPackageKeyFromManifest($composerManifest, $packagePath, $packagesBasePath);
 				$this->composerNameToPackageKeyMap[strtolower($composerManifest->name)] = $packageKey;
 				$this->packageStatesConfiguration['packages'][$packageKey]['composerName'] = $composerManifest->name;
@@ -435,7 +422,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param bool $registerOnlyNewPackages
 	 * @return void
-	 * @throws Exception\CorruptPackageException
 	 */
 	protected function registerPackagesFromConfiguration($registerOnlyNewPackages = FALSE) {
 		$packageStatesHasChanged = FALSE;
@@ -465,10 +451,6 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 
 			$this->registerPackage($package, FALSE);
-
-			if (!$this->packages[$packageKey] instanceof PackageInterface) {
-				throw new Exception\CorruptPackageException(sprintf('The package class in package "%s" does not implement PackageInterface.', $packageKey), 1300782488);
-			}
 
 			$this->packageKeys[strtolower($packageKey)] = $packageKey;
 			if ($stateConfiguration['state'] === 'active') {
@@ -799,7 +781,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$fileDescription .= "# This file will be regenerated automatically if it doesn't exist. Deleting this file\n";
 		$fileDescription .= "# should, however, never become necessary if you use the package commands.\n";
 
-			// we do not need the dependencies on disk...
+		// We do not need the dependencies on disk...
 		foreach ($this->packageStatesConfiguration['packages'] as &$packageConfiguration) {
 			if (isset($packageConfiguration['dependencies'])) {
 				unset($packageConfiguration['dependencies']);
@@ -839,7 +821,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns an array of \TYPO3\CMS\Core\Package objects of all available packages.
 	 * A package is available, if the package directory contains valid meta information.
 	 *
-	 * @return array Array of PackageInterface
+	 * @return PackageInterface[] Array of PackageInterface
 	 * @api
 	 */
 	public function getAvailablePackages() {
@@ -965,4 +947,5 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 			return preg_replace('/[^A-Za-z0-9.]/', '', $packageKey);
 		}
 	}
+
 }

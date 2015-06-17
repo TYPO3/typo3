@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Package\DependencyResolver;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use org\bovigo\vfs\vfsStream;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
@@ -60,14 +61,14 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param string $packageKey
-	 * @return \TYPO3\CMS\Core\Package\Package
+	 * @return Package
 	 */
 	protected function createPackage($packageKey) {
 		$packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
 		mkdir($packagePath, 0770, TRUE);
 		file_put_contents($packagePath . 'ext_emconf.php', '');
 		file_put_contents($packagePath . 'composer.json', '');
-		$package = new \TYPO3\CMS\Core\Package\Package($this->packageManager, $packageKey, $packagePath);
+		$package = new Package($this->packageManager, $packageKey, $packagePath);
 		$this->packageManager->registerPackage($package);
 		$this->packageManager->activatePackage($packageKey);
 
@@ -78,10 +79,10 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getPackageReturnsTheSpecifiedPackage() {
-		$this->createPackage('TYPO3.Flow');
-		$package = $this->packageManager->getPackage('TYPO3.Flow');
+		$this->createPackage('TYPO3.MyPackage');
+		$package = $this->packageManager->getPackage('TYPO3.MyPackage');
 
-		$this->assertInstanceOf(\TYPO3\CMS\Core\Package\PackageInterface::class, $package, 'The result of getPackage() was no valid package object.');
+		$this->assertInstanceOf(Package::class, $package, 'The result of getPackage() was no valid package object.');
 	}
 
 	/**
@@ -108,7 +109,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
 
 			mkdir($packagePath, 0770, TRUE);
-			mkdir($packagePath . 'Classes');
 			file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-test"}');
 		}
 
@@ -139,7 +139,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
 
 			mkdir($packagePath, 0770, TRUE);
-			mkdir($packagePath . 'Classes');
 			file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
 			file_put_contents($packagePath . 'ext_emconf.php', '');
 		}
@@ -159,6 +158,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$packageManager->injectDependencyResolver($dependencyResolver);
 
+		$packageKey = $expectedPackageKeys[0];
 		$packageManager->_set('packageStatesConfiguration', array(
 			'packages' => array(
 				$packageKey => array(
@@ -190,7 +190,6 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
 
 			mkdir($packagePath, 0770, TRUE);
-			mkdir($packagePath . 'Classes');
 			file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "typo3-cms-test"}');
 			file_put_contents($packagePath . 'ext_emconf.php', '');
 		}
