@@ -20,6 +20,8 @@
  */
 unset($MCONF);
 require __DIR__ . '/conf.php';
+
+define('TYPO3_MODE', 'BE');
 require $BACK_PATH . 'sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
 // Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
