@@ -676,25 +676,6 @@ function jumpToUrl(URL) {
 	}
 
 	/**
-	 * This function is dedicated to textareas, which has the wrapping on/off option to observe.
-	 * EXAMPLE:
-	 * <textarea rows="10" wrap="off" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48, "", "off").'>
-	 * or
-	 * <textarea rows="10" wrap="virtual" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48, "", "virtual").'>
-	 *
-	 * @param int $size A relative number which multiplied with approx. 10 will lead to the width in pixels
-	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
-	 * @param string $wrap Pass on the wrap-attribute value you use in your <textarea>! This will be used to make sure that some browsers will detect wrapping alright.
-	 * @return string Tag attributes for an <input> tag (regarding width)
-	 * @see formWidth()
-	 * @deprecated since TYPO3 CMS 6.2, remove two versions later, as this is function is not needed anymore, use formWidth()
-	 */
-	public function formWidthText($size = 48, $styleOverride = '', $wrap = '') {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->formWidth($size, TRUE, $styleOverride);
-	}
-
-	/**
 	 * Returns JavaScript variables setting the returnUrl and thisScript location for use by JavaScript on the page.
 	 * Used in fx. db_list.php (Web>List)
 	 *

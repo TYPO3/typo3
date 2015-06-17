@@ -909,17 +909,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		return $out;
 	}
 
-	/**
-	 * Get backend layout configuration
-	 *
-	 * @return array
-	 * @deprecated since TYPO3 CMS 6.2, will be removed two versions later
-	 */
-	public function getBackendLayoutConfiguration() {
-		GeneralUtility::logDeprecatedFunction();
-		return $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
-	}
-
 	/**********************************
 	 *
 	 * Generic listing of items
@@ -1991,29 +1980,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		return $enableCols['disabled'] && $row[$enableCols['disabled']]
 			|| $enableCols['starttime'] && $row[$enableCols['starttime']] > $GLOBALS['EXEC_TIME']
 			|| $enableCols['endtime'] && $row[$enableCols['endtime']] && $row[$enableCols['endtime']] < $GLOBALS['EXEC_TIME'];
-	}
-
-	/**
-	 * Will perform "word-wrapping" on the input string. What it does is to split by space or line break,
-	 * then find any word longer than $max and if found, a hyphen is inserted.
-	 * Works well on normal texts, little less well when HTML is involved (since much HTML will have
-	 * long strings that will be broken).
-	 *
-	 * @param string $content Content to word-wrap.
-	 * @param int $max Max number of chars in a word before it will be wrapped.
-	 * @param string $char Character to insert when wrapping.
-	 * @return string Processed output.
-	 * @deprecated since 6.2 - will be removed two versions later; use CSS instead (word-break: break-all;)
-	 */
-	public function wordWrapper($content, $max = 50, $char = ' -') {
-		GeneralUtility::logDeprecatedFunction();
-		$array = preg_split('/[ ' . LF . ']/', $content);
-		foreach ($array as $val) {
-			if (strlen($val) > $max) {
-				$content = str_replace($val, substr(chunk_split($val, $max, $char), 0, -1), $content);
-			}
-		}
-		return $content;
 	}
 
 	/**

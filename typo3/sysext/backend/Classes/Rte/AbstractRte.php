@@ -78,7 +78,7 @@ class AbstractRte {
 		// Create item:
 		$item = '
 			' . $this->triggerField($PA['itemFormElName']) . '
-			<textarea name="' . htmlspecialchars($PA['itemFormElName']) . '"' . $pObj->formWidthText('48', 'off') . ' rows="20" wrap="off" style="background-color: #99eebb;">' . GeneralUtility::formatForTextarea($value) . '</textarea>';
+			<textarea name="' . htmlspecialchars($PA['itemFormElName']) . '"' . $pObj->formWidth('48') . ' rows="20" wrap="off" style="background-color: #99eebb;">' . GeneralUtility::formatForTextarea($value) . '</textarea>';
 		// Return form item:
 		return $item;
 	}

@@ -76,16 +76,9 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 		$ajaxRegistryEntry = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID]) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'][$ajaxID] : NULL;
 		$ajaxScript = NULL;
 		$csrfTokenCheck = FALSE;
-		if ($ajaxRegistryEntry !== NULL) {
-			if (is_array($ajaxRegistryEntry)) {
-				if (isset($ajaxRegistryEntry['callbackMethod'])) {
-					$ajaxScript = $ajaxRegistryEntry['callbackMethod'];
-					$csrfTokenCheck = $ajaxRegistryEntry['csrfTokenCheck'];
-				}
-			} else {
-				// @deprecated since 6.2 will be removed two versions later
-				$ajaxScript = $ajaxRegistryEntry;
-			}
+		if ($ajaxRegistryEntry !== NULL && is_array($ajaxRegistryEntry) && isset($ajaxRegistryEntry['callbackMethod'])) {
+			$ajaxScript = $ajaxRegistryEntry['callbackMethod'];
+			$csrfTokenCheck = $ajaxRegistryEntry['csrfTokenCheck'];
 		}
 
 		// Instantiating the AJAX object

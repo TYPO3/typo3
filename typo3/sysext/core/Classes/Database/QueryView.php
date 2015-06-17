@@ -411,7 +411,7 @@ class QueryView {
 					$rowArr[] = $this->csvValues($row, ',', '"', $GLOBALS['TCA'][$table], $table);
 				}
 				if (count($rowArr)) {
-					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="text-monospace">' . GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
+					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidth($this->formW) . ' class="text-monospace">' . GeneralUtility::formatForTextarea(implode(LF, $rowArr)) . '</textarea>';
 					if (!$this->noDownloadB) {
 						$out .= '<br><input class="btn btn-default" type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">';
 					}
