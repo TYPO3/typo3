@@ -144,4 +144,32 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase {
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
 
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/67445
+	 */
+	public function alterTableAddKeyStatementIsRemappedToCreateIndex() {
+		$parseString = 'ALTER TABLE sys_collection ADD KEY parent (pid,deleted)';
+		$components = $this->subject->SQLparser->_callRef('parseALTERTABLE', $parseString);
+		$this->assertInternalType('array', $components);
+
+		$result = $this->subject->SQLparser->_callRef('compileALTERTABLE', $components);
+		$expected = array('CREATE INDEX "dd81ee97_parent" ON "sys_collection" ("pid", "deleted")');
+		$this->assertSame($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/67445
+	 */
+	public function canParseAlterTableDropKeyStatement() {
+		$parseString = 'ALTER TABLE sys_collection DROP KEY parent';
+		$components = $this->subject->SQLparser->_callRef('parseALTERTABLE', $parseString);
+		$this->assertInternalType('array', $components);
+
+		$result = $this->subject->SQLparser->_callRef('compileALTERTABLE', $components);
+		$expected = array('DROP INDEX "dd81ee97_parent"');
+		$this->assertSame($expected, $this->cleanSql($result));
+	}
+
 }

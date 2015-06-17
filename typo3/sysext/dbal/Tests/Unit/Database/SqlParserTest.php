@@ -299,6 +299,34 @@ class SqlParserTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see http://forge.typo3.org/issues/67445
+	 */
+	public function canParseAlterTableAddKeyStatement() {
+		$parseString = 'ALTER TABLE sys_collection ADD KEY parent (pid,deleted)';
+		$components = $this->subject->_callRef('parseALTERTABLE', $parseString);
+		$this->assertInternalType('array', $components);
+
+		$result = $this->subject->_callRef('compileALTERTABLE', $components);
+		$expected = 'ALTER TABLE sys_collection ADD KEY parent (pid,deleted)';
+		$this->assertSame($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/67445
+	 */
+	public function canParseAlterTableDropKeyStatement() {
+		$parseString = 'ALTER TABLE sys_collection DROP KEY parent';
+		$components = $this->subject->_callRef('parseALTERTABLE', $parseString);
+		$this->assertInternalType('array', $components);
+
+		$result = $this->subject->_callRef('compileALTERTABLE', $components);
+		$expected = 'ALTER TABLE sys_collection DROP KEY parent';
+		$this->assertSame($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/23087
 	 */
 	public function canParseFindInSetStatement() {

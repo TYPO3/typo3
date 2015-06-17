@@ -25,6 +25,7 @@ abstract class AbstractSpecifics {
 	const TABLE_MAXLENGTH = 'table_maxlength';
 	const FIELD_MAXLENGTH = 'field_maxlength';
 	const LIST_MAXEXPRESSIONS = 'list_maxexpressions';
+	const PARTIAL_STRING_INDEX = 'partial_string_index';
 
 	/**
 	 * Contains the specifics of a DBMS.

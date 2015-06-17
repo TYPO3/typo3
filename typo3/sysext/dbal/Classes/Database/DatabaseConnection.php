@@ -2718,7 +2718,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					foreach ($keyRows as $k => $theKey) {
 						$theKey['Table'] = $tableName;
 						$theKey['Non_unique'] = (int)(!$theKey['unique']);
-						$theKey['Key_name'] = str_replace($tableName . '_', '', $k);
+						$theKey['Key_name'] = str_replace(hash('crc32b', $tableName) . '_', '', $k);
 						// the following are probably not needed anyway...
 						$theKey['Collation'] = '';
 						$theKey['Cardinality'] = '';

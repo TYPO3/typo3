@@ -287,10 +287,10 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							}
 						} elseif ($kN === 'UNIQUE') {
 							foreach ($kCfg as $n => $field) {
-								$indexKeys = array_merge($indexKeys, $this->databaseConnection->handlerInstance[$this->databaseConnection->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
+								$indexKeys = array_merge($indexKeys, $this->compileCREATEINDEX($n, $components['TABLE'], $field, array('UNIQUE')));
 							}
 						} else {
-							$indexKeys = array_merge($indexKeys, $this->databaseConnection->handlerInstance[$this->databaseConnection->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'] . '_' . $kN, $components['TABLE'], $kCfg));
+							$indexKeys = array_merge($indexKeys, $this->compileCREATEINDEX($kN, $components['TABLE'], $kCfg));
 						}
 					}
 				}
@@ -331,13 +331,17 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 					case 'DROP':
 
 					case 'DROPKEY':
+						$query = $this->compileDROPINDEX($components['KEY'], $components['TABLE']);
 						break;
+
 					case 'ADDKEY':
-
-					case 'ADDPRIMARYKEY':
-
+						$query = $this->compileCREATEINDEX($components['KEY'], $components['TABLE'], $components['fields']);
+						break;
 					case 'ADDUNIQUE':
-						$query .= ' (' . implode(',', $components['fields']) . ')';
+						$query = $this->compileCREATEINDEX($components['KEY'], $components['TABLE'], $components['fields'], array('UNIQUE'));
+						break;
+					case 'ADDPRIMARYKEY':
+						// @todo ???
 						break;
 					case 'DEFAULTCHARACTERSET':
 
@@ -348,6 +352,56 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 				break;
 		}
 		return $query;
+	}
+
+	/**
+	 * Compiles CREATE INDEX statements from component information
+	 *
+	 * MySQL only needs uniqueness of index names per table, but many DBMS require uniqueness of index names per schema.
+	 * The table name is hashed and prepended to the index name to make sure index names are unique.
+	 *
+	 * @param string $indexName
+	 * @param string $tableName
+	 * @param array $indexFields
+	 * @param array $indexOptions
+	 * @return array
+	 * @see compileALTERTABLE()
+	 */
+	public function compileCREATEINDEX($indexName, $tableName, $indexFields, $indexOptions = array()) {
+		$indexIdentifier = $this->databaseConnection->quoteName(hash('crc32b', $tableName) . '_' . $indexName, NULL, TRUE);
+		$dbmsSpecifics = $this->databaseConnection->getSpecifics();
+		$keepFieldLengths = $dbmsSpecifics->specificExists(Specifics\AbstractSpecifics::PARTIAL_STRING_INDEX) && $dbmsSpecifics->getSpecific(Specifics\AbstractSpecifics::PARTIAL_STRING_INDEX);
+
+		foreach ($indexFields as $key => $fieldName) {
+			if (!$keepFieldLengths) {
+				$fieldName = preg_replace('/\A([^\(]+)(\(\d+\))/', '\\1', $fieldName);
+			}
+			// Quote the fieldName in backticks with escaping, ADOdb will replace the backticks with the correct quoting
+			$indexFields[$key] = '`' . str_replace('`', '``', $fieldName) . '`';
+		}
+
+		return $this->databaseConnection->handlerInstance[$this->databaseConnection->handler_getFromTableList($tableName)]->DataDictionary->CreateIndexSQL(
+			$indexIdentifier, $this->databaseConnection->quoteName($tableName, NULL, TRUE), $indexFields, $indexOptions
+		);
+	}
+
+	/**
+	 * Compiles DROP INDEX statements from component information
+	 *
+	 * MySQL only needs uniqueness of index names per table, but many DBMS require uniqueness of index names per schema.
+	 * The table name is hashed and prepended to the index name to make sure index names are unique.
+	 *
+	 * @param $indexName
+	 * @param $tableName
+	 * @return array
+	 * @see compileALTERTABLE()
+	 */
+	public function compileDROPINDEX($indexName, $tableName) {
+		$indexIdentifier = $this->databaseConnection->quoteName(hash('crc32b', $tableName) . '_' . $indexName, NULL, TRUE);
+
+		return $this->databaseConnection->handlerInstance[$this->databaseConnection->handler_getFromTableList($tableName)]->DataDictionary->DropIndexSQL(
+			$indexIdentifier, $this->databaseConnection->quoteName($tableName)
+		);
 	}
 
 	/**
