@@ -3087,7 +3087,7 @@ Connection: close
 	 *
 	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
 	 * @param bool $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
-	 * @return Relative path with version filename including the timestamp
+	 * @return string Relative path with version filename including the timestamp
 	 */
 	static public function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
 		$lookupFile = explode('?', $file);
