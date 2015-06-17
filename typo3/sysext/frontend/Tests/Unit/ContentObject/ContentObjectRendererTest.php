@@ -3310,6 +3310,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				'<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
 			),
+			'Link to url with script tag' => array(
+				'',
+				array(
+					'parameter' => 'http://typo3.org<script>alert(123)</script>',
+				),
+				'<a href="http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;">http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;</a>',
+			),
 			'Link to email address' => array(
 				'Email address',
 				array(
@@ -3351,6 +3358,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider
 	 */
 	public function typolinkReturnsCorrectLinksForEmailsAndUrls($linkText, $configuration, $expectedResult) {
+		$templateServiceObjectMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+		$templateServiceObjectMock->setup = array(
+			'lib.' => array(
+				'parseFunc.' => $this->getLibParseFunc(),
+			),
+		);
+		$typoScriptFrontendControllerMockObject = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
+		$typoScriptFrontendControllerMockObject->config = array(
+			'config' => array(),
+			'mainScript' => 'index.php',
+		);
+		$typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
 		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}
 
@@ -3405,6 +3426,28 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'title' => 'Page title',
 				),
 				'<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
+			),
+			'Link to page with bold tag in title' => array(
+				'',
+				array(
+					'parameter' => 42,
+				),
+				array(
+					'uid' => 42,
+					'title' => 'Page <b>title</b>',
+				),
+				'<a href="index.php?id=42">Page <b>title</b></a>',
+			),
+			'Link to page with script tag in title' => array(
+				'',
+				array(
+					'parameter' => 42,
+				),
+				array(
+					'uid' => 42,
+					'title' => '<script>alert(123)</script>Page title',
+				),
+				'<a href="index.php?id=42">&lt;script&gt;alert(123)&lt;/script&gt;Page title</a>',
 			),
 		);
 	}
@@ -3474,6 +3517,13 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				),
 				'<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
 			),
+			'Link to file with script tag in name' => array(
+				'',
+				array(
+					'parameter' => 'fileadmin/<script>alert(123)</script>',
+				),
+				'<a href="fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;">fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;</a>',
+			),
 		);
 	}
 
@@ -3485,6 +3535,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider typolinkReturnsCorrectLinksFilesDataProvider
 	 */
 	public function typolinkReturnsCorrectLinksFiles($linkText, $configuration, $expectedResult) {
+		$templateServiceObjectMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+		$templateServiceObjectMock->setup = array(
+			'lib.' => array(
+				'parseFunc.' => $this->getLibParseFunc(),
+			),
+		);
+		$typoScriptFrontendControllerMockObject = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
+		$typoScriptFrontendControllerMockObject->config = array(
+			'config' => array(),
+			'mainScript' => 'index.php',
+		);
+		$typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
 		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}
 
