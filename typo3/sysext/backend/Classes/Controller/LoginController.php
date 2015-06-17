@@ -237,17 +237,13 @@ class LoginController {
 	 * @throws \UnexpectedValueException
 	 */
 	protected function checkRedirect() {
-		if (empty($this->getBackendUserAuthentication()->user['uid'])) {
-			// a) if either the login is just done (isLoginInProgress) or
-			if ($this->isLoginInProgress()) {
-				// Wrong password, wait for 5 seconds
-				sleep(5);
-				return;
-			// b) a loginRefresh is done
-			} elseif (!$this->loginRefresh) {
-				return;
-			}
+		if (
+			empty($this->getBackendUserAuthentication()->user['uid'])
+			&& ($this->isLoginInProgress() || !$this->loginRefresh)
+		) {
+			return;
 		}
+
 		/*
 		 * If no cookie has been set previously, we tell people that this is a problem.
 		 * This assumes that a cookie-setting script (like this one) has been hit at

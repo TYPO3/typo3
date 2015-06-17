@@ -787,6 +787,21 @@ abstract class AbstractUserAuthentication {
 			if ($this->writeDevLog) {
 				GeneralUtility::devLog('Call checkLogFailures: ' . GeneralUtility::arrayToLogString(array('warningEmail' => $this->warningEmail, 'warningPeriod' => $this->warningPeriod, 'warningMax' => $this->warningMax)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
 			}
+
+			// Hook to implement login failure tracking methods
+			if (
+				!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'])
+			) {
+				$_params = array();
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postLoginFailureProcessing'] as $_funcRef) {
+					GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+				}
+			} else {
+				// If no hook is implemented, wait for 5 seconds
+				sleep(5);
+			}
+
 			$this->checkLogFailures($this->warningEmail, $this->warningPeriod, $this->warningMax);
 		}
 	}
