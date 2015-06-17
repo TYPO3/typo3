@@ -56,7 +56,7 @@ return array(
 			'html' => 'tt_content_html.gif'
 		),
 		'thumbnail' => 'image',
-		'requestUpdate' => 'list_type,rte_enabled,menu_type',
+		'requestUpdate' => 'list_type,menu_type',
 		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
 	),
 	'interface' => array(
@@ -906,19 +906,6 @@ return array(
 				'items' => array(
 					'1' => array(
 						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
-					)
-				)
-			)
-		),
-		'rte_enabled' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:rte_enabled',
-			'config' => array(
-				'type' => 'check',
-				'showIfRTE' => 1,
-				'items' => array(
-					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_ttc.xlf:rte_enabled.I.0'
 					)
 				)
 			)

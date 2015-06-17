@@ -231,5 +231,5 @@ construct on the fly and will throw deprecation warnings as soon as a record wit
 is opened in the backend.
 
 Typical migration of the 4th ``showitem`` parameter involves moving a RTE configuration like
-``richtext:rte_transform[flag=rte_enabled|mode=ts_css]`` or the ``type=text`` flags ``nowrap``, ``fixed-font``
+``richtext:rte_transform[mode=ts_css]`` or the ``type=text`` flags ``nowrap``, ``fixed-font``
 and ``enabled-tab`` to ``columnsOverrides``.

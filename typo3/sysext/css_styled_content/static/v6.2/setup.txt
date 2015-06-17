@@ -615,7 +615,7 @@ tt_content.text {
 
 		parseFunc = < lib.parseFunc_RTE
 
-		editIcons = tt_content:bodytext, rte_enabled
+		editIcons = tt_content:bodytext
 		editIcons.beforeLastTag = 1
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.bodytext
 

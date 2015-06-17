@@ -63,15 +63,8 @@ class RichTextNodeResolver implements NodeResolverInterface {
 			&& $backendUser->isRTE()
 		) {
 			$specialConfiguration = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-			// $parameters is a key=>value array from "defaultExtras" pipe separated rte_transform string
-			$parameters = BackendUtility::getSpecConfParametersFromArray($specialConfiguration['rte_transform']['parameters']);
-
-			if (
-				// If "richtext" is within defaultExtras
-				isset($specialConfiguration['richtext'])
-				// rte_transform[flag=foo] means RTE should only be rendered if the value of db row field "foo" can be interpreted as TRUE
-				&& (!$parameters['flag'] || !$row[$parameters['flag']])
-			) {
+			// If "richtext" is within defaultExtras
+			if (isset($specialConfiguration['richtext'])) {
 				// Operates by reference on $row! 'pid' is changed ...
 				BackendUtility::fixVersioningPid($table, $row);
 				list($recordPid, $tsConfigPid) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);

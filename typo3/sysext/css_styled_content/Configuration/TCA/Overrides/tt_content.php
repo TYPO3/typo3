@@ -547,7 +547,6 @@ $GLOBALS['TCA']['tt_content']['types']['text']['showitem'] = '
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
 		bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext_formlabel,
-		rte_enabled;LLL:EXT:cms/locallang_ttc.xlf:rte_enabled_formlabel,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
@@ -565,14 +564,13 @@ $baseDefaultExtrasOfBodytext = '';
 if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
 	$baseDefaultExtrasOfBodytext = $GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'] . ':';
 }
-$GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
+$GLOBALS['TCA']['tt_content']['types']['text']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[mode=ts_css]';
 
 // Field arrangement for CE "textpic"
 $GLOBALS['TCA']['tt_content']['types']['textpic']['showitem'] = '
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
 		bodytext;Text,
-		rte_enabled;LLL:EXT:cms/locallang_ttc.xlf:rte_enabled_formlabel,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.images,
 		image,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.imagelinks;imagelinks,
@@ -591,7 +589,7 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverride
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext'])) {
 	$GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext'] = array();
 }
-$GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
+$GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[mode=ts_css]';
 
 // Field arrangement for CE "image"
 $GLOBALS['TCA']['tt_content']['types']['image']['showitem'] = '

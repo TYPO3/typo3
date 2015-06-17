@@ -82,7 +82,7 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides'
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext'])) {
 	$GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext'] = array();
 }
-$GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[flag=rte_enabled|mode=ts_css]';
+$GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[mode=ts_css]';
 
 $GLOBALS['TCA']['tt_content']['palettes']['multimediafiles'] = array(
 	'showitem' => 'multimedia;LLL:EXT:cms/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel',

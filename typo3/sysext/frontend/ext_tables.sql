@@ -286,7 +286,6 @@ CREATE TABLE tt_content (
 	date int(10) unsigned DEFAULT '0' NOT NULL,
 	recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	imageheight mediumint(8) unsigned DEFAULT '0' NOT NULL,
-	rte_enabled tinyint(4) DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	tx_impexp_origuid int(11) DEFAULT '0' NOT NULL,
 	pi_flexform mediumtext,
