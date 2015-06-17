@@ -6178,7 +6178,7 @@ class ContentObjectRenderer {
 						$target = $forceTarget;
 					}
 					if ($linktxt == '') {
-						$linktxt = $linkParameter;
+						$linktxt = $this->parseFunc($linkParameter, array('makelinks' => 0), '< lib.parseFunc');
 					}
 					// Parse URL:
 					$urlParts = parse_url($linkParameter);
@@ -6210,7 +6210,7 @@ class ContentObjectRenderer {
 					// check if the file exists or if a / is contained (same check as in detectLinkType)
 					if (file_exists(rawurldecode($splitLinkParam[0])) || strpos($linkParameter, '/') !== FALSE) {
 						if ($linktxt == '') {
-							$linktxt = rawurldecode($linkParameter);
+							$linktxt = $this->parseFunc(rawurldecode($linkParameter), array('makelinks' => 0), '< lib.parseFunc');
 						}
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
 							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($linkParameter)));
@@ -6306,7 +6306,7 @@ class ContentObjectRenderer {
 						}
 						// Setting title if blank value to link:
 						if ($linktxt == '') {
-							$linktxt = $page['title'];
+							$linktxt = $this->parseFunc($page['title'], array('makelinks' => 0), '< lib.parseFunc');
 						}
 						// Query Params:
 						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
