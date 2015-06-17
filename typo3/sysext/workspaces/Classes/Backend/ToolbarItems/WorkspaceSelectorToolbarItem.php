@@ -27,9 +27,18 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 
 	/**
+	 * @var array
+	 */
+	protected $availableWorkspaces;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
+		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
+		$this->availableWorkspaces = $wsService->getAvailableWorkspaces();
+
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
@@ -41,15 +50,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
-		/** @var \TYPO3\CMS\Workspaces\Service\WorkspaceService $wsService */
-		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
-		$availableWorkspaces = $wsService->getAvailableWorkspaces();
-		if (count($availableWorkspaces) > 0) {
-			$result = TRUE;
-		} else {
-			$result = FALSE;
-		}
-		return $result;
+		return count($this->availableWorkspaces) > 1;
 	}
 
 	/**
@@ -58,6 +59,10 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 	 * @return string HTML
 	 */
 	public function getItem() {
+		if (empty($this->availableWorkspaces)) {
+			return '';
+		}
+
 		return IconUtility::getSpriteIcon(
 			'apps-toolbar-menu-workspace',
 			array(
@@ -66,14 +71,16 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 		);
 	}
 
+	/**
+	 * Get drop down
+	 *
+	 * @return string
+	 */
 	public function getDropDown() {
 		$backendUser = $this->getBackendUser();
 		$languageService = $this->getLanguageService();
 
 		$index = 0;
-		/** @var WorkspaceService $wsService */
-		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
-		$availableWorkspaces = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = (int)$backendUser->workspace;
 		$stateCheckedIcon = IconUtility::getSpriteIcon('status-status-checked');
 		$stateUncheckedIcon = IconUtility::getSpriteIcon('empty-empty', array(
@@ -85,7 +92,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 			'items' => array(),
 		);
 
-		foreach ($availableWorkspaces as $workspaceId => $label) {
+		foreach ($this->availableWorkspaces as $workspaceId => $label) {
 			$workspaceId = (int)$workspaceId;
 			$iconState = ($workspaceId === $activeWorkspace ? $stateCheckedIcon : $stateUncheckedIcon);
 			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
@@ -135,7 +142,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 	 * @return bool
 	 */
 	public function hasDropDown() {
-		return TRUE;
+		return !empty($this->availableWorkspaces);
 	}
 
 	/**
