@@ -467,7 +467,11 @@ class AbstractPlugin {
 	public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
 		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
 			$aTagContent = GeneralUtility::get_tag_attributes($match[2]);
-			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $this->frontendController->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ? $winName : md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
+			$onClick = 'vHWin=window.open('
+				. GeneralUtility::quoteJSvalue($this->frontendController->baseUrlWrap($aTagContent['href'])) . ','
+				. GeneralUtility::quoteJSvalue($winName ?: md5($aTagContent['href'])) . ','
+				. GeneralUtility::quoteJSvalue($winParams) . ');vHWin.focus();return false;';
+			$match[2] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">';
 			$str = $match[1] . $match[2] . $match[3];
 		}
 		return $str;

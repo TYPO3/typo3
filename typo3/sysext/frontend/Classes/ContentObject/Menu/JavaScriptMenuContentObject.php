@@ -56,7 +56,7 @@ class JavaScriptMenuContentObject extends AbstractMenuContentObject {
 		$this->JSVarName = 'eid' . $uniqueParam;
 		$this->JSMenuName = $this->mconf['menuName'] ?: 'JSmenu' . $uniqueParam;
 		$JScode = '
-var ' . $this->JSMenuName . ' = new JSmenu(' . $levels . ', \'' . $this->JSMenuName . 'Form\');';
+var ' . $this->JSMenuName . ' = new JSmenu(' . $levels . ', ' . GeneralUtility::quoteJSvalue($this->JSMenuName . 'Form') . ');';
 		for ($a = 1; $a <= $levels; $a++) {
 			$JScode .= '
 var ' . $this->JSVarName . $a . '=0;';

@@ -439,7 +439,7 @@ class AdminPanelView {
 							parent.opener.top.goToModule("' . $pageModule . '");
 							parent.opener.top.focus();
 						} else {
-							vHWin=window.open(\'' . TYPO3_mainDir . BackendUtility::getBackendScript() . '\',\'' . md5(('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])) . '\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
+							vHWin=window.open(' . GeneralUtility::quoteJSvalue(TYPO3_mainDir . BackendUtility::getBackendScript()) . ',\'' . md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
 							vHWin.focus();
 						}
 						return false;
@@ -562,7 +562,7 @@ class AdminPanelView {
 	 * @see extGetHead()
 	 */
 	public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
-		$onclick = 'document.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']\'].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
+		$onclick = 'document.TSFE_ADMIN_PANEL_FORM[' . GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']') . '].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
 		$content = '<div class="typo3-adminPanel-label">
 						<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '"' . ($className ? ' class="' . htmlspecialchars($className) . '"' : '') . '>'
 			. $sectionTitle .

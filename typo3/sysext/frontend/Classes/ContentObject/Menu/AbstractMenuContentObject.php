@@ -1594,7 +1594,10 @@ abstract class AbstractMenuContentObject {
 			$conf = $this->mconf['JSWindow.'];
 			$url = $LD['totalURL'];
 			$LD['totalURL'] = '#';
-			$onClick = 'openPic(\'' . $tsfe->baseUrlWrap($url) . '\',\'' . ($conf['newWindow'] ? md5($url) : 'theNewPage') . '\',\'' . $conf['params'] . '\'); return false;';
+			$onClick = 'openPic('
+				. GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($url)) . ','
+				. '\'' . ($conf['newWindow'] ? md5($url) : 'theNewPage') . '\','
+				. GeneralUtility::quoteJSvalue($conf['params']) . '); return false;';
 			$tsfe->setJS('openPic');
 		}
 		// look for type and popup
@@ -1616,7 +1619,7 @@ abstract class AbstractMenuContentObject {
 				$JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
 				$onClick = 'vHWin=window.open('
 					. GeneralUtility::quoteJSvalue($tsfe->baseUrlWrap($LD['totalURL']))
-					. ',\'FEopenLink\',\'' . $JSparamWH . '\');vHWin.focus();return false;';
+					. ',\'FEopenLink\',' . GeneralUtility::quoteJSvalue($JSparamWH) . ');vHWin.focus();return false;';
 				$LD['target'] = '';
 			}
 		}

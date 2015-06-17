@@ -417,10 +417,10 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				if ($this->result['RO'][$key] && !$this->I['noLink']) {
 					$this->I['theName'] = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'];
 					$this->I['name'] = ' ' . $this->nameAttribute . '="' . $this->I['theName'] . '"';
-					$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(\'' . $this->I['theName'] . '\');';
-					$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(\'' . $this->I['theName'] . '\');';
-					$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $tsfe->absRefPrefix . $this->I['val']['output_file'] . '"; ';
-					$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $tsfe->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
+					$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(' . GeneralUtility::quoteJSvalue($this->I['theName']) . ');';
+					$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(' . GeneralUtility::quoteJSvalue($this->I['theName']) . ');';
+					$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = ' . GeneralUtility::quoteJSvalue($tsfe->absRefPrefix . $this->I['val']['output_file']) . '; ';
+					$tsfe->additionalJavaScript['JSImgCode'] .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = ' . GeneralUtility::quoteJSvalue($tsfe->absRefPrefix . $this->result['RO'][$key]['output_file']) . '; ';
 					$tsfe->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
 					$tsfe->setJS('mouseOver');
 					$this->extProc_RO($key);

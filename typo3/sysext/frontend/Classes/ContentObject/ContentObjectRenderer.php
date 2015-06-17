@@ -1730,7 +1730,13 @@ class ContentObjectRenderer {
 					$JSwindowExpand = isset($conf['JSwindow.']['expand.']) ? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.']) : $conf['JSwindow.']['expand'];
 					$offset = GeneralUtility::intExplode(',', $JSwindowExpand . ',');
 					$newWindow = isset($conf['JSwindow.']['newWindow.']) ? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.']) : $conf['JSwindow.']['newWindow'];
-					$a1 = '<a href="' . htmlspecialchars($url) . '" onclick="' . htmlspecialchars(('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' . ($newWindow ? md5($url) : 'thePicture') . '\',\'width=' . ($processedFile->getProperty('width') + $offset[0]) . ',height=' . ($processedFile->getProperty('height') + $offset[1]) . ',status=0,menubar=0\'); return false;')) . '"' . $target . $GLOBALS['TSFE']->ATagParams . '>';
+					$onClick = 'openPic('
+						. GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($url)) . ','
+						. '\'' . ($newWindow ? md5($url) : 'thePicture') . '\','
+						. GeneralUtility::quoteJSvalue('width=' . ($processedFile->getProperty('width') + $offset[0])
+							. ',height=' . ($processedFile->getProperty('height') + $offset[1]) . ',status=0,menubar=0')
+						. '); return false;';
+					$a1 = '<a href="' . htmlspecialchars($url) . '" onclick="' . htmlspecialchars($onClick) . '"' . $target . $GLOBALS['TSFE']->ATagParams . '>';
 					$a2 = '</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
 				} else {
@@ -6762,7 +6768,7 @@ class ContentObjectRenderer {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii') {
 					$mailToUrl = $GLOBALS['TSFE']->encryptEmail($mailToUrl);
 				} else {
-					$mailToUrl = 'javascript:linkTo_UnCryptMailto(\'' . $GLOBALS['TSFE']->encryptEmail($mailToUrl) . '\');';
+					$mailToUrl = 'javascript:linkTo_UnCryptMailto(' . GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->encryptEmail($mailToUrl)) . ');';
 				}
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);

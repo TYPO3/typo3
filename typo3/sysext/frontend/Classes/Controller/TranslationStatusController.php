@@ -195,7 +195,11 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 							$status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'danger' : '';
 							$info = '<input type="checkbox" name="newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']" value="1" />';
 							$newOL_js[$langRow['uid']] .= '
-								+(document.webinfoForm[\'newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']\'].checked ? \'&edit[pages_language_overlay][' . $data['row']['uid'] . ']=new\' : \'\')
+								+(document.webinfoForm['
+								. GeneralUtility::quoteJSvalue('newOL[' . $langRow['uid'] . '][' . $data['row']['uid'] . ']')
+								. '].checked ? '
+								. GeneralUtility::quoteJSvalue('&edit[pages_language_overlay][' . $data['row']['uid'] . ']=new')
+								. ' : \'\')
 							';
 						}
 						$tCells[] = '<td class="' . $status . ' col-border-left">&nbsp;</td>';
