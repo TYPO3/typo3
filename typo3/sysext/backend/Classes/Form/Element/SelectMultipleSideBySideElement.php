@@ -156,10 +156,18 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			}
 			$itemArray[$tk] = implode('|', $tvP);
 		}
+
+		// size must be at least two, as there are always maxitems > 1 (see parent function)
+		if (isset($config['size'])) {
+			$size = (int)$config['size'];
+		} else {
+			$size = 2;
+		}
+		$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
+
 		$itemsToSelect = '';
 		$filterTextfield = '';
 		$filterSelectbox = '';
-		$size = 0;
 		if (!$disabled) {
 			// Create option tags:
 			$opt = array();
@@ -176,10 +184,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			$selector_itemListStyle = isset($config['itemListStyle'])
 				? ' style="' . htmlspecialchars($config['itemListStyle']) . '"'
 				: '';
-			$size = (int)$config['size'];
-			$size = $config['autoSizeMax']
-				? MathUtility::forceIntegerInRange(count($itemArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
-				: $size;
 			$sOnChange = implode('', $parameterArray['fieldChangeFunc']);
 
 			$multiSelectId = str_replace('.', '', uniqid('tceforms-multiselect-', TRUE));
