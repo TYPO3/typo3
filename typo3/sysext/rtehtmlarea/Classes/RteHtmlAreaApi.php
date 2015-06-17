@@ -195,7 +195,10 @@ abstract class RteHtmlAreaApi {
 	 * @return string path to the skin (css) file
 	 */
 	public function getPathToSkin() {
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin']) {
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin'])
+			&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin']
+		) {
 			return $this->relativePathToSkin;
 		} else {
 			return '';

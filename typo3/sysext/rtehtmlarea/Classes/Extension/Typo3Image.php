@@ -34,13 +34,6 @@ class Typo3Image extends RteHtmlAreaApi {
 	protected $pluginName = 'TYPO3Image';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/typo3-image.css';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

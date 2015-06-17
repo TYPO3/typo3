@@ -32,13 +32,6 @@ class DefinitionList extends RteHtmlAreaApi {
 	protected $pluginName = 'DefinitionList';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/definition-list.css';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

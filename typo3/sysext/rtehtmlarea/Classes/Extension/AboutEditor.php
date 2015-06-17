@@ -30,13 +30,6 @@ class AboutEditor extends RteHtmlAreaApi {
 	protected $pluginName = 'AboutEditor';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/about-editor.css';
-
-	/**
 	 * Comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

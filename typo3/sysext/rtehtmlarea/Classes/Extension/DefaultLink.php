@@ -30,13 +30,6 @@ class DefaultLink extends RteHtmlAreaApi {
 	protected $pluginName = 'DefaultLink';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/default-link.css';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

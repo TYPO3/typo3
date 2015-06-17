@@ -31,13 +31,6 @@ class BlockStyle extends RteHtmlAreaApi {
 	protected $pluginName = 'BlockStyle';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = '';
-
-	/**
 	 * The comma-separated list of button names that the extension id adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

@@ -32,13 +32,6 @@ class QuickTag extends RteHtmlAreaApi {
 	protected $pluginName = 'QuickTag';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/quick-tag.css';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

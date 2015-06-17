@@ -39,13 +39,6 @@ class BlockElements extends RteHtmlAreaApi {
 	protected $relativePathToLocallangFile = 'extensions/BlockElements/locallang.xlf';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/block-elements.css';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string

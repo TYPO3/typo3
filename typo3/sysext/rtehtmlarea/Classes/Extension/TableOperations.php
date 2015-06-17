@@ -33,13 +33,6 @@ class TableOperations extends RteHtmlAreaApi {
 	protected $pluginName = 'TableOperations';
 
 	/**
-	 * Path to the skin file relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/table-operations.css';
-
-	/**
 	 * TRUE if the registered plugin requires the PageTSConfig Classes configuration
 	 *
 	 * @var bool

@@ -31,13 +31,10 @@ class EditElement extends RteHtmlAreaApi {
 	protected $pluginName = 'EditElement';
 
 	/**
-	 * Path to the skin file relative to the extension directory
+	 * The comma-separated list of names of prerequisite plugins
 	 *
 	 * @var string
 	 */
-	protected $relativePathToSkin = 'Resources/Public/Css/Skin/Plugins/edit-element.css';
-
-	// The comma-separated list of names of prerequisite plugins
 	protected $requiredPlugins = 'BlockStyle,TextStyle,Language,MicrodataSchema';
 
 	/**
