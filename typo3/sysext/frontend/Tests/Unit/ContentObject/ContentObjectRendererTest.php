@@ -3003,6 +3003,69 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return array
 	 */
+	protected function getLibParseTarget() {
+		return array(
+			'override' => '',
+			'override.' => array(
+				'if.' => array(
+					'isTrue.' => array(
+						'data' => 'TSFE:dtdAllowsFrames',
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getLibParseFunc() {
+		return array(
+			'makelinks' => '1',
+			'makelinks.' => array(
+				'http.' => array(
+					'keep' => '{$styles.content.links.keep}',
+					'extTarget' => '',
+					'extTarget.' => $this->getLibParseTarget(),
+					'mailto.' => array(
+						'keep' => 'path',
+					),
+				),
+			),
+			'tags' => array(
+				'link' => 'TEXT',
+				'link.' => array(
+					'current' => '1',
+					'typolink.' => array(
+						'parameter.' => array(
+							'data' => 'parameters : allParams',
+						),
+						'extTarget.' => $this->getLibParseTarget(),
+						'target.' => $this->getLibParseTarget(),
+					),
+					'parseFunc.' => array(
+						'constants' => '1',
+					),
+				),
+			),
+
+			'allowTags' => 'a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var',
+			'denyTags' => '*',
+			'sword' => '<span class="csc-sword">|</span>',
+			'constants' => '1',
+			'nonTypoTagStdWrap.' => array(
+				'HTMLparser' => '1',
+				'HTMLparser.' => array(
+					'keepNonMatchedTags' => '1',
+					'htmlSpecialChars' => '2',
+				),
+			),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
 	protected function getLibParseFunc_RTE() {
 		return array(
 			'parseFunc' => '',
@@ -3209,6 +3272,220 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult) {
 		$this->assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider() {
+		return array(
+			'Link to url' => array(
+				'TYPO3',
+				array(
+					'parameter' => 'http://typo3.org',
+				),
+				'<a href="http://typo3.org">TYPO3</a>',
+			),
+			'Link to url without link text' => array(
+				'',
+				array(
+					'parameter' => 'http://typo3.org',
+				),
+				'<a href="http://typo3.org">http://typo3.org</a>',
+			),
+			'Link to url with attributes' => array(
+				'TYPO3',
+				array(
+					'parameter' => 'http://typo3.org',
+					'ATagParams' => 'class="url-class"',
+					'extTarget' => '_blank',
+					'title' => 'Open new window',
+				),
+				'<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
+			),
+			'Link to url with attributes in parameter' => array(
+				'TYPO3',
+				array(
+					'parameter' => 'http://typo3.org _blank url-class "Open new window"',
+				),
+				'<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class">TYPO3</a>',
+			),
+			'Link to email address' => array(
+				'Email address',
+				array(
+					'parameter' => 'foo@bar.org',
+				),
+				'<a href="mailto:foo@bar.org">Email address</a>',
+			),
+			'Link to email address without link text' => array(
+				'',
+				array(
+					'parameter' => 'foo@bar.org',
+				),
+				'<a href="mailto:foo@bar.org">foo@bar.org</a>',
+			),
+			'Link to email with attributes' => array(
+				'Email address',
+				array(
+					'parameter' => 'foo@bar.org',
+					'ATagParams' => 'class="email-class"',
+					'title' => 'Write an email',
+				),
+				'<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
+			),
+			'Link to email with attributes in parameter' => array(
+				'Email address',
+				array(
+					'parameter' => 'foo@bar.org - email-class "Write an email"',
+				),
+				'<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $linkText
+	 * @param array $configuration
+	 * @param string $expectedResult
+	 * @dataProvider typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider
+	 */
+	public function typolinkReturnsCorrectLinksForEmailsAndUrls($linkText, $configuration, $expectedResult) {
+		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function typolinkReturnsCorrectLinksForPagesDataProvider() {
+		return array(
+			'Link to page' => array(
+				'My page',
+				array(
+					'parameter' => 42,
+				),
+				array(
+					'uid' => 42,
+					'title' => 'Page title',
+				),
+				'<a href="index.php?id=42">My page</a>',
+			),
+			'Link to page without link text' => array(
+				'',
+				array(
+					'parameter' => 42,
+				),
+				array(
+					'uid' => 42,
+					'title' => 'Page title',
+				),
+				'<a href="index.php?id=42">Page title</a>',
+			),
+			'Link to page with attributes' => array(
+				'My page',
+				array(
+					'parameter' => '42',
+					'ATagParams' => 'class="page-class"',
+					'target' => '_self',
+					'title' => 'Link to internal page',
+				),
+				array(
+					'uid' => 42,
+					'title' => 'Page title',
+				),
+				'<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
+			),
+			'Link to page with attributes in parameter' => array(
+				'My page',
+				array(
+					'parameter' => '42 _self page-class "Link to internal page"',
+				),
+				array(
+					'uid' => 42,
+					'title' => 'Page title',
+				),
+				'<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $linkText
+	 * @param array $configuration
+	 * @param array $pageArray
+	 * @param string $expectedResult
+	 * @dataProvider typolinkReturnsCorrectLinksForPagesDataProvider
+	 */
+	public function typolinkReturnsCorrectLinksForPages($linkText, $configuration, $pageArray, $expectedResult) {
+		$pageRepositoryMockObject = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, array('getPage'));
+		$pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn($pageArray);
+		$templateServiceObjectMock = $this->getMock(\TYPO3\CMS\Core\TypoScript\TemplateService::class, array('dummy'));
+		$templateServiceObjectMock->setup = array(
+			'lib.' => array(
+				'parseFunc.' => $this->getLibParseFunc(),
+			),
+		);
+		$typoScriptFrontendControllerMockObject = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(), array(), '', FALSE);
+		$typoScriptFrontendControllerMockObject->config = array(
+			'config' => array(),
+			'mainScript' => 'index.php',
+		);
+		$typoScriptFrontendControllerMockObject->sys_page = $pageRepositoryMockObject;
+		$typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
+		$GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
+
+		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function typolinkReturnsCorrectLinksFilesDataProvider() {
+		return array(
+			'Link to file' => array(
+				'My file',
+				array(
+					'parameter' => 'fileadmin/foo.bar',
+				),
+				'<a href="fileadmin/foo.bar">My file</a>',
+			),
+			'Link to file without link text' => array(
+				'',
+				array(
+					'parameter' => 'fileadmin/foo.bar',
+				),
+				'<a href="fileadmin/foo.bar">fileadmin/foo.bar</a>',
+			),
+			'Link to file with attributes' => array(
+				'My file',
+				array(
+					'parameter' => 'fileadmin/foo.bar',
+					'ATagParams' => 'class="file-class"',
+					'fileTarget' => '_blank',
+					'title' => 'Title of the file',
+				),
+				'<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+			),
+			'Link to file with attributes in parameter' => array(
+				'My file',
+				array(
+					'parameter' => 'fileadmin/foo.bar _blank file-class "Title of the file"',
+				),
+				'<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $linkText
+	 * @param array $configuration
+	 * @param string $expectedResult
+	 * @dataProvider typolinkReturnsCorrectLinksFilesDataProvider
+	 */
+	public function typolinkReturnsCorrectLinksFiles($linkText, $configuration, $expectedResult) {
+		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}
 
 }
