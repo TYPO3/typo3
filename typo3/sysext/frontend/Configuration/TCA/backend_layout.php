@@ -3,6 +3,7 @@ return array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:cms/locallang_tca.xlf:backend_layout',
 		'label' => 'title',
+		'descriptionColumn' => 'description',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

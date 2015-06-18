@@ -2,6 +2,7 @@
 return array(
 	'ctrl' => array(
 		'label' => 'title',
+		'descriptionColumn' => 'description',
 		'tstamp' => 'tstamp',
 		'sortby' => 'sorting',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',

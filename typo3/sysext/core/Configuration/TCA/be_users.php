@@ -2,6 +2,7 @@
 return array(
 	'ctrl' => array(
 		'label' => 'username',
+		'descriptionColumn' => 'description',
 		'tstamp' => 'tstamp',
 		'title' => 'LLL:EXT:lang/locallang_tca.xlf:be_users',
 		'crdate' => 'crdate',

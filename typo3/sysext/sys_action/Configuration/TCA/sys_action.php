@@ -2,6 +2,7 @@
 return array(
 	'ctrl' => array(
 		'label' => 'title',
+		'descriptionColumn' => 'description',
 		'tstamp' => 'tstamp',
 		'default_sortby' => 'ORDER BY title',
 		'sortby' => 'sorting',

@@ -2,6 +2,7 @@
 return array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category',
+		'descriptionColumn' => 'description',
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',

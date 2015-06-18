@@ -3,6 +3,7 @@ return array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:indexed_search/locallang_db.xlf:index_config',
 		'label' => 'title',
+		'descriptionColumn' => 'description',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
