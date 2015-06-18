@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\VersionNumberUtilityFixture;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
@@ -127,17 +128,8 @@ class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $expectedVersion
 	 */
 	public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion) {
-		$className = $this->getUniqueId('VersionNumberUtility');
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility {' .
-			'  static public function getCurrentTypo3Version() {' .
-			'    return \'' . $currentVersion . '\';' .
-			'  }' .
-			'}'
-		);
-		$className = __NAMESPACE__ . '\\' . $className;
-		$this->assertEquals($expectedVersion, $className::getNumericTypo3Version());
+		VersionNumberUtilityFixture::$versionNumber = $currentVersion;
+		$this->assertEquals($expectedVersion, VersionNumberUtilityFixture::getNumericTypo3Version());
 	}
 
 	/**
