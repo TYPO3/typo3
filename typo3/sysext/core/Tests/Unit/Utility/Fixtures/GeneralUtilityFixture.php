@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class GeneralUtilityFixture
  */
 class GeneralUtilityFixture extends GeneralUtility {
+	const DEPRECATION_LOG_PATH = 'typo3temp/test_deprecation/test.log';
 
 	/**
 	 * @var int
@@ -74,4 +75,19 @@ class GeneralUtilityFixture extends GeneralUtility {
 		return parent::stripHttpHeaders($content);
 	}
 
+	/**
+	 * Gets the absolute path to the deprecation log file.
+	 *
+	 * @return string Absolute path to the deprecation log file
+	 */
+	static public function getDeprecationLogFileName() {
+		return PATH_site . static::DEPRECATION_LOG_PATH;
+	}
+
+	/**
+	 * Resets the internal computed class name cache.
+	 */
+	static public function resetFinalClassNameCache() {
+		static::$finalClassNameCache = array();
+	}
 }

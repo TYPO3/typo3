@@ -15,6 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\GeneralUtilityMinifyJavaScriptFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OriginalClassFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\OtherReplacementClassFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
 use TYPO3\CMS\Core\Utility;
 use \org\bovigo\vfs\vfsStream;
 use \org\bovigo\vfs\vfsStreamDirectory;
@@ -2564,9 +2569,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function minifyJavaScriptWritesExceptionMessageToDevLog() {
-		$t3libDivMock = $this->getUniqueId('GeneralUtility');
-		eval('namespace ' . __NAMESPACE__ . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  static public function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
-		$t3libDivMock = __NAMESPACE__ . '\\' . $t3libDivMock;
 		$hookClassName = $this->getUniqueId('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
 		$functionName = '&' . $hookClassName . '->minify';
@@ -2576,7 +2578,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'][] = $functionName;
 		$minifyHookMock->expects($this->any())->method('minify')->will($this->returnCallback(array($this, 'minifyJavaScriptErroneousCallback')));
 		$this->setExpectedException('\\RuntimeException');
-		$t3libDivMock::minifyJavaScript('string to compress');
+		GeneralUtilityMinifyJavaScriptFixture::minifyJavaScript('string to compress');
 	}
 
 	/**
@@ -3793,11 +3795,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstancePassesParametersToConstructor() {
-		$className = $this->getUniqueId('testingClass');
-		if (!class_exists($className, FALSE)) {
-			eval('class ' . $className . ' {' . '  public $constructorParameter1;' . '  public $constructorParameter2;' . '  public function __construct($parameter1, $parameter2) {' . '    $this->constructorParameter1 = $parameter1;' . '    $this->constructorParameter2 = $parameter2;' . '  }' . '}');
-		}
-		$instance = Utility\GeneralUtility::makeInstance($className, 'one parameter', 'another parameter');
+		$instance = Utility\GeneralUtility::makeInstance(TwoParametersConstructorFixture::class, 'one parameter', 'another parameter');
 		$this->assertEquals('one parameter', $instance->constructorParameter1, 'The first constructor parameter has not been set.');
 		$this->assertEquals('another parameter', $instance->constructorParameter2, 'The second constructor parameter has not been set.');
 	}
@@ -3806,22 +3804,19 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function makeInstanceInstanciatesConfiguredImplementation() {
-		$classNameOriginal = get_class($this->getMock($this->getUniqueId('foo')));
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$classNameOriginal] = array('className' => $classNameOriginal . 'Other');
-		eval('class ' . $classNameOriginal . 'Other extends ' . $classNameOriginal . ' {}');
-		$this->assertInstanceOf($classNameOriginal . 'Other', Utility\GeneralUtility::makeInstance($classNameOriginal));
+		GeneralUtilityFixture::resetFinalClassNameCache();
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = array('className' => ReplacementClassFixture::class);
+		$this->assertInstanceOf(ReplacementClassFixture::class, Utility\GeneralUtility::makeInstance(OriginalClassFixture::class));
 	}
 
 	/**
 	 * @test
 	 */
 	public function makeInstanceResolvesConfiguredImplementationsRecursively() {
-		$classNameOriginal = get_class($this->getMock($this->getUniqueId('foo')));
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$classNameOriginal] = array('className' => $classNameOriginal . 'Other');
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][$classNameOriginal . 'Other'] = array('className' => $classNameOriginal . 'OtherOther');
-		eval('class ' . $classNameOriginal . 'Other extends ' . $classNameOriginal . ' {}');
-		eval('class ' . $classNameOriginal . 'OtherOther extends ' . $classNameOriginal . 'Other {}');
-		$this->assertInstanceOf($classNameOriginal . 'OtherOther', Utility\GeneralUtility::makeInstance($classNameOriginal));
+		GeneralUtilityFixture::resetFinalClassNameCache();
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = array('className' => ReplacementClassFixture::class);
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][ReplacementClassFixture::class] = array('className' => OtherReplacementClassFixture::class);
+		$this->assertInstanceOf(OtherReplacementClassFixture::class, Utility\GeneralUtility::makeInstance(OriginalClassFixture::class));
 	}
 
 	/**
@@ -4149,26 +4144,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('deprecationLogFixesPermissionsOnLogFile() test not available on Windows.');
 		}
-		// Create extending class and let getDeprecationLogFileName return something within typo3temp/
-		$className = $this->getUniqueId('GeneralUtility');
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Utility\GeneralUtility $subject */
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' .
-			'  static public function getDeprecationLogFileName() {' .
-			'    return PATH_site . \'typo3temp/test_deprecation/test.log\';' .
-			'  }' .
-			'}'
-		);
-		$filePath = PATH_site . 'typo3temp/test_deprecation/';
-		@mkdir($filePath);
+		$filePath = PATH_site . GeneralUtilityFixture::DEPRECATION_LOG_PATH;
+		@mkdir(dirname($filePath));
 		$this->testFilesToDelete[] = $filePath;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
-		$subject::deprecationLog('foo');
+		GeneralUtilityFixture::deprecationLog('foo');
 		clearstatcache();
-		$resultFilePermissions = substr(decoct(fileperms($filePath . 'test.log')), 2);
+		$resultFilePermissions = substr(decoct(fileperms($filePath)), 2);
 		$this->assertEquals('0777', $resultFilePermissions);
 	}
 
