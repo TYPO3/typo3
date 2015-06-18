@@ -38,7 +38,7 @@ class SaltedPasswordsUtility {
 		$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 			'*',
 			'be_users',
-			'password != ""'
+			'password != \'\''
 				. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
 				. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
 		);
