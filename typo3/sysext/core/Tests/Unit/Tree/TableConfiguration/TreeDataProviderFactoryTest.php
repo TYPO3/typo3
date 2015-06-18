@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 
 /**
  * Testcase for TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory
@@ -82,11 +83,7 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function configuredDataProviderClassIsInstantiated() {
-		$dataProviderMockClassName = $this->getUniqueId('tx_coretest_tree_data_provider');
-		eval('class ' . $dataProviderMockClassName . ' {
-			function __construct($configuration) {
-			}
-		}');
+		$dataProviderMockClassName = TreeDataProviderFixture::class;
 
 		$tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
 		$dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
