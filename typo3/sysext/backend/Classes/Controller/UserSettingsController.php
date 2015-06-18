@@ -65,9 +65,11 @@ class UserSettingsController {
 			case 'addToList':
 				$this->addToList($key, $value);
 				$content = $this->getAll();
+				break;
 			case 'removeFromList':
 				$this->removeFromList($key, $value);
 				$content = $this->getAll();
+				break;
 			case 'unset':
 				$this->unsetOption($key);
 				$content = $this->getAll();
