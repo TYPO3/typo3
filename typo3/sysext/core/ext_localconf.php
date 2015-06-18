@@ -6,12 +6,19 @@ if (!defined('TYPO3_MODE')) {
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
+	// FAL SECURITY CHECKS
 	$signalSlotDispatcher->connect(
 		'TYPO3\\CMS\\Core\\Resource\\ResourceFactory',
 		\TYPO3\CMS\Core\Resource\ResourceFactoryInterface::SIGNAL_PostProcessStorage,
 		'TYPO3\\CMS\\Core\\Resource\\Security\\StoragePermissionsAspect',
 		'addUserPermissionsToStorage'
 	);
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'TYPO3\\CMS\\Core\\Resource\\Security\\FileMetadataPermissionsAspect';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'][] = 'TYPO3\\CMS\\Core\\Resource\\Security\\FileMetadataPermissionsAspect->isAllowedToShowEditForm';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'][] = 'TYPO3\\CMS\\Core\\Resource\\Security\\FileMetadataPermissionsAspect->isAllowedToShowEditForm';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = 'TYPO3\\CMS\\Core\\Resource\\Security\\FileMetadataPermissionsAspect';
+
+	// PACKAGE MANAGEMENT
 	$signalSlotDispatcher->connect(
 		'PackageManagement',
 		'packagesMayHaveChanged',

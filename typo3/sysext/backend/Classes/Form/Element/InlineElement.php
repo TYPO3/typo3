@@ -2146,6 +2146,20 @@ class InlineElement {
 		if (!$GLOBALS['BE_USER']->check('tables_modify', $table)) {
 			$hasAccess = 0;
 		}
+		if (
+			!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'])
+			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'])
+		) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'] as $_funcRef) {
+				$_params = array(
+					'table' => $table,
+					'uid' => $theUid,
+					'cmd' => $cmd,
+					'hasAccess' => $hasAccess
+				);
+				$hasAccess = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
 		if (!$hasAccess) {
 			$deniedAccessReason = $GLOBALS['BE_USER']->errorMsg;
 			if ($deniedAccessReason) {
