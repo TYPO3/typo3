@@ -2041,6 +2041,73 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		return $this->dbmsSpecifics->getNativeFieldType($meta);
 	}
 
+	/*********************************************
+	 *
+	 * SqlSchemaMigrationService helper functions
+	 *
+	 *********************************************/
+	/**
+	 * Remove the index prefix length information from columns in an index definition.
+	 * Partial indexes based on a prefix are not supported by all databases.
+	 *
+	 * @param string $indexSQL
+	 * @return string
+	 */
+	public function getEquivalentIndexDefinition($indexSQL) {
+		if ($this->dbmsSpecifics->specificExists(Specifics\AbstractSpecifics::PARTIAL_STRING_INDEX) && (bool)$this->dbmsSpecifics->getSpecific(Specifics\AbstractSpecifics::PARTIAL_STRING_INDEX)) {
+			return $indexSQL;
+		}
+
+		$strippedIndexSQL = preg_replace_callback(
+			'/\A([^(]+)\((.*)\)\Z/',
+			function($matches) {
+				return $matches[1] . '(' . preg_replace('/\((\d+)\)/', '', $matches[2]) . ')';
+			},
+			$indexSQL
+		);
+
+		return $strippedIndexSQL === NULL ? $indexSQL : $strippedIndexSQL;
+	}
+
+	/**
+	 * Convert the native MySQL Field type to the closest matching equivalent field type supported by the DBMS.
+	 * INTEGER and TINYTEXT colums need to be further processed due to MySQL limitations / non-standard features.
+	 *
+	 * @param string $fieldSQL
+	 * @return string
+	 */
+	public function getEquivalentFieldDefinition($fieldSQL) {
+		if (!preg_match('/^([a-z0-9]+)(\(([^\)]+)\))?(.*)/', $fieldSQL, $components)) {
+			return $fieldSQL;
+		}
+
+		$metaType = $this->dbmsSpecifics->getMetaFieldType($components[1]);
+		$replacementType = $this->dbmsSpecifics->getNativeFieldType($metaType);
+		$replacementLength = $components[2];
+		$replacementExtra = '';
+
+		// MySQL INT types support a display length that has no effect on the
+		// actual range of values that can be stored, normalize to the default
+		// display length returned by DBAL.
+		if (substr($metaType, 0, 1) === 'I') {
+			$replacementLength = $this->dbmsSpecifics->getNativeFieldLength($replacementType, $components[3]);
+		}
+
+		// MySQL TINYTEXT is equivalent to VARCHAR(255) DEFAULT NULL. MySQL TEXT
+		// columns can not have a default value in contrast to VARCHAR, so the
+		// `default NULL` gets appended to avoid false-positive schema changes.
+		if ($components[1] === 'tinytext') {
+			$replacementLength = '(255)';
+			if (FALSE !== stripos($components[0], ' NOT NULL')) {
+				$replacementExtra = ' default \'\'';
+			} else {
+				$replacementExtra = ' default NULL';
+			}
+		}
+
+		return str_replace($components[1] . $components[2], strtolower($replacementType) . $replacementLength, $components[0]) . $replacementExtra;
+	}
+
 	/**************************************
 	 *
 	 * SQL wrapper functions (Overriding parent methods)

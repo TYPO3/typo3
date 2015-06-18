@@ -221,4 +221,31 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase {
 		$expected = 'SELECT COUNT("title"), COUNT("pid") FROM "pages" GROUP BY "title" ORDER BY "title"';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
+
+	/**
+	 * @test
+	 * @param string $fieldSQL
+	 * @param string $expected
+	 * @dataProvider equivalentFieldTypeDataProvider
+	 * @see http://forge.typo3.org/issues/67301
+	 */
+	public function suggestEquivalentFieldDefinitions($fieldSQL, $expected) {
+		$actual= $this->subject->getEquivalentFieldDefinition($fieldSQL);
+		$this->assertSame($expected, $actual);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function equivalentFieldTypeDataProvider() {
+		return array(
+			array('int(11) NOT NULL default \'0\'', 'int(11) NOT NULL default \'0\''),
+			array('int(10) NOT NULL', 'int(11) NOT NULL'),
+			array('tinyint(3)', 'smallint(6)'),
+			array('bigint(20) NOT NULL', 'bigint(20) NOT NULL'),
+			array('tinytext NOT NULL', 'varchar(255) NOT NULL default \'\''),
+			array('tinytext', 'varchar(255) default NULL'),
+			array('mediumtext', 'longtext')
+		);
+	}
 }

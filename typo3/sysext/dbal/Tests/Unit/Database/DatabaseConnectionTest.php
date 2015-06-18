@@ -284,4 +284,28 @@ class DatabaseConnectionTest extends AbstractTestCase {
 		$this->assertEquals($expectedParameterValues, $parameters);
 	}
 
+	///////////////////////////////////////
+	// Tests concerning indexes
+	///////////////////////////////////////
+	/**
+	 * @test
+	 * @param string $indexSQL
+	 * @param string $expected
+	 * @dataProvider equivalentIndexDefinitionDataProvider
+	 */
+	public function equivalentIndexDefinitionRemovesLengthInformation($indexSQL, $expected) {
+		$result = $this->subject->getEquivalentIndexDefinition($indexSQL);
+		$this->assertSame($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function equivalentIndexDefinitionDataProvider() {
+		return array(
+			array('KEY (foo,bar(199))', 'KEY (foo,bar)'),
+			array('KEY (foo(199), bar)', 'KEY (foo, bar)'),
+			array('KEY (foo(199),bar(199))', 'KEY (foo,bar)'),
+		);
+	}
 }

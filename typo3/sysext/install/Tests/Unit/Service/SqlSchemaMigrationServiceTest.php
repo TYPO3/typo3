@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 
 /**
@@ -22,10 +23,40 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
+	 * Get a SchemaService instance with mocked DBAL enable database connection, DBAL not enabled
+	 *
+	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 */
+	protected function getSqlSchemaMigrationService() {
+		/** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $databaseConnection */
+		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
+		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(FALSE));
+
+		return $subject;
+	}
+
+	/**
+	 * Get a SchemaService instance with mocked DBAL enable database connection, DBAL enabled
+	 *
+	 * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+	 */
+	protected function getDbalEnabledSqlSchemaMigrationService() {
+		/** @var \TYPO3\CMS\Dbal\Database\DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $databaseConnection */
+		$databaseConnection = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\DatabaseConnection::class, array('dummy'), array(), '', FALSE);
+		$databaseConnection->_set('dbmsSpecifics', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\Specifics\PostgresSpecifics::class));
+
+		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled', 'getDatabaseConnection'), array(), '', FALSE);
+		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(TRUE));
+		$subject->expects($this->any())->method('getDatabaseConnection')->will($this->returnValue($databaseConnection));
+
+		return $subject;
+	}
+
+	/**
 	 * @test
 	 */
 	public function getFieldDefinitionsFileContentHandlesMultipleWhitespacesInFieldDefinitions() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		// Multiple whitespaces and tabs in field definition
 		$inputString = 'CREATE table atable (' . LF . 'aFieldName   int(11)' . TAB . TAB . TAB . 'unsigned   DEFAULT \'0\'' . LF . ');';
 		$result = $subject->getFieldDefinitions_fileContent($inputString);
@@ -49,7 +80,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraFindsChangedFields() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -93,7 +124,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraFindsChangedFieldsIncludingNull() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -137,7 +168,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraFindsChangedFieldsIgnoreNotNull() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -183,7 +214,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraIgnoresCaseDifference() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -216,7 +247,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraIgnoresCaseDifferenceButKeepsCaseInSetIntact() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -248,7 +279,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraDoesNotLowercaseReservedWordsForTheComparison() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -280,7 +311,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraFindsNewSpatialKeys() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -316,7 +347,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function checkColumnDefinitionIfCommentIsSupplied() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$fieldDefinition = $subject->assembleFieldDefinition(
 			array(
 				'Field' => 'uid',
@@ -340,7 +371,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function checkColumnDefinitionIfNoCommentIsSupplied() {
-		$subject = new SqlSchemaMigrationService();
+		$subject = $this->getSqlSchemaMigrationService();
 		$fieldDefinition = $subject->assembleFieldDefinition(
 			array(
 				'Field' => 'uid',
@@ -363,8 +394,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraIncludesEngineIfMySQLIsUsed() {
-		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
-		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(FALSE));
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -402,8 +432,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraExcludesEngineIfDbalIsUsed() {
-		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
-		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(TRUE));
+		$subject = $this->getDbalEnabledSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -439,8 +468,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraIncludesUnsignedAttributeIfMySQLIsUsed() {
-		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
-		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(FALSE));
+		$subject = $this->getSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -490,8 +518,7 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getDatabaseExtraExcludesUnsignedAttributeIfDbalIsUsed() {
-		$subject = $this->getAccessibleMock(SqlSchemaMigrationService::class, array('isDbalEnabled'), array(), '', FALSE);
-		$subject->expects($this->any())->method('isDbalEnabled')->will($this->returnValue(TRUE));
+		$subject = $this->getDbalEnabledSqlSchemaMigrationService();
 		$differenceArray = $subject->getDatabaseExtra(
 			array(
 				'tx_foo' => array(
@@ -521,6 +548,82 @@ class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'extra' => array(),
 				'diff' => array(),
 				'diff_currentValues' => NULL
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraIgnoresIndexPrefixLengthIfDbalIsUsed() {
+		$subject = $this->getDbalEnabledSqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'keys' => array(
+						'foo' => 'KEY foo (foo(199))'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'keys' => array(
+						'foo' => 'KEY foo (foo)'
+					)
+				)
+			)
+		);
+
+		$this->assertSame(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(),
+				'diff_currentValues' => NULL,
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getDatabaseExtraComparesIndexPrefixLengthIfMySQLIsUsed() {
+		$subject = $this->getSqlSchemaMigrationService();
+		$differenceArray = $subject->getDatabaseExtra(
+			array(
+				'tx_foo' => array(
+					'keys' => array(
+						'foo' => 'KEY foo (foo(199))'
+					)
+				)
+			),
+			array(
+				'tx_foo' => array(
+					'keys' => array(
+						'foo' => 'KEY foo (foo)'
+					)
+				)
+			)
+		);
+
+		$this->assertSame(
+			$differenceArray,
+			array(
+				'extra' => array(),
+				'diff' => array(
+					'tx_foo' => array(
+						'keys' => array(
+							'foo' => 'KEY foo (foo(199))'
+						)
+					)
+				),
+				'diff_currentValues' => array(
+					'tx_foo' => array(
+						'keys' => array(
+							'foo' => 'KEY foo (foo)'
+						)
+					)
+				)
 			)
 		);
 	}
