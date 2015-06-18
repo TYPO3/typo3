@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\WindowsPathUtilityFixture;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\PathUtility
@@ -338,21 +339,9 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getCanonicalPathCorrectlyCleansPathDataProvider
 	 */
 	public function getCanonicalPathCorrectlyCleansPath($inputName, $expectedResult) {
-		$className = $this->getUniqueId('PathUtilityFixture');
-		$fixtureClassString = '
-			namespace ' . ltrim(__NAMESPACE__, '\\') . ';
-			class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Utility\\PathUtility {
-				static public function isWindows() {
-					return TRUE;
-				}
-			}
-		';
-		eval($fixtureClassString);
-		$fullyQualifiedClassName = __NAMESPACE__ . '\\' . $className;
-
 		$this->assertEquals(
 			$expectedResult,
-			$fullyQualifiedClassName::getCanonicalPath($inputName)
+			WindowsPathUtilityFixture::getCanonicalPath($inputName)
 		);
 	}
 
