@@ -1862,28 +1862,9 @@ class ArrayUtilityTest extends UnitTestCase {
 	}
 
 	/**
-	 * Shows the exmaple from the doc comment where
+	 * Shows the example from the doc comment where
 	 * a function is used to reduce the sub arrays to one item which
 	 * is then used for the matching.
-	 *
-	 * @test
-	 */
-	public function keepItemsInArrayCanUseCallbackOnSearchArray() {
-		$array = array(
-			'aa' => array('first', 'second'),
-			'bb' => array('third', 'fourth'),
-			'cc' => array('fifth', 'sixth')
-		);
-		$expected = array('bb' => array('third', 'fourth'));
-		$keepItems = 'third';
-		$getValueFunc = create_function('$value', 'return $value[0];');
-		$match = ArrayUtility::keepItemsInArray($array, $keepItems, $getValueFunc);
-		$this->assertEquals($expected, $match);
-	}
-
-	/**
-	 * Similar to keepItemsInArrayCanUseCallbackOnSearchArray(),
-	 * but uses a closure instead of create_function()
 	 *
 	 * @test
 	 */

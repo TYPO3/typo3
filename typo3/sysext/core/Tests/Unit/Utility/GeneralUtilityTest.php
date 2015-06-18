@@ -4206,9 +4206,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function callUserFunctionCanCallFunction() {
-		$functionName = create_function('', 'return "Worked fine";');
 		$inputData = array('foo' => 'bar');
-		$result = Utility\GeneralUtility::callUserFunction($functionName, $inputData, $this, '');
+		$result = Utility\GeneralUtility::callUserFunction(function() { return "Worked fine"; }, $inputData, $this, '');
 		$this->assertEquals('Worked fine', $result);
 	}
 
@@ -4217,7 +4216,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function callUserFunctionCanCallMethod() {
 		$inputData = array('foo' => 'bar');
-		$result = Utility\GeneralUtility::callUserFunction(\TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest::class . '->user_calledUserFunction', $inputData, $this);
+		$result = Utility\GeneralUtility::callUserFunction(GeneralUtilityTest::class . '->user_calledUserFunction', $inputData, $this);
 		$this->assertEquals('Worked fine', $result);
 	}
 

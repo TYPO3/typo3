@@ -591,7 +591,7 @@ class ArrayUtility {
 	 * array('cc' => array('fifth', 'sixth'),
 	 * );
 	 * $keepItems = array('third');
-	 * $getValueFunc = create_function('$value', 'return $value[0];');
+	 * $getValueFunc = function($value) { return $value[0]; }
 	 *
 	 * Returns:
 	 * array(
