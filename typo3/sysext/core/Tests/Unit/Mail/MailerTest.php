@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
 
 /**
  * Testcase for the TYPO3\CMS\Core\Mail\Mailer class.
@@ -82,13 +83,7 @@ class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function providingCorrectClassnameDoesNotThrowException() {
-		if (!class_exists('t3lib_mail_SwiftMailerFakeTransport')) {
-				// Create fake custom transport class
-			eval('class t3lib_mail_SwiftMailerFakeTransport extends \\TYPO3\\CMS\\Core\\Mail\\MboxTransport {
-				public function __construct($settings) {}
-			}');
-		}
-		$this->subject->injectMailSettings(array('transport' => 't3lib_mail_SwiftMailerFakeTransport'));
+		$this->subject->injectMailSettings(array('transport' => FakeTransportFixture::class));
 		$this->subject->__construct();
 	}
 
