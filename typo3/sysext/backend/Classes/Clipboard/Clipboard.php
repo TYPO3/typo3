@@ -334,7 +334,7 @@ class Clipboard {
 				TYPO3 Clipboard:
 			-->
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">' . BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_clipboard', $this->clLabel('clipboard', 'buttons')) . '</div>
 						<table class="table">
