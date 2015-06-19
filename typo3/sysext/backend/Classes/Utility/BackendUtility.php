@@ -770,9 +770,9 @@ class BackendUtility {
 			foreach ($fieldList as $k => $v) {
 				list($pFieldName, $pAltTitle, $pPalette) = GeneralUtility::trimExplode(';', $v);
 				$defaultExtras = '';
-				if (!empty($typesConf['columnsOverrides'][$pFieldName]['config']['defaultExtras'])) {
+				if (!empty($typesConf['columnsOverrides'][$pFieldName]['defaultExtras'])) {
 					// Use defaultExtras from columnsOverrides if given
-					$defaultExtras = $typesConf['columnsOverrides'][$pFieldName]['config']['defaultExtras'];
+					$defaultExtras = $typesConf['columnsOverrides'][$pFieldName]['defaultExtras'];
 				} elseif (!empty($GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'])) {
 					// Use defaultExtras from columns if given
 					$defaultExtras = $GLOBALS['TCA'][$table]['columns'][$pFieldName]['defaultExtras'];
