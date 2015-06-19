@@ -64,10 +64,10 @@ class CoreVersionService {
 	public function updateVersionMatrix() {
 		$versionArray = $this->fetchVersionMatrixFromRemote();
 		// This is a 'hack' to keep the string stored in the registry small. We are usually only
-		// interested in information from 6.2 and up and older releases do not matter in current
+		// interested in information from 7 and up and older releases do not matter in current
 		// use cases. If this unset() is removed and everything is stored for some reason, the
 		// table sys_file field entry_value needs to be extended from blob to longblob.
-		unset($versionArray['6.1'], $versionArray['6.0'], $versionArray['4.7'], $versionArray['4.6'],
+		unset($versionArray['6.2'], $versionArray['6.1'], $versionArray['6.0'], $versionArray['4.7'], $versionArray['4.6'],
 			$versionArray['4.5'], $versionArray['4.4'], $versionArray['4.3'], $versionArray['4.2'],
 			$versionArray['4.1'], $versionArray['4.0'], $versionArray['3.8'], $versionArray['3.7'],
 			$versionArray['3.6'], $versionArray['3.5'], $versionArray['3.3']);
@@ -95,10 +95,10 @@ class CoreVersionService {
 	public function getTarGzSha1OfVersion($version) {
 		$this->ensureVersionExistsInMatrix($version);
 
-		$minorVersion = $this->getMinorVersion($version);
+		$majorVersion = $this->getMajorVersion($version);
 		$versionMatrix = $this->getVersionMatrix();
 
-		if (empty($versionMatrix[$minorVersion]['releases'][$version]['checksums']['tar']['sha1'])) {
+		if (empty($versionMatrix[$majorVersion]['releases'][$version]['checksums']['tar']['sha1'])) {
 			throw new Exception\CoreVersionServiceException(
 				'Release sha1 of version ' . $version . ' not found in version matrix.'
 				. ' This is probably a bug on get.typo3.org.',
@@ -106,7 +106,7 @@ class CoreVersionService {
 			);
 		}
 
-		return $versionMatrix[$minorVersion]['releases'][$version]['checksums']['tar']['sha1'];
+		return $versionMatrix[$majorVersion]['releases'][$version]['checksums']['tar']['sha1'];
 	}
 
 	/**
@@ -124,9 +124,9 @@ class CoreVersionService {
 	 * @return bool TRUE if version is actively maintained
 	 */
 	public function isVersionActivelyMaintained() {
-		$minorVersion = $this->getInstalledMinorVersion();
+		$majorVersion = $this->getInstalledMajorVersion();
 		$versionMatrix = $this->getVersionMatrix();
-		return (bool)$versionMatrix[$minorVersion]['active'];
+		return (bool)$versionMatrix[$majorVersion]['active'];
 	}
 
 	/**
@@ -135,13 +135,9 @@ class CoreVersionService {
 	 * @return bool TRUE if younger patch release is exists
 	 */
 	public function isYoungerPatchReleaseAvailable() {
-		$result = FALSE;
 		$version = $this->getInstalledVersion();
 		$youngestVersion = $this->getYoungestPatchRelease();
-		if ($youngestVersion !== $version) {
-			$result = TRUE;
-		}
-		return $result;
+		return $youngestVersion !== $version;
 	}
 
 	/**
@@ -175,7 +171,7 @@ class CoreVersionService {
 	}
 
 	/**
-	 * Youngest patch release, eg. 6.2.2
+	 * Youngest patch release, e.g., 6.2.2
 	 *
 	 * @return string Version string of youngest patch level release
 	 */
@@ -184,7 +180,7 @@ class CoreVersionService {
 	}
 
 	/**
-	 * Youngest development patch release, eg. 6.2.0alpha3 or 6.2-snapshot-20131004
+	 * Youngest development patch release, e.g., 6.2.0alpha3 or 6.2-snapshot-20131004
 	 *
 	 * @return string
 	 */
@@ -198,18 +194,18 @@ class CoreVersionService {
 	 *
 	 * @param array $types List of allowed types: development, release, security, regular
 	 * @throws Exception\CoreVersionServiceException
-	 * @return string Youngest release, eg. 6.2.3 or 6.2.alpha3
+	 * @return string Youngest release, e.g., 7.2.0alpha3 or 7.3.0
 	 */
 	protected function getYoungestReleaseByType(array $types) {
 		$version = $this->getInstalledVersion();
 
-		$minorVersion = $this->getMinorVersion($version);
+		$majorVersion = $this->getMajorVersion($version);
 		$versionMatrix = $this->getVersionMatrix();
 
 		$youngestRelease = $version;
 		$versionReleaseTimestamp = $this->getReleaseTimestampOfVersion($version);
 
-		$patchLevelVersions = $versionMatrix[$minorVersion]['releases'];
+		$patchLevelVersions = $versionMatrix[$majorVersion]['releases'];
 		foreach ($patchLevelVersions as $aVersionNumber => $aVersionDetails) {
 			if (!array_key_exists('type', $aVersionDetails)) {
 				throw new Exception\CoreVersionServiceException(
@@ -232,24 +228,23 @@ class CoreVersionService {
 	}
 
 	/**
-	 * Get 'minor version' from version string, eg '6.2' from '6.2.2'
+	 * Get 'major version' from installed version of TYPO3, e.g., '7' from '7.3.0'
 	 *
-	 * @return string For example 6.2
+	 * @return string For example 7
 	 */
-	protected function getInstalledMinorVersion() {
-		return $this->getMinorVersion($this->getInstalledVersion());
+	protected function getInstalledMajorVersion() {
+		return $this->getMajorVersion($this->getInstalledVersion());
 	}
 
 	/**
-	 * Get 'minor version' of version, eg. '6.2' from '6.2.2'
+	 * Get 'major version' of version, e.g., '7' from '7.3.0'
 	 *
 	 * @param string $version to check
-	 * @return string Minor version, eg. '6.2'
+	 * @return string Major version, e.g., '7'
 	 */
-	protected function getMinorVersion($version) {
+	protected function getMajorVersion($version) {
 		$explodedVersion = explode('.', $version);
-		$minor = explode('-', $explodedVersion[1]);
-		return $explodedVersion[0] . '.' . $minor[0];
+		return $explodedVersion[0];
 	}
 
 	/**
@@ -290,21 +285,21 @@ class CoreVersionService {
 	/**
 	 * Returns release timestamp of a specific version
 	 *
-	 * @param $version String to check in version matrix, eg. 6.2.0alpha3 or 6.2.2
+	 * @param $version String to check in version matrix, e.g., 7.2.0alpha3 or 7.3.0
 	 * @throws Exception\CoreVersionServiceException
 	 * @return int Timestamp of release
 	 */
 	protected function getReleaseTimestampOfVersion($version) {
-		$minorVersion = $this->getMinorVersion($version);
+		$majorVersion = $this->getMajorVersion($version);
 		$versionMatrix = $this->getVersionMatrix();
 		$this->ensureVersionExistsInMatrix($version);
-		if (!array_key_exists('date', $versionMatrix[$minorVersion]['releases'][$version])) {
+		if (!array_key_exists('date', $versionMatrix[$majorVersion]['releases'][$version])) {
 			throw new Exception\CoreVersionServiceException(
 				'Release date of version ' . $version . ' not found in version matrix. This is probably a bug on get.typo3.org',
 				1380905853
 			);
 		}
-		$dateString = $versionMatrix[$minorVersion]['releases'][$version]['date'];
+		$dateString = $versionMatrix[$majorVersion]['releases'][$version]['date'];
 		$date = new \DateTime($dateString);
 		return $date->getTimestamp();
 	}
@@ -312,19 +307,19 @@ class CoreVersionService {
 	/**
 	 * Throws an exception if specified version does not exist in version matrix
 	 *
-	 * @param $version String to check in version matrix, eg. 6.2.0alpha3 or 6.2.2
+	 * @param $version String to check in version matrix, e.g., 7.2.0alpha3 or 7.3.0
 	 * @throws Exception\CoreVersionServiceException
 	 */
 	protected function ensureVersionExistsInMatrix($version) {
-		$minorVersion = $this->getMinorVersion($version);
+		$majorVersion = $this->getMajorVersion($version);
 		$versionMatrix = $this->getVersionMatrix();
-		if (!array_key_exists($minorVersion, $versionMatrix)) {
+		if (!array_key_exists($majorVersion, $versionMatrix)) {
 			throw new Exception\CoreVersionServiceException(
-				'Minor release ' . $minorVersion . ' not found in version matrix.',
+				'Major release ' . $majorVersion . ' not found in version matrix.',
 				1380905851
 			);
 		}
-		if (!array_key_exists($version, $versionMatrix[$minorVersion]['releases'])) {
+		if (!array_key_exists($version, $versionMatrix[$majorVersion]['releases'])) {
 			throw new Exception\CoreVersionServiceException(
 				'Patch level release ' . $version . ' not found in version matrix.',
 				1380905852
