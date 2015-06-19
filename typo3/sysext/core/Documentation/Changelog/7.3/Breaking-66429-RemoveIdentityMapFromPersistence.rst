@@ -1,5 +1,5 @@
 ======================================================
-Breaking - #66429: Remove IdentityMap from persistence
+Breaking: #66429 - Remove IdentityMap from persistence
 ======================================================
 
 Description
@@ -30,6 +30,7 @@ The Extbase reflection cache of existing installations needs to be cleared once.
 
 Existing code can be migrated to the persistence ``Session`` class which provides a drop-in replacement for the
 ``IdentityMap``.
+
 
 Usage example
 =============

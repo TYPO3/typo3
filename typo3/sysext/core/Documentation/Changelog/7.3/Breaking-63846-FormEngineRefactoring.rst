@@ -20,7 +20,7 @@ TCA changes
 -----------
 
 * Keys `_PADDING`, `_VALIGN` and `DISTANCE` of `TCA['aTable']['columns']['aField']['config']['wizards']`
-have been removed and have no effect anymore.
+  have been removed and have no effect anymore.
 
 * Key `TCA['aTable']['ctrl']['mainPalette']` has been dropped and has no effect anymore.
 
@@ -45,10 +45,10 @@ Changed user functions and hooks
 --------------------------------
 
 * TCA: If format of type `none` is set to `user`, the configured userFunc no longer gets an instance of `FormEngine`
-as parent object, but an instance of `NoneElement``.
+  as parent object, but an instance of `NoneElement``.
 
 * TCA: Wizards configured as `userFunc` now receive a dummy `FormEngine` object with empty properties instead
-of the real instance.
+  of the real instance.
 
 * Hooks no longer get the key `form_type`. Use `type` instead.
 
@@ -58,10 +58,10 @@ Breaking interface changes
 --------------------------
 
 * The type hint to `FormEngine` as `$pObj` has been removed on the `DatabaseFileIconsHookInterface`.
-This hook is no longer given an instance of `FormEngine`.
+  This hook is no longer given an instance of `FormEngine`.
 
 * Method `init()` of `InlineElementHookInterface` has been removed. Classes that implement this interface will
-no longer get `init()` called.
+  no longer get `init()` called.
 
 
 Affected installations

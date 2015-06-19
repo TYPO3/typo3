@@ -1,5 +1,5 @@
 ==================================================
-Feature - #63561: Add TypoScript stdWrap strtotime
+Feature: #63561 - Add TypoScript stdWrap strtotime
 ==================================================
 
 Description

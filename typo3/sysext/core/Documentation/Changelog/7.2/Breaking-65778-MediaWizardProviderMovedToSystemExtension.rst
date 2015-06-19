@@ -25,4 +25,4 @@ Migration
 =========
 
 Make sure to install the system extension "mediace" and rename the function calls to use the new classes, see
-the file ``ext_localconf.php`` of the extension "mediace" for example usage.
+the file :file:`ext_localconf.php` of the extension "mediace" for example usage.

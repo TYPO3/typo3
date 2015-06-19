@@ -15,17 +15,17 @@ ext_autoload.php files are **not** evaluated any more. Instead all class files a
 automatically during extension installation and written into a class map file. This class map file is
 not changed during regular requests, but only if the extension list changes (by using the Extension Manager).
 
-These class information files are located in the typo3temp/autoload/ directory and will also be automatically created
-if they do not exist.
+These class information files are located in the :file:`typo3temp/autoload/` directory and will also be automatically
+created if they do not exist.
 
-Non-namespaced classes with Tx\_ naming convention like Tx_Extension_ClassName are only resolved through
+Non-namespaced classes with ``Tx_`` naming convention like ``Tx_Extension_ClassName`` are only resolved through
 the aforementioned class map, but not dynamically. This means that extension authors need to re-generate the class map
 files when introducing new classes. Thus it is highly recommended to use a Classes folder with PSR-4 standard class
 files in there.
 
-When installing TYPO3 with composer, it also means that all extensions need to bring their own composer.json file with
-class loading information or the class loading information of all extensions need to be specified in the root
-composer.json for class loading to work properly.
+When installing TYPO3 with composer, it also means that all extensions need to bring their own :file:`composer.json`
+file with class loading information or the class loading information of all extensions need to be specified in the root
+:file:`composer.json` for class loading to work properly.
 
 
 Affected Installations
@@ -41,7 +41,7 @@ No migration is needed during upgrade if TYPO3 is installed in the classic way.
 If TYPO3 is installed in a distribution via composer, missing class loading information need to be provided in root
 composer.json for all extensions which do not bring their own composer.json manifest.
 
-.. code-block::
+.. code-block:: json
 
     {
         "autoload": {

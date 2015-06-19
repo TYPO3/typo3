@@ -28,7 +28,7 @@ Removed files
 -------------
 
 * lang/lang.php is removed. You don't need to include this file anymore, just use :code:`\TYPO3\CMS\Lang\LanguageService` directly.
-* rtehtmlarea/htmlarea/plugins/DynamicCSS/dynamiccss.css is removed. The file was not used.
+* :file:`rtehtmlarea/htmlarea/plugins/DynamicCSS/dynamiccss.css` is removed. The file was not used.
 
 
 Removed PHP classes

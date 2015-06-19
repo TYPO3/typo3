@@ -15,7 +15,7 @@ This class was extended with an API to allow flexible overriding and adding of c
 Registration of new nodes and overwriting existing nodes
 --------------------------------------------------------
 
-.. code-black:: php
+.. code-block:: php
 
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1433196792] = array(
 		'nodeName' => 'input',

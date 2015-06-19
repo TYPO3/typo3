@@ -16,8 +16,8 @@ Impact
 
 It is not possible to add custom Package.php loaders into TYPO3 extensions anymore to be called during runtime. It is
 not possible to configure extensions with custom `Classes/` directories and custom composer.json locations anymore.
-There is no special handling for "typo3-flow" packages anymore. The typo3conf/PackageStates.php file now only contains
-the parts that are necessary for the TYPO3 system.
+There is no special handling for "typo3-flow" packages anymore. The :file:`typo3conf/PackageStates.php` file now only
+contains the parts that are necessary for the TYPO3 system.
 
 
 Affected Installations

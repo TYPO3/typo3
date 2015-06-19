@@ -31,7 +31,8 @@ to `` | k| M| G| T| P| E| Z| Y`` (based on ten).
 Example
 =======
 
-.. codeblock:: php
+.. code-block:: php
+
 	echo GeneralUtility::formatSize(85123);
 	// => Before "83.1 K"
 	// => Now "83.13 Ki"

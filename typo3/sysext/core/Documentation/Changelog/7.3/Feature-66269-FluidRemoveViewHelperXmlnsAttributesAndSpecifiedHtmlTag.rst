@@ -1,5 +1,5 @@
 ==================================================================================
-Feature - #66269: Fluid: Remove ViewHelper xmlns-attributes and specified html tag
+Feature: #66269 - Fluid: Remove ViewHelper xmlns-attributes and specified html tag
 ==================================================================================
 
 Description

@@ -10,7 +10,7 @@ displaying the icons in the module menu on the left side of the TYPO3 Backend.
 
 Registering a module can now look like this (as an example the "Page" module):
 
-.. code-block:: [php]
+.. code-block:: php
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
 		'web',

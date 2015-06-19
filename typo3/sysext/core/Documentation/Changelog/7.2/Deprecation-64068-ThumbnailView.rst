@@ -5,7 +5,7 @@ Deprecation: #64068 - Deprecate thumbs.php and ThumbnailView
 Description
 ===========
 
-Prior to the File Abstraction Layer (FAL) there was typo3/thumbs.php generating all preview images for the TYPO3
+Prior to the File Abstraction Layer (FAL) there was :file:`typo3/thumbs.php` generating all preview images for the TYPO3
 Backend resources. This functionality is now marked for removal in TYPO3 CMS 8, as all functionality in the core already
 uses the File Abstraction Layer.
 

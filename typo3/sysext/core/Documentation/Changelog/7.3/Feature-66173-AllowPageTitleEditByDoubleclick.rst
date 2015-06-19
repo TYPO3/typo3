@@ -1,5 +1,5 @@
 ======================================================
-Feature - #66173: Allow page title edit by doubleclick
+Feature: #66173 - Allow page title edit by doubleclick
 ======================================================
 
 Description

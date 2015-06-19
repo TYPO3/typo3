@@ -6,6 +6,7 @@ Description
 ===========
 
 Only these TypoScript file names were allowed:
+
 - constants.txt
 - setup.txt
 - include_static.txt
@@ -17,4 +18,5 @@ The ts file extension has been allowed for constants and setup and is prioritise
 Impact
 ======
 
-There is a little performance impact when loading the TypoScript from scratch like in the backend and frontend without cache as the new extension is always tested.
+There is a little performance impact when loading the TypoScript from scratch like in the backend and frontend without
+cache as the new extension is always tested.
