@@ -246,12 +246,11 @@ class Clipboard {
 
 		$copymodeSelector = '
 			<div class="btn-group">
-				<button type="button" class="btn btn-default">' . ($this->currentMode() == 'copy' ? $copyLabel : $moveLabel) . '</button>
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<button class="btn btn-default dropdown-toggle" type="button" id="copymodeSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					' . ($this->currentMode() === 'copy' ? $copyLabel : $moveLabel) . '
 					<span class="caret"></span>
-					<span class="sr-only">Toggle Dropdown</span>
 				</button>
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" aria-labelledby="copymodeSelector">
 					<li><a href="#" onclick="document.getElementById(\'clipboard_form\').method=\'POST\'; document.getElementById(\'clipboard_form\').action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($copymodeUrl . '&CB[setCopyMode]=')) . '; document.getElementById(\'clipboard_form\').submit(); return true;">' . $moveLabel . '</a></li>
 					<li><a href="#" onclick="document.getElementById(\'clipboard_form\').method=\'POST\'; document.getElementById(\'clipboard_form\').action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($copymodeUrl . '&CB[setCopyMode]=1')) . '; document.getElementById(\'clipboard_form\').submit(); return true;">' . $copyLabel . '</a></li>
 				</ul>
@@ -287,12 +286,11 @@ class Clipboard {
 
 		$menuSelector = '
 			<div class="btn-group">
-			<button type="button" class="btn btn-default">' . $this->clLabel('menu', 'rm') . '</button>
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<button class="btn btn-default dropdown-toggle" type="button" id="menuSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					' . $this->clLabel('menu', 'rm') . '
 					<span class="caret"></span>
-					<span class="sr-only">Toggle Dropdown</span>
 				</button>
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" aria-labelledby="menuSelector">
 					' . implode('', $optionArray) . '
 				</ul>
 			</div>
