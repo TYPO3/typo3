@@ -94,6 +94,8 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 			success: function(data) {
 				$(OpendocsMenu.options.menuContainerSelector, OpendocsMenu.options.containerSelector).html(data);
 				OpendocsMenu.updateNumberOfDocs();
+				// Re-open the menu after closing a document
+				$(OpendocsMenu.options.containerSelector).toggleClass('open');
 			}
 		});
 	};
