@@ -119,7 +119,7 @@ class FilemountUpdateWizard extends AbstractUpdate {
 		foreach ($absoluteFilemounts as $filemount) {
 			if (stristr($filemount['path'], $fileadminDir)) {
 				$storageId = $this->storage->getUid();
-				$storagePath = str_replace($fileadminDir, '', $filemount['path']);
+				$storagePath = rtrim(str_replace($fileadminDir, '', $filemount['path']), '/') . '/';
 			} else {
 				$storageId = $this->storageRepository->createLocalStorage(
 					$filemount['title'] . ' (auto-created)',
@@ -152,10 +152,14 @@ class FilemountUpdateWizard extends AbstractUpdate {
 			'base = 1' . BackendUtility::deleteClause('sys_filemounts')
 		);
 		foreach ($relativeFilemounts as $filemount) {
+			$storagePath = trim($filemount['path'], '/') . '/';
+			if ($storagePath !== '/') {
+				$storagePath = '/' . $storagePath;
+			}
 			$this->db->exec_UPDATEquery(
 				'sys_filemounts',
 				'uid=' . (int)$filemount['uid'],
-				array('base' => $this->storage->getUid(), 'path' => '/' . ltrim($filemount['path'], '/'))
+				array('base' => $this->storage->getUid(), 'path' => $storagePath)
 			);
 			$this->sqlQueries[] = $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery;
 		}
