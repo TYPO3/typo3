@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend;
+namespace TYPO3\CMS\Core\Core;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,11 +15,17 @@ namespace TYPO3\CMS\Backend;
  */
 
 /**
- * Module entry script
- * Main entry point for all modules (wizards, backend modules, module functions etc)
- * which usually uses the BackendModuleRequestHandler
+ * The base ApplicationInterface which
+ * is used for all Entry Points for TYPO3, may it be
+ * Frontend, Backend, Install Tool or Command Line.
  */
-call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
-	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run();
-});
+interface ApplicationInterface {
+
+	/**
+	 * Starting point
+	 *
+	 * @param callable $execute
+	 * @return void
+	 */
+	public function run(callable $execute = NULL);
+}

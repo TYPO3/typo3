@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend;
+namespace TYPO3\CMS\Backend\Http;
 
 /*
  * This file is part of the TYPO3 CMS project.

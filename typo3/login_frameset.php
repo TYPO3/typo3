@@ -20,16 +20,16 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
-define('TYPO3_MODE', 'BE');
+call_user_func(function() {
+	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			'Login frameset is moved to an own module. Please use BackendUtility::getModuleUrl(\'login_frameset\') to link to login_frameset.php. This script will be removed in TYPO3 CMS 8.'
+		);
 
-require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'Login frameset is moved to an own module. Please use BackendUtility::getModuleUrl(\'login_frameset\') to link to login_frameset.php. This script will be removed in TYPO3 CMS 8.'
-);
-
-// Make instance:
-$loginFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginFramesetController::class);
-$loginFramesetController->main();
-$loginFramesetController->printContent();
+		// Make instance:
+		$loginFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LoginFramesetController::class);
+		$loginFramesetController->main();
+		$loginFramesetController->printContent();
+	});
+});

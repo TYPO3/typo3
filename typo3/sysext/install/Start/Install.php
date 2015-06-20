@@ -102,9 +102,8 @@ if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 	die('TYPO3 CMS requires PHP 5.5 or above');
 }
 
-define('TYPO3_MODE', 'BE');
-define('TYPO3_enterInstallScript', '1');
-
-// Bootstrap bare minimum: class loader, LocalConfiguration, but no extensions and such
-require __DIR__ . '/../../core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/sysext/install/Start/')->shutdown();
+// set up bare minimum application: class loader, LocalConfiguration, but no extensions and such
+call_user_func(function() {
+	$classLoader = require __DIR__ . '/../../../contrib/vendor/autoload.php';
+	(new \TYPO3\CMS\Install\Http\Application($classLoader))->run();
+});

@@ -21,20 +21,20 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-define('TYPO3_MODE', 'BE');
+call_user_func(function() {
+	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			'File handling entry point was moved an own module. Please use BackendUtility::getModuleUrl(\'tce_file\') to link to tce_file.php. This script will be removed in TYPO3 CMS 8.'
+		);
 
-require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
+		$fileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileController::class);
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'File handling entry point was moved an own module. Please use BackendUtility::getModuleUrl(\'tce_file\') to link to tce_file.php. This script will be removed in TYPO3 CMS 8.'
-);
+		$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+		if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {
+			$fileController->main();
+		}
 
-$fileController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileController::class);
-
-$formprotection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-if ($formprotection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'tceAction')) {
-	$fileController->main();
-}
-
-$fileController->finish();
+		$fileController->finish();
+	});
+});

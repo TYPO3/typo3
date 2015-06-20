@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install;
+namespace TYPO3\CMS\Install\Http;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Default request handler for all requests inside the TYPO3 Install Tool, which does a simple hardcoded
  * dispatching to a controller based on the get/post variable.
- *
- * @package TYPO3\CMS\Install
  */
 class RequestHandler implements RequestHandlerInterface {
 
@@ -51,13 +49,13 @@ class RequestHandler implements RequestHandlerInterface {
 		$getPost = GeneralUtility::_GP('install');
 		switch ($getPost['controller']) {
 			case 'tool':
-				$controllerClassName = Controller\ToolController::class;
+				$controllerClassName = \TYPO3\CMS\Install\Controller\ToolController::class;
 				break;
 			case 'ajax':
-				$controllerClassName = Controller\AjaxController::class;
+				$controllerClassName = \TYPO3\CMS\Install\Controller\AjaxController::class;
 				break;
 			default:
-				$controllerClassName = Controller\StepController::class;
+				$controllerClassName = \TYPO3\CMS\Install\Controller\StepController::class;
 		}
 		GeneralUtility::makeInstance($controllerClassName)->execute();
 	}
@@ -67,10 +65,10 @@ class RequestHandler implements RequestHandlerInterface {
 	 * please note that both checks are needed, as when in "failsafe" mode, the TYPO3_REQUESTTYPE is not
 	 * necessarily set at this point.
 	 *
-	 * @return bool Returns TRUE if the request is in Install Tool mode, otherwise FALSE
+	 * @return bool Returns always TRUE
 	 */
 	public function canHandleRequest() {
-		return defined('TYPO3_enterInstallScript') || (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL);
+		return TRUE;
 	}
 
 	/**

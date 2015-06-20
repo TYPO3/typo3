@@ -12,17 +12,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-define('TYPO3_MODE', 'BE');
+call_user_func(function() {
+	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			'The entry point to show_item was moved to an own module. Please use BackendUtility::getModuleUrl(\'show_item\') to link to show_item.php. This script will be removed in TYPO3 CMS 8.'
+		);
 
-require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
-
-\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-	'The entry point to show_item was moved to an own module. Please use BackendUtility::getModuleUrl(\'show_item\') to link to show_item.php. This script will be removed in TYPO3 CMS 8.'
-);
-
-$elementInformationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-	\TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController::class
-);
-$elementInformationController->main();
-$elementInformationController->printContent();
+		$elementInformationController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			\TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController::class
+		);
+		$elementInformationController->main();
+		$elementInformationController->printContent();
+	});
+});

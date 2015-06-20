@@ -15,9 +15,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit;
  */
 
 use PHPUnit_Framework_MockObject_MockObject;
-use TYPO3\CMS\Backend\BackendModuleRequestHandler;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Backend\Http\BackendModuleRequestHandler;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;

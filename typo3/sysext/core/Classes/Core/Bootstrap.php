@@ -114,10 +114,8 @@ class Bootstrap {
 	 */
 	static public function getInstance() {
 		if (is_null(static::$instance)) {
-			$composerClassLoader = self::initializeComposerClassLoader();
 			$applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
 			self::$instance = new static($applicationContext);
-			self::$instance->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $composerClassLoader);
 		}
 		return static::$instance;
 	}
@@ -160,33 +158,32 @@ class Bootstrap {
 	 * and sets up the base request information for a regular request, then
 	 * resolves the RequestHandler which handles the request.
 	 *
-	 * @param string $relativePathPart Relative path of entry script back to document root
+	 * Make sure that the baseSetup() is called before and the class loader is present
+	 *
 	 * @return Bootstrap
 	 */
-	public function run($relativePathPart = '') {
-		$this->baseSetup($relativePathPart);
+	public function run() {
+		$this->startOutputBuffering()
+			->loadConfigurationAndInitialize()
+			->loadTypo3LoadedExtAndExtLocalconf(TRUE)
+			->initializeExceptionHandling()
+			->setFinalCachingFrameworkCacheConfiguration()
+			->defineLoggingAndExceptionConstants()
+			->unsetReservedGlobalVariables()
+			->initializeTypo3DbGlobal()
+			->handleRequest();
 
-		// Failsafe minimal setup mode for the install tool
-		if (defined('TYPO3_enterInstallScript')) {
-			$this->startOutputBuffering()
-				->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
-		} elseif (!$this->checkIfEssentialConfigurationExists() && !defined('TYPO3_cliMode')) {
-			// Redirect to install tool if base configuration is not found
-			$this->redirectToInstallTool($relativePathPart);
-		} else {
-			// Regular request (Frontend, AJAX, Backend, CLI)
-			$this->startOutputBuffering()
-				->loadConfigurationAndInitialize()
-				->loadTypo3LoadedExtAndExtLocalconf(TRUE)
-				->initializeExceptionHandling()
-				->setFinalCachingFrameworkCacheConfiguration()
-				->defineLoggingAndExceptionConstants()
-				->unsetReservedGlobalVariables()
-				->initializeTypo3DbGlobal();
-		}
+		return $this;
+	}
 
-		// Resolve request handler that were registered based on TYPO3_MODE
-		$this->registerRequestHandlers();
+	/**
+	 * Resolve the request handler that were registered based on the application
+	 * and execute the request
+	 *
+	 * @return Bootstrap
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	public function handleRequest() {
 		$requestHandler = $this->resolveRequestHandler();
 		$requestHandler->handleRequest();
 		return $this;
@@ -212,23 +209,17 @@ class Bootstrap {
 	}
 
 	/**
-	 * @return \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\Composer\ClassAliasLoader
+	 * Sets the class loader to the bootstrap
+	 *
+	 * @param \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\Composer\ClassAliasLoader $classLoader an instance of the class loader
+	 * @return Bootstrap
 	 */
-	static protected function initializeComposerClassLoader() {
-		$possiblePaths = array(
-			'distribution' => __DIR__ . '/../../../../../../Packages/Libraries/autoload.php',
-			'fallback' => __DIR__ . '/../../../../contrib/vendor/autoload.php',
-		);
-		foreach ($possiblePaths as $autoLoadType => $possiblePath) {
-			if (file_exists($possiblePath)) {
-				if ($autoLoadType === 'distribution') {
-					self::$usesComposerClassLoading = TRUE;
-				}
-				return include $possiblePath;
-			}
+	public function initializeClassLoader($classLoader) {
+		$this->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $classLoader);
+		if (defined('TYPO3_COMPOSER_MODE') && TYPO3_COMPOSER_MODE) {
+			self::$usesComposerClassLoading = TRUE;
 		}
-
-		throw new \LogicException('No class loading information found for TYPO3 CMS. Please make sure you installed TYPO3 with composer or the typo3/contrib/vendor folder is present.', 1425153762);
+		return $this;
 	}
 
 	/**
@@ -237,7 +228,7 @@ class Bootstrap {
 	 *
 	 * @return bool TRUE when the essential configuration is available, otherwise FALSE
 	 */
-	protected function checkIfEssentialConfigurationExists() {
+	public function checkIfEssentialConfigurationExists() {
 		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
 		return (!file_exists($configurationManager->getLocalConfigurationFileLocation()) || !file_exists(PATH_typo3conf . 'PackageStates.php')) ? FALSE : TRUE;
@@ -246,7 +237,6 @@ class Bootstrap {
 	/**
 	 * Redirect to install tool if LocalConfiguration.php is missing.
 	 *
-	 * @param string $relativePathPart Can contain '../' if called from a sub directory
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function redirectToInstallTool($relativePathPart = '') {
@@ -255,31 +245,13 @@ class Bootstrap {
 	}
 
 	/**
-	 * Adds available request handlers, which currently hard-coded here based on the TYPO3_MODE. The extensability
-	 * of adding own request handlers would be too complex for now, but can be added later.
+	 * Adds available request handlers usually done via an application from the outside.
 	 *
+	 * @param string $requestHandler class which implements the request handler interface
 	 * @return Bootstrap
-	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function registerRequestHandlers() {
-		// Use the install tool handler if in install tool mode
-		if (!$this->checkIfEssentialConfigurationExists() || (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
-			$this->availableRequestHandlers = array(
-				\TYPO3\CMS\Install\RequestHandler::class
-			);
-		} elseif (TYPO3_MODE == 'BE') {
-			$this->availableRequestHandlers = array(
-				\TYPO3\CMS\Backend\RequestHandler::class,
-				\TYPO3\CMS\Backend\BackendModuleRequestHandler::class,
-				\TYPO3\CMS\Backend\AjaxRequestHandler::class,
-				\TYPO3\CMS\Backend\CliRequestHandler::class
-			);
-		} elseif (TYPO3_MODE == 'FE') {
-			$this->availableRequestHandlers = array(
-				\TYPO3\CMS\Frontend\RequestHandler::class,
-				\TYPO3\CMS\Frontend\EidRequestHandler::class
-			);
-		}
+	public function registerRequestHandlerImplementation($requestHandler) {
+		$this->availableRequestHandlers[] = $requestHandler;
 		return $this;
 	}
 
