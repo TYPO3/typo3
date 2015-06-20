@@ -329,7 +329,7 @@ class GeneralUtility {
 	static public function fixed_lgd_cs($string, $chars, $appendString = '...') {
 		if (is_object($GLOBALS['LANG'])) {
 			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $string, $chars, $appendString);
-		} elseif (is_object($GLOBALS['TSFE'])) {
+		} elseif (is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->csConvObj)) {
 			$charSet = $GLOBALS['TSFE']->renderCharset != '' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['TSFE']->defaultCharSet;
 			return $GLOBALS['TSFE']->csConvObj->crop($charSet, $string, $chars, $appendString);
 		} else {
