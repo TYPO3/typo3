@@ -459,7 +459,7 @@ class IconUtility {
 					return $iconfile;
 				}
 			} else {
-				return $GLOBALS['BACK_PATH'] . 'gfx/fileicons/default.gif';
+				return $GLOBALS['BACK_PATH'] . 'gfx/default.gif';
 			}
 		}
 	}

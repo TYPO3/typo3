@@ -1269,7 +1269,7 @@ tt_content.uploads {
 			# icon
 			15 = IMAGE
 			15 {
-				file.import = typo3/gfx/fileicons/
+				file.import = typo3/sysext/frontend/Resources/Public/Icons/FileIcons/
 				file.import.data = file:current:extension
 				file.import.case = lower
 				file.import.wrap = |.gif
