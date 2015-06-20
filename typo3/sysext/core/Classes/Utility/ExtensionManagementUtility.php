@@ -1754,7 +1754,7 @@ tt_content.' . $key . $suffix . ' {
 		// scope, but we can not prohibit this without breaking backwards compatibility
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
+		global $PAGES_TYPES, $TBE_STYLES;
 		global $_EXTKEY;
 		// Load each ext_tables.php file of loaded extensions
 		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
@@ -1783,7 +1783,7 @@ tt_content.' . $key . $suffix . ' {
 		$phpCodeToCache[] = '';
 		$phpCodeToCache[] = 'global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;';
 		$phpCodeToCache[] = 'global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;';
-		$phpCodeToCache[] = 'global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;';
+		$phpCodeToCache[] = 'global $PAGES_TYPES, $TBE_STYLES;';
 		$phpCodeToCache[] = 'global $_EXTKEY;';
 		$phpCodeToCache[] = '';
 		// Iterate through loaded extensions and add ext_tables content

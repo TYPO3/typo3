@@ -2448,16 +2448,6 @@ class BackendUtility {
 	}
 
 	/**
-	 * Returns file icon name (from $FILEICONS) for the fileextension $ext
-	 *
-	 * @param string $ext File extension, lowercase
-	 * @return string File icon filename
-	 */
-	static public function getFileIcon($ext) {
-		return $GLOBALS['FILEICONS'][$ext] ?: $GLOBALS['FILEICONS']['default'];
-	}
-
-	/**
 	 * Returns fields for a table, $table, which would typically be interesting to select
 	 * This includes uid, the fields defined for title, icon-field.
 	 * Returned as a list ready for query ($prefix can be set to eg. "pages." if you are selecting from the pages table and want the table name prefixed)

@@ -800,7 +800,6 @@ class Bootstrap {
 		unset($GLOBALS['TCA']);
 		unset($GLOBALS['TBE_MODULES']);
 		unset($GLOBALS['TBE_STYLES']);
-		unset($GLOBALS['FILEICONS']);
 		unset($GLOBALS['BE_USER']);
 		// Those set otherwise:
 		unset($GLOBALS['TBE_MODULES_EXT']);
@@ -1013,7 +1012,7 @@ class Bootstrap {
 		// can not prohibit this without breaking backwards compatibility
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
+		global $PAGES_TYPES, $TBE_STYLES;
 		global $_EXTKEY;
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;

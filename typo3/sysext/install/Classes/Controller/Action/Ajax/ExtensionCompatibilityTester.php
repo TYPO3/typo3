@@ -152,7 +152,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 		// scope, but we can not prohibit this without breaking backwards compatibility
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
-		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
+		global $PAGES_TYPES, $TBE_STYLES;
 		global $_EXTKEY;
 		// Load each ext_tables.php file of loaded extensions
 		$_EXTKEY = $extensionKey;
