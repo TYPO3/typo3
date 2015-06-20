@@ -5471,7 +5471,8 @@ class ContentObjectRenderer {
 					}
 
 					if (MathUtility::canBeInterpretedAsInteger($file)) {
-						if (!empty($fileArray['treatIdAsReference'])) {
+						$treatIdAsReference = isset($fileArray['treatIdAsReference.']) ? $this->stdWrap($fileArray['treatIdAsReference'], $fileArray['treatIdAsReference.']) : $fileArray['treatIdAsReference'];
+						if (!empty($treatIdAsReference)) {
 							$fileReference = $this->getResourceFactory()->getFileReferenceObject($file);
 							$fileObject = $fileReference->getOriginalFile();
 							if (!isset($fileArray['crop'])) {
