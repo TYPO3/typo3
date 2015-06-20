@@ -156,7 +156,7 @@ class Indexer {
 			if ($indexRecord !== FALSE) {
 				$this->identifiedFileUids[] = $indexRecord['uid'];
 
-				if ($indexRecord['modification_date'] < $modificationTime['mtime'] || $indexRecord['missing']) {
+				if ($indexRecord['modification_date'] !== $modificationTime['mtime'] || $indexRecord['missing']) {
 					$this->filesToUpdate[$fileIdentifier] = $indexRecord;
 				}
 			} else {
