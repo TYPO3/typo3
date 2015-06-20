@@ -172,8 +172,7 @@ class Bootstrap {
 				->loadConfigurationAndInitialize(FALSE, \TYPO3\CMS\Core\Package\FailsafePackageManager::class);
 		} elseif (!$this->checkIfEssentialConfigurationExists() && !defined('TYPO3_cliMode')) {
 			// Redirect to install tool if base configuration is not found
-			$backPathToSiteRoot = str_repeat('../', count(explode('/', $relativePathPart)) - 1);
-			$this->redirectToInstallTool($backPathToSiteRoot);
+			$this->redirectToInstallTool($relativePathPart);
 		} else {
 			// Regular request (Frontend, AJAX, Backend, CLI)
 			$this->startOutputBuffering()
@@ -247,13 +246,12 @@ class Bootstrap {
 	/**
 	 * Redirect to install tool if LocalConfiguration.php is missing.
 	 *
-	 * @param string $pathUpToDocumentRoot Can contain '../' if called from a sub directory
+	 * @param string $relativePathPart Can contain '../' if called from a sub directory
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function redirectToInstallTool($pathUpToDocumentRoot = '') {
-		define('TYPO3_enterInstallScript', '1');
-		$this->defineTypo3RequestTypes();
-		Utility\HttpUtility::redirect($pathUpToDocumentRoot . 'typo3/sysext/install/Start/Install.php');
+	public function redirectToInstallTool($relativePathPart = '') {
+		$backPathToSiteRoot = str_repeat('../', count(explode('/', $relativePathPart)) - 1);
+		Utility\HttpUtility::redirect($backPathToSiteRoot . 'typo3/sysext/install/Start/Install.php');
 	}
 
 	/**
@@ -365,9 +363,8 @@ class Bootstrap {
 		}
 		$this->initializeCachingFramework()
 			->initializePackageManagement($packageManagerClassName)
-			->initializeRuntimeActivatedPackagesFromConfiguration();
-
-		$this->defineDatabaseConstants()
+			->initializeRuntimeActivatedPackagesFromConfiguration()
+			->defineDatabaseConstants()
 			->defineUserAgentConstant()
 			->registerExtDirectComponents()
 			->transferDeprecatedCurlSettings()
@@ -734,7 +731,7 @@ class Bootstrap {
 	/**
 	 * Initialize exception handling
 	 * This method is called twice. First when LocalConfiguration has been loaded
-	 * and a second time after extension ext_loclconf.php have been included to allow extensions
+	 * and a second time after extension ext_localconf.php have been included to allow extensions
 	 * to change the exception and error handler configuration.
 	 *
 	 * @return Bootstrap
