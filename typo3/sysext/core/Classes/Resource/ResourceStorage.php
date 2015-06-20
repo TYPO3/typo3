@@ -1998,14 +1998,14 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * Returns the Identifier for a folder within a given folder.
 	 *
 	 * @param string $folderName The name of the target folder
-	 * @param string $folder
+	 * @param Folder $parentFolder
 	 * @param bool $returnInaccessibleFolderObject
 	 * @return Folder|InaccessibleFolder
 	 * @throws \Exception
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
-	public function getFolderInFolder($folderName, $folder, $returnInaccessibleFolderObject = FALSE) {
-		$folderIdentifier = $this->driver->getFolderInFolder($folderName, $folder);
+	public function getFolderInFolder($folderName, Folder $parentFolder, $returnInaccessibleFolderObject = FALSE) {
+		$folderIdentifier = $this->driver->getFolderInFolder($folderName, $parentFolder->getIdentifier());
 		return $this->getFolder($folderIdentifier, $returnInaccessibleFolderObject);
 	}
 
