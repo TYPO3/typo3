@@ -15,6 +15,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneAllowedTableFixture;
+use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
+use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMRelationFixture;
+use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
+use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ExcludeFieldsReturnsCorrectFieldListFixture;
+use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ExcludeFieldsReturnsCorrectListWithFlexFormFieldsFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -157,36 +163,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithOneAllowedTable() {
-		// Disable getRecordWSOL and getRecordTitle dependency by returning stable results
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$className = $this->getUniqueId('BackendUtility');
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getRecordWSOL() {' .
-			'    static $called = 0;' .
-			'    ++$called;' .
-			'    if ($called === 1) {' .
-			'      return array(\'title\' => \'Page 1\');' .
-			'    }' .
-			'    if ($called === 2) {' .
-			'      return array(\'title\' => \'Page 2\');' .
-			'    }' .
-			'  }' .
-			'  static public function getRecordTitle() {' .
-			'    static $called = 0;' .
-			'    ++$called;' .
-			'    if ($called === 1) {' .
-			'      return \'Page 1\';' .
-			'    }' .
-			'    if ($called === 2) {' .
-			'      return \'Page 2\';' .
-			'    }' .
-			'  }' .
-			'}'
-		);
-
 		$GLOBALS['TCA'] = array(
 			'tt_content' => array(
 				'columns' => array(
@@ -205,43 +181,13 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$this->assertSame('Page 1, Page 2', $subject::getProcessedValue('tt_content', 'pages', '1,2'));
+		$this->assertSame('Page 1, Page 2', ProcessedValueForGroupWithOneAllowedTableFixture::getProcessedValue('tt_content', 'pages', '1,2'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getProcessedValueForGroupWithMultipleAllowedTables() {
-		// Disable getRecordWSOL and getRecordTitle dependency by returning stable results
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$className = $this->getUniqueId('BackendUtility');
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getRecordWSOL() {' .
-			'    static $called = 0;' .
-			'    ++$called;' .
-			'    if ($called === 1) {' .
-			'      return array(\'title\' => \'Page 1\');' .
-			'    }' .
-			'    if ($called === 2) {' .
-			'      return array(\'header\' => \'Configuration 2\');' .
-			'    }' .
-			'  }' .
-			'  static public function getRecordTitle() {' .
-			'    static $called = 0;' .
-			'    ++$called;' .
-			'    if ($called === 1) {' .
-			'      return \'Page 1\';' .
-			'    }' .
-			'    if ($called === 2) {' .
-			'      return \'Configuration 2\';' .
-			'    }' .
-			'  }' .
-			'}'
-		);
-
 		$GLOBALS['TCA'] = array(
 			'index_config' => array(
 				'columns' => array(
@@ -257,7 +203,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$this->assertSame('Page 1, Configuration 2', $subject::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
+		$this->assertSame('Page 1, Configuration 2', ProcessedValueForGroupWithMultipleAllowedTablesFixture::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
 	}
 
 	/**
@@ -309,19 +255,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		// Disable getRecordTitle dependency by returning stable results
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$className = $this->getUniqueId('BackendUtility');
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getRecordTitle($table, $row) {' .
-			'    return $row["title"];' .
-			'  }' .
-			'}'
-		);
-
 		$GLOBALS['TCA'] = array(
 			'pages' => array(
 				'columns' => array(
@@ -354,7 +287,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 		);
 
-		$this->assertSame('Category 1; Category 2', $subject::getProcessedValue('pages', 'categories', '2', 0, FALSE, FALSE, 1));
+		$this->assertSame('Category 1; Category 2', ProcessedValueForSelectWithMMRelationFixture::getProcessedValue('pages', 'categories', '2', 0, FALSE, FALSE, 1));
 	}
 
 	/**
@@ -611,22 +544,9 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
 	 */
 	public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '') {
-		// Disable getPagesTSconfig by returning stable result
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$className = $this->getUniqueId('BackendUtility');
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getPagesTSconfig() {' .
-			'    return array();' .
-			'  }' .
-			'}'
-		);
-
 		$GLOBALS['TCA'][$table] = $tca;
 
-		$this->assertEquals($expectedLabel, $subject::getLabelFromItemListMerged($pageId, $table, $column, $key));
+		$this->assertEquals($expectedLabel, LabelFromItemListMergedReturnsCorrectFieldsFixture::getLabelFromItemListMerged($pageId, $table, $column, $key));
 	}
 
 	/**
@@ -860,18 +780,6 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider getExcludeFieldsDataProvider
 	 */
 	public function getExcludeFieldsReturnsCorrectFieldList($tca, $expected) {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$className = $this->getUniqueId('BackendUtility');
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getRegisteredFlexForms() {' .
-			'    return array();' .
-			'  }' .
-			'}'
-		);
-
 		$GLOBALS['TCA'] = $tca;
 
 		// Stub LanguageService and let sL() return the same value that came in again
@@ -883,7 +791,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		$this->assertSame($expected, $subject::getExcludeFields());
+		$this->assertSame($expected, ExcludeFieldsReturnsCorrectFieldListFixture::getExcludeFields());
 	}
 
 	/**
@@ -987,60 +895,7 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				}
 			));
 
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Backend\Utility\BackendUtility $subject */
-		$className = $this->getUniqueId('BackendUtility');
-		$subject = __NAMESPACE__ . '\\' . $className;
-		eval(
-			'namespace ' . __NAMESPACE__ . ';' .
-			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getRegisteredFlexForms($table) {' .
-			'    static $called = 0;' .
-			'    ++$called;' .
-			'    if ($called === 1) {' .
-			'      return array();' .
-			'    }' .
-			'    if ($called === 2) {' .
-			'      if ($table !== \'tx_foo\') {' .
-			'        throw new Exception(\'Expected tx_foo as argument on call 2\', 1399638572);' .
-			'      }' .
-			'      $parsedFlexForm = array(' .
-			'        \'abarfoo\' => array(' .
-			'          \'dummy\' => array(' .
-			'            \'title\' => \'dummy\',' .
-			'            \'ds\' => array(' .
-			'              \'sheets\' => array(' .
-			'                \'sGeneral\' => array(' .
-			'                  \'ROOT\' => array(' .
-			'                    \'type\' => \'array\',' .
-			'                    \'el\' => array(' .
-			'                      \'xmlTitle\' => array(' .
-			'                        \'TCEforms\' => array(' .
-			'                          \'exclude\' => 1,' .
-			'                          \'label\' => \'The Title:\',' .
-			'                          \'config\' => array(' .
-			'                            \'type\' => \'input\',' .
-			'                            \'size\' => 48,' .
-			'                          ),' .
-			'                        ),' .
-			'                      ),' .
-			'                    ),' .
-			'                  ),' .
-			'                ),' .
-			'              ),' .
-			'            ),' .
-			'          ),' .
-			'        ),' .
-			'      );' .
-			'      return $parsedFlexForm;' .
-			'    }' .
-			'    if ($called === 3) {' .
-			'      return array();' .
-			'    }' .
-			'  }' .
-			'}'
-		);
-
-		$this->assertSame($expectedResult, $subject::getExcludeFields());
+		$this->assertSame($expectedResult, ExcludeFieldsReturnsCorrectListWithFlexFormFieldsFixture::getExcludeFields());
 	}
 
 	/**
