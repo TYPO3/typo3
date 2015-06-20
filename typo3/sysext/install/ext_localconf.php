@@ -14,8 +14,8 @@ $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TY
 $signalSlotDispatcher->connect(
 	\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,
 	'tablesDefinitionIsBeingBuilt',
-	\TYPO3\CMS\Install\Service\CachingFrameworkDatabaseSchemaService::class,
-	'addCachingFrameworkRequiredDatabaseSchemaToTablesDefinition'
+	\TYPO3\CMS\Core\Cache\DatabaseSchemaService::class,
+	'addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService'
 );
 $signalSlotDispatcher->connect(
 	\TYPO3\CMS\Install\Service\SqlExpectedSchemaService::class,

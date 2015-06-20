@@ -308,7 +308,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return void
 	 */
 	protected function analyzeCachingTables() {
-		$this->parseAndAnalyzeSql(\TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions());
+		$schemaService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\DatabaseSchemaService::class);
+		$this->parseAndAnalyzeSql($schemaService->getCachingFrameworkRequiredDatabaseSchema());
 	}
 
 	/**

@@ -48,9 +48,6 @@ class ClearCacheService {
 		GeneralUtility::flushDirectory(PATH_site . 'typo3temp/Cache', TRUE, TRUE);
 
 		$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
-
-		\TYPO3\CMS\Core\Cache\Cache::flagCachingFrameworkForReinitialization();
-
 		$bootstrap
 			->initializeCachingFramework()
 			->initializePackageManagement(\TYPO3\CMS\Core\Package\PackageManager::class);

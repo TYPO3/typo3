@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Install\Service;
+namespace TYPO3\CMS\Core\Cache;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,13 +14,10 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\CacheFactory;
-
 /**
  * This service provides the sql schema for the caching framework
  */
-class CachingFrameworkDatabaseSchemaService {
+class DatabaseSchemaService {
 
 	/**
 	 * Get schema SQL of required cache framework tables.
@@ -52,11 +49,24 @@ class CachingFrameworkDatabaseSchemaService {
 	 * tables definitions string
 	 *
 	 * @param array $sqlString
+	 * @param string $extensionKey
 	 * @return array
 	 */
-	public function addCachingFrameworkRequiredDatabaseSchemaToTablesDefinition(array $sqlString) {
+	public function addCachingFrameworkRequiredDatabaseSchemaForInstallUtility(array $sqlString, $extensionKey) {
 		$sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-		return array('sqlString' => $sqlString);
+		return array($sqlString, $extensionKey);
+	}
+
+	/**
+	 * A slot method to inject the required caching framework database tables to the
+	 * tables definitions string
+	 *
+	 * @param array $sqlString
+	 * @return array
+	 */
+	public function addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService(array $sqlString) {
+		$sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
+		return array($sqlString);
 	}
 
 }

@@ -22,8 +22,8 @@ if (TYPO3_MODE === 'BE') {
 		$signalSlotDispatcher->connect(
 			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 			'tablesDefinitionIsBeingBuilt',
-			\TYPO3\CMS\Core\Cache\Cache::class,
-			'addCachingFrameworkRequiredDatabaseSchemaToTablesDefinition'
+			\TYPO3\CMS\Core\Cache\DatabaseSchemaService::class,
+			'addCachingFrameworkRequiredDatabaseSchemaForInstallUtility'
 		);
 		$signalSlotDispatcher->connect(
 			\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,

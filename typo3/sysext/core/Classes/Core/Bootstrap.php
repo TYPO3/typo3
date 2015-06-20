@@ -534,13 +534,21 @@ class Bootstrap {
 	}
 
 	/**
-	 * Initialize caching framework
+	 * Initialize caching framework, and re-initializes it (e.g. in the install tool) by recreating the instances
+	 * again despite the Singleton instance
 	 *
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function initializeCachingFramework() {
-		$this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework());
+		$cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
+		$cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
+
+		$cacheFactory = new \TYPO3\CMS\Core\Cache\CacheFactory('production', $cacheManager);
+		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheFactory::class, $cacheFactory);
+
+		$this->setEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManager);
 		return $this;
 	}
 

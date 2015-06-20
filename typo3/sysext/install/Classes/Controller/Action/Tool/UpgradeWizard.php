@@ -279,8 +279,8 @@ class UpgradeWizard extends Action\AbstractAction {
 		/** @var $sqlHandler \TYPO3\CMS\Install\Service\SqlSchemaMigrationService */
 		$sqlHandler = $this->objectManager->get(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
 
-		/** @var \TYPO3\CMS\Install\Service\CachingFrameworkDatabaseSchemaService $cachingFrameworkDatabaseSchemaService */
-		$cachingFrameworkDatabaseSchemaService = $this->objectManager->get(\TYPO3\CMS\Install\Service\CachingFrameworkDatabaseSchemaService::class);
+		/** @var \TYPO3\CMS\Core\Cache\DatabaseSchemaService $cachingFrameworkDatabaseSchemaService */
+		$cachingFrameworkDatabaseSchemaService = $this->objectManager->get(\TYPO3\CMS\Core\Cache\DatabaseSchemaService::class);
 		$expectedSchemaString = $cachingFrameworkDatabaseSchemaService->getCachingFrameworkRequiredDatabaseSchema();
 		$cleanedExpectedSchemaString = implode(LF, $sqlHandler->getStatementArray($expectedSchemaString, TRUE, '^CREATE TABLE '));
 		$neededTableDefinition = $sqlHandler->getFieldDefinitions_fileContent($cleanedExpectedSchemaString);
