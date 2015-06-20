@@ -239,12 +239,17 @@ class NewContentElementController {
 						$aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();" . (!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					}
 
+					$icon = $wInfo['icon'];
+					if (strpos($wInfo['icon'], '..') === FALSE) {
+						$icon = GeneralUtility::getFileAbsFileName($icon, TRUE, TRUE);
+						$icon = substr($icon, strlen(PATH_typo3));
+					}
 					$menuItems[$key]['content'] .= '
 						<div class="media">
 							' . $content . '
 							<div class="media-left">
 								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-									<img' . IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" />
+									<img' . IconUtility::skinImg($this->doc->backPath, $icon) . ' alt="" />
 								</a>
 							</div>
 							<div class="media-body">
