@@ -167,51 +167,6 @@ $extraContentColumns = array(
 			)
 		)
 	),
-	'image_frames' => array(
-		'exclude' => TRUE,
-		'label' => 'LLL:EXT:cms/locallang_ttc.xlf:image_frames',
-		'config' => array(
-			'type' => 'select',
-			'items' => array(
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.0',
-					0
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.1',
-					1
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.2',
-					2
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.3',
-					3
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.4',
-					4
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.5',
-					5
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.6',
-					6
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.7',
-					7
-				),
-				array(
-					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.8',
-					8
-				)
-			)
-		)
-	),
 	'image_noRows' => array(
 		'exclude' => TRUE,
 		'label' => 'LLL:EXT:cms/locallang_ttc.xlf:image_noRows',
@@ -479,18 +434,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 			',
 			'canNotCollapse' => 1
 		),
-		'image_settings' => array(
-			'showitem' => '
-				imagewidth;LLL:EXT:cms/locallang_ttc.xlf:imagewidth_formlabel,
-				imageheight;LLL:EXT:cms/locallang_ttc.xlf:imageheight_formlabel,
-				imageborder;LLL:EXT:cms/locallang_ttc.xlf:imageborder_formlabel,
-				--linebreak--,
-				image_compression;LLL:EXT:cms/locallang_ttc.xlf:image_compression_formlabel,
-				image_effects;LLL:EXT:cms/locallang_ttc.xlf:image_effects_formlabel,
-				image_frames;LLL:EXT:cms/locallang_ttc.xlf:image_frames_formlabel
-			',
-			'canNotCollapse' => 1
-		),
 		'imageblock' => array(
 			'showitem' => '
 				imageorient;LLL:EXT:cms/locallang_ttc.xlf:imageorient_formlabel,
@@ -528,6 +471,18 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 			'canNotCollapse' => 1
 		)
 	)
+);
+
+$GLOBALS['TCA']['tt_content']['palettes']['image_settings']['canNotCollapse'] = 1;
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
+	'tt_content',
+	'image_settings',
+	'imagewidth;LLL:EXT:cms/locallang_ttc.xlf:imagewidth_formlabel,
+		imageheight;LLL:EXT:cms/locallang_ttc.xlf:imageheight_formlabel,
+		imageborder;LLL:EXT:cms/locallang_ttc.xlf:imageborder_formlabel,
+		--linebreak--,
+		image_compression;LLL:EXT:cms/locallang_ttc.xlf:image_compression_formlabel,
+		image_effects;LLL:EXT:cms/locallang_ttc.xlf:image_effects_formlabel,'
 );
 
 // Field arrangement for CE "header"

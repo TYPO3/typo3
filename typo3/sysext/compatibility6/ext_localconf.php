@@ -1,6 +1,15 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+// unserializing the configuration so we can use it here:
+$_EXTCONF = unserialize($_EXTCONF);
+if (!$_EXTCONF || $_EXTCONF['setPageTSconfig']) {
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+		# Removes obsolete type values and fields from "Content Element" table "tt_content"
+		TCEFORM.tt_content.image_frames.disabled = 1
+	');
+}
+
 // TCA migration if TCA registration still happened in ext_tables.php
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] = array();

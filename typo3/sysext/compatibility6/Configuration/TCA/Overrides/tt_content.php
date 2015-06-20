@@ -71,6 +71,51 @@ $extraContentColumns = array(
 			'softref' => 'typolink[linkList]'
 		)
 	),
+	'image_frames' => array(
+		'exclude' => TRUE,
+		'label' => 'LLL:EXT:cms/locallang_ttc.xlf:image_frames',
+		'config' => array(
+			'type' => 'select',
+			'items' => array(
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.0',
+					0
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.1',
+					1
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.2',
+					2
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.3',
+					3
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.4',
+					4
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.5',
+					5
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.6',
+					6
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.7',
+					7
+				),
+				array(
+					'LLL:EXT:cms/locallang_ttc.xlf:image_frames.I.8',
+					8
+				)
+			)
+		)
+	),
 	'longdescURL' => array(
 		'exclude' => TRUE,
 		'label' => 'LLL:EXT:cms/locallang_ttc.xlf:image_longdescURL',
@@ -244,6 +289,8 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('css_styled_co
 		)
 	);
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('tt_content', 'image_settings', 'image_frames;LLL:EXT:cms/locallang_ttc.xlf:image_frames_formlabel');
 
 /**
  * CType "search"

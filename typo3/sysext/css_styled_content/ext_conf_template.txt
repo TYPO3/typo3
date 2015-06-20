@@ -1,5 +1,2 @@
-  # cat=basic/enable; type=boolean; label=LLL:EXT:css_styled_content/Resources/Private/Language/locallang_em.xlf:cssstyledcontent.config.setPageTSconfig
-setPageTSconfig = 1
-
   # cat=basic/enable; type=boolean; label=LLL:EXT:css_styled_content/Resources/Private/Language/locallang_em.xlf:cssstyledcontent.config.removePositionTypes
 removePositionTypes = 1

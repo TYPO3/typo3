@@ -1,0 +1,2 @@
+  # cat=basic/enable; type=boolean; label=LLL:EXT:compatibility6/Resources/Private/Language/extensionmanager.xlf:setPageTSconfig
+setPageTSconfig = 1
