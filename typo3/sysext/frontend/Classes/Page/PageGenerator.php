@@ -167,42 +167,6 @@ class PageGenerator {
 	}
 
 	/**
-	 * Returns an array with files to include. These files are the ones set up in TypoScript config.
-	 *
-	 * @return array Files to include. Paths are relative to PATH_site.
-	 */
-	static public function getIncFiles() {
-		/** @var TypoScriptFrontendController $tsfe */
-		$tsfe = $GLOBALS['TSFE'];
-		$incFilesArray = array();
-		// Get files from config.includeLibrary
-		$includeLibrary = trim('' . $tsfe->config['config']['includeLibrary']);
-		if ($includeLibrary) {
-			$incFile = $tsfe->tmpl->getFileName($includeLibrary);
-			if ($incFile) {
-				$incFilesArray[] = $incFile;
-			}
-		}
-		if (is_array($tsfe->pSetup['includeLibs.'])) {
-			$incLibs = $tsfe->pSetup['includeLibs.'];
-		} else {
-			$incLibs = array();
-		}
-		if (is_array($tsfe->tmpl->setup['includeLibs.'])) {
-			// toplevel 'includeLibs' is added to the PAGE.includeLibs. In that way, PAGE-libs get first priority, because if the key already exist, it's not altered. (Due to investigation by me)
-			$incLibs += $tsfe->tmpl->setup['includeLibs.'];
-		}
-		if (count($incLibs)) {
-			foreach ($incLibs as $theLib) {
-				if (!is_array($theLib) && ($incFile = $tsfe->tmpl->getFileName($theLib))) {
-					$incFilesArray[] = $incFile;
-				}
-			}
-		}
-		return $incFilesArray;
-	}
-
-	/**
 	 * Processing JavaScript handlers
 	 *
 	 * @return array Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
