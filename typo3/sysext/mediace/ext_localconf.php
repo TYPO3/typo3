@@ -12,7 +12,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \TYPO3\CMS\M
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	mod.wizards.newContentElement.wizardItems {
 		special.elements.media {
-			icon = gfx/c_wiz/multimedia.gif
+			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/multimedia.gif
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_media_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_media_description
 			tt_content_defValues.CType = media

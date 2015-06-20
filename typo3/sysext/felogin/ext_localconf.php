@@ -24,7 +24,7 @@ if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	mod.wizards.newContentElement.wizardItems.forms {
 		elements.login {
-			icon = gfx/c_wiz/login_form.gif
+			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/login_form.gif
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_title
 			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_description
 			tt_content_defValues {

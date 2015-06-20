@@ -56,7 +56,7 @@ mod.wizards.newContentElement {
 		common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common
 		common.elements {
 			header {
-				icon = gfx/c_wiz/regular_header.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/regular_header.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_headerOnly_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_headerOnly_description
 				tt_content_defValues {
@@ -64,7 +64,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			text {
-				icon = gfx/c_wiz/regular_text.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/regular_text.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_regularText_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_regularText_description
 				tt_content_defValues {
@@ -72,7 +72,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			textpic {
-				icon = gfx/c_wiz/text_image_right.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/text_image_right.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_textImage_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_textImage_description
 				tt_content_defValues {
@@ -81,7 +81,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			image {
-				icon = gfx/c_wiz/images_only.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/images_only.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_imagesOnly_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_imagesOnly_description
 				tt_content_defValues {
@@ -89,7 +89,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			bullets {
-				icon = gfx/c_wiz/bullet_list.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/bullet_list.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_bulletList_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_bulletList_description
 				tt_content_defValues {
@@ -97,7 +97,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			table {
-				icon = gfx/c_wiz/table.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/table.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_table_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:common_table_description
 				tt_content_defValues {
@@ -111,7 +111,7 @@ mod.wizards.newContentElement {
 		special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special
 		special.elements {
 			uploads {
-				icon = gfx/c_wiz/filelinks.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/filelinks.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_filelinks_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_filelinks_description
 				tt_content_defValues {
@@ -119,7 +119,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			menu {
-				icon = gfx/c_wiz/sitemap2.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/sitemap2.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_menus_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_menus_description
 				tt_content_defValues {
@@ -128,7 +128,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			html {
-				icon = gfx/c_wiz/html.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/html.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_plainHTML_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_plainHTML_description
 				tt_content_defValues {
@@ -136,7 +136,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			div {
-				icon = gfx/c_wiz/div.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/div.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_divider_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_divider_description
 				tt_content_defValues {
@@ -144,7 +144,7 @@ mod.wizards.newContentElement {
 				}
 			}
 			shortcut {
-				icon = gfx/c_wiz/shortcut.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/shortcut.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_shortcut_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_shortcut_description
 				tt_content_defValues {
@@ -161,7 +161,7 @@ mod.wizards.newContentElement {
 		plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins
 		plugins.elements {
 			general {
-				icon = gfx/c_wiz/user_defined.gif
+				icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/user_defined.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins_general_title
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:plugins_general_description
 				tt_content_defValues.CType = list
