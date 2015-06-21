@@ -594,7 +594,7 @@ class DataPreprocessor {
 						}
 					}
 				} else {
-					if (is_array($dsConf['TCEforms']['config']) && is_array($dataValues[$key])) {
+					if (is_array($dsConf['TCEforms']['config']) && isset($dataValues[$key]) && is_array($dataValues[$key])) {
 						foreach ($dataValues[$key] as $vKey => $data) {
 							// $data,$fieldConfig,$TSconfig,$table,$row,$field
 							list(, , $CVTSconfig, $CVtable, $CVrow, $CVfield) = $pParams;
