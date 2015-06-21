@@ -40,20 +40,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix() {
-		$classNameWithoutPrefix = $this->getUniqueId('postprocess');
-		eval(
-			'namespace TYPO3\CMS\Form\PostProcess;' .
-			'class ' . $classNameWithoutPrefix . 'PostProcessor implements PostProcessorInterface {' .
-			'  public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {' .
-			'  }' .
-			'  public function process() {' .
-			'    return \'processedWithoutPrefix\';' .
-			'  }' .
-			'}'
-		);
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
-			20 => $classNameWithoutPrefix
+			20 => \TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutFormPrefixFixture::class
 		);
 		$this->subject->typoScript = $typoScript;
 		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
@@ -65,20 +54,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function processFindsClassSpecifiedByTypoScriptWithFormPrefix() {
-		$classNameWithPrefix = $this->getUniqueId('postprocess');
-		eval(
-			'namespace TYPO3\CMS\Form\PostProcess;' .
-			'class ' . $classNameWithPrefix . 'PostProcessor implements PostProcessorInterface {' .
-			'  public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {' .
-			'  }' .
-			'  public function process() {' .
-			'    return \'processedWithPrefix\';' .
-			'  }' .
-			'}'
-		);
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
-			20 => $classNameWithPrefix
+			20 => \TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithFormPrefixFixture::class
 		);
 		$this->subject->typoScript = $typoScript;
 		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
@@ -90,20 +68,9 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function processReturnsEmptyStringIfSpecifiedPostProcessorDoesNotImplementTheInterface() {
-		$classNameWithoutInterface = $this->getUniqueId('postprocess');
-		eval(
-			'namespace TYPO3\CMS\Form\PostProcess;' .
-			'class ' . $classNameWithoutInterface . 'PostProcessor {' .
-			'  public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {' .
-			'  }' .
-			'  public function process() {' .
-			'    return \'withoutInterface\';' .
-			'  }' .
-			'}'
-		);
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
-			20 => $classNameWithoutInterface
+			20 => \TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutInterfaceFixture::class
 		);
 		$this->subject->typoScript = $typoScript;
 		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));

@@ -437,9 +437,8 @@ class DependencyUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$extension2 = new \TYPO3\CMS\Extensionmanager\Domain\Model\Extension();
 		$extension2->setExtensionKey('bar');
 		$extension2->setVersion('1.0.42');
-		$className = $this->getUniqueId('objectStorage');
-		eval('class ' . $className . ' {' . 'public $extensions = array();' . 'public function getFirst() {' . '  return $this->extensions[0];' . '}' . '}');
-		$myStorage = new $className();
+
+		$myStorage = new \TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures\LatestCompatibleExtensionObjectStorageFixture();
 		$myStorage->extensions[] = $extension1;
 		$myStorage->extensions[] = $extension2;
 		$dependencyMock = $this->getMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, array('getIdentifier'));
