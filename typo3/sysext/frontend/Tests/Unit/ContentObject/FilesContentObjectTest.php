@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\FilesContentObject
@@ -54,7 +55,7 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'FILES' => FilesContentObject::class,
 			'TEXT' => TextContentObject::class,
 		));
-		$this->subject = new FilesContentObject($contentObjectRenderer);
+		$this->subject = $this->getMock(FilesContentObject::class, array('getFileCollector'), array($contentObjectRenderer));
 	}
 
 	/**
@@ -215,14 +216,21 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->with('name')
 				->will($this->returnValue('File ' . $i));
 
-			$fileReferenceMap[] = array($i, array(), FALSE, $fileReference);
+			$fileReferenceMap[] = array($i, $fileReference);
 		}
 
-		$resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
-		$resourceFactory->expects($this->any())
-			->method('getFileReferenceObject')
+		$fileRepository = $this->getMock(\TYPO3\CMS\Core\Resource\FileRepository::class);
+		$fileRepository->expects($this->any())
+			->method('findFileReferenceByUid')
 			->will($this->returnValueMap($fileReferenceMap));
-		$this->subject->setFileFactory($resourceFactory);
+		$fileCollector = $this->getMock(FileCollector::class, array('getFileRepository'));
+		$fileCollector->expects($this->any())
+			->method('getFileRepository')
+			->will($this->returnValue($fileRepository));
+
+		$this->subject->expects($this->any())
+			->method('getFileCollector')
+			->will($this->returnValue($fileCollector));
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}
@@ -392,7 +400,14 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$resourceFactory->expects($this->any())
 			->method('getFileObject')
 			->will($this->returnValueMap($fileMap));
-		$this->subject->setFileFactory($resourceFactory);
+		$fileCollector = $this->getMock(FileCollector::class, array('getResourceFactory'));
+		$fileCollector->expects($this->any())
+			->method('getResourceFactory')
+			->will($this->returnValue($resourceFactory));
+
+		$this->subject->expects($this->any())
+			->method('getFileCollector')
+			->will($this->returnValue($fileCollector));
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}
@@ -611,7 +626,13 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$collectionRepository->expects($this->any())
 			->method('findByUid')
 			->will($this->returnValueMap($collectionMap));
-		$this->subject->setCollectionRepository($collectionRepository);
+		$fileCollector = $this->getMock(FileCollector::class, array('getFileCollectionRepository'));
+		$fileCollector->expects($this->any())
+			->method('getFileCollectionRepository')
+			->will($this->returnValue($collectionRepository));
+		$this->subject->expects($this->any())
+			->method('getFileCollector')
+			->will($this->returnValue($fileCollector));
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}
@@ -826,11 +847,18 @@ class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$folderMap[] = array($i . ':myfolder/', $folder);
 		}
 
-		$fileFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
-		$fileFactory->expects($this->any())
+		$resourceFactory = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+		$resourceFactory->expects($this->any())
 			->method('getFolderObjectFromCombinedIdentifier')
 			->will($this->returnValueMap($folderMap));
-		$this->subject->setFileFactory($fileFactory);
+		$fileCollector = $this->getMock(FileCollector::class, array('getResourceFactory'));
+		$fileCollector->expects($this->any())
+			->method('getResourceFactory')
+			->will($this->returnValue($resourceFactory));
+
+		$this->subject->expects($this->any())
+			->method('getFileCollector')
+			->will($this->returnValue($fileCollector));
 
 		$this->assertSame($expected, $this->subject->render($configuration));
 	}

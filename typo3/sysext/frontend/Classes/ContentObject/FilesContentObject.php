@@ -14,16 +14,10 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection;
 use TYPO3\CMS\Core\Resource\Exception;
-use TYPO3\CMS\Core\Resource\FileCollectionRepository;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Contains FILES content object
@@ -31,21 +25,6 @@ use TYPO3\CMS\Core\Log\LogManager;
  * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class FilesContentObject extends AbstractContentObject {
-
-	/**
-	 * @var FileCollectionRepository|NULL
-	 */
-	protected $collectionRepository = NULL;
-
-	/**
-	 * @var ResourceFactory|NULL
-	 */
-	protected $fileFactory = NULL;
-
-	/**
-	 * @var FileRepository|NULL
-	 */
-	protected $fileRepository = NULL;
 
 	/**
 	 * Rendering the cObject FILES
@@ -58,114 +37,12 @@ class FilesContentObject extends AbstractContentObject {
 			return '';
 		}
 
-		$fileObjects = array();
-		// Getting the files
-		if ($conf['references'] || $conf['references.']) {
-			/*
-			The TypoScript could look like this:# all items related to the page.media field:
-			references {
-			table = pages
-			uid.data = page:uid
-			fieldName = media
-			}# or: sys_file_references with uid 27:
-			references = 27
-			 */
-			$referencesUid = $this->cObj->stdWrapValue('references', $conf);
-			$referencesUidArray = GeneralUtility::intExplode(',', $referencesUid, TRUE);
-			foreach ($referencesUidArray as $referenceUid) {
-				try {
-					$this->addToArray(
-						$this->getFileFactory()->getFileReferenceObject($referenceUid),
-						$fileObjects
-					);
-				} catch (Exception $e) {
-					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-					$logger->warning('The file-reference with uid  "' . $referenceUid . '" could not be found and won\'t be included in frontend output');
-				}
-			}
-
-			$this->handleFileReferences($conf, (array)$this->cObj->data, $fileObjects);
-		}
-		if ($conf['files'] || $conf['files.']) {
-			/*
-			The TypoScript could look like this:
-			# with sys_file UIDs:
-			files = 12,14,15# using stdWrap:
-			files.field = some_field
-			 */
-			$fileUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('files', $conf), TRUE);
-			foreach ($fileUids as $fileUid) {
-				try {
-					$this->addToArray($this->getFileFactory()->getFileObject($fileUid), $fileObjects);
-				} catch (Exception $e) {
-					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-					$logger->warning('The file with uid  "' . $fileUid . '" could not be found and won\'t be included in frontend output');
-				}
-			}
-		}
-		if ($conf['collections'] || $conf['collections.']) {
-			$collectionUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('collections', $conf), TRUE);
-			foreach ($collectionUids as $collectionUid) {
-				try {
-					$fileCollection = $this->getCollectionRepository()->findByUid($collectionUid);
-					if ($fileCollection instanceof AbstractFileCollection) {
-						$fileCollection->loadContents();
-						$this->addToArray($fileCollection->getItems(), $fileObjects);
-					}
-				} catch (Exception $e) {
-					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-					$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-					$logger->warning('The file-collection with uid  "' . $collectionUid . '" could not be found or contents could not be loaded and won\'t be included in frontend output');
-				}
-			}
-		}
-		if ($conf['folders'] || $conf['folders.']) {
-			$folderIdentifiers = GeneralUtility::trimExplode(',', $this->cObj->stdWrapValue('folders', $conf));
-			foreach ($folderIdentifiers as $folderIdentifier) {
-				if ($folderIdentifier) {
-					try {
-						$folder = $this->getFileFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
-						if ($folder instanceof Folder) {
-							$this->addToArray(array_values($folder->getFiles()), $fileObjects);
-						}
-					} catch (Exception $e) {
-						/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-						$logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-						$logger->warning('The folder with identifier  "' . $folderIdentifier . '" could not be found and won\'t be included in frontend output');
-					}
-				}
-			}
-		}
-		// Rendering the files
-		$content = '';
-		// optionSplit applied to conf to allow differnt settings per file
-		$splitConf = $GLOBALS['TSFE']->tmpl->splitConfArray($conf, count($fileObjects));
-
-		// Enable sorting for multiple fileObjects
-		$sortingProperty = '';
-		if ($conf['sorting'] || $conf['sorting.']) {
-			$sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
-		}
-		if ($sortingProperty !== '' && count($fileObjects) > 1) {
-			@usort($fileObjects, function(FileInterface $a, FileInterface $b) use($sortingProperty) {
-				if ($a->hasProperty($sortingProperty) && $b->hasProperty($sortingProperty)) {
-					return strnatcasecmp($a->getProperty($sortingProperty), $b->getProperty($sortingProperty));
-				} else {
-					return 0;
-				}
-			});
-			$sortingDirection = isset($conf['sorting.']['direction']) ? $conf['sorting.']['direction'] : '';
-			if (isset($conf['sorting.']['direction.'])) {
-				$sortingDirection = $this->cObj->stdWrap($sortingDirection, $conf['sorting.']['direction.']);
-			}
-			if (strtolower($sortingDirection) === 'desc') {
-				$fileObjects = array_reverse($fileObjects);
-			}
-		}
-
+		$fileCollector = $this->findAndSortFiles($conf);
+		$fileObjects = $fileCollector->getFiles();
 		$availableFileObjectCount = count($fileObjects);
+
+		// optionSplit applied to conf to allow different settings per file
+		$splitConf = $GLOBALS['TSFE']->tmpl->splitConfArray($conf, $availableFileObjectCount);
 
 		$start = 0;
 		if (!empty($conf['begin'])) {
@@ -189,6 +66,8 @@ class FilesContentObject extends AbstractContentObject {
 		$GLOBALS['TSFE']->register['FILES_COUNT'] = min($limit, $availableFileObjectCount);
 		$fileObjectCounter = 0;
 		$keys = array_keys($fileObjects);
+
+		$content = '';
 		for ($i = $start; $i < $end; $i++) {
 			$key = $keys[$i];
 			$fileObject = $fileObjects[$key];
@@ -198,77 +77,78 @@ class FilesContentObject extends AbstractContentObject {
 			$content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
 			$fileObjectCounter++;
 		}
-		$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-		return $content;
+
+		return $this->cObj->stdWrap($content, $conf['stdWrap.']);
 	}
 
 	/**
-	 * Sets the file factory.
+	 * Function to check for references, collections, folders and
+	 * accumulates into one etc.
 	 *
-	 * @param ResourceFactory $fileFactory
-	 * @return void
+	 * @param array $conf
+	 * @return FileCollector
 	 */
-	public function setFileFactory($fileFactory) {
-		$this->fileFactory = $fileFactory;
-	}
+	protected function findAndSortFiles(array $conf) {
 
-	/**
-	 * Returns the file factory.
-	 *
-	 * @return ResourceFactory
-	 */
-	public function getFileFactory() {
-		if ($this->fileFactory === NULL) {
-			$this->fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+		$fileCollector = $this->getFileCollector();
+
+		// Getting the files
+		if ($conf['references'] || $conf['references.']) {
+			/*
+			The TypoScript could look like this:
+			# all items related to the page.media field:
+			references {
+				table = pages
+				uid.data = page:uid
+				fieldName = media
+			}
+			# or: sys_file_references with uid 27:
+			references = 27
+			 */
+			$referencesUidList = $this->cObj->stdWrapValue('references', $conf);
+			$referencesUids = GeneralUtility::intExplode(',', $referencesUidList, TRUE);
+			$fileCollector->addFileReferences($referencesUids);
+
+			if (!empty($conf['references.'])) {
+				$this->addFileReferences($conf, (array)$this->cObj->data, $fileCollector);
+			}
 		}
 
-		return $this->fileFactory;
-	}
-
-	/**
-	 * Sets the file repository.
-	 *
-	 * @param FileRepository $fileRepository
-	 * @return void
-	 */
-	public function setFileRepository($fileRepository) {
-		$this->fileRepository = $fileRepository;
-	}
-
-	/**
-	 * Returns the file repository.
-	 *
-	 * @return FileRepository
-	 */
-	public function getFileRepository() {
-		if ($this->fileRepository === NULL) {
-			$this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+		if ($conf['files'] || $conf['files.']) {
+			/*
+			The TypoScript could look like this:
+			# with sys_file UIDs:
+			files = 12,14,15# using stdWrap:
+			files.field = some_field
+			 */
+			$fileUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('files', $conf), TRUE);
+			$fileCollector->addFiles($fileUids);
 		}
 
-		return $this->fileRepository;
-	}
-
-	/**
-	 * Sets the collection repository.
-	 *
-	 * @param FileCollectionRepository $collectionRepository
-	 * @return void
-	 */
-	public function setCollectionRepository($collectionRepository) {
-		$this->collectionRepository = $collectionRepository;
-	}
-
-	/**
-	 * Returns the collection repository.
-	 *
-	 * @return FileCollectionRepository
-	 */
-	public function getCollectionRepository() {
-		if ($this->collectionRepository === NULL) {
-			$this->collectionRepository = GeneralUtility::makeInstance(FileCollectionRepository::class);
+		if ($conf['collections'] || $conf['collections.']) {
+			$collectionUids = GeneralUtility::intExplode(',', $this->cObj->stdWrapValue('collections', $conf), TRUE);
+			$fileCollector->addFilesFromFileCollections($collectionUids);
 		}
 
-		return $this->collectionRepository;
+		if ($conf['folders'] || $conf['folders.']) {
+			$folderIdentifiers = GeneralUtility::trimExplode(',', $this->cObj->stdWrapValue('folders', $conf));
+			$fileCollector->addFilesFromFolders($folderIdentifiers);
+		}
+
+		// Enable sorting for multiple fileObjects
+		$sortingProperty = '';
+		if ($conf['sorting'] || $conf['sorting.']) {
+			$sortingProperty = $this->cObj->stdWrapValue('sorting', $conf);
+		}
+		if ($sortingProperty !== '') {
+			$sortingDirection = isset($conf['sorting.']['direction']) ? $conf['sorting.']['direction'] : '';
+			if (isset($conf['sorting.']['direction.'])) {
+				$sortingDirection = $this->cObj->stdWrap($sortingDirection, $conf['sorting.']['direction.']);
+			}
+			$fileCollector->sort($sortingProperty, $sortingDirection);
+		}
+
+		return $fileCollector;
 	}
 
 	/**
@@ -276,13 +156,10 @@ class FilesContentObject extends AbstractContentObject {
 	 *
 	 * @param array $configuration TypoScript configuration
 	 * @param array $element The parent element referencing to files
-	 * @param array $fileObjects Collection of file objects
-	 * @return void
+	 * @param FileCollector $fileCollector
+	 * @return array
 	 */
-	protected function handleFileReferences(array $configuration, array $element, array &$fileObjects) {
-		if (empty($configuration['references.'])) {
-			return;
-		}
+	protected function addFileReferences(array $configuration, array $element, FileCollector $fileCollector) {
 
 		// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
 		$referencesFieldName = $this->cObj->stdWrapValue('fieldName', $configuration['references.']);
@@ -323,26 +200,7 @@ class FilesContentObject extends AbstractContentObject {
 		}
 
 		if (is_array($element)) {
-			$references = $pageRepository->getFileReferences(
-				$referencesForeignTable,
-				$referencesFieldName,
-				$element
-			);
-			$this->addToArray($references, $fileObjects);
-		}
-	}
-
-	/**
-	 * Adds $newItems to $theArray, which is passed by reference. Array must only consist of numerical keys.
-	 *
-	 * @param mixed $newItems Array with new items or single object that's added.
-	 * @param array $theArray The array the new items should be added to. Must only contain numeric keys (for array_merge() to add items instead of replacing).
-	 */
-	protected function addToArray($newItems, array &$theArray) {
-		if (is_array($newItems)) {
-			$theArray = array_merge($theArray, $newItems);
-		} elseif (is_object($newItems)) {
-			$theArray[] = $newItems;
+			$fileCollector->addFilesFromRelation($referencesForeignTable, $referencesFieldName, $element);
 		}
 	}
 
@@ -353,4 +211,10 @@ class FilesContentObject extends AbstractContentObject {
 		return $GLOBALS['TSFE']->sys_page;
 	}
 
+	/**
+	 * @return FileCollector
+	 */
+	protected function getFileCollector() {
+		return GeneralUtility::makeInstance(FileCollector::class);
+	}
 }
