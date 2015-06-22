@@ -2519,7 +2519,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function minifyJavaScriptCallsRegisteredHookWithInputString() {
 		$hookClassName = $this->getUniqueId('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
-		$functionName = '&' . $hookClassName . '->minify';
+		$functionName = $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
