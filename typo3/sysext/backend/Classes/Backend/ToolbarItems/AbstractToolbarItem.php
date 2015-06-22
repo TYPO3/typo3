@@ -24,46 +24,26 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 abstract class AbstractToolbarItem {
 
 	/**
-	 * @var string Extension context
-	 */
-	protected $extension = 'backend';
-
-	/**
-	 * @var string Template file for the dropdown menu
-	 */
-	protected $templateFile = '';
-
-	/**
 	 * @var StandaloneView
 	 */
 	protected $standaloneView = NULL;
 
-	/**
-	 * Constructor
-	 *
-	 * @throws \InvalidArgumentException
-	 */
 	public function __construct() {
-		if (empty($this->templateFile)) {
-			throw new \InvalidArgumentException('The template file for class "' . get_class($this) . '" is not set.', 1434530382);
-		}
-
-		$extPath = ExtensionManagementUtility::extPath($this->extension);
+		$extPath = ExtensionManagementUtility::extPath('backend');
 		/* @var $view StandaloneView */
 		$this->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
-		$this->standaloneView->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/ToolbarMenu/' . $this->templateFile);
-		$this->standaloneView->setPartialRootPaths(array(
-			$extPath . 'Resources/Private/Partials/ToolbarMenu/'
-		));
+		$this->standaloneView->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/ToolbarMenu/' . static::TOOLBAR_MENU_TEMPLATE);
 	}
 
 	/**
+	 * @param string $extension Set the extension context (required for shorthand locallang.xlf references)
 	 * @return StandaloneView
 	 */
-	protected function getStandaloneView() {
-		$request = $this->standaloneView->getRequest();
-		$request->setControllerExtensionName($this->extension);
-
+	protected function getStandaloneView($extension = NULL) {
+		if (!empty($extension)) {
+			$request = $this->standaloneView->getRequest();
+			$request->setControllerExtensionName($extension);
+		}
 		return $this->standaloneView;
 	}
 }

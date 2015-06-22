@@ -15,27 +15,16 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Backend\ToolbarItems\AbstractToolbarItem;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A list of all open documents
+ * Alist of all open documents
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @author Ingo Renner <ingo@typo3.org>
  */
-class OpendocsToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
-
-	/**
-	 * @var string Extension context
-	 */
-	protected $extension = 'opendocs';
-
-	/**
-	 * @var string Template file for the dropdown menu
-	 */
-	protected $templateFile = 'Opendocs.html';
+class OpendocsToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * @var array
@@ -51,8 +40,7 @@ class OpendocsToolbarItem extends AbstractToolbarItem implements ToolbarItemInte
 	 * Constructor
 	 */
 	public function __construct() {
-		parent::__construct();
-
+		$this->getLanguageService()->includeLLFile('EXT:opendocs/Resources/Private/Language/locallang.xlf');
 		$this->loadDocsFromUserSession();
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu');
@@ -101,40 +89,34 @@ class OpendocsToolbarItem extends AbstractToolbarItem implements ToolbarItemInte
 	 * @return string HTML
 	 */
 	public function getDropDown() {
+		$languageService = $this->getLanguageService();
 		$openDocuments = $this->openDocs;
 		$recentDocuments = $this->recentDocs;
-		$entries = array(
-			'open' => array(),
-			'recent' => array()
-		);
-		if (!empty($openDocuments)) {
+		$entries = array();
+		if (count($openDocuments)) {
+			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('open_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
 				$i++;
-				$entry = $this->renderMenuEntry($openDocument, $md5sum, FALSE, $i === 1);
-				if (!empty($entry)) {
-					$entries['open'][] = $entry;
-				}
+				$entries[] = $this->renderMenuEntry($openDocument, $md5sum, FALSE, $i == 1);
 			}
+			$entries[] = '<li class="divider"></li>';
 		}
 		// If there are "recent documents" in the list, add them
-		if (!empty($recentDocuments)) {
+		if (count($recentDocuments)) {
+			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('recent_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
 				$i++;
-				$entry = $this->renderMenuEntry($recentDocument, $md5sum, TRUE, $i === 1);
-				if (!empty($entry)) {
-					$entries['recent'][] = $entry;
-				}
+				$entries[] = $this->renderMenuEntry($recentDocument, $md5sum, TRUE, $i == 1);
 			}
 		}
-
-		$standaloneView = $this->getStandaloneView();
-		$standaloneView->assignMultiple(array(
-			'entries' => $entries,
-			'hasEntries' => !empty($entries['open']) || !empty($entries['recent'])
-		));
-		return $standaloneView->render();
+		if (count($entries)) {
+			$content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
+		} else {
+			$content = '<p>' . $languageService->getLL('no_docs', TRUE) . '</p>';
+		}
+		return $content;
 	}
 
 	/**
@@ -154,7 +136,7 @@ class OpendocsToolbarItem extends AbstractToolbarItem implements ToolbarItemInte
 			// Record seems to be deleted
 			return '';
 		}
-		$label = strip_tags(htmlspecialchars_decode($document[0]));
+		$label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $record);
 		$link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
 		$pageId = (int)$document[3]['uid'];
@@ -166,21 +148,17 @@ class OpendocsToolbarItem extends AbstractToolbarItem implements ToolbarItemInte
 			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE);
 			// Open document
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
-			$entry = array(
-				'onclick' => $onClickCode,
-				'icon' => $icon,
-				'label' => $label,
-				'md5sum' => $md5sum,
-				'title' => $title,
-				'closeIcon' => $closeIcon
-			);
+			$entry = '
+				<li class="opendoc">
+					<a href="#" class="dropdown-list-link dropdown-link-list-add-close" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
+					<a href="#" class="dropdown-list-link-close" data-opendocsidentifier="' . $md5sum . '" title="' . $title . '">' . $closeIcon . '</a>
+				</li>';
 		} else {
 			// Recently used document
-			$entry = array(
-				'onclick' => $onClickCode,
-				'icon' => $icon,
-				'label' => $label
-			);
+			$entry = '
+				<li>
+					<a href="#" class="dropdown-list-link" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
+				</li>';
 		}
 		return $entry;
 	}

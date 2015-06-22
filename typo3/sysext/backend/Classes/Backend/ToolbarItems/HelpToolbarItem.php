@@ -22,12 +22,7 @@ use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 /**
  * Help toolbar item
  */
-class HelpToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
-
-	/**
-	 * @var string Template file for the dropdown menu
-	 */
-	protected $templateFile = 'Help.html';
+class HelpToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * @var \SplObjectStorage<BackendModule>
@@ -38,8 +33,6 @@ class HelpToolbarItem extends AbstractToolbarItem implements ToolbarItemInterfac
 	 * Constructor
 	 */
 	public function __construct() {
-		parent::__construct();
-
 		/** @var BackendModuleRepository $backendModuleRepository */
 		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
 		/** @var \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule $userModuleMenu */
@@ -75,25 +68,26 @@ class HelpToolbarItem extends AbstractToolbarItem implements ToolbarItemInterfac
 	 */
 	public function getDropDown() {
 		$dropdown = array();
+		$dropdown[] = '<ul class="dropdown-list">';
 		foreach ($this->helpModuleMenu->getChildren() as $module) {
 			/** @var BackendModule $module */
-			$dropdown[] = array(
-				'id' => $module->getName(),
-				'navigation' => array(
-					'componentId' => $module->getNavigationComponentId(),
-					'frameScript' => $module->getNavigationFrameScript(),
-					'frameScriptParameters' => $module->getNavigationFrameScriptParameters(),
-				),
-				'href' => $module->getLink(),
-				'description' => $module->getDescription(),
-				'icon' => $module->getIcon(),
-				'label' => $module->getTitle()
-			);
+			$moduleIcon = $module->getIcon();
+			$dropdown[] ='<li'
+				. ' id="' . htmlspecialchars($module->getName()) . '"'
+				. ' class="typo3-module-menu-item submodule mod-' . htmlspecialchars($module->getName()) . '" '
+				. ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
+				. ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
+				. ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
+				. ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
+				. '>';
+			$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
+			$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . $moduleIcon . '</span></span></span>';
+			$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
+			$dropdown[] = '</a>';
+			$dropdown[] = '</li>';
 		}
-
-		$standaloneView = $this->getStandaloneView();
-		$standaloneView->assign('dropdown', $dropdown);
-		return $standaloneView->render();
+		$dropdown[] = '</ul>';
+		return implode(LF, $dropdown);
 	}
 
 	/**

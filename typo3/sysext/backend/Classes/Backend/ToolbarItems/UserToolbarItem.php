@@ -24,12 +24,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * User toolbar item
  */
-class UserToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
-
-	/**
-	 * @var string Template file for the dropdown menu
-	 */
-	protected $templateFile = 'User.html';
+class UserToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * Item is always enabled
@@ -80,6 +75,7 @@ class UserToolbarItem extends AbstractToolbarItem implements ToolbarItemInterfac
 		$languageService = $this->getLanguageService();
 
 		$dropdown = array();
+		$dropdown[] = '<ul class="dropdown-list">';
 
 		/** @var BackendModuleRepository $backendModuleRepository */
 		$backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
@@ -88,33 +84,34 @@ class UserToolbarItem extends AbstractToolbarItem implements ToolbarItemInterfac
 		if ($userModuleMenu != FALSE && $userModuleMenu->getChildren()->count() > 0) {
 			foreach ($userModuleMenu->getChildren() as $module) {
 				/** @var BackendModule $module */
-				$dropdown[] = array(
-					'id' => $module->getName(),
-					'navigation' => array(
-						'componentId' => $module->getNavigationComponentId(),
-						'frameScript' => $module->getNavigationFrameScript(),
-						'frameScriptParameters' => $module->getNavigationFrameScriptParameters(),
-					),
-					'href' => $module->getLink(),
-					'description' => $module->getDescription(),
-					'icon' => $module->getIcon(),
-					'label' => $module->getTitle()
-				);
+				$dropdown[] ='<li'
+					. ' id="' . htmlspecialchars($module->getName()) . '"'
+					. ' class="typo3-module-menu-item submodule mod-' . htmlspecialchars($module->getName()) . '" '
+					. ' data-modulename="' . htmlspecialchars($module->getName()) . '"'
+					. ' data-navigationcomponentid="' . htmlspecialchars($module->getNavigationComponentId()) . '"'
+					. ' data-navigationframescript="' . htmlspecialchars($module->getNavigationFrameScript()) . '"'
+					. ' data-navigationframescriptparameters="' . htmlspecialchars($module->getNavigationFrameScriptParameters()) . '"'
+					. '>';
+				$dropdown[] = '<a title="' . htmlspecialchars($module->getDescription()) . '" href="' . htmlspecialchars($module->getLink()) . '" class="dropdown-list-link modlink">';
+				$dropdown[] = '<span class="submodule-icon typo3-app-icon"><span><span>' . $module->getIcon() . '</span></span></span>';
+				$dropdown[] = '<span class="submodule-label">' . htmlspecialchars($module->getTitle()) . '</span>';
+				$dropdown[] = '</a>';
+				$dropdown[] = '</li>';
 			}
+			$dropdown[] = '<li class="divider"></li>';
 		}
 
 		// Logout button
-		$logoutButton = array(
-			'label' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout')),
-			'href' => htmlspecialchars(BackendUtility::getModuleUrl('logout')),
-		);
+		$buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
+		$dropdown[] = '<li class="reset-dropdown">';
+		$dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top"><i class="fa fa-power-off"></i> ';
+		$dropdown[] = $languageService->sL($buttonLabel, TRUE);
+		$dropdown[] = '</a>';
+		$dropdown[] = '</li>';
 
-		$standaloneView = $this->getStandaloneView();
-		$standaloneView->assignMultiple(array(
-			'dropdown' => $dropdown,
-			'logoutButton' => $logoutButton
-		));
-		return $standaloneView->render();
+		$dropdown[] = '</ul>';
+
+		return implode(LF, $dropdown);
 	}
 
 	/**

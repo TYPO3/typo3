@@ -25,12 +25,7 @@ use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class ClearCacheToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
-
-	/**
-	 * @var string Template file for the dropdown menu
-	 */
-	protected $templateFile = 'ClearCache.html';
+class ClearCacheToolbarItem implements ToolbarItemInterface {
 
 	/**
 	 * @var array
@@ -48,8 +43,6 @@ class ClearCacheToolbarItem extends AbstractToolbarItem implements ToolbarItemIn
 	 * @throws \UnexpectedValueException
 	 */
 	public function __construct() {
-		parent::__construct();
-
 		$backendUser = $this->getBackendUser();
 		$languageService = $this->getLanguageService();
 
@@ -143,20 +136,18 @@ class ClearCacheToolbarItem extends AbstractToolbarItem implements ToolbarItemIn
 	 * @return string Drop down HTML
 	 */
 	public function getDropDown() {
-		$items = array();
+		$result = array();
+		$result[] = '<ul class="dropdown-list">';
 		foreach ($this->cacheActions as $cacheAction) {
 			$title = $cacheAction['description'] ?: $cacheAction['title'];
-			$items[] = array(
-				'title' => $title,
-				'label' => $cacheAction['title'],
-				'href' => $cacheAction['href'],
-				'icon' => $cacheAction['icon']
-			);
+			$result[] = '<li>';
+			$result[] = '<a class="dropdown-list-link" href="' . htmlspecialchars($cacheAction['href']) . '" title="' . htmlspecialchars($title) . '">';
+			$result[] = $cacheAction['icon'] . ' ' . htmlspecialchars($cacheAction['title']);
+			$result[] = '</a>';
+			$result[] = '</li>';
 		}
-
-		$standaloneView = $this->getStandaloneView();
-		$standaloneView->assign('items', $items);
-		return $standaloneView->render();
+		$result[] = '</ul>';
+		return implode(LF, $result);
 	}
 
 	/**

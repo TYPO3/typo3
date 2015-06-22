@@ -29,9 +29,9 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 class SystemInformationToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
 
 	/**
-	 * @var string Template file for the dropdown menu
+	 * Template file for the dropdown menu
 	 */
-	protected $templateFile = 'SystemInformation.html';
+	const TOOLBAR_MENU_TEMPLATE = 'SystemInformation.html';
 
 	/**
 	 * Number displayed as badge on the dropdown trigger
@@ -280,15 +280,14 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 			return '';
 		}
 
-		$standaloneView = $this->getStandaloneView();
-		$standaloneView->assignMultiple(array(
+		$this->getStandaloneView('backend')->assignMultiple(array(
 			'installToolUrl' => BackendUtility::getModuleUrl('system_InstallInstall'),
 			'messages' => $this->systemMessages,
 			'count' => $this->totalCount,
 			'severityBadgeClass' => $this->severityBadgeClass,
 			'systemInformation' => $this->systemInformation
 		));
-		return $standaloneView->render();
+		return $this->getStandaloneView()->render();
 	}
 
 	/**
