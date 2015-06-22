@@ -2810,20 +2810,6 @@ class TypoScriptFrontendController {
 	}
 
 	/**
-	 * Check the jumpUrl referer if required
-	 *
-	 * @return void
-	 */
-	public function checkJumpUrlReferer() {
-		if ($this->jumpurl !== '' && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
-			$referer = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
-			if (isset($referer['host']) && !($referer['host'] == GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'))) {
-				unset($this->jumpurl);
-			}
-		}
-	}
-
-	/**
 	 * Sends a header "Location" to jumpUrl, if jumpurl is set.
 	 * Will exit if a location header is sent (for instance if jumpUrl was triggered)
 	 *

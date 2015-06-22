@@ -180,7 +180,6 @@ class RequestHandler implements RequestHandlerInterface {
 
 		// Check JumpUrl
 		$this->controller->setExternalJumpUrl();
-		$this->controller->checkJumpUrlReferer();
 
 		$this->controller->handleDataSubmission();
 
