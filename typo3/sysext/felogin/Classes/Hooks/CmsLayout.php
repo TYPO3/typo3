@@ -33,7 +33,7 @@ class CmsLayout implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInt
 	public function preProcess(\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject, &$drawItem, &$headerContent, &$itemContent, array &$row) {
 		if ($row['CType'] === 'login') {
 			$drawItem = FALSE;
-			$itemContent .= '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_title', TRUE) . '</strong>';
+			$itemContent .= $parentObject->linkEditContent('<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_title', TRUE) . '</strong>', $row);
 		}
 	}
 

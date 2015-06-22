@@ -1475,17 +1475,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					break;
 				case 'uploads':
 					if ($row['media']) {
-						$out .= $this->thumbCode($row, 'tt_content', 'media') . '<br />';
+						$out .= $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'media'), $row) . '<br />';
 					}
 					break;
 				case 'menu':
 					$contentType = $this->CType_labels[$row['CType']];
-					$out .= '<strong>' . htmlspecialchars($contentType) . '</strong><br />';
+					$out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
 					// Add Menu Type
 					$menuTypeLabel = $this->getLanguageService()->sL(
 						BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'menu_type', $row['menu_type'])
 					);
-					$out .= $menuTypeLabel !== '' ? $menuTypeLabel : 'invalid menu type';
+					$menuTypeLabel = $menuTypeLabel ?: 'invalid menu type';
+					$out .= $this->linkEditContent($menuTypeLabel, $row);
 					if ($row['menu_type'] !== '2' && ($row['pages'] || $row['selected_categories'])) {
 						// Show pages if menu type is not "Sitemap"
 						$out .= ':' . $this->linkEditContent($this->generateListForCTypeMenu($row), $row) . '<br />';
@@ -1529,7 +1530,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					} elseif (!empty($row['list_type'])) {
 						$label = BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'list_type', $row['list_type']);
 						if (!empty($label)) {
-							$out .=  '<strong>' . $this->getLanguageService()->sL($label, TRUE) . '</strong><br />';
+							$out .=  $this->linkEditContent('<strong>' . $this->getLanguageService()->sL($label, TRUE) . '</strong>', $row) . '<br />';
 						} else {
 							$message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
 							$out .= GeneralUtility::makeInstance(
@@ -1554,12 +1555,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$contentType = $this->CType_labels[$row['CType']];
 
 					if (isset($contentType)) {
-						$out .= '<strong>' . htmlspecialchars($contentType) . '</strong><br />';
+						$out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
 						if ($row['bodytext']) {
 							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 						}
 						if ($row['image']) {
-							$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
+							$out .= $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'image'), $row) . '<br />';
 						}
 					} else {
 						$message = sprintf(
@@ -2150,6 +2151,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			</table>';
 		// Return the content:
 		return $out;
+	}
+
+	/**
+	 * Create thumbnail code for record/field but not linked
+	 *
+	 * @param mixed[] $row Record array
+	 * @param string $table Table (record is from)
+	 * @param string $field Field name for which thumbnail are to be rendered.
+	 * @return string HTML for thumbnails, if any.
+	 */
+	public function getThumbCodeUnlinked($row, $table, $field) {
+		return BackendUtility::thumbCode($row, $table, $field, $this->backPath, '', NULL, 0, '', '', FALSE);
 	}
 
 	/**

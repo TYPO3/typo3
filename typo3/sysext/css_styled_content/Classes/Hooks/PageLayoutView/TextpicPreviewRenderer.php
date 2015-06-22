@@ -42,7 +42,7 @@ class TextpicPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDr
 			}
 
 			if ($row['image']) {
-				$itemContent .= $parentObject->thumbCode($row, 'tt_content', 'image');
+				$itemContent .= $parentObject->linkEditContent($parentObject->getThumbCodeUnlinked($row, 'tt_content', 'image'), $row);
 
 				$fileReferences = \TYPO3\CMS\Backend\Utility\BackendUtility::resolveFileReferences('tt_content', 'image', $row);
 
