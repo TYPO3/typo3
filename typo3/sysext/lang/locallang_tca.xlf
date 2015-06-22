@@ -285,6 +285,9 @@
 			<trans-unit id="sys_filemounts.base_relative">
 				<source>relative ../fileadmin/</source>
 			</trans-unit>
+			<trans-unit id="sys_history">
+				<source>System History</source>
+			</trans-unit>
 			<trans-unit id="sys_log">
 				<source>System Log</source>
 			</trans-unit>
