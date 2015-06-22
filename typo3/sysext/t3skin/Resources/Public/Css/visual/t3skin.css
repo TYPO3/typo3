@@ -12932,7 +12932,7 @@ fieldset[disabled] .live-search-list .x-btn button.active {
   width: 100%;
   position: absolute;
   bottom: 0;
-  z-index: 5000;
+  z-index: 1000;
   border: 1px solid #b1b1b1;
 }
 #typo3-debug-console .topbar {
