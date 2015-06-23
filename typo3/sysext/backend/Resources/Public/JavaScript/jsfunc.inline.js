@@ -126,9 +126,9 @@ var inline = {
 				recObjectId = objectPrefix + this.structureSeparator + records[i];
 				escapedRecordObjectId = this.escapeObjectId(recObjectId);
 
-				var $recordEntry = TYPO3.jQuery('#' + escapedRecordObjectId);
+				var $recordEntry = TYPO3.jQuery('#' + escapedRecordObjectId + '_div');
 				if (records[i] != callingUid && $recordEntry.hasClass(this.classVisible)) {
-					TYPO3.jQuery('#' + escapedRecordObjectId + '_div').removeClass(this.classVisible).addClass(this.classCollapsed);
+					$recordEntry.removeClass(this.classVisible).addClass(this.classCollapsed);
 					if (this.isNewRecord(recObjectId)) {
 						this.updateExpandedCollapsedStateLocally(recObjectId, 0);
 					} else {

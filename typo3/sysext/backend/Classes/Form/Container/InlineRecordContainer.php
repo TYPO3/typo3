@@ -182,7 +182,7 @@ class InlineRecordContainer extends AbstractContainer {
 			$class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
 			$html = '
 				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . $objectId . '_div">
-					<div class="panel-heading" data-toggle="formengine-inline" id="' . $objectId . '_header">
+					<div class="panel-heading" data-toggle="formengine-inline" id="' . $objectId . '_header" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
