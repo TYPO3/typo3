@@ -5,7 +5,7 @@ Feature: #66697 - Add uppercamelcase and lowercamelcase to stdWrap.case
 Description
 ===========
 
-To make it possible to change a value from underscored to "upperCamelCase" or "lowerCamelCase" the options
+To make it possible to change a value from underscored to "UpperCamelCase" or "lowerCamelCase" the options
 `uppercamelcase` and `lowercamelcase` are added to `stdWrap.case`.
 
 .. code-block:: typoscript
