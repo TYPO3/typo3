@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -94,30 +95,32 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
 	 * @return void
 	 */
 	protected function writeLog($logMessage) {
-		if (is_object($GLOBALS['TYPO3_DB']) && !empty($GLOBALS['TYPO3_DB']->link)) {
-			$userId = 0;
-			$workspace = 0;
-			if (is_object($GLOBALS['BE_USER'])) {
-				if (isset($GLOBALS['BE_USER']->user['uid'])) {
-					$userId = $GLOBALS['BE_USER']->user['uid'];
-				}
-				if (isset($GLOBALS['BE_USER']->workspace)) {
-					$workspace = $GLOBALS['BE_USER']->workspace;
-				}
-			}
-			$fields_values = array(
-				'userid' => $userId,
-				'type' => 5,
-				'action' => 0,
-				'error' => 2,
-				'details_nr' => 0,
-				'details' => str_replace('%', '%%', $logMessage),
-				'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-				'tstamp' => $GLOBALS['EXEC_TIME'],
-				'workspace' => $workspace
-			);
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
+		$databaseConnection = $this->getDatabaseConnection();
+		if (!is_object($databaseConnection) || !$databaseConnection->isConnected()) {
+			return;
 		}
+		$userId = 0;
+		$workspace = 0;
+		if (is_object($GLOBALS['BE_USER'])) {
+			if (isset($GLOBALS['BE_USER']->user['uid'])) {
+				$userId = $GLOBALS['BE_USER']->user['uid'];
+			}
+			if (isset($GLOBALS['BE_USER']->workspace)) {
+				$workspace = $GLOBALS['BE_USER']->workspace;
+			}
+		}
+		$fields_values = array(
+			'userid' => $userId,
+			'type' => 5,
+			'action' => 0,
+			'error' => 2,
+			'details_nr' => 0,
+			'details' => str_replace('%', '%%', $logMessage),
+			'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+			'tstamp' => $GLOBALS['EXEC_TIME'],
+			'workspace' => $workspace
+		);
+		$databaseConnection->exec_INSERTquery('sys_log', $fields_values);
 	}
 
 	/**
@@ -138,6 +141,14 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \T
 				header($header);
 			}
 		}
+	}
+
+	/**
+	 * Gets the Database Object
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
