@@ -53,13 +53,6 @@ abstract class RteHtmlAreaApi {
 	protected $relativePathToSkin = '';
 
 	/**
-	 * Path to the directory containing the plugin, relative to the extension dir (should end with slash /)
-	 *
-	 * @var string
-	 */
-	protected $relativePathToPluginDirectory;
-
-	/**
 	 * Reference to the invoking object
 	 *
 	 * @var RteHtmlAreaBase
@@ -225,15 +218,6 @@ abstract class RteHtmlAreaApi {
 	 */
 	public function getExtensionKey() {
 		return $this->extensionKey;
-	}
-
-	/**
-	 * Returns the path to the plugin directory, if any
-	 *
-	 * @return string the full path to the plugin directory
-	 */
-	public function getPathToPluginDirectory() {
-		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . ExtensionManagementUtility::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
 	}
 
 	/**

@@ -54,11 +54,4 @@ class BlockStyle extends RteHtmlAreaApi {
 		'blockstyle' => 'BlockStyle'
 	);
 
-	/**
-	 * TRUE if the registered plugin requires the PageTSConfig Classes configuration
-	 *
-	 * @var bool
-	 */
-	protected $requiresClassesConfiguration = TRUE;
-
 }

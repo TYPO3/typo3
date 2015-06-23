@@ -33,13 +33,6 @@ class TableOperations extends RteHtmlAreaApi {
 	protected $pluginName = 'TableOperations';
 
 	/**
-	 * TRUE if the registered plugin requires the PageTSConfig Classes configuration
-	 *
-	 * @var bool
-	 */
-	protected $requiresClassesConfiguration = TRUE;
-
-	/**
 	 * The comma-separated list of names of prerequisite plugins
 	 *
 	 * @var string

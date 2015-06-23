@@ -45,15 +45,11 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea',
 				if (!HtmlArea.editorSkin) {
 					HtmlArea.editorSkin = HtmlArea.editorUrl + 'Resources/Public/Css/Skin/';
 				}
-				if (!HtmlArea.editorCSS) {
-					HtmlArea.editorCSS = HtmlArea.editorUrl + 'Resources/Public/Css/Skin/htmlarea.css';
-				}
 				if (typeof HtmlArea.editedContentCSS !== 'string' || HtmlArea.editedContentCSS === '') {
 					HtmlArea.editedContentCSS = HtmlArea.editorSkin + 'htmlarea-edited-content.css';
 				}
 				HTMLArea.isReady = true;
 				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HtmlArea.editorUrl, 'info');
-				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor skin CSS set to: ' + HtmlArea.editorCSS, 'info');
 				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HtmlArea.editedContentCSS, 'info');
 
 				Util.apply(HTMLArea, HtmlArea);
