@@ -14,10 +14,15 @@ namespace TYPO3\CMS\Compatibility6\Hooks\PageLayoutView;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+
 /**
  * Contains a preview rendering for the page module of CType="script"
  */
-class ScriptPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface {
+class ScriptPreviewRenderer implements PageLayoutViewDrawItemHookInterface {
 
 	/**
 	 * Preprocesses the preview rendering of a content element of type "script"
@@ -31,15 +36,15 @@ class ScriptPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDra
 	 * @return void
 	 */
 	public function preProcess(
-		\TYPO3\CMS\Backend\View\PageLayoutView &$parentObject,
+		PageLayoutView &$parentObject,
 		&$drawItem,
 		&$headerContent,
 		&$itemContent,
 		array &$row
 	) {
 		if ($row['CType'] === 'script') {
-			$itemContent .= $parentObject->getLanguageService()->sL(
-				\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', 'select_key'),
+			$itemContent .= $this->getLanguageService()->sL(
+				BackendUtility::getItemLabel('tt_content', 'select_key'),
 				TRUE
 			) . ' ' . $row['select_key'] . '<br />';
 			$itemContent .= '<br />' . $parentObject->linkEditContent(
@@ -53,5 +58,13 @@ class ScriptPreviewRenderer implements \TYPO3\CMS\Backend\View\PageLayoutViewDra
 
 			$drawItem = FALSE;
 		}
+	}
+
+	/**
+	 * Returns the language service
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }
