@@ -41,7 +41,7 @@
 		"symfony/finder": "2.6.9",
 		"doctrine/instantiator": "1.0.4",
 		"helhum/class-alias-loader": "1.1.4",
-		"typo3/cms-composer-installers": "1.1.2"
+		"typo3/cms-composer-installers": "1.1.4"
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.4.*@dev",
