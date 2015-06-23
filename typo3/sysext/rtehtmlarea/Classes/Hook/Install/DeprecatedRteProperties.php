@@ -196,11 +196,11 @@ class DeprecatedRteProperties extends AbstractUpdate {
 	}
 
 	/**
-	 * Gets the pages with deprecated RTE properties in TSConfig column
+	 * Gets the pages with deprecated RTE properties in TSconfig column
 	 *
 	 * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
 	 * @param string $customMessages Pointer to output custom messages
-	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
+	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
 	 */
 	protected function getPagesWithDeprecatedRteProperties(&$dbQueries, &$customMessages) {
 		$fields = 'uid, TSconfig';
@@ -208,7 +208,7 @@ class DeprecatedRteProperties extends AbstractUpdate {
 		$where = '';
 		$db = $this->getDatabaseConnection();
 		foreach (array_merge($this->replacementRteProperties, $this->useInsteadRteProperties, $this->doubleReplacementRteProperties) as $deprecatedRteProperty => $_) {
-			$where .= ($where ? ' OR ' : '') . '(TSConfig LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSConfig NOT LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages') . ')' . LF;
+			$where .= ($where ? ' OR ' : '') . '(TSconfig LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . '%', 'pages') . ' AND TSconfig NOT LIKE BINARY ' . $db->fullQuoteStr('%RTE.%' . $deprecatedRteProperty . 's%', 'pages') . ')' . LF;
 		}
 		$res = $db->exec_SELECTquery($fields, $table, $where);
 		$dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
@@ -223,10 +223,10 @@ class DeprecatedRteProperties extends AbstractUpdate {
 	}
 
 	/**
-	 * Gets the pages with updateable deprecated RTE properties in TSConfig column
+	 * Gets the pages with updateable deprecated RTE properties in TSconfig column
 	 *
 	 * @param array $pages reference to pages with deprecated property
-	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
+	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
 	 */
 	protected function findUpdateablePagesWithDeprecatedRteProperties(&$pages) {
 		foreach ($pages as $index => $page) {
