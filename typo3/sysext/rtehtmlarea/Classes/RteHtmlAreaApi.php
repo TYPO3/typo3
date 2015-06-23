@@ -130,13 +130,6 @@ abstract class RteHtmlAreaApi {
 	protected $requiresClassesConfiguration = FALSE;
 
 	/**
-	 * TRUE if the plugin must be loaded synchronously
-	 *
-	 * @var bool
-	 */
-	protected $requiresSynchronousLoad = FALSE;
-
-	/**
 	 * The comma-separated list of names of prerequisite plugins
 	 *
 	 * @var string
@@ -286,25 +279,6 @@ abstract class RteHtmlAreaApi {
 	 */
 	public function requiresClassesConfiguration() {
 		return $this->requiresClassesConfiguration;
-	}
-
-	/**
-	 * Returns TRUE if the plugin requires synchronous load
-	 *
-	 * @return bool TRUE if the plugin requires synchronous load
-	 */
-	public function requiresSynchronousLoad() {
-		return $this->requiresSynchronousLoad;
-	}
-
-	/**
-	 * Sets the plugin to require synchronous load or not
-	 *
-	 * @param bool $value: the boolean value to set
-	 * @return void
-	 */
-	public function setSynchronousLoad($value = TRUE) {
-		$this->requiresSynchronousLoad = $value;
 	}
 
 	/**

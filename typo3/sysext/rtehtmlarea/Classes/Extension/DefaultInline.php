@@ -69,7 +69,7 @@ class DefaultInline extends RteHtmlAreaApi {
 	}
 
 	/**
-	 * Return tranformed content
+	 * Return transformed content
 	 *
 	 * @param string $content: The content that is about to be sent to the RTE
 	 * @return string the transformed content

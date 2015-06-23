@@ -62,11 +62,7 @@ class DefinitionList extends RteHtmlAreaApi {
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
 	public function main($parentObject) {
-		$enabled = parent::main($parentObject) && $this->htmlAreaRTE->isPluginEnabled('BlockElements');
-		if ($enabled && is_object($this->htmlAreaRTE->registeredPlugins['BlockElements'])) {
-			$this->htmlAreaRTE->registeredPlugins['BlockElements']->setSynchronousLoad();
-		}
-		return $enabled;
+		return (parent::main($parentObject) && $this->htmlAreaRTE->isPluginEnabled('BlockElements'));
 	}
 
 	/**
