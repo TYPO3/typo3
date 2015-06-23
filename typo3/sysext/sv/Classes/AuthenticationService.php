@@ -121,6 +121,11 @@ class AuthenticationService extends AbstractAuthenticationService {
 	 * @return mixed Groups array, keys = uid which must be unique
 	 */
 	public function getGroups($user, $knownGroups) {
+		/*
+		 * Attention: $knownGroups is not used within this method, but other services can use it.
+		 * This parameter should not be removed!
+		 * The FrontendUserAuthentication call getGroups and handover the previous detected groups.
+		 */
 		$groupDataArr = array();
 		if ($this->mode === 'getGroupsFE') {
 			$groups = array();
