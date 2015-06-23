@@ -37,7 +37,8 @@ class LanguageIsoCodeUpdate extends AbstractUpdate {
 			return FALSE;
 		}
 
-		$migratableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', 'language_isocode="" AND static_lang_isocode!=""');
+		$emptyValue = $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
+		$migratableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
 		if ($migratableLanguageRecords === 0) {
 			return FALSE;
 		}
@@ -57,7 +58,8 @@ class LanguageIsoCodeUpdate extends AbstractUpdate {
 	 * @return bool
 	 */
 	public function performUpdate(array &$databaseQueries, &$customMessages) {
-		$migrateableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,static_lang_isocode', 'sys_language', 'language_isocode="" AND static_lang_isocode!=""');
+		$emptyValue =  $this->getDatabaseConnection()->fullQuoteStr('', 'sys_language');
+		$migrateableLanguageRecords = $this->getDatabaseConnection()->exec_SELECTgetRows('uid,static_lang_isocode', 'sys_language', 'language_isocode=' . $emptyValue . ' AND CAST(static_lang_isocode AS CHAR) != ' . $emptyValue);
 		if (!empty($migrateableLanguageRecords)) {
 			foreach ($migrateableLanguageRecords as $languageRecord) {
 				$staticLanguageRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'static_languages', 'uid=' . (int)$languageRecord['static_lang_isocode']);
