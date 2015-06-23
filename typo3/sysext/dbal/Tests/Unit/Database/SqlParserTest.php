@@ -456,6 +456,30 @@ class SqlParserTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see http://forge.typo3.org/issues/67708
+	 */
+	public function canParseMultiJoinConditionsWithStringsAndLeftCast() {
+		$sql = 'SELECT * FROM sys_file_processedfile LEFT JOIN sys_registry ON CAST(entry_key AS INTEGER) = sys_file_processedfile.uid AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
+
+		$result = $this->subject->debug_testSQL($sql);
+		$expected = 'SELECT * FROM sys_file_processedfile LEFT JOIN sys_registry ON CAST(entry_key AS INTEGER)=sys_file_processedfile.uid AND entry_namespace=\'ProcessedFileChecksumUpdate\'';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/67708
+	 */
+	public function canParseMultiJoinConditionsWithStringsAndRightCast() {
+		$sql = 'SELECT * FROM sys_file_processedfile LEFT JOIN sys_registry ON entry_key = CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
+
+		$result = $this->subject->debug_testSQL($sql);
+		$expected = 'SELECT * FROM sys_file_processedfile LEFT JOIN sys_registry ON entry_key=CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace=\'ProcessedFileChecksumUpdate\'';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/22501
 	 */
 	public function canParseMultipleJoinConditionsWithLessThanOperator() {

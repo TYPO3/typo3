@@ -39,7 +39,7 @@ class ProcessedFileChecksumUpdate extends AbstractUpdate {
 			return FALSE;
 		}
 
-		$join = 'sys_file_processedfile LEFT JOIN sys_registry ON entry_key = sys_file_processedfile.uid AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
+		$join = 'sys_file_processedfile LEFT JOIN sys_registry ON entry_key = CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
 		$count = $this->getDatabaseConnection()->exec_SELECTcountRows('*', $join, '(entry_key IS NULL AND sys_file_processedfile.identifier <> \'\') OR sys_file_processedfile.width IS NULL');
 		if (!$count) {
 			return FALSE;
@@ -68,7 +68,7 @@ This can either happen on demand, when the processed file is first needed, or by
 
 		$factory = GeneralUtility::makeInstance(ResourceFactory::class);
 
-		$join = 'sys_file_processedfile LEFT JOIN sys_registry ON entry_key = sys_file_processedfile.uid AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
+		$join = 'sys_file_processedfile LEFT JOIN sys_registry ON entry_key = CAST(sys_file_processedfile.uid AS CHAR) AND entry_namespace = \'ProcessedFileChecksumUpdate\'';
 		$res = $db->exec_SELECTquery('sys_file_processedfile.*', $join, 'entry_key IS NULL AND sys_file_processedfile.identifier <> \'\'');
 		while ($processedFileRow = $db->sql_fetch_assoc($res)) {
 			$storage = $factory->getStorageObject($processedFileRow['storage']);

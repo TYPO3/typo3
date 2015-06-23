@@ -834,6 +834,40 @@ class SqlParser {
 	}
 
 	/**
+	 * Parsing a CAST definition in the "JOIN [$parseString] ..." part of a query into an array.
+	 * The success of this parsing determines if that part of the query is supported by TYPO3.
+	 *
+	 * @param string $parseString JOIN clause to parse. NOTICE: passed by reference!
+	 * @return mixed If successful parsing, returns an array, otherwise an error string.
+	 */
+	protected function parseCastStatement(&$parseString) {
+		$this->nextPart($parseString, '^(CAST)[[:space:]]*');
+		$parseString = trim(substr($parseString, 1));
+		$castDefinition = array('type' => 'cast');
+		// Strip off "("
+		if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\\*._]+)[[:space:]]*')) {
+			// Parse field name into field and table:
+			$tableField = explode('.', $fieldName, 2);
+			if (count($tableField) === 2) {
+				$castDefinition['table'] = $tableField[0];
+				$castDefinition['field'] = $tableField[1];
+			} else {
+				$castDefinition['table'] = '';
+				$castDefinition['field'] = $tableField[0];
+			}
+		} else {
+			return $this->parseError('No casted join field found in parseCastStatement()!', $parseString);
+		}
+		if ($this->nextPart($parseString, '^([[:space:]]*AS[[:space:]]*)')) {
+			$castDefinition['datatype'] = $this->getValue($parseString);
+		}
+		if (!$this->nextPart($parseString, '^([)])')) {
+			return $this->parseError('No end parenthesis at end of CAST function', $parseString);
+		}
+		return $castDefinition;
+	}
+
+	/**
 	 * Parsing the tablenames in the "FROM [$parseString] WHERE" part of a query into an array.
 	 * The success of this parsing determines if that part of the query is supported by TYPO3.
 	 *
@@ -896,12 +930,24 @@ class SqlParser {
 								$condition['left']['table'] = '';
 								$condition['left']['field'] = $tableField[0];
 							}
+						} elseif (preg_match('/^CAST[[:space:]]*[(]/i', $parseString)) {
+							$condition['left'] = $this->parseCastStatement($parseString);
+							// Return the parse error
+							if (!is_array($condition['left'])) {
+								return $condition['left'];
+							}
 						} else {
 							return $this->parseError('No join field found in parseFromTables()!', $parseString);
 						}
 						// Find "comparator":
 						$condition['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=)');
-						if (($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)')) !== '') {
+						if (preg_match('/^CAST[[:space:]]*[(]/i', $parseString)) {
+							$condition['right'] = $this->parseCastStatement($parseString);
+							// Return the parse error
+							if (!is_array($condition['right'])) {
+								return $condition['right'];
+							}
+						} elseif (($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)')) !== '') {
 							// Parse field name into field and table:
 							$tableField = explode('.', $fieldName, 2);
 							$condition['right'] = array();
@@ -1150,8 +1196,10 @@ class SqlParser {
 								$this->nextPart($parseString, '^([(])');
 								$stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString, $parameterReferences);
 								// Seek to new position in parseString after parsing of the subquery
-								$parseString = $stack[$level][$pnt[$level]]['subquery']['parseString'];
-								unset($stack[$level][$pnt[$level]]['subquery']['parseString']);
+								if (!empty($stack[$level][$pnt[$level]]['subquery']['parseString'])) {
+									$parseString = $stack[$level][$pnt[$level]]['subquery']['parseString'];
+									unset($stack[$level][$pnt[$level]]['subquery']['parseString']);
+								}
 								if (!$this->nextPart($parseString, '^([)])')) {
 									return 'No ) parenthesis at end of subquery';
 								}
@@ -1771,6 +1819,25 @@ class SqlParser {
 	}
 
 	/**
+	 * Compile a "JOIN table ON [output] = ..." identifier
+	 *
+	 * @param array $identifierParts Array of identifier parts
+	 * @return string
+	 * @see parseCastStatement()
+	 * @see parseFromTables()
+	 */
+	protected function compileJoinIdentifier($identifierParts) {
+		if ($identifierParts['type'] === 'cast') {
+			return sprintf('CAST(%s AS %s)',
+				$identifierParts['table'] ? $identifierParts['table'] . '.' . $identifierParts['field'] : $identifierParts['field'],
+				$identifierParts['datatype'][0]
+			);
+		} else {
+			return $identifierParts['table'] ? $identifierParts['table'] . '.' . $identifierParts['field'] : $identifierParts['field'];
+		}
+	}
+
+	/**
 	 * Compiles a "FROM [output] WHERE..:" table list based on input array (made with ->parseFromTables())
 	 *
 	 * @param array $tablesArray Array of table names, (made with ->parseFromTables())
@@ -1801,15 +1868,13 @@ class SqlParser {
 							if ($condition['operator'] !== '') {
 								$outputParts[$k] .= ' ' . $condition['operator'] . ' ';
 							}
-							$outputParts[$k] .= $condition['left']['table'] ? $condition['left']['table'] . '.' : '';
-							$outputParts[$k] .= $condition['left']['field'];
+							$outputParts[$k] .= $this->compileJoinIdentifier($condition['left']);
 							$outputParts[$k] .= $condition['comparator'];
 							if (!empty($condition['right']['value'])) {
 								$value = $condition['right']['value'];
 								$outputParts[$k] .= $value[1] . $this->compileAddslashes($value[0]) . $value[1];
 							} else {
-								$outputParts[$k] .= $condition['right']['table'] ? $condition['right']['table'] . '.' : '';
-								$outputParts[$k] .= $condition['right']['field'];
+								$outputParts[$k] .= $this->compileJoinIdentifier($condition['right']);
 							}
 						}
 					}
