@@ -99,17 +99,17 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate {
 	}
 
 	/**
-	 * Gets the pages with deprecated RTE properties in TSConfig column
+	 * Gets the pages with deprecated RTE properties in TSconfig column
 	 *
 	 * @param array $dbQueries Pointer where to insert all DB queries made, so they can be shown to the user if wanted
 	 * @param string $customMessages Pointer to output custom messages
-	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
+	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
 	 */
 	protected function getPagesWithDeprecatedRteProperties(&$dbQueries, &$customMessages) {
+		$db = $this->getDatabaseConnection();
 		$fields = 'uid, TSconfig';
 		$table = 'pages';
-		$where = 'TSConfig LIKE BINARY "%acronym%"';
-		$db = $this->getDatabaseConnection();
+		$where = 'TSconfig LIKE BINARY ' . $db->fullQuoteStr('%acronym%', 'pages');
 		$res = $db->exec_SELECTquery($fields, $table, $where);
 		$dbQueries[] = str_replace(LF, ' ', $db->debug_lastBuiltQuery);
 		if ($db->sql_error()) {
@@ -123,10 +123,10 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate {
 	}
 
 	/**
-	 * Gets the pages with updateable deprecated RTE properties in TSConfig column
+	 * Gets the pages with updateable deprecated RTE properties in TSconfig column
 	 *
 	 * @param array $pages reference to pages with deprecated property
-	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSConfig column
+	 * @return array uid and inclusion string for the pages with deprecated RTE properties in TSconfig column
 	 */
 	protected function findUpdateablePagesWithDeprecatedRteProperties(&$pages) {
 		foreach ($pages as $index => $page) {
