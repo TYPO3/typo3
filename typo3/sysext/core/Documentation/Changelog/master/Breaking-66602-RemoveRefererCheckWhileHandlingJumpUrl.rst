@@ -1,5 +1,5 @@
 =========================================================
-Breaking - #66602: Check jumpUrl referer has been removed
+Breaking: #66602 - Check jumpUrl referer has been removed
 =========================================================
 
 Description

@@ -1,5 +1,5 @@
 ====================================================
-Breaking - #65305: DriverInterface has been extended
+Breaking: #65305 - DriverInterface has been extended
 ====================================================
 
 Description
