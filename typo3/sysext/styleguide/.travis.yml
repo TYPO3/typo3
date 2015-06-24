@@ -11,7 +11,8 @@ before_script:
   - sudo apt-get install parallel
   - composer self-update
   - cd ..
-  - cp TYPO3.CMS.Styleguide/Build/composer-travis.json composer.json
+  - git clone --single-branch --branch master --depth 1 https://github.com/TYPO3/TYPO3.CMS.git typo3_core
+  - mv typo3_core/* .
   - composer install
   - mkdir -p typo3conf/ext
   - mv TYPO3.CMS.Styleguide typo3conf/ext/styleguide
