@@ -21,7 +21,7 @@ script:
   - >
     echo;
     echo "Running unit tests";
-    ./bin/phpunit --colors -c typo3conf/ext/styleguide/Build/UnitTests.xml
+    ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/styleguide/Tests/Unit/
   - >
     echo;
     echo "Running php lint";
