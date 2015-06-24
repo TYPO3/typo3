@@ -24,8 +24,6 @@ return array(
 		),
 
 		'type' => 'type_field',
-
-		'dividers2tabs' => 1,
 	),
 
 	'columns' => array(
