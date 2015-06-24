@@ -624,7 +624,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$colspan = $this->showIcon ? count($this->fieldArray) + 1 : count($this->fieldArray);
 						$rowOutput .= '<tr><td colspan="' . $colspan . '">
 								<a href="' . htmlspecialchars(($this->listURL() . '&table=' . rawurlencode($table))) . '" class="btn btn-default">'
-							. '<span class="t3-icon fa fa-ellipsis-h"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
+							. '<span class="t3-icon fa fa-chevron-down"></span> <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
 								</td></tr>';
 					}
 				}
