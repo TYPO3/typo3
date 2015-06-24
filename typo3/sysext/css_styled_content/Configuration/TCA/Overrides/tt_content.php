@@ -588,7 +588,7 @@ $GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = '
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 		--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
 	--div--;LLL:EXT:cms/locallang_ttc.xlf:CType.I.5,
-		layout;;10,
+		layout, --palette--;;10,
 		cols,
 		bodytext,
 		pi_flexform,

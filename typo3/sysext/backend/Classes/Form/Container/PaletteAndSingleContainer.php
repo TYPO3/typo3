@@ -62,7 +62,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				'elements' => array(
 					0 => array(
 						'type' => 'single',
-						'fieldName' => 'palettenName',
+						'fieldName' => 'paletteName',
 						'fieldLabel' => 'element1',
 						'fieldHtml' => 'element1',
 					),
@@ -71,23 +71,22 @@ class PaletteAndSingleContainer extends AbstractContainer {
 					),
 					2 => array(
 						'type' => 'single',
-						'fieldName' => 'palettenName',
+						'fieldName' => 'paletteName',
 						'fieldLabel' => 'element2',
 						'fieldHtml' => 'element2',
 					),
 				),
 			),
-			1 => array( // has 2 as "additional palette"
+			1 => array(
 				'type' => 'single',
 				'fieldName' => 'element3',
 				'fieldLabel' => 'element3',
 				'fieldHtml' => 'element3',
 			),
-			2 => array( // do only if 1 had result
+			2 => array(
 				'type' => 'palette2',
 				'fieldName' => 'palette2',
-				'fieldLabel' => '', // label missing because label of 1 is displayed only
-				'canNotCollapse' => TRUE, // An "additional palette" can not be collapsed
+				'fieldLabel' => '', // Palettes may not have a label
 				'elements' => array(
 					0 => array(
 						'type' => 'single',
@@ -150,22 +149,6 @@ class PaletteAndSingleContainer extends AbstractContainer {
 						'fieldLabel' => $this->getSingleFieldLabel($fieldName, $fieldConfiguration['fieldLabel']),
 						'fieldHtml' => $childResultArray['html'],
 					);
-
-					// If the third part of a show item field is given, this is a name of a palette that should be rendered
-					// below the single field - without palette header and only if single field produced content
-					if (!empty($childResultArray['html']) && !empty($fieldConfiguration['paletteName'])) {
-						$paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
-						if (!empty($paletteElementArray)) {
-							$mainStructureCounter ++;
-							$targetStructure[$mainStructureCounter] = array(
-								'type' => 'palette',
-								'fieldName' => $fieldConfiguration['paletteName'],
-								'fieldLabel' => '', // An "additional palette" has no show label
-								'canNotCollapse' => TRUE,
-								'elements' => $paletteElementArray,
-							);
-						}
-					}
 				}
 
 				$childResultArray['html'] = '';
@@ -197,10 +180,6 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				}
 				// No button if palettes are not collapsed - this is the checkbox at the end of the form
 				if (!$this->globalOptions['palettesCollapsed']) {
-					$renderUnCollapseButtonWrapper = FALSE;
-				}
-				// No button if palette is set to no collapse on element level - this is the case if palette is an "additional palette" after a casual field
-				if (!empty($element['canNotCollapse'])) {
 					$renderUnCollapseButtonWrapper = FALSE;
 				}
 

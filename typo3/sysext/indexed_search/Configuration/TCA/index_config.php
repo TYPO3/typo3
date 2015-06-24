@@ -235,14 +235,28 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type'),
-		'1' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, table2index, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
-		'2' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, filepath, extensions, depth'),
-		'3' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, externalUrl, depth, url_deny'),
-		'4' => array('showitem' => 'title;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.xlf:index_config.rootpage, depth'),
-		'5' => array('showitem' => 'title, description, type, indexcfgs')
+		'0' => array(
+			'showitem' => 'title, --palette--;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type',
+		),
+		'1' => array(
+			'showitem' => 'title, --palette--;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, table2index, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange',
+		),
+		'2' => array(
+			'showitem' => 'title, --palette--;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, filepath, extensions, depth',
+		),
+		'3' => array(
+			'showitem' => 'title, --palette--;;1, timer_next_indexing, timer_offset, timer_frequency, set_id, type, externalUrl, depth, url_deny',
+		),
+		'4' => array(
+			'showitem' => 'title, --palette--;;1, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.xlf:index_config.rootpage, depth',
+		),
+		'5' => array(
+			'showitem' => 'title, description, type, indexcfgs',
+		),
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'starttime,hidden')
-	)
+		'1' => array(
+			'showitem' => 'starttime, hidden',
+		),
+	),
 );

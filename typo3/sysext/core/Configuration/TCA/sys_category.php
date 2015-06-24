@@ -32,7 +32,11 @@ return array(
 		'showRecordFieldList' => 'title,description'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'title;;1, parent,description,--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.items,items,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime')
+		'1' => array(
+			'showitem' => 'title, --palette--;;1, parent, description,
+				--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.items, items,
+				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
+		),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'sys_language_uid, l10n_parent, hidden')

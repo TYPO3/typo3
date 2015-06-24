@@ -174,7 +174,9 @@ return array(
 		)
 	),
 	'types' => array(
-		'static' => array('showitem' => 'title;;1,type, description,table_name, items')
+		'static' => array(
+			'showitem' => 'title, --palette--;;1, type, description,table_name, items',
+		),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'starttime, endtime, fe_group, sys_language_uid, l10n_parent, l10n_diffsource, hidden')

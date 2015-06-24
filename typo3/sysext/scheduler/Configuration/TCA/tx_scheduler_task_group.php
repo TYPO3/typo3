@@ -46,6 +46,8 @@ return array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden,groupName;;1,description;;1')
-	)
+		'1' => array(
+			'showitem' => 'hidden, groupName, description',
+		),
+	),
 );

@@ -146,7 +146,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 		// Create a TCA fixture for sys_file_collection
 		$GLOBALS['TCA']['sys_file_collection'] = array(
 			'types' => array(
-				'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
+				'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldD'),
 			),
 			'columns' => array(
 				'type' => array(
@@ -163,7 +163,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
 		$this->testSubject->addTypeToTCA($type, $label, 'something');
 
 		// check type
-		$this->assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
+		$this->assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
 
 		$indexOfNewType = count($GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items']) - 1;
 

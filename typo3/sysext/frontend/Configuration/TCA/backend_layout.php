@@ -81,6 +81,8 @@ return array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden,title;;1, icon, description, config')
+		'1' => array(
+			'showitem' => 'hidden, title, icon, description, config',
+		),
 	)
 );

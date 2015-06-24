@@ -42,7 +42,7 @@ class TcaMigrationTest extends UnitTestCase {
 				),
 				'types' => array(
 					0 => array(
-						'showitem' => 'this,should;stay;this,too',
+						'showitem' => 'this,should;stay,this,too',
 					),
 				),
 			),
@@ -112,7 +112,7 @@ class TcaMigrationTest extends UnitTestCase {
 			'aTable' => array(
 				'types' => array(
 					0 => array(
-						'showitem' => 'aField,anotherField;with;palette;;and-style-pointer,thirdField',
+						'showitem' => 'aField,anotherField;with;;;style-pointer,thirdField',
 					),
 					1 => array(
 						'showitem' => 'aField,;;;;only-a-style-pointer,anotherField',
@@ -124,7 +124,7 @@ class TcaMigrationTest extends UnitTestCase {
 			'aTable' => array(
 				'types' => array(
 					0 => array(
-						'showitem' => 'aField,anotherField;with;palette,thirdField',
+						'showitem' => 'aField,anotherField;with,thirdField',
 					),
 					1 => array(
 						'showitem' => 'aField,anotherField',
@@ -144,7 +144,7 @@ class TcaMigrationTest extends UnitTestCase {
 			'aTable' => array(
 				'types' => array(
 					0 => array(
-						'showitem' => 'aField,anotherField;with;palette;special:configuration,thirdField',
+						'showitem' => 'aField,anotherField;with;;special:configuration,thirdField',
 					),
 				),
 			),
@@ -153,7 +153,7 @@ class TcaMigrationTest extends UnitTestCase {
 			'aTable' => array(
 				'types' => array(
 					0 => array(
-						'showitem' => 'aField,anotherField;with;palette,thirdField',
+						'showitem' => 'aField,anotherField;with,thirdField',
 						'columnsOverrides' => array(
 							'anotherField' => array(
 								'defaultExtras' => 'special:configuration',
@@ -180,7 +180,7 @@ class TcaMigrationTest extends UnitTestCase {
 				),
 				'types' => array(
 					0 => array(
-						'showitem' => 'aField,anotherField;with;palette;special:configuration,thirdField',
+						'showitem' => 'aField,anotherField;with;;special:configuration,thirdField',
 					),
 				),
 			),
@@ -194,7 +194,7 @@ class TcaMigrationTest extends UnitTestCase {
 				),
 				'types' => array(
 					0 => array(
-						'showitem' => 'aField,anotherField;with;palette,thirdField',
+						'showitem' => 'aField,anotherField;with,thirdField',
 						'columnsOverrides' => array(
 							'anotherField' => array(
 								'defaultExtras' => 'some:values:special:configuration',
@@ -380,5 +380,31 @@ class TcaMigrationTest extends UnitTestCase {
 		$subject = new TcaMigration();
 		$subject->migrate($input);
 		$this->assertEmpty($subject->getMessages());
+	}
+
+	/**
+	 * @test
+	 */
+	public function migrateShowItemMovesAdditionalPaletteToOwnPaletteDefinition() {
+		$input = array(
+			'aTable' => array(
+				'types' => array(
+					'firstType' => array(
+						'showitem' => 'field1;field1Label,field2;fieldLabel2;palette1,field2;;palette2',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'types' => array(
+					'firstType' => array(
+						'showitem' => 'field1;field1Label,field2;fieldLabel2,--palette--;;palette1,field2,--palette--;;palette2',
+					),
+				),
+			),
+		);
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
 	}
 }

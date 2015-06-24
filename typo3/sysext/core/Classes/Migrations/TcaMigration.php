@@ -42,6 +42,7 @@ class TcaMigration {
 		$tca = $this->migrateT3editorWizardToRenderTypeT3editorIfNotEnabledByTypeConfig($tca);
 		$tca = $this->migrateSpecialConfigurationAndRemoveShowItemStylePointerConfig($tca);
 		$tca = $this->migrateT3editorWizardWithEnabledByTypeConfigToColumnsOverrides($tca);
+		$tca = $this->migrateShowItemAdditionalPaletteToOwnPalette($tca);
 		// @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
 		return $tca;
 	}
@@ -91,7 +92,7 @@ class TcaMigration {
 							if (!empty($wizardConfig['params']['format'])) {
 								$newTca[$table]['columns'][$fieldName]['config']['format'] = $wizardConfig['params']['format'];
 							}
-							$this->messages[] = 'Migrated t3editor wizard in TCA of table ' . $table . ' field ' . $fieldName . ' to a renderType definition.';
+							$this->messages[] = 'Migrated t3editor wizard in TCA of table "' . $table . '" field "' . $fieldName . '" to a renderType definition.';
 						}
 					}
 					// If no wizard is left after migration, unset the whole sub array
@@ -239,8 +240,8 @@ class TcaMigration {
 												if (!empty($wizardConfig['params']['format'])) {
 													$newTca[$table]['types'][$typeName]['columnsOverrides'][$fieldName]['config']['format'] = $wizardConfig['params']['format'];
 												}
-												$this->messages[] = 'Migrated t3editor wizard in TCA of table ' . $table . ' field ' . $fieldName
-													. ' to a renderType definition with columnsOverrides in type ' . $typeName . '.';
+												$this->messages[] = 'Migrated t3editor wizard in TCA of table "' . $table . '" field "' . $fieldName
+													. '" to a renderType definition with columnsOverrides in type "' . $typeName . '".';
 											} else {
 												// Some other enabled wizard
 												$newEnabledWizardsArray[] = $enabledWizardName;
@@ -271,4 +272,60 @@ class TcaMigration {
 		return $newTca;
 	}
 
+	/**
+	 * Migrate types showitem 'aField;aLabel;aPalette' to 'afield;aLabel, --palette--;;aPalette'
+	 *
+	 * Old showitem can have a syntax like:
+	 * fieldName;aLabel;aPalette
+	 * This way, the palette with name "aPalette" is rendered after fieldName.
+	 * The migration parses this to a syntax like:
+	 * fieldName;aLabel, --palette--;;paletteName
+	 *
+	 * @param array $tca Incoming TCA
+	 * @return array Migrated TCA
+	 */
+	protected function migrateShowItemAdditionalPaletteToOwnPalette(array $tca) {
+		$newTca = $tca;
+		foreach ($tca as $table => $tableDefinition) {
+			if (!isset($tableDefinition['types']) || !is_array($tableDefinition['types'])) {
+				continue;
+			}
+			foreach ($tableDefinition['types'] as $typeName => $typeArray) {
+				if (
+					!isset($typeArray['showitem'])
+					|| !is_string($typeArray['showitem'])
+					|| strpos($typeArray['showitem'], ';') === FALSE // no field parameters
+				) {
+					continue;
+				}
+				$itemList = GeneralUtility::trimExplode(',', $typeArray['showitem'], TRUE);
+				$newFieldStrings = array();
+				foreach ($itemList as $fieldString) {
+					$fieldArray = GeneralUtility::trimExplode(';', $fieldString);
+					$fieldArray = array(
+						'fieldName' => isset($fieldArray[0]) ? $fieldArray[0] : '',
+						'fieldLabel' => isset($fieldArray[1]) ? $fieldArray[1] : NULL,
+						'paletteName' => isset($fieldArray[2]) ? $fieldArray[2] : NULL,
+					);
+					if ($fieldArray['fieldName'] !== '--palette--' && $fieldArray['paletteName'] !== NULL) {
+						if ($fieldArray['fieldLabel']) {
+							$fieldString = $fieldArray['fieldName'] . ';' . $fieldArray['fieldLabel'];
+						} else {
+							$fieldString = $fieldArray['fieldName'];
+						}
+						$paletteString = '--palette--;;' . $fieldArray['paletteName'];
+						$this->messages[] = 'Migrated TCA table "' . $table . '" showitem field of type "' . $typeName . '": Moved additional palette'
+							. ' with name "' . $fieldArray['paletteName'] . '" as 3rd argument of field "' . $fieldArray['fieldName']
+							. '" to an own palette. The result of this part is: "' . $fieldString . ', ' . $paletteString . '"';
+						$newFieldStrings[] = $fieldString;
+						$newFieldStrings[] = $paletteString;
+					} else {
+						$newFieldStrings[] = $fieldString;
+					}
+				}
+				$newTca[$table]['types'][$typeName]['showitem'] = implode(',', $newFieldStrings);
+			}
+		}
+		return $newTca;
+	}
 }

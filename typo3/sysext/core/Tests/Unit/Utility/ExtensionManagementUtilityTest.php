@@ -181,8 +181,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 			'fieldC' => array()
 		);
 		$tca[$table]['types'] = array(
-			'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, fieldD, fieldD1'),
-			'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, fieldD, fieldD1'),
+			'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'),
+			'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1'),
 			'typeC' => array('showitem' => 'fieldC;;paletteD')
 		);
 		$tca[$table]['palettes'] = array(
@@ -308,9 +308,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'before:fieldD');
 		// Checking typeA:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
 	}
 
 	/**
@@ -324,9 +324,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldC');
 		// Checking typeA:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
 	}
 
 	/**
@@ -340,9 +340,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'before:fieldD');
 		// Checking typeA:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
 	}
 
 	/**
@@ -356,9 +356,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'after:fieldC');
 		// Checking typeA:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, newA, newB, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
 		// Checking typeB:
-		$this->assertEquals('fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+		$this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
 	}
 
 	/**
@@ -388,14 +388,14 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$table = $this->getUniqueId('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 		$typesBefore = $GLOBALS['TCA'][$table]['types'];
-		ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldX;;foo;;', '', 'replace:fieldX');
+		ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldX, --palette--;;foo', '', 'replace:fieldX');
 		$this->assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
 		// unchanged because the palette is not used
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
 		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
 		// changed
-		$this->assertEquals('fieldX;;foo;;, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-		$this->assertEquals('fieldX;;foo;;, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+		$this->assertEquals('fieldX, --palette--;;foo, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
+		$this->assertEquals('fieldX, --palette--;;foo, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
 	}
 
 	/**
@@ -457,16 +457,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				'field_a, field_b, --linebreak--, field_c',
 				'--linebreak--, field_d, --linebreak--'
 			),
-			'with configuration in list' => array(
-				'field_b, field_d, field_c;;;4-4-4',
-				'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3',
-				'field_d',
-			),
-			'with configuration in list and insertion list' => array(
-				'field_b, field_d;;;3-3-3, field_c;;;4-4-4',
-				'field_a, field_b;;;;2-2-2, field_c;;;;3-3-3',
-				'field_d;;;3-3-3',
-			),
 		);
 	}
 
@@ -495,7 +485,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 			'aTable' => array(
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -525,7 +515,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -542,7 +532,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -571,7 +561,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -588,7 +578,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -617,10 +607,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;;palette1',
+						'showitem' => 'fieldA, --palette--;;palette1',
 					),
 					'typeB' => array(
-						'showitem' => 'fieldA;aLabel;palette2',
+						'showitem' => 'fieldA;aLabel, --palette--;;palette2',
 					),
 				),
 				'palettes' => array(
@@ -640,10 +630,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;;palette1',
+						'showitem' => 'fieldA, --palette--;;palette1',
 					),
 					'typeB' => array(
-						'showitem' => 'fieldA;aLabel;palette2',
+						'showitem' => 'fieldA;aLabel, --palette--;;palette2',
 					),
 				),
 				'palettes' => array(
@@ -675,7 +665,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;;palette1',
+						'showitem' => 'fieldA, --palette--;;palette1',
 					),
 				),
 				'palettes' => array(
@@ -692,7 +682,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;;palette1',
+						'showitem' => 'fieldA, --palette--;;palette1',
 					),
 				),
 				'palettes' => array(
@@ -721,7 +711,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -738,7 +728,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -768,7 +758,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -785,7 +775,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -815,7 +805,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -832,7 +822,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -862,7 +852,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -879,7 +869,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;paletteA',
+						'showitem' => 'fieldA;labelA, --palette--;;paletteA',
 					),
 				),
 				'palettes' => array(
@@ -921,7 +911,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;;generatedFor-fieldA',
+						'showitem' => 'fieldA, --palette--;;generatedFor-fieldA',
 					),
 				),
 				'palettes' => array(
@@ -962,7 +952,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 				),
 				'types' => array(
 					'typeA' => array(
-						'showitem' => 'fieldA;labelA;generatedFor-fieldA',
+						'showitem' => 'fieldA;labelA, --palette--;;generatedFor-fieldA',
 					),
 				),
 				'palettes' => array(
