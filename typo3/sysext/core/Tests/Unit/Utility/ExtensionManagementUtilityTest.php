@@ -398,9 +398,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$this->assertEquals('fieldX;;foo;;, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
 	}
 
-	///////////////////////////////////////////////////
-	// Tests concerning addFieldsToAllPalettesOfField
-	///////////////////////////////////////////////////
 	/**
 	 * Tests whether fields can be added to a palette before existing elements.
 	 *
@@ -485,72 +482,508 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$this->assertSame($expected, $result);
 	}
 
+
+	///////////////////////////////////////////////////
+	// Tests concerning addFieldsToAllPalettesOfField
+	///////////////////////////////////////////////////
+
 	/**
-	 * Tests whether fields can be added to all palettes of a regular field before existing ones.
-	 *
 	 * @test
-	 * @see ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
-	public function canAddFieldsToAllPalettesOfFieldBeforeExistingOnes() {
-		$table = $this->getUniqueId('tx_coretest_table');
-		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'before:fieldY');
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+	public function addFieldsToAllPalettesOfFieldDoesNotAddAnythingIfFieldIsNotRegisteredInColumns() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'fieldX, fieldY',
+					),
+				),
+			),
+		);
+		$expected = $GLOBALS['TCA'];
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
 	}
 
 	/**
-	 * Tests whether fields can be added to all palettes of a regular field after existing ones.
-	 *
 	 * @test
-	 * @see ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
-	public function canAddFieldsToAllPalettesOfFieldAfterExistingOnes() {
-		$table = $this->getUniqueId('tx_coretest_table');
-		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:fieldX');
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
-		$this->assertEquals('fieldX, newA, newB, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-		$this->assertEquals('fieldX, newA, newB, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+	public function addFieldsToAllPalettesOfFieldAddsFieldsToPaletteAndSuppressesDuplicates() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'fieldX, fieldY',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'fieldX, fieldY, dupeA',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'dupeA, dupeA' // Duplicate
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
 	}
 
 	/**
-	 * Tests whether fields can be added to all palettes of a regular field after a not existing field.
-	 *
 	 * @test
-	 * @see ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
-	public function canAddFieldsToAllPalettesOfFieldAfterNotExistingOnes() {
-		$table = $this->getUniqueId('tx_coretest_table');
-		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:' . $this->getUniqueId('notExisting'));
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+	public function addFieldsToAllPalettesOfFieldDoesNotAddAFieldThatIsPartOfPaletteAlready() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'existingA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
 	}
 
 	/**
-	 * Tests whether fields are added to a new palette that did not exist before.
-	 *
 	 * @test
-	 * @see ExtensionManagementUtility::addFieldsToAllPalettesOfField()
 	 */
-	public function canAddFieldsToAllPalettesOfFieldWithoutPaletteExistingBefore() {
-		$table = $this->getUniqueId('tx_coretest_table');
-		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
-		ExtensionManagementUtility::addFieldsToAllPalettesOfField($table, 'fieldA', 'newA, newA, newB, fieldX');
-		// is palette reference added
-		$this->assertSame('fieldA;;generatedFor-fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-		$this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
-		$this->assertEquals('newA, newB, fieldX', $GLOBALS['TCA'][$table]['palettes']['generatedFor-fieldA']['showitem']);
+	public function addFieldsToAllPalettesOfFieldAddsFieldsToMultiplePalettes() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;;palette1',
+					),
+					'typeB' => array(
+						'showitem' => 'fieldA;aLabel;palette2',
+					),
+				),
+				'palettes' => array(
+					'palette1' => array(
+						'showitem' => 'fieldX',
+					),
+					'palette2' => array(
+						'showitem' => 'fieldY',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;;palette1',
+					),
+					'typeB' => array(
+						'showitem' => 'fieldA;aLabel;palette2',
+					),
+				),
+				'palettes' => array(
+					'palette1' => array(
+						'showitem' => 'fieldX, newA',
+					),
+					'palette2' => array(
+						'showitem' => 'fieldY, newA',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
 	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsMultipleFields() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;;palette1',
+					),
+				),
+				'palettes' => array(
+					'palette1' => array(
+						'showitem' => 'fieldX',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;;palette1',
+					),
+				),
+				'palettes' => array(
+					'palette1' => array(
+						'showitem' => 'fieldX, newA, newB',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA, newB'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsBeforeExistingIfRequested() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA, existingB',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA, newA, existingB',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA',
+			'before:existingB'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfBeforeRequestedDoesNotExist() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'fieldX, fieldY',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'fieldX, fieldY, newA, newB',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA, newB',
+			'before:notExisting'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsAfterExistingIfRequested() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA, existingB',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA, newA, existingB',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA',
+			'after:existingA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsFieldsAtEndIfAfterRequestedDoesNotExist() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA, existingB',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;paletteA',
+					),
+				),
+				'palettes' => array(
+					'paletteA' => array(
+						'showitem' => 'existingA, existingB, newA, newB',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA, newB',
+			'after:notExistingA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYet() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;;generatedFor-fieldA',
+					),
+				),
+				'palettes' => array(
+					'generatedFor-fieldA' => array(
+						'showitem' => 'newA',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFieldsToAllPalettesOfFieldAddsNewPaletteIfFieldHasNoPaletteYetAndKeepsExistingLabel() {
+		$GLOBALS['TCA'] = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA',
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'fieldA' => array(),
+				),
+				'types' => array(
+					'typeA' => array(
+						'showitem' => 'fieldA;labelA;generatedFor-fieldA',
+					),
+				),
+				'palettes' => array(
+					'generatedFor-fieldA' => array(
+						'showitem' => 'newA',
+					),
+				),
+			),
+		);
+		ExtensionManagementUtility::addFieldsToAllPalettesOfField(
+			'aTable',
+			'fieldA',
+			'newA'
+		);
+		$this->assertEquals($expected, $GLOBALS['TCA']);
+	}
+
+
+	///////////////////////////////////////////////////
+	// Tests concerning executePositionedStringInsertion
+	///////////////////////////////////////////////////
 
 	/**
 	 * Data provider for executePositionedStringInsertionTrimsCorrectCharacters
@@ -596,6 +1029,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
 		$this->assertEquals($expectedResult, $string);
 	}
+
 
 	/////////////////////////////////////////
 	// Tests concerning addTcaSelectItem
