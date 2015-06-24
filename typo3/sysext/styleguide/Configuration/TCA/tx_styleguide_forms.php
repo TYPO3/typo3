@@ -2347,6 +2347,42 @@ return array(
 			),
 			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
+		'required_10' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED 10: Input, date',
+			'config' => array(
+				'type' => 'input',
+				'size' => 20,
+				'eval' => 'trim,required,date',
+			),
+		),
+		'required_11' => array(
+			'exclude' => 1,
+			'label' => 'REQUIRED 11: Input, link wizard',
+			'config' => array(
+				'type' => 'input',
+				'size' => 60,
+				'eval' => 'trim,required',
+				'wizards' => array(
+					'link' => array(
+						'type' => 'popup',
+						'title' => 'a title',
+						'icon' => 'link_popup.gif',
+						'module' => array(
+							'name' => 'wizard_element_browser',
+							'urlParameters' => array(
+								'mode' => 'wizard',
+								'act' => 'file|url',
+							),
+						),
+						'params' => array(
+							'blindLinkOptions' => 'page,folder,mail,spec',
+							'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+						),
+					),
+				),
+			),
+		),
 
 
 		'rte_1' => array(
@@ -2807,6 +2843,7 @@ return array(
 			inline_1, inline_2, inline_3,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 			required_1, required_2, required_3, required_4, required_5, required_6, required_7, required_8, required_9,
+			required_10, required_11,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5, t3editor_6,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
@@ -2860,7 +2897,7 @@ return array(
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 				--div--;Required,
-					required_1, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7, required_9,
+					required_1, required_10, required_11, --palette--;Required in palette;required_2_palette, required_4, required_5, required_6, required_8, required_7, required_9,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,

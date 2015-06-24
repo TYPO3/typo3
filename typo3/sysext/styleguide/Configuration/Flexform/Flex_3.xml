@@ -30,17 +30,6 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<input_1>
-						<TCEforms>
-							<label>input_1 eval trim,required,date</label>
-							<config>
-								<type>input</type>
-								<size>20</size>
-								<!-- @TODO: required handling mostly broken: icon misplacement, required field not recognized, sheet icon missing on first sheet -->
-								<eval>trim,required,date</eval>
-							</config>
-						</TCEforms>
-					</input_1>
 					<input_2>
 						<TCEforms>
 							<label>input_2 with select wizard</label>
@@ -66,37 +55,6 @@
 							</config>
 						</TCEforms>
 					</input_2>
-					<input_3>
-						<TCEforms>
-							<label>input_3 eval=trim,required, link wizard</label>
-							<config>
-								<type>input</type>
-								<size>60</size>
-								<eval>trim,required</eval>
-								<default></default>
-								<wizards type="array">
-									<_PADDING>2</_PADDING> <!-- @TODO: Any effect?! -->
-									<link type="array">
-										<type>popup</type>
-										<title>A title</title>
-										<icon>link_popup.gif</icon>
-										<module type="array">
-											<name>wizard_element_browser</name>
-											<urlParameters type="array">
-												<mode>wizard</mode>
-												<act>file|url</act>
-											</urlParameters>
-										</module>
-										<params type="array">
-											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
-											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
-										</params>
-										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-									</link>
-								</wizards>
-							</config>
-						</TCEforms>
-					</input_3>
 
 
 					<text_1>
