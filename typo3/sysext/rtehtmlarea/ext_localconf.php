@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') or die();
 
 // Registering the RTE object
-$GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg']['rtehtmlarea'] = array('objRef' => '&TYPO3\\CMS\\Rtehtmlarea\\RteHtmlAreaBase');
+$GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg']['rtehtmlarea'] = array('objRef' => \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase::class);
 
 // Register FormEngine node type resolver hook to render RTE in FormEngine if enabled
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'][1433167475] = array(

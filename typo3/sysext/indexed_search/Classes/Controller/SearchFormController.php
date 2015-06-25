@@ -223,7 +223,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			}
 		}
 		// Init lexer (used to post-processing of search words)
-		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : 'EXT:indexed_search/Classes/Lexer.php:&TYPO3\\CMS\\IndexedSearch\\Lexer';
+		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: \TYPO3\CMS\IndexedSearch\Lexer::class;
 		$this->lexerObj = GeneralUtility::getUserObj($lexerObjRef);
 		// If "_sections" is set, this value overrides any existing value.
 		if ($this->piVars['_sections']) {

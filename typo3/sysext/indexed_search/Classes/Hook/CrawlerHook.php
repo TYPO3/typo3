@@ -43,7 +43,7 @@ class CrawlerHook {
 	/**
 	 * @var string
 	 */
-	public $callBack = '&TYPO3\\CMS\\IndexedSearch\\Hook\\CrawlerHook';
+	public $callBack = CrawlerHook::class;
 
 	// The object reference to this class.
 	/**

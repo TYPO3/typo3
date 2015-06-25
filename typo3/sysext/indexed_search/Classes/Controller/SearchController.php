@@ -811,7 +811,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function procSearchWordsByLexer($searchWords) {
 		$newSearchWords = array();
 		// Init lexer (used to post-processing of search words)
-		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ? $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] : 'EXT:indexed_search/Classes/Lexer.php:&TYPO3\\CMS\\IndexedSearch\\Lexer';
+		$lexerObjRef = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['lexer'] ?: \TYPO3\CMS\IndexedSearch\Lexer::class;
 		$this->lexerObj = GeneralUtility::getUserObj($lexerObjRef);
 		// Traverse the search word array
 		foreach ($searchWords as $wordDef) {

@@ -39,7 +39,7 @@ class PluginHook {
 	 * The example reverses the order of elements in the ranking selector box. You can modify other values like this or add / remove items.
 	 *
 	 * This hook is activated by this key / value pair in ext_localconf.php
-	 * 'initialize_postProc' => 'EXT:indexed_search/example/class.pihook.php:&tx_indexedsearch_pihook',
+	 * 'initialize_postProc' => \TYPO3\CMS\IndexedSearch\Example\PluginHook::class,
 	 *
 	 * @return void
 	 */

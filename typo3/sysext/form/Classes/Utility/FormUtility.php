@@ -93,7 +93,7 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($this->getFormObjects() as $formObject) {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
 				$formObject,
-				'EXT:form/Classes/Controller/FormController.php:&TYPO3\\CMS\\Form\\Controller\\FormController'
+				\TYPO3\CMS\Form\Controller\FormController::class
 			);
 		}
 		return $this;

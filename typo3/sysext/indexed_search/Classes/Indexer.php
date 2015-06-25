@@ -692,7 +692,7 @@ class Indexer {
 								'conf' => $this->conf
 							);
 							unset($params['conf']['content']);
-							$crawler->addQueueEntry_callBack(0, $params, '&TYPO3\\CMS\\IndexedSearch\\Hook\\CrawlerFilesHook', $this->conf['id']);
+							$crawler->addQueueEntry_callBack(0, $params, Hook\CrawlerFilesHook::class, $this->conf['id']);
 							$this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
 						} else {
 							$this->indexRegularDocument($linkInfo['href'], FALSE, $linkSource, $ext);
@@ -704,7 +704,7 @@ class Indexer {
 								'conf' => $this->conf
 							);
 							unset($params['conf']['content']);
-							$crawler->addQueueEntry_callBack(0, $params, '&TYPO3\\CMS\\IndexedSearch\\Hook\\CrawlerFilesHook', $this->conf['id']);
+							$crawler->addQueueEntry_callBack(0, $params, Hook\CrawlerFilesHook::class, $this->conf['id']);
 							$this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
 						} else {
 							$this->indexRegularDocument($linkSource);
