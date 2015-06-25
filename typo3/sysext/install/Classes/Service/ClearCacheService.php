@@ -45,7 +45,7 @@ class ClearCacheService {
 	 */
 	public function clearAll() {
 		// Delete typo3temp/Cache
-		GeneralUtility::rmdir(PATH_site . 'typo3temp/Cache', TRUE);
+		GeneralUtility::flushDirectory(PATH_site . 'typo3temp/Cache', TRUE, TRUE);
 
 		$bootstrap = \TYPO3\CMS\Core\Core\Bootstrap::getInstance();
 		$bootstrap->unregisterClassLoader();
