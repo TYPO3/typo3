@@ -755,11 +755,15 @@ class SetupModuleController {
 	 */
 	protected function checkAccess(array $config) {
 		$access = $config['access'];
-		// Check for hook
-		$accessObject = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
-		if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
-			// Initialize vars. If method fails, $set will be set to FALSE
-			return $accessObject->accessLevelCheck($config);
+
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access])) {
+			if (class_exists($access)) {
+				$accessObject = GeneralUtility::makeInstance($access);
+				if (method_exists($accessObject, 'accessLevelCheck')) {
+					// Initialize vars. If method fails, $set will be set to FALSE
+					return $accessObject->accessLevelCheck($config);
+				}
+			}
 		} elseif ($access == 'admin') {
 			return $this->isAdmin;
 		}

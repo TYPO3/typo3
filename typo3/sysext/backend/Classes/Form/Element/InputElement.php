@@ -130,6 +130,7 @@ class InputElement extends AbstractFormElement {
 			}
 		}
 
+		// @todo: The whole eval handling is a mess and needs refactoring
 		foreach ($evalList as $func) {
 			switch ($func) {
 				case 'required':
@@ -150,13 +151,19 @@ class InputElement extends AbstractFormElement {
 					}
 					break;
 				default:
+					// @todo: This is ugly: The code should find out on it's own whether a eval definition is a
+					// @todo: keyword like "date", or a class reference. The global registration could be dropped then
 					// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
-					$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func] . ':&' . $func);
-					if (is_object($evalObj) && method_exists($evalObj, 'deevaluateFieldValue')) {
-						$_params = array(
-							'value' => $parameterArray['itemFormElValue']
-						);
-						$parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+					if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
+						if (class_exists($func)) {
+							$evalObj = GeneralUtility::makeInstance($func);
+							if (method_exists($evalObj, 'deevaluateFieldValue')) {
+								$_params = array(
+									'value' => $parameterArray['itemFormElValue']
+								);
+								$parameterArray['itemFormElValue'] = $evalObj->deevaluateFieldValue($_params);
+							}
+						}
 					}
 			}
 		}
@@ -208,11 +215,17 @@ class InputElement extends AbstractFormElement {
 		$html .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 
 		$resultArray['extJSCODE'] = 'typo3form.fieldSet(' . $paramsList . ');';
+
 		// Going through all custom evaluations configured for this field
+		// @todo: Similar to above code!
 		foreach ($evalList as $evalData) {
-			$evalObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData] . ':&' . $evalData);
-			if (is_object($evalObj) && method_exists($evalObj, 'returnFieldJS')) {
-				$resultArray['extJSCODE'] .= LF . 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($evalData) . '] = function(value) {' . $evalObj->returnFieldJS() . '}';
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$evalData])) {
+				if (class_exists($evalData)) {
+					$evalObj = GeneralUtility::makeInstance($evalData);
+					if (method_exists($evalObj, 'returnFieldJS')) {
+						$resultArray['extJSCODE'] .= LF . 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($evalData) . '] = function(value) {' . $evalObj->returnFieldJS() . '}';
+					}
+				}
 			}
 		}
 
