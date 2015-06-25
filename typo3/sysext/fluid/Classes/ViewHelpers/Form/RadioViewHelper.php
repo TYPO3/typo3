@@ -73,7 +73,7 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
     /**
      * Renders the checkbox.
      *
-     * @param bool $checked Specifies that the input element should be preselected
+     * @param bool|null $checked Specifies that the input element should be preselected
      * @return string
      * @api
      */

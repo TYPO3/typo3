@@ -71,13 +71,13 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
     /**
      * Renders the checkbox.
      *
-     * @param bool $checked Specifies that the input element should be preselected
+     * @param bool|null $checked Specifies that the input element should be preselected
      * @param bool $multiple Specifies whether this checkbox belongs to a multivalue (is part of a checkbox group)
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return string
      * @api
      */
-    public function render($checked = null, $multiple = null)
+    public function render($checked = null, $multiple = false)
     {
         $this->tag->addAttribute('type', 'checkbox');
 
