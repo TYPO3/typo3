@@ -54,6 +54,8 @@ Changed user functions and hooks
 
 * Hook `getSingleFieldClass` has been dropped and no longer called.
 
+* Hook `getMainFieldsClass` is no longer called for inline child records.
+
 Breaking interface changes
 --------------------------
 
