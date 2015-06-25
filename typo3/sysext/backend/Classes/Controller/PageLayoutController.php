@@ -345,7 +345,6 @@ class PageLayoutController {
 		// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => '',
-			'showPalettes' => '',
 			'showDescriptions' => '',
 			'function' => array(
 				0 => $lang->getLL('m_function_0'),
@@ -869,7 +868,6 @@ class PageLayoutController {
 				// If the record is an array (which it will always be... :-)
 				// Create instance of TCEforms, setting defaults:
 				$tceForms = GeneralUtility::makeInstance(FormEngine::class);
-				$tceForms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 				// Render form, wrap it:
 				$panel = '';
 				$panel .= $tceForms->getMainFields($this->eRParts[0], $rec);
@@ -917,13 +915,6 @@ class PageLayoutController {
 			'<label for="checkTt_content_showHidden">' .
 			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
 			(!$q_count ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', TRUE) . '</span>') : $lang->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
-			'</label>' .
-			'</div>';
-
-		$h_func_b .= '<div class="checkbox">' .
-			'<label for="checkShowPalettes">' .
-			BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], '', '', 'id="checkShowPalettes"') .
-			$lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
 			'</label>' .
 			'</div>';
 

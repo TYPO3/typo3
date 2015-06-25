@@ -418,7 +418,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				--linebreak--,
 				header_link;LLL:EXT:cms/locallang_ttc.xlf:header_link_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'headers' => array(
 			'showitem' => '
@@ -432,7 +431,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				--linebreak--,
 				subheader;LLL:EXT:cms/locallang_ttc.xlf:subheader_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'imageblock' => array(
 			'showitem' => '
@@ -442,7 +440,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				image_noRows;LLL:EXT:cms/locallang_ttc.xlf:image_noRows_formlabel,
 				imagecaption_position;LLL:EXT:cms/locallang_ttc.xlf:imagecaption_position_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'tablelayout' => array(
 			'showitem' => '
@@ -451,7 +448,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				table_cellspacing;LLL:EXT:cms/locallang_ttc.xlf:table_cellspacing_formlabel,
 				table_cellpadding;LLL:EXT:cms/locallang_ttc.xlf:table_cellpadding_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'visibility' => array(
 			'showitem' => '
@@ -459,7 +455,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				sectionIndex;LLL:EXT:cms/locallang_ttc.xlf:sectionIndex_formlabel,
 				linkToTop;LLL:EXT:cms/locallang_ttc.xlf:linkToTop_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'frames' => array(
 			'showitem' => '
@@ -468,12 +463,10 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				spaceAfter;LLL:EXT:cms/locallang_ttc.xlf:spaceAfter_formlabel,
 				section_frame;LLL:EXT:cms/locallang_ttc.xlf:section_frame_formlabel
 			',
-			'canNotCollapse' => 1
 		)
 	)
 );
 
-$GLOBALS['TCA']['tt_content']['palettes']['image_settings']['canNotCollapse'] = 1;
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
 	'tt_content',
 	'image_settings',

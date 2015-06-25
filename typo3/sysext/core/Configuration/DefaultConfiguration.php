@@ -338,7 +338,6 @@ return array(
 			'preloadLimit' => 50
 		),
 		'defaultUserTSconfig' => 'options.enableBookmarks=1
-			options.enableShowPalettes=1
 			options.file_list.enableDisplayBigControlPanel=selectable
 			options.file_list.enableDisplayThumbnails=selectable
 			options.file_list.enableClipBoard=selectable

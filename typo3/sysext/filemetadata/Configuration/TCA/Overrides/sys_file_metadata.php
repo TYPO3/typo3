@@ -78,12 +78,24 @@ $tca = array(
 		),
 	),
 	'palettes' => array(
-		'10' => array('showitem' => 'visible, status, ranking', 'canNotCollapse' => '1'),
-		'20' => array('showitem' => 'creator_tool, publisher, source, copyright', 'canNotCollapse' => '1'),
-		'30' => array('showitem' => 'latitude, longitude', 'canNotCollapse' => '1'),
-		'40' => array('showitem' => 'location_country, location_region, location_city', 'canNotCollapse' => '1'),
-		'50' => array('showitem' => 'width, height, unit, color_space', 'canNotCollapse' => '1'),
-		'60' => array('showitem' => 'content_creation_date, content_modification_date', 'canNotCollapse' => '1'),
+		'10' => array(
+			'showitem' => 'visible, status, ranking',
+		),
+		'20' => array(
+			'showitem' => 'creator_tool, publisher, source, copyright',
+		),
+		'30' => array(
+			'showitem' => 'latitude, longitude',
+		),
+		'40' => array(
+			'showitem' => 'location_country, location_region, location_city',
+		),
+		'50' => array(
+			'showitem' => 'width, height, unit, color_space',
+		),
+		'60' => array(
+			'showitem' => 'content_creation_date, content_modification_date',
+		),
 	),
 	'columns' => array(
 		'visible' => array(

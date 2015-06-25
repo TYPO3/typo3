@@ -971,7 +971,6 @@ return array(
 		),
 		'5' => array(
 			'showitem' => 'author, author_email',
-			'canNotCollapse' => 1
 		),
 		'6' => array(
 			'showitem' => 'php_tree_stop, editlock'
@@ -984,103 +983,78 @@ return array(
 		),
 		'standard' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel',
-			'canNotCollapse' => 1
 		),
 		'shortcut' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, shortcut_mode;LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_mode_formlabel',
-			'canNotCollapse' => 1
 		),
 		'shortcutpage' => array(
 			'showitem' => 'shortcut;LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_formlabel',
-			'canNotCollapse' => 1
 		),
 		'mountpoint' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, mount_pid_ol;LLL:EXT:cms/locallang_tca.xlf:pages.mount_pid_ol_formlabel',
-			'canNotCollapse' => 1
 		),
 		'mountpage' => array(
 			'showitem' => 'mount_pid;LLL:EXT:cms/locallang_tca.xlf:pages.mount_pid_formlabel',
-			'canNotCollapse' => 1
 		),
 		'external' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, urltype;LLL:EXT:cms/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:cms/locallang_tca.xlf:pages.url_formlabel',
-			'canNotCollapse' => 1
 		),
 		'title' => array(
 			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:cms/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:cms/locallang_tca.xlf:pages.subtitle_formlabel',
-			'canNotCollapse' => 1
 		),
 		'titleonly' => array(
 			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xlf:pages.title_formlabel',
-			'canNotCollapse' => 1
 		),
 		'visibility' => array(
 			'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xlf:pages.hidden_formlabel, nav_hide;LLL:EXT:cms/locallang_tca.xlf:pages.nav_hide_formlabel',
-			'canNotCollapse' => 1
 		),
 		'hiddenonly' => array(
 			'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xlf:pages.hidden_formlabel',
-			'canNotCollapse' => 1
 		),
 		'access' => array(
 			'showitem' => 'starttime;LLL:EXT:cms/locallang_tca.xlf:pages.starttime_formlabel, endtime;LLL:EXT:cms/locallang_tca.xlf:pages.endtime_formlabel, extendToSubpages;LLL:EXT:cms/locallang_tca.xlf:pages.extendToSubpages_formlabel, --linebreak--, fe_group;LLL:EXT:cms/locallang_tca.xlf:pages.fe_group_formlabel, --linebreak--, fe_login_mode;LLL:EXT:cms/locallang_tca.xlf:pages.fe_login_mode_formlabel',
-			'canNotCollapse' => 1
 		),
 		'abstract' => array(
 			'showitem' => 'abstract;LLL:EXT:cms/locallang_tca.xlf:pages.abstract_formlabel',
-			'canNotCollapse' => 1
 		),
 		'metatags' => array(
 			'showitem' => 'keywords;LLL:EXT:cms/locallang_tca.xlf:pages.keywords_formlabel, --linebreak--, description;LLL:EXT:cms/locallang_tca.xlf:pages.description_formlabel',
-			'canNotCollapse' => 1
 		),
 		'editorial' => array(
 			'showitem' => 'author;LLL:EXT:cms/locallang_tca.xlf:pages.author_formlabel, author_email;LLL:EXT:cms/locallang_tca.xlf:pages.author_email_formlabel, lastUpdated;LLL:EXT:cms/locallang_tca.xlf:pages.lastUpdated_formlabel',
-			'canNotCollapse' => 1
 		),
 		'layout' => array(
 			'showitem' => 'layout;LLL:EXT:cms/locallang_tca.xlf:pages.layout_formlabel, newUntil;LLL:EXT:cms/locallang_tca.xlf:pages.newUntil_formlabel, --linebreak--, backend_layout;LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout_formlabel, backend_layout_next_level;LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout_next_level_formlabel',
-			'canNotCollapse' => 1
 		),
 		'module' => array(
 			'showitem' => 'module;LLL:EXT:cms/locallang_tca.xlf:pages.module_formlabel',
-			'canNotCollapse' => 1
 		),
 		'replace' => array(
 			'showitem' => 'content_from_pid;LLL:EXT:cms/locallang_tca.xlf:pages.content_from_pid_formlabel',
-			'canNotCollapse' => 1
 		),
 		'links' => array(
 			'showitem' => 'alias;LLL:EXT:cms/locallang_tca.xlf:pages.alias_formlabel, --linebreak--, target;LLL:EXT:cms/locallang_tca.xlf:pages.target_formlabel, --linebreak--, url_scheme;LLL:EXT:cms/locallang_tca.xlf:pages.url_scheme_formlabel',
-			'canNotCollapse' => 1
 		),
 		'caching' => array(
 			'showitem' => 'cache_timeout;LLL:EXT:cms/locallang_tca.xlf:pages.cache_timeout_formlabel, cache_tags, no_cache;LLL:EXT:cms/locallang_tca.xlf:pages.no_cache_formlabel',
-			'canNotCollapse' => 1
 		),
 		'language' => array(
 			'showitem' => 'l18n_cfg;LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg_formlabel',
-			'canNotCollapse' => 1
 		),
 		'miscellaneous' => array(
 			'showitem' => 'is_siteroot;LLL:EXT:cms/locallang_tca.xlf:pages.is_siteroot_formlabel, no_search;LLL:EXT:cms/locallang_tca.xlf:pages.no_search_formlabel, editlock;LLL:EXT:cms/locallang_tca.xlf:pages.editlock_formlabel, php_tree_stop;LLL:EXT:cms/locallang_tca.xlf:pages.php_tree_stop_formlabel',
-			'canNotCollapse' => 1
 		),
 		'adminsonly' => array(
 			'showitem' => 'editlock;LLL:EXT:cms/locallang_tca.xlf:pages.editlock_formlabel',
-			'canNotCollapse' => 1
 		),
 		'media' => array(
 			'showitem' => 'media;LLL:EXT:cms/locallang_tca.xlf:pages.media_formlabel',
-			'canNotCollapse' => 1
 		),
 		'storage' => array(
 			'showitem' => 'storage_pid;LLL:EXT:cms/locallang_tca.xlf:pages.storage_pid_formlabel',
-			'canNotCollapse' => 1
 		),
 		'config' => array(
 			'showitem' => 'TSconfig;LLL:EXT:cms/locallang_tca.xlf:pages.TSconfig_formlabel',
-			'canNotCollapse' => 1
 		)
 	)
 );

@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -165,30 +164,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 
 				$isHiddenPalette = !empty($GLOBALS['TCA'][$table]['palettes'][$paletteName]['isHiddenPalette']);
 
-				$renderUnCollapseButtonWrapper = TRUE;
-				// No button if the palette is hidden
-				if ($isHiddenPalette) {
-					$renderUnCollapseButtonWrapper = FALSE;
-				}
-				// No button if palette can not collapse on ctrl level
-				if (!empty($GLOBALS['TCA'][$table]['ctrl']['canNotCollapse'])) {
-					$renderUnCollapseButtonWrapper = FALSE;
-				}
-				// No button if palette can not collapse on palette definition level
-				if (!empty($GLOBALS['TCA'][$table]['palettes'][$paletteName]['canNotCollapse'])) {
-					$renderUnCollapseButtonWrapper = FALSE;
-				}
-				// No button if palettes are not collapsed - this is the checkbox at the end of the form
-				if (!$this->globalOptions['palettesCollapsed']) {
-					$renderUnCollapseButtonWrapper = FALSE;
-				}
-
-				if ($renderUnCollapseButtonWrapper) {
-					$cssId = str_replace('.', '_', 'FORMENGINE_' . $this->globalOptions['table'] . '_' . $paletteName . '_' . $this->globalOptions['databaseRow']['uid']);
-					$paletteElementsHtml = $this->wrapPaletteWithCollapseButton($paletteElementsHtml, $cssId);
-				} else {
-					$paletteElementsHtml = '<div class="row">' . $paletteElementsHtml . '</div>';
-				}
+				$paletteElementsHtml = '<div class="row">' . $paletteElementsHtml . '</div>';
 
 				$content[] = $this->fieldSetWrap($paletteElementsHtml, $isHiddenPalette, $element['fieldLabel']);
 			} else {
@@ -345,27 +321,6 @@ class PaletteAndSingleContainer extends AbstractContainer {
 		}
 
 		return implode(LF, $result);
-	}
-
-	/**
-	 * Add a "collapsible" button around given content
-	 *
-	 * @param string $elementHtml HTML of handled palette content
-	 * @param string $cssId A css id to be added
-	 * @return string Wrapped content
-	 */
-	protected function wrapPaletteWithCollapseButton($elementHtml, $cssId) {
-		$content = array();
-		$content[] = '<p>';
-		$content[] = 	'<button class="btn btn-default" type="button" data-toggle="collapse" data-target="#' . $cssId . '" aria-expanded="false" aria-controls="' . $cssId . '">';
-		$content[] = 		IconUtility::getSpriteIcon('actions-system-options-view');
-		$content[] = 		htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.moreOptions'));
-		$content[] = 	'</button>';
-		$content[] = '</p>';
-		$content[] = '<div id="' . $cssId . '" class="form-section-collapse collapse">';
-		$content[] = 	'<div class="row">' . $elementHtml . '</div>';
-		$content[] = '</div>';
-		return implode(LF, $content);
 	}
 
 	/**

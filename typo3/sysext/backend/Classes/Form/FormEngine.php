@@ -93,14 +93,6 @@ class FormEngine {
 	public $doSaveFieldName = '';
 
 	/**
-	 * Can be set TRUE/FALSE to whether palettes (secondary options) are in the topframe or in form.
-	 * TRUE means they are NOT IN-form. So a collapsed palette is one, which is shown in the top frame, not in the page.
-	 *
-	 * @var bool
-	 */
-	public $palettesCollapsed = FALSE;
-
-	/**
 	 * If this evaluates to TRUE, the forms are rendering only localization relevant fields of the records.
 	 *
 	 * @var string
@@ -435,7 +427,6 @@ class FormEngine {
 			'renderReadonly' => $this->renderReadonly,
 			'disabledWizards' => $this->disableWizards,
 			'returnUrl' => $this->thisReturnUrl(),
-			'palettesCollapsed' => $this->palettesCollapsed,
 			'table' => $this->table,
 			'databaseRow' => $this->databaseRow,
 			'recordTypeValue' => '',
@@ -911,7 +902,6 @@ class FormEngine {
 		// Create a new anonymous object:
 		$GLOBALS['SOBE'] = new \stdClass();
 		$GLOBALS['SOBE']->MOD_MENU = array(
-			'showPalettes' => '',
 			'showDescriptions' => '',
 		);
 		// Setting virtual document name
@@ -923,8 +913,7 @@ class FormEngine {
 		$GLOBALS['SOBE']->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Initialize FormEngine (rendering the forms)
-		// @todo: check what of this part is still needed, simplify
-		$this->palettesCollapsed = !$GLOBALS['SOBE']->MOD_SETTINGS['showPalettes'];
+		// @todo: check if this is still needed, simplify
 		$GLOBALS['SOBE']->tceforms = $this;
 	}
 

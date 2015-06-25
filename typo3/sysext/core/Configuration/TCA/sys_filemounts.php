@@ -73,6 +73,8 @@ return array(
 		'0' => array('showitem' => '--palette--;;mount, description, base, path, read_only')
 	),
 	'palettes' => array(
-		'mount' => array('showitem' => 'title,hidden', 'canNotCollapse' => 1)
+		'mount' => array(
+			'showitem' => 'title,hidden',
+		),
 	),
 );

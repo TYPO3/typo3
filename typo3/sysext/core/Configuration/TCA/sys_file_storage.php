@@ -115,6 +115,8 @@ return array(
 		'0' => array('showitem' => 'name, description, --div--;Configuration, driver, configuration, is_default, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
 	),
 	'palettes' => array(
-		'capabilities' => array('showitem' => 'is_browsable, is_public, is_writable', 'canNotCollapse' => TRUE)
-	)
+		'capabilities' => array(
+			'showitem' => 'is_browsable, is_public, is_writable',
+		),
+	),
 );

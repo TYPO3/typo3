@@ -86,7 +86,6 @@ $GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext'][
 
 $GLOBALS['TCA']['tt_content']['palettes']['multimediafiles'] = array(
 	'showitem' => 'multimedia;LLL:EXT:cms/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel',
-	'canNotCollapse' => 1
 );
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides'])) {
 	$GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides'] = array();

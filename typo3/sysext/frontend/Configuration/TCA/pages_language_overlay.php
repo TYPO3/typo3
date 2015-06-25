@@ -314,58 +314,47 @@ return array(
 		)
 	),
 	'palettes' => array(
-		'5' => array('showitem' => 'author,author_email', 'canNotCollapse' => TRUE),
+		'5' => array(
+			'showitem' => 'author,author_email',
+		),
 		'standard' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid',
-			'canNotCollapse' => 1
 		),
 		'shortcut' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid, shortcut_mode;LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_mode_formlabel',
-			'canNotCollapse' => 1
 		),
 		'shortcutpage' => array(
 			'showitem' => 'shortcut;LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_formlabel',
-			'canNotCollapse' => 1
 		),
 		'external' => array(
 			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid, urltype;LLL:EXT:cms/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:cms/locallang_tca.xlf:pages.url_formlabel',
-			'canNotCollapse' => 1
 		),
 		'title' => array(
 			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:cms/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:cms/locallang_tca.xlf:pages.subtitle_formlabel',
-			'canNotCollapse' => 1
 		),
 		'titleonly' => array(
 			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xlf:pages.title_formlabel',
-			'canNotCollapse' => 1
 		),
 		'hiddenonly' => array(
 			'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xlf:pages.hidden_formlabel',
-			'canNotCollapse' => 1
 		),
 		'access' => array(
 			'showitem' => 'starttime;LLL:EXT:cms/locallang_tca.xlf:pages.starttime_formlabel, endtime;LLL:EXT:cms/locallang_tca.xlf:pages.endtime_formlabel',
-			'canNotCollapse' => 1
 		),
 		'abstract' => array(
 			'showitem' => 'abstract;LLL:EXT:cms/locallang_tca.xlf:pages.abstract_formlabel',
-			'canNotCollapse' => 1
 		),
 		'metatags' => array(
 			'showitem' => 'keywords;LLL:EXT:cms/locallang_tca.xlf:pages.keywords_formlabel, --linebreak--, description;LLL:EXT:cms/locallang_tca.xlf:pages.description_formlabel',
-			'canNotCollapse' => 1
 		),
 		'editorial' => array(
 			'showitem' => 'author;LLL:EXT:cms/locallang_tca.xlf:pages.author_formlabel, author_email;LLL:EXT:cms/locallang_tca.xlf:pages.author_email_formlabel',
-			'canNotCollapse' => 1
 		),
 		'language' => array(
 			'showitem' => 'l18n_cfg;LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg_formlabel',
-			'canNotCollapse' => 1
 		),
 		'media' => array(
 			'showitem' => 'media;LLL:EXT:cms/locallang_tca.xlf:pages.media_formlabel',
-			'canNotCollapse' => 1
-		)
-	)
+		),
+	),
 );

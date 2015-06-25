@@ -493,9 +493,6 @@ Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistor
 				<source>&lt;b&gt;Saving content&lt;/b&gt;
 Just press one of the save-buttons in the top of bottom of the form. There are some variants allowing you to "Save and close document" or "Save document and View page". The latter will save the document and open a new window where the affected page is shown (be sure to disable pop-up blockers for this function!)
 
-&lt;b&gt;Secondary options (palettes)&lt;/b&gt;
-Fields in the editing forms are prioritized so that certain fields of generally lesser interest is moved to a so called "palette". By default it means that the fields appears in the top frame when you enter the field to which the secondary fields are associated. But you can also enable the fields to be shown in the main form which is more convenient some times - just select the "Show secondary options" checkbox (bottom of page).
-
 &lt;b&gt;Editing multiple records at a time&lt;/b&gt;
 From the Web&gt;List module you can activate editing of multiple records at a time. This is done when you list a single table and enable multiple columns for display (see Web&gt;List module for details) - then icons will link you to a form with multiple records displayed, possibly with only certain fields available for editing.
 
@@ -523,10 +520,7 @@ EXT:lang/cshimages/core_31.png,</source>
 			</trans-unit>
 			<trans-unit id="TCEforms.image_descr" xml:space="preserve">
 				<source>This is how a typical record is edited in TYPO3. The form display is standardized for all types of records. You will always see the same buttons in the top for saving or closing. In the blue bar you will see the type of record (table name) and the ID number that each record has (uid). Here the record is a page with ID "2" and the title "Content Elements".
-In the bottom of the editing page you will find additional options for the interface. You can select "Show field descriptions" if you want a small text shown for each element that explains what it is used for. Also "Show secondary options" is very important since it will show additional form fields in the main forms (from "palettes").
-Here "Show secondary options (palettes)" is enabled. The result is that a number of additional fields of "lower priority" is shown under the "Pagetitle" field.
-The "additional fields" from the example above is located in a so called "palette" which is normally shown in the top frame when "Show secondary options" is disabled. Whether you prefer the one or the other solution is your choice.
-This is an example of three Content Elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
+The "additional fields" from the example above is located in a so called "palette". This is an example of three content elements being edited at the same time. You can edit multiple records by using the links from the Web&gt;List module in single-table mode. Notice that not only are three records shown at the same time - it is also a limited number of fields shown for editing, here "Header" and "Hide". You can combine this almost any way you like. This is of course very useful if you need to edit only the header of multiple records.</source>
 			</trans-unit>
 			<trans-unit id="TCEforms_docSelector.alttitle">
 				<source>Document Selector</source>

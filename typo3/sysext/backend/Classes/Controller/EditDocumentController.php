@@ -276,17 +276,7 @@ class EditDocumentController {
 	/**
 	 * @var array
 	 */
-	public $MOD_MENU;
-
-	/**
-	 * @var array
-	 */
 	public $MCONF;
-
-	/**
-	 * @var array
-	 */
-	public $MOD_SETTINGS;
 
 	/**
 	 * @var array
@@ -685,17 +675,8 @@ class EditDocumentController {
 		// Set other internal variables:
 		$this->R_URL_getvars['returnUrl'] = $this->retUrl;
 		$this->R_URI = $this->R_URL_parts['path'] . '?' . ltrim(GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars), '&');
-		// MENU-ITEMS:
-		// If array, then it's a selector box menu
-		// If empty string it's just a variable, that'll be saved.
-		// Values NOT in this array will not be saved in the settings-array for the module.
-		$this->MOD_MENU = array(
-			'showPalettes' => ''
-		);
 		// Setting virtual document name
 		$this->MCONF['name'] = 'xMOD_alt_doc.php';
-		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
 		// Create an instance of the document template object
 		$this->doc = $GLOBALS['TBE_TEMPLATE'];
 		$this->doc->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_alt_doc.xml');
@@ -880,7 +861,6 @@ class EditDocumentController {
 			$this->tceforms->localizationMode = GeneralUtility::inList('text,media', $this->localizationMode) ? $this->localizationMode : '';
 			// text,media is keywords defined in TYPO3 Core API..., see "l10n_cat"
 			$this->tceforms->returnUrl = $this->R_URI;
-			$this->tceforms->palettesCollapsed = !$this->MOD_SETTINGS['showPalettes'];
 			if ($this->editRegularContentFromId) {
 				$this->editRegularContentFromId();
 			}
@@ -899,7 +879,6 @@ class EditDocumentController {
 				$body = $this->tceforms->printNeededJSFunctions_top();
 				$body .= $this->compileForm($editForm);
 				$body .= $this->tceforms->printNeededJSFunctions();
-				$body .= $this->functionMenus();
 			}
 		}
 		// Access check...
@@ -1271,26 +1250,6 @@ class EditDocumentController {
 	}
 
 	/**
-	 * Create the checkbox buttons in the bottom of the pages.
-	 *
-	 * @return string HTML for function menus.
-	 */
-	public function functionMenus() {
-		if ($this->getBackendUser()->getTSConfigVal('options.enableShowPalettes')) {
-			// Show palettes
-
-			return '<div class="checkbox">' .
-				'<label for="checkShowPalettes">' .
-					BackendUtility::getFuncCheck('', 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], BackendUtility::getModuleUrl('record_edit'), (GeneralUtility::implodeArrayForUrl('', array_merge($this->R_URL_getvars, array('SET' => ''))) . BackendUtility::getUrlToken('editRecord')), 'id="checkShowPalettes"') .
-					$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPalettes', TRUE) .
-				'</label>'.
-			'</div>';
-		} else {
-			return '';
-		}
-	}
-
-	/**
 	 * Create shortcut icon
 	 *
 	 * @return string
@@ -1299,7 +1258,7 @@ class EditDocumentController {
 		if ($this->returnUrl == 'close.html' || !$this->getBackendUser()->mayMakeShortcut()) {
 			return '';
 		}
-		return $this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,returnNewPageId,editRegularContentFromId,noView', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name'], 1);
+		return $this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,returnNewPageId,editRegularContentFromId,noView', '', $this->MCONF['name'], 1);
 	}
 
 	/**

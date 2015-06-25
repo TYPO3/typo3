@@ -210,7 +210,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				image_link,
 				image_zoom
 			',
-			'canNotCollapse' => 1
 		),
 		'8' => array(
 			'showitem' => '
@@ -231,7 +230,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				image_effects,
 				image_frames
 			',
-			'canNotCollapse' => 1
 		),
 		'12' => array(
 			'showitem' => '
@@ -243,7 +241,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				imagewidth,
 				imageheight
 			',
-			'canNotCollapse' => 1
 		),
 		'14' => array(
 			'showitem' => '
@@ -259,7 +256,6 @@ $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 				--linebreak--,
 				longdescURL;LLL:EXT:cms/locallang_ttc.xlf:longdescURL_formlabel
 			',
-			'canNotCollapse' => 1
 		)
 	)
 );
@@ -275,7 +271,6 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('css_styled_co
 					sectionIndex;LLL:EXT:cms/locallang_ttc.xlf:sectionIndex_formlabel,
 					linkToTop;LLL:EXT:cms/locallang_ttc.xlf:linkToTop_formlabel
 				',
-				'canNotCollapse' => 1
 			),
 			'frames' => array(
 				'showitem' => '
@@ -284,7 +279,6 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('css_styled_co
 					spaceAfter;LLL:EXT:cms/locallang_ttc.xlf:spaceAfter_formlabel,
 					section_frame;LLL:EXT:cms/locallang_ttc.xlf:section_frame_formlabel
 				',
-				'canNotCollapse' => 1
 			)
 		)
 	);
@@ -312,7 +306,6 @@ $GLOBALS['TCA']['tt_content']['types']['search'] = array(
 
 $GLOBALS['TCA']['tt_content']['palettes']['searchform'] = array(
 	'showitem' => 'pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.searchform',
-	'canNotCollapse' => 1
 );
 
 // check if there is already a forms tab and add the item after that, otherwise
@@ -409,5 +402,4 @@ $GLOBALS['TCA']['tt_content']['types']['mailform']['columnsOverrides']['bodytext
 
 $GLOBALS['TCA']['tt_content']['palettes']['mailform'] = array(
 	'showitem' => 'pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.mailform, --linebreak--, subheader;LLL:EXT:cms/locallang_ttc.xlf:subheader.ALT.mailform_formlabel',
-	'canNotCollapse' => 1
 );

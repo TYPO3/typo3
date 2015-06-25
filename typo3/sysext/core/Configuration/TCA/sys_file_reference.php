@@ -263,7 +263,6 @@ return array(
 		// Used for basic overlays: having a file list etc
 		'basicoverlayPalette' => array(
 			'showitem' => 'title,description',
-			'canNotCollapse' => TRUE
 		),
 		// Used for everything that is an image (because it has a link and a alternative text)
 		'imageoverlayPalette' => array(
@@ -271,12 +270,11 @@ return array(
 				title,alternative,--linebreak--,
 				link,description,--linebreak--,crop
 				',
-			'canNotCollapse' => TRUE
 		),
 		// File palette, hidden but needs to be included all the time
 		'filePalette' => array(
 			'showitem' => 'uid_local, hidden, sys_language_uid, l10n_parent',
-			'isHiddenPalette' => TRUE
-		)
-	)
+			'isHiddenPalette' => TRUE,
+		),
+	),
 );

@@ -1063,7 +1063,6 @@ return array(
 				--linebreak--,
 				l18n_parent
 			',
-			'canNotCollapse' => 1
 		),
 		'header' => array(
 			'showitem' => '
@@ -1074,7 +1073,6 @@ return array(
 				--linebreak--,
 				header_link;LLL:EXT:cms/locallang_ttc.xlf:header_link_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'headers' => array(
 			'showitem' => '
@@ -1087,13 +1085,11 @@ return array(
 				--linebreak--,
 				subheader;LLL:EXT:cms/locallang_ttc.xlf:subheader_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'imagelinks' => array(
 			'showitem' => '
 				image_zoom;LLL:EXT:cms/locallang_ttc.xlf:image_zoom_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'uploads' => array(
 			'showitem' => '
@@ -1104,7 +1100,6 @@ return array(
 				filelink_sorting,
 				target
 			',
-			'canNotCollapse' => 1
 		),
 		'menu' => array(
 			'showitem' => '
@@ -1112,7 +1107,6 @@ return array(
 				--linebreak--,
 				pages;LLL:EXT:cms/locallang_ttc.xlf:pages.ALT.menu_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'menu_accessibility' => array(
 			'showitem' => '
@@ -1121,7 +1115,6 @@ return array(
 				accessibility_bypass;LLL:EXT:cms/locallang_ttc.xlf:menu.ALT.accessibility_bypass_formlabel,
 				accessibility_bypass_text;LLL:EXT:cms/locallang_ttc.xlf:menu.ALT.accessibility_bypass_text_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'access' => array(
 			'showitem' => '
@@ -1130,11 +1123,9 @@ return array(
 				--linebreak--,
 				fe_group;LLL:EXT:cms/locallang_ttc.xlf:fe_group_formlabel
 			',
-			'canNotCollapse' => 1
 		),
 		'uploadslayout' => array(
 			'showitem' => 'filelink_size;LLL:EXT:cms/locallang_ttc.xlf:filelink_size_formlabel',
-			'canNotCollapse' => 1
 		)
 	)
 );
