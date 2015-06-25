@@ -156,7 +156,7 @@ return array(
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
 					'options' => array(
 						'compression' => TRUE,
-						'defaultLifetime' => 2592000   //  30 days; set this to a lower value in case your cache gets too big
+						'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
 					),
 					'groups' => array('pages', 'all')
 				),
@@ -177,7 +177,9 @@ return array(
 				'cache_rootline' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
 					'backend' => 'TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend',
-					'options' => array(),
+					'options' => array(
+						'defaultLifetime' => 2592000, // 30 days; set this to a lower value in case your cache gets too big
+					),
 					'groups' => array('pages', 'all')
 				),
 				'l10n' => array(
