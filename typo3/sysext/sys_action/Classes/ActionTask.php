@@ -174,8 +174,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'title' => $actionRow['title'],
 				'description' => $actionRow['description'],
 				'descriptionHtml' => nl2br(htmlspecialchars($actionRow['description'])) . $editActionLink,
-				'link' => $this->moduleUrl . '&SET[function]=sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
-				'icon' => 'EXT:sys_action/sys_action.gif'
+				'link' => $this->moduleUrl . '&SET[function]=sys_action.tx_sysaction_task&show=' . $actionRow['uid']
 			);
 		}
 		$this->getDatabaseConnection()->sql_free_result($res);
