@@ -360,7 +360,7 @@ class QueryView {
 				}
 			}
 		}
-		return $output;
+		return '<div class="query-builder">' . $output . '</div>';
 	}
 
 	/**

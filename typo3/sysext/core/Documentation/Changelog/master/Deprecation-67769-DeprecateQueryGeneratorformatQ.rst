@@ -1,0 +1,26 @@
+=========================================================
+Deprecation: #67769 - Deprecate QueryGenerator::formatQ()
+=========================================================
+
+Description
+===========
+
+The method ``QueryGenerator::formatQ()``, which was used to format a query string, has been marked for deprecation.
+
+
+Impact
+======
+
+All calls to the PHP method will throw a deprecation warning.
+
+
+Affected Installations
+======================
+
+Instances which make use of ``QueryGenerator::formatQ()``.
+
+
+Migration
+=========
+
+No migration, use ``htmlspecialchars`` as alternative.

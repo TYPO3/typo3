@@ -12295,6 +12295,30 @@ iframe {
 .typo3-module-menu-snapped .typo3-module-menu-item-title {
   display: none;
 }
+.query-builder .form-group-with-button-addon .input-group {
+  margin-bottom: 10px;
+}
+.query-builder .form-group-with-button-addon .input-group .input-group-addon {
+  padding: 2px;
+}
+.query-builder .from-control-operator {
+  width: 70px;
+  min-width: 70px;
+}
+.query-builder .action-button-group {
+  margin: 10px 0;
+}
+.query-builder .row-group {
+  background-color: #f5f5f5;
+  margin: 10px 0;
+  padding: 10px;
+  border-color: #999;
+  -webkit-box-shadow: 0px 2px 5px 0px #999999;
+  box-shadow: 0px 2px 5px 0px #999999;
+}
+.query-builder .indent {
+  padding-left: 20px;
+}
 .t3-grid-table {
   border-collapse: separate;
   border-spacing: 10px 0;
