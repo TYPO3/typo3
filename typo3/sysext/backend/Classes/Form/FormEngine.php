@@ -894,20 +894,18 @@ class FormEngine {
 	 * Construct runtime environment for Inline Relational Record Editing.
 	 * - creates an anonymous \TYPO3\CMS\Backend\Controller\EditDocumentController in $GLOBALS['SOBE']
 	 * - sets $this to $GLOBALS['SOBE']->tceforms
-	 * -
+	 *
 	 * @return void
 	 */
 	protected function setUpRuntimeEnvironmentForAjaxRequests() {
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_alt_doc.xlf');
 		// Create a new anonymous object:
 		$GLOBALS['SOBE'] = new \stdClass();
-		$GLOBALS['SOBE']->MOD_MENU = array(
-			'showDescriptions' => '',
-		);
+		$GLOBALS['SOBE']->MOD_MENU = array();
 		// Setting virtual document name
 		$GLOBALS['SOBE']->MCONF['name'] = 'xMOD_alt_doc.php';
 		// CLEANSE SETTINGS
-		$GLOBALS['SOBE']->MOD_SETTINGS = BackendUtility::getModuleData($GLOBALS['SOBE']->MOD_MENU, GeneralUtility::_GP('SET'), $GLOBALS['SOBE']->MCONF['name']);
+		$GLOBALS['SOBE']->MOD_SETTINGS = array();
 		// Create an instance of the document template object
 		// @todo: resolve clash getDocumentTemplate() / getControllerDocumenttemplate()
 		$GLOBALS['SOBE']->doc = GeneralUtility::makeInstance(DocumentTemplate::class);

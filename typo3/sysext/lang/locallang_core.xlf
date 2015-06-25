@@ -89,8 +89,9 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Show secondary options (palettes)</source>
 				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
-			<trans-unit id="labels.showDescriptions">
+			<trans-unit id="labels.showDescriptions" deprecated="Unused since CMS 7">
 				<source>Show field descriptions</source>
+				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="labels.disableRTE">
 				<source>Disable Rich Text Editor (RTE)</source>

@@ -345,7 +345,6 @@ class PageLayoutController {
 		// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'tt_content_showHidden' => '',
-			'showDescriptions' => '',
 			'function' => array(
 				0 => $lang->getLL('m_function_0'),
 				1 => $lang->getLL('m_function_1'),
@@ -918,14 +917,6 @@ class PageLayoutController {
 			'</label>' .
 			'</div>';
 
-		if (ExtensionManagementUtility::isLoaded('context_help')) {
-			$h_func_b .= '<div class="checkbox">' .
-				'<label for="checkShowDescriptions">' .
-				BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], '', '', 'id="checkShowDescriptions"') .
-				$lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showDescriptions', TRUE) .
-				'</label>' .
-				'</div>';
-		}
 		// Add the function menus to bottom:
 		$content .= $this->doc->section('', $h_func_b, 0, 0);
 		$content .= $this->doc->spacer(10);
