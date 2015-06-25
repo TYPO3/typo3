@@ -92,14 +92,14 @@ $TCA['tx_blogexample_domain_model_post'] = array(
 						 'type' => 'popup',
 						 'title' => 'Edit',
 						 'script' => 'wizard_edit.php',
-						 'icon' => 'edit2.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						 'popup_onlyOpenIfSelected' => 1,
 						 'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					 ),
 					 'add' => Array(
 						 'type' => 'script',
 						 'title' => 'Create new',
-						 'icon' => 'add.gif',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						 'params' => Array(
 							 'table'=>'tx_blogexample_domain_model_person',
 							 'pid' => '###CURRENT_PID###',

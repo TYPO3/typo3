@@ -149,7 +149,7 @@ return array(
 															<link type="array">
 																<type>popup</type>
 																<title>Link</title>
-																<icon>link_popup.gif</icon>
+																<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 																<module type="array">
 																	<name>wizard_element_browser</name>
 																	<urlParameters type="array">

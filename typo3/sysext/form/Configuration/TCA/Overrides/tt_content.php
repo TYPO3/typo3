@@ -40,7 +40,7 @@ $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['wizards']['forms
 	'enableByTypeConfig' => 1,
 	'type' => 'script',
 	'title' => 'Form wizard',
-	'icon' => 'wizard_forms.gif',
+	'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif',
 	'module' => array(
 		'name' => 'wizard_form'
 	),

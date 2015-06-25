@@ -176,7 +176,7 @@ return array(
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
-						'icon' => 'link_popup.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
 						'module' => array(
 							'name' => 'wizard_element_browser',
 							'urlParameters' => array(

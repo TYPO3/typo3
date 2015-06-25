@@ -226,7 +226,7 @@
 									<link type="array">
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-										<icon>link_popup.gif</icon>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
 											<name>wizard_element_browser</name>
 											<urlParameters type="array">
@@ -276,7 +276,7 @@
 													<link type="array">
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-														<icon>link_popup.gif</icon>
+														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_element_browser</name>
 															<urlParameters type="array">
@@ -310,7 +310,7 @@
 									<link type="array">
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-										<icon>link_popup.gif</icon>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
 											<name>wizard_element_browser</name>
 											<urlParameters type="array">
@@ -349,7 +349,7 @@
 													<link type="array">
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-														<icon>link_popup.gif</icon>
+														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_element_browser</name>
 															<urlParameters type="array">
@@ -395,7 +395,7 @@
 									<link type="array">
 										<type>popup</type>
 										<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-										<icon>link_popup.gif</icon>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
 											<name>wizard_element_browser</name>
 											<urlParameters type="array">
@@ -434,7 +434,7 @@
 													<link type="array">
 														<type>popup</type>
 														<title>LLL:EXT:cms/locallang_ttc.xml:media.browseUrlTitle</title>
-														<icon>link_popup.gif</icon>
+														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_element_browser</name>
 															<urlParameters type="array">

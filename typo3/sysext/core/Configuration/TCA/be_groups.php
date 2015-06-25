@@ -70,13 +70,13 @@ return array(
 							'name' => 'wizard_edit',
 						),
 						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'edit2.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
 					),
 					'add' => array(
 						'type' => 'script',
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_add_title',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						'params' => array(
 							'table' => 'sys_filemounts',
 							'pid' => '0',
@@ -89,7 +89,7 @@ return array(
 					'list' => array(
 						'type' => 'script',
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints_list_title',
-						'icon' => 'list.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
 						'params' => array(
 							'table' => 'sys_filemounts',
 							'pid' => '0'

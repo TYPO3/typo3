@@ -43,6 +43,7 @@ class TcaMigration {
 		$tca = $this->migrateSpecialConfigurationAndRemoveShowItemStylePointerConfig($tca);
 		$tca = $this->migrateT3editorWizardWithEnabledByTypeConfigToColumnsOverrides($tca);
 		$tca = $this->migrateShowItemAdditionalPaletteToOwnPalette($tca);
+		$tca = $this->migrateIconsForFormFieldWizardsToNewLocation($tca);
 		// @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
 		return $tca;
 	}
@@ -326,6 +327,71 @@ class TcaMigration {
 				$newTca[$table]['types'][$typeName]['showitem'] = implode(',', $newFieldStrings);
 			}
 		}
+		return $newTca;
+	}
+
+	/**
+	 * Migrate core icons for form field wizard to new location
+	 *
+	 * add.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif
+	 * link_popup.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif
+	 * wizard_rte2.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif
+	 * wizard_table.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif
+	 * edit2.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif
+	 * list.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif
+	 * wizard_forms.gif => EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif
+	 *
+	 * @param array $tca Incoming TCA
+	 * @return array Migrated TCA
+	 */
+	protected function migrateIconsForFormFieldWizardsToNewLocation($tca) {
+		$newTca = $tca;
+
+		$oldFileNames = array(
+			'add.gif',
+			'link_popup.gif',
+			'wizard_rte2.gif',
+			'wizard_table.gif',
+			'edit2.gif',
+			'list.gif',
+			'wizard_forms.gif',
+		);
+
+		$newFileLocations = array(
+			'add.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+			'link_popup.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+			'wizard_rte2.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
+			'wizard_table.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+			'edit2.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+			'list.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
+			'wizard_forms.gif' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_forms.gif',
+		);
+
+		foreach ($tca as $table => $tableDefinition) {
+			if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+				continue;
+			}
+			foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+				if (
+					isset($fieldConfig['config']['wizards'])
+					&& is_array($fieldConfig['config']['wizards']) // and there are wizards
+				) {
+					foreach ($fieldConfig['config']['wizards'] as $wizardName => $wizardConfig) {
+						if (!is_array($wizardConfig)) {
+							continue;
+						}
+
+						foreach ($wizardConfig as $option => $value) {
+							if ($option === 'icon' && in_array($value, $oldFileNames, TRUE)) {
+								$newTca[$table]['columns'][$fieldName]['config']['wizards'][$wizardName]['icon'] = $newFileLocations[$value];
+								$this->messages[] = 'Migrated icon path of wizard "' . $wizardName . '" in field "' . $fieldName . '" from TCA table "' . $table . '". New path is: ' . $newFileLocations[$value];
+							}
+						}
+					}
+				}
+			}
+		}
+
 		return $newTca;
 	}
 }

@@ -72,7 +72,7 @@ return array(
 						'RTEonly' => 1,
 						'type' => 'script',
 						'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-						'icon' => 'wizard_rte2.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
 						'module' => array(
 							'name' => 'wizard_rte'
 						)

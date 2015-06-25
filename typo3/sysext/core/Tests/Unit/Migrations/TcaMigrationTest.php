@@ -69,7 +69,7 @@ class TcaMigrationTest extends UnitTestCase {
 									'type' => 'userFunc',
 									'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
 									'title' => 't3editor',
-									'icon' => 'wizard_table.gif',
+									'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
 									'module' => array(
 										'name' => 'wizard_table'
 									),
@@ -227,7 +227,7 @@ class TcaMigrationTest extends UnitTestCase {
 									'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
 									'enableByTypeConfig' => 1,
 									'title' => 't3editor',
-									'icon' => 'wizard_table.gif',
+									'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
 									'module' => array(
 										'name' => 'wizard_table'
 									),
@@ -241,7 +241,7 @@ class TcaMigrationTest extends UnitTestCase {
 									'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
 									'enableByTypeConfig' => 1,
 									'title' => 't3editor',
-									'icon' => 'wizard_table.gif',
+									'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
 									'module' => array(
 										'name' => 'wizard_table'
 									),
@@ -327,7 +327,7 @@ class TcaMigrationTest extends UnitTestCase {
 									'userFunc' => 'TYPO3\CMS\T3editor\FormWizard->main',
 									'enableByTypeConfig' => 1,
 									'title' => 't3editor',
-									'icon' => 'wizard_table.gif',
+									'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
 									'module' => array(
 										'name' => 'wizard_table'
 									),
@@ -404,6 +404,46 @@ class TcaMigrationTest extends UnitTestCase {
 				),
 			),
 		);
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function migrateIconsForFormFieldWizardsToNewLocation() {
+		$input = array(
+			'aTable' => array(
+				'columns' => array(
+					'bodytext' => array(
+						'config' => array(
+							'wizards' => array(
+								't3editorHtml' => array(
+									'icon' => 'wizard_table.gif',
+								),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'bodytext' => array(
+						'config' => array(
+							'wizards' => array(
+								't3editorHtml' => array(
+									'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+								),
+							),
+						),
+					),
+				),
+			),
+		);
+
 		$subject = new TcaMigration();
 		$this->assertEquals($expected, $subject->migrate($input));
 	}
