@@ -59,7 +59,7 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 	 * @return string
 	 * @api
 	 */
-	public function render($required = NULL, $type = 'text') {
+	public function render($required = FALSE, $type = 'text') {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
 		$this->setRespectSubmittedDataValue(TRUE);
@@ -73,7 +73,7 @@ class TextfieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractForm
 			$this->tag->addAttribute('value', $value);
 		}
 
-		if ($required !== NULL) {
+		if ($required !== FALSE) {
 			$this->tag->addAttribute('required', 'required');
 		}
 
