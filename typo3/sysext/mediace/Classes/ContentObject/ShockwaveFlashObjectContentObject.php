@@ -46,6 +46,9 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		// Add SWFobject js-file
 		$pageRenderer->addJsFile($this->getPathToLibrary('flashmedia/swfobject/swfobject.js'));
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
+		if (strpos($player, 'EXT:') === 0) {
+			$player = $prefix . $GLOBALS['TSFE']->tmpl->getFileName($player);
+		}
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
 			$installUrl = $prefix . $this->getPathToLibrary('flashmedia/swfobject/expressInstall.swf');
