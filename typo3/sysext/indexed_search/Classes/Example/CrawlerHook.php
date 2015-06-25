@@ -14,6 +14,9 @@ namespace TYPO3\CMS\IndexedSearch\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\IndexedSearch\Indexer;
+
 /**
  * Index search crawler hook example
  *
@@ -38,10 +41,13 @@ class CrawlerHook {
 	 * @param array $cfgRec Indexing Configuration Record (the record which holds the information that lead to this indexing session...)
 	 * @param array $session_data Session data variable. Passed by reference. Changed content is saved and passed back upon next instance in the session.
 	 * @param array $params Params array from the queue entry.
-	 * @param object $pObj Parent Object (from "indexed_search" extension)
+	 * @param \TYPO3\CMS\IndexedSearch\Hook\CrawlerHook $pObj Parent Object (from "indexed_search" extension)
 	 * @return void
 	 */
 	public function indexOperation($cfgRec, &$session_data, $params, &$pObj) {
+		// Set up language uid, if any:
+		$sys_language_uid = 0;
+
 		// Init session data array if not already:
 		if (!is_array($session_data)) {
 			$session_data = array(
@@ -55,8 +61,6 @@ class CrawlerHook {
 				// Indexing Example: Content accessed with GET parameters added to URL:
 				// Get rootline from the Indexing Record (needed because the indexer relates all search results to a position in the page tree!) [DON'T CHANGE]:
 				$rl = $pObj->getUidRootLineForClosestTemplate($cfgRec['pid']);
-				// Set up language uid, if any:
-				$sys_language_uid = 0;
 				// Set up 2 example items to index:
 				$exampleItems = array(
 					array(
@@ -75,7 +79,8 @@ class CrawlerHook {
 					// Prepare the GET variables array that must be added to the page URL in order to view result:
 					parse_str('&itemID=' . rawurlencode($item['ID']), $GETparams);
 					// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
+					/** @var Indexer $indexerObj */
+					$indexerObj = GeneralUtility::makeInstance(Indexer::class);
 					$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, FALSE);
 					$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 					$indexerObj->forceIndexing = TRUE;
@@ -87,10 +92,9 @@ class CrawlerHook {
 				// Indexing Example: Content accessed directly in file system:
 				// Get rootline from the Indexing Record (needed because the indexer relates all search results to a position in the page tree!) [DON'T CHANGE]:
 				$rl = $pObj->getUidRootLineForClosestTemplate($cfgRec['pid']);
-				// Set up language uid, if any:
-				$sys_language_uid = 0;
 				// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
+				/** @var Indexer $indexerObj */
+				$indexerObj = GeneralUtility::makeInstance(Indexer::class);
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;
@@ -101,8 +105,9 @@ class CrawlerHook {
 			case 3:
 				// Indexing Example: Content accessed on External URLs:
 				// Index external URL:
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
-				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
+				/** @var Indexer $indexerObj */
+				$indexerObj = GeneralUtility::makeInstance(Indexer::class);
+				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', NULL);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;
 				// To avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)
