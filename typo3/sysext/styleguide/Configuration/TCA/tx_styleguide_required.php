@@ -203,6 +203,16 @@ return array(
 			),
 			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
+		'rte_2' => array(
+			'exclude' => 1,
+			'label' => 'RTE 2: Required in inline',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_required_rte_2_inline_1_child1',
+				'foreign_field' => 'parentid',
+				'foreign_table_field' => 'parenttable',
+			),
+		),
 
 
 		'inline_1' => array(
@@ -365,7 +375,8 @@ return array(
 			input_1, input_2, input_3, input_4, input_5
 			text_1,
 			select_1,
-			rte_1,
+			group_1, group_2,
+			rte_1, rte_2,
 			inline_1, inline_2, inline_3,
 			flex_1, flex_2,
 		',
@@ -385,7 +396,7 @@ return array(
 				--div--;Group,
 					group_1, group_2,
 				--div--;Rte,
-					rte_1,
+					rte_1, rte_2,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
 				--div--;Flex,
