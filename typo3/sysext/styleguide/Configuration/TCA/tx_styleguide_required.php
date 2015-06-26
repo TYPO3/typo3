@@ -67,41 +67,90 @@ return array(
 		),
 
 
-		'required_1' => array(
+		'notrequired_1' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 1 type input, eval required',
+			'label' => 'NOT REQUIRED 1: simple input',
+			'config' => array(
+				'type' => 'input',
+			),
+		),
+
+
+		'input_1' => array(
+			'exclude' => 1,
+			'label' => 'INPUT 1: eval required',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'required',
 			),
 		),
-		'required_2' => array(
+		'input_2' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 2 type input, eval required',
+			'label' => 'INPUT 2: eval required',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'required',
 			),
 		),
-		'required_3' => array(
+		'input_3' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 3 type input, eval required',
+			'label' => 'INPUT 3: eval required',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'required',
 			),
 		),
-		'required_4' => array(
+		'input_4' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 4 type text, eval required',
+			'label' => 'INPUT 4: eval required,trim,date',
+			'config' => array(
+				'type' => 'input',
+				'size' => 20,
+				'eval' => 'trim,required,date',
+			),
+		),
+		'input_5' => array(
+			'exclude' => 1,
+			'label' => 'INPUT 5: eval required, link wizard',
+			'config' => array(
+				'type' => 'input',
+				'size' => 60,
+				'eval' => 'trim,required',
+				'wizards' => array(
+					'link' => array(
+						'type' => 'popup',
+						'title' => 'a title',
+						'icon' => 'link_popup.gif',
+						'module' => array(
+							'name' => 'wizard_element_browser',
+							'urlParameters' => array(
+								'mode' => 'wizard',
+								'act' => 'file|url',
+							),
+						),
+						'params' => array(
+							'blindLinkOptions' => 'page,folder,mail,spec',
+							'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+						),
+					),
+				),
+			),
+		),
+
+
+		'text_1' => array(
+			'exclude' => 1,
+			'label' => 'TEXT 1: eval required',
 			'config' => array(
 				'type' => 'text',
 				'eval' => 'required',
 			),
 		),
-		'required_5' => array(
+
+
+		'select_1' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 5 type select, multiple, maxitems=5, minitems=2',
+			'label' => 'SELECT 1: multiple, maxitems=5, minitems=2',
 			'config' => array(
 				'type' => 'select',
 				'size' => 3,
@@ -117,9 +166,36 @@ return array(
 				),
 			),
 		),
-		'required_6' => array(
+
+
+		'rte_1' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 6 type flex, group minitems 1',
+			'label' => 'RTE 1: required',
+			'config' => array(
+				'type' => 'text',
+				'eval' => 'required',
+			),
+			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
+		),
+
+
+		'inline_1' => array(
+			'exclude' => 1,
+			'label' => 'INLINE 1: minitems 1, maxitems 3',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_required_required_8_child1',
+				'foreign_field' => 'parentid',
+				'foreign_table_field' => 'parenttable',
+				'minitems' => 1,
+				'maxitems' => 3,
+			),
+		),
+
+
+		'flex_1' => array(
+			'exclude' => 1,
+			'label' => 'FLEX 1: input required',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -130,14 +206,10 @@ return array(
 								<el>
 									<select_1>
 										<TCEforms>
-											<label>minitems 1</label>
+											<label>input required</label>
 											<config>
-												<type>select</type>
-												<foreign_table>tx_styleguide_forms_staticdata</foreign_table>
-												<rootLevel>1</rootLevel>
-												<size>5</size>
-												<minitems>1</minitems>
-												<maxitems>999</maxitems>
+												<type>text</type>
+												<eval>required</eval>
 											</config>
 										</TCEforms>
 									</select_1>
@@ -148,9 +220,9 @@ return array(
 				),
 			),
 		),
-		'required_7' => array(
+		'flex_2' => array(
 			'exclude' => 1,
-			'label' => 'REQUIRED: 7 type flex, tab, section container, inline',
+			'label' => 'FLEX 2: tabs, section container, inline',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -235,90 +307,46 @@ return array(
 				),
 			),
 		),
-		'required_8' => array(
-			'exclude' => 1,
-			'label' => 'REQUIRED: 8: Inline, minitems 1, maxitems 3',
-			'config' => array(
-				'type' => 'inline',
-				'foreign_table' => 'tx_styleguide_required_required_8_child1',
-				'foreign_field' => 'parentid',
-				'foreign_table_field' => 'parenttable',
-				'minitems' => 1,
-				'maxitems' => 3,
-			),
-		),
-		'required_9' => array(
-			'exclude' => 1,
-			'label' => 'REQUIRED: 9: RTE',
-			'config' => array(
-				'type' => 'text',
-			),
-			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
-		),
-		'required_10' => array(
-			'exclude' => 1,
-			'label' => 'REQUIRED 10: Input, date',
-			'config' => array(
-				'type' => 'input',
-				'size' => 20,
-				'eval' => 'trim,required,date',
-			),
-		),
-		'required_11' => array(
-			'exclude' => 1,
-			'label' => 'REQUIRED 11: Input, link wizard',
-			'config' => array(
-				'type' => 'input',
-				'size' => 60,
-				'eval' => 'trim,required',
-				'wizards' => array(
-					'link' => array(
-						'type' => 'popup',
-						'title' => 'a title',
-						'icon' => 'link_popup.gif',
-						'module' => array(
-							'name' => 'wizard_element_browser',
-							'urlParameters' => array(
-								'mode' => 'wizard',
-								'act' => 'file|url',
-							),
-						),
-						'params' => array(
-							'blindLinkOptions' => 'page,folder,mail,spec',
-							'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
-						),
-					),
-				),
-			),
-		),
-
-
 	),
 
 
 	'interface' => array(
 		'showRecordFieldList' => '
 			hidden,starttime,endtime,
-			required_1, required_2, required_3, required_4, required_5,
-			required_6, required_7, required_8, required_9,
-			required_10, required_11,
+			notrequired_1,
+			input_1, input_2, input_3, input_4, input_5
+			text_1,
+			select_1,
+			rte_1,
+			inline_1,
+			flex_1, flex_2,
 		',
 	),
 
 	'types' => array(
 		'0' => array(
 			'showitem' => '
-				--div--;Required input fields,
-					required_1, required_10, required_11, --palette--;Required in palette;required_2_palette,
-				--div--;Required other fields,
-					required_4, required_5, required_6, required_8, required_7, required_9,
+				--div--;Not required,
+					notrequired_1,
+				--div--;input,
+					input_1, input_4, input_5, --palette--;Required in palette;input_palette,
+				--div--;text,
+					text_1,
+				--div--;select,
+					select_1,
+				--div--;rte,
+					rte_1,
+				--div--;inline,
+					inline_1,
+				--div--;flex,
+					flex_1, flex_2,
 			',
 		),
 	),
 
 	'palettes' => array(
-		'required_2_palette' => array(
-			'showitem' => 'required_2, required_3',
+		'input_palette' => array(
+			'showitem' => 'input_2, input_3',
 		),
 	),
 

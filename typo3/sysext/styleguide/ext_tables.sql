@@ -260,17 +260,22 @@ CREATE TABLE tx_styleguide_required (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
-	required_1 text NOT NULL,
-	required_2 text NOT NULL,
-	required_3 text NOT NULL,
-	required_4 text,
-	required_5 text NOT NULL,
-	required_6 text,
-	required_7 text,
-	required_8 text,
-	required_9 text,
-	required_10 text NOT NULL,
-	required_11 text NOT NULL,
+	input_1 text NOT NULL,
+	input_2 text NOT NULL,
+	input_3 text NOT NULL,
+	input_4 text NOT NULL,
+	input_5 text NOT NULL,
+
+	text_1 text,
+
+	select_1 text,
+
+	rte_1 text,
+
+	inline_1 text,
+
+	flex_1 text,
+	flex_2 text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
