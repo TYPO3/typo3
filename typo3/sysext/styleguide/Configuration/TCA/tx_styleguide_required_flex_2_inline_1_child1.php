@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'Form engine tests - required_7 inline_1 child 1',
+		'title' => 'Form engine tests - flex_2 inline_1 child 1',
 		'label' => 'input_1',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
 		'tstamp' => 'tstamp',
@@ -35,7 +35,7 @@ return array(
 					array('', 0),
 				),
 				'foreign_table' => 'tx_styleguide_forms_inline_2_child1',
-				'foreign_table_where' => 'AND tx_styleguide_forms_required_7_flex_inline_1_child1.pid=###CURRENT_PID### AND tx_styleguide_forms_required_7_flex_inline_1_child1.sys_language_uid IN (-1,0)',
+				'foreign_table_where' => 'AND tx_styleguide_forms_flex_2_inline_1_child1.pid=###CURRENT_PID### AND tx_styleguide_forms_flex_2_inline_1_child1.sys_language_uid IN (-1,0)',
 			)
 		),
 		'l18n_diffsource' => array(

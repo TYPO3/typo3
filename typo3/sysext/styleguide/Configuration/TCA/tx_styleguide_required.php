@@ -340,7 +340,7 @@ return array(
 													<label>inline_1 to one required field</label>
 													<config>
 														<type>inline</type>
-														<foreign_table>tx_styleguide_required_required_7_flex_inline_1_child1</foreign_table>
+														<foreign_table>tx_styleguide_required_flex_2_inline_1_child1</foreign_table>
 														<foreign_field>parentid</foreign_field>
 														<foreign_table_field>parenttable</foreign_table_field>
 													</config>

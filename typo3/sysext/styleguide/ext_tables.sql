@@ -394,7 +394,7 @@ CREATE TABLE tx_styleguide_forms_inline_3_child (
 	KEY parent (pid)
 );
 
-CREATE TABLE tx_styleguide_required_required_7_flex_inline_1_child1 (
+CREATE TABLE tx_styleguide_required_flex_2_inline_1_child1 (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
