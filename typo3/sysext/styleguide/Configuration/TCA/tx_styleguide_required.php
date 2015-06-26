@@ -437,7 +437,7 @@ return array(
 				--div--;Text,
 					text_1,
 				--div--;Select,
-					select_1, select_2, select_3, select_4,
+					select_1, select_2,
 				--div--;Group,
 					group_1, group_2,
 				--div--;Inline,
@@ -445,6 +445,7 @@ return array(
 				--div--;Flex,
 					flex_1, flex_2,
 			',
+//					select_3, select_4, // @todo: both checkbox and tree required handling still open
 //				--div--;Rte, @todo: The two RTE fields are disabled for now since re-validation does not work
 //					rte_1, rte_2,
 		),
