@@ -435,7 +435,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							if ($this->procOptions['plainImageMode']) {
 								// If "plain image mode" has been configured
 								// Find the original dimensions of the image
-								$imageInfo = @getimagesize($filePath);
+								$imageInfo = @getimagesize($filepath);
 								$attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
 							}
 							// Let's try to find a file uid for this image
