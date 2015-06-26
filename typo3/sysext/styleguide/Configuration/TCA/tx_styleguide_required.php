@@ -201,6 +201,18 @@ return array(
 				'foreign_table_field' => 'parenttable',
 			),
 		),
+		'inline_3' => array(
+			'exclude' => 1,
+			'label' => 'INLINE 3: minitems 1, maxitems 3, elements with single required field',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_styleguide_required_inline_3_child1',
+				'foreign_field' => 'parentid',
+				'foreign_table_field' => 'parenttable',
+				'minitems' => 1,
+				'maxitems' => 3,
+			),
+		),
 
 
 		'flex_1' => array(
@@ -328,7 +340,7 @@ return array(
 			text_1,
 			select_1,
 			rte_1,
-			inline_1, inline_2,
+			inline_1, inline_2, inline_3,
 			flex_1, flex_2,
 		',
 	),
@@ -347,7 +359,7 @@ return array(
 				--div--;rte,
 					rte_1,
 				--div--;inline,
-					inline_1, inline_2,
+					inline_1, inline_2, inline_3,
 				--div--;flex,
 					flex_1, flex_2,
 			',
