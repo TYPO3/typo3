@@ -2049,7 +2049,6 @@ return array(
 					'colorpicker' => array(
 						'type' => 'colorbox',
 						'title' => 'Color picker',
-						'icon' => 'link_popup.gif',
 						'module' => array(
 							'name' => 'wizard_colorpicker',
 						),
@@ -2066,7 +2065,6 @@ return array(
 					'colorpicker' => array(
 						'type' => 'colorbox',
 						'title' => 'Color picker',
-						'icon' => 'link_popup.gif',
 						'module' => array(
 							'name' => 'wizard_colorpicker',
 						),
