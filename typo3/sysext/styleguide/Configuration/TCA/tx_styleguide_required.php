@@ -440,13 +440,13 @@ return array(
 					select_1, select_2, select_3, select_4,
 				--div--;Group,
 					group_1, group_2,
-				--div--;Rte,
-					rte_1, rte_2,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
 				--div--;Flex,
 					flex_1, flex_2,
 			',
+//				--div--;Rte, @todo: The two RTE fields are disabled for now since re-validation does not work
+//					rte_1, rte_2,
 		),
 	),
 
