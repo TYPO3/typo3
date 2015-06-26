@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ctrl' => array(
-		'title' => 'Form engine tests - required_8 child 1',
+		'title' => 'Form engine tests - inline_2 child 1',
 		'label' => 'input_1',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
 		'tstamp' => 'tstamp',
@@ -64,6 +64,7 @@ return array(
 			'label' => 'input_1',
 			'config' => array(
 				'type' => 'input',
+				'eval' => 'required',
 			),
 		),
 	),
