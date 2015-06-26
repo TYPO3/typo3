@@ -150,7 +150,7 @@ return array(
 
 		'select_1' => array(
 			'exclude' => 1,
-			'label' => 'SELECT 1: multiple, maxitems=5, minitems=2',
+			'label' => 'SELECT 1: multiple, minitems=2, maxitems=5',
 			'config' => array(
 				'type' => 'select',
 				'size' => 3,
@@ -163,6 +163,51 @@ return array(
 					array('foo4', 4),
 					array('foo5', 5),
 					array('foo6', 6),
+				),
+			),
+		),
+		'select_2' => array(
+			'exclude' => 1,
+			'label' => 'SELECT 2: singlebox, minitems=1, maxitems=1',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('foo3', 3),
+				),
+				'size' => 2, // combination size > 1 & maxitems 1 triggers "singlebox" mode
+				'minitems' => 1,
+				'maxitems' => 1,
+			),
+		),
+		'select_3' => array(
+			'exclude' => 1,
+			'label' => 'SELECT 3: checkbox, minitems=1, maxitems=2',
+			'config' => array(
+				'type' => 'select',
+				'renderMode' => 'checkbox',
+				'items' => array(
+					array('foo1', 1),
+					array('foo2', 2),
+					array('foo3', 3),
+				),
+				'minitems' => 1,
+				'maxitems' => 2,
+			),
+		),
+		'select_4' => array(
+			'exclude' => 1,
+			'label' => 'SELECT: 4 tree, minitems=1, maxitems=3',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 20,
+				'minitems' => 1,
+				'maxitems' => 3,
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'parentField' => 'pid',
 				),
 			),
 		),
@@ -374,7 +419,7 @@ return array(
 			notrequired_1,
 			input_1, input_2, input_3, input_4, input_5
 			text_1,
-			select_1,
+			select_1, select_2, select_3, select_4,
 			group_1, group_2,
 			rte_1, rte_2,
 			inline_1, inline_2, inline_3,
@@ -392,7 +437,7 @@ return array(
 				--div--;Text,
 					text_1,
 				--div--;Select,
-					select_1,
+					select_1, select_2, select_3, select_4,
 				--div--;Group,
 					group_1, group_2,
 				--div--;Rte,
