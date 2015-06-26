@@ -168,6 +168,32 @@ return array(
 		),
 
 
+		'group_1' => array(
+			'exclude' => 1,
+			'label' => 'GROUP 1: minitems = 1, maxitems=3',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'minitems' => 1,
+				'maxitems' => 3,
+			),
+		),
+		'group_2' => array(
+			'exclude' => 1,
+			'label' => 'GROUP 2: minitems = 1, maxitems=1, size=1',
+			'config' => array (
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_styleguide_forms_staticdata',
+				'show_thumbs' => TRUE,
+				'size' => 1,
+				'minitems' => 1,
+				'maxitems' => 1,
+			),
+		),
+
+
 		'rte_1' => array(
 			'exclude' => 1,
 			'label' => 'RTE 1: required',
@@ -350,17 +376,19 @@ return array(
 			'showitem' => '
 				--div--;Not required,
 					notrequired_1,
-				--div--;input,
+				--div--;Input,
 					input_1, input_4, input_5, --palette--;Required in palette;input_palette,
-				--div--;text,
+				--div--;Text,
 					text_1,
-				--div--;select,
+				--div--;Select,
 					select_1,
-				--div--;rte,
+				--div--;Group,
+					group_1, group_2,
+				--div--;Rte,
 					rte_1,
-				--div--;inline,
+				--div--;Inline,
 					inline_1, inline_2, inline_3,
-				--div--;flex,
+				--div--;Flex,
 					flex_1, flex_2,
 			',
 		),

@@ -270,6 +270,9 @@ CREATE TABLE tx_styleguide_required (
 
 	select_1 text,
 
+	group_1 text,
+	group_2 text,
+
 	rte_1 text,
 
 	inline_1 text,
