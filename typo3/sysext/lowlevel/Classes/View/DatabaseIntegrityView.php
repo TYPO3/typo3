@@ -68,6 +68,7 @@ class DatabaseIntegrityView extends BaseScriptClass {
 	 * @return void
 	 */
 	public function init() {
+		$this->MCONF['name'] = 'system_dbint';
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
