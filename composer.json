@@ -121,19 +121,58 @@
 	},
 	"autoload": {
 		"psr-4": {
+			"TYPO3\\CMS\\About\\": "typo3/sysext/about/Classes/",
+			"TYPO3\\CMS\\Aboutmodules\\": "typo3/sysext/aboutmodules/Classes/",
 			"TYPO3\\CMS\\Backend\\": "typo3/sysext/backend/Classes/",
+			"TYPO3\\CMS\\Belog\\": "typo3/sysext/belog/Classes/",
+			"TYPO3\\CMS\\Beuser\\": "typo3/sysext/beuser/Classes/",
+			"TYPO3\\CMS\\ContextHelp\\": "typo3/sysext/context_help/Classes/",
 			"TYPO3\\CMS\\Core\\": "typo3/sysext/core/Classes/",
 			"TYPO3\\CMS\\Cshmanual\\": "typo3/sysext/cshmanual/Classes/",
+			"TYPO3\\CMS\\CssStyledContent\\": "typo3/sysext/css_styled_content/Classes/",
+			"TYPO3\\CMS\\Dbal\\": "typo3/sysext/dbal/Classes/",
+			"TYPO3\\CMS\\Documentation\\": "typo3/sysext/documentation/Classes/",
 			"TYPO3\\CMS\\Extbase\\": "typo3/sysext/extbase/Classes/",
 			"TYPO3\\CMS\\Extensionmanager\\": "typo3/sysext/extensionmanager/Classes/",
+			"TYPO3\\CMS\\Feedit\\": "typo3/sysext/feedit/Classes/",
+			"TYPO3\\CMS\\Felogin\\": "typo3/sysext/felogin/Classes/",
+			"TYPO3\\CMS\\Filelist\\": "typo3/sysext/filelist/Classes/",
 			"TYPO3\\CMS\\Fluid\\": "typo3/sysext/fluid/Classes/",
+			"TYPO3\\CMS\\Form\\": "typo3/sysext/form/Classes/",
 			"TYPO3\\CMS\\Frontend\\": "typo3/sysext/frontend/Classes/",
+			"TYPO3\\CMS\\Func\\": "typo3/sysext/func/Classes/",
+			"TYPO3\\CMS\\Impexp\\": "typo3/sysext/impexp/Classes/",
+			"TYPO3\\CMS\\IndexedSearch\\": "typo3/sysext/indexed_search/Classes/",
+			"TYPO3\\CMS\\IndexedSearchMysql\\": "typo3/sysext/indexed_search_mysql/Classes/",
+			"TYPO3\\CMS\\Info\\": "typo3/sysext/info/Classes/",
+			"TYPO3\\CMS\\InfoPagetsconfig\\": "typo3/sysext/info_pagetsconfig/Classes/",
 			"TYPO3\\CMS\\Install\\": "typo3/sysext/install/Classes/",
 			"TYPO3\\CMS\\Lang\\": "typo3/sysext/lang/Classes/",
+			"TYPO3\\CMS\\Linkvalidator\\": "typo3/sysext/linkvalidator/Classes/",
+			"TYPO3\\CMS\\Lowlevel\\": "typo3/sysext/lowlevel/Classes/",
+			"TYPO3\\CMS\\Mediace\\": "typo3/sysext/mediace/Classes/",
+			"TYPO3\\CMS\\Opendocs\\": "typo3/sysext/opendocs/Classes/",
+			"TYPO3\\CMS\\Openid\\": "typo3/sysext/openid/Classes/",
 			"TYPO3\\CMS\\Recordlist\\": "typo3/sysext/recordlist/Classes/",
+			"TYPO3\\CMS\\Recycler\\": "typo3/sysext/recycler/Classes/",
+			"TYPO3\\CMS\\Reports\\": "typo3/sysext/reports/Classes/",
+			"TYPO3\\CMS\\Rsaauth\\": "typo3/sysext/rsaauth/Classes/",
+			"TYPO3\\CMS\\Rtehtmlarea\\": "typo3/sysext/rtehtmlarea/Classes/",
 			"TYPO3\\CMS\\Saltedpasswords\\": "typo3/sysext/saltedpasswords/Classes/",
+			"TYPO3\\CMS\\Scheduler\\": "typo3/sysext/scheduler/Classes/",
+			"TYPO3\\CMS\\Setup\\": "typo3/sysext/setup/Classes/",
 			"TYPO3\\CMS\\Sv\\": "typo3/sysext/sv/Classes/",
-			"TYPO3\\CMS\\T3skin\\": "typo3/sysext/t3skin/Classes/"
+			"TYPO3\\CMS\\SysAction\\": "typo3/sysext/sys_action/Classes/",
+			"TYPO3\\CMS\\SysNote\\": "typo3/sysext/sys_note/Classes/",
+			"TYPO3\\CMS\\T3editor\\": "typo3/sysext/t3editor/Classes/",
+			"TYPO3\\CMS\\T3skin\\": "typo3/sysext/t3skin/Classes/",
+			"TYPO3\\CMS\\Taskcenter\\": "typo3/sysext/taskcenter/Classes/",
+			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
+			"TYPO3\\CMS\\Version\\": "typo3/sysext/version/Classes/",
+			"TYPO3\\CMS\\Viewpage\\": "typo3/sysext/viewpage/Classes/",
+			"TYPO3\\CMS\\WizardCrpages\\": "typo3/sysext/wizard_crpages/Classes/",
+			"TYPO3\\CMS\\WizardSortpages\\": "typo3/sysext/wizard_sortpages/Classes/",
+			"TYPO3\\CMS\\Workspaces\\": "typo3/sysext/workspaces/Classes/"
 		},
 		"classmap": [
 			"typo3/sysext/core/Resources/PHP/"
@@ -158,6 +197,7 @@
 			"TYPO3\\CMS\\Install\\Tests\\": "typo3/sysext/install/Tests/",
 			"TYPO3\\CMS\\Lang\\Tests\\": "typo3/sysext/lang/Tests/",
 			"TYPO3\\CMS\\Lowlevel\\Tests\\": "typo3/sysext/lowlevel/Tests/",
+			"TYPO3\\CMS\\Mediace\\Tests\\": "typo3/sysext/mediace/Tests/",
 			"TYPO3\\CMS\\Recordlist\\Tests\\": "typo3/sysext/recordlist/Tests/",
 			"TYPO3\\CMS\\Reports\\Tests\\": "typo3/sysext/reports/Tests/",
 			"TYPO3\\CMS\\Rsaauth\\Tests\\": "typo3/sysext/rsaauth/Tests/",
@@ -168,6 +208,6 @@
 		}
 	},
 	"include-path": [
-		"./typo3/contrib/vendor/pear/http_request2"
+		"typo3/contrib/vendor/pear/http_request2/"
 	]
 }
