@@ -28,9 +28,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class ClassLoadingInformationGenerator {
 
 	/**
+	 * Folder with framework extensions
+	 */
+	const SYSEXT_FOLDER = 'typo3/sysext';
+
+	/**
 	 * @var PackageInterface[]
 	 */
-	static protected $activePackages;
+	static protected $activeExtensionPackages;
 
 	/**
 	 * Returns class loading information for a single package
@@ -107,7 +112,7 @@ class ClassLoadingInformationGenerator {
 	 */
 	static public function buildAutoloadInformationFiles() {
 		// Ensure that for each re-build, the packages are fetched again from the package manager
-		self::$activePackages = NULL;
+		self::$activeExtensionPackages = NULL;
 
 		$psr4File = $classMapFile = <<<EOF
 <?php
@@ -121,7 +126,7 @@ return array(
 EOF;
 		$classMap = array();
 		$psr4 = array();
-		foreach (self::getActivePackages() as $package) {
+		foreach (self::getActiveExtensionPackages() as $package) {
 			$classLoadingInformation = self::buildClassLoadingInformationForPackage($package, TRUE);
 			$classMap = array_merge($classMap, $classLoadingInformation['classMap']);
 			$psr4 = array_merge($psr4, $classLoadingInformation['psr-4']);
@@ -178,7 +183,7 @@ EOF;
 	static public function buildClassAliasMapFile() {
 		$aliasToClassNameMapping = array();
 		$classNameToAliasMapping = array();
-		foreach (self::getActivePackages() as $package) {
+		foreach (self::getActiveExtensionPackages() as $package) {
 			$aliasMappingForPackage = self::buildClassAliasMapForPackage($package);
 			$aliasToClassNameMapping = array_merge($aliasToClassNameMapping, $aliasMappingForPackage['aliasToClassNameMapping']);
 			$classNameToAliasMapping = array_merge($classNameToAliasMapping, $aliasMappingForPackage['classNameToAliasMapping']);
@@ -198,20 +203,29 @@ EOF;
 	 *
 	 * @return \TYPO3\CMS\Core\Package\PackageInterface[]
 	 */
-	static protected function getActivePackages() {
-		if (self::$activePackages === NULL) {
-			self::$activePackages = array();
+	static protected function getActiveExtensionPackages() {
+		if (self::$activeExtensionPackages === NULL) {
+			self::$activeExtensionPackages = array();
 			foreach (self::getPackageManager()->getActivePackages() as $package) {
-				if (!$package instanceof \TYPO3\CMS\Core\Package\Package || $package->isProtected()) {
-					// Skip non core packages and all protected packages.
-					// The latter will be covered by composer class loader.
+				if (self::isFrameworkPackage($package)) {
+					// Skip all core packages as the class loading info is prepared for them already
 					continue;
 				}
-				self::$activePackages[] = $package;
+				self::$activeExtensionPackages[] = $package;
 			}
 		}
 
-		return self::$activePackages;
+		return self::$activeExtensionPackages;
+	}
+
+	/**
+	 * Check if the package is a framework package (located in typo3/sysext)
+	 *
+	 * @param PackageInterface $package
+	 * @return bool
+	 */
+	static protected function isFrameworkPackage(PackageInterface $package) {
+		return strpos($package->getPackagePath(), self::SYSEXT_FOLDER) !== FALSE;
 	}
 
 	/**
