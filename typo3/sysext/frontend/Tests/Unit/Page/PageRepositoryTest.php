@@ -27,6 +27,25 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $pageSelectObject;
 
+	protected $defaultTcaForPages = array(
+		'ctrl' => array(
+			'label' => 'title',
+			'tstamp' => 'tstamp',
+			'sortby' => 'sorting',
+			'type' => 'doktype',
+			'versioningWS' => 2,
+			'origUid' => 't3_origuid',
+			'delete' => 'deleted',
+			'enablecolumns' => array(
+				'disabled' => 'hidden',
+				'starttime' => 'starttime',
+				'endtime' => 'endtime',
+				'fe_group' => 'fe_group'
+			),
+		),
+		'columns' => array()
+	);
+
 	/**
 	 * Sets up this testcase
 	 */
@@ -178,6 +197,9 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function noPagesFromWorkspaceAreShownLive() {
 		// initialization
 		$wsid = 987654321;
+		$GLOBALS['TCA'] = array(
+			'pages' => $this->defaultTcaForPages
+		);
 
 		// simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
 		$this->pageSelectObject->versioningPreview = FALSE;
@@ -194,7 +216,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				$this->logicalNot(
 					$this->stringContains('(pages.t3ver_wsid=0 or pages.t3ver_wsid=' . $wsid . ')')
 				),
-				$this->stringContains('AND NOT pages.t3ver_state>0')
+				$this->stringContains('AND pages.t3ver_state<=0')
 			)
 		);
 
@@ -208,6 +230,9 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function previewShowsPagesFromLiveAndCurrentWorkspace() {
 		// initialization
 		$wsid = 987654321;
+		$GLOBALS['TCA'] = array(
+			'pages' => $this->defaultTcaForPages
+		);
 
 		// simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
 		$this->pageSelectObject->versioningPreview = TRUE;
@@ -237,6 +262,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function enableFieldsHidesVersionedRecordsAndPlaceholders() {
 		$table = $this->getUniqueId('aTable');
 		$GLOBALS['TCA'] = array(
+			'pages' => $this->defaultTcaForPages,
 			$table => array(
 				'ctrl' => array(
 					'versioningWS' => 2
@@ -259,6 +285,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function enableFieldsDoesNotHidePlaceholdersInPreview() {
 		$table = $this->getUniqueId('aTable');
 		$GLOBALS['TCA'] = array(
+			'pages' => $this->defaultTcaForPages,
 			$table => array(
 				'ctrl' => array(
 					'versioningWS' => 2
@@ -281,6 +308,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview() {
 		$table = $this->getUniqueId('aTable');
 		$GLOBALS['TCA'] = array(
+			'pages' => $this->defaultTcaForPages,
 			$table => array(
 				'ctrl' => array(
 					'versioningWS' => 2
@@ -303,6 +331,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function enableFieldsDoesNotHideVersionedRecordsWhenCheckingVersionOverlays() {
 		$table = $this->getUniqueId('aTable');
 		$GLOBALS['TCA'] = array(
+			'pages' => $this->defaultTcaForPages,
 			$table => array(
 				'ctrl' => array(
 					'versioningWS' => 2
